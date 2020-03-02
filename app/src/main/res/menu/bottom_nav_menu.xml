@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/discoverMenu"
+        android:icon="@drawable/ic_discover"
+        android:title="@string/discover" />
+
+    <item
+        android:id="@+id/seasonMenu"
+        android:icon="@drawable/ic_season"
+        android:title="@string/season" />
+
+    <item
+        android:id="@+id/collectionMenu"
+        android:icon="@drawable/ic_collection"
+        android:title="@string/collection" />
+
+    <item
+        android:id="@+id/downloadMenu"
+        android:icon="@drawable/ic_download"
+        android:title="@string/download" />
+
+    <item
+        android:id="@+id/profileMenu"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile" />
+
+</menu>

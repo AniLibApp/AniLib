@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AniLibv2</string>
+    <string name="discover">Discover</string>
+    <string name="season">Season</string>
+    <string name="collection">Collection</string>
+    <string name="download">Download</string>
+    <string name="profile">Profile</string>
+    <string name="empty">Empty</string>
+    <string name="error">Error</string>
+</resources>
