@@ -1,0 +1,55 @@
+query SeasonListQuery($page: Int!
+    , $perPage: Int!
+    , $seasonYear: Int
+    , $season: MediaSeason
+    , $status: MediaStatus
+    , $genre:String
+    , $type: MediaType
+    , $format: MediaFormat
+    , $genre_in:[String]
+    , $sort: [MediaSort]) {
+    Page(page: $page, perPage: $perPage) {
+        media(seasonYear: $seasonYear, season: $season, type: $type,genre: $genre, format: $format,status: $status,genre_in: $genre_in, sort: $sort,isAdult:false) {
+            ... on Media{
+                ... mediaContent
+            }
+        }
+    }
+}
+
+
+fragment mediaContent on Media{
+    id
+    title {
+        ... on MediaTitle{
+            english
+            romaji
+            native
+            userPreferred
+        }
+    }
+    isAdult
+    type
+    genres
+    status
+    averageScore
+    episodes
+    duration
+    startDate {
+        ... on FuzzyDate{
+            year
+            month
+            day
+        }
+    }
+    description(asHtml:true)
+    coverImage {
+        ... on MediaCoverImage{
+            medium
+            large
+            extraLarge
+        }
+    }
+    bannerImage
+
+}

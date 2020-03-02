@@ -1,0 +1,114 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.apollographql.apollo'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        applicationId "com.revolgenx.anilib"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    viewBinding {
+        enabled = true
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+    buildTypes {
+        debug {
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+ext {
+    eventbus_ver = '3.2.0'
+    multidex_ver = '1.0.3'
+    preference_ver = '1.1.0'
+    koin_ver = '2.0.1'
+    dynamic_ver = '3.1.1'
+    elements_ver = '0.3.7'
+    threetenabp_ver = '1.2.2'
+    apollo_ver = "1.3.2"
+    fresco_ver = '2.1.0'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+
+    //apollo
+    implementation("com.apollographql.apollo:apollo-runtime:$apollo_ver")
+    implementation "com.apollographql.apollo:apollo-rx2-support:$apollo_ver"
+
+    //rx
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    //multidex
+    implementation "com.android.support:multidex:$multidex_ver"
+
+    //eventbus
+    implementation "org.greenrobot:eventbus:$eventbus_ver"
+
+    //preference
+    implementation "androidx.preference:preference-ktx:$preference_ver"
+
+    //koin
+    implementation "org.koin:koin-android:$koin_ver"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_ver"
+
+    //dynamic theming
+    implementation "com.pranavpandey.android:dynamic-support:$dynamic_ver"
+
+    //element ver
+    implementation "com.otaliastudios:elements:$elements_ver"
+
+    //threetenabp
+    implementation "com.jakewharton.threetenabp:threetenabp:$threetenabp_ver"
+
+    //flexbox
+    implementation 'com.google.android:flexbox:2.0.1'
+
+    //okhttp
+    implementation("com.squareup.okhttp3:okhttp:4.4.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.4.0")
+
+    //image fresco
+    implementation "com.facebook.fresco:fresco:$fresco_ver"
+
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

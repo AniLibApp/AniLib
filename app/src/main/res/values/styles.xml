@@ -1,0 +1,23 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.DynamicApp.Light" />
+
+    <style name="BaseTheme" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="fontFamily">@font/open_sans_regular</item>
+    </style>
+
+    <style name="BaseTheme.Dark" parent="Theme.DynamicApp">
+        <!-- Customize your theme here. -->
+    </style>
+
+
+    <!--    <style name="BottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">-->
+    <!--        <item name="fontFamily">@font/open_sans_regular</item>-->
+    <!--    </style>-->
+
+</resources>
