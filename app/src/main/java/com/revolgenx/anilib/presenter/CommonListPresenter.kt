@@ -1,11 +1,13 @@
 package com.revolgenx.anilib.presenter
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
+import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.model.CommonMediaModel
 import kotlinx.android.synthetic.main.common_list_presenter_layout.view.*

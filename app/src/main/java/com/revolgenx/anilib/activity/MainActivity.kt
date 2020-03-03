@@ -1,10 +1,13 @@
-package com.revolgenx.anilib
+package com.revolgenx.anilib.activity
 
 import android.os.Bundle
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.revolgenx.anilib.R
+import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.fragment.*
+import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.BasePagerFragment
 import com.revolgenx.anilib.util.makePagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -39,9 +42,10 @@ class MainActivity : DynamicSystemActivity() {
 
         activityMainContainer.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
         bottomNav.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
+        statusBarColor = statusBarColor
 
         noSwipeViewPager.adapter = makePagerAdapter(
-            BasePagerFragment.newInstances(
+            BaseFragment.newInstances(
                 listOf(
                     DiscoverFragment::class.java,
                     SeasonFragment::class.java,
@@ -72,6 +76,14 @@ class MainActivity : DynamicSystemActivity() {
         }
     }
 
+    override fun setStatusBarColor(color: Int) {
+        super.setStatusBarColor(color)
+        setWindowStatusBarColor(statusBarColor);
+    }
+
+    override fun setNavigationBarTheme(): Boolean {
+        return AppController.instance.isThemeNavigationBar
+    }
 
     private fun themeBottomNavigation() {
         bottomNav.color = DynamicTheme.getInstance().get().primaryColor

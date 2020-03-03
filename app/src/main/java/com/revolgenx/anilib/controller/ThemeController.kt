@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.controller
 
 
+import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
@@ -17,7 +18,7 @@ object ThemeController {
     /**
      * `true` if `auto` theme is selected.
      */
-    val isAutoTheme: Boolean get() = appThemeColor == Theme.AUTO
+    val isAutoTheme: Boolean get() = appThemeColor == Theme.NIGHT
 
 
     /**

@@ -10,11 +10,6 @@ import com.revolgenx.anilib.fragment.base.BasePagerFragment
 
 class DiscoverFragment : BasePagerFragment() {
 
-    companion object {
-        fun newInstance() = DiscoverFragment()
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

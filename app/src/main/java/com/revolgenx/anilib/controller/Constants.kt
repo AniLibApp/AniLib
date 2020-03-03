@@ -10,27 +10,32 @@ object Constants {
      *
      * `Auto` to use day and night themes.
      */
-    @ColorInt const val APP_THEME_COLOR = Theme.AUTO
+    @ColorInt
+    const val APP_THEME_COLOR = Theme.AUTO
 
     /**
      * TODO: Default value for app theme day color.
      */
-    @ColorInt val APP_THEME_DAY_COLOR = Color.parseColor("#ffffff")
+    @ColorInt
+    val APP_THEME_DAY_COLOR = Color.parseColor("#fafafa")
 
     /**
      * TODO: Default value for app theme night color.
      */
-    @ColorInt val APP_THEME_NIGHT_COLOR = Color.parseColor("#171E28")
+    @ColorInt
+    val APP_THEME_NIGHT_COLOR = Color.parseColor("#171E28")
 
     /**
      * TODO: Default value for app theme primary color.
      */
-    @ColorInt val APP_THEME_COLOR_PRIMARY = Color.parseColor("#ffffff")
+    @ColorInt
+    val APP_THEME_COLOR_PRIMARY = Color.parseColor("#fafafa")
 
     /**
      * TODO: Default value for app theme accent color.
      */
-    @ColorInt val APP_THEME_COLOR_ACCENT = Color.parseColor("#02A4F8")
+    @ColorInt
+    val APP_THEME_COLOR_ACCENT = Color.parseColor("#02A4F8")
 
 
     /**
@@ -86,17 +91,20 @@ object Constants {
     /**
      * Shared preferences default value for app theme day color.
      */
-    @ColorInt val PREF_SETTINGS_APP_THEME_DAY_COLOR_DEFAULT = APP_THEME_DAY_COLOR
+    @ColorInt
+    val PREF_SETTINGS_APP_THEME_DAY_COLOR_DEFAULT = APP_THEME_DAY_COLOR
 
     /**
      * Shared preferences default value for app theme night color.
      */
-    @ColorInt val PREF_SETTINGS_APP_THEME_NIGHT_COLOR_DEFAULT = APP_THEME_NIGHT_COLOR
+    @ColorInt
+    val PREF_SETTINGS_APP_THEME_NIGHT_COLOR_DEFAULT = APP_THEME_NIGHT_COLOR
 
     /**
      * Shared preferences default value for app theme primary color.
      */
-    @ColorInt val PREF_SETTINGS_APP_THEME_COLOR_PRIMARY_DEFAULT = APP_THEME_COLOR_PRIMARY
+    @ColorInt
+    val PREF_SETTINGS_APP_THEME_COLOR_PRIMARY_DEFAULT = APP_THEME_COLOR_PRIMARY
 
     /**
      * Shared preferences default value for app theme accent color.
