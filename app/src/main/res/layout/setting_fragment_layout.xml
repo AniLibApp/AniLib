@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/Widget.DynamicApp.Scroller.Padding.Vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            style="@style/Widget.DynamicApp.Card">
+
+            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+                android:id="@+id/themeItemView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_title="@string/ads_dynamic_theme"
+                app:ads_subtitle="@string/dynamically_apply_theme"
+                app:ads_icon="@drawable/ads_ic_style"/>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+    </LinearLayout>
+</com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>

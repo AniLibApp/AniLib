@@ -45,6 +45,7 @@ abstract class BasePresenterFragment<S : Any> : BasePagerFragment() {
     lateinit var baseSwipeRefreshLayout: DynamicSwipeRefreshLayout
     lateinit var layoutManager: RecyclerView.LayoutManager
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

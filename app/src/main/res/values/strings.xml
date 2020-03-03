@@ -7,4 +7,5 @@
     <string name="profile">Profile</string>
     <string name="empty">Empty</string>
     <string name="error">Error</string>
+    <string name="dynamically_apply_theme">Dynamically appy theme.</string>
 </resources>
