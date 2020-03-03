@@ -5,6 +5,6 @@
     android:layout_height="match_parent">
 
     <include
-        layout="@layout/common_list_presenter_layout"/>
+        layout="@layout/media_list_presenter_layout"/>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>

@@ -3,11 +3,10 @@ package com.revolgenx.anilib.event
 import org.greenrobot.eventbus.EventBus
 
 abstract class BaseEvent {
-    fun postEvent() {
+    val postEvent by lazy {
         EventBus.getDefault().post(this)
     }
-
-    fun postSticky(){
+    val postSticky by lazy {
         EventBus.getDefault().postSticky(this)
     }
 }

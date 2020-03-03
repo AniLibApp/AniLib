@@ -10,8 +10,8 @@ class TitleModel {
     var userPreferred: String? = null
 
     fun title(context: Context) = when (context.titlePref()) {
-        0 -> english
-        1 -> romaji
+        0 -> romaji
+        1 -> english
         2 -> native
         3 -> userPreferred
         else -> ""

@@ -1,7 +1,11 @@
 package com.revolgenx.anilib.model
 
 class DateModel {
-    var year = 0
-    var month = 0
-    var day = 0
+    var year: Int? = null
+    var month: Int? = null
+    var day: Int? = null
+    var date: String = ""
+    override fun toString(): String {
+        return (year?.let { "$it" } ?: "") + (month?.let { "-$it" } ?: "") + (day?.let { "-$it" } ?: "")
+    }
 }

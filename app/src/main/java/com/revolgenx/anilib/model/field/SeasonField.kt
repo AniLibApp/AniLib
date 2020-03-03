@@ -13,7 +13,6 @@ import com.revolgenx.anilib.type.MediaType
 
 data class SeasonField(
     var format: Int,
-    var type: Int,
     var year: Int,
     var season: Int,
     var status: Int,
@@ -50,8 +49,11 @@ data class SeasonField(
         return SeasonListQuery.builder()
             .page(page)
             .perPage(perPage)
-            .format(MediaFormat.values()[format])
-            .type(MediaType.values()[type])
+            .also {
+                if (format != MediaFormat.`$UNKNOWN`.ordinal) {
+                    it.format(MediaFormat.values()[format])
+                }
+            }
             .seasonYear(year)
             .season(MediaSeason.values()[season]).apply {
                 if (status != MediaStatus.`$UNKNOWN`.ordinal) {

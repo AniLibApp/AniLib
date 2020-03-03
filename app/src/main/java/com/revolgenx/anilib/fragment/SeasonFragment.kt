@@ -7,7 +7,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.model.field.SeasonField
-import com.revolgenx.anilib.presenter.CommonListPresenter
+import com.revolgenx.anilib.presenter.MediaPresenter
 import com.revolgenx.anilib.viewmodel.SeasonViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -20,7 +20,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
     private val viewModel by viewModel<SeasonViewModel>()
 
     override var basePresenter: Presenter<CommonMediaModel>? = null
-        get() = if (field == null) CommonListPresenter(context!!) else field
+        get() = if (field == null) MediaPresenter(context!!) else field
 
     override var baseSource: Source<CommonMediaModel>? = null
         get() = viewModel.seasonSource
