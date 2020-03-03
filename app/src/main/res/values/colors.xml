@@ -4,4 +4,14 @@
     <color name="colorPrimaryDark">#171E28</color>
     <color name="colorAccent">#02A4F8</color>
     <color name="translucent_dark">#7E181818</color>
+
+
+    <color name="white">#ffffff</color>
+
+    //media status
+    <color name="colorReleasing">#4CAF50</color>
+    <color name="colorFinished">#02A4F8</color>
+    <color name="colorNotReleased">#673AB7</color>
+    <color name="colorCancelled">#D50000</color>
+
 </resources>

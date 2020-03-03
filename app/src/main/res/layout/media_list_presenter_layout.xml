@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.DynamicApp.Card"
+    android:id="@+id/mediaCardView"
     android:layout_width="match_parent"
     android:layout_height="@dimen/base_list_adapter_height"
     android:layout_marginStart="10dp"
@@ -38,80 +40,64 @@
                 android:paddingStart="5dp"
                 android:paddingTop="3dp"
                 android:paddingEnd="5dp"
+                android:textColor="@color/white"
+                app:drawableStartCompat="@drawable/ic_star"
+                app:ads_colorType="custom"
                 android:paddingBottom="3dp"
                 android:textSize="12sp" />
-
-            <!--            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView-->
-            <!--                android:id="@+id/timeLeftTv"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="20dp"-->
-            <!--                android:layout_gravity="bottom"-->
-            <!--                android:background="@color/time_left_background"-->
-            <!--                android:ellipsize="end"-->
-            <!--                android:fontFamily="sans-serif-condensed-medium"-->
-            <!--                android:gravity="center"-->
-            <!--                android:includeFontPadding="false"-->
-            <!--                android:maxLines="1"-->
-            <!--                android:textColor="@color/textPrimaryColor"-->
-            <!--                android:textSize="10sp"-->
-            <!--                android:visibility="gone"-->
-            <!--                tools:ignore="SmallSp" />-->
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/mediaTitleTv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_toStartOf="@id/bookmarkIv"
+                android:ellipsize="end"
+                android:fontFamily="@font/open_sans_regular"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:maxLines="2"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="14sp" />
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                    android:id="@+id/animeTitleTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_toStartOf="@id/bookmarkIv"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/open_sans_regular"
-                    android:gravity="center_vertical"
-                    android:includeFontPadding="false"
-                    android:maxLines="2"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="14sp" />
-
-                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                    android:id="@+id/bookmarkIv"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentEnd="true"
-                    android:padding="10dp"
-                    android:textColor="?android:attr/textColorPrimary"
-                    app:srcCompat="@drawable/ic_bookmark"
-                    app:tint="?android:textColorPrimary"
-                    app:ads_colorType="tint_primary"
-                    style="@style/Widget.DynamicApp.Image"/>
-
-            </RelativeLayout>
+            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                android:id="@+id/bookmarkIv"
+                style="@style/Widget.DynamicApp.Image"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:padding="10dp"
+                android:textColor="?android:attr/textColorPrimary"
+                app:ads_colorType="tint_primary"
+                app:srcCompat="@drawable/ic_bookmark"
+                app:tint="?android:textColorPrimary" />
 
 
             <com.revolgenx.anilib.view.GenreLayout
+                android:id="@+id/genreLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/mediaTitleTv"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/animeStatusTv"
+                android:id="@+id/mediaStatusTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/genreLayout"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
@@ -126,9 +112,10 @@
                 android:textSize="12sp" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/animeStartDateTv"
+                android:id="@+id/mediaStartDateTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/mediaStatusTv"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="8dp"
@@ -140,27 +127,53 @@
                 android:textSize="12sp" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/animeEpisodeTv"
+                android:id="@+id/mediaEpisodeTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/mediaStartDateTv"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/open_sans_semi_bold"
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
                 android:text="episodes"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="12sp" />
 
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/mediaDurationTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mediaEpisodeTv"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="duration"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="12sp" />
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/mediaFormatTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mediaDurationTv"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="type"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="12sp" />
 
-
+        </RelativeLayout>
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-
-
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

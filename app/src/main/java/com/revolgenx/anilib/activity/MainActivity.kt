@@ -69,7 +69,7 @@ class MainActivity : DynamicSystemActivity() {
                 else -> 0
             }
             if (position in 0..4) {
-                noSwipeViewPager.currentItem = position
+                noSwipeViewPager.setCurrentItem(position, false)
                 true
             } else
                 false

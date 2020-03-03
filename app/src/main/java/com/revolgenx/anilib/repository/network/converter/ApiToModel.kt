@@ -15,6 +15,7 @@ fun MediaContent.getCommonMedia() =
             title.native = title()!!.native_() ?: title()!!.romaji()
             title.userPreferred = title()!!.userPreferred()
         }
+        it.format = format()!!.ordinal
         it.episodes = episodes()?.toString() ?: ""
         it.status = status()!!.ordinal
         it.coverImage = CoverImageModel().also { image ->
@@ -24,10 +25,21 @@ fun MediaContent.getCommonMedia() =
         }
         it.genres = genres()
         it.averageScore = averageScore()
-        it.startDate = DateModel().also { dateModel ->
-            dateModel.year = startDate()!!.year() ?: 0
-            dateModel.month = startDate()!!.month() ?: 0
-            dateModel.day = startDate()!!.day() ?: 0
+        startDate()?.let { date ->
+            it.startDate = DateModel().also { dateModel ->
+                dateModel.year = date.year()
+                dateModel.month = date.month()
+                dateModel.day = date.day()
+                dateModel.date = dateModel.toString()
+            }
+        }
+        endDate()?.let { date ->
+            it.endDate = DateModel().also { dateModel ->
+                dateModel.year = date.year()
+                dateModel.month = date.month()
+                dateModel.day = date.day()
+                dateModel.date = dateModel.toString()
+            }
         }
         it.description = description() ?: ""
         it.bannerImage = bannerImage() ?: it.coverImage!!.large

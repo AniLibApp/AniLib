@@ -24,7 +24,3 @@ fun Context.getInt(key: String, def: Int) = sharedPreference().getInt(key, def)
 fun Context.sharedPreference() = PreferenceManager.getDefaultSharedPreferences(this)
 
 
-private const val titleKey = "title_key"
-
-fun Context.titlePref() = getInt(titleKey, 0)
-fun Context.titlePref(title: Int) = putInt(titleKey, title)

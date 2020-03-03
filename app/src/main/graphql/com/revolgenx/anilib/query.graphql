@@ -4,12 +4,11 @@ query SeasonListQuery($page: Int!
     , $season: MediaSeason
     , $status: MediaStatus
     , $genre:String
-    , $type: MediaType
     , $format: MediaFormat
     , $genre_in:[String]
     , $sort: [MediaSort]) {
     Page(page: $page, perPage: $perPage) {
-        media(seasonYear: $seasonYear, season: $season, type: $type,genre: $genre, format: $format,status: $status,genre_in: $genre_in, sort: $sort,isAdult:false) {
+        media(seasonYear: $seasonYear, season: $season,genre: $genre, format: $format,status: $status,genre_in: $genre_in, sort: $sort,isAdult:false) {
             ... on Media{
                 ... mediaContent
             }
@@ -29,13 +28,20 @@ fragment mediaContent on Media{
         }
     }
     isAdult
-    type
+    format
     genres
     status
     averageScore
     episodes
     duration
     startDate {
+        ... on FuzzyDate{
+            year
+            month
+            day
+        }
+    }
+    endDate{
         ... on FuzzyDate{
             year
             month
