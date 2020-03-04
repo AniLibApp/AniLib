@@ -4,13 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.core.content.ContextCompat
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
-import com.pranavpandey.android.dynamic.utils.DynamicDrawableUtils
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.model.CommonMediaModel
@@ -45,9 +44,15 @@ class MediaPresenter(context: Context) :
         holder.itemView.apply {
             mediaTitleTv.naText(data.title!!.title(context))
             coverImageIv.setImageURI(data.coverImage!!.image)
-            mediaEpisodeTv.text = string(R.string.ep_s).format(data.episodes?.naText())
+            mediaEpisodeTv.text =
+                string(R.string.ep_s).format(data.episodes!!.naText(), data.duration!!.naText())
             mediaStartDateTv.naText(data.endDate?.date ?: data.startDate?.date)
-            mediaDurationTv.naText(data.duration?.toString())
+            mediaGenreLayout.addGenre(
+                data.genres?.take(5)
+            ) {
+                BrowseGenreEvent(it).postEvent
+            }
+
             mediaRatingTv.text = data.averageScore?.div(10f)?.let {
                 String.format("%.1f", it)
             } ?: "?"
@@ -74,7 +79,7 @@ class MediaPresenter(context: Context) :
                 MediaStatus.FINISHED.ordinal -> {
                     mediaStatusTv.color = ContextCompat.getColor(context, R.color.colorFinished)
                     mediaStatusTv.text = context.getString(R.string.finished)
-                }
+                };
                 MediaStatus.NOT_YET_RELEASED.ordinal -> {
                     mediaStatusTv.color = ContextCompat.getColor(context, R.color.colorNotReleased)
                     mediaStatusTv.text = context.getString(R.string.not_released)

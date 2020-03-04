@@ -2,13 +2,16 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.DynamicApp.Card"
     android:id="@+id/mediaCardView"
+    style="@style/Widget.DynamicApp.Card"
     android:layout_width="match_parent"
     android:layout_height="@dimen/base_list_adapter_height"
     android:layout_marginStart="10dp"
     android:layout_marginTop="10dp"
-    android:layout_marginEnd="10dp">
+    android:layout_marginEnd="10dp"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="match_parent"
@@ -40,11 +43,11 @@
                 android:paddingStart="5dp"
                 android:paddingTop="3dp"
                 android:paddingEnd="5dp"
-                android:textColor="@color/white"
-                app:drawableStartCompat="@drawable/ic_star"
-                app:ads_colorType="custom"
                 android:paddingBottom="3dp"
-                android:textSize="12sp" />
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:ads_colorType="custom"
+                app:drawableStartCompat="@drawable/ic_star" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
@@ -65,7 +68,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_toStartOf="@id/bookmarkIv"
                 android:ellipsize="end"
-                android:fontFamily="@font/open_sans_regular"
+                android:fontFamily="@font/open_sans_semi_bold"
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
                 android:maxLines="2"
@@ -84,20 +87,21 @@
                 app:srcCompat="@drawable/ic_bookmark"
                 app:tint="?android:textColorPrimary" />
 
-
             <com.revolgenx.anilib.view.GenreLayout
-                android:id="@+id/genreLayout"
+                android:id="@+id/mediaGenreLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/mediaTitleTv"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="horizontal" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/mediaStatusTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/genreLayout"
+                android:layout_below="@id/mediaGenreLayout"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
@@ -107,7 +111,6 @@
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
                 android:text="status"
-                android:textAllCaps="true"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="12sp" />
 
@@ -142,27 +145,12 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="12sp" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/mediaDurationTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/mediaEpisodeTv"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:text="duration"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="12sp" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/mediaFormatTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/mediaDurationTv"
+                android:layout_below="@id/mediaEpisodeTv"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"

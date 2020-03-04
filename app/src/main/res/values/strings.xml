@@ -14,7 +14,7 @@
     <string name="cancelled">Cancelled</string>
     <string name="not_released">Not released</string>
 
-    <string name="ep_s">Ep: %s</string>
+    <string name="ep_s">Ep: %s · D: %s min</string>
 
     <!--Media format-->
     <string name="tv">Tv</string>
@@ -29,7 +29,19 @@
     <string name="one_shot">One Shot</string>
     <string name="unknown">Unknown</string>
     <string name="please_log_in">Please log in.</string>
-
+    <string name="home">Home</string>
+    <string name="settings">Settings</string>
+    <string name="account">Account</string>
+    <string name="sign_in">Sign In</string>
+    <string name="nav_close">Nav Close</string>
+    <string name="nav_open">Nav Open</string>
+    <string name="dynamic_theme">Dynamic Theme</string>
+    <string name="notification">Notification</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="feed">Feed</string>
+    <string name="activity">Activity</string>
+    <string name="login_service">Login Service</string>
+    <string name="authenticating">Authenticating</string>
     <!-- TV("TV"),
   TV_SHORT("TV_SHORT")
   MOVIE("MOVIE")

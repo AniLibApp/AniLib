@@ -1,27 +1,57 @@
 package com.revolgenx.anilib.view
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
+import android.view.View
+import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.flexbox.FlexboxLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+import com.pranavpandey.android.dynamic.theme.Theme
+import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
 
+typealias GenreCallback = ((genre: String) -> Unit)?
+
 class GenreLayout(context: Context, attributeSet: AttributeSet?) :
-    FlexboxLayout(context, attributeSet) {
+    LinearLayout(context, attributeSet) {
     constructor(context: Context) : this(context, null)
 
-    fun addGenre(genres: List<String>, listener: ((genre: String) -> Unit)? = null) {
-        genres.forEach { genre ->
+    private var genreCallback: GenreCallback = null
+    private val viewCache by lazy {
+        mutableMapOf<Int, DynamicTextView>()
+    }
+
+    init {
+        for (i in 0..4) {
             DynamicTextView(context).also { tv ->
-                tv.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-                tv.typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
-                tv.text = genre
-                tv.textSize = 10f
-                tv.setOnClickListener {
-                    listener?.invoke(genre)
+                tv.layoutParams = LayoutParams(
+                    LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT
+                ).also { params ->
+                    params.rightMargin = DynamicUnitUtils.convertDpToPixels(6f)
                 }
+                tv.maxLines = 1
+                tv.ellipsize = TextUtils.TruncateAt.END
+                tv.typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
+                tv.textSize = 10f
+                tv.colorType = Theme.ColorType.ACCENT
+                addView(tv)
+                viewCache[i] = tv
             }
         }
+    }
+
+    fun addGenre(genres: List<String>?, listener: GenreCallback) {
+        genreCallback = listener
+        viewCache.forEach { it.value.text = "" }
+        genres?.forEachIndexed { index, genre ->
+            viewCache[index]?.text = genre
+        }
+    }
+
+    fun clearCache() {
+        viewCache.clear()
     }
 }

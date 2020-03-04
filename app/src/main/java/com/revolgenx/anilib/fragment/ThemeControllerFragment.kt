@@ -12,49 +12,45 @@ import com.pranavpandey.android.dynamic.utils.DynamicWindowUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.fragment.base.BaseFragment
+import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
 import kotlinx.android.synthetic.main.theme_controller_fragment.*
 
-class ThemeControllerFragment : BaseFragment() {
+class ThemeControllerFragment : BaseToolbarFragment() {
 
     private var mAppThemeDay: DynamicColorPreference? = null
     private var mAppThemeNight: DynamicColorPreference? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.theme_controller_fragment, container, false)
+    override val title: String by lazy {
+        getString(R.string.dynamic_theme)
+    }
+
+    override val contentRes: Int by lazy {
+        R.layout.theme_controller_fragment
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).also {
-            it.setSupportActionBar(toolbar)
-            it.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            it.supportActionBar!!.title = getString(R.string.ads_dynamic_theme)
-        }
-        setHasOptionsMenu(true)
         mAppThemeDay = view.findViewById(R.id.pref_app_theme_day)
         mAppThemeNight = view.findViewById(R.id.pref_app_theme_night)
 
         if (!DynamicWindowUtils.isNavigationBarThemeSupported(requireContext())) {
             view.findViewById<View>(R.id.pref_navigation_bar_theme).visibility = View.GONE
         }
-
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home->{
-                finishActivity()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
         super.onResume()
         updatePreferences()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                parentFragmentManager.popBackStack()
+                true
+            }
+            else -> false
+        }
     }
 
     private fun updatePreferences() {

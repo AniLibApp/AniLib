@@ -10,7 +10,7 @@ class CommonMediaModel() : BaseMediaModel() {
     var episodes: String? = null
     var bannerImage: String? = null
     var averageScore: Int? = null
-    var duration: Int? = null
+    var duration: String? = null
     var status: Int? = null
     var format:Int? = null
     var isAdult = false

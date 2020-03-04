@@ -1,12 +1,7 @@
 package com.revolgenx.anilib.fragment
 
-import android.content.Context
-import com.revolgenx.anilib.R
-import com.revolgenx.anilib.fragment.base.BasePagerFragment
+import com.revolgenx.anilib.fragment.base.BaseFragment
 
-class CollectionFragment :BasePagerFragment(){
+class CollectionFragment :BaseFragment(){
 
-    override fun title(context: Context): String {
-        return context.getString(R.string.collection)
-    }
 }

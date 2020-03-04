@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navHeaderLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    app:ads_colorType="primary"
+    app:ads_backgroundAware="disable">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/ads_nav_header_spacing"
+        android:paddingLeft="@dimen/ads_nav_header_spacing"
+        android:paddingRight="@dimen/ads_nav_header_spacing"
+        android:paddingTop="@dimen/ads_nav_header_spacing_top">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/navHeaderIcon"
+            android:layout_width="@dimen/ads_icon_header_drawer"
+            android:layout_height="@dimen/ads_icon_header_drawer"
+            android:layout_gravity="start"
+            app:ads_colorType="tint_primary"
+            app:ads_contrastWithColorType="primary" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/TextAppearance.DynamicApp.Caption.Drawer"
+            android:id="@+id/navHeaderTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ads_nav_header_spacing"
+            app:ads_colorType="tint_primary"
+            app:ads_contrastWithColorType="primary" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/TextAppearance.DynamicApp.Subtitle1"
+            android:id="@+id/navHeaderSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:ads_colorType="tint_primary"
+            app:ads_contrastWithColorType="primary" />
+
+    </LinearLayout>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>

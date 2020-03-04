@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/mainIconIv"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/anilistColor"
+        android:padding="20dp"
+        app:srcCompat="@drawable/ic_anilib_anilist" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="10dp"
+        android:layout_margin="10dp">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicProgressBar
+            android:id="@+id/progBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_marginStart="40dp"
+            android:layout_centerVertical="true"/>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/progBar"
+            android:fontFamily="@font/open_sans_semi_bold"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:layout_marginStart="20dp"
+            android:text="@string/authenticating" />
+    </RelativeLayout>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

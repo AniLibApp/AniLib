@@ -3,23 +3,23 @@ package com.revolgenx.anilib.util
 import android.content.Context
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.snackbar.Snackbar
-import com.revolgenx.anilib.fragment.base.BasePagerFragment
+import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.type.MediaSeason
 import org.greenrobot.eventbus.EventBus
 
-fun AppCompatActivity.makePagerAdapter(fragments: List<BasePagerFragment>) =
+fun AppCompatActivity.makePagerAdapter(fragments: List<BaseFragment>) =
     object : FragmentPagerAdapter(
         this@makePagerAdapter.supportFragmentManager,
         FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
     ) {
         override fun getItem(position: Int) = fragments[position]
         override fun getCount(): Int = fragments.size
-        override fun getPageTitle(position: Int): CharSequence? =
-            fragments[position].title(this@makePagerAdapter)
     }
 
 fun getSeasonFromMonth(monthOfYear: Int): MediaSeason {
@@ -58,6 +58,13 @@ fun String?.naText() = this.takeIf { it!=null && it.isNotEmpty() }?:"NA"
 
 fun View.makeSnakeBar(msg: String) {
     Snackbar.make(this, msg, Snackbar.LENGTH_SHORT).show()
+}
+
+fun Fragment.makeToast(msg:String){
+    context?.makeToast(msg)
+}
+fun Context.makeToast(msg:String){
+    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
 fun View.string(@StringRes id: Int) = context.getString(id)

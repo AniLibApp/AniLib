@@ -11,14 +11,19 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
-import com.pranavpandey.android.dynamic.support.fragment.DynamicFragment
 import com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout
 import com.revolgenx.anilib.R
 import kotlinx.android.synthetic.main.base_presenter_fragment_layout.view.*
+import timber.log.Timber
 
-abstract class BasePresenterFragment<S : Any> : BasePagerFragment() {
-    open var basePresenter: Presenter<S>? = null
-    open var baseSource: Source<S>? = null
+
+/**
+ * BasePresenter class contains @property baseRecyclerView @property layoutManager
+ *
+ * */
+abstract class BasePresenterFragment<S : Any> : BaseFragment() {
+    abstract val basePresenter: Presenter<S>
+    abstract val baseSource: Source<S>
 
     var loadingPresenter: Presenter<Void>? = null
         get() {
@@ -44,7 +49,6 @@ abstract class BasePresenterFragment<S : Any> : BasePagerFragment() {
     lateinit var baseRecyclerView: RecyclerView
     lateinit var baseSwipeRefreshLayout: DynamicSwipeRefreshLayout
     lateinit var layoutManager: RecyclerView.LayoutManager
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,7 +77,6 @@ abstract class BasePresenterFragment<S : Any> : BasePagerFragment() {
         if (savedInstanceState == null)
             createSource()
 
-        invalidateAdapter()
         baseSwipeRefreshLayout.setOnRefreshListener {
             createSource()
             baseSwipeRefreshLayout.isRefreshing = false
@@ -83,11 +86,17 @@ abstract class BasePresenterFragment<S : Any> : BasePagerFragment() {
 
     abstract fun createSource(): Source<S>
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        Timber.d("set user visiblit $isVisibleToUser")
+    }
+
+    /** call this method*/
     protected fun invalidateAdapter() {
         Adapter.builder(this, 10)
             .setPager(PageSizePager(10))
-            .addSource(baseSource!!)
-            .addPresenter(basePresenter!!)
+            .addSource(baseSource)
+            .addPresenter(basePresenter)
             .addPresenter(loadingPresenter!!)
             .addPresenter(errorPresenter!!)
             .addPresenter(emptyPresenter!!)
