@@ -32,14 +32,23 @@ import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.preference.token
 import com.revolgenx.anilib.util.makePagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import net.openid.appauth.*
 import timber.log.Timber
 import java.util.*
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
 
 
 typealias OnOptionItemSelected = ((menuItem: MenuItem) -> Unit)?
 
-class MainActivity : DynamicSystemActivity() {
+class MainActivity : DynamicSystemActivity(), CoroutineScope {
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     companion object {
         private const val DISCOVER_POS = 0
@@ -180,7 +189,9 @@ class MainActivity : DynamicSystemActivity() {
                             postAuthorizationIntent,
                             0
                         )
-                        authorizationService.performAuthorizationRequest(request, pendingIntent)
+                        launch(Dispatchers.IO) {
+                            authorizationService.performAuthorizationRequest(request, pendingIntent)
+                        }
                     }
                     true
                 }
@@ -281,6 +292,7 @@ class MainActivity : DynamicSystemActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        job.cancel()
         optionItemSelectedListeners.clear()
     }
 }
