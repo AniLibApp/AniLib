@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.fragment.base.BasePagerFragment
+import com.revolgenx.anilib.fragment.base.BaseFragment
 
-class DiscoverFragment : BasePagerFragment() {
+class DiscoverFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -16,9 +16,5 @@ class DiscoverFragment : BasePagerFragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.discover_fragment_layout, container, false)
-    }
-
-    override fun title(context: Context): String? {
-        return context.getString(R.string.discover)
     }
 }

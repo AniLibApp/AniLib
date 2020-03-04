@@ -17,6 +17,7 @@ fun MediaContent.getCommonMedia() =
         }
         it.format = format()!!.ordinal
         it.episodes = episodes()?.toString() ?: ""
+        it.duration = duration()?.toString() ?: ""
         it.status = status()!!.ordinal
         it.coverImage = CoverImageModel().also { image ->
             image.medium = coverImage()!!.medium()

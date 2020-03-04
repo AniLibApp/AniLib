@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.fragment.base
 
+import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.fragment.DynamicFragment
 
@@ -9,5 +10,9 @@ abstract class BaseFragment : DynamicFragment() {
         fun <T : BaseFragment> newInstance(clz: Class<T>) = clz.newInstance()
         fun <T : BaseFragment> newInstances(clzzez: List<Class<out T>>) =
             clzzez.map { it.newInstance() }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
     }
 }

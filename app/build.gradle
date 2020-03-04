@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.apollographql.apollo'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion 29
@@ -16,6 +17,10 @@ android {
         versionName "1.0"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+
+        manifestPlaceholders = [
+                appAuthRedirectScheme: 'callback'
+        ]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -109,6 +114,10 @@ dependencies {
 
     //timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    //app auth
+    implementation 'com.blundell:app-auth-android:0.7.1-HYBRID-FORK-0.0.3'
+
 
 
     testImplementation 'junit:junit:4.12'

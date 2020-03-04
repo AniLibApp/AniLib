@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/feed"
+        android:id="@+id/navFeedId">
+        <menu>
+            <item android:title="@string/activity"
+                android:id="@+id/navActivityId"
+                android:icon="@drawable/ic_gesture"/>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/navNotification"
+        android:icon="@drawable/ic_notifications"
+        android:title="@string/notification"/>
+
+    <item
+        android:id="@+id/navSetting"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings" />
+
+    <item android:title="@string/account">
+        <menu>
+            <item
+                android:id="@+id/navAuth"
+                android:icon="@drawable/ic_person"
+                android:title="@string/sign_in" />
+        </menu>
+    </item>
+</menu>

@@ -2,12 +2,8 @@ package com.revolgenx.anilib.fragment
 
 import android.content.Context
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.fragment.base.BasePagerFragment
+import com.revolgenx.anilib.fragment.base.BaseFragment
 
-class DownloadFragment :BasePagerFragment(){
-
-    override fun title(context: Context): String {
-        return context.getString(R.string.download)
-    }
+class DownloadFragment :BaseFragment(){
 
 }
