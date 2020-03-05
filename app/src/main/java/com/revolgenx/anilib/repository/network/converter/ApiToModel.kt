@@ -1,12 +1,13 @@
 package com.revolgenx.anilib.repository.network.converter
 
 import com.revolgenx.anilib.fragment.MediaContent
+import com.revolgenx.anilib.fragment.NarrowMediaContent
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.model.CoverImageModel
 import com.revolgenx.anilib.model.DateModel
 import com.revolgenx.anilib.model.TitleModel
 
-fun MediaContent.getCommonMedia() =
+fun NarrowMediaContent.getCommonMedia() =
     CommonMediaModel().also {
         it.id = id()
         it.title = TitleModel().also { title ->
@@ -42,7 +43,6 @@ fun MediaContent.getCommonMedia() =
                 dateModel.date = dateModel.toString()
             }
         }
-        it.description = description() ?: ""
-        it.bannerImage = bannerImage() ?: it.coverImage!!.large
+        it.bannerImage = bannerImage() ?: it.coverImage!!.extraLarge
     }
 

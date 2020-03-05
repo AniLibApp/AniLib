@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.util
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.snackbar.Snackbar
+import com.pranavpandey.android.dynamic.toasts.DynamicToast
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.type.MediaSeason
 import org.greenrobot.eventbus.EventBus
@@ -54,17 +56,19 @@ fun <T> T.unRegisterForEvent() {
 fun TextView.naText(text: String?) {
     this.text = text?.takeIf { it.isNotEmpty() } ?: "NA"
 }
-fun String?.naText() = this.takeIf { it!=null && it.isNotEmpty() }?:"NA"
+
+fun String?.naText() = this.takeIf { it != null && it.isNotEmpty() } ?: "NA"
 
 fun View.makeSnakeBar(msg: String) {
     Snackbar.make(this, msg, Snackbar.LENGTH_SHORT).show()
 }
 
-fun Fragment.makeToast(msg:String){
-    context?.makeToast(msg)
+fun Fragment.makeToast(msg: String, icon: Drawable? = null) {
+    context?.makeToast(msg, icon)
 }
-fun Context.makeToast(msg:String){
-    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+
+fun Context.makeToast(msg: String, icon: Drawable? = null) {
+    DynamicToast.make(this, msg, icon).show()
 }
 
 fun View.string(@StringRes id: Int) = context.getString(id)

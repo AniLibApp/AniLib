@@ -17,4 +17,5 @@ class DiscoverFragment : BaseFragment() {
     ): View? {
         return inflater.inflate(R.layout.discover_fragment_layout, container, false)
     }
+
 }

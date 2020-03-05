@@ -5,9 +5,14 @@ apply plugin: 'com.apollographql.apollo'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.jfrog.bintray'
 
+def anilistPropertiesFile = rootProject.file("anilist.properties");
+def anilistProperties = new Properties()
+anilistProperties.load(new FileInputStream(anilistPropertiesFile))
+
+
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.revolgenx.anilib"
@@ -21,6 +26,12 @@ android {
         manifestPlaceholders = [
                 appAuthRedirectScheme: 'callback'
         ]
+
+        buildConfigField "String", "anilistclientId", anilistProperties['anilist_client_id']
+        buildConfigField "String", "anilistclientSecret", anilistProperties['anilist_client_secret']
+        buildConfigField "String", "anilistRedirectUri", anilistProperties['anilist_redirect_uri']
+        buildConfigField "String", "anilistAuthEndPoint", anilistProperties['anilist_auth_endpoint']
+        buildConfigField "String", "anilistTokenEndPoint", anilistProperties['anilist_token_endpoint']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -124,7 +135,6 @@ dependencies {
 
     //app auth
     implementation 'com.blundell:app-auth-android:0.7.1-HYBRID-FORK-0.0.3'
-
 
 
     testImplementation 'junit:junit:4.12'

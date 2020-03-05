@@ -42,6 +42,9 @@
     <string name="activity">Activity</string>
     <string name="login_service">Login Service</string>
     <string name="authenticating">Authenticating</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="filter">Filter</string>
     <!-- TV("TV"),
   TV_SHORT("TV_SHORT")
   MOVIE("MOVIE")
