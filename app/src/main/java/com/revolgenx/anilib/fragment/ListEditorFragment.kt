@@ -4,17 +4,26 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.base.BaseFragment
+import com.revolgenx.anilib.util.makeToast
 import kotlinx.android.synthetic.main.list_editor_fragment_layout.*
+import timber.log.Timber
+import kotlin.math.abs
 
 class ListEditorFragment : BaseFragment() {
 
     companion object {
         const val LIST_EDITOR_META_KEY = "list_editor_meta_key"
+        const val COLLAPSED = 0
+        const val EXPANDED = 1
     }
+
+    private var state = COLLAPSED //collapsed
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +55,17 @@ class ListEditorFragment : BaseFragment() {
             DynamicTheme.getInstance().get().primaryColor
         )
         listEditorCollapsingToolbar.setCollapsedTitleTextColor(DynamicTheme.getInstance().get().tintPrimaryColor)
+        appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (verticalOffset == 0) {
+                state = EXPANDED
+                (activity as AppCompatActivity).invalidateOptionsMenu()
+            } else if (abs(verticalOffset) >= appBarLayout.totalScrollRange) {
+                state = COLLAPSED
+                (activity as AppCompatActivity).invalidateOptionsMenu()
+            }
+        })
+
+
         (activity as AppCompatActivity).also { act ->
             act.setSupportActionBar(listEditorToolbar)
             act.supportActionBar!!.title = mediaTitle
@@ -57,7 +77,8 @@ class ListEditorFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.season_menu,menu)
+        if (state == EXPANDED) return
+        inflater.inflate(R.menu.season_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
