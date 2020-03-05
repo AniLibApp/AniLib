@@ -33,7 +33,7 @@ class SimpleDraweeFrameLayoutBehavior(context: Context, attributeSet: AttributeS
         dependency: View
     ): Boolean {
         return if (dependency is AppBarLayout) {
-            updateFrameLayoutVisibility(parent, dependency as AppBarLayout, child)
+            updateFrameLayoutVisibility(parent, dependency, child)
         } else false
     }
 

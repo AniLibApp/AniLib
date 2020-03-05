@@ -14,6 +14,7 @@ import com.revolgenx.anilib.fragment.ThemeControllerFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import kotlinx.android.synthetic.main.container_activity.*
+import timber.log.Timber
 import java.util.*
 
 class ContainerActivity : DynamicSystemActivity() {
@@ -60,7 +61,7 @@ class ContainerActivity : DynamicSystemActivity() {
         if (savedInstanceState == null) {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragmentContainer, parcel.clzz.newInstance().apply {
-                arguments = parcel.bundle
+                this.arguments = parcel.bundle
             }).commitNow()
         }
     }
