@@ -43,15 +43,15 @@ class ThemeControllerFragment : BaseToolbarFragment() {
         updatePreferences()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                parentFragmentManager.popBackStack()
-                true
-            }
-            else -> false
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            android.R.id.home -> {
+//                parentFragmentManager.popBackStack()
+//                true
+//            }
+//            else -> false
+//        }
+//    }
 
     private fun updatePreferences() {
         if (ThemeController.isAutoTheme) {

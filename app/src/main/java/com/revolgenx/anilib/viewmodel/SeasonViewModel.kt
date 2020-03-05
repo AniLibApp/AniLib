@@ -1,8 +1,6 @@
 package com.revolgenx.anilib.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.revolgenx.anilib.SeasonListQuery
 import com.revolgenx.anilib.model.field.SeasonField
 import com.revolgenx.anilib.repository.network.GraphRepository
@@ -15,4 +13,5 @@ class SeasonViewModel(private val repository: GraphRepository) : ViewModel() {
         seasonSource = SeasonSource(baseGraphRepository = repository, seasonField = seasonField)
         return seasonSource
     }
+
 }

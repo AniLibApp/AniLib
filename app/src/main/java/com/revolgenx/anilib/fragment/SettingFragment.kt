@@ -1,9 +1,14 @@
 package com.revolgenx.anilib.fragment
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
+import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import kotlinx.android.synthetic.main.setting_fragment_layout.*
+import timber.log.Timber
 
 class SettingFragment : BaseToolbarFragment() {
 
@@ -17,7 +22,6 @@ class SettingFragment : BaseToolbarFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         themeItemView.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(
                 R.id.fragmentContainer,
@@ -26,5 +30,10 @@ class SettingFragment : BaseToolbarFragment() {
                 .addToBackStack(null)
                 .commit()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.nav_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

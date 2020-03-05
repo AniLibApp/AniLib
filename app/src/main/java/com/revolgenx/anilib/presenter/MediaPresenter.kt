@@ -97,7 +97,7 @@ class MediaPresenter(context: Context) :
 
             bookmarkIv.setOnClickListener {
                 if (context.loggedIn()) {
-                    ListEditorEvent(data.id).postEvent
+                    ListEditorEvent(data.id, data.coverImage!!.image, data.bannerImage, holder.itemView.coverImageIv).postEvent
                 } else {
                     (parent as View).makeSnakeBar(string(R.string.please_log_in))
                 }

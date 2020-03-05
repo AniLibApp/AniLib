@@ -25,6 +25,8 @@ abstract class BasePresenterFragment<S : Any> : BaseFragment() {
     abstract val basePresenter: Presenter<S>
     abstract val baseSource: Source<S>
 
+    var visibleToUser = false
+
     var loadingPresenter: Presenter<Void>? = null
         get() {
             return if (field == null) Presenter.forLoadingIndicator(
@@ -70,6 +72,7 @@ abstract class BasePresenterFragment<S : Any> : BaseFragment() {
             )
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         baseRecyclerView.layoutManager = layoutManager
@@ -84,14 +87,23 @@ abstract class BasePresenterFragment<S : Any> : BaseFragment() {
         }
     }
 
-    abstract fun createSource(): Source<S>
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        Timber.d("set user visiblit $isVisibleToUser")
+    override fun onResume() {
+        super.onResume()
+        visibleToUser = true
     }
 
-    /** call this method*/
+    override fun onStop() {
+        super.onStop()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        visibleToUser = false
+    }
+
+    abstract fun createSource(): Source<S>
+
+    /** call this method to load into recyclerview*/
     protected fun invalidateAdapter() {
         Adapter.builder(this, 10)
             .setPager(PageSizePager(10))
@@ -102,4 +114,5 @@ abstract class BasePresenterFragment<S : Any> : BaseFragment() {
             .addPresenter(emptyPresenter!!)
             .into(baseRecyclerView)
     }
+
 }
