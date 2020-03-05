@@ -15,10 +15,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:collapsedTitleTextAppearance="@style/TextAppearance.DynamicApp.Toolbar"
-            app:expandedTitleMarginStart="104dp"
-            app:maxLines="2"
+            app:expandedTitleMarginStart="130dp"
             app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:maxLines="2"
+            >
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/listEditorBannerImage"
@@ -41,13 +42,13 @@
         style="@style/Widget.DynamicApp.Scroller.Padding.Vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior=".view.ScrollingViewBehaviourWithImage">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="80dp">
+            android:layout_marginTop="80dp"
+            android:orientation="vertical">
 
             <include layout="@layout/media_list_presenter_layout" />
 
@@ -71,12 +72,13 @@
         android:orientation="horizontal"
         app:layout_anchor="@id/appbarLayout"
         app:layout_anchorGravity="bottom"
+        android:layout_marginStart="20dp"
         app:layout_behavior=".view.SimpleDraweeFrameLayoutBehavior">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/listEditorCoverImage"
             android:layout_width="104dp"
-            android:layout_height="160dp"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:transitionName="media_cover_transition" />
 
