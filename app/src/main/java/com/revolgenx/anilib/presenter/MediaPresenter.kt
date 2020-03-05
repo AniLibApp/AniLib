@@ -12,6 +12,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
+import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.type.MediaFormat
@@ -97,7 +98,14 @@ class MediaPresenter(context: Context) :
 
             bookmarkIv.setOnClickListener {
                 if (context.loggedIn()) {
-                    ListEditorEvent(data.id, data.coverImage!!.image, data.bannerImage, holder.itemView.coverImageIv).postEvent
+                    ListEditorEvent(
+                        ListEditorMeta(
+                            data.id,
+                            data.title!!.title(context)!!,
+                            data.coverImage!!.image,
+                            data.bannerImage
+                        ), holder.itemView.coverImageIv
+                    ).postEvent
                 } else {
                     (parent as View).makeSnakeBar(string(R.string.please_log_in))
                 }
