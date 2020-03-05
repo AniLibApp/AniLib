@@ -31,7 +31,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:transitionName="media_cover_transition"/>
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/mediaRatingTv"

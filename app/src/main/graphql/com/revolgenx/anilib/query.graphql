@@ -10,14 +10,14 @@ query SeasonListQuery($page: Int!
     Page(page: $page, perPage: $perPage) {
         media(seasonYear: $seasonYear, season: $season,genre: $genre, format: $format,status: $status,genre_in: $genre_in, sort: $sort,isAdult:false) {
             ... on Media{
-                ... mediaContent
+                ... narrowMediaContent
             }
         }
     }
 }
 
 
-fragment mediaContent on Media{
+fragment narrowMediaContent on Media{
     id
     title {
         ... on MediaTitle{
@@ -48,7 +48,6 @@ fragment mediaContent on Media{
             day
         }
     }
-    description(asHtml:true)
     coverImage {
         ... on MediaCoverImage{
             medium

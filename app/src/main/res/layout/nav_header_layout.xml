@@ -25,7 +25,7 @@
             android:layout_width="@dimen/ads_icon_header_drawer"
             android:layout_height="@dimen/ads_icon_header_drawer"
             android:layout_gravity="start"
-            app:ads_colorType="tint_primary"
+            app:ads_colorType="none"
             app:ads_contrastWithColorType="primary" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView

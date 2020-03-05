@@ -45,7 +45,7 @@ class SeasonSource(
         val disposable = baseGraphRepository.request(query)
             .map {
                 it.data()?.Page()?.media()!!.map { media ->
-                    media.fragments().mediaContent().getCommonMedia()
+                    media.fragments().narrowMediaContent().getCommonMedia()
                 }
             }
             .observeOn(AndroidSchedulers.mainThread())

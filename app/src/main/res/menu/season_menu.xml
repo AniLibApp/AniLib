@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/prevSeasonId"
+        android:icon="@drawable/ic_angle_left"
+        android:title="@string/previous"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/nextSeasonId"
+        android:icon="@drawable/ic_angle_right"
+        android:title="@string/next"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/filterSeasonId"
+        android:icon="@drawable/ic_button_setting"
+        android:title="@string/filter"
+        app:showAsAction="ifRoom" />
+</menu>

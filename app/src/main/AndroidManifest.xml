@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.ContainerActivity" />
+        <activity android:name=".activity.ContainerActivity"/>
 
 
         <activity android:name="net.openid.appauth.RedirectUriReceiverActivity">
