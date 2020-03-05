@@ -23,6 +23,16 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
+    <style name="ExpandedTitleAppearance" parent="TextAppearance.DynamicApp.Toolbar.Expanded">
+        <item name="android:textSize">17sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:visibility">gone</item>
+        <item name="fontFamily">@font/open_sans_regular</item>
+        <item name="color">@color/white</item>
+    </style>
+<!--
+        <item name="android:shadowColor">@color/ads_color_black</item>
+        <item name="android:shadowRadius">50</item>-->
 
     <!--    <style name="BottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">-->
     <!--        <item name="fontFamily">@font/open_sans_regular</item>-->

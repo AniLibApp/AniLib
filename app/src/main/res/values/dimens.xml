@@ -3,4 +3,5 @@
     <dimen name="base_list_adapter_height">160dp</dimen>
     <dimen name="base_list_adapter_corner_radius">80dp</dimen>
 
+
 </resources>

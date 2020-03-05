@@ -309,9 +309,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
             ParcelableFragment(
                 ListEditorFragment::class.java,
                 bundleOf(
-                    BaseField.MEDIA_ID_KEY to event.id,
-                    BaseField.MEDIA_COVER_URL_KEY to event.coverImage,
-                    BaseField.MEDIA_BANNER_URL_KEY to event.bannerImage
+                    ListEditorFragment.LIST_EDITOR_META_KEY to event.meta
                 )
             )
             , options
