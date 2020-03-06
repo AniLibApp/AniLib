@@ -22,10 +22,10 @@ class MediaListEditorViewModel(
     private val context: Context,
     private val repository: BaseGraphRepository
 ) : ViewModel() {
-    private val mediaQueryLiveData = MutableLiveData<Resource<ListEditorMediaModel>>()
+    val mediaQueryLiveData = MutableLiveData<Resource<ListEditorMediaModel>>()
     private val compositeDisposable = CompositeDisposable()
 
-    fun queryMediaList(mediaId: Int): MutableLiveData<Resource<ListEditorMediaModel>> {
+    fun queryMediaList(mediaId: Int) {
         mediaQueryLiveData.value = Resource.loading(null)
         val disposable = repository.request(
             MediaListEditorQuery.builder()
@@ -53,7 +53,6 @@ class MediaListEditorViewModel(
                 }
             })
         compositeDisposable.add(disposable)
-        return mediaQueryLiveData
     }
 
     override fun onCleared() {

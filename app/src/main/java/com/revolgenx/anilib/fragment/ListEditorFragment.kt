@@ -1,9 +1,11 @@
 package com.revolgenx.anilib.fragment
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.appbar.AppBarLayout
@@ -12,6 +14,7 @@ import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.base.BaseFragment
+import com.revolgenx.anilib.model.ListEditorMediaModel
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.viewmodel.MediaListEditorViewModel
 import kotlinx.android.synthetic.main.error_layout.*
@@ -32,6 +35,7 @@ class ListEditorFragment : BaseFragment() {
     private var fetched = false
     private lateinit var mediaMeta: ListEditorMeta
     private val viewModel by viewModel<MediaListEditorViewModel>()
+    private var model: ListEditorMediaModel? = null
 
     private val offSetChangeListener by lazy {
         AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -61,6 +65,7 @@ class ListEditorFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        retainInstance = true
 
         //bug or smth wont parcelize without class loader
         arguments?.classLoader = ListEditorMeta::class.java.classLoader
@@ -70,7 +75,7 @@ class ListEditorFragment : BaseFragment() {
         showMetaViews()
         initListener()
 
-        viewModel.queryMediaList(mediaMeta.id).observe(viewLifecycleOwner, Observer { resource ->
+        viewModel.mediaQueryLiveData.observe(viewLifecycleOwner, Observer { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
                     listResourceEditorContainer.visibility = View.GONE
@@ -78,12 +83,8 @@ class ListEditorFragment : BaseFragment() {
                     progressLayout.visibility = View.VISIBLE
                     errorLayout.visibility = View.GONE
                     fetched = true
-
-                    if (resource.data == null) {
-
-                    } else {
-
-                    }
+                    model = resource.data
+                    invalidateOptionMenu()
                 }
                 Status.ERROR -> {
                     listResourceEditorContainer.visibility = View.VISIBLE
@@ -102,6 +103,10 @@ class ListEditorFragment : BaseFragment() {
             }
         })
 
+        if (savedInstanceState == null)
+            viewModel.queryMediaList(mediaMeta.id)
+
+
     }
 
     private fun showMetaViews() {
@@ -113,7 +118,8 @@ class ListEditorFragment : BaseFragment() {
         }
         listEditorCoverImage.setImageURI(mediaMeta.coverImage)
         listEditorBannerImage.setImageURI(mediaMeta.bannerImage)
-        listDeletButton.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context!!, R.color.red))
+        listDeleteButton.backgroundTintList =
+            ColorStateList.valueOf(ContextCompat.getColor(context!!, R.color.red))
         listFavCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
         listDeleteCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
         listSaveCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
@@ -127,10 +133,27 @@ class ListEditorFragment : BaseFragment() {
 
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (state == EXPANDED) return
-        if (fetched)
+        if (state == EXPANDED) {
+            if (model == null) {
+                listDeleteCardView.visibility = View.GONE
+            }
+            return
+        }
+        if (fetched) {
             inflater.inflate(R.menu.list_editor_menu, menu)
+            if (model == null) {
+                menu.findItem(R.id.listDeleteMenu).isVisible = false
+                listDeleteCardView.visibility = View.GONE
+            } else {
+                if (model!!.isFavourite) {
+                    val drawable = AppCompatDrawableManager.get()
+                        .getDrawable(context!!, R.drawable.ic_favorite)
+                    menu.findItem(R.id.listFavMenu).icon = drawable
+                }
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
