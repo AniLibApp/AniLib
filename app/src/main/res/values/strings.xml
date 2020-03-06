@@ -45,6 +45,10 @@
     <string name="previous">Previous</string>
     <string name="next">Next</string>
     <string name="filter">Filter</string>
+
+
+    <string name="user_detail_fetch_failed">Failed to fetch user detail.</string>
+    <string name="save">Save</string>
     <!-- TV("TV"),
   TV_SHORT("TV_SHORT")
   MOVIE("MOVIE")

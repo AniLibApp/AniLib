@@ -8,7 +8,7 @@ import com.apollographql.apollo.rx2.Rx2Apollo
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
-class GraphRepository(private val apolloClient: ApolloClient): BaseGraphRepository {
+class GraphRepositoryImpl(private val apolloClient: ApolloClient): BaseGraphRepository {
     override fun <D : Operation.Data, T, V : Operation.Variables> request(query: Query<D, T, V>): Observable<Response<T>> {
         return Rx2Apollo.from(apolloClient.query(query)).observeOn(Schedulers.io())
     }

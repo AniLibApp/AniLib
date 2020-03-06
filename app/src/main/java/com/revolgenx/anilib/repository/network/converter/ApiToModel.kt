@@ -1,11 +1,10 @@
 package com.revolgenx.anilib.repository.network.converter
 
+import com.revolgenx.anilib.BasicUserQuery
 import com.revolgenx.anilib.fragment.MediaContent
+import com.revolgenx.anilib.fragment.MediaListContent
 import com.revolgenx.anilib.fragment.NarrowMediaContent
-import com.revolgenx.anilib.model.CommonMediaModel
-import com.revolgenx.anilib.model.CoverImageModel
-import com.revolgenx.anilib.model.DateModel
-import com.revolgenx.anilib.model.TitleModel
+import com.revolgenx.anilib.model.*
 
 fun NarrowMediaContent.getCommonMedia() =
     CommonMediaModel().also {
@@ -46,3 +45,41 @@ fun NarrowMediaContent.getCommonMedia() =
         it.bannerImage = bannerImage() ?: it.coverImage!!.extraLarge
     }
 
+fun BasicUserQuery.User.toBasicUserModel() = BasicUserModel().also {
+    it.userId = id()
+    it.name = name()
+    it.scoreFormat = mediaListOptions()!!.scoreFormat()!!.ordinal
+    it.avatar = UserAvatarImageModel().also { img ->
+        img.large = avatar()!!.large()
+        img.medium = avatar()!!.medium()
+    }
+    it.bannerImage = bannerImage() ?: ""
+}
+
+
+fun MediaListContent.toListEditorMediaModel() = ListEditorMediaModel().also {
+    it.id = mediaId()
+    it.userId = userId()
+    it.listId = id()
+    it.status = status()!!.ordinal
+    it.notes = notes() ?: ""
+    it.progress = progress()!!
+    it.private = private_()!!
+    it.repeat = repeat()!!
+    it.isFavourite = media()!!.isFavourite
+    it.startDate = startedAt()!!.let {
+        DateModel().also { date ->
+            date.day = it.day()
+            date.month = it.month()
+            date.year = it.year()
+        }
+    }
+    it.endDate = completedAt()!!.let {
+        DateModel().also { date ->
+            date.day = it.day()
+            date.month = it.month()
+            date.year = it.year()
+        }
+    }
+
+}
