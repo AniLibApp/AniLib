@@ -74,6 +74,7 @@ ext {
     threetenabp_ver = '1.2.2'
     apollo_ver = "1.3.2"
     fresco_ver = '2.1.0'
+    lifecycle_version = '2.2.0'
     coroutine_version = '1.3.2'
 }
 
@@ -112,6 +113,13 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
+    //lifecycle
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+
+
 
     //dynamic theming
     implementation "com.pranavpandey.android:dynamic-support:$dynamic_ver"
@@ -137,6 +145,12 @@ dependencies {
 
     //app auth
     implementation 'com.blundell:app-auth-android:0.7.1-HYBRID-FORK-0.0.3'
+
+    //jwt token
+    implementation 'com.auth0.android:jwtdecode:1.2.0'
+
+    //progress button
+    implementation 'com.github.razir.progressbutton:progressbutton:2.0.1'
 
 
     testImplementation 'junit:junit:4.12'

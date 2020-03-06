@@ -1,7 +1,8 @@
 package com.revolgenx.anilib.repository
 
+import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.NetworkProvider
-import com.revolgenx.anilib.repository.network.GraphRepository
+import com.revolgenx.anilib.repository.network.GraphRepositoryImpl
 import org.koin.dsl.module
 
 val networkModules = module {
@@ -10,5 +11,5 @@ val networkModules = module {
 }
 
 val repositoryModules = module {
-    factory { GraphRepository(get()) }
+    factory<BaseGraphRepository> { GraphRepositoryImpl(get()) }
 }
