@@ -2,7 +2,8 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/listEditorRootLayout">
 
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
@@ -41,6 +42,7 @@
         style="@style/Widget.DynamicApp.Scroller.Padding.Vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/listEditorNestedScrollView"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
@@ -122,6 +124,7 @@
                 app:ads_elevationOnSameBackground="true">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicImageButton
+                    android:id="@+id/listSaveImageButton"
                     style="@style/Widget.DynamicApp.Button.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -138,7 +141,7 @@
                 app:ads_elevationOnSameBackground="true">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicImageButton
-                    android:id="@+id/listDeletButton"
+                    android:id="@+id/listDeleteButton"
                     style="@style/Widget.DynamicApp.Button.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -157,6 +160,7 @@
                 app:ads_elevationOnSameBackground="true">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicImageButton
+                    android:id="@+id/listFabImageButton"
                     style="@style/Widget.DynamicApp.Button.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
