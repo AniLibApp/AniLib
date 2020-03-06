@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.activity
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
@@ -8,17 +9,23 @@ import android.view.View
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
+import com.facebook.common.util.UriUtil
+import com.facebook.drawee.interfaces.DraweeController
 import com.facebook.drawee.view.SimpleDraweeView
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
@@ -28,12 +35,11 @@ import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.fragment.*
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
-import com.revolgenx.anilib.model.field.BaseField
-import com.revolgenx.anilib.preference.loggedIn
-import com.revolgenx.anilib.preference.token
+import com.revolgenx.anilib.preference.*
 import com.revolgenx.anilib.util.makePagerAdapter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
+import com.revolgenx.anilib.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_layout.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -43,8 +49,9 @@ import kotlinx.coroutines.launch
 import net.openid.appauth.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.*
+import java.util.Locale
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : DynamicSystemActivity(), CoroutineScope {
@@ -53,7 +60,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
         get() = job + Dispatchers.Main
 
     private var currentPage: Int = 0
-
+    private val viewModel by viewModel<MainActivityViewModel>()
 
     companion object {
         private const val authIntent: String = "auth_intent_key"
@@ -108,6 +115,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
                 )
             )
         )
+
         themeBottomNavigation()
         noSwipeViewPager.offscreenPageLimit = 3
         currentPage = noSwipeViewPager.currentItem
@@ -117,31 +125,66 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
                 invalidateOptionsMenu()
             }
         })
+
         updateNavView()
         initListener()
+
+        silentFetchUserInfo()
+    }
+
+    private fun silentFetchUserInfo() {
+        if (loggedIn()) {
+            viewModel.getUserLiveData().observe(this, Observer {
+                updateNavView()
+            })
+        }
     }
 
 
+    @SuppressLint("RestrictedApi")
     private fun updateNavView() {
         if (navView == null) return
 
         if (!loggedIn()) {
             simpleNavView()
         } else {
-            loggedInNavView()
+            navView.menu.findItem(R.id.navAuth).title = getString(R.string.sign_out)
+        }
+
+        navView.getHeaderView(0).let { headerView ->
+            val userAvatar = userAvatar()!!
+            val userBanner = userBannerImage()!!
+            val userName = userName()
+
+            headerView.headerIconCardView.corner = DynamicUnitUtils.convertDpToPixels(10f).toFloat()
+            if (userAvatar.isEmpty()) {
+                headerView.navHeaderIcon.setImageDrawable(
+                    AppCompatDrawableManager.get().getDrawable(
+                        context,
+                        R.drawable.ic_launcher_foreground
+                    )
+                )
+            } else {
+                headerView.navHeaderIcon.setImageURI(userAvatar)
+            }
+
+            headerView.navHeaderTitle.text = userName
+            headerView.navHeaderTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
+
+            if (userBanner.isNotEmpty()) {
+                headerView.navHeaderBackground.setImageURI(userAvatar)
+            }
+
         }
     }
 
-    private fun loggedInNavView() {
-        navView.menu.findItem(R.id.navAuth).title = getString(R.string.sign_out)
-    }
 
+    @SuppressLint("RestrictedApi")
     private fun simpleNavView() {
         navView.menu.findItem(R.id.navAuth).title =
             getString(R.string.sign_in)
         navView.menu.findItem(R.id.navFeedId).isVisible = false
         navView.menu.findItem(R.id.navNotification).isVisible = false
-        navView.getHeaderView(0).navHeaderIcon.setImageResource(R.mipmap.ic_launcher)
     }
 
 
@@ -168,8 +211,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
 
                 R.id.navAuth -> {
                     if (loggedIn()) {
-                        loggedIn(false)
-                        token("")
+                        context.logOut()
 //                        SessionEvent(false).postEvent
                         startActivity(Intent(this.context, MainActivity::class.java).apply {
                             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -232,7 +274,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
 
 
         /**problem with transition
-        * {@link https://github.com/facebook/fresco/issues/1445}*/
+         * {@link https://github.com/facebook/fresco/issues/1445}*/
         ActivityCompat.setExitSharedElementCallback(this, object : SharedElementCallback() {
             override fun onSharedElementEnd(
                 sharedElementNames: List<String?>?,
@@ -282,8 +324,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
                     Timber.w(exception, "Token Exchange failed")
                 } else {
                     val accessToken = tokenResponse?.accessToken!!
-                    loggedIn(true)
-                    token(accessToken)
+                    logIn(accessToken)
                     startActivity(Intent(this.context, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     })

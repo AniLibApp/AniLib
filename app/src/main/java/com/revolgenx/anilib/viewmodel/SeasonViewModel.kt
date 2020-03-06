@@ -1,12 +1,11 @@
 package com.revolgenx.anilib.viewmodel
 
 import androidx.lifecycle.*
-import com.revolgenx.anilib.SeasonListQuery
 import com.revolgenx.anilib.model.field.SeasonField
-import com.revolgenx.anilib.repository.network.GraphRepository
+import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.source.SeasonSource
 
-class SeasonViewModel(private val repository: GraphRepository) : ViewModel() {
+class SeasonViewModel(private val repository: BaseGraphRepository) : ViewModel() {
     lateinit var seasonSource: SeasonSource
 
     fun createSource(seasonField: SeasonField): SeasonSource {

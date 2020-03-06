@@ -16,6 +16,52 @@ query SeasonListQuery($page: Int!
     }
 }
 
+query MediaListEditorQuery($mediaId:Int,$userId:Int, $format:ScoreFormat){
+    MediaList(mediaId:$mediaId, userId:$userId){
+        ... mediaListContent
+        score(format:$format)
+    }
+}
+
+query BasicUserQuery($id:Int){
+    User(id:$id){
+        id
+        name
+        avatar{
+            medium
+            large
+        }
+        bannerImage
+        mediaListOptions{
+            scoreFormat
+        }
+    }
+}
+
+
+fragment mediaListContent on MediaList{
+    id
+    mediaId
+    userId
+    status
+    progress
+    repeat
+    private
+    notes
+    startedAt {
+        year
+        month
+        day
+    }
+    completedAt {
+        year
+        month
+        day
+    }
+    media{
+        isFavourite
+    }
+}
 
 fragment narrowMediaContent on Media{
     id
