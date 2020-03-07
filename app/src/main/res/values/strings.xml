@@ -49,6 +49,19 @@
 
     <string name="user_detail_fetch_failed">Failed to fetch user detail.</string>
     <string name="save">Save</string>
+    <string name="status">Status</string>
+    <string name="score">Score</string>
+    <string name="invalid_input_type">Invalid input type.</string>
+
+    <!--media list status-->
+    <string name="watching">Watching</string>
+    <string name="planning">Planning</string>
+    <string name="completed">Completed</string>
+    <string name="dropped">Dropped</string>
+    <string name="paused">Paused</string>
+    <string name="rewatching">Rewatching</string>
+
+
     <!-- TV("TV"),
   TV_SHORT("TV_SHORT")
   MOVIE("MOVIE")

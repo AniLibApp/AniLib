@@ -81,10 +81,8 @@
                 android:layout_height="35dp"
                 android:layout_alignParentEnd="true"
                 android:padding="10dp"
-                android:textColor="?android:attr/textColorPrimary"
                 app:ads_colorType="tint_primary"
-                app:srcCompat="@drawable/ic_bookmark"
-                app:tint="?android:textColorPrimary" />
+                app:srcCompat="@drawable/ic_bookmark" />
 
             <com.revolgenx.anilib.view.GenreLayout
                 android:id="@+id/mediaGenreLayout"
