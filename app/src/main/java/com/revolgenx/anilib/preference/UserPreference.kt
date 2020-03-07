@@ -28,7 +28,7 @@ fun Context.userId(userId: Int) = putInt(userIdKey, userId)
 fun Context.titlePref() = getInt(titleKey, 0)
 fun Context.titlePref(title: Int) = putInt(titleKey, title)
 
-fun Context.userScoreFormat() = getInt(scoreFormatKey, ScoreFormat.`$UNKNOWN`.ordinal)
+fun Context.userScoreFormat() = getInt(scoreFormatKey, ScoreFormat.POINT_100.ordinal)
 fun Context.userScoreFormat(scoreFormat: Int) = putInt(scoreFormatKey, scoreFormat)
 
 fun Context.userName() = getString(userNameKey, getString(R.string.app_name))
