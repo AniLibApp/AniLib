@@ -168,6 +168,8 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
                 headerView.navHeaderIcon.setImageURI(userAvatar)
             }
 
+            DynamicTheme.getInstance().get().primaryColorDark
+
             headerView.navHeaderTitle.text = userName
             headerView.navHeaderTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
 

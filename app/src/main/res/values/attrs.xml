@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="navActivityId" type="id"/>
+    <item name="incrementButtonId" type="id"/>
+    <item name="decrementButtonId" type="id"/>
 </resources>

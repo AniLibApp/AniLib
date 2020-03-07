@@ -9,6 +9,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <com.revolgenx.anilib.view.PlusMinusEditTextLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
+
+        <com.revolgenx.anilib.view.MediaListEditorScoreLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+
         <include layout="@layout/media_list_presenter_layout" />
 
         <include layout="@layout/media_list_presenter_layout" />

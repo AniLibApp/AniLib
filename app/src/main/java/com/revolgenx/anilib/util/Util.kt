@@ -5,8 +5,10 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -63,12 +65,17 @@ fun View.makeSnakeBar(msg: String) {
     Snackbar.make(this, msg, Snackbar.LENGTH_SHORT).show()
 }
 
-fun Fragment.makeToast(msg: String, icon: Drawable? = null) {
+fun Fragment.makeToast(msg: String, @DrawableRes icon: Int? = null) {
     context?.makeToast(msg, icon)
 }
 
-fun Context.makeToast(msg: String, icon: Drawable? = null) {
-    DynamicToast.make(this, msg, icon).show()
+fun Context.makeToast(msg: String,@DrawableRes  icon: Int? = null) {
+    if(icon != null){
+        val drawable = ContextCompat.getDrawable(this, icon)
+        DynamicToast.make(this, msg, drawable).show()
+    }else{
+        DynamicToast.make(this, msg).show()
+    }
 }
 
 fun View.string(@StringRes id: Int) = context.getString(id)
