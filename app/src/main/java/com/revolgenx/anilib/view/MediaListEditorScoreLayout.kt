@@ -17,7 +17,9 @@ class MediaListEditorScoreLayout(context: Context, attributeSet: AttributeSet?, 
             updateView()
         }
 
-    var mediaListScore: Double = 0.0
+    var scoreChangeListener: ScoreChangeListener = null
+
+    var mediaListScore = 0.0
         get() {
             return when (scoreFormatType) {
                 ScoreFormat.POINT_3.ordinal -> {
@@ -36,6 +38,7 @@ class MediaListEditorScoreLayout(context: Context, attributeSet: AttributeSet?, 
                 }
                 else -> {
                     plusMinusScoreLayout.counterHolder = field
+                    plusMinusScoreLayout.updateDynamicText()
                 }
             }
         }
@@ -51,11 +54,20 @@ class MediaListEditorScoreLayout(context: Context, attributeSet: AttributeSet?, 
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
         addView(smileyScoreLayout)
         addView(plusMinusScoreLayout)
+
+        plusMinusScoreLayout.textChangeListener {
+            scoreChangeListener?.invoke(it.toString().toFloat())
+        }
+
+        smileyScoreLayout.onSmileyScoreChange {
+            scoreChangeListener?.invoke(it.toFloat())
+        }
+
         smileyScoreLayout.visibility = View.GONE
         updateView()
     }
 
-    fun updateView() {
+    private fun updateView() {
         when (scoreFormatType) {
             ScoreFormat.POINT_3.ordinal -> {
                 plusMinusScoreLayout.visibility = View.GONE
@@ -70,7 +82,7 @@ class MediaListEditorScoreLayout(context: Context, attributeSet: AttributeSet?, 
             ScoreFormat.POINT_10_DECIMAL.ordinal -> {
                 plusMinusScoreLayout.max = 10.0
                 plusMinusScoreLayout.dynamicInputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
-                plusMinusScoreLayout.setDynamicText()
+                plusMinusScoreLayout.updateDynamicText()
             }
             ScoreFormat.POINT_100.ordinal -> {
                 plusMinusScoreLayout.max = 100.0
@@ -78,5 +90,9 @@ class MediaListEditorScoreLayout(context: Context, attributeSet: AttributeSet?, 
         }
     }
 
+    fun onScoreChangeListener(listener: ScoreChangeListener) {
+        this.scoreChangeListener = listener
+    }
 
 }
+typealias ScoreChangeListener = ((score: Float) -> Unit)?

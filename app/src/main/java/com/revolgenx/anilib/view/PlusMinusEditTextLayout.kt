@@ -1,23 +1,20 @@
 package com.revolgenx.anilib.view
 
 import android.content.Context
-import android.content.res.ColorStateList
+import android.os.Parcelable
 import android.text.InputType
 import android.util.AttributeSet
-import android.view.Gravity
-import android.view.ViewGroup
 import android.widget.RelativeLayout
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.setPadding
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.*
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.makeToast
+import kotlinx.android.parcel.Parcelize
 
 class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set: Int = 0) :
     RelativeLayout(context, attributeSet, set) {
@@ -32,8 +29,9 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
     var max: Double? = null
 
     var counterHolder = 0.0
+    private var textChanged: ((char: CharSequence) -> Unit)? = null
 
-    fun setDynamicText() {
+    fun updateDynamicText() {
         when (dynamicInputType) {
             InputType.TYPE_NUMBER_FLAG_DECIMAL -> {
                 dynamicNumberEditText.setText(counterHolder.toString())
@@ -57,6 +55,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         DynamicEditText(context, attributeSet).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).also {
                 it.addRule(LEFT_OF, R.id.decrementButtonId)
+                it.marginStart = dp(6f)
             }
             this.background = null
             typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
@@ -105,43 +104,49 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         addView(dynamicDecrementIv)
 
         dynamicNumberEditText.doOnTextChanged { text, _, _, _ ->
-            if (text!!.isEmpty()) return@doOnTextChanged
+            if (text!!.isEmpty()) {
+                dynamicNumberEditText.setText("0")
+                return@doOnTextChanged
+            }
             try {
                 counterHolder = text.toString().trim().toDouble()
+                textChanged?.invoke(text)
             } catch (e: NumberFormatException) {
                 context.makeToast(
-                    context.getString(R.string.invalid_input_type),
-                    R.drawable.ic_error
+                    R.string.invalid_input_type,
+                    icon = R.drawable.ic_error
                 )
             }
         }
         dynamicInputType = InputType.TYPE_CLASS_NUMBER
-        setDynamicText()
+        updateDynamicText()
 
         this.setBackgroundColor(surfaceColor)
 
         dynamicIncrementIv.setOnClickListener {
+//            counterHolder = (((counterHolder * 10).toInt() + 10) / 10).toDouble()
             counterHolder++
             if (max != null) {
                 if (counterHolder > max!!) {
                     counterHolder = max!!
                 }
             }
-            setDynamicText()
+            updateDynamicText()
         }
 
         dynamicDecrementIv.setOnClickListener {
+//            counterHolder = (((counterHolder * 10).toInt() - 10) / 10).toDouble()
             counterHolder--
             if (counterHolder < 0) {
                 counterHolder = 0.0
             }
-            setDynamicText()
+            updateDynamicText()
         }
     }
 
-    fun putNumberText(d: Double) {
-        counterHolder = d
-        setDynamicText()
+
+    fun textChangeListener(listener: ((char: CharSequence) -> Unit)? = null) {
+        this.textChanged = listener
     }
 
     val dynamictext: String

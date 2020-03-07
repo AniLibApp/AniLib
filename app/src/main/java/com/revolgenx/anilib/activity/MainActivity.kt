@@ -19,8 +19,6 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
-import com.facebook.common.util.UriUtil
-import com.facebook.drawee.interfaces.DraweeController
 import com.facebook.drawee.view.SimpleDraweeView
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
@@ -350,9 +348,9 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
         ContainerActivity.openActivity(
             this,
             ParcelableFragment(
-                ListEditorFragment::class.java,
+                MediaEntryEditorFragment::class.java,
                 bundleOf(
-                    ListEditorFragment.LIST_EDITOR_META_KEY to event.meta
+                    MediaEntryEditorFragment.LIST_EDITOR_META_KEY to event.meta
                 )
             )
             , options

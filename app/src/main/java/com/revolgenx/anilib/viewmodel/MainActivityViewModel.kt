@@ -37,7 +37,7 @@ class MainActivityViewModel(
                 basicUserLiveData.value = userModel
             }, {
                 Timber.e(it)
-                context.makeToast(context.getString(R.string.user_detail_fetch_failed))
+                context.makeToast(R.string.user_detail_fetch_failed)
             })
         compositeDisposable.add(disposable)
         return basicUserLiveData

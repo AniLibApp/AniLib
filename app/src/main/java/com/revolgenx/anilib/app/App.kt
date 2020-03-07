@@ -14,6 +14,7 @@ import com.revolgenx.anilib.controller.Constants
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.repository.networkModules
 import com.revolgenx.anilib.repository.repositoryModules
+import com.revolgenx.anilib.service.serviceModule
 import com.revolgenx.anilib.viewmodel.viewModelModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -35,7 +36,7 @@ class App : DynamicApplication() {
         startKoin {
             androidContext(this@App)
 
-            modules(listOf(viewModelModules, repositoryModules, networkModules))
+            modules(listOf(viewModelModules, repositoryModules, networkModules, serviceModule))
         }
     }
 

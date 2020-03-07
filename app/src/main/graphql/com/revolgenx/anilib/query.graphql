@@ -39,6 +39,44 @@ query BasicUserQuery($id:Int){
 }
 
 
+#mutation
+
+mutation SaveMediaListEntryMutation($listId:Int, $mediaId:Int){
+    SaveMediaListEntry(id:$listId, mediaId:$mediaId){
+        id
+    }
+}
+
+mutation DeleteMediaListEntryMutation($listId:Int){
+    DeleteMediaListEntry(id:$listId){
+        deleted
+    }
+}
+
+
+mutation ToggleFavouriteMutation($animeId:Int,$mangaId:Int, $characterId:Int
+    ,$staffId:Int, $studioId:Int){
+    ToggleFavourite(animeId:$animeId, mangaId:$mangaId, characterId:$characterId, staffId:$staffId, studioId:$studioId){
+        anime{
+            __typename
+        }
+        manga{
+            __typename
+        }
+        characters{
+            __typename
+        }
+        staff{
+            __typename
+        }
+        studios{
+            __typename
+        }
+    }
+}
+
+
+
 fragment mediaListContent on MediaList{
     id
     mediaId
@@ -75,6 +113,7 @@ fragment narrowMediaContent on Media{
     }
     isAdult
     format
+    type
     genres
     status
     averageScore
@@ -104,3 +143,16 @@ fragment narrowMediaContent on Media{
     bannerImage
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
