@@ -21,15 +21,13 @@ abstract class MediaListEntryService(
         MutableLiveData<Resource<Boolean>>()
     }
 
-
     abstract fun queryMediaListEntry(
         mediaId: Int,
         compositeDisposable: CompositeDisposable? = null
     ): MutableLiveData<Resource<EntryListEditorMediaModel>>
 
     abstract fun saveMediaListEntry(
-        listId: Int?,
-        mediaId: Int,
+        model: EntryListEditorMediaModel,
         compositeDisposable: CompositeDisposable? = null
     ): MutableLiveData<Resource<Int>>
 

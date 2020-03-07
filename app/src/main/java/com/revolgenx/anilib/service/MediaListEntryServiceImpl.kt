@@ -12,6 +12,9 @@ import com.revolgenx.anilib.preference.userScoreFormat
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.converter.toListEditorMediaModel
 import com.revolgenx.anilib.repository.util.Resource
+import com.revolgenx.anilib.type.FuzzyDateInput
+import com.revolgenx.anilib.type.MediaListStatus
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -46,8 +49,10 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
                     } else {
                         mediaQueryEntryLiveData.value = Resource.error(it.message ?: "Error", null)
                     }
+                    Timber.w(it)
                 } else {
                     mediaQueryEntryLiveData.value = Resource.error(it.message ?: "Error", null)
+                    Timber.e(it)
                 }
             })
 
@@ -56,12 +61,40 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
     }
 
     override fun saveMediaListEntry(
-        listId: Int?,
-        mediaId: Int,
+        model: EntryListEditorMediaModel,
         compositeDisposable: CompositeDisposable?
     ): MutableLiveData<Resource<Int>> {
         val disposable = graphRepository.request(
-            SaveMediaListEntryMutation.builder().listId(listId).mediaId(mediaId).build()
+            SaveMediaListEntryMutation.builder().apply {
+                model.listId.takeIf { it != -1 }?.let {
+                    listId(it)
+                }
+                mediaId(model.id)
+
+                if (model.type == MediaType.MANGA.ordinal) {
+                    progressVolumes(model.progressVolumes)
+                }
+                progress(model.progress)
+                private_(model.private)
+                status(MediaListStatus.values()[model.status])
+                score(model.score)
+                repeat(model.repeat)
+                notes(model.notes)
+                model.startDate?.year?.let {
+                    startedAt(
+                        FuzzyDateInput.builder().day(model.startDate!!.day).month(model.startDate!!.month).year(
+                            it
+                        ).build()
+                    )
+                } ?: startedAt(null)
+                model.endDate?.year?.let {
+                    startedAt(
+                        FuzzyDateInput.builder().day(model.endDate!!.day).month(model.endDate!!.month).year(
+                            it
+                        ).build()
+                    )
+                } ?: completedAt(null)
+            }.build()
         )
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

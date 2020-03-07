@@ -62,11 +62,11 @@ fun MediaListContent.toListEditorMediaModel() = EntryListEditorMediaModel().also
     it.userId = userId()
     it.listId = id()
     it.status = status()!!.ordinal
-    it.notes = notes()
+    it.notes = notes()?:""
     it.progress = progress()!!
+    it.progressVolumes = progressVolumes()?:0
     it.private = private_()!!
     it.repeat = repeat()!!
-    it.isFavourite = media()!!.isFavourite
     it.startDate = startedAt()!!.let {
         DateModel().also { date ->
             date.day = it.day()

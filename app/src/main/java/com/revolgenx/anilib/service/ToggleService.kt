@@ -11,5 +11,9 @@ import timber.log.Timber
 
 abstract class ToggleService(val graphRepository: BaseGraphRepository) {
     val toggleFavMutableLiveData = MutableLiveData<Resource<Boolean>>()
+    val isFavouriteLiveData = MutableLiveData<Resource<Boolean>>()
     abstract fun toggleFavourite(favouriteModel: ToggleFavouriteModel, compositeDisposable: CompositeDisposable? = null): MutableLiveData<Resource<Boolean>>
+
+    //helper fun
+    abstract fun isFavourite(mediaId:Int,compositeDisposable: CompositeDisposable?):MutableLiveData<Resource<Boolean>>
 }
