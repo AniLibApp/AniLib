@@ -7,6 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ListEditorMeta(
     var id: Int,
+    var type: Int,
     var title: String,
     var coverImage: String,
     var bannerImage: String?

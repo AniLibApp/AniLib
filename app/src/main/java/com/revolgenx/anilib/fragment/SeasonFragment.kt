@@ -8,12 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.model.field.SeasonField
 import com.revolgenx.anilib.presenter.MediaPresenter
-import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.viewmodel.SeasonViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber

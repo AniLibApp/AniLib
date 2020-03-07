@@ -13,5 +13,6 @@ class CommonMediaModel() : BaseMediaModel() {
     var duration: String? = null
     var status: Int? = null
     var format:Int? = null
+    var type:Int? = null
     var isAdult = false
 }

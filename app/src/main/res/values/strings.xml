@@ -60,6 +60,14 @@
     <string name="dropped">Dropped</string>
     <string name="paused">Paused</string>
     <string name="rewatching">Rewatching</string>
+    <string name="episode_progress">Episode Progress</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">Finish Date</string>
+    <string name="total_rewatch">Total Rewatches</string>
+    <string name="private_">Private</string>
+    <string name="notes">Notes</string>
+    <string name="failed_to_save">Failed to save.</string>
+    <string name="failed_to_toggle">Failed to toggle.</string>
 
 
     <!-- TV("TV"),

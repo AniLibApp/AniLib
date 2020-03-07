@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.pranavpandey.android.dynamic.toasts.DynamicToast
+import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.type.MediaSeason
 import org.greenrobot.eventbus.EventBus
@@ -55,6 +56,8 @@ fun <T> T.unRegisterForEvent() {
 
 
 //view
+fun dp(dp: Float) = DynamicUnitUtils.convertDpToPixels(dp)
+
 fun TextView.naText(text: String?) {
     this.text = text?.takeIf { it.isNotEmpty() } ?: "NA"
 }
@@ -65,16 +68,16 @@ fun View.makeSnakeBar(msg: String) {
     Snackbar.make(this, msg, Snackbar.LENGTH_SHORT).show()
 }
 
-fun Fragment.makeToast(msg: String, @DrawableRes icon: Int? = null) {
-    context?.makeToast(msg, icon)
+fun Fragment.makeToast(@StringRes str: Int? = null, msg: String? = null, @DrawableRes icon: Int? = null) {
+    context?.makeToast(str, msg, icon)
 }
 
-fun Context.makeToast(msg: String,@DrawableRes  icon: Int? = null) {
-    if(icon != null){
+fun Context.makeToast(@StringRes str: Int? = null, msg: String? = null, @DrawableRes icon: Int? = null) {
+    if (icon != null) {
         val drawable = ContextCompat.getDrawable(this, icon)
-        DynamicToast.make(this, msg, drawable).show()
-    }else{
-        DynamicToast.make(this, msg).show()
+        DynamicToast.make(this, str?.let { getString(it) }?:msg, drawable).show()
+    } else {
+        DynamicToast.make(this, str?.let { getString(it) }?:msg).show()
     }
 }
 

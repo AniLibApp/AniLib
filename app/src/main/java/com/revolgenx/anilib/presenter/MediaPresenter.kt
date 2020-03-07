@@ -22,8 +22,7 @@ import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
 import kotlinx.android.synthetic.main.media_list_presenter_layout.view.*
 
-class MediaPresenter(context: Context) :
-    Presenter<CommonMediaModel>(context) {
+class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
 
     override val elementTypes: Collection<Int>
         get() = listOf(0)
@@ -101,6 +100,7 @@ class MediaPresenter(context: Context) :
                     ListEditorEvent(
                         ListEditorMeta(
                             data.id,
+                            data.type!!,
                             data.title!!.title(context)!!,
                             data.coverImage!!.image,
                             data.bannerImage
