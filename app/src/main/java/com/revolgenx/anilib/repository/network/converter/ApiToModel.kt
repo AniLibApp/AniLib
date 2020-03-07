@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.repository.network.converter
 
 import com.revolgenx.anilib.BasicUserQuery
-import com.revolgenx.anilib.fragment.MediaContent
 import com.revolgenx.anilib.fragment.MediaListContent
 import com.revolgenx.anilib.fragment.NarrowMediaContent
 import com.revolgenx.anilib.model.*
@@ -16,6 +15,7 @@ fun NarrowMediaContent.getCommonMedia() =
             title.userPreferred = title()!!.userPreferred()
         }
         it.format = format()!!.ordinal
+        it.type = type()!!.ordinal
         it.episodes = episodes()?.toString() ?: ""
         it.duration = duration()?.toString() ?: ""
         it.status = status()!!.ordinal
@@ -57,12 +57,12 @@ fun BasicUserQuery.User.toBasicUserModel() = BasicUserModel().also {
 }
 
 
-fun MediaListContent.toListEditorMediaModel() = ListEditorMediaModel().also {
+fun MediaListContent.toListEditorMediaModel() = EntryListEditorMediaModel().also {
     it.id = mediaId()
     it.userId = userId()
     it.listId = id()
     it.status = status()!!.ordinal
-    it.notes = notes() ?: ""
+    it.notes = notes()
     it.progress = progress()!!
     it.private = private_()!!
     it.repeat = repeat()!!

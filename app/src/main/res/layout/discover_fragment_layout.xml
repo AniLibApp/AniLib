@@ -17,6 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
 
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/listPrivateButton"
+            style="@style/Widget.DynamicApp.Button.ImageButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:button="@drawable/ic_dropped" />
+
+
         <include layout="@layout/media_list_presenter_layout" />
 
         <include layout="@layout/media_list_presenter_layout" />
