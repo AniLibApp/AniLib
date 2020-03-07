@@ -24,8 +24,10 @@ import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.model.DateModel
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.model.ToggleFavouriteModel
+import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.preference.userScoreFormat
 import com.revolgenx.anilib.repository.util.Status
+import com.revolgenx.anilib.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.viewmodel.MediaEntryEditorViewModel
@@ -33,7 +35,6 @@ import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.list_editor_fragment_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 import java.util.*
 import kotlin.math.abs
 
@@ -55,9 +56,8 @@ class MediaEntryEditorFragment : BaseFragment() {
     private var saving = false
     private var deleting = false
     private var toggling = false
-
     private var apiModelEntry: EntryListEditorMediaModel? = null
-
+    private var isFavourite = false
     private val surfaceColor by lazy {
         DynamicTheme.getInstance().get().surfaceColor
     }
@@ -118,7 +118,7 @@ class MediaEntryEditorFragment : BaseFragment() {
 
         viewModel.queryMediaListEntryLiveData.observe(viewLifecycleOwner, Observer { resource ->
             when (resource.status) {
-                Status.SUCCESS -> {
+                SUCCESS -> {
                     listResourceEditorContainer.visibility = View.GONE
                     listEditorContainer.visibility = View.VISIBLE
                     progressLayout.visibility = View.VISIBLE
@@ -127,7 +127,7 @@ class MediaEntryEditorFragment : BaseFragment() {
                     modelEntry = resource.data
 
                     apiModelEntry = if (savedInstanceState == null) {
-                        if (modelEntry == null) EntryListEditorMediaModel() else modelEntry
+                        if (modelEntry == null) createListEditorMediaModel() else modelEntry
                     } else {
                         savedInstanceState.getParcelable(LIST_EDITOR_MODEL)
                             ?: if (modelEntry == null) EntryListEditorMediaModel() else modelEntry
@@ -135,14 +135,14 @@ class MediaEntryEditorFragment : BaseFragment() {
                     updateView()
                     invalidateOptionMenu()
                 }
-                Status.ERROR -> {
+                ERROR -> {
                     listResourceEditorContainer.visibility = View.VISIBLE
                     listEditorContainer.visibility = View.GONE
                     progressLayout.visibility = View.GONE
                     errorLayout.visibility = View.VISIBLE
                     fetched = false
                 }
-                Status.LOADING -> {
+                LOADING -> {
                     listResourceEditorContainer.visibility = View.VISIBLE
                     listEditorContainer.visibility = View.GONE
                     progressLayout.visibility = View.VISIBLE
@@ -152,19 +152,34 @@ class MediaEntryEditorFragment : BaseFragment() {
             }
         })
 
+        viewModel.isFavouriteQuery(mediaMeta.id).observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                SUCCESS -> {
+                    isFavourite = it.data!!
+                    listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                    invalidateOptionMenu()
+                }
+                ERROR -> {
+                }
+                LOADING -> {
+                }
+            }
+        })
+
         viewModel.toggleFavMediaLiveData.observe(viewLifecycleOwner, Observer {
             toggling = when (it.status) {
-                Status.SUCCESS -> {
-                    apiModelEntry!!.isFavourite = !apiModelEntry!!.isFavourite
-                    listFavButton.setImageResource(if (apiModelEntry!!.isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                SUCCESS -> {
+                    isFavourite = !isFavourite
+                    listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                    invalidateOptionMenu()
                     false
                 }
-                Status.ERROR -> {
-                    listFavButton.setImageResource(if (apiModelEntry!!.isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                ERROR -> {
+                    listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
                     false
                 }
-                Status.LOADING -> {
+                LOADING -> {
                     listFavButton.setImageDrawable(circularProgressDrawable)
                     true
                 }
@@ -173,36 +188,50 @@ class MediaEntryEditorFragment : BaseFragment() {
 
         viewModel.saveMediaListEntryLiveData.observe(viewLifecycleOwner, Observer {
             saving = when (it.status) {
-                Status.SUCCESS -> {
+                SUCCESS -> {
                     finishActivity()
                     false
                 }
-                Status.ERROR -> {
+                ERROR -> {
                     makeToast(R.string.failed_to_save, icon = R.drawable.ic_error)
+                    listSaveButton.setImageResource(R.drawable.ic_save)
                     false
                 }
-                Status.LOADING -> {
+                LOADING -> {
+                    listSaveButton.setImageDrawable(circularProgressDrawable)
                     true
                 }
             }
         })
 
         viewModel.deleteMediaListEntryLiveData.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    deleting = false
+            deleting = when (it.status) {
+                SUCCESS -> {
+                    finishActivity()
+                    false
                 }
-                Status.ERROR -> {
-                    deleting = false
+                ERROR -> {
+                    makeToast(R.string.failed_to_delete, icon = R.drawable.ic_error)
+                    listDeleteButton.setImageResource(R.drawable.ic_delete)
+                    false
                 }
-                Status.LOADING -> {
-                    deleting = true
+                LOADING -> {
+                    listDeleteButton.setImageDrawable(circularProgressDrawable)
+                    true
                 }
             }
         })
 
         if (savedInstanceState == null)
             viewModel.queryMediaListEntry(mediaMeta.id)
+    }
+
+    private fun createListEditorMediaModel(): EntryListEditorMediaModel {
+        return EntryListEditorMediaModel().also {
+            it.id = mediaMeta.id
+            it.type = mediaMeta.type
+            it.userId = context!!.userId()
+        }
     }
 
     private fun showMetaViews() {
@@ -221,13 +250,30 @@ class MediaEntryEditorFragment : BaseFragment() {
         listSaveCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
         listPrivateCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
         listEditorScoreLayout.scoreFormatType = context!!.userScoreFormat()
+
+        if (mediaMeta.type == MediaType.MANGA.ordinal) {
+            progressHeader.title = getString(R.string.manga_progress)
+            volumeProgressHeader.visibility = View.GONE
+            listEditorVolumeProgressLayout.visibility = View.GONE
+        }
+
         startDateDynamicEt.setBackgroundColor(surfaceColor)
-
-        DrawableCompat.setTint(startDateDynamicEt.compoundDrawablesRelative[0], primaryTint)
-        DrawableCompat.setTint(endDateDynamicEt.compoundDrawablesRelative[0], primaryTint)
-
         endDateDynamicEt.setBackgroundColor(surfaceColor)
         notesEt.setBackgroundColor(surfaceColor)
+
+        startDateDynamicEt.compoundDrawablesRelative[0].setTintList(
+            ColorStateList.valueOf(
+                accentColor
+            )
+        )
+        startDateDynamicEt.compoundDrawablesRelative[2].setTintList(
+            ColorStateList.valueOf(
+                accentColor
+            )
+        )
+
+        endDateDynamicEt.compoundDrawablesRelative[0].setTintList(ColorStateList.valueOf(accentColor))
+        endDateDynamicEt.compoundDrawablesRelative[2].setTintList(ColorStateList.valueOf(accentColor))
 
         val spinnerItems = mutableListOf<DynamicSpinnerItem>()
         spinnerItems.add(
@@ -291,16 +337,40 @@ class MediaEntryEditorFragment : BaseFragment() {
         appbarLayout.addOnOffsetChangedListener(offSetChangeListener)
 
         listSaveButton.setOnClickListener {
-
+            saveList()
         }
 
         listDeleteButton.setOnClickListener {
-
+            deleteList()
         }
 
         listFavButton.setOnClickListener {
             toggleFav()
         }
+
+        startDateDynamicEt.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= (startDateDynamicEt.right - startDateDynamicEt.compoundDrawablesRelative[2].bounds.width())) {
+                    startDateDynamicEt.setText("")
+                    apiModelEntry!!.startDate = null
+                    true
+                }
+            }
+            false
+        }
+
+        endDateDynamicEt.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= (startDateDynamicEt.right - startDateDynamicEt.compoundDrawablesRelative[2].bounds.width())) {
+                    endDateDynamicEt.setText("")
+                    apiModelEntry!!.endDate = null
+                    true
+                }
+            }
+            false
+        }
+
+
 
         startDateDynamicEt.setOnClickListener {
             DatePickerDialog(
@@ -353,6 +423,11 @@ class MediaEntryEditorFragment : BaseFragment() {
         listEditorEpisodeLayout.textChangeListener {
             apiModelEntry!!.progress = it.toString().toInt()
         }
+
+        listEditorVolumeProgressLayout.textChangeListener {
+            apiModelEntry!!.progressVolumes = it.toString().toInt()
+        }
+
         listEditorScoreLayout.onScoreChangeListener {
             apiModelEntry!!.score = it.toDouble()
         }
@@ -364,6 +439,9 @@ class MediaEntryEditorFragment : BaseFragment() {
             apiModelEntry!!.notes = text.toString()
         }
 
+        totalRewatchesLayout.textChangeListener {
+            apiModelEntry!!.repeat = it.toString().toInt()
+        }
     }
 
     private fun updateView() {
@@ -373,7 +451,7 @@ class MediaEntryEditorFragment : BaseFragment() {
         privateToggleButton.checked = apiModelEntry!!.private
         listEditorEpisodeLayout.counterHolder = apiModelEntry!!.progress.toDouble()
         totalRewatchesLayout.counterHolder = apiModelEntry!!.repeat.toDouble()
-        notesEt.setText(apiModelEntry!!.notes ?: "")
+        notesEt.setText(apiModelEntry!!.notes)
 
         if (apiModelEntry!!.startDate?.year != null) {
             startDateDynamicEt.setText(apiModelEntry!!.startDate!!.let { "${it.year}-${it.month}-${it.day}" })
@@ -386,9 +464,7 @@ class MediaEntryEditorFragment : BaseFragment() {
 
 
     private fun toggleFav() {
-        Timber.d("toggle fav")
         if (toggling || apiModelEntry == null) return
-        Timber.d("toggle fav")
         viewModel.toggleMediaFavourite(ToggleFavouriteModel().also {
             when (mediaMeta.type) {
                 MediaType.ANIME.ordinal -> {
@@ -401,6 +477,18 @@ class MediaEntryEditorFragment : BaseFragment() {
         })
     }
 
+    private fun deleteList() {
+        if (deleting || apiModelEntry == null) return
+        apiModelEntry!!.listId.takeIf { it != -1 }?.let {
+            viewModel.deleteMediaListEntry(it)
+        }
+    }
+
+    private fun saveList() {
+        if (saving || apiModelEntry == null) return
+        viewModel.saveMediaListEntry(apiModelEntry!!)
+    }
+
 
     @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -409,14 +497,15 @@ class MediaEntryEditorFragment : BaseFragment() {
                 listDeleteCardView.visibility = View.GONE
             } else {
                 listDeleteCardView.visibility = View.VISIBLE
-                if (modelEntry!!.isFavourite) {
-                    listFavButton.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context!!,
-                            R.drawable.ic_favorite
-                        )
+            }
+
+            if (isFavourite) {
+                listFavButton.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context!!,
+                        R.drawable.ic_favorite
                     )
-                }
+                )
             }
             return
         }
@@ -428,12 +517,13 @@ class MediaEntryEditorFragment : BaseFragment() {
                 menu.findItem(R.id.listDeleteMenu).isVisible = false
                 listDeleteCardView.visibility = View.GONE
             } else {
-                if (modelEntry!!.isFavourite) {
-                    val drawable = AppCompatDrawableManager.get()
-                        .getDrawable(context!!, R.drawable.ic_favorite)
-                    menu.findItem(R.id.listFavMenu).icon = drawable
-                }
                 listDeleteCardView.visibility = View.VISIBLE
+            }
+
+            if (isFavourite) {
+                val drawable =
+                    AppCompatDrawableManager.get().getDrawable(context!!, R.drawable.ic_favorite)
+                menu.findItem(R.id.listFavMenu).icon = drawable
             }
         }
     }
@@ -446,15 +536,18 @@ class MediaEntryEditorFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.listSaveMenu -> {
-
+                makeToast(R.string.please_wait, icon = R.drawable.ic_hour_glass)
+                saveList()
                 true
             }
             R.id.listDeleteMenu -> {
-
+                makeToast(R.string.please_wait, icon = R.drawable.ic_hour_glass)
+                deleteList()
                 true
             }
             R.id.listFavMenu -> {
-
+                makeToast(R.string.please_wait, icon = R.drawable.ic_hour_glass)
+                toggleFav()
                 true
             }
             android.R.id.home -> {

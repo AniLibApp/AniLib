@@ -3,38 +3,41 @@ package com.revolgenx.anilib.model
 import android.os.Parcel
 import android.os.Parcelable
 import com.revolgenx.anilib.type.MediaListStatus
+import com.revolgenx.anilib.type.MediaType
 
 class EntryListEditorMediaModel() : BaseMediaModel() {
     var listId: Int = -1
     var userId: Int = -1
+    var type: Int = MediaType.ANIME.ordinal
     var status: Int = MediaListStatus.CURRENT.ordinal
     var score: Double = 0.0
     var progress: Int = 0
+    var progressVolumes: Int = 0
     var repeat: Int = 0
-    var notes: String? = null
+    var notes: String = ""
     var private: Boolean = false
     var startDate: DateModel? = null
     var endDate: DateModel? = null
-    var isFavourite = false
 
     constructor(parcel: Parcel) : this() {
         listId = parcel.readInt()
         userId = parcel.readInt()
+        type = parcel.readInt()
         status = parcel.readInt()
         score = parcel.readDouble()
         progress = parcel.readInt()
         repeat = parcel.readInt()
-        notes = parcel.readString()
+        notes = parcel.readString()!!
         private = parcel.readByte() != 0.toByte()
         startDate = parcel.readParcelable(DateModel::class.java.classLoader)
         endDate = parcel.readParcelable(DateModel::class.java.classLoader)
-        isFavourite = parcel.readByte() != 0.toByte()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         super.writeToParcel(parcel, flags)
         parcel.writeInt(listId)
         parcel.writeInt(userId)
+        parcel.writeInt(type)
         parcel.writeInt(status)
         parcel.writeDouble(score)
         parcel.writeInt(progress)
@@ -43,7 +46,6 @@ class EntryListEditorMediaModel() : BaseMediaModel() {
         parcel.writeByte(if (private) 1 else 0)
         parcel.writeParcelable(startDate, flags)
         parcel.writeParcelable(endDate, flags)
-        parcel.writeByte(if (isFavourite) 1 else 0)
     }
 
     override fun describeContents(): Int {

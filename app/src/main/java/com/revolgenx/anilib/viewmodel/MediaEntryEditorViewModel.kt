@@ -2,6 +2,7 @@ package com.revolgenx.anilib.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.model.ToggleFavouriteModel
@@ -55,11 +56,10 @@ class MediaEntryEditorViewModel(
         )
     }
 
-    fun saveMediaListEntry(listId: Int?, mediaId: Int) {
+    fun saveMediaListEntry(model: EntryListEditorMediaModel) {
         saveMediaListEntryLiveData.value = Resource.loading(null)
         mediaListEntryService.saveMediaListEntry(
-            listId,
-            mediaId,
+            model,
             compositeDisposable
         )
     }
@@ -78,6 +78,10 @@ class MediaEntryEditorViewModel(
             toggleFavouriteModel,
             compositeDisposable
         )
+    }
+
+    fun isFavouriteQuery(mediaId: Int):MutableLiveData<Resource<Boolean>> {
+        return toggleService.isFavourite(mediaId, compositeDisposable)
     }
 
     override fun onCleared() {

@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.service
 
 import androidx.lifecycle.*
+import com.revolgenx.anilib.IsFavouriteQuery
 import com.revolgenx.anilib.ToggleFavouriteMutation
 import com.revolgenx.anilib.model.ToggleFavouriteModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
@@ -36,5 +37,23 @@ class ToggleServiceImpl(graphRepository: BaseGraphRepository) :
             })
         compositeDisposable?.add(disposable)
         return toggleFavMutableLiveData
+    }
+
+    override fun isFavourite(
+        mediaId: Int,
+        compositeDisposable: CompositeDisposable?
+    ): MutableLiveData<Resource<Boolean>> {
+        val disposable =
+            graphRepository.request(IsFavouriteQuery.builder().mediaId(mediaId).build())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    isFavouriteLiveData.value = Resource.success(it.data()?.Media()!!.isFavourite)
+                }, {
+                    Timber.e(it)
+                    isFavouriteLiveData.value = Resource.error(it.message ?: "Error", null)
+                })
+
+        compositeDisposable?.add(disposable)
+        return isFavouriteLiveData
     }
 }

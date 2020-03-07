@@ -38,11 +38,34 @@ query BasicUserQuery($id:Int){
     }
 }
 
+query IsFavouriteQuery($mediaId:Int){
+    Media(id:$mediaId){
+        isFavourite
+    }
+}
+
 
 #mutation
-
-mutation SaveMediaListEntryMutation($listId:Int, $mediaId:Int){
-    SaveMediaListEntry(id:$listId, mediaId:$mediaId){
+mutation SaveMediaListEntryMutation(
+    $listId:Int, $mediaId:Int,
+    $status:MediaListStatus,
+    $score:Float,
+    $progress:Int,
+    $progressVolumes:Int,
+    $private_:Boolean,
+    $repeat:Int,
+    $notes:String,
+    $startedAt:FuzzyDateInput,
+    $completedAt:FuzzyDateInput
+){
+    SaveMediaListEntry(id:$listId, mediaId:$mediaId
+        , status:$status
+        , score:$score
+        , progress:$progress
+        , progressVolumes:$progressVolumes
+        ,repeat:$repeat
+        ,private:$private_
+        ,startedAt:$startedAt,completedAt:$completedAt, notes:$notes){
         id
     }
 }
@@ -83,6 +106,7 @@ fragment mediaListContent on MediaList{
     userId
     status
     progress
+    progressVolumes
     repeat
     private
     notes
@@ -96,10 +120,9 @@ fragment mediaListContent on MediaList{
         month
         day
     }
-    media{
-        isFavourite
-    }
 }
+
+
 
 fragment narrowMediaContent on Media{
     id
