@@ -100,6 +100,7 @@
                     android:layout_height="48dp" />
 
                 <com.pranavpandey.android.dynamic.support.view.DynamicHeader
+                    android:id="@+id/progressHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:ads_fillSpace="true"
@@ -111,21 +112,36 @@
                     android:layout_height="48dp" />
 
                 <com.pranavpandey.android.dynamic.support.view.DynamicHeader
+                    android:id="@+id/volumeProgressHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ads_fillSpace="true"
+                    android:visibility="gone"
+                    app:ads_title="@string/volume_progress" />
+
+                <com.revolgenx.anilib.view.PlusMinusEditTextLayout
+                    android:id="@+id/listEditorVolumeProgressLayout"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="48dp" />
+
+                <com.pranavpandey.android.dynamic.support.view.DynamicHeader
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:ads_fillSpace="true"
                     app:ads_title="@string/start_date" />
 
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/startDateDynamicEt"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@null"
                     android:drawableStart="@drawable/ic_calendar"
+                    android:drawableEnd="@drawable/ic_close"
+                    android:drawablePadding="6dp"
                     android:focusable="false"
                     android:maxLines="1"
-                    android:drawablePadding="6dp"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp"
                     android:textSize="14sp" />
@@ -136,15 +152,16 @@
                     app:ads_fillSpace="true"
                     app:ads_title="@string/end_date" />
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/endDateDynamicEt"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@null"
                     android:drawableStart="@drawable/ic_calendar"
+                    android:drawableEnd="@drawable/ic_close"
+                    android:drawablePadding="6dp"
                     android:focusable="false"
                     android:maxLines="1"
-                    android:drawablePadding="6dp"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp"
                     android:textSize="14sp" />
@@ -172,12 +189,12 @@
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="80dp"
                     android:background="@null"
                     android:minHeight="48dp"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="80dp"/>
+                    android:textSize="16sp" />
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
         </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
@@ -226,6 +243,7 @@
                     style="@style/Widget.DynamicApp.Button.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:padding="10dp"
                     android:src="@drawable/ic_save" />
             </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
@@ -243,6 +261,7 @@
                     style="@style/Widget.DynamicApp.Button.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:padding="10dp"
                     android:src="@drawable/ic_delete" />
             </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
