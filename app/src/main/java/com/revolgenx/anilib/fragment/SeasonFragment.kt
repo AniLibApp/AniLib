@@ -25,7 +25,11 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
 
     override val baseSource: Source<CommonMediaModel>
         get() {
-            return viewModel.seasonSource
+            return if (viewModel.seasonSource != null) {
+                viewModel.seasonSource!!
+            }else{
+                createSource()
+            }
         }
 
     override fun createSource(): Source<CommonMediaModel> {

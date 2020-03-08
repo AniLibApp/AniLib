@@ -12,6 +12,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
+import com.revolgenx.anilib.event.meta.BrowseMediaMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.preference.loggedIn
@@ -92,8 +93,17 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
 
 
             mediaCardView.setOnClickListener {
-                BrowseMediaEvent(data.id).postEvent
+                BrowseMediaEvent(
+                    BrowseMediaMeta(
+                        data.id,
+                        data.type!!,
+                        data.title!!.title(context)!!,
+                        data.coverImage!!.image,
+                        data.bannerImage
+                    ), holder.itemView.coverImageIv
+                ).postEvent
             }
+
 
             bookmarkIv.setOnClickListener {
                 if (context.loggedIn()) {

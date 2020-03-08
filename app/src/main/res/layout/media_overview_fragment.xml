@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/listEditorRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+        android:id="@+id/appbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/mediaOverviewCollapsingToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.DynamicApp.Toolbar"
+            app:expandedTitleMarginStart="132dp"
+            app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:maxLines="2">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/mediaOverviewBannerImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+                android:id="@+id/mediaOverviewToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:layout_collapseMode="pin" />
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/coverImageFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginStart="20dp"
+        android:orientation="horizontal"
+        app:layout_anchor="@id/appbarLayout"
+        app:layout_anchorGravity="bottom"
+        app:layout_behavior=".view.SimpleDraweeFrameLayoutBehavior">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/mediaOverviewCoverImage"
+            android:layout_width="104dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:scaleType="centerCrop"
+            android:transitionName="media_cover_transition" />
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/mediaOverviewButtonsLayout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:layout_toEndOf="@id/mediaOverviewCoverImage"-->
+<!--            android:gravity="end"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView-->
+<!--                android:id="@+id/listSaveCardView"-->
+<!--                style="@style/Widget.DynamicApp.Card.Clickable"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="10dp"-->
+<!--                app:ads_cardElevation="4dp"-->
+<!--                app:ads_elevationOnSameBackground="true">-->
+
+<!--                <com.pranavpandey.android.dynamic.support.widget.DynamicImageButton-->
+<!--                    android:id="@+id/listSaveButton"-->
+<!--                    style="@style/Widget.DynamicApp.Button.ImageButton"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:src="@drawable/ic_save" />-->
+<!--            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>-->
+
+<!--            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView-->
+<!--                android:id="@+id/listDeleteCardView"-->
+<!--                style="@style/Widget.DynamicApp.Card.Clickable"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="10dp"-->
+<!--                app:ads_cardElevation="4dp"-->
+<!--                app:ads_elevationOnSameBackground="true">-->
+
+<!--                <com.pranavpandey.android.dynamic.support.widget.DynamicImageButton-->
+<!--                    android:id="@+id/listDeleteButton"-->
+<!--                    style="@style/Widget.DynamicApp.Button.ImageButton"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:src="@drawable/ic_delete" />-->
+<!--            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>-->
+
+<!--            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView-->
+<!--                android:id="@+id/listFavCardView"-->
+<!--                style="@style/Widget.DynamicApp.Card.Clickable"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="10dp"-->
+<!--                app:ads_cardCornerRadius="6dp"-->
+<!--                app:ads_cardElevation="4dp"-->
+<!--                app:ads_elevationOnSameBackground="true"-->
+<!--                app:cardCornerRadius="6dp">-->
+
+<!--                <com.pranavpandey.android.dynamic.support.widget.DynamicImageButton-->
+<!--                    android:id="@+id/listFavButton"-->
+<!--                    style="@style/Widget.DynamicApp.Button.ImageButton"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:src="@drawable/ic_not_favourite" />-->
+<!--            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>-->
+
+
+<!--            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView-->
+<!--                android:id="@+id/listPrivateCardView"-->
+<!--                style="@style/Widget.DynamicApp.Card.Clickable"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_margin="10dp"-->
+<!--                app:ads_cardElevation="4dp"-->
+<!--                app:ads_elevationOnSameBackground="true">-->
+
+<!--                <com.revolgenx.anilib.view.DynamicToggleButton-->
+<!--                    android:id="@+id/privateToggleButton"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    app:srcCompat="@drawable/ic_dropped" />-->
+
+<!--            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>-->
+<!--        </LinearLayout>-->
+
+    </RelativeLayout>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout>
