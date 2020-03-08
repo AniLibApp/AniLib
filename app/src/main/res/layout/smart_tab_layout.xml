@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_width="wrap_content"
+    android:layout_height="?actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/change"
     android:orientation="vertical">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -12,10 +14,13 @@
         android:src="@drawable/ic_overview"
         android:layout_weight="1"/>
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tabTextTv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/overview"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:visibility="visible"
+        android:paddingBottom="6dp"
+        android:layout_gravity="center"/>
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

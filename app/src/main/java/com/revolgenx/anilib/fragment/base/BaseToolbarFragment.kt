@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
 import com.revolgenx.anilib.R
@@ -34,7 +35,7 @@ abstract class BaseToolbarFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as AppCompatActivity).invalidateOptionsMenu()
+        invalidateOptionMenu()
         setHasOptionsMenu(true)
     }
 

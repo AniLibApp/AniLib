@@ -38,6 +38,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.math.abs
 
+
+//todo:// check for manga
 class MediaEntryEditorFragment : BaseFragment() {
 
     companion object {
@@ -435,6 +437,11 @@ class MediaEntryEditorFragment : BaseFragment() {
             apiModelEntry!!.private = it
         }
 
+        privateToggleButton.setOnLongClickListener {
+            makeToast(R.string.make_private)
+            true
+        }
+
         notesEt.doOnTextChanged { text, _, _, _ ->
             apiModelEntry!!.notes = text.toString()
         }
@@ -449,8 +456,8 @@ class MediaEntryEditorFragment : BaseFragment() {
         statusSpinner.setSelection(apiModelEntry!!.status)
         listEditorScoreLayout.mediaListScore = apiModelEntry!!.score
         privateToggleButton.checked = apiModelEntry!!.private
-        listEditorEpisodeLayout.counterHolder = apiModelEntry!!.progress.toDouble()
-        totalRewatchesLayout.counterHolder = apiModelEntry!!.repeat.toDouble()
+        listEditorEpisodeLayout.setCounter(apiModelEntry!!.progress.toDouble())
+        totalRewatchesLayout.setCounter(apiModelEntry!!.repeat.toDouble())
         notesEt.setText(apiModelEntry!!.notes)
 
         if (apiModelEntry!!.startDate?.year != null) {
