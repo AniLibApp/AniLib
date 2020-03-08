@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicRootLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/browserRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager
+        android:id="@+id/browseMediaViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/smartTabLayout" />
+
+    <com.revolgenx.anilib.view.CustomSmartTab
+        android:id="@+id/smartTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentBottom="true"
+        app:stl_distributeEvenly="true"
+        app:stl_dividerThickness="0dp"
+        app:stl_indicatorColor="@android:color/transparent"
+        app:stl_indicatorInterpolation="linear"
+        app:stl_underlineThickness="0dp" />
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicRootLayout>

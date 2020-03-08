@@ -119,8 +119,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
 
-
-
     //dynamic theming
     implementation "com.pranavpandey.android:dynamic-support:$dynamic_ver"
 
@@ -149,9 +147,8 @@ dependencies {
     //jwt token
     implementation 'com.auth0.android:jwtdecode:1.2.0'
 
-    //progress button
-    implementation 'com.github.razir.progressbutton:progressbutton:2.0.1'
-
+    //smarttab
+    implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

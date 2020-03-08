@@ -3,4 +3,6 @@
     <item name="navActivityId" type="id"/>
     <item name="incrementButtonId" type="id"/>
     <item name="decrementButtonId" type="id"/>
+
+    <item name="mediaBrowserBottomNavId" type="id"/>
 </resources>

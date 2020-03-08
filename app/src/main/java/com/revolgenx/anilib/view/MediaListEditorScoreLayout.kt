@@ -37,8 +37,7 @@ class MediaListEditorScoreLayout(context: Context, attributeSet: AttributeSet?, 
                     smileyScoreLayout.smileyScore = field.toInt()
                 }
                 else -> {
-                    plusMinusScoreLayout.counterHolder = field
-                    plusMinusScoreLayout.updateDynamicText()
+                    plusMinusScoreLayout.setCounter(field)
                 }
             }
         }

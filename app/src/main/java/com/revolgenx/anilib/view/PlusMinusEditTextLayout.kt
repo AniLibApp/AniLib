@@ -149,6 +149,11 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         this.textChanged = listener
     }
 
+    fun setCounter(counter:Double){
+        counterHolder = counter
+        updateDynamicText()
+    }
+
     val dynamictext: String
         get() {
             return dynamicNumberEditText.text.toString()

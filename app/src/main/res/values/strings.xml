@@ -72,6 +72,13 @@
     <string name="please_wait">Please wait.</string>
     <string name="volume_progress">Volume Progress</string>
     <string name="manga_progress">Manga Progress</string>
+    <string name="make_private">Make Private</string>
+    <string name="overview">Overview</string>
+    <string name="character">Character</string>
+    <string name="stats">Stats</string>
+    <string name="staff">Staff</string>
+    <string name="review">Review</string>
+    <string name="watch">Watch</string>
 
 
     <!-- TV("TV"),
