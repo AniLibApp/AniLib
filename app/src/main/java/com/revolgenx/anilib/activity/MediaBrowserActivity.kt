@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
@@ -30,7 +29,6 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
@@ -39,7 +37,6 @@ import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.browser.*
 import com.revolgenx.anilib.model.ToggleFavouriteModel
 import com.revolgenx.anilib.preference.loggedIn
-import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.COLLAPSED

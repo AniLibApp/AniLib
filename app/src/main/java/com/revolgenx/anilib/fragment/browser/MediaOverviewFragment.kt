@@ -23,4 +23,7 @@ class MediaOverviewFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         mediaBrowserMeta = arguments?.getParcelable(MediaBrowserActivity.MEDIA_BROWSER_META) ?: return
     }
+
+
+
 }
