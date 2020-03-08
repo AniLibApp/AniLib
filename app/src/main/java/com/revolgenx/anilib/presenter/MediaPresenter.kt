@@ -12,7 +12,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
-import com.revolgenx.anilib.event.meta.BrowseMediaMeta
+import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.preference.loggedIn
@@ -94,7 +94,7 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
 
             mediaCardView.setOnClickListener {
                 BrowseMediaEvent(
-                    BrowseMediaMeta(
+                    MediaBrowserMeta(
                         data.id,
                         data.type!!,
                         data.title!!.title(context)!!,
@@ -117,7 +117,7 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                         ), holder.itemView.coverImageIv
                     ).postEvent
                 } else {
-                    (parent as View).makeSnakeBar(string(R.string.please_log_in))
+                    (parent as View).makeSnakeBar(R.string.please_log_in)
                 }
             }
 

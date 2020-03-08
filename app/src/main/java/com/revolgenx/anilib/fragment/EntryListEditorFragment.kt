@@ -29,6 +29,8 @@ import com.revolgenx.anilib.preference.userScoreFormat
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.util.COLLAPSED
+import com.revolgenx.anilib.util.EXPANDED
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.viewmodel.MediaEntryEditorViewModel
 import kotlinx.android.synthetic.main.error_layout.*
@@ -40,13 +42,12 @@ import kotlin.math.abs
 
 
 //todo:// check for manga
-class MediaEntryEditorFragment : BaseFragment() {
+class EntryListEditorFragment : BaseFragment() {
 
     companion object {
         const val LIST_EDITOR_MODEL = "list_editor_model"
         const val LIST_EDITOR_META_KEY = "list_editor_meta_key"
-        const val COLLAPSED = 0
-        const val EXPANDED = 1
+
     }
 
     private var state = COLLAPSED //collapsed
@@ -60,15 +61,10 @@ class MediaEntryEditorFragment : BaseFragment() {
     private var toggling = false
     private var apiModelEntry: EntryListEditorMediaModel? = null
     private var isFavourite = false
+
+
     private val surfaceColor by lazy {
         DynamicTheme.getInstance().get().surfaceColor
-    }
-    private val accentColor by lazy {
-        DynamicTheme.getInstance().get().accentColor
-    }
-
-    private val primaryTint by lazy {
-        DynamicTheme.getInstance().get().tintPrimaryColor
     }
 
     private val calendar by lazy {
@@ -247,10 +243,10 @@ class MediaEntryEditorFragment : BaseFragment() {
         listEditorBannerImage.setImageURI(mediaMeta.bannerImage)
         listDeleteButton.backgroundTintList =
             ColorStateList.valueOf(ContextCompat.getColor(context!!, R.color.red))
-        listFavCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
-        listDeleteCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
-        listSaveCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
-        listPrivateCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
+//        listFavCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
+//        listDeleteCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
+//        listSaveCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
+//        listPrivateCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
         listEditorScoreLayout.scoreFormatType = context!!.userScoreFormat()
 
         if (mediaMeta.type == MediaType.MANGA.ordinal) {
@@ -265,17 +261,27 @@ class MediaEntryEditorFragment : BaseFragment() {
 
         startDateDynamicEt.compoundDrawablesRelative[0].setTintList(
             ColorStateList.valueOf(
-                accentColor
+                DynamicTheme.getInstance().get().accentColor
+
             )
         )
         startDateDynamicEt.compoundDrawablesRelative[2].setTintList(
             ColorStateList.valueOf(
-                accentColor
+                DynamicTheme.getInstance().get().accentColor
+
             )
         )
 
-        endDateDynamicEt.compoundDrawablesRelative[0].setTintList(ColorStateList.valueOf(accentColor))
-        endDateDynamicEt.compoundDrawablesRelative[2].setTintList(ColorStateList.valueOf(accentColor))
+        endDateDynamicEt.compoundDrawablesRelative[0].setTintList(
+            ColorStateList.valueOf(
+                DynamicTheme.getInstance().get().accentColor
+            )
+        )
+        endDateDynamicEt.compoundDrawablesRelative[2].setTintList(
+            ColorStateList.valueOf(
+                DynamicTheme.getInstance().get().accentColor
+            )
+        )
 
         val spinnerItems = mutableListOf<DynamicSpinnerItem>()
         spinnerItems.add(
@@ -517,21 +523,19 @@ class MediaEntryEditorFragment : BaseFragment() {
             return
         }
 
-        if (fetched) {
-            inflater.inflate(R.menu.list_editor_menu, menu)
+        inflater.inflate(R.menu.list_editor_menu, menu)
 
-            if (modelEntry == null) {
-                menu.findItem(R.id.listDeleteMenu).isVisible = false
-                listDeleteCardView.visibility = View.GONE
-            } else {
-                listDeleteCardView.visibility = View.VISIBLE
-            }
+        if (modelEntry == null) {
+            menu.findItem(R.id.listDeleteMenu).isVisible = false
+            listDeleteCardView.visibility = View.GONE
+        } else {
+            listDeleteCardView.visibility = View.VISIBLE
+        }
 
-            if (isFavourite) {
-                val drawable =
-                    AppCompatDrawableManager.get().getDrawable(context!!, R.drawable.ic_favorite)
-                menu.findItem(R.id.listFavMenu).icon = drawable
-            }
+        if (isFavourite) {
+            val drawable =
+                AppCompatDrawableManager.get().getDrawable(context!!, R.drawable.ic_favorite)
+            menu.findItem(R.id.listFavMenu).icon = drawable
         }
     }
 

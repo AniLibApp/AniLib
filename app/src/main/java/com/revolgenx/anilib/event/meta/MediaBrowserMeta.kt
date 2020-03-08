@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class BrowseMediaMeta(
+data class MediaBrowserMeta(
     var mediaId: Int,
     var type: Int,
     var title:String,

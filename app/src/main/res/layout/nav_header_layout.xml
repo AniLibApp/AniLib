@@ -23,23 +23,16 @@
             android:layout_height="match_parent"
             android:background="@color/transparent_dark" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-            android:id="@+id/headerIconCardView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.DynamicApp.Card.Clickable"
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/navHeaderIcon"
+            android:layout_width="@dimen/ads_icon_header_drawer"
+            android:layout_height="@dimen/ads_icon_header_drawer"
+            android:scaleType="fitCenter"
+            app:roundAsCircle="false"
+            app:roundedCornerRadius="6dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_margin="20dp">
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/navHeaderIcon"
-                android:layout_width="@dimen/ads_icon_header_drawer"
-                android:layout_height="@dimen/ads_icon_header_drawer"
-                android:scaleType="fitCenter"
-                />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+            android:layout_margin="20dp"/>
 
         <TextView
             android:id="@+id/navHeaderTitle"
@@ -48,15 +41,15 @@
             android:layout_alignParentBottom="true"
             android:layout_marginTop="@dimen/ads_nav_header_spacing"
             android:layout_marginBottom="40dp"
-            android:layout_toEndOf="@+id/headerIconCardView"
+            android:layout_toEndOf="@+id/navHeaderIcon"
             android:fontFamily="@font/open_sans_regular"
             android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="16sp"
             android:shadowColor="@color/black"
-            android:shadowRadius="2"
             android:shadowDx="1"
-            android:shadowDy="1"/>
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
