@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/overviewNav"
-        android:icon="@drawable/ic_overview"
-        android:title="@string/overview" />
-    <item
-        android:id="@+id/watchNav"
-        android:icon="@drawable/ic_watch"
-        android:title="@string/watch" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/characterNav"
-        android:icon="@drawable/ic_character"
-        android:title="@string/character" />
+        android:id="@+id/addToListMenu"
+        android:icon="@drawable/ic_plus"
+        android:title="@string/open_list_editor"
+        app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/staffNav"
-        android:icon="@drawable/ic_staff"
-        android:title="@string/staff" />
-
-    <item
-        android:id="@+id/reviewNav"
+        android:id="@+id/writeReviewMenu"
         android:icon="@drawable/ic_review"
-        android:title="@string/review" />
-
+        android:title="@string/write_review"
+        app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/statsNav"
-        android:icon="@drawable/ic_chart"
-        android:title="@string/stats" />
+        android:id="@+id/toggleFavMenu"
+        android:icon="@drawable/ic_not_favourite"
+        android:title="@string/toggle_fav"
+        app:showAsAction="ifRoom" />
 
 </menu>

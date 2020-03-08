@@ -7,4 +7,5 @@ val viewModelModules = module {
     viewModel { SeasonViewModel(get()) }
     viewModel { MediaEntryEditorViewModel(get(),get(),get()) }
     viewModel { MainActivityViewModel(get(),get()) }
+    viewModel { MediaBrowserViewModel(get()) }
 }

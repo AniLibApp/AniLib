@@ -18,10 +18,15 @@ import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.type.MediaSeason
 import org.greenrobot.eventbus.EventBus
 
+
+const val COLLAPSED = 0
+const val EXPANDED = 1
+
+
 fun AppCompatActivity.makePagerAdapter(fragments: List<BaseFragment>) =
     object : FragmentPagerAdapter(
         this@makePagerAdapter.supportFragmentManager,
-        FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
     ) {
         override fun getItem(position: Int) = fragments[position]
         override fun getCount(): Int = fragments.size
@@ -64,8 +69,9 @@ fun TextView.naText(text: String?) {
 
 fun String?.naText() = this.takeIf { it != null && it.isNotEmpty() } ?: "NA"
 
-fun View.makeSnakeBar(msg: String) {
-    Snackbar.make(this, msg, Snackbar.LENGTH_SHORT).show()
+fun View.makeSnakeBar(@StringRes str: Int? = null, msg: String? = null) {
+    Snackbar.make(this, str?.let { context.getString(str) } ?: msg ?: "", Snackbar.LENGTH_SHORT)
+        .show()
 }
 
 fun Fragment.makeToast(@StringRes str: Int? = null, msg: String? = null, @DrawableRes icon: Int? = null) {
@@ -75,9 +81,9 @@ fun Fragment.makeToast(@StringRes str: Int? = null, msg: String? = null, @Drawab
 fun Context.makeToast(@StringRes str: Int? = null, msg: String? = null, @DrawableRes icon: Int? = null) {
     if (icon != null) {
         val drawable = ContextCompat.getDrawable(this, icon)
-        DynamicToast.make(this, str?.let { getString(it) }?:msg, drawable).show()
+        DynamicToast.make(this, str?.let { getString(it) } ?: msg, drawable).show()
     } else {
-        DynamicToast.make(this, str?.let { getString(it) }?:msg).show()
+        DynamicToast.make(this, str?.let { getString(it) } ?: msg).show()
     }
 }
 

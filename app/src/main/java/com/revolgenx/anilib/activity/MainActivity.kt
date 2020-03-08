@@ -23,7 +23,6 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
-import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
@@ -110,6 +109,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
                 listOf(
                     DiscoverFragment::class.java,
                     SeasonFragment::class.java,
+                    CollectionFragment::class.java,
                     DownloadFragment::class.java
                 )
             )
@@ -155,12 +155,11 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
             val userBanner = userBannerImage()!!
             val userName = userName()
 
-            headerView.headerIconCardView.corner = DynamicUnitUtils.convertDpToPixels(10f).toFloat()
             if (userAvatar.isEmpty()) {
                 headerView.navHeaderIcon.setImageDrawable(
                     AppCompatDrawableManager.get().getDrawable(
                         context,
-                        R.drawable.ic_launcher_foreground
+                        R.mipmap.ic_launcher
                     )
                 )
             } else {
@@ -338,9 +337,8 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
 
 
     /*Events*/
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onListEditEvent(event: ListEditorEvent) {
-
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             this,
             event.sharedElement,
@@ -349,9 +347,9 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
         ContainerActivity.openActivity(
             this,
             ParcelableFragment(
-                MediaEntryEditorFragment::class.java,
+                EntryListEditorFragment::class.java,
                 bundleOf(
-                    MediaEntryEditorFragment.LIST_EDITOR_META_KEY to event.meta
+                    EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
                 )
             )
             , options
@@ -360,9 +358,8 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onBrowseMediaEvent(event: BrowseMediaEvent) {
-
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             this,
             event.sharedElement,
@@ -370,7 +367,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
         )
 
         startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
-            this.putExtra(MediaBrowserActivity.MEDIA_BROWSER_META, event.browseMediaMeta)
+            this.putExtra(MediaBrowserActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
         }, options.toBundle())
     }
 
