@@ -79,6 +79,10 @@
     <string name="staff">Staff</string>
     <string name="review">Review</string>
     <string name="watch">Watch</string>
+    <string name="open_list_editor">Open list editor</string>
+    <string name="delete">Delete</string>
+    <string name="toggle_fav">Toggle Favourite</string>
+    <string name="write_review">Write review</string>
 
 
     <!-- TV("TV"),
