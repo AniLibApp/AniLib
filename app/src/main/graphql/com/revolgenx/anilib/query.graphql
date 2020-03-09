@@ -23,6 +23,141 @@ query MediaListEditorQuery($mediaId:Int,$userId:Int, $format:ScoreFormat){
     }
 }
 
+query MediaRecommendationQuery($mediaId:Int, $page:Int, $perPage:Int
+    , $sort:[RecommendationSort] ){
+    Media(id:$mediaId){
+        recommendations(page:$page, perPage:$perPage,sort:$sort){
+            nodes{
+                rating
+                userRating
+                mediaRecommendation{
+                    title{
+                        english
+                        romaji
+                        english
+                    }
+                    averageScore
+                }
+            }
+        }
+    }
+}
+
+query MediaWatchQuery($mediaId:Int){
+    Media(id:$mediaId){
+        streamingEpisodes{
+            title
+            thumbnail
+            url
+            site
+        }
+    }
+}
+
+query MediaCharacterQuery(
+    $page:Int,
+    $perPage:Int,
+    $mediaId:Int
+    , $language:StaffLanguage){
+    Media(id:$mediaId){
+        characters(page:$page, perPage:$perPage, sort:[ROLE,ID]){
+            edges{
+                id
+                role
+                node{
+                    name{
+                        full
+                    }
+                }
+                voiceActors(language:$language){
+                    id
+                    name{
+                        full
+                    }
+                }
+
+            }
+
+        }
+    }
+}
+
+query MediaStaffQuery($page:Int, $perPage:Int, $mediaId:Int){
+    Media(id:$mediaId){
+        staff(page:$page,perPage:$perPage){
+            edges{
+                id
+                role
+                node{
+                    id
+                    name{
+                        full
+                    }
+                }
+            }
+        }
+    }
+}
+
+query MediaReviewQuery($mediaId:Int, $page:Int, $perPage:Int){
+    Media(id:$mediaId){
+        reviews(page:$page,perPage:$perPage,sort:[RATING_DESC]){
+            edges{
+                node{
+                    id
+                    userId
+                    summary
+                    userRating
+                    rating
+                    ratingAmount
+                    user{
+                        id
+                        name
+                        avatar{
+                            large
+                            medium
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query MediaStatsQuery($mediaId:Int){
+    Media(id:$mediaId){
+        rankings{
+            id
+            rank
+            type
+            year
+            allTime
+            context
+            season
+        }
+
+        trends(page:1, perPage:7,sort:[DATE]){
+            nodes{
+                date
+                trending
+            }
+        }
+
+        stats{
+            statusDistribution{
+                amount
+                status
+            }
+        }
+        stats{
+            scoreDistribution{
+                score
+                amount
+            }
+        }
+    }
+}
+
 query BasicUserQuery($id:Int){
     User(id:$id){
         id
@@ -121,8 +256,6 @@ fragment mediaListContent on MediaList{
         day
     }
 }
-
-
 
 fragment narrowMediaContent on Media{
     id
