@@ -41,8 +41,12 @@ class SeasonSource(
         }
 
 
-        val query = seasonField.toQuery(key, pageSize)
-        val disposable = baseGraphRepository.request(query)
+        seasonField.also {
+            it.page = key
+            it.perPage = pageSize
+        }
+
+        val disposable = baseGraphRepository.request(seasonField.toQuery())
             .map {
                 it.data()?.Page()?.media()!!.map { media ->
                     media.fragments().narrowMediaContent().getCommonMedia()

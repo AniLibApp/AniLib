@@ -28,6 +28,8 @@ data class Resource<out T>(val status: Status, val data: T?, val message: String
     }
 }
 
+val ERROR = "ERROR"
+
 enum class Status {
     SUCCESS,
     ERROR,
