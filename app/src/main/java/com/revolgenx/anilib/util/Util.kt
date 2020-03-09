@@ -16,6 +16,9 @@ import com.pranavpandey.android.dynamic.toasts.DynamicToast
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.type.MediaSeason
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import org.greenrobot.eventbus.EventBus
 
 
@@ -57,6 +60,10 @@ fun <T> T.unRegisterForEvent() {
     if (bus.isRegistered(this)) {
         bus.unregister(this)
     }
+}
+
+suspend fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = coroutineScope {
+    map { async { f(it) } }.awaitAll()
 }
 
 

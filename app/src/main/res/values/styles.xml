@@ -10,6 +10,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="fontFamily">@font/open_sans_regular</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="BaseTheme.Dark" parent="Theme.DynamicApp">
@@ -19,7 +20,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="fontFamily">@font/open_sans_regular</item>
-
+        <item name="android:windowDisablePreview">true</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
 

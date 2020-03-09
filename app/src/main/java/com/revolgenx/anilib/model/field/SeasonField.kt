@@ -28,6 +28,9 @@ data class SeasonField(
         }
     }
 
+    var page = 0
+    var perPage = 10
+
 //    val sorted:String
 //        get() {
 //            return if (order == "ASC") sort else sort + "_" + order
@@ -45,7 +48,7 @@ data class SeasonField(
         }
     }
 
-    override fun toQuery(page: Int, perPage: Int): SeasonListQuery {
+    override fun toQuery(): SeasonListQuery {
         return SeasonListQuery.builder()
             .page(page)
             .perPage(perPage)
@@ -62,6 +65,7 @@ data class SeasonField(
             }
             .build()
     }
+
 //    fun update(context: Context) {
 //        setSeasonField(context, this)
 //    }

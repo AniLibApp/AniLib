@@ -25,6 +25,9 @@
             android:layout_height="40dp"
             android:button="@drawable/ic_dropped" />
 
+        <include
+            layout="@layout/recommendation_card_layout"/>
+
 
         <include layout="@layout/media_list_presenter_layout" />
 
