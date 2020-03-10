@@ -158,6 +158,78 @@ query MediaStatsQuery($mediaId:Int){
     }
 }
 
+
+query MediaOverViewQuery($mediaId:Int){
+    Media(id:$mediaId){
+        id
+        title {
+            ... mediaTitle
+        }
+        isAdult
+        format
+        type
+        genres
+        status
+        averageScore
+        meanScore
+        chapters
+        volumes
+        popularity
+        favourites
+        episodes
+        duration
+        season
+        seasonYear
+        description
+        chapters
+        volumes
+        source
+        hashtag
+        relations{
+            edges{
+                relationType(version:2)
+                node{
+                    id
+                    title{
+                        ... mediaTitle
+                    }
+                    format
+                    status
+                }
+            }
+        }
+        externalLinks{
+            id
+            url
+            site
+        }
+        tags{
+            name
+            isMediaSpoiler
+        }
+        startDate {
+            ... fuzzyDate
+        }
+        endDate{
+            ... fuzzyDate
+        }
+        trailer{
+            id
+            site
+            thumbnail
+        }
+        studios{
+            edges{
+                node{
+                    id
+                    name
+                    isAnimationStudio
+                }
+            }
+        }
+    }
+}
+
 query BasicUserQuery($id:Int){
     User(id:$id){
         id
@@ -274,6 +346,8 @@ fragment narrowMediaContent on Media{
     status
     averageScore
     episodes
+    chapters
+    volumes
     duration
     startDate {
         ... on FuzzyDate{
@@ -300,6 +374,20 @@ fragment narrowMediaContent on Media{
 
 }
 
+
+
+fragment fuzzyDate on FuzzyDate{
+    year
+    month
+    day
+}
+
+fragment mediaTitle on MediaTitle{
+    english
+    romaji
+    native
+    userPreferred
+}
 
 
 

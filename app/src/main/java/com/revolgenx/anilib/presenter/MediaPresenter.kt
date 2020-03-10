@@ -18,6 +18,7 @@ import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaStatus
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
@@ -45,8 +46,13 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
         holder.itemView.apply {
             mediaTitleTv.naText(data.title!!.title(context))
             coverImageIv.setImageURI(data.coverImage!!.image)
-            mediaEpisodeTv.text =
-                string(R.string.ep_s).format(data.episodes!!.naText(), data.duration!!.naText())
+            if (data.type == MediaType.ANIME.ordinal) {
+                mediaEpisodeTv.text =
+                    string(R.string.ep_s).format(data.episodes?.naText(), data.duration?.naText())
+            } else {
+                mediaEpisodeTv.text =
+                    string(R.string.chap_s).format(data.chapters?.naText(), data.volumes?.naText())
+            }
             mediaStartDateTv.naText(data.endDate?.date ?: data.startDate?.date)
             mediaGenreLayout.addGenre(
                 data.genres?.take(5)

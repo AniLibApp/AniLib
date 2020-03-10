@@ -16,8 +16,10 @@ fun NarrowMediaContent.getCommonMedia() =
         }
         it.format = format()!!.ordinal
         it.type = type()!!.ordinal
-        it.episodes = episodes()?.toString() ?: ""
-        it.duration = duration()?.toString() ?: ""
+        it.episodes = episodes()?.toString()
+        it.duration = duration()?.toString()
+        it.chapters = chapters()?.toString()
+        it.volumes = volumes()?.toString()
         it.status = status()!!.ordinal
         it.coverImage = CoverImageModel().also { image ->
             image.medium = coverImage()!!.medium()

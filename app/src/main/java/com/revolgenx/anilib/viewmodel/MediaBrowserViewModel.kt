@@ -27,6 +27,4 @@ class MediaBrowserViewModel(private val toggleService: ToggleService) :ViewModel
             compositeDisposable
         )
     }
-
-
 }
