@@ -15,6 +15,7 @@
     <string name="not_released">Not released</string>
 
     <string name="ep_s">Ep: %s · D: %s min</string>
+    <string name="chap_s">Chap: %s · Vol: %s</string>
 
     <!--Media format-->
     <string name="tv">Tv</string>
