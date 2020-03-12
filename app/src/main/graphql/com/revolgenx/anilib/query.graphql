@@ -86,7 +86,6 @@ query MediaStaffQuery($page:Int, $perPage:Int, $mediaId:Int){
     Media(id:$mediaId){
         staff(page:$page,perPage:$perPage){
             edges{
-                id
                 role
                 node{
                     id

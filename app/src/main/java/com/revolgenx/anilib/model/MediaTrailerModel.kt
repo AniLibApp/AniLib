@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.model
 
-enum class MediaTrailerModel {
-
+class MediaTrailerModel {
+    var id:String? = null
+    var site:String? = null
+    var thumbnail:String? = null
 }
