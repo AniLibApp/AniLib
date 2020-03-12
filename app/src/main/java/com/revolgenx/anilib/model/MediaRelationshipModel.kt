@@ -6,5 +6,5 @@ class MediaRelationshipModel : BaseMediaModel() {
     var relationshipType: Int? = null
     var title: TitleModel? = null
     var format: Int? = MediaFormat.`$UNKNOWN`?.ordinal
-    var state: Int? = null
+    var status: Int? = null
 }

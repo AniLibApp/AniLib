@@ -3,11 +3,9 @@ package com.revolgenx.anilib.model
 import android.os.Parcel
 import android.os.Parcelable
 
-class DateModel() :Parcelable {
-    var year: Int? = null
-    var month: Int? = null
-    var day: Int? = null
+class DateModel(var year: Int? = null, var month: Int? = null, var day: Int? = null) : Parcelable {
     var date: String = ""
+
 
     constructor(parcel: Parcel) : this() {
         year = parcel.readValue(Int::class.java.classLoader) as? Int
@@ -17,7 +15,8 @@ class DateModel() :Parcelable {
     }
 
     override fun toString(): String {
-        return (year?.let { "$it" } ?: "") + (month?.let { "-$it" } ?: "") + (day?.let { "-$it" } ?: "")
+        return (year?.let { "$it" } ?: "") + (month?.let { "-$it" } ?: "") + (day?.let { "-$it" }
+            ?: "")
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

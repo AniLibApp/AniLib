@@ -1,5 +1,9 @@
 package com.revolgenx.anilib.model
 
+import com.revolgenx.anilib.type.MediaFormat
+import com.revolgenx.anilib.type.MediaStatus
+import com.revolgenx.anilib.type.MediaType
+
 open class CommonMediaModel() : BaseMediaModel() {
     var title: TitleModel? = null
     var startDate: DateModel? = null
