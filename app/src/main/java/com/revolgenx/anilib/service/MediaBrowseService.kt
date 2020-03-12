@@ -2,7 +2,9 @@ package com.revolgenx.anilib.service
 
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.model.*
+import com.revolgenx.anilib.model.field.MediaOverviewField
 import com.revolgenx.anilib.model.field.overview.*
+import com.revolgenx.anilib.model.stats.MediaStatsModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.disposables.CompositeDisposable
@@ -14,7 +16,7 @@ typealias MutableStaffType = MutableLiveData<Resource<List<MediaStaffModel>>>
 typealias MutableReviewType = MutableLiveData<Resource<List<MediaReviewModel>>>
 typealias MutableStatsType = MutableLiveData<Resource<MediaStatsModel>>
 
-abstract class MediaBrowseService(graphRepository: BaseGraphRepository) {
+abstract class MediaBrowseService(protected val graphRepository: BaseGraphRepository) {
     val mediaOverviewLiveData by lazy {
         MutableOverviewType()
     }
@@ -35,7 +37,7 @@ abstract class MediaBrowseService(graphRepository: BaseGraphRepository) {
     }
 
     abstract fun getMediaOverview(
-        mediaId: Int,
+        field: MediaOverviewField,
         compositeDisposable: CompositeDisposable? = null
     ): MutableOverviewType
 
