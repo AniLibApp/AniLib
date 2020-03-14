@@ -1,14 +1,11 @@
-package com.revolgenx.anilib.model.field
+package com.revolgenx.anilib.field
 
 import android.content.Context
-import com.apollographql.apollo.api.Operation
-import com.apollographql.apollo.api.Query
 import com.revolgenx.anilib.SeasonListQuery
 import com.revolgenx.anilib.preference.getSeasonField
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaSeason
 import com.revolgenx.anilib.type.MediaStatus
-import com.revolgenx.anilib.type.MediaType
 
 
 data class SeasonField(
@@ -48,7 +45,7 @@ data class SeasonField(
         }
     }
 
-    override fun toQuery(): SeasonListQuery {
+    override fun toQueryOrMutation(): SeasonListQuery {
         return SeasonListQuery.builder()
             .page(page)
             .perPage(perPage)

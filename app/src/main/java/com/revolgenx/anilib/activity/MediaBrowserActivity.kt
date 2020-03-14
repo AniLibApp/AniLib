@@ -217,6 +217,7 @@ class MediaBrowserActivity : DynamicSystemActivity() {
 
 
         browseMediaViewPager.adapter = MediaBrowserAdapter(animeBrowserList)
+        browseMediaViewPager.offscreenPageLimit = 5
         smartTabLayout.setViewPager(browseMediaViewPager)
         browseMediaViewPager.setCurrentItem(0, false)
         browseMediaViewPager.post {
@@ -240,7 +241,6 @@ class MediaBrowserActivity : DynamicSystemActivity() {
         mediaFavButton.setOnClickListener {
             toggleFav()
         }
-
 
 
         /**problem with transition
@@ -351,6 +351,11 @@ class MediaBrowserActivity : DynamicSystemActivity() {
 
     private fun toggleFav() {
         if (toggling || !::mediaBrowserMeta.isInitialized) return
+
+        if (!loggedIn()) {
+            browserRootLayout.makeSnakeBar(R.string.please_log_in)
+            return
+        }
 
         viewModel.toggleMediaFavourite(ToggleFavouriteModel().also {
             when (mediaBrowserMeta.type) {

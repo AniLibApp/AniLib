@@ -28,13 +28,22 @@ query MediaRecommendationQuery($mediaId:Int, $page:Int, $perPage:Int
     Media(id:$mediaId){
         recommendations(page:$page, perPage:$perPage,sort:$sort){
             nodes{
+                id
                 rating
                 userRating
+                media{
+                    id
+                }
                 mediaRecommendation{
+                    id
                     title{
                         english
                         romaji
-                        english
+                        native
+                        userPreferred
+                    }
+                    coverImage{
+                        ... mediaCoverImage
                     }
                     averageScore
                 }
@@ -276,6 +285,34 @@ mutation SaveMediaListEntryMutation(
     }
 }
 
+
+mutation UpdateRecommendationMutation($mediaId:Int, $mediaRecommendationId:Int, $rating:RecommendationRating){
+    SaveRecommendation(mediaId:$mediaId, mediaRecommendationId:$mediaRecommendationId, rating:$rating){
+        id
+        userRating
+        rating
+    }
+}
+
+mutation SaveRecommendationMutation($mediaId:Int, $mediaRecommendationId:Int, $rating:RecommendationRating){
+    SaveRecommendation(mediaId:$mediaId, mediaRecommendationId:$mediaRecommendationId, rating:$rating){
+        id
+        rating
+        userRating
+        media{
+            id
+        }
+        mediaRecommendation{
+            title{
+                english
+                romaji
+                english
+            }
+            averageScore
+        }
+    }
+}
+
 mutation DeleteMediaListEntryMutation($listId:Int){
     DeleteMediaListEntry(id:$listId){
         deleted
@@ -388,6 +425,11 @@ fragment mediaTitle on MediaTitle{
     userPreferred
 }
 
+fragment mediaCoverImage on MediaCoverImage{
+    medium
+    large
+    extraLarge
+}
 
 
 

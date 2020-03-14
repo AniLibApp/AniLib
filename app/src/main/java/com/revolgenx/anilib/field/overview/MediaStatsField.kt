@@ -1,12 +1,12 @@
-package com.revolgenx.anilib.model.field.overview
+package com.revolgenx.anilib.field.overview
 
 import com.revolgenx.anilib.MediaStatsQuery
-import com.revolgenx.anilib.model.field.BaseField
+import com.revolgenx.anilib.field.BaseField
 
 class MediaStatsField :BaseField<MediaStatsQuery>{
 
     var mediaId = -1
-    override fun toQuery(): MediaStatsQuery {
+    override fun toQueryOrMutation(): MediaStatsQuery {
         return MediaStatsQuery.builder()
             .mediaId(mediaId)
             .build()

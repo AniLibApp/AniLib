@@ -1,15 +1,15 @@
-package com.revolgenx.anilib.model.field.overview
+package com.revolgenx.anilib.field.overview
 
 import com.revolgenx.anilib.MediaStaffQuery
-import com.revolgenx.anilib.model.field.BaseField
-import com.revolgenx.anilib.model.field.BaseField.Companion.PER_PAGE
+import com.revolgenx.anilib.field.BaseField
+import com.revolgenx.anilib.field.BaseField.Companion.PER_PAGE
 
 class MediaStaffField :BaseField<MediaStaffQuery>{
     var mediaId = -1
     var page = 0
     var perPage = PER_PAGE
 
-    override fun toQuery(): MediaStaffQuery {
+    override fun toQueryOrMutation(): MediaStaffQuery {
         return MediaStaffQuery.builder()
             .page(page)
             .perPage(perPage)

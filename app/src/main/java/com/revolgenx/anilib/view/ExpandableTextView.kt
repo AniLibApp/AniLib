@@ -1,12 +1,15 @@
 package com.revolgenx.anilib.view
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.revolgenx.anilib.R
+import timber.log.Timber
 
 class ExpandableTextView(context: Context, attributeSet: AttributeSet?, style: Int) :
     DynamicTextView(context, attributeSet, style), View.OnClickListener {
@@ -18,7 +21,9 @@ class ExpandableTextView(context: Context, attributeSet: AttributeSet?, style: I
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
-
+        setOnClickListener(this)
+        color = DynamicTheme.getInstance().get().tintSurfaceColor
+        typeface = ResourcesCompat.getFont(context, R.font.open_sans_light)
     }
 
     override fun onTextChanged(
@@ -35,7 +40,7 @@ class ExpandableTextView(context: Context, attributeSet: AttributeSet?, style: I
                     null,
                     null,
                     ContextCompat.getDrawable(context, R.drawable.ads_ic_more_horizontal)?.apply {
-                        this.setTint(DynamicTheme.getInstance().get().tintPrimaryColor)
+                        this.setTint(DynamicTheme.getInstance().get().tintSurfaceColor)
                     })
             else
                 setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)

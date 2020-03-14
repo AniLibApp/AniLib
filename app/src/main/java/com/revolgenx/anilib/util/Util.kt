@@ -1,10 +1,8 @@
 package com.revolgenx.anilib.util
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -48,6 +46,10 @@ fun getSeasonFromMonth(monthOfYear: Int): MediaSeason {
     }
 }
 
+fun getAverageScore(avg: Int?) = avg?.div(10f)?.let {
+    String.format("%.1f", it)
+} ?: "?"
+
 
 fun <T> T.registerForEvent() {
     val bus = EventBus.getDefault()
@@ -71,10 +73,10 @@ suspend fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = coroutineSco
 fun dp(dp: Float) = DynamicUnitUtils.convertDpToPixels(dp)
 
 fun TextView.naText(text: String?) {
-    this.text = text?.takeIf { it.isNotEmpty() } ?: "NA"
+    this.text = text?.takeIf { it.isNotEmpty() } ?: "?"
 }
 
-fun String?.naText() = this.takeIf { it != null && it.isNotEmpty() } ?: "NA"
+fun naText(na: String?) = na.takeIf { it != null && it.isNotEmpty() } ?: "?"
 
 fun View.makeSnakeBar(@StringRes str: Int? = null, msg: String? = null) {
     Snackbar.make(this, str?.let { context.getString(str) } ?: msg ?: "", Snackbar.LENGTH_SHORT)

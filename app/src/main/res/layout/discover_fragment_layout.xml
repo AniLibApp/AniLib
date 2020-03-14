@@ -9,6 +9,29 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <com.revolgenx.anilib.view.ExpandableTextView
+            android:id="@+id/mediaDescriptionTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string "
+            />
+
+        <com.revolgenx.anilib.view.TitleTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            app:titleName="@string/type"/>
+
+        <com.revolgenx.anilib.view.DynamicLoadingImageView
+            android:id="@+id/loading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_favorite"/>
+
         <com.revolgenx.anilib.view.PlusMinusEditTextLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"/>
@@ -26,16 +49,8 @@
             android:button="@drawable/ic_dropped" />
 
         <include
-            layout="@layout/recommendation_card_layout"/>
+            layout="@layout/overview_recommendation_card_layout"/>
 
-
-        <include layout="@layout/media_list_presenter_layout" />
-
-        <include layout="@layout/media_list_presenter_layout" />
-
-        <include layout="@layout/media_list_presenter_layout" />
-
-        <include layout="@layout/media_list_presenter_layout" />
 
         <include layout="@layout/media_list_presenter_layout" />
 

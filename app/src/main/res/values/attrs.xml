@@ -5,4 +5,10 @@
     <item name="decrementButtonId" type="id"/>
 
     <item name="mediaBrowserBottomNavId" type="id"/>
+    <item name="customTextViewDescriptionId" type="id"/>
+    <item name="customTextViewTitleId" type="id"/>
+
+    <declare-styleable name="TitleTextView">
+        <attr name="titleName" format="string"/>
+    </declare-styleable>
 </resources>

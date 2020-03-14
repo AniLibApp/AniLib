@@ -5,5 +5,7 @@ import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
 
 class MediaCharacterFragment:BaseFragment() {
+
+
 }
 

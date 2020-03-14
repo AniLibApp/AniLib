@@ -1,7 +1,9 @@
-package com.revolgenx.anilib.model.field
+package com.revolgenx.anilib.field
 
 interface BaseField<T> {
-    fun toQuery():T
+
+
+    fun toQueryOrMutation():T
 
     companion object{
         const val  MEDIA_ID_KEY = "media_id_key"

@@ -54,7 +54,6 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:padding="10dp"
-                android:text="ssssssssssssssssssssssssssssssssssssssssssssssssssss"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -78,21 +77,21 @@
             android:layout_marginStart="10dp"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                 android:id="@+id/mediaRecommendationLikeTv"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:background="?selectableItemBackground"
                 android:padding="6dp"
-                app:srcCompat="@drawable/ic_thumb_up" />
+                android:src="@drawable/ic_thumb_up"/>
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                 android:id="@+id/mediaRecommendationDislikeTv"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:background="?selectableItemBackground"
                 android:padding="6dp"
-                app:srcCompat="@drawable/ic_thumb_down" />
+                android:src="@drawable/ic_thumb_down" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/mediaRecommendationRating"
