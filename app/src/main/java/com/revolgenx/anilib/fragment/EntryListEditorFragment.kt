@@ -1,23 +1,18 @@
 package com.revolgenx.anilib.fragment
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
-import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.base.BaseFragment
@@ -26,7 +21,6 @@ import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.model.ToggleFavouriteModel
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.preference.userScoreFormat
-import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.COLLAPSED
@@ -36,6 +30,7 @@ import com.revolgenx.anilib.viewmodel.MediaEntryEditorViewModel
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.list_editor_fragment_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
+import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.math.abs
@@ -71,8 +66,6 @@ class EntryListEditorFragment : BaseFragment() {
         Calendar.getInstance()
     }
 
-
-    private var circularProgressDrawable: CircularProgressDrawable? = null
 
     private val offSetChangeListener by lazy {
         AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -111,13 +104,10 @@ class EntryListEditorFragment : BaseFragment() {
         showMetaViews()
         initListener()
 
-        circularProgressDrawable = CircularProgressDrawable(context!!)
-        circularProgressDrawable!!.start()
-
         viewModel.queryMediaListEntryLiveData.observe(viewLifecycleOwner, Observer { resource ->
             when (resource.status) {
                 SUCCESS -> {
-                    listResourceEditorContainer.visibility = View.GONE
+                    resourceStatusContainer.visibility = View.GONE
                     listEditorContainer.visibility = View.VISIBLE
                     progressLayout.visibility = View.VISIBLE
                     errorLayout.visibility = View.GONE
@@ -134,14 +124,14 @@ class EntryListEditorFragment : BaseFragment() {
                     invalidateOptionMenu()
                 }
                 ERROR -> {
-                    listResourceEditorContainer.visibility = View.VISIBLE
+                    resourceStatusContainer.visibility = View.VISIBLE
                     listEditorContainer.visibility = View.GONE
                     progressLayout.visibility = View.GONE
                     errorLayout.visibility = View.VISIBLE
                     fetched = false
                 }
                 LOADING -> {
-                    listResourceEditorContainer.visibility = View.VISIBLE
+                    resourceStatusContainer.visibility = View.VISIBLE
                     listEditorContainer.visibility = View.GONE
                     progressLayout.visibility = View.VISIBLE
                     errorLayout.visibility = View.GONE
@@ -178,7 +168,7 @@ class EntryListEditorFragment : BaseFragment() {
                     false
                 }
                 LOADING -> {
-                    listFavButton.setImageDrawable(circularProgressDrawable)
+                    listFavButton.showLoading(true)
                     true
                 }
             }
@@ -192,11 +182,11 @@ class EntryListEditorFragment : BaseFragment() {
                 }
                 ERROR -> {
                     makeToast(R.string.failed_to_save, icon = R.drawable.ic_error)
-                    listSaveButton.setImageResource(R.drawable.ic_save)
+                    listSaveButton.showLoading(false)
                     false
                 }
                 LOADING -> {
-                    listSaveButton.setImageDrawable(circularProgressDrawable)
+                    listSaveButton.showLoading(true)
                     true
                 }
             }
@@ -210,11 +200,11 @@ class EntryListEditorFragment : BaseFragment() {
                 }
                 ERROR -> {
                     makeToast(R.string.failed_to_delete, icon = R.drawable.ic_error)
-                    listDeleteButton.setImageResource(R.drawable.ic_delete)
+                    listDeleteButton.showLoading(false)
                     false
                 }
                 LOADING -> {
-                    listDeleteButton.setImageDrawable(circularProgressDrawable)
+                    listDeleteButton.showLoading(true)
                     true
                 }
             }
@@ -226,7 +216,7 @@ class EntryListEditorFragment : BaseFragment() {
 
     private fun createListEditorMediaModel(): EntryListEditorMediaModel {
         return EntryListEditorMediaModel().also {
-            it.id = mediaMeta.id
+            it.mediaId = mediaMeta.id
             it.type = mediaMeta.type
             it.userId = context!!.userId()
         }
@@ -503,7 +493,6 @@ class EntryListEditorFragment : BaseFragment() {
     }
 
 
-    @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (state == EXPANDED) {
             if (modelEntry == null) {
@@ -513,12 +502,7 @@ class EntryListEditorFragment : BaseFragment() {
             }
 
             if (isFavourite) {
-                listFavButton.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context!!,
-                        R.drawable.ic_favorite
-                    )
-                )
+                listFavButton.setImageResource(R.drawable.ic_favorite)
             }
             return
         }
@@ -533,8 +517,7 @@ class EntryListEditorFragment : BaseFragment() {
         }
 
         if (isFavourite) {
-            val drawable =
-                AppCompatDrawableManager.get().getDrawable(context!!, R.drawable.ic_favorite)
+            val drawable = ContextCompat.getDrawable(context!!, R.drawable.ic_favorite)
             menu.findItem(R.id.listFavMenu).icon = drawable
         }
     }
@@ -579,7 +562,6 @@ class EntryListEditorFragment : BaseFragment() {
 
     override fun onDestroy() {
         appbarLayout?.removeOnOffsetChangedListener(offSetChangeListener)
-        circularProgressDrawable?.stop()
         super.onDestroy()
     }
 }

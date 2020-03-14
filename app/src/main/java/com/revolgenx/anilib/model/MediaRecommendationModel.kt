@@ -2,9 +2,12 @@ package com.revolgenx.anilib.model
 
 import com.revolgenx.anilib.type.RecommendationRating
 
-class MediaRecommendationModel :BaseMediaModel(){
-    var rating:Int = 0
-    var userRating:Int = RecommendationRating.NO_RATING.ordinal
-    var title:TitleModel = TitleModel()
-    var averageScore:Double = 0.0
+open class MediaRecommendationModel : BaseMediaModel() {
+    var recommendationId: Int? = null
+    var mediaRecommendationId: Int? = null
+    var rating: Int? = null
+    var userRating: Int? = null
+    var title: TitleModel? = null
+    var averageScore: Int? = null
+    var coverImage: CoverImageModel? = null
 }

@@ -1,8 +1,8 @@
 package com.revolgenx.anilib.service
 
 import com.revolgenx.anilib.model.*
-import com.revolgenx.anilib.model.field.MediaOverviewField
-import com.revolgenx.anilib.model.field.overview.*
+import com.revolgenx.anilib.field.MediaOverviewField
+import com.revolgenx.anilib.field.overview.*
 import com.revolgenx.anilib.model.stats.*
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.converter.toMediaOverviewModel
@@ -22,10 +22,11 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
         field: MediaOverviewField,
         compositeDisposable: CompositeDisposable?
     ): MutableOverviewType {
-        val disposable = graphRepository.request(field.toQuery())
+        val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 response.data()?.Media()!!.toMediaOverviewModel()
-            }.subscribeOn(AndroidSchedulers.mainThread())
+            }
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 mediaOverviewLiveData.value = Resource.success(it)
             }, {
@@ -41,11 +42,11 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
         field: MediaWatchField,
         compositeDisposable: CompositeDisposable?
     ): MutableWatchType {
-        val disposable = graphRepository.request(field.toQuery())
+        val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 response.data()?.Media()!!.toModel()
             }
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 mediaWatchLiveData.value = Resource.success(it)
             }, {
@@ -62,12 +63,12 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
         field: MediaCharacterField,
         compositeDisposable: CompositeDisposable?
     ): MutableCharacterType {
-        val disposable = graphRepository.request(field.toQuery())
+        val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 runBlocking {
                     response.data()?.Media()?.characters()?.edges()?.pmap {
                         MediaCharacterModel().also { charac ->
-                            charac.id = it.id() ?: -1
+                            charac.mediaId = it.id() ?: -1
                             charac.role = it.role()?.ordinal
                             it.node()?.let { node ->
                                 charac.name = node.name()?.full()
@@ -83,7 +84,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                 }
 
             }
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 mediaCharacterLiveData.value = Resource.success(it)
             }, {
@@ -99,14 +100,14 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
         field: MediaStaffField,
         compositeDisposable: CompositeDisposable?
     ): MutableStaffType {
-        val disposable = graphRepository.request(field.toQuery())
+        val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 runBlocking {
                     it.data()?.Media()?.staff()?.edges()?.pmap { s ->
                         MediaStaffModel().also { model ->
                             model.role = s.role()
                             s.node()?.let { staff ->
-                                model.id = staff.id()
+                                model.mediaId = staff.id()
                                 model.name = staff.name()?.full()
                             }
                         }
@@ -129,13 +130,13 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
         field: MediaReviewField,
         compositeDisposable: CompositeDisposable?
     ): MutableReviewType {
-        val disposable = graphRepository.request(field.toQuery())
+        val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 runBlocking {
                     response.data()?.Media()?.reviews()?.edges()?.pmap { edge ->
                         MediaReviewModel().also { model ->
                             edge.node()?.let { node ->
-                                model.id = node.id()
+                                model.mediaId = node.id()
                                 model.rating = node.rating()
                                 model.ratingAmount = node.ratingAmount()
                                 model.summary = node.summary()
@@ -156,7 +157,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                     }
                 }
             }
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 mediaReviewLiveData.value = Resource.success(it)
             }, {
@@ -172,7 +173,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
         field: MediaStatsField,
         compositeDisposable: CompositeDisposable?
     ): MutableStatsType {
-        val disposable = graphRepository.request(field.toQuery())
+        val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 response.data()?.Media()?.let { media ->
                     MediaStatsModel().also { model ->

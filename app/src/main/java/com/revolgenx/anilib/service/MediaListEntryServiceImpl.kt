@@ -69,7 +69,7 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
                 model.listId.takeIf { it != -1 }?.let {
                     listId(it)
                 }
-                mediaId(model.id)
+                mediaId(model.mediaId)
 
                 if (model.type == MediaType.MANGA.ordinal) {
                     progressVolumes(model.progressVolumes)

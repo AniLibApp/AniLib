@@ -19,12 +19,13 @@ import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.util.getAverageScore
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
 import kotlinx.android.synthetic.main.media_list_presenter_layout.view.*
 
-class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
+class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
 
     override val elementTypes: Collection<Int>
         get() = listOf(0)
@@ -43,15 +44,16 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
     override fun onBind(page: Page, holder: Holder, element: Element<CommonMediaModel>) {
         super.onBind(page, holder, element)
         val data = element.data!!
+
         holder.itemView.apply {
             mediaTitleTv.naText(data.title!!.title(context))
             coverImageIv.setImageURI(data.coverImage!!.image)
             if (data.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeTv.text =
-                    string(R.string.ep_s).format(data.episodes?.naText(), data.duration?.naText())
+                    string(R.string.ep_s).format(naText(data.episodes), naText(data.duration))
             } else {
                 mediaEpisodeTv.text =
-                    string(R.string.chap_s).format(data.chapters?.naText(), data.volumes?.naText())
+                    string(R.string.chap_s).format(naText(data.chapters), naText(data.volumes))
             }
             mediaStartDateTv.naText(data.endDate?.date ?: data.startDate?.date)
             mediaGenreLayout.addGenre(
@@ -60,10 +62,7 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                 BrowseGenreEvent(it).postEvent
             }
 
-            mediaRatingTv.text = data.averageScore?.div(10f)?.let {
-                String.format("%.1f", it)
-            } ?: "?"
-
+            mediaRatingTv.text = getAverageScore(data.averageScore)
             mediaFormatTv.text = when (data.format) {
                 MediaFormat.TV.ordinal -> string(R.string.tv)
                 MediaFormat.TV_SHORT.ordinal -> string(R.string.tv_short)
@@ -97,11 +96,10 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                 }
             }
 
-
             mediaCardView.setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(
-                        data.id,
+                        data.mediaId,
                         data.type!!,
                         data.title!!.title(context)!!,
                         data.coverImage!!.image,
@@ -110,12 +108,11 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                 ).postEvent
             }
 
-
             bookmarkIv.setOnClickListener {
                 if (context.loggedIn()) {
                     ListEditorEvent(
                         ListEditorMeta(
-                            data.id,
+                            data.mediaId,
                             data.type!!,
                             data.title!!.title(context)!!,
                             data.coverImage!!.image,
@@ -126,7 +123,6 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                     (parent as View).makeSnakeBar(R.string.please_log_in)
                 }
             }
-
         }
     }
 

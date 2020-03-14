@@ -1,7 +1,7 @@
-package com.revolgenx.anilib.model.field.overview
+package com.revolgenx.anilib.field.overview
 
 import com.revolgenx.anilib.MediaRecommendationQuery
-import com.revolgenx.anilib.model.field.BaseField
+import com.revolgenx.anilib.field.BaseField
 import com.revolgenx.anilib.type.RecommendationSort
 
 class MediaRecommendationField :
@@ -11,7 +11,7 @@ class MediaRecommendationField :
     var page: Int = 0
     var perPage = 10
 
-    override fun toQuery(): MediaRecommendationQuery {
+    override fun toQueryOrMutation(): MediaRecommendationQuery {
         return MediaRecommendationQuery.builder()
             .page(page)
             .perPage(perPage)

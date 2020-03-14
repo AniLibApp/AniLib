@@ -29,6 +29,35 @@
     <string name="novel">Novel</string>
     <string name="one_shot">One Shot</string>
     <string name="unknown">Unknown</string>
+
+
+    <string-array name="media_format">
+        <item>Tv</item>
+        <item>Tv Short</item>
+        <item>Movie</item>
+        <item>Special</item>
+        <item>Ova</item>
+        <item>Ona</item>
+        <item>Music</item>
+        <item>Manga</item>
+        <item>Novel</item>
+        <item>One Shot</item>
+        <item>Unknown</item>
+    </string-array>
+
+    <string-array name="media_source">
+        <item>Original</item>
+        <item>Manga</item>
+        <item>Light Novel</item>
+        <item>Visual Novel</item>
+        <item>Video Game</item>
+        <item>Other</item>
+        <item>Novel</item>
+        <item>Doujinshi</item>
+        <item>Anime</item>
+        <item>Unknown</item>
+    </string-array>
+
     <string name="please_log_in">Please log in.</string>
     <string name="home">Home</string>
     <string name="settings">Settings</string>
@@ -84,6 +113,16 @@
     <string name="delete">Delete</string>
     <string name="toggle_fav">Toggle Favourite</string>
     <string name="write_review">Write review</string>
+    <string name="operation_failed">Operation failed.</string>
+    <string name="type">Type</string>
+    <string name="source">Source</string>
+    <string name="episodes">Episodes</string>
+    <string name="duration">Duration</string>
+    <string name="format">Format</string>
+    <string name="min_s">%s min</string>
+    <string name="chapters">Chapters</string>
+    <string name="volumes">Volume</string>
+    <string name="start_s_end_s">Start: %s &#160; · &#160; End: %s</string>
 
 
     <!-- TV("TV"),

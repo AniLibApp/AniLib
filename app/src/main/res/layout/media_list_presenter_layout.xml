@@ -77,9 +77,10 @@
             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                 android:id="@+id/bookmarkIv"
                 style="@style/Widget.DynamicApp.Image"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
+                android:background="?selectableItemBackground"
                 android:padding="10dp"
                 app:ads_colorType="tint_primary"
                 app:srcCompat="@drawable/ic_bookmark" />

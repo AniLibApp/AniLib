@@ -2,17 +2,16 @@ package com.revolgenx.anilib.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
 
 open class BaseMediaModel() :Parcelable{
-    var id:Int = -1
+    var mediaId:Int = -1
 
     constructor(parcel: Parcel) : this() {
-        id = parcel.readInt()
+        mediaId = parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
+        parcel.writeInt(mediaId)
     }
 
     override fun describeContents(): Int {

@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 
 fun NarrowMediaContent.getCommonMedia() =
     CommonMediaModel().also {
-        it.id = id()
+        it.mediaId = id()
         it.title = TitleModel().also { title ->
             title.english = title()!!.english() ?: title()!!.romaji()
             title.romaji = title()!!.romaji()
@@ -64,7 +64,7 @@ fun BasicUserQuery.User.toBasicUserModel() = BasicUserModel().also {
 
 
 fun MediaListContent.toListEditorMediaModel() = EntryListEditorMediaModel().also {
-    it.id = mediaId()
+    it.mediaId = mediaId()
     it.userId = userId()
     it.listId = id()
     it.status = status()!!.ordinal
@@ -94,7 +94,7 @@ fun MediaListContent.toListEditorMediaModel() = EntryListEditorMediaModel().also
 fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also {
     runBlocking {
 
-        it.id = id()
+        it.mediaId = id()
         it.title = title()?.fragments()?.mediaTitle()?.let {
             TitleModel().also { title ->
                 title.english = it.english() ?: it.romaji()
@@ -130,7 +130,7 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
             MediaRelationshipModel().also { rel ->
                 rel.relationshipType = it.relationType()?.ordinal
                 it.node()?.let { node ->
-                    rel.id = node.id()
+                    rel.mediaId = node.id()
                     rel.title = node.title()?.fragments()?.mediaTitle()?.let {
                         TitleModel().also { titleModel ->
                             titleModel.english = it.english()
