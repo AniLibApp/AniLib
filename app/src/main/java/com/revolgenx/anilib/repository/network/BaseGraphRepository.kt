@@ -4,7 +4,6 @@ import com.apollographql.apollo.api.Mutation
 import com.apollographql.apollo.api.Operation
 import com.apollographql.apollo.api.Query
 import com.apollographql.apollo.api.Response
-import com.revolgenx.anilib.model.field.BaseField
 import io.reactivex.Observable
 
 interface BaseGraphRepository {

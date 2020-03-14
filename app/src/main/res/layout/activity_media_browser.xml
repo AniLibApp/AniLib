@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/smartTabLayout">
 
-
         <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
             android:id="@+id/appbarLayout"
             android:layout_width="match_parent"
@@ -21,7 +20,7 @@
                 android:id="@+id/mediaBrowserCollapsingToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:collapsedTitleTextAppearance="@style/TextAppearance.DynamicApp.Toolbar"
+                app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
                 app:expandedTitleMarginStart="132dp"
                 app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
                 app:layout_scrollFlags="scroll|snap|enterAlways|enterAlwaysCollapsed"

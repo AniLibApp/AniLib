@@ -1,14 +1,12 @@
 package com.revolgenx.anilib.preference
 
 import android.content.Context
-import com.revolgenx.anilib.model.field.SeasonField
+import com.revolgenx.anilib.field.SeasonField
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.type.MediaStatus
-import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.getSeasonFromMonth
 import org.threeten.bp.LocalDateTime
-import java.util.*
 
 
 const val SEASON_FORMAT_KEY = "SEASON_FORMAT_KEY"

@@ -1,34 +1,24 @@
 package com.revolgenx.anilib.source
 
-import android.os.Handler
-import android.os.Looper
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.extensions.MainSource
-import com.revolgenx.anilib.SeasonListQuery
 import com.revolgenx.anilib.model.CommonMediaModel
-import com.revolgenx.anilib.model.field.SeasonField
+import com.revolgenx.anilib.field.SeasonField
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.converter.getCommonMedia
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import timber.log.Timber
 
 class SeasonSource(
     private val pageSize: Int = 10,
     private val baseGraphRepository: BaseGraphRepository,
-    private val seasonField: SeasonField
+    private val seasonField: SeasonField,
+    private val compositeDisposable: CompositeDisposable? = null
 ) : MainSource<CommonMediaModel>() {
 
-    private val compositeDisposable by lazy {
-        CompositeDisposable()
-    }
-
     override fun areItemsTheSame(first: CommonMediaModel, second: CommonMediaModel): Boolean =
-        first.id == second.id
+        first.mediaId == second.mediaId
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {
         super.onPageOpened(page, dependencies)
@@ -46,7 +36,7 @@ class SeasonSource(
             it.perPage = pageSize
         }
 
-        val disposable = baseGraphRepository.request(seasonField.toQuery())
+        val disposable = baseGraphRepository.request(seasonField.toQueryOrMutation())
             .map {
                 it.data()?.Page()?.media()!!.map { media ->
                     media.fragments().narrowMediaContent().getCommonMedia()
@@ -59,7 +49,7 @@ class SeasonSource(
                 postResult(page, Exception(it))
             })
 
-        compositeDisposable.add(disposable)
+        compositeDisposable?.add(disposable)
     }
 
 }

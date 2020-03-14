@@ -5,6 +5,7 @@ import com.revolgenx.anilib.IsFavouriteQuery
 import com.revolgenx.anilib.ToggleFavouriteMutation
 import com.revolgenx.anilib.model.ToggleFavouriteModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -33,7 +34,7 @@ class ToggleServiceImpl(graphRepository: BaseGraphRepository) :
                 toggleFavMutableLiveData.value = Resource.success(true)
             }, {
                 Timber.e(it)
-                toggleFavMutableLiveData.value = Resource.error(it.message ?: "Error", null)
+                toggleFavMutableLiveData.value = Resource.error(it.message ?: ERROR, null)
             })
         compositeDisposable?.add(disposable)
         return toggleFavMutableLiveData
@@ -50,7 +51,7 @@ class ToggleServiceImpl(graphRepository: BaseGraphRepository) :
                     isFavouriteLiveData.value = Resource.success(it.data()?.Media()!!.isFavourite)
                 }, {
                     Timber.e(it)
-                    isFavouriteLiveData.value = Resource.error(it.message ?: "Error", null)
+                    isFavouriteLiveData.value = Resource.error(it.message ?: ERROR, null)
                 })
 
         compositeDisposable?.add(disposable)

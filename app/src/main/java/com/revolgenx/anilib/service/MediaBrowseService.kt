@@ -2,8 +2,8 @@ package com.revolgenx.anilib.service
 
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.model.*
-import com.revolgenx.anilib.model.field.MediaOverviewField
-import com.revolgenx.anilib.model.field.overview.*
+import com.revolgenx.anilib.field.MediaOverviewField
+import com.revolgenx.anilib.field.overview.*
 import com.revolgenx.anilib.model.stats.MediaStatsModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.util.Resource

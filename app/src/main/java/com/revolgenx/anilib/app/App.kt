@@ -12,10 +12,12 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.Constants
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.repository.networkModules
 import com.revolgenx.anilib.repository.repositoryModules
 import com.revolgenx.anilib.service.serviceModule
 import com.revolgenx.anilib.viewmodel.viewModelModules
+import io.noties.markwon.Markwon
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -33,6 +35,7 @@ class App : DynamicApplication() {
         AndroidThreeTen.init(this)
         Fresco.initialize(this)
         Timber.plant(Timber.DebugTree())
+        MarkwonImpl.createInstance(this)
         startKoin {
             androidContext(this@App)
 

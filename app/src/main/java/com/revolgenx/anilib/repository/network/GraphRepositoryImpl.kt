@@ -6,7 +6,6 @@ import com.apollographql.apollo.api.Operation
 import com.apollographql.apollo.api.Query
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.Rx2Apollo
-import com.revolgenx.anilib.model.field.BaseField
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
