@@ -208,6 +208,8 @@ query MediaOverViewQuery($mediaId:Int){
                     coverImage{
                         ... mediaCoverImage
                     }
+                    bannerImage
+                    type
                     seasonYear
                     format
                     status
