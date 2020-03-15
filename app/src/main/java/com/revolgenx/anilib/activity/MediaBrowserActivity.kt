@@ -31,7 +31,6 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.BrowseMediaEvent
-import com.revolgenx.anilib.event.BrowseRecommendationEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
@@ -423,7 +422,7 @@ class MediaBrowserActivity : DynamicSystemActivity() {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBrowseMediaEvent(event: BrowseRecommendationEvent) {
+    fun onBrowseMediaEvent(event: BrowseMediaEvent) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             this,
             event.sharedElement,
@@ -434,6 +433,7 @@ class MediaBrowserActivity : DynamicSystemActivity() {
             this.putExtra(MEDIA_BROWSER_META, event.mediaBrowserMeta)
         }, options.toBundle())
     }
+
 
 
     inner class MediaBrowserAdapter(private val fragmentList: List<BaseFragment>) :

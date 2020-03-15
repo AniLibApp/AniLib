@@ -14,7 +14,7 @@ import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
-import com.revolgenx.anilib.event.BrowseRecommendationEvent
+import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.UpdateRecommendationField
 import com.revolgenx.anilib.model.MediaRecommendationModel
@@ -134,7 +134,7 @@ class BrowserRecommendationPresenter(
             mediaRecommendationDislikeTv.setOnClickListener(null)
 
             this.setOnClickListener {
-                BrowseRecommendationEvent(
+                BrowseMediaEvent(
                     MediaBrowserMeta(
                         data.mediaRecommendationId!!,
                         data.type!!,

@@ -94,11 +94,15 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
         bottomNav.textColor = DynamicTheme.getInstance().get().accentColor
     }
 
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        registerForEvent()
         drawerLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
         bottomNav.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
         statusBarColor = statusBarColor
@@ -379,9 +383,13 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
             super.onBackPressed()
     }
 
+    override fun onStop() {
+        unRegisterForEvent()
+        super.onStop()
+    }
+
 
     override fun onDestroy() {
-        unRegisterForEvent()
         job.cancel()
         super.onDestroy()
     }

@@ -12,6 +12,8 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.MediaRelationshipModel
 import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.util.getAverageScore
@@ -73,7 +75,15 @@ class BrowserRelationshipPresenter(context: Context) : Presenter<MediaRelationsh
             }
 
             setOnClickListener {
-
+                BrowseMediaEvent(
+                    MediaBrowserMeta(
+                        item.mediaId,
+                        item.type!!,
+                        item.title!!.romaji!!,
+                        item.coverImageModel!!.image,
+                        item.bannerImage
+                    ), relationshipCoverImage
+                ).postEvent
             }
 
             statusDivider.setBackgroundColor(statusColor)
