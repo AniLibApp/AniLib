@@ -58,6 +58,30 @@
         <item>Unknown</item>
     </string-array>
 
+    <string-array name="media_relation">
+        <item>Adaptation</item>
+        <item>Prequel</item>
+        <item>Sequel</item>
+        <item>Parent</item>
+        <item>Side story</item>
+        <item>Character</item>
+        <item>Summary</item>
+        <item>Alternative</item>
+        <item>Spin off</item>
+        <item>Other</item>
+        <item>Source</item>
+        <item>Compilation</item>
+        <item>Contains</item>
+    </string-array>
+
+
+    <string-array name="media_status">
+        <item>Finished</item>
+        <item>Releasing</item>
+        <item>Not yet released</item>
+        <item>Cancelled</item>
+    </string-array>
+
     <string name="please_log_in">Please log in.</string>
     <string name="home">Home</string>
     <string name="settings">Settings</string>
@@ -123,6 +147,17 @@
     <string name="chapters">Chapters</string>
     <string name="volumes">Volume</string>
     <string name="start_s_end_s">Start: %s &#160; · &#160; End: %s</string>
+    <string name="japanese_title">Japanese</string>
+    <string name="english_title">English</string>
+    <string name="romaji_title">Romaji</string>
+    <string name="description">Description</string>
+    <string name="episode_format_s">E: %s · %s</string>
+    <string name="too_many_request">Too many request</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="chapter_format_s">C: %s · %s</string>
+    <string name="source_seasonyear_s">%s · %s</string>
+    <string name="format_status_s">%s · %s</string>
+    <string name="relations">Relations</string>
 
 
     <!-- TV("TV"),

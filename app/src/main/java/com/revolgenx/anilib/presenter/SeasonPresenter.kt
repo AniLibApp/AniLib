@@ -23,7 +23,7 @@ import com.revolgenx.anilib.util.getAverageScore
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
-import kotlinx.android.synthetic.main.media_list_presenter_layout.view.*
+import kotlinx.android.synthetic.main.season_presenter_layout.view.*
 
 class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
 
@@ -34,7 +34,7 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         return Holder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.media_list_presenter_layout,
+                R.layout.season_presenter_layout,
                 parent,
                 false
             )
@@ -101,7 +101,7 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                     MediaBrowserMeta(
                         data.mediaId,
                         data.type!!,
-                        data.title!!.title(context)!!,
+                        data.title!!.romaji!!,
                         data.coverImage!!.image,
                         data.bannerImage
                     ), holder.itemView.coverImageIv

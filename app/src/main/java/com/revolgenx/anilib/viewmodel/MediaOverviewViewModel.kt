@@ -1,9 +1,6 @@
 package com.revolgenx.anilib.viewmodel
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.revolgenx.anilib.model.MediaOverviewModel
 import com.revolgenx.anilib.field.MediaOverviewField
 import com.revolgenx.anilib.field.UpdateRecommendationField
@@ -23,6 +20,7 @@ class MediaOverviewViewModel(
     private val compositeDisposable by lazy {
         CompositeDisposable()
     }
+
 
     var browserOverviewRecommendationSource: BrowserOverviewRecommendationSource? = null
     val mediaOverviewLiveData by lazy {
@@ -49,6 +47,10 @@ class MediaOverviewViewModel(
             compositeDisposable
         )
         return browserOverviewRecommendationSource!!
+    }
+
+    fun removeUpdateRecommendationObserver(observer: Observer<Resource<UpdateRecommendationModel>>){
+        recommendationService.removeUpdateRecommendationObserver(observer)
     }
 
 

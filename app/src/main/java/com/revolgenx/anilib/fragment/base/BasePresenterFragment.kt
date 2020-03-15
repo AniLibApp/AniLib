@@ -27,26 +27,21 @@ abstract class BasePresenterFragment<S : Any> : BaseFragment() {
 
     var visibleToUser = false
 
-    var loadingPresenter: Presenter<Void>? = null
-        get() {
-            return if (field == null) Presenter.forLoadingIndicator(
-                context!!,
-                R.layout.loading_layout
-            )
-            else field
-        }
 
-    var errorPresenter: Presenter<Void>? = null
-        get() {
-            return if (field == null) Presenter.forErrorIndicator(context!!, R.layout.error_layout)
-            else field
-        }
+    private val loadingPresenter: Presenter<Void> by lazy {
+        Presenter.forLoadingIndicator(
+            context!!,
+            R.layout.loading_layout
+        )
+    }
 
-    var emptyPresenter: Presenter<Void>? = null
-        get() {
-            return if (field == null) Presenter.forEmptyIndicator(context!!, R.layout.empty_layout)
-            else field
-        }
+    private val errorPresenter: Presenter<Void> by lazy {
+        Presenter.forErrorIndicator(context!!, R.layout.error_layout)
+    }
+
+    private val emptyPresenter: Presenter<Void> by lazy {
+        Presenter.forEmptyIndicator(context!!, R.layout.empty_layout)
+    }
 
     lateinit var baseRecyclerView: RecyclerView
     lateinit var baseSwipeRefreshLayout: DynamicSwipeRefreshLayout
@@ -109,9 +104,9 @@ abstract class BasePresenterFragment<S : Any> : BaseFragment() {
             .setPager(PageSizePager(10))
             .addSource(baseSource)
             .addPresenter(basePresenter)
-            .addPresenter(loadingPresenter!!)
-            .addPresenter(errorPresenter!!)
-            .addPresenter(emptyPresenter!!)
+            .addPresenter(loadingPresenter)
+            .addPresenter(errorPresenter)
+            .addPresenter(emptyPresenter)
             .into(baseRecyclerView)
     }
 

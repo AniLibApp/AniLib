@@ -7,4 +7,7 @@ class CoverImageModel {
 
     val image: String
         get() = large ?: medium ?: ""
+
+    val largeImage: String
+        get() = extraLarge ?: image
 }

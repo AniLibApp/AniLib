@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relationshipCardView"
+    style="@style/Widget.DynamicApp.Card.Clickable"
+    android:layout_width="280dp"
+    android:layout_marginStart="10dp"
+    android:layout_height="wrap_content">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="30dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="240dp">
+
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/relationshipCoverImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/black"
+                app:actualImageScaleType="centerCrop"
+                android:transitionName="media_cover_transition" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/relationshipMediaRatingTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="5dp"
+                android:background="@drawable/rating_background"
+                android:paddingStart="5dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="3dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:ads_colorType="custom"
+                app:drawableStartCompat="@drawable/ic_star" />
+
+            <View
+                android:id="@+id/statusDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:background="@color/ads_color_gray" />
+
+        </FrameLayout>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/relationshipTitleTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="10dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="10dp"
+            android:textSize="12sp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/mediaSourceSeasonYearTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="12sp"
+            app:ads_colorType="accent" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/mediaFormatStatusTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="12sp"
+            app:ads_colorType="tint_surface" />
+
+
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

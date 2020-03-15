@@ -36,15 +36,19 @@ query MediaRecommendationQuery($mediaId:Int, $page:Int, $perPage:Int
                 }
                 mediaRecommendation{
                     id
+                    format
+                    type
+                    episodes
+                    chapters
+                    status
+                    seasonYear
                     title{
-                        english
-                        romaji
-                        native
-                        userPreferred
+                        ... mediaTitle
                     }
                     coverImage{
                         ... mediaCoverImage
                     }
+                    bannerImage
                     averageScore
                 }
             }
@@ -201,8 +205,13 @@ query MediaOverViewQuery($mediaId:Int){
                     title{
                         ... mediaTitle
                     }
+                    coverImage{
+                        ... mediaCoverImage
+                    }
+                    seasonYear
                     format
                     status
+                    averageScore
                 }
             }
         }

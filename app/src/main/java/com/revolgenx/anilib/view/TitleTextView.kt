@@ -62,7 +62,7 @@ class TitleTextView(context: Context, attributeSet: AttributeSet?, defStyle: Int
                 ).also { params ->
                     params.addRule(BELOW, R.id.customTextViewTitleId)
                     params.addRule(CENTER_IN_PARENT)
-                    params.setMargins(0,dp(4f),0,0)
+                    params.setMargins(0,dp(2f),0,0)
                 }
                 it.color = textColor
                 if (isInEditMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)

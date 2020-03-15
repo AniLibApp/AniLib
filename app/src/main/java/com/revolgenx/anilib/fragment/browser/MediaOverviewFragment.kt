@@ -5,29 +5,31 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.*
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
+import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowserActivity
+import com.revolgenx.anilib.adapter.BrowserRelationshipPresenter
 import com.revolgenx.anilib.constant.*
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.MediaOverviewField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.field.overview.MediaRecommendationField
-import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.MediaOverviewModel
-import com.revolgenx.anilib.presenter.BrowserOverviewRecommendationPresenter
+import com.revolgenx.anilib.presenter.BrowserRecommendationPresenter
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.source.BrowserOverviewRecommendationSource
-import com.revolgenx.anilib.type.MediaFormat
-import com.revolgenx.anilib.type.MediaSource
+import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.viewmodel.MediaOverviewViewModel
-import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.media_overview_fragment.*
@@ -49,30 +51,28 @@ class MediaOverviewFragment : BaseFragment() {
         else viewModel.browserOverviewRecommendationSource!!
     }
 
-    private val recommendationPresenter by lazy {
-        BrowserOverviewRecommendationPresenter(viewLifecycleOwner, context!!, viewModel)
+    private val relationshipPresenter by lazy {
+        BrowserRelationshipPresenter(context!!)
     }
 
-    private var loadingPresenter: Presenter<Void>? = null
-        get() {
-            return if (field == null) Presenter.forLoadingIndicator(
-                context!!,
-                R.layout.loading_layout
-            )
-            else field
-        }
+    private val recommendationPresenter by lazy {
+        BrowserRecommendationPresenter(viewLifecycleOwner, context!!, viewModel)
+    }
 
-    private var errorPresenter: Presenter<Void>? = null
-        get() {
-            return if (field == null) Presenter.forErrorIndicator(context!!, R.layout.error_layout)
-            else field
-        }
+    private val loadingPresenter: Presenter<Void> by lazy {
+        Presenter.forLoadingIndicator(
+            context!!,
+            R.layout.loading_layout
+        )
+    }
 
-    private var emptyPresenter: Presenter<Void>? = null
-        get() {
-            return if (field == null) Presenter.forEmptyIndicator(context!!, R.layout.empty_layout)
-            else field
-        }
+    private val errorPresenter: Presenter<Void> by lazy {
+        Presenter.forErrorIndicator(context!!, R.layout.error_layout)
+    }
+
+    private val emptyPresenter: Presenter<Void> by lazy {
+        Presenter.forEmptyIndicator(context!!, R.layout.empty_layout)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -120,12 +120,47 @@ class MediaOverviewFragment : BaseFragment() {
         }
 
         recommendationField.mediaId = mediaBrowserMeta!!.mediaId
-
+        recommendationRecyclerView.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         invalidateRecommendationAdapter()
     }
 
     private fun updateView(overview: MediaOverviewModel) {
         if (context == null) return
+
+        val statusColor = when (overview.status) {
+            MediaStatus.RELEASING.ordinal -> {
+                ContextCompat.getColor(context!!, R.color.colorReleasing)
+            }
+            MediaStatus.FINISHED.ordinal -> {
+                ContextCompat.getColor(context!!, R.color.colorFinished)
+            };
+            MediaStatus.NOT_YET_RELEASED.ordinal -> {
+                ContextCompat.getColor(context!!, R.color.colorNotReleased)
+            }
+            MediaStatus.CANCELLED.ordinal -> {
+                ContextCompat.getColor(context!!, R.color.colorCancelled)
+            }
+            else -> {
+                ContextCompat.getColor(context!!, R.color.colorUnknown)
+            }
+        }
+        statusDivider.setBackgroundColor(statusColor)
+
+
+        if (overview.title!!.native != null) {
+            nativeTitle.subtitle = overview.title!!.native
+        } else {
+            nativeTitle.visibility = View.GONE
+        }
+
+        if (overview.title!!.english != null) {
+            englishTitle.subtitle = overview.title!!.english
+        } else {
+            englishTitle.visibility = View.GONE
+        }
+
+
 
         mediaDescriptionTv.text =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -138,6 +173,7 @@ class MediaOverviewFragment : BaseFragment() {
             .naText(overview.format?.let { context!!.resources.getStringArray(R.array.media_format)[it] })
         mediaSourceTv.descriptionTextView()
             .naText(overview.source?.let { context!!.resources.getStringArray(R.array.media_source)[it] })
+
 
         if (overview.type == MediaType.ANIME.ordinal) {
             mediaEpisodeTv.descriptionTextView()
@@ -184,6 +220,17 @@ class MediaOverviewFragment : BaseFragment() {
             naText(overview.endDate.toString())
         )
 
+        relationRecyclerView.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+
+        Adapter.builder(viewLifecycleOwner)
+            .addSource(Source.fromList(overview.relationship ?: emptyList()))
+            .addPresenter(loadingPresenter)
+            .addPresenter(errorPresenter)
+            .addPresenter(emptyPresenter)
+            .addPresenter(relationshipPresenter)
+            .into(relationRecyclerView)
+
     }
 
     private fun createRecommendationSource(): BrowserOverviewRecommendationSource {
@@ -195,11 +242,10 @@ class MediaOverviewFragment : BaseFragment() {
             .setPager(PageSizePager(PAGE_SIZE))
             .addSource(recommendationSource)
             .addPresenter(recommendationPresenter)
-            .addPresenter(loadingPresenter!!)
-            .addPresenter(errorPresenter!!)
-            .addPresenter(emptyPresenter!!)
-            .build()
-//            .into(overviewRecommendationRecyclerView)
+            .addPresenter(loadingPresenter)
+            .addPresenter(errorPresenter)
+            .addPresenter(emptyPresenter)
+            .into(recommendationRecyclerView)
     }
 
 
