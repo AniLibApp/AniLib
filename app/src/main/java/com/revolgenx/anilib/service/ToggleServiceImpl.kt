@@ -44,17 +44,20 @@ class ToggleServiceImpl(graphRepository: BaseGraphRepository) :
         mediaId: Int,
         compositeDisposable: CompositeDisposable?
     ): MutableLiveData<Resource<Boolean>> {
-        val disposable =
-            graphRepository.request(IsFavouriteQuery.builder().mediaId(mediaId).build())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    isFavouriteLiveData.value = Resource.success(it.data()?.Media()!!.isFavourite)
-                }, {
-                    Timber.e(it)
-                    isFavouriteLiveData.value = Resource.error(it.message ?: ERROR, null)
-                })
+        if ((isFavouriteLiveData.value == null)) {
+            val disposable =
+                graphRepository.request(IsFavouriteQuery.builder().mediaId(mediaId).build())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        isFavouriteLiveData.value =
+                            Resource.success(it.data()?.Media()!!.isFavourite)
+                    }, {
+                        Timber.e(it)
+                        isFavouriteLiveData.value = Resource.error(it.message ?: ERROR, null)
+                    })
 
-        compositeDisposable?.add(disposable)
+            compositeDisposable?.add(disposable)
+        }
         return isFavouriteLiveData
     }
 }

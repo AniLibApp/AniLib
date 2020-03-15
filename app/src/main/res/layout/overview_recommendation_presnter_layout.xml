@@ -3,8 +3,9 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mediaRecommendationRootLayout"
-    android:layout_width="180dp"
-    android:layout_height="340dp">
+    android:layout_width="185dp"
+    android:layout_height="370dp"
+    android:layout_marginStart="10dp">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
         android:id="@+id/mediaRecommendationCardView"
@@ -15,18 +16,20 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="30dp">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="216dp">
+                android:layout_height="240dp">
 
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/recommendationCoverImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@color/black" />
+                    android:src="@color/black"
+                    android:transitionName="media_cover_transition" />
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                     android:id="@+id/mediaRatingTv"
@@ -44,17 +47,46 @@
                     app:ads_colorType="custom"
                     app:drawableStartCompat="@drawable/ic_star" />
 
+                <View
+                    android:id="@+id/statusDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/ads_color_gray"/>
+
             </FrameLayout>
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/mediaRecommendationTitleTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:ellipsize="end"
-                android:maxLines="2"
-                android:padding="10dp"
-                android:textColor="@color/black"
+                android:paddingTop="6dp"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textSize="12sp" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/mediaEpisodeFormatTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textSize="12sp"
+                android:text="@string/episode_format_s"
+                app:ads_colorType="accent" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/mediaSeasonYearTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:textSize="12sp" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
@@ -67,7 +99,8 @@
         android:layout_height="30dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        app:ads_colorType="primary_dark"
+        app:ads_cardElevation="1dp"
+        app:ads_colorType="tint_surface"
         app:layout_anchor="@id/mediaRecommendationCardView"
         app:layout_anchorGravity="bottom">
 
@@ -77,15 +110,15 @@
             android:layout_marginStart="10dp"
             android:orientation="horizontal">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/mediaRecommendationLikeTv"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:background="?selectableItemBackground"
                 android:padding="6dp"
-                android:src="@drawable/ic_thumb_up"/>
+                android:src="@drawable/ic_thumb_up" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/mediaRecommendationDislikeTv"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
@@ -93,16 +126,19 @@
                 android:padding="6dp"
                 android:src="@drawable/ic_thumb_down" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            <TextView
                 android:id="@+id/mediaRecommendationRating"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:ellipsize="end"
                 android:gravity="center"
+                android:layout_gravity="end"
+                android:textColor="@color/white"
+                android:paddingStart="6dp"
+                android:paddingEnd="10dp"
                 android:maxLines="1"
-                android:text="+ 1"
-                android:textColor="@color/white" />
+                android:text="+ 1" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 

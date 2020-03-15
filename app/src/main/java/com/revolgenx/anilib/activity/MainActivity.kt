@@ -337,7 +337,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
 
 
     /*Events*/
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onListEditEvent(event: ListEditorEvent) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             this,
@@ -358,7 +358,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
     }
 
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBrowseMediaEvent(event: BrowseMediaEvent) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             this,

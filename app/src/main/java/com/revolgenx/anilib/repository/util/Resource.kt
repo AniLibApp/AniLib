@@ -1,6 +1,11 @@
 package com.revolgenx.anilib.repository.util
 
-data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
+data class Resource<out T>(
+    val status: Status,
+    val data: T?,
+    val message: String?,
+    val code: Int = -1
+) {
     companion object {
         fun <T> success(data: T?): Resource<T> {
             return Resource(
@@ -10,7 +15,7 @@ data class Resource<out T>(val status: Status, val data: T?, val message: String
             )
         }
 
-        fun <T> error(msg: String, data: T?): Resource<T> {
+        fun <T> error(msg: String, data: T?, code: Int = -1): Resource<T> {
             return Resource(
                 Status.ERROR,
                 data,

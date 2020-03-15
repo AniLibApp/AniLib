@@ -97,7 +97,7 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
         it.mediaId = id()
         it.title = title()?.fragments()?.mediaTitle()?.let {
             TitleModel().also { title ->
-                title.english = it.english() ?: it.romaji()
+                title.english = it.english()
                 title.romaji = it.romaji()
                 title.native = it.native_()
                 title.userPreferred = it.userPreferred()
@@ -141,6 +141,15 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
                     }
                     rel.format = node.format()?.ordinal
                     rel.status = node.status()?.ordinal
+                    rel.averageScore = node.averageScore()
+                    rel.seasonYear = node.seasonYear()
+                    rel.coverImageModel = node.coverImage()?.fragments()?.mediaCoverImage()?.let {
+                        CoverImageModel().also { model ->
+                            model.large = it.large()
+                            model.extraLarge = it.extraLarge()
+                            model.medium = it.medium()
+                        }
+                    }
                 }
             }
         }

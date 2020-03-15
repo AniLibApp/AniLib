@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
@@ -29,6 +30,8 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.BrowseRecommendationEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
@@ -37,15 +40,15 @@ import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.browser.*
 import com.revolgenx.anilib.model.ToggleFavouriteModel
 import com.revolgenx.anilib.preference.loggedIn
+import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.util.COLLAPSED
-import com.revolgenx.anilib.util.EXPANDED
-import com.revolgenx.anilib.util.makeSnakeBar
-import com.revolgenx.anilib.util.makeToast
+import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.viewmodel.MediaBrowserViewModel
 import kotlinx.android.synthetic.main.activity_media_browser.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.math.abs
@@ -112,6 +115,10 @@ class MediaBrowserActivity : DynamicSystemActivity() {
         ThemeController.setLocalTheme()
     }
 
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -191,10 +198,25 @@ class MediaBrowserActivity : DynamicSystemActivity() {
             }
         )
 
+        viewModel.isFavourite(mediaBrowserMeta.mediaId).observe(this, Observer {
+            when (it.status) {
+                SUCCESS -> {
+                    isFavourite = it.data!!
+                    mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                    invalidateOptionsMenu()
+                }
+                ERROR -> {
+
+                }
+            }
+        })
+
         viewModel.toggleFavMediaLiveData.observe(this, Observer {
             toggling = when (it.status) {
                 SUCCESS -> {
                     isFavourite = !isFavourite
+                    viewModel.isFavourite(mediaBrowserMeta.mediaId).value =
+                        Resource.success(isFavourite)
                     mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
                     invalidateOptionsMenu()
                     false
@@ -303,7 +325,9 @@ class MediaBrowserActivity : DynamicSystemActivity() {
                 true
             }
             R.id.toggleFavMenu -> {
-                makeToast(R.string.please_wait, icon = R.drawable.ic_hour_glass)
+                if (loggedIn())
+                    makeToast(R.string.please_wait, icon = R.drawable.ic_hour_glass)
+
                 toggleFav()
                 true
             }
@@ -398,6 +422,20 @@ class MediaBrowserActivity : DynamicSystemActivity() {
     }
 
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBrowseMediaEvent(event: BrowseRecommendationEvent) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            this,
+            event.sharedElement,
+            ViewCompat.getTransitionName(event.sharedElement) ?: ""
+        )
+
+        startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
+            this.putExtra(MEDIA_BROWSER_META, event.mediaBrowserMeta)
+        }, options.toBundle())
+    }
+
+
     inner class MediaBrowserAdapter(private val fragmentList: List<BaseFragment>) :
         FragmentPagerAdapter(
             supportFragmentManager,
@@ -410,6 +448,11 @@ class MediaBrowserActivity : DynamicSystemActivity() {
         override fun getCount(): Int {
             return fragmentList.size
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unRegisterForEvent()
     }
 
     override fun onDestroy() {
