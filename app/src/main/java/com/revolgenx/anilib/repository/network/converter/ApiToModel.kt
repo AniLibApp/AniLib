@@ -140,6 +140,7 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
                         }
                     }
                     rel.format = node.format()?.ordinal
+                    rel.type = node.type()?.ordinal
                     rel.status = node.status()?.ordinal
                     rel.averageScore = node.averageScore()
                     rel.seasonYear = node.seasonYear()
@@ -150,6 +151,7 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
                             model.medium = it.medium()
                         }
                     }
+                    rel.bannerImage = node.bannerImage() ?: rel.coverImageModel?.largeImage
                 }
             }
         }

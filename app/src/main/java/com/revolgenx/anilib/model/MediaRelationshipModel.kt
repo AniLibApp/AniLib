@@ -9,6 +9,8 @@ class MediaRelationshipModel : BaseMediaModel() {
     var status: Int? = null
     var averageScore: Int? = null
     var coverImageModel: CoverImageModel? = null
+    var bannerImage:String? = null
+    var type:Int? = null
     var seasonYear:Int? = null
 
     override fun equals(other: Any?): Boolean {
