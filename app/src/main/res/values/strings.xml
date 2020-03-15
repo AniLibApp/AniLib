@@ -158,6 +158,7 @@
     <string name="source_seasonyear_s">%s · %s</string>
     <string name="format_status_s">%s · %s</string>
     <string name="relations">Relations</string>
+    <string name="genre">Genre</string>
 
 
     <!-- TV("TV"),
