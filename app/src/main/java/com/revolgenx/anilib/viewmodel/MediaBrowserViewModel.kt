@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.model.ToggleFavouriteModel
 import com.revolgenx.anilib.repository.util.Resource
@@ -18,6 +19,10 @@ class MediaBrowserViewModel(private val toggleService: ToggleService) :ViewModel
                 this.value = it
             }
         }
+    }
+
+    fun isFavourite(mediaId:Int): MutableLiveData<Resource<Boolean>> {
+        return toggleService.isFavourite(mediaId, compositeDisposable)
     }
 
     fun toggleMediaFavourite(toggleFavouriteModel: ToggleFavouriteModel) {

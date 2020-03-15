@@ -49,16 +49,16 @@
             android:button="@drawable/ic_dropped" />
 
         <include
-            layout="@layout/overview_recommendation_card_layout"/>
+            layout="@layout/overview_recommendation_presnter_layout"/>
 
 
-        <include layout="@layout/media_list_presenter_layout" />
+        <include layout="@layout/season_presenter_layout" />
 
-        <include layout="@layout/media_list_presenter_layout" />
+        <include layout="@layout/season_presenter_layout" />
 
-        <include layout="@layout/media_list_presenter_layout" />
+        <include layout="@layout/season_presenter_layout" />
 
-        <include layout="@layout/media_list_presenter_layout" />
+        <include layout="@layout/season_presenter_layout" />
     </LinearLayout>
 
 

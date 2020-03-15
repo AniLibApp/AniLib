@@ -9,7 +9,7 @@ import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.makeSnakeBar
 import kotlinx.android.synthetic.main.discover_fragment_layout.*
-import kotlinx.android.synthetic.main.overview_recommendation_card_layout.*
+import kotlinx.android.synthetic.main.overview_recommendation_presnter_layout.*
 
 class DiscoverFragment : BaseFragment() {
 

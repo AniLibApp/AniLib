@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.service
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.revolgenx.anilib.model.SaveRecommendationModel
 import com.revolgenx.anilib.field.AddRecommendationField
 import com.revolgenx.anilib.model.MediaRecommendationModel
@@ -33,6 +34,9 @@ abstract class RecommendationService(protected var graphRepository: BaseGraphRep
         recommendationField: UpdateRecommendationField,
         compositeDisposable: CompositeDisposable? = null
     ): MutableLiveData<Resource<UpdateRecommendationModel>>
+
+    abstract fun  removeUpdateRecommendationObserver(observer:Observer<Resource<UpdateRecommendationModel>>)
+
 
     abstract fun saveRecommendation(addRecommendationField: AddRecommendationField):MutableLiveData<Resource<SaveRecommendationModel>>
 }

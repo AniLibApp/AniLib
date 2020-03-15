@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
-                app:expandedTitleMarginStart="132dp"
+                app:expandedTitleMarginStart="136dp"
                 app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
                 app:layout_scrollFlags="scroll|snap|enterAlways|enterAlwaysCollapsed"
                 app:maxLines="2">
@@ -54,9 +54,9 @@
         <RelativeLayout
             android:id="@+id/coverImageFrameLayout"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_height="170dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
             android:orientation="horizontal"
             app:layout_anchor="@id/appbarLayout"
             app:layout_anchorGravity="bottom"
@@ -64,10 +64,12 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/mediaBrowserCoverImage"
-                android:layout_width="104dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:scaleType="centerCrop"
+                app:roundAsCircle="false"
+                app:roundedCornerRadius="4dp"
                 android:transitionName="media_cover_transition" />
 
             <LinearLayout

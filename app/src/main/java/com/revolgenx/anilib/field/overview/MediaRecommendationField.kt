@@ -13,6 +13,7 @@ class MediaRecommendationField :
 
     override fun toQueryOrMutation(): MediaRecommendationQuery {
         return MediaRecommendationQuery.builder()
+            .mediaId(mediaId)
             .page(page)
             .perPage(perPage)
             .sort(listOf(RecommendationSort.values()[sort]))
