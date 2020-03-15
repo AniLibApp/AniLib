@@ -19,4 +19,6 @@
         android:fontFamily="@font/open_sans_light"
         android:text="@string/its_empty" />
 
+
+
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

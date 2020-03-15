@@ -3,31 +3,41 @@ package com.revolgenx.anilib.fragment.browser
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
+import android.text.*
+import android.text.style.ClickableSpan
 import android.view.*
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
+import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowserActivity
 import com.revolgenx.anilib.adapter.BrowserRelationshipPresenter
 import com.revolgenx.anilib.constant.*
+import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.MediaOverviewField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.field.overview.MediaRecommendationField
+import com.revolgenx.anilib.model.MediaMetaCollection
 import com.revolgenx.anilib.model.MediaOverviewModel
+import com.revolgenx.anilib.model.MediaRelationshipModel
 import com.revolgenx.anilib.presenter.BrowserRecommendationPresenter
+import com.revolgenx.anilib.presenter.MediaMetaPresenter
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.source.BrowserOverviewRecommendationSource
 import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.viewmodel.MediaOverviewViewModel
 import kotlinx.android.synthetic.main.error_layout.*
@@ -35,6 +45,7 @@ import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.media_overview_fragment.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class MediaOverviewFragment : BaseFragment() {
 
@@ -64,6 +75,10 @@ class MediaOverviewFragment : BaseFragment() {
             context!!,
             R.layout.loading_layout
         )
+    }
+
+    private val mediaMetaList by lazy {
+        mutableListOf<MediaMetaCollection>()
     }
 
     private val errorPresenter: Presenter<Void> by lazy {
@@ -222,19 +237,61 @@ class MediaOverviewFragment : BaseFragment() {
 
         relationRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        invalidateRelationshipAdapter(overview.relationship ?: emptyList())
+
+
+        if (overview.genres?.isNotEmpty() == true) {
+            val spannableStringBuilder = SpannableStringBuilder()
+            overview.genres?.forEach { genre ->
+                val current = spannableStringBuilder.length
+                spannableStringBuilder.append(genre.trim())
+                spannableStringBuilder.setSpan(
+                    object : ClickableSpan() {
+                        override fun onClick(widget: View) {
+                            BrowseGenreEvent(genre)
+                        }
+
+                        override fun updateDrawState(ds: TextPaint) {
+                            super.updateDrawState(ds)
+                            ds.isUnderlineText = true
+                        }
+                    },
+                    current,
+                    spannableStringBuilder.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                spannableStringBuilder.append(",")
+            }
+
+            mediaMetaList.add(MediaMetaCollection().also { col ->
+                col.header = getString(R.string.genre)
+                col.subTitleSpannable = spannableStringBuilder
+            })
+        }
+
+
+        metaContainerRecyclerView.layoutManager =
+            GridLayoutManager(context, 4, GridLayoutManager.HORIZONTAL, false)
 
         Adapter.builder(viewLifecycleOwner)
-            .addSource(Source.fromList(overview.relationship ?: emptyList()))
-            .addPresenter(loadingPresenter)
-            .addPresenter(errorPresenter)
-            .addPresenter(emptyPresenter)
-            .addPresenter(relationshipPresenter)
-            .into(relationRecyclerView)
+            .addSource(Source.fromList(mediaMetaList))
+            .addPresenter(MediaMetaPresenter(context!!))
+            .into(metaContainerRecyclerView)
 
     }
 
     private fun createRecommendationSource(): BrowserOverviewRecommendationSource {
         return viewModel.createRecommendationSource(recommendationField, viewLifecycleOwner)
+    }
+
+    private fun invalidateRelationshipAdapter(list: List<MediaRelationshipModel>) {
+        Adapter.builder(viewLifecycleOwner)
+            .addSource(Source.fromList(list))
+            .addPresenter(loadingPresenter)
+            .addPresenter(errorPresenter)
+            .addPresenter(emptyPresenter)
+            .addPresenter(relationshipPresenter)
+            .into(relationRecyclerView)
     }
 
     private fun invalidateRecommendationAdapter() {
