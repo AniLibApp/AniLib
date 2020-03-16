@@ -80,7 +80,7 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 mediaRecommendationLiveData.value = Resource.success(it)
             }, {
-                Timber.e(it)
+                Timber.w(it)
                 mediaRecommendationLiveData.value = Resource.error(it.message ?: ERROR, null)
             })
         compositeDisposable?.add(disposable)
