@@ -166,7 +166,9 @@
                 android:src="@color/black"
                 app:actualImageScaleType="centerCrop"
                 app:roundAsCircle="false"
-                app:roundedCornerRadius="6dp" />
+                app:roundedCornerRadius="6dp"
+                app:failureImage="@drawable/ic_error_anilib"
+                app:failureImageScaleType="fitCenter"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="50dp"
@@ -217,7 +219,8 @@
                 android:id="@+id/metaContainerRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
