@@ -159,6 +159,14 @@
     <string name="format_status_s">%s · %s</string>
     <string name="relations">Relations</string>
     <string name="genre">Genre</string>
+    <string name="tags">Tags</string>
+    <string name="studios">Studios</string>
+    <string name="producers">Producers</string>
+    <string name="hashtag">Hashtag</string>
+    <string name="averageScore">Average Score</string>
+    <string name="meanScore">Mean Score</string>
+    <string name="popularity">Popularity</string>
+    <string name="favourites">Favourites</string>
 
 
     <!-- TV("TV"),

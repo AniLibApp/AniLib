@@ -114,6 +114,7 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
         it.chapters = chapters()?.toString()
         it.volumes = volumes()?.toString()
         it.averageScore = averageScore()
+        it.meanScore = meanScore()
         it.duration = duration()?.toString()
         it.status = status()?.ordinal
         it.format = format()?.ordinal
@@ -164,8 +165,8 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
         }
         it.tags = tags()?.pmap {
             MediaTagsModel().also { tag ->
-                tag.isSpoilerTag = it.isMediaSpoiler ?: false
                 tag.name = it.name()
+                tag.isSpoilerTag = it.isMediaSpoiler ?: false
             }
         }
         it.trailer = trailer()?.let {
