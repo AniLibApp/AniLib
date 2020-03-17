@@ -11,12 +11,14 @@ import androidx.core.net.toUri
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.*
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.support.widget.DynamicButton
+import com.pranavpandey.android.dynamic.support.widget.DynamicImageButton
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowserActivity
 import com.revolgenx.anilib.adapter.BrowserRelationshipPresenter
@@ -33,11 +35,13 @@ import com.revolgenx.anilib.model.MediaOverviewModel
 import com.revolgenx.anilib.model.MediaRelationshipModel
 import com.revolgenx.anilib.model.MediaStudioModel
 import com.revolgenx.anilib.presenter.BrowserRecommendationPresenter
+import com.revolgenx.anilib.presenter.MediaExternalLinkPresenter
 import com.revolgenx.anilib.presenter.MediaMetaPresenter
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.source.BrowserOverviewRecommendationSource
 import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.view.span.SpoilerSpan
 import com.revolgenx.anilib.viewmodel.MediaOverviewViewModel
@@ -101,6 +105,10 @@ class MediaOverviewFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         metaContainerRecyclerView.layoutManager = FlexboxLayoutManager(context)
+        metaLinkRecyclerView.layoutManager = FlexboxLayoutManager(context).also { manager->
+            manager.justifyContent = JustifyContent.CENTER;
+            manager.alignItems = AlignItems.CENTER;
+        }
         recommendationRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         relationRecyclerView.layoutManager =
@@ -282,6 +290,13 @@ class MediaOverviewFragment : BaseFragment() {
         }
 
 
+        overview.externalLink?.let {
+            Adapter.builder(viewLifecycleOwner)
+                .addSource(Source.fromList(it))
+                .addPresenter(MediaExternalLinkPresenter(context!!))
+                .into(metaLinkRecyclerView)
+        }
+
         Adapter.builder(viewLifecycleOwner)
             .addSource(Source.fromList(mediaMetaList))
             .addPresenter(MediaMetaPresenter(context!!))
@@ -334,7 +349,7 @@ class MediaOverviewFragment : BaseFragment() {
         if (overview.tags?.isNotEmpty() == true) {
             val spannableStringBuilder = SpannableStringBuilder()
             val spoilerSpans = mutableListOf<SpoilerSpan>()
-            val lastIndex = overview.tags!!.size-1
+            val lastIndex = overview.tags!!.size - 1
             overview.tags?.forEachIndexed { index, tag ->
                 val current = spannableStringBuilder.length
                 spannableStringBuilder.append(tag.name?.trim())
@@ -392,7 +407,7 @@ class MediaOverviewFragment : BaseFragment() {
     private fun addStudioToMetaCollection(studios: List<MediaStudioModel>?) {
         if (studios == null || studios.isEmpty()) return
         val spannableStringBuilder = SpannableStringBuilder()
-        val lastIndex = studios.size-1
+        val lastIndex = studios.size - 1
 
         studios.forEachIndexed { index, it ->
             val current = spannableStringBuilder.length
@@ -427,7 +442,7 @@ class MediaOverviewFragment : BaseFragment() {
     private fun addProducerToMetaCollection(studios: List<MediaStudioModel>?) {
         if (studios == null || studios.isEmpty()) return
         val spannableStringBuilder = SpannableStringBuilder()
-        val lastIndex = studios.size -1
+        val lastIndex = studios.size - 1
         studios.forEachIndexed { index, it ->
             val current = spannableStringBuilder.length
             spannableStringBuilder.append(it.name)
