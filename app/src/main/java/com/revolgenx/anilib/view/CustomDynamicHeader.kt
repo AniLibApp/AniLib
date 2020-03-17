@@ -9,9 +9,12 @@ import com.revolgenx.anilib.R
 
 class CustomDynamicHeader(context: Context, attributeSet: AttributeSet?, defAttSet:Int): DynamicHeader(context, attributeSet, defAttSet) {
     constructor(context: Context):this(context, null)
+
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet,0){
         titleView.typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
         subtitleView.typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
         subtitleView.setTextColor(DynamicTheme.getInstance().get().tintSurfaceColor)
     }
+
+
 }
