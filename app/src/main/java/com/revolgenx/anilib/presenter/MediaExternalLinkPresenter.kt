@@ -10,6 +10,7 @@ import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.model.MediaExternalLinkModel
 import com.revolgenx.anilib.util.colorsMap
+import com.revolgenx.anilib.util.openLink
 import kotlinx.android.synthetic.main.external_link_presenter.view.*
 import timber.log.Timber
 
@@ -62,6 +63,9 @@ class MediaExternalLinkPresenter(context: Context) : Presenter<MediaExternalLink
                 )
             }
 
+            setOnClickListener {
+                context.openLink(item.url)
+            }
             colorsMap[item.site?.toLowerCase()]?.let {
                 mediaExternalLinkTv.color = Color.parseColor(it)
             }

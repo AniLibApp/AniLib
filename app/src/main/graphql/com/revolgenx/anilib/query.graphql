@@ -177,6 +177,13 @@ query MediaOverViewQuery($mediaId:Int){
         title {
             ... mediaTitle
         }
+
+        nextAiringEpisode{
+            id
+            timeUntilAiring
+            episode
+        }
+
         isAdult
         format
         type

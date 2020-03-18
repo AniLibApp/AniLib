@@ -33,6 +33,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                 Timber.e(it)
                 mediaOverviewLiveData.value = Resource.error(it.message ?: ERROR, null)
             })
+
         compositeDisposable?.add(disposable)
 
         return mediaOverviewLiveData

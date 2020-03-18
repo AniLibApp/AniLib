@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.text.*
 import android.text.style.ClickableSpan
 import android.view.*
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.observe
@@ -18,6 +21,7 @@ import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicButton
+import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageButton
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowserActivity
@@ -43,6 +47,7 @@ import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.view.AiringEpisodeView
 import com.revolgenx.anilib.view.span.SpoilerSpan
 import com.revolgenx.anilib.viewmodel.MediaOverviewViewModel
 import kotlinx.android.synthetic.main.error_layout.*
@@ -81,6 +86,18 @@ class MediaOverviewFragment : BaseFragment() {
         )
     }
 
+    private val airingEpisodeView by lazy {
+        AiringEpisodeView(context!!).also { ae ->
+            ae.layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).also { params ->
+                params.marginStart = dp(30f)
+                params.marginEnd = dp(10f)
+            }
+        }
+    }
+
     private val mediaMetaList by lazy {
         mutableListOf<MediaMetaCollection>()
     }
@@ -105,7 +122,7 @@ class MediaOverviewFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         metaContainerRecyclerView.layoutManager = FlexboxLayoutManager(context)
-        metaLinkRecyclerView.layoutManager = FlexboxLayoutManager(context).also { manager->
+        metaLinkRecyclerView.layoutManager = FlexboxLayoutManager(context).also { manager ->
             manager.justifyContent = JustifyContent.CENTER;
             manager.alignItems = AlignItems.CENTER;
         }
@@ -248,6 +265,12 @@ class MediaOverviewFragment : BaseFragment() {
             naText(overview.endDate.toString())
         )
 
+        overview.airingTimeModel?.let {
+            airingContainer.visibility = View.VISIBLE
+            airingContainer.addView(makeAiringLayout())
+            airingEpisodeView.setTimer(it)
+        }
+
         invalidateRelationshipAdapter(overview.relationship ?: emptyList())
 
 
@@ -310,6 +333,42 @@ class MediaOverviewFragment : BaseFragment() {
             col.header = header
             col.subTitle = subtitle
         })
+    }
+
+
+    /*<com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            android:id="@+id/airingCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            >
+
+            <com.revolgenx.anilib.view.AiringEpisodeView
+                android:id="@+id/airingEpisode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="10dp"/>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>*/
+
+    private fun makeAiringLayout(): DynamicCardView {
+        return DynamicCardView(context!!).also {
+            it.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).also { params ->
+                params.marginEnd = dp(2f)
+                params.marginStart = dp(2f)
+                params.bottomMargin = dp(20f)
+            }
+        }.also {
+            it.addView(airingEpisodeView)
+        }
     }
 
     private fun addGenreToMetaCollection(overview: MediaOverviewModel) {
