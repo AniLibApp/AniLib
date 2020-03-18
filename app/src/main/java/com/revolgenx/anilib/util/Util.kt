@@ -1,17 +1,20 @@
 package com.revolgenx.anilib.util
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.pranavpandey.android.dynamic.toasts.DynamicToast
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
+import com.revolgenx.anilib.R
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.type.MediaSeason
 import kotlinx.coroutines.async
@@ -93,6 +96,15 @@ fun Context.makeToast(@StringRes str: Int? = null, msg: String? = null, @Drawabl
         DynamicToast.make(this, str?.let { getString(it) } ?: msg, drawable).show()
     } else {
         DynamicToast.make(this, str?.let { getString(it) } ?: msg).show()
+    }
+}
+
+fun Context.openLink(url: String?) {
+    try {
+        if (url != null)
+            startActivity(Intent(Intent.ACTION_VIEW, url.trim().toUri()))
+    } catch (e: Exception) {
+        makeToast(R.string.no_app_found_to_open)
     }
 }
 

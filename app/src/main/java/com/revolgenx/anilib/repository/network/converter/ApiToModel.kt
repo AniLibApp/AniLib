@@ -127,6 +127,12 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
         it.description = description()
         it.source = source()?.ordinal
         it.hashTag = hashtag()
+        it.airingTimeModel = nextAiringEpisode()?.let {
+            AiringTimeModel().also { model ->
+                model.episode = it.episode()
+                model.airingTime = AiringTime().also { ti -> ti.time = it.timeUntilAiring() }
+            }
+        }
         it.relationship = relations()?.edges()?.pmap {
             MediaRelationshipModel().also { rel ->
                 rel.relationshipType = it.relationType()?.ordinal

@@ -14,7 +14,7 @@
     <string name="cancelled">Cancelled</string>
     <string name="not_released">Not released</string>
 
-    <string name="ep_s">Ep: %s · D: %s min</string>
+    <string name="ep_d_s">Ep: %s · D: %s min</string>
     <string name="chap_s">Chap: %s · Vol: %s</string>
 
     <!--Media format-->
@@ -167,6 +167,12 @@
     <string name="meanScore">Mean Score</string>
     <string name="popularity">Popularity</string>
     <string name="favourites">Favourites</string>
+    <string name="day">Days</string>
+    <string name="hour">Hour</string>
+    <string name="min">Min</string>
+    <string name="sec">Sec</string>
+    <string name="ep_s">Ep %d</string>
+    <string name="no_app_found_to_open">No app found to handle url</string>
 
 
     <!-- TV("TV"),
