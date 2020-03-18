@@ -11,6 +11,7 @@ class MediaOverviewModel : CommonMediaModel() {
     var description: String? = null
     var source: Int? = null
     var hashTag: String? = null  /*can be null*/
+    var airingTimeModel:AiringTimeModel? = null
     var relationship: List<MediaRelationshipModel>? = null
     var externalLink: List<MediaExternalLinkModel>? = null /*empty */
     var tags: List<MediaTagsModel>? = null

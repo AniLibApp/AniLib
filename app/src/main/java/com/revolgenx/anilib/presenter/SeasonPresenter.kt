@@ -50,7 +50,7 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
             coverImageIv.setImageURI(data.coverImage!!.image)
             if (data.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeTv.text =
-                    string(R.string.ep_s).format(naText(data.episodes), naText(data.duration))
+                    string(R.string.ep_d_s).format(naText(data.episodes), naText(data.duration))
             } else {
                 mediaEpisodeTv.text =
                     string(R.string.chap_s).format(naText(data.chapters), naText(data.volumes))
