@@ -1,8 +1,10 @@
 package com.revolgenx.anilib.model
 
-class MediaCharacterModel :BaseMediaModel(){
-    var characterId:Int? = null
-    var role:Int? = null
-    var name:String? = null
-    var voiceActors:List<VoiceActorModel>? = null
+class MediaCharacterModel {
+    var characterId: Int? = null
+    var role: Int? = null
+    var name: String? = null
+    var characterImageModel: CharacterImageModel? = null
+    var voiceActor: VoiceActorModel? = null
+    var type: Int? = null
 }

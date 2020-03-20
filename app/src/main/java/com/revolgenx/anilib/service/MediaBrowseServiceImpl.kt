@@ -41,43 +41,57 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
 
     override fun getMediaWatch(
         field: MediaWatchField,
-        compositeDisposable: CompositeDisposable?
-    ): MutableWatchType {
+        compositeDisposable: CompositeDisposable?,
+        resourceCallback: (Resource<List<MediaWatchModel>>) -> Unit
+    ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 response.data()?.Media()!!.toModel()
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                mediaWatchLiveData.value = Resource.success(it)
+                resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.e(it)
-                mediaWatchLiveData.value = Resource.error(it.message ?: ERROR, null)
+                Timber.w(it)
+                Resource.success(Resource.error(it.message ?: ERROR, null))
             })
 
         compositeDisposable?.add(disposable)
-
-        return mediaWatchLiveData
     }
 
     override fun getMediaCharacter(
         field: MediaCharacterField,
-        compositeDisposable: CompositeDisposable?
-    ): MutableCharacterType {
+        compositeDisposable: CompositeDisposable?,
+        resourceCallback: (Resource<List<MediaCharacterModel>>) -> Unit
+    ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 runBlocking {
                     response.data()?.Media()?.characters()?.edges()?.pmap {
                         MediaCharacterModel().also { charac ->
-                            charac.mediaId = it.id() ?: -1
+                            charac.characterId = it.node()?.id()
                             charac.role = it.role()?.ordinal
                             it.node()?.let { node ->
                                 charac.name = node.name()?.full()
+                                charac.characterImageModel = node.image()?.let {
+                                    CharacterImageModel().apply {
+                                        large = it.large()
+                                        medium = it.medium()
+                                    }
+                                }
                             }
-                            charac.voiceActors = it.voiceActors()?.pmap {
+                            charac.voiceActor = it.voiceActors()?.firstOrNull()?.let {
                                 VoiceActorModel().also { model ->
+                                    model.actorId = it.id()
                                     model.name = it.name()?.full()
                                     model.actorId = it.id()
+                                    model.language = it.language()?.ordinal
+                                    model.voiceActorImageModel = it.image()?.let {
+                                        VoiceActorImageModel().apply {
+                                            large = it.large()
+                                            medium = it.medium()
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -87,14 +101,13 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                mediaCharacterLiveData.value = Resource.success(it)
+                resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                mediaCharacterLiveData.value = Resource.error(it.message ?: ERROR, null)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null))
             })
 
         compositeDisposable?.add(disposable)
-        return mediaCharacterLiveData
     }
 
     override fun getMediaStaff(

@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
                 android:layout_margin="5dp"
-                android:background="@drawable/rating_background"
+                android:background="@drawable/oval_background"
                 android:paddingStart="5dp"
                 android:paddingTop="3dp"
                 android:paddingEnd="5dp"
