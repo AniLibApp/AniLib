@@ -9,4 +9,6 @@ val viewModelModules = module {
     viewModel { MainActivityViewModel(get(), get()) }
     viewModel { MediaBrowserViewModel(get()) }
     viewModel { MediaOverviewViewModel(get(), get()) }
+    viewModel { MediaWatchViewModel(get()) }
+    viewModel { MediaCharacterViewModel(get()) }
 }

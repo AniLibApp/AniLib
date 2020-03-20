@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
@@ -24,11 +25,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
 
     override val baseSource: Source<CommonMediaModel>
         get() {
-            return if (viewModel.seasonSource != null) {
-                viewModel.seasonSource!!
-            }else{
-                createSource()
-            }
+            return viewModel.seasonSource ?: createSource()
         }
 
     override fun createSource(): Source<CommonMediaModel> {
@@ -46,6 +43,10 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

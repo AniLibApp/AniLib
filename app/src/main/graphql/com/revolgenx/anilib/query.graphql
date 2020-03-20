@@ -78,15 +78,26 @@ query MediaCharacterQuery(
                 id
                 role
                 node{
+                    id
                     name{
                         full
                     }
+                    image{
+                        large
+                        medium
+                    }
+
                 }
                 voiceActors(language:$language){
                     id
                     name{
                         full
                     }
+                    image{
+                        large
+                        medium
+                    }
+                    language
                 }
 
             }

@@ -3,6 +3,7 @@ package com.revolgenx.anilib.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -418,6 +419,7 @@ class MediaBrowserActivity : DynamicSystemActivity() {
         mediaBrowserCollapsingToolbar.setStatusBarScrimColor(DynamicTheme.getInstance().get().primaryColorDark)
         mediaBrowserCollapsingToolbar.setContentScrimColor(DynamicTheme.getInstance().get().primaryColor)
         mediaBrowserCollapsingToolbar.setCollapsedTitleTextColor(DynamicTheme.getInstance().get().tintPrimaryColor)
+        mediaBrowserCollapsingToolbar.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
     }
 
 
@@ -433,7 +435,6 @@ class MediaBrowserActivity : DynamicSystemActivity() {
             this.putExtra(MEDIA_BROWSER_META, event.mediaBrowserMeta)
         }, options.toBundle())
     }
-
 
 
     inner class MediaBrowserAdapter(private val fragmentList: List<BaseFragment>) :

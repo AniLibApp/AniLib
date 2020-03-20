@@ -86,17 +86,6 @@ class MediaOverviewFragment : BaseFragment() {
         )
     }
 
-    private val airingEpisodeView by lazy {
-        AiringEpisodeView(context!!).also { ae ->
-            ae.layoutParams = FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            ).also { params ->
-                params.marginStart = dp(30f)
-                params.marginEnd = dp(10f)
-            }
-        }
-    }
 
     private val mediaMetaList by lazy {
         mutableListOf<MediaMetaCollection>()
@@ -265,10 +254,30 @@ class MediaOverviewFragment : BaseFragment() {
             naText(overview.endDate.toString())
         )
 
-        overview.airingTimeModel?.let {
+        overview.airingTimeModel?.let { atModel ->
             airingContainer.visibility = View.VISIBLE
-            airingContainer.addView(makeAiringLayout())
-            airingEpisodeView.setTimer(it)
+            airingContainer.addView(
+                DynamicCardView(context!!).also {
+                    it.layoutParams = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    ).also { params ->
+                        params.marginEnd = dp(2f)
+                        params.marginStart = dp(2f)
+                        params.bottomMargin = dp(20f)
+                    }
+                }.also {
+                    it.addView(AiringEpisodeView(context!!).also { ae ->
+                        ae.layoutParams = FrameLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                        ).also { params ->
+                            params.marginStart = dp(30f)
+                            params.marginEnd = dp(10f)
+                        }
+                        ae.setTimer(atModel)
+                    })
+                })
         }
 
         invalidateRelationshipAdapter(overview.relationship ?: emptyList())
@@ -335,41 +344,6 @@ class MediaOverviewFragment : BaseFragment() {
         })
     }
 
-
-    /*<com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-            android:id="@+id/airingCardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
-            >
-
-            <com.revolgenx.anilib.view.AiringEpisodeView
-                android:id="@+id/airingEpisode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="10dp"/>
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>*/
-
-    private fun makeAiringLayout(): DynamicCardView {
-        return DynamicCardView(context!!).also {
-            it.layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            ).also { params ->
-                params.marginEnd = dp(2f)
-                params.marginStart = dp(2f)
-                params.bottomMargin = dp(20f)
-            }
-        }.also {
-            it.addView(airingEpisodeView)
-        }
-    }
 
     private fun addGenreToMetaCollection(overview: MediaOverviewModel) {
         if (overview.genres?.isNotEmpty() == true) {

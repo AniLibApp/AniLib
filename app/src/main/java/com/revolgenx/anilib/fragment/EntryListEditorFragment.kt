@@ -557,6 +557,7 @@ class EntryListEditorFragment : BaseFragment() {
         listEditorCollapsingToolbar.setStatusBarScrimColor(DynamicTheme.getInstance().get().primaryColorDark)
         listEditorCollapsingToolbar.setContentScrimColor(DynamicTheme.getInstance().get().primaryColor)
         listEditorCollapsingToolbar.setCollapsedTitleTextColor(DynamicTheme.getInstance().get().tintPrimaryColor)
+        listEditorCollapsingToolbar.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
     }
 
 
