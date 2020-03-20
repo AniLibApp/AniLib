@@ -74,6 +74,25 @@
         <item>Contains</item>
     </string-array>
 
+    <string-array name="character_role">
+        <item>Main</item>
+        <item>Supporting</item>
+        <item>Background</item>
+    </string-array>
+
+    <string-array name="staff_language">
+        <item>Japanese</item>
+        <item>English</item>
+        <item>Korean</item>
+        <item>Italian</item>
+        <item>Spanish</item>
+        <item>Portuguese</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Hebrew</item>
+        <item>Hungarian</item>
+    </string-array>
+
 
     <string-array name="media_status">
         <item>Finished</item>

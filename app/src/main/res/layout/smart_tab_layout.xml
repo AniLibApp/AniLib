@@ -12,6 +12,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_overview"
+        app:ads_colorType="custom"
         android:layout_weight="1"/>
 
     <androidx.appcompat.widget.AppCompatTextView

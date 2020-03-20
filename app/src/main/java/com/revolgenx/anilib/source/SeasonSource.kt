@@ -3,6 +3,7 @@ package com.revolgenx.anilib.source
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.extensions.MainSource
+import com.revolgenx.anilib.constant.PAGE_SIZE
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.field.SeasonField
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
@@ -11,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 
 class SeasonSource(
-    private val pageSize: Int = 10,
+    private val pageSize: Int = PAGE_SIZE,
     private val baseGraphRepository: BaseGraphRepository,
     private val seasonField: SeasonField,
     private val compositeDisposable: CompositeDisposable? = null

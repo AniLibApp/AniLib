@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
+import com.otaliastudios.elements.extensions.LoadingPresenter
 import com.otaliastudios.elements.pagers.PageSizePager
+import com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout
 import com.revolgenx.anilib.R
 import kotlinx.android.synthetic.main.base_presenter_fragment_layout.view.*
@@ -21,19 +24,19 @@ import timber.log.Timber
  * BasePresenter class contains @property baseRecyclerView @property layoutManager
  *
  * */
-abstract class BasePresenterFragment<S : Any> : BaseFragment() {
+abstract class BasePresenterFragment<S : Any>() :
+    BaseFragment() {
     abstract val basePresenter: Presenter<S>
     abstract val baseSource: Source<S>
 
     var visibleToUser = false
 
-
     private val loadingPresenter: Presenter<Void> by lazy {
         Presenter.forLoadingIndicator(
-            context!!,
-            R.layout.loading_layout
+            context!!, R.layout.loading_layout
         )
     }
+
 
     private val errorPresenter: Presenter<Void> by lazy {
         Presenter.forErrorIndicator(context!!, R.layout.error_layout)
@@ -46,6 +49,7 @@ abstract class BasePresenterFragment<S : Any> : BaseFragment() {
     lateinit var baseRecyclerView: RecyclerView
     lateinit var baseSwipeRefreshLayout: DynamicSwipeRefreshLayout
     lateinit var layoutManager: RecyclerView.LayoutManager
+    lateinit var baseRecyclerContainer: DynamicFrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +59,7 @@ abstract class BasePresenterFragment<S : Any> : BaseFragment() {
         val v = inflater.inflate(R.layout.base_presenter_fragment_layout, container, false)
         baseRecyclerView = v.base_presenter_recycler_view
         baseSwipeRefreshLayout = v.base_swipe_to_refresh
+        baseRecyclerContainer = v.base_recycler_container
         return v;
     }
 

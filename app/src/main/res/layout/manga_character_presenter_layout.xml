@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.DynamicApp.Card.Margin.Clickable"
+    android:layout_width="170dp"
+    android:layout_height="260dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingEnd="5dp"
+        tools:ignore="RtlSymmetry">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="character name"
+            android:textSize="14sp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="character role"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

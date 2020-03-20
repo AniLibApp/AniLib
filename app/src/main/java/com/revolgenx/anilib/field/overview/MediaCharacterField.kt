@@ -5,11 +5,12 @@ import com.revolgenx.anilib.field.BaseField
 import com.revolgenx.anilib.field.BaseField.Companion.PER_PAGE
 import com.revolgenx.anilib.type.StaffLanguage
 
-class MediaCharacterField:BaseField<MediaCharacterQuery>{
+class MediaCharacterField : BaseField<MediaCharacterQuery> {
     var mediaId = -1
     var page = 1
     var perPage = PER_PAGE
     var language = StaffLanguage.JAPANESE.ordinal
+    var type: Int = 0
 
     override fun toQueryOrMutation(): MediaCharacterQuery {
         return MediaCharacterQuery.builder()
