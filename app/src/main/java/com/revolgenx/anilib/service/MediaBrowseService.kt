@@ -10,7 +10,6 @@ import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.disposables.CompositeDisposable
 
 typealias MutableOverviewType = MutableLiveData<Resource<MediaOverviewModel>>
-typealias MutableStaffType = MutableLiveData<Resource<List<MediaStaffModel>>>
 typealias MutableReviewType = MutableLiveData<Resource<List<MediaReviewModel>>>
 typealias MutableStatsType = MutableLiveData<Resource<MediaStatsModel>>
 
@@ -19,9 +18,6 @@ abstract class MediaBrowseService(protected val graphRepository: BaseGraphReposi
         MutableOverviewType()
     }
 
-    val mediaStaffLiveData by lazy {
-        MutableStaffType()
-    }
     val mediaReviewLiveData by lazy {
         MutableReviewType()
     }
@@ -48,8 +44,9 @@ abstract class MediaBrowseService(protected val graphRepository: BaseGraphReposi
 
     abstract fun getMediaStaff(
         field: MediaStaffField,
-        compositeDisposable: CompositeDisposable? = null
-    ): MutableStaffType
+        compositeDisposable: CompositeDisposable? = null,
+        resourceCallback: (Resource<List<MediaStaffModel>>) -> Unit
+    )
 
 
     abstract fun getMediaReview(

@@ -30,8 +30,8 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 mediaOverviewLiveData.value = Resource.success(it)
             }, {
-                Timber.e(it)
-                mediaOverviewLiveData.value = Resource.error(it.message ?: ERROR, null)
+                Timber.w(it)
+                mediaOverviewLiveData.value = Resource.error(it.message ?: ERROR, null, it)
             })
 
         compositeDisposable?.add(disposable)
@@ -53,7 +53,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.w(it)
-                Resource.success(Resource.error(it.message ?: ERROR, null))
+                Resource.success(Resource.error(it.message ?: ERROR, null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -84,7 +84,6 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                 VoiceActorModel().also { model ->
                                     model.actorId = it.id()
                                     model.name = it.name()?.full()
-                                    model.actorId = it.id()
                                     model.language = it.language()?.ordinal
                                     model.voiceActorImageModel = it.image()?.let {
                                         VoiceActorImageModel().apply {
@@ -103,8 +102,8 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null))
+                Timber.w(it)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -112,8 +111,9 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
 
     override fun getMediaStaff(
         field: MediaStaffField,
-        compositeDisposable: CompositeDisposable?
-    ): MutableStaffType {
+        compositeDisposable: CompositeDisposable?,
+        resourceCallback: (Resource<List<MediaStaffModel>>) -> Unit
+    ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 runBlocking {
@@ -121,8 +121,14 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                         MediaStaffModel().also { model ->
                             model.role = s.role()
                             s.node()?.let { staff ->
-                                model.mediaId = staff.id()
+                                model.staffId = staff.id()
                                 model.name = staff.name()?.full()
+                                model.image = staff.image()?.let {
+                                    StaffImageModel().also { imgModel ->
+                                        imgModel.large = it.large()
+                                        imgModel.medium = it.medium()
+                                    }
+                                }
                             }
                         }
                     }
@@ -130,14 +136,13 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                mediaStaffLiveData.value = Resource.success(it)
+                resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.e(it)
-                mediaStaffLiveData.value = Resource.error(it.message ?: ERROR, null)
+                Timber.w(it)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
         compositeDisposable?.add(disposable)
-        return mediaStaffLiveData
     }
 
     override fun getMediaReview(
@@ -175,8 +180,8 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 mediaReviewLiveData.value = Resource.success(it)
             }, {
-                Timber.e(it)
-                mediaReviewLiveData.value = Resource.error(it.message ?: ERROR, null)
+                Timber.w(it)
+                mediaReviewLiveData.value = Resource.error(it.message ?: ERROR, null, it)
             })
 
         compositeDisposable?.add(disposable)
@@ -236,8 +241,8 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 mediaStatsLiveData.value = Resource.success(it)
             }, {
-                Timber.e(it)
-                mediaStatsLiveData.value = Resource.error(it.message ?: ERROR, null)
+                Timber.w(it)
+                mediaStatsLiveData.value = Resource.error(it.message ?: ERROR, null, it)
             })
         compositeDisposable?.add(disposable)
         return mediaStatsLiveData
