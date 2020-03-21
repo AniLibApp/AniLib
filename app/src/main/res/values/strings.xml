@@ -192,6 +192,7 @@
     <string name="sec">Sec</string>
     <string name="ep_s">Ep %d</string>
     <string name="no_app_found_to_open">No app found to handle url</string>
+    <string name="recent_act_per_day">Recent Activity Per Day</string>
 
 
     <!-- TV("TV"),

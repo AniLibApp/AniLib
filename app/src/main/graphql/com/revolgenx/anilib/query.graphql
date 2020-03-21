@@ -161,7 +161,7 @@ query MediaStatsQuery($mediaId:Int){
             season
         }
 
-        trends(page:1, perPage:7,sort:[DATE]){
+        trends(page:1, perPage:7,sort:[DATE_DESC]){
             nodes{
                 date
                 trending
