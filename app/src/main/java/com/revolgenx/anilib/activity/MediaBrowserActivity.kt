@@ -74,6 +74,8 @@ class MediaBrowserActivity : DynamicSystemActivity() {
             override fun onPageSelected(position: Int) {
                 smartTabLayout.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
                 smartTabLayout.getTabAt(position).tabTextTv.visibility = View.VISIBLE
+                if(position == 0) return
+                appbarLayout.setExpanded(false)
             }
         }
     }
@@ -240,7 +242,11 @@ class MediaBrowserActivity : DynamicSystemActivity() {
 
         browseMediaViewPager.adapter = MediaBrowserAdapter(animeBrowserList)
         browseMediaViewPager.offscreenPageLimit = 5
-        smartTabLayout.setViewPager(browseMediaViewPager)
+        smartTabLayout.setViewPager(browseMediaViewPager) {
+            if (it == 0) return@setViewPager
+            appbarLayout.setExpanded(false)
+        }
+
         browseMediaViewPager.setCurrentItem(0, false)
         browseMediaViewPager.post {
             pageChangeListener.onPageSelected(browseMediaViewPager.currentItem)

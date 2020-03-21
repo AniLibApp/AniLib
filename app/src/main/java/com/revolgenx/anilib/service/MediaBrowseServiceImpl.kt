@@ -147,15 +147,16 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
 
     override fun getMediaReview(
         field: MediaReviewField,
-        compositeDisposable: CompositeDisposable?
-    ): MutableReviewType {
+        compositeDisposable: CompositeDisposable?,
+        resourceCallback: (Resource<List<MediaReviewModel>>) -> Unit
+    ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 runBlocking {
                     response.data()?.Media()?.reviews()?.edges()?.pmap { edge ->
                         MediaReviewModel().also { model ->
                             edge.node()?.let { node ->
-                                model.mediaId = node.id()
+                                model.reviewId = node.id()
                                 model.rating = node.rating()
                                 model.ratingAmount = node.ratingAmount()
                                 model.summary = node.summary()
@@ -163,7 +164,6 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                 model.user = node.user()?.let {
                                     MediaReviewUserModel().also { model ->
                                         model.userId = it.id()
-                                        model.name = it.name()
                                         model.avatar = UserAvatarImageModel().also { imageModel ->
                                             imageModel.medium = it.avatar()?.medium()
                                             imageModel.large = it.avatar()?.large()
@@ -178,14 +178,13 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                mediaReviewLiveData.value = Resource.success(it)
+                resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.w(it)
-                mediaReviewLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
         compositeDisposable?.add(disposable)
-        return mediaReviewLiveData
     }
 
     override fun getMediaStats(
