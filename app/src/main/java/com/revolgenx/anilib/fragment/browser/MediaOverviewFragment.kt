@@ -72,16 +72,16 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private val relationshipPresenter by lazy {
-        BrowserRelationshipPresenter(context!!)
+        BrowserRelationshipPresenter(requireContext())
     }
 
     private val recommendationPresenter by lazy {
-        BrowserRecommendationPresenter(viewLifecycleOwner, context!!, viewModel)
+        BrowserRecommendationPresenter(viewLifecycleOwner, requireContext(), viewModel)
     }
 
     private val loadingPresenter: Presenter<Void> by lazy {
         Presenter.forLoadingIndicator(
-            context!!,
+            requireContext(),
             R.layout.loading_layout
         )
     }
@@ -92,11 +92,11 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private val errorPresenter: Presenter<Void> by lazy {
-        Presenter.forErrorIndicator(context!!, R.layout.error_layout)
+        Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
     }
 
     private val emptyPresenter: Presenter<Void> by lazy {
-        Presenter.forEmptyIndicator(context!!, R.layout.empty_layout)
+        Presenter.forEmptyIndicator(requireContext(), R.layout.empty_layout)
     }
 
     override fun onCreateView(
@@ -160,23 +160,23 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private fun updateView(overview: MediaOverviewModel) {
-        if (context == null) return
+        context ?: return
 
         val statusColor = when (overview.status) {
             MediaStatus.RELEASING.ordinal -> {
-                ContextCompat.getColor(context!!, R.color.colorReleasing)
+                ContextCompat.getColor(requireContext(), R.color.colorReleasing)
             }
             MediaStatus.FINISHED.ordinal -> {
-                ContextCompat.getColor(context!!, R.color.colorFinished)
+                ContextCompat.getColor(requireContext(), R.color.colorFinished)
             };
             MediaStatus.NOT_YET_RELEASED.ordinal -> {
-                ContextCompat.getColor(context!!, R.color.colorNotReleased)
+                ContextCompat.getColor(requireContext(), R.color.colorNotReleased)
             }
             MediaStatus.CANCELLED.ordinal -> {
-                ContextCompat.getColor(context!!, R.color.colorCancelled)
+                ContextCompat.getColor(requireContext(), R.color.colorCancelled)
             }
             else -> {
-                ContextCompat.getColor(context!!, R.color.colorUnknown)
+                ContextCompat.getColor(requireContext(), R.color.colorUnknown)
             }
         }
         statusDivider.setBackgroundColor(statusColor)
@@ -204,9 +204,9 @@ class MediaOverviewFragment : BaseFragment() {
             }
 
         mediaFormatTv.descriptionTextView()
-            .naText(overview.format?.let { context!!.resources.getStringArray(R.array.media_format)[it] })
+            .naText(overview.format?.let { requireContext().resources.getStringArray(R.array.media_format)[it] })
         mediaSourceTv.descriptionTextView()
-            .naText(overview.source?.let { context!!.resources.getStringArray(R.array.media_source)[it] })
+            .naText(overview.source?.let { requireContext().resources.getStringArray(R.array.media_source)[it] })
 
 
         if (overview.type == MediaType.ANIME.ordinal) {
@@ -257,7 +257,7 @@ class MediaOverviewFragment : BaseFragment() {
         overview.airingTimeModel?.let { atModel ->
             airingContainer.visibility = View.VISIBLE
             airingContainer.addView(
-                DynamicCardView(context!!).also {
+                DynamicCardView(requireContext()).also {
                     it.layoutParams = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
@@ -267,7 +267,7 @@ class MediaOverviewFragment : BaseFragment() {
                         params.bottomMargin = dp(20f)
                     }
                 }.also {
-                    it.addView(AiringEpisodeView(context!!).also { ae ->
+                    it.addView(AiringEpisodeView(requireContext()).also { ae ->
                         ae.layoutParams = FrameLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -304,7 +304,7 @@ class MediaOverviewFragment : BaseFragment() {
             }
 
             overview.status?.let {
-                context!!.resources.getStringArray(R.array.media_status)[it]?.let {
+                requireContext().resources.getStringArray(R.array.media_status)[it]?.let {
                     addToMediaCollection(getString(R.string.status), it)
                 }
             }
@@ -325,13 +325,13 @@ class MediaOverviewFragment : BaseFragment() {
         overview.externalLink?.let {
             Adapter.builder(viewLifecycleOwner)
                 .addSource(Source.fromList(it))
-                .addPresenter(MediaExternalLinkPresenter(context!!))
+                .addPresenter(MediaExternalLinkPresenter(requireContext()))
                 .into(metaLinkRecyclerView)
         }
 
         Adapter.builder(viewLifecycleOwner)
             .addSource(Source.fromList(mediaMetaList))
-            .addPresenter(MediaMetaPresenter(context!!))
+            .addPresenter(MediaMetaPresenter(requireContext()))
             .into(metaContainerRecyclerView)
 
     }
@@ -387,7 +387,7 @@ class MediaOverviewFragment : BaseFragment() {
                 val current = spannableStringBuilder.length
                 spannableStringBuilder.append(tag.name?.trim())
                 val clickableSpan = if (tag.isSpoilerTag) {
-                    object : SpoilerSpan(context!!) {
+                    object : SpoilerSpan(requireContext()) {
                         init {
                             spoilerSpans.add(this)
                         }

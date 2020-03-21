@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.service
 
+import com.github.mikephil.charting.data.Entry
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.field.MediaOverviewField
 import com.revolgenx.anilib.field.overview.*
@@ -13,6 +14,9 @@ import com.revolgenx.anilib.util.pmap
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
 import timber.log.Timber
 
 class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
@@ -213,6 +217,16 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                 MediaStatsTrendsModel().also { trendModel ->
                                     trendModel.date = node.date()
                                     trendModel.trending = node.trending()
+                                }
+                            }
+
+                            model.trendsEntry = model.trends?.sortedBy { it.date }?.pmap {
+                                it.date!!.let { date ->
+                                    val day = LocalDateTime.ofInstant(
+                                        Instant.ofEpochSecond(date.toLong()),
+                                        ZoneId.systemDefault()
+                                    ).dayOfMonth
+                                    Entry(day.toFloat(), it.trending?.toFloat() ?: 0f)
                                 }
                             }
 
