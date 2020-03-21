@@ -116,6 +116,10 @@ query MediaStaffQuery($page:Int, $perPage:Int, $mediaId:Int){
                     name{
                         full
                     }
+                    image{
+                        large
+                        medium
+                    }
                 }
             }
         }

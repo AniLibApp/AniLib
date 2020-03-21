@@ -1,15 +1,8 @@
 package com.revolgenx.anilib.model
 
-class MediaStaffModel:BaseMediaModel() {
-    var role:String? = null
-    var name:String? = null
-
-    /*  id
-                role
-                node{
-                    id
-                    name{
-                        full
-                    }
-                }*/
+class MediaStaffModel {
+    var staffId: Int? = null
+    var role: String? = null
+    var name: String? = null
+    var image: StaffImageModel? = null
 }

@@ -1,9 +1,7 @@
 package com.revolgenx.anilib.source
 
-import android.content.Context
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.extensions.MainSource
 import com.revolgenx.anilib.constant.PAGE_SIZE
 import com.revolgenx.anilib.field.overview.MediaCharacterField
 import com.revolgenx.anilib.model.MediaCharacterModel
@@ -18,7 +16,7 @@ class MediaCharacterSource(
     private val mediaBrowseService: MediaBrowseService,
     private val compositeDisposable: CompositeDisposable
 ) :
-    MainSource<MediaCharacterModel>() {
+    BaseRecyclerSource<MediaCharacterModel>() {
 
     override fun areItemsTheSame(first: MediaCharacterModel, second: MediaCharacterModel): Boolean {
         return first.characterId == second.characterId
@@ -33,15 +31,7 @@ class MediaCharacterSource(
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {
         super.onPageOpened(page, dependencies)
-        var key = 1
-        if (page.isFirstPage()) {
-            setKey(page, 1)
-        } else {
-            key = getKey<Int>(page.previous()!!)!!.plus(1)
-            setKey(page, key)
-        }
-
-        field.page = key
+        field.page = pageNo
         field.perPage = pageSize
 
         mediaBrowseService.getMediaCharacter(field, compositeDisposable) { res ->

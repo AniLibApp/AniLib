@@ -21,8 +21,7 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginBottom="20dp">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                 android:id="@+id/descriptionContainerLinearLayout"

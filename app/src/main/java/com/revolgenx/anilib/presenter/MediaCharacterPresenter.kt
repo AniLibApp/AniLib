@@ -7,8 +7,11 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.event.BrowseCharacterEvent
+import com.revolgenx.anilib.event.BrowseStaffEvent
 import com.revolgenx.anilib.model.MediaCharacterModel
 import kotlinx.android.synthetic.main.anime_character_presenter_layout.view.*
+import kotlinx.android.synthetic.main.manga_character_presenter_layout.view.*
 
 class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>(context) {
 
@@ -44,17 +47,31 @@ class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>
                 holder.itemView.apply {
                     characterImageView.setImageURI(item.characterImageModel?.image)
                     characterNameTv.text = item.name
-                    characterRoleTv.text = item.role?.let { characterRoles[it] } ?: ""
-                    voiceActorImageView.setImageURI(item.voiceActor?.voiceActorImageModel?.image)
-                    voiceActorNameTv.text = item.voiceActor?.name
-                    voiceActorLanguage.text =
-                        item.voiceActor?.language?.let { staffLanguages[it] } ?: ""
+                    characterRoleTv.text = item.role?.let { characterRoles[it] }
+                    characterLayoutContainer.setOnClickListener {
+                        BrowseCharacterEvent(item.characterId ?: -1).postEvent
+                    }
 
-                    characterFavIv.setImageResource(R.drawable.ic_favorite)
+                    item.voiceActor?.let { actorModel ->
+                        voiceActorLayoutContainer
+                        voiceActorImageView.setImageURI(actorModel.voiceActorImageModel?.image)
+                        voiceActorNameTv.text = actorModel.name
+                        voiceActorLanguage.text =
+                            actorModel.language?.let { staffLanguages[it] }
+
+                        voiceActorLayoutContainer.setOnClickListener {
+                            BrowseStaffEvent(actorModel.actorId ?: -1).postEvent
+                        }
+                    }
+
                 }
             }
             1 -> {
-
+                holder.itemView.apply {
+                    mangaCharacterImageView.setImageURI(item.characterImageModel?.image)
+                    mangaCharacterNameTv.text = item.name
+                    mangaCharacterRoleTv.text = item.role?.let { characterRoles[it] }
+                }
             }
         }
     }
