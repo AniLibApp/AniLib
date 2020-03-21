@@ -18,12 +18,13 @@ class CustomSmartTab(context: Context, attributeSet: AttributeSet?, style: Int) 
         return tabStrip.children
     }
 
-    override fun setViewPager(viewPager: ViewPager?) {
+    fun setViewPager(viewPager: ViewPager?, callback: ((position: Int) -> Unit)? = null) {
         super.setViewPager(viewPager)
         getTabs().forEach { tabs ->
             tabs.setOnClickListener {
                 for (i in 0 until tabStrip.children.count()) {
                     if (it === getTabAt(i)) {
+                        callback?.invoke(i)
                         viewPager!!.setCurrentItem(i, false)
                         return@setOnClickListener
                     }

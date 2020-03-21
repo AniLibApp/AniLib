@@ -69,7 +69,7 @@ ext {
     multidex_ver = '1.0.3'
     preference_ver = '1.1.0'
     koin_ver = '2.0.1'
-    dynamic_ver = '3.1.1'
+    dynamic_ver = '3.2.0'
     elements_ver = '0.3.7'
     threetenabp_ver = '1.2.2'
     apollo_ver = "1.3.2"
