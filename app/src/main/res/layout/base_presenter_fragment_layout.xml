@@ -2,13 +2,14 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/base_recycler_container"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/base_recycler_container">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout
         android:id="@+id/base_swipe_to_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:ads_colorType="accent_dark">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/base_presenter_recycler_view"
