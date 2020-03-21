@@ -1,10 +1,12 @@
 package com.revolgenx.anilib.repository.util
 
+import java.lang.Exception
+
 data class Resource<out T>(
     val status: Status,
     val data: T?,
     val message: String?,
-    val code: Int = -1
+    val exception: Throwable? = null
 ) {
     companion object {
         fun <T> success(data: T?): Resource<T> {
@@ -15,11 +17,12 @@ data class Resource<out T>(
             )
         }
 
-        fun <T> error(msg: String, data: T?, code: Int = -1): Resource<T> {
+        fun <T> error(msg: String, data: T?, exception: Throwable? = null): Resource<T> {
             return Resource(
                 Status.ERROR,
                 data,
-                msg
+                msg,
+                exception
             )
         }
 

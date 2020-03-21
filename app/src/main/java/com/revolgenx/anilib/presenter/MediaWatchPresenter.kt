@@ -46,20 +46,8 @@ class MediaWatchPresenter(context: Context) : Presenter<MediaWatchModel>(context
             watchThumbnail.setImageURI(item.thumbnail)
             watchTitleTv.text = item.title
             watchFromTv.text = item.site
-            watchTitleTv.setTextColor(Color.WHITE)
-            watchFromTv.setTextColor(Color.WHITE)
             setOnClickListener {
                 context.openLink(item.url)
-            }
-
-            if (item.site?.equals("crunchyroll", true) == true) {
-                watchFromTv.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    crunchyDrawable,
-                    null,
-                    null,
-                    null
-                )
-                watchFromTv.text = ""
             }
         }
     }

@@ -40,14 +40,16 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
                                 node.mediaRecommendation()!!.averageScore()
                             mediaRecommendationModel.rating = node.rating()
                             mediaRecommendationModel.userRating = node.userRating()?.ordinal
-                            mediaRecommendationModel.type = node.mediaRecommendation()!!.type()!!.ordinal
+                            mediaRecommendationModel.type =
+                                node.mediaRecommendation()!!.type()!!.ordinal
                             mediaRecommendationModel.format =
                                 node.mediaRecommendation()?.format()?.ordinal
                             mediaRecommendationModel.seasonYear =
                                 node.mediaRecommendation()?.seasonYear()
                             mediaRecommendationModel.episodes =
                                 node.mediaRecommendation()?.episodes()?.toString()
-                            mediaRecommendationModel.chapters = node.mediaRecommendation()?.chapters()?.toString()
+                            mediaRecommendationModel.chapters =
+                                node.mediaRecommendation()?.chapters()?.toString()
                             mediaRecommendationModel.status =
                                 node.mediaRecommendation()?.status()?.ordinal
                             mediaRecommendationModel.coverImage =
@@ -105,13 +107,8 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
                 updateRecommendationLiveData.value = Resource.success(it)
             }, {
                 Timber.w(it)
-                if (it is ApolloHttpException) {
-                    val code = it.code()
-                    updateRecommendationLiveData.value =
-                        Resource.error(it.message ?: ERROR, null, code)
-                } else {
-                    updateRecommendationLiveData.value = Resource.error(it.message ?: ERROR, null)
-                }
+                updateRecommendationLiveData.value =
+                    Resource.error(it.message ?: ERROR, null, it)
             })
         compositeDisposable?.add(disposable)
         return updateRecommendationLiveData

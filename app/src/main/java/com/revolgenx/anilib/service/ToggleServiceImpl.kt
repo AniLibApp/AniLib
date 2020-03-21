@@ -34,7 +34,7 @@ class ToggleServiceImpl(graphRepository: BaseGraphRepository) :
                 toggleFavMutableLiveData.value = Resource.success(true)
             }, {
                 Timber.w(it)
-                toggleFavMutableLiveData.value = Resource.error(it.message ?: ERROR, null)
+                toggleFavMutableLiveData.value = Resource.error(it.message ?: ERROR, null, it)
             })
         compositeDisposable?.add(disposable)
         return toggleFavMutableLiveData
@@ -53,7 +53,7 @@ class ToggleServiceImpl(graphRepository: BaseGraphRepository) :
                             Resource.success(it.data()?.Media()!!.isFavourite)
                     }, {
                         Timber.w(it)
-                        isFavouriteLiveData.value = Resource.error(it.message ?: ERROR, null)
+                        isFavouriteLiveData.value = Resource.error(it.message ?: ERROR, null, it)
                     })
 
             compositeDisposable?.add(disposable)

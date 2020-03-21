@@ -2,11 +2,15 @@ package com.revolgenx.anilib.fragment.browser
 
 import android.os.Bundle
 import android.view.View
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.activity.MediaBrowserActivity
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.overview.MediaWatchField
+import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.MediaWatchModel
 import com.revolgenx.anilib.presenter.MediaWatchPresenter
@@ -43,7 +47,10 @@ class MediaWatchFragment : BasePresenterFragment<MediaWatchModel>() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        layoutManager = FlexboxLayoutManager(context).also { manager ->
+            manager.justifyContent = JustifyContent.SPACE_EVENLY
+            manager.alignItems = AlignItems.CENTER
+        }
     }
 
     override fun onResume() {

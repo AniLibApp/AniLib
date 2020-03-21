@@ -1,43 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mediaWatchCardView"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
-    android:layout_marginBottom="16dp">
+    style="@style/Widget.DynamicApp.Card.Clickable"
+    android:layout_width="190dp"
+    android:layout_height="210dp"
+    android:layout_marginTop="6dp">
 
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/watchThumbnail"
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="6dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/watchFromTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|top"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/oval_background"
-        android:gravity="center_vertical"
-        android:padding="5dp"
-        android:textColor="@color/white"
-        android:textSize="12sp" />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/watchThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="140dp" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/watchTitleTv"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="bottom"
-        android:background="@color/translucent_dark"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:textColor="@color/white"
-        android:textSize="15sp" />
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/watchTitleTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/watchFromTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textSize="10sp"
+            app:ads_colorType="accent"
+            tools:ignore="SmallSp" />
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

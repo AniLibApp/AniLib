@@ -11,4 +11,5 @@ val viewModelModules = module {
     viewModel { MediaOverviewViewModel(get(), get()) }
     viewModel { MediaWatchViewModel(get()) }
     viewModel { MediaCharacterViewModel(get()) }
+    viewModel { MediaStaffViewModel(get()) }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import com.apollographql.apollo.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
@@ -164,13 +165,17 @@ class BrowserRecommendationPresenter(
                                     }
                                 }
                                 Status.ERROR -> {
-                                    when (it.code) {
-                                        HTTP_TOO_MANY_REQUEST -> {
-                                            this@updateView.itemView.context.makeToast(R.string.too_many_request)
+                                    if (it.exception is ApolloHttpException) {
+                                        when (it.exception.code()) {
+                                            HTTP_TOO_MANY_REQUEST -> {
+                                                this@updateView.itemView.context.makeToast(R.string.too_many_request)
+                                            }
+                                            else -> {
+                                                this@updateView.itemView.context.makeToast(R.string.operation_failed)
+                                            }
                                         }
-                                        -1 -> {
-                                            this@updateView.itemView.context.makeToast(R.string.operation_failed)
-                                        }
+                                    } else {
+                                        this@updateView.itemView.context.makeToast(R.string.operation_failed)
                                     }
                                 }
                             }
