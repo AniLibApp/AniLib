@@ -132,14 +132,12 @@ query MediaReviewQuery($mediaId:Int, $page:Int, $perPage:Int){
             edges{
                 node{
                     id
-                    userId
                     summary
                     userRating
                     rating
                     ratingAmount
                     user{
                         id
-                        name
                         avatar{
                             large
                             medium
