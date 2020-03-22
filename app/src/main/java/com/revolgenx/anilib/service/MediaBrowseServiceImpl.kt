@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.service
 
 import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.PieEntry
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.field.MediaOverviewField
 import com.revolgenx.anilib.field.overview.*
@@ -208,7 +209,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                     rankModel.rank = rank.rank()
                                     rankModel.season = rank.season()?.ordinal
                                     rankModel.year = rank.year()
-                                    rankModel.type = rank.type().ordinal
+                                    rankModel.rankType = rank.type().ordinal
                                 }
                             }
 

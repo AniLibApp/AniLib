@@ -8,6 +8,7 @@ import android.text.style.ClickableSpan
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -112,7 +113,7 @@ class MediaOverviewFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         metaContainerRecyclerView.layoutManager = FlexboxLayoutManager(context)
         metaLinkRecyclerView.layoutManager = FlexboxLayoutManager(context).also { manager ->
-            manager.justifyContent = JustifyContent.CENTER;
+            manager.justifyContent = JustifyContent.SPACE_EVENLY;
             manager.alignItems = AlignItems.CENTER;
         }
         recommendationRecyclerView.layoutManager =
@@ -195,7 +196,6 @@ class MediaOverviewFragment : BaseFragment() {
         }
 
 
-
         mediaDescriptionTv.text =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 overview.description?.let { Html.fromHtml(it, Html.FROM_HTML_MODE_COMPACT) } ?: ""
@@ -203,22 +203,26 @@ class MediaOverviewFragment : BaseFragment() {
                 overview.description?.let { Html.fromHtml(it) } ?: ""
             }
 
-        mediaFormatTv.descriptionTextView()
-            .naText(overview.format?.let { requireContext().resources.getStringArray(R.array.media_format)[it] })
-        mediaSourceTv.descriptionTextView()
-            .naText(overview.source?.let { requireContext().resources.getStringArray(R.array.media_source)[it] })
-
+        mediaFormatTv.subtitle = naText(overview.format?.let {
+            requireContext().resources.getStringArray(
+                R.array.media_format
+            )[it]
+        })
+        mediaSourceTv.subtitle = naText(overview.source?.let {
+            requireContext().resources.getStringArray(
+                R.array.media_source
+            )[it]
+        })
 
         if (overview.type == MediaType.ANIME.ordinal) {
-            mediaEpisodeTv.descriptionTextView()
-                .naText(overview.episodes)
-            mediaDurationTv.description =
+            mediaEpisodeTv.subtitle = naText(overview.episodes)
+            mediaDurationTv.subtitle =
                 getString(R.string.min_s).format(naText(overview.duration))
         } else if (overview.type == MediaType.MANGA.ordinal) {
-            mediaEpisodeTv.titleTextView().text = getString(R.string.chapters)
-            mediaEpisodeTv.descriptionTextView().naText(overview.chapters)
-            mediaDurationTv.titleTextView().text = getString(R.string.volumes)
-            mediaDurationTv.descriptionTextView().naText(overview.volumes)
+            mediaEpisodeTv.title = getString(R.string.chapters)
+            mediaEpisodeTv.subtitle = naText(overview.chapters)
+            mediaDurationTv.title = getString(R.string.volumes)
+            mediaDurationTv.subtitle = naText(overview.volumes)
         }
 
         when (overview.trailer?.site) {

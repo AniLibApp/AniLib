@@ -33,17 +33,17 @@ abstract class BasePresenterFragment<S : Any>() :
 
     private val loadingPresenter: Presenter<Void> by lazy {
         Presenter.forLoadingIndicator(
-            context!!, R.layout.loading_layout
+            requireContext(), R.layout.loading_layout
         )
     }
 
 
     private val errorPresenter: Presenter<Void> by lazy {
-        Presenter.forErrorIndicator(context!!, R.layout.error_layout)
+        Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
     }
 
     private val emptyPresenter: Presenter<Void> by lazy {
-        Presenter.forEmptyIndicator(context!!, R.layout.empty_layout)
+        Presenter.forEmptyIndicator(requireContext(), R.layout.empty_layout)
     }
 
     lateinit var baseRecyclerView: RecyclerView
@@ -68,7 +68,7 @@ abstract class BasePresenterFragment<S : Any>() :
         layoutManager =
             GridLayoutManager(
                 this.context,
-                if (context!!.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
+                if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
             )
     }
 

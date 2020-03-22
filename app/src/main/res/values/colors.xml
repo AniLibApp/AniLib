@@ -20,5 +20,7 @@
     <color name="colorNotReleased">#673AB7</color>
     <color name="colorCancelled">#D50000</color>
     <color name="colorUnknown">#FF6E40</color>
+    <color name="popular_color">#E85D75</color>
+    <color name="rated_color">#F7BF63</color>
 
 </resources>

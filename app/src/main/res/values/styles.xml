@@ -10,7 +10,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="fontFamily">@font/open_sans_regular</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="BaseTheme.Dark" parent="Theme.DynamicApp">
@@ -20,7 +19,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="fontFamily">@font/open_sans_regular</item>
-        <item name="android:windowDisablePreview">true</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
 
@@ -40,9 +38,9 @@
     <style name="CollapsedTitleAppearance" parent="TextAppearance.DynamicApp.Toolbar">
         <item name="fontFamily">@font/open_sans_regular</item>
     </style>
-<!--
-        <item name="android:shadowColor">@color/ads_color_black</item>
-        <item name="android:shadowRadius">50</item>-->
+    <!--
+            <item name="android:shadowColor">@color/ads_color_black</item>
+            <item name="android:shadowRadius">50</item>-->
 
     <!--    <style name="BottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">-->
     <!--        <item name="fontFamily">@font/open_sans_regular</item>-->

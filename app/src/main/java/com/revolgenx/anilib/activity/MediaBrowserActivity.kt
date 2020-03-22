@@ -255,6 +255,7 @@ class MediaBrowserActivity : DynamicSystemActivity() {
 
     }
 
+
     private fun initListener() {
         appbarLayout.addOnOffsetChangedListener(offSetChangeListener)
 
@@ -269,7 +270,6 @@ class MediaBrowserActivity : DynamicSystemActivity() {
         mediaFavButton.setOnClickListener {
             toggleFav()
         }
-
 
         /**problem with transition
          * {@link https://github.com/facebook/fresco/issues/1445}*/
@@ -457,6 +457,11 @@ class MediaBrowserActivity : DynamicSystemActivity() {
         }
     }
 
+
+    override fun finishAfterTransition() {
+        finish()
+//        this.overridePendingTransition(0,android.R.anim.slide_out_right);
+    }
     override fun onStop() {
         super.onStop()
         unRegisterForEvent()
