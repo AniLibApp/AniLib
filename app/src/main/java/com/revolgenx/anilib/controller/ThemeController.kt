@@ -5,6 +5,7 @@ import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
+import com.pranavpandey.android.dynamic.support.model.DynamicAppTheme
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
@@ -123,4 +124,15 @@ object ThemeController {
             .setBackgroundColor(backgroundColor)
             .setSurfaceColor(Theme.AUTO).autoGenerateColors()
     }
+
+
+    fun lightSurfaceColor(): Int {
+        val surfaceColor = DynamicTheme.getInstance().get().surfaceColor
+        return if (DynamicColorUtils.isColorDark(surfaceColor)) {
+            surfaceColor
+        } else {
+            DynamicColorUtils.getLighterColor(surfaceColor, 0.3f)
+        }
+    }
 }
+

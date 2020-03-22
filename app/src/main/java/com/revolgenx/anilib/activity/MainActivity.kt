@@ -33,6 +33,10 @@ import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.fragment.*
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
+import com.revolgenx.anilib.fragment.home.DiscoverFragment
+import com.revolgenx.anilib.fragment.home.DownloadFragment
+import com.revolgenx.anilib.fragment.home.RecommendationFragment
+import com.revolgenx.anilib.fragment.home.SeasonFragment
 import com.revolgenx.anilib.preference.*
 import com.revolgenx.anilib.util.makePagerAdapter
 import com.revolgenx.anilib.util.registerForEvent
@@ -113,7 +117,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
                 listOf(
                     DiscoverFragment::class.java,
                     SeasonFragment::class.java,
-                    CollectionFragment::class.java,
+                    RecommendationFragment::class.java,
                     DownloadFragment::class.java
                 )
             )

@@ -9,6 +9,7 @@ import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseCharacterEvent
 import com.revolgenx.anilib.event.BrowseStaffEvent
+import com.revolgenx.anilib.event.meta.CharacterMeta
 import com.revolgenx.anilib.model.MediaCharacterModel
 import kotlinx.android.synthetic.main.anime_character_presenter_layout.view.*
 import kotlinx.android.synthetic.main.manga_character_presenter_layout.view.*
@@ -49,7 +50,10 @@ class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>
                     characterNameTv.text = item.name
                     characterRoleTv.text = item.role?.let { characterRoles[it] }
                     characterLayoutContainer.setOnClickListener {
-                        BrowseCharacterEvent(item.characterId ?: -1).postEvent
+                        BrowseCharacterEvent(
+                            CharacterMeta(item.characterId ?: -1, item.characterImageModel?.image),
+                            characterImageView
+                        ).postEvent
                     }
 
                     item.voiceActor?.let { actorModel ->
@@ -71,6 +75,12 @@ class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>
                     mangaCharacterImageView.setImageURI(item.characterImageModel?.image)
                     mangaCharacterNameTv.text = item.name
                     mangaCharacterRoleTv.text = item.role?.let { characterRoles[it] }
+                    mangaCharacterContainer.setOnClickListener {
+                        BrowseCharacterEvent(
+                            CharacterMeta(item.characterId ?: -1, item.characterImageModel?.image),
+                            mangaCharacterImageView
+                        ).postEvent
+                    }
                 }
             }
         }
