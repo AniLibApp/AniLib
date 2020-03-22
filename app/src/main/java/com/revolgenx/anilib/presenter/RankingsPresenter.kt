@@ -2,6 +2,7 @@ package com.revolgenx.anilib.presenter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -23,13 +24,18 @@ class RankingsPresenter(context: Context, private val mediaType: Int = -1) :
         get() = listOf(0)
 
     private val ratedDrawable by lazy {
-        ContextCompat.getDrawable(context, R.drawable.ic_star)?.also {
-            it.setTint(ContextCompat.getColor(context, R.color.rated_color))
+        ContextCompat.getDrawable(context, R.drawable.ic_star)?.mutate()?.also {
+            it.setTint(
+                ContextCompat.getColor(
+                    context,
+                    R.color.rated_color
+                )
+            )
         }
     }
 
     private val popularDrawable by lazy {
-        ContextCompat.getDrawable(context, R.drawable.ic_favorite)?.also {
+        ContextCompat.getDrawable(context, R.drawable.ic_favorite)?.mutate()?.also {
             it.setTint(
                 ContextCompat.getColor(
                     context,
