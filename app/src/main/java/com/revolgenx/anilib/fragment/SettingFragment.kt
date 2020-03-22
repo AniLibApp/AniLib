@@ -32,8 +32,4 @@ class SettingFragment : BaseToolbarFragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.nav_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
 }
