@@ -27,8 +27,8 @@
                 android:id="@+id/descriptionContainerLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -100,53 +100,53 @@
                     android:alpha="0.5"
                     android:background="@color/ads_color_gray" />
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <com.revolgenx.anilib.view.TitleTextView
+                    <com.revolgenx.anilib.view.CustomDynamicHeader
                         android:id="@+id/mediaFormatTv"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        app:titleName="@string/format" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ads_fillSpace="true"
+                        app:ads_title="@string/format"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/mediaSourceTv"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
 
-                    <com.revolgenx.anilib.view.TitleTextView
+                    <com.revolgenx.anilib.view.CustomDynamicHeader
                         android:id="@+id/mediaSourceTv"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        app:titleName="@string/source" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ads_fillSpace="true"
+                        app:ads_title="@string/source"
+                        app:layout_constraintLeft_toRightOf="@id/mediaFormatTv"
+                        app:layout_constraintRight_toLeftOf="@id/mediaEpisodeTv"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.revolgenx.anilib.view.TitleTextView
+                    <com.revolgenx.anilib.view.CustomDynamicHeader
                         android:id="@+id/mediaEpisodeTv"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        app:titleName="@string/episodes" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ads_fillSpace="true"
+                        app:ads_title="@string/episodes"
+                        app:layout_constraintLeft_toRightOf="@id/mediaSourceTv"
+                        app:layout_constraintRight_toLeftOf="@id/mediaDurationTv"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.revolgenx.anilib.view.TitleTextView
+                    <com.revolgenx.anilib.view.CustomDynamicHeader
                         android:id="@+id/mediaDurationTv"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        app:titleName="@string/duration" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ads_fillSpace="true"
+                        app:ads_title="@string/duration"
+                        android:layout_alignParentEnd="true"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/mediaEpisodeTv"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-                </LinearLayout>
-
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
@@ -155,26 +155,26 @@
             android:id="@+id/airingContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
 
-<!--        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView-->
-<!--            android:id="@+id/airingCardView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="20dp"-->
-<!--            android:layout_marginStart="2dp"-->
-<!--            android:layout_marginEnd="2dp"-->
-<!--            >-->
+        <!--        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView-->
+        <!--            android:id="@+id/airingCardView"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginBottom="20dp"-->
+        <!--            android:layout_marginStart="2dp"-->
+        <!--            android:layout_marginEnd="2dp"-->
+        <!--            >-->
 
-<!--            <com.revolgenx.anilib.view.AiringEpisodeView-->
-<!--                android:id="@+id/airingEpisode"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="30dp"-->
-<!--                android:layout_marginEnd="10dp"/>-->
+        <!--            <com.revolgenx.anilib.view.AiringEpisodeView-->
+        <!--                android:id="@+id/airingEpisode"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="30dp"-->
+        <!--                android:layout_marginEnd="10dp"/>-->
 
-<!--        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>-->
+        <!--        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>-->
 
         <FrameLayout
             android:id="@+id/trailerLayout"

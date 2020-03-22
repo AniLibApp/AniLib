@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.model.stats
 
 import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.PieEntry
 
 
 class MediaStatsModel {
@@ -8,6 +9,5 @@ class MediaStatsModel {
     var trends: List<MediaStatsTrendsModel>? = null
     var statusDistribution: List<MediaStatsStatusDistributionModel>? = null
     var scoreDistribution: List<MediaStatsScoreDistributionModel>? = null
-
     var trendsEntry: List<Entry>? = null
 }

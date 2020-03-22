@@ -15,6 +15,4 @@ class CustomDynamicHeader(context: Context, attributeSet: AttributeSet?, defAttS
         subtitleView.typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
         subtitleView.setTextColor(DynamicTheme.getInstance().get().tintSurfaceColor)
     }
-
-
 }

@@ -3,7 +3,7 @@
     <!-- Default app theme colors. -->
     <integer-array name="pref_app_theme_colors">
         <item>-3</item>
-        <item>@color/ads_window_background_light</item>
+        <item>@color/window_background_light</item>
         <item>@color/ads_window_background</item>
         <item>@color/ads_window_background_yellow</item>
         <item>@color/ads_window_background_indigo_light</item>
@@ -29,7 +29,7 @@
 
     <!-- Default app theme day colors. -->
     <integer-array name="pref_app_theme_day_colors">
-        <item>@color/ads_window_background_light</item>
+        <item>@color/window_background_light</item>
         <item>@color/ads_window_background_yellow</item>
         <item>@color/ads_window_background_indigo_light</item>
         <item>@color/ads_window_background_red_light</item>
@@ -58,4 +58,5 @@
     </integer-array>
 
 
+    <color name="window_background_light">#F1F1F1</color>
 </resources>
