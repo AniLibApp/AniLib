@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.view
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Parcelable
 import android.text.InputType
 import android.util.AttributeSet
@@ -10,8 +11,10 @@ import androidx.core.view.setPadding
 import androidx.core.widget.doOnTextChanged
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.*
+import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.makeToast
 import kotlinx.android.parcel.Parcelize
@@ -23,7 +26,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         DynamicTheme.getInstance().get().accentColor
     }
     private val surfaceColor by lazy {
-        DynamicTheme.getInstance().get().surfaceColor
+        ThemeController.lightSurfaceColor()
     }
 
     var max: Double? = null
@@ -124,7 +127,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         this.setBackgroundColor(surfaceColor)
 
         dynamicIncrementIv.setOnClickListener {
-//            counterHolder = (((counterHolder * 10).toInt() + 10) / 10).toDouble()
+            //            counterHolder = (((counterHolder * 10).toInt() + 10) / 10).toDouble()
             counterHolder++
             if (max != null) {
                 if (counterHolder > max!!) {
@@ -135,7 +138,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         }
 
         dynamicDecrementIv.setOnClickListener {
-//            counterHolder = (((counterHolder * 10).toInt() - 10) / 10).toDouble()
+            //            counterHolder = (((counterHolder * 10).toInt() - 10) / 10).toDouble()
             counterHolder--
             if (counterHolder < 0) {
                 counterHolder = 0.0
@@ -149,7 +152,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         this.textChanged = listener
     }
 
-    fun setCounter(counter:Double){
+    fun setCounter(counter: Double) {
         counterHolder = counter
         updateDynamicText()
     }

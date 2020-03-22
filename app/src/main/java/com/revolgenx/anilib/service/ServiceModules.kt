@@ -7,4 +7,5 @@ val serviceModule = module {
     factory<MediaListEntryService> { MediaListEntryServiceImpl(get(), get()) }
     factory<RecommendationService> { RecommendationServiceImpl(get()) }
     factory<MediaBrowseService> { MediaBrowseServiceImpl(get()) }
+    factory<CharacterService> { CharacterServiceImpl(get(),get()) }
 }

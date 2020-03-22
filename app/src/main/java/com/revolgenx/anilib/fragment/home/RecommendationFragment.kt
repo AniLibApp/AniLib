@@ -1,11 +1,11 @@
-package com.revolgenx.anilib.fragment
+package com.revolgenx.anilib.fragment.home
 
 import android.view.Menu
 import android.view.MenuInflater
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.fragment.base.BaseFragment
 
-class CollectionFragment :BaseFragment(){
+class RecommendationFragment :BaseFragment(){
 
     override fun onResume() {
         super.onResume()

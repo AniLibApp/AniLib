@@ -13,6 +13,7 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
 import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.controller.ThemeController
 import kotlinx.android.parcel.Parcelize
 
 class MediaSmileyScoreLayout(context: Context, attributeSet: AttributeSet?, style: Int) :
@@ -24,11 +25,9 @@ class MediaSmileyScoreLayout(context: Context, attributeSet: AttributeSet?, styl
     private val tintPrimary by lazy {
         DynamicTheme.getInstance().get().tintPrimaryColor
     }
-    private val surfaceColor by lazy {
-        DynamicTheme.getInstance().get().surfaceColor
-    }
 
-    private var mScoreListener:OnSmileyScoreChangeListener = null
+
+    private var mScoreListener: OnSmileyScoreChangeListener = null
     var smileyScore: Int = 0
         set(value) {
             field = value
@@ -78,7 +77,7 @@ class MediaSmileyScoreLayout(context: Context, attributeSet: AttributeSet?, styl
         addView(smileySadImageButton)
         addView(smileyNeutralImageButton)
         addView(smileySmileImageButton)
-        setBackgroundColor(surfaceColor)
+        setBackgroundColor(ThemeController.lightSurfaceColor())
 
         smileySmileImageButton.setOnClickListener {
             if (smileyScore == 3) {

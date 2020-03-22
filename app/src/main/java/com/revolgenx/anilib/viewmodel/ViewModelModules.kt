@@ -8,10 +8,13 @@ val viewModelModules = module {
     viewModel { MediaEntryEditorViewModel(get(), get(), get()) }
     viewModel { MainActivityViewModel(get(), get()) }
     viewModel { MediaBrowserViewModel(get()) }
+
     viewModel { MediaOverviewViewModel(get(), get()) }
     viewModel { MediaWatchViewModel(get()) }
     viewModel { MediaCharacterViewModel(get()) }
     viewModel { MediaStaffViewModel(get()) }
     viewModel { MediaReviewViewModel(get()) }
     viewModel { MediaStatsViewModel(get()) }
+
+    viewModel { CharacterViewModel(get()) }
 }

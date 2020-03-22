@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.fragment
+package com.revolgenx.anilib.fragment.home
 
 import android.os.Bundle
 import android.view.Menu
