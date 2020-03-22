@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="navActivityId" type="id"/>
-    <item name="incrementButtonId" type="id"/>
-    <item name="decrementButtonId" type="id"/>
+    <item name="navActivityId" type="id" />
+    <item name="incrementButtonId" type="id" />
+    <item name="decrementButtonId" type="id" />
 
-    <item name="mediaBrowserBottomNavId" type="id"/>
-    <item name="customTextViewDescriptionId" type="id"/>
-    <item name="customTextViewTitleId" type="id"/>
+    <item name="mediaBrowserBottomNavId" type="id" />
+    <item name="customTextViewDescriptionId" type="id" />
+    <item name="customTextViewTitleId" type="id" />
 
-    <item name="airingEpisode" type="id"/>
+    <item name="airingEpisode" type="id" />
     <declare-styleable name="TitleTextView">
-        <attr name="titleName" format="string"/>
+        <attr name="titleName" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomDynamicHeader">
+        <attr name="titleSize" format="dimension" />
+        <attr name="subtitleSize" format="dimension" />
     </declare-styleable>
 </resources>

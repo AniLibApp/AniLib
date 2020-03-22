@@ -1,0 +1,105 @@
+package com.revolgenx.anilib.service
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.revolgenx.anilib.field.CharacterField
+import com.revolgenx.anilib.field.CharacterMediaField
+import com.revolgenx.anilib.model.CharacterImageModel
+import com.revolgenx.anilib.model.CoverImageModel
+import com.revolgenx.anilib.model.TitleModel
+import com.revolgenx.anilib.model.character.CharacterMediaModel
+import com.revolgenx.anilib.model.character.CharacterModel
+import com.revolgenx.anilib.model.character.CharacterNameModel
+import com.revolgenx.anilib.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.repository.util.ERROR
+import com.revolgenx.anilib.repository.util.Resource
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
+
+class CharacterServiceImpl(
+    private val graphRepository: BaseGraphRepository,
+    private val toggleService: ToggleService
+) : CharacterService {
+    override val characterInfoLiveData by lazy {
+        MutableLiveData<Resource<CharacterModel>>()
+    }
+
+    override fun getCharacterInfo(
+        field: CharacterField,
+        compositeDisposable: CompositeDisposable?
+    ): LiveData<Resource<CharacterModel>> {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map {
+                it.data()?.Character()?.let {
+                    CharacterModel().also { model ->
+                        model.characterId = it.id()
+                        model.isFavourite = it.isFavourite
+                        model.descrition = it.description()?.replace("\n", "  \r")
+                        model.siteUrl = it.siteUrl()
+                        model.favourites = it.favourites()
+                        model.name = it.name()?.let {
+                            CharacterNameModel().also { name ->
+                                name.full = it.full()
+                                name.native = it.native_()
+                                name.alternative = it.alternative()
+                            }
+                        }
+                    }
+                }
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                characterInfoLiveData.value = Resource.success(it)
+            }, {
+                characterInfoLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+            })
+
+        compositeDisposable?.add(disposable)
+        return characterInfoLiveData
+    }
+
+    override fun getCharacterMediaInfo(
+        field: CharacterMediaField,
+        compositeDisposable: CompositeDisposable?,
+        resourceCallback: ((Resource<List<CharacterMediaModel>>) -> Unit)
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map {
+                it.data()?.Character()?.media()?.nodes()?.map {
+                    CharacterMediaModel().also { model ->
+                        model.mediaId = it.id()
+                        model.title = it.title()?.let {
+                            TitleModel().also { title ->
+                                title.romaji = it.romaji()
+                                title.english = it.english()
+                                title.native = it.native_()
+                                title.userPreferred = it.userPreferred()
+                            }
+                        }
+
+                        model.season = it.season()?.ordinal
+                        model.seasonYear = it.seasonYear()
+                        model.status = it.status()?.ordinal
+                        model.format = it.format()?.ordinal
+                        model.averageScore = it.averageScore()
+                        model.coverImage = it.coverImage()?.let {
+                            CoverImageModel().also { img ->
+                                img.large = it.large()
+                                img.extraLarge = it.extraLarge()
+                            }
+                        }
+                    }
+                }
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                resourceCallback.invoke(Resource.success(it))
+            }, {
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+
+        compositeDisposable?.add(disposable)
+    }
+
+}

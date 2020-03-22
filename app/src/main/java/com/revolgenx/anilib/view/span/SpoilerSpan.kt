@@ -17,7 +17,7 @@ abstract class SpoilerSpan(private val context: Context) : ClickableSpan() {
     }
 
     override fun updateDrawState(ds: TextPaint) {
-        val accent = DynamicTheme.getInstance().get().accentColor
+        val accent = DynamicTheme.getInstance().get().tintAccentColor
 
         if (shown) {
             ds.color = accent

@@ -213,6 +213,8 @@
     <string name="rankings">Rankings</string>
     <string name="status_distribution">Status Distribution</string>
     <string name="score_distribution">Score Distribution</string>
+    <string name="native_name">Native Name</string>
+    <string name="alternative_name">Alternative Name</string>
 
     <!-- TV("TV"),
   TV_SHORT("TV_SHORT")

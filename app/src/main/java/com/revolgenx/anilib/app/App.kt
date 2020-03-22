@@ -2,7 +2,6 @@ package com.revolgenx.anilib.app
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Handler
 import androidx.annotation.StyleRes
 import androidx.multidex.MultiDex
 import com.facebook.drawee.backends.pipeline.Fresco
@@ -17,7 +16,6 @@ import com.revolgenx.anilib.repository.networkModules
 import com.revolgenx.anilib.repository.repositoryModules
 import com.revolgenx.anilib.service.serviceModule
 import com.revolgenx.anilib.viewmodel.viewModelModules
-import io.noties.markwon.Markwon
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -35,6 +33,7 @@ class App : DynamicApplication() {
         AndroidThreeTen.init(this)
         Fresco.initialize(this)
         Timber.plant(Timber.DebugTree())
+        MarkwonImpl.createHtmlInstance(this)
         MarkwonImpl.createInstance(this)
         startKoin {
             androidContext(this@App)

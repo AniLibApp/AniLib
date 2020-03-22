@@ -32,6 +32,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.BaseEvent
+import com.revolgenx.anilib.event.BrowseCharacterEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
@@ -39,6 +40,7 @@ import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.browser.*
+import com.revolgenx.anilib.fragment.info.CharacterFragment
 import com.revolgenx.anilib.model.ToggleFavouriteModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Resource
@@ -443,6 +445,23 @@ class MediaBrowserActivity : DynamicSystemActivity() {
                 startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
                     this.putExtra(MEDIA_BROWSER_META, event.mediaBrowserMeta)
                 }, options.toBundle())
+            }
+            is BrowseCharacterEvent->{
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this,
+                    event.sharedElement,
+                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
+                )
+
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        CharacterFragment::class.java,
+                        bundleOf(
+                            CharacterFragment.CHARACTER_META_KEY to event.meta
+                        )
+                    ), options
+                )
             }
         }
     }

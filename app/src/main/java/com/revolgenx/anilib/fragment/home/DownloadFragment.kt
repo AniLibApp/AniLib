@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.fragment
+package com.revolgenx.anilib.fragment.home
 
 import android.content.Context
 import com.revolgenx.anilib.R

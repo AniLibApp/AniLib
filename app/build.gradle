@@ -156,6 +156,7 @@ dependencies {
 
     //markwon
     implementation "io.noties.markwon:core:$markwon_ver"
+    implementation"io.noties.markwon:html:$markwon_ver"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

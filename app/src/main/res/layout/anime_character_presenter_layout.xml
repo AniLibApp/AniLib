@@ -26,7 +26,8 @@
                 android:layout_width="80dp"
                 android:layout_height="140dp"
                 app:roundAsCircle="false"
-                app:roundedCornerRadius="4dp" />
+                app:roundedCornerRadius="4dp"
+                android:transitionName="character_image_transition"/>
 
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView

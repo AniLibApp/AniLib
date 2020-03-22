@@ -16,8 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="280dp"
             app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
-            app:expandedTitleMarginStart="132dp"
             app:expandedTitleMarginBottom="100dp"
+            app:expandedTitleMarginStart="132dp"
             app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:maxLines="2">
@@ -33,11 +33,11 @@
                 android:id="@+id/coverImageFrameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:layout_marginStart="20dp"
-                android:orientation="horizontal"
                 android:layout_gravity="bottom"
-                app:layout_collapseMode="parallax"
-                android:layout_marginBottom="10dp">
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                app:layout_collapseMode="parallax">
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/listEditorCoverImage"

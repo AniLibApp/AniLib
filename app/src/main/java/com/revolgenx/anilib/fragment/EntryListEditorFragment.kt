@@ -14,6 +14,7 @@ import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapt
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.model.DateModel
@@ -58,8 +59,20 @@ class EntryListEditorFragment : BaseFragment() {
     private var isFavourite = false
 
 
-    private val surfaceColor by lazy {
-        DynamicTheme.getInstance().get().surfaceColor
+    private val calendarDrawable by lazy {
+        ContextCompat.getDrawable(requireContext(), R.drawable.ic_calendar)!!.mutate().also {
+            it.setTint(accentColor)
+        }
+    }
+
+    private val crossDrawable by lazy {
+        ContextCompat.getDrawable(requireContext(), R.drawable.ic_close)!!.mutate().also {
+            it.setTint(accentColor)
+        }
+    }
+
+    private val accentColor by lazy {
+        DynamicTheme.getInstance().get().accentColor
     }
 
     private val calendar by lazy {
@@ -218,7 +231,7 @@ class EntryListEditorFragment : BaseFragment() {
         return EntryListEditorMediaModel().also {
             it.mediaId = mediaMeta.id
             it.type = mediaMeta.type
-            it.userId = context!!.userId()
+            it.userId = requireContext().userId()
         }
     }
 
@@ -232,52 +245,39 @@ class EntryListEditorFragment : BaseFragment() {
         listEditorCoverImage.setImageURI(mediaMeta.coverImage)
         listEditorBannerImage.setImageURI(mediaMeta.bannerImage)
         listDeleteButton.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(context!!, R.color.red))
-//        listFavCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
-//        listDeleteCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
-//        listSaveCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
-//        listPrivateCardView.corner = DynamicUnitUtils.convertDpToPixels(8f).toFloat()
-        listEditorScoreLayout.scoreFormatType = context!!.userScoreFormat()
+            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red))
+
+        listEditorScoreLayout.scoreFormatType = requireContext()!!.userScoreFormat()
 
         if (mediaMeta.type == MediaType.MANGA.ordinal) {
             progressHeader.title = getString(R.string.manga_progress)
-            volumeProgressHeader.visibility = View.GONE
-            listEditorVolumeProgressLayout.visibility = View.GONE
+            volumeProgressHeader.visibility = View.VISIBLE
+            listEditorVolumeProgressLayout.visibility = View.VISIBLE
         }
 
-        startDateDynamicEt.setBackgroundColor(surfaceColor)
-        endDateDynamicEt.setBackgroundColor(surfaceColor)
-        notesEt.setBackgroundColor(surfaceColor)
+        val lightSurfaceColor = ThemeController.lightSurfaceColor()
+        startDateDynamicEt.setBackgroundColor(lightSurfaceColor)
+        endDateDynamicEt.setBackgroundColor(lightSurfaceColor)
+        notesEt.setBackgroundColor(lightSurfaceColor)
 
-        startDateDynamicEt.compoundDrawablesRelative[0].setTintList(
-            ColorStateList.valueOf(
-                DynamicTheme.getInstance().get().accentColor
-
-            )
+        startDateDynamicEt.setCompoundDrawablesWithIntrinsicBounds(
+            calendarDrawable,
+            null,
+            crossDrawable,
+            null
         )
-        startDateDynamicEt.compoundDrawablesRelative[2].setTintList(
-            ColorStateList.valueOf(
-                DynamicTheme.getInstance().get().accentColor
-
-            )
-        )
-
-        endDateDynamicEt.compoundDrawablesRelative[0].setTintList(
-            ColorStateList.valueOf(
-                DynamicTheme.getInstance().get().accentColor
-            )
-        )
-        endDateDynamicEt.compoundDrawablesRelative[2].setTintList(
-            ColorStateList.valueOf(
-                DynamicTheme.getInstance().get().accentColor
-            )
+        endDateDynamicEt.setCompoundDrawablesWithIntrinsicBounds(
+            calendarDrawable,
+            null,
+            crossDrawable,
+            null
         )
 
         val spinnerItems = mutableListOf<DynamicSpinnerItem>()
         spinnerItems.add(
             DynamicSpinnerItem(
                 ContextCompat.getDrawable(
-                    context!!,
+                    requireContext(),
                     R.drawable.ic_watching
                 ), getString(R.string.watching)
             )
@@ -285,7 +285,7 @@ class EntryListEditorFragment : BaseFragment() {
         spinnerItems.add(
             DynamicSpinnerItem(
                 ContextCompat.getDrawable(
-                    context!!,
+                    requireContext(),
                     R.drawable.ic_planning
                 ), getString(R.string.planning)
             )
@@ -293,7 +293,7 @@ class EntryListEditorFragment : BaseFragment() {
         spinnerItems.add(
             DynamicSpinnerItem(
                 ContextCompat.getDrawable(
-                    context!!,
+                    requireContext(),
                     R.drawable.ic_completed
                 ), getString(R.string.completed)
             )
@@ -301,7 +301,7 @@ class EntryListEditorFragment : BaseFragment() {
         spinnerItems.add(
             DynamicSpinnerItem(
                 ContextCompat.getDrawable(
-                    context!!,
+                    requireContext(),
                     R.drawable.ic_dropped
                 ), getString(R.string.dropped)
             )
@@ -309,7 +309,7 @@ class EntryListEditorFragment : BaseFragment() {
         spinnerItems.add(
             DynamicSpinnerItem(
                 ContextCompat.getDrawable(
-                    context!!,
+                    requireContext(),
                     R.drawable.ic_paused_filled
                 ), getString(R.string.paused)
             )
@@ -317,7 +317,7 @@ class EntryListEditorFragment : BaseFragment() {
         spinnerItems.add(
             DynamicSpinnerItem(
                 ContextCompat.getDrawable(
-                    context!!,
+                    requireContext(),
                     R.drawable.ic_rewatching
                 ), getString(R.string.rewatching)
             )
@@ -372,7 +372,7 @@ class EntryListEditorFragment : BaseFragment() {
 
         startDateDynamicEt.setOnClickListener {
             DatePickerDialog(
-                context!!, { view, year, month, dayOfMonth ->
+                requireContext(), { view, year, month, dayOfMonth ->
                     apiModelEntry!!.startDate =
                         (apiModelEntry!!.startDate ?: DateModel()).also {
                             it.year = year
@@ -389,7 +389,7 @@ class EntryListEditorFragment : BaseFragment() {
 
         endDateDynamicEt.setOnClickListener {
             DatePickerDialog(
-                context!!, { view, year, month, dayOfMonth ->
+                requireContext(), { view, year, month, dayOfMonth ->
                     apiModelEntry!!.endDate =
                         (apiModelEntry!!.endDate ?: DateModel()).also {
                             it.year = year
@@ -517,7 +517,7 @@ class EntryListEditorFragment : BaseFragment() {
         }
 
         if (isFavourite) {
-            val drawable = ContextCompat.getDrawable(context!!, R.drawable.ic_favorite)
+            val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite)
             menu.findItem(R.id.listFavMenu).icon = drawable
         }
     }

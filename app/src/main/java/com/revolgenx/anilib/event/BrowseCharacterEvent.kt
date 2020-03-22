@@ -1,3 +1,6 @@
 package com.revolgenx.anilib.event
 
-data class BrowseCharacterEvent(var characterId: Int) : BaseEvent()
+import android.view.View
+import com.revolgenx.anilib.event.meta.CharacterMeta
+
+data class BrowseCharacterEvent(var meta: CharacterMeta, var sharedElement: View) : BaseEvent()

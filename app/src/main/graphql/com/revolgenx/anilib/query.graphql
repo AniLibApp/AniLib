@@ -25,7 +25,7 @@ query MediaListEditorQuery($mediaId:Int,$userId:Int, $format:ScoreFormat){
 
 query MediaRecommendationQuery($mediaId:Int, $page:Int, $perPage:Int
     , $sort:[RecommendationSort] ){
-    Media(id:$mediaId){
+    Media(id:$mediaId, isAdult:false){
         recommendations(page:$page, perPage:$perPage,sort:$sort){
             nodes{
                 id
@@ -264,6 +264,46 @@ query MediaOverViewQuery($mediaId:Int){
                     name
                     isAnimationStudio
                 }
+            }
+        }
+    }
+}
+
+query CharacterQuery($characterId:Int){
+    Character(id:$characterId){
+        id
+        name{
+            full
+            native
+            alternative
+        }
+        isFavourite
+        siteUrl
+        favourites
+        description
+    }
+}
+
+query CharacterMediaQuery($characterId:Int, $page:Int, $perPage:Int){
+    Character(id:$characterId){
+        media(page:$page, perPage:$perPage){
+            nodes{
+                id
+                averageScore
+                coverImage{
+                    large
+                    extraLarge
+                }
+                title{
+                    romaji
+                    english
+                    native
+                    userPreferred
+                }
+                format
+                season
+                status
+                seasonYear
             }
         }
     }
