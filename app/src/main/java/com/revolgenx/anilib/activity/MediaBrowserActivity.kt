@@ -31,6 +31,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.event.BaseEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
@@ -430,16 +431,20 @@ class MediaBrowserActivity : DynamicSystemActivity() {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBrowseMediaEvent(event: BrowseMediaEvent) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            this,
-            event.sharedElement,
-            ViewCompat.getTransitionName(event.sharedElement) ?: ""
-        )
+    fun onBaseEvent(event:BaseEvent){
+        when(event){
+            is BrowseMediaEvent->{
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this,
+                    event.sharedElement,
+                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
+                )
 
-        startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
-            this.putExtra(MEDIA_BROWSER_META, event.mediaBrowserMeta)
-        }, options.toBundle())
+                startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
+                    this.putExtra(MEDIA_BROWSER_META, event.mediaBrowserMeta)
+                }, options.toBundle())
+            }
+        }
     }
 
 
