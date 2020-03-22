@@ -43,7 +43,6 @@ class MediaStatsFragment : BaseFragment() {
 
     private var visibleToUser = false
 
-
     private val mediaListStatus by lazy {
         requireContext().resources.getStringArray(R.array.media_list_status)
     }
@@ -56,35 +55,32 @@ class MediaStatsFragment : BaseFragment() {
         listOf(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
     }
 
-
-    private val pieColors by lazy {
-        listOf(
-            Color.parseColor("#bbdefb"),//current
-            Color.parseColor("#d1c4e9"),//planning
-            Color.parseColor("#dcedc8"),//completed
-            Color.parseColor("#f8bbd0"),//dropped
-            Color.parseColor("#fbe9e7"),//paused
-            Color.parseColor("#FFD28C")//repeating
-        )
-    }
-
-    private val barColors by lazy {
-        listOf(
-            Color.parseColor("#ff8a65"),
-            Color.parseColor("#ffab91"),
-            Color.parseColor("#ffccbc"),
-            Color.parseColor("#ffe0b2"),
-            Color.parseColor("#ffe082"),
-            Color.parseColor("#ffcc80"),
-            Color.parseColor("#e6ee9c"),
-            Color.parseColor("#c5e1a5"),
-            Color.parseColor("#a5d6a7"),
-            Color.parseColor("#81c784")
-        )
-    }
-
     companion object {
         const val visibleToUserKey = "visibleToUserKey"
+        private val barColors by lazy {
+            listOf(
+                Color.parseColor("#ff8a65"),
+                Color.parseColor("#ffab91"),
+                Color.parseColor("#ffccbc"),
+                Color.parseColor("#ffe0b2"),
+                Color.parseColor("#ffe082"),
+                Color.parseColor("#ffcc80"),
+                Color.parseColor("#e6ee9c"),
+                Color.parseColor("#c5e1a5"),
+                Color.parseColor("#a5d6a7"),
+                Color.parseColor("#81c784")
+            )
+        }
+        private val pieColors by lazy {
+            listOf(
+                Color.parseColor("#bbdefb"),//current
+                Color.parseColor("#d1c4e9"),//planning
+                Color.parseColor("#dcedc8"),//completed
+                Color.parseColor("#f8bbd0"),//dropped
+                Color.parseColor("#fbe9e7"),//paused
+                Color.parseColor("#FFD28C")//repeating
+            )
+        }
     }
 
     override fun onCreateView(
@@ -267,11 +263,6 @@ class MediaStatsFragment : BaseFragment() {
                 it.colors = barColors
             }
             scoreDistributionPieChart.apply {
-                //                axisLeft.let {
-//                    it.setDrawGridLines(false)
-//                    it.typeface = ResourcesCompat.getFont(requireContext(), R.font.open_sans_regular)
-//                    it.textSize = 10f
-//                }
                 axisRight.isEnabled = false
                 axisLeft.isEnabled = false
                 xAxis.let { axis ->
