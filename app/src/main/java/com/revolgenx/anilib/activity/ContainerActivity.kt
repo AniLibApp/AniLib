@@ -22,7 +22,6 @@ class ContainerActivity : DynamicSystemActivity() {
     companion object {
         const val fragmentContainerKey = "fragment_container_key"
 
-
         fun <T : BaseFragment> openActivity(
             context: Context?,
             parcelableFragment: ParcelableFragment<T>,
@@ -32,7 +31,6 @@ class ContainerActivity : DynamicSystemActivity() {
                 it.putExtra(fragmentContainerKey, parcelableFragment)
             }, option?.toBundle())
         }
-
 
     }
 

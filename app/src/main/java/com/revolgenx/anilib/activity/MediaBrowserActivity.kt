@@ -39,8 +39,11 @@ import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
+import com.revolgenx.anilib.fragment.base.ViewPagerParcelableFragments
 import com.revolgenx.anilib.fragment.browser.*
+import com.revolgenx.anilib.fragment.info.CharacterActorFragment
 import com.revolgenx.anilib.fragment.info.CharacterFragment
+import com.revolgenx.anilib.fragment.info.CharacterMediaFragment
 import com.revolgenx.anilib.model.ToggleFavouriteModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Resource
@@ -77,7 +80,7 @@ class MediaBrowserActivity : DynamicSystemActivity() {
             override fun onPageSelected(position: Int) {
                 smartTabLayout.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
                 smartTabLayout.getTabAt(position).tabTextTv.visibility = View.VISIBLE
-                if(position == 0) return
+                if (position == 0) return
                 appbarLayout.setExpanded(false)
             }
         }
@@ -253,7 +256,6 @@ class MediaBrowserActivity : DynamicSystemActivity() {
         browseMediaViewPager.setCurrentItem(0, false)
         browseMediaViewPager.post {
             pageChangeListener.onPageSelected(browseMediaViewPager.currentItem)
-//            ActivityCompat.startPostponedEnterTransition(this@MediaBrowserActivity);
         }
 
     }
@@ -433,9 +435,9 @@ class MediaBrowserActivity : DynamicSystemActivity() {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBaseEvent(event:BaseEvent){
-        when(event){
-            is BrowseMediaEvent->{
+    fun onBaseEvent(event: BaseEvent) {
+        when (event) {
+            is BrowseMediaEvent -> {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     this,
                     event.sharedElement,
@@ -446,21 +448,28 @@ class MediaBrowserActivity : DynamicSystemActivity() {
                     this.putExtra(MEDIA_BROWSER_META, event.mediaBrowserMeta)
                 }, options.toBundle())
             }
-            is BrowseCharacterEvent->{
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this,
-                    event.sharedElement,
-                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
-                )
+            is BrowseCharacterEvent -> {
 
-                ContainerActivity.openActivity(
+                ViewPagerContainerActivity.openActivity(
                     this,
-                    ParcelableFragment(
-                        CharacterFragment::class.java,
-                        bundleOf(
-                            CharacterFragment.CHARACTER_META_KEY to event.meta
+                    ViewPagerParcelableFragments(
+                        listOf(
+                            CharacterFragment::class.java.name,
+                            CharacterMediaFragment::class.java.name,
+                            CharacterActorFragment::class.java.name
+                        ),
+                        listOf(
+                            bundleOf(
+                                CharacterFragment.CHARACTER_META_KEY to event.meta
+                            ),
+                            bundleOf(
+                                CharacterFragment.CHARACTER_META_KEY to event.meta
+                            ),
+                            bundleOf(
+                                CharacterFragment.CHARACTER_META_KEY to event.meta
+                            )
                         )
-                    ), options
+                    )
                 )
             }
         }
@@ -486,6 +495,7 @@ class MediaBrowserActivity : DynamicSystemActivity() {
         finish()
 //        this.overridePendingTransition(0,android.R.anim.slide_out_right);
     }
+
     override fun onStop() {
         super.onStop()
         unRegisterForEvent()

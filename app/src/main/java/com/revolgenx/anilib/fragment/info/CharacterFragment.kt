@@ -1,13 +1,15 @@
 package com.revolgenx.anilib.fragment.info
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.observe
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.meta.CharacterMeta
 import com.revolgenx.anilib.field.CharacterField
 import com.revolgenx.anilib.field.CharacterMediaField
-import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
+import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.character.CharacterModel
 import com.revolgenx.anilib.repository.util.Status.*
@@ -19,7 +21,7 @@ import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class CharacterFragment : BaseToolbarFragment() {
+class CharacterFragment : BaseFragment() {
 
     companion object {
         const val CHARACTER_META_KEY = "character_meta_key"
@@ -39,16 +41,19 @@ class CharacterFragment : BaseToolbarFragment() {
             it.characterId = characterMeta.characterId
         }
     }
-    override val title: String
-        get() = getString(R.string.character)
 
-    override val contentRes: Int
-        get() = R.layout.character_fragment_layout
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.character_fragment_layout, container, false)
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         arguments?.classLoader = CharacterMeta::class.java.classLoader
-        characterMeta = arguments?.getParcelable<CharacterMeta>(CHARACTER_META_KEY) ?: return
+        characterMeta = arguments?.getParcelable(CHARACTER_META_KEY) ?: return
 
         characterIv.setImageURI(characterMeta.characterUrl)
         viewModel.characterInfoLiveData.observe(viewLifecycleOwner) { res ->
@@ -87,8 +92,7 @@ class CharacterFragment : BaseToolbarFragment() {
         item.name?.alternative?.let {
             alternativeNameTv.subtitle = it.joinToString()
         }
-        Timber.d("desc ${item.descrition}" + "heeloo wo \n hellowo     newline\\ new new line")
 
-        MarkwonImpl.instance.setMarkdown(expandableTv, item.descrition ?: "")
+        MarkwonImpl.instanceHtml.setMarkdown(characterDescriptionTv, item.descrition?:"")
     }
 }

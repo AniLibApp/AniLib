@@ -1,9 +1,11 @@
 package com.revolgenx.anilib.fragment.browser
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.*
+import android.text.method.ScrollingMovementMethod
 import android.text.style.ClickableSpan
 import android.view.*
 import android.widget.FrameLayout
@@ -35,6 +37,7 @@ import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.MediaOverviewField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.field.overview.MediaRecommendationField
+import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.MediaMetaCollection
 import com.revolgenx.anilib.model.MediaOverviewModel
 import com.revolgenx.anilib.model.MediaRelationshipModel
@@ -85,6 +88,10 @@ class MediaOverviewFragment : BaseFragment() {
             requireContext(),
             R.layout.loading_layout
         )
+    }
+
+    private val statusColors by lazy {
+        requireContext().resources.getStringArray(R.array.status_color)
     }
 
 
@@ -163,24 +170,9 @@ class MediaOverviewFragment : BaseFragment() {
     private fun updateView(overview: MediaOverviewModel) {
         context ?: return
 
-        val statusColor = when (overview.status) {
-            MediaStatus.RELEASING.ordinal -> {
-                ContextCompat.getColor(requireContext(), R.color.colorReleasing)
-            }
-            MediaStatus.FINISHED.ordinal -> {
-                ContextCompat.getColor(requireContext(), R.color.colorFinished)
-            };
-            MediaStatus.NOT_YET_RELEASED.ordinal -> {
-                ContextCompat.getColor(requireContext(), R.color.colorNotReleased)
-            }
-            MediaStatus.CANCELLED.ordinal -> {
-                ContextCompat.getColor(requireContext(), R.color.colorCancelled)
-            }
-            else -> {
-                ContextCompat.getColor(requireContext(), R.color.colorUnknown)
-            }
+        overview.status?.let {
+            statusDivider.setBackgroundColor(Color.parseColor(statusColors[it]))
         }
-        statusDivider.setBackgroundColor(statusColor)
 
 
         if (overview.title!!.native != null) {
@@ -195,13 +187,7 @@ class MediaOverviewFragment : BaseFragment() {
             englishTitle.visibility = View.GONE
         }
 
-
-        mediaDescriptionTv.text =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                overview.description?.let { Html.fromHtml(it, Html.FROM_HTML_MODE_COMPACT) } ?: ""
-            } else {
-                overview.description?.let { Html.fromHtml(it) } ?: ""
-            }
+        MarkwonImpl.instanceHtml.setMarkdown(mediaDescriptionTv, overview.description ?: "")
 
         mediaFormatTv.subtitle = naText(overview.format?.let {
             requireContext().resources.getStringArray(
@@ -391,7 +377,7 @@ class MediaOverviewFragment : BaseFragment() {
                 val current = spannableStringBuilder.length
                 spannableStringBuilder.append(tag.name?.trim())
                 val clickableSpan = if (tag.isSpoilerTag) {
-                    object : SpoilerSpan(requireContext()) {
+                    object : SpoilerSpan() {
                         init {
                             spoilerSpans.add(this)
                         }

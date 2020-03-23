@@ -2,6 +2,7 @@ package com.revolgenx.anilib.view
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -14,16 +15,15 @@ import timber.log.Timber
 class ExpandableTextView(context: Context, attributeSet: AttributeSet?, style: Int) :
     DynamicTextView(context, attributeSet, style), View.OnClickListener {
 
-
     var myMaxLines = Integer.MAX_VALUE
         private set
 
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
-        setOnClickListener(this)
         color = DynamicTheme.getInstance().get().tintSurfaceColor
-        typeface = ResourcesCompat.getFont(context, R.font.open_sans_light)
+        typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
+        movementMethod = LinkMovementMethod.getInstance()
     }
 
     override fun onTextChanged(
@@ -60,6 +60,26 @@ class ExpandableTextView(context: Context, attributeSet: AttributeSet?, style: I
             MAX_LINES
         else
             Integer.MAX_VALUE
+    }
+
+    fun toggle(): Boolean {
+        return if (myMaxLines == Integer.MAX_VALUE) {
+            maxLines = MAX_LINES
+            false
+        } else {
+            maxLines = Integer.MAX_VALUE
+            true
+        }
+    }
+
+
+    fun removeOnClick() {
+        setOnClickListener(null)
+    }
+
+    fun addOnClick() {
+        if (!hasOnClickListeners())
+            setOnClickListener(this)
     }
 
     companion object {

@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.field.CharacterField
 import com.revolgenx.anilib.field.CharacterMediaField
-import com.revolgenx.anilib.model.CharacterImageModel
-import com.revolgenx.anilib.model.CoverImageModel
-import com.revolgenx.anilib.model.TitleModel
+import com.revolgenx.anilib.field.CharacterVoiceActorField
+import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.character.CharacterMediaModel
 import com.revolgenx.anilib.model.character.CharacterModel
 import com.revolgenx.anilib.model.character.CharacterNameModel
@@ -37,7 +36,7 @@ class CharacterServiceImpl(
                     CharacterModel().also { model ->
                         model.characterId = it.id()
                         model.isFavourite = it.isFavourite
-                        model.descrition = it.description()?.replace("\n", "  \r")
+                        model.descrition = it.description()
                         model.siteUrl = it.siteUrl()
                         model.favourites = it.favourites()
                         model.name = it.name()?.let {
@@ -102,4 +101,36 @@ class CharacterServiceImpl(
         compositeDisposable?.add(disposable)
     }
 
+    override fun getCharacterActor(
+        field: CharacterVoiceActorField,
+        compositeDisposable: CompositeDisposable?,
+        resourceCallback: (Resource<List<VoiceActorModel>>) -> Unit
+    ) {
+        val hashMap = mutableMapOf<Int, VoiceActorModel>()
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map {
+                it.data()?.Character()?.media()?.edges()?.forEach {
+                    it.voiceActors()?.forEach {
+                        hashMap[it.id()] = VoiceActorModel().also { model ->
+                            model.actorId = it.id()
+                            model.name = it.name()?.full()
+                            model.language = it.language()?.ordinal
+                            model.voiceActorImageModel = it.image()?.let {
+                                VoiceActorImageModel().apply {
+                                    large = it.large()
+                                    medium = it.medium()
+                                }
+                            }
+                        }
+                    }
+                }
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                resourceCallback.invoke(Resource.success(hashMap.values.toList()))
+            }, {
+                Timber.w(it)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+        compositeDisposable?.add(disposable)
+    }
 }
