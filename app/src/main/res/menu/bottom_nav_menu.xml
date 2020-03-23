@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/seasonMenu"
-        android:icon="@drawable/ic_season"
+        android:icon="@drawable/ic_media"
         android:title="@string/season" />
 
     <item

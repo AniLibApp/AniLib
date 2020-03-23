@@ -32,8 +32,8 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <com.revolgenx.anilib.view.NoSwipeViewPager
-                    android:id="@+id/noSwipeViewPager"
+                <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager
+                    android:id="@+id/mainViewPager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true" />
