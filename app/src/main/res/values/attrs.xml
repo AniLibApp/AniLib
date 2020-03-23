@@ -13,8 +13,9 @@
         <attr name="titleName" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="CustomDynamicHeader">
-        <attr name="titleSize" format="dimension" />
-        <attr name="subtitleSize" format="dimension" />
+    <declare-styleable name="ExpandableTextViewLayout">
+        <attr name="maxLines" format="integer" />
     </declare-styleable>
+
+
 </resources>

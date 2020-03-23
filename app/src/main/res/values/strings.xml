@@ -215,6 +215,9 @@
     <string name="score_distribution">Score Distribution</string>
     <string name="native_name">Native Name</string>
     <string name="alternative_name">Alternative Name</string>
+    <string name="about">About</string>
+    <string name="roles">Roles</string>
+    <string name="actor">Actor</string>
 
     <!-- TV("TV"),
   TV_SHORT("TV_SHORT")

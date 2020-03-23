@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.field.CharacterField
 import com.revolgenx.anilib.field.CharacterMediaField
+import com.revolgenx.anilib.field.CharacterVoiceActorField
+import com.revolgenx.anilib.model.VoiceActorModel
 import com.revolgenx.anilib.model.character.CharacterMediaModel
 import com.revolgenx.anilib.model.character.CharacterModel
 import com.revolgenx.anilib.repository.util.Resource
@@ -20,5 +22,11 @@ interface CharacterService {
         field: CharacterMediaField,
         compositeDisposable: CompositeDisposable? = null,
         resourceCallback: ((Resource<List<CharacterMediaModel>>) -> Unit)
+    )
+
+    fun getCharacterActor(
+        field: CharacterVoiceActorField,
+        compositeDisposable: CompositeDisposable? = null,
+        resourceCallback: ((Resource<List<VoiceActorModel>>) -> Unit)
     )
 }

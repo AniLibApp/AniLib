@@ -34,7 +34,6 @@ class App : DynamicApplication() {
         Fresco.initialize(this)
         Timber.plant(Timber.DebugTree())
         MarkwonImpl.createHtmlInstance(this)
-        MarkwonImpl.createInstance(this)
         startKoin {
             androidContext(this@App)
 

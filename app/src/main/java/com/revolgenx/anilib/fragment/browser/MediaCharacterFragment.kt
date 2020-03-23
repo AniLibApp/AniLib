@@ -37,7 +37,7 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
 
     override val basePresenter: Presenter<MediaCharacterModel>
         get() {
-            return MediaCharacterPresenter(context!!)
+            return MediaCharacterPresenter(requireContext())
         }
 
     override val baseSource: Source<MediaCharacterModel>
@@ -67,7 +67,7 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
     ): View? {
         val v = super.onCreateView(inflater, container, savedInstanceState)
 
-        languageSpinner = DynamicSpinner(context!!).also {
+        languageSpinner = DynamicSpinner(requireContext()).also {
             it.layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -84,7 +84,7 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
             it.addView(languageSpinner)
         }
 
-        return DynamicLinearLayout(context!!).also {
+        return DynamicLinearLayout(requireContext()).also {
             it.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
@@ -107,7 +107,7 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
             arguments?.getParcelable(MediaBrowserActivity.MEDIA_BROWSER_META) ?: return
 
         val spinnerItems = mutableListOf<DynamicSpinnerItem>()
-        context!!.resources.getStringArray(R.array.staff_language).forEach {
+        requireContext().resources.getStringArray(R.array.staff_language).forEach {
             spinnerItems.add(DynamicSpinnerItem(null, it))
         }
 

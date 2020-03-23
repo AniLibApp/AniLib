@@ -59,7 +59,7 @@
                     app:ads_fillSpace="true"
                     app:ads_title="@string/description" />
 
-                <com.revolgenx.anilib.view.ExpandableTextView
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                     android:id="@+id/mediaDescriptionTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

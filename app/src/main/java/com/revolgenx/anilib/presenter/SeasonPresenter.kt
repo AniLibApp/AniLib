@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.presenter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,19 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
+    private val statusColors by lazy {
+        context.resources.getStringArray(R.array.status_color)
+    }
+
+
+    private val mediaFormats by lazy {
+        context.resources.getStringArray(R.array.media_format)
+    }
+
+    private val mediaStatus by lazy {
+        context.resources.getStringArray(R.array.media_status)
+    }
+
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         return Holder(
@@ -40,6 +54,7 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
             )
         )
     }
+
 
     override fun onBind(page: Page, holder: Holder, element: Element<CommonMediaModel>) {
         super.onBind(page, holder, element)
@@ -63,37 +78,13 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
             }
 
             mediaRatingTv.text = getAverageScore(data.averageScore)
-            mediaFormatTv.text = when (data.format) {
-                MediaFormat.TV.ordinal -> string(R.string.tv)
-                MediaFormat.TV_SHORT.ordinal -> string(R.string.tv_short)
-                MediaFormat.MOVIE.ordinal -> string(R.string.movie)
-                MediaFormat.MANGA.ordinal -> string(R.string.manga)
-                MediaFormat.MUSIC.ordinal -> string(R.string.music)
-                MediaFormat.NOVEL.ordinal -> string(R.string.novel)
-                MediaFormat.ONA.ordinal -> string(R.string.ona)
-                MediaFormat.OVA.ordinal -> string(R.string.ova)
-                MediaFormat.ONE_SHOT.ordinal -> string(R.string.one_shot)
-                MediaFormat.SPECIAL.ordinal -> string(R.string.special)
-                else -> string(R.string.unknown)
-            }
 
-            when (data.status) {
-                MediaStatus.RELEASING.ordinal -> {
-                    mediaStatusTv.color = ContextCompat.getColor(context, R.color.colorReleasing)
-                    mediaStatusTv.text = context.getString(R.string.releasing)
-                }
-                MediaStatus.FINISHED.ordinal -> {
-                    mediaStatusTv.color = ContextCompat.getColor(context, R.color.colorFinished)
-                    mediaStatusTv.text = context.getString(R.string.finished)
-                };
-                MediaStatus.NOT_YET_RELEASED.ordinal -> {
-                    mediaStatusTv.color = ContextCompat.getColor(context, R.color.colorNotReleased)
-                    mediaStatusTv.text = context.getString(R.string.not_released)
-                }
-                MediaStatus.CANCELLED.ordinal -> {
-                    mediaStatusTv.color = ContextCompat.getColor(context, R.color.colorCancelled)
-                    mediaStatusTv.text = context.getString(R.string.cancelled)
-                }
+            data.format?.let {
+                mediaFormatTv.text = mediaFormats[it]
+            }
+            data.status?.let {
+                mediaStatusTv.color = Color.parseColor(statusColors[it])
+                mediaStatusTv.text = mediaStatus[it]
             }
 
             mediaCardView.setOnClickListener {

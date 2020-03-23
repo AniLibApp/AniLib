@@ -17,6 +17,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.forEachIndexed
+import androidx.core.view.iterator
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.facebook.drawee.view.SimpleDraweeView
@@ -61,7 +63,6 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    private var currentPage: Int = 0
     private val viewModel by viewModel<MainActivityViewModel>()
 
     companion object {
@@ -111,8 +112,9 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
         bottomNav.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
         statusBarColor = statusBarColor
         setSupportActionBar(mainToolbar)
+        themeBottomNavigation()
 
-        noSwipeViewPager.adapter = makePagerAdapter(
+        mainViewPager.adapter = makePagerAdapter(
             BaseFragment.newInstances(
                 listOf(
                     DiscoverFragment::class.java,
@@ -123,16 +125,7 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
             )
         )
 
-        themeBottomNavigation()
-        noSwipeViewPager.offscreenPageLimit = 3
-        currentPage = noSwipeViewPager.currentItem
-        noSwipeViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected(position: Int) {
-                currentPage = position
-                invalidateOptionsMenu()
-            }
-        })
-
+        mainViewPager.offscreenPageLimit = 3
         updateNavView()
         initListener()
 
@@ -265,21 +258,26 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
             }
         }
 
-        bottomNav.setOnNavigationItemSelectedListener {
-            val position = when (it.itemId) {
-                R.id.discoverMenu -> 0
-                R.id.seasonMenu -> 1
-                R.id.collectionMenu -> 2
-                R.id.downloadMenu -> 3
-                else -> 0
-            }
-            if (position in 0..4) {
-                noSwipeViewPager.setCurrentItem(position, false)
-                true
-            } else
-                false
-        }
 
+
+        mainViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                bottomNav.menu.iterator().forEach {
+                    it.isChecked = false
+                }
+                bottomNav.menu.getItem(position).isChecked = true
+            }
+        })
+
+        bottomNav.setOnNavigationItemSelectedListener {
+            bottomNav.menu.forEachIndexed { index, item ->
+                if (it == item) {
+                    mainViewPager.setCurrentItem(index, true)
+                    return@setOnNavigationItemSelectedListener true
+                }
+            }
+            false
+        }
 
         /**problem with transition
          * {@link https://github.com/facebook/fresco/issues/1445}*/
@@ -368,15 +366,16 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBrowseMediaEvent(event: BrowseMediaEvent) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            this,
-            event.sharedElement,
-            ViewCompat.getTransitionName(event.sharedElement) ?: ""
-        )
+//        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//            this,
+//            event.sharedElement,
+//            ViewCompat.getTransitionName(event.sharedElement) ?: ""
+//        )
 
         startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
             this.putExtra(MediaBrowserActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
-        }, options.toBundle())
+        })
+        //, options.toBundle()
     }
 
 

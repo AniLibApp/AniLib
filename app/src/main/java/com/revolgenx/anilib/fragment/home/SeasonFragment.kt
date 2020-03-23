@@ -20,7 +20,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
 
     private val viewModel by viewModel<SeasonViewModel>()
     override val basePresenter: Presenter<CommonMediaModel> by lazy {
-        SeasonPresenter(context!!)
+        SeasonPresenter(requireContext())
     }
 
     override val baseSource: Source<CommonMediaModel>
@@ -29,7 +29,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
         }
 
     override fun createSource(): Source<CommonMediaModel> {
-        return viewModel.createSource(SeasonField.create(context!!))
+        return viewModel.createSource(SeasonField.create(requireContext()))
     }
 
 

@@ -212,7 +212,7 @@ query MediaOverViewQuery($mediaId:Int){
         duration
         season
         seasonYear
-        description
+        description(asHtml:true)
         chapters
         volumes
         source
@@ -280,7 +280,7 @@ query CharacterQuery($characterId:Int){
         isFavourite
         siteUrl
         favourites
-        description
+        description(asHtml:true)
     }
 }
 
@@ -304,6 +304,30 @@ query CharacterMediaQuery($characterId:Int, $page:Int, $perPage:Int){
                 season
                 status
                 seasonYear
+            }
+        }
+    }
+}
+
+query CharacterActorQuery($characterId:Int ){
+    Character(id:$characterId){
+        media(sort:[ID_DESC]){
+            edges{
+                id
+                node{
+                    id
+                }
+                voiceActors(sort:[LANGUAGE]){
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        large
+                        medium
+                    }
+                    language
+                }
             }
         }
     }

@@ -87,13 +87,10 @@ abstract class BasePresenterFragment<S : Any>() :
         }
     }
 
+
     override fun onResume() {
         super.onResume()
         visibleToUser = true
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 
     override fun onDestroyView() {
