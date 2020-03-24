@@ -38,7 +38,7 @@
                     android:scheme="callback" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ViewPagerContainerActivity" />
+        <activity android:name=".activity.ViewPagerContainerActivity"/>
     </application>
 
 </manifest>

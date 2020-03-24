@@ -20,7 +20,7 @@ class DynamicLoadingImageView(
         CircularProgressDrawable(context).also { it.start() }
     }
 
-    private var srcId = -1
+    private var srcId = 0
     private var loading: Boolean = false
 
     constructor(context: Context) : this(context, null)
@@ -42,12 +42,12 @@ class DynamicLoadingImageView(
     }
 
     fun toggleLoading() {
-        loading = !loading
         if (loading) {
             setImageResource(srcId)
         } else {
             setImageDrawable(circularProgressDrawable)
         }
+        loading = !loading
     }
 
 }

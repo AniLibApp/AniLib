@@ -51,7 +51,11 @@ class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>
                     characterRoleTv.text = item.role?.let { characterRoles[it] }
                     characterLayoutContainer.setOnClickListener {
                         BrowseCharacterEvent(
-                            CharacterMeta(item.characterId ?: -1, item.characterImageModel?.image),
+                            CharacterMeta(
+                                item.characterId ?: -1,
+                                item.characterImageModel?.image,
+                                item.siteUrl
+                            ),
                             characterImageView
                         ).postEvent
                     }
@@ -77,7 +81,11 @@ class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>
                     mangaCharacterRoleTv.text = item.role?.let { characterRoles[it] }
                     mangaCharacterContainer.setOnClickListener {
                         BrowseCharacterEvent(
-                            CharacterMeta(item.characterId ?: -1, item.characterImageModel?.image),
+                            CharacterMeta(
+                                item.characterId ?: -1,
+                                item.characterImageModel?.image,
+                                item.siteUrl
+                            ),
                             mangaCharacterImageView
                         ).postEvent
                     }

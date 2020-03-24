@@ -8,9 +8,10 @@
     <item
         android:id="@+id/character_role_menu"
         android:icon="@drawable/ic_media"
-        android:title="@string/roles" />
+        android:title="@string/media" />
+
     <item
         android:id="@+id/voice_actor_menu"
-        android:title="@string/actor"
-        android:icon="@drawable/ic_staff"/>
+        android:icon="@drawable/ic_staff"
+        android:title="@string/voice_role" />
 </menu>

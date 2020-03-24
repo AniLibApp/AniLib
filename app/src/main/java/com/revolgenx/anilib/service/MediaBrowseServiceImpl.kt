@@ -1,7 +1,9 @@
 package com.revolgenx.anilib.service
 
+import androidx.lifecycle.LiveData
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieEntry
+import com.revolgenx.anilib.BrowseSimpleMediaQuery
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.field.MediaOverviewField
 import com.revolgenx.anilib.field.overview.*
@@ -22,6 +24,49 @@ import timber.log.Timber
 
 class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
     MediaBrowseService(graphRepository) {
+
+    override fun getSimpleMedia(
+        mediaId: Int,
+        compositeDisposable: CompositeDisposable
+    ): LiveData<Resource<MediaBrowseMediaModel>> {
+
+        val disposable = graphRepository.request(
+            BrowseSimpleMediaQuery.builder()
+                .mediaId(mediaId)
+                .build()
+        )
+            .map {
+                it.data()?.Media()?.let {
+                    MediaBrowseMediaModel().also { model ->
+                        model.mediaId = it.id()
+                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
+                            TitleModel().also { tModel ->
+                                tModel.userPreferred = it.userPreferred()
+                                tModel.native = it.native_()
+                                tModel.romaji = it.romaji()
+                                tModel.english = it.english()
+                            }
+                        }
+                        model.coverImage = it.coverImage()?.let {
+                            CoverImageModel().also { cModel ->
+                                cModel.extraLarge = it.extraLarge()
+                                cModel.large = it.large()
+                                cModel.medium = it.medium()
+                            }
+                        }
+                        model.bannerImage = it.bannerImage() ?: model.coverImage?.largeImage
+                    }
+                }
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                simpleMediaLiveData.value = Resource.success(it)
+            }, {
+                simpleMediaLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+            })
+
+        compositeDisposable.add(disposable)
+        return simpleMediaLiveData
+    }
 
     override fun getMediaOverview(
         field: MediaOverviewField,
@@ -85,6 +130,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                     }
                                 }
                             }
+                            charac.siteUrl = it.node()?.siteUrl()
                             charac.voiceActor = it.voiceActors()?.firstOrNull()?.let {
                                 VoiceActorModel().also { model ->
                                     model.actorId = it.id()
