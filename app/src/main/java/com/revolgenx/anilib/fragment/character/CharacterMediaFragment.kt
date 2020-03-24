@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.fragment.info
+package com.revolgenx.anilib.fragment.character
 
 import android.os.Bundle
 import android.view.View
@@ -8,32 +8,32 @@ import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.event.meta.CharacterMeta
-import com.revolgenx.anilib.field.CharacterVoiceActorField
+import com.revolgenx.anilib.field.CharacterMediaField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
-import com.revolgenx.anilib.model.VoiceActorModel
-import com.revolgenx.anilib.presenter.CharacterActorPresenter
-import com.revolgenx.anilib.viewmodel.CharacterActorViewModel
+import com.revolgenx.anilib.model.character.CharacterMediaModel
+import com.revolgenx.anilib.presenter.CharacterMediaPresenter
+import com.revolgenx.anilib.viewmodel.CharacterMediaViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CharacterActorFragment : BasePresenterFragment<VoiceActorModel>() {
-
-    override val basePresenter: Presenter<VoiceActorModel> by lazy {
-        CharacterActorPresenter(requireContext())
-    }
-
-    override val baseSource: Source<VoiceActorModel>
-        get() = viewModel.source ?: createSource()
-    private val viewModel by viewModel<CharacterActorViewModel>()
+class CharacterMediaFragment : BasePresenterFragment<CharacterMediaModel>() {
 
     private lateinit var characterMeta: CharacterMeta
     private val field by lazy {
-        CharacterVoiceActorField().also {
+        CharacterMediaField().also {
             it.characterId = characterMeta.characterId
         }
     }
 
+    override val basePresenter: Presenter<CharacterMediaModel>
+        get() {
+            return CharacterMediaPresenter(requireContext())
+        }
 
-    override fun createSource(): Source<VoiceActorModel> {
+    private val viewModel by viewModel<CharacterMediaViewModel>()
+    override val baseSource: Source<CharacterMediaModel>
+        get() = viewModel.source ?: createSource()
+
+    override fun createSource(): Source<CharacterMediaModel> {
         return viewModel.createSource(field)
     }
 
@@ -46,8 +46,7 @@ class CharacterActorFragment : BasePresenterFragment<VoiceActorModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         arguments?.classLoader = CharacterMeta::class.java.classLoader
-        characterMeta =
-            arguments?.getParcelable(CharacterFragment.CHARACTER_META_KEY) ?: return
+        characterMeta = arguments?.getParcelable(CharacterFragment.CHARACTER_META_KEY) ?: return
         super.onActivityCreated(savedInstanceState)
     }
 

@@ -3,7 +3,7 @@ package com.revolgenx.anilib.service
 import androidx.lifecycle.*
 import com.revolgenx.anilib.IsFavouriteQuery
 import com.revolgenx.anilib.ToggleFavouriteMutation
-import com.revolgenx.anilib.model.ToggleFavouriteModel
+import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
@@ -14,20 +14,20 @@ import timber.log.Timber
 class ToggleServiceImpl(graphRepository: BaseGraphRepository) :
     ToggleService(graphRepository) {
     override fun toggleFavourite(
-        favouriteModel: ToggleFavouriteModel,
+        favouriteField: ToggleFavouriteField,
         compositeDisposable: CompositeDisposable?
     ): MutableLiveData<Resource<Boolean>> {
         val disposable = graphRepository.request(ToggleFavouriteMutation.builder().apply {
-            if (favouriteModel.animeId != null)
-                animeId(favouriteModel.animeId)
-            if (favouriteModel.mangaId != null)
-                mangaId(favouriteModel.mangaId)
-            if (favouriteModel.characterId != null)
-                characterId(favouriteModel.characterId)
-            if (favouriteModel.staffId != null)
-                staffId(favouriteModel.staffId)
-            if (favouriteModel.studioId != null)
-                studioId(favouriteModel.studioId)
+            if (favouriteField.animeId != null)
+                animeId(favouriteField.animeId)
+            if (favouriteField.mangaId != null)
+                mangaId(favouriteField.mangaId)
+            if (favouriteField.characterId != null)
+                characterId(favouriteField.characterId)
+            if (favouriteField.staffId != null)
+                staffId(favouriteField.staffId)
+            if (favouriteField.studioId != null)
+                studioId(favouriteField.studioId)
         }.build())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->

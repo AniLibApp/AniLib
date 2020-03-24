@@ -7,4 +7,5 @@ class MediaCharacterModel {
     var characterImageModel: CharacterImageModel? = null
     var voiceActor: VoiceActorModel? = null
     var type: Int? = null
+    var siteUrl: String? = null
 }

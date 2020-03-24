@@ -19,7 +19,7 @@ import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.model.DateModel
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
-import com.revolgenx.anilib.model.ToggleFavouriteModel
+import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.preference.userScoreFormat
 import com.revolgenx.anilib.repository.util.Status.*
@@ -468,7 +468,7 @@ class EntryListEditorFragment : BaseFragment() {
 
     private fun toggleFav() {
         if (toggling || apiModelEntry == null) return
-        viewModel.toggleMediaFavourite(ToggleFavouriteModel().also {
+        viewModel.toggleMediaFavourite(ToggleFavouriteField().also {
             when (mediaMeta.type) {
                 MediaType.ANIME.ordinal -> {
                     it.animeId = mediaMeta.id

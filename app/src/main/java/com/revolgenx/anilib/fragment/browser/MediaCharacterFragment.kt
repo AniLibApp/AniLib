@@ -49,8 +49,8 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
     private val viewModel by viewModel<MediaCharacterViewModel>()
     private val field by lazy {
         MediaCharacterField().also {
-            it.mediaId = mediaBrowserMeta?.mediaId ?: -1
-            it.type - mediaBrowserMeta!!.type
+            it.mediaId = mediaBrowserMeta!!.mediaId
+            it.type = mediaBrowserMeta!!.type
         }
     }
 

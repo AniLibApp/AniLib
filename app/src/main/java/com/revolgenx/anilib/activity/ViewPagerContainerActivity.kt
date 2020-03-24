@@ -1,12 +1,11 @@
 package com.revolgenx.anilib.activity
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.MenuItem
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.forEachIndexed
 import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
@@ -15,30 +14,52 @@ import androidx.viewpager.widget.ViewPager
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.meta.ViewPagerContainerMeta
+import com.revolgenx.anilib.activity.meta.ViewPagerContainerType
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.event.BaseEvent
+import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ViewPagerParcelableFragments
+import com.revolgenx.anilib.fragment.character.CharacterActorFragment
+import com.revolgenx.anilib.fragment.character.CharacterFragment
+import com.revolgenx.anilib.fragment.character.CharacterMediaFragment
+import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.toolbar_layout.*
 import kotlinx.android.synthetic.main.viewpager_container_activity.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 class ViewPagerContainerActivity : DynamicSystemActivity() {
 
     companion object {
         const val viewPagerContainerKey = "viewpager_activity_container_key"
+        const val viewPagerContainerMetaKey = "view_pager_container_meta_key"
+
         fun openActivity(
             activity: Context,
-            parcelableFragments: ViewPagerParcelableFragments,
-            option: ActivityOptionsCompat? = null
+            parcelableFragments: ViewPagerParcelableFragments? = null
         ) {
             activity.startActivity(Intent(activity, ViewPagerContainerActivity::class.java).also {
                 it.putExtra(viewPagerContainerKey, parcelableFragments)
-            }, option?.toBundle())
+            })
+        }
+
+        fun <T : Parcelable> openActivity(
+            context: Context,
+            meta: ViewPagerContainerMeta<T>
+        ) {
+            context.startActivity(Intent(context, ViewPagerContainerActivity::class.java).also {
+                it.putExtra(viewPagerContainerMetaKey, meta)
+            })
         }
     }
 
     private lateinit var viewPagerParcelableFragments: ViewPagerParcelableFragments
+    private lateinit var viewPagerMeta: ViewPagerContainerMeta<Parcelable>
 
     override fun getLocale(): Locale? {
         return null
@@ -53,6 +74,11 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
         ThemeController.setLocalTheme()
     }
 
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.viewpager_container_activity)
@@ -62,8 +88,12 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
         statusBarColor = statusBarColor
         themeBottomNavigation()
 
-        viewPagerParcelableFragments =
-            intent.getParcelableExtra(viewPagerContainerKey) ?: return
+//        viewPagerParcelableFragments = intent.getParcelableExtra(viewPagerContainerKey) ?: return
+
+        //go through intent here
+
+        viewPagerMeta = intent.getParcelableExtra(viewPagerContainerMetaKey) ?: return
+        prepareViews(viewPagerMeta)
 
 
         containerBottomNav.setOnNavigationItemSelectedListener {
@@ -75,6 +105,7 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
             }
             false
         }
+
 
         containerViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
@@ -90,6 +121,34 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
 //        containerViewPager.post {
 //            ActivityCompat.startPostponedEnterTransition(this)
 //        }
+    }
+
+
+    private fun prepareViews(viewPagerMeta: ViewPagerContainerMeta<Parcelable>) {
+        when (viewPagerMeta.containerType) {
+            ViewPagerContainerType.CHARACTER -> {
+                supportActionBar?.title = getString(R.string.character)
+                containerBottomNav.inflateMenu(R.menu.character_nav_menu)
+                viewPagerParcelableFragments = ViewPagerParcelableFragments(
+                    listOf(
+                        CharacterFragment::class.java.name,
+                        CharacterMediaFragment::class.java.name,
+                        CharacterActorFragment::class.java.name
+                    ),
+                    listOf(
+                        bundleOf(
+                            CharacterFragment.CHARACTER_META_KEY to viewPagerMeta.data
+                        ),
+                        bundleOf(
+                            CharacterFragment.CHARACTER_META_KEY to viewPagerMeta.data
+                        ),
+                        bundleOf(
+                            CharacterFragment.CHARACTER_META_KEY to viewPagerMeta.data
+                        )
+                    )
+                )
+            }
+        }
     }
 
     override fun setStatusBarColor(color: Int) {
@@ -118,6 +177,22 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBaseEvent(event: BaseEvent) {
+        when (event) {
+            is BrowseMediaEvent -> {
+                startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
+                    this.putExtra(MediaBrowserActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
+                })
+            }
+        }
+    }
+
+    override fun onStop() {
+        unRegisterForEvent()
+        super.onStop()
+    }
+
     inner class ViewPagerContainerAdapter :
         FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
@@ -130,4 +205,6 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
             return viewPagerParcelableFragments.clzzes.size
         }
     }
+
+
 }

@@ -19,8 +19,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class CharacterServiceImpl(
-    private val graphRepository: BaseGraphRepository,
-    private val toggleService: ToggleService
+    private val graphRepository: BaseGraphRepository
 ) : CharacterService {
     override val characterInfoLiveData by lazy {
         MutableLiveData<Resource<CharacterModel>>()
@@ -44,6 +43,12 @@ class CharacterServiceImpl(
                                 name.full = it.full()
                                 name.native = it.native_()
                                 name.alternative = it.alternative()
+                            }
+                        }
+                        model.characterImageModel = it.image()?.let { image ->
+                            CharacterImageModel().also { imgModel ->
+                                imgModel.large = image.large()
+                                imgModel.medium = image.medium()
                             }
                         }
                     }
@@ -77,11 +82,11 @@ class CharacterServiceImpl(
                                 title.userPreferred = it.userPreferred()
                             }
                         }
-
                         model.season = it.season()?.ordinal
                         model.seasonYear = it.seasonYear()
                         model.status = it.status()?.ordinal
                         model.format = it.format()?.ordinal
+                        model.type = it.type()?.ordinal
                         model.averageScore = it.averageScore()
                         model.coverImage = it.coverImage()?.let {
                             CoverImageModel().also { img ->
@@ -89,6 +94,7 @@ class CharacterServiceImpl(
                                 img.extraLarge = it.extraLarge()
                             }
                         }
+                        model.bannerImage = it.bannerImage() ?: model.coverImage?.largeImage
                     }
                 }
             }.observeOn(AndroidSchedulers.mainThread())
@@ -133,4 +139,6 @@ class CharacterServiceImpl(
             })
         compositeDisposable?.add(disposable)
     }
+
+
 }
