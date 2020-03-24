@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
-import com.revolgenx.anilib.model.ToggleFavouriteModel
+import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.service.MediaListEntryService
 import com.revolgenx.anilib.service.ToggleService
@@ -74,10 +74,10 @@ class MediaEntryEditorViewModel(
         )
     }
 
-    fun toggleMediaFavourite(toggleFavouriteModel: ToggleFavouriteModel) {
+    fun toggleMediaFavourite(toggleFavouriteField: ToggleFavouriteField) {
         toggleFavMediaLiveData.value = Resource.loading(null)
         toggleService.toggleFavourite(
-            toggleFavouriteModel,
+            toggleFavouriteField,
             compositeDisposable
         )
     }

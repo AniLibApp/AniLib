@@ -1,27 +1,30 @@
-package com.revolgenx.anilib.fragment.info
+package com.revolgenx.anilib.fragment.character
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.lifecycle.observe
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.meta.CharacterMeta
 import com.revolgenx.anilib.field.CharacterField
-import com.revolgenx.anilib.field.CharacterMediaField
+import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.character.CharacterModel
+import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Status.*
+import com.revolgenx.anilib.util.makeSnakeBar
+import com.revolgenx.anilib.util.makeToast
+import com.revolgenx.anilib.util.openLink
+import com.revolgenx.anilib.util.prettyNumberFormat
 import com.revolgenx.anilib.viewmodel.CharacterViewModel
 import kotlinx.android.synthetic.main.character_fragment_layout.*
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class CharacterFragment : BaseFragment() {
+
 
     companion object {
         const val CHARACTER_META_KEY = "character_meta_key"
@@ -29,6 +32,7 @@ class CharacterFragment : BaseFragment() {
 
     private val viewModel by viewModel<CharacterViewModel>()
 
+    private var characterModel: CharacterModel? = null
     private lateinit var characterMeta: CharacterMeta
     private val characterField by lazy {
         CharacterField().also {
@@ -36,8 +40,8 @@ class CharacterFragment : BaseFragment() {
         }
     }
 
-    private val characterMediaField by lazy {
-        CharacterMediaField().also {
+    private val toggleFavouriteField by lazy {
+        ToggleFavouriteField().also {
             it.characterId = characterMeta.characterId
         }
     }
@@ -48,6 +52,25 @@ class CharacterFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.character_fragment_layout, container, false)
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.character_fragment_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.character_share_menu -> {
+                characterModel?.siteUrl?.let {
+                    requireContext().openLink(it)
+                } ?: makeToast(R.string.invalid)
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -76,13 +99,64 @@ class CharacterFragment : BaseFragment() {
                 }
             }
         }
+
+        viewModel.toggleCharacterFavLiveData.observe(viewLifecycleOwner) { res ->
+            when (res.status) {
+                SUCCESS -> {
+                    characterFavIv.toggleLoading()
+                    if (res.data == true) {
+                        characterModel?.isFavourite = characterModel?.isFavourite?.not() ?: false
+                        characterFavIv.setImageResource(
+                            if (characterModel?.isFavourite == true) {
+                                R.drawable.ic_favorite
+                            } else {
+                                R.drawable.ic_not_favourite
+                            }
+                        )
+                    }
+                }
+                ERROR -> {
+                    characterFavIv.toggleLoading()
+                    makeToast(R.string.failed_to_toggle, icon = R.drawable.ads_ic_error)
+                }
+                LOADING -> {
+                    characterFavIv.toggleLoading()
+                }
+            }
+        }
+
+        initListener()
+
         if (savedInstanceState == null) {
             viewModel.getCharacterInfo(characterField)
         }
     }
 
+    private fun initListener() {
+        characterFavLayout.setOnClickListener {
+            if (requireContext().loggedIn()) {
+                viewModel.toggleCharacterFav(toggleFavouriteField)
+            } else {
+                characterNestedLayout.makeSnakeBar(R.string.please_log_in)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        invalidateOptionMenu()
+        setHasOptionsMenu(true)
+    }
+
     private fun updateView(item: CharacterModel) {
+        characterModel = item
         characterNameTv.text = item.name?.full
+        characterFavCountIv.text = item.favourites?.toLong()?.prettyNumberFormat()
+
+        if (characterMeta.characterUrl == null) {
+            characterIv.setImageURI(characterModel?.characterImageModel?.image)
+        }
+
         item.name?.native?.let {
             nativeNameTv.subtitle = it
         } ?: let {
@@ -93,6 +167,10 @@ class CharacterFragment : BaseFragment() {
             alternativeNameTv.subtitle = it.joinToString()
         }
 
-        MarkwonImpl.instanceHtml.setMarkdown(characterDescriptionTv, item.descrition?:"")
+        if (item.isFavourite) {
+            characterFavIv.setImageResource(R.drawable.ic_favorite)
+        }
+
+        MarkwonImpl.instanceHtml.setMarkdown(characterDescriptionTv, item.descrition ?: "")
     }
 }

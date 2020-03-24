@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout
+        android:id="@+id/viewPagerCoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/containerBottomNav">
@@ -31,6 +32,5 @@
         android:id="@+id/containerBottomNav"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/character_nav_menu" />
+        android:layout_alignParentBottom="true" />
 </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>

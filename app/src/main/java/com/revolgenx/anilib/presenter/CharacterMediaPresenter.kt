@@ -8,6 +8,8 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.character.CharacterMediaModel
 import kotlinx.android.synthetic.main.character_media_presenter.view.*
 
@@ -47,12 +49,24 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
                 mediaFormatList[it]
             }
 
-            characterMediaStatusTv.text  = item.status?.let {
+            characterMediaStatusTv.text = item.status?.let {
                 characterMediaStatusTv.color = Color.parseColor(statusColors[it])
                 mediaStatus[it]
             }
-        }
-        item.title?.title(context)
 
+            setOnClickListener {
+                BrowseMediaEvent(
+                    MediaBrowserMeta(
+                        item.mediaId,
+                        item.type!!,
+                        item.title!!.romaji!!,
+                        item.coverImage!!.image,
+                        item.bannerImage
+                    ), characterMediaImageView
+                ).postEvent
+            }
+        }
+
+        item.title?.title(context)
     }
 }

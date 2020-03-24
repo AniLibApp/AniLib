@@ -86,7 +86,7 @@ query MediaCharacterQuery(
                         large
                         medium
                     }
-
+                    siteUrl
                 }
                 voiceActors(language:$language){
                     id
@@ -184,6 +184,23 @@ query MediaStatsQuery($mediaId:Int){
 }
 
 
+query BrowseSimpleMediaQuery($mediaId:Int){
+    Media(id:$mediaId){
+        id
+        title {
+            ... mediaTitle
+        }
+        coverImage {
+            ... on MediaCoverImage{
+                medium
+                large
+                extraLarge
+            }
+        }
+        bannerImage
+    }
+}
+
 query MediaOverViewQuery($mediaId:Int){
     Media(id:$mediaId){
         id
@@ -277,6 +294,10 @@ query CharacterQuery($characterId:Int){
             native
             alternative
         }
+        image{
+            large
+            medium
+        }
         isFavourite
         siteUrl
         favourites
@@ -300,7 +321,9 @@ query CharacterMediaQuery($characterId:Int, $page:Int, $perPage:Int){
                     native
                     userPreferred
                 }
+                bannerImage
                 format
+                type
                 season
                 status
                 seasonYear
@@ -332,6 +355,101 @@ query CharacterActorQuery($characterId:Int ){
         }
     }
 }
+
+
+query StaffQuery($id:Int){
+    Staff(id:$id){
+        id
+        name{
+            full
+            native
+            alternative
+        }
+        image{
+            large
+            medium
+        }
+        description(asHtml:true)
+        favourites
+        language
+        isFavourite
+        siteUrl
+    }
+}
+
+query StaffCharacterMediaQuery($staffId:Int, $page:Int, $perPage:Int){
+    Staff(id:$staffId){
+        characters(page:$page,perPage:$perPage){
+            nodes{
+                id
+                name{
+                    full
+                }
+                image{
+                    large
+                    medium
+                }
+
+
+                media{
+                    edges{
+                        characterRole
+                        node{
+                            id
+                            title{
+                                romaji
+                                english
+                                native
+                                userPreferred
+                            }
+                            coverImage{
+                                medium
+                                large
+                                extraLarge
+                            }
+                            isAdult
+                            status
+                            format
+                            type
+                            seasonYear
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query StaffMediaRoleQuery($staffId:Int,$page:Int,$perPage:Int){
+    Staff(id:$staffId){
+        staffMedia(page:$page,perPage:$perPage){
+            edges{
+                node{
+                    id
+                    title{
+                        romaji
+                        english
+                        native
+                        userPreferred
+                    }
+                    coverImage{
+                        extraLarge
+                        large
+                        medium
+                    }
+                    status
+                    type
+                    format
+                    seasonYear
+                    isAdult
+                }
+                staffRole
+            }
+        }
+    }
+}
+
+
 
 query BasicUserQuery($id:Int){
     User(id:$id){

@@ -7,7 +7,7 @@ val viewModelModules = module {
     viewModel { SeasonViewModel(get()) }
     viewModel { MediaEntryEditorViewModel(get(), get(), get()) }
     viewModel { MainActivityViewModel(get(), get()) }
-    viewModel { MediaBrowserViewModel(get()) }
+    viewModel { MediaBrowserViewModel(get(), get()) }
 
     viewModel { MediaOverviewViewModel(get(), get()) }
     viewModel { MediaWatchViewModel(get()) }
@@ -16,7 +16,7 @@ val viewModelModules = module {
     viewModel { MediaReviewViewModel(get()) }
     viewModel { MediaStatsViewModel(get()) }
 
-    viewModel { CharacterViewModel(get()) }
+    viewModel { CharacterViewModel(get(), get()) }
     viewModel { CharacterMediaViewModel(get()) }
     viewModel { CharacterActorViewModel(get()) }
 }

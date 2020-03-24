@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.service
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.field.MediaOverviewField
@@ -20,6 +21,15 @@ abstract class MediaBrowseService(protected val graphRepository: BaseGraphReposi
     val mediaStatsLiveData by lazy {
         MutableStatsType()
     }
+
+    val simpleMediaLiveData by lazy {
+        MutableLiveData<Resource<MediaBrowseMediaModel>>()
+    }
+
+    abstract fun getSimpleMedia(
+        mediaId: Int,
+        compositeDisposable: CompositeDisposable
+    ): LiveData<Resource<MediaBrowseMediaModel>>
 
     abstract fun getMediaOverview(
         field: MediaOverviewField,

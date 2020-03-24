@@ -30,6 +30,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.dialog.AuthDialog
+import com.revolgenx.anilib.event.BaseEvent
+import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.fragment.*
@@ -344,38 +346,34 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
 
     /*Events*/
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onListEditEvent(event: ListEditorEvent) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            this,
-            event.sharedElement,
-            ViewCompat.getTransitionName(event.sharedElement) ?: ""
-        )
-        ContainerActivity.openActivity(
-            this,
-            ParcelableFragment(
-                EntryListEditorFragment::class.java,
-                bundleOf(
-                    EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
+    fun onBaseEvent(event: BaseEvent) {
+        when (event) {
+            is BrowseMediaEvent -> {
+                startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
+                    this.putExtra(MediaBrowserActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
+                })
+            }
+            is ListEditorEvent -> {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this,
+                    event.sharedElement,
+                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
                 )
-            )
-            , options
-        )
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        EntryListEditorFragment::class.java,
+                        bundleOf(
+                            EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
+                        )
+                    )
+                    , options
+                )
+            }
+            is BrowseGenreEvent -> {
 
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBrowseMediaEvent(event: BrowseMediaEvent) {
-//        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-//            this,
-//            event.sharedElement,
-//            ViewCompat.getTransitionName(event.sharedElement) ?: ""
-//        )
-
-        startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
-            this.putExtra(MediaBrowserActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
-        })
-        //, options.toBundle()
+            }
+        }
     }
 
 

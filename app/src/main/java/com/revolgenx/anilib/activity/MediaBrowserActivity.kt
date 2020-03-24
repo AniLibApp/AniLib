@@ -3,7 +3,6 @@ package com.revolgenx.anilib.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +21,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewpager.widget.ViewPager
 import com.facebook.drawee.view.SimpleDraweeView
@@ -29,6 +29,8 @@ import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.meta.ViewPagerContainerMeta
+import com.revolgenx.anilib.activity.meta.ViewPagerContainerType
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.BaseEvent
@@ -39,12 +41,9 @@ import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
-import com.revolgenx.anilib.fragment.base.ViewPagerParcelableFragments
 import com.revolgenx.anilib.fragment.browser.*
-import com.revolgenx.anilib.fragment.info.CharacterActorFragment
-import com.revolgenx.anilib.fragment.info.CharacterFragment
-import com.revolgenx.anilib.fragment.info.CharacterMediaFragment
-import com.revolgenx.anilib.model.ToggleFavouriteModel
+import com.revolgenx.anilib.field.ToggleFavouriteField
+import com.revolgenx.anilib.model.MediaBrowseMediaModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.repository.util.Status.*
@@ -72,6 +71,7 @@ class MediaBrowserActivity : DynamicSystemActivity() {
 
     private var circularProgressDrawable: CircularProgressDrawable? = null
 
+    private var browseMediaModel: MediaBrowseMediaModel? = null
 
     private val viewModel by viewModel<MediaBrowserViewModel>()
     private val pageChangeListener by lazy {
@@ -132,20 +132,35 @@ class MediaBrowserActivity : DynamicSystemActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media_browser)
 
+        //todo:initialize with manifest
         mediaBrowserMeta = intent.getParcelableExtra(MEDIA_BROWSER_META) ?: return
+
+        //initialize or do nth
+
+
+        viewModel.mediaLiveData.observe(this) {
+            when (it.status) {
+                SUCCESS -> {
+                    browseMediaModel = it.data
+                    if (mediaBrowserMeta.coverImage.isEmpty()) {
+                        mediaBrowserMeta.coverImage = it.data?.coverImage?.large ?: ""
+                        mediaBrowserMeta.bannerImage = it.data?.bannerImage ?: ""
+                        mediaBrowserMeta.title = it.data?.title?.romaji ?: ""
+                        updateView()
+                    }
+                }
+            }
+        }
+
+        viewModel.getMediaInfo(mediaBrowserMeta.mediaId)
 
         val colors = intArrayOf(
             DynamicTheme.getInstance().get().accentColor,
             DynamicTheme.getInstance().get().tintPrimaryColor
         )
-
-        mediaBrowserCoverImage.setImageURI(mediaBrowserMeta.coverImage)
-        mediaBrowserBannerImage.setImageURI(mediaBrowserMeta.bannerImage)
-
         setSupportActionBar(mediaBrowserToolbar)
-        supportActionBar!!.title = mediaBrowserMeta.title
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
+        updateView()
 
         tabColorStateList = ColorStateList(states, colors)
         browserRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
@@ -206,6 +221,8 @@ class MediaBrowserActivity : DynamicSystemActivity() {
             }
         )
 
+
+
         viewModel.isFavourite(mediaBrowserMeta.mediaId).observe(this, Observer {
             when (it.status) {
                 SUCCESS -> {
@@ -258,6 +275,12 @@ class MediaBrowserActivity : DynamicSystemActivity() {
             pageChangeListener.onPageSelected(browseMediaViewPager.currentItem)
         }
 
+    }
+
+    private fun updateView() {
+        supportActionBar!!.title = mediaBrowserMeta.title
+        mediaBrowserCoverImage.setImageURI(mediaBrowserMeta.coverImage)
+        mediaBrowserBannerImage.setImageURI(mediaBrowserMeta.bannerImage)
     }
 
 
@@ -392,7 +415,7 @@ class MediaBrowserActivity : DynamicSystemActivity() {
             return
         }
 
-        viewModel.toggleMediaFavourite(ToggleFavouriteModel().also {
+        viewModel.toggleMediaFavourite(ToggleFavouriteField().also {
             when (mediaBrowserMeta.type) {
                 MediaType.ANIME.ordinal -> {
                     it.animeId = mediaBrowserMeta.mediaId
@@ -450,26 +473,31 @@ class MediaBrowserActivity : DynamicSystemActivity() {
             }
             is BrowseCharacterEvent -> {
 
+//                ViewPagerContainerActivity.openActivity(
+//                    this,
+//                    ViewPagerParcelableFragments(
+//                        listOf(
+//                            CharacterFragment::class.java.name,
+//                            CharacterMediaFragment::class.java.name,
+//                            CharacterActorFragment::class.java.name
+//                        ),
+//                        listOf(
+//                            bundleOf(
+//                                CharacterFragment.CHARACTER_META_KEY to event.meta
+//                            ),
+//                            bundleOf(
+//                                CharacterFragment.CHARACTER_META_KEY to event.meta
+//                            ),
+//                            bundleOf(
+//                                CharacterFragment.CHARACTER_META_KEY to event.meta
+//                            )
+//                        )
+//                    )
+//                )
+
                 ViewPagerContainerActivity.openActivity(
                     this,
-                    ViewPagerParcelableFragments(
-                        listOf(
-                            CharacterFragment::class.java.name,
-                            CharacterMediaFragment::class.java.name,
-                            CharacterActorFragment::class.java.name
-                        ),
-                        listOf(
-                            bundleOf(
-                                CharacterFragment.CHARACTER_META_KEY to event.meta
-                            ),
-                            bundleOf(
-                                CharacterFragment.CHARACTER_META_KEY to event.meta
-                            ),
-                            bundleOf(
-                                CharacterFragment.CHARACTER_META_KEY to event.meta
-                            )
-                        )
-                    )
+                    ViewPagerContainerMeta(ViewPagerContainerType.CHARACTER, event.meta)
                 )
             }
         }
