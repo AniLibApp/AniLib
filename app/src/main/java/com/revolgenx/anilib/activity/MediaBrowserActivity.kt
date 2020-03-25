@@ -36,6 +36,7 @@ import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.BaseEvent
 import com.revolgenx.anilib.event.BrowseCharacterEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.BrowseStaffEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
@@ -472,32 +473,15 @@ class MediaBrowserActivity : DynamicSystemActivity() {
                 }, options.toBundle())
             }
             is BrowseCharacterEvent -> {
-
-//                ViewPagerContainerActivity.openActivity(
-//                    this,
-//                    ViewPagerParcelableFragments(
-//                        listOf(
-//                            CharacterFragment::class.java.name,
-//                            CharacterMediaFragment::class.java.name,
-//                            CharacterActorFragment::class.java.name
-//                        ),
-//                        listOf(
-//                            bundleOf(
-//                                CharacterFragment.CHARACTER_META_KEY to event.meta
-//                            ),
-//                            bundleOf(
-//                                CharacterFragment.CHARACTER_META_KEY to event.meta
-//                            ),
-//                            bundleOf(
-//                                CharacterFragment.CHARACTER_META_KEY to event.meta
-//                            )
-//                        )
-//                    )
-//                )
-
                 ViewPagerContainerActivity.openActivity(
                     this,
                     ViewPagerContainerMeta(ViewPagerContainerType.CHARACTER, event.meta)
+                )
+            }
+            is BrowseStaffEvent -> {
+                ViewPagerContainerActivity.openActivity(
+                    this,
+                    ViewPagerContainerMeta(ViewPagerContainerType.STAFF, event.meta)
                 )
             }
         }

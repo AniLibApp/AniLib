@@ -2,22 +2,21 @@ package com.revolgenx.anilib.fragment.base
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.otaliastudios.elements.extensions.LoadingPresenter
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout
 import com.revolgenx.anilib.R
 import kotlinx.android.synthetic.main.base_presenter_fragment_layout.view.*
-import timber.log.Timber
 
 
 /**
@@ -36,7 +35,6 @@ abstract class BasePresenterFragment<S : Any>() :
             requireContext(), R.layout.loading_layout
         )
     }
-
 
     private val errorPresenter: Presenter<Void> by lazy {
         Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
@@ -90,6 +88,8 @@ abstract class BasePresenterFragment<S : Any>() :
 
     override fun onResume() {
         super.onResume()
+        if (!visibleToUser)
+            invalidateAdapter()
         visibleToUser = true
     }
 

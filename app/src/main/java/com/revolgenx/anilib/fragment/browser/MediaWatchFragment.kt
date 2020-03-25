@@ -52,12 +52,6 @@ class MediaWatchFragment : BasePresenterFragment<MediaWatchModel>() {
         }
     }
 
-    override fun onResume() {
-        if (!visibleToUser)
-            invalidateAdapter()
-        super.onResume()
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         mediaBrowserMeta =
             arguments?.getParcelable(MediaBrowserActivity.MEDIA_BROWSER_META) ?: return

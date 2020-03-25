@@ -7,13 +7,10 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowserActivity
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.overview.MediaStaffField
-import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
-import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
 import com.revolgenx.anilib.model.MediaStaffModel
 import com.revolgenx.anilib.presenter.MediaStaffPresenter
 import com.revolgenx.anilib.viewmodel.MediaStaffViewModel
@@ -56,11 +53,5 @@ class MediaStaffFragment : BasePresenterFragment<MediaStaffModel>() {
         super.onActivityCreated(savedInstanceState)
     }
 
-
-    override fun onResume() {
-        if (!visibleToUser)
-            invalidateAdapter()
-        super.onResume()
-    }
 
 }

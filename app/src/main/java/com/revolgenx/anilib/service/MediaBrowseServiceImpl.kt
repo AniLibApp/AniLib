@@ -2,7 +2,6 @@ package com.revolgenx.anilib.service
 
 import androidx.lifecycle.LiveData
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.PieEntry
 import com.revolgenx.anilib.BrowseSimpleMediaQuery
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.field.MediaOverviewField
@@ -174,7 +173,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                             s.node()?.let { staff ->
                                 model.staffId = staff.id()
                                 model.name = staff.name()?.full()
-                                model.image = staff.image()?.let {
+                                model.staffImage = staff.image()?.let {
                                     StaffImageModel().also { imgModel ->
                                         imgModel.large = it.large()
                                         imgModel.medium = it.medium()

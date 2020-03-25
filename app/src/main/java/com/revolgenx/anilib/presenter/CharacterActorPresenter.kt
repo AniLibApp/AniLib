@@ -7,6 +7,8 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.event.BrowseStaffEvent
+import com.revolgenx.anilib.event.meta.StaffMeta
 import com.revolgenx.anilib.model.VoiceActorModel
 import kotlinx.android.synthetic.main.character_actor_presenter_layout.view.*
 
@@ -37,6 +39,14 @@ class CharacterActorPresenter(context: Context) : Presenter<VoiceActorModel>(con
             actorNameTv.text = item.name
             item.language?.let {
                 actorLanguageTv.text = language[it]
+            }
+            setOnClickListener {
+                BrowseStaffEvent(
+                    StaffMeta(
+                        item.actorId ?: -1,
+                        item.voiceActorImageModel?.image
+                    )
+                ).postEvent
             }
         }
     }

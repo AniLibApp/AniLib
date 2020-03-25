@@ -11,6 +11,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.character.CharacterMediaModel
+import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.character_media_presenter.view.*
 
 class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>(context) {
@@ -47,13 +48,14 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
             characterMediaTitleTv.text = item.title?.title(context)
             characterMediaFormatTv.text = item.format?.let {
                 mediaFormatList[it]
-            }
+            }.naText()
 
             characterMediaStatusTv.text = item.status?.let {
                 characterMediaStatusTv.color = Color.parseColor(statusColors[it])
                 mediaStatus[it]
-            }
+            }.naText()
 
+            characterMediaRatingTv.text = item.averageScore?.toString().naText()
             setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(

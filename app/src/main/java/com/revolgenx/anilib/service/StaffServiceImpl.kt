@@ -2,7 +2,7 @@ package com.revolgenx.anilib.service
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.revolgenx.anilib.field.StaffCharacterMediaField
+import com.revolgenx.anilib.field.StaffMediaCharacterField
 import com.revolgenx.anilib.field.StaffField
 import com.revolgenx.anilib.field.StaffMediaRoleField
 import com.revolgenx.anilib.model.*
@@ -38,7 +38,7 @@ class StaffServiceImpl(
                                 nModel.alternative = it.alternative()
                             }
                         }
-                        model.image = it.image()?.let {
+                        model.staffImage = it.image()?.let {
                             StaffImageModel().also { i ->
                                 i.medium = it.medium()
                                 i.large = it.large()
@@ -64,19 +64,19 @@ class StaffServiceImpl(
         return staffInfoLiveData
     }
 
-    override fun getStaffCharacterMedia(
-        field: StaffCharacterMediaField,
+    override fun getStaffMediaCharacter(
+        field: StaffMediaCharacterField,
         compositeDisposable: CompositeDisposable,
-        resourceCallback: (Resource<List<StaffCharacterMediaModel>>) -> Unit
+        resourceCallback: (Resource<List<StaffMediaCharacterModel>>) -> Unit
     ) {
-        val characList = mutableListOf<StaffCharacterMediaModel>()
+        val characList = mutableListOf<StaffMediaCharacterModel>()
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Staff()?.characters()?.nodes()?.forEach { charac ->
                     charac.media()?.edges()?.forEach cont@{ mid ->
                         mid.node()?.let { media ->
                             if (media.isAdult == true) return@cont
-                            StaffCharacterMediaModel().also { model ->
+                            StaffMediaCharacterModel().also { model ->
                                 model.mediaId = media.id()
                                 model.title = media.title()?.let {
                                     TitleModel().also { titleModel ->
@@ -93,11 +93,13 @@ class StaffServiceImpl(
                                         img.extraLarge = it.extraLarge()
                                     }
                                 }
+                                model.bannerImage =
+                                    media.bannerImage() ?: model.coverImage?.largeImage
                                 model.status = media.status()?.ordinal
                                 model.format = media.format()?.ordinal
                                 model.type = media.type()?.ordinal
-                                media.seasonYear()
-
+                                model.seasonYear = media.seasonYear()
+                                model.averageScore = media.averageScore()
                                 model.characterId = charac.id()
                                 model.characterName = charac.name()?.let {
                                     CharacterNameModel().also { c ->
@@ -158,6 +160,8 @@ class StaffServiceImpl(
                                     img.medium = it.medium()
                                 }
                             }
+                            model.bannerImage = media.bannerImage() ?: model.coverImage?.largeImage
+                            model.averageScore = media.averageScore()
                             model.seasonYear = media.seasonYear()
                             model.format = media.format()?.ordinal
                             model.type = media.type()?.ordinal

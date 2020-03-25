@@ -9,10 +9,10 @@ import com.revolgenx.anilib.service.MediaBrowseService
 import io.reactivex.disposables.CompositeDisposable
 
 class MediaReviewSource(
-    private val field: MediaReviewField,
+    field: MediaReviewField,
     private val browseService: MediaBrowseService,
     private val compositeDisposable: CompositeDisposable
-) : BaseRecyclerSource<MediaReviewModel>() {
+) : BaseRecyclerSource<MediaReviewModel,MediaReviewField>(field) {
     override fun areItemsTheSame(first: MediaReviewModel, second: MediaReviewModel): Boolean {
         return first.reviewId == second.reviewId
     }
@@ -21,14 +21,7 @@ class MediaReviewSource(
         super.onPageOpened(page, dependencies)
         field.page = pageNo
         browseService.getMediaReview(field, compositeDisposable) { res ->
-            when (res.status) {
-                Status.SUCCESS -> {
-                    postResult(page, res.data ?: emptyList())
-                }
-                Status.ERROR -> {
-                    postResult(page, Exception(res.exception))
-                }
-            }
+           postResult(page, res)
         }
     }
 }

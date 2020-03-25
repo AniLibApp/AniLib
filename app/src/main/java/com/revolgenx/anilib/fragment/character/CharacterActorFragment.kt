@@ -52,11 +52,4 @@ class CharacterActorFragment : BasePresenterFragment<VoiceActorModel>() {
     }
 
 
-
-
-    override fun onResume() {
-        if (!visibleToUser)
-            invalidateAdapter()
-        super.onResume()
-    }
 }

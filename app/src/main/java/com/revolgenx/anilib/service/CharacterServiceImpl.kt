@@ -14,8 +14,6 @@ import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class CharacterServiceImpl(
@@ -35,7 +33,7 @@ class CharacterServiceImpl(
                     CharacterModel().also { model ->
                         model.characterId = it.id()
                         model.isFavourite = it.isFavourite
-                        model.descrition = it.description()
+                        model.description = it.description()
                         model.siteUrl = it.siteUrl()
                         model.favourites = it.favourites()
                         model.name = it.name()?.let {

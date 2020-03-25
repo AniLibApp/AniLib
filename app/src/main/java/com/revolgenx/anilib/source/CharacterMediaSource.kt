@@ -10,11 +10,11 @@ import io.reactivex.disposables.CompositeDisposable
 import java.lang.Exception
 
 class CharacterMediaSource(
-    private val field: CharacterMediaField,
+    field: CharacterMediaField,
     private val characterService: CharacterService,
     private val compositeDisposable: CompositeDisposable
 ) :
-    BaseRecyclerSource<CharacterMediaModel>() {
+    BaseRecyclerSource<CharacterMediaModel, CharacterMediaField>(field) {
 
     override fun areItemsTheSame(first: CharacterMediaModel, second: CharacterMediaModel): Boolean {
         return first.mediaId == second.mediaId
@@ -24,14 +24,7 @@ class CharacterMediaSource(
         super.onPageOpened(page, dependencies)
         field.page = pageNo
         characterService.getCharacterMediaInfo(field, compositeDisposable) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    postResult(page, it.data ?: emptyList())
-                }
-                Status.ERROR -> {
-                    postResult(page, Exception(it.exception))
-                }
-            }
+            postResult(page, it)
         }
     }
 }

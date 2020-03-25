@@ -222,15 +222,8 @@
     <string name="invalid">Invalid</string>
     <string name="media">Media</string>
     <string name="voice_role">Voice Roles</string>
+    <string name="staff_role">Staff Roles</string>
+    <string name="staff_media_format_year">%s · %s</string>
+    <string name="language">Language</string>
 
-    <!-- TV("TV"),
-  TV_SHORT("TV_SHORT")
-  MOVIE("MOVIE")
-  SPECIAL("SPECIAL")
-  OVA("OVA")
-  ONA("ONA")
-  MUSIC("MUSIC")
-  MANGA("MANGA")
-  NOVEL("NOVEL")
-  ONE_SHOT("ONE_SHOT"),-->
 </resources>

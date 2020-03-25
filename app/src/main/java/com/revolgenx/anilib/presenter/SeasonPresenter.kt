@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
@@ -17,10 +16,7 @@ import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.preference.loggedIn
-import com.revolgenx.anilib.type.MediaFormat
-import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.util.getAverageScore
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
@@ -65,10 +61,10 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
             coverImageIv.setImageURI(data.coverImage!!.image)
             if (data.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeTv.text =
-                    string(R.string.ep_d_s).format(naText(data.episodes), naText(data.duration))
+                    string(R.string.ep_d_s).format(data.episodes.naText(), data.duration.naText())
             } else {
                 mediaEpisodeTv.text =
-                    string(R.string.chap_s).format(naText(data.chapters), naText(data.volumes))
+                    string(R.string.chap_s).format(data.chapters.naText(), data.volumes.naText())
             }
             mediaStartDateTv.naText(data.endDate?.date ?: data.startDate?.date)
             mediaGenreLayout.addGenre(
@@ -77,15 +73,16 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                 BrowseGenreEvent(it).postEvent
             }
 
-            mediaRatingTv.text = getAverageScore(data.averageScore)
+            mediaRatingTv.text = data.averageScore?.toString().naText()
 
-            data.format?.let {
-                mediaFormatTv.text = mediaFormats[it]
-            }
-            data.status?.let {
+            mediaFormatTv.text = data.format?.let {
+                mediaFormats[it]
+            }.naText()
+
+            mediaStatusTv.naText(data.status?.let {
                 mediaStatusTv.color = Color.parseColor(statusColors[it])
-                mediaStatusTv.text = mediaStatus[it]
-            }
+                mediaStatus[it]
+            })
 
             mediaCardView.setOnClickListener {
                 BrowseMediaEvent(
