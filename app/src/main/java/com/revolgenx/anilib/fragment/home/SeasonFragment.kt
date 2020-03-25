@@ -33,13 +33,6 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
     }
 
 
-    override fun onResume() {
-        (activity as AppCompatActivity).invalidateOptionsMenu()
-        setHasOptionsMenu(true)
-        if (!visibleToUser)
-            invalidateAdapter()
-        super.onResume()
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

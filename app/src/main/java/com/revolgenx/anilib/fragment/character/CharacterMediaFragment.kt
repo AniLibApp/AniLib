@@ -50,10 +50,4 @@ class CharacterMediaFragment : BasePresenterFragment<CharacterMediaModel>() {
         super.onActivityCreated(savedInstanceState)
     }
 
-
-    override fun onResume() {
-        if (!visibleToUser)
-            invalidateAdapter()
-        super.onResume()
-    }
 }

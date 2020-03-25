@@ -19,4 +19,7 @@ val viewModelModules = module {
     viewModel { CharacterViewModel(get(), get()) }
     viewModel { CharacterMediaViewModel(get()) }
     viewModel { CharacterActorViewModel(get()) }
+    viewModel { StaffViewModel(get(),get()) }
+    viewModel { StaffMediaCharacterViewModel(get()) }
+    viewModel { StaffMediaRoleViewModel(get()) }
 }

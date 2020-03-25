@@ -189,26 +189,26 @@ class MediaOverviewFragment : BaseFragment() {
 
         MarkwonImpl.instanceHtml.setMarkdown(mediaDescriptionTv, overview.description ?: "")
 
-        mediaFormatTv.subtitle = naText(overview.format?.let {
+        mediaFormatTv.subtitle = overview.format?.let {
             requireContext().resources.getStringArray(
                 R.array.media_format
             )[it]
-        })
-        mediaSourceTv.subtitle = naText(overview.source?.let {
+        }.naText()
+        mediaSourceTv.subtitle = overview.source?.let {
             requireContext().resources.getStringArray(
                 R.array.media_source
             )[it]
-        })
+        }.naText()
 
         if (overview.type == MediaType.ANIME.ordinal) {
-            mediaEpisodeTv.subtitle = naText(overview.episodes)
+            mediaEpisodeTv.subtitle = overview.episodes.naText()
             mediaDurationTv.subtitle =
-                getString(R.string.min_s).format(naText(overview.duration))
+                getString(R.string.min_s).format(overview.duration.naText())
         } else if (overview.type == MediaType.MANGA.ordinal) {
             mediaEpisodeTv.title = getString(R.string.chapters)
-            mediaEpisodeTv.subtitle = naText(overview.chapters)
+            mediaEpisodeTv.subtitle = overview.chapters.naText()
             mediaDurationTv.title = getString(R.string.volumes)
-            mediaDurationTv.subtitle = naText(overview.volumes)
+            mediaDurationTv.subtitle = overview.volumes.naText()
         }
 
         when (overview.trailer?.site) {
@@ -240,8 +240,8 @@ class MediaOverviewFragment : BaseFragment() {
         }
 
         startEndDateTv.text = getString(R.string.start_s_end_s).format(
-            naText(overview.startDate.toString()),
-            naText(overview.endDate.toString())
+            overview.startDate.toString().naText(),
+            overview.endDate.toString().naText()
         )
 
         overview.airingTimeModel?.let { atModel ->

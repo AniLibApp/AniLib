@@ -1,16 +1,11 @@
 package com.revolgenx.anilib.fragment.browser
 
-import android.content.res.Configuration
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.core.view.setMargins
-import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -19,16 +14,13 @@ import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.widget.*
-import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowserActivity
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.overview.MediaCharacterField
-import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.MediaCharacterModel
 import com.revolgenx.anilib.presenter.MediaCharacterPresenter
-import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.viewmodel.MediaCharacterViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,7 +34,7 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
 
     override val baseSource: Source<MediaCharacterModel>
         get() {
-            return viewModel.characterSource ?: createSource()
+            return viewModel.source ?: createSource()
         }
 
     private var mediaBrowserMeta: MediaBrowserMeta? = null
@@ -138,12 +130,6 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
         }
 
         super.onActivityCreated(savedInstanceState)
-    }
-
-    override fun onResume() {
-        if (!visibleToUser)
-            invalidateAdapter()
-        super.onResume()
     }
 
     override fun onDestroy() {

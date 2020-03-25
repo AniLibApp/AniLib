@@ -3,9 +3,9 @@ package com.revolgenx.anilib.service
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.field.StaffField
-import com.revolgenx.anilib.field.StaffCharacterMediaField
+import com.revolgenx.anilib.field.StaffMediaCharacterField
 import com.revolgenx.anilib.field.StaffMediaRoleField
-import com.revolgenx.anilib.model.StaffCharacterMediaModel
+import com.revolgenx.anilib.model.StaffMediaCharacterModel
 import com.revolgenx.anilib.model.StaffMediaRoleModel
 import com.revolgenx.anilib.model.StaffModel
 import com.revolgenx.anilib.repository.util.Resource
@@ -19,9 +19,9 @@ interface StaffService {
         compositeDisposable: CompositeDisposable
     ): LiveData<Resource<StaffModel>>
 
-    fun getStaffCharacterMedia(
-        field: StaffCharacterMediaField, compositeDisposable: CompositeDisposable,
-        resourceCallback: ((Resource<List<StaffCharacterMediaModel>>) -> Unit)
+    fun getStaffMediaCharacter(
+        field: StaffMediaCharacterField, compositeDisposable: CompositeDisposable,
+        resourceCallback: ((Resource<List<StaffMediaCharacterModel>>) -> Unit)
     )
 
     fun getStaffMediaRole(

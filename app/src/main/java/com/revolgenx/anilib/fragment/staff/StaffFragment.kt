@@ -1,66 +1,59 @@
-package com.revolgenx.anilib.fragment.character
+package com.revolgenx.anilib.fragment.staff
 
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.observe
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.event.meta.CharacterMeta
-import com.revolgenx.anilib.field.CharacterField
+import com.revolgenx.anilib.event.meta.StaffMeta
+import com.revolgenx.anilib.field.StaffField
 import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
-import com.revolgenx.anilib.model.character.CharacterModel
+import com.revolgenx.anilib.model.StaffModel
 import com.revolgenx.anilib.preference.loggedIn
-import com.revolgenx.anilib.repository.util.Status.*
+import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
-import com.revolgenx.anilib.viewmodel.CharacterViewModel
-import kotlinx.android.synthetic.main.character_fragment_layout.*
+import com.revolgenx.anilib.viewmodel.StaffViewModel
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*
+import kotlinx.android.synthetic.main.staff_fragment_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CharacterFragment : BaseFragment() {
+class StaffFragment : BaseFragment() {
     companion object {
-        const val CHARACTER_META_KEY = "character_meta_key"
+        const val STAFF_META_KEY = "staff_meta_key"
     }
 
-    private val viewModel by viewModel<CharacterViewModel>()
+    private val viewModel by viewModel<StaffViewModel>()
 
-    private var characterModel: CharacterModel? = null
-    private lateinit var characterMeta: CharacterMeta
-    private val characterField by lazy {
-        CharacterField().also {
-            it.characterId = characterMeta.characterId
+
+    private var staffModel: StaffModel? = null
+    private lateinit var staffMeta: StaffMeta
+    private val staffField by lazy {
+        StaffField().also {
+            it.staffId = staffMeta.staffId
         }
     }
 
     private val toggleFavouriteField by lazy {
         ToggleFavouriteField().also {
-            it.characterId = characterMeta.characterId
+            it.staffId = staffMeta.staffId
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.character_fragment_layout, container, false)
     }
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.character_fragment_menu, menu)
+        inflater.inflate(R.menu.staff_fragment_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.character_share_menu -> {
-                characterModel?.siteUrl?.let {
+                staffModel?.siteUrl?.let {
                     requireContext().openLink(it)
                 } ?: makeToast(R.string.invalid)
                 true
@@ -71,26 +64,35 @@ class CharacterFragment : BaseFragment() {
         }
     }
 
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.staff_fragment_layout, container, false)
+    }
+
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        arguments?.classLoader = CharacterMeta::class.java.classLoader
-        characterMeta = arguments?.getParcelable(CHARACTER_META_KEY) ?: return
-
-        characterIv.setImageURI(characterMeta.characterUrl)
-        viewModel.characterInfoLiveData.observe(viewLifecycleOwner) { res ->
+        arguments?.classLoader = StaffMeta::class.java.classLoader
+        staffMeta = arguments?.getParcelable(STAFF_META_KEY) ?: return
+        staffIv.setImageURI(staffMeta.staffUrl)
+        viewModel.staffInfoLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
-                SUCCESS -> {
+                Status.SUCCESS -> {
                     resourceStatusContainer.visibility = View.GONE
                     progressLayout.visibility = View.VISIBLE
                     errorLayout.visibility = View.GONE
                     updateView(res.data!!)
                 }
-                ERROR -> {
+                Status.ERROR -> {
                     resourceStatusContainer.visibility = View.VISIBLE
                     progressLayout.visibility = View.GONE
                     errorLayout.visibility = View.VISIBLE
                 }
-                LOADING -> {
+                Status.LOADING -> {
                     resourceStatusContainer.visibility = View.VISIBLE
                     progressLayout.visibility = View.VISIBLE
                     errorLayout.visibility = View.GONE
@@ -98,14 +100,14 @@ class CharacterFragment : BaseFragment() {
             }
         }
 
-        viewModel.toggleCharacterFavLiveData.observe(viewLifecycleOwner) { res ->
+        viewModel.toggleStaffFavLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
-                SUCCESS -> {
-                    characterFavIv.toggleLoading()
+                Status.SUCCESS -> {
+                    staffFavIv.toggleLoading()
                     if (res.data == true) {
-                        characterModel?.isFavourite = characterModel?.isFavourite?.not() ?: false
-                        characterFavIv.setImageResource(
-                            if (characterModel?.isFavourite == true) {
+                        staffModel?.isFavourite = staffModel?.isFavourite?.not() ?: false
+                        staffFavIv.setImageResource(
+                            if (staffModel?.isFavourite == true) {
                                 R.drawable.ic_favorite
                             } else {
                                 R.drawable.ic_not_favourite
@@ -113,29 +115,28 @@ class CharacterFragment : BaseFragment() {
                         )
                     }
                 }
-                ERROR -> {
-                    characterFavIv.toggleLoading()
+                Status.ERROR -> {
+                    staffFavIv.toggleLoading()
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ads_ic_error)
                 }
-                LOADING -> {
-                    characterFavIv.toggleLoading()
+                Status.LOADING -> {
+                    staffFavIv.toggleLoading()
                 }
             }
         }
-
         initListener()
 
         if (savedInstanceState == null) {
-            viewModel.getCharacterInfo(characterField)
+            viewModel.getStaffInfo(staffField)
         }
     }
 
     private fun initListener() {
-        characterFavLayout.setOnClickListener {
+        staffFavLayout.setOnClickListener {
             if (requireContext().loggedIn()) {
                 viewModel.toggleCharacterFav(toggleFavouriteField)
             } else {
-                characterNestedLayout.makeSnakeBar(R.string.please_log_in)
+                staffNestedLayout.makeSnakeBar(R.string.please_log_in)
             }
         }
     }
@@ -146,29 +147,30 @@ class CharacterFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    private fun updateView(item: CharacterModel) {
-        characterModel = item
-        characterNameTv.text = item.name?.full
-        characterFavCountIv.text = item.favourites?.toLong()?.prettyNumberFormat()
+    private fun updateView(item: StaffModel) {
+        staffModel = item
+        staffNameTv.text = item.staffName?.full
+        staffFavCountIv.text = item.favourites?.toLong()?.prettyNumberFormat()
 
-        if (characterMeta.characterUrl == null) {
-            characterIv.setImageURI(characterModel?.characterImageModel?.image)
+        if (staffMeta.staffUrl == null) {
+            staffIv.setImageURI(staffModel?.staffImage?.image)
         }
 
-        item.name?.native?.let {
+        item.staffName?.native?.let {
             nativeNameTv.subtitle = it
         } ?: let {
             nativeNameTv.visibility = View.GONE
         }
 
-        item.name?.alternative?.let {
+        item.staffName?.alternative?.let {
             alternativeNameTv.subtitle = it.joinToString()
+        } ?: let {
+            alternativeNameTv.visibility = View.GONE
         }
-
         if (item.isFavourite) {
-            characterFavIv.setImageResource(R.drawable.ic_favorite)
+            staffFavIv.setImageResource(R.drawable.ic_favorite)
         }
 
-        MarkwonImpl.instanceHtml.setMarkdown(characterDescriptionTv, item.description ?: "")
+        MarkwonImpl.instanceHtml.setMarkdown(staffDescriptionTv, item.description ?: "")
     }
 }

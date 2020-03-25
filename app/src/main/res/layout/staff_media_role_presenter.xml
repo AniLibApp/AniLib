@@ -2,7 +2,7 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/characterMediaContainer"
+    android:id="@+id/staffMediaRoleContainer"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="120dp"
     android:layout_height="230dp">
@@ -15,12 +15,12 @@
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-            android:id="@+id/characterMediaImageContainer"
+            android:id="@+id/staffMediaRoleImageContainer"
             android:layout_width="match_parent"
             android:layout_height="140dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/characterMediaImageView"
+                android:id="@+id/staffMediaRoleImageView"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
                 android:transitionName="character_image_transition"
@@ -28,7 +28,7 @@
                 app:roundedCornerRadius="4dp" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/characterMediaRatingTv"
+                android:id="@+id/staffMediaRoleRatingTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
@@ -48,10 +48,10 @@
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/characterMediaTitleTv"
+            android:id="@+id/staffMediaRoleTitleTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/characterMediaImageContainer"
+            android:layout_below="@id/staffMediaRoleImageContainer"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
@@ -63,10 +63,10 @@
             tools:ignore="SmallSp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/characterMediaStatusTv"
+            android:id="@+id/staffMediaRoleFormatYearTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/characterMediaFormatTv"
+            android:layout_above="@id/staffMediaRoleTv"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
@@ -79,7 +79,7 @@
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/characterMediaFormatTv"
+            android:id="@+id/staffMediaRoleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -90,9 +90,8 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:textSize="10sp"
-            app:ads_colorType="accent"
+            app:ads_colorType="accent_dark"
             tools:ignore="SmallSp" />
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
-
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

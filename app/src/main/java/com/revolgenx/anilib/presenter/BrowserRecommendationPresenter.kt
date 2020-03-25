@@ -26,7 +26,6 @@ import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.RecommendationRating
-import com.revolgenx.anilib.util.getAverageScore
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.naText
@@ -68,20 +67,20 @@ class BrowserRecommendationPresenter(
             mediaRecommendationTitleTv.text = data.title?.title(context)
             recommendationCoverImage.setImageURI(data.coverImage?.image)
 
-            mediaRatingTv.text = getAverageScore(data.averageScore)
+            mediaRatingTv.text = data.averageScore?.toString().naText()
 
             if (data.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeFormatTv.text = context.getString(R.string.episode_format_s).format(
-                    naText(data.episodes),
-                    naText(data.format?.let { context.resources.getStringArray(R.array.media_format)[it] })
+                    data.episodes.naText(),
+                    data.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText()
                 )
             } else {
                 mediaEpisodeFormatTv.text = context.getString(R.string.chapter_format_s).format(
-                    naText(data.chapters),
-                    naText(data.format?.let { context.resources.getStringArray(R.array.media_format)[it] })
+                    data.chapters.naText(),
+                    data.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText()
                 )
             }
-            mediaSeasonYearTv.text = naText(data.seasonYear?.toString())
+            mediaSeasonYearTv.text = data.seasonYear?.toString().naText()
             mediaRecommendationRating.text = data.rating?.toString()
             mediaRecommendationRating.setTextColor(Color.WHITE)
 

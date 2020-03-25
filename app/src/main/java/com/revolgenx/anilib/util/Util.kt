@@ -74,10 +74,6 @@ fun Long.prettyNumberFormat(): String { //Long.MIN_VALUE == -Long.MIN_VALUE so w
     return if (hasDecimal) (truncated / 10.0).toString() + suffix else (truncated / 10).toString() + suffix
 }
 
-fun getAverageScore(avg: Int?) = avg?.div(10f)?.let {
-    String.format("%.1f", it)
-} ?: "?"
-
 
 fun <T> T.registerForEvent() {
     val bus = EventBus.getDefault()
@@ -104,7 +100,9 @@ fun TextView.naText(text: String?) {
     this.text = text?.takeIf { it.isNotEmpty() } ?: "?"
 }
 
-fun naText(na: String?) = na.takeIf { it != null && it.isNotEmpty() } ?: "?"
+fun String?.naText() = this.takeIf { it != null && it.isNotEmpty() } ?: "?"
+
+//fun naText(na: String?) = na.takeIf { it != null && it.isNotEmpty() } ?: "?"
 
 fun View.makeSnakeBar(@StringRes str: Int? = null, msg: String? = null) {
     Snackbar.make(this, str?.let { context.getString(str) } ?: msg ?: "", Snackbar.LENGTH_SHORT)

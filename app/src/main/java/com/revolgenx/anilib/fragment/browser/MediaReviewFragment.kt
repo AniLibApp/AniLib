@@ -47,10 +47,4 @@ class MediaReviewFragment : BasePresenterFragment<MediaReviewModel>() {
         super.onActivityCreated(savedInstanceState)
     }
 
-    override fun onResume() {
-        if (!visibleToUser)
-            invalidateAdapter()
-        super.onResume()
-    }
-
 }
