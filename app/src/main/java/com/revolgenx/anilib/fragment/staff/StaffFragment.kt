@@ -12,6 +12,7 @@ import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.StaffModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Status
+import com.revolgenx.anilib.type.StaffLanguage
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.openLink
@@ -52,7 +53,7 @@ class StaffFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.character_share_menu -> {
+            R.id.staff_share_menu -> {
                 staffModel?.siteUrl?.let {
                     requireContext().openLink(it)
                 } ?: makeToast(R.string.invalid)
@@ -167,6 +168,14 @@ class StaffFragment : BaseFragment() {
         } ?: let {
             alternativeNameTv.visibility = View.GONE
         }
+
+        item.language?.let {
+            languageTv.subtitle =
+                requireContext().resources.getStringArray(R.array.staff_language)[it]
+        } ?: let {
+            languageTv.visibility = View.GONE
+        }
+
         if (item.isFavourite) {
             staffFavIv.setImageResource(R.drawable.ic_favorite)
         }
