@@ -2,6 +2,7 @@
 
 <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mediaRecommendationRootLayout"
     android:layout_width="185dp"
     android:layout_height="370dp"
@@ -43,16 +44,17 @@
                     android:paddingEnd="5dp"
                     android:paddingBottom="3dp"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     app:ads_colorType="custom"
-                    app:drawableStartCompat="@drawable/ic_star" />
+                    app:drawableStartCompat="@drawable/ic_star"
+                    tools:ignore="SmallSp" />
 
                 <View
                     android:id="@+id/statusDivider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_gravity="bottom"
-                    android:background="@color/ads_color_gray"/>
+                    android:background="@color/ads_color_gray" />
 
             </FrameLayout>
 
@@ -61,9 +63,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:paddingTop="6dp"
                 android:maxLines="1"
                 android:paddingStart="10dp"
+                android:paddingTop="6dp"
                 android:paddingEnd="10dp"
                 android:textSize="12sp" />
 
@@ -75,8 +77,8 @@
                 android:maxLines="1"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:textSize="12sp"
                 android:text="@string/episode_format_s"
+                android:textSize="12sp"
                 app:ads_colorType="accent" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -130,15 +132,15 @@
                 android:id="@+id/mediaRecommendationRating"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_gravity="end"
                 android:layout_marginStart="10dp"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:layout_gravity="end"
-                android:textColor="@color/white"
+                android:maxLines="1"
                 android:paddingStart="6dp"
                 android:paddingEnd="10dp"
-                android:maxLines="1"
-                android:text="+ 1" />
+                android:text="+ 1"
+                android:textColor="@color/white" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 

@@ -11,10 +11,10 @@ import io.reactivex.disposables.CompositeDisposable
 import java.lang.Exception
 
 class CharacterActorSource(
-    private val field: CharacterVoiceActorField,
+    field: CharacterVoiceActorField,
     private val characterService: CharacterService,
     private val compositeDisposable: CompositeDisposable?
-) : BaseRecyclerSource<VoiceActorModel>() {
+) : BaseRecyclerSource<VoiceActorModel,CharacterVoiceActorField>(field) {
     override fun areItemsTheSame(first: VoiceActorModel, second: VoiceActorModel): Boolean {
         return first.actorId == second.actorId
     }
@@ -23,14 +23,7 @@ class CharacterActorSource(
         super.onPageOpened(page, dependencies)
         if (page.isFirstPage()) {
             characterService.getCharacterActor(field, compositeDisposable) {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        postResult(page, it.data ?: emptyList())
-                    }
-                    Status.ERROR -> {
-                        postResult(page, Exception(it.exception))
-                    }
-                }
+               postResult(page, it)
             }
         } else {
             postResult(page, emptyList<VoiceActorModel>())

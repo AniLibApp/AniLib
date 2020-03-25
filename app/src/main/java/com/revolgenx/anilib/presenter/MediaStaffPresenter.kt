@@ -8,6 +8,7 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseStaffEvent
+import com.revolgenx.anilib.event.meta.StaffMeta
 import com.revolgenx.anilib.model.MediaStaffModel
 import kotlinx.android.synthetic.main.media_staff_presenter_layout.view.*
 
@@ -31,9 +32,9 @@ class MediaStaffPresenter(context: Context) : Presenter<MediaStaffModel>(context
         holder.itemView.apply {
             staffNameTv.text = item.name
             staffRoleTv.text = item.role
-            staffImageView.setImageURI(item.image?.image)
+            staffImageView.setImageURI(item.staffImage?.image)
             setOnClickListener {
-                BrowseStaffEvent(item.staffId ?: -1).postEvent
+                BrowseStaffEvent(StaffMeta(item.staffId ?: -1, item.staffImage?.image)).postEvent
             }
         }
     }

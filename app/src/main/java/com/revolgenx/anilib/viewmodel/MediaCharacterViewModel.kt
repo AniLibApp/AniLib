@@ -6,23 +6,13 @@ import com.revolgenx.anilib.service.MediaBrowseService
 import com.revolgenx.anilib.source.MediaCharacterSource
 import io.reactivex.disposables.CompositeDisposable
 
-class MediaCharacterViewModel(private val mediaBrowserService: MediaBrowseService) : ViewModel() {
-    var characterSource: MediaCharacterSource? = null
-    private val compositeDisposable by lazy {
-        CompositeDisposable()
-    }
-
-    fun createSource(field: MediaCharacterField): MediaCharacterSource {
-        characterSource = MediaCharacterSource(
+class MediaCharacterViewModel(private val mediaBrowserService: MediaBrowseService) : SourceViewModel<MediaCharacterSource, MediaCharacterField>() {
+    override fun createSource(field: MediaCharacterField): MediaCharacterSource {
+        source = MediaCharacterSource(
             field = field,
             mediaBrowseService = mediaBrowserService,
             compositeDisposable = compositeDisposable
         )
-        return characterSource!!
-    }
-
-    override fun onCleared() {
-        compositeDisposable.clear()
-        super.onCleared()
+        return source!!
     }
 }

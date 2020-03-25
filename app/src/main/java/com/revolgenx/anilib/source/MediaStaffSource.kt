@@ -11,11 +11,11 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlin.Exception
 
 class MediaStaffSource(
-    private val field: MediaStaffField,
+    field: MediaStaffField,
     private val browseService: MediaBrowseService,
     private val compositeDisposable: CompositeDisposable
 ) :
-    BaseRecyclerSource<MediaStaffModel>() {
+    BaseRecyclerSource<MediaStaffModel,MediaStaffField>(field) {
 
     override fun areItemsTheSame(first: MediaStaffModel, second: MediaStaffModel): Boolean {
         return first.staffId == second.staffId
@@ -25,14 +25,7 @@ class MediaStaffSource(
         super.onPageOpened(page, dependencies)
         field.page = pageNo
         browseService.getMediaStaff(field, compositeDisposable) { res ->
-            when (res.status) {
-                Status.SUCCESS -> {
-                    postResult(page, res.data ?: emptyList())
-                }
-                Status.ERROR -> {
-                    postResult(page, Exception(res.exception))
-                }
-            }
+           postResult(page, res)
         }
     }
 }

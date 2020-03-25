@@ -10,6 +10,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseCharacterEvent
 import com.revolgenx.anilib.event.BrowseStaffEvent
 import com.revolgenx.anilib.event.meta.CharacterMeta
+import com.revolgenx.anilib.event.meta.StaffMeta
 import com.revolgenx.anilib.model.MediaCharacterModel
 import kotlinx.android.synthetic.main.anime_character_presenter_layout.view.*
 import kotlinx.android.synthetic.main.manga_character_presenter_layout.view.*
@@ -53,8 +54,7 @@ class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>
                         BrowseCharacterEvent(
                             CharacterMeta(
                                 item.characterId ?: -1,
-                                item.characterImageModel?.image,
-                                item.siteUrl
+                                item.characterImageModel?.image
                             ),
                             characterImageView
                         ).postEvent
@@ -68,7 +68,12 @@ class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>
                             actorModel.language?.let { staffLanguages[it] }
 
                         voiceActorLayoutContainer.setOnClickListener {
-                            BrowseStaffEvent(actorModel.actorId ?: -1).postEvent
+                            BrowseStaffEvent(
+                                StaffMeta(
+                                    actorModel.actorId ?: -1,
+                                    actorModel.voiceActorImageModel?.image
+                                )
+                            ).postEvent
                         }
                     }
 
@@ -83,8 +88,7 @@ class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>
                         BrowseCharacterEvent(
                             CharacterMeta(
                                 item.characterId ?: -1,
-                                item.characterImageModel?.image,
-                                item.siteUrl
+                                item.characterImageModel?.image
                             ),
                             mangaCharacterImageView
                         ).postEvent

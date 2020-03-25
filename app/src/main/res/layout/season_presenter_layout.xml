@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mediaCardView"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="match_parent"
@@ -44,9 +45,10 @@
                 android:paddingEnd="5dp"
                 android:paddingBottom="3dp"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 app:ads_colorType="custom"
-                app:drawableStartCompat="@drawable/ic_star" />
+                app:drawableStartCompat="@drawable/ic_star"
+                tools:ignore="SmallSp" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
@@ -71,6 +73,7 @@
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
                 android:maxLines="2"
+                app:ads_colorType="tint_surface"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="14sp" />
 
@@ -157,6 +160,7 @@
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
                 android:text="type"
+                app:ads_colorType="accent_dark"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="12sp" />
 

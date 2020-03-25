@@ -19,12 +19,17 @@ import com.revolgenx.anilib.activity.meta.ViewPagerContainerType
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.BaseEvent
+import com.revolgenx.anilib.event.BrowseCharacterEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.BrowseStaffEvent
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ViewPagerParcelableFragments
 import com.revolgenx.anilib.fragment.character.CharacterActorFragment
 import com.revolgenx.anilib.fragment.character.CharacterFragment
 import com.revolgenx.anilib.fragment.character.CharacterMediaFragment
+import com.revolgenx.anilib.fragment.staff.StaffFragment
+import com.revolgenx.anilib.fragment.staff.StaffMediaCharacterFragment
+import com.revolgenx.anilib.fragment.staff.StaffMediaRoleFragment
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.toolbar_layout.*
@@ -148,6 +153,29 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
                     )
                 )
             }
+
+            ViewPagerContainerType.STAFF -> {
+                supportActionBar?.title = getString(R.string.staff)
+                containerBottomNav.inflateMenu(R.menu.staff_nav_menu)
+                viewPagerParcelableFragments = ViewPagerParcelableFragments(
+                    listOf(
+                        StaffFragment::class.java.name,
+                        StaffMediaCharacterFragment::class.java.name,
+                        StaffMediaRoleFragment::class.java.name
+                    ),
+                    listOf(
+                        bundleOf(
+                            StaffFragment.STAFF_META_KEY to viewPagerMeta.data
+                        ),
+                        bundleOf(
+                            StaffFragment.STAFF_META_KEY to viewPagerMeta.data
+                        ),
+                        bundleOf(
+                            StaffFragment.STAFF_META_KEY to viewPagerMeta.data
+                        )
+                    )
+                )
+            }
         }
     }
 
@@ -184,6 +212,18 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
                 startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
                     this.putExtra(MediaBrowserActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
                 })
+            }
+            is BrowseCharacterEvent -> {
+                openActivity(
+                    this,
+                    ViewPagerContainerMeta(ViewPagerContainerType.CHARACTER, event.meta)
+                )
+            }
+            is BrowseStaffEvent -> {
+                openActivity(
+                    this,
+                    ViewPagerContainerMeta(ViewPagerContainerType.STAFF, event.meta)
+                )
             }
         }
     }

@@ -11,12 +11,11 @@ import com.revolgenx.anilib.type.MediaType
 import io.reactivex.disposables.CompositeDisposable
 
 class MediaCharacterSource(
-    private val pageSize: Int = PAGE_SIZE,
-    private val field: MediaCharacterField,
+    field: MediaCharacterField,
     private val mediaBrowseService: MediaBrowseService,
     private val compositeDisposable: CompositeDisposable
 ) :
-    BaseRecyclerSource<MediaCharacterModel>() {
+    BaseRecyclerSource<MediaCharacterModel,MediaCharacterField>(field) {
 
     override fun areItemsTheSame(first: MediaCharacterModel, second: MediaCharacterModel): Boolean {
         return first.characterId == second.characterId
@@ -32,17 +31,8 @@ class MediaCharacterSource(
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {
         super.onPageOpened(page, dependencies)
         field.page = pageNo
-        field.perPage = pageSize
-
         mediaBrowseService.getMediaCharacter(field, compositeDisposable) { res ->
-            when (res.status) {
-                Status.SUCCESS -> {
-                    postResult(page, res.data ?: emptyList())
-                }
-                Status.ERROR -> {
-                    postResult(page, Exception(res.message))
-                }
-            }
+            postResult(page, res)
         }
     }
 }
