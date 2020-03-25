@@ -163,6 +163,8 @@ class CharacterFragment : BaseFragment() {
 
         item.name?.alternative?.let {
             alternativeNameTv.subtitle = it.joinToString()
+        } ?: let {
+            alternativeNameTv.visibility = View.GONE
         }
 
         if (item.isFavourite) {
