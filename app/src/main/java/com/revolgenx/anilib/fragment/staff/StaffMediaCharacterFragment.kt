@@ -8,7 +8,7 @@ import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.event.meta.StaffMeta
-import com.revolgenx.anilib.field.StaffMediaCharacterField
+import com.revolgenx.anilib.field.staff.StaffMediaCharacterField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.fragment.staff.StaffFragment.Companion.STAFF_META_KEY
 import com.revolgenx.anilib.model.StaffMediaCharacterModel

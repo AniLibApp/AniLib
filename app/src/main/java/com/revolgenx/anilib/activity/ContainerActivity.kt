@@ -10,10 +10,16 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.event.BaseEvent
+import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.fragment.ThemeControllerFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
+import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.container_activity.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.util.*
 
@@ -23,11 +29,11 @@ class ContainerActivity : DynamicSystemActivity() {
         const val fragmentContainerKey = "fragment_container_key"
 
         fun <T : BaseFragment> openActivity(
-            context: Context?,
+            context: Context,
             parcelableFragment: ParcelableFragment<T>,
             option: ActivityOptionsCompat? = null
         ) {
-            context?.startActivity(Intent(context, ContainerActivity::class.java).also {
+            context.startActivity(Intent(context, ContainerActivity::class.java).also {
                 it.putExtra(fragmentContainerKey, parcelableFragment)
             }, option?.toBundle())
         }
@@ -47,6 +53,12 @@ class ContainerActivity : DynamicSystemActivity() {
         ThemeController.setLocalTheme()
     }
 
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.container_activity)
@@ -64,6 +76,18 @@ class ContainerActivity : DynamicSystemActivity() {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBaseEvent(event: BaseEvent) {
+
+        when (event) {
+            is BrowseMediaEvent -> {
+                startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
+                    this.putExtra(MediaBrowserActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
+                })
+            }
+        }
+    }
+
     override fun setStatusBarColor(color: Int) {
         super.setStatusBarColor(color)
         setWindowStatusBarColor(statusBarColor);
@@ -71,6 +95,12 @@ class ContainerActivity : DynamicSystemActivity() {
 
     override fun setNavigationBarTheme(): Boolean {
         return AppController.instance.isThemeNavigationBar
+    }
+
+
+    override fun onStop() {
+        unRegisterForEvent()
+        super.onStop()
     }
 
 }

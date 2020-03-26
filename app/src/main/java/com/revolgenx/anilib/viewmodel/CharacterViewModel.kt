@@ -2,7 +2,7 @@ package com.revolgenx.anilib.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import com.revolgenx.anilib.field.CharacterField
+import com.revolgenx.anilib.field.character.CharacterField
 import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.model.character.CharacterModel
 import com.revolgenx.anilib.repository.util.Resource
@@ -24,7 +24,7 @@ class CharacterViewModel(
         }
     }
 
-    val toggleCharacterFavLiveData by lazy {
+    val toggleFavouriteLiveData by lazy {
         MediatorLiveData<Resource<Boolean>>().also {
             it.addSource(toggleService.toggleFavMutableLiveData) { res ->
                 it.value = res
@@ -42,7 +42,7 @@ class CharacterViewModel(
     }
 
     fun toggleCharacterFav(field: ToggleFavouriteField) {
-        toggleCharacterFavLiveData.value = Resource.loading(null)
+        toggleFavouriteLiveData.value = Resource.loading(null)
         toggleService.toggleFavourite(field, compositeDisposable)
     }
 

@@ -1,8 +1,9 @@
-package com.revolgenx.anilib.field
+package com.revolgenx.anilib.field.staff
 
 import com.revolgenx.anilib.StaffCharacterMediaQuery
+import com.revolgenx.anilib.field.BaseSourceField
 
-class StaffMediaCharacterField : BaseRecyclerField<StaffCharacterMediaQuery>() {
+class StaffMediaCharacterField : BaseSourceField<StaffCharacterMediaQuery>() {
     var staffId: Int? = null
     override fun toQueryOrMutation(): StaffCharacterMediaQuery {
         return StaffCharacterMediaQuery.builder()

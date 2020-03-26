@@ -2,12 +2,10 @@ package com.revolgenx.anilib.source
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.field.StaffMediaCharacterField
+import com.revolgenx.anilib.field.staff.StaffMediaCharacterField
 import com.revolgenx.anilib.model.StaffMediaCharacterModel
-import com.revolgenx.anilib.repository.util.Status.*
 import com.revolgenx.anilib.service.StaffService
 import io.reactivex.disposables.CompositeDisposable
-import java.lang.Exception
 
 class StaffMediaCharacterSource(
     field: StaffMediaCharacterField,

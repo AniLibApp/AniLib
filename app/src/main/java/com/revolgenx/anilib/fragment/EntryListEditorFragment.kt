@@ -259,14 +259,15 @@ class EntryListEditorFragment : BaseFragment() {
         startDateDynamicEt.setBackgroundColor(lightSurfaceColor)
         endDateDynamicEt.setBackgroundColor(lightSurfaceColor)
         notesEt.setBackgroundColor(lightSurfaceColor)
+        statusContainerSpinner.setBackgroundColor(lightSurfaceColor)
 
-        startDateDynamicEt.setCompoundDrawablesWithIntrinsicBounds(
+        startDateDynamicEt.setCompoundDrawablesRelativeWithIntrinsicBounds(
             calendarDrawable,
             null,
             crossDrawable,
             null
         )
-        endDateDynamicEt.setCompoundDrawablesWithIntrinsicBounds(
+        endDateDynamicEt.setCompoundDrawablesRelativeWithIntrinsicBounds(
             calendarDrawable,
             null,
             crossDrawable,

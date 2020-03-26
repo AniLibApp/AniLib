@@ -61,7 +61,7 @@ class StaffMediaCharacterPresenter(context: Context) :
                 mediaStatus[it]
             }.naText()
             staffMediaFormatYearTv.text =
-                context.getString(R.string.staff_media_format_year).format(
+                context.getString(R.string.media_format_year_s).format(
                     item.format?.let { mediaFormats[it] }.naText(),
                     item.seasonYear?.toString().naText()
                 )

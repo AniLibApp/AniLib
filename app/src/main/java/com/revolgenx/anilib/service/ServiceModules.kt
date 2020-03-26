@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.service
 
+import com.revolgenx.anilib.service.studio.StudioService
+import com.revolgenx.anilib.service.studio.StudioServiceImpl
 import org.koin.dsl.module
 
 val serviceModule = module {
@@ -9,4 +11,5 @@ val serviceModule = module {
     factory<MediaBrowseService> { MediaBrowseServiceImpl(get()) }
     factory<CharacterService> { CharacterServiceImpl(get()) }
     factory<StaffService> { StaffServiceImpl(get()) }
+    factory<StudioService> { StudioServiceImpl(get()) }
 }

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.fragment.browser
+package com.revolgenx.anilib.fragment.browse
 
 import android.graphics.Color
 import android.os.Bundle

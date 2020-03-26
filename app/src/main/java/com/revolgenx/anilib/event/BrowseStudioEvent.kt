@@ -1,5 +1,5 @@
 package com.revolgenx.anilib.event
 
-class BrowseStudioEvent(studioId: Int) {
+import com.revolgenx.anilib.event.meta.StudioMeta
 
-}
+data class BrowseStudioEvent(var meta: StudioMeta) : BaseEvent()

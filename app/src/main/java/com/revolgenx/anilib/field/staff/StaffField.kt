@@ -1,6 +1,7 @@
-package com.revolgenx.anilib.field
+package com.revolgenx.anilib.field.staff
 
 import com.revolgenx.anilib.StaffQuery
+import com.revolgenx.anilib.field.BaseField
 
 class StaffField : BaseField<StaffQuery> {
     var staffId: Int = -1

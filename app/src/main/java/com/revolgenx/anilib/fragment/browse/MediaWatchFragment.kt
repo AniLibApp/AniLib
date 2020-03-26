@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.fragment.browser
+package com.revolgenx.anilib.fragment.browse
 
 import android.os.Bundle
 import android.view.View
@@ -10,7 +10,6 @@ import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.activity.MediaBrowserActivity
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.overview.MediaWatchField
-import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.MediaWatchModel
 import com.revolgenx.anilib.presenter.MediaWatchPresenter
