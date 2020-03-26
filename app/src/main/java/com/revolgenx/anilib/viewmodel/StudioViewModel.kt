@@ -33,7 +33,8 @@ class StudioViewModel(
     }
 
     override fun createSource(field: StudioMediaField): StudioMediaSource {
-        return StudioMediaSource(field, studioService, compositeDisposable)
+        source =  StudioMediaSource(field, studioService, compositeDisposable)
+        return source!!
     }
 
     fun getStudioInfo(field: StudioField) {

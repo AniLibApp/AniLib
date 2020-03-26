@@ -18,7 +18,7 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             style="@style/Widget.DynamicApp.Card.Margin.Clickable"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="40dp">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
                 android:layout_width="match_parent"
