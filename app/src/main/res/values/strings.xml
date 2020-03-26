@@ -223,7 +223,8 @@
     <string name="media">Media</string>
     <string name="voice_role">Voice Roles</string>
     <string name="staff_role">Staff Roles</string>
-    <string name="staff_media_format_year">%s · %s</string>
+    <string name="media_format_year_s">%s · %s</string>
     <string name="language">Language</string>
+    <string name="studio">Studio</string>
 
 </resources>

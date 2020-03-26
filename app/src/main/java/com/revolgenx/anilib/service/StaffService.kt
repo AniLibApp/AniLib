@@ -2,9 +2,9 @@ package com.revolgenx.anilib.service
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.revolgenx.anilib.field.StaffField
-import com.revolgenx.anilib.field.StaffMediaCharacterField
-import com.revolgenx.anilib.field.StaffMediaRoleField
+import com.revolgenx.anilib.field.staff.StaffField
+import com.revolgenx.anilib.field.staff.StaffMediaCharacterField
+import com.revolgenx.anilib.field.staff.StaffMediaRoleField
 import com.revolgenx.anilib.model.StaffMediaCharacterModel
 import com.revolgenx.anilib.model.StaffMediaRoleModel
 import com.revolgenx.anilib.model.StaffModel

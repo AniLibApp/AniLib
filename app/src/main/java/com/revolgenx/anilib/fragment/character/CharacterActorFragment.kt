@@ -8,7 +8,7 @@ import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.event.meta.CharacterMeta
-import com.revolgenx.anilib.field.CharacterVoiceActorField
+import com.revolgenx.anilib.field.character.CharacterVoiceActorField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.VoiceActorModel
 import com.revolgenx.anilib.presenter.CharacterActorPresenter

@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.viewmodel
 
-import com.revolgenx.anilib.field.StaffMediaRoleField
+import com.revolgenx.anilib.field.staff.StaffMediaRoleField
 import com.revolgenx.anilib.service.StaffService
 import com.revolgenx.anilib.source.StaffMediaRoleSource
 

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.fragment.browser
+package com.revolgenx.anilib.fragment.browse
 
 import android.os.Bundle
 import android.view.LayoutInflater

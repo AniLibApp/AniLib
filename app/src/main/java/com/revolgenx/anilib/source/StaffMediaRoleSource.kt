@@ -2,7 +2,7 @@ package com.revolgenx.anilib.source
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.field.StaffMediaRoleField
+import com.revolgenx.anilib.field.staff.StaffMediaRoleField
 import com.revolgenx.anilib.model.StaffMediaRoleModel
 import com.revolgenx.anilib.service.StaffService
 import io.reactivex.disposables.CompositeDisposable

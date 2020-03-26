@@ -453,6 +453,43 @@ query StaffMediaRoleQuery($staffId:Int,$page:Int,$perPage:Int){
     }
 }
 
+query StudioQuery($studioId:Int){
+    Studio(id:$studioId){
+        id
+        name
+        isFavourite
+        favourites
+        siteUrl
+    }
+}
+
+query StudioMediaQuery($studioId:Int,$page:Int, $perPage:Int){
+    Studio(id:$studioId){
+        media(page:$page,perPage:$perPage){
+            nodes{
+                id
+                title{
+                    romaji
+                    english
+                    native
+                    userPreferred
+                }
+                coverImage{
+                    extraLarge
+                    large
+                    medium
+                }
+                isAdult
+                averageScore
+                bannerImage
+                format
+                seasonYear
+                type
+                status
+            }
+        }
+    }
+}
 
 
 query BasicUserQuery($id:Int){

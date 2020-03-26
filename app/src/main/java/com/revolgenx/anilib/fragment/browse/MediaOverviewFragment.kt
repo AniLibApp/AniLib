@@ -1,18 +1,13 @@
-package com.revolgenx.anilib.fragment.browser
+package com.revolgenx.anilib.fragment.browse
 
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.text.*
-import android.text.method.ScrollingMovementMethod
 import android.text.style.ClickableSpan
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,9 +18,7 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
-import com.pranavpandey.android.dynamic.support.widget.DynamicButton
 import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-import com.pranavpandey.android.dynamic.support.widget.DynamicImageButton
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowserActivity
 import com.revolgenx.anilib.adapter.BrowserRelationshipPresenter
@@ -34,6 +27,7 @@ import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseStudioEvent
 import com.revolgenx.anilib.event.BrowseTagEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
+import com.revolgenx.anilib.event.meta.StudioMeta
 import com.revolgenx.anilib.field.MediaOverviewField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.field.overview.MediaRecommendationField
@@ -47,7 +41,6 @@ import com.revolgenx.anilib.presenter.MediaExternalLinkPresenter
 import com.revolgenx.anilib.presenter.MediaMetaPresenter
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.source.BrowserOverviewRecommendationSource
-import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
@@ -439,7 +432,7 @@ class MediaOverviewFragment : BaseFragment() {
             spannableStringBuilder.setSpan(
                 object : ClickableSpan() {
                     override fun onClick(widget: View) {
-                        BrowseStudioEvent(it.studioId)
+                        BrowseStudioEvent(StudioMeta(it.studioId)).postEvent
                     }
 
                     override fun updateDrawState(ds: TextPaint) {
@@ -473,7 +466,7 @@ class MediaOverviewFragment : BaseFragment() {
             spannableStringBuilder.setSpan(
                 object : ClickableSpan() {
                     override fun onClick(widget: View) {
-                        BrowseStudioEvent(it.studioId)
+                        BrowseStudioEvent(StudioMeta(it.studioId)).postEvent
                     }
 
                     override fun updateDrawState(ds: TextPaint) {
