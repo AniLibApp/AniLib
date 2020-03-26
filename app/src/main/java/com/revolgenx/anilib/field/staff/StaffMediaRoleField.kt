@@ -1,9 +1,9 @@
-package com.revolgenx.anilib.field
+package com.revolgenx.anilib.field.staff
 
 import com.revolgenx.anilib.StaffMediaRoleQuery
-import com.revolgenx.anilib.field.BaseField.Companion.PER_PAGE
+import com.revolgenx.anilib.field.BaseSourceField
 
-class StaffMediaRoleField : BaseRecyclerField<StaffMediaRoleQuery>() {
+class StaffMediaRoleField : BaseSourceField<StaffMediaRoleQuery>() {
     var staffId: Int? = null
 
     override fun toQueryOrMutation(): StaffMediaRoleQuery {

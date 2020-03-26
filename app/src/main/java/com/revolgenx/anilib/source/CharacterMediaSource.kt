@@ -2,12 +2,10 @@ package com.revolgenx.anilib.source
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.field.CharacterMediaField
+import com.revolgenx.anilib.field.character.CharacterMediaField
 import com.revolgenx.anilib.model.character.CharacterMediaModel
-import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.service.CharacterService
 import io.reactivex.disposables.CompositeDisposable
-import java.lang.Exception
 
 class CharacterMediaSource(
     field: CharacterMediaField,

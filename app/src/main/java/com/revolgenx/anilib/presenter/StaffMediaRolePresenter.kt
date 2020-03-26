@@ -42,7 +42,7 @@ class StaffMediaRolePresenter(context: Context) : Presenter<StaffMediaRoleModel>
             staffMediaRoleTitleTv.text = item.title?.title(context)
             staffMediaRoleTv.text = item.staffRole
             staffMediaRoleFormatYearTv.text =
-                context.getString(R.string.staff_media_format_year).format(
+                context.getString(R.string.media_format_year_s).format(
                     item.format?.let { mediaFormats[it] }.naText(),
                     item.seasonYear?.toString().naText()
                 )

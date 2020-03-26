@@ -81,7 +81,7 @@
                         android:orientation="horizontal">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                            android:id="@+id/characterFavCountIv"
+                            android:id="@+id/characterFavCountTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

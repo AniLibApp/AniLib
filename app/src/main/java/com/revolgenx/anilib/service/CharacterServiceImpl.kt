@@ -2,9 +2,9 @@ package com.revolgenx.anilib.service
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.revolgenx.anilib.field.CharacterField
-import com.revolgenx.anilib.field.CharacterMediaField
-import com.revolgenx.anilib.field.CharacterVoiceActorField
+import com.revolgenx.anilib.field.character.CharacterField
+import com.revolgenx.anilib.field.character.CharacterMediaField
+import com.revolgenx.anilib.field.character.CharacterVoiceActorField
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.character.CharacterMediaModel
 import com.revolgenx.anilib.model.character.CharacterModel

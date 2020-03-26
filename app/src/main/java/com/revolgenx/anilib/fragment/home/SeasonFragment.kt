@@ -46,6 +46,13 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
         inflater.inflate(R.menu.season_menu, menu)
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        invalidateOptionMenu()
+        setHasOptionsMenu(true)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.prevSeasonId -> {

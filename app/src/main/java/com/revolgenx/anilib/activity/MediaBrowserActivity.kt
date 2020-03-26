@@ -33,17 +33,15 @@ import com.revolgenx.anilib.activity.meta.ViewPagerContainerMeta
 import com.revolgenx.anilib.activity.meta.ViewPagerContainerType
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.event.BaseEvent
-import com.revolgenx.anilib.event.BrowseCharacterEvent
-import com.revolgenx.anilib.event.BrowseMediaEvent
-import com.revolgenx.anilib.event.BrowseStaffEvent
+import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
-import com.revolgenx.anilib.fragment.browser.*
+import com.revolgenx.anilib.fragment.browse.*
 import com.revolgenx.anilib.field.ToggleFavouriteField
+import com.revolgenx.anilib.fragment.studio.StudioFragment
 import com.revolgenx.anilib.model.MediaBrowseMediaModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Resource
@@ -482,6 +480,15 @@ class MediaBrowserActivity : DynamicSystemActivity() {
                 ViewPagerContainerActivity.openActivity(
                     this,
                     ViewPagerContainerMeta(ViewPagerContainerType.STAFF, event.meta)
+                )
+            }
+            is BrowseStudioEvent -> {
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        StudioFragment::class.java,
+                        bundleOf(StudioFragment.STUDIO_META_KEY to event.meta)
+                    )
                 )
             }
         }

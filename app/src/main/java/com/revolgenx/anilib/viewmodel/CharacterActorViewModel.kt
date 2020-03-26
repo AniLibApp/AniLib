@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.viewmodel
 
-import com.revolgenx.anilib.field.CharacterVoiceActorField
+import com.revolgenx.anilib.field.character.CharacterVoiceActorField
 import com.revolgenx.anilib.service.CharacterService
 import com.revolgenx.anilib.source.CharacterActorSource
 

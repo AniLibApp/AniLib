@@ -23,10 +23,10 @@ import kotlinx.android.synthetic.main.base_presenter_fragment_layout.view.*
  * BasePresenter class contains @property baseRecyclerView @property layoutManager
  *
  * */
-abstract class BasePresenterFragment<S : Any>() :
+abstract class BasePresenterFragment<M : Any>() :
     BaseFragment() {
-    abstract val basePresenter: Presenter<S>
-    abstract val baseSource: Source<S>
+    abstract val basePresenter: Presenter<M>
+    abstract val baseSource: Source<M>
 
     var visibleToUser = false
 
@@ -98,7 +98,7 @@ abstract class BasePresenterFragment<S : Any>() :
         visibleToUser = false
     }
 
-    abstract fun createSource(): Source<S>
+    abstract fun createSource(): Source<M>
 
     /** call this method to load into recyclerview*/
     protected fun invalidateAdapter() {

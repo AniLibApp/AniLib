@@ -5,7 +5,7 @@ import android.view.*
 import androidx.lifecycle.observe
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.meta.CharacterMeta
-import com.revolgenx.anilib.field.CharacterField
+import com.revolgenx.anilib.field.character.CharacterField
 import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
@@ -98,7 +98,7 @@ class CharacterFragment : BaseFragment() {
             }
         }
 
-        viewModel.toggleCharacterFavLiveData.observe(viewLifecycleOwner) { res ->
+        viewModel.toggleFavouriteLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 SUCCESS -> {
                     characterFavIv.toggleLoading()
@@ -149,7 +149,7 @@ class CharacterFragment : BaseFragment() {
     private fun updateView(item: CharacterModel) {
         characterModel = item
         characterNameTv.text = item.name?.full
-        characterFavCountIv.text = item.favourites?.toLong()?.prettyNumberFormat()
+        characterFavCountTv.text = item.favourites?.toLong()?.prettyNumberFormat()
 
         if (characterMeta.characterUrl == null) {
             characterIv.setImageURI(characterModel?.characterImageModel?.image)

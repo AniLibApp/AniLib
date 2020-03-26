@@ -176,11 +176,18 @@
                     app:ads_fillSpace="true"
                     app:ads_title="@string/status" />
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                    android:id="@+id/statusSpinner"
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    android:id="@+id/statusContainerSpinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:ads_colorType="primary" />
+                    android:layout_height="wrap_content">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                        android:id="@+id/statusSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:ads_colorType="primary" />
+                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
                 <com.pranavpandey.android.dynamic.support.view.DynamicHeader
                     android:layout_width="match_parent"
