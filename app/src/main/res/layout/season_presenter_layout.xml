@@ -160,7 +160,7 @@
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
                 android:text="type"
-                app:ads_colorType="tint_accent"
+                app:ads_colorType="accent"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="12sp" />
 
