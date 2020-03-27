@@ -61,4 +61,13 @@
         app:headerLayout="@layout/nav_header_layout"
         app:menu="@menu/nav_menu" />
 
+    <com.revolgenx.anilib.view.navigation.AdvanceBrowseNavigationView
+        android:id="@+id/betaView"
+        style="@style/Widget.DynamicApp.NavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:fitsSystemWindows="true"
+        android:theme="@style/Widget.DynamicApp.NavigationView.ThemeOverlay"/>
+
 </com.pranavpandey.android.dynamic.support.widget.DynamicDrawerLayout>

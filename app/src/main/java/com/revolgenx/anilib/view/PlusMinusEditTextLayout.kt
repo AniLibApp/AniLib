@@ -48,6 +48,11 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         }
     }
 
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        invalidate()
+    }
+
     var dynamicInputType: Int? = null
         set(value) {
             field = value

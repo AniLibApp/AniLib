@@ -8,6 +8,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.makeSnakeBar
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.discover_fragment_layout.*
 import kotlinx.android.synthetic.main.overview_recommendation_presnter_layout.*
 
@@ -31,6 +32,16 @@ class DiscoverFragment : BaseFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.list_editor_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.listFavMenu -> {
+                activity?.drawerLayout?.openDrawer(activity?.betaView!!, true)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
