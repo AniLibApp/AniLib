@@ -226,5 +226,7 @@
     <string name="media_format_year_s">%s · %s</string>
     <string name="language">Language</string>
     <string name="studio">Studio</string>
+    <string name="apply_filter">Apply Filter</string>
+    <string name="search">Search</string>
 
 </resources>
