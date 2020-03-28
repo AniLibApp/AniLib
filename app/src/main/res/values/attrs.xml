@@ -17,5 +17,14 @@
         <attr name="maxLines" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="DynamicHeaderLinearLayout">
+        <attr name="headerName" format="string"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="CheckBoxHeaderLinearLayout">
+        <attr name="checkBoxHeaderName" format="string"/>
+    </declare-styleable>
+
 
 </resources>

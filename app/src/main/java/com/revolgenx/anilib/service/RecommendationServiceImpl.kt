@@ -2,7 +2,6 @@ package com.revolgenx.anilib.service
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.apollographql.apollo.exception.ApolloHttpException
 import com.revolgenx.anilib.model.SaveRecommendationModel
 import com.revolgenx.anilib.field.AddRecommendationField
 import com.revolgenx.anilib.field.UpdateRecommendationField
@@ -25,8 +24,9 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
 
     override fun mediaRecommendation(
         field: MediaRecommendationField,
-        compositeDisposable: CompositeDisposable?
-    ): MutableLiveData<Resource<List<MediaRecommendationModel>>> {
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: ((Resource<List<MediaRecommendationModel>>) -> Unit)
+    ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 runBlocking {
@@ -80,13 +80,12 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
                 }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                mediaRecommendationLiveData.value = Resource.success(it)
+                resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.w(it)
-                mediaRecommendationLiveData.value = Resource.error(it.message ?: ERROR, null)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null))
             })
         compositeDisposable?.add(disposable)
-        return mediaRecommendationLiveData
     }
 
     override fun updateRecommendation(

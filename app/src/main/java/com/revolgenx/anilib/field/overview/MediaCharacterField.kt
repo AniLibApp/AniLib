@@ -3,21 +3,23 @@ package com.revolgenx.anilib.field.overview
 import com.revolgenx.anilib.MediaCharacterQuery
 import com.revolgenx.anilib.field.BaseField
 import com.revolgenx.anilib.field.BaseField.Companion.PER_PAGE
+import com.revolgenx.anilib.field.BaseSourceField
 import com.revolgenx.anilib.type.StaffLanguage
 
-class MediaCharacterField : BaseField<MediaCharacterQuery> {
-    var mediaId = -1
-    var page = 1
-    var perPage = PER_PAGE
-    var language = StaffLanguage.JAPANESE.ordinal
-    var type: Int = 0
+class MediaCharacterField : BaseSourceField<MediaCharacterQuery>() {
+    var mediaId: Int? = null
+    var language: Int? = null
+    var type: Int? = null
 
     override fun toQueryOrMutation(): MediaCharacterQuery {
         return MediaCharacterQuery.builder()
             .page(page)
             .perPage(perPage)
-            .mediaId(mediaId)
-            .language(StaffLanguage.values()[language])
+            .mediaId(mediaId).apply {
+                language?.let {
+                    language(StaffLanguage.values()[it])
+                }
+            }
             .build()
     }
 

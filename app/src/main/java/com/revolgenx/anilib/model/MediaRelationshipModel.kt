@@ -2,16 +2,9 @@ package com.revolgenx.anilib.model
 
 import com.revolgenx.anilib.type.MediaFormat
 
-class MediaRelationshipModel : BaseMediaModel() {
+class MediaRelationshipModel : CommonMediaModel() {
     var relationshipType: Int? = null
-    var title: TitleModel? = null
-    var format: Int? = MediaFormat.`$UNKNOWN`?.ordinal
-    var status: Int? = null
-    var averageScore: Int? = null
-    var coverImageModel: CoverImageModel? = null
-    var bannerImage:String? = null
-    var type:Int? = null
-    var seasonYear:Int? = null
+    var seasonYear: Int? = null
 
     override fun equals(other: Any?): Boolean {
         return if (other is MediaRelationshipModel) {

@@ -13,8 +13,6 @@ import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class RecommendationService(protected var graphRepository: BaseGraphRepository) {
-    val mediaRecommendationLiveData
-            by lazy { MutableLiveData<Resource<List<MediaRecommendationModel>>>() }
 
     val updateRecommendationLiveData by lazy {
         MutableLiveData<Resource<UpdateRecommendationModel>>()
@@ -26,8 +24,9 @@ abstract class RecommendationService(protected var graphRepository: BaseGraphRep
 
     abstract fun mediaRecommendation(
         field: MediaRecommendationField,
-        compositeDisposable: CompositeDisposable? = null
-    ): MutableLiveData<Resource<List<MediaRecommendationModel>>>
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: ((Resource<List<MediaRecommendationModel>>) -> Unit)
+    )
 
 
     abstract fun updateRecommendation(

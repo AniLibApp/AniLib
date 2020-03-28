@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.revolgenx.anilib.view.CustomDynamicHeader
+                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
                         android:id="@+id/nativeTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
                         app:ads_fillSpace="true"
                         app:ads_title="@string/japanese_title" />
 
-                    <com.revolgenx.anilib.view.CustomDynamicHeader
+                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
                         android:id="@+id/englishTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
 
                 </LinearLayout>
 
-                <com.revolgenx.anilib.view.CustomDynamicHeader
+                <com.revolgenx.anilib.view.header.CustomDynamicHeader
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:ads_fillSpace="true"
@@ -105,7 +105,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <com.revolgenx.anilib.view.CustomDynamicHeader
+                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
                         android:id="@+id/mediaFormatTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         />
 
-                    <com.revolgenx.anilib.view.CustomDynamicHeader
+                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
                         android:id="@+id/mediaSourceTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                         app:layout_constraintRight_toLeftOf="@id/mediaEpisodeTv"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.revolgenx.anilib.view.CustomDynamicHeader
+                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
                         android:id="@+id/mediaEpisodeTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
                         app:layout_constraintRight_toLeftOf="@id/mediaDurationTv"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.revolgenx.anilib.view.CustomDynamicHeader
+                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
                         android:id="@+id/mediaDurationTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -217,7 +217,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.revolgenx.anilib.view.CustomDynamicHeader
+                <com.revolgenx.anilib.view.header.CustomDynamicHeader
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:ads_fillSpace="true"
@@ -260,7 +260,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.revolgenx.anilib.view.CustomDynamicHeader
+                <com.revolgenx.anilib.view.header.CustomDynamicHeader
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:ads_fillSpace="true"

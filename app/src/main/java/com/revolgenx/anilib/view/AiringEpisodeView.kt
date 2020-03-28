@@ -12,6 +12,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.model.AiringTimeModel
 import com.revolgenx.anilib.util.CommonTimer
 import com.revolgenx.anilib.util.TimerCallback
+import com.revolgenx.anilib.view.header.CustomDynamicHeader
 import java.util.concurrent.TimeUnit
 
 class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet?, attstyle: Int) :
@@ -136,7 +137,10 @@ class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet
 
 
     private fun makeDynamicHeaderLayout(context: Context, attributeSet: AttributeSet?) =
-        CustomDynamicHeader(context, attributeSet).also { header ->
+        CustomDynamicHeader(
+            context,
+            attributeSet
+        ).also { header ->
             header.layoutParams =
                 LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).also { params ->
                     params.weight = 1f
