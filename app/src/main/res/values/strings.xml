@@ -117,6 +117,102 @@
         <item>Repeating</item>
     </string-array>
 
+    <string-array name="advance_search_type">
+        <item>Anime</item>
+        <item>Manga</item>
+        <item>Studios</item>
+        <item>Characters</item>
+        <item>Staff</item>
+    </string-array>
+
+    <string-array name="advance_search_season">
+        <item>All</item>
+        <item>Winter</item>
+        <item>Spring</item>
+        <item>Summer</item>
+        <item>Fall</item>
+    </string-array>
+
+    <string-array name="advance_search_sort">
+        <item>None</item>
+        <item>Title Romaji</item>
+        <item>Title Romaji Desc</item>
+        <item>Title English</item>
+        <item>Title English Desc</item>
+        <item>Title Native</item>
+        <item>Title Native Desc</item>
+        <item>Type</item>
+        <item>Type Desc</item>
+        <item>Format</item>
+        <item>Format Desc</item>
+        <item>Start Date</item>
+        <item>Start Date Desc</item>
+        <item>End Date</item>
+        <item>End Date Desc</item>
+        <item>Score</item>
+        <item>Score Desc</item>
+        <item>Popularity</item>
+        <item>Popularity Desc</item>
+        <item>Trending</item>
+        <item>Trending Desc</item>
+        <item>Episodes</item>
+        <item>Episodes Desc</item>
+        <item>Duration</item>
+        <item>Duration Desc</item>
+        <item>Status</item>
+        <item>Status Desc</item>
+        <item>Chapters</item>
+        <item>Chapters Desc</item>
+        <item>Volumes</item>
+        <item>Volumes Desc</item>
+        <item>Updated At</item>
+        <item>Updated At Desc</item>
+        <item>Favourites</item>
+        <item>Favourites Desc</item>
+    </string-array>
+
+    <string-array name="advance_search_format">
+        <item>None</item>
+        <item>Tv</item>
+        <item>Tv Short</item>
+        <item>Movie</item>
+        <item>Special</item>
+        <item>Ova</item>
+        <item>Ona</item>
+        <item>Music</item>
+        <item>Manga</item>
+        <item>Novel</item>
+        <item>One Shot</item>
+    </string-array>
+
+    <string-array name="advance_search_country">
+        <item>None</item>
+        <item>Japan</item>
+        <item>South korean</item>
+        <item>China</item>
+    </string-array>
+
+    <string-array name="advance_search_status">
+        <item>None</item>
+        <item>Finished</item>
+        <item>Releasing</item>
+        <item>Not yet released</item>
+        <item>Cancelled</item>
+    </string-array>
+
+    <string-array name="advance_search_source">
+        <item>None</item>
+        <item>Original</item>
+        <item>Manga</item>
+        <item>Light Novel</item>
+        <item>Visual Novel</item>
+        <item>Video Game</item>
+        <item>Other</item>
+        <item>Novel</item>
+        <item>Doujinshi</item>
+        <item>Anime</item>
+    </string-array>
+
     <string name="please_log_in">Please log in.</string>
     <string name="home">Home</string>
     <string name="settings">Settings</string>
@@ -228,5 +324,9 @@
     <string name="studio">Studio</string>
     <string name="apply_filter">Apply Filter</string>
     <string name="search">Search</string>
+    <string name="sort">Sort</string>
+    <string name="streaming_on">Streaming On</string>
+    <string name="country">Country</string>
+    <string name="year">Year</string>
 
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.revolgenx.anilib.view.CustomDynamicHeader xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.view.header.CustomDynamicHeader xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/header"
     android:layout_width="190dp"

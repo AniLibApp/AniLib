@@ -229,8 +229,12 @@ class EntryListEditorFragment : BaseFragment() {
 
     private fun createListEditorMediaModel(): EntryListEditorMediaModel {
         return EntryListEditorMediaModel().also {
-            it.mediaId = mediaMeta.id
-            it.type = mediaMeta.type
+            mediaMeta.id?.let { id ->
+                it.mediaId = id
+            }
+            mediaMeta.type?.let { type ->
+                it.type = type
+            }
             it.userId = requireContext().userId()
         }
     }

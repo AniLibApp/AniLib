@@ -33,8 +33,20 @@
             android:src="@drawable/ic_favorite"/>
 
         <com.revolgenx.anilib.view.PlusMinusEditTextLayout
+            android:id="@+id/testplusminus"
             android:layout_width="match_parent"
-            android:layout_height="60dp"/>
+            android:layout_height="60dp"
+            android:visibility="gone"/>
+
+
+        <com.jaygoo.widget.RangeSeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rsb_mode="range"
+            app:rsb_min="1950"
+            app:rsb_max="2020"
+            app:rsb_indicator_show_mode="alwaysShow"
+            />
 
         <com.revolgenx.anilib.view.MediaListEditorScoreLayout
             android:layout_width="match_parent"

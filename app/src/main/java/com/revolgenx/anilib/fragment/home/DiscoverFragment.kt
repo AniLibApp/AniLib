@@ -51,6 +51,8 @@ class DiscoverFragment : BaseFragment() {
         mediaRecommendationDislikeTv.setOnClickListener {
             it.checkLoggedIn()
         }
+
+        testplusminus.visibility = View.VISIBLE
     }
 
 

@@ -50,7 +50,7 @@
                         app:ads_colorType="tint_surface"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.revolgenx.anilib.view.CustomDynamicHeader
+                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
                         android:id="@+id/nativeNameTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                         app:ads_title="@string/native_name" />
 
 
-                    <com.revolgenx.anilib.view.CustomDynamicHeader
+                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
                         android:id="@+id/alternativeNameTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -100,14 +100,14 @@
                 </RelativeLayout>
 
 
-                <com.revolgenx.anilib.view.CustomDynamicHeader
+                <com.revolgenx.anilib.view.header.CustomDynamicHeader
                     android:id="@+id/languageTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:ads_fillSpace="true"
                     app:ads_title="@string/language" />
 
-                <com.revolgenx.anilib.view.CustomDynamicHeader
+                <com.revolgenx.anilib.view.header.CustomDynamicHeader
                     android:id="@+id/descriptionTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

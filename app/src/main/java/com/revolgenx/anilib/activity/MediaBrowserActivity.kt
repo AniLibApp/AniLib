@@ -141,7 +141,7 @@ class MediaBrowserActivity : DynamicSystemActivity() {
             when (it.status) {
                 SUCCESS -> {
                     browseMediaModel = it.data
-                    if (mediaBrowserMeta.coverImage.isEmpty()) {
+                    if (mediaBrowserMeta.coverImage == null) {
                         mediaBrowserMeta.coverImage = it.data?.coverImage?.large ?: ""
                         mediaBrowserMeta.bannerImage = it.data?.bannerImage ?: ""
                         mediaBrowserMeta.title = it.data?.title?.romaji ?: ""

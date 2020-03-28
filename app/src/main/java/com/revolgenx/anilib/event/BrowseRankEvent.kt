@@ -1,3 +1,3 @@
 package com.revolgenx.anilib.event
 
-data class BrowseRankEvent(val rankType: Int,val  mediaType: Int):BaseEvent()
+data class BrowseRankEvent(val rankType: Int,val  mediaType: Int?):BaseEvent()

@@ -35,11 +35,11 @@ class MediaBrowserViewModel(
         }
     }
 
-    fun getMediaInfo(mediaId: Int): LiveData<Resource<MediaBrowseMediaModel>> {
+    fun getMediaInfo(mediaId: Int?): LiveData<Resource<MediaBrowseMediaModel>> {
         return mediaBrowseService.getSimpleMedia(mediaId, compositeDisposable)
     }
 
-    fun isFavourite(mediaId: Int): MutableLiveData<Resource<Boolean>> {
+    fun isFavourite(mediaId: Int?): MutableLiveData<Resource<Boolean>> {
         return toggleService.isFavourite(mediaId, compositeDisposable)
     }
 

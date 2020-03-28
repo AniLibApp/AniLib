@@ -25,7 +25,7 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
     MediaListEntryService(context, graphRepository) {
 
     override fun queryMediaListEntry(
-        mediaId: Int,
+        mediaId: Int?,
         compositeDisposable: CompositeDisposable?
     ): MutableLiveData<Resource<EntryListEditorMediaModel>> {
         val disposable = graphRepository.request(
