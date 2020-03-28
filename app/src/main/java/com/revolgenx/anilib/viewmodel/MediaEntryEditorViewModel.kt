@@ -50,7 +50,7 @@ class MediaEntryEditorViewModel(
         CompositeDisposable()
     }
 
-    fun queryMediaListEntry(mediaId: Int) {
+    fun queryMediaListEntry(mediaId: Int?) {
         queryMediaListEntryLiveData.value = Resource.loading(null)
         mediaListEntryService.queryMediaListEntry(
             mediaId,
@@ -82,7 +82,7 @@ class MediaEntryEditorViewModel(
         )
     }
 
-    fun isFavouriteQuery(mediaId: Int): MutableLiveData<Resource<Boolean>> {
+    fun isFavouriteQuery(mediaId: Int?): MutableLiveData<Resource<Boolean>> {
         return toggleService.isFavourite(mediaId, compositeDisposable)
     }
 

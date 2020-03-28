@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.view
+package com.revolgenx.anilib.view.header
 
 import android.content.Context
 import android.util.AttributeSet

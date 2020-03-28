@@ -18,7 +18,7 @@ import com.revolgenx.anilib.type.MediaRankType
 import com.revolgenx.anilib.util.dp
 import kotlinx.android.synthetic.main.ranking_presenter_layout.view.*
 
-class RankingsPresenter(context: Context, private val mediaType: Int = -1) :
+class RankingsPresenter(context: Context, private val mediaType: Int?) :
     Presenter<MediaStatsRankingModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)

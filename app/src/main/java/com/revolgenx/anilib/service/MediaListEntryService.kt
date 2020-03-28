@@ -22,7 +22,7 @@ abstract class MediaListEntryService(
     }
 
     abstract fun queryMediaListEntry(
-        mediaId: Int,
+        mediaId: Int?,
         compositeDisposable: CompositeDisposable? = null
     ): MutableLiveData<Resource<EntryListEditorMediaModel>>
 

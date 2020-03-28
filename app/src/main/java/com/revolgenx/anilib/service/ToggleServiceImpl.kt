@@ -41,7 +41,7 @@ class ToggleServiceImpl(graphRepository: BaseGraphRepository) :
     }
 
     override fun isFavourite(
-        mediaId: Int,
+        mediaId: Int?,
         compositeDisposable: CompositeDisposable?
     ): MutableLiveData<Resource<Boolean>> {
         if ((isFavouriteLiveData.value == null)) {

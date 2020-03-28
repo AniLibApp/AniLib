@@ -5,7 +5,8 @@ import android.os.Parcelable
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 
-class EntryListEditorMediaModel() : BaseMediaModel() {
+class EntryListEditorMediaModel() : Parcelable {
+    var mediaId:Int = -1
     var listId: Int = -1
     var userId: Int = -1
     var type: Int = MediaType.ANIME.ordinal
@@ -34,7 +35,6 @@ class EntryListEditorMediaModel() : BaseMediaModel() {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        super.writeToParcel(parcel, flags)
         parcel.writeInt(listId)
         parcel.writeInt(userId)
         parcel.writeInt(type)

@@ -1,8 +1,6 @@
 package com.revolgenx.anilib.view
 
 import android.content.Context
-import android.graphics.Color
-import android.os.Parcelable
 import android.text.InputType
 import android.util.AttributeSet
 import android.widget.RelativeLayout
@@ -11,13 +9,11 @@ import androidx.core.view.setPadding
 import androidx.core.widget.doOnTextChanged
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.*
-import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.makeToast
-import kotlinx.android.parcel.Parcelize
 
 class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set: Int = 0) :
     RelativeLayout(context, attributeSet, set) {
@@ -48,11 +44,6 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         }
     }
 
-    override fun setVisibility(visibility: Int) {
-        super.setVisibility(visibility)
-        invalidate()
-    }
-
     var dynamicInputType: Int? = null
         set(value) {
             field = value
@@ -61,8 +52,9 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
 
     val dynamicNumberEditText by lazy {
         DynamicEditText(context, attributeSet).apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).also {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, dp(40f)).also {
                 it.addRule(LEFT_OF, R.id.decrementButtonId)
+                it.addRule(CENTER_VERTICAL)
                 it.marginStart = dp(6f)
             }
             this.background = null
@@ -71,15 +63,15 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         }
     }
 
-
     val dynamicIncrementIv by lazy {
         DynamicImageView(context, attributeSet).apply {
             this.id = R.id.incrementButtonId
             layoutParams = LayoutParams(
-                DynamicUnitUtils.convertDpToPixels(40f),
-                LayoutParams.MATCH_PARENT
+                dp(40f),
+                dp(40f)
             ).also {
                 it.addRule(ALIGN_PARENT_END)
+                it.addRule(CENTER_VERTICAL)
             }
             this.setPadding(DynamicUnitUtils.convertDpToPixels(10f))
             setImageResource(R.drawable.ic_plus)
@@ -93,6 +85,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
                 DynamicUnitUtils.convertDpToPixels(40f),
                 LayoutParams.MATCH_PARENT
             ).also {
+                it.addRule(CENTER_VERTICAL)
                 it.addRule(LEFT_OF, R.id.incrementButtonId)
             }
             this.setPadding(DynamicUnitUtils.convertDpToPixels(10f))
@@ -152,11 +145,16 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         }
     }
 
-
     fun textChangeListener(listener: ((char: CharSequence) -> Unit)? = null) {
         this.textChanged = listener
     }
 
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        dynamicNumberEditText.visibility = visibility
+        dynamicIncrementIv.visibility = visibility
+        dynamicDecrementIv.visibility = visibility
+    }
     fun setCounter(counter: Double) {
         counterHolder = counter
         updateDynamicText()

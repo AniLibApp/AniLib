@@ -151,14 +151,14 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
                     rel.status = node.status()?.ordinal
                     rel.averageScore = node.averageScore()
                     rel.seasonYear = node.seasonYear()
-                    rel.coverImageModel = node.coverImage()?.fragments()?.mediaCoverImage()?.let {
+                    rel.coverImage = node.coverImage()?.fragments()?.mediaCoverImage()?.let {
                         CoverImageModel().also { model ->
                             model.large = it.large()
                             model.extraLarge = it.extraLarge()
                             model.medium = it.medium()
                         }
                     }
-                    rel.bannerImage = node.bannerImage() ?: rel.coverImageModel?.largeImage
+                    rel.bannerImage = node.bannerImage() ?: rel.coverImage?.largeImage
                 }
             }
         }

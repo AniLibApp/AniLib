@@ -40,7 +40,7 @@ import com.revolgenx.anilib.presenter.BrowserRecommendationPresenter
 import com.revolgenx.anilib.presenter.MediaExternalLinkPresenter
 import com.revolgenx.anilib.presenter.MediaMetaPresenter
 import com.revolgenx.anilib.repository.util.Status
-import com.revolgenx.anilib.source.BrowserOverviewRecommendationSource
+import com.revolgenx.anilib.source.MediaOverviewRecommendationSource
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
@@ -62,12 +62,8 @@ class MediaOverviewFragment : BaseFragment() {
         MediaRecommendationField()
     }
 
-    private val recommendationSource by lazy {
-        if (viewModel.browserOverviewRecommendationSource == null)
-            createRecommendationSource()
-        else viewModel.browserOverviewRecommendationSource!!
-    }
-
+    private val recommendationSource: MediaOverviewRecommendationSource
+        get() = viewModel.source ?: createRecommendationSource()
     private val relationshipPresenter by lazy {
         BrowserRelationshipPresenter(requireContext())
     }
@@ -488,8 +484,8 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
 
-    private fun createRecommendationSource(): BrowserOverviewRecommendationSource {
-        return viewModel.createRecommendationSource(recommendationField, viewLifecycleOwner)
+    private fun createRecommendationSource(): MediaOverviewRecommendationSource {
+        return viewModel.createSource(recommendationField)
     }
 
     private fun invalidateRelationshipAdapter(list: List<MediaRelationshipModel>) {

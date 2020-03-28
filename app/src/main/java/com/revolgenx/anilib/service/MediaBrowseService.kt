@@ -27,7 +27,7 @@ abstract class MediaBrowseService(protected val graphRepository: BaseGraphReposi
     }
 
     abstract fun getSimpleMedia(
-        mediaId: Int,
+        mediaId: Int?,
         compositeDisposable: CompositeDisposable
     ): LiveData<Resource<MediaBrowseMediaModel>>
 

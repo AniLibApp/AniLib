@@ -10,27 +10,21 @@ import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.service.MediaBrowseService
 import com.revolgenx.anilib.service.RecommendationService
-import com.revolgenx.anilib.source.BrowserOverviewRecommendationSource
+import com.revolgenx.anilib.source.MediaOverviewRecommendationSource
 import com.revolgenx.anilib.util.CommonTimer
-import io.reactivex.disposables.CompositeDisposable
 
 class MediaOverviewViewModel(
     private val mediaBrowseService: MediaBrowseService,
     private val recommendationService: RecommendationService
-) : ViewModel() {
-
-    private val compositeDisposable by lazy {
-        CompositeDisposable()
-    }
+) : SourceViewModel<MediaOverviewRecommendationSource, MediaRecommendationField>() {
 
     private val handler by lazy {
         Handler()
     }
 
-    var browserOverviewRecommendationSource: BrowserOverviewRecommendationSource? = null
     val mediaOverviewLiveData by lazy {
         MediatorLiveData<Resource<MediaOverviewModel>>().apply {
-            addSource(mediaBrowseService.mediaOverviewLiveData) {res->
+            addSource(mediaBrowseService.mediaOverviewLiveData) { res ->
                 res.data?.airingTimeModel?.let {
                     it.commonTimer = CommonTimer(handler, it.airingTime!!)
                 }
@@ -44,18 +38,6 @@ class MediaOverviewViewModel(
         mediaBrowseService.getMediaOverview(field, compositeDisposable)
     }
 
-    fun createRecommendationSource(
-        field: MediaRecommendationField,
-        lifecycleOwner: LifecycleOwner
-    ): BrowserOverviewRecommendationSource {
-        browserOverviewRecommendationSource = BrowserOverviewRecommendationSource(
-            recommendationService,
-            field,
-            lifecycleOwner,
-            compositeDisposable
-        )
-        return browserOverviewRecommendationSource!!
-    }
 
     fun removeUpdateRecommendationObserver(observer: Observer<Resource<UpdateRecommendationModel>>) {
         recommendationService.removeUpdateRecommendationObserver(observer)
@@ -66,7 +48,18 @@ class MediaOverviewViewModel(
         return recommendationService.updateRecommendation(field, compositeDisposable)
     }
 
+    override fun createSource(field: MediaRecommendationField): MediaOverviewRecommendationSource {
+        source = MediaOverviewRecommendationSource(
+            recommendationService,
+            compositeDisposable,
+            field
+        )
+        return source!!
+    }
+
+
     override fun onCleared() {
+        compositeDisposable.dispose()
         handler.removeCallbacksAndMessages(null)
         super.onCleared()
     }

@@ -12,5 +12,5 @@ abstract class ToggleService(val graphRepository: BaseGraphRepository) {
     abstract fun toggleFavourite(favouriteField: ToggleFavouriteField, compositeDisposable: CompositeDisposable? = null): MutableLiveData<Resource<Boolean>>
 
     //helper fun
-    abstract fun isFavourite(mediaId:Int,compositeDisposable: CompositeDisposable?):MutableLiveData<Resource<Boolean>>
+    abstract fun isFavourite(mediaId:Int?,compositeDisposable: CompositeDisposable?):MutableLiveData<Resource<Boolean>>
 }

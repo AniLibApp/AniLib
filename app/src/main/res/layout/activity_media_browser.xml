@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
-                app:expandedTitleMarginBottom="105dp"
+                app:expandedTitleMarginBottom="140dp"
                 app:expandedTitleMarginStart="136dp"
                 app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
                 app:layout_scrollFlags="scroll|snap|enterAlways|enterAlwaysCollapsed"

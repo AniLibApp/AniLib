@@ -40,7 +40,7 @@ class BrowserRelationshipPresenter(context: Context) : Presenter<MediaRelationsh
         holder.itemView.apply {
 
             relationshipTitleTv.text = item.title!!.title(context)
-            relationshipCoverImage.setImageURI(item.coverImageModel?.largeImage)
+            relationshipCoverImage.setImageURI(item.coverImage?.largeImage)
             relationshipMediaRatingTv.text = item.averageScore?.toString().naText()
             mediaSourceSeasonYearTv.text =
                 context.getString(R.string.source_seasonyear_s).format(
@@ -58,7 +58,7 @@ class BrowserRelationshipPresenter(context: Context) : Presenter<MediaRelationsh
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImageModel!!.image,
+                        item.coverImage!!.image,
                         item.bannerImage
                     ), relationshipCoverImage
                 ).postEvent

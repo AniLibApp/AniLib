@@ -25,7 +25,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
     MediaBrowseService(graphRepository) {
 
     override fun getSimpleMedia(
-        mediaId: Int,
+        mediaId: Int?,
         compositeDisposable: CompositeDisposable
     ): LiveData<Resource<MediaBrowseMediaModel>> {
 

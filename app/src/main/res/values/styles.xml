@@ -10,6 +10,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="fontFamily">@font/open_sans_regular</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorPrimaryInverse">@color/white</item>
     </style>
 
     <style name="BaseTheme.Dark" parent="Theme.DynamicApp">
@@ -20,6 +22,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="fontFamily">@font/open_sans_regular</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorPrimaryInverse">@color/black</item>
     </style>
 
     <style name="ExpandedTitleAppearance" parent="Widget.AppCompat.TextView">
