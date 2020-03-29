@@ -2,22 +2,24 @@ package com.revolgenx.anilib.view.navigation
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.drawable.RippleDrawable
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.AdapterView
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.jaygoo.widget.RangeSeekBar
+import com.otaliastudios.elements.Adapter
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicNavigationView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.presenter.TagPresenter
 import com.revolgenx.anilib.util.onItemSelected
 import kotlinx.android.synthetic.main.advance_browse_navigation_view.view.*
 
@@ -26,6 +28,7 @@ import kotlinx.android.synthetic.main.advance_browse_navigation_view.view.*
 class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?, style: Int) :
     DynamicNavigationView(context, attributeSet, style) {
 
+    private var mListener: AdvanceBrowseNavigationCallbackListener? = null
     private val rView by lazy {
         LayoutInflater.from(context).inflate(
             R.layout.advance_browse_navigation_view,
@@ -33,6 +36,41 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
             false
         )
     }
+
+    private val rippleDrawable: RippleDrawable
+        get() = RippleDrawable(ColorStateList.valueOf(accentColor), null, null)
+
+    private val accentColor: Int
+        get() = DynamicTheme.getInstance().get().accentColor
+
+    private lateinit var streamAdapter: Adapter
+    private lateinit var genreAdapter: Adapter
+    private lateinit var tagAdapter: Adapter
+    private val streamPresenter by lazy {
+        TagPresenter(context)
+    }
+    private val genrePresenter by lazy {
+        TagPresenter(context)
+    }
+    private val tagPresenter by lazy {
+        TagPresenter(context)
+    }
+
+    val drawerListener = object : DrawerLayout.DrawerListener {
+        override fun onDrawerStateChanged(newState: Int) {
+        }
+
+        override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+        }
+
+        override fun onDrawerClosed(drawerView: View) {
+        }
+
+        override fun onDrawerOpened(drawerView: View) {
+            mListener?.getQuery()
+        }
+    }
+
 
 //    private var seekBarMode = RangeSeekBar.SEEKBAR_MODE_RANGE
 //        set(value) {
@@ -44,19 +82,39 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
-        addView(
-            rView
-        )
+        addView(rView)
         rView.advanceNavigationSearchInputLayout.apply {
             this.setEndIconTintList(ColorStateList.valueOf(DynamicTheme.getInstance().get().tintAccentColor))
             this.setStartIconTintList(ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColorDark))
         }
-
         updateTheme(rView)
         updateView(rView)
+        updateRecyclerView(rView)
         initListener(rView)
     }
 
+    private fun updateRecyclerView(rView: View) {
+        rView.apply {
+            streamingOnRecyclerView.layoutManager = FlexboxLayoutManager(context)
+            genreRecyclerView.layoutManager = FlexboxLayoutManager(context)
+        }
+    }
+
+
+    fun buildStreamAdapter(builder: Adapter.Builder) {
+        streamAdapter = builder.addPresenter(streamPresenter)
+            .into(streamingOnRecyclerView)
+    }
+
+    fun buildGenreAdapter(builder: Adapter.Builder) {
+        genreAdapter = builder.addPresenter(genrePresenter)
+            .into(genreRecyclerView)
+    }
+
+    fun buildTagAdapter(builder: Adapter.Builder) {
+        tagAdapter = builder.addPresenter(tagPresenter)
+            .into(tagRecyclerView)
+    }
 
     fun updateView(rView: View) {
         val searchTypeItems: List<DynamicSpinnerItem>
@@ -123,6 +181,12 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
 //            seekBarMode = seekBarMode
 
             searchYearIndicator.isEnabled = enableYearCheckBox.isChecked
+            yearTv.text =
+                if (enableYearCheckBox.isChecked)
+                    context.getString(R.string.year)
+                else
+                    context.getString(R.string.year_disabled)
+
         }
 
     }
@@ -147,6 +211,11 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
                 searchCountryFrameLayout.setBackgroundColor(it)
                 searchStreamingFrameLayout.setBackgroundColor(it)
                 genreFrameLayout.setBackgroundColor(it)
+                tagFrameLayout.setBackgroundColor(it)
+                tagAddIv.background = rippleDrawable
+                genreAddIv.background = rippleDrawable
+                streamAddIv.background = rippleDrawable
+
                 searchYearIndicator.setIndicatorTextDecimalFormat("0")
                 searchYearIndicator.setTypeface(
                     ResourcesCompat.getFont(
@@ -170,13 +239,17 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
         rView.apply {
             enableYearCheckBox.setOnCheckedChangeListener { _, isChecked ->
                 searchYearIndicator.isEnabled = isChecked
+                yearTv.text =
+                    if (isChecked)
+                        context.getString(R.string.year)
+                    else
+                        context.getString(R.string.year_disabled)
             }
 
 //            yearRangeToggleButton.setToggleListener {
 //                seekBarMode =
 //                    if (it) RangeSeekBar.SEEKBAR_MODE_RANGE else RangeSeekBar.SEEKBAR_MODE_SINGLE
 //            }
-
 
             advanceSearchTypeSpinner.onItemSelected {
                 if (it == 0 || it == 1) {
@@ -188,13 +261,30 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
                 }
             }
 
+            streamAddIv.setOnClickListener {
+                mListener?.onStreamAdd()
+            }
+
+            genreAddIv.setOnClickListener {
+                mListener?.onGenreAdd()
+
+            }
+
+            tagAddIv.setOnClickListener {
+                mListener?.onTagAdd()
+            }
         }
+    }
+
+    fun setNavigationCallbackListener(listener: AdvanceBrowseNavigationCallbackListener) {
+        mListener = listener
     }
 
 
     override fun onSaveInstanceState(): Parcelable? {
         return SavedState(super.onSaveInstanceState()).also {
-//            it.seekBarMode = seekBarMode
+            //            it.seekBarMode = seekBarMode
+
         }
     }
 
@@ -231,5 +321,12 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
                 return arrayOfNulls(size)
             }
         }
+    }
+
+    interface AdvanceBrowseNavigationCallbackListener {
+        fun onGenreAdd()
+        fun onStreamAdd()
+        fun onTagAdd()
+        fun getQuery(): String
     }
 }

@@ -36,9 +36,7 @@ class BrowserRelationshipPresenter(context: Context) : Presenter<MediaRelationsh
     override fun onBind(page: Page, holder: Holder, element: Element<MediaRelationshipModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-
         holder.itemView.apply {
-
             relationshipTitleTv.text = item.title!!.title(context)
             relationshipCoverImage.setImageURI(item.coverImage?.largeImage)
             relationshipMediaRatingTv.text = item.averageScore?.toString().naText()

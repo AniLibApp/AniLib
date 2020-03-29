@@ -31,5 +31,6 @@
 
     <color name="popular_color">#E85D75</color>
     <color name="rated_color">#F7BF63</color>
+    <color name="tag_color">#0D000000</color>
 
 </resources>

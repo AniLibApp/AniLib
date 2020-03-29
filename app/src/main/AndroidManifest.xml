@@ -39,6 +39,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ViewPagerContainerActivity"/>
+        <activity android:name=".activity.AdvanceBrowseActivity" />
     </application>
 
 </manifest>

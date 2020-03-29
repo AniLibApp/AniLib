@@ -110,6 +110,7 @@
                         android:padding="6dp">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            android:id="@+id/yearTv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -118,13 +119,13 @@
                             android:textSize="11sp"
                             tools:ignore="SmallSp" />
 
-<!--                        <com.revolgenx.anilib.view.DynamicToggleButton-->
-<!--                            android:id="@+id/yearRangeToggleButton"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_centerVertical="true"-->
-<!--                            android:layout_toStartOf="@id/enableYearCheckBox"-->
-<!--                            app:srcCompat="@drawable/ic_range"/>-->
+                        <!--                        <com.revolgenx.anilib.view.DynamicToggleButton-->
+                        <!--                            android:id="@+id/yearRangeToggleButton"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_centerVertical="true"-->
+                        <!--                            android:layout_toStartOf="@id/enableYearCheckBox"-->
+                        <!--                            app:srcCompat="@drawable/ic_range"/>-->
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
                             android:id="@+id/enableYearCheckBox"
@@ -220,26 +221,38 @@
 
                 </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
 
+
                 <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
                     app:headerName="@string/streaming_on">
 
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
                         android:id="@+id/searchStreamingFrameLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:minHeight="40dp">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                             android:id="@+id/streamingOnRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginTop="6dp"
-                            android:layout_marginBottom="6dp" />
+                            android:layout_marginBottom="6dp"
+                            android:layout_toStartOf="@id/streamAddIv" />
 
-                    </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:id="@+id/streamAddIv"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:padding="10dp"
+                            app:ads_colorType="accent_dark"
+                            app:srcCompat="@drawable/ic_add" />
 
+                    </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
                 </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
 
 
@@ -288,25 +301,69 @@
                 <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    app:headerName="@string/genre">
+                    android:orientation="vertical"
+                    app:headerName="@string/tags">
 
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
                         android:id="@+id/genreFrameLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:minHeight="40dp">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                             android:id="@+id/genreRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginTop="6dp"
-                            android:layout_marginBottom="6dp" />
+                            android:layout_marginBottom="6dp"
+                            android:layout_toStartOf="@id/genreAddIv" />
 
-                    </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:id="@+id/genreAddIv"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentEnd="true"
+                            android:padding="10dp"
+                            app:ads_colorType="accent_dark"
+                            app:srcCompat="@drawable/ic_add" />
+                    </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
+                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
 
+
+                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:headerName="@string/tags">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
+                        android:id="@+id/tagFrameLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="40dp">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                            android:id="@+id/tagRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="6dp"
+                            android:layout_toStartOf="@id/tagAddIv" />
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:id="@+id/tagAddIv"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentEnd="true"
+                            android:padding="10dp"
+                            app:ads_colorType="accent_dark"
+                            app:srcCompat="@drawable/ic_add" />
+                    </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
                 </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
         </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
