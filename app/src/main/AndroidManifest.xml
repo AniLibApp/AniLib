@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ViewPagerContainerActivity"/>
-        <activity android:name=".activity.AdvanceBrowseActivity" />
+        <activity android:name=".activity.AdvanceSearchActivity" />
     </application>
 
 </manifest>
