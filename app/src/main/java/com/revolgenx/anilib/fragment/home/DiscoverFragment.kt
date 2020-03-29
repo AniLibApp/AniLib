@@ -1,12 +1,14 @@
 package com.revolgenx.anilib.fragment.home
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.AdvanceBrowseActivity
+import com.revolgenx.anilib.activity.AdvanceSearchActivity
+import com.revolgenx.anilib.dialog.TagChooserDialogFragment
+import com.revolgenx.anilib.field.TagChooserField
+import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.makeSnakeBar
@@ -43,7 +45,7 @@ class DiscoverFragment : BaseFragment() {
                 true
             }
             R.id.listDeleteMenu -> {
-                startActivity(Intent(requireContext(), AdvanceBrowseActivity::class.java))
+                startActivity(Intent(requireContext(), AdvanceSearchActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -58,6 +60,14 @@ class DiscoverFragment : BaseFragment() {
             it.checkLoggedIn()
         }
 
+        listPrivateButton.setOnClickListener {
+            TagChooserDialogFragment.newInstance(
+                TagChooserField(
+                    "header",
+                    listOf(TagField("genre", true), TagField("help", false))
+                )
+            ).show(childFragmentManager, "tag")
+        }
         testplusminus.visibility = View.VISIBLE
     }
 

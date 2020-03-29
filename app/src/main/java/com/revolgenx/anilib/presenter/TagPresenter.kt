@@ -15,6 +15,8 @@ class TagPresenter(context: Context) : Presenter<String>(context) {
 
     var elements: MutableList<String> = mutableListOf()
 
+    private var tagRemovedListener: ((elements: String) -> Unit)? = null
+
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         return Holder(
             LayoutInflater.from(parent.context).inflate(
@@ -37,7 +39,12 @@ class TagPresenter(context: Context) : Presenter<String>(context) {
             setOnClickListener {
                 page.removeElement(element)
                 elements.remove(data)
+                tagRemovedListener?.invoke(data)
             }
         }
+    }
+
+    fun tagRemoved(listener: (element: String) -> Unit) {
+        tagRemovedListener = listener
     }
 }

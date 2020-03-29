@@ -23,4 +23,6 @@ val viewModelModules = module {
     viewModel { StaffMediaCharacterViewModel(get()) }
     viewModel { StaffMediaRoleViewModel(get()) }
     viewModel { StudioViewModel(get(),get()) }
+
+    viewModel { AdvanceSearchViewModel() }
 }
