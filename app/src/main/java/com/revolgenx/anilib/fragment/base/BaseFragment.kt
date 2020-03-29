@@ -13,9 +13,6 @@ abstract class BaseFragment : DynamicFragment() {
             clzzez.map { it.newInstance() }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
 
     fun invalidateOptionMenu() {
         (activity as AppCompatActivity).invalidateOptionsMenu()

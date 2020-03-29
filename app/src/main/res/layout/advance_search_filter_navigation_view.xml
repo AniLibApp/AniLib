@@ -42,6 +42,7 @@
     </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
+        android:id="@+id/advanceSearchNestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/browseFilterCardView"
@@ -302,7 +303,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:headerName="@string/tags">
+                    app:headerName="@string/genre">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
                         android:id="@+id/genreFrameLayout"

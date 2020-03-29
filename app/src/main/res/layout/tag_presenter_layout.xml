@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/tag_background"
     android:orientation="horizontal"
-    android:padding="4dp">
+    android:padding="4dp"
+    android:layout_margin="2dp">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
         android:id="@+id/tagName"

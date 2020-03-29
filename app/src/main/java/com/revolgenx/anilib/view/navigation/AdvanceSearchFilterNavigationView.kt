@@ -13,25 +13,27 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.jaygoo.widget.RangeSeekBar
 import com.otaliastudios.elements.Adapter
+import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicNavigationView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.presenter.TagPresenter
 import com.revolgenx.anilib.util.onItemSelected
-import kotlinx.android.synthetic.main.advance_browse_navigation_view.view.*
+import kotlinx.android.synthetic.main.advance_search_filter_navigation_view.view.*
 
 
 //todo://search year not working after rotation
-class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?, style: Int) :
+class AdvanceSearchFilterNavigationView(context: Context, attributeSet: AttributeSet?, style: Int) :
     DynamicNavigationView(context, attributeSet, style) {
 
     private var mListener: AdvanceBrowseNavigationCallbackListener? = null
     private val rView by lazy {
         LayoutInflater.from(context).inflate(
-            R.layout.advance_browse_navigation_view,
+            R.layout.advance_search_filter_navigation_view,
             null,
             false
         )
@@ -47,14 +49,62 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
     private lateinit var genreAdapter: Adapter
     private lateinit var tagAdapter: Adapter
     private val streamPresenter by lazy {
-        TagPresenter(context)
+        TagPresenter(context).also {
+            it.tagRemoved {
+                streamingTagMap!![it]?.isTagged = false
+            }
+        }
     }
     private val genrePresenter by lazy {
-        TagPresenter(context)
+        TagPresenter(context).also {
+            it.tagRemoved {
+                genreTagMap!![it]?.isTagged = false
+            }
+        }
     }
     private val tagPresenter by lazy {
-        TagPresenter(context)
+        TagPresenter(context).also {
+            it.tagRemoved {
+                tagTagMap!![it]?.isTagged = false
+            }
+        }
     }
+
+    private val streamingOnList
+        get() =
+            context.resources.getStringArray(R.array.streaming_on)
+
+    private val tagList
+        get() =
+            context.resources.getStringArray(R.array.media_tags)
+
+    private val genreList
+        get() =
+            context.resources.getStringArray(R.array.media_genre)
+
+    private var genreTagMap: MutableMap<String, TagField>? = null
+        get() {
+            field = field ?: mutableMapOf<String, TagField>().also { map ->
+                genreList.map { map[it] = TagField(it, false) }
+            }
+            return field
+        }
+
+    private var tagTagMap: MutableMap<String, TagField>? = null
+        get() {
+            field = field ?: mutableMapOf<String, TagField>().also { map ->
+                tagList.map { map[it] = TagField(it, false) }
+            }
+            return field
+        }
+
+    private var streamingTagMap: MutableMap<String, TagField>? = null
+        get() {
+            field = field ?: mutableMapOf<String, TagField>().also { map ->
+                streamingOnList.map { map[it] = TagField(it, false) }
+            }
+            return field
+        }
 
     val drawerListener = object : DrawerLayout.DrawerListener {
         override fun onDrawerStateChanged(newState: Int) {
@@ -97,22 +147,35 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
         rView.apply {
             streamingOnRecyclerView.layoutManager = FlexboxLayoutManager(context)
             genreRecyclerView.layoutManager = FlexboxLayoutManager(context)
+            tagRecyclerView.layoutManager = FlexboxLayoutManager(context)
         }
     }
 
 
-    fun buildStreamAdapter(builder: Adapter.Builder) {
-        streamAdapter = builder.addPresenter(streamPresenter)
+    fun buildStreamAdapter(builder: Adapter.Builder, list: List<TagField>) {
+        list.forEach {
+            streamingTagMap!![it.tag]?.isTagged = it.isTagged
+        }
+        streamAdapter = builder
+            .addPresenter(streamPresenter)
             .into(streamingOnRecyclerView)
     }
 
-    fun buildGenreAdapter(builder: Adapter.Builder) {
-        genreAdapter = builder.addPresenter(genrePresenter)
+    fun buildGenreAdapter(builder: Adapter.Builder, list: List<TagField>) {
+        list.forEach {
+            genreTagMap!![it.tag]?.isTagged = it.isTagged
+        }
+        genreAdapter = builder
+            .addPresenter(genrePresenter)
             .into(genreRecyclerView)
     }
 
-    fun buildTagAdapter(builder: Adapter.Builder) {
-        tagAdapter = builder.addPresenter(tagPresenter)
+    fun buildTagAdapter(builder: Adapter.Builder, list: List<TagField>) {
+        list.forEach {
+            tagTagMap!![it.tag]?.isTagged = it.isTagged
+        }
+        tagAdapter = builder
+            .addPresenter(tagPresenter)
             .into(tagRecyclerView)
     }
 
@@ -177,8 +240,6 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
             advanceSearchStatusSpinner.adapter = makeSpinnerAdapter(searchStatusItems)
             advanceSearchSourceSpinner.adapter = makeSpinnerAdapter(searchSourceItems)
             advanceSearchCountrySpinner.adapter = makeSpinnerAdapter(searchCountryItems)
-
-//            seekBarMode = seekBarMode
 
             searchYearIndicator.isEnabled = enableYearCheckBox.isChecked
             yearTv.text =
@@ -257,21 +318,19 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
 
                 } else {
                     advanceMediaFilterContainer.visibility = View.GONE
-
                 }
             }
 
             streamAddIv.setOnClickListener {
-                mListener?.onStreamAdd()
+                mListener?.onStreamAdd(streamingTagMap!!.values.toList())
             }
 
             genreAddIv.setOnClickListener {
-                mListener?.onGenreAdd()
-
+                mListener?.onGenreAdd(genreTagMap!!.values.toList())
             }
 
             tagAddIv.setOnClickListener {
-                mListener?.onTagAdd()
+                mListener?.onTagAdd(tagTagMap!!.values.toList())
             }
         }
     }
@@ -281,52 +340,12 @@ class AdvanceBrowseNavigationView(context: Context, attributeSet: AttributeSet?,
     }
 
 
-    override fun onSaveInstanceState(): Parcelable? {
-        return SavedState(super.onSaveInstanceState()).also {
-            //            it.seekBarMode = seekBarMode
-
-        }
-    }
-
-    override fun onRestoreInstanceState(savedState: Parcelable?) {
-        super.onRestoreInstanceState(savedState)
-        if (savedState is SavedState) {
-//            seekBarMode = savedState.seekBarMode
-        }
-    }
-
-    internal class SavedState : BaseSavedState {
-        var seekBarMode = RangeSeekBar.SEEKBAR_MODE_SINGLE
-
-        constructor(parcelable: Parcelable?) : super(parcelable)
-        constructor(parcel: Parcel) : super(parcel) {
-            seekBarMode = parcel.readInt()
-        }
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            super.writeToParcel(parcel, flags)
-            parcel.writeInt(seekBarMode)
-        }
-
-        override fun describeContents(): Int {
-            return 0
-        }
-
-        companion object CREATOR : Parcelable.Creator<SavedState> {
-            override fun createFromParcel(parcel: Parcel): SavedState {
-                return SavedState(parcel)
-            }
-
-            override fun newArray(size: Int): Array<SavedState?> {
-                return arrayOfNulls(size)
-            }
-        }
-    }
-
     interface AdvanceBrowseNavigationCallbackListener {
-        fun onGenreAdd()
-        fun onStreamAdd()
-        fun onTagAdd()
+        fun onGenreAdd(tags: List<TagField>)
+        fun onStreamAdd(tags: List<TagField>)
+        fun onTagAdd(tags: List<TagField>)
         fun getQuery(): String
     }
+
+
 }
