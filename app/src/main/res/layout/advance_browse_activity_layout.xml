@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootDrawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/advanceSearchCoordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/searchViewAppBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:elevation="0dp">
+
+            <com.paulrybitskyi.persistentsearchview.PersistentSearchView
+                android:id="@+id/navigationSearchView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:dimColor="@android:color/transparent"
+                app:isClearInputButtonEnabled="true"
+                app:isDismissableOnTouchOutside="true"
+                app:isVoiceInputButtonEnabled="false"
+                app:queryInputHint="@string/search"
+                app:shouldDimBehind="false"
+                />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/advanceSearchFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <com.revolgenx.anilib.view.navigation.AdvanceBrowseNavigationView
+        android:id="@+id/browseFilterNavigationView"
+        style="@style/Widget.DynamicApp.NavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:fitsSystemWindows="true"
+        android:theme="@style/Widget.DynamicApp.NavigationView.ThemeOverlay" />
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicDrawerLayout>
