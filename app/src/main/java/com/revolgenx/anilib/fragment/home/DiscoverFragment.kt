@@ -1,10 +1,12 @@
 package com.revolgenx.anilib.fragment.home
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.AdvanceBrowseActivity
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.makeSnakeBar
@@ -38,6 +40,10 @@ class DiscoverFragment : BaseFragment() {
         return when (item.itemId) {
             R.id.listFavMenu -> {
                 activity?.drawerLayout?.openDrawer(activity?.betaView!!, true)
+                true
+            }
+            R.id.listDeleteMenu -> {
+                startActivity(Intent(requireContext(), AdvanceBrowseActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
