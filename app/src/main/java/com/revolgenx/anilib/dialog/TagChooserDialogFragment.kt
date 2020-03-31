@@ -47,6 +47,7 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
             setView(R.layout.tag_chooser_dialog_fragment_layout)
             isAutoDismiss = false
         }
+
         return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
     }
 
@@ -61,7 +62,7 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
                     doneTv.setOnClickListener {
                         doneListener?.onDone(
                             tag,
-                            tagChooserField!!.tags
+                            tagAdapter.items
                         )
                         dismiss()
                     }
@@ -73,6 +74,7 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
                     }
                     tagRecyclerView.layoutManager = LinearLayoutManager(context)
                     tagRecyclerView.adapter = tagAdapter
+                    tagAdapter.submitList(tagChooserField!!.tags)
                 }
             }
 
@@ -84,10 +86,12 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
         doneListener = listener
     }
 
-    inner class TagAdapter : RecyclerView.Adapter<TagAdapter.TagHolder>() {
+    internal class TagAdapter : RecyclerView.Adapter<TagAdapter.TagHolder>() {
         private val textColor by lazy {
             DynamicTheme.getInstance().get().tintSurfaceColor
         }
+
+        val items: MutableList<TagField> = mutableListOf()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagHolder {
             return TagHolder(
@@ -99,12 +103,18 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
             )
         }
 
+        fun submitList(list: List<TagField>) {
+            items.clear()
+            items.addAll(list.map { TagField(it.tag, it.isTagged) })
+            notifyDataSetChanged()
+        }
+
         override fun getItemCount(): Int {
-            return tagChooserField?.tags?.size ?: 0
+            return items.size
         }
 
         override fun onBindViewHolder(holder: TagHolder, position: Int) {
-            val item = tagChooserField!!.tags[position]
+            val item = items[position]
             holder.bind(item)
         }
 
@@ -115,7 +125,7 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
         }
 
         fun deSelectAll() {
-            tagChooserField!!.tags.forEach {
+            items.forEach {
                 it.isTagged = false
             }
             notifyDataSetChanged()
