@@ -57,8 +57,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.math.abs
 
-class MediaBrowserActivity : DynamicSystemActivity() {
-
+class MediaBrowseActivity : DynamicSystemActivity() {
     companion object {
         const val MEDIA_BROWSER_META = "media_browser_meta"
     }
@@ -88,7 +87,6 @@ class MediaBrowserActivity : DynamicSystemActivity() {
     private val accentColor by lazy {
         DynamicTheme.getInstance().get().accentColor
     }
-
 
     private val states = arrayOf(
         intArrayOf(android.R.attr.state_selected),
@@ -239,23 +237,19 @@ class MediaBrowserActivity : DynamicSystemActivity() {
             toggling = when (it.status) {
                 SUCCESS -> {
                     isFavourite = !isFavourite
-                    viewModel.isFavourite(mediaBrowserMeta.mediaId).value =
-                        Resource.success(isFavourite)
+                    mediaFavButton.showLoading(false)
+                    viewModel.isFavourite(mediaBrowserMeta.mediaId).value = Resource.success(isFavourite)
                     mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
                     invalidateOptionsMenu()
                     false
                 }
                 ERROR -> {
-                    mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                    mediaFavButton.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
                     false
                 }
                 LOADING -> {
-                    mediaFavButton.setImageDrawable(circularProgressDrawable ?: let {
-                        circularProgressDrawable = CircularProgressDrawable(context)
-                        circularProgressDrawable!!.start()
-                        circularProgressDrawable
-                    })
+                    mediaFavButton.showLoading(true)
                     true
                 }
             }
@@ -466,7 +460,7 @@ class MediaBrowserActivity : DynamicSystemActivity() {
                     ViewCompat.getTransitionName(event.sharedElement) ?: ""
                 )
 
-                startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
+                startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
                     this.putExtra(MEDIA_BROWSER_META, event.mediaBrowserMeta)
                 }, options.toBundle())
             }

@@ -5,18 +5,18 @@
     android:id="@+id/mangaCharacterContainer"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="120dp"
-    android:layout_height="225dp">
+    android:layout_height="@dimen/mini_card_dimen">
 
-    <LinearLayout
+    <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:padding="6dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/mangaCharacterImageView"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="@dimen/mini_image_dimen"
+            android:layout_alignParentTop="true"
             android:transitionName="character_image_transition"
             app:roundAsCircle="false"
             app:roundedCornerRadius="4dp" />
@@ -26,6 +26,7 @@
             android:id="@+id/mangaCharacterNameTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/mangaCharacterImageView"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
@@ -37,8 +38,9 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/mangaCharacterRoleTv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
@@ -49,6 +51,6 @@
             app:ads_colorType="accent"
             tools:ignore="SmallSp" />
 
-    </LinearLayout>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

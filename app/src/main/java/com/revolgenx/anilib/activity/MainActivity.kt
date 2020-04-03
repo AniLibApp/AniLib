@@ -349,8 +349,8 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
     fun onBaseEvent(event: BaseEvent) {
         when (event) {
             is BrowseMediaEvent -> {
-                startActivity(Intent(this, MediaBrowserActivity::class.java).apply {
-                    this.putExtra(MediaBrowserActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
+                startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
+                    this.putExtra(MediaBrowseActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
                 })
             }
             is ListEditorEvent -> {

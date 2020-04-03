@@ -46,9 +46,10 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
         holder.itemView.apply {
             characterMediaImageView.setImageURI(item.coverImage?.image)
             characterMediaTitleTv.text = item.title?.title(context)
-            characterMediaFormatTv.text = item.format?.let {
-                mediaFormatList[it]
-            }.naText()
+            characterMediaFormatTv.text =
+                context.getString(R.string.media_format_year_s).format(item.format?.let {
+                    mediaFormatList[it]
+                }.naText(), item.seasonYear?.toString().naText())
 
             characterMediaStatusTv.text = item.status?.let {
                 characterMediaStatusTv.color = Color.parseColor(statusColors[it])

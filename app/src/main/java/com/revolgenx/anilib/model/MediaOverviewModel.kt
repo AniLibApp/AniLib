@@ -6,8 +6,6 @@ class MediaOverviewModel : CommonMediaModel() {
     var popularity: Int? = null
     var favourites: Int? = null
     var meanScore:Int? = null
-    var season: Int? = null      /*can be null*/
-    var seasonYear: Int? = null  /*can be null*/
     var description: String? = null
     var source: Int? = null
     var hashTag: String? = null  /*can be null*/

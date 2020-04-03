@@ -20,7 +20,7 @@ import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MediaBrowserActivity
+import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.adapter.BrowserRelationshipPresenter
 import com.revolgenx.anilib.constant.*
 import com.revolgenx.anilib.event.BrowseGenreEvent
@@ -122,7 +122,7 @@ class MediaOverviewFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         mediaBrowserMeta =
-            arguments?.getParcelable(MediaBrowserActivity.MEDIA_BROWSER_META) ?: return
+            arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
 
         viewModel.mediaOverviewLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
@@ -423,7 +423,7 @@ class MediaOverviewFragment : BaseFragment() {
 
         studios.forEachIndexed { index, it ->
             val current = spannableStringBuilder.length
-            spannableStringBuilder.append(it.name)
+            spannableStringBuilder.append(it.studioName)
 
             spannableStringBuilder.setSpan(
                 object : ClickableSpan() {
@@ -457,7 +457,7 @@ class MediaOverviewFragment : BaseFragment() {
         val lastIndex = studios.size - 1
         studios.forEachIndexed { index, it ->
             val current = spannableStringBuilder.length
-            spannableStringBuilder.append(it.name)
+            spannableStringBuilder.append(it.studioName)
 
             spannableStringBuilder.setSpan(
                 object : ClickableSpan() {

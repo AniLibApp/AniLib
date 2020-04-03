@@ -101,7 +101,7 @@ class CharacterFragment : BaseFragment() {
         viewModel.toggleFavouriteLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 SUCCESS -> {
-                    characterFavIv.toggleLoading()
+                    characterFavIv.showLoading(false)
                     if (res.data == true) {
                         characterModel?.isFavourite = characterModel?.isFavourite?.not() ?: false
                         characterFavIv.setImageResource(
@@ -114,11 +114,11 @@ class CharacterFragment : BaseFragment() {
                     }
                 }
                 ERROR -> {
-                    characterFavIv.toggleLoading()
+                    characterFavIv.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ads_ic_error)
                 }
                 LOADING -> {
-                    characterFavIv.toggleLoading()
+                    characterFavIv.showLoading(true)
                 }
             }
         }

@@ -3,7 +3,7 @@ package com.revolgenx.anilib.fragment.browse
 import android.os.Bundle
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.revolgenx.anilib.activity.MediaBrowserActivity
+import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.overview.MediaReviewField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
@@ -40,7 +40,7 @@ class MediaReviewFragment : BasePresenterFragment<MediaReviewModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         mediaBrowserMeta =
-            arguments?.getParcelable(MediaBrowserActivity.MEDIA_BROWSER_META) ?: return
+            arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
         super.onActivityCreated(savedInstanceState)
     }
 
