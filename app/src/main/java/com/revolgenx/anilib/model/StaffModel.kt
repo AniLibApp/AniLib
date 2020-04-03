@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.model
 
-class StaffModel {
+open class StaffModel : BaseModel() {
     var staffId: Int? = null
     var staffName: StaffNameModel? = null
     var staffImage: StaffImageModel? = null

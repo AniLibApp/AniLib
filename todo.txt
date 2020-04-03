@@ -1,0 +1,3 @@
+todo
+
+#bug:Toggle Favourite on rotation changes

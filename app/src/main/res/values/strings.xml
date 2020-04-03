@@ -243,9 +243,9 @@
     <string-array name="advance_search_type">
         <item>Anime</item>
         <item>Manga</item>
-        <item>Studios</item>
         <item>Characters</item>
         <item>Staff</item>
+        <item>Studios</item>
     </string-array>
 
     <string-array name="advance_search_season">

@@ -133,7 +133,7 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
         viewModel.toggleFavouriteLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 SUCCESS -> {
-                    studioFavIv.toggleLoading()
+                    studioFavIv.showLoading(false)
                     if (res.data == true) {
                         studioModel?.isFavourite = studioModel?.isFavourite?.not() ?: false
                         studioFavIv.setImageResource(
@@ -146,11 +146,11 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
                     }
                 }
                 ERROR -> {
-                    studioFavIv.toggleLoading()
+                    studioFavIv.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ads_ic_error)
                 }
                 LOADING -> {
-                    studioFavIv.toggleLoading()
+                    studioFavIv.showLoading(true)
                 }
             }
         }

@@ -2,6 +2,7 @@
 <resources>
     <dimen name="base_list_adapter_height">160dp</dimen>
     <dimen name="base_list_adapter_corner_radius">80dp</dimen>
-
-
+    <dimen name="mini_card_dimen">240dp</dimen>
+    <dimen name="mini_image_dimen">160dp</dimen>
+    <dimen name="box_card_dimen">220dp</dimen>
 </resources>

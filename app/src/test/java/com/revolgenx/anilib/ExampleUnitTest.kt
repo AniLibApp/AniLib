@@ -1,5 +1,6 @@
 package com.revolgenx.anilib
 
+import com.google.gson.Gson
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.util.pmap
@@ -83,6 +84,49 @@ class ExampleUnitTest {
         }
     }
 
+
+    inner class testClass {
+        var hlw = "hlw"
+        var nth = "nth"
+        var nth2 = null
+    }
+
+    inner class testClass1 {
+        var hlw: String? = null
+        var nth: String? = null
+        var nth2: String? = null
+        override fun toString(): String {
+            return hlw + nth + nth2
+        }
+    }
+
+    @Test
+    fun gsonTest() {
+        println(System.currentTimeMillis())
+        Gson().let {
+            it.toJson(
+                testClass()
+            ).let { str ->
+                it.fromJson(str, testClass1::class.java)
+            }.let {
+                println(it.toString())
+            }
+        }
+        println(System.currentTimeMillis())
+        println(System.currentTimeMillis())
+
+        testClass().let {
+            testClass1().apply {
+                hlw = it.hlw
+                nth = it.nth
+                nth2 = it.nth2
+                println(toString())
+            }
+        }
+        println(System.currentTimeMillis())
+
+    }
+
     @Test
     fun testTagPerf() {
         runBlocking {
@@ -90,7 +134,7 @@ class ExampleUnitTest {
             val testlist = tags.split(",").map { it.trim() }
             println(System.currentTimeMillis().toString())
             val mutablemap = mutableMapOf<String, TagField>()
-            val testmap = testlist.map { mutablemap[it]= TagField(it, false)}
+            val testmap = testlist.map { mutablemap[it] = TagField(it, false) }
 
             println(System.currentTimeMillis().toString())
 //            testlist.forEach {

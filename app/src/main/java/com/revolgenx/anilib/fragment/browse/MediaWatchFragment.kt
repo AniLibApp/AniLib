@@ -7,7 +7,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.revolgenx.anilib.activity.MediaBrowserActivity
+import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.overview.MediaWatchField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
@@ -53,7 +53,7 @@ class MediaWatchFragment : BasePresenterFragment<MediaWatchModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         mediaBrowserMeta =
-            arguments?.getParcelable(MediaBrowserActivity.MEDIA_BROWSER_META) ?: return
+            arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
         super.onActivityCreated(savedInstanceState)
     }
 

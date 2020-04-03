@@ -17,7 +17,7 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MediaBrowserActivity
+import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.overview.MediaStatsField
 import com.revolgenx.anilib.fragment.base.BaseFragment
@@ -101,7 +101,7 @@ class MediaStatsFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         mediaBrowserMeta =
-            arguments?.getParcelable(MediaBrowserActivity.MEDIA_BROWSER_META) ?: return
+            arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
         super.onActivityCreated(savedInstanceState)
 
         visibleToUser = savedInstanceState?.getBoolean(visibleToUserKey) ?: false

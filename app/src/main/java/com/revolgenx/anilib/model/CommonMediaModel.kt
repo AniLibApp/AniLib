@@ -17,4 +17,6 @@ open class CommonMediaModel() : BaseModel() {
     var format: Int? = null
     var type: Int? = null
     var isAdult = false
+    var season: Int? = null
+    var seasonYear: Int? = null
 }

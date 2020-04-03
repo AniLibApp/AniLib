@@ -9,4 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_scrollFlags="enterAlways|scroll" />
+
+
+
 </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>

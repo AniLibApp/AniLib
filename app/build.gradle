@@ -162,6 +162,8 @@ dependencies {
 
     //searchview
     implementation "com.paulrybitskyi.persistentsearchview:persistentsearchview:$persistent_s_ver"
+    implementation "com.arthurivanets.adapster:adapster:1.0.12"
+
 
     //range seekbar
     implementation 'com.github.Jay-Goo:RangeSeekBar:3.0.0'

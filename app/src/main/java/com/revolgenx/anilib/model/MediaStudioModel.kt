@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.model
 
-class MediaStudioModel {
-    var studioId: Int = -1
-    var name: String? = null
-    var isAnimationStudio = false
+import com.revolgenx.anilib.model.studio.StudioModel
+
+class MediaStudioModel:StudioModel() {
 }
