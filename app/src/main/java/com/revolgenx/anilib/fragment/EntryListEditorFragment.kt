@@ -171,12 +171,13 @@ class EntryListEditorFragment : BaseFragment() {
             toggling = when (it.status) {
                 SUCCESS -> {
                     isFavourite = !isFavourite
+                    listFavButton.showLoading(false)
                     listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
                     invalidateOptionMenu()
                     false
                 }
                 ERROR -> {
-                    listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                    listFavButton.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
                     false
                 }
@@ -459,6 +460,7 @@ class EntryListEditorFragment : BaseFragment() {
         privateToggleButton.checked = apiModelEntry!!.private
         listEditorEpisodeLayout.setCounter(apiModelEntry!!.progress.toDouble())
         totalRewatchesLayout.setCounter(apiModelEntry!!.repeat.toDouble())
+        listEditorVolumeProgressLayout.setCounter(apiModelEntry!!.progressVolumes.toDouble())
         notesEt.setText(apiModelEntry!!.notes)
 
         if (apiModelEntry!!.startDate?.year != null) {
@@ -499,18 +501,20 @@ class EntryListEditorFragment : BaseFragment() {
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (state == EXPANDED) {
-            if (modelEntry == null) {
-                listDeleteCardView.visibility = View.GONE
-            } else {
-                listDeleteCardView.visibility = View.VISIBLE
-            }
+        if (state == EXPANDED) return
 
-            if (isFavourite) {
-                listFavButton.setImageResource(R.drawable.ic_favorite)
-            }
-            return
-        }
+//        if (state == EXPANDED) {
+//            if (modelEntry == null) {
+//                listDeleteCardView.visibility = View.GONE
+//            } else {
+//                listDeleteCardView.visibility = View.VISIBLE
+//            }
+//
+//            if (isFavourite) {
+//                listFavButton.setImageResource(R.drawable.ic_favorite)
+//            }
+//            return
+//        }
 
         inflater.inflate(R.menu.list_editor_menu, menu)
 

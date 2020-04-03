@@ -103,7 +103,7 @@ class StaffFragment : BaseFragment() {
         viewModel.toggleStaffFavLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 Status.SUCCESS -> {
-                    staffFavIv.toggleLoading()
+                    staffFavIv.showLoading(false)
                     if (res.data == true) {
                         staffModel?.isFavourite = staffModel?.isFavourite?.not() ?: false
                         staffFavIv.setImageResource(
@@ -116,11 +116,11 @@ class StaffFragment : BaseFragment() {
                     }
                 }
                 Status.ERROR -> {
-                    staffFavIv.toggleLoading()
+                    staffFavIv.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ads_ic_error)
                 }
                 Status.LOADING -> {
-                    staffFavIv.toggleLoading()
+                    staffFavIv.showLoading(true)
                 }
             }
         }

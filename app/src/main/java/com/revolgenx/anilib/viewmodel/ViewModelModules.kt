@@ -24,5 +24,6 @@ val viewModelModules = module {
     viewModel { StaffMediaRoleViewModel(get()) }
     viewModel { StudioViewModel(get(),get()) }
 
-    viewModel { AdvanceSearchViewModel() }
+    viewModel { AdvanceSearchActivityViewModel() }
+    viewModel { AdvanceSearchFragmentViewModel(get()) }
 }

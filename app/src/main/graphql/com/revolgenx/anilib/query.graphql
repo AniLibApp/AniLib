@@ -492,6 +492,95 @@ query StudioMediaQuery($studioId:Int,$page:Int, $perPage:Int){
 }
 
 
+query MediaSearchQuery($search:String, $page:Int, $perPage:Int){
+    Page(page:$page,perPage:$perPage){
+        media(search:$search, isAdult:false){
+            id
+            title{
+                romaji
+                english
+                native
+                userPreferred
+            }
+            coverImage{
+                extraLarge
+                large
+                medium
+            }
+            bannerImage
+            averageScore
+            type
+            format
+            status
+            season
+            seasonYear
+        }
+    }
+}
+
+query CharacterSearchQuery($search:String, $page:Int, $perPage:Int){
+    Page(page:$page,perPage:$perPage){
+        characters(search:$search, sort:[FAVOURITES_DESC]){
+            id
+            name{
+                full
+            }
+            image{
+                large
+                medium
+            }
+        }
+    }
+}
+
+query StaffSearchQuery($search:String, $page:Int, $perPage:Int){
+    Page(page:$page, perPage:$perPage){
+        staff(search:$search, sort:[FAVOURITES_DESC]){
+            id
+            name{
+                full
+            }
+            image{
+                large
+                medium
+            }
+        }
+    }
+}
+
+query StudioSearchQuery($search:String, $page:Int, $perPage:Int){
+    Page(page:$page, perPage:$perPage){
+
+        studios(search:$search, sort:[FAVOURITES_DESC]){
+            id
+            name
+            media(page:1, perPage:2, sort:[POPULARITY_DESC]){
+                nodes{
+                    id
+                    title{
+                        romaji
+                        english
+                        romaji
+                        userPreferred
+                    }
+                    coverImage{
+                        extraLarge
+                        large
+                        medium
+                    }
+                    averageScore
+                    type
+                    format
+                    status
+                    season
+                    seasonYear
+                }
+            }
+        }
+
+    }
+}
+
 query BasicUserQuery($id:Int){
     User(id:$id){
         id
@@ -579,18 +668,33 @@ mutation ToggleFavouriteMutation($animeId:Int,$mangaId:Int, $characterId:Int
     ToggleFavourite(animeId:$animeId, mangaId:$mangaId, characterId:$characterId, staffId:$staffId, studioId:$studioId){
         anime{
             __typename
+            nodes{
+                isFavourite
+            }
         }
         manga{
             __typename
+            nodes{
+                isFavourite
+            }
         }
         characters{
             __typename
+            nodes{
+                isFavourite
+            }
         }
         staff{
             __typename
+            nodes{
+                isFavourite
+            }
         }
         studios{
             __typename
+            nodes{
+                isFavourite
+            }
         }
     }
 }

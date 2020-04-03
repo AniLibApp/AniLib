@@ -22,7 +22,7 @@
                 android:layout_height="300dp"
                 app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
                 app:expandedTitleMarginBottom="140dp"
-                app:expandedTitleMarginStart="136dp"
+                app:expandedTitleMarginStart="140dp"
                 app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
                 app:layout_scrollFlags="scroll|snap|enterAlways|enterAlwaysCollapsed"
                 app:maxLines="2">
@@ -114,7 +114,7 @@
                             app:ads_elevationOnSameBackground="true"
                             app:cardCornerRadius="6dp">
 
-                            <com.pranavpandey.android.dynamic.support.widget.DynamicImageButton
+                            <com.revolgenx.anilib.view.DynamicLoadingImageView
                                 android:id="@+id/mediaFavButton"
                                 style="@style/Widget.DynamicApp.Button.ImageButton"
                                 android:layout_width="40dp"

@@ -2,6 +2,7 @@ package com.revolgenx.anilib.repository.network.converter
 
 import com.revolgenx.anilib.BasicUserQuery
 import com.revolgenx.anilib.MediaOverViewQuery
+import com.revolgenx.anilib.MediaSearchQuery
 import com.revolgenx.anilib.MediaWatchQuery
 import com.revolgenx.anilib.fragment.MediaListContent
 import com.revolgenx.anilib.fragment.NarrowMediaContent
@@ -185,7 +186,7 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
         it.studios = studios()?.edges()?.pmap {
             MediaStudioModel().also { studio ->
                 it.node()?.let { node ->
-                    studio.name = node.name()
+                    studio.studioName = node.name()
                     studio.isAnimationStudio = node.isAnimationStudio
                     studio.studioId = node.id()
                 }

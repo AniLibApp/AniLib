@@ -12,4 +12,5 @@ val serviceModule = module {
     factory<CharacterService> { CharacterServiceImpl(get()) }
     factory<StaffService> { StaffServiceImpl(get()) }
     factory<StudioService> { StudioServiceImpl(get()) }
+    factory<AdvanceSearchService> { AdvanceSearchServiceImpl(get()) }
 }

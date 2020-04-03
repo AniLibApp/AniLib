@@ -15,7 +15,7 @@ import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapt
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.widget.*
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MediaBrowserActivity
+import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.overview.MediaCharacterField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
@@ -96,7 +96,7 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         mediaBrowserMeta =
-            arguments?.getParcelable(MediaBrowserActivity.MEDIA_BROWSER_META) ?: return
+            arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
 
         val spinnerItems = mutableListOf<DynamicSpinnerItem>()
         requireContext().resources.getStringArray(R.array.staff_language).forEach {

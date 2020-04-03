@@ -45,7 +45,7 @@
         android:id="@+id/advanceSearchNestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/browseFilterCardView"
+        android:layout_above="@id/applyFilterCardView"
         android:layout_below="@+id/advance_browse_navigation_search_card_view">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
@@ -140,7 +140,7 @@
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
 
                     <com.jaygoo.widget.RangeSeekBar
-                        android:id="@+id/searchYearIndicator"
+                        android:id="@+id/searchYearSeekbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
@@ -153,8 +153,6 @@
                         app:rsb_indicator_radius="4dp"
                         app:rsb_indicator_show_mode="alwaysShow"
                         app:rsb_indicator_text_size="11sp"
-                        app:rsb_max="2020"
-                        app:rsb_min="1950"
                         app:rsb_mode="range"
                         app:rsb_thumb_height="18dp"
                         app:rsb_thumb_width="18dp" />
@@ -370,7 +368,7 @@
     </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-        android:id="@+id/browseFilterCardView"
+        android:id="@+id/applyFilterCardView"
         style="@style/Widget.DynamicApp.Card.Margin.Clickable"
         android:layout_width="match_parent"
         android:layout_height="40dp"

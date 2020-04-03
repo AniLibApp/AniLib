@@ -4,7 +4,6 @@ import com.revolgenx.anilib.type.MediaFormat
 
 class MediaRelationshipModel : CommonMediaModel() {
     var relationshipType: Int? = null
-    var seasonYear: Int? = null
 
     override fun equals(other: Any?): Boolean {
         return if (other is MediaRelationshipModel) {
