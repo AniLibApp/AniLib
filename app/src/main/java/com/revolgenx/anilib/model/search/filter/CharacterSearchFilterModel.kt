@@ -2,7 +2,7 @@ package com.revolgenx.anilib.model.search.filter
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.revolgenx.anilib.field.search.BaseAdvanceSearchField
+import com.revolgenx.anilib.field.search.BrowseField
 import com.revolgenx.anilib.field.search.CharacterSearchField
 
 class CharacterSearchFilterModel : BaseSearchFilterModel {
@@ -10,7 +10,7 @@ class CharacterSearchFilterModel : BaseSearchFilterModel {
     constructor(parcel: Parcel) : super(parcel)
     constructor() : super()
 
-    override fun toField(): BaseAdvanceSearchField {
+    override fun toField(): BrowseField {
         return CharacterSearchField().also {
             it.query = query
         }

@@ -61,7 +61,7 @@
         app:headerLayout="@layout/nav_header_layout"
         app:menu="@menu/nav_menu" />
 
-    <com.revolgenx.anilib.view.navigation.AdvanceSearchFilterNavigationView
+    <com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
         android:id="@+id/betaView"
         style="@style/Widget.DynamicApp.NavigationView"
         android:layout_width="match_parent"

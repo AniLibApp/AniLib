@@ -1,8 +1,10 @@
 package com.revolgenx.anilib.util
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
@@ -138,6 +140,13 @@ fun DynamicSpinner.onItemSelected(callback: (position: Int) -> Unit) {
             callback.invoke(position)
         }
     }
+}
+
+fun Context.hideKeyboard(view: View) {
+    (getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(
+        view.windowToken,
+        0
+    )
 }
 
 fun Context.openLink(url: String?) {

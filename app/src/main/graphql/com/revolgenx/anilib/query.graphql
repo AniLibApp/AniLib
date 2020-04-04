@@ -492,9 +492,36 @@ query StudioMediaQuery($studioId:Int,$page:Int, $perPage:Int){
 }
 
 
-query MediaSearchQuery($search:String, $page:Int, $perPage:Int){
+query MediaSearchQuery($search:String, $page:Int, $perPage:Int
+    ,$type:MediaType,
+    ,$format:MediaFormat
+    ,$season:MediaSeason
+    ,$seasonYear:Int
+    ,$yearGreater:FuzzyDateInt
+    ,$yearLesser:FuzzyDateInt
+    ,$status:MediaStatus
+    ,$source:MediaSource
+    ,$streamingOn:[String]
+    ,$genre:[String]
+    ,$tag:[String]
+    ,$sort:[MediaSort]
+    ,$country:CountryCode){
     Page(page:$page,perPage:$perPage){
-        media(search:$search, isAdult:false){
+        media(search:$search
+            , type:$type
+            , format:$format
+            , season:$season
+            , seasonYear:$seasonYear
+            , startDate_greater:$yearGreater
+            , startDate_lesser:$yearLesser
+            , status:$status
+            , source:$source
+            , licensedBy_in:$streamingOn
+            , genre_in:$genre
+            , tag_in:$tag
+            , sort:$sort
+            , countryOfOrigin:$country
+            , isAdult:false){
             id
             title{
                 romaji
@@ -554,13 +581,13 @@ query StudioSearchQuery($search:String, $page:Int, $perPage:Int){
         studios(search:$search, sort:[FAVOURITES_DESC]){
             id
             name
-            media(page:1, perPage:2, sort:[POPULARITY_DESC]){
+            media(page:1, perPage:8, sort:[POPULARITY_DESC]){
                 nodes{
                     id
                     title{
                         romaji
                         english
-                        romaji
+                        native
                         userPreferred
                     }
                     coverImage{
@@ -568,11 +595,13 @@ query StudioSearchQuery($search:String, $page:Int, $perPage:Int){
                         large
                         medium
                     }
+                    bannerImage
                     averageScore
                     type
                     format
                     status
                     season
+                    isAdult
                     seasonYear
                 }
             }

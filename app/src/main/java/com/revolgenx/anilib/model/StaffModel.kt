@@ -2,6 +2,10 @@ package com.revolgenx.anilib.model
 
 open class StaffModel : BaseModel() {
     var staffId: Int? = null
+        set(value) {
+            field = value
+            baseId = value
+        }
     var staffName: StaffNameModel? = null
     var staffImage: StaffImageModel? = null
     var description: String? = null

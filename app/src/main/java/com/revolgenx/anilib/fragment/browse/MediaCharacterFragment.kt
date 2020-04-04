@@ -112,21 +112,22 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
 
         field.language?.let {
             languageSpinner.setSelection(it)
-            languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
+        }
 
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (field.language != position) {
-                        field.language = position
-                        createSource()
-                        invalidateAdapter()
-                    }
+        languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (field.language != position) {
+                    field.language = position
+                    createSource()
+                    invalidateAdapter()
                 }
             }
         }

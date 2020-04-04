@@ -2,16 +2,16 @@ package com.revolgenx.anilib.source
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.field.search.BaseAdvanceSearchField
+import com.revolgenx.anilib.field.search.BrowseField
 import com.revolgenx.anilib.model.BaseModel
-import com.revolgenx.anilib.service.AdvanceSearchService
+import com.revolgenx.anilib.service.BrowseService
 import io.reactivex.disposables.CompositeDisposable
 
-class AdvanceSearchSource(
-    field: BaseAdvanceSearchField,
-    private val advanceSearchService: AdvanceSearchService,
+class BrowseSource(
+    field: BrowseField,
+    private val browseService: BrowseService,
     private val compositeDisposable: CompositeDisposable
-) : BaseRecyclerSource<BaseModel, BaseAdvanceSearchField>(field) {
+) : BaseRecyclerSource<BaseModel, BrowseField>(field) {
     override fun areItemsTheSame(first: BaseModel, second: BaseModel): Boolean {
         return first.baseId == second.baseId
     }
@@ -23,7 +23,7 @@ class AdvanceSearchSource(
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {
         super.onPageOpened(page, dependencies)
         field.page = pageNo
-        advanceSearchService.search(field, compositeDisposable) {
+        browseService.search(field, compositeDisposable) {
             postResult(page, it)
         }
     }

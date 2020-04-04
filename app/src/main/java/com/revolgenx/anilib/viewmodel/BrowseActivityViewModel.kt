@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.repository.util.Resource
 
-class AdvanceSearchActivityViewModel : ViewModel() {
+class BrowseActivityViewModel : ViewModel() {
     var searchQuery: String = ""
     var searchLiveData = MutableLiveData<Resource<SearchData>>()
-    var genreTagFields: List<TagField>? = null
-    var tagTagFields: List<TagField>? = null
-    var streamTagFields: List<TagField>? = null
+    var genreTagFields: MutableList<TagField>? = null
+    var tagTagFields: MutableList<TagField>? = null
+    var streamTagFields: MutableList<TagField>? = null
 
     private val handler = Handler()
 

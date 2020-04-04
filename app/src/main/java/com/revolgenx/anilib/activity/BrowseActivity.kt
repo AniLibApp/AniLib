@@ -1,10 +1,14 @@
 package com.revolgenx.anilib.activity
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.observe
 import com.otaliastudios.elements.Adapter
 import com.paulrybitskyi.persistentsearchview.adapters.model.SuggestionItem
@@ -13,25 +17,32 @@ import com.paulrybitskyi.persistentsearchview.utils.SuggestionCreationUtil
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.meta.ViewPagerContainerMeta
+import com.revolgenx.anilib.activity.meta.ViewPagerContainerType
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
+import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
-import com.revolgenx.anilib.fragment.AdvanceSearchFragment
+import com.revolgenx.anilib.fragment.BrowseFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
-import com.revolgenx.anilib.model.search.filter.BaseSearchFilterModel
+import com.revolgenx.anilib.fragment.base.ParcelableFragment
+import com.revolgenx.anilib.fragment.studio.StudioFragment
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.util.DataProvider
-import com.revolgenx.anilib.util.makeToast
-import com.revolgenx.anilib.view.navigation.AdvanceSearchFilterNavigationView
-import com.revolgenx.anilib.viewmodel.AdvanceSearchActivityViewModel
-import kotlinx.android.synthetic.main.advance_search_activity_layout.*
+import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.util.unRegisterForEvent
+import com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
+import com.revolgenx.anilib.viewmodel.BrowseActivityViewModel
+import kotlinx.android.synthetic.main.browse_activity_layout.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-class AdvanceSearchActivity : DynamicSystemActivity(),
-    AdvanceSearchFilterNavigationView.AdvanceBrowseNavigationCallbackListener,
+class BrowseActivity : DynamicSystemActivity(),
+    BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener,
     TagChooserDialogFragment.OnDoneListener {
 
     companion object {
@@ -74,12 +85,17 @@ class AdvanceSearchActivity : DynamicSystemActivity(),
         DataProvider(this)
     }
 
-    private val viewModel by viewModel<AdvanceSearchActivityViewModel>()
+    private val viewModel by viewModel<BrowseActivityViewModel>()
 
+
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.advance_search_activity_layout)
+        setContentView(R.layout.browse_activity_layout)
         setUpTheme()
         setUpPersistentSearchView()
         setUpListener()
@@ -87,14 +103,14 @@ class AdvanceSearchActivity : DynamicSystemActivity(),
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(
-                R.id.advanceSearchFragmentContainer,
-                BaseFragment.newInstance(AdvanceSearchFragment::class.java),
+                R.id.browseFragmentContainer,
+                BaseFragment.newInstance(BrowseFragment::class.java),
                 ADVANCE_SEARCH_FRAGMENT_TAG
             ).commitNow()
 
             if (intent.hasExtra(ADVANCE_SEARCH_INTENT_KEY)) {
                 //todo
-                advanceSearchFilterNavView.filter =
+                browseFilterNavView.filter =
                     intent.getParcelableExtra(ADVANCE_SEARCH_INTENT_KEY)
             }
         }
@@ -102,7 +118,7 @@ class AdvanceSearchActivity : DynamicSystemActivity(),
 
     private fun getAdvanceSearchFragment() = supportFragmentManager.findFragmentByTag(
         ADVANCE_SEARCH_FRAGMENT_TAG
-    ) as? AdvanceSearchFragment
+    ) as? BrowseFragment
 
     private fun setUpViews() {
         viewModel.tagTagFields?.let {
@@ -167,7 +183,7 @@ class AdvanceSearchActivity : DynamicSystemActivity(),
                 setCardBackgroundColor(it)
             }
 
-            ResourcesCompat.getFont(this@AdvanceSearchActivity, R.font.open_sans_regular)?.let {
+            ResourcesCompat.getFont(this@BrowseActivity, R.font.open_sans_regular)?.let {
                 setQueryTextTypeface(it)
                 setSuggestionTextTypeface(it)
             }
@@ -211,10 +227,10 @@ class AdvanceSearchActivity : DynamicSystemActivity(),
                 rootDrawerLayout.openDrawer(GravityCompat.END)
             }
         }
-        with(advanceSearchFilterNavView) {
-            setNavigationCallbackListener(this@AdvanceSearchActivity)
+        with(browseFilterNavView) {
+            setNavigationCallbackListener(this@BrowseActivity)
         }
-        rootDrawerLayout.addDrawerListener(advanceSearchFilterNavView.drawerListener)
+        rootDrawerLayout.addDrawerListener(browseFilterNavView.drawerListener)
 
         dataProvider.onDataChanged {
             persistentSearchView.setSuggestions(
@@ -282,24 +298,24 @@ class AdvanceSearchActivity : DynamicSystemActivity(),
     }
 
     private fun invalidateStreamFilter(list: List<TagField>) {
-        viewModel.streamTagFields = list
-        advanceSearchFilterNavView.buildStreamAdapter(
+        viewModel.streamTagFields = list.toMutableList()
+        browseFilterNavView.buildStreamAdapter(
             tagAdapter,
             list
         )
     }
 
     private fun invalidateGenreFilter(list: List<TagField>) {
-        viewModel.genreTagFields = list
-        advanceSearchFilterNavView.buildGenreAdapter(
+        viewModel.genreTagFields = list.toMutableList()
+        browseFilterNavView.buildGenreAdapter(
             tagAdapter,
             list
         )
     }
 
     private fun invalidateTagFilter(list: List<TagField>) {
-        viewModel.tagTagFields = list
-        advanceSearchFilterNavView.buildTagAdapter(
+        viewModel.tagTagFields = list.toMutableList()
+        browseFilterNavView.buildTagAdapter(
             tagAdapter,
             list
         )
@@ -334,7 +350,7 @@ class AdvanceSearchActivity : DynamicSystemActivity(),
                 tags
             )
         ).apply {
-            onDoneListener(this@AdvanceSearchActivity)
+            onDoneListener(this@BrowseActivity)
             show(supportFragmentManager, GENRE_CHOOSER_DIALOG_TAG)
         }
     }
@@ -349,7 +365,7 @@ class AdvanceSearchActivity : DynamicSystemActivity(),
                 tags
             )
         ).apply {
-            onDoneListener(this@AdvanceSearchActivity)
+            onDoneListener(this@BrowseActivity)
             show(supportFragmentManager, STREAM_CHOOSER_DIALOG_TAG)
         }
     }
@@ -364,8 +380,26 @@ class AdvanceSearchActivity : DynamicSystemActivity(),
                 tags
             )
         ).apply {
-            onDoneListener(this@AdvanceSearchActivity)
+            onDoneListener(this@BrowseActivity)
             show(supportFragmentManager, TAG_CHOOSER_DIALOG_TAG)
+        }
+    }
+
+    override fun onTagRemoved(tag: String) {
+        viewModel.tagTagFields?.find { it.tag == tag }?.let {
+            viewModel.tagTagFields?.remove(it)
+        }
+    }
+
+    override fun onGenreRemoved(tag: String) {
+        viewModel.genreTagFields?.find { it.tag == tag }?.let {
+            viewModel.genreTagFields?.remove(it)
+        }
+    }
+
+    override fun onStreamRemoved(tag: String) {
+        viewModel.streamTagFields?.find { it.tag == tag }?.let {
+            viewModel.streamTagFields?.remove(it)
         }
     }
 
@@ -377,22 +411,22 @@ class AdvanceSearchActivity : DynamicSystemActivity(),
     }
 
     override fun updateGenre() {
-        advanceSearchFilterNavView.invalidateGenreAdapter(tagAdapter)
+        browseFilterNavView.invalidateGenreAdapter(tagAdapter)
     }
 
     override fun updateStream() {
-        advanceSearchFilterNavView.invalidateStreamAdapter(tagAdapter)
+        browseFilterNavView.invalidateStreamAdapter(tagAdapter)
     }
 
     override fun updateTags() {
-        advanceSearchFilterNavView.invalidateTagAdapter(tagAdapter)
+        browseFilterNavView.invalidateTagAdapter(tagAdapter)
     }
 
     override fun applyFilter() {
         if (rootDrawerLayout.isDrawerOpen(GravityCompat.END)) {
             rootDrawerLayout.closeDrawer(GravityCompat.END)
         }
-        advanceSearchFilterNavView.filter?.let {
+        browseFilterNavView.filter?.let {
             viewModel.searchQuery = it.query!!
             persistentSearchView.inputQuery = viewModel.searchQuery
             getAdvanceSearchFragment()?.search(it)
@@ -400,10 +434,55 @@ class AdvanceSearchActivity : DynamicSystemActivity(),
     }
 
     private fun search() {
-        advanceSearchFilterNavView.filter?.let {
+        browseFilterNavView.filter?.let {
             it.query = viewModel.searchQuery
             getAdvanceSearchFragment()?.search(it)
         }
+    }
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBaseEvent(event: BaseEvent) {
+        when (event) {
+            is BrowseMediaEvent -> {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this,
+                    event.sharedElement,
+                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
+                )
+
+                startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
+                    this.putExtra(MediaBrowseActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
+                }, options.toBundle())
+            }
+            is BrowseCharacterEvent -> {
+                ViewPagerContainerActivity.openActivity(
+                    this,
+                    ViewPagerContainerMeta(ViewPagerContainerType.CHARACTER, event.meta)
+                )
+            }
+            is BrowseStaffEvent -> {
+                ViewPagerContainerActivity.openActivity(
+                    this,
+                    ViewPagerContainerMeta(ViewPagerContainerType.STAFF, event.meta)
+                )
+            }
+            is BrowseStudioEvent -> {
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        StudioFragment::class.java,
+                        bundleOf(StudioFragment.STUDIO_META_KEY to event.meta)
+                    )
+                )
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unRegisterForEvent()
     }
 
     override fun onDestroy() {

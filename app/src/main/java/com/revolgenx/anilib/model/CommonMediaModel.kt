@@ -1,7 +1,11 @@
 package com.revolgenx.anilib.model
 
 open class CommonMediaModel() : BaseModel() {
-    var mediaId: Int?= null
+    var mediaId: Int? = null
+        set(value) {
+            field = value
+            baseId = value
+        }
     var title: TitleModel? = null
     var startDate: DateModel? = null
     var endDate: DateModel? = null

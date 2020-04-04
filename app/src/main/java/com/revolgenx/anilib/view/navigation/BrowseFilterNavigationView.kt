@@ -16,24 +16,26 @@ import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicNavigationView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.constant.AdvanceSearchTypes
+import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.model.search.filter.*
 import com.revolgenx.anilib.presenter.TagPresenter
+import com.revolgenx.anilib.type.MediaSort
+import com.revolgenx.anilib.util.hideKeyboard
 import com.revolgenx.anilib.util.onItemSelected
-import kotlinx.android.synthetic.main.advance_search_filter_navigation_view.view.*
+import kotlinx.android.synthetic.main.browse_filter_navigation_view.view.*
 import java.util.*
+import kotlin.math.ceil
 
 
-//todo://search year not working after rotation
-class AdvanceSearchFilterNavigationView(context: Context, attributeSet: AttributeSet?, style: Int) :
+class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, style: Int) :
     DynamicNavigationView(context, attributeSet, style) {
 
     private var mListener: AdvanceBrowseNavigationCallbackListener? = null
     private val rView by lazy {
         LayoutInflater.from(context).inflate(
-            R.layout.advance_search_filter_navigation_view,
+            R.layout.browse_filter_navigation_view,
             null,
             false
         )
@@ -52,6 +54,7 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
         TagPresenter(context).also {
             it.tagRemoved {
                 streamingTagMap!![it]?.isTagged = false
+                mListener?.onStreamRemoved(it)
             }
         }
     }
@@ -59,6 +62,7 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
         TagPresenter(context).also {
             it.tagRemoved {
                 genreTagMap!![it]?.isTagged = false
+                mListener?.onGenreRemoved(it)
             }
         }
     }
@@ -66,6 +70,7 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
         TagPresenter(context).also {
             it.tagRemoved {
                 tagTagMap!![it]?.isTagged = false
+                mListener?.onTagRemoved(it)
             }
         }
     }
@@ -121,7 +126,7 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
 
         override fun onDrawerOpened(drawerView: View) {
             mListener?.getQuery()?.let {
-                advanceNavigationSearchEt.setText(it)
+                browseSearchEt.setText(it)
             }
         }
     }
@@ -129,60 +134,70 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
 
     var filter: BaseSearchFilterModel? = null
         get() {
-            return when (advanceSearchTypeSpinner.selectedItemPosition) {
-                AdvanceSearchTypes.ANIME.ordinal, AdvanceSearchTypes.MANGA.ordinal -> {
+            return when (browseTypeSpinner.selectedItemPosition) {
+                SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
                     MediaSearchFilterModel().apply {
-                        query = advanceNavigationSearchEt?.text?.toString()
-                        season = advanceSearchSeasonSpinner?.selectedItemPosition?.minus(1)
+                        query = browseSearchEt?.text?.toString()
+                        season = browseSeasonSpinner?.selectedItemPosition?.minus(1)
                             ?.takeIf { it >= 0 }
 
-                        type = advanceSearchTypeSpinner.selectedItemPosition
+                        type = browseTypeSpinner.selectedItemPosition
                         yearEnabled = enableYearCheckBox.isChecked
                         if (yearEnabled) {
-                            minYear = searchYearSeekbar?.minProgress?.toInt()
-                            maxYear = searchYearSeekbar?.maxProgress?.toInt()
+                            minYear = browseYearSeekBar?.leftSeekBar?.progress?.let {
+                                ceil(it).toInt()
+                            }
+                            maxYear = browseYearSeekBar?.rightSeekBar?.progress?.let {
+                                ceil(it).toInt()
+                            }
                         }
 
-                        sort = advanceSearchCountrySpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                        sort = browseSortSpinner?.selectedItemPosition?.minus(1)?.takeIf {
                             it >= 0
+                        }?.let {
+                            (browseSortSpinner.selectedItem as? DynamicSpinnerItem)?.text?.toString()
+                                ?.replace(" ", "_")
+                                ?.toUpperCase()?.let {
+                                    MediaSort.valueOf(it).ordinal
+                                }
                         }
 
                         format =
-                            advanceSearchFormatSpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                            browseFormatSpinner?.selectedItemPosition?.minus(1)?.takeIf {
                                 it >= 0
                             }
 
                         status =
-                            advanceSearchStatusSpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                            browseStatusSpinner?.selectedItemPosition?.minus(1)?.takeIf {
                                 it >= 0
                             }
 
                         streamingOn = streamingTagMap!!.values.filter { it.isTagged }.map { it.tag }
                         countryOfOrigin =
-                            advanceSearchCountrySpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                            browseCountrySpinner?.selectedItemPosition?.minus(1)?.takeIf {
                                 it >= 0
                             }
                         source =
-                            advanceSearchSourceSpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                            browseSourceSpinner?.selectedItemPosition?.minus(1)?.takeIf {
                                 it >= 0
                             }
                         genre = genreTagMap!!.values.filter { it.isTagged }.map { it.tag }
                         tags = tagTagMap!!.values.filter { it.isTagged }.map { it.tag }
                     }
                 }
-                AdvanceSearchTypes.CHARACTER.ordinal -> {
+                SearchTypes.CHARACTER.ordinal -> {
                     CharacterSearchFilterModel().apply {
-                        query = advanceNavigationSearchEt?.text?.toString()
+                        query = browseSearchEt?.text?.toString()
                     }
                 }
-                AdvanceSearchTypes.STAFF.ordinal -> {
+                SearchTypes.STAFF.ordinal -> {
                     StaffSearchFilterModel().apply {
-                        query = advanceNavigationSearchEt?.text?.toString()
+                        query = browseSearchEt?.text?.toString()
                     }
                 }
-                AdvanceSearchTypes.STUDIO.ordinal -> {
+                SearchTypes.STUDIO.ordinal -> {
                     StudioSearchFilterModel().apply {
-                        query = advanceNavigationSearchEt?.text?.toString()
+                        query = browseSearchEt?.text?.toString()
                     }
                 }
                 else -> {
@@ -195,37 +210,37 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
             when (value) {
                 is MediaSearchFilterModel -> {
                     value.let {
-                        advanceNavigationSearchEt?.setText(value.query ?: "")
+                        browseSearchEt?.setText(value.query ?: "")
                         it.type?.let {
-                            advanceSearchTypeSpinner?.setSelection(it)
+                            browseTypeSpinner?.setSelection(it)
                         }
                         it.season?.let {
-                            advanceSearchSeasonSpinner?.setSelection(it + 1)
+                            browseSeasonSpinner?.setSelection(it + 1)
                         }
                         if (it.yearEnabled) {
-                            searchYearSeekbar?.setProgress(
+                            browseYearSeekBar?.setProgress(
                                 it.minYear!!.toFloat(),
                                 it.maxYear!!.toFloat()
                             )
                         }
                         it.sort?.let {
-                            advanceSearchSortSpinner?.setSelection(it + 1)
+                            browseSortSpinner?.setSelection(it + 1)
                         }
                         it.format?.let {
-                            advanceSearchFormatSpinner?.setSelection(it + 1)
+                            browseFormatSpinner?.setSelection(it + 1)
                         }
                         it.status?.let {
-                            advanceSearchStatusSpinner?.setSelection(it + 1)
+                            browseStatusSpinner?.setSelection(it + 1)
                         }
                         it.streamingOn?.forEach {
                             streamingTagMap!![it]?.isTagged = true
                         }
 
                         it.countryOfOrigin?.let {
-                            advanceSearchCountrySpinner.setSelection(it + 1)
+                            browseCountrySpinner.setSelection(it + 1)
                         }
                         it.source?.let {
-                            advanceSearchSortSpinner.setSelection(it + 1)
+                            browseSortSpinner.setSelection(it + 1)
                         }
                         it.genre?.forEach {
                             genreTagMap!![it]?.isTagged = true
@@ -241,13 +256,13 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
                     }
                 }
                 is CharacterSearchFilterModel -> {
-                    advanceNavigationSearchEt?.setText(value.query ?: "")
+                    browseSearchEt?.setText(value.query ?: "")
                 }
                 is StaffSearchFilterModel -> {
-                    advanceNavigationSearchEt?.setText(value.query ?: "")
+                    browseSearchEt?.setText(value.query ?: "")
                 }
                 is StudioSearchFilterModel -> {
-                    advanceNavigationSearchEt?.setText(value.query ?: "")
+                    browseSearchEt?.setText(value.query ?: "")
                 }
             }
         }
@@ -264,7 +279,7 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
         addView(rView)
-        rView.advanceNavigationSearchInputLayout.apply {
+        rView.browseSearchInputLayout.apply {
             this.setEndIconTintList(ColorStateList.valueOf(DynamicTheme.getInstance().get().tintAccentColor))
             this.setStartIconTintList(ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColorDark))
         }
@@ -321,7 +336,7 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
             .addSource(
                 Source.fromList(tagTagMap!!.values.filter { it.isTagged }.map { it.tag })
             )
-            .addPresenter(genrePresenter)
+            .addPresenter(tagPresenter)
             .into(tagRecyclerView)
     }
 
@@ -330,7 +345,7 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
             .addSource(
                 Source.fromList(streamingTagMap!!.values.filter { it.isTagged }.map { it.tag })
             )
-            .addPresenter(genrePresenter)
+            .addPresenter(streamPresenter)
             .into(streamingOnRecyclerView)
     }
 
@@ -389,24 +404,24 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
                     )
                 }
 
-            advanceSearchTypeSpinner.adapter = makeSpinnerAdapter(searchTypeItems)
-            advanceSearchSeasonSpinner.adapter = makeSpinnerAdapter(searchSeasonItems)
-            advanceSearchSortSpinner.adapter = makeSpinnerAdapter(searchSortItems)
-            advanceSearchFormatSpinner.adapter = makeSpinnerAdapter(searchFormatItems)
-            advanceSearchStatusSpinner.adapter = makeSpinnerAdapter(searchStatusItems)
-            advanceSearchSourceSpinner.adapter = makeSpinnerAdapter(searchSourceItems)
-            advanceSearchCountrySpinner.adapter = makeSpinnerAdapter(searchCountryItems)
+            browseTypeSpinner.adapter = makeSpinnerAdapter(searchTypeItems)
+            browseSeasonSpinner.adapter = makeSpinnerAdapter(searchSeasonItems)
+            browseSortSpinner.adapter = makeSpinnerAdapter(searchSortItems)
+            browseFormatSpinner.adapter = makeSpinnerAdapter(searchFormatItems)
+            browseStatusSpinner.adapter = makeSpinnerAdapter(searchStatusItems)
+            browseSourceSpinner.adapter = makeSpinnerAdapter(searchSourceItems)
+            browseCountrySpinner.adapter = makeSpinnerAdapter(searchCountryItems)
 
-            searchYearSeekbar.isEnabled = enableYearCheckBox.isChecked
+            browseYearSeekBar.isEnabled = enableYearCheckBox.isChecked
             val currentYear = Calendar.getInstance().get(Calendar.YEAR) + 1f
-            searchYearSeekbar.setRange(1950f, currentYear)
-            searchYearSeekbar.setProgress(1950f, currentYear)
+            browseYearSeekBar.setRange(1950f, currentYear)
+            browseYearSeekBar.setProgress(1950f, currentYear)
             yearTv.text =
                 if (enableYearCheckBox.isChecked)
                     context.getString(R.string.year)
                 else
                     context.getString(R.string.year_disabled)
-            searchYearSeekbar.progressLeft = 1950
+            browseYearSeekBar.progressLeft = 1950
 
         }
 
@@ -424,21 +439,21 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
         rView.apply {
             ThemeController.lightSurfaceColor().let {
                 searchTypeFrameLayout.setBackgroundColor(it)
-                searchSeasonFrameLayout.setBackgroundColor(it)
-                searchSortFrameLayout.setBackgroundColor(it)
-                searchFormatFrameLayout.setBackgroundColor(it)
-                searchStatusFrameLayout.setBackgroundColor(it)
-                searchSourceFrameLayout.setBackgroundColor(it)
-                searchCountryFrameLayout.setBackgroundColor(it)
-                searchStreamingFrameLayout.setBackgroundColor(it)
+                browseSeasonFrameLayout.setBackgroundColor(it)
+                browseSortFrameLayout.setBackgroundColor(it)
+                browseFormatFrameLayout.setBackgroundColor(it)
+                browseStatusFrameLayout.setBackgroundColor(it)
+                browseSourceFrameLayout.setBackgroundColor(it)
+                browseCountryFrameLayout.setBackgroundColor(it)
+                browseStreamingFrameLayout.setBackgroundColor(it)
                 genreFrameLayout.setBackgroundColor(it)
                 tagFrameLayout.setBackgroundColor(it)
                 tagAddIv.background = rippleDrawable
                 genreAddIv.background = rippleDrawable
                 streamAddIv.background = rippleDrawable
 
-                searchYearSeekbar.setIndicatorTextDecimalFormat("0")
-                searchYearSeekbar.setTypeface(
+                browseYearSeekBar.setIndicatorTextDecimalFormat("0")
+                browseYearSeekBar.setTypeface(
                     ResourcesCompat.getFont(
                         context,
                         R.font.open_sans_light
@@ -448,9 +463,9 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
             }
 
             DynamicTheme.getInstance().get().accentColor.let {
-                searchYearSeekbar.progressColor = it
-                searchYearSeekbar.leftSeekBar?.indicatorBackgroundColor = it
-                searchYearSeekbar.rightSeekBar?.indicatorBackgroundColor = it
+                browseYearSeekBar.progressColor = it
+                browseYearSeekBar.leftSeekBar?.indicatorBackgroundColor = it
+                browseYearSeekBar.rightSeekBar?.indicatorBackgroundColor = it
             }
         }
     }
@@ -459,7 +474,7 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
     private fun updateListener(rView: View) {
         rView.apply {
             enableYearCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                searchYearSeekbar.isEnabled = isChecked
+                browseYearSeekBar.isEnabled = isChecked
                 yearTv.text =
                     if (isChecked)
                         context.getString(R.string.year)
@@ -472,12 +487,12 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
 //                    if (it) RangeSeekBar.SEEKBAR_MODE_RANGE else RangeSeekBar.SEEKBAR_MODE_SINGLE
 //            }
 
-            advanceSearchTypeSpinner.onItemSelected {
+            browseTypeSpinner.onItemSelected {
                 if (it == 0 || it == 1) {
-                    advanceMediaFilterContainer.visibility = View.VISIBLE
+                    browseMediaFilterContainer.visibility = View.VISIBLE
 
                 } else {
-                    advanceMediaFilterContainer.visibility = View.GONE
+                    browseMediaFilterContainer.visibility = View.GONE
                 }
             }
 
@@ -496,6 +511,7 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
 
 
             applyFilterCardView.setOnClickListener {
+                context.hideKeyboard(browseSearchEt)
                 applyFilter()
             }
         }
@@ -514,6 +530,9 @@ class AdvanceSearchFilterNavigationView(context: Context, attributeSet: Attribut
         fun onGenreAdd(tags: List<TagField>)
         fun onStreamAdd(tags: List<TagField>)
         fun onTagAdd(tags: List<TagField>)
+        fun onTagRemoved(tag: String)
+        fun onGenreRemoved(tag: String)
+        fun onStreamRemoved(tag: String)
         fun updateGenre()
         fun updateTags()
         fun updateStream()
