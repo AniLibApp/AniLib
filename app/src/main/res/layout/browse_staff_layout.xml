@@ -2,18 +2,19 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/searchStaffContainer"
+    android:id="@+id/browseStaffContainer"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="120dp"
-    android:layout_height="@dimen/mini_card_dimen">
+    android:layout_height="210dp">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:padding="6dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/searchStaffImageView"
+            android:id="@+id/browseStaffImageView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mini_image_dimen"
             android:layout_alignParentTop="true"
@@ -22,7 +23,7 @@
             app:roundedCornerRadius="4dp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/searchStaffNameTv"
+            android:id="@+id/browseStaffNameTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/mangaCharacterImageView"
@@ -35,6 +36,6 @@
             android:textSize="10sp"
             tools:ignore="SmallSp" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

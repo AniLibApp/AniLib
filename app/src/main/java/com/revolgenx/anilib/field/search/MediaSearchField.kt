@@ -1,17 +1,19 @@
 package com.revolgenx.anilib.field.search
 
 import com.revolgenx.anilib.MediaSearchQuery
-import com.revolgenx.anilib.constant.AdvanceSearchTypes
+import com.revolgenx.anilib.constant.CountryOfOrigins
+import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.type.*
 
-class MediaSearchField : BaseAdvanceSearchField() {
+class MediaSearchField : BrowseField() {
 
-    override var type: Int = AdvanceSearchTypes.ANIME.ordinal
+    override var type: Int = SearchTypes.ANIME.ordinal
     var season: Int? = null
     var minYear: Int? = null
     var maxYear: Int? = null
     var yearEnabled = false
-    var isYearSame = minYear == maxYear
-
+    val isYearSame
+        get() = minYear == maxYear
     var sort: Int? = null
 
     var format: Int? = null
@@ -22,12 +24,79 @@ class MediaSearchField : BaseAdvanceSearchField() {
     var genre: List<String>? = null
     var tags: List<String>? = null
 
-
     override fun toQueryOrMutation(): Any {
         return MediaSearchQuery.builder()
-            .search(query)
             .page(page)
             .perPage(perPage)
+            .apply {
+
+                if (!query.isNullOrEmpty()) {
+                    search(query)
+                }
+
+                season?.let {
+                    season(MediaSeason.values()[it])
+                }
+
+                if (yearEnabled) {
+                    if (isYearSame) {
+                        minYear?.let {
+                            seasonYear(it)
+                        }
+                    } else {
+                        minYear?.let {
+                            yearGreater(it * 10000)
+                        }
+                        maxYear?.let {
+                            yearLesser(it * 10000)
+                        }
+                    }
+                }
+
+                when (type) {
+                    SearchTypes.ANIME.ordinal -> {
+                        type(MediaType.ANIME)
+                    }
+                    SearchTypes.MANGA.ordinal -> {
+                        type(MediaType.MANGA)
+                    }
+                }
+
+                format?.let {
+                    format(MediaFormat.values()[it])
+                }
+                season?.let {
+                    season(MediaSeason.values()[it])
+                }
+                status?.let {
+                    status(MediaStatus.values()[it])
+                }
+                source?.let {
+                    source(MediaSource.values()[it])
+                }
+
+                streamingOn?.takeIf { it.isNotEmpty() }?.let {
+                    streamingOn(it)
+                }
+
+                genre?.takeIf { it.isNotEmpty() }?.let {
+                    genre(it)
+                }
+
+                tags?.takeIf { it.isNotEmpty() }?.let {
+                    tag(it)
+                }
+
+                sort?.let {
+                    sort(listOf(MediaSort.values()[it]))
+                }
+
+                countryOfOrigin?.let {
+                    country(CountryOfOrigins.values()[it].name)
+                }
+
+            }
             .build()
     }
+
 }

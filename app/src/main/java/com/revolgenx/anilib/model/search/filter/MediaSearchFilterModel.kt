@@ -2,9 +2,7 @@ package com.revolgenx.anilib.model.search.filter
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.Gson
-import com.revolgenx.anilib.constant.AdvanceSearchTypes
-import com.revolgenx.anilib.field.search.BaseAdvanceSearchField
+import com.revolgenx.anilib.field.search.BrowseField
 import com.revolgenx.anilib.field.search.MediaSearchField
 
 class MediaSearchFilterModel : BaseSearchFilterModel {
@@ -71,7 +69,7 @@ class MediaSearchFilterModel : BaseSearchFilterModel {
         }
     }
 
-    override fun toField(): BaseAdvanceSearchField {
+    override fun toField(): BrowseField {
         return MediaSearchField().also {
             it.query = query
             it.minYear = minYear
@@ -82,8 +80,10 @@ class MediaSearchFilterModel : BaseSearchFilterModel {
             it.status = status
             it.source = source
             it.streamingOn = streamingOn
+            it.countryOfOrigin = countryOfOrigin
             it.tags = tags
             it.genre = genre
+            it.season = season
             it.type = type?:it.type
         }
     }

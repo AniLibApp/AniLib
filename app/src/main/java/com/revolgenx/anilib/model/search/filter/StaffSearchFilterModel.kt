@@ -2,13 +2,14 @@ package com.revolgenx.anilib.model.search.filter
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.revolgenx.anilib.field.search.BaseAdvanceSearchField
+import com.revolgenx.anilib.field.search.BrowseField
 import com.revolgenx.anilib.field.search.StaffSearchField
 
-class StaffSearchFilterModel(parcel: Parcel?) : BaseSearchFilterModel(parcel) {
+class StaffSearchFilterModel : BaseSearchFilterModel {
+    constructor(parcel: Parcel) : super(parcel)
+    constructor() : super()
 
-    constructor():this(null)
-    override fun toField(): BaseAdvanceSearchField {
+    override fun toField(): BrowseField {
         return StaffSearchField().also {
             it.query = query
         }

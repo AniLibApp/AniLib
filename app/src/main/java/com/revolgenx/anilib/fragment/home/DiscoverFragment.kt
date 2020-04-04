@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.*
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.AdvanceSearchActivity
+import com.revolgenx.anilib.activity.BrowseActivity
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
@@ -45,7 +45,7 @@ class DiscoverFragment : BaseFragment() {
                 true
             }
             R.id.listDeleteMenu -> {
-                startActivity(Intent(requireContext(), AdvanceSearchActivity::class.java))
+                startActivity(Intent(requireContext(), BrowseActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
