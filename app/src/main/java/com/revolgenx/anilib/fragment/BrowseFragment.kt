@@ -7,21 +7,19 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.revolgenx.anilib.field.search.MediaSearchField
-import com.revolgenx.anilib.field.search.BaseAdvanceSearchField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.BaseModel
 import com.revolgenx.anilib.model.search.filter.*
-import com.revolgenx.anilib.presenter.search.AdvanceSearchPresenter
-import com.revolgenx.anilib.viewmodel.AdvanceSearchFragmentViewModel
+import com.revolgenx.anilib.presenter.search.BrowsePresenter
+import com.revolgenx.anilib.viewmodel.BrowseFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AdvanceSearchFragment : BasePresenterFragment<BaseModel>() {
+class BrowseFragment : BasePresenterFragment<BaseModel>() {
 
-    private val viewModel by viewModel<AdvanceSearchFragmentViewModel>()
+    private val viewModel by viewModel<BrowseFragmentViewModel>()
 
     override val basePresenter: Presenter<BaseModel>
-        get() = AdvanceSearchPresenter(requireContext())
+        get() = BrowsePresenter(requireContext(), viewLifecycleOwner)
 
     override val baseSource: Source<BaseModel>
         get() = viewModel.source ?: createSource()
@@ -30,9 +28,6 @@ class AdvanceSearchFragment : BasePresenterFragment<BaseModel>() {
         return viewModel.createSource(viewModel.field)
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         layoutManager = FlexboxLayoutManager(context).also { manager ->

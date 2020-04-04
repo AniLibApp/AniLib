@@ -5,6 +5,10 @@ import com.revolgenx.anilib.model.CharacterImageModel
 
 open class CharacterModel : BaseModel() {
     var characterId: Int = -1
+        set(value) {
+            field = value
+            baseId = characterId
+        }
     var name: CharacterNameModel? = null
     var isFavourite: Boolean = false
     var siteUrl: String? = null

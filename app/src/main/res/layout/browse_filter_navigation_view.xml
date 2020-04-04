@@ -6,13 +6,13 @@
     android:layout_height="match_parent">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-        android:id="@+id/advance_browse_navigation_search_card_view"
+        android:id="@+id/browse_navigation_search_card_view"
         style="@style/Widget.DynamicApp.Card.Margin.Clickable"
         android:layout_width="match_parent"
         android:layout_height="46dp">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout
-            android:id="@+id/advanceNavigationSearchInputLayout"
+            android:id="@+id/browseSearchInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="-10dp"
@@ -24,7 +24,7 @@
             app:startIconDrawable="@drawable/ads_ic_search">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextInputEditText
-                android:id="@+id/advanceNavigationSearchEt"
+                android:id="@+id/browseSearchEt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
@@ -42,11 +42,11 @@
     </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
-        android:id="@+id/advanceSearchNestedScrollView"
+        android:id="@+id/browseFilterNestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/applyFilterCardView"
-        android:layout_below="@+id/advance_browse_navigation_search_card_view">
+        android:layout_below="@+id/browse_navigation_search_card_view">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
             android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                        android:id="@+id/advanceSearchTypeSpinner"
+                        android:id="@+id/browseTypeSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
@@ -76,7 +76,7 @@
 
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
-                android:id="@+id/advanceMediaFilterContainer"
+                android:id="@+id/browseMediaFilterContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -89,12 +89,12 @@
                     app:headerName="@string/season">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                        android:id="@+id/searchSeasonFrameLayout"
+                        android:id="@+id/browseSeasonFrameLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                            android:id="@+id/advanceSearchSeasonSpinner"
+                            android:id="@+id/browseSeasonSpinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
@@ -140,7 +140,7 @@
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
 
                     <com.jaygoo.widget.RangeSeekBar
-                        android:id="@+id/searchYearSeekbar"
+                        android:id="@+id/browseYearSeekBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
@@ -167,12 +167,12 @@
                     app:headerName="@string/sort">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                        android:id="@+id/searchSortFrameLayout"
+                        android:id="@+id/browseSortFrameLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                            android:id="@+id/advanceSearchSortSpinner"
+                            android:id="@+id/browseSortSpinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
@@ -187,12 +187,12 @@
                     app:headerName="@string/format">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                        android:id="@+id/searchFormatFrameLayout"
+                        android:id="@+id/browseFormatFrameLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                            android:id="@+id/advanceSearchFormatSpinner"
+                            android:id="@+id/browseFormatSpinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
@@ -207,12 +207,12 @@
                     app:headerName="@string/status">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                        android:id="@+id/searchStatusFrameLayout"
+                        android:id="@+id/browseStatusFrameLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                            android:id="@+id/advanceSearchStatusSpinner"
+                            android:id="@+id/browseStatusSpinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
@@ -227,7 +227,7 @@
                     app:headerName="@string/streaming_on">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
-                        android:id="@+id/searchStreamingFrameLayout"
+                        android:id="@+id/browseStreamingFrameLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="40dp">
@@ -262,12 +262,12 @@
                     app:headerName="@string/country">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                        android:id="@+id/searchCountryFrameLayout"
+                        android:id="@+id/browseCountryFrameLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                            android:id="@+id/advanceSearchCountrySpinner"
+                            android:id="@+id/browseCountrySpinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
@@ -283,12 +283,12 @@
                     app:headerName="@string/source">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                        android:id="@+id/searchSourceFrameLayout"
+                        android:id="@+id/browseSourceFrameLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                            android:id="@+id/advanceSearchSourceSpinner"
+                            android:id="@+id/browseSourceSpinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
