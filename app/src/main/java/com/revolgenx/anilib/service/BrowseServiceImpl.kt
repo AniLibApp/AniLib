@@ -5,7 +5,7 @@ import com.revolgenx.anilib.CharacterSearchQuery
 import com.revolgenx.anilib.MediaSearchQuery
 import com.revolgenx.anilib.StaffSearchQuery
 import com.revolgenx.anilib.StudioSearchQuery
-import com.revolgenx.anilib.field.search.BrowseField
+import com.revolgenx.anilib.field.browse.BrowseField
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.character.CharacterNameModel
 import com.revolgenx.anilib.model.search.CharacterSearchModel

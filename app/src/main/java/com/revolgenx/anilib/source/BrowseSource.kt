@@ -2,7 +2,7 @@ package com.revolgenx.anilib.source
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.field.search.BrowseField
+import com.revolgenx.anilib.field.browse.BrowseField
 import com.revolgenx.anilib.model.BaseModel
 import com.revolgenx.anilib.service.BrowseService
 import io.reactivex.disposables.CompositeDisposable

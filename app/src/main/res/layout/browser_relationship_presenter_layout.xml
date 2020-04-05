@@ -6,8 +6,8 @@
     android:id="@+id/relationshipCardView"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="280dp"
-    android:layout_marginStart="10dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="match_parent"
@@ -25,8 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@color/black"
-                app:actualImageScaleType="centerCrop"
-                android:transitionName="media_cover_transition" />
+                android:transitionName="media_cover_transition"
+                app:actualImageScaleType="centerCrop" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/relationshipMediaRatingTv"
@@ -73,8 +73,9 @@
             android:maxLines="1"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:textSize="12sp"
-            app:ads_colorType="accent" />
+            android:textSize="11sp"
+            app:ads_colorType="accent"
+            tools:ignore="SmallSp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/mediaFormatStatusTv"
@@ -84,9 +85,9 @@
             android:maxLines="1"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:textSize="12sp"
-            app:ads_colorType="tint_surface" />
-
+            android:textSize="11sp"
+            app:ads_colorType="tint_surface"
+            tools:ignore="SmallSp" />
 
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

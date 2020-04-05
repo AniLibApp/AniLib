@@ -26,4 +26,6 @@ val viewModelModules = module {
 
     viewModel { BrowseActivityViewModel() }
     viewModel { BrowseFragmentViewModel(get()) }
+
+    viewModel { RecommendationViewModel(get()) }
 }

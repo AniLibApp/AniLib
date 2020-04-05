@@ -3,14 +3,20 @@ package com.revolgenx.anilib.presenter
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.ListEditorEvent
+import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.character.CharacterMediaModel
+import com.revolgenx.anilib.preference.loggedIn
+import com.revolgenx.anilib.util.BrowseFilterDataProvider.data
+import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.character_media_presenter.view.*
 
@@ -67,6 +73,23 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
                         item.bannerImage
                     ), characterMediaImageView
                 ).postEvent
+            }
+
+            setOnLongClickListener {
+                if (context.loggedIn()) {
+                    ListEditorEvent(
+                        ListEditorMeta(
+                            item.mediaId,
+                            item.type!!,
+                            item.title!!.title(context)!!,
+                            item.coverImage!!.image,
+                            item.bannerImage
+                        ), characterMediaImageView
+                    ).postEvent
+                } else {
+                    (parent as View).makeSnakeBar(R.string.please_log_in)
+                }
+                true
             }
         }
 

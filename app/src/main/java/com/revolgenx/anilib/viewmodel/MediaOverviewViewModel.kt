@@ -3,9 +3,9 @@ package com.revolgenx.anilib.viewmodel
 import android.os.Handler
 import androidx.lifecycle.*
 import com.revolgenx.anilib.model.MediaOverviewModel
-import com.revolgenx.anilib.field.MediaOverviewField
-import com.revolgenx.anilib.field.UpdateRecommendationField
-import com.revolgenx.anilib.field.overview.MediaRecommendationField
+import com.revolgenx.anilib.field.media.MediaOverviewField
+import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
+import com.revolgenx.anilib.field.media.MediaRecommendationField
 import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.service.MediaBrowseService

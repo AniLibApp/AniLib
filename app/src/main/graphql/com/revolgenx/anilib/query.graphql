@@ -610,6 +610,23 @@ query StudioSearchQuery($search:String, $page:Int, $perPage:Int){
     }
 }
 
+query RecommendationQuery($page:Int, $perPage:Int, $onList:Boolean, $sort:[RecommendationSort]){
+    Page(page:$page, perPage:$perPage){
+        recommendations(onList:$onList, sort:$sort){
+            id
+            rating
+            userRating
+            media{
+                ... recommendationMedia
+            }
+            mediaRecommendation{
+                ... recommendationMedia
+            }
+        }
+    }
+}
+
+
 query BasicUserQuery($id:Int){
     User(id:$id){
         id
@@ -818,6 +835,22 @@ fragment mediaCoverImage on MediaCoverImage{
     extraLarge
 }
 
+
+fragment recommendationMedia on Media{
+    id
+    averageScore
+    coverImage{
+        ... mediaCoverImage
+    }
+    title{
+        ... mediaTitle
+    }
+    bannerImage
+    type
+    format
+    status
+    seasonYear
+}
 
 
 

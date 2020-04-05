@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/recommendationLikeIv"
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:background="?selectableItemBackground"
+        android:padding="6dp"
+        android:src="@drawable/ic_thumb_up" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/recommendationDislikeIv"
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:background="?selectableItemBackground"
+        android:padding="6dp"
+        android:src="@drawable/ic_thumb_down" />
+
+    <TextView
+        android:id="@+id/recommendationRating"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_marginStart="10dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingStart="6dp"
+        android:paddingEnd="10dp"
+        android:text="+ 1"
+        android:textColor="@color/white" />
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

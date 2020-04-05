@@ -7,11 +7,17 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
+import com.revolgenx.anilib.event.BrowseFilterAppliedEvent
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.BaseModel
 import com.revolgenx.anilib.model.search.filter.*
 import com.revolgenx.anilib.presenter.search.BrowsePresenter
+import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.viewmodel.BrowseFragmentViewModel
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BrowseFragment : BasePresenterFragment<BaseModel>() {
@@ -29,6 +35,11 @@ class BrowseFragment : BasePresenterFragment<BaseModel>() {
     }
 
 
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         layoutManager = FlexboxLayoutManager(context).also { manager ->
             manager.justifyContent = JustifyContent.SPACE_EVENLY
@@ -36,12 +47,18 @@ class BrowseFragment : BasePresenterFragment<BaseModel>() {
         }
     }
 
-    fun search(filter: BaseSearchFilterModel?) {
-        filter?.let {
-            viewModel.field = it.toField()
-            createSource()
-            invalidateAdapter()
-        }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun search(event: BrowseFilterAppliedEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
+        viewModel.field = event.filterModel.toField()
+        createSource()
+        invalidateAdapter()
+        visibleToUser = true
+    }
+
+    override fun onStop() {
+        unRegisterForEvent()
+        super.onStop()
     }
 
 }

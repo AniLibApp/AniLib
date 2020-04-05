@@ -3,6 +3,7 @@ package com.revolgenx.anilib.presenter
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
@@ -10,26 +11,22 @@ import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseCharacterEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.event.meta.CharacterMeta
+import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.StaffMediaCharacterModel
+import com.revolgenx.anilib.preference.loggedIn
+import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.staff_media_character_presenter.view.*
 
+//voice roles
 class StaffMediaCharacterPresenter(context: Context) :
     Presenter<StaffMediaCharacterModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.staff_media_character_presenter,
-                parent,
-                false
-            )
-        )
-    }
 
     private val statusColors by lazy {
         context.resources.getStringArray(R.array.status_color)
@@ -47,6 +44,16 @@ class StaffMediaCharacterPresenter(context: Context) :
         context.resources.getStringArray(R.array.character_role)
     }
 
+
+    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
+        return Holder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.staff_media_character_presenter,
+                parent,
+                false
+            )
+        )
+    }
     override fun onBind(page: Page, holder: Holder, element: Element<StaffMediaCharacterModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
@@ -77,6 +84,22 @@ class StaffMediaCharacterPresenter(context: Context) :
                 ).postEvent
             }
 
+            staffMediaContainer.setOnLongClickListener {
+                if (context.loggedIn()) {
+                    ListEditorEvent(
+                        ListEditorMeta(
+                            item.mediaId,
+                            item.type!!,
+                            item.title!!.title(context)!!,
+                            item.coverImage!!.image,
+                            item.bannerImage
+                        ), staffMediaImageView
+                    ).postEvent
+                } else {
+                    (parent as View).makeSnakeBar(R.string.please_log_in)
+                }
+                true
+            }
 
             staffCharacterImageView.setImageURI(item.characterImageModel?.image)
             staffCharacterNameTv.text = item.characterName?.full

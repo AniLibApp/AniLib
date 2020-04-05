@@ -3,15 +3,15 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.DynamicApp.Card.Clickable"
-    android:layout_width="190dp"
-    android:layout_height="@dimen/box_card_dimen"
-    android:layout_marginTop="6dp">
+    style="@style/Widget.DynamicApp.Card.Margin.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/box_card_dimen">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="190dp"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
             android:id="@+id/staffMediaContainer"

@@ -4,7 +4,7 @@ package com.revolgenx.anilib.source
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.extensions.MainSource
-import com.revolgenx.anilib.field.overview.MediaWatchField
+import com.revolgenx.anilib.field.media.MediaWatchField
 import com.revolgenx.anilib.model.MediaWatchModel
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.service.MediaBrowseService

@@ -1,10 +1,14 @@
-package com.revolgenx.anilib.field.search
+package com.revolgenx.anilib.field.browse
 
 import com.revolgenx.anilib.StudioSearchQuery
-import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.constant.BrowseTypes
 
-class StudioSearchField : BrowseField() {
-    override val type: Int = SearchTypes.STUDIO.ordinal
+class StudioBrowseField : BrowseField() {
+    init {
+        perPage = 10
+    }
+
+    override val type: Int = BrowseTypes.STUDIO.ordinal
 
     override fun toQueryOrMutation(): Any {
         return StudioSearchQuery.builder()

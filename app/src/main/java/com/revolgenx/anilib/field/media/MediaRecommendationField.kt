@@ -1,7 +1,6 @@
-package com.revolgenx.anilib.field.overview
+package com.revolgenx.anilib.field.media
 
 import com.revolgenx.anilib.MediaRecommendationQuery
-import com.revolgenx.anilib.field.BaseField
 import com.revolgenx.anilib.field.BaseSourceField
 import com.revolgenx.anilib.type.RecommendationSort
 
