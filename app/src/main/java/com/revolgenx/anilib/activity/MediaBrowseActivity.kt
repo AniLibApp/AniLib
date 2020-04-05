@@ -42,7 +42,7 @@ import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.browse.*
 import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.fragment.studio.StudioFragment
-import com.revolgenx.anilib.model.MediaBrowseMediaModel
+import com.revolgenx.anilib.model.MediaBrowseModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.repository.util.Status.*
@@ -69,7 +69,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
 
     private var circularProgressDrawable: CircularProgressDrawable? = null
 
-    private var browseMediaModel: MediaBrowseMediaModel? = null
+    private var browseMediaBrowseModel: MediaBrowseModel? = null
 
     private val viewModel by viewModel<MediaBrowserViewModel>()
     private val pageChangeListener by lazy {
@@ -138,7 +138,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         viewModel.mediaLiveData.observe(this) {
             when (it.status) {
                 SUCCESS -> {
-                    browseMediaModel = it.data
+                    browseMediaBrowseModel = it.data
                     if (mediaBrowserMeta.coverImage == null) {
                         mediaBrowserMeta.coverImage = it.data?.coverImage?.large ?: ""
                         mediaBrowserMeta.bannerImage = it.data?.bannerImage ?: ""
@@ -238,7 +238,8 @@ class MediaBrowseActivity : DynamicSystemActivity() {
                 SUCCESS -> {
                     isFavourite = !isFavourite
                     mediaFavButton.showLoading(false)
-                    viewModel.isFavourite(mediaBrowserMeta.mediaId).value = Resource.success(isFavourite)
+                    viewModel.isFavourite(mediaBrowserMeta.mediaId).value =
+                        Resource.success(isFavourite)
                     mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
                     invalidateOptionsMenu()
                     false
@@ -483,6 +484,16 @@ class MediaBrowseActivity : DynamicSystemActivity() {
                         StudioFragment::class.java,
                         bundleOf(StudioFragment.STUDIO_META_KEY to event.meta)
                     )
+                )
+            }
+            is BrowseTagEvent -> {
+                BrowseActivity.openActivity(
+                    this, event.model
+                )
+            }
+            is BrowseGenreEvent->{
+                BrowseActivity.openActivity(
+                    this, event.genre
                 )
             }
         }

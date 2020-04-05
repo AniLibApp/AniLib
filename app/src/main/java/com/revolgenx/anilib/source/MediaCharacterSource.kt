@@ -2,10 +2,8 @@ package com.revolgenx.anilib.source
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.constant.PAGE_SIZE
-import com.revolgenx.anilib.field.overview.MediaCharacterField
+import com.revolgenx.anilib.field.media.MediaCharacterField
 import com.revolgenx.anilib.model.MediaCharacterModel
-import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.service.MediaBrowseService
 import com.revolgenx.anilib.type.MediaType
 import io.reactivex.disposables.CompositeDisposable

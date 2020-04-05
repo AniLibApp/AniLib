@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import com.github.mikephil.charting.data.Entry
 import com.revolgenx.anilib.BrowseSimpleMediaQuery
 import com.revolgenx.anilib.model.*
-import com.revolgenx.anilib.field.MediaOverviewField
-import com.revolgenx.anilib.field.overview.*
+import com.revolgenx.anilib.field.media.MediaOverviewField
+import com.revolgenx.anilib.field.media.*
 import com.revolgenx.anilib.model.stats.*
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.converter.toMediaOverviewModel
@@ -27,7 +27,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
     override fun getSimpleMedia(
         mediaId: Int?,
         compositeDisposable: CompositeDisposable
-    ): LiveData<Resource<MediaBrowseMediaModel>> {
+    ): LiveData<Resource<MediaBrowseModel>> {
 
         val disposable = graphRepository.request(
             BrowseSimpleMediaQuery.builder()
@@ -36,7 +36,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
         )
             .map {
                 it.data()?.Media()?.let {
-                    MediaBrowseMediaModel().also { model ->
+                    MediaBrowseModel().also { model ->
                         model.mediaId = it.id()
                         model.title = it.title()?.fragments()?.mediaTitle()?.let {
                             TitleModel().also { tModel ->
@@ -267,13 +267,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                             }
 
                             model.trendsEntry = model.trends?.sortedBy { it.date }?.pmap {
-                                it.date!!.let { date ->
-                                    val day = LocalDateTime.ofInstant(
-                                        Instant.ofEpochSecond(date.toLong()),
-                                        ZoneId.systemDefault()
-                                    ).dayOfMonth
-                                    Entry(day.toFloat(), it.trending?.toFloat() ?: 0f)
-                                }
+                                Entry(it.date!!.toFloat(), it.trending?.toFloat() ?: 0f)
                             }
 
                             model.statusDistribution =

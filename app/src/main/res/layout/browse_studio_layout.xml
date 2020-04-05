@@ -18,6 +18,7 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
         android:id="@+id/browseStudioMedia"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false"/>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

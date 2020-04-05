@@ -10,6 +10,7 @@ import androidx.lifecycle.observe
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -19,7 +20,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
-import com.revolgenx.anilib.field.overview.MediaStatsField
+import com.revolgenx.anilib.field.media.MediaStatsField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.model.stats.MediaStatsModel
 import com.revolgenx.anilib.presenter.RankingsPresenter
@@ -30,6 +31,9 @@ import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.media_stats_fragment_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
 
 class MediaStatsFragment : BaseFragment() {
     val viewModel by viewModel<MediaStatsViewModel>()
@@ -187,6 +191,14 @@ class MediaStatsFragment : BaseFragment() {
                     perDay.xAxis.apply {
                         setDrawGridLines(false)
                         setDrawAxisLine(false)
+                        valueFormatter = object : ValueFormatter() {
+                            override fun getFormattedValue(value: Float): String {
+                                return LocalDateTime.ofInstant(
+                                    Instant.ofEpochSecond(value.toLong()),
+                                    ZoneId.systemDefault()
+                                ).dayOfMonth.toString()
+                            }
+                        }
                         position = XAxis.XAxisPosition.BOTTOM
                         gridLineWidth = 2f
                         typeface = ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
@@ -225,6 +237,7 @@ class MediaStatsFragment : BaseFragment() {
             statusDistributionPieChart.rotationAngle = 0f
             statusDistributionPieChart.setDrawEntryLabels(false)
             statusDistributionPieChart.legend?.let { l ->
+                l.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                 l.verticalAlignment = Legend.LegendVerticalAlignment.TOP;
                 l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT;
                 l.orientation = Legend.LegendOrientation.VERTICAL;
@@ -261,8 +274,10 @@ class MediaStatsFragment : BaseFragment() {
         }.let {
             val dataSet = BarDataSet(it, getString(R.string.score_distribution)).also {
                 it.colors = barColors
+                it.valueTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
             }
             scoreDistributionPieChart.apply {
+                legend.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                 axisRight.isEnabled = false
                 axisLeft.isEnabled = false
                 xAxis.let { axis ->

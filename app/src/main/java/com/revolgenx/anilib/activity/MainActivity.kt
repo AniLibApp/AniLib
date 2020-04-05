@@ -22,6 +22,7 @@ import androidx.core.view.iterator
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.facebook.drawee.view.SimpleDraweeView
+import com.otaliastudios.elements.Adapter
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
@@ -30,10 +31,10 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.dialog.AuthDialog
-import com.revolgenx.anilib.event.BaseEvent
-import com.revolgenx.anilib.event.BrowseGenreEvent
-import com.revolgenx.anilib.event.BrowseMediaEvent
-import com.revolgenx.anilib.event.ListEditorEvent
+import com.revolgenx.anilib.dialog.TagChooserDialogFragment
+import com.revolgenx.anilib.event.*
+import com.revolgenx.anilib.field.TagChooserField
+import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.fragment.*
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
@@ -42,9 +43,11 @@ import com.revolgenx.anilib.fragment.home.DownloadFragment
 import com.revolgenx.anilib.fragment.home.RecommendationFragment
 import com.revolgenx.anilib.fragment.home.SeasonFragment
 import com.revolgenx.anilib.preference.*
+import com.revolgenx.anilib.util.BrowseFilterDataProvider
 import com.revolgenx.anilib.util.makePagerAdapter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
+import com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
 import com.revolgenx.anilib.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_layout.view.*
@@ -60,7 +63,9 @@ import timber.log.Timber
 import java.util.Locale
 import kotlin.coroutines.CoroutineContext
 
-class MainActivity : DynamicSystemActivity(), CoroutineScope {
+class MainActivity : DynamicSystemActivity(), CoroutineScope,
+    BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener
+    , TagChooserDialogFragment.OnDoneListener {
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
@@ -71,9 +76,12 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
         private const val authIntent: String = "auth_intent_key"
         private const val authDialogTag = "auth_dialog_tag"
         private const val authorizationExtra = "com.revolgenx.anilib.HANDLE_AUTHORIZATION_RESPONSE"
-
-
     }
+
+    private val tagAdapter: Adapter.Builder
+        get() {
+            return Adapter.builder(this)
+        }
 
     override fun getLocale(): Locale? {
         return null
@@ -128,10 +136,15 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
         )
 
         mainViewPager.offscreenPageLimit = 3
-        updateNavView()
         initListener()
-
+        updateNavView()
+        updateRightNavView()
         silentFetchUserInfo()
+    }
+
+    private fun updateRightNavView() {
+        val filter = BrowseFilterDataProvider.getBrowseFilterData(this) ?: return
+        mainBrowseFilterNavView.setFilter(filter, false)
     }
 
     private fun silentFetchUserInfo() {
@@ -281,6 +294,8 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
             false
         }
 
+        mainBrowseFilterNavView.setNavigationCallbackListener(this)
+
         /**problem with transition
          * {@link https://github.com/facebook/fresco/issues/1445}*/
         ActivityCompat.setExitSharedElementCallback(this, object : SharedElementCallback() {
@@ -394,4 +409,138 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope {
         job.cancel()
         super.onDestroy()
     }
+
+
+    override fun onDone(fragmentTag: String?, list: List<TagField>) {
+        when (fragmentTag) {
+            BrowseActivity.TAG_CHOOSER_DIALOG_TAG -> {
+                invalidateTagFilter(list)
+            }
+            BrowseActivity.GENRE_CHOOSER_DIALOG_TAG -> {
+                invalidateGenreFilter(list)
+            }
+            BrowseActivity.STREAM_CHOOSER_DIALOG_TAG -> {
+                invalidateStreamFilter(list)
+            }
+        }
+    }
+
+    private fun invalidateStreamFilter(list: List<TagField>) {
+        viewModel.streamTagFields = list.toMutableList()
+        mainBrowseFilterNavView.buildStreamAdapter(
+            tagAdapter,
+            list
+        )
+    }
+
+    private fun invalidateGenreFilter(list: List<TagField>) {
+        viewModel.genreTagFields = list.toMutableList()
+        mainBrowseFilterNavView.buildGenreAdapter(
+            tagAdapter,
+            list
+        )
+    }
+
+    private fun invalidateTagFilter(list: List<TagField>) {
+        viewModel.tagTagFields = list.toMutableList()
+        mainBrowseFilterNavView.buildTagAdapter(
+            tagAdapter,
+            list
+        )
+    }
+
+
+    /**
+     * Called by advance search filter nav view
+     * */
+    override fun onGenreChoose(tags: List<TagField>) {
+        openTagChooserDialog(tags, BrowseActivity.GENRE_CHOOSER_DIALOG_TAG)
+    }
+
+    /**
+     * Called by advance search filter nav view
+     * */
+    override fun onStreamChoose(tags: List<TagField>) {
+        openTagChooserDialog(tags, BrowseActivity.STREAM_CHOOSER_DIALOG_TAG)
+    }
+
+    /**
+     * Called by advance search filter nav view
+     * */
+    override fun onTagChoose(tags: List<TagField>) {
+        openTagChooserDialog(tags, BrowseActivity.TAG_CHOOSER_DIALOG_TAG)
+    }
+
+    override fun onGenreAdd(tags: List<TagField>) {
+        viewModel.genreTagFields = tags.toMutableList()
+    }
+
+    override fun onTagAdd(tags: List<TagField>) {
+        viewModel.tagTagFields = tags.toMutableList()
+    }
+
+    override fun onStreamAdd(tags: List<TagField>) {
+        viewModel.streamTagFields = tags.toMutableList()
+    }
+
+    override fun onTagRemoved(tag: String) {
+        viewModel.tagTagFields?.find { it.tag == tag }?.let {
+            viewModel.tagTagFields?.remove(it)
+        }
+    }
+
+    override fun onGenreRemoved(tag: String) {
+        viewModel.genreTagFields?.find { it.tag == tag }?.let {
+            viewModel.genreTagFields?.remove(it)
+        }
+    }
+
+    override fun onStreamRemoved(tag: String) {
+        viewModel.streamTagFields?.find { it.tag == tag }?.let {
+            viewModel.streamTagFields?.remove(it)
+        }
+    }
+
+    override fun updateGenre() {
+        mainBrowseFilterNavView.invalidateGenreAdapter(tagAdapter)
+    }
+
+    override fun updateStream() {
+        mainBrowseFilterNavView.invalidateStreamAdapter(tagAdapter)
+    }
+
+    override fun updateTags() {
+        mainBrowseFilterNavView.invalidateTagAdapter(tagAdapter)
+    }
+
+
+    override fun getQuery(): String {
+        return ""
+    }
+
+    override fun applyFilter() {
+        mainBrowseFilterNavView.getFilter()?.let {
+            BrowseFilterDataProvider.setBrowseFilterData(context, it)
+            BrowseActivity.openActivity(
+                this, it
+            )
+        }
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            drawerLayout.closeDrawer(GravityCompat.END)
+        }
+    }
+
+    private fun openTagChooserDialog(tags: List<TagField>, dialogTag: String) {
+        TagChooserDialogFragment.newInstance(
+            TagChooserField(
+                getString(R.string.tags),
+                tags
+            )
+        ).apply {
+            onDoneListener(this@MainActivity)
+            show(supportFragmentManager, dialogTag)
+        }
+    }
+
 }

@@ -47,7 +47,6 @@ abstract class BasePresenterFragment<M : Any>() :
     lateinit var baseRecyclerView: RecyclerView
     lateinit var baseSwipeRefreshLayout: DynamicSwipeRefreshLayout
     lateinit var layoutManager: RecyclerView.LayoutManager
-    lateinit var baseRecyclerContainer: DynamicFrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,8 +56,7 @@ abstract class BasePresenterFragment<M : Any>() :
         val v = inflater.inflate(R.layout.base_presenter_fragment_layout, container, false)
         baseRecyclerView = v.base_presenter_recycler_view
         baseSwipeRefreshLayout = v.base_swipe_to_refresh
-        baseRecyclerContainer = v.base_recycler_container
-        return v;
+        return v
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

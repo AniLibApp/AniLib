@@ -17,7 +17,7 @@ import com.pranavpandey.android.dynamic.support.widget.*
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
-import com.revolgenx.anilib.field.overview.MediaCharacterField
+import com.revolgenx.anilib.field.media.MediaCharacterField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.MediaCharacterModel
 import com.revolgenx.anilib.presenter.MediaCharacterPresenter

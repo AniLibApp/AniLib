@@ -16,7 +16,7 @@ import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicNavigationView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.constant.BrowseTypes
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.model.search.filter.*
@@ -130,151 +130,6 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
             }
         }
     }
-
-
-    var filter: BaseSearchFilterModel? = null
-        get() {
-            return when (browseTypeSpinner.selectedItemPosition) {
-                SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
-                    MediaSearchFilterModel().apply {
-                        query = browseSearchEt?.text?.toString()
-                        season = browseSeasonSpinner?.selectedItemPosition?.minus(1)
-                            ?.takeIf { it >= 0 }
-
-                        type = browseTypeSpinner.selectedItemPosition
-                        yearEnabled = enableYearCheckBox.isChecked
-                        if (yearEnabled) {
-                            minYear = browseYearSeekBar?.leftSeekBar?.progress?.let {
-                                ceil(it).toInt()
-                            }
-                            maxYear = browseYearSeekBar?.rightSeekBar?.progress?.let {
-                                ceil(it).toInt()
-                            }
-                        }
-
-                        sort = browseSortSpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                            it >= 0
-                        }?.let {
-                            (browseSortSpinner.selectedItem as? DynamicSpinnerItem)?.text?.toString()
-                                ?.replace(" ", "_")
-                                ?.toUpperCase()?.let {
-                                    MediaSort.valueOf(it).ordinal
-                                }
-                        }
-
-                        format =
-                            browseFormatSpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                                it >= 0
-                            }
-
-                        status =
-                            browseStatusSpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                                it >= 0
-                            }
-
-                        streamingOn = streamingTagMap!!.values.filter { it.isTagged }.map { it.tag }
-                        countryOfOrigin =
-                            browseCountrySpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                                it >= 0
-                            }
-                        source =
-                            browseSourceSpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                                it >= 0
-                            }
-                        genre = genreTagMap!!.values.filter { it.isTagged }.map { it.tag }
-                        tags = tagTagMap!!.values.filter { it.isTagged }.map { it.tag }
-                    }
-                }
-                SearchTypes.CHARACTER.ordinal -> {
-                    CharacterSearchFilterModel().apply {
-                        query = browseSearchEt?.text?.toString()
-                    }
-                }
-                SearchTypes.STAFF.ordinal -> {
-                    StaffSearchFilterModel().apply {
-                        query = browseSearchEt?.text?.toString()
-                    }
-                }
-                SearchTypes.STUDIO.ordinal -> {
-                    StudioSearchFilterModel().apply {
-                        query = browseSearchEt?.text?.toString()
-                    }
-                }
-                else -> {
-                    null
-                }
-            }
-        }
-        set(value) {
-            field = value
-            when (value) {
-                is MediaSearchFilterModel -> {
-                    value.let {
-                        browseSearchEt?.setText(value.query ?: "")
-                        it.type?.let {
-                            browseTypeSpinner?.setSelection(it)
-                        }
-                        it.season?.let {
-                            browseSeasonSpinner?.setSelection(it + 1)
-                        }
-                        if (it.yearEnabled) {
-                            browseYearSeekBar?.setProgress(
-                                it.minYear!!.toFloat(),
-                                it.maxYear!!.toFloat()
-                            )
-                        }
-                        it.sort?.let {
-                            browseSortSpinner?.setSelection(it + 1)
-                        }
-                        it.format?.let {
-                            browseFormatSpinner?.setSelection(it + 1)
-                        }
-                        it.status?.let {
-                            browseStatusSpinner?.setSelection(it + 1)
-                        }
-                        it.streamingOn?.forEach {
-                            streamingTagMap!![it]?.isTagged = true
-                        }
-
-                        it.countryOfOrigin?.let {
-                            browseCountrySpinner.setSelection(it + 1)
-                        }
-                        it.source?.let {
-                            browseSortSpinner.setSelection(it + 1)
-                        }
-                        it.genre?.forEach {
-                            genreTagMap!![it]?.isTagged = true
-                        }
-                        it.tags?.forEach {
-                            tagTagMap!![it]?.isTagged = true
-                        }
-
-                        mListener?.updateTags()
-                        mListener?.updateGenre()
-                        mListener?.updateStream()
-
-                    }
-                }
-                is CharacterSearchFilterModel -> {
-                    browseSearchEt?.setText(value.query ?: "")
-                }
-                is StaffSearchFilterModel -> {
-                    browseSearchEt?.setText(value.query ?: "")
-                }
-                is StudioSearchFilterModel -> {
-                    browseSearchEt?.setText(value.query ?: "")
-                }
-            }
-        }
-
-
-//    private var seekBarMode = RangeSeekBar.SEEKBAR_MODE_RANGE
-//        set(value) {
-//            field = value
-//            searchYearIndicator.seekBarMode = value
-//            searchYearIndicator.invalidate()
-//            yearRangeToggleButton.checked = value == RangeSeekBar.SEEKBAR_MODE_RANGE
-//        }
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
@@ -482,10 +337,6 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                         context.getString(R.string.year_disabled)
             }
 
-//            yearRangeToggleButton.setToggleListener {
-//                seekBarMode =
-//                    if (it) RangeSeekBar.SEEKBAR_MODE_RANGE else RangeSeekBar.SEEKBAR_MODE_SINGLE
-//            }
 
             browseTypeSpinner.onItemSelected {
                 if (it == 0 || it == 1) {
@@ -497,15 +348,15 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
             }
 
             streamAddIv.setOnClickListener {
-                mListener?.onStreamAdd(streamingTagMap!!.values.toList())
+                mListener?.onStreamChoose(streamingTagMap!!.values.toList())
             }
 
             genreAddIv.setOnClickListener {
-                mListener?.onGenreAdd(genreTagMap!!.values.toList())
+                mListener?.onGenreChoose(genreTagMap!!.values.toList())
             }
 
             tagAddIv.setOnClickListener {
-                mListener?.onTagAdd(tagTagMap!!.values.toList())
+                mListener?.onTagChoose(tagTagMap!!.values.toList())
             }
 
 
@@ -517,7 +368,150 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         }
     }
 
-    private fun View.applyFilter() {
+
+    fun getFilter(): BrowseFilterModel? {
+        return when (browseTypeSpinner.selectedItemPosition) {
+            BrowseTypes.ANIME.ordinal, BrowseTypes.MANGA.ordinal -> {
+                MediaBrowseFilterModel().apply {
+                    query = browseSearchEt?.text?.toString()
+                    season = browseSeasonSpinner?.selectedItemPosition?.minus(1)
+                        ?.takeIf { it >= 0 }
+
+                    type = browseTypeSpinner.selectedItemPosition
+                    yearEnabled = enableYearCheckBox.isChecked
+                    if (yearEnabled) {
+                        minYear = browseYearSeekBar?.leftSeekBar?.progress?.let {
+                            ceil(it).toInt()
+                        }
+                        maxYear = browseYearSeekBar?.rightSeekBar?.progress?.let {
+                            ceil(it).toInt()
+                        }
+                    }
+
+                    sort = browseSortSpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                        it >= 0
+                    }?.let {
+                        (browseSortSpinner.selectedItem as? DynamicSpinnerItem)?.text?.toString()
+                            ?.replace(" ", "_")
+                            ?.toUpperCase()?.let {
+                                MediaSort.valueOf(it).ordinal
+                            }
+                    }
+
+                    format =
+                        browseFormatSpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                            it >= 0
+                        }
+
+                    status =
+                        browseStatusSpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                            it >= 0
+                        }
+
+                    streamingOn = streamingTagMap!!.values.filter { it.isTagged }.map { it.tag }
+                    countryOfOrigin =
+                        browseCountrySpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                            it >= 0
+                        }
+                    source =
+                        browseSourceSpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                            it >= 0
+                        }
+                    genre = genreTagMap!!.values.filter { it.isTagged }.map { it.tag }
+                    tags = tagTagMap!!.values.filter { it.isTagged }.map { it.tag }
+                }
+            }
+            BrowseTypes.CHARACTER.ordinal -> {
+                CharacterBrowseFilterModel().apply {
+                    query = browseSearchEt?.text?.toString()
+                }
+            }
+            BrowseTypes.STAFF.ordinal -> {
+                StaffBrowseFilterModel().apply {
+                    query = browseSearchEt?.text?.toString()
+                }
+            }
+            BrowseTypes.STUDIO.ordinal -> {
+                StudioBrowseFilterModel().apply {
+                    query = browseSearchEt?.text?.toString()
+                }
+            }
+            else -> {
+                null
+            }
+        }
+    }
+
+    fun setFilter(value: BrowseFilterModel, applyFilter: Boolean = true) {
+        browseTypeSpinner?.setSelection(value.type)
+        when (value) {
+            is MediaBrowseFilterModel -> {
+                value.let {
+                    browseSearchEt?.setText(value.query ?: "")
+                    it.season?.let {
+                        browseSeasonSpinner?.setSelection(it + 1)
+                    }
+                    enableYearCheckBox.isChecked = it.yearEnabled
+                    browseYearSeekBar.isEnabled = it.yearEnabled
+
+                    if (it.minYear != null && it.maxYear != null)
+                        browseYearSeekBar?.setProgress(
+                            it.minYear!!.toFloat(),
+                            it.maxYear!!.toFloat()
+                        )
+                    it.sort?.let {
+                        browseSortSpinner?.setSelection(it + 1)
+                    }
+                    it.format?.let {
+                        browseFormatSpinner?.setSelection(it + 1)
+                    }
+                    it.status?.let {
+                        browseStatusSpinner?.setSelection(it + 1)
+                    }
+                    it.streamingOn?.forEach {
+                        streamingTagMap!![it]?.isTagged = true
+                    }
+
+                    it.countryOfOrigin?.let {
+                        browseCountrySpinner.setSelection(it + 1)
+                    }
+                    it.source?.let {
+                        browseSortSpinner.setSelection(it + 1)
+                    }
+                    it.genre?.mapNotNull {
+                        genreTagMap!![it]?.isTagged = true
+                        genreTagMap!![it]
+                    }?.let {
+                        mListener?.onGenreAdd(it)
+                    }
+
+                    it.tags?.mapNotNull {
+                        tagTagMap!![it]?.isTagged = true
+                        tagTagMap!![it]
+                    }?.let {
+                        mListener?.onTagAdd(it)
+                    }
+
+                    mListener?.updateTags()
+                    mListener?.updateGenre()
+                    mListener?.updateStream()
+                }
+            }
+            is CharacterBrowseFilterModel -> {
+                browseSearchEt?.setText(value.query ?: "")
+            }
+            is StaffBrowseFilterModel -> {
+                browseSearchEt?.setText(value.query ?: "")
+            }
+            is StudioBrowseFilterModel -> {
+                browseSearchEt?.setText(value.query ?: "")
+            }
+        }
+        if (applyFilter)
+            applyFilter()
+    }
+
+    private fun applyFilter() {
         mListener?.applyFilter()
     }
 
@@ -527,6 +521,9 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     }
 
     interface AdvanceBrowseNavigationCallbackListener {
+        fun onGenreChoose(tags: List<TagField>)
+        fun onStreamChoose(tags: List<TagField>)
+        fun onTagChoose(tags: List<TagField>)
         fun onGenreAdd(tags: List<TagField>)
         fun onStreamAdd(tags: List<TagField>)
         fun onTagAdd(tags: List<TagField>)

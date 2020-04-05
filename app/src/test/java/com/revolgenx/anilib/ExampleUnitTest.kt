@@ -1,9 +1,11 @@
 package com.revolgenx.anilib
 
 import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.revolgenx.anilib.constant.BrowseTypes
 import com.revolgenx.anilib.field.TagField
+import com.revolgenx.anilib.model.search.filter.*
 import com.revolgenx.anilib.type.MediaSort
-import com.revolgenx.anilib.util.pmap
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
@@ -85,13 +87,13 @@ class ExampleUnitTest {
     }
 
 
-    inner class testClass {
+    internal class testClass {
         var hlw = "hlw"
         var nth = "nth"
         var nth2 = null
     }
 
-    inner class testClass1 {
+    internal  class testClass1 {
         var hlw: String? = null
         var nth: String? = null
         var nth2: String? = null
@@ -103,29 +105,55 @@ class ExampleUnitTest {
     @Test
     fun gsonTest() {
         println(System.currentTimeMillis())
-        Gson().let {
-            it.toJson(
-                testClass()
-            ).let { str ->
-                it.fromJson(str, testClass1::class.java)
-            }.let {
-                println(it.toString())
-            }
-        }
-        println(System.currentTimeMillis())
-        println(System.currentTimeMillis())
-
-        testClass().let {
-            testClass1().apply {
-                hlw = it.hlw
-                nth = it.nth
-                nth2 = it.nth2
-                println(toString())
-            }
+        MediaBrowseFilterModel().also {
+            it.countryOfOrigin = 1
+            it.tags  = listOf("evertying", "nth")
+        }.let {
+            println(System.currentTimeMillis())
+            Gson().toJson(it as BrowseFilterModel)
+        }.let {
+            println(it)
+            println(Gson().fromJson("{\"yearEnabled\":false,\"countryOfOrigin\":1,\"tags\":[\"evertying\",\"nth\"],\"query\":\"sdasdfa\"}\n", JsonObject::class.java).get("countryOfOrigin"))
         }
         println(System.currentTimeMillis())
 
     }
+
+    val filter = "{\"type\":0,\"yearEnabled\":false,\"countryOfOrigin\":1,\"tags\":[\"evertying\",\"nth\"]}\n"
+    @Test
+    fun type(){
+        val gson = Gson()
+        println(System.currentTimeMillis())
+        val data = try {
+            when (gson.fromJson(filter, JsonObject::class.java).get("type").asInt) {
+                BrowseTypes.ANIME.ordinal, BrowseTypes.MANGA.ordinal -> {
+                    gson.fromJson(filter, MediaBrowseFilterModel::class.java)
+                }
+                BrowseTypes.CHARACTER.ordinal -> {
+                    gson.fromJson(filter, CharacterBrowseFilterModel::class.java)
+                }
+                BrowseTypes.STAFF.ordinal -> {
+                    gson.fromJson(filter, StaffBrowseFilterModel::class.java)
+                }
+                BrowseTypes.STUDIO.ordinal -> {
+                    gson.fromJson(filter, StudioBrowseFilterModel::class.java)
+                }
+                else -> null
+            }
+        } catch (e: ClassCastException) {
+            null
+        } catch (e: IllegalStateException) {
+            null
+        }
+        println(data.toString())
+        println(System.currentTimeMillis())
+
+        gson.toJson(data)
+        println(System.currentTimeMillis())
+
+    }
+
+
 
     @Test
     fun testTagPerf() {

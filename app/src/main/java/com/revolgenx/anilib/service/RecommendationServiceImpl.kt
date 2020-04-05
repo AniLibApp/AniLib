@@ -2,14 +2,12 @@ package com.revolgenx.anilib.service
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.revolgenx.anilib.model.SaveRecommendationModel
-import com.revolgenx.anilib.field.AddRecommendationField
-import com.revolgenx.anilib.field.UpdateRecommendationField
-import com.revolgenx.anilib.model.CoverImageModel
-import com.revolgenx.anilib.model.MediaRecommendationModel
-import com.revolgenx.anilib.model.TitleModel
-import com.revolgenx.anilib.field.overview.MediaRecommendationField
-import com.revolgenx.anilib.model.UpdateRecommendationModel
+import com.revolgenx.anilib.field.recommendation.AddRecommendationField
+import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
+import com.revolgenx.anilib.field.media.MediaRecommendationField
+import com.revolgenx.anilib.field.recommendation.RecommendationField
+import com.revolgenx.anilib.model.*
+import com.revolgenx.anilib.model.recommendation.RecommendationModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
@@ -29,52 +27,40 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                runBlocking {
-                    it.data()?.Media()?.recommendations()?.nodes()?.pmap { node ->
-                        MediaRecommendationModel().also { mediaRecommendationModel ->
-                            mediaRecommendationModel.recommendationId = node.id()
-                            mediaRecommendationModel.mediaId = node.media()!!.id()
-                            mediaRecommendationModel.mediaRecommendationId =
-                                node.mediaRecommendation()!!.id()
-                            mediaRecommendationModel.averageScore =
-                                node.mediaRecommendation()!!.averageScore()
-                            mediaRecommendationModel.rating = node.rating()
-                            mediaRecommendationModel.userRating = node.userRating()?.ordinal
-                            mediaRecommendationModel.type =
-                                node.mediaRecommendation()!!.type()!!.ordinal
-                            mediaRecommendationModel.format =
-                                node.mediaRecommendation()?.format()?.ordinal
-                            mediaRecommendationModel.seasonYear =
-                                node.mediaRecommendation()?.seasonYear()
-                            mediaRecommendationModel.episodes =
-                                node.mediaRecommendation()?.episodes()?.toString()
-                            mediaRecommendationModel.chapters =
-                                node.mediaRecommendation()?.chapters()?.toString()
-                            mediaRecommendationModel.status =
-                                node.mediaRecommendation()?.status()?.ordinal
-                            mediaRecommendationModel.coverImage =
-                                node.mediaRecommendation()?.coverImage()?.fragments()
-                                    ?.mediaCoverImage()?.let {
-                                        CoverImageModel().also { imageModel ->
-                                            imageModel.extraLarge = it.extraLarge()
-                                            imageModel.large = it.large()
-                                            imageModel.medium = it.medium()
+                it.data()?.Media()?.recommendations()?.nodes()?.map { it ->
+                    MediaRecommendationModel().also { mod ->
+                        mod.recommendationId = it.id()
+                        mod.rating = it.rating()
+                        mod.userRating = it.userRating()?.ordinal
+                        mod.mediaId = it.media()!!.id()
+                        mod.recommended = it.mediaRecommendation()?.let {
+                            CommonMediaModel().also { model ->
+                                mod.mediaRecommendationId = it.id()
+                                model.mediaId = it.id()
+                                model.title = it.title()?.fragments()?.mediaTitle()?.let {
+                                    TitleModel().also { title ->
+                                        title.romaji = it.romaji()
+                                        title.english = it.english()
+                                        title.native = it.native_()
+                                        title.userPreferred = it.userPreferred()
+                                    }
+                                }
+                                model.seasonYear = it.seasonYear()
+                                model.status = it.status()?.ordinal
+                                model.format = it.format()?.ordinal
+                                model.type = it.type()?.ordinal
+                                model.averageScore = it.averageScore()
+                                model.coverImage =
+                                    it.coverImage()?.fragments()?.mediaCoverImage()?.let {
+                                        CoverImageModel().also { img ->
+                                            img.medium = it.medium()
+                                            img.large = it.large()
+                                            img.extraLarge = it.extraLarge()
                                         }
                                     }
-                            mediaRecommendationModel.bannerImage =
-                                node.mediaRecommendation()?.bannerImage()
-                                    ?: mediaRecommendationModel.coverImage?.extraLarge
-
-                            mediaRecommendationModel.title =
-                                node.mediaRecommendation()?.title()?.fragments()?.mediaTitle()
-                                    ?.let { title ->
-                                        TitleModel().also { titleModel ->
-                                            titleModel.english = title.english() ?: title.romaji()
-                                            titleModel.romaji = title.romaji()
-                                            titleModel.native = title.native_()
-                                            titleModel.userPreferred = title.userPreferred()
-                                        }
-                                    }
+                                model.bannerImage =
+                                    it.bannerImage() ?: model.coverImage?.largeImage
+                            }
                         }
                     }
                 }
@@ -85,7 +71,93 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
                 Timber.w(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null))
             })
-        compositeDisposable?.add(disposable)
+        compositeDisposable.add(disposable)
+    }
+
+
+    override fun recommendation(
+        field: RecommendationField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<List<RecommendationModel>>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map {
+                it.data()?.Page()?.recommendations()?.map {
+                    RecommendationModel().also { mod ->
+                        mod.recommendationId = it.id()
+                        mod.rating = it.rating()
+                        mod.userRating = it.userRating()?.ordinal
+                        mod.recommendationFrom =
+                            it.media()!!.fragments().recommendationMedia().let {
+                                CommonMediaModel().also { model ->
+                                    model.mediaId = it.id()
+                                    model.title = it.title()?.fragments()?.mediaTitle()?.let {
+                                        TitleModel().also { title ->
+                                            title.romaji = it.romaji()
+                                            title.english = it.english()
+                                            title.native = it.native_()
+                                            title.userPreferred = it.userPreferred()
+                                        }
+                                    }
+                                    model.seasonYear = it.seasonYear()
+                                    model.status = it.status()?.ordinal
+                                    model.format = it.format()?.ordinal
+                                    model.type = it.type()?.ordinal
+                                    model.averageScore = it.averageScore()
+                                    model.coverImage =
+                                        it.coverImage()?.fragments()?.mediaCoverImage()?.let {
+                                            CoverImageModel().also { img ->
+                                                img.medium = it.medium()
+                                                img.large = it.large()
+                                                img.extraLarge = it.extraLarge()
+                                            }
+                                        }
+                                    model.bannerImage =
+                                        it.bannerImage() ?: model.coverImage?.largeImage
+                                }
+                            }
+
+                        mod.recommended =
+                            it.mediaRecommendation()!!.fragments().recommendationMedia().let {
+                                CommonMediaModel().also { model ->
+                                    model.mediaId = it.id()
+                                    model.title = it.title()?.fragments()?.mediaTitle()?.let {
+                                        TitleModel().also { title ->
+                                            title.romaji = it.romaji()
+                                            title.english = it.english()
+                                            title.native = it.native_()
+                                            title.userPreferred = it.userPreferred()
+                                        }
+                                    }
+                                    model.seasonYear = it.seasonYear()
+                                    model.status = it.status()?.ordinal
+                                    model.format = it.format()?.ordinal
+                                    model.type = it.type()?.ordinal
+                                    model.averageScore = it.averageScore()
+                                    model.coverImage =
+                                        it.coverImage()?.fragments()?.mediaCoverImage()?.let {
+                                            CoverImageModel().also { img ->
+                                                img.medium = it.medium()
+                                                img.large = it.large()
+                                                img.extraLarge = it.extraLarge()
+                                            }
+                                        }
+                                    model.bannerImage =
+                                        it.bannerImage() ?: model.coverImage?.largeImage
+                                }
+                            }
+
+                    }
+                }
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                resourceCallback.invoke(Resource.success(it ?: emptyList()))
+            }, {
+                Timber.w(it)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+
+        compositeDisposable.add(disposable)
     }
 
     override fun updateRecommendation(

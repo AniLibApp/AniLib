@@ -149,9 +149,9 @@
     <string name="cancel">Cancel</string>
     <string name="name">Name</string>
     <string name="unselect_all">Unselect All</string>
-
-
-
+    <string name="find">Find</string>
+    <string name="suggested">Suggested</string>
+    <string name="suggestion">Suggestion</string>
 
 
     <string-array name="media_format">

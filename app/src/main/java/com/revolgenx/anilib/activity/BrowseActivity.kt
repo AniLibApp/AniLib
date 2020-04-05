@@ -1,15 +1,20 @@
 package com.revolgenx.anilib.activity
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.observe
+import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Adapter
 import com.paulrybitskyi.persistentsearchview.adapters.model.SuggestionItem
 import com.paulrybitskyi.persistentsearchview.listeners.OnSuggestionChangeListener
@@ -26,9 +31,11 @@ import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.fragment.BrowseFragment
+import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.studio.StudioFragment
+import com.revolgenx.anilib.model.search.filter.BrowseFilterModel
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.util.DataProvider
 import com.revolgenx.anilib.util.registerForEvent
@@ -51,6 +58,15 @@ class BrowseActivity : DynamicSystemActivity(),
         const val ADVANCE_SEARCH_FRAGMENT_TAG = "advance_search_fragment_tag"
         const val STREAM_CHOOSER_DIALOG_TAG = "stream_chooser_tag"
         const val ADVANCE_SEARCH_INTENT_KEY = "advance_search_intent_key"
+
+
+        fun openActivity(context: Context, browseFilterModel: BrowseFilterModel? = null) {
+            context.startActivity(Intent(context, BrowseActivity::class.java).also { intent ->
+                browseFilterModel?.let {
+                    intent.putExtra(ADVANCE_SEARCH_INTENT_KEY, it)
+                }
+            })
+        }
     }
 
 
@@ -68,7 +84,7 @@ class BrowseActivity : DynamicSystemActivity(),
 
     private val tagAdapter: Adapter.Builder
         get() {
-            return com.otaliastudios.elements.Adapter.builder(this)
+            return Adapter.builder(this)
         }
 
     private val backDrawable: Drawable
@@ -109,9 +125,9 @@ class BrowseActivity : DynamicSystemActivity(),
             ).commitNow()
 
             if (intent.hasExtra(ADVANCE_SEARCH_INTENT_KEY)) {
-                //todo
-                browseFilterNavView.filter =
-                    intent.getParcelableExtra(ADVANCE_SEARCH_INTENT_KEY)
+                intent.getParcelableExtra<BrowseFilterModel>(ADVANCE_SEARCH_INTENT_KEY)?.let {
+                    browseFilterNavView.setFilter(it)
+                }
             }
         }
     }
@@ -146,15 +162,6 @@ class BrowseActivity : DynamicSystemActivity(),
                 viewModel.searchQuery = query
                 viewModel.searchNow()
                 persistentSearchView.collapse(false)
-            }
-
-            setOnSearchQueryChangeListener { _, oldQuery, newQuery ->
-                if (newQuery.length > 3) {
-                    viewModel.searchQuery = newQuery
-                    viewModel.searchLate()
-                } else {
-                    viewModel.clearHandler()
-                }
             }
 
             setOnSuggestionChangeListener(object : OnSuggestionChangeListener {
@@ -244,15 +251,9 @@ class BrowseActivity : DynamicSystemActivity(),
             when (resource.status) {
                 Status.SUCCESS -> {
                     resource.data?.let {
-                        when {
-                            it.searchNow -> {
-                                it.searchNow = false
-                                search()
-                            }
-                            it.searchLate -> {
-                                it.searchLate = false
-                                search()
-                            }
+                        if (it.searchNow) {
+                            it.searchNow = false
+                            search()
                         }
                     }
                 }
@@ -260,6 +261,26 @@ class BrowseActivity : DynamicSystemActivity(),
                 }
             }
         }
+
+        /**problem with transition
+         * {@link https://github.com/facebook/fresco/issues/1445}*/
+        ActivityCompat.setExitSharedElementCallback(this, object : SharedElementCallback() {
+            override fun onSharedElementEnd(
+                sharedElementNames: List<String?>?,
+                sharedElements: List<View>,
+                sharedElementSnapshots: List<View?>?
+            ) {
+                super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots)
+                if (sharedElements.isEmpty()) {
+                    return
+                }
+                for (view in sharedElements) {
+                    if (view is SimpleDraweeView) {
+                        view.drawable.setVisible(true, true)
+                    }
+                }
+            }
+        })
     }
 
 
@@ -343,46 +364,34 @@ class BrowseActivity : DynamicSystemActivity(),
     /**
      * Called by advance search filter nav view
      * */
+    override fun onGenreChoose(tags: List<TagField>) {
+        openTagChooserDialog(tags, GENRE_CHOOSER_DIALOG_TAG)
+    }
+
+    /**
+     * Called by advance search filter nav view
+     * */
+    override fun onStreamChoose(tags: List<TagField>) {
+        openTagChooserDialog(tags, STREAM_CHOOSER_DIALOG_TAG)
+    }
+
+    /**
+     * Called by advance search filter nav view
+     * */
+    override fun onTagChoose(tags: List<TagField>) {
+        openTagChooserDialog(tags, TAG_CHOOSER_DIALOG_TAG)
+    }
+
     override fun onGenreAdd(tags: List<TagField>) {
-        TagChooserDialogFragment.newInstance(
-            TagChooserField(
-                getString(R.string.genre),
-                tags
-            )
-        ).apply {
-            onDoneListener(this@BrowseActivity)
-            show(supportFragmentManager, GENRE_CHOOSER_DIALOG_TAG)
-        }
+        viewModel.genreTagFields = tags.toMutableList()
     }
 
-    /**
-     * Called by advance search filter nav view
-     * */
-    override fun onStreamAdd(tags: List<TagField>) {
-        TagChooserDialogFragment.newInstance(
-            TagChooserField(
-                getString(R.string.streaming_on),
-                tags
-            )
-        ).apply {
-            onDoneListener(this@BrowseActivity)
-            show(supportFragmentManager, STREAM_CHOOSER_DIALOG_TAG)
-        }
-    }
-
-    /**
-     * Called by advance search filter nav view
-     * */
     override fun onTagAdd(tags: List<TagField>) {
-        TagChooserDialogFragment.newInstance(
-            TagChooserField(
-                getString(R.string.tags),
-                tags
-            )
-        ).apply {
-            onDoneListener(this@BrowseActivity)
-            show(supportFragmentManager, TAG_CHOOSER_DIALOG_TAG)
-        }
+        viewModel.tagTagFields = tags.toMutableList()
+    }
+
+    override fun onStreamAdd(tags: List<TagField>) {
+        viewModel.streamTagFields = tags.toMutableList()
     }
 
     override fun onTagRemoved(tag: String) {
@@ -426,20 +435,32 @@ class BrowseActivity : DynamicSystemActivity(),
         if (rootDrawerLayout.isDrawerOpen(GravityCompat.END)) {
             rootDrawerLayout.closeDrawer(GravityCompat.END)
         }
-        browseFilterNavView.filter?.let {
+        browseFilterNavView.getFilter()?.let {
             viewModel.searchQuery = it.query!!
             persistentSearchView.inputQuery = viewModel.searchQuery
-            getAdvanceSearchFragment()?.search(it)
+            BrowseFilterAppliedEvent(it).postSticky
         }
     }
 
     private fun search() {
-        browseFilterNavView.filter?.let {
+        browseFilterNavView.getFilter()?.let {
             it.query = viewModel.searchQuery
-            getAdvanceSearchFragment()?.search(it)
+            BrowseFilterAppliedEvent(it).postSticky
         }
     }
 
+
+    private fun openTagChooserDialog(tags: List<TagField>, dialogTag: String) {
+        TagChooserDialogFragment.newInstance(
+            TagChooserField(
+                getString(R.string.tags),
+                tags
+            )
+        ).apply {
+            onDoneListener(this@BrowseActivity)
+            show(supportFragmentManager, dialogTag)
+        }
+    }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -475,6 +496,24 @@ class BrowseActivity : DynamicSystemActivity(),
                         StudioFragment::class.java,
                         bundleOf(StudioFragment.STUDIO_META_KEY to event.meta)
                     )
+                )
+            }
+
+            is ListEditorEvent -> {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this,
+                    event.sharedElement,
+                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
+                )
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        EntryListEditorFragment::class.java,
+                        bundleOf(
+                            EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
+                        )
+                    )
+                    , options
                 )
             }
         }

@@ -66,8 +66,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/open_sans_light"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp" />
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textSize="12sp"
+                    app:ads_colorType="tint_surface"/>
 
 
                 <RelativeLayout
@@ -113,8 +115,7 @@
                         app:ads_title="@string/format"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/mediaSourceTv"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.revolgenx.anilib.view.header.CustomDynamicHeader
                         android:id="@+id/mediaSourceTv"
@@ -140,12 +141,12 @@
                         android:id="@+id/mediaDurationTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
                         app:ads_fillSpace="true"
                         app:ads_title="@string/duration"
-                        android:layout_alignParentEnd="true"
-                        app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintLeft_toRightOf="@id/mediaEpisodeTv"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

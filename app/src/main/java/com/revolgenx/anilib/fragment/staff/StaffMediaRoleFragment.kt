@@ -15,6 +15,7 @@ import com.revolgenx.anilib.presenter.StaffMediaRolePresenter
 import com.revolgenx.anilib.viewmodel.StaffMediaRoleViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+//staff roles
 class StaffMediaRoleFragment : BasePresenterFragment<StaffMediaRoleModel>() {
     override val basePresenter: Presenter<StaffMediaRoleModel>
         get() = StaffMediaRolePresenter(requireContext())

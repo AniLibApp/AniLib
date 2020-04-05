@@ -2,17 +2,23 @@ package com.revolgenx.anilib.presenter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.ListEditorEvent
+import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.StaffMediaRoleModel
+import com.revolgenx.anilib.preference.loggedIn
+import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.staff_media_role_presenter.view.*
 
+//staff roles
 class StaffMediaRolePresenter(context: Context) : Presenter<StaffMediaRoleModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
@@ -56,6 +62,23 @@ class StaffMediaRolePresenter(context: Context) : Presenter<StaffMediaRoleModel>
                         item.bannerImage
                     ), staffMediaRoleImageView
                 ).postEvent
+            }
+
+            staffMediaRoleContainer.setOnLongClickListener {
+                if (context.loggedIn()) {
+                    ListEditorEvent(
+                        ListEditorMeta(
+                            item.mediaId,
+                            item.type!!,
+                            item.title!!.title(context)!!,
+                            item.coverImage!!.image,
+                            item.bannerImage
+                        ), staffMediaRoleImageView
+                    ).postEvent
+                } else {
+                    (parent as View).makeSnakeBar(R.string.please_log_in)
+                }
+                true
             }
         }
     }

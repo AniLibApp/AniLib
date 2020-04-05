@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.field.ToggleFavouriteField
-import com.revolgenx.anilib.model.MediaBrowseMediaModel
+import com.revolgenx.anilib.model.MediaBrowseModel
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.service.MediaBrowseService
 import com.revolgenx.anilib.service.ToggleService
@@ -20,7 +20,7 @@ class MediaBrowserViewModel(
     }
 
     val mediaLiveData by lazy {
-        MediatorLiveData<Resource<MediaBrowseMediaModel>>().also {
+        MediatorLiveData<Resource<MediaBrowseModel>>().also {
             it.addSource(mediaBrowseService.simpleMediaLiveData) { res ->
                 it.value = res
             }
@@ -35,7 +35,7 @@ class MediaBrowserViewModel(
         }
     }
 
-    fun getMediaInfo(mediaId: Int?): LiveData<Resource<MediaBrowseMediaModel>> {
+    fun getMediaInfo(mediaId: Int?): LiveData<Resource<MediaBrowseModel>> {
         return mediaBrowseService.getSimpleMedia(mediaId, compositeDisposable)
     }
 

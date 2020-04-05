@@ -13,8 +13,8 @@
 
     <item
         android:id="@+id/collectionMenu"
-        android:icon="@drawable/ic_collection"
-        android:title="@string/collection" />
+        android:icon="@drawable/ic_suggestion"
+        android:title="@string/suggestion" />
 
     <item
         android:id="@+id/downloadMenu"
