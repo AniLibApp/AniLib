@@ -17,7 +17,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
-import com.revolgenx.anilib.field.UpdateRecommendationField
+import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.model.MediaRecommendationModel
 import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.preference.loggedIn
@@ -32,7 +32,7 @@ import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.viewmodel.MediaOverviewViewModel
 import kotlinx.android.synthetic.main.overview_recommendation_presnter_layout.view.*
 
-class BrowserRecommendationPresenter(
+class MediaRecommendationPresenter(
     private val lifecycleOwner: LifecycleOwner,
     context: Context,
     private val viewModel: MediaOverviewViewModel
@@ -44,6 +44,21 @@ class BrowserRecommendationPresenter(
     companion object {
         private const val holder_key = "holder_key"
     }
+
+
+    private val statusColors by lazy {
+        context.resources.getStringArray(R.array.status_color)
+    }
+
+
+    private val mediaFormats by lazy {
+        context.resources.getStringArray(R.array.media_format)
+    }
+
+    private val mediaStatus by lazy {
+        context.resources.getStringArray(R.array.media_status)
+    }
+
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         return Holder(
@@ -63,47 +78,31 @@ class BrowserRecommendationPresenter(
     }
 
     private fun Holder.updateView(data: MediaRecommendationModel) {
+        val recommended = data.recommended ?: return
         itemView.apply {
-            mediaRecommendationTitleTv.text = data.title?.title(context)
-            recommendationCoverImage.setImageURI(data.coverImage?.image)
+            mediaRecommendationTitleTv.text = recommended.title?.title(context)
+            recommendationCoverImage.setImageURI(recommended.coverImage?.image)
 
-            mediaRatingTv.text = data.averageScore?.toString().naText()
+            mediaRatingTv.text = recommended.averageScore?.toString().naText()
 
-            if (data.type == MediaType.ANIME.ordinal) {
+            if (recommended.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeFormatTv.text = context.getString(R.string.episode_format_s).format(
-                    data.episodes.naText(),
-                    data.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText()
+                    recommended.episodes.naText(),
+                    recommended.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText()
                 )
             } else {
                 mediaEpisodeFormatTv.text = context.getString(R.string.chapter_format_s).format(
-                    data.chapters.naText(),
-                    data.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText()
+                    recommended.chapters.naText(),
+                    recommended.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText()
                 )
             }
-            mediaSeasonYearTv.text = data.seasonYear?.toString().naText()
+            mediaSeasonYearTv.text = recommended.seasonYear?.toString().naText()
             mediaRecommendationRating.text = data.rating?.toString()
             mediaRecommendationRating.setTextColor(Color.WHITE)
 
-            val statusColor = when (data.status) {
-                MediaStatus.RELEASING.ordinal -> {
-                    ContextCompat.getColor(context!!, R.color.colorReleasing)
-                }
-                MediaStatus.FINISHED.ordinal -> {
-                    ContextCompat.getColor(context!!, R.color.colorFinished)
-                };
-                MediaStatus.NOT_YET_RELEASED.ordinal -> {
-                    ContextCompat.getColor(context!!, R.color.colorNotReleased)
-                }
-                MediaStatus.CANCELLED.ordinal -> {
-                    ContextCompat.getColor(context!!, R.color.colorCancelled)
-                }
-                else -> {
-                    ContextCompat.getColor(context!!, R.color.colorUnknown)
-                }
+            recommended.status?.let {
+                statusDivider.setBackgroundColor(Color.parseColor(statusColors[it]))
             }
-            statusDivider.setBackgroundColor(statusColor)
-
-
 
             data.userRating?.let {
                 when (RecommendationRating.values()[it]) {
@@ -136,11 +135,11 @@ class BrowserRecommendationPresenter(
             this.setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(
-                        data.mediaRecommendationId!!,
-                        data.type!!,
-                        data.title!!.romaji!!,
-                        data.coverImage!!.image,
-                        data.bannerImage
+                        recommended.mediaId!!,
+                        recommended.type!!,
+                        recommended.title!!.romaji!!,
+                        recommended.coverImage!!.image,
+                        recommended.bannerImage
                     ), recommendationCoverImage
                 ).postEvent
             }

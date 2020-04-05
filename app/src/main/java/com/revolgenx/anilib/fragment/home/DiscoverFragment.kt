@@ -41,11 +41,11 @@ class DiscoverFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.listFavMenu -> {
-                activity?.drawerLayout?.openDrawer(activity?.betaView!!, true)
+                activity?.drawerLayout?.openDrawer(activity?.mainBrowseFilterNavView!!, true)
                 true
             }
             R.id.listDeleteMenu -> {
-                startActivity(Intent(requireContext(), BrowseActivity::class.java))
+                BrowseActivity.openActivity(requireContext())
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.field.overview
+package com.revolgenx.anilib.field.media
 
 import com.revolgenx.anilib.MediaWatchQuery
 import com.revolgenx.anilib.field.BaseField

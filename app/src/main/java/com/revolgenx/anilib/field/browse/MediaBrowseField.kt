@@ -1,13 +1,13 @@
-package com.revolgenx.anilib.field.search
+package com.revolgenx.anilib.field.browse
 
 import com.revolgenx.anilib.MediaSearchQuery
 import com.revolgenx.anilib.constant.CountryOfOrigins
-import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.constant.BrowseTypes
 import com.revolgenx.anilib.type.*
 
-class MediaSearchField : BrowseField() {
+class MediaBrowseField : BrowseField() {
 
-    override var type: Int = SearchTypes.ANIME.ordinal
+    override var type: Int = BrowseTypes.ANIME.ordinal
     var season: Int? = null
     var minYear: Int? = null
     var maxYear: Int? = null
@@ -54,10 +54,10 @@ class MediaSearchField : BrowseField() {
                 }
 
                 when (type) {
-                    SearchTypes.ANIME.ordinal -> {
+                    BrowseTypes.ANIME.ordinal -> {
                         type(MediaType.ANIME)
                     }
-                    SearchTypes.MANGA.ordinal -> {
+                    BrowseTypes.MANGA.ordinal -> {
                         type(MediaType.MANGA)
                     }
                 }

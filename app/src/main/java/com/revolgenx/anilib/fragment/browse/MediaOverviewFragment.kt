@@ -28,15 +28,16 @@ import com.revolgenx.anilib.event.BrowseStudioEvent
 import com.revolgenx.anilib.event.BrowseTagEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.StudioMeta
-import com.revolgenx.anilib.field.MediaOverviewField
+import com.revolgenx.anilib.field.media.MediaOverviewField
 import com.revolgenx.anilib.fragment.base.BaseFragment
-import com.revolgenx.anilib.field.overview.MediaRecommendationField
+import com.revolgenx.anilib.field.media.MediaRecommendationField
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.MediaMetaCollection
 import com.revolgenx.anilib.model.MediaOverviewModel
 import com.revolgenx.anilib.model.MediaRelationshipModel
 import com.revolgenx.anilib.model.MediaStudioModel
-import com.revolgenx.anilib.presenter.BrowserRecommendationPresenter
+import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
+import com.revolgenx.anilib.presenter.MediaRecommendationPresenter
 import com.revolgenx.anilib.presenter.MediaExternalLinkPresenter
 import com.revolgenx.anilib.presenter.MediaMetaPresenter
 import com.revolgenx.anilib.repository.util.Status
@@ -69,7 +70,7 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private val recommendationPresenter by lazy {
-        BrowserRecommendationPresenter(viewLifecycleOwner, requireContext(), viewModel)
+        MediaRecommendationPresenter(viewLifecycleOwner, requireContext(), viewModel)
     }
 
     private val loadingPresenter: Presenter<Void> by lazy {
@@ -334,7 +335,9 @@ class MediaOverviewFragment : BaseFragment() {
                 spannableStringBuilder.setSpan(
                     object : ClickableSpan() {
                         override fun onClick(widget: View) {
-                            BrowseGenreEvent(genre)
+                            BrowseGenreEvent(MediaBrowseFilterModel().also {
+                                it.genre = listOf(genre.trim())
+                            }).postEvent
                         }
 
                         override fun updateDrawState(ds: TextPaint) {
@@ -373,7 +376,9 @@ class MediaOverviewFragment : BaseFragment() {
 
                         override fun onClick(widget: View) {
                             if (shown)
-                                BrowseTagEvent(tag.name!!)
+                                BrowseTagEvent(MediaBrowseFilterModel().also {
+                                    it.tags = listOf(tag.name!!.trim())
+                                }).postEvent
                             else {
                                 spoilerSpans.forEach { it.shown = true }
                                 widget.invalidate()
@@ -388,7 +393,9 @@ class MediaOverviewFragment : BaseFragment() {
                 } else {
                     object : ClickableSpan() {
                         override fun onClick(widget: View) {
-                            BrowseTagEvent(tag.name!!)
+                            BrowseTagEvent(MediaBrowseFilterModel().also {
+                                it.tags = listOf(tag.name!!.trim())
+                            }).postEvent
                         }
 
                         override fun updateDrawState(ds: TextPaint) {

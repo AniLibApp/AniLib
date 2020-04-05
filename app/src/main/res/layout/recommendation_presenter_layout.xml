@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recommendationCardView"
+    style="@style/Widget.DynamicApp.Card.Margin"
+    android:layout_width="match_parent"
+    android:layout_height="250dp">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        android:layout_width="190dp"
+        android:layout_height="@dimen/box_card_dimen"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
+            android:id="@+id/recommendedFromMediaContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="6dp">
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                android:id="@+id/recommendedFromImageContainer"
+                android:layout_width="80dp"
+                android:layout_height="140dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/recommendedFromImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:transitionName="character_image_transition"
+                    app:roundAsCircle="false"
+                    app:roundedCornerRadius="4dp" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/recommendedFromRatingTv"
+                    tools:ignore="SmallSp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/oval_background"
+                    android:paddingStart="5dp"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="3dp"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    app:ads_colorType="custom"
+                    app:drawableStartCompat="@drawable/ic_star" />
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/recommendedFromTitleTv"
+                tools:ignore="SmallSp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recommendedFromImageContainer"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:textSize="10sp" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/recommendedFromStatusTv"
+                tools:ignore="SmallSp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/recommendedFromFormatYearTv"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textSize="10sp" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/recommendedFromFormatYearTv"
+                tools:ignore="SmallSp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textSize="10sp"
+                app:ads_colorType="accent" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
+            android:id="@+id/recommendedContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="6dp">
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                android:id="@+id/recommendedImageContainer"
+                android:layout_width="80dp"
+                android:layout_height="140dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/recommendedImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:transitionName="character_image_transition"
+                    app:roundAsCircle="false"
+                    app:roundedCornerRadius="4dp" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/recommendedMediaRatingTv"
+                    tools:ignore="SmallSp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/oval_background"
+                    android:paddingStart="5dp"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="3dp"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    app:ads_colorType="custom"
+                    app:drawableStartCompat="@drawable/ic_star" />
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/recommendedTitleTv"
+                tools:ignore="SmallSp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recommendedImageContainer"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:textSize="10sp" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/recommendedStatusTv"
+                tools:ignore="SmallSp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/recommendedFormatYearTv"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textSize="10sp" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/recommendedFormatYearTv"
+                tools:ignore="SmallSp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textSize="10sp"
+                app:ads_colorType="accent" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
+
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:orientation="horizontal"
+        app:ads_colorType="tint_surface">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mediaRecommendationLikeTv"
+            android:layout_width="24dp"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:padding="6dp"
+            android:src="@drawable/ic_thumb_up" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mediaRecommendationDislikeTv"
+            android:layout_width="24dp"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:padding="6dp"
+            android:src="@drawable/ic_thumb_down" />
+
+        <TextView
+            android:id="@+id/mediaRecommendationRating"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingStart="6dp"
+            android:paddingEnd="10dp"
+            android:text="+ 1"
+            android:textColor="@color/white" />
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+

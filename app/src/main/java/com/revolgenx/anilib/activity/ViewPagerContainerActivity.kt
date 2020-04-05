@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.MenuItem
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.core.view.forEachIndexed
 import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
@@ -18,11 +20,10 @@ import com.revolgenx.anilib.activity.meta.ViewPagerContainerMeta
 import com.revolgenx.anilib.activity.meta.ViewPagerContainerType
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.event.BaseEvent
-import com.revolgenx.anilib.event.BrowseCharacterEvent
-import com.revolgenx.anilib.event.BrowseMediaEvent
-import com.revolgenx.anilib.event.BrowseStaffEvent
+import com.revolgenx.anilib.event.*
+import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
+import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.base.ViewPagerParcelableFragments
 import com.revolgenx.anilib.fragment.character.CharacterActorFragment
 import com.revolgenx.anilib.fragment.character.CharacterFragment
@@ -223,6 +224,23 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
                 openActivity(
                     this,
                     ViewPagerContainerMeta(ViewPagerContainerType.STAFF, event.meta)
+                )
+            }
+            is ListEditorEvent -> {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this,
+                    event.sharedElement,
+                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
+                )
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        EntryListEditorFragment::class.java,
+                        bundleOf(
+                            EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
+                        )
+                    )
+                    , options
                 )
             }
         }

@@ -501,20 +501,18 @@ class EntryListEditorFragment : BaseFragment() {
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (state == EXPANDED) return
+        if (state == EXPANDED) {
+            if (modelEntry == null) {
+                listDeleteCardView.visibility = View.GONE
+            } else {
+                listDeleteCardView.visibility = View.VISIBLE
+            }
 
-//        if (state == EXPANDED) {
-//            if (modelEntry == null) {
-//                listDeleteCardView.visibility = View.GONE
-//            } else {
-//                listDeleteCardView.visibility = View.VISIBLE
-//            }
-//
-//            if (isFavourite) {
-//                listFavButton.setImageResource(R.drawable.ic_favorite)
-//            }
-//            return
-//        }
+            if (isFavourite) {
+                listFavButton.setImageResource(R.drawable.ic_favorite)
+            }
+            return
+        }
 
         inflater.inflate(R.menu.list_editor_menu, menu)
 

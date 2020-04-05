@@ -5,7 +5,7 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
-import com.revolgenx.anilib.field.overview.MediaReviewField
+import com.revolgenx.anilib.field.media.MediaReviewField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.MediaReviewModel
 import com.revolgenx.anilib.presenter.MediaReviewPresenter

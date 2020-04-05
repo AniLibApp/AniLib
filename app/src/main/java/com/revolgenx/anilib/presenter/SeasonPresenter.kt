@@ -15,6 +15,7 @@ import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.model.CommonMediaModel
+import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeSnakeBar
@@ -69,8 +70,10 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
             mediaStartDateTv.naText(data.endDate?.date ?: data.startDate?.date)
             mediaGenreLayout.addGenre(
                 data.genres?.take(5)
-            ) {
-                BrowseGenreEvent(it).postEvent
+            ) { genre ->
+                BrowseGenreEvent(MediaBrowseFilterModel().also {
+                    it.genre = listOf(genre.trim())
+                }).postEvent
             }
 
             mediaRatingTv.text = data.averageScore?.toString().naText()

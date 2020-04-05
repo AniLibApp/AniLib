@@ -3,8 +3,8 @@ package com.revolgenx.anilib.service
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.model.*
-import com.revolgenx.anilib.field.MediaOverviewField
-import com.revolgenx.anilib.field.overview.*
+import com.revolgenx.anilib.field.media.MediaOverviewField
+import com.revolgenx.anilib.field.media.*
 import com.revolgenx.anilib.model.stats.MediaStatsModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.util.Resource
@@ -23,13 +23,13 @@ abstract class MediaBrowseService(protected val graphRepository: BaseGraphReposi
     }
 
     val simpleMediaLiveData by lazy {
-        MutableLiveData<Resource<MediaBrowseMediaModel>>()
+        MutableLiveData<Resource<MediaBrowseModel>>()
     }
 
     abstract fun getSimpleMedia(
         mediaId: Int?,
         compositeDisposable: CompositeDisposable
-    ): LiveData<Resource<MediaBrowseMediaModel>>
+    ): LiveData<Resource<MediaBrowseModel>>
 
     abstract fun getMediaOverview(
         field: MediaOverviewField,

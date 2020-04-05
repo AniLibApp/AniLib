@@ -2,7 +2,7 @@ package com.revolgenx.anilib.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import com.revolgenx.anilib.field.overview.MediaStatsField
+import com.revolgenx.anilib.field.media.MediaStatsField
 import com.revolgenx.anilib.model.stats.MediaStatsModel
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.service.MediaBrowseService

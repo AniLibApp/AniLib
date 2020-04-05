@@ -8,14 +8,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.FlexboxLayoutManager
 import com.otaliastudios.elements.*
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.constant.BrowseTypes
 import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.event.meta.*
 import com.revolgenx.anilib.model.BaseModel
-import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.model.search.*
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.makeSnakeBar
@@ -28,7 +26,7 @@ import kotlinx.android.synthetic.main.browse_studio_layout.view.*
 class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwner) :
     Presenter<BaseModel>(context) {
     override val elementTypes: Collection<Int>
-        get() = SearchTypes.values().map { it.ordinal }
+        get() = BrowseTypes.values().map { it.ordinal }
 
     private val statusColors by lazy {
         context.resources.getStringArray(R.array.status_color)
@@ -46,16 +44,16 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         val holderRes = when (elementType) {
-            SearchTypes.ANIME.ordinal -> {
+            BrowseTypes.ANIME.ordinal, BrowseTypes.MANGA.ordinal -> {
                 R.layout.browse_media_layout
             }
-            SearchTypes.CHARACTER.ordinal -> {
+            BrowseTypes.CHARACTER.ordinal -> {
                 R.layout.browse_character_layout
             }
-            SearchTypes.STAFF.ordinal -> {
+            BrowseTypes.STAFF.ordinal -> {
                 R.layout.browse_staff_layout
             }
-            SearchTypes.STUDIO.ordinal -> {
+            BrowseTypes.STUDIO.ordinal -> {
                 R.layout.browse_studio_layout
             }
             else -> {
@@ -71,16 +69,16 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
 
         val item = element.data ?: return
         when (holder.elementType) {
-            SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
+            BrowseTypes.ANIME.ordinal, BrowseTypes.MANGA.ordinal -> {
                 holder.itemView.updateMedia(item)
             }
-            SearchTypes.CHARACTER.ordinal -> {
+            BrowseTypes.CHARACTER.ordinal -> {
                 holder.itemView.updateCharacter(item)
             }
-            SearchTypes.STAFF.ordinal -> {
+            BrowseTypes.STAFF.ordinal -> {
                 holder.itemView.updateStaff(item)
             }
-            SearchTypes.STUDIO.ordinal -> {
+            BrowseTypes.STUDIO.ordinal -> {
                 holder.itemView.updateStudio(item)
             }
         }

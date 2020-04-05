@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.field.search
+package com.revolgenx.anilib.field.browse
 
 import com.revolgenx.anilib.field.BaseSourceField
 

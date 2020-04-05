@@ -1,7 +1,9 @@
 package com.revolgenx.anilib.fragment.staff
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -16,6 +18,7 @@ import com.revolgenx.anilib.presenter.StaffMediaCharacterPresenter
 import com.revolgenx.anilib.viewmodel.StaffMediaCharacterViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+//voice roles
 class StaffMediaCharacterFragment : BasePresenterFragment<StaffMediaCharacterModel>() {
     override val basePresenter: Presenter<StaffMediaCharacterModel>
         get() = StaffMediaCharacterPresenter(requireContext())
@@ -36,10 +39,15 @@ class StaffMediaCharacterFragment : BasePresenterFragment<StaffMediaCharacterMod
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        layoutManager = FlexboxLayoutManager(context).also { manager ->
-            manager.justifyContent = JustifyContent.SPACE_EVENLY
-            manager.alignItems = AlignItems.CENTER
-        }
+//        layoutManager = FlexboxLayoutManager(context).also { manager ->
+//            manager.justifyContent = JustifyContent.SPACE_EVENLY
+//            manager.alignItems = AlignItems.CENTER
+//        }
+
+        layoutManager = GridLayoutManager(
+            this.context,
+            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
+        )
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
