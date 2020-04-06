@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.fragment.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
@@ -56,7 +55,7 @@ class DiscoverFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         loading.color = DynamicTheme.getInstance().get().accentColor
 
-        mediaRecommendationDislikeTv.setOnClickListener {
+        mediaRecommendationDislikeIv.setOnClickListener {
             it.checkLoggedIn()
         }
 
