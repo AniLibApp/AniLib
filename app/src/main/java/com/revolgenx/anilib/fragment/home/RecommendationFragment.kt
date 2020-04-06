@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
     override val basePresenter: Presenter<RecommendationModel>
-        get() = RecommendationPresenter(requireContext())
+        get() = RecommendationPresenter(requireContext(), viewLifecycleOwner, viewModel)
     override val baseSource: Source<RecommendationModel>
         get() = viewModel.source ?: createSource()
 

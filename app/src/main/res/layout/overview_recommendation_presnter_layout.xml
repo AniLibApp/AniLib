@@ -99,7 +99,7 @@
         app:ads_colorType="tint_surface">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/mediaRecommendationLikeTv"
+            android:id="@+id/mediaRecommendationLikeIv"
             android:layout_width="26dp"
             android:layout_height="match_parent"
             android:background="?selectableItemBackground"
@@ -107,7 +107,7 @@
             android:src="@drawable/ic_thumb_up" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/mediaRecommendationDislikeTv"
+            android:id="@+id/mediaRecommendationDislikeIv"
             android:layout_width="26dp"
             android:layout_height="match_parent"
             android:background="?selectableItemBackground"

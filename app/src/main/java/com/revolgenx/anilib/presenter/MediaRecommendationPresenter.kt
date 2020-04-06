@@ -1,11 +1,11 @@
 package com.revolgenx.anilib.presenter
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.apollographql.apollo.exception.ApolloHttpException
@@ -23,7 +23,6 @@ import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.repository.util.Status
-import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.RecommendationRating
 import com.revolgenx.anilib.util.makeSnakeBar
@@ -41,24 +40,9 @@ class MediaRecommendationPresenter(
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-    companion object {
-        private const val holder_key = "holder_key"
-    }
-
-
     private val statusColors by lazy {
         context.resources.getStringArray(R.array.status_color)
     }
-
-
-    private val mediaFormats by lazy {
-        context.resources.getStringArray(R.array.media_format)
-    }
-
-    private val mediaStatus by lazy {
-        context.resources.getStringArray(R.array.media_status)
-    }
-
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         return Holder(
@@ -72,9 +56,9 @@ class MediaRecommendationPresenter(
 
     override fun onBind(page: Page, holder: Holder, element: Element<MediaRecommendationModel>) {
         super.onBind(page, holder, element)
-        val data = element.data!!
+        val data = element.data ?: return
+        viewModel.mediaRecommendedList[data.recommendationId!!] = data
         holder.updateView(data)
-        holder.set(holder_key, data)
     }
 
     private fun Holder.updateView(data: MediaRecommendationModel) {
@@ -104,33 +88,10 @@ class MediaRecommendationPresenter(
                 statusDivider.setBackgroundColor(Color.parseColor(statusColors[it]))
             }
 
-            data.userRating?.let {
-                when (RecommendationRating.values()[it]) {
-                    RecommendationRating.NO_RATING -> {
-                        mediaRecommendationDislikeTv.setColorFilter(Color.WHITE)
-                        mediaRecommendationLikeTv.setColorFilter(Color.WHITE)
-                    }
-                    RecommendationRating.RATE_UP -> {
-                        mediaRecommendationLikeTv.setColorFilter(
-                            DynamicTheme.getInstance().get().accentColor
-                        )
-                        mediaRecommendationDislikeTv.setColorFilter(Color.WHITE)
-                    }
-                    RecommendationRating.RATE_DOWN -> {
-                        mediaRecommendationLikeTv.setColorFilter(Color.WHITE)
-                        mediaRecommendationDislikeTv.setColorFilter(
-                            DynamicTheme.getInstance().get().accentColor
-                        )
-                    }
-                    else -> {
-                        mediaRecommendationLikeTv.setColorFilter(Color.WHITE)
-                        mediaRecommendationDislikeTv.setColorFilter(Color.WHITE)
-                    }
-                }
-            }
+            updateRecommendationLikeView(data)
 
-            mediaRecommendationLikeTv.setOnClickListener(null)
-            mediaRecommendationDislikeTv.setOnClickListener(null)
+            mediaRecommendationLikeIv.setOnClickListener(null)
+            mediaRecommendationDislikeIv.setOnClickListener(null)
 
             this.setOnClickListener {
                 BrowseMediaEvent(
@@ -144,7 +105,7 @@ class MediaRecommendationPresenter(
                 ).postEvent
             }
 
-            mediaRecommendationLikeTv.setOnClickListener {
+            mediaRecommendationLikeIv.setOnClickListener {
                 if (it.checkLoggedIn()) {
                     val observer = object : Observer<Resource<UpdateRecommendationModel>> {
                         override fun onChanged(it: Resource<UpdateRecommendationModel>?) {
@@ -154,12 +115,12 @@ class MediaRecommendationPresenter(
 
                             when (it?.status) {
                                 Status.SUCCESS -> {
+                                    viewModel.mediaRecommendedList[it.data?.recommendationId]?.let { cache ->
+                                        cache.rating = it.data?.rating
+                                        cache.userRating = it.data?.userRating
+                                    }
                                     if (data.recommendationId == it.data!!.recommendationId) {
-                                        data.rating = it.data.rating
-                                        data.userRating = it.data.userRating
-                                        if ((this@updateView.get(holder_key) as MediaRecommendationModel).recommendationId == it.data.recommendationId) {
-                                            this@updateView.updateView(data)
-                                        }
+                                        updateRecommendationLikeView(data)
                                     }
                                 }
                                 Status.ERROR -> {
@@ -188,7 +149,7 @@ class MediaRecommendationPresenter(
                 }
             }
 
-            mediaRecommendationDislikeTv.setOnClickListener {
+            mediaRecommendationDislikeIv.setOnClickListener {
                 if (it.checkLoggedIn()) {
                     val observer = object : Observer<Resource<UpdateRecommendationModel>> {
                         override fun onChanged(it: Resource<UpdateRecommendationModel>?) {
@@ -198,16 +159,28 @@ class MediaRecommendationPresenter(
 
                             when (it?.status) {
                                 Status.SUCCESS -> {
+                                    viewModel.mediaRecommendedList[it.data?.recommendationId]?.let { cache ->
+                                        cache.rating = it.data?.rating
+                                        cache.userRating = it.data?.userRating
+                                    }
                                     if (data.recommendationId == it.data!!.recommendationId) {
-                                        data.rating = it.data.rating
-                                        data.userRating = it.data.userRating
-                                        if ((this@updateView.get(holder_key) as MediaRecommendationModel).recommendationId == it.data.recommendationId) {
-                                            this@updateView.updateView(data)
-                                        }
+                                        updateRecommendationLikeView(data)
                                     }
                                 }
+
                                 Status.ERROR -> {
-                                    this@updateView.itemView.context.makeToast(R.string.operation_failed)
+                                    if (it.exception is ApolloHttpException) {
+                                        when (it.exception.code()) {
+                                            HTTP_TOO_MANY_REQUEST -> {
+                                                this@updateView.itemView.context.makeToast(R.string.too_many_request)
+                                            }
+                                            else -> {
+                                                this@updateView.itemView.context.makeToast(R.string.operation_failed)
+                                            }
+                                        }
+                                    } else {
+                                        this@updateView.itemView.context.makeToast(R.string.operation_failed)
+                                    }
                                 }
                             }
                         }
@@ -221,6 +194,25 @@ class MediaRecommendationPresenter(
                 }
             }
 
+        }
+    }
+
+
+    private fun View.updateRecommendationLikeView(item: MediaRecommendationModel) {
+        mediaRecommendationLikeIv?.imageTintList = ColorStateList.valueOf(Color.WHITE)
+        mediaRecommendationDislikeIv?.imageTintList = ColorStateList.valueOf(Color.WHITE)
+        mediaRecommendationRating.setTextColor(Color.WHITE)
+        mediaRecommendationRating?.text = item.rating?.toString()
+
+        when (item.userRating) {
+            RecommendationRating.RATE_UP.ordinal -> {
+                mediaRecommendationLikeIv?.imageTintList =
+                    ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
+            }
+            RecommendationRating.RATE_DOWN.ordinal -> {
+                mediaRecommendationDislikeIv?.imageTintList =
+                    ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
+            }
         }
     }
 
