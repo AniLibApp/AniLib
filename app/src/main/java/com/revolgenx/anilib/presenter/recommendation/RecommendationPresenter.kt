@@ -1,25 +1,43 @@
 package com.revolgenx.anilib.presenter.recommendation
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import com.apollographql.apollo.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
+import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
+import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
+import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.model.recommendation.RecommendationModel
 import com.revolgenx.anilib.preference.loggedIn
+import com.revolgenx.anilib.repository.util.Resource
+import com.revolgenx.anilib.repository.util.Status
+import com.revolgenx.anilib.type.RecommendationRating
 import com.revolgenx.anilib.util.makeSnakeBar
+import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.viewmodel.RecommendationViewModel
 import kotlinx.android.synthetic.main.recommendation_presenter_layout.view.*
 
-class RecommendationPresenter(context: Context) : Presenter<RecommendationModel>(context) {
+class RecommendationPresenter(
+    context: Context,
+    private val lifecycleOwner: LifecycleOwner,
+    private val viewModel: RecommendationViewModel
+) :
+    Presenter<RecommendationModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -35,9 +53,14 @@ class RecommendationPresenter(context: Context) : Presenter<RecommendationModel>
         context.resources.getStringArray(R.array.media_format)
     }
 
+    private val updateRecommendationField by lazy {
+        UpdateRecommendationField()
+    }
+
+
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         return Holder(
-            LayoutInflater.from(context).inflate(
+            getLayoutInflater().inflate(
                 R.layout.recommendation_presenter_layout,
                 parent,
                 false
@@ -48,6 +71,8 @@ class RecommendationPresenter(context: Context) : Presenter<RecommendationModel>
     override fun onBind(page: Page, holder: Holder, element: Element<RecommendationModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
+        viewModel.recommendedList[item.recommendationId!!] = item
+
         holder.itemView.apply {
             item.recommendationFrom?.let { from ->
                 recommendedFromTitleTv.text = from.title?.title(context)
@@ -137,7 +162,127 @@ class RecommendationPresenter(context: Context) : Presenter<RecommendationModel>
                 }
             }
 
+            updateRecommendationLikeView(item)
 
+            recommendationLikeIv.setOnClickListener {
+                if (it.checkLoggedIn()) {
+                    val observer = object : Observer<Resource<UpdateRecommendationModel>> {
+                        override fun onChanged(it: Resource<UpdateRecommendationModel>?) {
+                            if (it != null) {
+                                viewModel.removeUpdateRecommendationObserver(this)
+                            }
+                            when (it?.status) {
+                                Status.SUCCESS -> {
+                                    viewModel.recommendedList[it.data?.recommendationId]?.let { cache ->
+                                        cache.rating = it.data?.rating
+                                        cache.userRating = it.data?.userRating
+                                    }
+
+                                    if (item.recommendationId == it.data?.recommendationId) {
+                                        updateRecommendationLikeView(item)
+                                    }
+                                }
+                                Status.ERROR -> {
+                                    if (it.exception is ApolloHttpException) {
+                                        when (it.exception.code()) {
+                                            HTTP_TOO_MANY_REQUEST -> {
+                                                context.makeToast(R.string.too_many_request)
+                                            }
+                                            else -> {
+                                                context.makeToast(R.string.operation_failed)
+                                            }
+                                        }
+                                    } else {
+                                        context.makeToast(R.string.operation_failed)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    updateRecommendation(observer, item,
+                        item.userRating?.let { RecommendationRating.values()[it] }
+                            ?: RecommendationRating.NO_RATING,
+                        RecommendationRating.RATE_UP
+                    )
+                }
+            }
+
+            recommendationDislikeIv.setOnClickListener {
+                if (it.checkLoggedIn()) {
+                    val observer = object : Observer<Resource<UpdateRecommendationModel>> {
+                        override fun onChanged(it: Resource<UpdateRecommendationModel>?) {
+                            if (it != null) {
+                                viewModel.removeUpdateRecommendationObserver(this)
+                            }
+
+                            when (it?.status) {
+                                Status.SUCCESS -> {
+                                    viewModel.recommendedList[it.data?.recommendationId]?.let { cache ->
+                                        cache.rating = it.data?.rating
+                                        cache.userRating = it.data?.userRating
+                                    }
+
+                                    if (item.recommendationId == it.data?.recommendationId) {
+                                        updateRecommendationLikeView(item)
+                                    }
+                                }
+                                Status.ERROR -> {
+                                    context.makeToast(R.string.operation_failed)
+                                }
+                            }
+                        }
+                    }
+
+                    updateRecommendation(observer, item,
+                        item.userRating?.let { RecommendationRating.values()[it] }
+                            ?: RecommendationRating.NO_RATING,
+                        RecommendationRating.RATE_DOWN
+                    )
+                }
+            }
         }
+    }
+
+
+    private fun updateRecommendation(
+        observer: Observer<Resource<UpdateRecommendationModel>>,
+        data: RecommendationModel,
+        currentRating: RecommendationRating,
+        newRating: RecommendationRating
+    ) {
+        viewModel.updateRecommendation(updateRecommendationField.also { field ->
+            field.mediaId = data.recommendationFrom?.mediaId
+            field.mediaRecommendationId = data.recommended?.mediaId
+            field.rating = if (currentRating == newRating) {
+                RecommendationRating.NO_RATING.ordinal
+            } else {
+                newRating.ordinal
+            }
+        }).observe(lifecycleOwner, observer)
+    }
+
+    private fun View.updateRecommendationLikeView(item: RecommendationModel) {
+        recommendationLikeIv?.imageTintList = ColorStateList.valueOf(Color.WHITE)
+        recommendationDislikeIv?.imageTintList = ColorStateList.valueOf(Color.WHITE)
+        recommendationRatingTv.setTextColor(Color.WHITE)
+        recommendationRatingTv?.text = item.rating?.toString()
+
+        when (item.userRating) {
+            RecommendationRating.RATE_UP.ordinal -> {
+                recommendationLikeIv?.imageTintList =
+                    ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
+            }
+            RecommendationRating.RATE_DOWN.ordinal -> {
+                recommendationDislikeIv?.imageTintList =
+                    ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
+            }
+        }
+    }
+
+    private fun View.checkLoggedIn(): Boolean {
+        val loggedIn = context.loggedIn()
+        if (!loggedIn) makeSnakeBar(R.string.please_log_in)
+        return loggedIn
     }
 }

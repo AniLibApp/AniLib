@@ -6,6 +6,7 @@ import com.revolgenx.anilib.model.MediaOverviewModel
 import com.revolgenx.anilib.field.media.MediaOverviewField
 import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.field.media.MediaRecommendationField
+import com.revolgenx.anilib.model.MediaRecommendationModel
 import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.service.MediaBrowseService
@@ -21,6 +22,11 @@ class MediaOverviewViewModel(
     private val handler by lazy {
         Handler()
     }
+
+    val mediaRecommendedList by lazy {
+        mutableMapOf<Int, MediaRecommendationModel>()
+    }
+
 
     val mediaOverviewLiveData by lazy {
         MediatorLiveData<Resource<MediaOverviewModel>>().apply {

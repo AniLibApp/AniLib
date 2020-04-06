@@ -196,10 +196,12 @@
         android:layout_height="28dp"
         android:layout_gravity="bottom|center_horizontal"
         android:orientation="horizontal"
-        app:ads_colorType="tint_surface">
+        app:ads_colorType="tint_surface"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/mediaRecommendationLikeTv"
+            android:id="@+id/recommendationLikeIv"
             android:layout_width="24dp"
             android:layout_height="match_parent"
             android:background="?selectableItemBackground"
@@ -207,7 +209,7 @@
             android:src="@drawable/ic_thumb_up" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/mediaRecommendationDislikeTv"
+            android:id="@+id/recommendationDislikeIv"
             android:layout_width="24dp"
             android:layout_height="match_parent"
             android:background="?selectableItemBackground"
@@ -215,7 +217,7 @@
             android:src="@drawable/ic_thumb_down" />
 
         <TextView
-            android:id="@+id/mediaRecommendationRating"
+            android:id="@+id/recommendationRatingTv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
