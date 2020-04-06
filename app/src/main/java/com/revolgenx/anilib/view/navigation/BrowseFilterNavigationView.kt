@@ -136,7 +136,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         addView(rView)
         rView.browseSearchInputLayout.apply {
             this.setEndIconTintList(ColorStateList.valueOf(DynamicTheme.getInstance().get().tintAccentColor))
-            this.setStartIconTintList(ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColorDark))
+            this.setStartIconTintList(ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor))
         }
         updateTheme(rView)
         updateView(rView)

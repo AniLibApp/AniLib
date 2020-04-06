@@ -5,15 +5,34 @@ import com.revolgenx.anilib.field.BaseSourceField
 import com.revolgenx.anilib.type.RecommendationSort
 
 class RecommendationField : BaseSourceField<RecommendationQuery>() {
-    var onList: Boolean = false
-    var sort: List<RecommendationSort> = listOf(RecommendationSort.ID_DESC)
+    var onList: Boolean? = null
+    var sort: Int? = null
 
     override fun toQueryOrMutation(): RecommendationQuery {
         return RecommendationQuery.builder()
             .page(page)
             .perPage(perPage)
-            .onList(onList)
-            .sort(sort)
+            .apply {
+                onList?.let {
+                    onList(onList)
+                }
+                sort?.let {
+                    when (it) {
+                        0 -> {
+                            sort(listOf(RecommendationSort.ID_DESC))
+                        }
+                        1 -> {
+                            sort(listOf(RecommendationSort.RATING_DESC))
+                        }
+                        2 -> {
+                            sort(listOf(RecommendationSort.RATING))
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+            }
             .build()
     }
 }

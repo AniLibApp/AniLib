@@ -36,6 +36,8 @@ abstract class BasePresenterFragment<M : Any>() :
         )
     }
 
+    var adapter: Adapter? = null
+
     private val errorPresenter: Presenter<Void> by lazy {
         Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
     }
@@ -100,7 +102,7 @@ abstract class BasePresenterFragment<M : Any>() :
 
     /** call this method to load into recyclerview*/
     protected fun invalidateAdapter() {
-        Adapter.builder(this, 10)
+        adapter = Adapter.builder(this, 10)
             .setPager(PageSizePager(10))
             .addSource(baseSource)
             .addPresenter(basePresenter)

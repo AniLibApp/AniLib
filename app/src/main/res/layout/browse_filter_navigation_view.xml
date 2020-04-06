@@ -248,7 +248,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:padding="10dp"
-                            app:ads_colorType="accent_dark"
+                            app:ads_colorType="accent"
                             app:srcCompat="@drawable/ic_add" />
 
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
@@ -324,7 +324,7 @@
                             android:layout_height="40dp"
                             android:layout_alignParentEnd="true"
                             android:padding="10dp"
-                            app:ads_colorType="accent_dark"
+                            app:ads_colorType="accent"
                             app:srcCompat="@drawable/ic_add" />
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
                 </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
@@ -357,7 +357,7 @@
                             android:layout_height="40dp"
                             android:layout_alignParentEnd="true"
                             android:padding="10dp"
-                            app:ads_colorType="accent_dark"
+                            app:ads_colorType="accent"
                             app:srcCompat="@drawable/ic_add" />
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
                 </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
@@ -381,7 +381,7 @@
             android:layout_gravity="center"
             android:text="@string/apply_filter"
             android:textSize="14sp"
-            app:ads_colorType="accent_dark" />
+            app:ads_colorType="accent" />
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
