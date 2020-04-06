@@ -169,6 +169,9 @@ dependencies {
     //range seekbar
     implementation 'com.github.Jay-Goo:RangeSeekBar:3.0.0'
 
+    //toggle
+    implementation 'com.llollox:androidtoggleswitch:2.0.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

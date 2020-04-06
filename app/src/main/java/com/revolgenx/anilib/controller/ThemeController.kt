@@ -131,7 +131,7 @@ object ThemeController {
         return if (DynamicColorUtils.isColorDark(surfaceColor)) {
             surfaceColor
         } else {
-            DynamicColorUtils.getLighterColor(surfaceColor, 0.3f)
+            DynamicColorUtils.getLighterColor(surfaceColor, 0.4f)
         }
     }
 }

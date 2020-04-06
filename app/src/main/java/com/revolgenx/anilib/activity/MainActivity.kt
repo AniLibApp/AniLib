@@ -386,7 +386,12 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope,
                 )
             }
             is BrowseGenreEvent -> {
-
+                BrowseActivity.openActivity(
+                    this, event.genre
+                )
+            }
+            is BrowseEvent -> {
+                BrowseActivity.openActivity(this)
             }
         }
     }

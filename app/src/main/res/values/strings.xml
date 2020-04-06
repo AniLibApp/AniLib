@@ -152,6 +152,7 @@
     <string name="find">Find</string>
     <string name="suggested">Suggested</string>
     <string name="suggestion">Suggestion</string>
+    <string name="recommendation_filter">Recommendation Filter</string>
 
 
     <string-array name="media_format">
@@ -336,4 +337,14 @@
         <item>Anime</item>
     </string-array>
 
+    <string-array name="on_list">
+        <item>All</item>
+        <item>On List</item>
+    </string-array>
+
+    <string-array name="recommendation_sort">
+        <item>Recent</item>
+        <item>Highest Rated</item>
+        <item>Lowest Rated</item>
+    </string-array>
 </resources>
