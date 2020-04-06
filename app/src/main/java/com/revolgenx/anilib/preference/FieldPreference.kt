@@ -2,6 +2,7 @@ package com.revolgenx.anilib.preference
 
 import android.content.Context
 import com.revolgenx.anilib.field.SeasonField
+import com.revolgenx.anilib.field.recommendation.RecommendationFilterField
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaSeason
 import com.revolgenx.anilib.type.MediaSort
@@ -18,6 +19,9 @@ const val SEASON_GENRES_KEY = "SEASON_GENRES_KEY"
 const val SEASON_ORDER_KEY = "SEASON_ORDER_KEY"
 const val SEASON_SORT_KEY = "SEASON_sort_KEY"
 
+const val RECOMMENDATION_ON_LIST_KEY = "RECOMMENDATION_ON_LIST_KEY"
+const val RECOMMENDATION_SORT_KEY = "RECOMMENDATION_SORT_KEY"
+
 fun getSeasonField(context: Context) = SeasonField(
     format = context.getInt(SEASON_FORMAT_KEY, MediaFormat.`$UNKNOWN`.ordinal),
     year = context.getInt(SEASON_YEAR_KEY, 2019),//LocalDateTime.now().year),
@@ -30,3 +34,13 @@ fun getSeasonField(context: Context) = SeasonField(
     genres = context.sharedPreference().getStringSet(SEASON_GENRES_KEY, emptySet())!!.toList(),
     order = context.getInt(SEASON_ORDER_KEY, SeasonField.Companion.SeasonOrder.DESC.ordinal)
 )
+
+fun getRecommendationField(context: Context) = RecommendationFilterField(
+    onList = context.getBoolean(RECOMMENDATION_ON_LIST_KEY, false),
+    sorting = context.getInt(RECOMMENDATION_SORT_KEY, 0)
+)
+
+fun setRecommendationField(context: Context, field: RecommendationFilterField) {
+    context.putBoolean(RECOMMENDATION_ON_LIST_KEY, field.onList)
+    context.putInt(RECOMMENDATION_SORT_KEY, field.sorting)
+}
