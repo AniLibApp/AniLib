@@ -88,11 +88,6 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         DynamicTheme.getInstance().get().accentColor
     }
 
-    private val states = arrayOf(
-        intArrayOf(android.R.attr.state_selected),
-        intArrayOf(android.R.attr.state_enabled)
-    )
-
     private var state = COLLAPSED
 
     private val offSetChangeListener by lazy {
@@ -159,7 +154,10 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         updateView()
 
-        tabColorStateList = ColorStateList(states, colors)
+        tabColorStateList = ColorStateList(arrayOf(
+            intArrayOf(android.R.attr.state_selected),
+            intArrayOf(android.R.attr.state_enabled)
+        ), colors)
         browserRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
         smartTabLayout.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
         statusBarColor = statusBarColor

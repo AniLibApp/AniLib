@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="@string/feed"
-        android:id="@+id/navFeedId">
+    <item
+        android:id="@+id/navFeedId"
+        android:title="@string/feed">
         <menu>
-            <item android:title="@string/activity"
+            <item
                 android:id="@+id/navActivityId"
-                android:icon="@drawable/ic_gesture"/>
+                android:icon="@drawable/ic_gesture"
+                android:title="@string/activity" />
         </menu>
     </item>
 
     <item
+        android:id="@+id/navMediaList"
+        android:title="@string/list">
+        <menu>
+            <item
+                android:id="@+id/navAnimeListId"
+                android:icon="@drawable/ic_media"
+                android:title="@string/anime_list" />
+
+            <item
+                android:id="@+id/navMangaListId"
+                android:icon="@drawable/ic_manga"
+                android:title="@string/manga_list" />
+        </menu>
+    </item>
+
+
+    <item
         android:id="@+id/navNotification"
         android:icon="@drawable/ic_notifications"
-        android:title="@string/notification"/>
+        android:title="@string/notification" />
 
     <item
         android:id="@+id/navSetting"
