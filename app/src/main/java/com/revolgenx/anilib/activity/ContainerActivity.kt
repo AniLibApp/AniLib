@@ -94,6 +94,10 @@ class ContainerActivity : DynamicSystemActivity() {
         return AppController.instance.isThemeNavigationBar
     }
 
+    override fun finishAfterTransition() {
+        finish()
+//        this.overridePendingTransition(0,android.R.anim.slide_out_right);
+    }
 
     override fun onStop() {
         unRegisterForEvent()

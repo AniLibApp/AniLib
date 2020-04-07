@@ -2,16 +2,17 @@ package com.revolgenx.anilib.repository.network.converter
 
 import com.revolgenx.anilib.BasicUserQuery
 import com.revolgenx.anilib.MediaOverViewQuery
-import com.revolgenx.anilib.MediaSearchQuery
 import com.revolgenx.anilib.MediaWatchQuery
 import com.revolgenx.anilib.fragment.MediaListContent
 import com.revolgenx.anilib.fragment.NarrowMediaContent
 import com.revolgenx.anilib.model.*
+import com.revolgenx.anilib.model.entry.MediaEntryListModel
+import com.revolgenx.anilib.model.season.SeasonMediaModel
 import com.revolgenx.anilib.util.pmap
 import kotlinx.coroutines.runBlocking
 
 fun NarrowMediaContent.getCommonMedia() =
-    CommonMediaModel().also {
+    SeasonMediaModel().also {
         it.mediaId = id()
         it.title = TitleModel().also { title ->
             title.english = title()!!.english() ?: title()!!.romaji()
@@ -50,6 +51,7 @@ fun NarrowMediaContent.getCommonMedia() =
             }
         }
         it.bannerImage = bannerImage() ?: it.coverImage!!.extraLarge
+        it.mediaEntryListModel = MediaEntryListModel(mediaListEntry()?.let { it.progress() ?: 0 })
     }
 
 fun BasicUserQuery.User.toBasicUserModel() = BasicUserModel().also {

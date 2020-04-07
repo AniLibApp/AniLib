@@ -1,7 +1,9 @@
 package com.revolgenx.anilib.fragment.character
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -38,10 +40,23 @@ class CharacterActorFragment : BasePresenterFragment<VoiceActorModel>() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        layoutManager = FlexboxLayoutManager(context).also { manager ->
-            manager.justifyContent = JustifyContent.SPACE_EVENLY
-            manager.alignItems = AlignItems.CENTER
-        }
+        val span =
+            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 3
+        layoutManager =
+            GridLayoutManager(
+                this.context,
+                span
+            ).also {
+                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (adapter?.elementAt(position)?.element?.type == 0) {
+                            1
+                        } else {
+                            span
+                        }
+                    }
+                }
+            }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
