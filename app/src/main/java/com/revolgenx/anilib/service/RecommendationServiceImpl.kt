@@ -11,10 +11,8 @@ import com.revolgenx.anilib.model.recommendation.RecommendationModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
-import com.revolgenx.anilib.util.pmap
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
@@ -27,13 +25,14 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Media()?.recommendations()?.nodes()?.map { it ->
+                it.data()?.Media()?.recommendations()?.nodes()
+                    ?.filter { it.mediaRecommendation()?.isAdult == false }?.map { node ->
                     MediaRecommendationModel().also { mod ->
-                        mod.recommendationId = it.id()
-                        mod.rating = it.rating()
-                        mod.userRating = it.userRating()?.ordinal
-                        mod.mediaId = it.media()!!.id()
-                        mod.recommended = it.mediaRecommendation()?.let {
+                        mod.recommendationId = node.id()
+                        mod.rating = node.rating()
+                        mod.userRating = node.userRating()?.ordinal
+                        mod.mediaId = node.media()!!.id()
+                        mod.recommended = node.mediaRecommendation()?.let {
                             CommonMediaModel().also { model ->
                                 mod.mediaRecommendationId = it.id()
                                 model.mediaId = it.id()
@@ -82,73 +81,75 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Page()?.recommendations()?.map {
-                    RecommendationModel().also { mod ->
-                        mod.recommendationId = it.id()
-                        mod.rating = it.rating()
-                        mod.userRating = it.userRating()?.ordinal
-                        mod.recommendationFrom =
-                            it.media()!!.fragments().recommendationMedia().let {
-                                CommonMediaModel().also { model ->
-                                    model.mediaId = it.id()
-                                    model.title = it.title()?.fragments()?.mediaTitle()?.let {
-                                        TitleModel().also { title ->
-                                            title.romaji = it.romaji()
-                                            title.english = it.english()
-                                            title.native = it.native_()
-                                            title.userPreferred = it.userPreferred()
-                                        }
-                                    }
-                                    model.seasonYear = it.seasonYear()
-                                    model.status = it.status()?.ordinal
-                                    model.format = it.format()?.ordinal
-                                    model.type = it.type()?.ordinal
-                                    model.averageScore = it.averageScore()
-                                    model.coverImage =
-                                        it.coverImage()?.fragments()?.mediaCoverImage()?.let {
-                                            CoverImageModel().also { img ->
-                                                img.medium = it.medium()
-                                                img.large = it.large()
-                                                img.extraLarge = it.extraLarge()
+                it.data()?.Page()?.recommendations()
+                    ?.filter { (it.media()?.fragments()?.recommendationMedia()?.isAdult == false) and (it.mediaRecommendation()?.fragments()?.recommendationMedia()?.isAdult == false) }
+                    ?.map {
+                        RecommendationModel().also { mod ->
+                            mod.recommendationId = it.id()
+                            mod.rating = it.rating()
+                            mod.userRating = it.userRating()?.ordinal
+                            mod.recommendationFrom =
+                                it.media()!!.fragments().recommendationMedia().let {
+                                    CommonMediaModel().also { model ->
+                                        model.mediaId = it.id()
+                                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
+                                            TitleModel().also { title ->
+                                                title.romaji = it.romaji()
+                                                title.english = it.english()
+                                                title.native = it.native_()
+                                                title.userPreferred = it.userPreferred()
                                             }
                                         }
-                                    model.bannerImage =
-                                        it.bannerImage() ?: model.coverImage?.largeImage
-                                }
-                            }
-
-                        mod.recommended =
-                            it.mediaRecommendation()!!.fragments().recommendationMedia().let {
-                                CommonMediaModel().also { model ->
-                                    model.mediaId = it.id()
-                                    model.title = it.title()?.fragments()?.mediaTitle()?.let {
-                                        TitleModel().also { title ->
-                                            title.romaji = it.romaji()
-                                            title.english = it.english()
-                                            title.native = it.native_()
-                                            title.userPreferred = it.userPreferred()
-                                        }
+                                        model.seasonYear = it.seasonYear()
+                                        model.status = it.status()?.ordinal
+                                        model.format = it.format()?.ordinal
+                                        model.type = it.type()?.ordinal
+                                        model.averageScore = it.averageScore()
+                                        model.coverImage =
+                                            it.coverImage()?.fragments()?.mediaCoverImage()?.let {
+                                                CoverImageModel().also { img ->
+                                                    img.medium = it.medium()
+                                                    img.large = it.large()
+                                                    img.extraLarge = it.extraLarge()
+                                                }
+                                            }
+                                        model.bannerImage =
+                                            it.bannerImage() ?: model.coverImage?.largeImage
                                     }
-                                    model.seasonYear = it.seasonYear()
-                                    model.status = it.status()?.ordinal
-                                    model.format = it.format()?.ordinal
-                                    model.type = it.type()?.ordinal
-                                    model.averageScore = it.averageScore()
-                                    model.coverImage =
-                                        it.coverImage()?.fragments()?.mediaCoverImage()?.let {
-                                            CoverImageModel().also { img ->
-                                                img.medium = it.medium()
-                                                img.large = it.large()
-                                                img.extraLarge = it.extraLarge()
+                                }
+
+                            mod.recommended =
+                                it.mediaRecommendation()!!.fragments().recommendationMedia().let {
+                                    CommonMediaModel().also { model ->
+                                        model.mediaId = it.id()
+                                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
+                                            TitleModel().also { title ->
+                                                title.romaji = it.romaji()
+                                                title.english = it.english()
+                                                title.native = it.native_()
+                                                title.userPreferred = it.userPreferred()
                                             }
                                         }
-                                    model.bannerImage =
-                                        it.bannerImage() ?: model.coverImage?.largeImage
+                                        model.seasonYear = it.seasonYear()
+                                        model.status = it.status()?.ordinal
+                                        model.format = it.format()?.ordinal
+                                        model.type = it.type()?.ordinal
+                                        model.averageScore = it.averageScore()
+                                        model.coverImage =
+                                            it.coverImage()?.fragments()?.mediaCoverImage()?.let {
+                                                CoverImageModel().also { img ->
+                                                    img.medium = it.medium()
+                                                    img.large = it.large()
+                                                    img.extraLarge = it.extraLarge()
+                                                }
+                                            }
+                                        model.bannerImage =
+                                            it.bannerImage() ?: model.coverImage?.largeImage
+                                    }
                                 }
-                            }
 
+                        }
                     }
-                }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it ?: emptyList()))

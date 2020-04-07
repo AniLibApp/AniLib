@@ -50,6 +50,7 @@ query MediaRecommendationQuery($mediaId:Int, $page:Int, $perPage:Int
                     }
                     bannerImage
                     averageScore
+                    isAdult
                 }
             }
         }
@@ -627,6 +628,51 @@ query RecommendationQuery($page:Int, $perPage:Int, $onList:Boolean, $sort:[Recom
 }
 
 
+query MediaListCollectinoQuery(
+    $userId:Int,
+    $userName:String,
+    $type:MediaType,
+    $status:MediaListStatus,
+    $includeEpisode:Boolean!,
+    $includeChapter:Boolean!
+){
+    #Laevatein
+    MediaListCollection(
+        userId:$userId
+        , userName:$userName
+        , type:$type
+        , status:$status
+    ){
+        lists{
+            entries{
+                id
+                score
+                progress
+                user{
+                    mediaListOptions{
+                        scoreFormat
+                    }
+                }
+                media{
+                    id
+                    title{
+                        userPreferred
+                    }
+                    coverImage{
+                        large
+                    }
+                    format
+                    status
+                    genres
+                    episodes @include(if:$includeEpisode)
+                    chapters @include(if:$includeChapter)
+                }
+            }
+        }
+    }
+}
+
+
 query BasicUserQuery($id:Int){
     User(id:$id){
         id
@@ -811,7 +857,9 @@ fragment narrowMediaContent on Media{
         }
     }
     bannerImage
-
+    mediaListEntry{
+        progress
+    }
 }
 
 
@@ -850,6 +898,7 @@ fragment recommendationMedia on Media{
     format
     status
     seasonYear
+    isAdult
 }
 
 

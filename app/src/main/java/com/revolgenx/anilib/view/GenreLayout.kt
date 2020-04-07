@@ -39,6 +39,11 @@ class GenreLayout(context: Context, attributeSet: AttributeSet?) :
                 tv.colorType = Theme.ColorType.ACCENT
                 addView(tv)
                 viewCache[i] = tv
+                tv.setOnClickListener {
+                    tv.text.toString().trim().takeIf { it.isNotEmpty() }?.let {
+                        genreCallback?.invoke(it)
+                    }
+                }
             }
         }
     }

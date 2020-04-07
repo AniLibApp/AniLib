@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.field.ToggleFavouriteField
+import com.revolgenx.anilib.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.service.MediaListEntryService
 import com.revolgenx.anilib.service.ToggleService
@@ -44,7 +45,6 @@ class MediaEntryEditorViewModel(
             }
         }
     }
-
 
     private val compositeDisposable by lazy {
         CompositeDisposable()

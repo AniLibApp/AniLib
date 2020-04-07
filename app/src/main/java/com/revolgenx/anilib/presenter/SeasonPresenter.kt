@@ -5,25 +5,29 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
+import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
 import com.revolgenx.anilib.event.meta.ListEditorMeta
-import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
+import com.revolgenx.anilib.model.season.SeasonMediaModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
+import com.revolgenx.anilib.viewmodel.SeasonViewModel
 import kotlinx.android.synthetic.main.season_presenter_layout.view.*
 
-class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
+class SeasonPresenter(context: Context, private val viewModel: SeasonViewModel) :
+    Presenter<SeasonMediaModel>(context) {
 
     override val elementTypes: Collection<Int>
         get() = listOf(0)
@@ -41,6 +45,13 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
         context.resources.getStringArray(R.array.media_status)
     }
 
+    private val tintSurfaceColor by lazy {
+        DynamicTheme.getInstance().get().tintSurfaceColor
+    }
+
+    private val isLoggedIn by lazy {
+        context.loggedIn()
+    }
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         return Holder(
@@ -53,9 +64,11 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
     }
 
 
-    override fun onBind(page: Page, holder: Holder, element: Element<CommonMediaModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<SeasonMediaModel>) {
         super.onBind(page, holder, element)
         val data = element.data!!
+
+        viewModel.seasonMediaList[data.mediaId!!] = data
 
         holder.itemView.apply {
             mediaTitleTv.naText(data.title!!.title(context))
@@ -100,7 +113,7 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
             }
 
             bookmarkIv.setOnClickListener {
-                if (context.loggedIn()) {
+                if (isLoggedIn) {
                     ListEditorEvent(
                         ListEditorMeta(
                             data.mediaId,
@@ -114,6 +127,44 @@ class SeasonPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                     (parent as View).makeSnakeBar(R.string.please_log_in)
                 }
             }
+
+            if (isLoggedIn) {
+                entryProgressTv.visibility = View.VISIBLE
+                entryProgressTv.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
+                entryProgressTv.text = context.getString(R.string.s_s).format(
+                    data.mediaEntryListModel?.progress?.toString().naText(),
+                    when (data.type) {
+                        MediaType.ANIME.ordinal -> {
+                            data.episodes.naText()
+                        }
+                        else -> {
+                            data.chapters.naText()
+                        }
+
+                    }
+                )
+
+                data.mediaEntryListModel?.let {
+                    it.progress?.let {
+                        bookmarkIv.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                context,
+                                R.drawable.ic_bookmark_filled
+                            )
+                        )
+                    } ?: let {
+                        bookmarkIv.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                context,
+                                R.drawable.ic_bookmark
+                            )
+                        )
+                    }
+                }
+            }else{
+                entryProgressTv.visibility = View.GONE
+            }
+
         }
     }
 
