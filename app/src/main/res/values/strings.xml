@@ -153,6 +153,7 @@
     <string name="suggested">Suggested</string>
     <string name="suggestion">Suggestion</string>
     <string name="recommendation_filter">Recommendation Filter</string>
+    <string name="s_s">%s/%s</string>
 
 
     <string-array name="media_format">

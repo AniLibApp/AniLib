@@ -6,6 +6,7 @@ import com.otaliastudios.elements.extensions.MainSource
 import com.revolgenx.anilib.constant.PAGE_SIZE
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.field.SeasonField
+import com.revolgenx.anilib.model.season.SeasonMediaModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.converter.getCommonMedia
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,9 +17,9 @@ class SeasonSource(
     private val baseGraphRepository: BaseGraphRepository,
     private val seasonField: SeasonField,
     private val compositeDisposable: CompositeDisposable? = null
-) : MainSource<CommonMediaModel>() {
+) : MainSource<SeasonMediaModel>() {
 
-    override fun areItemsTheSame(first: CommonMediaModel, second: CommonMediaModel): Boolean =
+    override fun areItemsTheSame(first: SeasonMediaModel, second: SeasonMediaModel): Boolean =
         first.mediaId == second.mediaId
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {

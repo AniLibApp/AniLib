@@ -15,7 +15,9 @@ import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.event.ListEditorResultEvent
 import com.revolgenx.anilib.event.meta.ListEditorMeta
+import com.revolgenx.anilib.event.meta.ListEditorResultMeta
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.model.DateModel
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
@@ -191,6 +193,12 @@ class EntryListEditorFragment : BaseFragment() {
         viewModel.saveMediaListEntryLiveData.observe(viewLifecycleOwner, Observer {
             saving = when (it.status) {
                 SUCCESS -> {
+                    ListEditorResultEvent(
+                        ListEditorResultMeta(
+                            apiModelEntry!!.mediaId,
+                            apiModelEntry!!.progress
+                        )
+                    ).postSticky
                     finishActivity()
                     false
                 }
@@ -209,6 +217,7 @@ class EntryListEditorFragment : BaseFragment() {
         viewModel.deleteMediaListEntryLiveData.observe(viewLifecycleOwner, Observer {
             deleting = when (it.status) {
                 SUCCESS -> {
+                    ListEditorResultEvent(ListEditorResultMeta(apiModelEntry!!.mediaId)).postSticky
                     finishActivity()
                     false
                 }
