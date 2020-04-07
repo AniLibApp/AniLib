@@ -199,8 +199,12 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope,
     private fun simpleNavView() {
         navView.menu.findItem(R.id.navAuth).title =
             getString(R.string.sign_in)
-        navView.menu.findItem(R.id.navFeedId).isVisible = false
-        navView.menu.findItem(R.id.navNotification).isVisible = false
+        with(navView.menu) {
+            findItem(R.id.navFeedId).isVisible = false
+            findItem(R.id.navNotification).isVisible = false
+            findItem(R.id.navAnimeListId).isVisible = false
+            findItem(R.id.navMangaListId).isVisible = false
+        }
     }
 
 
@@ -222,6 +226,16 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope,
                         this,
                         ParcelableFragment(SettingFragment::class.java, bundleOf())
                     )
+                    true
+                }
+
+                R.id.navAnimeListId -> {
+                    MediaListActivity.openActivity(this)
+                    true
+                }
+
+                R.id.navMangaListId -> {
+                    MediaListActivity.openActivity(this)
                     true
                 }
 
