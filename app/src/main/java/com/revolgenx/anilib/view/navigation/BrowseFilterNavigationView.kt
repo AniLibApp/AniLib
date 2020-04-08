@@ -90,7 +90,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     private var genreTagMap: MutableMap<String, TagField>? = null
         get() {
             field = field ?: mutableMapOf<String, TagField>().also { map ->
-                genreList.map { map[it] = TagField(it, false) }
+                genreList.forEach { map[it] = TagField(it, false) }
             }
             return field
         }
@@ -98,7 +98,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     private var tagTagMap: MutableMap<String, TagField>? = null
         get() {
             field = field ?: mutableMapOf<String, TagField>().also { map ->
-                tagList.map { map[it] = TagField(it, false) }
+                tagList.forEach { map[it] = TagField(it, false) }
             }
             return field
         }
@@ -106,7 +106,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     private var streamingTagMap: MutableMap<String, TagField>? = null
         get() {
             field = field ?: mutableMapOf<String, TagField>().also { map ->
-                streamingOnList.map { map[it] = TagField(it, false) }
+                streamingOnList.forEach { map[it] = TagField(it, false) }
             }
             return field
         }

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.fragment.presenter
+package com.revolgenx.anilib.presenter
 
 import android.content.Context
 import android.graphics.Color

@@ -47,4 +47,8 @@ class TagPresenter(context: Context) : Presenter<String>(context) {
     fun tagRemoved(listener: (element: String) -> Unit) {
         tagRemovedListener = listener
     }
+
+    fun removeListener(){
+        tagRemovedListener = null
+    }
 }

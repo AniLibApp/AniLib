@@ -154,9 +154,12 @@
     <string name="suggestion">Suggestion</string>
     <string name="recommendation_filter">Recommendation Filter</string>
     <string name="s_s">%s/%s</string>
-    <string name="anime_list">Anime List</string>
     <string name="list">List</string>
+    <string name="anime_list">Anime List</string>
     <string name="manga_list">Manga List</string>
+    <string name="none">None</string>
+    <string name="current">Current</string>
+    <string name="repeating">Repeating</string>
 
 
     <string-array name="media_format">

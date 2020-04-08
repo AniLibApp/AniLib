@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.tag_holder_layout.*
 import kotlinx.android.synthetic.main.tag_holder_layout.view.*
 
 class TagChooserDialogFragment : DynamicDialogFragment() {
-    companion object {
+    companion   object {
         const val TAG_KEY = "tag_key"
         fun newInstance(tags: TagChooserField) = TagChooserDialogFragment().apply {
             arguments = bundleOf(TAG_KEY to tags)

@@ -28,4 +28,6 @@ val viewModelModules = module {
     viewModel { BrowseFragmentViewModel(get()) }
 
     viewModel { RecommendationViewModel(get()) }
+
+    viewModel { WatchingViewModel(get()) }
 }
