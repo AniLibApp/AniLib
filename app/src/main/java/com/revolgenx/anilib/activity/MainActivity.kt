@@ -33,6 +33,7 @@ import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.dialog.AuthDialog
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.event.*
+import com.revolgenx.anilib.event.meta.MediaListMeta
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.fragment.*
@@ -43,6 +44,7 @@ import com.revolgenx.anilib.fragment.home.DownloadFragment
 import com.revolgenx.anilib.fragment.home.RecommendationFragment
 import com.revolgenx.anilib.fragment.home.SeasonFragment
 import com.revolgenx.anilib.preference.*
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.BrowseFilterDataProvider
 import com.revolgenx.anilib.util.makePagerAdapter
 import com.revolgenx.anilib.util.registerForEvent
@@ -230,12 +232,18 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope,
                 }
 
                 R.id.navAnimeListId -> {
-                    MediaListActivity.openActivity(this)
+                    MediaListActivity.openActivity(
+                        this,
+                        MediaListMeta(context.userId(), null, MediaType.ANIME.ordinal)
+                    )
                     true
                 }
 
                 R.id.navMangaListId -> {
-                    MediaListActivity.openActivity(this)
+                    MediaListActivity.openActivity(
+                        this,
+                        MediaListMeta(context.userId(), null, MediaType.MANGA.ordinal)
+                    )
                     true
                 }
 

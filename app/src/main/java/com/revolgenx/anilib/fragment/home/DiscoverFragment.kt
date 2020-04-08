@@ -5,6 +5,7 @@ import android.view.*
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.BrowseActivity
+import com.revolgenx.anilib.dialog.MediaListFilterDialog
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.event.BrowseEvent
 import com.revolgenx.anilib.field.TagChooserField
@@ -57,7 +58,8 @@ class DiscoverFragment : BaseFragment() {
         loading.color = DynamicTheme.getInstance().get().accentColor
 
         mediaRecommendationDislikeIv.setOnClickListener {
-            it.checkLoggedIn()
+            MediaListFilterDialog.newInstance().show(childFragmentManager, "media_filter_dialog")
+
         }
 
         listPrivateButton.setOnClickListener {

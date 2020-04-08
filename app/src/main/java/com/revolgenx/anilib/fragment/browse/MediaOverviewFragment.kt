@@ -21,7 +21,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowseActivity
-import com.revolgenx.anilib.adapter.BrowserRelationshipPresenter
+import com.revolgenx.anilib.adapter.BrowseRelationshipPresenter
 import com.revolgenx.anilib.constant.*
 import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseStudioEvent
@@ -66,7 +66,7 @@ class MediaOverviewFragment : BaseFragment() {
     private val recommendationSource: MediaOverviewRecommendationSource
         get() = viewModel.source ?: createRecommendationSource()
     private val relationshipPresenter by lazy {
-        BrowserRelationshipPresenter(requireContext())
+        BrowseRelationshipPresenter(requireContext())
     }
 
     private val recommendationPresenter by lazy {

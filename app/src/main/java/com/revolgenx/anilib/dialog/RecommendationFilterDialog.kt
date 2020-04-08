@@ -15,6 +15,7 @@ import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.dp
 import kotlinx.android.synthetic.main.recommendation_filter_dialog.*
 
+//todo handle rotation
 class RecommendationFilterDialog : DynamicDialogFragment() {
 
     private val recommendationFilterField: RecommendationFilterField
