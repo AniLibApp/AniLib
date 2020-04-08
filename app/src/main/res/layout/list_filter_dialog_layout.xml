@@ -50,36 +50,21 @@
     <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:headerName="@string/genre">
+        android:layout_marginBottom="6dp"
+        app:headerName="@string/status">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:id="@+id/listGenreFrameLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="40dp">
+            android:layout_height="wrap_content">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-                android:id="@+id/listGenreRecyclerView"
+            <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                android:id="@+id/listGenreSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
-                android:layout_toStartOf="@id/genreAddIv" />
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                android:id="@+id/listGenreAddIv"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp"
-                app:ads_colorType="accent"
-                app:srcCompat="@drawable/ic_add" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
-
+                android:layout_height="wrap_content" />
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
     </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 

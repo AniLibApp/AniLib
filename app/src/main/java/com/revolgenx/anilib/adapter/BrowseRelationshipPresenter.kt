@@ -14,7 +14,7 @@ import com.revolgenx.anilib.model.MediaRelationshipModel
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.browser_relationship_presenter_layout.view.*
 
-class BrowserRelationshipPresenter(context: Context) : Presenter<MediaRelationshipModel>(context) {
+class BrowseRelationshipPresenter(context: Context) : Presenter<MediaRelationshipModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 

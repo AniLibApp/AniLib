@@ -27,7 +27,7 @@ class MediaWatchFragment : BasePresenterFragment<MediaWatchModel>() {
     }
 
     override val basePresenter: Presenter<MediaWatchModel> by lazy {
-        MediaWatchPresenter(requireContext()!!)
+        MediaWatchPresenter(requireContext())
     }
 
     override val baseSource: Source<MediaWatchModel>

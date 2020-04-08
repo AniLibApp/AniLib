@@ -15,7 +15,7 @@ import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.field.studio.StudioField
 import com.revolgenx.anilib.field.studio.StudioMediaField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
-import com.revolgenx.anilib.fragment.presenter.StudioMediaPresenter
+import com.revolgenx.anilib.presenter.StudioMediaPresenter
 import com.revolgenx.anilib.model.studio.StudioMediaModel
 import com.revolgenx.anilib.model.studio.StudioModel
 import com.revolgenx.anilib.preference.loggedIn
@@ -40,7 +40,9 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
     }
 
     override val basePresenter: Presenter<StudioMediaModel>
-        get() = StudioMediaPresenter(requireContext())
+        get() = StudioMediaPresenter(
+            requireContext()
+        )
     override val baseSource: Source<StudioMediaModel>
         get() = viewModel.source ?: createSource()
 

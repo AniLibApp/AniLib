@@ -123,6 +123,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media_browser)
+        browserRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
 
         //todo:initialize with manifest
         mediaBrowserMeta = intent.getParcelableExtra(MEDIA_BROWSER_META) ?: return
@@ -158,7 +159,6 @@ class MediaBrowseActivity : DynamicSystemActivity() {
             intArrayOf(android.R.attr.state_selected),
             intArrayOf(android.R.attr.state_enabled)
         ), colors)
-        browserRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
         smartTabLayout.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
         statusBarColor = statusBarColor
         setToolbarTheme()
@@ -193,7 +193,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
                 }
             }
         }
-        browseMediaViewPager.addOnPageChangeListener(pageChangeListener)
+
 
         val animeBrowserList = listOf(
             BaseFragment.newInstance(MediaOverviewFragment::class.java).apply {
@@ -216,6 +216,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
             }
         )
 
+        browseMediaViewPager.addOnPageChangeListener(pageChangeListener)
 
 
         viewModel.isFavourite(mediaBrowserMeta.mediaId).observe(this, Observer {
