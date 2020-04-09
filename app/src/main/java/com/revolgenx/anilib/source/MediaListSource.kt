@@ -15,13 +15,21 @@ class MediaListSource(
     private val mediaListService: MediaListService,
     private val compositeDisposable: CompositeDisposable
 ) : BaseRecyclerSource<MediaListModel, MediaListField>(field) {
+
+
+    private lateinit var firstPage: Page
     override fun areItemsTheSame(first: MediaListModel, second: MediaListModel): Boolean {
         return first.baseId == second.baseId
+    }
+
+    fun filterPage(filterList: MutableList<MediaListModel>) {
+        postResult(firstPage, filterList)
     }
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {
         super.onPageOpened(page, dependencies)
         if (page.isFirstPage()) {
+            firstPage = page
             if (list.isEmpty()) {
                 mediaListService.getMediaList(field, compositeDisposable) {
                     postResult(page, it)

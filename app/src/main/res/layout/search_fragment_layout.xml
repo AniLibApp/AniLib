@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:ads_colorType="none"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.paulrybitskyi.persistentsearchview.PersistentSearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shouldDimBehind="false"
+        app:cardElevation="0dp"/>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
