@@ -6,9 +6,4 @@ import com.revolgenx.anilib.source.MediaListSource
 
 class WatchingViewModel(mediaListService: MediaListService) : MediaListViewModel(mediaListService) {
 
-    override fun createSource(field: MediaListField): MediaListSource {
-        source = MediaListSource(field, list, mediaListService, compositeDisposable)
-        return source!!
-    }
-
 }
