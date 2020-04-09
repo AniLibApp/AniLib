@@ -1,34 +1,54 @@
 package com.revolgenx.anilib.viewmodel
 
-import com.otaliastudios.elements.Source
+import androidx.lifecycle.viewModelScope
 import com.revolgenx.anilib.field.MediaListFilterField
 import com.revolgenx.anilib.field.list.MediaListField
 import com.revolgenx.anilib.model.list.MediaListModel
 import com.revolgenx.anilib.service.list.MediaListService
 import com.revolgenx.anilib.source.MediaListSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
-abstract class MediaListViewModel(protected val mediaListService: MediaListService) :
+abstract class MediaListViewModel(private val mediaListService: MediaListService) :
     SourceViewModel<MediaListSource, MediaListField>() {
     var filteredList: MutableList<MediaListModel>? = null
     val list by lazy { mutableListOf<MediaListModel>() }
+    var filter = MediaListFilterField()
 
-    fun filterList(filter: MediaListFilterField, field: MediaListField): MediaListSource? {
-        if (list.isEmpty() || filter.isNull()) return null
+    override fun createSource(field: MediaListField): MediaListSource {
         filteredList = null
+        if (source == null) {
+            source = MediaListSource(field, list, mediaListService, compositeDisposable)
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                filteredList = if (filter.format == null) list else {
+                    list.filter { it.format == filter.format }
+                }.let {
+                    if (filter.status == null) it else it.filter { it.status == filter.status }
+                }.let {
+                    if (filter.genre == null) it else it.filter { it.genres?.contains(filter.genre!!) == true }
+                }.let {
+                    if (filter.search.isNullOrEmpty()) it else {
+                        it.filter {
+                            it.title?.userPreferred?.contains(
+                                filter.search!!, true
+                            ) == true
+                        }
+                    }
+                }.toMutableList()
+                launch(Dispatchers.Main) {
+                    source?.filterPage(filteredList!!)
+                }
+            }
+        }
+        return source!!
+    }
 
-        filteredList = list.filter {
-                filter.search?.let { str ->
-                    it.title?.userPreferred?.contains(str ?: "")
-
-                } == true || filter.format?.let { frmt ->
-                    it.format == frmt
-                } == true || filter.status?.let { sta ->
-                    it.status == sta
-                } == true || filter.genre?.let { gen ->
-                    it.genres?.contains(gen)
-                } == true
-            }.toMutableList()
-        source = MediaListSource(field, filteredList!!, mediaListService, compositeDisposable)
-        return source
+    override fun onCleared() {
+        list.clear()
+        filteredList = null
+        compositeDisposable.clear()
+        super.onCleared()
     }
 }

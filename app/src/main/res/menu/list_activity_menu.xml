@@ -6,7 +6,8 @@
         android:id="@+id/listSearchMenu"
         android:icon="@drawable/ads_ic_search"
         android:title="@string/search"
-        app:showAsAction="ifRoom" />
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/listFilterMenu"

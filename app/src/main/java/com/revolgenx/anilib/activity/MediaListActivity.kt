@@ -6,13 +6,11 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
@@ -23,12 +21,20 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.dialog.MediaListFilterDialog
+import com.revolgenx.anilib.event.BaseEvent
+import com.revolgenx.anilib.event.MediaListFilterEvent
 import com.revolgenx.anilib.event.meta.MediaListMeta
+import com.revolgenx.anilib.field.MediaListFilterField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.list.*
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.media_list_activity_layout.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 import java.util.*
 
 class MediaListActivity : DynamicSystemActivity() {
@@ -64,6 +70,8 @@ class MediaListActivity : DynamicSystemActivity() {
         return AppController.instance.isThemeNavigationBar
     }
 
+
+    private var menuItem: MenuItem? = null
 
     private val mediaListFragment by lazy {
         listOf(
@@ -103,6 +111,13 @@ class MediaListActivity : DynamicSystemActivity() {
     private val accentColor by lazy {
         DynamicTheme.getInstance().get().accentColor
     }
+    private var mediaListFilterField = MediaListFilterField()
+
+
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,6 +131,7 @@ class MediaListActivity : DynamicSystemActivity() {
 
         setSupportActionBar(listToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         listSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
         statusBarColor = statusBarColor
 
@@ -177,18 +193,48 @@ class MediaListActivity : DynamicSystemActivity() {
             pageChangeListener.onPageSelected(mediaListViewPager.currentItem)
         }
 
-
+        (savedInstanceState?.getParcelable(MediaListFilterDialog.LIST_FILTER_PARCEL_KEY) as? MediaListFilterField)?.let { field ->
+            mediaListFilterField = field
+            if (field.search.isNullOrEmpty().not()) {
+                menuItem?.expandActionView()
+                (menuItem?.actionView as? SearchView)?.let {
+                    it.setQuery(field.search!!, true)
+                }
+            }
+        }
     }
 
 
     @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.list_activity_menu, menu)
         if (menu is MenuBuilder) {
             menu.setOptionalIconsVisible(true)
         }
-        menuInflater.inflate(R.menu.list_activity_menu, menu)
+
+        menu?.findItem(R.id.listSearchMenu)?.let { item ->
+            menuItem = item
+            (item.actionView as SearchView).also {
+                it.setOnQueryTextListener(object :
+                    SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        mediaListFilterField.search = newText
+                        filterMediaList()
+                        return true
+                    }
+                })
+            }
+        }
         return true
     }
+
+    private fun getViewPagerFragment(pos: Int) =
+        supportFragmentManager.findFragmentByTag("android:switcher:${R.id.mediaListViewPager}:$pos") as? MediaListFragment
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -196,7 +242,7 @@ class MediaListActivity : DynamicSystemActivity() {
                 true
             }
             R.id.listFilterMenu -> {
-                MediaListFilterDialog.newInstance()
+                MediaListFilterDialog.newInstance(mediaListFilterField)
                     .show(supportFragmentManager, "media_filter_dialog")
                 true
             }
@@ -232,5 +278,36 @@ class MediaListActivity : DynamicSystemActivity() {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: BaseEvent) {
+        if (event is MediaListFilterEvent) {
+            event.meta.let {
+                mediaListFilterField.format = it.format
+                mediaListFilterField.status = it.status
+                mediaListFilterField.genre = it.genres
+            }
+            filterMediaList()
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(MediaListFilterDialog.LIST_FILTER_PARCEL_KEY, mediaListFilterField)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun filterMediaList() {
+        getViewPagerFragment(0)?.filter(mediaListFilterField)
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        unRegisterForEvent()
+    }
 
 }

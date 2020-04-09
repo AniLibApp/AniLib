@@ -13,14 +13,16 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize">
-
+            android:layout_height="wrap_content"
+            app:ads_color="@android:color/transparent"
+            app:ads_colorType="none">
             <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
                 android:id="@+id/listToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
                 app:layout_scrollFlags="scroll|enterAlways" />
-
         </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 
 
