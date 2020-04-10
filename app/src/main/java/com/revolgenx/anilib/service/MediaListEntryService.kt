@@ -15,7 +15,7 @@ abstract class MediaListEntryService(
         MutableLiveData<Resource<EntryListEditorMediaModel>>()
     }
     val saveMediaListEntryLiveData by lazy {
-        MutableLiveData<Resource<Int>>()
+        MutableLiveData<Resource<EntryListEditorMediaModel>>()
     }
     val deleteMediaListEntryLiveData by lazy {
         MutableLiveData<Resource<Boolean>>()
@@ -29,7 +29,7 @@ abstract class MediaListEntryService(
     abstract fun saveMediaListEntry(
         model: EntryListEditorMediaModel,
         compositeDisposable: CompositeDisposable? = null
-    ): MutableLiveData<Resource<Int>>
+    ): MutableLiveData<Resource<EntryListEditorMediaModel>>
 
     abstract fun deleteMediaListEntry(
         listId: Int,

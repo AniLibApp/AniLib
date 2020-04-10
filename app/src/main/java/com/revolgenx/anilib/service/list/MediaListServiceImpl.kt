@@ -22,7 +22,7 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                 it.data()?.MediaListCollection()?.lists()?.firstOrNull()?.entries()?.map {
                     MediaListModel().also { model ->
                         model.mediaListId = it.id()
-                        model.progress = it.progress()
+                        model.progress = it.progress()?.toString()
                         model.score = it.score()
                         model.scoreFormat = it.user()?.mediaListOptions()?.scoreFormat()?.ordinal
                         it.media()?.let { media ->
@@ -35,6 +35,7 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                             model.coverImage = media.coverImage()?.large()?.let {
                                 CoverImageModel().apply { large = it }
                             }
+                            model.type = field.type
                             model.genres = media.genres()
                             model.format = media.format()?.ordinal
                             model.status = media.status()?.ordinal

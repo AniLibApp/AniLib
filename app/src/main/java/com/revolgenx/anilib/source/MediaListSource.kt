@@ -11,7 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 class MediaListSource(
     field: MediaListField,
-    private val list: MutableList<MediaListModel>,
+    private val listMap: MutableMap<Int, MediaListModel>,
     private val mediaListService: MediaListService,
     private val compositeDisposable: CompositeDisposable
 ) : BaseRecyclerSource<MediaListModel, MediaListField>(field) {
@@ -30,16 +30,18 @@ class MediaListSource(
         super.onPageOpened(page, dependencies)
         if (page.isFirstPage()) {
             firstPage = page
-            if (list.isEmpty()) {
+            if (listMap.isEmpty()) {
                 mediaListService.getMediaList(field, compositeDisposable) {
                     postResult(page, it)
 
                     if (it.status == Status.SUCCESS) {
-                        list.addAll(it.data as List<MediaListModel>)
+                        (it.data as List<MediaListModel>).forEach {
+                            listMap[it.mediaId!!] = it
+                        }
                     }
                 }
             } else {
-                postResult(page, Resource.success(list))
+                postResult(page, Resource.success(listMap.toList()))
             }
         } else {
             postResult(page, emptyList<MediaListModel>())

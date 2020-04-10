@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
@@ -116,8 +117,23 @@ class EntryListEditorFragment : BaseFragment() {
         mediaMeta = arguments?.getParcelable(LIST_EDITOR_META_KEY) ?: return
 
         setToolbarTheme()
-        showMetaViews()
+        showViews()
         initListener()
+
+        viewModel.mediaLiveData.observe(viewLifecycleOwner) {
+            when (it.status) {
+                SUCCESS -> {
+                    if (mediaMeta.coverImage == null || mediaMeta.bannerImage == null) {
+                        mediaMeta.coverImage = it.data?.coverImage?.large ?: ""
+                        mediaMeta.bannerImage = it.data?.bannerImage ?: ""
+                        mediaMeta.title = it.data?.title?.romaji ?: ""
+                        showMetaViews()
+                    }
+                }
+            }
+        }
+
+        viewModel.getMediaInfo(mediaMeta.mediaId)
 
         viewModel.queryMediaListEntryLiveData.observe(viewLifecycleOwner, Observer { resource ->
             when (resource.status) {
@@ -132,8 +148,7 @@ class EntryListEditorFragment : BaseFragment() {
                     apiModelEntry = if (savedInstanceState == null) {
                         if (modelEntry == null) createListEditorMediaModel() else modelEntry
                     } else {
-                        savedInstanceState.getParcelable(LIST_EDITOR_MODEL)
-                            ?: if (modelEntry == null) EntryListEditorMediaModel() else modelEntry
+                        savedInstanceState.getParcelable(LIST_EDITOR_MODEL) ?: if (modelEntry == null) createListEditorMediaModel() else modelEntry
                     }
                     updateView()
                     invalidateOptionMenu()
@@ -155,7 +170,7 @@ class EntryListEditorFragment : BaseFragment() {
             }
         })
 
-        viewModel.isFavouriteQuery(mediaMeta.id).observe(viewLifecycleOwner, Observer {
+        viewModel.isFavouriteQuery(mediaMeta.mediaId).observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 SUCCESS -> {
                     isFavourite = it.data!!
@@ -234,12 +249,12 @@ class EntryListEditorFragment : BaseFragment() {
         })
 
         if (savedInstanceState == null)
-            viewModel.queryMediaListEntry(mediaMeta.id)
+            viewModel.queryMediaListEntry(mediaMeta.mediaId)
     }
 
     private fun createListEditorMediaModel(): EntryListEditorMediaModel {
         return EntryListEditorMediaModel().also {
-            mediaMeta.id?.let { id ->
+            mediaMeta.mediaId?.let { id ->
                 it.mediaId = id
             }
             mediaMeta.type?.let { type ->
@@ -249,19 +264,13 @@ class EntryListEditorFragment : BaseFragment() {
         }
     }
 
-    private fun showMetaViews() {
+    private fun showViews() {
         if (!::mediaMeta.isInitialized) return
-        (activity as AppCompatActivity).also { act ->
-            act.setSupportActionBar(listEditorToolbar)
-            act.supportActionBar!!.title = mediaMeta.title
-            act.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        }
-        listEditorCoverImage.setImageURI(mediaMeta.coverImage)
-        listEditorBannerImage.setImageURI(mediaMeta.bannerImage)
+        showMetaViews()
         listDeleteButton.backgroundTintList =
             ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red))
 
-        listEditorScoreLayout.scoreFormatType = requireContext()!!.userScoreFormat()
+        listEditorScoreLayout.scoreFormatType = requireContext().userScoreFormat()
 
         if (mediaMeta.type == MediaType.MANGA.ordinal) {
             progressHeader.title = getString(R.string.manga_progress)
@@ -344,6 +353,17 @@ class EntryListEditorFragment : BaseFragment() {
             R.id.ads_spinner_item_icon,
             R.id.ads_spinner_item_text, spinnerItems
         )
+    }
+
+    private fun showMetaViews() {
+        if (!::mediaMeta.isInitialized) return
+        (activity as AppCompatActivity).also { act ->
+            act.setSupportActionBar(listEditorToolbar)
+            act.supportActionBar!!.title = mediaMeta.title
+            act.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        }
+        listEditorCoverImage.setImageURI(mediaMeta.coverImage)
+        listEditorBannerImage.setImageURI(mediaMeta.bannerImage)
     }
 
     private fun initListener() {
@@ -464,12 +484,14 @@ class EntryListEditorFragment : BaseFragment() {
 
     private fun updateView() {
         if (apiModelEntry == null) return
-        statusSpinner.setSelection(apiModelEntry!!.status)
-        listEditorScoreLayout.mediaListScore = apiModelEntry!!.score
-        privateToggleButton.checked = apiModelEntry!!.private
-        listEditorEpisodeLayout.setCounter(apiModelEntry!!.progress.toDouble())
-        totalRewatchesLayout.setCounter(apiModelEntry!!.repeat.toDouble())
-        listEditorVolumeProgressLayout.setCounter(apiModelEntry!!.progressVolumes.toDouble())
+        apiModelEntry!!.status?.let {
+            statusSpinner.setSelection(it)
+        }
+        listEditorScoreLayout.mediaListScore = apiModelEntry!!.score?:0.0
+        privateToggleButton.checked = apiModelEntry!!.private == true
+        listEditorEpisodeLayout.setCounter(apiModelEntry!!.progress?.toDouble())
+        totalRewatchesLayout.setCounter(apiModelEntry!!.repeat?.toDouble())
+        listEditorVolumeProgressLayout.setCounter(apiModelEntry!!.progressVolumes?.toDouble())
         notesEt.setText(apiModelEntry!!.notes)
 
         if (apiModelEntry!!.startDate?.year != null) {
@@ -487,10 +509,10 @@ class EntryListEditorFragment : BaseFragment() {
         viewModel.toggleMediaFavourite(ToggleFavouriteField().also {
             when (mediaMeta.type) {
                 MediaType.ANIME.ordinal -> {
-                    it.animeId = mediaMeta.id
+                    it.animeId = mediaMeta.mediaId
                 }
                 MediaType.MANGA.ordinal -> {
-                    it.mangaId = mediaMeta.id
+                    it.mangaId = mediaMeta.mediaId
                 }
             }
         })
