@@ -6,44 +6,48 @@ import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 
 class EntryListEditorMediaModel() : Parcelable {
-    var mediaId:Int = -1
-    var listId: Int = -1
-    var userId: Int = -1
-    var type: Int = MediaType.ANIME.ordinal
-    var status: Int = MediaListStatus.CURRENT.ordinal
-    var score: Double = 0.0
-    var progress: Int = 0
-    var progressVolumes: Int = 0
-    var repeat: Int = 0
-    var notes: String = ""
-    var private: Boolean = false
+    var mediaId: Int? = null
+    var listId: Int? = null
+    var userId: Int? = null
+    var type: Int? = null
+    var status: Int? = null
+    var score: Double? = null
+    var progress: Int? = null
+    var progressVolumes: Int? = null
+    var repeat: Int? = null
+    var notes: String? = null
+    var private: Boolean? = null
     var startDate: DateModel? = null
     var endDate: DateModel? = null
 
     constructor(parcel: Parcel) : this() {
-        listId = parcel.readInt()
-        userId = parcel.readInt()
-        type = parcel.readInt()
-        status = parcel.readInt()
-        score = parcel.readDouble()
-        progress = parcel.readInt()
-        repeat = parcel.readInt()
-        notes = parcel.readString()!!
-        private = parcel.readByte() != 0.toByte()
+        mediaId = parcel.readValue(Int::class.java.classLoader) as? Int
+        listId = parcel.readValue(Int::class.java.classLoader) as? Int
+        userId = parcel.readValue(Int::class.java.classLoader) as? Int
+        type = parcel.readValue(Int::class.java.classLoader) as? Int
+        status = parcel.readValue(Int::class.java.classLoader) as? Int
+        score = parcel.readValue(Double::class.java.classLoader) as? Double
+        progress = parcel.readValue(Int::class.java.classLoader) as? Int
+        progressVolumes = parcel.readValue(Int::class.java.classLoader) as? Int
+        repeat = parcel.readValue(Int::class.java.classLoader) as? Int
+        notes = parcel.readString()
+        private = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         startDate = parcel.readParcelable(DateModel::class.java.classLoader)
         endDate = parcel.readParcelable(DateModel::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(listId)
-        parcel.writeInt(userId)
-        parcel.writeInt(type)
-        parcel.writeInt(status)
-        parcel.writeDouble(score)
-        parcel.writeInt(progress)
-        parcel.writeInt(repeat)
+        parcel.writeValue(mediaId)
+        parcel.writeValue(listId)
+        parcel.writeValue(userId)
+        parcel.writeValue(type)
+        parcel.writeValue(status)
+        parcel.writeValue(score)
+        parcel.writeValue(progress)
+        parcel.writeValue(progressVolumes)
+        parcel.writeValue(repeat)
         parcel.writeString(notes)
-        parcel.writeByte(if (private) 1 else 0)
+        parcel.writeValue(private)
         parcel.writeParcelable(startDate, flags)
         parcel.writeParcelable(endDate, flags)
     }
@@ -61,4 +65,5 @@ class EntryListEditorMediaModel() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
 }

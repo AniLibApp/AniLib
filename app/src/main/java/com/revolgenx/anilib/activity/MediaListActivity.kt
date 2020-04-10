@@ -11,7 +11,9 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
@@ -22,10 +24,14 @@ import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.dialog.MediaListFilterDialog
 import com.revolgenx.anilib.event.BaseEvent
+import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.event.MediaListFilterEvent
 import com.revolgenx.anilib.event.meta.MediaListMeta
 import com.revolgenx.anilib.field.MediaListFilterField
+import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
+import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.list.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.registerForEvent
@@ -280,14 +286,39 @@ class MediaListActivity : DynamicSystemActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BaseEvent) {
-        if (event is MediaListFilterEvent) {
-            event.meta.let {
-                mediaListFilterField.format = it.format
-                mediaListFilterField.status = it.status
-                mediaListFilterField.genre = it.genres
+        when (event) {
+            is MediaListFilterEvent -> {
+                event.meta.let {
+                    mediaListFilterField.format = it.format
+                    mediaListFilterField.status = it.status
+                    mediaListFilterField.genre = it.genres
+                }
+                filterMediaList()
             }
-            filterMediaList()
+            is BrowseMediaEvent -> {
+                startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
+                    this.putExtra(MediaBrowseActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
+                })
+            }
+            is ListEditorEvent -> {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this,
+                    event.sharedElement,
+                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
+                )
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        EntryListEditorFragment::class.java,
+                        bundleOf(
+                            EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
+                        )
+                    )
+                    , options
+                )
+            }
         }
+
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

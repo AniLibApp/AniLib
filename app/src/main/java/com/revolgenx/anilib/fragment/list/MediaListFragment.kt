@@ -13,13 +13,12 @@ import com.revolgenx.anilib.field.list.MediaListField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.list.MediaListModel
 import com.revolgenx.anilib.presenter.list.MediaListPresenter
-import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.viewmodel.MediaListViewModel
 
 abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
 
     override val basePresenter: Presenter<MediaListModel>
-        get() = MediaListPresenter(requireContext())
+        get() = MediaListPresenter(requireContext(), viewModel, viewLifecycleOwner)
     override val baseSource: Source<MediaListModel>
         get() = viewModel.source ?: createSource()
 
@@ -43,7 +42,7 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val span =
-            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 3
+            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
         layoutManager =
             GridLayoutManager(
                 this.context,
@@ -69,7 +68,7 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
 
     fun filter(mediaListFilterField: MediaListFilterField) {
         viewModel.filter = mediaListFilterField
-        if(visibleToUser){
+        if (visibleToUser) {
             createSource()
             invalidateAdapter()
         }

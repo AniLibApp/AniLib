@@ -63,7 +63,7 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
     override fun saveMediaListEntry(
         model: EntryListEditorMediaModel,
         compositeDisposable: CompositeDisposable?
-    ): MutableLiveData<Resource<Int>> {
+    ): MutableLiveData<Resource<EntryListEditorMediaModel>> {
         val disposable = graphRepository.request(
             SaveMediaListEntryMutation.builder().apply {
                 model.listId.takeIf { it != -1 }?.let {
@@ -74,12 +74,25 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
                 if (model.type == MediaType.MANGA.ordinal) {
                     progressVolumes(model.progressVolumes)
                 }
-                progress(model.progress)
-                private_(model.private)
-                status(MediaListStatus.values()[model.status])
-                score(model.score)
-                repeat(model.repeat)
-                notes(model.notes)
+                model.progress?.let {
+                    progress(it)
+                }
+                model.private?.let {
+                    private_(model.private)
+                }
+                model.status?.let {
+                    status(MediaListStatus.values()[it])
+                }
+                model.score?.let {
+                    score(model.score)
+                }
+                model.repeat?.let {
+                    repeat(model.repeat)
+                }
+                model.notes?.let {
+                    notes(model.notes)
+                }
+
                 model.startDate?.year?.let {
                     startedAt(
                         FuzzyDateInput.builder().day(model.startDate!!.day).month(model.startDate!!.month).year(
@@ -98,8 +111,7 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
         )
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                val id = it.data()?.SaveMediaListEntry()!!.id()
-                saveMediaListEntryLiveData.value = Resource.success(id)
+                saveMediaListEntryLiveData.value = Resource.success(model)
             }, {
                 Timber.e(it)
                 saveMediaListEntryLiveData.value = Resource.error(it.message ?: "Error", null)

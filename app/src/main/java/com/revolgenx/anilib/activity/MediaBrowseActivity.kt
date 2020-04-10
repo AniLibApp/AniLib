@@ -135,7 +135,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
             when (it.status) {
                 SUCCESS -> {
                     browseMediaBrowseModel = it.data
-                    if (mediaBrowserMeta.coverImage == null) {
+                    if (mediaBrowserMeta.coverImage == null || mediaBrowserMeta.bannerImage == null) {
                         mediaBrowserMeta.coverImage = it.data?.coverImage?.large ?: ""
                         mediaBrowserMeta.bannerImage = it.data?.bannerImage ?: ""
                         mediaBrowserMeta.title = it.data?.title?.romaji ?: ""
@@ -155,10 +155,12 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         updateView()
 
-        tabColorStateList = ColorStateList(arrayOf(
-            intArrayOf(android.R.attr.state_selected),
-            intArrayOf(android.R.attr.state_enabled)
-        ), colors)
+        tabColorStateList = ColorStateList(
+            arrayOf(
+                intArrayOf(android.R.attr.state_selected),
+                intArrayOf(android.R.attr.state_enabled)
+            ), colors
+        )
         smartTabLayout.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
         statusBarColor = statusBarColor
         setToolbarTheme()
@@ -490,7 +492,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
                     this, event.model
                 )
             }
-            is BrowseGenreEvent->{
+            is BrowseGenreEvent -> {
                 BrowseActivity.openActivity(
                     this, event.genre
                 )
