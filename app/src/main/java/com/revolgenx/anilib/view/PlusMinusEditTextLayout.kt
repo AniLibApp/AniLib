@@ -155,7 +155,11 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         dynamicIncrementIv.visibility = visibility
         dynamicDecrementIv.visibility = visibility
     }
-    fun setCounter(counter: Double) {
+
+    fun setCounter(counter: Double?) {
+        if (counter == null) {
+            return
+        }
         counterHolder = counter
         updateDynamicText()
     }
