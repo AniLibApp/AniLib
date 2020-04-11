@@ -14,8 +14,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
-import com.revolgenx.anilib.event.meta.MediaBrowserMeta
-import com.revolgenx.anilib.event.meta.ListEditorMeta
+import com.revolgenx.anilib.meta.MediaBrowserMeta
+import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
 import com.revolgenx.anilib.model.season.SeasonMediaModel
 import com.revolgenx.anilib.preference.loggedIn

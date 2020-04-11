@@ -23,17 +23,14 @@ import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Adapter
-import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.controller.AppController
-import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.dialog.AuthDialog
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.event.*
-import com.revolgenx.anilib.event.meta.MediaListMeta
+import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.fragment.*
@@ -62,10 +59,9 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.Locale
 import kotlin.coroutines.CoroutineContext
 
-class MainActivity : DynamicSystemActivity(), CoroutineScope,
+class MainActivity : BaseDynamicActivity(), CoroutineScope,
     BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener
     , TagChooserDialogFragment.OnDoneListener {
     private val job = Job()
@@ -85,27 +81,6 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope,
             return Adapter.builder(this)
         }
 
-    override fun getLocale(): Locale? {
-        return null
-    }
-
-    override fun getThemeRes(): Int {
-        return ThemeController.appStyle
-    }
-
-    override fun onCustomiseTheme() {
-        ThemeController.setLocalTheme()
-    }
-
-    override fun setStatusBarColor(color: Int) {
-        super.setStatusBarColor(color)
-        setWindowStatusBarColor(statusBarColor);
-    }
-
-    override fun setNavigationBarTheme(): Boolean {
-        return AppController.instance.isThemeNavigationBar
-    }
-
     private fun themeBottomNavigation() {
         bottomNav.color = DynamicTheme.getInstance().get().primaryColor
         bottomNav.textColor = DynamicTheme.getInstance().get().accentColor
@@ -116,11 +91,11 @@ class MainActivity : DynamicSystemActivity(), CoroutineScope,
         registerForEvent()
     }
 
+    override val layoutRes: Int = R.layout.activity_main
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        drawerLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
         bottomNav.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
         statusBarColor = statusBarColor
         setSupportActionBar(mainToolbar)

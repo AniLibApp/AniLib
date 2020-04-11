@@ -12,7 +12,7 @@ import com.otaliastudios.elements.*
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.BrowseTypes
 import com.revolgenx.anilib.event.*
-import com.revolgenx.anilib.event.meta.*
+import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.model.BaseModel
 import com.revolgenx.anilib.model.search.*
 import com.revolgenx.anilib.preference.loggedIn

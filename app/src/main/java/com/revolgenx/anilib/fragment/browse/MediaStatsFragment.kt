@@ -19,7 +19,7 @@ import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowseActivity
-import com.revolgenx.anilib.event.meta.MediaBrowserMeta
+import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.media.MediaStatsField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.model.stats.MediaStatsModel

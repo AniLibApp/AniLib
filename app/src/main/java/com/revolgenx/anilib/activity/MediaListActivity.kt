@@ -27,7 +27,7 @@ import com.revolgenx.anilib.event.BaseEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.event.MediaListFilterEvent
-import com.revolgenx.anilib.event.meta.MediaListMeta
+import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.field.MediaListFilterField
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment

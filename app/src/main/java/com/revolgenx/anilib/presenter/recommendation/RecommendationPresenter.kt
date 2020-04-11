@@ -3,7 +3,6 @@ package com.revolgenx.anilib.presenter.recommendation
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -12,14 +11,13 @@ import com.apollographql.apollo.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
-import com.otaliastudios.elements.extensions.MainSource
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
-import com.revolgenx.anilib.event.meta.ListEditorMeta
-import com.revolgenx.anilib.event.meta.MediaBrowserMeta
+import com.revolgenx.anilib.meta.ListEditorMeta
+import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.model.recommendation.RecommendationModel

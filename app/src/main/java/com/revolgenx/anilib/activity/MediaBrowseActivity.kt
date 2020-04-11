@@ -29,13 +29,13 @@ import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.meta.ViewPagerContainerMeta
-import com.revolgenx.anilib.activity.meta.ViewPagerContainerType
+import com.revolgenx.anilib.meta.ViewPagerContainerMeta
+import com.revolgenx.anilib.meta.ViewPagerContainerType
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.*
-import com.revolgenx.anilib.event.meta.MediaBrowserMeta
-import com.revolgenx.anilib.event.meta.ListEditorMeta
+import com.revolgenx.anilib.meta.MediaBrowserMeta
+import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
@@ -469,13 +469,19 @@ class MediaBrowseActivity : DynamicSystemActivity() {
             is BrowseCharacterEvent -> {
                 ViewPagerContainerActivity.openActivity(
                     this,
-                    ViewPagerContainerMeta(ViewPagerContainerType.CHARACTER, event.meta)
+                    ViewPagerContainerMeta(
+                        ViewPagerContainerType.CHARACTER,
+                        event.meta
+                    )
                 )
             }
             is BrowseStaffEvent -> {
                 ViewPagerContainerActivity.openActivity(
                     this,
-                    ViewPagerContainerMeta(ViewPagerContainerType.STAFF, event.meta)
+                    ViewPagerContainerMeta(
+                        ViewPagerContainerType.STAFF,
+                        event.meta
+                    )
                 )
             }
             is BrowseStudioEvent -> {

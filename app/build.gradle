@@ -140,6 +140,11 @@ dependencies {
 
     //image fresco
     implementation "com.facebook.fresco:fresco:$fresco_ver"
+    implementation "com.facebook.fresco:animated-gif:$fresco_ver"
+    implementation 'com.facebook.fresco:animated-webp:2.1.0'
+    implementation 'com.facebook.fresco:webpsupport:2.1.0'
+    implementation 'com.facebook.fresco:animated-base:2.1.0'
+
 
     //timber
     implementation 'com.jakewharton.timber:timber:4.7.1'

@@ -33,7 +33,7 @@ class App : DynamicApplication() {
         AndroidThreeTen.init(this)
         Fresco.initialize(this)
         Timber.plant(Timber.DebugTree())
-        MarkwonImpl.createHtmlInstance(this)
+//        MarkwonImpl.createHtmlInstance(this)
         startKoin {
             androidContext(this@App)
 
