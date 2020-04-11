@@ -16,8 +16,8 @@ import androidx.viewpager.widget.ViewPager
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.meta.ViewPagerContainerMeta
-import com.revolgenx.anilib.activity.meta.ViewPagerContainerType
+import com.revolgenx.anilib.meta.ViewPagerContainerMeta
+import com.revolgenx.anilib.meta.ViewPagerContainerType
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.*
@@ -217,13 +217,19 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
             is BrowseCharacterEvent -> {
                 openActivity(
                     this,
-                    ViewPagerContainerMeta(ViewPagerContainerType.CHARACTER, event.meta)
+                    ViewPagerContainerMeta(
+                        ViewPagerContainerType.CHARACTER,
+                        event.meta
+                    )
                 )
             }
             is BrowseStaffEvent -> {
                 openActivity(
                     this,
-                    ViewPagerContainerMeta(ViewPagerContainerType.STAFF, event.meta)
+                    ViewPagerContainerMeta(
+                        ViewPagerContainerType.STAFF,
+                        event.meta
+                    )
                 )
             }
             is ListEditorEvent -> {

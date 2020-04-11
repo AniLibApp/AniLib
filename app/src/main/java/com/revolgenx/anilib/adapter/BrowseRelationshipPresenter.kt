@@ -9,7 +9,7 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseMediaEvent
-import com.revolgenx.anilib.event.meta.MediaBrowserMeta
+import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.MediaRelationshipModel
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.browser_relationship_presenter_layout.view.*

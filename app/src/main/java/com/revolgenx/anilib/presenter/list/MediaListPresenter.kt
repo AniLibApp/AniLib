@@ -14,9 +14,9 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
-import com.revolgenx.anilib.event.meta.ListEditorMeta
-import com.revolgenx.anilib.event.meta.MediaBrowserMeta
-import com.revolgenx.anilib.event.meta.MediaListMeta
+import com.revolgenx.anilib.meta.ListEditorMeta
+import com.revolgenx.anilib.meta.MediaBrowserMeta
+import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.model.list.MediaListModel
 import com.revolgenx.anilib.preference.loggedIn

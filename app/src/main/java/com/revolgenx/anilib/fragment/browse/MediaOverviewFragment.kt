@@ -26,8 +26,8 @@ import com.revolgenx.anilib.constant.*
 import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseStudioEvent
 import com.revolgenx.anilib.event.BrowseTagEvent
-import com.revolgenx.anilib.event.meta.MediaBrowserMeta
-import com.revolgenx.anilib.event.meta.StudioMeta
+import com.revolgenx.anilib.meta.MediaBrowserMeta
+import com.revolgenx.anilib.meta.StudioMeta
 import com.revolgenx.anilib.field.media.MediaOverviewField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.field.media.MediaRecommendationField

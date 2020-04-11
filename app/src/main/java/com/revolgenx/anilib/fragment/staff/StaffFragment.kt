@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.observe
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.event.meta.StaffMeta
+import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.field.staff.StaffField
 import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.fragment.base.BaseFragment

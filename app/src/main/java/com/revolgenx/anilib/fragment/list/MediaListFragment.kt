@@ -8,7 +8,7 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.activity.MediaListActivity
 import com.revolgenx.anilib.event.ListEditorResultEvent
-import com.revolgenx.anilib.event.meta.MediaListMeta
+import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.field.MediaListFilterField
 import com.revolgenx.anilib.field.list.MediaListField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.event.meta
+package com.revolgenx.anilib.meta
 
 data class ListEditorResultMeta(
     var mediaId: Int?,

@@ -9,6 +9,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/markdownTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <com.revolgenx.anilib.view.ExpandableTextView
             android:id="@+id/mediaDescriptionTv"
             android:layout_width="match_parent"
