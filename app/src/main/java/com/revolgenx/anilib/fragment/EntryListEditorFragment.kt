@@ -148,7 +148,8 @@ class EntryListEditorFragment : BaseFragment() {
                     apiModelEntry = if (savedInstanceState == null) {
                         if (modelEntry == null) createListEditorMediaModel() else modelEntry
                     } else {
-                        savedInstanceState.getParcelable(LIST_EDITOR_MODEL) ?: if (modelEntry == null) createListEditorMediaModel() else modelEntry
+                        savedInstanceState.getParcelable(LIST_EDITOR_MODEL)
+                            ?: if (modelEntry == null) createListEditorMediaModel() else modelEntry
                     }
                     updateView()
                     invalidateOptionMenu()
@@ -211,7 +212,8 @@ class EntryListEditorFragment : BaseFragment() {
                     ListEditorResultEvent(
                         ListEditorResultMeta(
                             apiModelEntry!!.mediaId,
-                            apiModelEntry!!.progress
+                            apiModelEntry!!.progress,
+                            apiModelEntry!!.status
                         )
                     ).postSticky
                     finishActivity()
@@ -232,7 +234,13 @@ class EntryListEditorFragment : BaseFragment() {
         viewModel.deleteMediaListEntryLiveData.observe(viewLifecycleOwner, Observer {
             deleting = when (it.status) {
                 SUCCESS -> {
-                    ListEditorResultEvent(ListEditorResultMeta(apiModelEntry!!.mediaId)).postSticky
+                    ListEditorResultEvent(
+                        ListEditorResultMeta(
+                            apiModelEntry!!.mediaId,
+                            status = apiModelEntry!!.status,
+                            deleted =  true
+                        )
+                    ).postSticky
                     finishActivity()
                     false
                 }
@@ -487,7 +495,7 @@ class EntryListEditorFragment : BaseFragment() {
         apiModelEntry!!.status?.let {
             statusSpinner.setSelection(it)
         }
-        listEditorScoreLayout.mediaListScore = apiModelEntry!!.score?:0.0
+        listEditorScoreLayout.mediaListScore = apiModelEntry!!.score ?: 0.0
         privateToggleButton.checked = apiModelEntry!!.private == true
         listEditorEpisodeLayout.setCounter(apiModelEntry!!.progress?.toDouble())
         totalRewatchesLayout.setCounter(apiModelEntry!!.repeat?.toDouble())

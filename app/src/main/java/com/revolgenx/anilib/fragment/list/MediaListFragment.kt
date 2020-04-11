@@ -7,18 +7,24 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.activity.MediaListActivity
+import com.revolgenx.anilib.event.ListEditorResultEvent
 import com.revolgenx.anilib.event.meta.MediaListMeta
 import com.revolgenx.anilib.field.MediaListFilterField
 import com.revolgenx.anilib.field.list.MediaListField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.list.MediaListModel
 import com.revolgenx.anilib.presenter.list.MediaListPresenter
+import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.viewmodel.MediaListViewModel
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
 
     override val basePresenter: Presenter<MediaListModel>
-        get() = MediaListPresenter(requireContext(), viewModel, viewLifecycleOwner)
+        get() = MediaListPresenter(requireContext(), mediaListMeta!!, viewModel, viewLifecycleOwner)
     override val baseSource: Source<MediaListModel>
         get() = viewModel.source ?: createSource()
 
@@ -60,10 +66,22 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
             }
     }
 
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         arguments?.classLoader = MediaListMeta::class.java.classLoader
         mediaListMeta = arguments?.getParcelable(MediaListActivity.MEDIA_LIST_META_KEY) ?: return
         super.onActivityCreated(savedInstanceState)
+
+        baseSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.renewSource()
+            createSource()
+            baseSwipeRefreshLayout.isRefreshing = false
+            invalidateAdapter()
+        }
     }
 
     fun filter(mediaListFilterField: MediaListFilterField) {
@@ -72,5 +90,29 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
             createSource()
             invalidateAdapter()
         }
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onListEditorEvent(event: ListEditorResultEvent) {
+        if (event.listEditorResultMeta.status != mediaListStatus) return
+        event.listEditorResultMeta.let {
+            if (it.progress == null) {
+                viewModel.filteredList?.remove(viewModel.listMap[it.mediaId])
+                viewModel.listMap.remove(it.mediaId)
+                createSource()
+                invalidateAdapter()
+            } else{
+                viewModel.listMap[it.mediaId]?.apply {
+                    progress = it.progress?.toString()
+                }
+                adapter?.notifyDataSetChanged()
+            }
+        }
+        EventBus.getDefault().removeStickyEvent(event)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unRegisterForEvent()
     }
 }

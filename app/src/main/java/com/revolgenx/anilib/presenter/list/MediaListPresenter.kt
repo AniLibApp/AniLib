@@ -5,18 +5,23 @@ import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import com.apollographql.apollo.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.event.meta.ListEditorMeta
 import com.revolgenx.anilib.event.meta.MediaBrowserMeta
+import com.revolgenx.anilib.event.meta.MediaListMeta
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.model.list.MediaListModel
 import com.revolgenx.anilib.preference.loggedIn
+import com.revolgenx.anilib.preference.userId
+import com.revolgenx.anilib.preference.userName
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
@@ -28,6 +33,7 @@ import kotlinx.android.synthetic.main.media_list_presenter_layout.view.*
 
 class MediaListPresenter(
     context: Context,
+    private val mediaListMeta: MediaListMeta,
     private val viewModel: MediaListViewModel,
     private val viewLifecycleOwner: LifecycleOwner
 ) :
@@ -49,6 +55,10 @@ class MediaListPresenter(
 
     private val tintSurfaceColor by lazy {
         DynamicTheme.getInstance().get().tintSurfaceColor
+    }
+
+    private val isLoggedInUser by lazy {
+        mediaListMeta.userId == context.userId() || mediaListMeta.userName == context.userName()
     }
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
@@ -97,28 +107,52 @@ class MediaListPresenter(
                 }
             }
 
-            mediaListProgressIncrease.setOnClickListener {
-                viewModel.addMediaListUpdateObserver(viewLifecycleOwner)
-                viewModel.saveMediaListEntry(EntryListEditorMediaModel().also {
-                    it.mediaId = item.mediaId
-                    it.listId = item.mediaListId
-                    it.progress = item.progress?.toInt()?.plus(1)
-                }) { res ->
-                    when (res.status) {
-                        Status.SUCCESS -> {
-                            if (res.data?.mediaId == item.mediaId) {
-                                mediaListProgress.text = context.getString(R.string.s_s).format(
-                                    item.progress.naText(),
-                                    if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
-                                )
+            if (isLoggedInUser) {
+                mediaListProgressIncrease.setOnClickListener {
+                    viewModel.addMediaListUpdateObserver(viewLifecycleOwner)
+                    viewModel.saveMediaListEntry(EntryListEditorMediaModel().also {
+                        it.mediaId = item.mediaId
+                        it.listId = item.mediaListId
+                        it.progress = item.progress?.toInt()?.plus(1)
+                    }) { res ->
+                        when (res.status) {
+                            Status.SUCCESS -> {
+                                if (res.data?.mediaId == item.mediaId) {
+                                    mediaListProgress.text = context.getString(R.string.s_s).format(
+                                        item.progress.naText(),
+                                        if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
+                                    )
+                                }
+                                viewModel.removeObserver(viewLifecycleOwner)
                             }
-                            viewModel.removeObserver(viewLifecycleOwner)
-                        }
-                        Status.ERROR -> {
-                            context.makeToast(R.string.operation_failed, icon = R.drawable.ic_error)
+                            Status.ERROR -> {
+                                if (res.exception is ApolloHttpException) {
+                                    when (res.exception.code()) {
+                                        HTTP_TOO_MANY_REQUEST -> {
+                                            context.makeToast(
+                                                R.string.too_many_request,
+                                                icon = R.drawable.ic_error
+                                            )
+                                        }
+                                        else -> {
+                                            context.makeToast(
+                                                R.string.operation_failed,
+                                                icon = R.drawable.ic_error
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    context.makeToast(
+                                        R.string.operation_failed,
+                                        icon = R.drawable.ic_error
+                                    )
+                                }
+                            }
                         }
                     }
                 }
+            } else {
+                mediaListProgressIncrease.visibility = View.GONE
             }
 
             mediaListContainer.setOnClickListener {
