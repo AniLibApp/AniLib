@@ -93,4 +93,10 @@ abstract class MediaListViewModel(
         compositeDisposable.clear()
         super.onCleared()
     }
+
+    fun renewSource() {
+        source = null
+        filteredList = null
+        listMap.clear()
+    }
 }

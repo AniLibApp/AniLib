@@ -30,4 +30,9 @@ val viewModelModules = module {
     viewModel { RecommendationViewModel(get()) }
 
     viewModel { WatchingViewModel(get(), get()) }
+    viewModel { PlanningViewModel(get(), get()) }
+    viewModel { CompletedViewModel(get(), get()) }
+    viewModel { DroppedViewModel(get(), get()) }
+    viewModel { PausedViewModel(get(), get()) }
+    viewModel { RepeatingViewModel(get(), get()) }
 }

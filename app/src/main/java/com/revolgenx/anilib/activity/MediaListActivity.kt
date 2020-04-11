@@ -104,6 +104,17 @@ class MediaListActivity : DynamicSystemActivity() {
 
     private val pageChangeListener by lazy {
         object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                Timber.d("position $position")
+                if (menuItem?.isActionViewExpanded == true)
+                    menuItem?.collapseActionView()
+            }
+
+
             override fun onPageSelected(position: Int) {
                 listSmartTab.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
                 listSmartTab.getTabAt(position).tabTextTv.visibility = View.VISIBLE
@@ -332,7 +343,9 @@ class MediaListActivity : DynamicSystemActivity() {
     }
 
     private fun filterMediaList() {
-        getViewPagerFragment(0)?.filter(mediaListFilterField)
+        mediaListViewPager?.let {
+            getViewPagerFragment(it.currentItem)?.filter(mediaListFilterField)
+        }
     }
 
 
