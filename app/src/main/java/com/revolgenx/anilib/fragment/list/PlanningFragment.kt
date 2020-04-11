@@ -1,7 +1,11 @@
 package com.revolgenx.anilib.fragment.list
 
-import com.revolgenx.anilib.fragment.base.BaseFragment
+import com.revolgenx.anilib.type.MediaListStatus
+import com.revolgenx.anilib.viewmodel.PlanningViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlanningFragment : BaseFragment() {
-
+class PlanningFragment : MediaListFragment() {
+    override val viewModel by viewModel<PlanningViewModel>()
+    override val mediaListStatus: Int = MediaListStatus.PLANNING.ordinal
 }
+

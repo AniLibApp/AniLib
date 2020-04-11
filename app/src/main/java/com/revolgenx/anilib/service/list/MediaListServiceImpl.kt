@@ -41,10 +41,10 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                             model.status = media.status()?.ordinal
                         }
                     }
-                }
+                }?: emptyList()
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                resourceCallback.invoke(Resource.success(it ?: emptyList()))
+                resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.w(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
