@@ -9,8 +9,8 @@ import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseCharacterEvent
 import com.revolgenx.anilib.event.BrowseStaffEvent
-import com.revolgenx.anilib.event.meta.CharacterMeta
-import com.revolgenx.anilib.event.meta.StaffMeta
+import com.revolgenx.anilib.meta.CharacterMeta
+import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.model.MediaCharacterModel
 import kotlinx.android.synthetic.main.anime_character_presenter_layout.view.*
 import kotlinx.android.synthetic.main.manga_character_presenter_layout.view.*

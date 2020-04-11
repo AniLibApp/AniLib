@@ -8,7 +8,7 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseStaffEvent
-import com.revolgenx.anilib.event.meta.StaffMeta
+import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.model.VoiceActorModel
 import kotlinx.android.synthetic.main.character_actor_presenter_layout.view.*
 

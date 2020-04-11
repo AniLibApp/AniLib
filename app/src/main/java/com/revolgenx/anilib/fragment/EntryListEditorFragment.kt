@@ -17,8 +17,8 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.ListEditorResultEvent
-import com.revolgenx.anilib.event.meta.ListEditorMeta
-import com.revolgenx.anilib.event.meta.ListEditorResultMeta
+import com.revolgenx.anilib.meta.ListEditorMeta
+import com.revolgenx.anilib.meta.ListEditorResultMeta
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.model.DateModel
 import com.revolgenx.anilib.model.EntryListEditorMediaModel

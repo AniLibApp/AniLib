@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.event.meta
+package com.revolgenx.anilib.meta
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

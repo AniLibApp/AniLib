@@ -10,14 +10,19 @@ import com.revolgenx.anilib.event.BrowseEvent
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.fragment.base.BaseFragment
+import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.makeSnakeBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.discover_fragment_layout.*
 import kotlinx.android.synthetic.main.overview_recommendation_presnter_layout.*
+import timber.log.Timber
 
 class DiscoverFragment : BaseFragment() {
+    val makrdowntest =
+        "<img width='100%'  src='https://dream-wonderland.com/blog/wp-content/uploads/2017/08/Ohys-Raws-Aikatsu-Stars-69-TX-1280x720-x264-AAC.mp4_20170820_005650.721.jpg'>"
 
+    val test = "<img width='100%'  src='https://media1.tenor.com/images/fcdbd7e6438f73799ba0c0704b44daa6/tenor.gif?itemid=3558286'>"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,7 +62,7 @@ class DiscoverFragment : BaseFragment() {
         loading.color = DynamicTheme.getInstance().get().accentColor
 
         mediaRecommendationDislikeIv.setOnClickListener {
-//            MediaListFilterDialog.newInstance(mediaListFilterField).show(childFragmentManager, "media_filter_dialog")
+            //            MediaListFilterDialog.newInstance(mediaListFilterField).show(childFragmentManager, "media_filter_dialog")
 
         }
 
@@ -70,6 +75,10 @@ class DiscoverFragment : BaseFragment() {
             ).show(childFragmentManager, "tag")
         }
         testplusminus.visibility = View.VISIBLE
+
+        markdownTest.post {
+            MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(markdownTest, test)
+        }
     }
 
 

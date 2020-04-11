@@ -11,7 +11,7 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicButton
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.MediaListFilterEvent
-import com.revolgenx.anilib.event.meta.MediaListFilterMeta
+import com.revolgenx.anilib.meta.MediaListFilterMeta
 import com.revolgenx.anilib.field.MediaListFilterField
 import kotlinx.android.synthetic.main.list_filter_dialog_layout.*
 

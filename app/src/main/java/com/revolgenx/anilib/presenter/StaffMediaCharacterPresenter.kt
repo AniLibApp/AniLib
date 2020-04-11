@@ -12,9 +12,9 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseCharacterEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
-import com.revolgenx.anilib.event.meta.CharacterMeta
-import com.revolgenx.anilib.event.meta.ListEditorMeta
-import com.revolgenx.anilib.event.meta.MediaBrowserMeta
+import com.revolgenx.anilib.meta.CharacterMeta
+import com.revolgenx.anilib.meta.ListEditorMeta
+import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.StaffMediaCharacterModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.makeSnakeBar

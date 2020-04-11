@@ -10,7 +10,7 @@ import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.event.meta.StudioMeta
+import com.revolgenx.anilib.meta.StudioMeta
 import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.field.studio.StudioField
 import com.revolgenx.anilib.field.studio.StudioMediaField

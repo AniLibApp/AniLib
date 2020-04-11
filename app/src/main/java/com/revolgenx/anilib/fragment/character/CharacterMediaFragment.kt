@@ -6,7 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.revolgenx.anilib.event.meta.CharacterMeta
+import com.revolgenx.anilib.meta.CharacterMeta
 import com.revolgenx.anilib.field.character.CharacterMediaField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.character.CharacterMediaModel

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.view.plugins
+package com.revolgenx.anilib.plugins
 
 import io.noties.markwon.AbstractMarkwonPlugin
 
