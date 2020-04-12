@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.PopupWindow
 import com.google.android.exoplayer2.ui.PlayerView
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.fragment.test.TestFragment
 import com.revolgenx.anilib.video.ExoVideoInstance
 import com.revolgenx.anilib.video.PlayerManager
 import com.revolgenx.anilib.video.PlayerManagerImpl
@@ -34,12 +35,9 @@ class TestActivity : BaseDynamicActivity() {
         super.onCreate(savedInstanceState)
         ExoVideoInstance.getInstance().url =
             "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-        toggle.setOnClickListener {
-            changePopupSize()
-        }
-        testActivityRootLayout.post {
-            prepare()
-        }
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.testRootLayout, TestFragment.newInstance(), "test tag").commitNow()
     }
 
     private fun changePopupSize() {
@@ -53,7 +51,8 @@ class TestActivity : BaseDynamicActivity() {
 
 
     fun prepare() {
-        playerManager = PlayerManagerImpl(context)
+        if (playerManager == null)
+            playerManager = PlayerManagerImpl(context)
         showVideoPopUp()
         playerManager?.play()
     }
@@ -71,7 +70,7 @@ class TestActivity : BaseDynamicActivity() {
         setPopupSize(0, 0);
         popupWindow = PopupWindow(container, params!!.width, params!!.height)
         popupWindow!!.isTouchable = true
-        popupWindow!!.showAtLocation(testActivityRootLayout, Gravity.TOP, 0, 0)
+        popupWindow!!.showAtLocation(testRootLayout, Gravity.TOP, 0, 0)
     }
 
     private fun setPopupSize(x: Int, y: Int) {
@@ -109,7 +108,7 @@ class TestActivity : BaseDynamicActivity() {
                 popupSize = PopupSize.SMALL
                 params = WindowManager.LayoutParams(
                     (baseSize / 1.2).toInt(),
-                    (baseSize / (1.2 * 1.5)).toInt(),
+                    (baseSize / (1.3 * 1.5)).toInt(),
                     popupParams,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT
@@ -145,7 +144,7 @@ class TestActivity : BaseDynamicActivity() {
     }
 
     override fun onStop() {
-        playerManager?.stop()
+        playerManager?.pause()
         super.onStop()
     }
 
