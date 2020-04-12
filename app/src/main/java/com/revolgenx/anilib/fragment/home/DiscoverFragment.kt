@@ -1,9 +1,11 @@
 package com.revolgenx.anilib.fragment.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.TestActivity
 import com.revolgenx.anilib.dialog.MediaListFilterDialog
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.event.BrowseEvent
@@ -75,6 +77,9 @@ class DiscoverFragment : BaseFragment() {
             ).show(childFragmentManager, "tag")
         }
         testplusminus.visibility = View.VISIBLE
+        mediaDescriptionTv.setOnClickListener {
+            startActivity(Intent(requireContext(), TestActivity::class.java))
+        }
 
         markdownTest.post {
             MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(markdownTest, test)
