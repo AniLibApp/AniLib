@@ -42,10 +42,7 @@ import com.revolgenx.anilib.fragment.home.RecommendationFragment
 import com.revolgenx.anilib.fragment.home.SeasonFragment
 import com.revolgenx.anilib.preference.*
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.util.BrowseFilterDataProvider
-import com.revolgenx.anilib.util.makePagerAdapter
-import com.revolgenx.anilib.util.registerForEvent
-import com.revolgenx.anilib.util.unRegisterForEvent
+import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
 import com.revolgenx.anilib.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -389,6 +386,10 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             }
             is BrowseEvent -> {
                 BrowseActivity.openActivity(this)
+            }
+
+            is ImageClickedEvent->{
+                makeToast(msg = "Image Clicked ${event.meta.url}")
             }
         }
     }

@@ -1,41 +1,16 @@
 package com.revolgenx.anilib.plugins
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.Spanned
 import android.widget.TextView
 import com.facebook.common.executors.CallerThreadExecutor
-import com.facebook.common.executors.DefaultSerialExecutorService
-import com.facebook.common.executors.UiThreadImmediateExecutorService
-import com.facebook.common.internal.Supplier
 import com.facebook.common.references.CloseableReference
-import com.facebook.common.time.RealtimeSinceBootClock
 import com.facebook.datasource.BaseDataSubscriber
 import com.facebook.datasource.DataSource
 import com.facebook.drawee.backends.pipeline.Fresco
-import com.facebook.fresco.animation.backend.AnimationBackend
-import com.facebook.fresco.animation.backend.AnimationBackendDelegateWithInactivityCheck
-import com.facebook.fresco.animation.bitmap.BitmapAnimationBackend
-import com.facebook.fresco.animation.bitmap.BitmapFrameCache
-import com.facebook.fresco.animation.bitmap.BitmapFrameRenderer
-import com.facebook.fresco.animation.bitmap.cache.NoOpCache
-import com.facebook.fresco.animation.bitmap.preparation.BitmapFramePreparationStrategy
-import com.facebook.fresco.animation.bitmap.preparation.BitmapFramePreparer
-import com.facebook.fresco.animation.bitmap.preparation.DefaultBitmapFramePreparer
-import com.facebook.fresco.animation.bitmap.preparation.FixedNumberBitmapFramePreparationStrategy
-import com.facebook.fresco.animation.bitmap.wrapper.AnimatedDrawableBackendAnimationInformation
-import com.facebook.fresco.animation.bitmap.wrapper.AnimatedDrawableBackendFrameRenderer
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2
-import com.facebook.fresco.animation.factory.ExperimentalBitmapAnimationDrawableFactory
-import com.facebook.imagepipeline.animated.base.AnimatedDrawableBackend
-import com.facebook.imagepipeline.animated.base.AnimatedImageResult
-import com.facebook.imagepipeline.animated.factory.AnimatedFactoryProvider
-import com.facebook.imagepipeline.animated.impl.AnimatedDrawableBackendImpl
-import com.facebook.imagepipeline.animated.impl.AnimatedDrawableBackendProvider
-import com.facebook.imagepipeline.animated.util.AnimatedDrawableUtil
 import com.facebook.imagepipeline.image.CloseableAnimatedImage
 import com.facebook.imagepipeline.image.CloseableImage
 import com.facebook.imagepipeline.image.CloseableStaticBitmap
@@ -60,7 +35,6 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
         fun load(drawable: AsyncDrawable)
         fun cancel(drawable: AsyncDrawable)
     }
-
 
     override fun configureSpansFactory(builder: MarkwonSpansFactory.Builder) {
         builder.setFactory(Image::class.java, ImageSpanFactory())
@@ -116,6 +90,7 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                             resource?.let {
                                 DrawableUtils.applyIntrinsicBounds(resource)
                             }
+
                             drawable.result = resource
                         } finally {
                             closeableRefs.remove(drawable.destination)
