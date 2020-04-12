@@ -22,7 +22,7 @@ class DiscoverFragment : BaseFragment() {
     val makrdowntest =
         "<img width='100%'  src='https://dream-wonderland.com/blog/wp-content/uploads/2017/08/Ohys-Raws-Aikatsu-Stars-69-TX-1280x720-x264-AAC.mp4_20170820_005650.721.jpg'>"
 
-    val test = "<img width='100%'  src='https://media1.tenor.com/images/fcdbd7e6438f73799ba0c0704b44daa6/tenor.gif?itemid=3558286'>"
+    val test = "<img width='1080'  src='https://media1.tenor.com/images/fcdbd7e6438f73799ba0c0704b44daa6/tenor.gif?itemid=3558286'>"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
