@@ -42,12 +42,7 @@
     <style name="CollapsedTitleAppearance" parent="TextAppearance.DynamicApp.Toolbar">
         <item name="fontFamily">@font/open_sans_regular</item>
     </style>
-    <!--
-            <item name="android:shadowColor">@color/ads_color_black</item>
-            <item name="android:shadowRadius">50</item>-->
 
-    <!--    <style name="BottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">-->
-    <!--        <item name="fontFamily">@font/open_sans_regular</item>-->
-    <!--    </style>-->
+    <style name="PopupVideoActivity" />
 
 </resources>

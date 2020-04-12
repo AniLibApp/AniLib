@@ -78,7 +78,7 @@ ext {
     lifecycle_version = '2.2.0'
     coroutine_version = '1.3.2'
     persistent_s_ver = '1.1.2'
-    jackson_ver = '2.10.3'
+    exo_ver = '2.11.4'
 }
 
 dependencies {
@@ -168,6 +168,10 @@ dependencies {
 
     //jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    //exoplayer
+    implementation "com.google.android.exoplayer:exoplayer-core:$exo_ver"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exo_ver"
 
 
     //searchview

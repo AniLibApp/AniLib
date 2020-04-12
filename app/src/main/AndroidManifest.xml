@@ -4,6 +4,7 @@
     package="com.revolgenx.anilib">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:name=".app.App"
@@ -42,6 +43,7 @@
         <activity android:name=".activity.BrowseActivity" />
         <activity android:name=".activity.MediaListActivity" />
         <activity android:name=".activity.UserActivity" />
+        <activity android:name=".activity.TestActivity" />
     </application>
 
 </manifest>
