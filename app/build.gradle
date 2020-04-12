@@ -166,6 +166,10 @@ dependencies {
     implementation "io.noties.markwon:html:$markwon_ver"
     implementation "io.noties.markwon:ext-strikethrough:$markwon_ver"
 
+    //jsoup
+    implementation 'org.jsoup:jsoup:1.13.1'
+
+
     //searchview
     implementation "com.paulrybitskyi.persistentsearchview:persistentsearchview:$persistent_s_ver"
     implementation "com.arthurivanets.adapster:adapster:1.0.12"
