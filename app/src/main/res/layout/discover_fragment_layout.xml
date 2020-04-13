@@ -24,13 +24,11 @@
             android:text="string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string "
             />
 
-        <com.revolgenx.anilib.view.TitleTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            app:titleName="@string/type"/>
 
+        <com.pranavpandey.android.dynamic.support.widget.DynamicButton
+            android:id="@+id/openVideoPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <com.revolgenx.anilib.view.DynamicLoadingImageView
             android:id="@+id/loading"
             android:layout_width="40dp"

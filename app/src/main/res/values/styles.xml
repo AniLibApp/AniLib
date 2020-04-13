@@ -43,6 +43,30 @@
         <item name="fontFamily">@font/open_sans_regular</item>
     </style>
 
-    <style name="PopupVideoActivity" />
+    <style name="AppThemeForNowPlaying" parent="BaseTheme">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
 
+        <item name="colorSwitchThumbNormal">@color/dark</item>
+        <!-- Inactive track color(30% transparency) -->
+        <item name="android:colorForeground">@color/dark</item>
+
+        <!--override text color here-->
+        <!--        <item name="android:textColorPrimary">@color/textcolorp</item>-->
+
+        <!-- Customize your theme here. -->
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <!-- colorAccent is used as the default value for colorControlActivated,
+         which is used to tint widgets -->
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+
+    <color name="dark">#292728</color>
 </resources>
