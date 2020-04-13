@@ -7,5 +7,9 @@ abstract class CustomPlugin : AbstractMarkwonPlugin() {
         const val SPAN = "span"
         const val MARKDOWN_SPOILER = "markdown_spoiler"
         const val CLASS = "class"
+        const val VIDEO = "video"
+        const val DIV = "div"
+        const val ID = "id"
+        const val SRC = "src"
     }
 }

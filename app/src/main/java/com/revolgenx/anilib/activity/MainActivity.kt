@@ -1,18 +1,11 @@
 package com.revolgenx.anilib.activity
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
-import android.view.MotionEvent
 import android.view.View
-import android.view.WindowManager
-import android.widget.FrameLayout
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -398,6 +391,13 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
             is ImageClickedEvent -> {
                 makeToast(msg = "Image Clicked ${event.meta.url}")
+            }
+
+            is YoutubeClickedEvent->{
+                openLink(event.meta.url)
+            }
+            is VideoClickedEvent->{
+                openLink(event.videoMeta.url)
             }
         }
     }
