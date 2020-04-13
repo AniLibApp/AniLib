@@ -15,6 +15,6 @@ class ExoVideoInstance {
 
     var exoPlayer: SimpleExoPlayer? = null
     var seekPosition: Long = 0
-    var isPlaying = true
+    var isPlaying = false
     var url: String = ""
 }

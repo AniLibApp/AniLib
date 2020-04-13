@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.activity
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.PixelFormat
@@ -15,6 +16,7 @@ import com.revolgenx.anilib.fragment.test.TestFragment
 import com.revolgenx.anilib.video.ExoVideoInstance
 import com.revolgenx.anilib.video.PlayerManager
 import com.revolgenx.anilib.video.PlayerManagerImpl
+import kotlinx.android.synthetic.main.popup_video_controller_layout.view.*
 import kotlinx.android.synthetic.main.popup_video_layout.view.*
 import kotlinx.android.synthetic.main.test_activty_layout.*
 
@@ -27,15 +29,17 @@ class TestActivity : BaseDynamicActivity() {
     private var container: FrameLayout? = null
     private var popupWindow: PopupWindow? = null
     private var popupParams = 0
+    private var isRotating = false
 
-    private var playerManager: PlayerManager? = null
+    private val playerManager: PlayerManager by lazy {
+        PlayerManagerImpl(this)
+    }
     private var popupPlayer: PlayerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ExoVideoInstance.getInstance().url =
             "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-
         supportFragmentManager.beginTransaction()
             .replace(R.id.testRootLayout, TestFragment.newInstance(), "test tag").commitNow()
     }
@@ -51,17 +55,32 @@ class TestActivity : BaseDynamicActivity() {
 
 
     fun prepare() {
-        if (playerManager == null)
-            playerManager = PlayerManagerImpl(context)
+        if (playerManager.isPopupSame() && popupWindow?.isShowing == true) return
         showVideoPopUp()
-        playerManager?.play()
+        playerManager.play()
     }
 
     private fun showVideoPopUp() {
+        removePopUpView()
+        playerManager.init()
+        playerManager.prepare(false, true)
         container = FrameLayout(this)
         val view = layoutInflater.inflate(R.layout.popup_video_layout, container)
         popupPlayer = view.popupPlayerView
-        playerManager?.attach(popupPlayer!!)
+        popupPlayer!!.exoFullScreenButton.setOnClickListener {
+            playerManager.fullScreen()
+            onMoving()
+            startActivity(Intent(this, ExoVideoPlayerActivity::class.java))
+        }
+        popupPlayer!!.exoScreenSize.setOnClickListener {
+            changePopupSize()
+        }
+        popupPlayer!!.exoPopupExitIv.setOnClickListener {
+            playerManager.stop()
+            playerManager.detach()
+            removePopUpView()
+        }
+        playerManager.attach(popupPlayer!!)
         popupParams = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
@@ -128,6 +147,7 @@ class TestActivity : BaseDynamicActivity() {
 
     fun removePopUpView() {
         if (popupWindow?.isShowing == true) {
+            popupSize = PopupSize.LARGE
             popupWindow?.dismiss()
             popupWindow = null
             container = null
@@ -136,22 +156,34 @@ class TestActivity : BaseDynamicActivity() {
 
     override fun onBackPressed() {
         if (popupWindow?.isShowing == true) {
-            playerManager?.stop()
+            playerManager.stop()
+            playerManager.detach()
             removePopUpView()
         } else {
             super.onBackPressed()
         }
     }
 
-    override fun onStop() {
-        playerManager?.pause()
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
+        playerManager.pause()
+    }
+
+    private fun onMoving() {
+        playerManager.pause()
+        removePopUpView()
     }
 
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        isRotating = true
+    }
+
     override fun onDestroy() {
         removePopUpView()
-        playerManager?.releasePlayer()
+        if(!isRotating)
+            playerManager.releasePlayer()
         super.onDestroy()
     }
 }

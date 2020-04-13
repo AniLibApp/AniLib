@@ -14,14 +14,10 @@ import com.revolgenx.anilib.R
 
 class PlayerManagerImpl(private val context: Context) : PlayerManager {
 
-    init {
-        initExoPlayer()
-    }
-
-    private val exoInstance: ExoVideoInstance
+    override val exoInstance: ExoVideoInstance
         get() = ExoVideoInstance.getInstance()
 
-    private var mPlayerView: PlayerView? = null
+    override var mPlayerView: PlayerView? = null
 
     private val mediaDataSourceFactory: DataSource.Factory by lazy {
         DefaultDataSourceFactory(
@@ -30,7 +26,7 @@ class PlayerManagerImpl(private val context: Context) : PlayerManager {
         )
     }
 
-    var currentPlayer: SimpleExoPlayer? = null
+    override var currentPlayer: SimpleExoPlayer? = null
         get() {
             return exoInstance.exoPlayer
         }
@@ -41,13 +37,17 @@ class PlayerManagerImpl(private val context: Context) : PlayerManager {
 
     var url: String? = null
 
-    private fun initExoPlayer() {
+    override fun init() {
         if (currentPlayer != null) return
         currentPlayer = SimpleExoPlayer.Builder(context).build()
         currentPlayer!!.playWhenReady = true
     }
 
-    fun prepare(resetPosition: Boolean, resetState: Boolean) {
+    override fun prepare(resetPosition: Boolean, resetState: Boolean) {
+        if (url != exoInstance.url) {
+            url = exoInstance.url
+        }
+
         val extractorsFactory = DefaultExtractorsFactory()
         val mediaSource: MediaSource =
             ProgressiveMediaSource.Factory(mediaDataSourceFactory, extractorsFactory)
@@ -62,15 +62,19 @@ class PlayerManagerImpl(private val context: Context) : PlayerManager {
             currentPlayer!!.playWhenReady = value
         }
 
-    override fun play(seekPosition: Boolean) {
-        if (url != exoInstance.url) {
-            url = exoInstance.url
-            prepare(true, false)
-            if (exoInstance.seekPosition > 0 && seekPosition) currentPlayer?.seekTo(exoInstance.seekPosition)
-            currentPlayer?.playWhenReady = true
-        }
+
+    override fun isPopupSame(): Boolean {
+        return url == exoInstance.url && mPlayerView != null
     }
 
+    override fun play(seekPosition: Long?) {
+        if (mPlayerView != null)
+            currentPlayer?.playWhenReady = true
+
+        if (seekPosition != null) {
+            if (seekPosition > 0) currentPlayer?.seekTo(seekPosition)
+        }
+    }
 
     override fun pause() {
         currentPlayer?.playWhenReady = false
@@ -96,18 +100,23 @@ class PlayerManagerImpl(private val context: Context) : PlayerManager {
         currentPlayer = null
     }
 
+    override fun currentPosition(): Long {
+        return currentPlayer?.currentPosition ?: 0
+    }
+
+    override fun duration(): Long {
+        return currentPlayer?.duration ?: 0
+    }
+
     override fun attach(playerView: PlayerView) {
         mPlayerView = playerView
         mPlayerView!!.player = currentPlayer
     }
 
     override fun detach() {
+        url = null
         mPlayerView?.player = null
         mPlayerView = null
-    }
-
-    init {
-        initExoPlayer()
     }
 
 }
