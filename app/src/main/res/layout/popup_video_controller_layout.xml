@@ -18,6 +18,44 @@
         app:ads_color="@color/white"
         app:ads_colorType="custom" />
 
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/exoPopupExitIv"
+        android:layout_height="20dp"
+        android:layout_width="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="6dp"
+        style="@style/ExoMediaButton"
+        app:ads_colorType="custom"
+        app:ads_color="@color/white"
+        app:srcCompat="@drawable/ic_close"/>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/exoFullScreenButton"
+        android:layout_height="20dp"
+        android:layout_width="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@id/exoPopupExitIv"
+        android:layout_margin="6dp"
+        style="@style/ExoMediaButton"
+        app:ads_colorType="custom"
+        app:ads_color="@color/white"
+        app:srcCompat="@drawable/exo_icon_fullscreen_enter"/>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/exoScreenSize"
+        android:layout_height="20dp"
+        android:layout_width="20dp"
+        style="@style/ExoMediaButton"
+        android:layout_alignParentTop="true"
+        android:layout_margin="6dp"
+        app:ads_colorType="custom"
+        app:ads_color="@color/white"
+        android:layout_toStartOf="@id/exoFullScreenButton"
+        app:srcCompat="@drawable/ic_popup_size"/>
+
+
+
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

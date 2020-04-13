@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="bottom"
+    android:background="@android:color/transparent">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+        android:id="@+id/exoVideoToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/transparent"
+        app:ads_colorType="none" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
+        android:id="@+id/layout_seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_above="@id/layout_btn_bot"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp">
+
+        <TextView
+            android:id="@id/exo_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="6dp"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="18:20" />
+
+        <com.google.android.exoplayer2.ui.DefaultTimeBar
+            android:id="@+id/exo_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/exo_duration"
+            android:layout_toEndOf="@+id/exo_position" />
+
+        <TextView
+            android:id="@id/exo_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="6dp"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="25:23" />
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_btn_bot"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="40dp">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFloatingActionButton
+            android:id="@+id/pausePlayFb"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@android:color/transparent"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="fitCenter"
+            app:ads_colorType="accent"
+            app:borderWidth="2dp"
+            app:elevation="0dp"
+            app:fabCustomSize="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/exoSkipPreIv"
+            android:layout_width="@dimen/video_player_big_button_dimen"
+            android:layout_height="@dimen/video_player_big_button_dimen"
+            android:layout_marginStart="5dp"
+            app:ads_color="@color/white"
+            app:ads_colorType="custom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/pausePlayFb"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/exo_icon_previous" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/exoSkipPostIv"
+            android:layout_width="@dimen/video_player_big_button_dimen"
+            android:layout_height="@dimen/video_player_big_button_dimen"
+            android:layout_marginStart="5dp"
+            app:ads_color="@color/white"
+            app:ads_colorType="custom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/pausePlayFb"
+            app:layout_constraintRight_toLeftOf="@id/exoRotationIv"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/exo_icon_next" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/exoRotationIv"
+            android:layout_width="@dimen/video_player_big_button_dimen"
+            android:layout_height="@dimen/video_player_big_button_dimen"
+            android:layout_marginStart="5dp"
+            android:padding="4dp"
+            app:ads_color="@color/white"
+            app:ads_colorType="custom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/exoSkipPostIv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_rotate" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
