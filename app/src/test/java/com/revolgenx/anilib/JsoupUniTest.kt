@@ -84,6 +84,17 @@ class JsoupUniTest {
         println(docs.body().html())
     }
 
+
+    @Test
+    fun addElement(){
+        val docs = Jsoup.parse(youtube)
+        docs.select("div.youtube").forEach {element->
+            element.appendElement("p").append("Youtube")
+        }
+
+        println(docs.body().html())
+    }
+
     @Test
     fun extract() {
         if(video___.contains("video###")){

@@ -9,10 +9,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/markdownTest"
+        <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="400dp"
+            android:scrollbars="vertical"
+            android:nestedScrollingEnabled="true">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/markdownTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical" />
+            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
 
         <com.revolgenx.anilib.view.ExpandableTextView
             android:id="@+id/mediaDescriptionTv"
@@ -21,39 +35,43 @@
             android:layout_marginTop="80dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:text="string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string "
-            />
+            android:text="string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string string \n string " />
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicButton
             android:id="@+id/openVideoPlayer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+
         <com.revolgenx.anilib.view.DynamicLoadingImageView
             android:id="@+id/loading"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_favorite"/>
+            android:src="@drawable/ic_favorite" />
 
         <com.revolgenx.anilib.view.PlusMinusEditTextLayout
             android:id="@+id/testplusminus"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/testImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
         <com.jaygoo.widget.RangeSeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:rsb_mode="range"
-            app:rsb_min="1950"
-            app:rsb_max="2020"
             app:rsb_indicator_show_mode="alwaysShow"
-            />
+            app:rsb_max="2020"
+            app:rsb_min="1950"
+            app:rsb_mode="range" />
 
         <com.revolgenx.anilib.view.MediaListEditorScoreLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp" />
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
@@ -63,8 +81,7 @@
             android:layout_height="40dp"
             android:button="@drawable/ic_dropped" />
 
-        <include
-            layout="@layout/overview_recommendation_presnter_layout"/>
+        <include layout="@layout/overview_recommendation_presnter_layout" />
 
 
         <include layout="@layout/season_presenter_layout" />
