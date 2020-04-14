@@ -104,4 +104,21 @@ class JsoupUniTest {
             println(youtube__.substring("youtube###".length))
         }
     }
+
+    val youtubediv = "<span class='markdown_spoiler'><div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>"
+    @Test
+    fun joinspan(){
+        println(System.currentTimeMillis())
+        youtubediv.contains("markdown_spoiler")
+        println(System.currentTimeMillis())
+        val docs = Jsoup.parse(youtubediv)
+        println(System.currentTimeMillis())
+        val element = docs.select("span.markdown_spoiler").firstOrNull()
+        element?.select("div.youtube")?.attr("alt", "markdown_spoiler")?.forEach {
+            println(it.outerHtml())
+        }
+        println(System.currentTimeMillis())
+
+    }
 }

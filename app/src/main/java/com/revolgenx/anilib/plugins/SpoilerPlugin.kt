@@ -29,10 +29,12 @@ class SpoilerPlugin : CustomPlugin() {
                             return SpoilerSpan()
                         }
                     }
+
                     return null
                 }
+
                 override fun supportedTags(): MutableCollection<String> {
-                    return Collections.singleton(SPAN)
+                    return mutableListOf(SPAN)
                 }
             })
         }
