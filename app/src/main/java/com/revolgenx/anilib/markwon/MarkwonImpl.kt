@@ -16,11 +16,12 @@ object MarkwonImpl {
         if (!::instanceHtml.isInitialized)
             instanceHtml = Markwon.builder(context)
                 .usePlugin(HtmlPlugin.create())
+                .usePlugin(ImageTagPlugin())
                 .usePlugin(SpoilerPlugin.create())
                 .usePlugin(FrescoImagePlugin.create(context))
-                .usePlugin(ImageClickHandlerPlugin())
-                .usePlugin(VideoTagPlugin())
-                .usePlugin(YoutubeTagPlugin())
+//                .usePlugin(ImageClickHandlerPlugin())
+                .usePlugin(VideoTagPlugin(context))
+                .usePlugin(YoutubeTagPlugin(context))
                 .build()
         return instanceHtml
     }

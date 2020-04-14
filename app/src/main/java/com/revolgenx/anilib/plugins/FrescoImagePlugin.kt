@@ -88,29 +88,9 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
         private val frescoImagePipelineFactory
             get() = Fresco.getImagePipelineFactory()
 
-        private var imageSource: ImageSourceType = ImageSourceType.NORMAL
-
-        private val playBitMapDrawable: BitmapDrawable?
-            get() {
-                return ContextCompat.getDrawable(context, R.drawable.ic_play_cirle)
-                    ?.toBitmap(dp(48f), dp(48f))
-                    ?.toDrawable(context.resources)?.also {
-                        it.setTint(DynamicTheme.getInstance().get().accentColor)
-                        it.gravity = Gravity.CENTER
-                    }
-            }
-
-        companion object {
-            enum class ImageSourceType {
-                NORMAL, VIDEO, YOUTUBE
-            }
-        }
-
         override fun load(drawable: AsyncDrawable) {
-            val source = filterSource(drawable.destination)
-
             val dataSource = frescoPipeline.fetchDecodedImage(
-                ImageRequest.fromUri(source),
+                ImageRequest.fromUri(drawable.destination),
                 context
             )
             dataSource.subscribe(object :
@@ -123,14 +103,20 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                             val resource = createDrawable(it.get()) ?: return
                             DrawableUtils.applyIntrinsicBounds(resource)
 
-                            if (imageSource == ImageSourceType.NORMAL) {
-                                drawable.result = resource
-                            } else {
+                            if ((drawable.result is LayerDrawable)) {
                                 val finalDrawable =
-                                    LayerDrawable(arrayOf(resource, playBitMapDrawable))
+                                    LayerDrawable(
+                                        arrayOf(
+                                            resource,
+                                            (drawable.result as LayerDrawable).getDrawable(0)
+                                        )
+                                    )
                                 DrawableUtils.applyIntrinsicBounds(finalDrawable)
                                 drawable.result = finalDrawable
+                                return
                             }
+
+                            drawable.result = resource
                         } finally {
                             closeableRefs.remove(drawable.destination)
                             CloseableReference.closeSafely(it)
@@ -142,27 +128,6 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                     val d = dataSource.failureCause
                 }
             }, CallerThreadExecutor.getInstance())
-        }
-
-        private fun filterSource(source: String): String {
-            return when {
-                source.contains(VIDEO_TAG) -> {
-                    imageSource = ImageSourceType.VIDEO
-                    source.substring(VIDEO_START_INDEX)
-                }
-                source.contains(YOUTUBE_TAG) -> {
-                    imageSource = ImageSourceType.YOUTUBE
-                    try {
-                        String.format(YOUTUBE_IMG_URL, source.substring(source.indexOf("?v=") + 3))
-                    } catch (e: Exception) {
-                        ""
-                    }
-                }
-                else -> {
-                    imageSource = ImageSourceType.NORMAL
-                    source
-                }
-            }
         }
 
         override fun cancel(drawable: AsyncDrawable) {
