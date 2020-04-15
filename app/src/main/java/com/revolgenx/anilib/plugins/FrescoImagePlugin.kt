@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.text.Spanned
@@ -22,11 +23,13 @@ import com.facebook.fresco.animation.drawable.AnimatedDrawable2
 import com.facebook.imagepipeline.image.CloseableAnimatedImage
 import com.facebook.imagepipeline.image.CloseableImage
 import com.facebook.imagepipeline.image.CloseableStaticBitmap
+import com.facebook.imagepipeline.nativecode.NativeBlurFilter
 import com.facebook.imagepipeline.request.ImageRequest
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.*
 import com.revolgenx.anilib.util.dp
+import com.revolgenx.anilib.view.drawable.SpoilerDrawable
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.MarkwonSpansFactory
@@ -82,40 +85,84 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
 
     class FrescoStoreImpl(private val context: Context) : FrescoStore {
         private val closeableRefs = mutableMapOf<String, CloseableReference<CloseableImage>>()
-        private val frescoPipeline
-            get() = Fresco.getImagePipeline()
-
-        private val frescoImagePipelineFactory
-            get() = Fresco.getImagePipelineFactory()
 
         override fun load(drawable: AsyncDrawable) {
-            val dataSource = frescoPipeline.fetchDecodedImage(
+            val dataSource = Fresco.getImagePipeline().fetchDecodedImage(
                 ImageRequest.fromUri(drawable.destination),
                 context
             )
             dataSource.subscribe(object :
                 BaseDataSubscriber<CloseableReference<CloseableImage>>() {
                 override fun onNewResultImpl(dataSource: DataSource<CloseableReference<CloseableImage>>) {
-                    if (dataSource.isFinished.not()) return
                     dataSource.result?.let {
                         closeableRefs[drawable.destination] = it
+                    }
+
+                    if (!dataSource.isFinished) return
+                    dataSource.result?.let {
                         try {
                             val resource = createDrawable(it.get()) ?: return
-                            DrawableUtils.applyIntrinsicBounds(resource)
+                            if (drawable.result is LayerDrawable && drawable.hasResult()) {
+                                val layerDrawable = drawable.result as LayerDrawable
+                                val spoilerDrawable = layerDrawable.getDrawable(1)
+                                if (spoilerDrawable == null) {
+                                    val finalDrawable =
+                                        LayerDrawable(
+                                            arrayOf(
+                                                resource,
+                                                layerDrawable.getDrawable(0)
+                                            )
+                                        )
+                                    DrawableUtils.applyIntrinsicBounds(finalDrawable)
+                                    drawable.result = finalDrawable
+                                } else {
+                                    val newBlurBitmap = resource.toBitmap(
+                                        (resource.intrinsicWidth * 0.2).toInt(),
+                                        (resource.intrinsicHeight * 0.2).toInt()
+                                    )
 
-                            if ((drawable.result is LayerDrawable)) {
+                                    NativeBlurFilter.iterativeBoxBlur(newBlurBitmap, 5, 1)
+                                    val finalDrawable =
+                                        LayerDrawable(
+                                            arrayOf(
+                                                resource,
+                                                SpoilerDrawable(
+                                                    context,
+                                                    newBlurBitmap
+                                                ).also {
+                                                    it.hasSpoiler = true
+                                                },
+                                                layerDrawable.getDrawable(0)
+                                            )
+                                        )
+                                    DrawableUtils.applyIntrinsicBoundsIfEmpty(finalDrawable)
+                                    drawable.result = finalDrawable
+                                }
+                                return
+                            }else if(drawable.result is ColorDrawable){
+                                val newBlurBitmap = resource.toBitmap(
+                                    (resource.intrinsicWidth * 0.2).toInt(),
+                                    (resource.intrinsicHeight * 0.2).toInt()
+                                )
+
+                                NativeBlurFilter.iterativeBoxBlur(newBlurBitmap, 8, 1)
                                 val finalDrawable =
                                     LayerDrawable(
                                         arrayOf(
                                             resource,
-                                            (drawable.result as LayerDrawable).getDrawable(0)
+                                            SpoilerDrawable(
+                                                context,
+                                                newBlurBitmap
+                                            ).also {
+                                                it.hasSpoiler = true
+                                            }
                                         )
                                     )
-                                DrawableUtils.applyIntrinsicBounds(finalDrawable)
+                                DrawableUtils.applyIntrinsicBoundsIfEmpty(finalDrawable)
                                 drawable.result = finalDrawable
                                 return
                             }
-
+                            DrawableUtils.applyIntrinsicBoundsIfEmpty(resource)
                             drawable.result = resource
                         } finally {
                             closeableRefs.remove(drawable.destination)
@@ -125,7 +172,6 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                 }
 
                 override fun onFailureImpl(dataSource: DataSource<CloseableReference<CloseableImage>>) {
-                    val d = dataSource.failureCause
                 }
             }, CallerThreadExecutor.getInstance())
         }
@@ -141,7 +187,7 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
         private fun createDrawable(closeableImage: CloseableImage): Drawable? {
             return when (closeableImage) {
                 is CloseableAnimatedImage -> {
-                    (frescoImagePipelineFactory.getAnimatedDrawableFactory(context)?.createDrawable(
+                    (Fresco.getImagePipelineFactory().getAnimatedDrawableFactory(context)?.createDrawable(
                         closeableImage
                     ) as? AnimatedDrawable2)?.also {
                         it.start()

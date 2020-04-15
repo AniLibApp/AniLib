@@ -160,6 +160,7 @@
     <string name="none">None</string>
     <string name="current">Current</string>
     <string name="repeating">Repeating</string>
+    <string name="spoiler_alert">** Spoiler Alert **</string>
 
 
     <string-array name="media_format">
