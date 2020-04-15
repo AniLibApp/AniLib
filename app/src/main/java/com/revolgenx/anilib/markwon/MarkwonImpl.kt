@@ -12,8 +12,9 @@ object MarkwonImpl {
     lateinit var instanceHtml: Markwon
 
     fun createHtmlInstance(context: Context): Markwon {
-        Timber.d("created html markdown instance")
-        if (!::instanceHtml.isInitialized)
+//        if (!::instanceHtml.isInitialized){
+            Timber.d("created html markdown instance")
+        Timber.d(System.currentTimeMillis().toString())
             instanceHtml = Markwon.builder(context)
                 .usePlugin(HtmlPlugin.create())
                 .usePlugin(ImageTagPlugin())
@@ -23,6 +24,9 @@ object MarkwonImpl {
                 .usePlugin(VideoTagPlugin(context))
                 .usePlugin(YoutubeTagPlugin(context))
                 .build()
+        Timber.d(System.currentTimeMillis().toString())
+
+//        }
         return instanceHtml
     }
 }

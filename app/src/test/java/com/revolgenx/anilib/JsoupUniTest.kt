@@ -105,19 +105,43 @@ class JsoupUniTest {
         }
     }
 
-    val youtubediv = "<span class='markdown_spoiler'><div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div>" +
+    val youtubediv = "<span class='markdown_spoiler'><span><div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div></span></span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>"+
+    "<span class='markdown_spoiler'><span><video muted loop autoplay controls><source src='https://files.catbox.moe/0zofnv.mp4' type='video/webm'>Your browser does not support the video tag.</video></div></span></span>"
+
+    val videodiv = "<span class='markdown_spoiler'><video muted loop autoplay controls><source src='https://files.catbox.moe/0zofnv.mp4' type='video/webm'>Your browser does not support the video tag.</video></div>" +
+                "<span class='markdown_spoiler'><video muted loop autoplay controls><source src='https://files.catbox.moe/0zofnv.mp4' type='video/webm'>Your browser does not support the video tag.</video></div>" +
             "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>"
+
+
     @Test
     fun joinspan(){
-        println(System.currentTimeMillis())
-        youtubediv.contains("markdown_spoiler")
-        println(System.currentTimeMillis())
         val docs = Jsoup.parse(youtubediv)
-        println(System.currentTimeMillis())
-        val element = docs.select("span.markdown_spoiler").firstOrNull()
-        element?.select("div.youtube")?.attr("alt", "markdown_spoiler")?.forEach {
-            println(it.outerHtml())
+        docs.select("span.markdown_spoiler").forEach {
+            it.select("div.youtube").attr("alt", "markdown_spoiler")
+            it.select("video").attr("alt", "markdown_spoiler")
         }
+
+        println(docs.body().html())
+    }
+
+
+    @Test
+    fun replaceTest(){
+        println(System.currentTimeMillis())
+        Jsoup.parse(youtubediv).select("img")
+        println(System.currentTimeMillis())
+        println(System.currentTimeMillis())
+        Jsoup.parse(video).select("source")
+        println(System.currentTimeMillis())
+        println(System.currentTimeMillis())
+        Jsoup.parse(html).select("source")
+        println(System.currentTimeMillis())
+        println(System.currentTimeMillis())
+        Jsoup.parse(complete).select("source")
+        println(System.currentTimeMillis())
+        println(System.currentTimeMillis())
+        Jsoup.parse(youtubediv).select("source")
         println(System.currentTimeMillis())
 
     }
