@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:scrollbars="vertical"
+            android:layout_height="wrap_content"
             android:nestedScrollingEnabled="true">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHeight_max="400dp"
+                app:layout_constrainedHeight="true"
+                android:scrollbars="vertical">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/markdownTest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="vertical" />
-            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+                <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/markdownTest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="vertical" />
+                </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.revolgenx.anilib.view.ExpandableTextView
             android:id="@+id/mediaDescriptionTv"

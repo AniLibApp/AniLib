@@ -12,5 +12,6 @@ abstract class CustomPlugin : AbstractMarkwonPlugin() {
         const val ID = "id"
         const val SRC = "src"
         const val IMG = "img"
+        const val ALT = "alt"
     }
 }
