@@ -12,17 +12,15 @@ import android.widget.FrameLayout
 import android.widget.PopupWindow
 import com.google.android.exoplayer2.ui.PlayerView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.fragment.test.TestFragment
 import com.revolgenx.anilib.video.ExoVideoInstance
 import com.revolgenx.anilib.video.PlayerManager
 import com.revolgenx.anilib.video.PlayerManagerImpl
 import kotlinx.android.synthetic.main.popup_video_controller_layout.view.*
 import kotlinx.android.synthetic.main.popup_video_layout.view.*
-import kotlinx.android.synthetic.main.test_activty_layout.*
 
 
-class TestActivity : BaseDynamicActivity() {
-    override val layoutRes: Int = R.layout.test_activty_layout
+abstract class BasePopupVideoActivity : BaseDynamicActivity() {
+//    override val layoutRes: Int = R.layout.test_activty_layout
 
     private var popupSize = PopupSize.LARGE
     private var params: WindowManager.LayoutParams? = null
@@ -40,8 +38,6 @@ class TestActivity : BaseDynamicActivity() {
         super.onCreate(savedInstanceState)
         ExoVideoInstance.getInstance().url =
             "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.testRootLayout, TestFragment.newInstance(), "test tag").commitNow()
     }
 
     private fun changePopupSize() {
@@ -89,7 +85,7 @@ class TestActivity : BaseDynamicActivity() {
         setPopupSize(0, 0);
         popupWindow = PopupWindow(container, params!!.width, params!!.height)
         popupWindow!!.isTouchable = true
-        popupWindow!!.showAtLocation(testRootLayout, Gravity.TOP, 0, 0)
+        popupWindow!!.showAtLocation(rootLayout, Gravity.TOP, 0, 0)
     }
 
     private fun setPopupSize(x: Int, y: Int) {

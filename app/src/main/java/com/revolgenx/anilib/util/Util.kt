@@ -101,6 +101,10 @@ suspend fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = coroutineSco
 fun dp(dp: Float) = DynamicUnitUtils.convertDpToPixels(dp)
 fun sp(sp:Float) = DynamicUnitUtils.convertSpToPixels(sp)
 
+fun makeLogInSnackBar(view: View){
+    view.makeSnakeBar(R.string.please_log_in)
+}
+
 fun TextView.naText(text: String?) {
     this.text = text?.takeIf { it.isNotEmpty() } ?: "?"
 }

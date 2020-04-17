@@ -90,8 +90,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
 
     private var state = COLLAPSED
 
-    private val offSetChangeListener by lazy {
-        AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+    private val offSetChangeListener = AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (verticalOffset == 0) {
                 state = EXPANDED
                 invalidateOptionsMenu()
@@ -100,7 +99,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
                 invalidateOptionsMenu()
             }
         }
-    }
+
 
     override fun getLocale(): Locale? {
         return null
