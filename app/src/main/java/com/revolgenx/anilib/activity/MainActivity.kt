@@ -22,6 +22,7 @@ import androidx.core.view.iterator
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.facebook.drawee.view.SimpleDraweeView
+import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.otaliastudios.elements.Adapter
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
@@ -40,6 +41,7 @@ import com.revolgenx.anilib.fragment.home.DiscoverFragment
 import com.revolgenx.anilib.fragment.home.DownloadFragment
 import com.revolgenx.anilib.fragment.home.RecommendationFragment
 import com.revolgenx.anilib.fragment.home.SeasonFragment
+import com.revolgenx.anilib.meta.UserMeta
 import com.revolgenx.anilib.preference.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.*
@@ -153,8 +155,18 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                         R.mipmap.ic_launcher
                     )
                 )
+
             } else {
                 headerView.navHeaderIcon.setImageURI(userAvatar)
+            }
+
+            headerView.navHeaderIcon.setOnClickListener {
+                if (checkLoggedIn())
+                    UserActivity.openActivity(this, UserMeta(context.userId(), null, true))
+            }
+
+            headerView.navHeaderIcon.hierarchy.let {
+                it.roundingParams = it.roundingParams?.setBorderColor(DynamicTheme.getInstance().get().accentColorDark)
             }
 
             DynamicTheme.getInstance().get().primaryColorDark
@@ -166,6 +178,15 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                 headerView.navHeaderBackground.setImageURI(userAvatar)
             }
 
+        }
+    }
+
+    private fun checkLoggedIn(): Boolean {
+        return if(context.loggedIn()){
+            true
+        }else{
+            makeLogInSnackBar(mainViewPager)
+            false
         }
     }
 
@@ -393,10 +414,10 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                 makeToast(msg = "Image Clicked ${event.meta.url}")
             }
 
-            is YoutubeClickedEvent->{
+            is YoutubeClickedEvent -> {
                 openLink(event.meta.url)
             }
-            is VideoClickedEvent->{
+            is VideoClickedEvent -> {
                 openLink(event.videoMeta.url)
             }
         }

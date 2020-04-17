@@ -31,4 +31,10 @@
     </declare-styleable>
 
 
+    <declare-styleable name="ImageHeaderLayout">
+        <attr name="title" format="string"/>
+        <attr name="headerImage" format="reference"/>
+    </declare-styleable>
+
+
 </resources>

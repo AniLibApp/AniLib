@@ -27,12 +27,14 @@
             android:id="@+id/navHeaderIcon"
             android:layout_width="@dimen/ads_icon_header_drawer"
             android:layout_height="@dimen/ads_icon_header_drawer"
-            android:scaleType="fitCenter"
-            app:roundAsCircle="false"
-            app:roundedCornerRadius="6dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_margin="20dp"/>
+            android:layout_margin="20dp"
+            android:scaleType="fitCenter"
+            app:roundedCornerRadius="10dp"
+            app:actualImageScaleType="fitCenter"
+            app:roundingBorderColor="@color/white"
+            app:roundingBorderWidth="3dp" />
 
         <TextView
             android:id="@+id/navHeaderTitle"

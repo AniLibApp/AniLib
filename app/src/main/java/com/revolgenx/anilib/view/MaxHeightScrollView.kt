@@ -24,7 +24,7 @@ class MaxHeightScrollView : DynamicScrollView {
         )
 
         try {
-            setMaxHeight(a.getDimensionPixelSize(R.styleable.MaxHeightScrollView_maxHeight, 0))
+            setMaxHeight(a.getLayoutDimension(R.styleable.MaxHeightScrollView_maxHeight, -1))
         } finally {
             a.recycle()
         }
