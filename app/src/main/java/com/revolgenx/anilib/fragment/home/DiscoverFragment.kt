@@ -3,14 +3,12 @@ package com.revolgenx.anilib.fragment.home
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.view.*
 import androidx.core.content.ContextCompat
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ExoVideoPlayerActivity
-import com.revolgenx.anilib.activity.TestActivity
-import com.revolgenx.anilib.dialog.MediaListFilterDialog
+import com.revolgenx.anilib.activity.BasePopupVideoActivity
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.event.BrowseEvent
 import com.revolgenx.anilib.field.TagChooserField
@@ -22,14 +20,15 @@ import com.revolgenx.anilib.util.makeSnakeBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.discover_fragment_layout.*
 import kotlinx.android.synthetic.main.overview_recommendation_presnter_layout.*
-import timber.log.Timber
+
 
 class DiscoverFragment : BaseFragment() {
     val makrdowntest =
         "<img width='100%'  src='https://dream-wonderland.com/blog/wp-content/uploads/2017/08/Ohys-Raws-Aikatsu-Stars-69-TX-1280x720-x264-AAC.mp4_20170820_005650.721.jpg'>"
 
     val test =
-        "<img width='1080'  src='https://media1.tenor.com/images/fcdbd7e6438f73799ba0c0704b44daa6/tenor.gif?itemid=3558286'>"
+        "<img width='1080'  src='https://media1.tenor.com/images/fcdbd7e6438f73799ba0c0704b44daa6/tenor.gif?itemid=3558286'>"+
+    "\norem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n"
 
     val youtube = "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>Youtube</p></div>"
 
@@ -107,14 +106,14 @@ class DiscoverFragment : BaseFragment() {
         }
         testplusminus.visibility = View.VISIBLE
         mediaDescriptionTv.setOnClickListener {
-            startActivity(Intent(requireContext(), TestActivity::class.java))
+            startActivity(Intent(requireContext(), BasePopupVideoActivity::class.java))
         }
         openVideoPlayer.setOnClickListener {
             startActivity(Intent(requireContext(), ExoVideoPlayerActivity::class.java))
         }
 
         markdownTest.post {
-            MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(markdownTest, combined)
+            MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(markdownTest, test)
         }
 
 
