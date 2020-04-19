@@ -19,7 +19,7 @@ class SpoilerDrawable(private val context: Context, bitmap: Bitmap) :
         paint.reset()
         paint.color = Color.WHITE
         paint.textSize = sp(18f)
-        paint.typeface = ResourcesCompat.getFont(context, R.font.open_sans_semi_bold)
+        paint.typeface = ResourcesCompat.getFont(context, R.font.qanelassoft_extra_bold)
         val txtWidth = paint.measureText(context.getString(R.string.spoiler_alert))
         val txtHeight = paint.fontMetrics.bottom - paint.fontMetrics.top
         rectF.left = bounds.width() / 2 - txtWidth / 2 - 30

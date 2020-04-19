@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.thefuntasty.hauler.HaulerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/haulerView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <com.github.piasy.biv.view.BigImageView
+                android:id="@+id/bigImageViewer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:transitionName="big_image_viewer"
+                app:failureImage="@drawable/ic_error_anilib"/>
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+                android:id="@+id/draweeViewerToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="@android:color/transparent"
+                app:ads_colorType="none" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
+
+</com.thefuntasty.hauler.HaulerView>

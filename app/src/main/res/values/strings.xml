@@ -160,8 +160,20 @@
     <string name="none">None</string>
     <string name="current">Current</string>
     <string name="repeating">Repeating</string>
-    <string name="spoiler_alert">** Spoiler Alert **</string>
-
+    <string name="spoiler_alert">Spoiler Alert</string>
+    <string name="error">Failed to load</string>
+    <string name="follower">Follower</string>
+    <string name="following">Following</string>
+    <string name="blocked">Blocked</string>
+    <string name="s_following">%sFollowing</string>
+    <string name="s_followers">%sFollowers</string>
+    <string name="total_anime">Total Anime</string>
+    <string name="days_watched">Days Watched</string>
+    <string name="mean_score">Mean Score</string>
+    <string name="total_manga">Total Manga</string>
+    <string name="chapters_read">Chapters Read</string>
+    <string name="block">Block</string>
+    <string name="saved_to_gallary">Saved to gallary</string>
 
     <string-array name="media_format">
         <item>Tv</item>

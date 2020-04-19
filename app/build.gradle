@@ -185,6 +185,17 @@ dependencies {
     //toggle
     implementation 'com.llollox:androidtoggleswitch:2.0.1'
 
+    //hauler
+    implementation("com.thefuntasty.hauler:core:3.1.0")
+
+    //bigimageviewer
+    implementation 'com.github.piasy:BigImageViewer:1.6.4'
+    implementation 'com.github.piasy:FrescoImageLoader:1.6.4'
+    implementation 'com.github.piasy:FrescoImageViewFactory:1.6.4'
+    implementation 'com.github.piasy:ProgressPieIndicator:1.6.4'
+
+
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

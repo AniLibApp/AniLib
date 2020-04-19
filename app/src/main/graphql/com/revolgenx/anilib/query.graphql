@@ -688,6 +688,91 @@ query BasicUserQuery($id:Int){
     }
 }
 
+query UserProfileQuery($name:String, $id:Int){
+    User(name:$name, id:$id){
+        id
+        name
+        about(asHtml:true)
+        avatar{
+            medium
+            large
+        }
+        bannerImage
+        isFollowing
+        isFollower
+        isBlocked
+        siteUrl
+        statistics{
+            anime{
+                count
+                minutesWatched
+                meanScore
+                genres{
+                    count
+                    genre
+                }
+
+            }
+            manga{
+                count
+                chaptersRead
+                meanScore
+
+                genres{
+                    count
+                    genre
+                }
+            }
+        }
+    }
+}
+
+query UserTotalFollowersQuery($id:Int!){
+    Page{
+        pageInfo{
+            total
+        }
+        followers(userId:$id){
+            __typename
+        }
+    }
+}
+
+query UserTotalFollowingQuery($id:Int!){
+    Page{
+        pageInfo{
+            total
+        }
+        following(userId:$id){
+            __typename
+        }
+    }
+}
+
+query UserFollowersQuery($id:Int!, $page:Int, $perPage:Int){
+    Page(page:$page, perPage:$perPage){
+        followers(userId:$id){
+            id
+            name
+            avatar{
+                medium
+            }
+        }
+    }
+}
+
+query UserFollowingQuery($id:Int!, $page:Int, $perPage:Int){
+    Page(page:$page, perPage:$perPage){
+        following(userId:$id){
+            id
+            name
+            avatar{
+                medium
+            }
+        }
+    }
+}
+
 query IsFavouriteQuery($mediaId:Int){
     Media(id:$mediaId){
         isFavourite

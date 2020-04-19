@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import androidx.annotation.StyleRes
 import androidx.multidex.MultiDex
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.github.piasy.biv.BigImageViewer
+import com.github.piasy.biv.loader.fresco.FrescoImageLoader
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.pranavpandey.android.dynamic.support.DynamicApplication
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
@@ -31,7 +33,8 @@ class App : DynamicApplication() {
 
     override fun onInitialize() {
         AndroidThreeTen.init(this)
-        Fresco.initialize(this)
+//        Fresco.initialize(this)
+        BigImageViewer.initialize(FrescoImageLoader.with(this))
         Timber.plant(Timber.DebugTree())
 //        MarkwonImpl.createHtmlInstance(this)
         startKoin {

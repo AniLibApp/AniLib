@@ -7,7 +7,7 @@ import com.revolgenx.anilib.util.dp
 
 
 class MaxHeightFrameLayout(context: Context, attributeSet: AttributeSet?, def:Int) :DynamicFrameLayout(context, attributeSet, def){
-    val maxHeight = dp(400f)
+    val maxHeight = dp(500f)
     constructor(context:Context):this(context, null)
     constructor(context:Context, attributeSet: AttributeSet?):this(context,attributeSet, 0){
     }

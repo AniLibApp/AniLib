@@ -9,6 +9,7 @@ val viewModelModules = module {
     viewModel { MainActivityViewModel(get(), get()) }
     viewModel { MediaBrowserViewModel(get(), get()) }
 
+    //overview
     viewModel { MediaOverviewViewModel(get(), get()) }
     viewModel { MediaWatchViewModel(get()) }
     viewModel { MediaCharacterViewModel(get()) }
@@ -16,6 +17,7 @@ val viewModelModules = module {
     viewModel { MediaReviewViewModel(get()) }
     viewModel { MediaStatsViewModel(get()) }
 
+    //character|staff|studio
     viewModel { CharacterViewModel(get(), get()) }
     viewModel { CharacterMediaViewModel(get()) }
     viewModel { CharacterActorViewModel(get()) }
@@ -24,15 +26,22 @@ val viewModelModules = module {
     viewModel { StaffMediaRoleViewModel(get()) }
     viewModel { StudioViewModel(get(), get()) }
 
+    //search | browse
     viewModel { BrowseActivityViewModel() }
     viewModel { BrowseFragmentViewModel(get()) }
 
+    //recommendation
     viewModel { RecommendationViewModel(get()) }
 
+    //medialist
     viewModel { WatchingViewModel(get(), get()) }
     viewModel { PlanningViewModel(get(), get()) }
     viewModel { CompletedViewModel(get(), get()) }
     viewModel { DroppedViewModel(get(), get()) }
     viewModel { PausedViewModel(get(), get()) }
-    viewModel { RepeatingViewModel(get(), get()) }
+    viewModel { RepeatingViewModel(get(), get())}
+
+    //userprofile
+    viewModel { UserProfileViewModel(get()) }
+    viewModel { UserFollowerViewModel(get()) }
 }

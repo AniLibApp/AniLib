@@ -20,6 +20,7 @@ import com.revolgenx.anilib.field.media.MediaCharacterField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.MediaCharacterModel
 import com.revolgenx.anilib.presenter.MediaCharacterPresenter
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.viewmodel.MediaCharacterViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -87,8 +88,17 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val span =
-            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
+        mediaBrowserMeta =
+            arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
+        val span:Int = when (mediaBrowserMeta!!.type) {
+            MediaType.ANIME.ordinal -> {
+                if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
+            }
+            else -> {
+                if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 3
+            }
+        }
+
         layoutManager =
             GridLayoutManager(
                 this.context,
@@ -96,7 +106,9 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
             ).also {
                 it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.elementAt(position)?.element?.type == 0) {
+                        return if (adapter?.elementAt(position)?.element!!.let {
+                                it.type == MediaType.ANIME.ordinal || it.type == MediaType.MANGA.ordinal
+                            }) {
                             1
                         } else {
                             span
@@ -107,9 +119,6 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        mediaBrowserMeta =
-            arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
-
         val spinnerItems = mutableListOf<DynamicSpinnerItem>()
         requireContext().resources.getStringArray(R.array.staff_language).forEach {
             spinnerItems.add(DynamicSpinnerItem(null, it))

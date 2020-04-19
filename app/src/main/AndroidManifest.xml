@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".app.App"
@@ -42,12 +43,15 @@
         <activity android:name=".activity.ViewPagerContainerActivity"/>
         <activity android:name=".activity.BrowseActivity" />
         <activity android:name=".activity.MediaListActivity" />
-        <activity android:name=".activity.UserActivity" />
         <activity android:name=".activity.BasePopupVideoActivity" />
+        <activity android:name=".activity.UserProfileActivity" />
         <activity android:name=".activity.ExoVideoPlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
             android:screenOrientation="fullSensor"/>
+        <activity android:name=".activity.SimpleDraweeViewerActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTop" />
 
     </application>
 
