@@ -31,10 +31,9 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="20dp"
             android:scaleType="fitCenter"
-            app:roundedCornerRadius="10dp"
-            app:actualImageScaleType="fitCenter"
+            app:roundAsCircle="true"
             app:roundingBorderColor="@color/white"
-            app:roundingBorderWidth="3dp" />
+            app:roundingBorderWidth="3.5dp" />
 
         <TextView
             android:id="@+id/navHeaderTitle"

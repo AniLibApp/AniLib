@@ -43,7 +43,7 @@ import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.util.*
 
-class MediaListActivity : DynamicSystemActivity() {
+class MediaListActivity : BaseDynamicActivity() {
 
     companion object {
         fun openActivity(context: Context, mediaListMeta: MediaListMeta) {
@@ -54,29 +54,7 @@ class MediaListActivity : DynamicSystemActivity() {
 
         const val MEDIA_LIST_META_KEY = "MEDIA_LIST_INTENT_KEY"
     }
-
-    override fun getLocale(): Locale? {
-        return null
-    }
-
-    override fun getThemeRes(): Int {
-        return ThemeController.appStyle
-    }
-
-    override fun onCustomiseTheme() {
-        ThemeController.setLocalTheme()
-    }
-
-    override fun setStatusBarColor(color: Int) {
-        super.setStatusBarColor(color)
-        setWindowStatusBarColor(statusBarColor);
-    }
-
-    override fun setNavigationBarTheme(): Boolean {
-        return AppController.instance.isThemeNavigationBar
-    }
-
-
+    override val layoutRes: Int = R.layout.media_list_activity_layout
     private var menuItem: MenuItem? = null
 
     private val mediaListFragment by lazy {
@@ -109,7 +87,6 @@ class MediaListActivity : DynamicSystemActivity() {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                Timber.d("position $position")
                 if (menuItem?.isActionViewExpanded == true)
                     menuItem?.collapseActionView()
             }
@@ -138,7 +115,6 @@ class MediaListActivity : DynamicSystemActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.media_list_activity_layout)
         listRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
 
         val colors = intArrayOf(

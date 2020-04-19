@@ -29,21 +29,22 @@ fun Context.titlePref() = getInt(titleKey, 0)
 fun Context.titlePref(title: Int) = putInt(titleKey, title)
 
 fun Context.userScoreFormat() = getInt(scoreFormatKey, ScoreFormat.POINT_100.ordinal)
-fun Context.userScoreFormat(scoreFormat: Int) = putInt(scoreFormatKey, scoreFormat)
+fun Context.userScoreFormat(scoreFormat: Int?) =
+    putInt(scoreFormatKey, scoreFormat ?: ScoreFormat.POINT_100.ordinal)
 
 fun Context.userName() = getString(userNameKey, getString(R.string.app_name))
-fun Context.userName(name: String) = putString(userNameKey, name)
+fun Context.userName(name: String?) = putString(userNameKey, name)
 
 fun Context.userAvatar() = getString(userAvatarKey, "")
-fun Context.userAvatar(avatar: String) = putString(userAvatarKey, avatar)
+fun Context.userAvatar(avatar: String?) = putString(userAvatarKey, avatar)
 
 fun Context.userBannerImage() = getString(userBannerImageKey, "")
-fun Context.userBannerImage(banner: String) = putString(userBannerImageKey, banner)
+fun Context.userBannerImage(banner: String?) = putString(userBannerImageKey, banner)
 
 
 fun Context.saveBasicUserDetail(user: BasicUserModel) {
     userName(user.name)
-    userAvatar(user.avatar.image)
+    userAvatar(user.avatar?.image)
     userBannerImage(user.bannerImage)
     userScoreFormat(user.scoreFormat)
 }

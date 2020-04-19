@@ -84,7 +84,6 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
     }
 
     class FrescoStoreImpl(private val context: Context) : FrescoStore {
-        private val closeableRefs = mutableMapOf<String, CloseableReference<CloseableImage>>()
 
         override fun load(drawable: AsyncDrawable) {
             val dataSource = Fresco.getImagePipeline().fetchDecodedImage(
@@ -94,11 +93,8 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
             dataSource.subscribe(object :
                 BaseDataSubscriber<CloseableReference<CloseableImage>>() {
                 override fun onNewResultImpl(dataSource: DataSource<CloseableReference<CloseableImage>>) {
-                    dataSource.result?.let {
-                        closeableRefs[drawable.destination] = it
-                    }
-
                     if (!dataSource.isFinished) return
+
                     dataSource.result?.let {
                         try {
                             val resource = createDrawable(it.get()) ?: return
@@ -165,7 +161,6 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                             DrawableUtils.applyIntrinsicBoundsIfEmpty(resource)
                             drawable.result = resource
                         } finally {
-                            closeableRefs.remove(drawable.destination)
                             CloseableReference.closeSafely(it)
                         }
                     }
@@ -177,10 +172,6 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
         }
 
         override fun cancel(drawable: AsyncDrawable) {
-            closeableRefs[drawable.destination]?.let {
-                CloseableReference.closeSafely(it)
-                closeableRefs.remove(drawable.destination)
-            }
         }
 
 

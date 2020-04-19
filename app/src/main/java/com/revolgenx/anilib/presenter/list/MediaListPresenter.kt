@@ -102,8 +102,11 @@ class MediaListPresenter(
                     }
                     mediaListRatingIv.setImageResource(drawable)
                 }
-                else -> {
+                ScoreFormat.POINT_10_DECIMAL.ordinal->{
                     mediaListRatingTv.text = item.score?.toString().naText()
+                }
+                else -> {
+                    mediaListRatingTv.text = item.score?.toInt()?.toString().naText()
                 }
             }
 

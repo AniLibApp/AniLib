@@ -65,6 +65,8 @@ private val suffixes: NavigableMap<Long, String> by lazy {
     }
 }
 
+fun Int.prettyNumberFormat():String = this.toLong().prettyNumberFormat()
+
 fun Long.prettyNumberFormat(): String { //Long.MIN_VALUE == -Long.MIN_VALUE so we need an adjustment here
     if (this == Long.MIN_VALUE) return (Long.MIN_VALUE + 1).prettyNumberFormat()
     if (this < 0) return "-" + this.prettyNumberFormat()

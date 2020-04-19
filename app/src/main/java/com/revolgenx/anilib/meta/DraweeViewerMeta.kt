@@ -4,5 +4,4 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class UserMeta(var userId: Int?, var userName: String?, var loggedInUser: Boolean = false) :
-    Parcelable
+class DraweeViewerMeta(var url:String) :Parcelable
