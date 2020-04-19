@@ -23,7 +23,7 @@
                 android:id="@+id/characterMediaImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:transitionName="character_image_transition"
+                android:transitionName="media_cover_transition"
                 app:roundAsCircle="false"
                 app:roundedCornerRadius="4dp" />
 

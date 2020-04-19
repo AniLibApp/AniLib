@@ -57,6 +57,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.math.abs
 
+//todo://handle review
 class MediaBrowseActivity : DynamicSystemActivity() {
     companion object {
         const val MEDIA_BROWSER_META = "media_browser_meta"

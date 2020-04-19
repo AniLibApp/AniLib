@@ -4,6 +4,8 @@ import com.revolgenx.anilib.service.list.MediaListService
 import com.revolgenx.anilib.service.list.MediaListServiceImpl
 import com.revolgenx.anilib.service.studio.StudioService
 import com.revolgenx.anilib.service.studio.StudioServiceImpl
+import com.revolgenx.anilib.service.user.UserService
+import com.revolgenx.anilib.service.user.UserServiceImpl
 import org.koin.dsl.module
 
 val serviceModule = module {
@@ -16,4 +18,5 @@ val serviceModule = module {
     factory<StudioService> { StudioServiceImpl(get()) }
     factory<BrowseService> { BrowseServiceImpl(get()) }
     factory<MediaListService> { MediaListServiceImpl(get()) }
+    factory<UserService> { UserServiceImpl(get()) }
 }

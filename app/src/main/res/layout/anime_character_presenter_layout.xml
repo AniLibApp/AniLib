@@ -1,110 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.DynamicApp.Card.Margin.Clickable"
     android:layout_width="match_parent"
-    android:layout_height="210dp">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        style="@style/Widget.DynamicApp.Card.Clickable"
         android:layout_width="190dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
+        android:layout_height="210dp"
+        android:layout_gravity="center_horizontal">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
-            android:id="@+id/characterLayoutContainer"
-            android:layout_width="0dp"
+        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="6dp">
+            android:orientation="horizontal">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/characterImageView"
-                android:layout_width="80dp"
-                android:layout_height="140dp"
-                android:transitionName="character_image_transition"
-                app:roundAsCircle="false"
-                app:roundedCornerRadius="4dp" />
+            <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
+                android:id="@+id/characterLayoutContainer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="6dp">
 
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/characterNameTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/characterImageView"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:maxLines="2"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/characterRoleTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:textSize="10sp"
-                app:ads_colorType="accent"
-                tools:ignore="SmallSp" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
-            android:id="@+id/voiceActorLayoutContainer"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="6dp"
-            tools:ignore="RtlSymmetry">
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/voiceActorImageView"
-                android:layout_width="80dp"
-                android:layout_height="140dp"
-                app:roundAsCircle="false"
-                app:roundedCornerRadius="4dp" />
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/voiceActorNameTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/voiceActorImageView"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/voiceActorLanguage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textSize="10sp"
-                app:ads_colorType="accent"
-                tools:ignore="SmallSp" />
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/characterImageView"
+                    android:layout_width="80dp"
+                    android:layout_height="140dp"
+                    android:transitionName="character_image_transition"
+                    app:roundAsCircle="false"
+                    app:roundedCornerRadius="4dp" />
 
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
-    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/characterNameTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/characterImageView"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="2"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/characterRoleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:textSize="10sp"
+                    app:ads_colorType="accent"
+                    tools:ignore="SmallSp" />
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
+                android:id="@+id/voiceActorLayoutContainer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="6dp"
+                tools:ignore="RtlSymmetry">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/voiceActorImageView"
+                    android:layout_width="80dp"
+                    android:layout_height="140dp"
+                    app:roundAsCircle="false"
+                    app:roundedCornerRadius="4dp" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/voiceActorNameTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/voiceActorImageView"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/voiceActorLanguage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textSize="10sp"
+                    app:ads_colorType="accent"
+                    tools:ignore="SmallSp" />
+
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
+        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>

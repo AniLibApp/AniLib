@@ -1,5 +1,5 @@
 package com.revolgenx.anilib.model
 
-abstract class BaseUserModel{
+abstract class BaseUserModel:BaseModel(){
     var userId:Int = -1
 }

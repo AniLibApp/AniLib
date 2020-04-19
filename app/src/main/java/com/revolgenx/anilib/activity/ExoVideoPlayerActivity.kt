@@ -33,6 +33,7 @@ class ExoVideoPlayerActivity : DynamicSystemActivity() {
     }
 
     private var isRotation = false
+
     override fun getLocale(): Locale? {
         return null
     }
