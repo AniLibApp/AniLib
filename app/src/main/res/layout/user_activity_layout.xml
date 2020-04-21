@@ -225,16 +225,23 @@
                 android:layout_marginTop="16dp"
                 android:nestedScrollingEnabled="true">
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
+<!--                <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:nestedScrollingEnabled="true">-->
+
+<!--                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView-->
+<!--                        android:id="@+id/userAboutTv"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content" />-->
+<!--                </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>-->
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                    android:id="@+id/userAboutRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="true">
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                        android:id="@+id/userAboutTv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             </com.revolgenx.anilib.view.MaxHeightFrameLayout>
 

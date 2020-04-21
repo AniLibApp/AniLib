@@ -126,8 +126,8 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                                 return
                             } else if (drawable.result is ColorDrawable) {
                                 val newBlurBitmap = resource.toBitmap(
-                                    (resource.intrinsicWidth * 0.2).toInt(),
-                                    (resource.intrinsicHeight * 0.2).toInt()
+                                    (resource.intrinsicWidth * 0.3).toInt(),
+                                    (resource.intrinsicHeight * 0.3).toInt()
                                 )
 
                                 NativeBlurFilter.iterativeBoxBlur(newBlurBitmap, 8, 1)
@@ -143,6 +143,7 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                                             }
                                         )
                                     )
+
                                 DrawableUtils.applyIntrinsicBoundsIfEmpty(finalDrawable)
                                 drawable.result = finalDrawable
                                 return
