@@ -1,32 +1,117 @@
 package com.revolgenx.anilib.markwon
 
 import android.content.Context
-import com.revolgenx.anilib.plugins.*
+import android.text.util.Linkify
+import com.revolgenx.anilib.markwon.plugins.*
+import com.revolgenx.anilib.model.markwon.MarkdownImageModel
+import com.revolgenx.anilib.model.markwon.MarkdownModel
+import com.revolgenx.anilib.model.markwon.MarkdownVideoModel
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
+import io.noties.markwon.core.CorePlugin
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.html.HtmlPlugin
+import io.noties.markwon.inlineparser.MarkwonInlineParser
+import io.noties.markwon.linkify.LinkifyPlugin
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.Renderer
+import org.commonmark.renderer.html.HtmlRenderer
+import org.jsoup.Jsoup
 import timber.log.Timber
 
 
 object MarkwonImpl {
-    lateinit var instanceHtml: Markwon
-
     fun createHtmlInstance(context: Context): Markwon {
-//        if (!::instanceHtml.isInitialized){
-            Timber.d("created html markdown instance")
-        Timber.d(System.currentTimeMillis().toString())
-            instanceHtml = Markwon.builder(context)
-                .usePlugin(HtmlPlugin.create())
-                .usePlugin(ImageTagPlugin())
-                .usePlugin(SpoilerPlugin.create())
-                .usePlugin(FrescoImagePlugin.create(context))
-//                .usePlugin(ImageClickHandlerPlugin())
-                .usePlugin(VideoTagPlugin(context))
-                .usePlugin(YoutubeTagPlugin(context))
-                .build()
-        Timber.d(System.currentTimeMillis().toString())
+        return Markwon.builder(context)
+            .usePlugin(LinkifyPlugin.create())
+            .usePlugin(object : AbstractMarkwonPlugin() {
+                override fun configureParser(builder: Parser.Builder) {
+                    builder.inlineParserFactory(MarkwonInlineParser.factoryBuilder().build())
+                }
+            })
+            .usePlugin(HtmlPlugin.create())
+            .usePlugin(StrikethroughPlugin.create())
+            .usePlugin(CenterPlugin())
+            .usePlugin(ImageTagPlugin())
+            .usePlugin(SpoilerPlugin.create())
+            .usePlugin(FrescoImagePlugin.create(context))
+            .usePlugin(VideoTagPlugin(context))
+            .usePlugin(YoutubeTagPlugin(context))
+            .build()
+    }
 
-//        }
-        return instanceHtml
+
+    const val BR = "<br>"
+
+    lateinit var parserInstance: Parser
+    lateinit var rendererInstance: HtmlRenderer
+
+    fun createParser(): Parser {
+        if (::parserInstance.isInitialized) return parserInstance
+
+        parserInstance = Parser.builder().build()
+        return parserInstance
+    }
+
+    fun createRenderer(): Renderer = if (::rendererInstance.isInitialized) rendererInstance else {
+        rendererInstance = HtmlRenderer.builder().escapeHtml(true).build()
+        rendererInstance
+    }
+
+    fun createMarkwonCompatible(html1: String): MarkdownModel {
+        var html2 = html1.replace("\n", BR)
+        val docs = Jsoup.parse(html2)
+        val videos = mutableListOf<MarkdownVideoModel>()
+        val images = mutableListOf<MarkdownImageModel>()
+
+        docs.select("div.youtube").forEachIndexed { index, element ->
+            val containsSpoiler = element.parents().hasClass("markdown_spoiler")
+            if (index < 8) {
+                if (containsSpoiler)
+                    element.attr("alt", "markdown_spoiler")
+            } else {
+                videos.add(MarkdownVideoModel().also {
+                    it.containsSpoiler = containsSpoiler
+                    it.url = element.attr("id")
+                    element.remove()
+                })
+            }
+        }
+
+        docs.select("video").forEachIndexed { index, element ->
+            val containsSpoiler = element.parents().hasClass("markdown_spoiler")
+            if (index < 8) {
+                if (containsSpoiler)
+                    element.attr("alt", "markdown_spoiler")
+            } else {
+                videos.add(MarkdownVideoModel().also {
+                    it.url = element.select("source[src]").firstOrNull()?.attr("src")
+                    it.videoType = 1
+                    it.containsSpoiler = containsSpoiler
+                    element.remove()
+                })
+            }
+        }
+
+        docs.select("img").forEachIndexed { index, element ->
+            val imageSrc = element.attr("src")
+            val containsSpoiler = element.parents().hasClass("markdown_spoiler")
+            if (index <= 20) {
+                if (containsSpoiler)
+                    element.attr("alt", "markdown_spoiler")
+            } else {
+                images.add(MarkdownImageModel().also {
+                    it.url = imageSrc
+                    it.containsSpoiler = containsSpoiler
+                    element.remove()
+                })
+            }
+        }
+        Timber.d(docs.body().html())
+        return MarkdownModel().also {
+            it.html = "<span></span>" + docs.body().html().replace("\n", "")
+            it.images = images
+            it.videos = videos
+        }
     }
 }

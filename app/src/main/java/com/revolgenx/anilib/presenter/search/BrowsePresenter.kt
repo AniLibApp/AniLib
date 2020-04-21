@@ -106,6 +106,7 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
                     data.type!!,
                     data.title!!.romaji!!,
                     data.coverImage!!.image,
+                    data.coverImage!!.largeImage,
                     data.bannerImage
                 ), searchMediaImageView
             ).postEvent

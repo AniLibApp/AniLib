@@ -31,6 +31,8 @@ import com.revolgenx.anilib.fragment.character.CharacterMediaFragment
 import com.revolgenx.anilib.fragment.staff.StaffFragment
 import com.revolgenx.anilib.fragment.staff.StaffMediaCharacterFragment
 import com.revolgenx.anilib.fragment.staff.StaffMediaRoleFragment
+import com.revolgenx.anilib.fragment.studio.StudioFragment
+import com.revolgenx.anilib.fragment.user.*
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.toolbar_layout.*
@@ -177,6 +179,37 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
                     )
                 )
             }
+
+            ViewPagerContainerType.FAVOURITE -> {
+                supportActionBar?.title = getString(R.string.favourites)
+                containerBottomNav.inflateMenu(R.menu.favourite_nav_menu)
+                viewPagerParcelableFragments = ViewPagerParcelableFragments(
+                    listOf(
+                        AnimeFavouriteFragment::class.java.name,
+                        MangaFavouriteFragment::class.java.name,
+                        CharacterFavouriteFragment::class.java.name,
+                        StaffFavouriteFragment::class.java.name,
+                        StudioFavouriteFragment::class.java.name
+                    ),
+                    listOf(
+                        bundleOf(
+                            UserFavouriteFragment.USER_FAVOURITE_PARCELABLE_KEY to viewPagerMeta.data
+                        ),
+                        bundleOf(
+                            UserFavouriteFragment.USER_FAVOURITE_PARCELABLE_KEY to viewPagerMeta.data
+                        ),
+                        bundleOf(
+                            UserFavouriteFragment.USER_FAVOURITE_PARCELABLE_KEY to viewPagerMeta.data
+                        ),
+                        bundleOf(
+                            UserFavouriteFragment.USER_FAVOURITE_PARCELABLE_KEY to viewPagerMeta.data
+                        ),
+                        bundleOf(
+                            UserFavouriteFragment.USER_FAVOURITE_PARCELABLE_KEY to viewPagerMeta.data
+                        )
+                    )
+                )
+            }
         }
     }
 
@@ -247,6 +280,16 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
                         )
                     )
                     , options
+                )
+            }
+
+            is BrowseStudioEvent -> {
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        StudioFragment::class.java,
+                        bundleOf(StudioFragment.STUDIO_META_KEY to event.meta)
+                    )
                 )
             }
         }

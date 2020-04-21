@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.plugins
+package com.revolgenx.anilib.markwon.plugins
 
 import com.revolgenx.anilib.view.span.SpoilerSpan
 import io.noties.markwon.MarkwonConfiguration
@@ -7,7 +7,6 @@ import io.noties.markwon.RenderProps
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.html.tag.SimpleTagHandler
-import java.util.*
 
 class SpoilerPlugin : CustomPlugin() {
     companion object {

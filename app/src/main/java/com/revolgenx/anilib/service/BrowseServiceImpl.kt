@@ -60,18 +60,20 @@ class BrowseServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                         }
                     }
                     is CharacterSearchQuery.Data -> {
-                        data.Page()?.characters()?.map {
-                            CharacterSearchModel().also { model ->
-                                model.characterId = it.id()
-                                model.name = it.name()?.let {
-                                    CharacterNameModel().also { name ->
-                                        name.full = it.full()
+                        data.Page()?.characters()?.map { map ->
+                            map.fragments().narrowCharacterContent().let {
+                                CharacterSearchModel().also { model ->
+                                    model.characterId = it.id()
+                                    model.name = it.name()?.let {
+                                        CharacterNameModel().also { name ->
+                                            name.full = it.full()
+                                        }
                                     }
-                                }
-                                model.characterImageModel = it.image()?.let {
-                                    CharacterImageModel().also { img ->
-                                        img.large = it.large()
-                                        img.medium = it.medium()
+                                    model.characterImageModel = it.image()?.let {
+                                        CharacterImageModel().also { img ->
+                                            img.large = it.large()
+                                            img.medium = it.medium()
+                                        }
                                     }
                                 }
                             }
@@ -79,18 +81,20 @@ class BrowseServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                     }
 
                     is StaffSearchQuery.Data -> {
-                        data.Page()?.staff()?.map {
-                            StaffSearchModel().also { model ->
-                                model.staffId = it.id()
-                                model.staffName = it.name()?.let {
-                                    StaffNameModel().also { name ->
-                                        name.full = it.full()
+                        data.Page()?.staff()?.map { map ->
+                            map.fragments().narrowStaffContent().let {
+                                StaffSearchModel().also { model ->
+                                    model.staffId = it.id()
+                                    model.staffName = it.name()?.let {
+                                        StaffNameModel().also { name ->
+                                            name.full = it.full()
+                                        }
                                     }
-                                }
-                                model.staffImage = it.image()?.let {
-                                    StaffImageModel().also { img ->
-                                        img.medium = it.medium()
-                                        img.large = it.large()
+                                    model.staffImage = it.image()?.let {
+                                        StaffImageModel().also { img ->
+                                            img.medium = it.medium()
+                                            img.large = it.large()
+                                        }
                                     }
                                 }
                             }
@@ -98,39 +102,46 @@ class BrowseServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                     }
 
                     is StudioSearchQuery.Data -> {
-                        data.Page()?.studios()?.map {
-                            StudioSearchModel().also { model ->
-                                model.studioId = it.id()
-                                model.studioName = it.name()
-                                model.studioMedia =
-                                    it.media()?.nodes()?.filter { it.isAdult == false }?.map {
-                                        MediaSearchModel().also { model ->
-                                            model.mediaId = it.id()
-                                            model.averageScore = it.averageScore()
-                                            model.title = it.title()?.let {
-                                                TitleModel().also { ti ->
-                                                    ti.userPreferred = it.userPreferred()
-                                                    ti.romaji = it.romaji()
-                                                    ti.english = it.english()
-                                                    ti.native = it.native_()
+                        data.Page()?.studios()?.map { map ->
+                            map.fragments().studioContent().let {
+                                StudioSearchModel().also { model ->
+                                    model.studioId = it.id()
+                                    model.studioName = it.name()
+                                    model.studioMedia =
+                                        it.media()?.nodes()
+                                            ?.filter { it.fragments().commonMediaContent().isAdult == false }
+                                            ?.map {
+                                                it.fragments().commonMediaContent().let {
+                                                    MediaSearchModel().also { model ->
+                                                        model.mediaId = it.id()
+                                                        model.averageScore = it.averageScore()
+                                                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
+                                                            TitleModel().also { ti ->
+                                                                ti.userPreferred =
+                                                                    it.userPreferred()
+                                                                ti.romaji = it.romaji()
+                                                                ti.english = it.english()
+                                                                ti.native = it.native_()
+                                                            }
+                                                        }
+                                                        model.coverImage = it.coverImage()?.fragments()?.mediaCoverImage()?.let {
+                                                            CoverImageModel().also { img ->
+                                                                img.large = it.large()
+                                                                img.medium = it.medium()
+                                                                img.extraLarge = it.extraLarge()
+                                                            }
+                                                        }
+                                                        model.bannerImage =
+                                                            it.bannerImage()
+                                                                ?: model.coverImage?.largeImage
+                                                        model.type = it.type()?.ordinal
+                                                        model.format = it.format()?.ordinal
+                                                        model.status = it.status()?.ordinal
+                                                        model.seasonYear = it.seasonYear()
+                                                    }
                                                 }
                                             }
-                                            model.coverImage = it.coverImage()?.let {
-                                                CoverImageModel().also { img ->
-                                                    img.large = it.large()
-                                                    img.medium = it.medium()
-                                                    img.extraLarge = it.extraLarge()
-                                                }
-                                            }
-                                            model.bannerImage =
-                                                it.bannerImage() ?: model.coverImage?.largeImage
-                                            model.type = it.type()?.ordinal
-                                            model.format = it.format()?.ordinal
-                                            model.status = it.status()?.ordinal
-                                            model.season = it.season()?.ordinal
-                                            model.seasonYear = it.seasonYear()
-                                        }
-                                    }
+                                }
                             }
                         }?.filter { it.studioMedia.isNullOrEmpty().not() }
                     }

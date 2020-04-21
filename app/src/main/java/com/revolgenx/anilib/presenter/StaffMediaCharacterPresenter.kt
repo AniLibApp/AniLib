@@ -79,6 +79,7 @@ class StaffMediaCharacterPresenter(context: Context) :
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image,
+                        item.coverImage!!.largeImage,
                         item.bannerImage
                     ), staffMediaImageView
                 ).postEvent

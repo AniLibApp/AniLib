@@ -5,7 +5,6 @@
     android:id="@+id/studioCoordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <include layout="@layout/toolbar_layout" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout

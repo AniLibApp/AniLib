@@ -95,24 +95,39 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                    android:id="@+id/followerTv"
+                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    android:id="@+id/followerFrameLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="6dp"
                     android:background="?selectableItemBackground"
-                    android:textSize="12sp"
-                    app:fontFamily="@font/qanelassoft_extra_bold" />
+                    android:padding="2dp">
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                    android:id="@+id/followingTv"
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/followerTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        app:fontFamily="@font/qanelassoft_extra_bold" />
+                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    android:id="@+id/followingFrameLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="6dp"
                     android:background="?selectableItemBackground"
-                    android:textSize="12sp"
-                    app:fontFamily="@font/qanelassoft_extra_bold" />
+                    android:padding="2dp">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/followingTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:background="?selectableItemBackground"
+                        android:textSize="12sp"
+                        app:fontFamily="@font/qanelassoft_extra_bold" />
+                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
@@ -368,15 +383,15 @@
                 style="@style/Widget.DynamicApp.Card.Clickable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:ads_cardElevation="1dp"
                 android:layout_marginTop="10dp"
+                app:ads_cardElevation="1dp"
                 app:ads_elevationOnSameBackground="true">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                     android:id="@+id/genreRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"/>
+                    android:nestedScrollingEnabled="false" />
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 

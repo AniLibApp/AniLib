@@ -94,6 +94,7 @@ class RecommendationPresenter(
                             from.type!!,
                             from.title!!.romaji!!,
                             from.coverImage!!.image,
+                            from.coverImage!!.largeImage,
                             from.bannerImage
                         ), recommendedFromImageView
                     ).postEvent
@@ -138,6 +139,7 @@ class RecommendationPresenter(
                             rec.type!!,
                             rec.title!!.romaji!!,
                             rec.coverImage!!.image,
+                            rec.coverImage!!.largeImage,
                             rec.bannerImage
                         ), recommendedImageView
                     ).postEvent

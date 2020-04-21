@@ -179,6 +179,6 @@ class StaffFragment : BaseFragment() {
             staffFavIv.setImageResource(R.drawable.ic_favorite)
         }
 
-        MarkwonImpl.instanceHtml.setMarkdown(staffDescriptionTv, item.description ?: "")
+        MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(staffDescriptionTv, item.description ?: "")
     }
 }
