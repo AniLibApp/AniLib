@@ -34,11 +34,11 @@ class ImageTagPlugin : CustomPlugin() {
 
 
                 val widthPercent = if (widthStr?.contains("%") == true) {
-                    widthStr.replace("%", "").toFloatOrNull() ?: 100f
+                    widthStr.replace("%", "").toFloatOrNull() ?: 80f
                 } else {
                     widthStr?.toFloatOrNull()?.let { width ->
                         if (width > 500) 100f else width.div(500).times(100)
-                    } ?: 50f
+                    } ?: 80f
                 }
                 val containsSpoiler = tag.attributes()[ALT] == MARKDOWN_SPOILER
 

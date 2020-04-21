@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
@@ -29,6 +30,7 @@ import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.viewmodel.UserProfileViewModel
+import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*
@@ -187,7 +189,22 @@ class UserProfileActivity : BasePopupVideoActivity() {
 
 
         data.about?.let {
-            MarkwonImpl.createHtmlInstance(context).setMarkdown(userAboutTv, it.html!!)
+//            MarkwonImpl.createHtmlInstance(context).setMarkdown(userAboutTv, it.html!!)
+
+            val adapter = MarkwonAdapter.create(R.layout.markwon_textview_layout, R.id.markdown_holder_tv)
+            userAboutRecyclerView.adapter = adapter
+            userAboutRecyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    this,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+            Timber.d(it.html)
+            adapter.setMarkdown(
+                MarkwonImpl.createHtmlInstance(this),
+                it.html!!
+            )
+            adapter.notifyDataSetChanged()
         }
         data.totalAnime?.let {
             totalAnimeTv.title = it.toString()
