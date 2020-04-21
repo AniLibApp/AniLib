@@ -17,6 +17,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.meta.DraweeViewerMeta
 import com.revolgenx.anilib.util.makeToast
+import com.revolgenx.anilib.util.openLink
 import com.thefuntasty.hauler.setOnDragDismissedListener
 import kotlinx.android.synthetic.main.simple_drawee_viewer_activity.*
 import timber.log.Timber
@@ -50,6 +51,8 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
         return null
     }
 
+    private var draweeMeta:DraweeViewerMeta? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +60,7 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
         setSupportActionBar(draweeViewerToolbar)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val draweeMeta = intent.getParcelableExtra<DraweeViewerMeta>(simpleDraweeMetaKey) ?: return
+        draweeMeta = intent.getParcelableExtra<DraweeViewerMeta>(simpleDraweeMetaKey) ?: return
         haulerView.setBackgroundColor(Color.BLACK)
         bigImageViewer.setImageViewFactory(FrescoImageViewFactory())
         bigImageViewer.setProgressIndicator(ProgressPieIndicator())
@@ -75,7 +78,7 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
         haulerView.setOnDragDismissedListener {
             finishAfterTransition()
         }
-        bigImageViewer.showImage(draweeMeta.url.toUri())
+        bigImageViewer.showImage(draweeMeta!!.url?.toUri())
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -94,10 +97,13 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
                 bigImageViewer.saveImageIntoGallery()
                 true
             }
+            R.id.imageShareMenu->{
+                openLink(draweeMeta?.url)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
 
         }
-
     }
 
     override fun onDestroy() {

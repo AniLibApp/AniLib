@@ -41,6 +41,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
@@ -165,6 +172,13 @@ dependencies {
     implementation "io.noties.markwon:core:$markwon_ver"
     implementation "io.noties.markwon:html:$markwon_ver"
     implementation "io.noties.markwon:ext-strikethrough:$markwon_ver"
+    implementation"io.noties.markwon:linkify:$markwon_ver"
+    implementation"io.noties.markwon:inline-parser:$markwon_ver"
+    implementation "io.noties.markwon:recycler:$markwon_ver"
+
+//    //commonmark
+//    implementation 'com.atlassian.commonmark:commonmark:0.14.0'
+//
 
     //jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
@@ -193,6 +207,8 @@ dependencies {
     implementation 'com.github.piasy:FrescoImageLoader:1.6.4'
     implementation 'com.github.piasy:FrescoImageViewFactory:1.6.4'
     implementation 'com.github.piasy:ProgressPieIndicator:1.6.4'
+
+
 
 
 

@@ -10,5 +10,5 @@ data class ViewPagerContainerMeta<T : Parcelable>(
 ) : Parcelable
 
 enum class ViewPagerContainerType {
-    CHARACTER, STAFF
+    CHARACTER, STAFF, FAVOURITE
 }

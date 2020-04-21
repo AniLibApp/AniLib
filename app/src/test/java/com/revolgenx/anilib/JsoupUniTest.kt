@@ -1,5 +1,7 @@
 package com.revolgenx.anilib
 
+import com.revolgenx.anilib.model.markwon.MarkdownImageModel
+import com.revolgenx.anilib.model.markwon.MarkdownVideoModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
@@ -86,9 +88,9 @@ class JsoupUniTest {
 
 
     @Test
-    fun addElement(){
+    fun addElement() {
         val docs = Jsoup.parse(youtube)
-        docs.select("div.youtube").forEach {element->
+        docs.select("div.youtube").forEach { element ->
             element.appendElement("p").append("Youtube")
         }
 
@@ -97,26 +99,51 @@ class JsoupUniTest {
 
     @Test
     fun extract() {
-        if(video___.contains("video###")){
+        if (video___.contains("video###")) {
             println(video___.substring("video###".length))
         }
-        if(youtube__.contains("youtube###")){
+        if (youtube__.contains("youtube###")) {
             println(youtube__.substring("youtube###".length))
         }
     }
 
-    val youtubediv = "<span class='markdown_spoiler'><span><div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div></span></span>" +
-            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>"+
-    "<span class='markdown_spoiler'><span><video muted loop autoplay controls><source src='https://files.catbox.moe/0zofnv.mp4' type='video/webm'>Your browser does not support the video tag.</video></div></span></span>"
+    val youtubediv = "<span class='markdown_spoiler'><span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'>\n\n<p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>" +
+            "<span class='markdown_spoiler'><span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'>\n\n<p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>" +
+            "<span class='markdown_spoiler'><span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'>\n\n<p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>" +
+            "<span class='markdown_spoiler'><span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'>\n\n<p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>" +
+            "<span class='markdown_spoiler'><span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'>\n\n<p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>" +
+            "<span class='markdown_spoiler'><span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'>\n\n<p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>" +
+            "<span class='markdown_spoiler'><span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'>\n\n<p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>" +
+            "<span class='markdown_spoiler'><span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>" +
+            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'>\n\n<p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>" +
+            "<span class='markdown_spoiler'><span><video muted loop autoplay controls><source src='https://files.catbox.moe/0zofnv.mp4' type='video/webm'>Your browser does not support the video tag.</video></div></span></span>"
 
-    val videodiv = "<span class='markdown_spoiler'><video muted loop autoplay controls><source src='https://files.catbox.moe/0zofnv.mp4' type='video/webm'>Your browser does not support the video tag.</video></div>" +
+    val videodiv =
+        "<span class='markdown_spoiler'><video muted loop autoplay controls><source src='https://files.catbox.moe/0zofnv.mp4' type='video/webm'>Your browser does not support the video tag.</video></div>" +
                 "<span class='markdown_spoiler'><video muted loop autoplay controls><source src='https://files.catbox.moe/0zofnv.mp4' type='video/webm'>Your browser does not support the video tag.</video></div>" +
-            "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>"
+                "<div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div</span>"
 
+    val newline = "<p>ehello \n wor</p><p>world</p>"
 
     @Test
-    fun joinspan(){
-        val docs = Jsoup.parse(youtubediv)
+    fun joinspan() {
+        val replace = newline.replace("\n", "<br>")
+        val docs = Jsoup.parse(replace)
         docs.select("span.markdown_spoiler").forEach {
             it.select("div.youtube").attr("alt", "markdown_spoiler")
             it.select("video").attr("alt", "markdown_spoiler")
@@ -126,23 +153,62 @@ class JsoupUniTest {
     }
 
 
-    @Test
-    fun replaceTest(){
-        println(System.currentTimeMillis())
-        Jsoup.parse(youtubediv).select("img")
-        println(System.currentTimeMillis())
-        println(System.currentTimeMillis())
-        Jsoup.parse(video).select("source")
-        println(System.currentTimeMillis())
-        println(System.currentTimeMillis())
-        Jsoup.parse(html).select("source")
-        println(System.currentTimeMillis())
-        println(System.currentTimeMillis())
-        Jsoup.parse(complete).select("source")
-        println(System.currentTimeMillis())
-        println(System.currentTimeMillis())
-        Jsoup.parse(youtubediv).select("source")
-        println(System.currentTimeMillis())
+    val youtubediv1 =
+        "<span class='markdown_spoiler'><span><div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>"
+   val image =
+        "<span class='markdown_spoiler'><span><img  src='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>"
 
+    @Test
+    fun imageTest() {
+        val docs = Jsoup.parse(youtubediv)
+        val videos = mutableListOf<MarkdownVideoModel>()
+        val images = mutableListOf<MarkdownImageModel>()
+        docs.select("div.youtube").forEachIndexed { index, element ->
+            val containsSpoiler = element.parents().hasClass("markdown_spoiler")
+            if (index < 8) {
+                if (containsSpoiler)
+                    element.attr("alt", "markdown_spoiler")
+            } else {
+                videos.add(MarkdownVideoModel().also {
+                    it.containsSpoiler = containsSpoiler
+                    it.url = element.attr("id")
+                    element.remove()
+                })
+            }
+        }
+
+        docs.select("video").forEachIndexed { index, element ->
+            val containsSpoiler = element.parents().hasClass("markdown_spoiler")
+            if (index < 8) {
+                if (containsSpoiler)
+                    element.attr("alt", "markdown_spoiler")
+            } else {
+                videos.add(MarkdownVideoModel().also {
+                    it.url = element.select("source[src]").firstOrNull()?.attr("src")
+                    it.videoType = 1
+                    it.containsSpoiler = containsSpoiler
+                    element.remove()
+                })
+            }
+        }
+
+        docs.select("img").forEachIndexed { index, element ->
+            val imageSrc = element.attr("src")
+            val containsSpoiler = element.parents().hasClass("markdown_spoiler")
+            if (index <= 8) {
+                if (containsSpoiler)
+                    element.attr("alt", "markdown_spoiler")
+            } else {
+                images.add(MarkdownImageModel().also {
+                    it.url = imageSrc
+                    it.containsSpoiler = containsSpoiler
+                    element.remove()
+                })
+            }
+        }
+
+        println(docs.body().html())
+        videos.forEach { println(it.toString()) }
+        images.forEach { println(it.toString()) }
     }
 }

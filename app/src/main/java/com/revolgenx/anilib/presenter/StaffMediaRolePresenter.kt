@@ -59,6 +59,7 @@ class StaffMediaRolePresenter(context: Context) : Presenter<StaffMediaRoleModel>
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image,
+                        item.coverImage!!.largeImage,
                         item.bannerImage
                     ), staffMediaRoleImageView
                 ).postEvent

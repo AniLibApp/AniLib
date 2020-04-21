@@ -9,5 +9,6 @@ data class MediaBrowserMeta(
     var type: Int?,
     var title: String?,
     var coverImage: String?,
+    var coverImageLarge:String?,
     var bannerImage: String?
 ) : Parcelable

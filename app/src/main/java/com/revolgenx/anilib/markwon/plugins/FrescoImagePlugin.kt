@@ -1,19 +1,13 @@
-package com.revolgenx.anilib.plugins
+package com.revolgenx.anilib.markwon.plugins
 
 import android.content.Context
-import android.content.res.Resources
-import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.text.Spanned
-import android.view.Gravity
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
 import com.facebook.common.executors.CallerThreadExecutor
 import com.facebook.common.references.CloseableReference
 import com.facebook.datasource.BaseDataSubscriber
@@ -25,10 +19,7 @@ import com.facebook.imagepipeline.image.CloseableImage
 import com.facebook.imagepipeline.image.CloseableStaticBitmap
 import com.facebook.imagepipeline.nativecode.NativeBlurFilter
 import com.facebook.imagepipeline.request.ImageRequest
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
-import com.revolgenx.anilib.R
-import com.revolgenx.anilib.constant.*
-import com.revolgenx.anilib.util.dp
+import com.revolgenx.anilib.view.drawable.GifDrawable
 import com.revolgenx.anilib.view.drawable.SpoilerDrawable
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.MarkwonConfiguration
@@ -36,7 +27,6 @@ import io.noties.markwon.MarkwonSpansFactory
 import io.noties.markwon.image.*
 import org.commonmark.node.Image
 import timber.log.Timber
-import kotlin.math.absoluteValue
 
 
 class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawableLoader) :
@@ -84,7 +74,6 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
     }
 
     class FrescoStoreImpl(private val context: Context) : FrescoStore {
-
         override fun load(drawable: AsyncDrawable) {
             val dataSource = Fresco.getImagePipeline().fetchDecodedImage(
                 ImageRequest.fromUri(drawable.destination),
@@ -97,7 +86,7 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
 
                     dataSource.result?.let {
                         try {
-                            val resource = createDrawable(it.get()) ?: return
+                            val resource = createDrawable(it.get())?: return
                             if (drawable.result is LayerDrawable && drawable.hasResult()) {
                                 val layerDrawable = drawable.result as LayerDrawable
                                 val spoilerDrawable = layerDrawable.getDrawable(1)
@@ -135,7 +124,7 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                                     drawable.result = finalDrawable
                                 }
                                 return
-                            }else if(drawable.result is ColorDrawable){
+                            } else if (drawable.result is ColorDrawable) {
                                 val newBlurBitmap = resource.toBitmap(
                                     (resource.intrinsicWidth * 0.2).toInt(),
                                     (resource.intrinsicHeight * 0.2).toInt()
@@ -160,7 +149,9 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                             }
                             DrawableUtils.applyIntrinsicBoundsIfEmpty(resource)
                             drawable.result = resource
-                        } finally {
+                        }catch (e:Exception){
+                            Timber.e(e, "Fresco Plugin Exception")
+                        }finally {
                             CloseableReference.closeSafely(it)
                         }
                     }
@@ -180,12 +171,12 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                 is CloseableAnimatedImage -> {
                     (Fresco.getImagePipelineFactory().getAnimatedDrawableFactory(context)?.createDrawable(
                         closeableImage
-                    ) as? AnimatedDrawable2)?.also {
-                        it.start()
+                    ) as? AnimatedDrawable2)?.let {
+                        GifDrawable(context, it.animationBackend)
                     }
                 }
                 is CloseableStaticBitmap -> {
-                    BitmapDrawable(context.resources, closeableImage.underlyingBitmap)
+                    BitmapDrawable(context.resources, closeableImage.underlyingBitmap.copy(closeableImage.underlyingBitmap.config, true))
                 }
                 else -> {
                     null

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.plugins
+package com.revolgenx.anilib.markwon.plugins
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
@@ -12,8 +12,6 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.constant.VIDEO_START_INDEX
-import com.revolgenx.anilib.constant.VIDEO_TAG
 import com.revolgenx.anilib.event.VideoClickedEvent
 import com.revolgenx.anilib.meta.VideoMeta
 import com.revolgenx.anilib.util.dp

@@ -11,14 +11,19 @@ import com.revolgenx.anilib.util.sp
 class SpoilerDrawable(private val context: Context, bitmap: Bitmap) :
     BitmapDrawable(context.resources, bitmap) {
     var hasSpoiler = false
-    val rectF = RectF()
-    val bottomPadding = dp(24f)
-    val strokeWidth = dp(2f)
+    private val rectF = RectF()
+
+
+    companion object{
+        val bottomPadding = dp(24f)
+        val strokeWidth = dp(1.2f)
+    }
+
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
         paint.reset()
         paint.color = Color.WHITE
-        paint.textSize = sp(18f)
+        paint.textSize = sp(18f * if(bounds.width() > 300) 1 else bounds.width() / 300)
         paint.typeface = ResourcesCompat.getFont(context, R.font.qanelassoft_extra_bold)
         val txtWidth = paint.measureText(context.getString(R.string.spoiler_alert))
         val txtHeight = paint.fontMetrics.bottom - paint.fontMetrics.top

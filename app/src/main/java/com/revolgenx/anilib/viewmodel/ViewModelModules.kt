@@ -44,4 +44,5 @@ val viewModelModules = module {
     //userprofile
     viewModel { UserProfileViewModel(get()) }
     viewModel { UserFollowerViewModel(get()) }
+    viewModel { UserFavouriteViewModel(get()) }
 }

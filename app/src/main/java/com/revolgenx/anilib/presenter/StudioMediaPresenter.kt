@@ -63,6 +63,7 @@ class StudioMediaPresenter(context: Context) : Presenter<StudioMediaModel>(conte
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image,
+                        item.coverImage!!.largeImage,
                         item.bannerImage
                     ), holder.itemView.studioMediaImageView
                 ).postEvent

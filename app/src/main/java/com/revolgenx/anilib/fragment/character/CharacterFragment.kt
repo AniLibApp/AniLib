@@ -171,6 +171,6 @@ class CharacterFragment : BaseFragment() {
             characterFavIv.setImageResource(R.drawable.ic_favorite)
         }
 
-        MarkwonImpl.instanceHtml.setMarkdown(characterDescriptionTv, item.description ?: "")
+        MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(characterDescriptionTv, item.description ?: "")
     }
 }

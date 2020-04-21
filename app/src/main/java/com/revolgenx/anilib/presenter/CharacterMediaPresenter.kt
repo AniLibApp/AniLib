@@ -69,6 +69,7 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image,
+                        item.coverImage!!.largeImage,
                         item.bannerImage
                     ), characterMediaImageView
                 ).postEvent

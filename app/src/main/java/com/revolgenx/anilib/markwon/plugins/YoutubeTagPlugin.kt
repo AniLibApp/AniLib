@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.plugins
+package com.revolgenx.anilib.markwon.plugins
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
@@ -14,7 +14,6 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.YOUTUBE
 import com.revolgenx.anilib.constant.YOUTUBE_IMG_URL
-import com.revolgenx.anilib.constant.YOUTUBE_START_INDEX
 import com.revolgenx.anilib.event.YoutubeClickedEvent
 import com.revolgenx.anilib.meta.YoutubeMeta
 import com.revolgenx.anilib.util.dp
@@ -27,7 +26,6 @@ import io.noties.markwon.image.AsyncDrawableSpan
 import io.noties.markwon.image.DrawableUtils
 import io.noties.markwon.image.ImageProps
 import io.noties.markwon.image.ImageSize
-import kotlinx.coroutines.channels.consumesAll
 import org.commonmark.node.Image
 import java.util.*
 

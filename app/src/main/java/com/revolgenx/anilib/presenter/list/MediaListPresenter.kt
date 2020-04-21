@@ -165,6 +165,7 @@ class MediaListPresenter(
                         item.type!!,
                         item.title!!.userPreferred,
                         item.coverImage!!.image,
+                        item.coverImage!!.largeImage,
                         item.bannerImage
                     ), mediaListCoverImageView
                 ).postEvent
