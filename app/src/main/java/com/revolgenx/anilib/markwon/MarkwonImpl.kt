@@ -46,70 +46,77 @@ object MarkwonImpl {
     lateinit var parserInstance: Parser
     lateinit var rendererInstance: HtmlRenderer
 
-    fun createParser(): Parser {
-        if (::parserInstance.isInitialized) return parserInstance
-
-        parserInstance = Parser.builder().build()
-        return parserInstance
-    }
-
-    fun createRenderer(): Renderer = if (::rendererInstance.isInitialized) rendererInstance else {
-        rendererInstance = HtmlRenderer.builder().escapeHtml(true).build()
-        rendererInstance
-    }
-
     fun createMarkwonCompatible(html1: String): MarkdownModel {
         var html2 = html1.replace("\n", BR)
         val docs = Jsoup.parse(html2)
         val videos = mutableListOf<MarkdownVideoModel>()
         val images = mutableListOf<MarkdownImageModel>()
 
-        docs.select("div.youtube").forEachIndexed { index, element ->
+        docs.select("div.youtube").forEach { element ->
             val containsSpoiler = element.parents().hasClass("markdown_spoiler")
-            if (index < 8) {
-                if (containsSpoiler)
-                    element.attr("alt", "markdown_spoiler")
-            } else {
-                videos.add(MarkdownVideoModel().also {
-                    it.containsSpoiler = containsSpoiler
-                    it.url = element.attr("id")
-                    element.remove()
-                })
-            }
+            if (containsSpoiler)
+                element.attr("alt", "markdown_spoiler")
         }
 
-        docs.select("video").forEachIndexed { index, element ->
+        docs.select("div.youtube").forEach { element ->
             val containsSpoiler = element.parents().hasClass("markdown_spoiler")
-            if (index < 8) {
-                if (containsSpoiler)
-                    element.attr("alt", "markdown_spoiler")
-            } else {
-                videos.add(MarkdownVideoModel().also {
-                    it.url = element.select("source[src]").firstOrNull()?.attr("src")
-                    it.videoType = 1
-                    it.containsSpoiler = containsSpoiler
-                    element.remove()
-                })
-            }
+            if (containsSpoiler)
+                element.attr("alt", "markdown_spoiler")
         }
+
 
         docs.select("img").forEachIndexed { index, element ->
-            val imageSrc = element.attr("src")
             val containsSpoiler = element.parents().hasClass("markdown_spoiler")
-            if (index <= 20) {
-                if (containsSpoiler)
-                    element.attr("alt", "markdown_spoiler")
-            } else {
-                images.add(MarkdownImageModel().also {
-                    it.url = imageSrc
-                    it.containsSpoiler = containsSpoiler
-                    element.remove()
-                })
-            }
+            if (containsSpoiler)
+                element.attr("alt", "markdown_spoiler")
         }
-        Timber.d(docs.body().html())
+
+//        docs.select("div.youtube").forEachIndexed { index, element ->
+//            val containsSpoiler = element.parents().hasClass("markdown_spoiler")
+//            if (index < 8) {
+//                if (containsSpoiler)
+//                    element.attr("alt", "markdown_spoiler")
+//            } else {
+//                videos.add(MarkdownVideoModel().also {
+//                    it.containsSpoiler = containsSpoiler
+//                    it.url = element.attr("id")
+//                    element.remove()
+//                })
+//            }
+//        }
+//
+//        docs.select("video").forEachIndexed { index, element ->
+//            val containsSpoiler = element.parents().hasClass("markdown_spoiler")
+//            if (index < 8) {
+//                if (containsSpoiler)
+//                    element.attr("alt", "markdown_spoiler")
+//            } else {
+//                videos.add(MarkdownVideoModel().also {
+//                    it.url = element.select("source[src]").firstOrNull()?.attr("src")
+//                    it.videoType = 1
+//                    it.containsSpoiler = containsSpoiler
+//                    element.remove()
+//                })
+//            }
+//        }
+//
+//        docs.select("img").forEachIndexed { index, element ->
+//            val imageSrc = element.attr("src")
+//            val containsSpoiler = element.parents().hasClass("markdown_spoiler")
+//            if (index <= 20) {
+//                if (containsSpoiler)
+//                    element.attr("alt", "markdown_spoiler")
+//            } else {
+//                images.add(MarkdownImageModel().also {
+//                    it.url = imageSrc
+//                    it.containsSpoiler = containsSpoiler
+//                    element.remove()
+//                })
+//            }
+//        }
+
         return MarkdownModel().also {
-            it.html = "<span></span>" + docs.body().html().replace("\n", "")
+            it.html = docs.body().html().replace("\n", "").replace("<br>", "\n\n<span></span>")
             it.images = images
             it.videos = videos
         }
