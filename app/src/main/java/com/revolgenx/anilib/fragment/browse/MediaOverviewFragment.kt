@@ -177,7 +177,7 @@ class MediaOverviewFragment : BaseFragment() {
             englishTitle.visibility = View.GONE
         }
 
-        MarkwonImpl.instanceHtml.setMarkdown(mediaDescriptionTv, overview.description ?: "")
+        MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(mediaDescriptionTv, overview.description ?: "")
 
         mediaFormatTv.subtitle = overview.format?.let {
             requireContext().resources.getStringArray(

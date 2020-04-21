@@ -1,9 +1,10 @@
 package com.revolgenx.anilib.model.user
 
 import com.revolgenx.anilib.model.BasicUserModel
+import com.revolgenx.anilib.model.markwon.MarkdownModel
 
 class UserProfileModel : BasicUserModel() {
-    var about: String? = null
+    var about: MarkdownModel? = null
     var isFollowing: Boolean? = null
     var isFollower: Boolean? = null
     var isBlocked: Boolean? = null

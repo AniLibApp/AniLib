@@ -549,14 +549,7 @@ query MediaSearchQuery($search:String, $page:Int, $perPage:Int
 query CharacterSearchQuery($search:String, $page:Int, $perPage:Int){
     Page(page:$page,perPage:$perPage){
         characters(search:$search, sort:[FAVOURITES_DESC]){
-            id
-            name{
-                full
-            }
-            image{
-                large
-                medium
-            }
+            ... narrowCharacterContent
         }
     }
 }
@@ -564,14 +557,7 @@ query CharacterSearchQuery($search:String, $page:Int, $perPage:Int){
 query StaffSearchQuery($search:String, $page:Int, $perPage:Int){
     Page(page:$page, perPage:$perPage){
         staff(search:$search, sort:[FAVOURITES_DESC]){
-            id
-            name{
-                full
-            }
-            image{
-                large
-                medium
-            }
+            ... narrowStaffContent
         }
     }
 }
@@ -580,32 +566,7 @@ query StudioSearchQuery($search:String, $page:Int, $perPage:Int){
     Page(page:$page, perPage:$perPage){
 
         studios(search:$search, sort:[FAVOURITES_DESC]){
-            id
-            name
-            media(page:1, perPage:8, sort:[POPULARITY_DESC]){
-                nodes{
-                    id
-                    title{
-                        romaji
-                        english
-                        native
-                        userPreferred
-                    }
-                    coverImage{
-                        extraLarge
-                        large
-                        medium
-                    }
-                    bannerImage
-                    averageScore
-                    type
-                    format
-                    status
-                    season
-                    isAdult
-                    seasonYear
-                }
-            }
+            ... studioContent
         }
 
     }
@@ -618,10 +579,10 @@ query RecommendationQuery($page:Int, $perPage:Int, $onList:Boolean, $sort:[Recom
             rating
             userRating
             media{
-                ... recommendationMedia
+                ... commonMediaContent
             }
             mediaRecommendation{
-                ... recommendationMedia
+                ... commonMediaContent
             }
         }
     }
@@ -772,6 +733,55 @@ query UserFollowingQuery($id:Int!, $page:Int, $perPage:Int){
         }
     }
 }
+
+query UserFavouriteQuery($page:Int, $perPage:Int, $id:Int, $name:String,
+    $includeAnime:Boolean!,
+    $includeManga:Boolean!,
+    $includeCharacter:Boolean!,
+    $includeStaff:Boolean!,
+    $includeStudio:Boolean!)  {
+    User(id:$id, name:$name){
+        favourites{
+            anime(page:$page,perPage:$perPage) @include(if:$includeAnime){
+                nodes{
+                    ... on Media{
+                        ... commonMediaContent
+                    }
+                }
+            }
+            manga(page:$page,perPage:$perPage) @include(if:$includeManga){
+                nodes{
+                    ... on Media{
+                        ... commonMediaContent
+                    }
+                }
+            }
+            characters(page:$page,perPage:$perPage) @include(if:$includeCharacter){
+                nodes{
+                    ... on Character{
+                        ... narrowCharacterContent
+                    }
+                }
+            }
+            staff(page:$page,perPage:$perPage) @include(if:$includeStaff){
+                nodes{
+                    ... on Staff{
+                        ... narrowStaffContent
+                    }
+                }
+            }
+            studios(page:$page,perPage:$perPage) @include(if:$includeStudio){
+                nodes{
+                    ... on Studio{
+                        ... studioContent
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 
 query IsFavouriteQuery($mediaId:Int){
     Media(id:$mediaId){
@@ -969,15 +979,15 @@ fragment mediaCoverImage on MediaCoverImage{
 }
 
 
-fragment recommendationMedia on Media{
+fragment commonMediaContent on Media{
     id
-    averageScore
     coverImage{
         ... mediaCoverImage
     }
     title{
         ... mediaTitle
     }
+    averageScore
     bannerImage
     type
     format
@@ -985,6 +995,42 @@ fragment recommendationMedia on Media{
     seasonYear
     isAdult
 }
+
+
+fragment studioContent on Studio{
+    id
+    name
+    isAnimationStudio
+    media(page:1, perPage:8, sort:[POPULARITY_DESC]){
+        nodes{
+            ... commonMediaContent
+        }
+    }
+}
+
+fragment narrowStaffContent on Staff{
+    id
+    name{
+        full
+    }
+    image{
+        large
+        medium
+    }
+}
+
+fragment narrowCharacterContent on Character{
+    id
+    name{
+        full
+    }
+    image{
+        large
+        medium
+    }
+}
+
+
 
 
 

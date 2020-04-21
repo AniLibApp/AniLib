@@ -19,12 +19,9 @@ import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.UserFollowerDialog
-import com.revolgenx.anilib.event.BaseEvent
-import com.revolgenx.anilib.event.UserBrowseEvent
+import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.markwon.MarkwonImpl
-import com.revolgenx.anilib.meta.FollowerMeta
-import com.revolgenx.anilib.meta.MediaListMeta
-import com.revolgenx.anilib.meta.UserMeta
+import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.model.user.UserFollowerCountModel
 import com.revolgenx.anilib.model.user.UserProfileModel
 import com.revolgenx.anilib.preference.userId
@@ -40,6 +37,7 @@ import kotlinx.android.synthetic.main.user_activity_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import kotlin.math.abs
 
 //todo://handle intent handle review //image explorer
@@ -189,7 +187,7 @@ class UserProfileActivity : BasePopupVideoActivity() {
 
 
         data.about?.let {
-            MarkwonImpl.createHtmlInstance(context).setMarkdown(userAboutTv, it)
+            MarkwonImpl.createHtmlInstance(context).setMarkdown(userAboutTv, it.html!!)
         }
         data.totalAnime?.let {
             totalAnimeTv.title = it.toString()
@@ -245,37 +243,65 @@ class UserProfileActivity : BasePopupVideoActivity() {
         }
 
         userFavouriteFrameLayout.setOnClickListener {
-
+            ViewPagerContainerActivity.openActivity(
+                this,
+                ViewPagerContainerMeta(
+                    ViewPagerContainerType.FAVOURITE,
+                    UserMeta(userMeta.userId, userMeta.userName)
+                )
+            )
         }
 
         userStatsFrameLayout.setOnClickListener {
 
         }
 
-        followerTv.setOnClickListener {
+        followerFrameLayout.setOnClickListener {
             UserFollowerDialog.newInstance(FollowerMeta(userMeta.userId))
                 .show(supportFragmentManager, "follower_dialog")
         }
 
-        followingTv.setOnClickListener {
+        followingFrameLayout.setOnClickListener {
             UserFollowerDialog.newInstance(FollowerMeta(userMeta.userId, true))
                 .show(supportFragmentManager, "following_dialog")
         }
 
         userFollowTv.setOnClickListener {
-            if (userProfileModel?.isBlocked == true) {
-                openLink(userProfileModel?.siteUrl)
+            if (userProfileModel!!.isBlocked == true) {
+                openLink(userProfileModel!!.siteUrl)
             }
+        }
+
+        userAvatar.setOnClickListener {
+            SimpleDraweeViewerActivity.openActivity(
+                this,
+                DraweeViewerMeta(userProfileModel!!.avatar!!.image)
+            )
+        }
+        userBannerImage.setOnClickListener {
+            SimpleDraweeViewerActivity.openActivity(
+                this,
+                DraweeViewerMeta(userProfileModel!!.bannerImage)
+            )
         }
 
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(baseEvent: BaseEvent) {
-        when (baseEvent) {
+    fun onEvent(event: BaseEvent) {
+        when (event) {
             is UserBrowseEvent -> {
-                openActivity(this, UserMeta(baseEvent.userId, null))
+                openActivity(this, UserMeta(event.userId, null))
+            }
+            is ImageClickedEvent -> {
+                SimpleDraweeViewerActivity.openActivity(this, DraweeViewerMeta(event.meta.url))
+            }
+            is YoutubeClickedEvent -> {
+                openLink(event.meta.url)
+            }
+            is VideoClickedEvent -> {
+                openLink(event.videoMeta.url)
             }
         }
     }

@@ -107,6 +107,7 @@ class SeasonPresenter(context: Context, private val viewModel: SeasonViewModel) 
                         data.type!!,
                         data.title!!.romaji!!,
                         data.coverImage!!.image,
+                        data.coverImage!!.largeImage,
                         data.bannerImage
                     ), holder.itemView.coverImageIv
                 ).postEvent

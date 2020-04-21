@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.plugins
+package com.revolgenx.anilib.markwon.plugins
 
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.LayerDrawable
@@ -18,7 +18,6 @@ import io.noties.markwon.image.DrawableUtils
 import io.noties.markwon.image.ImageProps
 import io.noties.markwon.image.ImageSize
 import org.commonmark.node.Image
-import timber.log.Timber
 import java.util.*
 
 class ImageTagPlugin : CustomPlugin() {
@@ -29,12 +28,24 @@ class ImageTagPlugin : CustomPlugin() {
                 renderProps: RenderProps,
                 tag: HtmlTag
             ): Any? {
+
                 val source = tag.attributes()[SRC] ?: return null
+                val widthStr = tag.attributes()[WIDTH]?.trim()
+
+
+                val widthPercent = if (widthStr?.contains("%") == true) {
+                    widthStr.replace("%", "").toFloatOrNull() ?: 100f
+                } else {
+                    widthStr?.toFloatOrNull()?.let { width ->
+                        if (width > 500) 100f else width.div(500).times(100)
+                    } ?: 50f
+                }
                 val containsSpoiler = tag.attributes()[ALT] == MARKDOWN_SPOILER
+
                 renderProps.set(ImageProps.DESTINATION, source)
                 renderProps.set(
                     ImageProps.IMAGE_SIZE,
-                    ImageSize(ImageSize.Dimension(100f, "%"), null)
+                    ImageSize(ImageSize.Dimension(widthPercent, "%"), null)
                 )
 
                 val imageSpan = configuration.spansFactory().get(Image::class.java)?.getSpans(
@@ -52,7 +63,7 @@ class ImageTagPlugin : CustomPlugin() {
                             val spoilerDrawable = layerDrawable.getDrawable(1)
                             if (spoilerDrawable is SpoilerDrawable) {
                                 spoilerDrawable.hasSpoiler = false
-                                imageSpan.drawable.result = layerDrawable.getDrawable(0).also{
+                                imageSpan.drawable.result = layerDrawable.getDrawable(0).also {
                                     DrawableUtils.applyIntrinsicBoundsIfEmpty(it)
                                 }
                                 return

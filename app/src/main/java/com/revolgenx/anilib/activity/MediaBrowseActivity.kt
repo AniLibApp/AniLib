@@ -29,19 +29,16 @@ import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.meta.ViewPagerContainerMeta
-import com.revolgenx.anilib.meta.ViewPagerContainerType
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.*
-import com.revolgenx.anilib.meta.MediaBrowserMeta
-import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.browse.*
 import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.fragment.studio.StudioFragment
+import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.model.MediaBrowseModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Resource
@@ -91,7 +88,8 @@ class MediaBrowseActivity : DynamicSystemActivity() {
 
     private var state = COLLAPSED
 
-    private val offSetChangeListener = AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+    private val offSetChangeListener =
+        AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (verticalOffset == 0) {
                 state = EXPANDED
                 invalidateOptionsMenu()
@@ -137,7 +135,9 @@ class MediaBrowseActivity : DynamicSystemActivity() {
                     browseMediaBrowseModel = it.data
                     if (mediaBrowserMeta.coverImage == null || mediaBrowserMeta.bannerImage == null) {
                         mediaBrowserMeta.coverImage = it.data?.coverImage?.large ?: ""
-                        mediaBrowserMeta.bannerImage = it.data?.bannerImage ?: ""
+                        mediaBrowserMeta.coverImageLarge = it.data?.coverImage?.largeImage
+                        mediaBrowserMeta.bannerImage =
+                            it.data?.bannerImage ?: it.data?.coverImage?.largeImage
                         mediaBrowserMeta.title = it.data?.title?.romaji ?: ""
                         updateView()
                     }
@@ -145,7 +145,9 @@ class MediaBrowseActivity : DynamicSystemActivity() {
             }
         }
 
-        viewModel.getMediaInfo(mediaBrowserMeta.mediaId)
+
+        if (savedInstanceState == null)
+            viewModel.getMediaInfo(mediaBrowserMeta.mediaId)
 
         val colors = intArrayOf(
             DynamicTheme.getInstance().get().accentColor,
@@ -292,6 +294,14 @@ class MediaBrowseActivity : DynamicSystemActivity() {
 
         mediaFavButton.setOnClickListener {
             toggleFav()
+        }
+
+        mediaBrowserBannerImage.setOnClickListener {
+            SimpleDraweeViewerActivity.openActivity(this, DraweeViewerMeta(mediaBrowserMeta.bannerImage))
+        }
+
+        mediaBrowserCoverImage.setOnClickListener {
+            SimpleDraweeViewerActivity.openActivity(this, DraweeViewerMeta(mediaBrowserMeta.coverImageLarge))
         }
 
         /**problem with transition
@@ -502,6 +512,10 @@ class MediaBrowseActivity : DynamicSystemActivity() {
                 BrowseActivity.openActivity(
                     this, event.genre
                 )
+            }
+
+            is ImageClickedEvent -> {
+                SimpleDraweeViewerActivity.openActivity(this, DraweeViewerMeta(event.meta.url))
             }
         }
     }

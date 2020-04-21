@@ -100,6 +100,7 @@ class MediaRecommendationPresenter(
                         recommended.type!!,
                         recommended.title!!.romaji!!,
                         recommended.coverImage!!.image,
+                        recommended.coverImage!!.largeImage,
                         recommended.bannerImage
                     ), recommendationCoverImage
                 ).postEvent

@@ -1,14 +1,16 @@
 package com.revolgenx.anilib.service.user
 
 import androidx.lifecycle.MutableLiveData
-import com.revolgenx.anilib.UserFollowersQuery
-import com.revolgenx.anilib.UserFollowingQuery
+import com.revolgenx.anilib.*
+import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.field.user.UserFavouriteField
 import com.revolgenx.anilib.field.user.UserField
 import com.revolgenx.anilib.field.user.UserFollowerField
-import com.revolgenx.anilib.model.UserAvatarImageModel
-import com.revolgenx.anilib.model.user.UserFollowersModel
-import com.revolgenx.anilib.model.user.UserFollowerCountModel
-import com.revolgenx.anilib.model.user.UserProfileModel
+import com.revolgenx.anilib.markwon.MarkwonImpl
+import com.revolgenx.anilib.model.*
+import com.revolgenx.anilib.model.character.CharacterNameModel
+import com.revolgenx.anilib.model.search.MediaSearchModel
+import com.revolgenx.anilib.model.user.*
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
@@ -16,70 +18,72 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
-class UserServiceImpl(private val repository: BaseGraphRepository) : UserService {
+class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : UserService {
     override var userProfileLiveData: MutableLiveData<Resource<UserProfileModel>> =
         MutableLiveData()
     override val userFollowerCountLiveData: MutableLiveData<Resource<UserFollowerCountModel>> =
         MutableLiveData()
 
     override fun getUserProfile(userField: UserField, compositeDisposable: CompositeDisposable) {
-        val disposable = repository.request(userField.toQueryOrMutation()).map { response ->
-            response.data()?.User()?.let {
-                UserProfileModel().also { model ->
-                    model.baseId = it.id()
-                    model.userId = it.id()
-                    model.name = it.name()
-                    model.avatar = it.avatar()?.let { ava ->
-                        UserAvatarImageModel().also { img ->
-                            img.large = ava.large()
-                            img.medium = ava.medium()
-                        }
-                    }
-                    model.bannerImage = it.bannerImage()
-                    model.isBlocked = it.isBlocked
-                    model.isFollower = it.isFollower
-                    model.isFollowing = it.isFollowing
-                    model.about = it.about()
-                    model.siteUrl = it.siteUrl()
-                    it.statistics()?.let { stats ->
-                        stats.anime()?.let { a ->
-                            model.totalAnime = a.count()
-                            model.daysWatched = a.minutesWatched().toDouble().div(60).div(24)
-                            model.animeMeanScore = a.meanScore()
-                            a.genres()?.forEach { g ->
-                                model.genreOverView[g.genre()!!] = g.count()
+        val disposable =
+            baseGraphRepository.request(userField.toQueryOrMutation()).map { response ->
+                response.data()?.User()?.let {
+                    UserProfileModel().also { model ->
+                        model.baseId = it.id()
+                        model.userId = it.id()
+                        model.name = it.name()
+                        model.avatar = it.avatar()?.let { ava ->
+                            UserAvatarImageModel().also { img ->
+                                img.large = ava.large()
+                                img.medium = ava.medium()
                             }
                         }
-                        stats.manga()?.let { m ->
-                            model.totalManga = m.count()
-                            model.chaptersRead = m.chaptersRead()
-                            model.mangaMeanScore = m.meanScore()
-                            m.genres()?.forEach { g ->
-                                if (model.genreOverView.containsKey(g.genre())) {
-                                    model.genreOverView[g.genre()!!] =
-                                        model.genreOverView[g.genre()!!]!!.plus(g.count())
-                                } else {
+                        model.bannerImage = it.bannerImage() ?: model.avatar?.image
+                        model.isBlocked = it.isBlocked
+                        model.isFollower = it.isFollower
+                        model.isFollowing = it.isFollowing
+                        model.about = MarkwonImpl.createMarkwonCompatible(it.about()?:"")
+                        model.siteUrl = it.siteUrl()
+                        it.statistics()?.let { stats ->
+                            stats.anime()?.let { a ->
+                                model.totalAnime = a.count()
+                                model.daysWatched = a.minutesWatched().toDouble().div(60).div(24)
+                                model.animeMeanScore = a.meanScore()
+                                a.genres()?.forEach { g ->
                                     model.genreOverView[g.genre()!!] = g.count()
+                                }
+                            }
+                            stats.manga()?.let { m ->
+                                model.totalManga = m.count()
+                                model.chaptersRead = m.chaptersRead()
+                                model.mangaMeanScore = m.meanScore()
+                                m.genres()?.forEach { g ->
+                                    if (model.genreOverView.containsKey(g.genre())) {
+                                        model.genreOverView[g.genre()!!] =
+                                            model.genreOverView[g.genre()!!]!!.plus(g.count())
+                                    } else {
+                                        model.genreOverView[g.genre()!!] = g.count()
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-        }.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ model ->
-                model?.genreOverView?.toList()?.sortedByDescending { (_, value) -> value }?.toMap()
-                    ?.toMutableMap()?.let {
-                        model.genreOverView = it
+            }.observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ model ->
+                    model?.genreOverView?.toList()?.sortedByDescending { (_, value) -> value }
+                        ?.toMap()
+                        ?.toMutableMap()?.let {
+                            model.genreOverView = it
+                        }
+                    userProfileLiveData.value = Resource.success(model)
+                    model?.let {
+                        getTotalFollowing(userField, compositeDisposable)
                     }
-                userProfileLiveData.value = Resource.success(model)
-                model?.let {
-                    getTotalFollowing(userField, compositeDisposable)
-                }
-            }, {
-                Timber.w(it)
-                userProfileLiveData.value = Resource.error(it.message ?: ERROR, null, it)
-            })
+                }, {
+                    Timber.w(it)
+                    userProfileLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+                })
 
         compositeDisposable.add(disposable)
     }
@@ -89,22 +93,24 @@ class UserServiceImpl(private val repository: BaseGraphRepository) : UserService
         compositeDisposable: CompositeDisposable,
         callback: ((Resource<Int>) -> Unit)?
     ) {
-        val disposable = repository.request(userField.userTotalFollowerField.toQueryOrMutation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ response ->
-                if (userFollowerCountLiveData.value == null) {
-                    userFollowerCountLiveData.value =
-                        Resource.success(UserFollowerCountModel().also { mod ->
-                            mod.followers = response.data()?.Page()?.pageInfo()?.total()
-                        })
-                } else {
-                    userFollowerCountLiveData.value = userFollowerCountLiveData.value?.also { mod ->
-                        mod.data?.followers = response.data()?.Page()?.pageInfo()?.total()
+        val disposable =
+            baseGraphRepository.request(userField.userTotalFollowerField.toQueryOrMutation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    if (userFollowerCountLiveData.value == null) {
+                        userFollowerCountLiveData.value =
+                            Resource.success(UserFollowerCountModel().also { mod ->
+                                mod.followers = response.data()?.Page()?.pageInfo()?.total()
+                            })
+                    } else {
+                        userFollowerCountLiveData.value =
+                            userFollowerCountLiveData.value?.also { mod ->
+                                mod.data?.followers = response.data()?.Page()?.pageInfo()?.total()
+                            }
                     }
-                }
-            }, {
-                Timber.w(it)
-            })
+                }, {
+                    Timber.w(it)
+                })
         compositeDisposable.add(disposable)
     }
 
@@ -113,22 +119,24 @@ class UserServiceImpl(private val repository: BaseGraphRepository) : UserService
         compositeDisposable: CompositeDisposable,
         callback: ((Resource<Int>) -> Unit)?
     ) {
-        val disposable = repository.request(userField.userTotalFollowingField.toQueryOrMutation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ response ->
-                if (userFollowerCountLiveData.value == null) {
-                    userFollowerCountLiveData.value =
-                        Resource.success(UserFollowerCountModel().also { mod ->
-                            mod.following = response.data()?.Page()?.pageInfo()?.total()
-                        })
-                } else {
-                    userFollowerCountLiveData.value = userFollowerCountLiveData.value?.also { mod ->
-                        mod.data?.following = response.data()?.Page()?.pageInfo()?.total()
+        val disposable =
+            baseGraphRepository.request(userField.userTotalFollowingField.toQueryOrMutation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    if (userFollowerCountLiveData.value == null) {
+                        userFollowerCountLiveData.value =
+                            Resource.success(UserFollowerCountModel().also { mod ->
+                                mod.following = response.data()?.Page()?.pageInfo()?.total()
+                            })
+                    } else {
+                        userFollowerCountLiveData.value =
+                            userFollowerCountLiveData.value?.also { mod ->
+                                mod.data?.following = response.data()?.Page()?.pageInfo()?.total()
+                            }
                     }
-                }
-            }, {
-                Timber.w(it)
-            })
+                }, {
+                    Timber.w(it)
+                })
         compositeDisposable.add(disposable)
     }
 
@@ -137,7 +145,7 @@ class UserServiceImpl(private val repository: BaseGraphRepository) : UserService
         compositeDisposable: CompositeDisposable,
         callback: (Resource<List<UserFollowersModel>>) -> Unit
     ) {
-        val disposable = repository.request(userField.toQueryOrMutation())
+        val disposable = baseGraphRepository.request(userField.toQueryOrMutation())
             .map { response ->
                 val data = response.data()
                 if (data is UserFollowersQuery.Data)
@@ -168,6 +176,211 @@ class UserServiceImpl(private val repository: BaseGraphRepository) : UserService
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
+        compositeDisposable.add(disposable)
+    }
+
+
+    override fun getUserFavourite(
+        field: UserFavouriteField,
+        compositeDisposable: CompositeDisposable,
+        callback: (Resource<List<BaseModel>>) -> Unit
+    ) {
+        val disposable = baseGraphRepository.request(field.toQueryOrMutation())
+            .map {
+                val type = it.data()?.User()?.favourites()?.let { fav ->
+                    when {
+                        fav.anime() != null -> {
+                            BrowseTypes.ANIME
+                        }
+                        fav.manga() != null -> {
+                            BrowseTypes.MANGA
+                        }
+                        fav.characters() != null -> {
+                            BrowseTypes.CHARACTER
+                        }
+                        fav.staff() != null -> {
+                            BrowseTypes.STAFF
+                        }
+                        fav.studios() != null -> {
+                            BrowseTypes.STUDIO
+                        }
+                        else -> {
+                            BrowseTypes.UNKNOWN
+                        }
+                    }
+                }
+                val data = it.data()?.User()?.favourites()
+                when (type) {
+                    BrowseTypes.ANIME -> {
+                        data?.anime()?.nodes()
+                            ?.filter { it.fragments().commonMediaContent().isAdult == false }
+                            ?.map { map ->
+                                map.fragments().commonMediaContent().let {
+                                    MediaFavouriteModel().also { model ->
+                                        model.mediaId = it.id()
+                                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
+                                            TitleModel().also { ti ->
+                                                ti.romaji = it.romaji()
+                                                ti.english = it.english()
+                                                ti.native = it.native_()
+                                                ti.userPreferred = it.userPreferred()
+                                            }
+                                        }
+                                        model.coverImage =
+                                            it.coverImage()?.fragments()?.mediaCoverImage()?.let {
+                                                CoverImageModel().also { img ->
+                                                    img.extraLarge = it.extraLarge()
+                                                    img.medium = it.medium()
+                                                    img.large = it.large()
+                                                }
+                                            }
+                                        model.bannerImage =
+                                            it.bannerImage() ?: model.coverImage?.largeImage
+                                        model.type = it.type()?.ordinal
+                                        model.format = it.format()?.ordinal
+                                        model.status = it.status()?.ordinal
+                                        model.seasonYear = it.seasonYear()
+                                        model.averageScore = it.averageScore()
+                                    }
+                                }
+                            }
+                    }
+                    BrowseTypes.MANGA -> {
+                        data?.manga()?.nodes()
+                            ?.filter { it.fragments().commonMediaContent().isAdult == false }
+                            ?.map { map ->
+                                map.fragments().commonMediaContent().let {
+                                    MediaFavouriteModel().also { model ->
+                                        model.mediaId = it.id()
+                                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
+                                            TitleModel().also { ti ->
+                                                ti.romaji = it.romaji()
+                                                ti.english = it.english()
+                                                ti.native = it.native_()
+                                                ti.userPreferred = it.userPreferred()
+                                            }
+                                        }
+                                        model.coverImage =
+                                            it.coverImage()?.fragments()?.mediaCoverImage()?.let {
+                                                CoverImageModel().also { img ->
+                                                    img.extraLarge = it.extraLarge()
+                                                    img.medium = it.medium()
+                                                    img.large = it.large()
+                                                }
+                                            }
+                                        model.bannerImage =
+                                            it.bannerImage() ?: model.coverImage?.largeImage
+                                        model.type = it.type()?.ordinal
+                                        model.format = it.format()?.ordinal
+                                        model.status = it.status()?.ordinal
+                                        model.seasonYear = it.seasonYear()
+                                        model.averageScore = it.averageScore()
+                                    }
+                                }
+                            }
+                    }
+                    BrowseTypes.CHARACTER -> {
+                        data?.characters()?.nodes()?.map { map ->
+                            map.fragments().narrowCharacterContent().let {
+                                CharacterFavouriteModel().also { model ->
+                                    model.characterId = it.id()
+                                    model.name = it.name()?.let {
+                                        CharacterNameModel().also { name ->
+                                            name.full = it.full()
+                                        }
+                                    }
+                                    model.characterImageModel = it.image()?.let {
+                                        CharacterImageModel().also { img ->
+                                            img.large = it.large()
+                                            img.medium = it.medium()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    BrowseTypes.STAFF -> {
+                        data?.staff()?.nodes()?.map { map ->
+                            map.fragments().narrowStaffContent().let {
+                                StaffFavouriteModel().also { model ->
+                                    model.staffId = it.id()
+                                    model.staffName = it.name()?.let {
+                                        StaffNameModel().also { name ->
+                                            name.full = it.full()
+                                        }
+                                    }
+                                    model.staffImage = it.image()?.let {
+                                        StaffImageModel().also { img ->
+                                            img.medium = it.medium()
+                                            img.large = it.large()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    BrowseTypes.STUDIO -> {
+                        data?.studios()?.nodes()?.map { map ->
+                            map.fragments().studioContent().let {
+                                StudioFavouriteModel().also { model ->
+                                    model.studioId = it.id()
+                                    model.studioName = it.name()
+                                    model.studioMedia =
+                                        it.media()?.nodes()
+                                            ?.filter { it.fragments().commonMediaContent().isAdult == false }
+                                            ?.map {
+                                                it.fragments().commonMediaContent().let {
+                                                    MediaFavouriteModel().also { model ->
+                                                        model.mediaId = it.id()
+                                                        model.averageScore = it.averageScore()
+                                                        model.title =
+                                                            it.title()?.fragments()?.mediaTitle()
+                                                                ?.let {
+                                                                    TitleModel().also { ti ->
+                                                                        ti.userPreferred =
+                                                                            it.userPreferred()
+                                                                        ti.romaji = it.romaji()
+                                                                        ti.english = it.english()
+                                                                        ti.native = it.native_()
+                                                                    }
+                                                                }
+                                                        model.coverImage =
+                                                            it.coverImage()?.fragments()
+                                                                ?.mediaCoverImage()?.let {
+                                                                    CoverImageModel().also { img ->
+                                                                        img.large = it.large()
+                                                                        img.medium = it.medium()
+                                                                        img.extraLarge =
+                                                                            it.extraLarge()
+                                                                    }
+                                                                }
+                                                        model.bannerImage =
+                                                            it.bannerImage()
+                                                                ?: model.coverImage?.largeImage
+                                                        model.type = it.type()?.ordinal
+                                                        model.format = it.format()?.ordinal
+                                                        model.status = it.status()?.ordinal
+                                                        model.seasonYear = it.seasonYear()
+                                                    }
+                                                }
+                                            }
+                                }
+                            }
+                        }?.filter { it.studioMedia.isNullOrEmpty().not() }
+                    }
+                    else -> {
+                        emptyList()
+                    }
+                }
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(it ?: emptyList()))
+            }, {
+                Timber.w(it)
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
         compositeDisposable.add(disposable)
     }
 

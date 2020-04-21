@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_download"
         android:title="@string/download"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/imageShareMenu"
+        android:title="@string/share"
+        app:showAsAction="never" />
 </menu>
