@@ -88,7 +88,14 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
 
                     dataSource.result?.let {
                         try {
-                            val resource = createDrawable(it.get())?: return
+                            var resource = createDrawable(it.get()) ?: return
+                            resource = BitmapDrawable(
+                                context.resources,
+                                resource.toBitmap(
+                                    (resource.intrinsicWidth * 0.8).toInt(),
+                                    (resource.intrinsicHeight * 0.8).toInt()
+                                )
+                            )
                             if (drawable.result is LayerDrawable && drawable.hasResult()) {
                                 val layerDrawable = drawable.result as LayerDrawable
                                 val spoilerDrawable = layerDrawable.getDrawable(1)
@@ -153,9 +160,9 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                             }
                             DrawableUtils.applyIntrinsicBoundsIfEmpty(resource)
                             drawable.result = resource
-                        }catch (e:Exception){
+                        } catch (e: Exception) {
                             Timber.e(e, "Fresco Plugin Exception")
-                        }finally {
+                        } finally {
                             CloseableReference.closeSafely(it)
                         }
                     }
@@ -180,7 +187,13 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                     }
                 }
                 is CloseableStaticBitmap -> {
-                    BitmapDrawable(context.resources, closeableImage.underlyingBitmap.copy(closeableImage.underlyingBitmap.config, true))
+                    BitmapDrawable(
+                        context.resources,
+                        closeableImage.underlyingBitmap.copy(
+                            closeableImage.underlyingBitmap.config,
+                            true
+                        )
+                    )
                 }
                 else -> {
                     null
