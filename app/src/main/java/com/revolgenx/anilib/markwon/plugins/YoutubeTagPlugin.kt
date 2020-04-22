@@ -56,7 +56,6 @@ class YoutubeTagPlugin(private val context: Context) : CustomPlugin() {
                         ImageProps.DESTINATION,
                         String.format(YOUTUBE_IMG_URL, source.substring(source.indexOf("?v=") + 3))
                     )
-                    renderProps.set(ImageProps.REPLACEMENT_TEXT_IS_LINK, true)
                     renderProps.set(
                         ImageProps.IMAGE_SIZE,
                         ImageSize(ImageSize.Dimension(100f, "%"), null)

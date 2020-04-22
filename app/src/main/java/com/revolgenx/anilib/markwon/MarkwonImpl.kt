@@ -23,12 +23,12 @@ import timber.log.Timber
 object MarkwonImpl {
     fun createHtmlInstance(context: Context): Markwon {
         return Markwon.builder(context)
-            .usePlugin(LinkifyPlugin.create())
-            .usePlugin(object : AbstractMarkwonPlugin() {
-                override fun configureParser(builder: Parser.Builder) {
-                    builder.inlineParserFactory(MarkwonInlineParser.factoryBuilder().build())
-                }
-            })
+//            .usePlugin(LinkifyPlugin.create())
+//            .usePlugin(object : AbstractMarkwonPlugin() {
+//                override fun configureParser(builder: Parser.Builder) {
+//                    builder.inlineParserFactory(MarkwonInlineParser.factoryBuilder().build())
+//                }
+//            })
             .usePlugin(HtmlPlugin.create())
             .usePlugin(StrikethroughPlugin.create())
             .usePlugin(CenterPlugin())
@@ -54,12 +54,14 @@ object MarkwonImpl {
 
         docs.select("div.youtube").forEach { element ->
             val containsSpoiler = element.parents().hasClass("markdown_spoiler")
+            element.appendText("youtube")
             if (containsSpoiler)
                 element.attr("alt", "markdown_spoiler")
         }
 
-        docs.select("div.youtube").forEach { element ->
+        docs.select("video").forEachIndexed { index, element ->
             val containsSpoiler = element.parents().hasClass("markdown_spoiler")
+            element.appendText("video")
             if (containsSpoiler)
                 element.attr("alt", "markdown_spoiler")
         }
@@ -116,7 +118,7 @@ object MarkwonImpl {
 //        }
 
         return MarkdownModel().also {
-            it.html = docs.body().html().replace("\n", "").replace("<br>", "\n\n<span></span>")
+            it.html = "<span></span> \n <span></span>" + docs.body().html().replace("\n", "").replace("<br>", "<span></span>\n\n<span></span>")
             it.images = images
             it.videos = videos
         }

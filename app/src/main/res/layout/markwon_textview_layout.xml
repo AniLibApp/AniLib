@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<?xml version="1.0" encoding="utf-8"?><!--<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
 <!--    android:layout_width="match_parent"-->
 <!--    android:layout_height="wrap_content"-->
 <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
 <!--    app:layout_maxWidth="1080dp">-->
 
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicTextView android:id="@+id/markdown_holder_tv"
+<com.pranavpandey.android.dynamic.support.widget.DynamicTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/markdown_holder_tv"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    android:layout_height="wrap_content" />
 
-<!--</HorizontalScrollView>-->
+    <!--</HorizontalScrollView>-->
