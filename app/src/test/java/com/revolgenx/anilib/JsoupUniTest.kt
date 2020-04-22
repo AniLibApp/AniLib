@@ -155,7 +155,7 @@ class JsoupUniTest {
 
     val youtubediv1 =
         "<span class='markdown_spoiler'><span><div class='youtube' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>"
-   val image =
+    val image =
         "<span class='markdown_spoiler'><span><img  src='https://www.youtube.com/watch?v=XoyLbuX8EXU'></div></span></span>"
 
     @Test
@@ -210,5 +210,17 @@ class JsoupUniTest {
         println(docs.body().html())
         videos.forEach { println(it.toString()) }
         images.forEach { println(it.toString()) }
+    }
+
+
+    @Test
+    fun insertElement() {
+        val t = "<video><source></video>"
+        val docs = Jsoup.parse(t)
+        docs.select("video").forEach {
+//            it.text("video")
+            it.appendText("video")
+        }
+        println(docs.body().html().replace("\n", ""))
     }
 }
