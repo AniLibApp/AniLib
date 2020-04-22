@@ -8,6 +8,7 @@ import android.graphics.drawable.LayerDrawable
 import android.text.Spanned
 import android.widget.TextView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.net.toUri
 import com.facebook.common.executors.CallerThreadExecutor
 import com.facebook.common.references.CloseableReference
 import com.facebook.datasource.BaseDataSubscriber
@@ -19,6 +20,7 @@ import com.facebook.imagepipeline.image.CloseableImage
 import com.facebook.imagepipeline.image.CloseableStaticBitmap
 import com.facebook.imagepipeline.nativecode.NativeBlurFilter
 import com.facebook.imagepipeline.request.ImageRequest
+import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.revolgenx.anilib.view.drawable.GifDrawable
 import com.revolgenx.anilib.view.drawable.SpoilerDrawable
 import io.noties.markwon.AbstractMarkwonPlugin
@@ -76,7 +78,7 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
     class FrescoStoreImpl(private val context: Context) : FrescoStore {
         override fun load(drawable: AsyncDrawable) {
             val dataSource = Fresco.getImagePipeline().fetchDecodedImage(
-                ImageRequest.fromUri(drawable.destination),
+                ImageRequestBuilder.newBuilderWithSource(drawable.destination.toUri()).build(),
                 context
             )
             dataSource.subscribe(object :
@@ -122,6 +124,7 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                                         )
                                     DrawableUtils.applyIntrinsicBoundsIfEmpty(finalDrawable)
                                     drawable.result = finalDrawable
+
                                 }
                                 return
                             } else if (drawable.result is ColorDrawable) {
