@@ -12,6 +12,7 @@ import android.widget.FrameLayout
 import android.widget.PopupWindow
 import com.google.android.exoplayer2.ui.PlayerView
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.video.ExoVideoInstance
 import com.revolgenx.anilib.video.PlayerManager
 import com.revolgenx.anilib.video.PlayerManagerImpl
@@ -34,9 +35,8 @@ abstract class BasePopupVideoActivity : BaseDynamicActivity() {
     }
     private var popupPlayer: PlayerView? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        ExoVideoInstance.getInstance().url =
+    companion object {
+        val testvid =
             "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     }
 
@@ -75,6 +75,9 @@ abstract class BasePopupVideoActivity : BaseDynamicActivity() {
             playerManager.stop()
             playerManager.detach()
             removePopUpView()
+        }
+        popupPlayer!!.exoShareIv.setOnClickListener {
+            openLink(ExoVideoInstance.getInstance().url)
         }
         playerManager.attach(popupPlayer!!)
         popupParams = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -178,7 +181,7 @@ abstract class BasePopupVideoActivity : BaseDynamicActivity() {
 
     override fun onDestroy() {
         removePopUpView()
-        if(!isRotating)
+        if (!isRotating)
             playerManager.releasePlayer()
         super.onDestroy()
     }

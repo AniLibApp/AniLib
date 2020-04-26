@@ -2,20 +2,16 @@ package com.revolgenx.anilib.presenter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.view.setPadding
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseRankEvent
-import com.revolgenx.anilib.model.stats.MediaStatsRankingModel
+import com.revolgenx.anilib.model.user.stats.MediaStatsRankingModel
 import com.revolgenx.anilib.type.MediaRankType
-import com.revolgenx.anilib.util.dp
 import kotlinx.android.synthetic.main.ranking_presenter_layout.view.*
 
 class RankingsPresenter(context: Context, private val mediaType: Int?) :

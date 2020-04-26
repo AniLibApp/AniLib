@@ -1,15 +1,25 @@
 package com.revolgenx.anilib.fragment.home
 
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.NavViewPagerContainerActivity
 import com.revolgenx.anilib.event.BrowseEvent
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
+import com.revolgenx.anilib.meta.NavViewPagerContainerMeta
+import com.revolgenx.anilib.meta.NavViewPagerContainerType
+import com.revolgenx.anilib.meta.UserMeta
+import com.revolgenx.anilib.meta.UserStatsMeta
 import com.revolgenx.anilib.preference.loggedIn
+import com.revolgenx.anilib.preference.userId
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeSnakeBar
+import com.revolgenx.anilib.view.drawable.VideoPlayBitmapDrawable
 import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.discover_fragment_layout.*
@@ -34,7 +44,7 @@ class DiscoverFragment : BaseFragment() {
 
 
     val combined =
-        "<span></span><div class='youtube' alt='markdown_spoiler' id='https://www.youtube.com/watch?v=Jzg0oBf-47A'> youtube</div>\n"+
+        "<span></span><div class='youtube' alt='markdown_spoiler' id='https://www.youtube.com/watch?v=Jzg0oBf-47A'> youtube</div>\n" +
 
                 " hello orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n" +
                 "\n" +
@@ -53,7 +63,7 @@ class DiscoverFragment : BaseFragment() {
                 "\n" +
                 "Why do we use it? <img width='440'  src='https://dream-wonderland.com/blog/wp-content/uploads/2017/08/Ohys-Raws-Aikatsu-Stars-69-TX-1280x720-x264-AAC.mp4_20170820_005650.721.jpg'>" +
                 "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).\n" +
-                "\n<video muted loop autoplay alt='markdown_spoiler' controls><source src='https://media1.tenor.com/images/fcdbd7e6438f73799ba0c0704b44daa6/tenor.gif?itemid=3558286' type='video/webm'>video###https://media1.tenor.com/images/fcdbd7e6438f73799ba0c0704b44daa6/tenor.gif?itemid=3558286</video>\n" +
+                "\n<video muted loop autoplay alt='markdown_spoiler' controls><source src='https://files.catbox.moe/0zofnv.mp4' type='video/webm'>video###https://media1.tenor.com/images/fcdbd7e6438f73799ba0c0704b44daa6/tenor.gif?itemid=3558286</video>\n" +
                 "<span></span><div class='youtube'  id='https://www.youtube.com/watch?v=Jzg0oBf-47A'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div>\n"
 
     /*https://files.catbox.moe/0zofnv.mp4*/
@@ -93,19 +103,63 @@ class DiscoverFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val adapter = MarkwonAdapter.create(R.layout.markwon_textview_layout, R.id.markdown_holder_tv)
-        markwonRecyclerView.adapter = adapter
-        markwonRecyclerView.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            )
-        )
-        adapter.setMarkdown(
-            MarkwonImpl.createHtmlInstance(requireContext()),combined
-        )
-        adapter.notifyDataSetChanged()
+//        val adapter = MarkwonAdapter.create(R.layout.markwon_textview_layout, R.id.markdown_holder_tv)
+//        markwonRecyclerView.adapter = adapter
+//        markwonRecyclerView.addItemDecoration(
+//            DividerItemDecoration(
+//                requireContext(),
+//                DividerItemDecoration.VERTICAL
+//            )
+//        )
+//        adapter.setMarkdown(
+//            MarkwonImpl.createHtmlInstance(requireContext()),combined
+//        )
+//        adapter.notifyDataSetChanged()
 
+
+        imageView.setOnClickListener {
+            PopupMenu(requireContext(), it).let {
+                it.inflate(R.menu.user_stats_menu)
+                it.setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.userAnimeStats -> {
+                            NavViewPagerContainerActivity.openActivity(
+                                requireContext(),
+                                NavViewPagerContainerMeta(
+                                    NavViewPagerContainerType.ANIME_STATS,
+                                    UserStatsMeta(
+                                        UserMeta(
+                                            requireContext().userId(),
+                                            userName = null,
+                                            loggedInUser = true
+                                        ), MediaType.ANIME.ordinal
+                                    )
+                                )
+                            )
+                            true
+                        }
+                        R.id.userMangaStats -> {
+                            NavViewPagerContainerActivity.openActivity(
+                                requireContext(),
+                                NavViewPagerContainerMeta(
+                                    NavViewPagerContainerType.MANGA_STATS,
+                                    UserStatsMeta(UserMeta(
+                                        requireContext().userId(),
+                                        userName = null,
+                                        loggedInUser = true
+                                    ), MediaType.MANGA.ordinal)
+                                )
+                            )
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                it.show()
+            }
+        }
+
+        imageView.setImageDrawable(LayerDrawable(arrayOf(VideoPlayBitmapDrawable(requireContext()))))
 //        discoverFragmentTv.post {
 //            MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(discoverFragmentTv, video)
 //        }

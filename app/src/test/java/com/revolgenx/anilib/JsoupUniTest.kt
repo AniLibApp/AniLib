@@ -4,6 +4,7 @@ import com.revolgenx.anilib.model.markwon.MarkdownImageModel
 import com.revolgenx.anilib.model.markwon.MarkdownVideoModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import org.jsoup.nodes.Entities
 import org.jsoup.nodes.TextNode
 import org.junit.Test
 
@@ -218,9 +219,24 @@ class JsoupUniTest {
         val t = "<video><source></video>"
         val docs = Jsoup.parse(t)
         docs.select("video").forEach {
-//            it.text("video")
+            //            it.text("video")
             it.appendText("video")
         }
         println(docs.body().html().replace("\n", ""))
+    }
+
+    @Test
+    fun newLineCenter() {
+        val t = "<center>hello \n hello</center><span>hello</span>"
+        println(t.replace("\n", "<br>"))
+
+        Jsoup.parse(t)?.let {
+            it.outputSettings().prettyPrint(false)
+            it.select("center").forEach {
+                println(it.html(it.html().replace("<br>", "</center><center>")))
+            }
+
+            println(it.body().html())
+        }
     }
 }

@@ -52,6 +52,7 @@
         <activity android:name=".activity.SimpleDraweeViewerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop" />
+        <activity android:name=".activity.NavViewPagerContainerActivity" />
 
     </application>
 

@@ -2,7 +2,7 @@ package com.revolgenx.anilib.field.user
 
 import com.revolgenx.anilib.UserProfileQuery
 
-class UserField : BaseUserField<UserProfileQuery>() {
+class UserProfileField : BaseUserField<UserProfileQuery>() {
     override fun toQueryOrMutation(): UserProfileQuery {
         return UserProfileQuery.builder().apply {
             userId?.let {

@@ -4,12 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.*
 import com.revolgenx.anilib.constant.BrowseTypes
 import com.revolgenx.anilib.field.user.UserFavouriteField
-import com.revolgenx.anilib.field.user.UserField
+import com.revolgenx.anilib.field.user.UserProfileField
 import com.revolgenx.anilib.field.user.UserFollowerField
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.character.CharacterNameModel
-import com.revolgenx.anilib.model.search.MediaSearchModel
 import com.revolgenx.anilib.model.user.*
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.util.ERROR
@@ -24,14 +23,14 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
     override val userFollowerCountLiveData: MutableLiveData<Resource<UserFollowerCountModel>> =
         MutableLiveData()
 
-    override fun getUserProfile(userField: UserField, compositeDisposable: CompositeDisposable) {
+    override fun getUserProfile(userProfileField: UserProfileField, compositeDisposable: CompositeDisposable) {
         val disposable =
-            baseGraphRepository.request(userField.toQueryOrMutation()).map { response ->
+            baseGraphRepository.request(userProfileField.toQueryOrMutation()).map { response ->
                 response.data()?.User()?.let {
                     UserProfileModel().also { model ->
                         model.baseId = it.id()
                         model.userId = it.id()
-                        model.name = it.name()
+                        model.userName = it.name()
                         model.avatar = it.avatar()?.let { ava ->
                             UserAvatarImageModel().also { img ->
                                 img.large = ava.large()
@@ -78,7 +77,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                         }
                     userProfileLiveData.value = Resource.success(model)
                     model?.let {
-                        getTotalFollowing(userField, compositeDisposable)
+                        getTotalFollowing(userProfileField, compositeDisposable)
                     }
                 }, {
                     Timber.w(it)
@@ -89,12 +88,12 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
     }
 
     override fun getTotalFollower(
-        userField: UserField,
+        userProfileField: UserProfileField,
         compositeDisposable: CompositeDisposable,
         callback: ((Resource<Int>) -> Unit)?
     ) {
         val disposable =
-            baseGraphRepository.request(userField.userTotalFollowerField.toQueryOrMutation())
+            baseGraphRepository.request(userProfileField.userTotalFollowerField.toQueryOrMutation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     if (userFollowerCountLiveData.value == null) {
@@ -115,12 +114,12 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
     }
 
     override fun getTotalFollowing(
-        userField: UserField,
+        userProfileField: UserProfileField,
         compositeDisposable: CompositeDisposable,
         callback: ((Resource<Int>) -> Unit)?
     ) {
         val disposable =
-            baseGraphRepository.request(userField.userTotalFollowingField.toQueryOrMutation())
+            baseGraphRepository.request(userProfileField.userTotalFollowingField.toQueryOrMutation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     if (userFollowerCountLiveData.value == null) {
@@ -152,7 +151,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                     (data as? UserFollowersQuery.Data)?.Page()?.followers()?.map {
                         UserFollowersModel().also { model ->
                             model.userId = it.id()
-                            model.name = it.name()
+                            model.userName = it.name()
                             model.avatar = it.avatar()?.let {
                                 UserAvatarImageModel().also { img -> img.medium = it.medium() }
                             }
@@ -162,7 +161,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                     (data as? UserFollowingQuery.Data)?.Page()?.following()?.map {
                         UserFollowersModel().also { model ->
                             model.userId = it.id()
-                            model.name = it.name()
+                            model.userName = it.name()
                             model.avatar = it.avatar()?.let {
                                 UserAvatarImageModel().also { img -> img.medium = it.medium() }
                             }

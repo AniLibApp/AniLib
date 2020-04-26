@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.model.stats
+package com.revolgenx.anilib.model.user.stats
 
 class MediaStatsScoreDistributionModel {
     var score: Int? = null

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/userAnimeStats"
+        android:title="@string/anime_stats"/>
+    <item
+        android:id="@+id/userMangaStats"
+        android:title="@string/manga_stats"/>
+
+</menu>
