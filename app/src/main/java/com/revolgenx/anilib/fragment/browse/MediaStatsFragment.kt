@@ -22,7 +22,7 @@ import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.media.MediaStatsField
 import com.revolgenx.anilib.fragment.base.BaseFragment
-import com.revolgenx.anilib.model.stats.MediaStatsModel
+import com.revolgenx.anilib.model.user.stats.MediaStatsModel
 import com.revolgenx.anilib.presenter.RankingsPresenter
 import com.revolgenx.anilib.repository.util.Status.*
 import com.revolgenx.anilib.viewmodel.MediaStatsViewModel
@@ -160,7 +160,7 @@ class MediaStatsFragment : BaseFragment() {
 
         data.trendsEntry?.let { entries ->
             LineDataSet(entries, "").apply {
-                mode = LineDataSet.Mode.CUBIC_BEZIER
+                mode = LineDataSet.Mode.HORIZONTAL_BEZIER
                 lineWidth = 2f
                 valueTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
                 color = DynamicTheme.getInstance().get().tintAccentColor
@@ -266,7 +266,7 @@ class MediaStatsFragment : BaseFragment() {
             if (scores.contains(score)) {
                 BarEntry(
                     score.toFloat(),
-                    data.scoreDistribution?.get(index)?.amount?.toFloat() ?: 0f
+                    data.scoreDistribution?.get(scores.indexOf(score))?.amount?.toFloat() ?: 0f
                 )
             } else {
                 BarEntry(score.toFloat(), 0f)
@@ -276,7 +276,7 @@ class MediaStatsFragment : BaseFragment() {
                 it.colors = barColors
                 it.valueTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
             }
-            scoreDistributionPieChart.apply {
+            scoreDistributionBarChart.apply {
                 legend.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                 axisRight.isEnabled = false
                 axisLeft.isEnabled = false
@@ -295,7 +295,7 @@ class MediaStatsFragment : BaseFragment() {
 
                 setTouchEnabled(false)
                 description = null
-                scoreDistributionPieChart.data = BarData(dataSet).apply {
+                scoreDistributionBarChart.data = BarData(dataSet).apply {
                     barWidth = 4f
                     xAxis.spaceMin = barWidth / 2f
                     xAxis.spaceMax = barWidth / 2f

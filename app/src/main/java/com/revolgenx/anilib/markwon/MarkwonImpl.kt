@@ -23,12 +23,12 @@ import timber.log.Timber
 object MarkwonImpl {
     fun createHtmlInstance(context: Context): Markwon {
         return Markwon.builder(context)
-//            .usePlugin(LinkifyPlugin.create())
-//            .usePlugin(object : AbstractMarkwonPlugin() {
-//                override fun configureParser(builder: Parser.Builder) {
-//                    builder.inlineParserFactory(MarkwonInlineParser.factoryBuilder().build())
-//                }
-//            })
+            .usePlugin(LinkifyPlugin.create())
+            .usePlugin(object : AbstractMarkwonPlugin() {
+                override fun configureParser(builder: Parser.Builder) {
+                    builder.inlineParserFactory(MarkwonInlineParser.factoryBuilder().build())
+                }
+            })
             .usePlugin(HtmlPlugin.create())
             .usePlugin(StrikethroughPlugin.create())
             .usePlugin(CenterPlugin())
@@ -72,6 +72,8 @@ object MarkwonImpl {
             if (containsSpoiler)
                 element.attr("alt", "markdown_spoiler")
         }
+
+
 
 //        docs.select("div.youtube").forEachIndexed { index, element ->
 //            val containsSpoiler = element.parents().hasClass("markdown_spoiler")
@@ -118,7 +120,11 @@ object MarkwonImpl {
 //        }
 
         return MarkdownModel().also {
-            it.html = "<span></span> \n <span></span>" + docs.body().html().replace("\n", "").replace("<br>", "<span></span>\n\n<span></span>")
+            it.html = "<span></span> \n <span></span>" + docs.body().html()
+                .replace("\n", "")
+                .replace("</center>", "</center><br>")
+                .replace("<center>", "\n<center>")
+                .replace("<br>", "<span></span>\n\n<span></span>")
             it.images = images
             it.videos = videos
         }

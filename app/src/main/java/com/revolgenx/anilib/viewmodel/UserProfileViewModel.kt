@@ -2,7 +2,7 @@ package com.revolgenx.anilib.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import com.revolgenx.anilib.field.user.UserField
+import com.revolgenx.anilib.field.user.UserProfileField
 import com.revolgenx.anilib.model.user.UserFollowerCountModel
 import com.revolgenx.anilib.model.user.UserProfileModel
 import com.revolgenx.anilib.repository.util.Resource
@@ -27,7 +27,7 @@ class UserProfileViewModel(private val userService: UserService) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     val userField by lazy {
-        UserField()
+        UserProfileField()
     }
 
     fun getProfile() {

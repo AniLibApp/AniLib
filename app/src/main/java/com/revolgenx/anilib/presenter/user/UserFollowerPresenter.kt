@@ -29,7 +29,7 @@ class UserFollowerPresenter(requireContext: Context) :
         val item = element.data ?: return
         holder.itemView.apply {
             userFollowerSimpleDrawee.setImageURI(item.avatar?.medium)
-            userFollowerTv.text = item.name
+            userFollowerTv.text = item.userName
             setOnClickListener {
                 UserBrowseEvent(item.userId).postEvent
             }

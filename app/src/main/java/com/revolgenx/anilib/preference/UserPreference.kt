@@ -43,7 +43,7 @@ fun Context.userBannerImage(banner: String?) = putString(userBannerImageKey, ban
 
 
 fun Context.saveBasicUserDetail(user: BasicUserModel) {
-    userName(user.name)
+    userName(user.userName)
     userAvatar(user.avatar?.image)
     userBannerImage(user.bannerImage)
     userScoreFormat(user.scoreFormat)

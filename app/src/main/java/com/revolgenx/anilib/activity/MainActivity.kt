@@ -166,7 +166,8 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             }
 
             headerView.navHeaderIcon.hierarchy.let {
-                it.roundingParams = it.roundingParams?.setBorderColor(DynamicTheme.getInstance().get().accentColorDark)
+                it.roundingParams =
+                    it.roundingParams?.setBorderColor(DynamicTheme.getInstance().get().tintAccentColor)
             }
 
             DynamicTheme.getInstance().get().primaryColorDark
@@ -182,9 +183,9 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
     }
 
     private fun checkLoggedIn(): Boolean {
-        return if(context.loggedIn()){
+        return if (context.loggedIn()) {
             true
-        }else{
+        } else {
             makeLogInSnackBar(mainViewPager)
             false
         }

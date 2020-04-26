@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.markwon.plugins
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -15,11 +16,11 @@ import com.facebook.datasource.BaseDataSubscriber
 import com.facebook.datasource.DataSource
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2
+import com.facebook.imagepipeline.common.ImageDecodeOptions
 import com.facebook.imagepipeline.image.CloseableAnimatedImage
 import com.facebook.imagepipeline.image.CloseableImage
 import com.facebook.imagepipeline.image.CloseableStaticBitmap
 import com.facebook.imagepipeline.nativecode.NativeBlurFilter
-import com.facebook.imagepipeline.request.ImageRequest
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.revolgenx.anilib.view.drawable.GifDrawable
 import com.revolgenx.anilib.view.drawable.SpoilerDrawable
@@ -78,7 +79,9 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
     class FrescoStoreImpl(private val context: Context) : FrescoStore {
         override fun load(drawable: AsyncDrawable) {
             val dataSource = Fresco.getImagePipeline().fetchDecodedImage(
-                ImageRequestBuilder.newBuilderWithSource(drawable.destination.toUri()).build(),
+                ImageRequestBuilder.newBuilderWithSource(drawable.destination.toUri()).setImageDecodeOptions(
+                    ImageDecodeOptions.newBuilder().setDecodePreviewFrame(true).build()
+                ).build(),
                 context
             )
             dataSource.subscribe(object :
@@ -88,14 +91,7 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
 
                     dataSource.result?.let {
                         try {
-                            var resource = createDrawable(it.get()) ?: return
-                            resource = BitmapDrawable(
-                                context.resources,
-                                resource.toBitmap(
-                                    (resource.intrinsicWidth * 0.8).toInt(),
-                                    (resource.intrinsicHeight * 0.8).toInt()
-                                )
-                            )
+                            val resource = createDrawable(it.get()) ?: return
                             if (drawable.result is LayerDrawable && drawable.hasResult()) {
                                 val layerDrawable = drawable.result as LayerDrawable
                                 val spoilerDrawable = layerDrawable.getDrawable(1)
@@ -183,15 +179,29 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                     (Fresco.getImagePipelineFactory().getAnimatedDrawableFactory(context)?.createDrawable(
                         closeableImage
                     ) as? AnimatedDrawable2)?.let {
-                        GifDrawable(context, it.animationBackend)
+                        val bitmap = closeableImage.imageResult.previewBitmap.get().copy(
+                            closeableImage.imageResult.previewBitmap.get().config,
+                            true
+                        )
+                        GifDrawable(
+                            context, Bitmap.createScaledBitmap(
+                                bitmap,
+                                (bitmap.width * 0.7).toInt(),
+                                (bitmap.height * 0.7).toInt(), false
+                            )
+                        )
                     }
                 }
                 is CloseableStaticBitmap -> {
+                    val bitmap = closeableImage.underlyingBitmap.copy(
+                        closeableImage.underlyingBitmap.config,
+                        true
+                    )
                     BitmapDrawable(
                         context.resources,
-                        closeableImage.underlyingBitmap.copy(
-                            closeableImage.underlyingBitmap.config,
-                            true
+                        Bitmap.createScaledBitmap(
+                            bitmap, (bitmap.width * 0.7).toInt(),
+                            (bitmap.height * 0.7).toInt(), false
                         )
                     )
                 }
@@ -199,6 +209,7 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                     null
                 }
             }
+
         }
     }
 

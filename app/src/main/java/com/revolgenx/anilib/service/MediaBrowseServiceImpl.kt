@@ -6,7 +6,7 @@ import com.revolgenx.anilib.BrowseSimpleMediaQuery
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.field.media.MediaOverviewField
 import com.revolgenx.anilib.field.media.*
-import com.revolgenx.anilib.model.stats.*
+import com.revolgenx.anilib.model.user.stats.*
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.converter.toMediaOverviewModel
 import com.revolgenx.anilib.repository.network.converter.toModel
@@ -16,9 +16,6 @@ import com.revolgenx.anilib.util.pmap
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
-import org.threeten.bp.Instant
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.ZoneId
 import timber.log.Timber
 
 class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
@@ -301,4 +298,41 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
         return mediaStatsLiveData
     }
 
+    override fun getMediaIn(
+        field: MediaInField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<List<CommonMediaModel>>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation()).map {
+            it.data()?.Media()?.let { media ->
+                CommonMediaModel().also { model ->
+                    model.mediaId = media.id()
+                    model.title = media.title()?.let {
+                        TitleModel().also { mod ->
+                            mod.romaji = it.romaji()
+                        }
+                    }
+
+                    model.type = media.type()!!.ordinal
+                    model.coverImage = media.coverImage()?.fragments()?.mediaCoverImage()?.let {
+                        CoverImageModel().also { image ->
+                            image.medium = it.medium()
+                            image.large = it.large()
+                            image.extraLarge = it.extraLarge()
+                        }
+                    }
+                    model.bannerImage = media.bannerImage()
+                    model.averageScore = media.averageScore()
+                }
+            }
+        }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+
+            }, {
+                Timber.e(it)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+
+        compositeDisposable.add(disposable)
+    }
 }

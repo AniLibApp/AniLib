@@ -54,6 +54,7 @@ class MediaListActivity : BaseDynamicActivity() {
 
         const val MEDIA_LIST_META_KEY = "MEDIA_LIST_INTENT_KEY"
     }
+
     override val layoutRes: Int = R.layout.media_list_activity_layout
     private var menuItem: MenuItem? = null
 
@@ -100,7 +101,19 @@ class MediaListActivity : BaseDynamicActivity() {
     }
 
 
-    private lateinit var tabColorStateList: ColorStateList
+    private val tabColorStateList: ColorStateList
+        get() {
+            return ColorStateList(
+                arrayOf(
+                    intArrayOf(android.R.attr.state_selected),
+                    intArrayOf(android.R.attr.state_enabled)
+                )
+                , intArrayOf(
+                    DynamicTheme.getInstance().get().accentColor,
+                    DynamicTheme.getInstance().get().tintPrimaryColor
+                )
+            )
+        }
     private lateinit var mediaListMeta: MediaListMeta
     private val accentColor by lazy {
         DynamicTheme.getInstance().get().accentColor
@@ -116,11 +129,6 @@ class MediaListActivity : BaseDynamicActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         listRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-
-        val colors = intArrayOf(
-            DynamicTheme.getInstance().get().accentColor,
-            DynamicTheme.getInstance().get().tintPrimaryColor
-        )
 
         setSupportActionBar(listToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -140,14 +148,6 @@ class MediaListActivity : BaseDynamicActivity() {
                 getString(R.string.manga_list)
             }
         }
-
-        tabColorStateList = ColorStateList(
-            arrayOf(
-                intArrayOf(android.R.attr.state_selected),
-                intArrayOf(android.R.attr.state_enabled)
-            )
-            , colors
-        )
 
         val inflater = LayoutInflater.from(this)
         listSmartTab.setCustomTabView { container, position, adapter ->

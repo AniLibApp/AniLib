@@ -202,6 +202,21 @@ query BrowseSimpleMediaQuery($mediaId:Int){
     }
 }
 
+query MediaInQuery($idIn:[Int]){
+    Media(id_in:$idIn){
+        id
+        title {
+            romaji
+        }
+        coverImage {
+            ... mediaCoverImage
+        }
+        type
+        averageScore
+        bannerImage
+    }
+}
+
 query MediaOverViewQuery($mediaId:Int){
     Media(id:$mediaId){
         id
@@ -781,6 +796,109 @@ query UserFavouriteQuery($page:Int, $perPage:Int, $id:Int, $name:String,
     }
 }
 
+query StatsOverviewQuery($id:Int, $name:String,$includeAnime:Boolean!){
+    User(id:$id, name:$name){
+        statistics{
+            anime@include(if:$includeAnime){
+                count
+                meanScore
+                standardDeviation
+                minutesWatched
+                episodesWatched
+                statuses{
+                    count
+                    meanScore
+                    status
+                    minutesWatched
+                }
+                scores(sort:[MEAN_SCORE]){
+                    count
+                    score
+                    meanScore
+                    minutesWatched
+                }
+
+                formats{
+                    count
+                    meanScore
+                    minutesWatched
+                    format
+                }
+
+                countries{
+                    count
+                    meanScore
+                    minutesWatched
+                    country
+                }
+
+                releaseYears{
+                    count
+                    meanScore
+                    minutesWatched
+                    releaseYear
+                }
+
+                startYears{
+                    count
+                    meanScore
+                    minutesWatched
+                    startYear
+                }
+            }
+
+            manga @skip(if:$includeAnime){
+                count
+                meanScore
+                standardDeviation
+
+                chaptersRead
+                volumesRead
+
+                statuses{
+                    count
+                    meanScore
+                    status
+                    minutesWatched
+                }
+                scores(sort:[MEAN_SCORE]){
+                    count
+                    score
+                    meanScore
+                    minutesWatched
+                }
+
+                formats{
+                    count
+                    meanScore
+                    minutesWatched
+                    format
+                }
+
+                countries{
+                    count
+                    meanScore
+                    minutesWatched
+                    country
+                }
+
+                releaseYears{
+                    count
+                    meanScore
+                    minutesWatched
+                    releaseYear
+                }
+
+                startYears{
+                    count
+                    meanScore
+                    minutesWatched
+                    startYear
+                }
+            }
+        }
+    }
+}
 
 
 query IsFavouriteQuery($mediaId:Int){

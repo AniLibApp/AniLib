@@ -56,7 +56,7 @@ fun NarrowMediaContent.getCommonMedia() =
 
 fun BasicUserQuery.User.toBasicUserModel() = BasicUserModel().also {
     it.userId = id()
-    it.name = name()
+    it.userName = name()
     it.scoreFormat = mediaListOptions()!!.scoreFormat()!!.ordinal
     it.avatar = UserAvatarImageModel().also { img ->
         img.large = avatar()!!.large()

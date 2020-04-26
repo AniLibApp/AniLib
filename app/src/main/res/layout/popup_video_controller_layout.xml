@@ -54,6 +54,17 @@
         android:layout_toStartOf="@id/exoFullScreenButton"
         app:srcCompat="@drawable/ic_popup_size"/>
 
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/exoShareIv"
+        android:layout_height="20dp"
+        android:layout_width="20dp"
+        style="@style/ExoMediaButton"
+        android:layout_alignParentTop="true"
+        android:layout_margin="6dp"
+        app:ads_colorType="custom"
+        app:ads_color="@color/white"
+        android:layout_toStartOf="@id/exoScreenSize"
+        app:srcCompat="@drawable/ads_ic_share"/>
 
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout

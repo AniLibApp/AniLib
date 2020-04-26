@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.model.stats
+package com.revolgenx.anilib.model.user.stats
 
 class MediaStatsTrendsModel {
     var date: Int? = null
