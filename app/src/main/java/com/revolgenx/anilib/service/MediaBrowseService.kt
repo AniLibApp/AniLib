@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.field.media.MediaOverviewField
 import com.revolgenx.anilib.field.media.*
-import com.revolgenx.anilib.model.stats.MediaStatsModel
+import com.revolgenx.anilib.model.user.stats.MediaStatsModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.disposables.CompositeDisposable
@@ -67,4 +67,9 @@ abstract class MediaBrowseService(protected val graphRepository: BaseGraphReposi
         compositeDisposable: CompositeDisposable? = null
     ): MutableStatsType
 
+    abstract fun getMediaIn(
+        field: MediaInField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<List<CommonMediaModel>>) -> Unit
+    )
 }

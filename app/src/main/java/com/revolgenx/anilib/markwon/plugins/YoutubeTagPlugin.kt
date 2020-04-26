@@ -18,6 +18,7 @@ import com.revolgenx.anilib.event.YoutubeClickedEvent
 import com.revolgenx.anilib.meta.YoutubeMeta
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.view.drawable.SpoilerDrawable
+import com.revolgenx.anilib.view.drawable.YoutubePlayBitmapDrawable
 import io.noties.markwon.*
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.html.HtmlTag
@@ -30,15 +31,8 @@ import org.commonmark.node.Image
 import java.util.*
 
 class YoutubeTagPlugin(private val context: Context) : CustomPlugin() {
-    private val playBitMapDrawable: BitmapDrawable?
-        get() {
-            return ContextCompat.getDrawable(context, R.drawable.ic_play_cirle)
-                ?.toBitmap(dp(56f), dp(56f))
-                ?.toDrawable(context.resources)?.also {
-                    it.setTint(DynamicTheme.getInstance().get().accentColor)
-                    it.gravity = Gravity.CENTER
-                }
-        }
+    private val playBitMapDrawable: YoutubePlayBitmapDrawable?
+        get() = YoutubePlayBitmapDrawable(context)
 
     override fun configure(registry: MarkwonPlugin.Registry) {
         registry.require(HtmlPlugin::class.java) { plugin ->
@@ -78,7 +72,12 @@ class YoutubeTagPlugin(private val context: Context) : CustomPlugin() {
                                 val spoilerDrawable = layerDrawable.getDrawable(1)
                                 if (spoilerDrawable is SpoilerDrawable) {
                                     spoilerDrawable.hasSpoiler = false
-                                    youtubeSpan.drawable.result = LayerDrawable(arrayOf(layerDrawable.getDrawable(0), layerDrawable.getDrawable(2))).also {
+                                    youtubeSpan.drawable.result = LayerDrawable(
+                                        arrayOf(
+                                            layerDrawable.getDrawable(0),
+                                            layerDrawable.getDrawable(2)
+                                        )
+                                    ).also {
                                         DrawableUtils.applyIntrinsicBoundsIfEmpty(it)
                                     }
                                     return

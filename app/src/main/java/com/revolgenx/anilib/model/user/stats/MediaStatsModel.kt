@@ -1,7 +1,6 @@
-package com.revolgenx.anilib.model.stats
+package com.revolgenx.anilib.model.user.stats
 
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.PieEntry
 
 
 class MediaStatsModel {

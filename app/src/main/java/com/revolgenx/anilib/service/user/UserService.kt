@@ -2,7 +2,7 @@ package com.revolgenx.anilib.service.user
 
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.field.user.UserFavouriteField
-import com.revolgenx.anilib.field.user.UserField
+import com.revolgenx.anilib.field.user.UserProfileField
 import com.revolgenx.anilib.field.user.UserFollowerField
 import com.revolgenx.anilib.model.BaseModel
 import com.revolgenx.anilib.model.user.UserFollowersModel
@@ -15,15 +15,15 @@ interface UserService {
     val userProfileLiveData: MutableLiveData<Resource<UserProfileModel>>
     val userFollowerCountLiveData: MutableLiveData<Resource<UserFollowerCountModel>>
 
-    fun getUserProfile(userField: UserField, compositeDisposable: CompositeDisposable)
+    fun getUserProfile(userProfileField: UserProfileField, compositeDisposable: CompositeDisposable)
     fun getTotalFollower(
-        userField: UserField,
+        userProfileField: UserProfileField,
         compositeDisposable: CompositeDisposable,
         callback: ((Resource<Int>) -> Unit)? = null
     )
 
     fun getTotalFollowing(
-        userField: UserField,
+        userProfileField: UserProfileField,
         compositeDisposable: CompositeDisposable,
         callback: ((Resource<Int>) -> Unit)? = null
     )

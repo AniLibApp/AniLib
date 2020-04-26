@@ -176,6 +176,19 @@
     <string name="saved_to_gallary">Saved to gallary</string>
     <string name="anime">Anime</string>
     <string name="gif">Gif</string>
+    <string name="anime_stats">Anime Stats</string>
+    <string name="manga_stats">Manga Stats</string>
+    <string name="voice_actors">Voice Actors</string>
+    <string name="episodes_watched">Episodes Watched</string>
+    <string name="days_planned">Days Planned</string>
+    <string name="standard_deviation">Standard Deviation</string>
+    <string name="volumes_read">Volumes Read</string>
+    <string name="chapters_planned">Chapters Planned</string>
+    <string name="format_distribution">Format Distribution</string>
+    <string name="country_distribution">Country Distribution</string>
+    <string name="release_year">Release Year</string>
+    <string name="watch_year">Watch Year</string>
+    <string name="read_year">Read Year</string>
 
     <string-array name="media_format">
         <item>Tv</item>
@@ -369,4 +382,28 @@
         <item>Highest Rated</item>
         <item>Lowest Rated</item>
     </string-array>
+    <string-array name="score_toggle_list" >
+        <item>Titles Watched</item>
+        <item>Hour Watched</item>
+    </string-array>
+
+    <string-array name="stats_toggle_list" >
+        <item>Titles Watched</item>
+        <item>Hour Watched</item>
+        <item>Mean Score</item>
+    </string-array>
+
+
+    <string-array name="manga_score_toggle_list" >
+        <item>Titles Watched</item>
+        <item>Chapters Read</item>
+    </string-array>
+
+    <string-array name="manga_stats_toggle_list" >
+        <item>Titles Read</item>
+        <item>Chapters Read</item>
+        <item>Mean Score</item>
+    </string-array>
+
+
 </resources>

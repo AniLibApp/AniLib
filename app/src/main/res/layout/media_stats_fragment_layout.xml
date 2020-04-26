@@ -101,7 +101,7 @@
                     app:ads_title="@string/score_distribution" />
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/scoreDistributionPieChart"
+                    android:id="@+id/scoreDistributionBarChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 

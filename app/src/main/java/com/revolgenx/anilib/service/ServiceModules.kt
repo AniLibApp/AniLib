@@ -6,6 +6,8 @@ import com.revolgenx.anilib.service.studio.StudioService
 import com.revolgenx.anilib.service.studio.StudioServiceImpl
 import com.revolgenx.anilib.service.user.UserService
 import com.revolgenx.anilib.service.user.UserServiceImpl
+import com.revolgenx.anilib.service.user.UserStatsService
+import com.revolgenx.anilib.service.user.UserStatsServiceImpl
 import org.koin.dsl.module
 
 val serviceModule = module {
@@ -19,4 +21,5 @@ val serviceModule = module {
     factory<BrowseService> { BrowseServiceImpl(get()) }
     factory<MediaListService> { MediaListServiceImpl(get()) }
     factory<UserService> { UserServiceImpl(get()) }
+    factory<UserStatsService> { UserStatsServiceImpl(get()) }
 }
