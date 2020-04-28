@@ -10,7 +10,7 @@ import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.repository.util.Status
 import java.lang.Exception
 
-abstract class BaseRecyclerSource<T : Any, F>(protected var field: F) : MainSource<T>() {
+abstract class BaseRecyclerSource<M : Any, F>(protected var field: F) : MainSource<M>() {
     protected var pageNo = 1
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {
         super.onPageOpened(page, dependencies)
@@ -25,7 +25,7 @@ abstract class BaseRecyclerSource<T : Any, F>(protected var field: F) : MainSour
     fun <R> postResult(page: Page, resource: Resource<R>) {
         when (resource.status) {
             Status.SUCCESS -> {
-                postResult(page, resource.data as? List<T> ?: emptyList())
+                postResult(page, resource.data as? List<M> ?: emptyList())
             }
             Status.ERROR -> {
                 postResult(page, Exception(resource.exception))

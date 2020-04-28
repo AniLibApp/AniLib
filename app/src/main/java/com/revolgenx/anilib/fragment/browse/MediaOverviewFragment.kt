@@ -276,11 +276,11 @@ class MediaOverviewFragment : BaseFragment() {
             }
 
             overview.averageScore?.let {
-                addToMediaCollection(getString(R.string.averageScore), "$it %")
+                addToMediaCollection(getString(R.string.average_score), "$it %")
             }
 
             overview.meanScore?.let {
-                addToMediaCollection(getString(R.string.meanScore), "$it %")
+                addToMediaCollection(getString(R.string.mean_score), "$it %")
             }
 
             overview.status?.let {

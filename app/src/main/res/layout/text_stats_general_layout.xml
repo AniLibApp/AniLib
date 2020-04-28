@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.DynamicApp.Card.Margin.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/statsTitleTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Romance"
+            android:textSize="18sp"
+            app:fontFamily="@font/qanelassoft_extra_bold" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                    android:id="@+id/statsCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:ads_fillSpace="true"
+                    app:ads_subtitle="@string/count"
+                    app:ads_title="0" />
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                    android:id="@+id/statsMeanScoreTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:ads_fillSpace="true"
+                    app:ads_subtitle="@string/mean_score"
+                    app:ads_title="0" />
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                    android:id="@+id/statsTimeWatched"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:ads_fillSpace="true"
+                    app:ads_subtitle="@string/count"
+                    app:ads_title="0" />
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
