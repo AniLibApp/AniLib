@@ -111,8 +111,7 @@
     <string name="studios">Studios</string>
     <string name="producers">Producers</string>
     <string name="hashtag">Hashtag</string>
-    <string name="averageScore">Average Score</string>
-    <string name="meanScore">Mean Score</string>
+    <string name="average_score">Average Score</string>
     <string name="popularity">Popularity</string>
     <string name="favourites">Favourites</string>
     <string name="day">Days</string>
@@ -189,6 +188,7 @@
     <string name="release_year">Release Year</string>
     <string name="watch_year">Watch Year</string>
     <string name="read_year">Read Year</string>
+    <string name="count">Count</string>
 
     <string-array name="media_format">
         <item>Tv</item>

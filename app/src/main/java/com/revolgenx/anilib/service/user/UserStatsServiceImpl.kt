@@ -1,6 +1,8 @@
 package com.revolgenx.anilib.service.user
 
 import androidx.lifecycle.MutableLiveData
+import com.revolgenx.anilib.UserStatsQuery
+import com.revolgenx.anilib.field.stats.UserStatsField
 import com.revolgenx.anilib.field.user.stats.StatsOverviewField
 import com.revolgenx.anilib.model.user.stats.*
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
@@ -8,6 +10,7 @@ import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import org.jetbrains.annotations.Nullable
 import timber.log.Timber
 
 class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
@@ -38,7 +41,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsOverviewScoreModel().apply {
                                         count = scr.count()
                                         meanScore = scr.meanScore()
-                                        hourWatched = scr.minutesWatched()
+                                        minutesWatched = scr.minutesWatched()
                                         score = scr.score()
                                     }
                                 }
@@ -48,7 +51,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsStatusDistributionModel().apply {
                                         count = stat.count()
                                         meanScore = stat.meanScore()
-                                        hourWatched = stat.minutesWatched()
+                                        minutesWatched = stat.minutesWatched()
                                         status = stat.status()?.ordinal
                                     }
                                 }
@@ -57,7 +60,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsFormatDistributionModel().apply {
                                         count = fmt.count()
                                         meanScore = fmt.meanScore()
-                                        hourWatched = fmt.minutesWatched()
+                                        minutesWatched = fmt.minutesWatched()
                                         format = fmt.format()?.ordinal
                                     }
                                 }
@@ -66,7 +69,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsCountryDistributionModel().apply {
                                         count = cnt.count()
                                         meanScore = cnt.meanScore()
-                                        hourWatched = cnt.minutesWatched()
+                                        minutesWatched = cnt.minutesWatched()
                                         country = cnt.country()?.toString()
                                     }
                                 }
@@ -75,7 +78,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsYearModel().apply {
                                         count = yr.count()
                                         meanScore = yr.meanScore()
-                                        hourWatched = yr.minutesWatched()
+                                        minutesWatched = yr.minutesWatched()
                                         year = yr.releaseYear()
                                     }
                                 }?.sortedWith(compareBy { it.year })
@@ -84,7 +87,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsYearModel().apply {
                                         count = yr.count()
                                         meanScore = yr.meanScore()
-                                        hourWatched = yr.minutesWatched()
+                                        minutesWatched = yr.minutesWatched()
                                         year = yr.startYear()
                                     }
                                 }?.sortedWith(compareBy { it.year })
@@ -107,7 +110,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsOverviewScoreModel().apply {
                                         count = scr.count()
                                         meanScore = scr.meanScore()
-                                        hourWatched = scr.minutesWatched()
+                                        minutesWatched = scr.minutesWatched()
                                         score = scr.score()
                                     }
                                 }
@@ -117,7 +120,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsStatusDistributionModel().apply {
                                         count = stat.count()
                                         meanScore = stat.meanScore()
-                                        hourWatched = stat.minutesWatched()
+                                        minutesWatched = stat.minutesWatched()
                                         status = stat.status()?.ordinal
                                     }
                                 }
@@ -126,7 +129,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsFormatDistributionModel().apply {
                                         count = fmt.count()
                                         meanScore = fmt.meanScore()
-                                        hourWatched = fmt.minutesWatched()
+                                        minutesWatched = fmt.minutesWatched()
                                         format = fmt.format()?.ordinal
                                     }
                                 }
@@ -135,7 +138,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsCountryDistributionModel().apply {
                                         count = cnt.count()
                                         meanScore = cnt.meanScore()
-                                        hourWatched = cnt.minutesWatched()
+                                        minutesWatched = cnt.minutesWatched()
                                         country = cnt.country()?.toString()
                                     }
                                 }
@@ -144,7 +147,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsYearModel().apply {
                                         count = yr.count()
                                         meanScore = yr.meanScore()
-                                        hourWatched = yr.minutesWatched()
+                                        minutesWatched = yr.minutesWatched()
                                         year = yr.releaseYear()
                                     }
                                 }?.sortedWith(compareBy { it.year })
@@ -153,7 +156,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                     StatsYearModel().apply {
                                         count = yr.count()
                                         meanScore = yr.meanScore()
-                                        hourWatched = yr.minutesWatched()
+                                        minutesWatched = yr.minutesWatched()
                                         year = yr.startYear()
                                     }
                                 }?.sortedWith(compareBy { it.year })
@@ -169,5 +172,153 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 })
 
         compositeDisposable.add(disposable)
+    }
+
+    override fun getUserStats(
+        field: UserStatsField,
+        compositeDisposable: CompositeDisposable,
+        callback: (Resource<List<BaseStatsModel>>) -> Unit
+    ) {
+        val disposable = baseGraphRepository.request(field.toQueryOrMutation()).map {
+            it.data()?.User()?.statistics()?.let {
+                if (it.anime() != null) {
+                    if (it.anime()!!.genres() != null) {
+                        getStatsGenreModel(it.anime()!!.genres()!!)
+                    } else if (it.anime()!!.tags() != null) {
+                        getStatsTagModel(it.anime()!!.tags()!!)
+                    } else if (it.anime()!!.studios() != null) {
+                        getStatsStudioModel(it.anime()!!.studios()!!)
+                    } else if (it.anime()!!.voiceActors() != null) {
+                        getStatsVoiceActorModel(it.anime()!!.voiceActors()!!)
+                    } else if (it.anime()!!.staff() != null) {
+                        getStatsStaffModel(it.anime()!!.staff()!!)
+                    } else {
+                        null
+                    }
+                } else {
+                    if (it.manga() != null) {
+                        if (it.manga()!!.genres() != null) {
+                            getStatsGenreModel1(it.manga()!!.genres()!!)
+                        } else if (it.manga()!!.tags() != null) {
+                            getStatsTagModel1(it.manga()!!.tags()!!)
+                        } else if (it.manga()!!.staff() != null) {
+                            getStatsStaffModel1(it.manga()!!.staff()!!)
+                        } else {
+                            null
+                        }
+                    } else {
+                        null
+                    }
+                }
+
+            }
+        }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(it))
+            }, {
+                Timber.e(it)
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+
+        compositeDisposable.add(disposable)
+    }
+
+    private fun getStatsGenreModel(genres: @Nullable MutableList<UserStatsQuery.Genre>): List<StatsGenreModel> {
+        return genres.mapIndexed { index, genre ->
+            StatsGenreModel().also { model ->
+                model.baseId = index
+                model.genre = genre.genre()
+                model.count = genre.count()
+                model.minutesWatched = genre.minutesWatched()
+                model.meanScore = genre.meanScore()
+            }
+        }
+    }
+
+    private fun getStatsGenreModel1(genres: @Nullable MutableList<UserStatsQuery.Genre1>): List<StatsGenreModel> {
+        return genres.mapIndexed { index, genre ->
+            StatsGenreModel().also { model ->
+                model.baseId = index
+                model.genre = genre.genre()
+                model.count = genre.count()
+                model.minutesWatched = genre.minutesWatched()
+                model.meanScore = genre.meanScore()
+            }
+        }
+    }
+
+    private fun getStatsTagModel(tags: @Nullable MutableList<UserStatsQuery.Tag>): List<StatsTagModel> {
+        return tags.mapIndexed { index, tag ->
+            StatsTagModel().also { model ->
+                model.baseId = tag.tag()?.id()
+                model.tag = tag.tag()?.name()
+                model.count = tag.count()
+                model.meanScore = tag.meanScore()
+                model.minutesWatched = tag.minutesWatched()
+            }
+        }
+    }
+
+    private fun getStatsTagModel1(tags: @Nullable MutableList<UserStatsQuery.Tag2>): List<StatsTagModel> {
+        return tags.mapIndexed { index, tag ->
+            StatsTagModel().also { model ->
+                model.baseId = tag.tag()?.id()
+                model.tag = tag.tag()?.name()
+                model.count = tag.count()
+                model.meanScore = tag.meanScore()
+                model.minutesWatched = tag.minutesWatched()
+            }
+        }
+    }
+
+
+    private fun getStatsStaffModel(staff: @Nullable MutableList<UserStatsQuery.Staff>): List<StatsStaffModel> {
+        return staff.mapIndexed { index, staf ->
+            StatsStaffModel().also { model ->
+                model.staffId = staf.staff()?.id()
+                model.name = staf.staff()?.name()?.full()
+                model.count = staf.count()
+                model.meanScore = staf.meanScore()
+                model.minutesWatched = staf.minutesWatched()
+            }
+        }
+    }
+
+
+    private fun getStatsStaffModel1(staff: @Nullable MutableList<UserStatsQuery.Staff2>): List<StatsStaffModel> {
+        return staff.mapIndexed { index, staf ->
+            StatsStaffModel().also { model ->
+                model.staffId = staf.staff()?.id()
+                model.name = staf.staff()?.name()?.full()
+                model.count = staf.count()
+                model.meanScore = staf.meanScore()
+                model.minutesWatched = staf.minutesWatched()
+            }
+        }
+    }
+
+
+    private fun getStatsStudioModel(studios: @Nullable MutableList<UserStatsQuery.Studio>): List<StatsStudioModel> {
+        return studios.mapIndexed { index, studio ->
+            StatsStudioModel().also { model ->
+                model.baseId = studio.studio()?.id()
+                model.studio = studio.studio()?.name()
+                model.count = studio.count()
+                model.meanScore = studio.meanScore()
+                model.minutesWatched = studio.minutesWatched()
+            }
+        }
+    }
+
+    private fun getStatsVoiceActorModel(voiceActors: @Nullable MutableList<UserStatsQuery.VoiceActor>): List<StatsVoiceActorModel> {
+        return voiceActors.mapIndexed { index, voiceActor ->
+            StatsVoiceActorModel().also { model ->
+                model.voiceActorId = voiceActor.voiceActor()?.id()
+                model.name = voiceActor.voiceActor()?.name()?.full()
+                model.count = voiceActor.count()
+                model.meanScore = voiceActor.meanScore()
+                model.minutesWatched = voiceActor.minutesWatched()
+            }
+        }
     }
 }

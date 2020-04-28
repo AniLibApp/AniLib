@@ -39,7 +39,7 @@ val viewModelModules = module {
     viewModel { CompletedViewModel(get(), get()) }
     viewModel { DroppedViewModel(get(), get()) }
     viewModel { PausedViewModel(get(), get()) }
-    viewModel { RepeatingViewModel(get(), get())}
+    viewModel { RepeatingViewModel(get(), get()) }
 
     //userprofile
     viewModel { UserProfileViewModel(get()) }
@@ -48,4 +48,5 @@ val viewModelModules = module {
 
     //userstats
     viewModel { StatsOverviewViewModel(get()) }
+    viewModel { StatsGenreViewModel(get()) }
 }
