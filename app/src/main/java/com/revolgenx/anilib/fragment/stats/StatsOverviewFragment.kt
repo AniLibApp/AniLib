@@ -126,7 +126,7 @@ class StatsOverviewFragment : BaseFragment() {
             }
 
             statusDistribution?.firstOrNull { it.status == MediaListStatus.PLANNING.ordinal }?.let {
-                it.hourWatched?.div(24)?.let {
+                it.hoursWatched?.div(24)?.let {
                     dayPlannedTv.title =
                         it.toString()
                 }
@@ -156,7 +156,7 @@ class StatsOverviewFragment : BaseFragment() {
                             it.count?.toFloat()
                         }
                         1 -> {
-                            it.hourWatched?.toFloat()
+                            it.hoursWatched?.toFloat()
                         }
                         else -> {
                             it.meanScore?.toFloat()
@@ -226,7 +226,7 @@ class StatsOverviewFragment : BaseFragment() {
                             it.count?.toFloat()
                         }
                         1 -> {
-                            it.hourWatched?.toFloat()
+                            it.hoursWatched?.toFloat()
                         }
                         else -> {
                             it.meanScore?.toFloat()
@@ -298,7 +298,7 @@ class StatsOverviewFragment : BaseFragment() {
                     view.distributionTv.text = dist.format?.let { mediaFormat[it] }
                     view.distributionMetaTv.text =
                         "Count: ${dist.count?.toString().naText()}" +
-                                "\nHour Watched: ${dist.hourWatched?.toString().naText()}" +
+                                "\nHour Watched: ${dist.hoursWatched?.toString().naText()}" +
                                 "\nMean Score: ${dist.meanScore?.toString().naText()}"
                 }).into(formatDistributionRecyclerView)
         }
@@ -312,7 +312,7 @@ class StatsOverviewFragment : BaseFragment() {
                     view.distributionTv.text = dist.status?.let { mediaListStatus[it] }
                     view.distributionMetaTv.text =
                         "Count: ${dist.count?.toString().naText()}" +
-                                "\nHour Watched: ${dist.hourWatched?.toString().naText()}" +
+                                "\nHour Watched: ${dist.hoursWatched?.toString().naText()}" +
                                 "\nMean Score: ${dist.meanScore?.toString().naText()}"
                 }).into(statusDistributionRecyclerView)
         }
@@ -327,7 +327,7 @@ class StatsOverviewFragment : BaseFragment() {
                     view.distributionTv.text = dist.country
                     view.distributionMetaTv.text =
                         "Count: ${dist.count?.toString().naText()}" +
-                                "\nHour Watched: ${dist.hourWatched?.toString().naText()}" +
+                                "\nHour Watched: ${dist.hoursWatched?.toString().naText()}" +
                                 "\nMean Score: ${dist.meanScore?.toString().naText()}"
                 }).into(countrysDistributionRecyclerView)
         }
@@ -340,7 +340,7 @@ class StatsOverviewFragment : BaseFragment() {
                     BarEntry(
                         model.score!!.toFloat(),
                         if (scoreToggleSwitch.getCheckedPosition() == 0) model.count?.toFloat()
-                            ?: 0f else model.hourWatched?.toFloat() ?: 0f
+                            ?: 0f else model.hoursWatched?.toFloat() ?: 0f
                     )
                 }
             }

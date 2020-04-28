@@ -901,6 +901,118 @@ query StatsOverviewQuery($id:Int, $name:String,$includeAnime:Boolean!){
 }
 
 
+query UserStatsQuery($id:Int
+    , $name:String
+    , $sort:[UserStatisticsSort]
+    , $includeAnime:Boolean = false
+    , $includeManga:Boolean = false
+    , $includeTag:Boolean = false
+    , $includeGenre:Boolean = false
+    , $includeStudio:Boolean = false
+    , $includeStaff:Boolean = false
+    , $includeVoiceActor:Boolean = false){
+    User(id:$id, name:$name){
+        statistics{
+            anime @include(if:$includeAnime){
+                genres(sort:$sort) @include(if:$includeGenre){
+                    count
+                    #mediaIds
+                    genre
+                    minutesWatched
+                    meanScore
+                }
+                tags(sort:$sort) @include(if:$includeTag){
+                    count
+                    tag{
+                        id
+                        name
+                    }
+                    minutesWatched
+                    meanScore
+                }
+                studios(sort:$sort)  @include(if:$includeStudio){
+                    count
+                    studio{
+                        id
+                        name
+                    }
+                    minutesWatched
+                    meanScore
+                }
+
+                voiceActors(sort:$sort) @include(if:$includeVoiceActor){
+                    count
+                    meanScore
+                    minutesWatched
+                    voiceActor{
+                        id
+                        name{
+                            full
+                        }
+
+                        image{
+                            large
+                            medium
+                        }
+                    }
+                }
+
+                staff(sort:$sort) @include(if:$includeStaff){
+                    count
+                    meanScore
+                    minutesWatched
+                    staff{
+                        id
+                        name{
+                            full
+                        }
+
+                        image{
+                            large
+                            medium
+                        }
+                    }
+                }
+            }
+
+            manga @include(if:$includeManga){
+                genres(sort:$sort) @include(if:$includeGenre){
+                    count
+                    #mediaIds
+                    genre
+                    minutesWatched
+                    meanScore
+                }
+                tags(sort:$sort) @include(if:$includeTag){
+                    count
+                    tag{
+                        id
+                        name
+                    }
+                    minutesWatched
+                    meanScore
+                }
+                staff(sort:$sort) @include(if:$includeStaff){
+                    count
+                    meanScore
+                    minutesWatched
+                    staff{
+                        id
+                        name{
+                            full
+                        }
+
+                        image{
+                            large
+                            medium
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 query IsFavouriteQuery($mediaId:Int){
     Media(id:$mediaId){
         isFavourite

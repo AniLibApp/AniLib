@@ -1,10 +1,15 @@
 package com.revolgenx.anilib.model.user.stats
 
-abstract class BaseStatsModel {
+import com.revolgenx.anilib.model.BaseModel
+
+abstract class BaseStatsModel : BaseModel() {
     var count: Int? = null
     var meanScore: Double? = null
-    var hourWatched: Int? = null
+    var minutesWatched: Int? = null
         set(value) {
-            field = value?.div(60)
+            field = value
+            hoursWatched = value?.div(60)
         }
+
+    var hoursWatched: Int? = null
 }
