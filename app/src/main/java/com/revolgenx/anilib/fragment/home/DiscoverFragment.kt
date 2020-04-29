@@ -23,7 +23,6 @@ import com.revolgenx.anilib.view.drawable.VideoPlayBitmapDrawable
 import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.discover_fragment_layout.*
-import wseemann.media.FFmpegMediaMetadataRetriever
 
 
 class DiscoverFragment : BaseFragment() {

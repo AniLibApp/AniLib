@@ -8,4 +8,5 @@ class StatsStaffModel : BaseStatsModel() {
             baseId = value
         }
     var name: String? = null
+    var image:String? = null
 }

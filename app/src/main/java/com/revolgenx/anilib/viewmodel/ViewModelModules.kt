@@ -49,4 +49,8 @@ val viewModelModules = module {
     //userstats
     viewModel { StatsOverviewViewModel(get()) }
     viewModel { StatsGenreViewModel(get()) }
+    viewModel { StatsTagViewModel(get()) }
+    viewModel { StatsVoiceActorViewModel(get()) }
+    viewModel { StatsStudioViewModel(get()) }
+    viewModel { StatsStaffViewModel(get()) }
 }

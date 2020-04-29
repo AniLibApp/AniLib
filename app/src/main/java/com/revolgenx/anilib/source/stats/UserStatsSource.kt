@@ -21,12 +21,12 @@ class UserStatsSource(
     }
 
     override fun getElementType(data: BaseStatsModel): Int {
-        return when(field.statsType){
-           UserStatsField.UserStatsType.STAFF,UserStatsField.UserStatsType.VOICE_ACTOR->{
-               1
-           }
-           else ->{
-               0
+        return when (field.userStatsType) {
+            UserStatsField.UserStatsType.STAFF, UserStatsField.UserStatsType.VOICE_ACTOR -> {
+                1
+            }
+            else -> {
+                0
             }
         }
     }
@@ -38,6 +38,8 @@ class UserStatsSource(
             statsService.getUserStats(field, compositeDisposable) {
                 postResult(page, it)
             }
+        } else {
+            postResult(page, emptyList<BaseStatsModel>())
         }
     }
 }

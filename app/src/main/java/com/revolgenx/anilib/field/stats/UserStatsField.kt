@@ -7,7 +7,7 @@ import com.revolgenx.anilib.type.UserStatisticsSort
 
 class UserStatsField : BaseSourceField<UserStatsQuery>() {
     var type: Int? = null
-    var statsType: UserStatsType? = null
+    var userStatsType: UserStatsType? = null
     var userName: String? = null
     var userId: Int? = null
     var userStatsSort: Int? = null
@@ -28,7 +28,7 @@ class UserStatsField : BaseSourceField<UserStatsQuery>() {
                 when (type) {
                     MediaType.ANIME.ordinal -> {
                         includeAnime(true)
-                        when (statsType) {
+                        when (userStatsType) {
                             UserStatsType.GENRE -> {
                                 includeGenre(true)
                             }
@@ -51,7 +51,7 @@ class UserStatsField : BaseSourceField<UserStatsQuery>() {
 
                     MediaType.MANGA.ordinal -> {
                         includeManga(true)
-                        when (statsType?.ordinal) {
+                        when (userStatsType?.ordinal) {
                             UserStatsType.GENRE.ordinal -> {
                                 includeGenre(true)
                             }

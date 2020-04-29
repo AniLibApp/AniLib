@@ -241,7 +241,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.baseId = index
                 model.genre = genre.genre()
                 model.count = genre.count()
-                model.minutesWatched = genre.minutesWatched()
+                model.chaptersRead = genre.chaptersRead()
                 model.meanScore = genre.meanScore()
             }
         }
@@ -266,7 +266,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.tag = tag.tag()?.name()
                 model.count = tag.count()
                 model.meanScore = tag.meanScore()
-                model.minutesWatched = tag.minutesWatched()
+                model.chaptersRead = tag.chaptersRead()
             }
         }
     }
@@ -280,6 +280,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.count = staf.count()
                 model.meanScore = staf.meanScore()
                 model.minutesWatched = staf.minutesWatched()
+                model.image = staf.staff()?.image()?.let { it.large() ?: it.large() }
             }
         }
     }
@@ -292,7 +293,8 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.name = staf.staff()?.name()?.full()
                 model.count = staf.count()
                 model.meanScore = staf.meanScore()
-                model.minutesWatched = staf.minutesWatched()
+                model.chaptersRead = staf.chaptersRead()
+                model.image = staf.staff()?.image()?.let { it.large() ?: it.large() }
             }
         }
     }
@@ -318,6 +320,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.count = voiceActor.count()
                 model.meanScore = voiceActor.meanScore()
                 model.minutesWatched = voiceActor.minutesWatched()
+                model.image = voiceActor.voiceActor()?.image()?.let { it.large() ?: it.medium() }
             }
         }
     }
