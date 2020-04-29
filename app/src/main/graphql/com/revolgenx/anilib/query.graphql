@@ -980,7 +980,7 @@ query UserStatsQuery($id:Int
                     count
                     #mediaIds
                     genre
-                    minutesWatched
+                    chaptersRead
                     meanScore
                 }
                 tags(sort:$sort) @include(if:$includeTag){
@@ -989,13 +989,13 @@ query UserStatsQuery($id:Int
                         id
                         name
                     }
-                    minutesWatched
+                    chaptersRead
                     meanScore
                 }
                 staff(sort:$sort) @include(if:$includeStaff){
                     count
                     meanScore
-                    minutesWatched
+                    chaptersRead
                     staff{
                         id
                         name{

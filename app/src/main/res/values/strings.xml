@@ -189,6 +189,8 @@
     <string name="watch_year">Watch Year</string>
     <string name="read_year">Read Year</string>
     <string name="count">Count</string>
+    <string name="time_watched">Time Watched</string>
+    <string name="s_day_s_hour">%d d %d h</string>
 
     <string-array name="media_format">
         <item>Tv</item>

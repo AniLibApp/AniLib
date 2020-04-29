@@ -16,14 +16,22 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.NavViewPagerParcelableFragments
+import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.stats.*
+import com.revolgenx.anilib.fragment.studio.StudioFragment
 import com.revolgenx.anilib.meta.NavViewPagerContainerMeta
 import com.revolgenx.anilib.meta.NavViewPagerContainerType
+import com.revolgenx.anilib.meta.ViewPagerContainerMeta
+import com.revolgenx.anilib.meta.ViewPagerContainerType
+import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.nav_view_pager_container_activity_layout.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
+import org.greenrobot.eventbus.Subscribe
 
 class NavViewPagerContainerActivity : BaseDynamicActivity() {
     override val layoutRes: Int = R.layout.nav_view_pager_container_activity_layout
@@ -82,6 +90,12 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
 
     private lateinit var viewPagerParcelableFragments: NavViewPagerParcelableFragments
     private lateinit var viewPagerMeta: NavViewPagerContainerMeta<Parcelable>
+
+
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -239,6 +253,47 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
+    }
+
+
+    @Subscribe
+    fun onEvent(event: BaseEvent) {
+        when (event) {
+            is BrowseGenreEvent -> {
+                BrowseActivity.openActivity(
+                    this, event.genre
+                )
+            }
+            is BrowseTagEvent -> {
+                BrowseActivity.openActivity(
+                    this, event.model
+                )
+            }
+            is BrowseStaffEvent -> {
+                ViewPagerContainerActivity.openActivity(
+                    this,
+                    ViewPagerContainerMeta(
+                        ViewPagerContainerType.STAFF,
+                        event.meta
+                    )
+                )
+            }
+            is BrowseStudioEvent -> {
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        StudioFragment::class.java,
+                        bundleOf(StudioFragment.STUDIO_META_KEY to event.meta)
+                    )
+                )
+            }
+        }
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unRegisterForEvent()
     }
 
     inner class ViewPagerContainerAdapter :

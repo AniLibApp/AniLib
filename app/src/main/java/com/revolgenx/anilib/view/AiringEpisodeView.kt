@@ -95,14 +95,12 @@ class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet
             field = TimeUnit.SECONDS.toHours(value) - TimeUnit.DAYS.toHours(
                 TimeUnit.SECONDS.toDays(value)
             )
-
         }
     private var min: Long = 0
         set(value) {
             field = TimeUnit.SECONDS.toMinutes(value) - TimeUnit.HOURS.toMinutes(
                 TimeUnit.SECONDS.toHours(value)
             )
-
         }
     private var sec: Long = 0
         set(value) {

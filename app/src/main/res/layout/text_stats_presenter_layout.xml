@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge>
-    <include layout="@layout/text_stats_general_layout" />
-</merge>
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.DynamicApp.Card.Margin.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="130dp">
+
+    <include
+        layout="@layout/text_stats_general_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
