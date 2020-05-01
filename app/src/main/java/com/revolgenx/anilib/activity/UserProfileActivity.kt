@@ -19,6 +19,7 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.support.utils.DynamicDialogUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.UserFollowerDialog
 import com.revolgenx.anilib.event.*
@@ -336,6 +337,9 @@ class UserProfileActivity : BasePopupVideoActivity() {
         userFollowTv.setOnClickListener {
             if (userProfileModel!!.isBlocked == true) {
                 openLink(userProfileModel!!.siteUrl)
+            }
+
+            if (userProfileModel!!.isFollowing == true) {
             }
         }
 

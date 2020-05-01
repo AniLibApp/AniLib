@@ -191,6 +191,8 @@
     <string name="count">Count</string>
     <string name="time_watched">Time Watched</string>
     <string name="s_day_s_hour">%d d %d h</string>
+    <string name="links">Links</string>
+    <string name="info">Info</string>
 
     <string-array name="media_format">
         <item>Tv</item>
