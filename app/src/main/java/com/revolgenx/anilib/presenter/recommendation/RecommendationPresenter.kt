@@ -87,7 +87,7 @@ class RecommendationPresenter(
                         from.seasonYear?.toString().naText()
                     )
 
-                recommendedFromMediaContainer.setOnClickListener {
+                recommendedFromImageConstraintLayout.setOnClickListener {
                     BrowseMediaEvent(
                         MediaBrowserMeta(
                             from.mediaId,
@@ -100,7 +100,7 @@ class RecommendationPresenter(
                     ).postEvent
                 }
 
-                recommendedFromMediaContainer.setOnLongClickListener {
+                recommendedFromImageConstraintLayout.setOnLongClickListener {
                     if (context.loggedIn()) {
                         ListEditorEvent(
                             ListEditorMeta(
@@ -132,7 +132,7 @@ class RecommendationPresenter(
                         rec.seasonYear?.toString().naText()
                     )
 
-                recommendedContainer.setOnClickListener {
+                recommendedImageConstraintLayout.setOnClickListener {
                     BrowseMediaEvent(
                         MediaBrowserMeta(
                             rec.mediaId,
@@ -145,7 +145,7 @@ class RecommendationPresenter(
                     ).postEvent
                 }
 
-                recommendedContainer.setOnLongClickListener {
+                recommendedImageConstraintLayout.setOnLongClickListener {
                     if (context.loggedIn()) {
                         ListEditorEvent(
                             ListEditorMeta(

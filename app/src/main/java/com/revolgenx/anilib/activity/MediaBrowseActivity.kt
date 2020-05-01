@@ -85,6 +85,9 @@ class MediaBrowseActivity : DynamicSystemActivity() {
     private val accentColor by lazy {
         DynamicTheme.getInstance().get().accentColor
     }
+    private val tintAccentColor by lazy {
+        DynamicTheme.getInstance().get().tintAccentColor
+    }
 
     private var state = COLLAPSED
 
@@ -150,7 +153,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
             viewModel.getMediaInfo(mediaBrowserMeta.mediaId)
 
         val colors = intArrayOf(
-            DynamicTheme.getInstance().get().accentColor,
+            DynamicTheme.getInstance().get().tintAccentColor,
             DynamicTheme.getInstance().get().tintPrimaryColor
         )
         setSupportActionBar(mediaBrowserToolbar)
@@ -297,11 +300,17 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         }
 
         mediaBrowserBannerImage.setOnClickListener {
-            SimpleDraweeViewerActivity.openActivity(this, DraweeViewerMeta(mediaBrowserMeta.bannerImage))
+            SimpleDraweeViewerActivity.openActivity(
+                this,
+                DraweeViewerMeta(mediaBrowserMeta.bannerImage)
+            )
         }
 
         mediaBrowserCoverImage.setOnClickListener {
-            SimpleDraweeViewerActivity.openActivity(this, DraweeViewerMeta(mediaBrowserMeta.coverImageLarge))
+            SimpleDraweeViewerActivity.openActivity(
+                this,
+                DraweeViewerMeta(mediaBrowserMeta.coverImageLarge)
+            )
         }
 
         /**problem with transition
@@ -329,8 +338,8 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         view.tabImageView.imageTintList = tabColorStateList
         view.tabImageView.setImageResource(src)
         view.tabTextTv.text = getString(str)
-        view.background = RippleDrawable(ColorStateList.valueOf(accentColor), null, null)
-        view.tabTextTv.setTextColor(accentColor)
+        view.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
+        view.tabTextTv.setTextColor(tintAccentColor)
         return view
     }
 
