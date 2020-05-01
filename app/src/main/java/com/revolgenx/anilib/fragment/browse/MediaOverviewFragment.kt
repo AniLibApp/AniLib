@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.fragment.browse
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.text.*
@@ -10,9 +11,9 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.net.toUri
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.*
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
@@ -72,7 +73,6 @@ class MediaOverviewFragment : BaseFragment() {
     private val recommendationPresenter by lazy {
         MediaRecommendationPresenter(viewLifecycleOwner, requireContext(), viewModel)
     }
-
     private val loadingPresenter: Presenter<Void> by lazy {
         Presenter.forLoadingIndicator(
             requireContext(),
@@ -97,6 +97,10 @@ class MediaOverviewFragment : BaseFragment() {
         Presenter.forEmptyIndicator(requireContext(), R.layout.empty_layout)
     }
 
+
+    private var metaLinkAdapter: Adapter? = null
+    private var metaContainerAdapter: Adapter? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -108,11 +112,41 @@ class MediaOverviewFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        metaContainerRecyclerView.layoutManager = FlexboxLayoutManager(context)
-        metaLinkRecyclerView.layoutManager = FlexboxLayoutManager(context).also { manager ->
-            manager.justifyContent = JustifyContent.SPACE_EVENLY;
-            manager.alignItems = AlignItems.CENTER;
-        }
+
+        val span =
+            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
+        metaContainerRecyclerView.layoutManager =
+            GridLayoutManager(
+                this.context,
+                span
+            ).also {
+                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (metaContainerAdapter?.elementAt(position)?.element?.type == 0) {
+                            1
+                        } else {
+                            span
+                        }
+                    }
+                }
+            }
+
+        metaLinkRecyclerView.layoutManager =
+            GridLayoutManager(
+                this.context,
+                span
+            ).also {
+                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (metaLinkAdapter?.elementAt(position)?.element?.type == 0) {
+                            1
+                        } else {
+                            span
+                        }
+                    }
+                }
+            }
+
         recommendationRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         relationRecyclerView.layoutManager =
@@ -177,7 +211,8 @@ class MediaOverviewFragment : BaseFragment() {
             englishTitle.visibility = View.GONE
         }
 
-        MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(mediaDescriptionTv, overview.description ?: "")
+        MarkwonImpl.createHtmlInstance(requireContext())
+            .setMarkdown(mediaDescriptionTv, overview.description ?: "")
 
         mediaFormatTv.subtitle = overview.format?.let {
             requireContext().resources.getStringArray(
@@ -303,13 +338,13 @@ class MediaOverviewFragment : BaseFragment() {
 
 
         overview.externalLink?.let {
-            Adapter.builder(viewLifecycleOwner)
+            metaLinkAdapter = Adapter.builder(viewLifecycleOwner)
                 .addSource(Source.fromList(it))
                 .addPresenter(MediaExternalLinkPresenter(requireContext()))
                 .into(metaLinkRecyclerView)
         }
 
-        Adapter.builder(viewLifecycleOwner)
+        metaContainerAdapter = Adapter.builder(viewLifecycleOwner)
             .addSource(Source.fromList(mediaMetaList))
             .addPresenter(MediaMetaPresenter(requireContext()))
             .into(metaContainerRecyclerView)

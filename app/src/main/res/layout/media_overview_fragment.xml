@@ -69,7 +69,7 @@
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
                     android:textSize="12sp"
-                    app:ads_colorType="tint_surface"/>
+                    app:ads_colorType="tint_surface" />
 
 
                 <RelativeLayout
@@ -210,7 +210,7 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             android:layout_width="match_parent"
-            android:layout_height="420dp"
+            android:layout_height="410dp"
             android:layout_marginBottom="20dp">
 
             <LinearLayout
@@ -218,11 +218,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ads_fillSpace="true"
-                    app:ads_title="@string/relations" />
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/relations"
+                    android:textSize="18sp"
+                    app:fontFamily="@font/qanelassoft_extra_bold" />
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                     android:id="@+id/relationRecyclerView"
@@ -240,13 +244,27 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp">
 
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-                android:id="@+id/metaContainerRecyclerView"
+            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp" />
+                android:orientation="vertical">
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/info"
+                    android:textSize="18sp"
+                    app:fontFamily="@font/qanelassoft_extra_bold" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                    android:id="@+id/metaContainerRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp" />
+            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
@@ -261,11 +279,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ads_fillSpace="true"
-                    app:ads_title="@string/recommendations" />
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/recommendations"
+                    android:textSize="18sp"
+                    app:fontFamily="@font/qanelassoft_extra_bold" />
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                     android:id="@+id/recommendationRecyclerView"
@@ -281,11 +303,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-                android:id="@+id/metaLinkRecyclerView"
+            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp" />
+                android:orientation="vertical">
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/links"
+                    android:textSize="18sp"
+                    app:fontFamily="@font/qanelassoft_extra_bold" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                    android:id="@+id/metaLinkRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp" />
+            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 

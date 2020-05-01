@@ -20,10 +20,8 @@ import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.view.drawable.VideoPlayBitmapDrawable
-import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.discover_fragment_layout.*
-
 
 class DiscoverFragment : BaseFragment() {
     val makrdowntest =
