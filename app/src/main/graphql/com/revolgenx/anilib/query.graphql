@@ -198,6 +198,9 @@ query BrowseSimpleMediaQuery($mediaId:Int){
                 extraLarge
             }
         }
+        mediaListEntry{
+            status
+        }
         bannerImage
     }
 }
@@ -798,6 +801,9 @@ query UserFavouriteQuery($page:Int, $perPage:Int, $id:Int, $name:String,
 
 query StatsOverviewQuery($id:Int, $name:String,$includeAnime:Boolean!){
     User(id:$id, name:$name){
+        mediaListOptions{
+            scoreFormat
+        }
         statistics{
             anime@include(if:$includeAnime){
                 count
@@ -1116,6 +1122,12 @@ mutation ToggleFavouriteMutation($animeId:Int,$mangaId:Int, $characterId:Int
     }
 }
 
+mutation ToggleFollowMutation($userId:Int){
+    ToggleFollow(userId:$userId){
+        id
+        isFollowing
+    }
+}
 
 
 fragment mediaListContent on MediaList{

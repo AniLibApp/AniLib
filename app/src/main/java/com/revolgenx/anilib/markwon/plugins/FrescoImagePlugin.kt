@@ -30,6 +30,7 @@ import io.noties.markwon.MarkwonSpansFactory
 import io.noties.markwon.image.*
 import org.commonmark.node.Image
 import timber.log.Timber
+import java.lang.ref.WeakReference
 
 
 class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawableLoader) :
@@ -77,6 +78,10 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
     }
 
     class FrescoStoreImpl(private val context: Context) : FrescoStore {
+
+        private val closeableReferences =
+            mutableMapOf<String, WeakReference<DataSource<CloseableReference<CloseableImage>>>>()
+
         override fun load(drawable: AsyncDrawable) {
             val dataSource = Fresco.getImagePipeline().fetchDecodedImage(
                 ImageRequestBuilder.newBuilderWithSource(drawable.destination.toUri()).setImageDecodeOptions(
@@ -87,6 +92,7 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
             dataSource.subscribe(object :
                 BaseDataSubscriber<CloseableReference<CloseableImage>>() {
                 override fun onNewResultImpl(dataSource: DataSource<CloseableReference<CloseableImage>>) {
+                    closeableReferences[drawable.destination] = WeakReference(dataSource)
                     if (!dataSource.isFinished) return
 
                     dataSource.result?.let {
@@ -170,6 +176,9 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
         }
 
         override fun cancel(drawable: AsyncDrawable) {
+            closeableReferences[drawable.destination]?.let {
+                it.get()?.close()
+            }
         }
 
 

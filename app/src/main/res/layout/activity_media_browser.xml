@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/browserRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,113 +20,117 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/mediaBrowserCollapsingToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
-                app:expandedTitleMarginBottom="140dp"
-                app:expandedTitleMarginStart="140dp"
+                app:expandedTitleMarginBottom="160dp"
+                app:expandedTitleMarginStart="160dp"
                 app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
                 app:layout_scrollFlags="scroll|snap|enterAlways|enterAlwaysCollapsed"
                 app:maxLines="2">
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/mediaBrowserBannerImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    app:layout_collapseMode="parallax" />
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicRootLayout
-                    android:id="@+id/coverImageFrameLayout"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="175dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="15dp"
-                    android:orientation="horizontal"
-                    app:layout_collapseMode="parallax"
-                    android:layout_marginBottom="30dp">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    app:layout_collapseMode="parallax">
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/mediaBrowserBannerImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/mediaBrowserCoverImage"
                         android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentStart="true"
-                        android:scaleType="centerCrop"
+                        android:layout_height="175dp"
+                        android:layout_marginStart="16dp"
                         android:transitionName="media_cover_transition"
+                        app:layout_constraintBottom_toBottomOf="@id/mediaBrowserBannerImage"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/mediaBrowserBannerImage"
                         app:roundAsCircle="false"
                         app:roundedCornerRadius="4dp" />
 
-                    <LinearLayout
-                        android:id="@+id/mediaButtonsLayout"
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/mediaAddButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginEnd="20dp"
-                        android:layout_toEndOf="@id/mediaBrowserCoverImage"
-                        android:gravity="end"
-                        android:orientation="horizontal">
+                        android:layout_height="0dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="24dp"
+                        android:drawablePadding="3dp"
+                        android:background="@drawable/stroke_background"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="@string/add"
+                        app:fontFamily="@font/qanelassoft_extra_bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/mediaBrowserCoverImage"
+                        app:layout_constraintEnd_toStartOf="@+id/mediaReviewButton"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toEndOf="@+id/mediaBrowserCoverImage"
+                        app:layout_constraintTop_toBottomOf="@+id/mediaBrowserBannerImage"
+                        app:layout_constraintVertical_bias="0.36" />
 
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-                            android:id="@+id/mediaAddCardView"
-                            style="@style/Widget.DynamicApp.Card.Clickable"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            app:ads_cardElevation="4dp"
-                            app:ads_elevationOnSameBackground="true">
+                    <!--                    <com.revolgenx.anilib.view.DynamicLoadingImageView-->
+                    <!--                        android:id="@+id/mediaAddButton"-->
+                    <!--                        android:layout_width="0dp"-->
+                    <!--                        android:layout_height="0dp"-->
+                    <!--                        android:layout_marginTop="24dp"-->
+                    <!--                        android:layout_marginEnd="16dp"-->
+                    <!--                        android:layout_marginBottom="24dp"-->
+                    <!--                        android:background="@drawable/stroke_background"-->
+                    <!--                        android:padding="10dp"-->
+                    <!--                        android:src="@drawable/ic_plus"-->
+                    <!--                        app:layout_constraintBottom_toBottomOf="@+id/mediaBrowserCoverImage"-->
+                    <!--                        app:layout_constraintDimensionRatio="1:1"-->
+                    <!--                        app:layout_constraintEnd_toStartOf="@+id/mediaReviewButton"-->
+                    <!--                        app:layout_constraintHorizontal_bias="1.0"-->
+                    <!--                        app:layout_constraintHorizontal_chainStyle="packed"-->
+                    <!--                        app:layout_constraintStart_toEndOf="@+id/mediaBrowserCoverImage"-->
+                    <!--                        app:layout_constraintTop_toBottomOf="@+id/mediaBrowserBannerImage"-->
+                    <!--                        app:layout_constraintVertical_bias="0.36" />-->
 
-                            <com.pranavpandey.android.dynamic.support.widget.DynamicImageButton
-                                android:id="@+id/mediaAddButton"
-                                style="@style/Widget.DynamicApp.Button.ImageButton"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:padding="10dp"
-                                android:src="@drawable/ic_plus" />
-                        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-                            android:id="@+id/mediaReviewView"
-                            style="@style/Widget.DynamicApp.Card.Clickable"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            app:ads_cardElevation="4dp"
-                            app:ads_elevationOnSameBackground="true">
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                        android:id="@+id/mediaReviewButton"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/stroke_background"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_review"
+                        app:ads_colorType="tint_surface"
+                        app:layout_constraintBottom_toBottomOf="@+id/mediaAddButton"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toStartOf="@+id/mediaFavButton"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/mediaAddButton"
+                        app:layout_constraintTop_toTopOf="@+id/mediaAddButton" />
 
-                            <com.pranavpandey.android.dynamic.support.widget.DynamicImageButton
-                                android:id="@+id/mediaReviewButton"
-                                style="@style/Widget.DynamicApp.Button.ImageButton"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:padding="10dp"
-                                android:src="@drawable/ic_review" />
 
-                        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+                    <com.revolgenx.anilib.view.DynamicLoadingImageView
+                        android:id="@+id/mediaFavButton"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/stroke_background"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_not_favourite"
+                        app:ads_colorType="tint_surface"
+                        app:layout_constraintBottom_toBottomOf="@+id/mediaReviewButton"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/mediaReviewButton"
+                        app:layout_constraintTop_toTopOf="@+id/mediaReviewButton" />
 
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-                            android:id="@+id/mediaFavCardView"
-                            style="@style/Widget.DynamicApp.Card.Clickable"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            app:ads_cardCornerRadius="6dp"
-                            app:ads_cardElevation="4dp"
-                            app:ads_elevationOnSameBackground="true"
-                            app:cardCornerRadius="6dp">
-
-                            <com.revolgenx.anilib.view.DynamicLoadingImageView
-                                android:id="@+id/mediaFavButton"
-                                style="@style/Widget.DynamicApp.Button.ImageButton"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:padding="10dp"
-                                android:src="@drawable/ic_not_favourite" />
-                        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-                    </LinearLayout>
-
-                </com.pranavpandey.android.dynamic.support.widget.DynamicRootLayout>
-
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
                     android:id="@+id/mediaBrowserToolbar"

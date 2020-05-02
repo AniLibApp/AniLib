@@ -109,7 +109,7 @@ class MediaListActivity : BaseDynamicActivity() {
                     intArrayOf(android.R.attr.state_enabled)
                 )
                 , intArrayOf(
-                    DynamicTheme.getInstance().get().accentColor,
+                    DynamicTheme.getInstance().get().tintAccentColor,
                     DynamicTheme.getInstance().get().tintPrimaryColor
                 )
             )
@@ -117,6 +117,9 @@ class MediaListActivity : BaseDynamicActivity() {
     private lateinit var mediaListMeta: MediaListMeta
     private val accentColor by lazy {
         DynamicTheme.getInstance().get().accentColor
+    }
+    private val tintAccentColor by lazy {
+        DynamicTheme.getInstance().get().tintAccentColor
     }
     private var mediaListFilterField = MediaListFilterField()
 
@@ -252,8 +255,8 @@ class MediaListActivity : BaseDynamicActivity() {
         view.tabImageView.imageTintList = tabColorStateList
         view.tabImageView.setImageResource(src)
         view.tabTextTv.text = getString(str)
-        view.background = RippleDrawable(ColorStateList.valueOf(accentColor), null, null)
-        view.tabTextTv.setTextColor(accentColor)
+        view.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
+        view.tabTextTv.setTextColor(tintAccentColor)
         return view
     }
 

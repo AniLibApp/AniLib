@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.field.user.UserFavouriteField
 import com.revolgenx.anilib.field.user.UserProfileField
 import com.revolgenx.anilib.field.user.UserFollowerField
+import com.revolgenx.anilib.field.user.UserToggleFollowField
 import com.revolgenx.anilib.model.BaseModel
 import com.revolgenx.anilib.model.user.UserFollowersModel
 import com.revolgenx.anilib.model.user.UserFollowerCountModel
@@ -39,6 +40,12 @@ interface UserService {
         field: UserFavouriteField,
         compositeDisposable: CompositeDisposable,
         callback: (Resource<List<BaseModel>>) -> Unit
+    )
+
+    fun toggleUserFollowing(
+        field: UserToggleFollowField,
+        compositeDisposable: CompositeDisposable,
+        callback: ((Resource<UserProfileModel>) -> Unit)?
     )
 
 }

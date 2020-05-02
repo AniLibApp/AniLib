@@ -90,7 +90,7 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mediaBrowserMeta =
             arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
-        val span:Int = when (mediaBrowserMeta!!.type) {
+        val span: Int = when (mediaBrowserMeta!!.type) {
             MediaType.ANIME.ordinal -> {
                 if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
             }
@@ -145,7 +145,7 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
                 position: Int,
                 id: Long
             ) {
-                if (field.language != position) {
+                if ((field.language != position) && visibleToUser) {
                     field.language = position
                     createSource()
                     invalidateAdapter()
