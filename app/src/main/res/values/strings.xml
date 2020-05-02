@@ -193,6 +193,12 @@
     <string name="s_day_s_hour">%d d %d h</string>
     <string name="links">Links</string>
     <string name="info">Info</string>
+    <string name="add">Add</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="stop_following_s">Stop following %s?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="follow">Follow</string>
 
     <string-array name="media_format">
         <item>Tv</item>

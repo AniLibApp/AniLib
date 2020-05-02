@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.model
 
-import com.revolgenx.anilib.type.MediaSource
 
 class MediaOverviewModel : CommonMediaModel() {
     var popularity: Int? = null

@@ -6,6 +6,7 @@ import com.revolgenx.anilib.constant.BrowseTypes
 import com.revolgenx.anilib.field.user.UserFavouriteField
 import com.revolgenx.anilib.field.user.UserProfileField
 import com.revolgenx.anilib.field.user.UserFollowerField
+import com.revolgenx.anilib.field.user.UserToggleFollowField
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.character.CharacterNameModel
@@ -23,7 +24,10 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
     override val userFollowerCountLiveData: MutableLiveData<Resource<UserFollowerCountModel>> =
         MutableLiveData()
 
-    override fun getUserProfile(userProfileField: UserProfileField, compositeDisposable: CompositeDisposable) {
+    override fun getUserProfile(
+        userProfileField: UserProfileField,
+        compositeDisposable: CompositeDisposable
+    ) {
         val disposable =
             baseGraphRepository.request(userProfileField.toQueryOrMutation()).map { response ->
                 response.data()?.User()?.let {
@@ -41,7 +45,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                         model.isBlocked = it.isBlocked
                         model.isFollower = it.isFollower
                         model.isFollowing = it.isFollowing
-                        model.about = MarkwonImpl.createMarkwonCompatible(it.about()?:"")
+                        model.about = MarkwonImpl.createMarkwonCompatible(it.about() ?: "")
                         model.siteUrl = it.siteUrl()
                         it.statistics()?.let { stats ->
                             stats.anime()?.let { a ->
@@ -384,4 +388,29 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
     }
 
 
+    override fun toggleUserFollowing(
+        field: UserToggleFollowField,
+        compositeDisposable: CompositeDisposable,
+        callback: ((Resource<UserProfileModel>) -> Unit)?
+    ) {
+        val disposable = baseGraphRepository.request(field.toQueryOrMutation()).map {
+            it.data()?.ToggleFollow()?.let {
+                UserProfileModel().also { model ->
+                    model.userId = it.id()
+                    model.isFollowing = it.isFollowing
+                }
+            }
+        }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                it?.isFollowing?.let {
+                    userProfileLiveData.value?.data?.isFollowing = it
+                }
+                callback?.invoke(Resource.success(it))
+            }, {
+                Timber.e(it)
+                callback?.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+
+        compositeDisposable.add(disposable)
+    }
 }

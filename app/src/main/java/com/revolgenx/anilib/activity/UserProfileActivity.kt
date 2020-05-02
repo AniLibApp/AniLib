@@ -2,12 +2,14 @@ package com.revolgenx.anilib.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.observe
@@ -19,8 +21,8 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
-import com.pranavpandey.android.dynamic.support.utils.DynamicDialogUtils
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.dialog.MessageDialog
 import com.revolgenx.anilib.dialog.UserFollowerDialog
 import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.markwon.MarkwonImpl
@@ -83,7 +85,26 @@ class UserProfileActivity : BasePopupVideoActivity() {
 
 
     private val viewModel by viewModel<UserProfileViewModel>()
+    private val toggleFollowCallback = { _: DialogInterface, which: Int ->
+        when (which) {
+            AlertDialog.BUTTON_POSITIVE -> {
+                toggleFollow()
+            }
+        }
+    }
 
+    private fun toggleFollow() {
+        if (::userMeta.isInitialized) {
+            viewModel.toggleFollowField.userId = userMeta.userId
+            viewModel.toggleFollow {
+                if (it.status == Status.SUCCESS) {
+                    updateFollowView()
+                } else if (it.status == Status.ERROR) {
+                    makeToast(R.string.operation_failed, icon = R.drawable.ic_error)
+                }
+            }
+        }
+    }
 
     override fun onStart() {
         super.onStart()
@@ -94,6 +115,7 @@ class UserProfileActivity : BasePopupVideoActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userMeta = intent.getParcelableExtra(USER_ACTIVITY_META_KEY) ?: return
+        userMeta.userId = 298047
         setSupportActionBar(userToolbar)
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -153,6 +175,14 @@ class UserProfileActivity : BasePopupVideoActivity() {
             }
             viewModel.getProfile()
             viewModel.getFollower()
+        } else {
+            resolveChange()
+        }
+    }
+
+    private fun resolveChange() {
+        (supportFragmentManager.findFragmentByTag(MessageDialog.messageDialogTag) as? MessageDialog)?.let {
+            it.dialogCallback = toggleFollowCallback
         }
     }
 
@@ -188,6 +218,21 @@ class UserProfileActivity : BasePopupVideoActivity() {
         }
     }
 
+    private fun updateFollowView() {
+        if (userProfileModel == null) return
+
+        if (userProfileModel?.isFollowing == true) {
+            userFollowTv.text = getString(R.string.following)
+        } else {
+            userFollowTv.text = getString(R.string.follow)
+        }
+
+        if (userProfileModel?.isBlocked == true) {
+            userFollowTv.text = getString(R.string.blocked)
+        }
+
+    }
+
     private fun updateView(data: UserProfileModel?) {
         if (data == null) return
         userProfileModel = data
@@ -203,6 +248,8 @@ class UserProfileActivity : BasePopupVideoActivity() {
 
         if (data.isFollowing == true) {
             userFollowTv.text = getString(R.string.following)
+        } else {
+            userFollowTv.text = getString(R.string.follow)
         }
 
         if (data.isBlocked == true) {
@@ -337,10 +384,26 @@ class UserProfileActivity : BasePopupVideoActivity() {
         userFollowTv.setOnClickListener {
             if (userProfileModel!!.isBlocked == true) {
                 openLink(userProfileModel!!.siteUrl)
+                return@setOnClickListener
             }
 
             if (userProfileModel!!.isFollowing == true) {
+                with(MessageDialog.Builder) {
+                    titleRes = R.string.unfollow
+                    message = getString(R.string.stop_following_s).format(
+                        userProfileModel?.userName ?: ""
+                    )
+                    positiveTextRes = R.string.yes
+                    negativeTextRes = R.string.no
+                    build().let {
+                        it.dialogCallback = toggleFollowCallback
+                        it.show(supportFragmentManager, messageDialogTag)
+                    }
+                }
+                return@setOnClickListener
             }
+
+            toggleFollow()
         }
 
         userAvatar.setOnClickListener {
@@ -355,7 +418,6 @@ class UserProfileActivity : BasePopupVideoActivity() {
                 DraweeViewerMeta(userProfileModel!!.bannerImage)
             )
         }
-
     }
 
 

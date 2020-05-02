@@ -34,7 +34,6 @@ class MediaListFilterDialog : DynamicDialogFragment() {
         dialogBuilder: DynamicDialog.Builder,
         savedInstanceState: Bundle?
     ): DynamicDialog.Builder {
-        retainInstance = true
         with(dialogBuilder) {
             setTitle(R.string.filter)
             setPositiveButton(R.string.done) { dialogInterface, _ ->

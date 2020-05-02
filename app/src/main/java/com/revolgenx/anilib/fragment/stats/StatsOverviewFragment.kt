@@ -26,6 +26,7 @@ import com.revolgenx.anilib.model.user.stats.StatsStatusDistributionModel
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.viewmodel.StatsOverviewViewModel
@@ -283,7 +284,7 @@ class StatsOverviewFragment : BaseFragment() {
                     perYear.invalidate()
                 }
             }
-        }?: let { releaseYearLinearLayout.visibility = View.GONE }
+        } ?: let { releaseYearLinearLayout.visibility = View.GONE }
     }
 
     @SuppressLint("SetTextI18n")
@@ -334,8 +335,9 @@ class StatsOverviewFragment : BaseFragment() {
     }
 
     private fun updateScoreChart() {
-        overviewModel?.scoresDistribution?.let { distr ->
-            distr.map { model ->
+        if (overviewModel == null) return
+
+        overviewModel?.scoresDistribution?.map { model ->
                 model.score?.let {
                     BarEntry(
                         model.score!!.toFloat(),
@@ -343,43 +345,41 @@ class StatsOverviewFragment : BaseFragment() {
                             ?: 0f else model.hoursWatched?.toFloat() ?: 0f
                     )
                 }
-            }
         }?.let {
-            if (it.isEmpty()) {
-                return
-            }
-            val dataSet = BarDataSet(it, getString(R.string.score_distribution)).also {
-                it.color = DynamicTheme.getInstance().get().tintAccentColor
-                it.valueTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
-            }
-            scoreBarChart.apply {
-                legend.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
-                axisRight.isEnabled = false
-                axisLeft.isEnabled = false
-                xAxis.let { axis ->
-                    axis.typeface =
-                        ResourcesCompat.getFont(requireContext(), R.font.open_sans_regular)
-                    axis.position = XAxis.XAxisPosition.BOTTOM
-                    axis.setDrawGridLines(false)
-                    axis.setDrawAxisLine(false)
-                    axis.typeface =
-                        ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
-                    axis.textSize = 10f
-                    axis.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
-                    axis.labelCount = 10
+                if (it.isEmpty()) {
+                    return
+                }
+                val dataSet = BarDataSet(it, getString(R.string.score_distribution)).also {
+                    it.color = DynamicTheme.getInstance().get().tintAccentColor
+                    it.valueTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
+                }
+                scoreBarChart.apply {
+                    legend.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
+                    axisRight.isEnabled = false
+                    axisLeft.isEnabled = false
+                    xAxis.let { axis ->
+                        axis.typeface =
+                            ResourcesCompat.getFont(requireContext(), R.font.open_sans_regular)
+                        axis.position = XAxis.XAxisPosition.BOTTOM
+                        axis.setDrawGridLines(false)
+                        axis.setDrawAxisLine(false)
+                        axis.typeface =
+                            ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
+                        axis.textSize = 10f
+                        axis.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
+                        axis.labelCount = 10
+                    }
+
+                    setTouchEnabled(false)
+                    description = null
+                    scoreBarChart.data = BarData(dataSet).apply {
+                        xAxis.spaceMin = barWidth / 2f
+                        xAxis.spaceMax = barWidth / 2f
+                    }
+                    invalidate()
                 }
 
-                setTouchEnabled(false)
-                description = null
-                scoreBarChart.data = BarData(dataSet).apply {
-                    barWidth = 4f
-                    xAxis.spaceMin = barWidth / 2f
-                    xAxis.spaceMax = barWidth / 2f
-                }
-                invalidate()
             }
-
-        }
     }
 
 
