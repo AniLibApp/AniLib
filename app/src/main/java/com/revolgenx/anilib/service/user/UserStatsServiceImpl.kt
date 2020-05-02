@@ -33,7 +33,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                 model.count = anime.count()
                                 model.meanScore = anime.meanScore()
                                 model.standardDeviation = anime.standardDeviation()
-
+                                model.scoreFormat = it.data()?.User()?.mediaListOptions()?.scoreFormat()?.ordinal
                                 model.daysWatched = anime.minutesWatched().toFloat()
                                 model.episodesWatched = anime.episodesWatched()
 
@@ -102,7 +102,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                 model.count = manga.count()
                                 model.meanScore = manga.meanScore()
                                 model.standardDeviation = manga.standardDeviation()
-
+                                model.scoreFormat = it.data()?.User()?.mediaListOptions()?.scoreFormat()?.ordinal
                                 model.volumesRead = manga.volumesRead()
                                 model.chaptersRead = manga.chaptersRead()
 

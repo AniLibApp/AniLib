@@ -125,7 +125,14 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media_browser)
         browserRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-
+        mediaAddButton.setCompoundDrawablesRelative(
+            null,
+            null,
+            ContextCompat.getDrawable(this, R.drawable.ic_arrow_down)?.also {
+                it.setTint(DynamicTheme.getInstance().get().tintSurfaceColor)
+            },
+            null
+        )
         //todo:initialize with manifest
         mediaBrowserMeta = intent.getParcelableExtra(MEDIA_BROWSER_META) ?: return
 
@@ -136,6 +143,12 @@ class MediaBrowseActivity : DynamicSystemActivity() {
             when (it.status) {
                 SUCCESS -> {
                     browseMediaBrowseModel = it.data
+
+                    browseMediaBrowseModel?.mediaListStatus?.let {
+                        mediaAddButton.text =
+                            resources.getStringArray(R.array.media_list_status)[it]
+                    }
+
                     if (mediaBrowserMeta.coverImage == null || mediaBrowserMeta.bannerImage == null) {
                         mediaBrowserMeta.coverImage = it.data?.coverImage?.large ?: ""
                         mediaBrowserMeta.coverImageLarge = it.data?.coverImage?.largeImage

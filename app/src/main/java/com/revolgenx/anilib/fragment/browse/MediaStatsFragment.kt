@@ -25,6 +25,7 @@ import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.model.user.stats.MediaStatsModel
 import com.revolgenx.anilib.presenter.RankingsPresenter
 import com.revolgenx.anilib.repository.util.Status.*
+import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.viewmodel.MediaStatsViewModel
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
@@ -247,7 +248,7 @@ class MediaStatsFragment : BaseFragment() {
                 l.yOffset = 0f
             }
 
-            statusDistributionPieChart.setExtraOffsets(-100f, 0f, 0f, 0f)
+            statusDistributionPieChart.setExtraOffsets(-40f, 0f, 0f, 0f)
             statusDistributionPieChart.setEntryLabelTypeface(
                 ResourcesCompat.getFont(
                     requireContext(),

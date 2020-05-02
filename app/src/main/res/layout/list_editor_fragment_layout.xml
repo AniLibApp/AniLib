@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/listEditorRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -14,128 +15,110 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/listEditorCollapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="wrap_content"
             app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
-            app:expandedTitleMarginBottom="120dp"
+            app:expandedTitleMarginBottom="140dp"
             app:expandedTitleMarginStart="132dp"
             app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:maxLines="2">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/listEditorBannerImage"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax" />
-
-            <RelativeLayout
-                android:id="@+id/coverImageFrameLayout"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 app:layout_collapseMode="parallax">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/listEditorBannerImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/listEditorCoverImage"
                     android:layout_width="104dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:scaleType="centerCrop"
-                    android:transitionName="media_cover_transition" />
+                    android:layout_height="160dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/stroke_background"
+                    android:transitionName="media_cover_transition"
+                    app:layout_constraintBottom_toBottomOf="@id/listEditorBannerImage"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/listEditorBannerImage"
+                    app:roundAsCircle="false"
+                    app:roundedCornerRadius="4dp" />
 
-                <LinearLayout
-                    android:id="@+id/listEditorButtonsLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="20dp"
-                    android:layout_toEndOf="@id/listEditorCoverImage"
-                    android:gravity="end"
-                    android:orientation="horizontal">
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-                        android:id="@+id/listSaveCardView"
-                        style="@style/Widget.DynamicApp.Card.Clickable"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        app:ads_cardElevation="4dp"
-                        app:ads_elevationOnSameBackground="true">
-
-                        <com.revolgenx.anilib.view.DynamicLoadingImageView
-                            android:id="@+id/listSaveButton"
-                            style="@style/Widget.DynamicApp.Button.ImageButton"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:padding="10dp"
-                            android:src="@drawable/ic_save" />
-                    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-                        android:id="@+id/listDeleteCardView"
-                        style="@style/Widget.DynamicApp.Card.Clickable"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        app:ads_cardElevation="4dp"
-                        app:ads_elevationOnSameBackground="true">
-
-                        <com.revolgenx.anilib.view.DynamicLoadingImageView
-                            android:id="@+id/listDeleteButton"
-                            style="@style/Widget.DynamicApp.Button.ImageButton"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:padding="10dp"
-                            android:src="@drawable/ic_delete" />
-                    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-                        android:id="@+id/listFavCardView"
-                        style="@style/Widget.DynamicApp.Card.Clickable"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        app:ads_cardCornerRadius="6dp"
-                        app:ads_cardElevation="4dp"
-                        app:ads_elevationOnSameBackground="true"
-                        app:cardCornerRadius="6dp">
-
-                        <com.revolgenx.anilib.view.DynamicLoadingImageView
-                            android:id="@+id/listFavButton"
-                            style="@style/Widget.DynamicApp.Button.ImageButton"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:padding="10dp"
-                            android:src="@drawable/ic_not_favourite" />
-
-                    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+                <com.revolgenx.anilib.view.DynamicLoadingImageView
+                    android:id="@+id/listSaveButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginBottom="22dp"
+                    android:background="@drawable/stroke_background"
+                    android:padding="10dp"
+                    app:ads_colorType="tint_surface"
+                    android:src="@drawable/ic_save"
+                    app:layout_constraintBottom_toBottomOf="@+id/listEditorCoverImage"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@+id/listFavButton"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/listEditorCoverImage"
+                    app:layout_constraintTop_toBottomOf="@+id/listEditorBannerImage" />
 
 
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-                        android:id="@+id/listPrivateCardView"
-                        style="@style/Widget.DynamicApp.Card.Clickable"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
-                        app:ads_cardElevation="4dp"
-                        app:ads_elevationOnSameBackground="true">
+                <com.revolgenx.anilib.view.DynamicLoadingImageView
+                    android:id="@+id/listFavButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/stroke_background"
+                    android:padding="10dp"
+                    app:ads_colorType="tint_surface"
+                    android:src="@drawable/ic_not_favourite"
+                    app:layout_constraintBottom_toBottomOf="@+id/listSaveButton"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@+id/privateToggleButton"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/listSaveButton"
+                    app:layout_constraintTop_toTopOf="@+id/listSaveButton" />
 
-                        <com.revolgenx.anilib.view.DynamicToggleButton
-                            android:id="@+id/privateToggleButton"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:srcCompat="@drawable/ic_dropped" />
+                <com.revolgenx.anilib.view.DynamicToggleButton
+                    android:id="@+id/privateToggleButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/stroke_background"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/listFavButton"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@+id/listDeleteButton"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/listFavButton"
+                    app:layout_constraintTop_toTopOf="@+id/listFavButton"
+                    app:srcCompat="@drawable/ic_dropped" />
 
-                    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-                </LinearLayout>
+                <com.revolgenx.anilib.view.DynamicLoadingImageView
+                    android:id="@+id/listDeleteButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="16dp"
+                    android:padding="10dp"
+                    app:ads_colorType="tint_surface"
+                    android:background="@drawable/stroke_background"
+                    android:src="@drawable/ic_delete"
+                    app:layout_constraintBottom_toBottomOf="@+id/privateToggleButton"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/privateToggleButton"
+                    app:layout_constraintTop_toTopOf="@+id/privateToggleButton" />
 
-            </RelativeLayout>
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
                 android:id="@+id/listEditorToolbar"

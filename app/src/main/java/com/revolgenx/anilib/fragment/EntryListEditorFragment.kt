@@ -64,18 +64,18 @@ class EntryListEditorFragment : BaseFragment() {
 
     private val calendarDrawable by lazy {
         ContextCompat.getDrawable(requireContext(), R.drawable.ic_calendar)!!.mutate().also {
-            it.setTint(accentColor)
+            it.setTint(tintAccentColor)
         }
     }
 
     private val crossDrawable by lazy {
         ContextCompat.getDrawable(requireContext(), R.drawable.ic_close)!!.mutate().also {
-            it.setTint(accentColor)
+            it.setTint(tintAccentColor)
         }
     }
 
-    private val accentColor by lazy {
-        DynamicTheme.getInstance().get().accentColor
+    private val tintAccentColor by lazy {
+        DynamicTheme.getInstance().get().tintAccentColor
     }
 
     private val calendar by lazy {
@@ -542,9 +542,9 @@ class EntryListEditorFragment : BaseFragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (state == EXPANDED) {
             if (modelEntry == null) {
-                listDeleteCardView.visibility = View.GONE
+                listDeleteButton.visibility = View.GONE
             } else {
-                listDeleteCardView.visibility = View.VISIBLE
+                listDeleteButton.visibility = View.VISIBLE
             }
 
             if (isFavourite) {
@@ -557,9 +557,9 @@ class EntryListEditorFragment : BaseFragment() {
 
         if (modelEntry == null) {
             menu.findItem(R.id.listDeleteMenu).isVisible = false
-            listDeleteCardView.visibility = View.GONE
+            listDeleteButton.visibility = View.GONE
         } else {
-            listDeleteCardView.visibility = View.VISIBLE
+            listDeleteButton.visibility = View.VISIBLE
         }
 
         if (isFavourite) {

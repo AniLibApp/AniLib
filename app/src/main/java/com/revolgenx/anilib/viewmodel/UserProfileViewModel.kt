@@ -3,9 +3,11 @@ package com.revolgenx.anilib.viewmodel
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.field.user.UserProfileField
+import com.revolgenx.anilib.field.user.UserToggleFollowField
 import com.revolgenx.anilib.model.user.UserFollowerCountModel
 import com.revolgenx.anilib.model.user.UserProfileModel
 import com.revolgenx.anilib.repository.util.Resource
+import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.service.user.UserService
 import io.reactivex.disposables.CompositeDisposable
 
@@ -23,6 +25,9 @@ class UserProfileViewModel(private val userService: UserService) : ViewModel() {
         }
     }
 
+    val toggleFollowField: UserToggleFollowField by lazy {
+        UserToggleFollowField()
+    }
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -38,6 +43,28 @@ class UserProfileViewModel(private val userService: UserService) : ViewModel() {
     fun getFollower() {
         userService.getTotalFollower(userField, compositeDisposable)
         userService.getTotalFollowing(userField, compositeDisposable)
+    }
+
+    fun toggleFollow(callback: (Resource<Boolean>) -> Unit) {
+        callback.invoke(Resource.loading(null))
+        userService.toggleUserFollowing(toggleFollowField, compositeDisposable) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.isFollowing?.let {
+                        userProfileLiveData.value?.data?.isFollowing = it
+                        callback.invoke(Resource.success(it))
+                    }
+                }
+                Status.ERROR -> {
+                    callback.invoke(Resource.error(it.message!!, null, it.exception))
+                }
+            }
+        }
+    }
+
+    override fun onCleared() {
+        compositeDisposable.clear()
+        super.onCleared()
     }
 
 }

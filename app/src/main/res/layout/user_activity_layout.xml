@@ -71,7 +71,7 @@
                     android:layout_margin="4dp"
                     android:background="@drawable/stroke_background"
                     android:padding="6dp"
-                    android:text="Follow"
+                    android:text="@string/follow"
                     android:textSize="16sp"
                     android:visibility="gone"
                     app:fontFamily="@font/qanelassoft_extra_bold" />

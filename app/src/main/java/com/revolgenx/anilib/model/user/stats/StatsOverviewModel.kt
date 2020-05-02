@@ -6,6 +6,7 @@ class StatsOverviewModel : BaseUserModel() {
     var type: Int? = null
 
     var count: Int? = null
+    var scoreFormat: Int? = null
 
     var meanScore: Double? = null
     var standardDeviation: Double? = null

@@ -50,6 +50,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                 cModel.medium = it.medium()
                             }
                         }
+                        model.mediaListStatus = it.mediaListEntry()?.status()?.ordinal
                         model.bannerImage = it.bannerImage() ?: model.coverImage?.largeImage
                     }
                 }
