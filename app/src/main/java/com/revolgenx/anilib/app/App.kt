@@ -4,6 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.StyleRes
 import androidx.multidex.MultiDex
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.facebook.common.logging.FLog
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.imagepipeline.listener.RequestListener
@@ -16,14 +20,17 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.Constants
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.networkModules
 import com.revolgenx.anilib.repository.repositoryModules
+import com.revolgenx.anilib.service.notification.NotificationWorker
 import com.revolgenx.anilib.service.serviceModule
 import com.revolgenx.anilib.viewmodel.viewModelModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class App : DynamicApplication() {
@@ -52,6 +59,18 @@ class App : DynamicApplication() {
             androidContext(this@App)
 
             modules(listOf(viewModelModules, repositoryModules, networkModules, serviceModule))
+        }
+
+
+        if (context.loggedIn()) {
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+            val periodicWork = PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
+                .setConstraints(constraints).build()
+            WorkManager.getInstance(this).enqueue(periodicWork)
+        }else{
+            WorkManager.getInstance(this).pruneWork()
         }
     }
 
