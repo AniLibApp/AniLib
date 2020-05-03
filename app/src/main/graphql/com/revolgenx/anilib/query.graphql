@@ -1025,6 +1025,242 @@ query IsFavouriteQuery($mediaId:Int){
     }
 }
 
+query NotificationQuery($page:Int, $perPage:Int, $resetNotificationCount:Boolean){
+    Page(page:$page, perPage:$perPage){
+        notifications(resetNotificationCount:$resetNotificationCount){
+            __typename
+            ... on AiringNotification{
+                id
+                type
+                episode
+                contexts
+                createdAt
+                media{
+                    ... on Media{
+                        ... basicMediaContent
+                    }
+
+                }
+
+            }
+            ... on FollowingNotification{
+                id
+                context
+                type
+                createdAt
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+
+                }
+
+            }
+
+
+            ...  on ActivityMessageNotification{
+                id
+                type
+                activityId
+                context
+                message{
+                    id
+                    message
+                    siteUrl
+                }
+                createdAt
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+                }
+            }
+            ... on ActivityMentionNotification{
+                id
+                type
+                activityId
+                context
+                createdAt
+                activity{
+                    ... notificationActivity
+                }
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+                }
+            }
+            ... on ActivityReplyNotification{
+                id
+                type
+                activityId
+                context
+                createdAt
+
+                activity{
+                    ... notificationActivity
+                }
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+                }
+            }
+            ... on ActivityReplySubscribedNotification{
+                id
+                type
+                activityId
+                context
+                createdAt
+
+                activity{
+                    ... notificationActivity
+                }
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+                }
+            }
+            ... on ActivityLikeNotification{
+                id
+                userId
+                type
+                activityId
+                context
+                createdAt
+                activity{
+                    ... notificationActivity
+                }
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+                }
+            }
+            ... on ActivityReplyLikeNotification{
+                id
+                userId
+                type
+                activityId
+                context
+                createdAt
+                activity{
+                    ... notificationActivity
+                }
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+                }
+            }
+
+            ... on ThreadCommentMentionNotification{
+                id
+                type
+                context
+                createdAt
+                comment{
+                    id
+                    siteUrl
+                }
+
+                thread{
+                    ... on Thread{
+                        ... basicThreadContent
+                    }
+                }
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+                }
+            }
+
+            ... on ThreadCommentReplyNotification{
+                id
+                type
+                context
+                createdAt
+                comment{
+                    id
+                    siteUrl
+                }
+                thread{
+                    ... on Thread{
+                        ... basicThreadContent
+                    }
+                }
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+                }
+
+            }
+
+
+            ... on ThreadCommentSubscribedNotification{
+                id
+                context
+                comment{
+                    id
+                    siteUrl
+                }
+                type
+                createdAt
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+                }
+                thread{
+                    ... on Thread{
+                        ... basicThreadContent
+                    }
+                }
+            }
+
+            ... on ThreadCommentLikeNotification{
+                id
+                type
+                context
+                createdAt
+                comment{
+                    id
+                    siteUrl
+                }
+                thread{
+                    ... on Thread{
+                        ... basicThreadContent
+                    }
+                }
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+                }
+            }
+
+            ... on ThreadLikeNotification{
+                id
+                type
+                context
+                createdAt
+                thread{
+                    ... on Thread{
+                        ... basicThreadContent
+                    }
+                }
+                user{
+                    ... on User{
+                        ... notificationUserContent
+                    }
+                }
+            }
+        }
+    }
+}
 
 #mutation
 mutation SaveMediaListEntryMutation(
@@ -1271,6 +1507,65 @@ fragment narrowCharacterContent on Character{
         medium
     }
 }
+
+
+fragment notificationUserContent on User{
+    id
+    name
+    avatar{
+        medium
+        large
+    }
+    bannerImage
+}
+
+fragment basicMediaContent on Media{
+    id
+    title {
+        ... on MediaTitle{
+            english
+            romaji
+            native
+            userPreferred
+        }
+    }
+    isAdult
+    format
+    type
+    coverImage {
+        ... on MediaCoverImage{
+            medium
+            large
+            extraLarge
+        }
+    }
+    bannerImage
+}
+
+
+fragment basicThreadContent on Thread{
+    id
+    title
+    siteUrl
+}
+
+
+fragment notificationActivity on ActivityUnion{
+    ... on TextActivity{
+        id
+        siteUrl
+    }
+    ... on ListActivity{
+        id
+        siteUrl
+    }
+    ... on MessageActivity{
+        id
+        siteUrl
+    }
+}
+
+
 
 
 

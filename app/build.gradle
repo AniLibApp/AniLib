@@ -205,6 +205,9 @@ dependencies {
     implementation 'com.github.piasy:ProgressPieIndicator:1.6.4'
 
 
+    //preetytime
+    implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
+
 
 
 

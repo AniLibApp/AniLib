@@ -199,6 +199,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="follow">Follow</string>
+    <string name="episode_airing_notif">%s %s %s %s %s</string>
+    <string name="thread_notif_s">%s %s %s</string>
+    <string name="activity_notif_s">%s %s</string>
 
     <string-array name="media_format">
         <item>Tv</item>

@@ -5,4 +5,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class UserMeta(var userId: Int?, var userName: String?, var loggedInUser: Boolean = false) :
-    Parcelable
+    Parcelable{
+    companion object{
+        const val userMetaKey = "userMetaKey"
+    }
+}
