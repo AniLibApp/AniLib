@@ -25,6 +25,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.greenrobot.eventbus.EventBus
+import org.ocpsoft.prettytime.PrettyTime
+import org.threeten.bp.DateTimeUtils
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
 import java.util.*
 
 
@@ -163,6 +167,10 @@ fun Context.openLink(url: String?) {
     } catch (e: Exception) {
         makeToast(R.string.no_app_found_to_open)
     }
+}
+
+fun Long.prettyTime(): String? {
+    return PrettyTime().format(DateTimeUtils.toDate(Instant.ofEpochSecond(this)))
 }
 
 fun View.string(@StringRes id: Int) = context.getString(id)

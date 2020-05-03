@@ -53,4 +53,7 @@ val viewModelModules = module {
     viewModel { StatsVoiceActorViewModel(get()) }
     viewModel { StatsStudioViewModel(get()) }
     viewModel { StatsStaffViewModel(get()) }
+
+    //notification
+    viewModel { NotificationViewModel(get()) }
 }

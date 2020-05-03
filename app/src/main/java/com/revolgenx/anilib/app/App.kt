@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.StyleRes
 import androidx.multidex.MultiDex
-import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.common.logging.FLog
+import com.facebook.imagepipeline.core.ImagePipelineConfig
+import com.facebook.imagepipeline.listener.RequestListener
+import com.facebook.imagepipeline.listener.RequestLoggingListener
 import com.github.piasy.biv.BigImageViewer
 import com.github.piasy.biv.loader.fresco.FrescoImageLoader
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -13,7 +16,6 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.Constants
 import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.repository.networkModules
 import com.revolgenx.anilib.repository.repositoryModules
 import com.revolgenx.anilib.service.serviceModule
@@ -22,6 +24,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
 import java.util.*
+
 
 class App : DynamicApplication() {
 
@@ -34,7 +37,15 @@ class App : DynamicApplication() {
     override fun onInitialize() {
         AndroidThreeTen.init(this)
 //        Fresco.initialize(this)
-        BigImageViewer.initialize(FrescoImageLoader.with(this))
+
+        val requestListeners: MutableSet<RequestListener> = HashSet()
+        requestListeners.add(RequestLoggingListener())
+        val config = ImagePipelineConfig.newBuilder(context) // other setters
+            .setRequestListeners(requestListeners)
+            .build()
+        BigImageViewer.initialize(FrescoImageLoader.with(this, config))
+        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
+
         Timber.plant(Timber.DebugTree())
 //        MarkwonImpl.createHtmlInstance(this)
         startKoin {

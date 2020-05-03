@@ -115,7 +115,6 @@ class UserProfileActivity : BasePopupVideoActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userMeta = intent.getParcelableExtra(USER_ACTIVITY_META_KEY) ?: return
-        userMeta.userId = 298047
         setSupportActionBar(userToolbar)
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

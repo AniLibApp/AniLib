@@ -84,15 +84,20 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
 
         override fun load(drawable: AsyncDrawable) {
             val dataSource = Fresco.getImagePipeline().fetchDecodedImage(
-                ImageRequestBuilder.newBuilderWithSource(drawable.destination.toUri()).setImageDecodeOptions(
-                    ImageDecodeOptions.newBuilder().setDecodePreviewFrame(true).build()
-                ).build(),
+                ImageRequestBuilder.
+                    newBuilderWithSource(drawable.destination.toUri())
+                    .setImageDecodeOptions(ImageDecodeOptions.newBuilder().setDecodePreviewFrame(true).setDecodeAllFrames(false).build())
+                    .setLocalThumbnailPreviewsEnabled(true)
+                    .build(),
                 context
             )
-            dataSource.subscribe(object :
+
+            closeableReferences[drawable.destination] = WeakReference(dataSource)
+
+            val subscriber = object :
                 BaseDataSubscriber<CloseableReference<CloseableImage>>() {
+
                 override fun onNewResultImpl(dataSource: DataSource<CloseableReference<CloseableImage>>) {
-                    closeableReferences[drawable.destination] = WeakReference(dataSource)
                     if (!dataSource.isFinished) return
 
                     dataSource.result?.let {
@@ -113,8 +118,8 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                                     drawable.result = finalDrawable
                                 } else {
                                     val newBlurBitmap = resource.toBitmap(
-                                        (resource.intrinsicWidth * 0.2).toInt(),
-                                        (resource.intrinsicHeight * 0.2).toInt()
+                                        (resource.intrinsicWidth * 0.3).toInt().takeIf { it >= 1 } ?: 1,
+                                        (resource.intrinsicHeight * 0.3).toInt().takeIf { it >= 1 } ?: 1
                                     )
 
                                     NativeBlurFilter.iterativeBoxBlur(newBlurBitmap, 5, 1)
@@ -138,8 +143,8 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                                 return
                             } else if (drawable.result is ColorDrawable) {
                                 val newBlurBitmap = resource.toBitmap(
-                                    (resource.intrinsicWidth * 0.3).toInt(),
-                                    (resource.intrinsicHeight * 0.3).toInt()
+                                    (resource.intrinsicWidth * 0.3).toInt().takeIf { it >= 1 } ?: 1,
+                                    (resource.intrinsicHeight * 0.3).toInt().takeIf { it >= 1 } ?: 1
                                 )
 
                                 NativeBlurFilter.iterativeBoxBlur(newBlurBitmap, 8, 1)
@@ -172,12 +177,15 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
 
                 override fun onFailureImpl(dataSource: DataSource<CloseableReference<CloseableImage>>) {
                 }
-            }, CallerThreadExecutor.getInstance())
+            }
+
+            dataSource.subscribe(subscriber, CallerThreadExecutor.getInstance())
         }
 
         override fun cancel(drawable: AsyncDrawable) {
-            closeableReferences[drawable.destination]?.let {
-                it.get()?.close()
+            if (closeableReferences.containsKey(drawable.destination)) {
+                closeableReferences[drawable.destination]!!.get()?.close()
+                closeableReferences.remove(drawable.destination)
             }
         }
 
@@ -195,8 +203,8 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                         GifDrawable(
                             context, Bitmap.createScaledBitmap(
                                 bitmap,
-                                (bitmap.width * 0.7).toInt(),
-                                (bitmap.height * 0.7).toInt(), false
+                                (bitmap.width * 0.7).toInt().takeIf { it >= 1 } ?: 1,
+                                (bitmap.height * 0.7).toInt().takeIf { it >= 1 } ?: 1, false
                             )
                         )
                     }
@@ -206,11 +214,13 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                         closeableImage.underlyingBitmap.config,
                         true
                     )
+                    closeableImage.originalEncodedImageInfo
+                    closeableImage.originalEncodedImageInfo.callerContext
                     BitmapDrawable(
                         context.resources,
                         Bitmap.createScaledBitmap(
-                            bitmap, (bitmap.width * 0.7).toInt(),
-                            (bitmap.height * 0.7).toInt(), false
+                            bitmap, (bitmap.width * 0.7).toInt().takeIf { it >= 1 } ?: 1,
+                            (bitmap.height * 0.7).toInt().takeIf { it >= 1 } ?: 1, false
                         )
                     )
                 }
