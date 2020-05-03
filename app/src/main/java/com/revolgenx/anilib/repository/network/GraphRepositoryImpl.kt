@@ -18,4 +18,5 @@ class GraphRepositoryImpl(private val apolloClient: ApolloClient): BaseGraphRepo
         return Rx2Apollo.from(apolloClient.mutate(mutate)).observeOn(Schedulers.io())
     }
 
+
 }

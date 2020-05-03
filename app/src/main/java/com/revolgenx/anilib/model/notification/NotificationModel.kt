@@ -8,5 +8,6 @@ abstract class NotificationModel : BaseModel() {
     var context: String? = null
     var createdAt: String? = null
     var type: Int? = null
+    var notification:String? = null
     var notificationUnionType: NotificationUnionType? = null
 }
