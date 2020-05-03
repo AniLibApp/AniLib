@@ -73,7 +73,6 @@ class DiscoverFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
     }
 
     private fun View.checkLoggedIn(): Boolean {

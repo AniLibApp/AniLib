@@ -15,6 +15,7 @@ private const val userAvatarKey = "user_avatar_key"
 private const val userBannerImageKey = "user_banner_image_key"
 private const val scoreFormatKey = "score_format_key"
 
+private const val lastNotificationKey = "last_notification_key"
 
 fun Context.loggedIn() = getBoolean(loggedInKey, false)
 fun Context.loggedIn(logIn: Boolean) = putBoolean(loggedInKey, logIn)
@@ -69,4 +70,12 @@ fun Context.logIn(accessToken: String) {
     token(accessToken)
     val userId = JWT(accessToken).subject?.trim()?.toInt() ?: -1
     userId(userId)
+}
+
+fun getLastNotification(context: Context): Int {
+    return context.getInt(lastNotificationKey, -1)
+}
+
+fun setNewNotification(context: Context, notifId: Int) {
+    context.putInt(lastNotificationKey, notifId)
 }

@@ -9,5 +9,4 @@ import io.reactivex.Observable
 interface BaseGraphRepository {
     fun <D : Operation.Data, T, V : Operation.Variables> request(query: Query<D, T, V>): Observable<Response<T>>
     fun <D : Operation.Data, T, V : Operation.Variables> request(mutate: Mutation<D, T, V>): Observable<Response<T>>
-
 }

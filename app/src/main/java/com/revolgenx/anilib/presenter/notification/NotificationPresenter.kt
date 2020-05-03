@@ -3,8 +3,6 @@ package com.revolgenx.anilib.presenter.notification
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
-import com.facebook.drawee.generic.RoundingParams
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
@@ -14,10 +12,9 @@ import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.UserBrowseEvent
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.notification.NotificationModel
-import com.revolgenx.anilib.model.notification.activity.ActivityMessageNotification
-import com.revolgenx.anilib.model.notification.activity.ActivityNotification
-import com.revolgenx.anilib.model.notification.activity.AiringNotificationModel
-import com.revolgenx.anilib.model.notification.thread.ThreadNotification
+import com.revolgenx.anilib.model.notification.activity.*
+import com.revolgenx.anilib.model.notification.thread.*
+import com.revolgenx.anilib.util.openLink
 import kotlinx.android.synthetic.main.notification_presenter_layout.view.*
 import java.util.*
 
@@ -36,7 +33,6 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
         )
     }
 
-
     override fun onBind(page: Page, holder: Holder, element: Element<NotificationModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
@@ -47,40 +43,85 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                     val activity = item as ActivityMessageNotification
                     createActivityNotif(activity)
                     setOnClickListener {
+                        openActivityLink(activity)
                     }
                 }
                 NotificationUnionType.ACTIVITY_REPLY -> {
-                    createActivityNotif(item as ActivityNotification)
-
-                }
-                NotificationUnionType.FOLLOWING -> {
-                    createActivityNotif(item as ActivityNotification)
-
+                    val activity = item as ActivityReplyNotification
+                    createActivityNotif(activity)
                     setOnClickListener {
-                        UserBrowseEvent(item.userModel?.userId).postEvent
+                        openActivityLink(activity)
                     }
                 }
                 NotificationUnionType.ACTIVITY_MENTION -> {
-                    createActivityNotif(item as ActivityNotification)
 
+                    val activity = item as ActivityMentionNotification
+                    createActivityNotif(activity)
+                    setOnClickListener {
+                        openActivityLink(activity)
+                    }
                 }
-                NotificationUnionType.THREAD_COMMENT_MENTION -> {
-                    createThreadNotif(item as ThreadNotification)
+                NotificationUnionType.ACTIVITY_LIKE -> {
 
+                    val activity = item as ActivityLikeNotification
+                    createActivityNotif(activity)
+                    setOnClickListener {
+                        openActivityLink(activity)
+                    }
+                }
+                NotificationUnionType.ACTIVITY_REPLY_LIKE -> {
+
+                    val activity = item as ActivityReplyLikeNotification
+                    createActivityNotif(activity)
+                    setOnClickListener {
+                        openActivityLink(activity)
+                    }
+                }
+                NotificationUnionType.ACTIVITY_REPLY_SUBSCRIBED -> {
+                    val activity = item as ActivityReplySubscribedNotification
+                    createActivityNotif(activity)
+                    setOnClickListener {
+                        openActivityLink(activity)
+                    }
+                }
+
+                NotificationUnionType.THREAD_COMMENT_MENTION -> {
+                    val thread = item as ThreadCommentMentionNotification
+                    createThreadNotif(thread)
+                    setOnClickListener {
+                        openThreadLink(thread)
+                    }
                 }
                 NotificationUnionType.THREAD_SUBSCRIBED -> {
-                    createThreadNotif(item as ThreadNotification)
-
+                    val thread = item as ThreadCommentSubscribedNotification
+                    createThreadNotif(thread)
+                    setOnClickListener {
+                        openThreadLink(thread)
+                    }
                 }
                 NotificationUnionType.THREAD_COMMENT_REPLY -> {
-                    createThreadNotif(item as ThreadNotification)
+                    val thread = item as ThreadCommentReplyNotification
+                    createThreadNotif(thread)
+                    setOnClickListener {
+                        openThreadLink(thread)
+                    }
+                }
+                NotificationUnionType.THREAD_LIKE -> {
+                    val thread = item as ThreadLikeNotification
+                    createThreadNotif(thread)
+                    setOnClickListener {
+                        openThreadLink(thread)
+                    }
+                }
+                NotificationUnionType.THREAD_COMMENT_LIKE -> {
+                    val thread = item as ThreadCommentLikeNotification
+                    createThreadNotif(thread)
+                    setOnClickListener {
+                        openThreadLink(thread)
+                    }
                 }
                 NotificationUnionType.AIRING -> {
                     (item as AiringNotificationModel).let {
-                        val roundingParams = RoundingParams.fromCornersRadius(6f)
-                        notificationMediaDrawee.hierarchy = GenericDraweeHierarchyBuilder(resources)
-                            .setRoundingParams(roundingParams)
-                            .build()
                         notificationMediaDrawee.setImageURI(it.commonMediaModel?.coverImage?.image)
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text = String.format(
@@ -108,20 +149,12 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                         }
                     }
                 }
-                NotificationUnionType.ACTIVITY_LIKE -> {
+
+                NotificationUnionType.FOLLOWING -> {
                     createActivityNotif(item as ActivityNotification)
-                }
-                NotificationUnionType.ACTIVITY_REPLY_LIKE -> {
-                    createActivityNotif(item as ActivityNotification)
-                }
-                NotificationUnionType.THREAD_LIKE -> {
-                    createThreadNotif(item as ThreadNotification)
-                }
-                NotificationUnionType.THREAD_COMMENT_LIKE -> {
-                    createThreadNotif(item as ThreadNotification)
-                }
-                NotificationUnionType.ACTIVITY_REPLY_SUBSCRIBED -> {
-                    createActivityNotif(item as ActivityNotification)
+                    setOnClickListener {
+                        UserBrowseEvent(item.userModel?.userId).postEvent
+                    }
                 }
                 NotificationUnionType.RELATED_MEDIA_ADDITION -> {
 
@@ -129,19 +162,30 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
             }
         }
 
-        holder.itemView.apply {
-            val roundingParams = RoundingParams.fromCornersRadius(7f)
-            notificationMediaDrawee.hierarchy = GenericDraweeHierarchyBuilder(resources)
-                .setRoundingParams(roundingParams)
-                .build()
+    }
+
+    private fun openThreadLink(thread: ThreadNotification) {
+        thread.threadModel?.siteUrl?.let {
+            context.openLink(it)
         }
     }
 
+    private fun openActivityLink(activity: ActivityNotification) {
+        var siteUrl: String? = null
+        activity.textActivityModel?.let {
+            siteUrl = it.siteUrl
+        }
+        activity.listActivityModel?.let {
+            siteUrl = it.siteUrl
+        }
+
+        activity.messageActivityModel?.let {
+            siteUrl = it.siteUrl
+        }
+        context.openLink(siteUrl)
+    }
+
     private fun View.createActivityNotif(item: ActivityNotification) {
-        val roundingParams = RoundingParams.asCircle()
-        notificationMediaDrawee.hierarchy = GenericDraweeHierarchyBuilder(resources)
-            .setRoundingParams(roundingParams)
-            .build()
         notificationMediaDrawee.setImageURI(item.userModel?.avatar?.image)
         notificationTitleTv.text = context.getString(R.string.activity_notif_s)
             .format(item.userModel?.userName, item.context)
@@ -149,10 +193,6 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
     }
 
     private fun View.createThreadNotif(item: ThreadNotification) {
-        val roundingParams = RoundingParams.asCircle()
-        notificationMediaDrawee.hierarchy = GenericDraweeHierarchyBuilder(resources)
-            .setRoundingParams(roundingParams)
-            .build()
         notificationMediaDrawee.setImageURI(item.userModel?.avatar?.image)
         notificationTitleTv.text = context.getString(R.string.thread_notif_s)
             .format(item.userModel?.userName, item.context, item.threadModel?.title)
