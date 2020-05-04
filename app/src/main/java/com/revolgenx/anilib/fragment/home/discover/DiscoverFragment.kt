@@ -1,41 +1,19 @@
-package com.revolgenx.anilib.fragment.home
+package com.revolgenx.anilib.fragment.home.discover
 
-import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.PopupMenu
-import androidx.core.net.toUri
 import androidx.core.os.bundleOf
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
-import com.revolgenx.anilib.activity.NavViewPagerContainerActivity
-import com.revolgenx.anilib.event.BrowseEvent
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
-import com.revolgenx.anilib.markwon.MarkwonImpl
-import com.revolgenx.anilib.meta.NavViewPagerContainerMeta
-import com.revolgenx.anilib.meta.NavViewPagerContainerType
+import com.revolgenx.anilib.fragment.home.NotificationFragment
 import com.revolgenx.anilib.meta.UserMeta
-import com.revolgenx.anilib.meta.UserStatsMeta
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.preference.userId
-import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeSnakeBar
-import com.revolgenx.anilib.view.drawable.VideoPlayBitmapDrawable
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.discover_fragment_layout.*
 
-class DiscoverFragment : BaseFragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.discover_fragment_layout, container, false)
-    }
-
+class DiscoverFragment : DiscoverAiringFragment() {
 
     override fun onResume() {
         super.onResume()
@@ -43,9 +21,9 @@ class DiscoverFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.discover_fragment_menu, menu)
+        menu.findItem(R.id.notificationMenu).isVisible = requireContext().loggedIn()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

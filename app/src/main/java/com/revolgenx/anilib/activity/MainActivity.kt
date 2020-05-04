@@ -36,7 +36,7 @@ import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.fragment.*
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
-import com.revolgenx.anilib.fragment.home.DiscoverFragment
+import com.revolgenx.anilib.fragment.home.discover.DiscoverFragment
 import com.revolgenx.anilib.fragment.home.DownloadFragment
 import com.revolgenx.anilib.fragment.home.RecommendationFragment
 import com.revolgenx.anilib.fragment.home.SeasonFragment
@@ -198,7 +198,6 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             getString(R.string.sign_in)
         with(navView.menu) {
             findItem(R.id.navFeedId).isVisible = false
-            findItem(R.id.navNotification).isVisible = false
             findItem(R.id.navAnimeListId).isVisible = false
             findItem(R.id.navMangaListId).isVisible = false
         }
