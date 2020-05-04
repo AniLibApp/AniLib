@@ -46,7 +46,7 @@ import com.revolgenx.anilib.source.MediaOverviewRecommendationSource
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
-import com.revolgenx.anilib.view.AiringEpisodeView
+import com.revolgenx.anilib.view.airing.AiringEpisodeView
 import com.revolgenx.anilib.view.span.SpoilerSpan
 import com.revolgenx.anilib.viewmodel.MediaOverviewViewModel
 import kotlinx.android.synthetic.main.error_layout.*
@@ -282,7 +282,10 @@ class MediaOverviewFragment : BaseFragment() {
                         params.bottomMargin = dp(20f)
                     }
                 }.also {
-                    it.addView(AiringEpisodeView(requireContext()).also { ae ->
+                    it.addView(
+                        AiringEpisodeView(
+                            requireContext()
+                        ).also { ae ->
                         ae.layoutParams = FrameLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT

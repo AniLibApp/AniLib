@@ -6,53 +6,50 @@ import com.revolgenx.anilib.MediaWatchQuery
 import com.revolgenx.anilib.fragment.MediaListContent
 import com.revolgenx.anilib.fragment.NarrowMediaContent
 import com.revolgenx.anilib.model.*
-import com.revolgenx.anilib.model.entry.MediaEntryListModel
-import com.revolgenx.anilib.model.season.SeasonMediaModel
 import com.revolgenx.anilib.util.pmap
 import kotlinx.coroutines.runBlocking
 
-fun NarrowMediaContent.getCommonMedia() =
-    SeasonMediaModel().also {
-        it.mediaId = id()
-        it.title = TitleModel().also { title ->
-            title.english = title()!!.english() ?: title()!!.romaji()
-            title.romaji = title()!!.romaji()
-            title.native = title()!!.native_() ?: title()!!.romaji()
-            title.userPreferred = title()!!.userPreferred()
-        }
-        it.format = format()!!.ordinal
-        it.type = type()!!.ordinal
-        it.episodes = episodes()?.toString()
-        it.duration = duration()?.toString()
-        it.chapters = chapters()?.toString()
-        it.volumes = volumes()?.toString()
-        it.status = status()!!.ordinal
-        it.coverImage = CoverImageModel().also { image ->
-            image.medium = coverImage()!!.medium()
-            image.large = coverImage()!!.large()
-            image.extraLarge = coverImage()!!.extraLarge()
-        }
-        it.genres = genres()
-        it.averageScore = averageScore()
-        startDate()?.let { date ->
-            it.startDate = DateModel().also { dateModel ->
-                dateModel.year = date.year()
-                dateModel.month = date.month()
-                dateModel.day = date.day()
-                dateModel.date = dateModel.toString()
-            }
-        }
-        endDate()?.let { date ->
-            it.endDate = DateModel().also { dateModel ->
-                dateModel.year = date.year()
-                dateModel.month = date.month()
-                dateModel.day = date.day()
-                dateModel.date = dateModel.toString()
-            }
-        }
-        it.bannerImage = bannerImage() ?: it.coverImage!!.extraLarge
-        it.mediaEntryListModel = MediaEntryListModel(mediaListEntry()?.let { it.progress() ?: 0 })
+fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel) {
+    model.mediaId = id()
+    model.title = TitleModel().also { title ->
+        title.english = title()!!.english() ?: title()!!.romaji()
+        title.romaji = title()!!.romaji()
+        title.native = title()!!.native_() ?: title()!!.romaji()
+        title.userPreferred = title()!!.userPreferred()
     }
+    model.format = format()!!.ordinal
+    model.type = type()!!.ordinal
+    model.episodes = episodes()?.toString()
+    model.duration = duration()?.toString()
+    model.chapters = chapters()?.toString()
+    model.volumes = volumes()?.toString()
+    model.status = status()!!.ordinal
+    model.coverImage = CoverImageModel().also { image ->
+        image.medium = coverImage()!!.medium()
+        image.large = coverImage()!!.large()
+        image.extraLarge = coverImage()!!.extraLarge()
+    }
+    model.genres = genres()
+    model.averageScore = averageScore()
+    startDate()?.let { date ->
+        model.startDate = DateModel().also { dateModel ->
+            dateModel.year = date.year()
+            dateModel.month = date.month()
+            dateModel.day = date.day()
+            dateModel.date = dateModel.toString()
+        }
+    }
+    endDate()?.let { date ->
+        model.endDate = DateModel().also { dateModel ->
+            dateModel.year = date.year()
+            dateModel.month = date.month()
+            dateModel.day = date.day()
+            dateModel.date = dateModel.toString()
+        }
+    }
+    model.isAdult = isAdult ?: false
+    model.bannerImage = bannerImage() ?: model.coverImage!!.extraLarge
+}
 
 fun BasicUserQuery.User.toBasicUserModel() = BasicUserModel().also {
     it.userId = id()
@@ -133,7 +130,8 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
         it.airingTimeModel = nextAiringEpisode()?.let {
             AiringTimeModel().also { model ->
                 model.episode = it.episode()
-                model.airingTime = AiringTime().also { ti -> ti.time = it.timeUntilAiring() }
+                model.airingTime =
+                    AiringTime().also { ti -> ti.time = it.timeUntilAiring().toLong() }
             }
         }
         it.relationship = relations()?.edges()?.pmap {

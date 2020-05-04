@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.DynamicApp.Card.Margin.Clickable"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/airingMediaCoverFrameLayout"
+            android:layout_width="220dp"
+            android:layout_height="240dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="parent">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/airingMediaSimpleDrawee"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/airingMediaRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="5dp"
+                android:background="@drawable/oval_background"
+                android:paddingStart="5dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="3dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:ads_colorType="custom"
+                app:drawableStartCompat="@drawable/ic_star"
+                tools:ignore="SmallSp" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/airingMediaTitleTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:padding="4dp"
+            android:textSize="12sp"
+            app:ads_colorType="tint_surface" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/airingFormatTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:padding="4dp"
+            android:textSize="12sp"
+            app:ads_colorType="tint_surface" />
+
+        <com.revolgenx.anilib.view.airing.AiringDynamicTextView
+            android:id="@+id/airingTimeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:padding="4dp"
+            android:text="@string/airing_time_e_s_s"
+            android:textSize="13sp"
+            app:ads_colorType="accent"
+            android:layout_marginBottom="10dp"/>
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
