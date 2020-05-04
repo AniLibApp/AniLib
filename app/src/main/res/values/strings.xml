@@ -203,6 +203,8 @@
     <string name="thread_notif_s">%s %s %s</string>
     <string name="activity_notif_s">%s %s</string>
     <string name="new_notification">New notification available</string>
+    <string name="airing_schedules">Airing Schedules</string>
+    <string name="airing_time_e_s_s">E:%s · %dd %dh %dm %ds </string>
 
     <string-array name="media_format">
         <item>Tv</item>

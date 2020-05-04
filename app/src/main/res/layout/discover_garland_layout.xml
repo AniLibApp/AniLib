@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/garlandTitleTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Title"
+        android:textSize="16sp"
+        app:fontFamily="@font/qanelassoft_extra_bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/garlandSettingIv"
+        app:layout_constraintTop_toBottomOf="@+id/garlandContainer"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/garlandSettingIv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:ads_colorType="tint_surface"
+        app:layout_constraintBottom_toBottomOf="@id/garlandTitleTv"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="3dp"
+        app:srcCompat="@drawable/ic_button_setting" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+        android:id="@+id/garlandContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/garlandTitleTv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,11 +30,6 @@
 
 
     <item
-        android:id="@+id/navNotification"
-        android:icon="@drawable/ic_notifications"
-        android:title="@string/notification" />
-
-    <item
         android:id="@+id/navSetting"
         android:icon="@drawable/ic_settings"
         android:title="@string/settings" />

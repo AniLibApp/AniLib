@@ -6,6 +6,7 @@ import com.otaliastudios.elements.extensions.MainSource
 import com.revolgenx.anilib.constant.PAGE_SIZE
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.field.SeasonField
+import com.revolgenx.anilib.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.model.season.SeasonMediaModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.converter.getCommonMedia
@@ -41,7 +42,10 @@ class SeasonSource(
         val disposable = baseGraphRepository.request(seasonField.toQueryOrMutation())
             .map {
                 it.data()?.Page()?.media()!!.map { media ->
-                    media.fragments().narrowMediaContent().getCommonMedia()
+                    val seasonMediaModel = SeasonMediaModel()
+                    media.fragments().narrowMediaContent().getCommonMedia(seasonMediaModel)
+                    seasonMediaModel.mediaEntryListModel = MediaEntryListModel(media.fragments().narrowMediaContent().mediaListEntry()?.let { it.progress() ?: 0 })
+                    seasonMediaModel
                 }
             }
             .observeOn(AndroidSchedulers.mainThread())

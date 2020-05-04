@@ -11,8 +11,10 @@ import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.BaseEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.UserBrowseEvent
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
+import com.revolgenx.anilib.meta.UserMeta
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.container_activity.*
@@ -81,6 +83,10 @@ class ContainerActivity : DynamicSystemActivity() {
                 startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
                     this.putExtra(MediaBrowseActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
                 })
+            }
+
+            is UserBrowseEvent -> {
+                UserProfileActivity.openActivity(this, UserMeta(event.userId, null))
             }
         }
     }

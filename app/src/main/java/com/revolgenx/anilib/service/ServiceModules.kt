@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.service
 
+import com.revolgenx.anilib.service.airing.AiringMediaService
+import com.revolgenx.anilib.service.airing.AiringMediaServiceImpl
 import com.revolgenx.anilib.service.list.MediaListService
 import com.revolgenx.anilib.service.list.MediaListServiceImpl
 import com.revolgenx.anilib.service.notification.NotificationService
@@ -25,4 +27,5 @@ val serviceModule = module {
     factory<UserService> { UserServiceImpl(get()) }
     factory<UserStatsService> { UserStatsServiceImpl(get()) }
     factory<NotificationService> { NotificationServiceImpl(get()) }
+    factory<AiringMediaService> { AiringMediaServiceImpl(get()) }
 }
