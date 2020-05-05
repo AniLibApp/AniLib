@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.field.media.MediaStaffField
 import com.revolgenx.anilib.model.MediaStaffModel
-import com.revolgenx.anilib.service.MediaBrowseService
+import com.revolgenx.anilib.service.media.MediaBrowseService
 import io.reactivex.disposables.CompositeDisposable
 
 class MediaStaffSource(

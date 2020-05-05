@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.service
+package com.revolgenx.anilib.service.media
 
 import com.revolgenx.anilib.field.browse.BrowseField
 import com.revolgenx.anilib.model.BaseModel

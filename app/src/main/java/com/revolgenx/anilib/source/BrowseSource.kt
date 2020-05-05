@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.field.browse.BrowseField
 import com.revolgenx.anilib.model.BaseModel
-import com.revolgenx.anilib.service.BrowseService
+import com.revolgenx.anilib.service.media.BrowseService
 import io.reactivex.disposables.CompositeDisposable
 
 class BrowseSource(

@@ -10,12 +10,11 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:layout_marginTop="10dp"
-        android:text="Title"
         android:textSize="16sp"
         app:fontFamily="@font/qanelassoft_extra_bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/garlandSettingIv"
-        app:layout_constraintTop_toBottomOf="@+id/garlandContainer"
+        app:layout_constraintBottom_toTopOf="@+id/garlandContainer"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -28,7 +27,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/garlandTitleTv"
         android:padding="6dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_button_setting" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout

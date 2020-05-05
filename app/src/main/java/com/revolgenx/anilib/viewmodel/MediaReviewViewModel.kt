@@ -2,7 +2,7 @@ package com.revolgenx.anilib.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.field.media.MediaReviewField
-import com.revolgenx.anilib.service.MediaBrowseService
+import com.revolgenx.anilib.service.media.MediaBrowseService
 import com.revolgenx.anilib.source.MediaReviewSource
 import io.reactivex.disposables.CompositeDisposable
 

@@ -2,10 +2,17 @@ package com.revolgenx.anilib.service
 
 import com.revolgenx.anilib.service.airing.AiringMediaService
 import com.revolgenx.anilib.service.airing.AiringMediaServiceImpl
+import com.revolgenx.anilib.service.character.CharacterService
+import com.revolgenx.anilib.service.character.CharacterServiceImpl
 import com.revolgenx.anilib.service.list.MediaListService
 import com.revolgenx.anilib.service.list.MediaListServiceImpl
+import com.revolgenx.anilib.service.media.*
 import com.revolgenx.anilib.service.notification.NotificationService
 import com.revolgenx.anilib.service.notification.NotificationServiceImpl
+import com.revolgenx.anilib.service.recommendation.RecommendationService
+import com.revolgenx.anilib.service.recommendation.RecommendationServiceImpl
+import com.revolgenx.anilib.service.staff.StaffService
+import com.revolgenx.anilib.service.staff.StaffServiceImpl
 import com.revolgenx.anilib.service.studio.StudioService
 import com.revolgenx.anilib.service.studio.StudioServiceImpl
 import com.revolgenx.anilib.service.user.UserService
@@ -28,4 +35,5 @@ val serviceModule = module {
     factory<UserStatsService> { UserStatsServiceImpl(get()) }
     factory<NotificationService> { NotificationServiceImpl(get()) }
     factory<AiringMediaService> { AiringMediaServiceImpl(get()) }
+    factory<MediaService> { MediaServiceImpl(get()) }
 }

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.service
+package com.revolgenx.anilib.service.media
 
 import com.apollographql.apollo.api.Query
 import com.revolgenx.anilib.CharacterSearchQuery

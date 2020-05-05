@@ -7,7 +7,7 @@ import com.otaliastudios.elements.extensions.MainSource
 import com.revolgenx.anilib.field.media.MediaWatchField
 import com.revolgenx.anilib.model.MediaWatchModel
 import com.revolgenx.anilib.repository.util.Status
-import com.revolgenx.anilib.service.MediaBrowseService
+import com.revolgenx.anilib.service.media.MediaBrowseService
 import io.reactivex.disposables.CompositeDisposable
 import java.lang.Exception
 

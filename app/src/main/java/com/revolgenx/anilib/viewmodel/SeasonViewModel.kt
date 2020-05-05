@@ -1,31 +1,24 @@
 package com.revolgenx.anilib.viewmodel
 
-import androidx.lifecycle.*
 import com.revolgenx.anilib.field.SeasonField
-import com.revolgenx.anilib.model.season.SeasonMediaModel
-import com.revolgenx.anilib.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.source.SeasonSource
-import io.reactivex.disposables.CompositeDisposable
+import com.revolgenx.anilib.service.media.MediaService
+import com.revolgenx.anilib.source.MedianSource
 
-class SeasonViewModel(private val repository: BaseGraphRepository) : ViewModel() {
-    var seasonSource: SeasonSource? = null
-    private val compositeDisposable = CompositeDisposable()
+class SeasonViewModel(private val service: MediaService) :
+    SourceViewModel<MedianSource, SeasonField>() {
+    private val field = SeasonField()
 
-    val seasonMediaList = mutableMapOf<Int, SeasonMediaModel>()
-
-    fun createSource(seasonField: SeasonField): SeasonSource {
-        seasonSource = SeasonSource(
-            baseGraphRepository = repository,
-            seasonField = seasonField,
-            compositeDisposable = compositeDisposable
+    override fun createSource(field: SeasonField): MedianSource {
+        source = MedianSource(
+            service,
+            field,
+            compositeDisposable
         )
-        return seasonSource!!
+        return source!!
     }
 
-    override fun onCleared() {
-        compositeDisposable.clear()
-        seasonMediaList.clear()
-        super.onCleared()
+    fun updateMediaProgress(mediaId: Int?, progress:Int?) {
+        source?.resources?.get(mediaId)?.mediaEntryListModel?.progress = progress
     }
 
 }

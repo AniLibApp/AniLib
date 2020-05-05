@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.field.media.MediaStatsField
 import com.revolgenx.anilib.model.user.stats.MediaStatsModel
 import com.revolgenx.anilib.repository.util.Resource
-import com.revolgenx.anilib.service.MediaBrowseService
+import com.revolgenx.anilib.service.media.MediaBrowseService
 import io.reactivex.disposables.CompositeDisposable
 
 class MediaStatsViewModel(private val browseService: MediaBrowseService) : ViewModel() {

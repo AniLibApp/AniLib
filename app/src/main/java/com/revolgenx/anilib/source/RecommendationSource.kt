@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.field.recommendation.RecommendationField
 import com.revolgenx.anilib.model.recommendation.RecommendationModel
-import com.revolgenx.anilib.service.RecommendationService
+import com.revolgenx.anilib.service.recommendation.RecommendationService
 import io.reactivex.disposables.CompositeDisposable
 
 class RecommendationSource(
