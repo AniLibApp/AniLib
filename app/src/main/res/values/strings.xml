@@ -204,7 +204,9 @@
     <string name="activity_notif_s">%s %s</string>
     <string name="new_notification">New notification available</string>
     <string name="airing_schedules">Airing Schedules</string>
-    <string name="airing_time_e_s_s">E:%s · %dd %dh %dm %ds </string>
+    <string name="airing_time_e_s_s">E: %s · %dd %dh %dm %ds </string>
+    <string name="format_episode_s">%s · E: %s</string>
+    <string name="select_date">Select Date</string>
 
     <string-array name="media_format">
         <item>Tv</item>

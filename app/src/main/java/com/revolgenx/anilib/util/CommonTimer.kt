@@ -25,7 +25,7 @@ open class CommonTimer(var handler: Handler?, val airingTime: AiringTime) : Runn
 
     override fun run() {
         if (handler == null) return
-        if (airingTime.time < 0) return
+        if (airingTime.time <= 0) return
 
         airingTime.time -= decreaseTimeBy
         timerCallback?.invoke()

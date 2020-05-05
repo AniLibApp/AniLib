@@ -7,17 +7,19 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:id="@+id/airingMediaCoverFrameLayout"
-            android:layout_width="220dp"
-            android:layout_height="240dp"
+            android:layout_width="170dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1.5"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="parent">
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/airingMediaSimpleDrawee"
@@ -27,7 +29,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/airingMediaRating"
+                android:id="@+id/mediaRatingTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
@@ -43,39 +45,82 @@
                 app:drawableStartCompat="@drawable/ic_star"
                 tools:ignore="SmallSp" />
 
+
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent_black"
+            app:layout_constraintBottom_toBottomOf="@id/airingMediaCoverFrameLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/airingMediaTitleTv" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/airingMediaTitleTv"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:padding="4dp"
-            android:textSize="12sp"
-            app:ads_colorType="tint_surface" />
+            android:layout_marginStart="4dp"
+            android:paddingTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="11sp"
+            app:ads_color="@color/white"
+            app:ads_colorType="custom"
+            app:layout_constraintBottom_toTopOf="@id/airingGenreLayout"
+            app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
+            app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout"
+            tools:ignore="SmallSp" />
+
+
+        <com.revolgenx.anilib.view.GenreLayout
+            android:id="@+id/airingGenreLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintBottom_toTopOf="@id/airingFormatTv"
+            app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
+            app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout" />
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/airingFormatTv"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
-            android:padding="4dp"
-            android:textSize="12sp"
-            app:ads_colorType="tint_surface" />
+            android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="10sp"
+            app:ads_colorType="tint_accent"
+            app:layout_constraintBottom_toTopOf="@id/airingTimeTv"
+            app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
+            app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout"
+            tools:ignore="SmallSp" />
 
         <com.revolgenx.anilib.view.airing.AiringDynamicTextView
             android:id="@+id/airingTimeTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="6dp"
-            android:padding="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingBottom="4dp"
             android:text="@string/airing_time_e_s_s"
-            android:textSize="13sp"
+            android:textSize="11sp"
             app:ads_colorType="accent"
-            android:layout_marginBottom="10dp"/>
+            app:fontFamily="@font/open_sans_semi_bold"
+            app:layout_constraintBottom_toBottomOf="@id/airingMediaCoverFrameLayout"
+            app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
+            app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout"
+            tools:ignore="SmallSp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

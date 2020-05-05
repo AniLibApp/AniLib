@@ -1,8 +1,7 @@
-package com.revolgenx.anilib.presenter
+package com.revolgenx.anilib.presenter.airing
 
 import android.content.Context
 import android.graphics.Color
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -14,28 +13,28 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
-import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.meta.ListEditorMeta
+import com.revolgenx.anilib.meta.MediaBrowserMeta
+import com.revolgenx.anilib.model.airing.AiringMediaModel
 import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
-import com.revolgenx.anilib.model.season.SeasonMediaModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
-import com.revolgenx.anilib.viewmodel.SeasonViewModel
-import kotlinx.android.synthetic.main.season_presenter_layout.view.*
+import kotlinx.android.synthetic.main.airing_presenter_layout.view.*
 
-class SeasonPresenter(context: Context, private val viewModel: SeasonViewModel) :
-    Presenter<SeasonMediaModel>(context) {
-
+class AiringPresenter(context: Context) : Presenter<AiringMediaModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
+
+    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
+        return Holder(getLayoutInflater().inflate(R.layout.airing_presenter_layout, parent, false))
+    }
 
     private val statusColors by lazy {
         context.resources.getStringArray(R.array.status_color)
     }
-
 
     private val mediaFormats by lazy {
         context.resources.getStringArray(R.array.media_format)
@@ -49,28 +48,13 @@ class SeasonPresenter(context: Context, private val viewModel: SeasonViewModel) 
         DynamicTheme.getInstance().get().tintSurfaceColor
     }
 
-    private val isLoggedIn by lazy {
-        context.loggedIn()
-    }
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.season_presenter_layout,
-                parent,
-                false
-            )
-        )
-    }
-
-
-    override fun onBind(page: Page, holder: Holder, element: Element<SeasonMediaModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<AiringMediaModel>) {
         super.onBind(page, holder, element)
-        val item = element.data!!
-
-        viewModel.seasonMediaList[item.mediaId!!] = item
+        val item = element.data ?: return
 
         holder.itemView.apply {
+
             mediaTitleTv.naText(item.title!!.title(context))
             coverImageIv.setImageURI(item.coverImage!!.image)
             if (item.type == MediaType.ANIME.ordinal) {
@@ -81,6 +65,7 @@ class SeasonPresenter(context: Context, private val viewModel: SeasonViewModel) 
                     string(R.string.chap_s).format(item.chapters.naText(), item.volumes.naText())
             }
             mediaStartDateTv.text = item.startDate?.date.naText() + " ~ " + item.endDate?.date?.naText()
+
             mediaGenreLayout.addGenre(
                 item.genres?.take(5)
             ) { genre ->
@@ -114,7 +99,7 @@ class SeasonPresenter(context: Context, private val viewModel: SeasonViewModel) 
             }
 
             bookmarkIv.setOnClickListener {
-                if (isLoggedIn) {
+                if (context.loggedIn()) {
                     ListEditorEvent(
                         ListEditorMeta(
                             item.mediaId,
@@ -129,7 +114,10 @@ class SeasonPresenter(context: Context, private val viewModel: SeasonViewModel) 
                 }
             }
 
-            if (isLoggedIn) {
+            airingTimeTv.setAiringText(item.airingTimeModel)
+
+
+            if (context.loggedIn()) {
                 entryProgressTv.visibility = View.VISIBLE
                 entryProgressTv.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
                 entryProgressTv.text = context.getString(R.string.s_s).format(
@@ -162,11 +150,10 @@ class SeasonPresenter(context: Context, private val viewModel: SeasonViewModel) 
                         )
                     }
                 }
-            }else{
+            } else {
                 entryProgressTv.visibility = View.GONE
             }
-
         }
-    }
 
+    }
 }

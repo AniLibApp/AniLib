@@ -46,16 +46,20 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
     override fun addView(
         view: View,
         title: String,
-        onClick: ((which: Int) -> Unit)
+        showSetting: Boolean,
+        onClick: ((which: Int) -> Unit)?
     ) {
         garlandLayout =
             LayoutInflater.from(view.context).inflate(R.layout.discover_garland_layout, null)
 
         garlandLayout.garlandTitleTv.setOnClickListener {
-            onClick.invoke(0)
+            onClick?.invoke(0)
         }
-        garlandLayout.garlandSettingIv.setOnClickListener {
-            onClick.invoke(1)
+        if (showSetting) {
+            garlandLayout.garlandSettingIv.visibility = View.VISIBLE
+            garlandLayout.garlandSettingIv.setOnClickListener {
+                onClick?.invoke(1)
+            }
         }
 
         garlandLayout.garlandTitleTv.text = title

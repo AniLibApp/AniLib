@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.ContainerActivity
+import com.revolgenx.anilib.fragment.airing.AiringFragment
+import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.presenter.home.discover.DiscoverAiringPresenter
-import com.revolgenx.anilib.source.home.airing.DiscoverAiringSource
+import com.revolgenx.anilib.source.home.airing.AiringSource
 import com.revolgenx.anilib.type.AiringSort
 import kotlinx.android.synthetic.main.discover_airing_fragment_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,7 +24,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     private val presenter
         get() = DiscoverAiringPresenter(requireContext())
 
-    private val source: DiscoverAiringSource
+    private val source: AiringSource
         get() = viewModel.source ?: viewModel.createSource(viewModel.field)
 
     private val viewModel by viewModel<DiscoverAiringViewModel>()
@@ -47,8 +51,10 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.field.sort = AiringSort.TIME.ordinal
-        discoverAiringRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        discoverAiringRecyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         invalidateAdapter()
+
     }
 
 
@@ -57,7 +63,15 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     }
 
     private fun handleGarlandClick(it: Int) {
-
+        if (it == 0) {
+            ContainerActivity.openActivity(
+                requireContext(),
+                ParcelableFragment(
+                    AiringFragment::class.java,
+                    bundleOf()
+                )
+            )
+        }
     }
 
     /** call this method to load into recyclerview*/

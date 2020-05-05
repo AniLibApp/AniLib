@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/airing_previous"
+        android:icon="@drawable/ic_angle_left"
+        android:title="@string/previous"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/airing_next"
+        android:icon="@drawable/ic_angle_right"
+        android:title="@string/next"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/airing_custom"
+        android:icon="@drawable/ic_calendar"
+        android:title="@string/select_date"
+        app:showAsAction="ifRoom" />
+
+</menu>

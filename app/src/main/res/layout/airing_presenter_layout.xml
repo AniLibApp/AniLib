@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mediaCardView"
+    style="@style/Widget.DynamicApp.Card.Margin.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/mediaImageLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="start"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1.6"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.26">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/coverImageIv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:transitionName="media_cover_transition" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/mediaRatingTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="5dp"
+                android:background="@drawable/oval_background"
+                android:paddingStart="5dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="3dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:ads_colorType="custom"
+                app:drawableStartCompat="@drawable/ic_star"
+                tools:ignore="SmallSp" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/mediaTitleTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/open_sans_semi_bold"
+            android:maxLines="2"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp"
+            android:includeFontPadding="false"
+            app:ads_colorType="tint_surface"
+            app:layout_constraintLeft_toRightOf="@+id/mediaImageLayout"
+            app:layout_constraintRight_toLeftOf="@+id/bookmarkIv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/bookmarkIv"
+            style="@style/Widget.DynamicApp.Image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?selectableItemBackground"
+            android:padding="10dp"
+            app:ads_colorType="tint_primary"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_bookmark" />
+
+        <com.revolgenx.anilib.view.GenreLayout
+            android:id="@+id/mediaGenreLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintLeft_toLeftOf="@+id/mediaTitleTv"
+            app:layout_constraintRight_toRightOf="@id/mediaTitleTv"
+            app:layout_constraintTop_toBottomOf="@+id/mediaTitleTv" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/mediaStatusTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:maxLines="1"
+            android:text="status"
+            android:textSize="11sp"
+            android:includeFontPadding="false"
+            app:layout_constraintLeft_toLeftOf="@+id/mediaTitleTv"
+            app:layout_constraintRight_toRightOf="@id/mediaTitleTv"
+            app:layout_constraintTop_toBottomOf="@+id/mediaGenreLayout"
+            tools:ignore="SmallSp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/mediaStartDateTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mediaStatusTv"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:text="start date"
+            android:textSize="11sp"
+            android:includeFontPadding="false"
+            app:layout_constraintLeft_toLeftOf="@id/mediaStatusTv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mediaStatusTv"
+            tools:ignore="SmallSp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/mediaEpisodeTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mediaStartDateTv"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:text="episodes"
+            android:textSize="11sp"
+            android:includeFontPadding="false"
+            app:layout_constraintLeft_toLeftOf="@id/mediaStartDateTv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mediaStartDateTv" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/mediaFormatTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mediaEpisodeTv"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:text="type"
+            android:textSize="11sp"
+            app:ads_colorType="accent"
+            android:includeFontPadding="false"
+            app:layout_constraintLeft_toLeftOf="@id/mediaEpisodeTv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mediaEpisodeTv"
+            app:layout_constraintVertical_bias="0" />
+
+        <com.revolgenx.anilib.view.airing.AiringDynamicTextView
+            android:id="@+id/airingTimeTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/airing_time_e_s_s"
+            android:textSize="12sp"
+            app:ads_colorType="accent"
+            android:includeFontPadding="false"
+            app:fontFamily="@font/open_sans_semi_bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/mediaFormatTv"
+            app:layout_constraintRight_toLeftOf="@id/entryProgressTv"
+            app:layout_constraintTop_toBottomOf="@+id/mediaFormatTv"
+            app:layout_constraintVertical_bias="0.7"
+            app:layout_goneMarginEnd="4dp"
+            tools:ignore="SmallSp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/entryProgressTv"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginEnd="12dp"
+            android:drawablePadding="4dp"
+            android:text="@string/s_s"
+            android:textSize="12sp"
+            android:visibility="visible"
+            app:ads_colorType="tint_surface"
+            android:includeFontPadding="false"
+            app:drawableStartCompat="@drawable/ic_eye_16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mediaFormatTv"
+            app:layout_constraintVertical_bias="0.7" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
