@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.service
+package com.revolgenx.anilib.service.media
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
@@ -111,7 +111,12 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
         )
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                saveMediaListEntryLiveData.value = Resource.success(model)
+                it.data()?.SaveMediaListEntry()?.let {
+                    saveMediaListEntryLiveData.value = Resource.success(model.also {mod->
+                        mod.progress = it.progress()
+                        mod.progressVolumes = it.progressVolumes()
+                    })
+                }
             }, {
                 Timber.e(it)
                 saveMediaListEntryLiveData.value = Resource.error(it.message ?: "Error", null)

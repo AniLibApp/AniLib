@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.service
+package com.revolgenx.anilib.service.character
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

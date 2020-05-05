@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.service
+package com.revolgenx.anilib.service.recommendation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer

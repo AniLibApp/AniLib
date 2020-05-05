@@ -9,7 +9,7 @@ import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.model.list.MediaListModel
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.repository.util.Status
-import com.revolgenx.anilib.service.MediaListEntryService
+import com.revolgenx.anilib.service.media.MediaListEntryService
 import com.revolgenx.anilib.service.list.MediaListService
 import com.revolgenx.anilib.source.MediaListSource
 import kotlinx.coroutines.Dispatchers

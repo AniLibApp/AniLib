@@ -9,6 +9,7 @@ import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 
+//todo update progress after bookmark
 class AiringViewModel(private val airingMediaService: AiringMediaService) :
     SourceViewModel<AiringSource, AiringMediaField>() {
 
@@ -49,5 +50,9 @@ class AiringViewModel(private val airingMediaService: AiringMediaService) :
         startDateTime = zonedDateTime.with(LocalTime.MIN)
         endDateTime = zonedDateTime.with(LocalTime.MAX)
         compositeDisposable.clear()
+    }
+
+    fun updateMediaProgress(mediaId: Int?, progress: Int?){
+
     }
 }

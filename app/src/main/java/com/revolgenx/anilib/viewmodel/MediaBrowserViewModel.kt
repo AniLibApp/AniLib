@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.model.MediaBrowseModel
 import com.revolgenx.anilib.repository.util.Resource
-import com.revolgenx.anilib.service.MediaBrowseService
+import com.revolgenx.anilib.service.media.MediaBrowseService
 import com.revolgenx.anilib.service.ToggleService
 import io.reactivex.disposables.CompositeDisposable
 

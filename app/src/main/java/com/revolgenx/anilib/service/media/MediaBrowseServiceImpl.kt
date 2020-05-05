@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.service
+package com.revolgenx.anilib.service.media
 
 import androidx.lifecycle.LiveData
 import com.github.mikephil.charting.data.Entry

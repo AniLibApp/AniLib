@@ -9,12 +9,16 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
+import com.revolgenx.anilib.event.ListEditorResultEvent
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.airing.AiringMediaModel
 import com.revolgenx.anilib.presenter.airing.AiringPresenter
 import com.revolgenx.anilib.viewmodel.AiringViewModel
 import kotlinx.android.synthetic.main.airing_fragment_layout.view.*
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZoneOffset
@@ -119,6 +123,15 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         updateToolbarTitle()
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onListEditorEvent(event: ListEditorResultEvent) {
+        event.listEditorResultMeta.let {
+            viewModel.updateMediaProgress(it.mediaId, it.progress)
+        }
+        adapter?.notifyDataSetChanged()
+        EventBus.getDefault().removeStickyEvent(event)
     }
 
     private fun updateToolbarTitle() {

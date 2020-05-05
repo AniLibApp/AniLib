@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.field.media.MediaReviewField
 import com.revolgenx.anilib.model.MediaReviewModel
-import com.revolgenx.anilib.service.MediaBrowseService
+import com.revolgenx.anilib.service.media.MediaBrowseService
 import io.reactivex.disposables.CompositeDisposable
 
 class MediaReviewSource(

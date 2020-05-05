@@ -7,7 +7,7 @@ import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.model.recommendation.RecommendationModel
 import com.revolgenx.anilib.repository.util.Resource
-import com.revolgenx.anilib.service.RecommendationService
+import com.revolgenx.anilib.service.recommendation.RecommendationService
 import com.revolgenx.anilib.source.RecommendationSource
 
 class RecommendationViewModel(private val recommendationService: RecommendationService) :

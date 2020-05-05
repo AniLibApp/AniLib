@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.service
+package com.revolgenx.anilib.service.media
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData

@@ -14,7 +14,7 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:id="@+id/airingMediaCoverFrameLayout"
-            android:layout_width="170dp"
+            android:layout_width="160dp"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="1:1.5"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -47,11 +47,12 @@
 
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+        <!--            android:background="@color/transparent_black"-->
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/mediaMetaBackground"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/transparent_black"
             app:layout_constraintBottom_toBottomOf="@id/airingMediaCoverFrameLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -62,13 +63,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:paddingTop="4dp"
             android:layout_marginEnd="4dp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:paddingTop="4dp"
+            android:textColor="@color/white"
             android:textSize="11sp"
-            app:ads_color="@color/white"
-            app:ads_colorType="custom"
+            app:fontFamily="@font/open_sans_semi_bold"
+            app:ads_colorType="tint_surface"
             app:layout_constraintBottom_toTopOf="@id/airingGenreLayout"
             app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
             app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout"

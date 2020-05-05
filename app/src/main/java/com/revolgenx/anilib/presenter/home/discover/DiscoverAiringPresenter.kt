@@ -1,11 +1,14 @@
 package com.revolgenx.anilib.presenter.home.discover
 
 import android.content.Context
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.ColorUtils
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
+import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
@@ -29,7 +32,9 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
                 R.layout.discover_airing_presenter_layout,
                 parent,
                 false
-            )
+            ).also {
+                it.mediaMetaBackground.setBackgroundColor(ColorUtils.setAlphaComponent(DynamicTheme.getInstance().get().backgroundColor, 200))
+            }
         )
     }
 

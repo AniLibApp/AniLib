@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.field.staff.StaffMediaRoleField
 import com.revolgenx.anilib.model.StaffMediaRoleModel
-import com.revolgenx.anilib.service.StaffService
+import com.revolgenx.anilib.service.staff.StaffService
 import io.reactivex.disposables.CompositeDisposable
 
 class StaffMediaRoleSource(

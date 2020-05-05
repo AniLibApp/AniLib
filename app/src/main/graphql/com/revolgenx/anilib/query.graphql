@@ -6,15 +6,52 @@ query SeasonListQuery($page: Int!
     , $genre:String
     , $format: MediaFormat
     , $genre_in:[String]
-    , $sort: [MediaSort]) {
+    , $sort: [MediaSort]
+    , $isAdult:Boolean  = false) {
     Page(page: $page, perPage: $perPage) {
-        media(seasonYear: $seasonYear, season: $season,genre: $genre, format: $format,status: $status,genre_in: $genre_in, sort: $sort,isAdult:false) {
+        media(seasonYear: $seasonYear
+            , season: $season
+            , genre: $genre
+            , format: $format
+            , status: $status
+            , genre_in: $genre_in
+            , sort: $sort
+            , isAdult:$isAdult) {
             ... on Media{
                 ... narrowMediaContent
             }
         }
     }
 }
+
+query MediaQuery($page: Int!
+    , $perPage: Int!
+    , $seasonYear: Int
+    , $season: MediaSeason
+    , $status: MediaStatus
+    , $genre:String
+    , $format: MediaFormat
+    , $genre_in:[String]
+    , $sort: [MediaSort]
+    , $isAdult:Boolean  = false) {
+    Page(page: $page, perPage: $perPage) {
+        media(seasonYear: $seasonYear
+            , season: $season
+            , genre: $genre
+            , format: $format
+            , status: $status
+            , genre_in: $genre_in
+            , sort: $sort
+            , isAdult:$isAdult) {
+            ... on Media{
+                ... narrowMediaContent
+            }
+        }
+    }
+}
+
+
+
 
 query MediaListEditorQuery($mediaId:Int,$userId:Int, $format:ScoreFormat){
     MediaList(mediaId:$mediaId, userId:$userId){
@@ -1309,6 +1346,8 @@ mutation SaveMediaListEntryMutation(
         ,private:$private_
         ,startedAt:$startedAt,completedAt:$completedAt, notes:$notes){
         id
+        progress
+        progressVolumes
     }
 }
 
