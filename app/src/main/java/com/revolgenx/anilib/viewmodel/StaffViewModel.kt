@@ -6,7 +6,7 @@ import com.revolgenx.anilib.field.staff.StaffField
 import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.model.StaffModel
 import com.revolgenx.anilib.repository.util.Resource
-import com.revolgenx.anilib.service.StaffService
+import com.revolgenx.anilib.service.staff.StaffService
 import com.revolgenx.anilib.service.ToggleService
 import io.reactivex.disposables.CompositeDisposable
 

@@ -9,8 +9,8 @@ import com.revolgenx.anilib.field.media.MediaRecommendationField
 import com.revolgenx.anilib.model.MediaRecommendationModel
 import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.repository.util.Resource
-import com.revolgenx.anilib.service.MediaBrowseService
-import com.revolgenx.anilib.service.RecommendationService
+import com.revolgenx.anilib.service.media.MediaBrowseService
+import com.revolgenx.anilib.service.recommendation.RecommendationService
 import com.revolgenx.anilib.source.MediaOverviewRecommendationSource
 import com.revolgenx.anilib.util.CommonTimer
 

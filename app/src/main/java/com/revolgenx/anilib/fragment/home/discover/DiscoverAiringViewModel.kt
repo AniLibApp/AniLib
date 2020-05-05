@@ -17,6 +17,7 @@ class DiscoverAiringViewModel(private val airingMediaService: AiringMediaService
         return source!!
     }
 
+
     override fun onCleared() {
         adapter?.releasePages()
         super.onCleared()

@@ -4,17 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.setPadding
+import androidx.recyclerview.widget.RecyclerView
+import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
+import com.otaliastudios.elements.Source
+import com.otaliastudios.elements.pagers.PageSizePager
+import com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.fragment.base.BaseFragment
+import com.revolgenx.anilib.util.dp
 import kotlinx.android.synthetic.main.discover_fragment_layout.view.*
-import kotlinx.android.synthetic.main.discover_garland_layout.view.*
 
 abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
 
     protected lateinit var discoverLayout: ViewGroup
     protected lateinit var garlandLayout: View
-
 
     protected val loadingPresenter: Presenter<Void>
         get() {
@@ -49,22 +59,139 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
         showSetting: Boolean,
         onClick: ((which: Int) -> Unit)?
     ) {
-        garlandLayout =
-            LayoutInflater.from(view.context).inflate(R.layout.discover_garland_layout, null)
-
-        garlandLayout.garlandTitleTv.setOnClickListener {
-            onClick?.invoke(0)
+        val constraintLayout = ConstraintLayout(requireContext()).also {
+            it.id = R.id.garlandConstraintLayout
+            it.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
         }
+
+        val garlandTextView = DynamicTextView(requireContext()).also {
+            it.id = R.id.garlandTitleTv
+            it.layoutParams =
+                ConstraintLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            it.textSize = 16f
+            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.qanelassoft_extra_bold)
+            it.setPadding(dp(10f))
+        }
+
+        val garlandSettingIv = DynamicImageView(requireContext()).also {
+            it.id = R.id.garlandSettingIv
+            it.layoutParams = ViewGroup.LayoutParams(0, 0)
+            it.setImageResource(R.drawable.ic_button_setting)
+            it.setPadding(dp(6f))
+            it.visibility = View.GONE
+        }
+
+        val garlandContainer = DynamicFrameLayout(requireContext()).also {
+            it.id = R.id.gralandFrameContainer
+            it.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        garlandTextView.text = title
         if (showSetting) {
-            garlandLayout.garlandSettingIv.visibility = View.VISIBLE
-            garlandLayout.garlandSettingIv.setOnClickListener {
+            garlandSettingIv.visibility = View.VISIBLE
+            garlandSettingIv.setOnClickListener {
                 onClick?.invoke(1)
             }
         }
 
-        garlandLayout.garlandTitleTv.text = title
-        garlandLayout.garlandContainer.addView(view)
-        discoverLayout.addView(garlandLayout)
+        garlandTextView.setOnClickListener {
+            onClick?.invoke(0)
+        }
+
+        constraintLayout.addView(garlandTextView)
+        constraintLayout.addView(garlandSettingIv)
+        constraintLayout.addView(garlandContainer)
+        garlandContainer.addView(view)
+
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(constraintLayout)
+        constraintSet.connect(
+            garlandTextView.id,
+            ConstraintSet.START,
+            constraintLayout.id,
+            ConstraintSet.START,
+            0
+        )
+        constraintSet.connect(
+            garlandTextView.id,
+            ConstraintSet.TOP,
+            constraintLayout.id,
+            ConstraintSet.TOP,
+            0
+        )
+        constraintSet.connect(
+            garlandTextView.id,
+            ConstraintSet.END,
+            garlandSettingIv.id,
+            ConstraintSet.START,
+            0
+        )
+        constraintSet.connect(
+            garlandSettingIv.id,
+            ConstraintSet.END,
+            constraintLayout.id,
+            ConstraintSet.END,
+            0
+        )
+        constraintSet.connect(
+            garlandSettingIv.id,
+            ConstraintSet.BOTTOM,
+            garlandTextView.id,
+            ConstraintSet.BOTTOM,
+            0
+        )
+        constraintSet.connect(
+            garlandSettingIv.id,
+            ConstraintSet.TOP,
+            garlandTextView.id,
+            ConstraintSet.TOP,
+            0
+        )
+
+        constraintSet.connect(
+            garlandContainer.id,
+            ConstraintSet.START,
+            constraintLayout.id,
+            ConstraintSet.START
+        )
+        constraintSet.connect(
+            garlandContainer.id,
+            ConstraintSet.TOP,
+            garlandTextView.id,
+            ConstraintSet.BOTTOM
+        )
+
+        constraintSet.setMargin(garlandTextView.id, ConstraintSet.TOP, dp(10f))
+
+        constraintSet.setDimensionRatio(garlandSettingIv.id, "1:1")
+
+
+        constraintSet.applyTo(constraintLayout)
+
+        discoverLayout.addView(constraintLayout)
+    }
+
+    protected fun RecyclerView.createAdapter(
+        source: Any,
+        presenter: Any
+    ): Adapter {
+        return Adapter.builder(viewLifecycleOwner, 10)
+            .setPager(PageSizePager(10))
+            .addSource(source as Source<*>)
+            .addPresenter(presenter as Presenter<*>)
+            .addPresenter(loadingPresenter)
+            .addPresenter(errorPresenter)
+            .addPresenter(emptyPresenter)
+            .into(this)
     }
 
 }

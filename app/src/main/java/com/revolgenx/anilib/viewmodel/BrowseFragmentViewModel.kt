@@ -2,7 +2,7 @@ package com.revolgenx.anilib.viewmodel
 
 import com.revolgenx.anilib.field.browse.BrowseField
 import com.revolgenx.anilib.field.browse.MediaBrowseField
-import com.revolgenx.anilib.service.BrowseService
+import com.revolgenx.anilib.service.media.BrowseService
 import com.revolgenx.anilib.source.BrowseSource
 import com.revolgenx.anilib.type.MediaSort
 

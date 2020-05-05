@@ -212,7 +212,7 @@ class EntryListEditorFragment : BaseFragment() {
                     ListEditorResultEvent(
                         ListEditorResultMeta(
                             apiModelEntry!!.mediaId,
-                            apiModelEntry!!.progress,
+                            apiModelEntry!!.progress?:0,
                             apiModelEntry!!.status
                         )
                     ).postSticky

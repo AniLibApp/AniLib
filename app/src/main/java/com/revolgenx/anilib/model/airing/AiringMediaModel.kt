@@ -6,5 +6,4 @@ import com.revolgenx.anilib.model.entry.MediaEntryListModel
 
 class AiringMediaModel :CommonMediaModel(){
     var airingTimeModel: AiringTimeModel? = null
-    var mediaEntryListModel: MediaEntryListModel? = null
 }

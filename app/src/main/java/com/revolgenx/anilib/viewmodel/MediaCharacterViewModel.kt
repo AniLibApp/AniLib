@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.viewmodel
 
 import com.revolgenx.anilib.field.media.MediaCharacterField
-import com.revolgenx.anilib.service.MediaBrowseService
+import com.revolgenx.anilib.service.media.MediaBrowseService
 import com.revolgenx.anilib.source.MediaCharacterSource
 
 class MediaCharacterViewModel(private val mediaBrowserService: MediaBrowseService) : SourceViewModel<MediaCharacterSource, MediaCharacterField>() {

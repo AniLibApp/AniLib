@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.viewmodel
 
 import com.revolgenx.anilib.field.character.CharacterMediaField
-import com.revolgenx.anilib.service.CharacterService
+import com.revolgenx.anilib.service.character.CharacterService
 import com.revolgenx.anilib.source.CharacterMediaSource
 
 class CharacterMediaViewModel(private val characterService: CharacterService) :

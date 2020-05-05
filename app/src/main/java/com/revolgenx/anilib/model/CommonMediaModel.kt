@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.model
 
+import com.revolgenx.anilib.model.entry.MediaEntryListModel
+
 open class CommonMediaModel() : BaseModel() {
     var mediaId: Int? = null
         set(value) {
@@ -23,4 +25,5 @@ open class CommonMediaModel() : BaseModel() {
     var isAdult = false
     var season: Int? = null
     var seasonYear: Int? = null
+    var mediaEntryListModel: MediaEntryListModel? = null
 }

@@ -6,10 +6,11 @@ import com.revolgenx.anilib.MediaWatchQuery
 import com.revolgenx.anilib.fragment.MediaListContent
 import com.revolgenx.anilib.fragment.NarrowMediaContent
 import com.revolgenx.anilib.model.*
+import com.revolgenx.anilib.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.util.pmap
 import kotlinx.coroutines.runBlocking
 
-fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel) {
+fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel):CommonMediaModel {
     model.mediaId = id()
     model.title = TitleModel().also { title ->
         title.english = title()!!.english() ?: title()!!.romaji()
@@ -48,7 +49,9 @@ fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel) {
         }
     }
     model.isAdult = isAdult ?: false
+    model.mediaEntryListModel = MediaEntryListModel(mediaListEntry()?.let { it.progress() ?: 0 })
     model.bannerImage = bannerImage() ?: model.coverImage!!.extraLarge
+    return model
 }
 
 fun BasicUserQuery.User.toBasicUserModel() = BasicUserModel().also {

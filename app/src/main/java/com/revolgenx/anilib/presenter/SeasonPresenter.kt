@@ -16,8 +16,8 @@ import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.meta.ListEditorMeta
+import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
-import com.revolgenx.anilib.model.season.SeasonMediaModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeSnakeBar
@@ -26,8 +26,8 @@ import com.revolgenx.anilib.util.string
 import com.revolgenx.anilib.viewmodel.SeasonViewModel
 import kotlinx.android.synthetic.main.season_presenter_layout.view.*
 
-class SeasonPresenter(context: Context, private val viewModel: SeasonViewModel) :
-    Presenter<SeasonMediaModel>(context) {
+class SeasonPresenter(context: Context) :
+    Presenter<CommonMediaModel>(context) {
 
     override val elementTypes: Collection<Int>
         get() = listOf(0)
@@ -64,12 +64,9 @@ class SeasonPresenter(context: Context, private val viewModel: SeasonViewModel) 
     }
 
 
-    override fun onBind(page: Page, holder: Holder, element: Element<SeasonMediaModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<CommonMediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data!!
-
-        viewModel.seasonMediaList[item.mediaId!!] = item
-
         holder.itemView.apply {
             mediaTitleTv.naText(item.title!!.title(context))
             coverImageIv.setImageURI(item.coverImage!!.image)

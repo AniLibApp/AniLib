@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.field.character.CharacterMediaField
 import com.revolgenx.anilib.model.character.CharacterMediaModel
-import com.revolgenx.anilib.service.CharacterService
+import com.revolgenx.anilib.service.character.CharacterService
 import io.reactivex.disposables.CompositeDisposable
 
 class CharacterMediaSource(

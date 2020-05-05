@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.field.character.CharacterVoiceActorField
 import com.revolgenx.anilib.model.VoiceActorModel
-import com.revolgenx.anilib.service.CharacterService
+import com.revolgenx.anilib.service.character.CharacterService
 import io.reactivex.disposables.CompositeDisposable
 
 class CharacterActorSource(

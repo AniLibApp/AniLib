@@ -207,6 +207,8 @@
     <string name="airing_time_e_s_s">E: %s · %dd %dh %dm %ds </string>
     <string name="format_episode_s">%s · E: %s</string>
     <string name="select_date">Select Date</string>
+    <string name="trending_anime">Trending Anime</string>
+    <string name="trending_manga">Trending Manga</string>
 
     <string-array name="media_format">
         <item>Tv</item>
