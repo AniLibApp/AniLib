@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
@@ -11,7 +13,9 @@ import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.BaseEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.event.UserBrowseEvent
+import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.meta.UserMeta
@@ -83,6 +87,23 @@ class ContainerActivity : DynamicSystemActivity() {
                 startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
                     this.putExtra(MediaBrowseActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
                 })
+            }
+            is ListEditorEvent -> {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this,
+                    event.sharedElement,
+                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
+                )
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        EntryListEditorFragment::class.java,
+                        bundleOf(
+                            EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
+                        )
+                    )
+                    , options
+                )
             }
 
             is UserBrowseEvent -> {

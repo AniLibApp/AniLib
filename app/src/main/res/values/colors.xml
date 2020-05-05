@@ -10,6 +10,7 @@
     <color name="black">#191919</color>
     <color name="red">#FF5252</color>
     <color name="transparent_dark">#12000000</color>
+    <color name="transparent_black">#A9000000</color>
 
     <color name="colorSave">#02A4F8</color>
 

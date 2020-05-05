@@ -7,11 +7,13 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.airing.AiringMediaModel
+import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
@@ -35,16 +37,23 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
         context.resources.getStringArray(R.array.media_format)
     }
 
-
     override fun onBind(page: Page, holder: Holder, element: Element<AiringMediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
         holder.itemView.apply {
             airingMediaSimpleDrawee.setImageURI(item.coverImage?.image)
-            airingMediaRating.text = item.averageScore?.toString().naText()
+            mediaRatingTv.text = item.averageScore?.toString().naText()
             airingMediaTitleTv.text = item.title?.title(context)
-            airingFormatTv.text = item.format?.let { mediaFormats[it] }.naText()
+            airingFormatTv.text = context.getString(R.string.format_episode_s).format(
+                item.format?.let { mediaFormats[it] }.naText(),
+                item.episodes.naText()
+            )
             airingTimeTv.setAiringText(item.airingTimeModel)
+            airingGenreLayout.addGenre(item.genres?.take(3)) { genre ->
+                BrowseGenreEvent(MediaBrowseFilterModel().also {
+                    it.genre = listOf(genre.trim())
+                }).postEvent
+            }
 
             setOnClickListener {
                 BrowseMediaEvent(

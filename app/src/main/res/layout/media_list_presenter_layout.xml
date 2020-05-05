@@ -121,7 +121,7 @@
             tools:ignore="SmallSp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/mediaListProgress"
+            android:id="@+id/mediaListProgressTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

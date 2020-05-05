@@ -85,12 +85,12 @@ class MediaListPresenter(
                 mediaStatus[it]
             }.naText()
 
-            mediaListProgress.text = context.getString(R.string.s_s).format(
+            mediaListProgressTv.text = context.getString(R.string.s_s).format(
                 item.progress.naText(),
                 if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
             )
 
-            mediaListProgress.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
+            mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
 
             when (item.scoreFormat) {
                 ScoreFormat.POINT_3.ordinal -> {
@@ -121,7 +121,7 @@ class MediaListPresenter(
                         when (res.status) {
                             Status.SUCCESS -> {
                                 if (res.data?.mediaId == item.mediaId) {
-                                    mediaListProgress.text = context.getString(R.string.s_s).format(
+                                    mediaListProgressTv.text = context.getString(R.string.s_s).format(
                                         item.progress.naText(),
                                         if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
                                     )
