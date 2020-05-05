@@ -14,14 +14,17 @@ class AiringMediaField : BaseSourceField<AiringScheduleQuery>() {
         return AiringScheduleQuery.builder()
             .page(page)
             .perPage(perPage)
-            .notYetAired(notYetAired)
+
             .apply {
                 airingGreaterThan?.let {
                     airingAtGreater(it)
                 }
                 airingLessThan?.let {
-                    airingLessThan
+                    airingAtLesser(it)
                 }
+                if(notYetAired)
+                    notYetAired(notYetAired)
+
                 sort?.let {
                     sort(listOf(AiringSort.values()[it]))
                 }

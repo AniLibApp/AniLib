@@ -5,6 +5,7 @@ import com.revolgenx.anilib.field.home.airing.AiringMediaField
 import com.revolgenx.anilib.model.AiringTime
 import com.revolgenx.anilib.model.AiringTimeModel
 import com.revolgenx.anilib.model.airing.AiringMediaModel
+import com.revolgenx.anilib.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.repository.util.ERROR
@@ -36,11 +37,16 @@ class AiringMediaServiceImpl(private val baseGraphRepository: BaseGraphRepositor
                                 airingTimeModel.airingTime = AiringTime().also { ti ->
                                     ti.time = it.timeUntilAiring().toLong()
                                 }
+
                                 CoroutineScope(Dispatchers.Main).launch {
                                     airingTimeModel.commonTimer =
                                         CommonTimer(Handler(), airingTimeModel.airingTime!!)
                                 }
                             }
+                            model.mediaEntryListModel =
+                                MediaEntryListModel(it.media()?.fragments()?.narrowMediaContent()?.mediaListEntry()?.let {
+                                    it.progress() ?: 0
+                                })
                             it.media()?.fragments()?.narrowMediaContent()?.getCommonMedia(model)
                         }
                     }

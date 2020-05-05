@@ -8,7 +8,7 @@ import com.revolgenx.anilib.service.airing.AiringMediaService
 import com.revolgenx.anilib.source.BaseRecyclerSource
 import io.reactivex.disposables.CompositeDisposable
 
-class DiscoverAiringSource(
+class AiringSource(
     mediaField: AiringMediaField
     , private val airingMediaService: AiringMediaService
     , private val compositeDisposable: CompositeDisposable

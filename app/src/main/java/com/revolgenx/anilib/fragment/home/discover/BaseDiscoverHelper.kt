@@ -3,6 +3,12 @@ package com.revolgenx.anilib.fragment.home.discover
 import android.view.View
 
 interface BaseDiscoverHelper {
-    fun addView(view: View, title:String,onClick: ((which: Int) -> Unit))
+    fun addView(
+        view: View,
+        title: String,
+        showSetting: Boolean = false,
+        onClick: ((which: Int) -> Unit)? = null
+    )
+
     fun reloadAll()
 }

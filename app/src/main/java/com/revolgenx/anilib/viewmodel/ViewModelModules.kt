@@ -60,4 +60,5 @@ val viewModelModules = module {
 
     //airing
     viewModel { DiscoverAiringViewModel(get()) }
+    viewModel { AiringViewModel(get()) }
 }

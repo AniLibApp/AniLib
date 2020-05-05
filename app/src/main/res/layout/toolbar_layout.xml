@@ -8,5 +8,8 @@
         android:id="@+id/dynamicToolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_scrollFlags="enterAlways|scroll" />
+        app:layout_scrollFlags="enterAlways|scroll"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"/>
 </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
