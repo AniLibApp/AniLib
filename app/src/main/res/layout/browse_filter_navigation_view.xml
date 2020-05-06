@@ -310,7 +310,7 @@
                         android:minHeight="40dp">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-                            android:id="@+id/genreRecyclerView"
+                            android:id="@+id/seasonGenreRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"

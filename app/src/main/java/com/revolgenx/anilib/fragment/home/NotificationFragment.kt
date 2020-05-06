@@ -26,7 +26,7 @@ class NotificationFragment : BasePresenterFragment<NotificationModel>() {
     private val viewModel by viewModel<NotificationViewModel>()
 
     override fun createSource(): Source<NotificationModel> {
-        return viewModel.createSource(viewModel.field)
+        return viewModel.createSource()
     }
 
     override fun onCreateView(

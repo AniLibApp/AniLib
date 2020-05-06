@@ -60,10 +60,6 @@ class MediaOverviewFragment : BaseFragment() {
     private var mediaBrowserMeta: MediaBrowserMeta? = null
     private val viewModel by viewModel<MediaOverviewViewModel>()
 
-    private val recommendationField by lazy {
-        MediaRecommendationField()
-    }
-
     private val recommendationSource: MediaOverviewRecommendationSource
         get() = viewModel.source ?: createRecommendationSource()
     private val relationshipPresenter by lazy {
@@ -158,7 +154,7 @@ class MediaOverviewFragment : BaseFragment() {
 
         mediaBrowserMeta =
             arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
-
+        viewModel.field.mediaId = mediaBrowserMeta!!.mediaId
         viewModel.mediaOverviewLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 Status.SUCCESS -> {
@@ -188,7 +184,6 @@ class MediaOverviewFragment : BaseFragment() {
             })
         }
 
-        recommendationField.mediaId = mediaBrowserMeta!!.mediaId
     }
 
     private fun updateView(overview: MediaOverviewModel) {
@@ -530,7 +525,7 @@ class MediaOverviewFragment : BaseFragment() {
 
 
     private fun createRecommendationSource(): MediaOverviewRecommendationSource {
-        return viewModel.createSource(recommendationField)
+        return viewModel.createSource()
     }
 
     private fun invalidateRelationshipAdapter(list: List<MediaRelationshipModel>) {

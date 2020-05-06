@@ -36,7 +36,7 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
     private val viewModel by viewModel<AiringViewModel>()
 
     override fun createSource(): Source<AiringMediaModel> {
-        return viewModel.createSource(viewModel.airingField)
+        return viewModel.createSource()
     }
 
     override fun onResume() {

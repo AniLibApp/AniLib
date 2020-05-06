@@ -22,7 +22,7 @@ abstract class UserFavouriteFragment() : BasePresenterFragment<BaseModel>() {
         get() = viewModel.source ?: createSource()
 
     override fun createSource(): Source<BaseModel> {
-        return viewModel.createSource(viewModel.field)
+        return viewModel.createSource()
     }
 
     companion object {

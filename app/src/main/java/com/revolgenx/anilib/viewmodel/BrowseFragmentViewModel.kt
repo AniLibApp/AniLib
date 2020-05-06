@@ -9,11 +9,12 @@ import com.revolgenx.anilib.type.MediaSort
 class BrowseFragmentViewModel(private val browseService: BrowseService) :
     SourceViewModel<BrowseSource, BrowseField>() {
 
-    var field: BrowseField = MediaBrowseField().also {
+    override var field: BrowseField = MediaBrowseField().also {
         it.sort = MediaSort.TRENDING_DESC.ordinal
     }
 
-    override fun createSource(field: BrowseField): BrowseSource {
+
+    override fun createSource(): BrowseSource {
         source = BrowseSource(field, browseService, compositeDisposable)
         return source!!
     }

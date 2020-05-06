@@ -2,6 +2,7 @@ package com.revolgenx.anilib.fragment.home.discover
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
@@ -19,6 +20,14 @@ class DiscoverFragment : DiscoverAiringFragment() {
         super.onResume()
         invalidateOptionMenu()
         setHasOptionsMenu(true)
+        updateToolbarTitle()
+    }
+
+    private fun updateToolbarTitle() {
+        (activity as? AppCompatActivity)?.let {
+            it.supportActionBar?.setTitle(R.string.app_name)
+            it.supportActionBar?.setSubtitle(0)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

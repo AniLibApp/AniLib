@@ -33,17 +33,9 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
 
     protected var mediaListMeta: MediaListMeta? = null
 
-    private val mediaListField by lazy {
-        MediaListField().also { field ->
-            field.userId = mediaListMeta?.userId
-            field.userName = mediaListMeta?.userName
-            field.mediaListStatus = mediaListStatus
-            field.type = mediaListMeta?.type
-        }
-    }
 
     override fun createSource(): Source<MediaListModel> {
-        return viewModel.createSource(mediaListField)
+        return viewModel.createSource()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,6 +66,12 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         arguments?.classLoader = MediaListMeta::class.java.classLoader
         mediaListMeta = arguments?.getParcelable(MediaListActivity.MEDIA_LIST_META_KEY) ?: return
+        viewModel.field.also { field ->
+            field.userId = mediaListMeta?.userId
+            field.userName = mediaListMeta?.userName
+            field.mediaListStatus = mediaListStatus
+            field.type = mediaListMeta?.type
+        }
         super.onActivityCreated(savedInstanceState)
 
         baseSwipeRefreshLayout.setOnRefreshListener {
@@ -101,7 +99,7 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
                 viewModel.listMap.remove(it.mediaId)
                 createSource()
                 invalidateAdapter()
-            } else{
+            } else {
                 viewModel.listMap[it.mediaId]?.apply {
                     progress = it.progress?.toString()
                 }

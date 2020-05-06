@@ -6,7 +6,10 @@ import com.revolgenx.anilib.source.StaffMediaCharacterSource
 
 class StaffMediaCharacterViewModel(private val staffService: StaffService) :
     SourceViewModel<StaffMediaCharacterSource, StaffMediaCharacterField>() {
-    override fun createSource(field: StaffMediaCharacterField): StaffMediaCharacterSource {
+
+    override var field: StaffMediaCharacterField = StaffMediaCharacterField()
+
+    override fun createSource(): StaffMediaCharacterSource {
         source = StaffMediaCharacterSource(field, staffService, compositeDisposable)
         return source!!
     }

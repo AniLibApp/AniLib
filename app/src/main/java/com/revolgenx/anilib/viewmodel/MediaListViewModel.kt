@@ -28,6 +28,8 @@ abstract class MediaListViewModel(
     val listMap by lazy { mutableMapOf<Int, MediaListModel>() }
     var filter = MediaListFilterField()
 
+    override var field: MediaListField = MediaListField()
+
     private var mCallback: ((Resource<EntryListEditorMediaModel>) -> Unit)? = null
 
     fun addMediaListUpdateObserver(viewLifecycleOwner: LifecycleOwner) {
@@ -46,7 +48,7 @@ abstract class MediaListViewModel(
         entryService.saveMediaListEntryLiveData.removeObservers(viewLifecycleOwner)
     }
 
-    override fun createSource(field: MediaListField): MediaListSource {
+    override fun createSource(): MediaListSource {
         filteredList = null
         if (source == null) {
             source = MediaListSource(field, listMap, mediaListService, compositeDisposable)

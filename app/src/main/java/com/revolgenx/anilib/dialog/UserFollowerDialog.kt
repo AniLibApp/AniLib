@@ -60,7 +60,7 @@ class UserFollowerDialog : DynamicDialogFragment() {
         }
 
     private fun createSource(): Source<UserFollowersModel> {
-        return viewModel.createSource(viewModel.field)
+        return viewModel.createSource()
     }
 
     private var baseRecyclerView: RecyclerView? = null
