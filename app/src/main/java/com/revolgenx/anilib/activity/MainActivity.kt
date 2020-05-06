@@ -289,8 +289,6 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             }
         }
 
-
-
         mainViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 bottomNav.menu.iterator().forEach {

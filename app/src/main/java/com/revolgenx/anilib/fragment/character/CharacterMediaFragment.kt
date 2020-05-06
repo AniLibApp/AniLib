@@ -17,12 +17,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class CharacterMediaFragment : BasePresenterFragment<CharacterMediaModel>() {
 
     private lateinit var characterMeta: CharacterMeta
-    private val field by lazy {
-        CharacterMediaField().also {
-            it.characterId = characterMeta.characterId
-        }
-    }
-
     override val basePresenter: Presenter<CharacterMediaModel>
         get() {
             return CharacterMediaPresenter(requireContext())
@@ -33,7 +27,7 @@ class CharacterMediaFragment : BasePresenterFragment<CharacterMediaModel>() {
         get() = viewModel.source ?: createSource()
 
     override fun createSource(): Source<CharacterMediaModel> {
-        return viewModel.createSource(field)
+        return viewModel.createSource()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,6 +53,8 @@ class CharacterMediaFragment : BasePresenterFragment<CharacterMediaModel>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         arguments?.classLoader = CharacterMeta::class.java.classLoader
         characterMeta = arguments?.getParcelable(CharacterFragment.CHARACTER_META_KEY) ?: return
+        viewModel.field.characterId = characterMeta.characterId
+
         super.onActivityCreated(savedInstanceState)
     }
 

@@ -9,6 +9,7 @@ import com.revolgenx.anilib.type.MediaStatus
 
 open class MediaField : BaseSourceField<MediaQuery>() {
     var genres: List<String>? = null
+    var tags:List<String>? = null
     var format: Int? = null
     var sort: Int? = null
     var seasonYear: Int? = null
@@ -21,6 +22,9 @@ open class MediaField : BaseSourceField<MediaQuery>() {
             .apply {
                 if (genres?.isNullOrEmpty() == false) {
                     genre_in(genres)
+                }
+                if(tags?.isNullOrEmpty() == false) {
+                    tag_in(tags)
                 }
                 sort?.let {
                     sort(listOf(MediaSort.values()[it]))

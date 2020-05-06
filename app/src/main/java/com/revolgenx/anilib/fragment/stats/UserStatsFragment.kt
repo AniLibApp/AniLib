@@ -22,7 +22,7 @@ abstract class UserStatsFragment : BasePresenterFragment<BaseStatsModel>() {
         get() = viewModel.source ?: createSource()
 
     override fun createSource(): Source<BaseStatsModel> {
-        return viewModel.createSource(viewModel.field)
+        return viewModel.createSource()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

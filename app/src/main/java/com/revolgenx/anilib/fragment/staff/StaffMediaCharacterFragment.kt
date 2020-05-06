@@ -25,14 +25,8 @@ class StaffMediaCharacterFragment : BasePresenterFragment<StaffMediaCharacterMod
 
     private val viewModel by viewModel<StaffMediaCharacterViewModel>()
     private lateinit var staffmeta: StaffMeta
-    private val field by lazy {
-        StaffMediaCharacterField().also {
-            it.staffId = staffmeta.staffId
-        }
-    }
-
     override fun createSource(): Source<StaffMediaCharacterModel> {
-        return viewModel.createSource(field)
+        return viewModel.createSource()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +52,7 @@ class StaffMediaCharacterFragment : BasePresenterFragment<StaffMediaCharacterMod
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         arguments?.classLoader = StaffMeta::class.java.classLoader
         staffmeta = arguments?.getParcelable(STAFF_META_KEY) ?: return
+        viewModel.field.staffId = staffmeta.staffId
         super.onActivityCreated(savedInstanceState)
     }
 }

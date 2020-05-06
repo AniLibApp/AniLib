@@ -7,9 +7,9 @@ import com.revolgenx.anilib.source.UserFollowersSource
 class UserFollowerViewModel(private val userService: UserService) :
     SourceViewModel<UserFollowersSource, UserFollowerField>() {
 
-    val field = UserFollowerField()
+    override var field = UserFollowerField()
 
-    override fun createSource(field: UserFollowerField): UserFollowersSource {
+    override fun createSource(): UserFollowersSource {
         source = UserFollowersSource(field, userService, compositeDisposable)
         return source!!
     }

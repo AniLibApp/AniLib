@@ -1,28 +1,3 @@
-query SeasonListQuery($page: Int!
-    , $perPage: Int!
-    , $seasonYear: Int
-    , $season: MediaSeason
-    , $status: MediaStatus
-    , $genre:String
-    , $format: MediaFormat
-    , $genre_in:[String]
-    , $sort: [MediaSort]
-    , $isAdult:Boolean  = false) {
-    Page(page: $page, perPage: $perPage) {
-        media(seasonYear: $seasonYear
-            , season: $season
-            , genre: $genre
-            , format: $format
-            , status: $status
-            , genre_in: $genre_in
-            , sort: $sort
-            , isAdult:$isAdult) {
-            ... on Media{
-                ... narrowMediaContent
-            }
-        }
-    }
-}
 
 query MediaQuery($page: Int!
     , $perPage: Int!
@@ -32,6 +7,7 @@ query MediaQuery($page: Int!
     , $genre:String
     , $format: MediaFormat
     , $genre_in:[String]
+    , $tag_in:[String]
     , $sort: [MediaSort]
     , $isAdult:Boolean  = false) {
     Page(page: $page, perPage: $perPage) {
@@ -41,6 +17,7 @@ query MediaQuery($page: Int!
             , format: $format
             , status: $status
             , genre_in: $genre_in
+            , tag_in: $tag_in
             , sort: $sort
             , isAdult:$isAdult) {
             ... on Media{

@@ -9,10 +9,11 @@ import com.revolgenx.anilib.viewmodel.SourceViewModel
 class DiscoverAiringViewModel(private val airingMediaService: AiringMediaService) :
     SourceViewModel<AiringSource, AiringMediaField>() {
 
-    val field = AiringMediaField()
+    override var field: AiringMediaField = AiringMediaField()
+
     var adapter: Adapter? = null
 
-    override fun createSource(field: AiringMediaField): AiringSource {
+    override fun createSource(): AiringSource {
         source = AiringSource(field, airingMediaService, compositeDisposable)
         return source!!
     }

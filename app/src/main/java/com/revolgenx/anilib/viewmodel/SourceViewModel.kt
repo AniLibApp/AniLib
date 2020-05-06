@@ -5,7 +5,8 @@ import io.reactivex.disposables.CompositeDisposable
 
 abstract class SourceViewModel<S, F> : ViewModel() {
     var source: S? = null
-    abstract fun createSource(field: F): S
+    abstract var field: F
+    abstract fun createSource(): S
 
     protected val compositeDisposable: CompositeDisposable by lazy {
         CompositeDisposable()

@@ -17,7 +17,9 @@ class RecommendationViewModel(private val recommendationService: RecommendationS
         mutableMapOf<Int, RecommendationModel>()
     }
 
-    override fun createSource(field: RecommendationField): RecommendationSource {
+    override var field: RecommendationField=RecommendationField()
+
+    override fun createSource(): RecommendationSource {
         source = RecommendationSource(field, recommendationService, compositeDisposable)
         return source!!
     }

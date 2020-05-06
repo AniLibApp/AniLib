@@ -209,6 +209,7 @@
     <string name="select_date">Select Date</string>
     <string name="trending_anime">Trending Anime</string>
     <string name="trending_manga">Trending Manga</string>
+    <string name="season_filter">Season Filter</string>
 
     <string-array name="media_format">
         <item>Tv</item>

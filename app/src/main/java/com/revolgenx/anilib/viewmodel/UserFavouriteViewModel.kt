@@ -8,9 +8,9 @@ import com.revolgenx.anilib.source.UserFavouriteSource
 class UserFavouriteViewModel(private val userService: UserService) :
     SourceViewModel<UserFavouriteSource, UserFavouriteField>() {
 
-    val field = UserFavouriteField()
+    override var field: UserFavouriteField = UserFavouriteField()
 
-    override fun createSource(field: UserFavouriteField): UserFavouriteSource {
+    override fun createSource(): UserFavouriteSource {
         source = UserFavouriteSource(field, userService, compositeDisposable)
         return source!!
     }

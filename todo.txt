@@ -1,3 +1,4 @@
 todo
 
 #bug:Toggle Favourite on rotation changes
+#find nice way to observe like button with multiple activity

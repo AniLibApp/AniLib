@@ -6,7 +6,10 @@ import com.revolgenx.anilib.source.CharacterActorSource
 
 class CharacterActorViewModel(private val characterService: CharacterService) :
     SourceViewModel<CharacterActorSource, CharacterVoiceActorField>() {
-    override fun createSource(field: CharacterVoiceActorField): CharacterActorSource {
+
+    override var field: CharacterVoiceActorField = CharacterVoiceActorField()
+
+    override fun createSource(): CharacterActorSource {
         source = CharacterActorSource(field, characterService, compositeDisposable)
         return source!!
     }

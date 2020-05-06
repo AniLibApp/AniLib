@@ -31,15 +31,16 @@ class StudioViewModel(
             }
         }
     }
-
-    override fun createSource(field: StudioMediaField): StudioMediaSource {
-        source =  StudioMediaSource(field, studioService, compositeDisposable)
+    var studioField: StudioField = StudioField()
+    override var field: StudioMediaField = StudioMediaField()
+    override fun createSource(): StudioMediaSource {
+        source = StudioMediaSource(field, studioService, compositeDisposable)
         return source!!
     }
 
-    fun getStudioInfo(field: StudioField) {
+    fun getStudioInfo() {
         studioInfoLiveData.value = Resource.loading(null)
-        studioService.getStudioInfo(field, compositeDisposable)
+        studioService.getStudioInfo(studioField, compositeDisposable)
     }
 
     fun toggleStudioFav(toggleFavouriteField: ToggleFavouriteField) {

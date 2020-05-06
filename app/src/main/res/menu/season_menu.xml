@@ -18,5 +18,17 @@
         android:id="@+id/filterSeasonId"
         android:icon="@drawable/ic_button_setting"
         android:title="@string/filter"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/filterSeasonGenreId"
+        android:icon="@drawable/ic_genre"
+        android:title="@string/genre"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/filterSeasonTagId"
+        android:icon="@drawable/ic_tag"
+        android:title="@string/tags"
+        app:showAsAction="never" />
+
 </menu>

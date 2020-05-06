@@ -39,6 +39,8 @@ class MediaOverviewViewModel(
         }
     }
 
+    override var field: MediaRecommendationField = MediaRecommendationField()
+
     fun getOverview(field: MediaOverviewField) {
         mediaOverviewLiveData.value = Resource.loading(null)
         mediaBrowseService.getMediaOverview(field, compositeDisposable)
@@ -54,7 +56,7 @@ class MediaOverviewViewModel(
         return recommendationService.updateRecommendation(field, compositeDisposable)
     }
 
-    override fun createSource(field: MediaRecommendationField): MediaOverviewRecommendationSource {
+    override fun createSource(): MediaOverviewRecommendationSource {
         source = MediaOverviewRecommendationSource(
             recommendationService,
             compositeDisposable,

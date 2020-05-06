@@ -147,7 +147,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     private fun updateRecyclerView(rView: View) {
         rView.apply {
             streamingOnRecyclerView.layoutManager = FlexboxLayoutManager(context)
-            genreRecyclerView.layoutManager = FlexboxLayoutManager(context)
+            seasonGenreRecyclerView.layoutManager = FlexboxLayoutManager(context)
             tagRecyclerView.layoutManager = FlexboxLayoutManager(context)
         }
     }
@@ -182,7 +182,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                 Source.fromList(genreTagMap!!.values.filter { it.isTagged }.map { it.tag })
             )
             .addPresenter(genrePresenter)
-            .into(genreRecyclerView)
+            .into(seasonGenreRecyclerView)
     }
 
 

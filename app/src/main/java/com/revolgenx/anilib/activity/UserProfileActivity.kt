@@ -297,7 +297,7 @@ class UserProfileActivity : BasePopupVideoActivity() {
         data.mangaMeanScore?.let {
             mangaMeanScoreTv.title = it.toString()
         }
-        genreRecyclerView.layoutManager =
+        seasonGenreRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         Adapter.builder(this).addSource(Source.fromList(data.genreOverView.toList())).addPresenter(
             Presenter.simple<Pair<String, Int>>(
@@ -307,7 +307,7 @@ class UserProfileActivity : BasePopupVideoActivity() {
             ) { view, genres ->
                 view.userGenreHeader.title = genres.first
                 view.userGenreHeader.subtitle = genres.second.toString()
-            }).into(genreRecyclerView)
+            }).into(seasonGenreRecyclerView)
 
         initListener()
     }

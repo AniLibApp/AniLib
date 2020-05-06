@@ -25,7 +25,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
         get() = DiscoverAiringPresenter(requireContext())
 
     private val source: AiringSource
-        get() = viewModel.source ?: viewModel.createSource(viewModel.field)
+        get() = viewModel.source ?: viewModel.createSource()
 
     private var discoverAiringRecyclerView: DynamicRecyclerView? = null
     private val viewModel by viewModel<DiscoverAiringViewModel>()
@@ -66,7 +66,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
 
 
     override fun reloadAll() {
-        viewModel.createSource(viewModel.field)
+        viewModel.createSource()
         invalidateAdapter()
     }
 
