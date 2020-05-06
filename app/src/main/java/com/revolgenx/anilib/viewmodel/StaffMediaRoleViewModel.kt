@@ -6,7 +6,9 @@ import com.revolgenx.anilib.source.StaffMediaRoleSource
 
 class StaffMediaRoleViewModel(private val staffService: StaffService) :
     SourceViewModel<StaffMediaRoleSource, StaffMediaRoleField>() {
-    override fun createSource(field: StaffMediaRoleField): StaffMediaRoleSource {
+    override var field: StaffMediaRoleField = StaffMediaRoleField()
+
+    override fun createSource(): StaffMediaRoleSource {
         return StaffMediaRoleSource(field, staffService, compositeDisposable)
     }
 }

@@ -109,7 +109,7 @@ class MediaListActivity : BaseDynamicActivity() {
                     intArrayOf(android.R.attr.state_enabled)
                 )
                 , intArrayOf(
-                    DynamicTheme.getInstance().get().tintAccentColor,
+                    DynamicTheme.getInstance().get().accentColor,
                     DynamicTheme.getInstance().get().tintPrimaryColor
                 )
             )
@@ -256,7 +256,7 @@ class MediaListActivity : BaseDynamicActivity() {
         view.tabImageView.setImageResource(src)
         view.tabTextTv.text = getString(str)
         view.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
-        view.tabTextTv.setTextColor(tintAccentColor)
+        view.tabTextTv.setTextColor(accentColor)
         return view
     }
 

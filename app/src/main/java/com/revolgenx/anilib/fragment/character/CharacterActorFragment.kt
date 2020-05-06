@@ -26,14 +26,11 @@ class CharacterActorFragment : BasePresenterFragment<VoiceActorModel>() {
 
     private lateinit var characterMeta: CharacterMeta
     private val field by lazy {
-        CharacterVoiceActorField().also {
-            it.characterId = characterMeta.characterId
-        }
     }
 
 
     override fun createSource(): Source<VoiceActorModel> {
-        return viewModel.createSource(field)
+        return viewModel.createSource()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,6 +57,7 @@ class CharacterActorFragment : BasePresenterFragment<VoiceActorModel>() {
         arguments?.classLoader = CharacterMeta::class.java.classLoader
         characterMeta =
             arguments?.getParcelable(CharacterFragment.CHARACTER_META_KEY) ?: return
+        viewModel.field.characterId = characterMeta.characterId
         super.onActivityCreated(savedInstanceState)
     }
 

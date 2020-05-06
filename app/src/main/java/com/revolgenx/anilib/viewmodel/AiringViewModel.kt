@@ -16,20 +16,21 @@ class AiringViewModel(private val airingMediaService: AiringMediaService) :
     var startDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(LocalTime.MIN)
         set(value) {
             field = value
-            airingField.airingGreaterThan = field.toEpochSecond().toInt()
+            this.field.airingGreaterThan = field.toEpochSecond().toInt()
         }
     var endDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(LocalTime.MAX)
         set(value) {
             field = value
-            airingField.airingLessThan = field.toEpochSecond().toInt()
+            this.field.airingLessThan = field.toEpochSecond().toInt()
         }
-    val airingField = AiringMediaField().also {
+
+    override var field: AiringMediaField =  AiringMediaField().also {
         it.notYetAired = false
         it.airingGreaterThan = startDateTime.toEpochSecond().toInt()
         it.airingLessThan = endDateTime.toEpochSecond().toInt()
     }
 
-    override fun createSource(field: AiringMediaField): AiringSource {
+    override fun createSource(): AiringSource {
         source = AiringSource(field, airingMediaService, compositeDisposable)
         return source!!
     }

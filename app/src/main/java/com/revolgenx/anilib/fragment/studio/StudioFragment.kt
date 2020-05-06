@@ -50,12 +50,6 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
 
     private lateinit var studioMeta: StudioMeta
 
-    private val studioMediaField by lazy {
-        StudioMediaField().also {
-            it.studioId = studioMeta.studioId
-        }
-    }
-
     private var studioModel: StudioModel? = null
 
     private val toggleFavouriteField: ToggleFavouriteField by lazy {
@@ -64,16 +58,11 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
         }
     }
 
-    private val studioField by lazy {
-        StudioField().also {
-            it.studioId = studioMeta.studioId
-        }
-    }
 
     private val viewModel by viewModel<StudioViewModel>()
 
     override fun createSource(): Source<StudioMediaModel> {
-        return viewModel.createSource(studioMediaField)
+        return viewModel.createSource()
     }
 
     override fun onCreateView(
@@ -125,6 +114,9 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
         arguments?.classLoader = StudioMeta::class.java.classLoader
         studioMeta = arguments?.getParcelable(STUDIO_META_KEY) ?: return
         super.onActivityCreated(savedInstanceState)
+        viewModel.field.studioId = studioMeta.studioId
+        viewModel.studioField.studioId = studioMeta.studioId
+
         viewModel.studioInfoLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 SUCCESS -> {
@@ -174,7 +166,7 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
         initListener()
 
         if (savedInstanceState == null) {
-            viewModel.getStudioInfo(studioField)
+            viewModel.getStudioInfo()
         }
     }
 

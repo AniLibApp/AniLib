@@ -166,7 +166,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
             viewModel.getMediaInfo(mediaBrowserMeta.mediaId)
 
         val colors = intArrayOf(
-            DynamicTheme.getInstance().get().tintAccentColor,
+            DynamicTheme.getInstance().get().accentColor,
             DynamicTheme.getInstance().get().tintPrimaryColor
         )
         setSupportActionBar(mediaBrowserToolbar)
@@ -352,7 +352,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         view.tabImageView.setImageResource(src)
         view.tabTextTv.text = getString(str)
         view.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
-        view.tabTextTv.setTextColor(tintAccentColor)
+        view.tabTextTv.setTextColor(accentColor)
         return view
     }
 

@@ -6,9 +6,9 @@ import com.revolgenx.anilib.source.notification.NotificationSource
 
 class NotificationViewModel(private val notificationService: NotificationService) : SourceViewModel<NotificationSource, NotificationField>() {
 
-    val field = NotificationField()
+    override var field: NotificationField = NotificationField()
 
-    override fun createSource(field: NotificationField): NotificationSource {
+    override fun createSource(): NotificationSource {
         source = NotificationSource(field, notificationService, compositeDisposable)
         return source!!
     }

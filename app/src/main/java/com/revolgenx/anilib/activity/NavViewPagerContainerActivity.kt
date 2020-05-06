@@ -57,7 +57,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
                     intArrayOf(android.R.attr.state_enabled)
                 )
                 , intArrayOf(
-                    DynamicTheme.getInstance().get().tintAccentColor,
+                    DynamicTheme.getInstance().get().accentColor,
                     DynamicTheme.getInstance().get().tintPrimaryColor
                 )
             )
@@ -245,8 +245,8 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
         view.tabImageView.imageTintList = tabColorStateList
         view.tabImageView.setImageResource(src)
         view.tabTextTv.text = getString(str)
-        view.background = RippleDrawable(ColorStateList.valueOf(accentColor), null, null)
-        view.tabTextTv.setTextColor(tintAccentColor)
+        view.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
+        view.tabTextTv.setTextColor(accentColor)
         return view
     }
 

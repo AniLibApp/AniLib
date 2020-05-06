@@ -39,17 +39,11 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
 
     private var mediaBrowserMeta: MediaBrowserMeta? = null
     private val viewModel by viewModel<MediaCharacterViewModel>()
-    private val field by lazy {
-        MediaCharacterField().also {
-            it.mediaId = mediaBrowserMeta!!.mediaId
-            it.type = mediaBrowserMeta!!.type
-        }
-    }
 
     private lateinit var languageSpinner: DynamicSpinner
 
     override fun createSource(): Source<MediaCharacterModel> {
-        return viewModel.createSource(field)
+        return viewModel.createSource()
     }
 
     override fun onCreateView(
@@ -131,7 +125,12 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
             R.id.ads_spinner_item_text, spinnerItems
         )
 
-        field.language?.let {
+        viewModel.field.also {
+            it.mediaId = mediaBrowserMeta!!.mediaId
+            it.type = mediaBrowserMeta!!.type
+        }
+
+        viewModel.field.language?.let {
             languageSpinner.setSelection(it)
         }
 
@@ -145,8 +144,8 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
                 position: Int,
                 id: Long
             ) {
-                if ((field.language != position) && visibleToUser) {
-                    field.language = position
+                if ((viewModel.field.language != position) && visibleToUser) {
+                    viewModel.field.language = position
                     createSource()
                     invalidateAdapter()
                 }

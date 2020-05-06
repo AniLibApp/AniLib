@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.flexbox.AlignItems
@@ -44,18 +45,8 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
 
     private val viewModel by viewModel<RecommendationViewModel>()
 
-    private val field: RecommendationField by lazy {
-        RecommendationField().apply {
-            RecommendationFilterField.field(requireContext()).let {
-                sort = it.sorting
-                if (requireContext().loggedIn())
-                    onList = it.onList
-            }
-        }
-    }
-
     override fun createSource(): Source<RecommendationModel> {
-        return viewModel.createSource(field)
+        return viewModel.createSource()
     }
 
     override fun onStart() {
@@ -87,6 +78,14 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
         super.onResume()
         invalidateOptionMenu()
         setHasOptionsMenu(true)
+        updateToolbarTitle()
+    }
+
+    private fun updateToolbarTitle() {
+        (activity as? AppCompatActivity)?.let {
+            it.supportActionBar?.setTitle(R.string.app_name)
+            it.supportActionBar?.setSubtitle(0)
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -95,6 +94,18 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
             menu.setOptionalIconsVisible(true)
         }
         inflater.inflate(R.menu.recommendation_menu, menu)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null)
+            viewModel.field.apply {
+                RecommendationFilterField.field(requireContext()).let {
+                    sort = it.sorting
+                    if (requireContext().loggedIn())
+                        onList = it.onList
+                }
+            }
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -121,11 +132,11 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
         when (event) {
             is RecommendationFilterEvent -> {
                 if (requireContext().loggedIn()) {
-                    field.onList = event.field.onList
+                    viewModel.field.onList = event.field.onList
                 } else {
-                    field.onList = null
+                    viewModel.field.onList = null
                 }
-                field.sort = event.field.sorting
+                viewModel.field.sort = event.field.sorting
                 setRecommendationField(requireContext(), event.field)
                 createSource()
                 invalidateAdapter()

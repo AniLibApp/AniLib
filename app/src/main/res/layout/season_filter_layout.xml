@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+        android:id="@+id/seasonFormatHeaderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:headerName="@string/format"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/seasonFormatLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                android:id="@+id/seasonFormatSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+    </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+
+
+    <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+        android:id="@+id/seasonStatusHeaderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:headerName="@string/status"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seasonFormatHeaderLayout">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/seasonStatusFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                android:id="@+id/seasonStatusSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+    </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
