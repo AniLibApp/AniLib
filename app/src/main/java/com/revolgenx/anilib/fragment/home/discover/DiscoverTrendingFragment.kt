@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.MediaFilterDialog
+import com.revolgenx.anilib.field.home.TrendingMediaField
 import com.revolgenx.anilib.presenter.home.MediaPresenter
 import com.revolgenx.anilib.source.MediaSource
+import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.viewmodel.TrendingViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -68,6 +70,10 @@ open class DiscoverTrendingFragment : DiscoverAiringFragment() {
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null)
+            viewModel.field = TrendingMediaField.create(requireContext()).also {
+                it.sort = MediaSort.TRENDING_DESC.ordinal
+            }
         super.onActivityCreated(savedInstanceState)
         if (savedInstanceState != null) {
             childFragmentManager.findFragmentByTag(MEDIA_TRENDING_TAG)?.let {
