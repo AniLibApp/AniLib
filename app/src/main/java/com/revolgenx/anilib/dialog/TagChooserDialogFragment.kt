@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.tag_holder_layout.*
 import kotlinx.android.synthetic.main.tag_holder_layout.view.*
 
 class TagChooserDialogFragment : DynamicDialogFragment() {
-    companion   object {
+    companion object {
         const val TAG_KEY = "tag_key"
         fun newInstance(tags: TagChooserField) = TagChooserDialogFragment().apply {
             arguments = bundleOf(TAG_KEY to tags)
@@ -28,7 +28,7 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
     }
 
     private var doneListener: OnDoneListener? = null
-    private var tagChooserField: TagChooserField? = null
+    private val tagChooserField: TagChooserField by lazy { arguments?.getParcelable<TagChooserField>(TAG_KEY)!! }
     private val tagAdapter by lazy {
         TagAdapter()
     }
@@ -37,13 +37,9 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
         dialogBuilder: DynamicDialog.Builder,
         savedInstanceState: Bundle?
     ): DynamicDialog.Builder {
-        tagChooserField =
-            arguments?.getParcelable(TAG_KEY) ?: return super.onCustomiseBuilder(
-                dialogBuilder,
-                savedInstanceState
-            )
         with(dialogBuilder) {
-            setTitle(tagChooserField!!.header)
+            arguments?.containsKey(TAG_KEY) ?: return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
+            setTitle(tagChooserField.header)
             setView(R.layout.tag_chooser_dialog_fragment_layout)
             isAutoDismiss = false
         }
@@ -56,13 +52,13 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
         savedInstanceState: Bundle?
     ): DynamicDialog {
 
-        if (tagChooserField != null)
+        if (arguments?.containsKey(TAG_KEY) == true)
             alertDialog.apply {
                 setOnShowListener {
                     doneTv.setOnClickListener {
                         doneListener?.onDone(
                             tag,
-                            tagAdapter.items
+                            tagChooserField.tags
                         )
                         dismiss()
                     }
@@ -74,7 +70,6 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
                     }
                     tagRecyclerView.layoutManager = LinearLayoutManager(context)
                     tagRecyclerView.adapter = tagAdapter
-                    tagAdapter.submitList(tagChooserField!!.tags)
                 }
             }
 
@@ -86,12 +81,10 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
         doneListener = listener
     }
 
-    internal class TagAdapter : RecyclerView.Adapter<TagAdapter.TagHolder>() {
+    inner class TagAdapter : RecyclerView.Adapter<TagAdapter.TagHolder>() {
         private val textColor by lazy {
             DynamicTheme.getInstance().get().tintSurfaceColor
         }
-
-        val items: MutableList<TagField> = mutableListOf()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagHolder {
             return TagHolder(
@@ -103,18 +96,13 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
             )
         }
 
-        fun submitList(list: List<TagField>) {
-            items.clear()
-            items.addAll(list.map { TagField(it.tag, it.isTagged) })
-            notifyDataSetChanged()
-        }
 
         override fun getItemCount(): Int {
-            return items.size
+            return tagChooserField.tags.size
         }
 
         override fun onBindViewHolder(holder: TagHolder, position: Int) {
-            val item = items[position]
+            val item = tagChooserField.tags[position]
             holder.bind(item)
         }
 
@@ -125,7 +113,7 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
         }
 
         fun deSelectAll() {
-            items.forEach {
+            tagChooserField.tags.forEach {
                 it.isTagged = false
             }
             notifyDataSetChanged()
@@ -137,7 +125,7 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
                     tagCheckBox.setTextColor(textColor)
                     tagCheckBox.text = item.tag
                     tagCheckBox.isChecked = item.isTagged
-                    tagCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+                    tagCheckBox.setOnCheckedChangeListener { _, isChecked ->
                         item.isTagged = isChecked
                     }
                 }

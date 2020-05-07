@@ -2,20 +2,15 @@ package com.revolgenx.anilib.source
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.extensions.MainSource
-import com.revolgenx.anilib.constant.PAGE_SIZE
-import com.revolgenx.anilib.field.SeasonField
 import com.revolgenx.anilib.model.CommonMediaModel
-import com.revolgenx.anilib.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.service.media.MediaService
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 
-class MedianSource(
+class MediaSource(
     private val mediaService: MediaService,
-    seasonField: SeasonField,
+    field: com.revolgenx.anilib.field.media.MediaField,
     private val compositeDisposable: CompositeDisposable
-) : BaseRecyclerSource<CommonMediaModel, SeasonField>(seasonField) {
+) : BaseRecyclerSource<CommonMediaModel, com.revolgenx.anilib.field.media.MediaField>(field) {
 
     val resources = mutableMapOf<Int, CommonMediaModel>()
     override fun areItemsTheSame(first: CommonMediaModel, second: CommonMediaModel): Boolean =

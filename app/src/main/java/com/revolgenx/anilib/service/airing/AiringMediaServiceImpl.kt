@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.service.airing
 
 import android.os.Handler
-import com.revolgenx.anilib.field.home.airing.AiringMediaField
+import com.revolgenx.anilib.field.home.AiringMediaField
 import com.revolgenx.anilib.model.AiringTime
 import com.revolgenx.anilib.model.AiringTimeModel
 import com.revolgenx.anilib.model.airing.AiringMediaModel
@@ -17,7 +17,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.coroutines.CoroutineContext
 
 class AiringMediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
     AiringMediaService {

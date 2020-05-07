@@ -1,17 +1,18 @@
 package com.revolgenx.anilib.viewmodel
 
 import android.content.Context
-import com.revolgenx.anilib.field.SeasonField
+import com.revolgenx.anilib.field.home.SeasonField
 import com.revolgenx.anilib.service.media.MediaService
-import com.revolgenx.anilib.source.MedianSource
+import com.revolgenx.anilib.source.MediaSource
 
 class SeasonViewModel(private val service: MediaService) :
-    SourceViewModel<MedianSource, SeasonField>() {
+    SourceViewModel<MediaSource, SeasonField>() {
 
-    override var field: SeasonField = SeasonField()
+    override var field: SeasonField =
+        SeasonField()
 
-    override fun createSource(): MedianSource {
-        source = MedianSource(
+    override fun createSource(): MediaSource {
+        source = MediaSource(
             service,
             field,
             compositeDisposable
@@ -26,13 +27,11 @@ class SeasonViewModel(private val service: MediaService) :
     fun nextSeason(context: Context) {
         compositeDisposable.clear()
         field.nextSeason(context)
-        createSource()
     }
 
     fun previousSeason(context: Context) {
         compositeDisposable.clear()
         field.previousSeason(context)
-        createSource()
     }
 
 }

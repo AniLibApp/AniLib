@@ -16,7 +16,9 @@ import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.dialog.MediaFilterDialog
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.util.dp
 import kotlinx.android.synthetic.main.discover_fragment_layout.view.*
@@ -71,11 +73,11 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
             it.id = R.id.garlandTitleTv
             it.layoutParams =
                 ConstraintLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
             it.textSize = 16f
-            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.qanelassoft_extra_bold)
+            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.berlinrounded_extra_bold)
             it.setPadding(dp(10f))
         }
 
@@ -83,7 +85,8 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
             it.id = R.id.garlandSettingIv
             it.layoutParams = ViewGroup.LayoutParams(0, 0)
             it.setImageResource(R.drawable.ic_button_setting)
-            it.setPadding(dp(6f))
+            it.colorType = Theme.ColorType.TINT_SURFACE
+            it.setPadding(dp(8f))
             it.visibility = View.GONE
         }
 
@@ -131,8 +134,8 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
         constraintSet.connect(
             garlandTextView.id,
             ConstraintSet.END,
-            garlandSettingIv.id,
-            ConstraintSet.START,
+            constraintLayout.id,
+            ConstraintSet.END,
             0
         )
         constraintSet.connect(
@@ -170,14 +173,19 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
             ConstraintSet.BOTTOM
         )
 
-        constraintSet.setMargin(garlandTextView.id, ConstraintSet.TOP, dp(10f))
-
+//        constraintSet.setMargin(garlandTextView.id, ConstraintSet.TOP, dp(10f))
         constraintSet.setDimensionRatio(garlandSettingIv.id, "1:1")
-
-
         constraintSet.applyTo(constraintLayout)
 
         discoverLayout.addView(constraintLayout)
+    }
+
+
+    protected fun showMediaFilterDialog(type: Int, tag: String, callback: (() -> Unit)) {
+        MediaFilterDialog.newInstance(type).also {
+            it.onDoneListener = callback
+            it.show(childFragmentManager, tag)
+        }
     }
 
     protected fun RecyclerView.createAdapter(
