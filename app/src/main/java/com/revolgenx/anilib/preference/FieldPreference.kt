@@ -45,7 +45,7 @@ fun getSeasonField(context: Context) = SeasonField().apply {
 
 fun getTrendingField(context: Context) = TrendingMediaField().apply {
     format = context.getInt(TRENDING_FORMAT_KEY, DEFAULT_FORMAT).takeIf { it > -1 }
-    seasonYear = context.getInt(TRENDING_YEAR_KEY, LocalDateTime.now().year)
+    seasonYear = context.getInt(TRENDING_YEAR_KEY, -1).takeIf { it > -1 }
     season = context.getInt(
         TRENDING_SEASON_KEY,
         -1
@@ -71,7 +71,7 @@ fun storeSeasonField(context: Context, field: SeasonField) {
 fun storeTrendingField(context: Context, field: TrendingMediaField) {
     with(field) {
         context.putInt(TRENDING_FORMAT_KEY, format ?: DEFAULT_FORMAT)
-        context.putInt(TRENDING_YEAR_KEY, seasonYear ?: LocalDateTime.now().year)
+        context.putInt(TRENDING_YEAR_KEY, seasonYear ?: -1)
         context.putInt(
             TRENDING_SEASON_KEY,
             season ?: -1

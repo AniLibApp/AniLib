@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.dialog
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
@@ -17,8 +18,9 @@ import com.revolgenx.anilib.field.home.SeasonField
 import com.revolgenx.anilib.field.home.TrendingMediaField
 import com.revolgenx.anilib.field.media.MediaField
 import com.revolgenx.anilib.preference.getSeasonField
+import com.revolgenx.anilib.preference.getTrendingField
 import com.revolgenx.anilib.util.onItemSelected
-import kotlinx.android.synthetic.main.season_filter_layout.*
+import kotlinx.android.synthetic.main.media_filter_layout.*
 import java.util.*
 import kotlin.math.round
 
@@ -30,6 +32,9 @@ class MediaFilterDialog : DynamicDialogFragment() {
         when (mediaFilterType) {
             MediaFilterType.SEASON.ordinal -> {
                 getSeasonField(requireContext())
+            }
+            MediaFilterType.TRENDING.ordinal -> {
+                getTrendingField(requireContext())
             }
             else -> {
                 MediaField()
@@ -86,12 +91,15 @@ class MediaFilterDialog : DynamicDialogFragment() {
     ): DynamicDialog.Builder {
         with(dialogBuilder) {
             setTitle(R.string.season_filter)
-            setView(R.layout.season_filter_layout)
+            setView(R.layout.media_filter_layout)
             setPositiveButton(R.string.done) { dialogInterface, _ ->
                 if (dialogInterface is DynamicDialog) {
                     if (field is SeasonField)
                         (field as SeasonField).saveSeasonField(requireContext())
                     else if (field is TrendingMediaField) {
+                        if (!dialogInterface.enableYearCheckBox.isChecked) {
+                            field.seasonYear = -1
+                        }
                         (field as TrendingMediaField).saveTrendingField(requireContext())
                     }
                     onDoneListener?.invoke()
@@ -136,6 +144,7 @@ class MediaFilterDialog : DynamicDialogFragment() {
                     seasonSpinner.setSelection(if (field is SeasonField) it else it + 1)
                 }
 
+
                 seasonYearSeekBar.setIndicatorTextDecimalFormat("0")
                 seasonYearSeekBar.setTypeface(
                     ResourcesCompat.getFont(
@@ -153,8 +162,19 @@ class MediaFilterDialog : DynamicDialogFragment() {
 
                 seasonYearSeekBar.setRange(1950f, currentYear)
 
+
+                if (field !is SeasonField) {
+                    enableYearCheckBox.visibility = View.VISIBLE
+                    enableYearCheckBox.isChecked = field.seasonYear != null
+                    seasonYearSeekBar.isEnabled = field.seasonYear != null
+                }
+
                 field.seasonYear?.toFloat()?.let {
                     seasonYearSeekBar.setProgress(it)
+                }
+
+                enableYearCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                    seasonYearSeekBar.isEnabled = isChecked
                 }
                 seasonStatusSpinner.onItemSelected {
                     field.status = it.minus(1).takeIf { it >= 0 }
