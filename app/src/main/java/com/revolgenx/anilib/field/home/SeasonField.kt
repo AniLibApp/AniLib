@@ -1,13 +1,12 @@
-package com.revolgenx.anilib.field
+package com.revolgenx.anilib.field.home
 
 import android.content.Context
-import com.revolgenx.anilib.SeasonListQuery
+import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.field.media.MediaField
 import com.revolgenx.anilib.preference.getSeasonField
 import com.revolgenx.anilib.preference.storeSeasonField
-import com.revolgenx.anilib.type.MediaFormat
-import com.revolgenx.anilib.type.MediaSeason
-import com.revolgenx.anilib.type.MediaStatus
+import com.revolgenx.anilib.preference.storeSeasonGenre
+import com.revolgenx.anilib.preference.storeSeasonTag
 
 
 class SeasonField : MediaField() {
@@ -15,8 +14,19 @@ class SeasonField : MediaField() {
         fun create(context: Context) = getSeasonField(context)
     }
 
+    var tagTagFields = mutableMapOf<String, TagField>()
+    var genreTagFields = mutableMapOf<String, TagField>()
+
     fun saveSeasonField(context: Context) {
         storeSeasonField(context, this)
+    }
+
+    fun saveGenre(context: Context) {
+        storeSeasonGenre(context, this)
+    }
+
+    fun saveTags(context: Context) {
+        storeSeasonTag(context, this)
     }
 
     fun nextSeason(context: Context) {
@@ -37,6 +47,18 @@ class SeasonField : MediaField() {
             season = 3
         }
         saveSeasonField(context)
+    }
+
+    fun updateFields(context: Context) {
+        getSeasonField(context).also {
+            this.season = it.season
+            this.seasonYear = it.seasonYear
+            this.tags = it.tags
+            this.genres = it.genres
+            this.format = it.format
+            this.sort = it.sort
+            this.status = it.status
+        }
     }
 
 }

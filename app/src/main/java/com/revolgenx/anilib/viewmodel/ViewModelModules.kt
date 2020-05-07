@@ -59,6 +59,9 @@ val viewModelModules = module {
     viewModel { NotificationViewModel(get()) }
 
     //airing
-    viewModel { DiscoverAiringViewModel(get()) }
     viewModel { AiringViewModel(get()) }
+
+    //discover
+    viewModel { DiscoverAiringViewModel(get()) }
+    viewModel { TrendingViewModel(get()) }
 }

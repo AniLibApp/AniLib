@@ -13,7 +13,7 @@
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-            android:id="@+id/airingMediaCoverFrameLayout"
+            android:id="@+id/mediaCoverFrameLayout"
             android:layout_width="155dp"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="1:1.6"
@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/airingMediaSimpleDrawee"
+                android:id="@+id/mediaSimpleDrawee"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -53,13 +53,13 @@
             android:id="@+id/mediaMetaBackground"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/airingMediaCoverFrameLayout"
+            app:layout_constraintBottom_toBottomOf="@id/mediaCoverFrameLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/airingMediaTitleTv" />
+            app:layout_constraintTop_toTopOf="@id/mediaTitleTv" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/airingMediaTitleTv"
+            android:id="@+id/mediaTitleTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -69,60 +69,42 @@
             android:paddingTop="4dp"
             android:textColor="@color/white"
             android:textSize="11sp"
-            app:fontFamily="@font/open_sans_semi_bold"
             app:ads_colorType="tint_surface"
-            app:layout_constraintBottom_toTopOf="@id/airingGenreLayout"
-            app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
-            app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout"
+            app:fontFamily="@font/open_sans_semi_bold"
+            app:layout_constraintBottom_toTopOf="@id/mediaGenreLayout"
+            app:layout_constraintLeft_toLeftOf="@id/mediaCoverFrameLayout"
+            app:layout_constraintRight_toRightOf="@id/mediaCoverFrameLayout"
             tools:ignore="SmallSp" />
 
 
         <com.revolgenx.anilib.view.GenreLayout
-            android:id="@+id/airingGenreLayout"
+            android:id="@+id/mediaGenreLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
-            app:layout_constraintBottom_toTopOf="@id/airingFormatTv"
-            app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
-            app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout" />
+            app:layout_constraintBottom_toTopOf="@id/mediaFormatTv"
+            app:layout_constraintLeft_toLeftOf="@id/mediaCoverFrameLayout"
+            app:layout_constraintRight_toRightOf="@id/mediaCoverFrameLayout" />
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/airingFormatTv"
+            android:id="@+id/mediaFormatTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textSize="10sp"
-            app:ads_colorType="tint_accent"
-            app:layout_constraintBottom_toTopOf="@id/airingTimeTv"
-            app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
-            app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout"
-            tools:ignore="SmallSp" />
-
-        <com.revolgenx.anilib.view.airing.AiringDynamicTextView
-            android:id="@+id/airingTimeTv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:paddingBottom="4dp"
-            android:text="@string/airing_time_e_s_s"
-            android:textSize="11sp"
-            app:ads_colorType="accent"
-            app:fontFamily="@font/open_sans_semi_bold"
-            app:layout_constraintBottom_toBottomOf="@id/airingMediaCoverFrameLayout"
-            app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
-            app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout"
+            android:textSize="10sp"
+            app:ads_colorType="tint_accent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/mediaCoverFrameLayout"
+            app:layout_constraintRight_toRightOf="@id/mediaCoverFrameLayout"
             tools:ignore="SmallSp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

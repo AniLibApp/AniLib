@@ -11,5 +11,4 @@ interface BaseDiscoverHelper {
     )
 
     fun reloadAll()
-    fun handleClick(which: Int, next: Int? = null)
 }
