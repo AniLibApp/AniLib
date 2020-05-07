@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.field.home.airing
+package com.revolgenx.anilib.field.home
 
 import com.revolgenx.anilib.AiringScheduleQuery
 import com.revolgenx.anilib.field.BaseSourceField

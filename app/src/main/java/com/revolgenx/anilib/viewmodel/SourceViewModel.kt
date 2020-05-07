@@ -12,7 +12,6 @@ abstract class SourceViewModel<S, F> : ViewModel() {
         CompositeDisposable()
     }
 
-
     override fun onCleared() {
         compositeDisposable.clear()
         super.onCleared()

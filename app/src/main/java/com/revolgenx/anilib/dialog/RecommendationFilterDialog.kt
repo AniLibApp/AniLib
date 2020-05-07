@@ -62,10 +62,10 @@ class RecommendationFilterDialog : DynamicDialogFragment() {
                 if (context.loggedIn()) {
                     onListToggleSwitch?.let {
                         it.uncheckedBackgroundColor = ThemeController.lightSurfaceColor()
-                        it.checkedBackgroundColor = DynamicTheme.getInstance().get().accentColor
+                        it.checkedBackgroundColor = DynamicTheme.getInstance().get().tintAccentColor
                         it.borderRadius = dp(6f).toFloat()
                         it.elevation = dp(1f).toFloat()
-                        it.checkedTextColor = DynamicTheme.getInstance().get().tintAccentColorDark
+                        it.checkedTextColor = DynamicTheme.getInstance().get().accentColor
                         it.uncheckedTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
                         it.reDraw()
                         it.setEntries(R.array.on_list)
@@ -81,10 +81,10 @@ class RecommendationFilterDialog : DynamicDialogFragment() {
 
                 recommendationSortToggleSwitch?.let {
                     it.uncheckedBackgroundColor = ThemeController.lightSurfaceColor()
-                    it.checkedBackgroundColor = DynamicTheme.getInstance().get().accentColor
+                    it.checkedBackgroundColor = DynamicTheme.getInstance().get().tintAccentColor
                     it.borderRadius = dp(6f).toFloat()
                     it.elevation = dp(1f).toFloat()
-                    it.checkedTextColor = DynamicTheme.getInstance().get().tintAccentColorDark
+                    it.checkedTextColor = DynamicTheme.getInstance().get().accentColor
                     it.uncheckedTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
                     it.reDraw()
                     it.setEntries(R.array.recommendation_sort)

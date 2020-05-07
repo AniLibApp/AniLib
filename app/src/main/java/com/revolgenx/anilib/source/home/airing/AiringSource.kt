@@ -2,7 +2,7 @@ package com.revolgenx.anilib.source.home.airing
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.field.home.airing.AiringMediaField
+import com.revolgenx.anilib.field.home.AiringMediaField
 import com.revolgenx.anilib.model.airing.AiringMediaModel
 import com.revolgenx.anilib.service.airing.AiringMediaService
 import com.revolgenx.anilib.source.BaseRecyclerSource

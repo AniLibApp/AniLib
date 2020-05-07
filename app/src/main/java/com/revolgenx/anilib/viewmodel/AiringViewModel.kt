@@ -1,13 +1,11 @@
 package com.revolgenx.anilib.viewmodel
 
-import com.revolgenx.anilib.field.home.airing.AiringMediaField
+import com.revolgenx.anilib.field.home.AiringMediaField
 import com.revolgenx.anilib.service.airing.AiringMediaService
 import com.revolgenx.anilib.source.home.airing.AiringSource
-import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
 import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
-import timber.log.Timber
 
 //todo update progress after bookmark
 class AiringViewModel(private val airingMediaService: AiringMediaService) :
@@ -24,7 +22,8 @@ class AiringViewModel(private val airingMediaService: AiringMediaService) :
             this.field.airingLessThan = field.toEpochSecond().toInt()
         }
 
-    override var field: AiringMediaField =  AiringMediaField().also {
+    override var field: AiringMediaField =  AiringMediaField()
+        .also {
         it.notYetAired = false
         it.airingGreaterThan = startDateTime.toEpochSecond().toInt()
         it.airingLessThan = endDateTime.toEpochSecond().toInt()

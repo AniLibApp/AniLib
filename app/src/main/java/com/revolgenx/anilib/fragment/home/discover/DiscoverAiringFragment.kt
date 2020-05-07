@@ -41,12 +41,13 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
+            it.isNestedScrollingEnabled = false
         }
         addView(
             discoverAiringRecyclerView!!,
-            getString(R.string.airing_schedules) + ">>", showSetting = false
+            " >>> " + getString(R.string.airing_schedules) + " <<<", showSetting = false
         ) {
-            handleClick(it)
+            this@DiscoverAiringFragment.handleClick(it)
         }
         return v
     }
@@ -59,9 +60,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.field.sort = AiringSort.TIME.ordinal
         invalidateAdapter()
-
     }
 
 
@@ -70,7 +69,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
         invalidateAdapter()
     }
 
-    override fun handleClick(which: Int, next: Int?) {
+    private fun handleClick(which: Int) {
         if (which == 0) {
             ContainerActivity.openActivity(
                 requireContext(),

@@ -5,18 +5,17 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.BrowseActivity
-import com.revolgenx.anilib.dialog.SeasonFilterDialog
+import com.revolgenx.anilib.dialog.MediaFilterDialog
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.event.ListEditorResultEvent
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
-import com.revolgenx.anilib.field.SeasonField
+import com.revolgenx.anilib.field.home.SeasonField
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.model.CommonMediaModel
@@ -55,21 +54,6 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
         return viewModel.createSource()
     }
 
-    private val genreTagField by lazy {
-        val genreTags = mutableMapOf<String, TagField>()
-        requireContext().resources.getStringArray(R.array.media_genre).forEach {
-            genreTags[it] = TagField(it, false)
-        }
-        genreTags
-    }
-
-    private val tagTagField by lazy {
-        val genreTags = mutableMapOf<String, TagField>()
-        requireContext().resources.getStringArray(R.array.media_tags).forEach {
-            genreTags[it] = TagField(it, false)
-        }
-        genreTags
-    }
 
     @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -80,8 +64,21 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null)
+        if (savedInstanceState == null) {
             viewModel.field = SeasonField.create(requireContext())
+            requireContext().resources.getStringArray(R.array.media_tags).forEach {
+                viewModel.field.tagTagFields[it] = TagField(it, false)
+            }
+            requireContext().resources.getStringArray(R.array.media_genre).forEach {
+                viewModel.field.genreTagFields[it] = TagField(it, false)
+            }
+            viewModel.field.genres?.forEach {
+                viewModel.field.genreTagFields[it]?.isTagged = true
+            }
+            viewModel.field.tags?.forEach {
+                viewModel.field.tagTagFields[it]?.isTagged = true
+            }
+        }
         super.onActivityCreated(savedInstanceState)
 
         if (savedInstanceState != null) {
@@ -107,18 +104,16 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
         return when (item.itemId) {
             R.id.prevSeasonId -> {
                 viewModel.previousSeason(requireContext())
-                updateToolbarTitle()
-                invalidateAdapter()
+                renewAdapter()
                 true
             }
             R.id.nextSeasonId -> {
                 viewModel.nextSeason(requireContext())
-                updateToolbarTitle()
-                invalidateAdapter()
+                renewAdapter()
                 true
             }
             R.id.filterSeasonId -> {
-                SeasonFilterDialog().also {
+                MediaFilterDialog.newInstance(MediaFilterDialog.MediaFilterType.SEASON.ordinal).also {
                     it.onDoneListener = {
                         renewAdapter()
                     }
@@ -130,7 +125,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
                 TagChooserDialogFragment.newInstance(
                     TagChooserField(
                         requireContext().getString(R.string.genre),
-                        genreTagField.values.toList()
+                        viewModel.field.genreTagFields.values.toList()
                     )
                 ).also {
                     it.onDoneListener(this)
@@ -142,7 +137,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
                 TagChooserDialogFragment.newInstance(
                     TagChooserField(
                         requireContext().getString(R.string.genre),
-                        tagTagField.values.toList()
+                        viewModel.field.tagTagFields.values.toList()
                     )
                 ).also {
                     it.onDoneListener(this)
@@ -156,7 +151,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
 
     private fun updateSeasonDialogListener() {
         childFragmentManager.findFragmentByTag(SEASON_FILTER_DIALOG_TAG)?.let {
-            (it as SeasonFilterDialog).onDoneListener = {
+            (it as MediaFilterDialog).onDoneListener = {
                 renewAdapter()
             }
         }
@@ -192,17 +187,17 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
         when (fragmentTag) {
             BrowseActivity.TAG_CHOOSER_DIALOG_TAG -> {
                 list.forEach {
-                    tagTagField[it.tag]?.isTagged = it.isTagged
+                    viewModel.field.tagTagFields[it.tag]?.isTagged = it.isTagged
                 }
                 viewModel.field.tags = list.filter { it.isTagged }.map { it.tag }.toList()
-                viewModel.field.saveSeasonField(requireContext())
+                viewModel.field.saveTags(requireContext())
             }
             BrowseActivity.GENRE_CHOOSER_DIALOG_TAG -> {
                 list.forEach {
-                    genreTagField[it.tag]?.isTagged = it.isTagged
+                    viewModel.field.genreTagFields[it.tag]?.isTagged = it.isTagged
                 }
                 viewModel.field.genres = list.filter { it.isTagged }.map { it.tag }.toList()
-                viewModel.field.saveSeasonField(requireContext())
+                viewModel.field.saveGenre(requireContext())
             }
         }
 
@@ -210,7 +205,8 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
     }
 
     private fun renewAdapter() {
-        viewModel.field = SeasonField.create(requireContext())
+        viewModel.field.updateFields(requireContext())
+        updateToolbarTitle()
         createSource()
         invalidateAdapter()
     }
