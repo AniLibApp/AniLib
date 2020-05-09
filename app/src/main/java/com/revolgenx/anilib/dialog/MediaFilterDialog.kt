@@ -14,11 +14,16 @@ import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicButton
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.field.home.NewlyAddedMediaField
+import com.revolgenx.anilib.field.home.PopularMediaField
 import com.revolgenx.anilib.field.home.SeasonField
 import com.revolgenx.anilib.field.home.TrendingMediaField
 import com.revolgenx.anilib.field.media.MediaField
+import com.revolgenx.anilib.preference.getNewlyAddedField
+import com.revolgenx.anilib.preference.getPopularField
 import com.revolgenx.anilib.preference.getSeasonField
 import com.revolgenx.anilib.preference.getTrendingField
+import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.util.onItemSelected
 import kotlinx.android.synthetic.main.media_filter_layout.*
 import java.util.*
@@ -35,6 +40,12 @@ class MediaFilterDialog : DynamicDialogFragment() {
             }
             MediaFilterType.TRENDING.ordinal -> {
                 getTrendingField(requireContext())
+            }
+            MediaFilterType.POPULAR.ordinal -> {
+                getPopularField(requireContext())
+            }
+            MediaFilterType.NEWLY_ADDED.ordinal -> {
+                getNewlyAddedField(requireContext())
             }
             else -> {
                 MediaField()
@@ -61,6 +72,19 @@ class MediaFilterDialog : DynamicDialogFragment() {
             )
         }
     }
+
+    private val mediaSortList by lazy {
+        requireContext().resources.getStringArray(R.array.advance_search_sort)
+    }
+
+    private val listSortItems by lazy {
+        mediaSortList.map {
+            DynamicSpinnerItem(
+                null, it
+            )
+        }
+    }
+
     private val seasons by lazy {
         requireContext().resources.getStringArray(if (mediaFilterType == MediaFilterType.SEASON.ordinal) R.array.media_season else R.array.advance_search_season)
             .map {
@@ -81,7 +105,7 @@ class MediaFilterDialog : DynamicDialogFragment() {
     }
 
     enum class MediaFilterType {
-        SEASON, TRENDING, POPULAR
+        SEASON, TRENDING, POPULAR, NEWLY_ADDED
     }
 
 
@@ -90,17 +114,30 @@ class MediaFilterDialog : DynamicDialogFragment() {
         savedInstanceState: Bundle?
     ): DynamicDialog.Builder {
         with(dialogBuilder) {
-            setTitle(R.string.season_filter)
+            setTitle(R.string.filter)
             setView(R.layout.media_filter_layout)
             setPositiveButton(R.string.done) { dialogInterface, _ ->
                 if (dialogInterface is DynamicDialog) {
-                    if (field is SeasonField)
-                        (field as SeasonField).saveSeasonField(requireContext())
-                    else if (field is TrendingMediaField) {
-                        if (!dialogInterface.enableYearCheckBox.isChecked) {
-                            field.seasonYear = -1
+                    when (field) {
+                        is SeasonField -> (field as SeasonField).saveSeasonField(requireContext())
+                        is TrendingMediaField -> {
+                            if (!dialogInterface.enableYearCheckBox.isChecked) {
+                                field.seasonYear = null
+                            }
+                            (field as TrendingMediaField).saveTrendingField(requireContext())
                         }
-                        (field as TrendingMediaField).saveTrendingField(requireContext())
+                        is PopularMediaField -> {
+                            if (!dialogInterface.enableYearCheckBox.isChecked) {
+                                field.seasonYear = null
+                            }
+                            (field as PopularMediaField).savePopularField(requireContext())
+                        }
+                        is NewlyAddedMediaField -> {
+                            if (!dialogInterface.enableYearCheckBox.isChecked) {
+                                field.seasonYear = null
+                            }
+                            (field as NewlyAddedMediaField).saveNewlyAddedField(requireContext())
+                        }
                     }
                     onDoneListener?.invoke()
                 }
@@ -128,11 +165,22 @@ class MediaFilterDialog : DynamicDialogFragment() {
                     (it as DynamicButton).isAllCaps = false
                 }
 
-                seasonStatusSpinner.adapter = makeSpinnerAdapter(listStatusItems)
                 seasonFormatSpinner.adapter = makeSpinnerAdapter(listFormatItems)
+                seasonStatusSpinner.adapter = makeSpinnerAdapter(listStatusItems)
                 seasonSpinner.adapter = makeSpinnerAdapter(seasons)
 
+                if (field is SeasonField) {
+                    seasonSortSpinner.adapter = makeSpinnerAdapter(listSortItems)
+                    field.sort?.let {
+                        seasonSortSpinner.setSelection(it + 1)
+                    }
 
+                    seasonSortSpinner.onItemSelected {
+                        field.sort = it.minus(1).takeIf { it >= 0 }
+                    }
+                }else{
+                    seasonSortHeaderLayout.visibility = View.GONE
+                }
 
                 field.status?.let {
                     seasonStatusSpinner.setSelection(it + 1)

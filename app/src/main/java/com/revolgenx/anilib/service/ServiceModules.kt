@@ -11,6 +11,8 @@ import com.revolgenx.anilib.service.notification.NotificationService
 import com.revolgenx.anilib.service.notification.NotificationServiceImpl
 import com.revolgenx.anilib.service.recommendation.RecommendationService
 import com.revolgenx.anilib.service.recommendation.RecommendationServiceImpl
+import com.revolgenx.anilib.service.review.ReviewService
+import com.revolgenx.anilib.service.review.ReviewServiceImpl
 import com.revolgenx.anilib.service.staff.StaffService
 import com.revolgenx.anilib.service.staff.StaffServiceImpl
 import com.revolgenx.anilib.service.studio.StudioService
@@ -36,4 +38,5 @@ val serviceModule = module {
     factory<NotificationService> { NotificationServiceImpl(get()) }
     factory<AiringMediaService> { AiringMediaServiceImpl(get()) }
     factory<MediaService> { MediaServiceImpl(get()) }
+    factory<ReviewService> { ReviewServiceImpl(get()) }
 }

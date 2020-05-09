@@ -46,7 +46,6 @@ class EntryListEditorFragment : BaseFragment() {
     companion object {
         const val LIST_EDITOR_MODEL = "list_editor_model"
         const val LIST_EDITOR_META_KEY = "list_editor_meta_key"
-
     }
 
     private var state = COLLAPSED //collapsed

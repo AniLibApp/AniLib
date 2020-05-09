@@ -60,7 +60,7 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
         setSupportActionBar(draweeViewerToolbar)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        draweeMeta = intent.getParcelableExtra<DraweeViewerMeta>(simpleDraweeMetaKey) ?: return
+        draweeMeta = intent.getParcelableExtra(simpleDraweeMetaKey) ?: return
         haulerView.setBackgroundColor(Color.BLACK)
         bigImageViewer.setImageViewFactory(FrescoImageViewFactory())
         bigImageViewer.setProgressIndicator(ProgressPieIndicator())
@@ -93,10 +93,10 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.downloadImageMenu -> {
-                bigImageViewer.saveImageIntoGallery()
-                true
-            }
+//            R.id.downloadImageMenu -> {
+//                bigImageViewer.saveImageIntoGallery()
+//                true
+//            }
             R.id.imageShareMenu->{
                 openLink(draweeMeta?.url)
                 true

@@ -8,16 +8,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.MediaFilterDialog
-import com.revolgenx.anilib.field.home.TrendingMediaField
+import com.revolgenx.anilib.field.home.PopularMediaField
 import com.revolgenx.anilib.presenter.home.MediaPresenter
 import com.revolgenx.anilib.source.MediaSource
 import com.revolgenx.anilib.type.MediaSort
-import com.revolgenx.anilib.viewmodel.TrendingViewModel
+import com.revolgenx.anilib.viewmodel.PopularViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-open class DiscoverTrendingFragment : DiscoverAiringFragment() {
+open class DiscoverPopularFragment : DiscoverTrendingFragment() {
 
-    private var trendingRecyclerView: DynamicRecyclerView? = null
+    private lateinit var popularRecyclerView: DynamicRecyclerView
 
     private val presenter
         get() = MediaPresenter(requireContext())
@@ -25,7 +25,7 @@ open class DiscoverTrendingFragment : DiscoverAiringFragment() {
     private val source: MediaSource
         get() = viewModel.source ?: viewModel.createSource()
 
-    private val viewModel by viewModel<TrendingViewModel>()
+    private val viewModel by viewModel<PopularViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +33,7 @@ open class DiscoverTrendingFragment : DiscoverAiringFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = super.onCreateView(inflater, container, savedInstanceState)
-        trendingRecyclerView = DynamicRecyclerView(requireContext()).also {
+        popularRecyclerView = DynamicRecyclerView(requireContext()).also {
             it.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -42,8 +42,8 @@ open class DiscoverTrendingFragment : DiscoverAiringFragment() {
         }
 
         addView(
-            trendingRecyclerView!!,
-            " >>> " + getString(R.string.trending) + " <<<", showSetting = true
+            popularRecyclerView,
+            " >>> " + getString(R.string.popular) + " <<<", showSetting = true
         ) {
             handleClick(it)
         }
@@ -51,26 +51,21 @@ open class DiscoverTrendingFragment : DiscoverAiringFragment() {
         return v
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        trendingRecyclerView!!.layoutManager =
+        popularRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 
-    override fun reloadAll() {
-        super.reloadAll()
-
-    }
-
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (savedInstanceState == null)
-            viewModel.field = TrendingMediaField.create(requireContext()).also {
-                it.sort = MediaSort.TRENDING_DESC.ordinal
+            viewModel.field = PopularMediaField.create(requireContext()).also {
+                it.sort = MediaSort.POPULARITY_DESC.ordinal
             }
         super.onActivityCreated(savedInstanceState)
         if (savedInstanceState != null) {
-            childFragmentManager.findFragmentByTag(MEDIA_TRENDING_TAG)?.let {
+            childFragmentManager.findFragmentByTag(MEDIA_POPULAR_TAG)?.let {
                 (it as MediaFilterDialog).onDoneListener = {
                     renewAdapter()
                 }
@@ -80,18 +75,20 @@ open class DiscoverTrendingFragment : DiscoverAiringFragment() {
     }
 
 
+
     private fun handleClick(which: Int) {
         if (which == 0) {
 
         } else if (which == 1) {
             showMediaFilterDialog(
-                MediaFilterDialog.MediaFilterType.TRENDING.ordinal,
-                MEDIA_TRENDING_TAG
+                MediaFilterDialog.MediaFilterType.POPULAR.ordinal,
+                MEDIA_POPULAR_TAG
             ) {
                 renewAdapter()
             }
         }
     }
+
 
     private fun renewAdapter() {
         viewModel.updateField(requireContext())
@@ -99,9 +96,9 @@ open class DiscoverTrendingFragment : DiscoverAiringFragment() {
         invalidateAdapter()
     }
 
+
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {
-        if (trendingRecyclerView == null) return
-        viewModel.adapter = trendingRecyclerView!!.createAdapter(source, presenter)
+        viewModel.adapter = popularRecyclerView.createAdapter(source, presenter)
     }
 }

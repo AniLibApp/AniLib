@@ -53,6 +53,7 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop" />
         <activity android:name=".activity.NavViewPagerContainerActivity" />
+        <activity android:name=".activity.ToolbarContainerActivity" />
 
     </application>
 

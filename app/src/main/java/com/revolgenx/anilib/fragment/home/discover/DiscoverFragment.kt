@@ -14,7 +14,7 @@ import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.util.makeSnakeBar
 
-class DiscoverFragment : DiscoverTrendingFragment() {
+class DiscoverFragment : DiscoverNewFragment() {
 
     override fun onResume() {
         super.onResume()

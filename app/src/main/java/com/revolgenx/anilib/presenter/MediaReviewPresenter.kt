@@ -38,9 +38,9 @@ class MediaReviewPresenter(context: Context) : Presenter<MediaReviewModel>(conte
         val item = element.data ?: return
 
         holder.itemView.apply {
-            reviewUserIv.setImageURI(item.user?.avatar?.large)
+            reviewUserIv.setImageURI(item.userModel?.avatar?.large)
             reviewUserIv.setOnClickListener {
-                BrowseUserEvent(item.user?.userId ?: -1).postEvent
+                BrowseUserEvent(item.userModel?.userId ?: -1).postEvent
             }
             reviewSummaryTv.text = item.summary
             likedReviewTv.text = item.rating?.toString()

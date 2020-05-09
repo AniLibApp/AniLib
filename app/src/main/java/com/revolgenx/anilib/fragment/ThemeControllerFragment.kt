@@ -20,9 +20,8 @@ class ThemeControllerFragment : BaseToolbarFragment() {
     private var mAppThemeDay: DynamicColorPreference? = null
     private var mAppThemeNight: DynamicColorPreference? = null
 
-    override val title: String by lazy {
-        getString(R.string.dynamic_theme)
-    }
+    override val title: Int = R.string.dynamic_theme
+
 
     override val contentRes: Int by lazy {
         R.layout.theme_controller_fragment

@@ -16,5 +16,4 @@ class MediaReviewField :BaseField<MediaReviewQuery>{
             .mediaId(mediaId)
             .build()
     }
-
 }
