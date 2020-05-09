@@ -21,7 +21,6 @@ import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.model.search.filter.*
 import com.revolgenx.anilib.presenter.TagPresenter
-import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.util.hideKeyboard
 import com.revolgenx.anilib.util.onItemSelected
 import kotlinx.android.synthetic.main.browse_filter_navigation_view.view.*
@@ -390,14 +389,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
 
                     sort = browseSortSpinner?.selectedItemPosition?.minus(1)?.takeIf {
                         it >= 0
-                    }?.let {
-                        (browseSortSpinner.selectedItem as? DynamicSpinnerItem)?.text?.toString()
-                            ?.replace(" ", "_")
-                            ?.toUpperCase()?.let {
-                                MediaSort.valueOf(it).ordinal
-                            }
                     }
-
                     format =
                         browseFormatSpinner?.selectedItemPosition?.minus(1)?.takeIf {
                             it >= 0
@@ -476,7 +468,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                         browseCountrySpinner.setSelection(it + 1)
                     }
                     it.source?.let {
-                        browseSortSpinner.setSelection(it + 1)
+                        browseSourceSpinner.setSelection(it + 1)
                     }
                     it.genre?.mapNotNull {
                         genreTagMap!![it]?.isTagged = true

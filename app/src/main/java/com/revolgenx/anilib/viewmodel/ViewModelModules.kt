@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.viewmodel
 
+import com.revolgenx.anilib.fragment.ReviewComposerViewModel
 import com.revolgenx.anilib.fragment.home.discover.DiscoverAiringViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -64,4 +65,9 @@ val viewModelModules = module {
     //discover
     viewModel { DiscoverAiringViewModel(get()) }
     viewModel { TrendingViewModel(get()) }
+    viewModel { PopularViewModel(get()) }
+    viewModel { DiscoverNewViewModel(get()) }
+
+    //review
+    viewModel { ReviewComposerViewModel(get()) }
 }

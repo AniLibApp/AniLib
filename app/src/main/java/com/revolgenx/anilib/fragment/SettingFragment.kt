@@ -12,9 +12,7 @@ import timber.log.Timber
 
 class SettingFragment : BaseToolbarFragment() {
 
-    override val title: String by lazy {
-        getString(R.string.settings)
-    }
+    override val title: Int= R.string.settings
 
     override val contentRes: Int by lazy {
         R.layout.setting_fragment_layout

@@ -1299,6 +1299,37 @@ query  AiringScheduleQuery($page:Int
     }
 }
 
+query ReviewQuery($reviewId:Int, $mediaId:Int, $userId:Int){
+    Review(id:$reviewId,mediaId:$mediaId,userId:$userId){
+        id
+        userId
+        mediaId
+        summary
+        body(asHtml:true)
+        rating
+        ratingAmount
+        score
+        private
+        userRating
+        user{
+            id
+            name
+            avatar{
+                large
+                medium
+            }
+        }
+        media{
+            id
+            title{
+                ... mediaTitle
+            }
+            coverImage{
+                ... mediaCoverImage
+            }
+        }
+    }
+}
 
 
 #mutation

@@ -84,7 +84,6 @@
     <string name="open_list_editor">Open list editor</string>
     <string name="delete">Delete</string>
     <string name="toggle_fav">Toggle Favourite</string>
-    <string name="write_review">Write review</string>
     <string name="operation_failed">Operation failed.</string>
     <string name="type">Type</string>
     <string name="source">Source</string>
@@ -207,8 +206,14 @@
     <string name="airing_time_e_s_s">E: %s · %dd %dh %dm %ds </string>
     <string name="format_episode_s">%s · E: %s</string>
     <string name="select_date">Select Date</string>
-    <string name="season_filter">Season Filter</string>
     <string name="trending">Trending</string>
+    <string name="popular">Popular</string>
+    <string name="newly_added">Newly Added</string>
+    <string name="review_composer">Review Composer</string>
+    <string name="write_review">Write review (Min:2200)</string>
+    <string name="summary">Summary</string>
+    <string name="review_summary">Review Summary (Min:20, Max:120)</string>
+    <string name="save_review">Save Review</string>
 
     <string-array name="media_format">
         <item>Tv</item>
@@ -314,6 +319,8 @@
 
     <string-array name="advance_search_sort">
         <item>None</item>
+        <item>Id</item>
+        <item>Id Desc</item>
         <item>Title Romaji</item>
         <item>Title Romaji Desc</item>
         <item>Title English</item>
@@ -346,6 +353,7 @@
         <item>Volumes Desc</item>
         <item>Updated At</item>
         <item>Updated At Desc</item>
+        <item>Search Match</item>
         <item>Favourites</item>
         <item>Favourites Desc</item>
     </string-array>
