@@ -172,6 +172,7 @@ dependencies {
     //markwon
     implementation "io.noties.markwon:core:$markwon_ver"
     implementation "io.noties.markwon:html:$markwon_ver"
+    implementation "io.noties.markwon:editor:$markwon_ver"
     implementation "io.noties.markwon:ext-strikethrough:$markwon_ver"
     implementation"io.noties.markwon:linkify:$markwon_ver"
     implementation"io.noties.markwon:inline-parser:$markwon_ver"

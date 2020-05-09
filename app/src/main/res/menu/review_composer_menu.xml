@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/privateReview"
+        android:icon="@drawable/ic_eye_16dp"
+        android:title="@string/private_"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/saveReview"
+        android:icon="@drawable/ic_save"
+        android:title="@string/save_review"
+        app:showAsAction="ifRoom" />
+</menu>

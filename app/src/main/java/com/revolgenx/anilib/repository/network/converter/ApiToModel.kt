@@ -3,7 +3,9 @@ package com.revolgenx.anilib.repository.network.converter
 import com.revolgenx.anilib.BasicUserQuery
 import com.revolgenx.anilib.MediaOverViewQuery
 import com.revolgenx.anilib.MediaWatchQuery
+import com.revolgenx.anilib.fragment.MediaCoverImage
 import com.revolgenx.anilib.fragment.MediaListContent
+import com.revolgenx.anilib.fragment.MediaTitle
 import com.revolgenx.anilib.fragment.NarrowMediaContent
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.entry.MediaEntryListModel
@@ -205,4 +207,17 @@ fun MediaWatchQuery.Media.toModel() = streamingEpisodes()?.map {
         model.title = it.title()
         model.url = it.url()
     }
+}
+
+fun MediaTitle.toModel() = TitleModel().also {
+    it.english = english()
+    it.native = native_()
+    it.romaji = romaji()
+    it.userPreferred = userPreferred()
+}
+
+fun MediaCoverImage.toModel() = CoverImageModel().also {
+    it.medium = medium()
+    it.large = large()
+    it.extraLarge = extraLarge()
 }

@@ -21,6 +21,7 @@ import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.type.MediaSeason
+import com.revolgenx.anilib.type.MediaSort
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -69,7 +70,7 @@ private val suffixes: NavigableMap<Long, String> by lazy {
     }
 }
 
-fun Int.prettyNumberFormat():String = this.toLong().prettyNumberFormat()
+fun Int.prettyNumberFormat(): String = this.toLong().prettyNumberFormat()
 
 fun Long.prettyNumberFormat(): String { //Long.MIN_VALUE == -Long.MIN_VALUE so we need an adjustment here
     if (this == Long.MIN_VALUE) return (Long.MIN_VALUE + 1).prettyNumberFormat()
@@ -105,9 +106,10 @@ suspend fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = coroutineSco
 
 //view
 fun dp(dp: Float) = DynamicUnitUtils.convertDpToPixels(dp)
-fun sp(sp:Float) = DynamicUnitUtils.convertSpToPixels(sp)
 
-fun makeLogInSnackBar(view: View){
+fun sp(sp: Float) = DynamicUnitUtils.convertSpToPixels(sp)
+
+fun makeLogInSnackBar(view: View) {
     view.makeSnakeBar(R.string.please_log_in)
 }
 
@@ -174,6 +176,5 @@ fun Long.prettyTime(): String? {
 }
 
 fun View.string(@StringRes id: Int) = context.getString(id)
-
 
 

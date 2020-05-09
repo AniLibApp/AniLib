@@ -37,6 +37,7 @@ import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.browse.*
 import com.revolgenx.anilib.field.ToggleFavouriteField
+import com.revolgenx.anilib.fragment.ReviewComposerFragment
 import com.revolgenx.anilib.fragment.studio.StudioFragment
 import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.model.MediaBrowseModel
@@ -125,7 +126,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media_browser)
         browserRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-        mediaAddButton.setCompoundDrawablesRelative(
+        mediaAddButton.setCompoundDrawablesRelativeWithIntrinsicBounds(
             null,
             null,
             ContextCompat.getDrawable(this, R.drawable.ic_arrow_down)?.also {
@@ -457,15 +458,10 @@ class MediaBrowseActivity : DynamicSystemActivity() {
     private fun openReviewWriter() {
         if (!::mediaBrowserMeta.isInitialized) return
         if (loggedIn()) {
-//            ListEditorEvent(
-//                ListEditorMeta(
-//                    mediaBrowserMeta.mediaId,
-//                    mediaBrowserMeta.type,
-//                    mediaBrowserMeta.title,
-//                    mediaBrowserMeta.coverImage,
-//                    mediaBrowserMeta.bannerImage
-//                ), mediaBrowserCoverImage
-//            ).postSticky
+            ContainerActivity.openActivity(
+                this,
+                ParcelableFragment(ReviewComposerFragment::class.java, bundleOf())
+            )
         } else {
             browserRootLayout.makeSnakeBar(R.string.please_log_in)
         }

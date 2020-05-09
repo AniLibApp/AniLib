@@ -45,6 +45,13 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
             return Presenter.forEmptyIndicator(requireContext(), R.layout.empty_layout)
         }
 
+    companion object {
+        const val MEDIA_TRENDING_TAG = "MEDIA_TRENDING_TAG"
+        const val MEDIA_POPULAR_TAG = "MEDIA_POPULAR_TAG"
+        const val NEWLY_ADDED_TAG = "NEWLY_ADDED_TAG"
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -17,7 +17,7 @@ abstract class BaseToolbarFragment : BaseFragment() {
     var subtitle: String? = null
 
     lateinit var toolbar:DynamicToolbar
-    abstract val title: String
+    abstract val title: Int
     abstract val contentRes: Int
 
 
@@ -44,7 +44,7 @@ abstract class BaseToolbarFragment : BaseFragment() {
         (activity as AppCompatActivity).also {
             it.setSupportActionBar(toolbar)
             it.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            it.supportActionBar!!.title = title
+            it.supportActionBar!!.title = getString(title)
         }
     }
 

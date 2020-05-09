@@ -209,8 +209,8 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                 model.ratingAmount = node.ratingAmount()
                                 model.summary = node.summary()
                                 model.userRating = node.userRating()?.ordinal
-                                model.user = node.user()?.let {
-                                    MediaReviewUserModel().also { model ->
+                                model.userModel = node.user()?.let {
+                                    BasicUserModel().also { model ->
                                         model.userId = it.id()
                                         model.avatar = UserAvatarImageModel().also { imageModel ->
                                             imageModel.medium = it.avatar()?.medium()
