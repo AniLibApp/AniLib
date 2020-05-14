@@ -45,6 +45,7 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import timber.log.Timber
 import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -58,6 +59,8 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
         const val CHANNEL_ID = "com.revolgenx.anilib.notification.CHANNEL_ID"
         const val CHANNEL_NAME = "AniLibChannel"
         const val NOTIFICATION_ID = 102020
+
+        const val NOTIFICATION_WORKER_TAG = "ANILIB_NOTIFICATION_WORKER_TAG"
     }
 
     private val notificationService: NotificationService by inject()
@@ -346,6 +349,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
     private fun isNewNotification(item: NotificationModel?): Boolean {
         if (getLastNotification(context) == -1) {
+            setNewNotification(item)
             return false
         }
         return getLastNotification(context) != item?.baseId

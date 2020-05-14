@@ -1,6 +1,10 @@
 package com.revolgenx.anilib.service.review
 
 import androidx.lifecycle.MutableLiveData
+import com.apollographql.apollo.exception.ApolloHttpException
+import com.revolgenx.anilib.DeleteReviewMutation
+import com.revolgenx.anilib.ReviewQuery
+import com.revolgenx.anilib.SaveReviewMutation
 import com.revolgenx.anilib.field.reivew.ReviewField
 import com.revolgenx.anilib.model.BasicUserModel
 import com.revolgenx.anilib.model.CommonMediaModel
@@ -13,6 +17,7 @@ import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
+import java.net.HttpURLConnection
 
 class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : ReviewService {
 
@@ -22,7 +27,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
         field: ReviewField,
         compositeDisposable: CompositeDisposable
     ) {
-        val disposable = graphRepository.request(field.toQueryOrMutation()).map {
+        val disposable = graphRepository.request(field.toQueryOrMutation() as ReviewQuery).map {
             it.data()?.Review()?.let {
                 ReviewModel().also { model ->
                     model.reviewId = it.id()
@@ -30,6 +35,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                     model.ratingAmount = it.ratingAmount()
                     model.userRating = it.userRating()?.ordinal
                     model.summary = it.summary()
+                    model.body = it.body()
                     model.score = it.score()
                     model.private = it.private_()
                     model.userModel = it.user()?.let {
@@ -58,9 +64,53 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
             .subscribe({
                 reviewLiveData.value = Resource.success(it)
             }, {
-                Timber.e(it)
-                reviewLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+                if (it is ApolloHttpException) {
+                    if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
+                        reviewLiveData.value = Resource.success(null)
+                    } else {
+                        Timber.e(it)
+                        reviewLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+                    }
+                } else {
+                    Timber.e(it)
+                    reviewLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+                }
             })
         compositeDisposable.add(disposable)
     }
+
+
+    override fun saveReview(
+        field: ReviewField,
+        compositeDisposable: CompositeDisposable,
+        callback: (Resource<Boolean>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation() as SaveReviewMutation)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(true))
+            }, {
+                Timber.e(it)
+                callback.invoke(Resource.error(it.message ?: ERROR, false, it))
+            })
+
+        compositeDisposable.add(disposable)
+    }
+
+    override fun deleteReview(
+        field: ReviewField,
+        compositeDisposable: CompositeDisposable,
+        callback: (Resource<Boolean>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation() as DeleteReviewMutation)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(true))
+            }, {
+                Timber.e(it)
+                callback.invoke(Resource.error(it.message ?: ERROR, false, it))
+            })
+        compositeDisposable.add(disposable)
+    }
+
 }

@@ -460,7 +460,14 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         if (loggedIn()) {
             ContainerActivity.openActivity(
                 this,
-                ParcelableFragment(ReviewComposerFragment::class.java, bundleOf())
+                ParcelableFragment(
+                    ReviewComposerFragment::class.java,
+                    bundleOf(
+                        ReviewComposerFragment.reviewComposerMetaKey to ReviewComposerMeta(
+                            mediaBrowserMeta.mediaId
+                        )
+                    )
+                )
             )
         } else {
             browserRootLayout.makeSnakeBar(R.string.please_log_in)

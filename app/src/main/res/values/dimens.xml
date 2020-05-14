@@ -6,4 +6,5 @@
     <dimen name="mini_image_dimen">160dp</dimen>
     <dimen name="box_card_dimen">220dp</dimen>
     <dimen name="video_player_big_button_dimen">30dp</dimen>
+    <dimen name="markdown_helper_icon_dimen">10dp</dimen>
 </resources>

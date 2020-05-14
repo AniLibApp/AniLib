@@ -62,7 +62,12 @@ fun Context.logOut() {
     token("")
     userId(-1)
     userScoreFormat(ScoreFormat.`$UNKNOWN`.ordinal)
+    removeNotification()
     removeBasicUserDetail()
+}
+
+fun Context.removeNotification() {
+    setNewNotification(this)
 }
 
 fun Context.logIn(accessToken: String) {
@@ -76,6 +81,6 @@ fun getLastNotification(context: Context): Int {
     return context.getInt(lastNotificationKey, -1)
 }
 
-fun setNewNotification(context: Context, notifId: Int) {
+fun setNewNotification(context: Context, notifId: Int = -1) {
     context.putInt(lastNotificationKey, notifId)
 }

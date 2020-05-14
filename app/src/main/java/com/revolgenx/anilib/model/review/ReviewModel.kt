@@ -16,33 +16,3 @@ open class ReviewModel : BaseModel() {
     var userModel: BasicUserModel? = null
     var mediaModel: CommonMediaModel? = null
 }
-
-
-/*    id
-        userId
-        mediaId
-        summary
-        body(asHtml:true)
-        rating
-        ratingAmount
-        score
-        private
-        userRating
-        user{
-            id
-            name
-            avatar{
-                large
-                medium
-            }
-        }
-        media{
-            id
-            title{
-                ... mediaTitle
-            }
-            coverImage{
-                ... mediaCoverImage
-            }
-        }
-    }*/

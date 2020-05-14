@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.util
 
 import android.app.Activity
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -178,3 +179,7 @@ fun Long.prettyTime(): String? {
 fun View.string(@StringRes id: Int) = context.getString(id)
 
 
+fun Context.getClipBoardText(): String {
+    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    return clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: ""
+}

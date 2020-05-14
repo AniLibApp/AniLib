@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class CharacterMeta(var characterId: Int, var characterUrl: String?) : Parcelable
+data class CharacterMeta(var characterId: Int, var characterUrl: String?) : BaseMeta
