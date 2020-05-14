@@ -244,7 +244,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                 R.id.navAuth -> {
                     if (loggedIn()) {
                         context.logOut()
-//                        SessionEvent(false).postEvent
+                        SessionEvent(false).postEvent
                         startActivity(Intent(this.context, MainActivity::class.java).apply {
                             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         })

@@ -1,23 +1,20 @@
 package com.revolgenx.anilib.markwon
 
 import android.content.Context
-import android.text.util.Linkify
 import com.revolgenx.anilib.markwon.plugins.*
 import com.revolgenx.anilib.model.markwon.MarkdownImageModel
 import com.revolgenx.anilib.model.markwon.MarkdownModel
 import com.revolgenx.anilib.model.markwon.MarkdownVideoModel
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
-import io.noties.markwon.core.CorePlugin
+import io.noties.markwon.editor.MarkwonEditor
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.inlineparser.MarkwonInlineParser
 import io.noties.markwon.linkify.LinkifyPlugin
 import org.commonmark.parser.Parser
-import org.commonmark.renderer.Renderer
 import org.commonmark.renderer.html.HtmlRenderer
 import org.jsoup.Jsoup
-import timber.log.Timber
 
 
 object MarkwonImpl {
@@ -39,6 +36,15 @@ object MarkwonImpl {
             .usePlugin(YoutubeTagPlugin(context))
             .build()
     }
+
+    fun createInstance(context: Context) = Markwon.builder(context)
+        .usePlugin(StrikethroughPlugin.create())
+        .usePlugin(LinkifyPlugin.create())
+        .usePlugin(object : AbstractMarkwonPlugin() {
+            override fun configureParser(builder: Parser.Builder) {
+                builder.inlineParserFactory(MarkwonInlineParser.factoryBuilder().build())
+            }
+        }).build()
 
 
     const val BR = "<br>"
@@ -72,7 +78,6 @@ object MarkwonImpl {
             if (containsSpoiler)
                 element.attr("alt", "markdown_spoiler")
         }
-
 
 
 //        docs.select("div.youtube").forEachIndexed { index, element ->
@@ -129,4 +134,7 @@ object MarkwonImpl {
             it.videos = videos
         }
     }
+
+    fun createMarkwonEditor(context: Context) = MarkwonEditor.create(createInstance(context))
 }
+

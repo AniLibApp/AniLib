@@ -1,119 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toTopOf="@id/markdownHelperLayout"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:layout_height="match_parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-        style="@style/Widget.DynamicApp.Card.Margin.Clickable"
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/markdownHelperLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        <include layout="@layout/resource_status_container_layout" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            style="@style/Widget.DynamicApp.Card.Margin.Clickable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <com.pranavpandey.android.dynamic.support.view.DynamicHeader
+            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:ads_fillSpace="true"
-                app:ads_title="@string/write_review" />
+                android:orientation="vertical">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:counterEnabled="true"
-                app:counterMaxLength="2200"
-                app:hintEnabled="false">
-
-                <com.pranavpandey.android.dynamic.support.widget.DynamicTextInputEditText
-                    android:id="@+id/writeReviewEt"
+                <com.pranavpandey.android.dynamic.support.view.DynamicHeader
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:padding="6dp"
-                    android:textSize="14sp" />
+                    app:ads_fillSpace="true"
+                    app:ads_title="@string/write_review" />
 
-            </com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout>
-
-            <include layout="@layout/markwon_helper_layout" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-        style="@style/Widget.DynamicApp.Card.Margin.Clickable"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.pranavpandey.android.dynamic.support.view.DynamicHeader
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_fillSpace="true"
-                app:ads_title="@string/review_summary" />
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:counterEnabled="true"
-                app:counterMaxLength="120"
-                app:hintEnabled="false">
-
-
-                <com.pranavpandey.android.dynamic.support.widget.DynamicTextInputEditText
-                    android:id="@+id/reviewSummaryEt"
+                <com.revolgenx.anilib.view.MaxHeightFrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:padding="6dp"
-                    android:textSize="14sp" />
+                    android:nestedScrollingEnabled="true">
 
-            </com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout>
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="true">
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout
+                            android:id="@+id/writeReviewTextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="2200"
+                            app:hintEnabled="false">
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+                            <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                                android:id="@+id/writeReviewEt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:hint="@string/review"
+                                android:padding="6dp"
+                                android:textSize="14sp" />
 
+                        </com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout>
+                    </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-        style="@style/Widget.DynamicApp.Card.Margin.Clickable"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+                </com.revolgenx.anilib.view.MaxHeightFrameLayout>
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+                <include layout="@layout/markwon_helper_layout" />
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            style="@style/Widget.DynamicApp.Card.Margin.Clickable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="10dp">
 
-            <com.pranavpandey.android.dynamic.support.view.DynamicHeader
-                android:id="@+id/scoreHeader"
+            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:ads_fillSpace="true"
-                app:ads_title="@string/score" />
+                android:orientation="vertical">
 
-            <com.revolgenx.anilib.view.PlusMinusEditTextLayout
-                android:id="@+id/reviewScorePlusMinusTv"
+                <com.pranavpandey.android.dynamic.support.view.DynamicHeader
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ads_fillSpace="true"
+                    app:ads_title="@string/review_summary" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout
+                    android:id="@+id/reviewSummaryTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="120"
+                    app:hintEnabled="false">
+
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                        android:id="@+id/reviewSummaryEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="@string/summary"
+                        android:padding="6dp"
+                        android:textSize="14sp" />
+
+                </com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout>
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                    android:id="@+id/summaryPasteIv"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+                    app:ads_colorType="tint_surface"
+                    app:srcCompat="@drawable/ic_paste" />
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            style="@style/Widget.DynamicApp.Card.Margin.Clickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp" />
-        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-</com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+                <com.pranavpandey.android.dynamic.support.view.DynamicHeader
+                    android:id="@+id/scoreHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ads_fillSpace="true"
+                    app:ads_title="@string/score" />
 
+                <com.revolgenx.anilib.view.PlusMinusEditTextLayout
+                    android:id="@+id/reviewScorePlusMinusTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp" />
+            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+</com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>

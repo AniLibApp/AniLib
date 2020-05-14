@@ -59,8 +59,8 @@
                     android:layout_marginBottom="22dp"
                     android:background="@drawable/stroke_background"
                     android:padding="10dp"
-                    app:ads_colorType="tint_surface"
                     android:src="@drawable/ic_save"
+                    app:ads_colorType="tint_surface"
                     app:layout_constraintBottom_toBottomOf="@+id/listEditorCoverImage"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toStartOf="@+id/listFavButton"
@@ -78,45 +78,52 @@
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/stroke_background"
                     android:padding="10dp"
-                    app:ads_colorType="tint_surface"
                     android:src="@drawable/ic_not_favourite"
+                    app:ads_colorType="tint_surface"
                     app:layout_constraintBottom_toBottomOf="@+id/listSaveButton"
                     app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@+id/privateToggleButton"
+                    app:layout_constraintEnd_toStartOf="@+id/privateToggleLayout"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/listSaveButton"
                     app:layout_constraintTop_toTopOf="@+id/listSaveButton" />
 
-                <com.revolgenx.anilib.view.DynamicToggleButton
-                    android:id="@+id/privateToggleButton"
+                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    android:id="@+id/privateToggleLayout"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/stroke_background"
-                    android:padding="10dp"
                     app:layout_constraintBottom_toBottomOf="@+id/listFavButton"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toStartOf="@+id/listDeleteButton"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/listFavButton"
-                    app:layout_constraintTop_toTopOf="@+id/listFavButton"
-                    app:srcCompat="@drawable/ic_dropped" />
+                    app:layout_constraintTop_toTopOf="@+id/listFavButton">
+
+                    <com.revolgenx.anilib.view.DynamicToggleButton
+                        android:id="@+id/privateToggleButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/ic_dropped" />
+                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
 
                 <com.revolgenx.anilib.view.DynamicLoadingImageView
                     android:id="@+id/listDeleteButton"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="16dp"
-                    android:padding="10dp"
-                    app:ads_colorType="tint_surface"
                     android:background="@drawable/stroke_background"
+                    android:padding="10dp"
                     android:src="@drawable/ic_delete"
-                    app:layout_constraintBottom_toBottomOf="@+id/privateToggleButton"
+                    app:ads_colorType="tint_surface"
+                    app:layout_constraintBottom_toBottomOf="@+id/privateToggleLayout"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/privateToggleButton"
-                    app:layout_constraintTop_toTopOf="@+id/privateToggleButton" />
+                    app:layout_constraintStart_toEndOf="@+id/privateToggleLayout"
+                    app:layout_constraintTop_toTopOf="@+id/privateToggleLayout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

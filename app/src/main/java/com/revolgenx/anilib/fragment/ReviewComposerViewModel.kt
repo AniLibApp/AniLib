@@ -10,8 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 class ReviewComposerViewModel(private val reviewService: ReviewService) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
-    private val field = ReviewField()
-
+    val field = ReviewField()
     val reviewLiveData = MediatorLiveData<Resource<ReviewModel>>().also {
         it.addSource(reviewService.reviewLiveData) { resource ->
             it.value = resource
@@ -19,6 +18,21 @@ class ReviewComposerViewModel(private val reviewService: ReviewService) : ViewMo
     }
 
     fun getReview() {
+        reviewLiveData.value = Resource.loading(null)
         reviewService.getReview(field, compositeDisposable)
+    }
+
+    fun saveReview(callback: ((Resource<Boolean>) -> Unit)) {
+        callback.invoke(Resource.loading(false))
+        reviewService.saveReview(field, compositeDisposable) {
+            callback.invoke(it)
+        }
+    }
+
+    fun deleteReview(callback: ((Resource<Boolean>) -> Unit)) {
+        callback.invoke(Resource.loading(false))
+        reviewService.deleteReview(field, compositeDisposable) {
+            callback.invoke(it)
+        }
     }
 }

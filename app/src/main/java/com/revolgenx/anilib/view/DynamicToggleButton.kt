@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
@@ -9,7 +8,6 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.core.view.setPadding
 import androidx.core.widget.ImageViewCompat
-import androidx.preference.Preference
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
 import com.revolgenx.anilib.util.dp
