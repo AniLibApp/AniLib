@@ -8,32 +8,79 @@
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/pasteIv"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/markdown_helper_icon_dimen"
+            app:ads_colorType="tint_surface"
+            app:srcCompat="@drawable/ic_paste" />
+
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
             android:id="@+id/boldIv"
-            android:layout_width="0dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="parent"
-            app:srcCompat="@drawable/ic_bold"
-            android:padding="8dp"/>
+            android:padding="@dimen/markdown_helper_icon_dimen"
+            app:ads_colorType="tint_surface"
+            app:srcCompat="@drawable/ic_bold" />
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
             android:id="@+id/italicsIv"
-            android:layout_width="0dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintLeft_toRightOf="@+id/boldIv"
-            app:layout_constraintTop_toBottomOf="parent"
-            app:srcCompat="@drawable/ic_italics"
-            android:padding="8dp"/>
+            android:padding="@dimen/markdown_helper_icon_dimen"
+            app:ads_colorType="tint_surface"
+            app:srcCompat="@drawable/ic_italics" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/spoilerIv"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/markdown_helper_icon_dimen"
+            app:ads_colorType="tint_surface"
+            app:srcCompat="@drawable/ic_dropped" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/linkIv"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/markdown_helper_icon_dimen"
+            app:ads_colorType="tint_surface"
+            app:srcCompat="@drawable/ic_link" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/imageIv"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/markdown_helper_icon_dimen"
+            app:ads_colorType="tint_surface"
+            app:srcCompat="@drawable/ic_image" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/youtubeIv"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/markdown_helper_icon_dimen"
+            app:ads_colorType="none"
+            app:srcCompat="@drawable/ic_youtube" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/videoIv"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/markdown_helper_icon_dimen"
+            app:ads_colorType="tint_accent"
+            app:srcCompat="@drawable/ic_play_cirle" />
+
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 </HorizontalScrollView>

@@ -1305,7 +1305,7 @@ query ReviewQuery($reviewId:Int, $mediaId:Int, $userId:Int){
         userId
         mediaId
         summary
-        body(asHtml:true)
+        body
         rating
         ratingAmount
         score
@@ -1434,6 +1434,32 @@ mutation ToggleFollowMutation($userId:Int){
     ToggleFollow(userId:$userId){
         id
         isFollowing
+    }
+}
+
+
+mutation DeleteReviewMutation($reviewId:Int){
+    DeleteReview(id:$reviewId){
+        deleted
+    }
+}
+
+mutation SaveReviewMutation(
+    $reviewId:Int,
+    $mediaId:Int,
+    $body:String,
+    $summary:String,
+    $score:Int,
+    $private_:Boolean
+){
+    SaveReview(
+        id:$reviewId,
+        mediaId:$mediaId,
+        body:$body,
+        summary:$summary,
+        score:$score,
+        private:$private_){
+        id
     }
 }
 

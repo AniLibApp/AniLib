@@ -4,10 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.StyleRes
 import androidx.multidex.MultiDex
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.facebook.common.logging.FLog
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.imagepipeline.listener.RequestListener
@@ -68,9 +65,9 @@ class App : DynamicApplication() {
                 .build()
             val periodicWork = PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
                 .setConstraints(constraints).build()
-            WorkManager.getInstance(this).enqueue(periodicWork)
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork(NotificationWorker.NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.REPLACE, periodicWork)
         }else{
-            WorkManager.getInstance(this).pruneWork()
+            WorkManager.getInstance(this).cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
         }
     }
 
