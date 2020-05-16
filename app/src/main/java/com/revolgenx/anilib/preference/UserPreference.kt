@@ -9,6 +9,7 @@ import com.revolgenx.anilib.type.ScoreFormat
 private const val loggedInKey = "logged_in_key"
 private const val tokenKey = "token_key"
 private const val titleKey = "title_key"
+private const val imageQualityKey = "image_quality_key"
 private const val userIdKey = "user_id_key"
 private const val userNameKey = "user_name_key"
 private const val userAvatarKey = "user_avatar_key"
@@ -28,6 +29,9 @@ fun Context.userId(userId: Int) = putInt(userIdKey, userId)
 
 fun Context.titlePref() = getInt(titleKey, 0)
 fun Context.titlePref(title: Int) = putInt(titleKey, title)
+
+fun Context.imageQuality() = getInt(imageQualityKey, 0)
+fun Context.imageQuality(quality: Int) = putInt(imageQualityKey, quality)
 
 fun Context.userScoreFormat() = getInt(scoreFormatKey, ScoreFormat.POINT_100.ordinal)
 fun Context.userScoreFormat(scoreFormat: Int?) =

@@ -50,7 +50,7 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
         holder.itemView.apply {
-            mediaSimpleDrawee.setImageURI(item.coverImage?.image)
+            mediaSimpleDrawee.setImageURI(item.coverImage?.image(context))
             mediaRatingTv.text = item.averageScore?.toString().naText()
             mediaTitleTv.text = item.title?.title(context)
             mediaFormatTv.text = context.getString(R.string.format_episode_s).format(
@@ -69,7 +69,7 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image,
+                        item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     ), mediaSimpleDrawee
@@ -83,7 +83,7 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                             item.mediaId,
                             item.type!!,
                             item.title!!.title(context)!!,
-                            item.coverImage!!.image,
+                            item.coverImage!!.image(context),
                             item.bannerImage
                         ), mediaSimpleDrawee
                     ).postEvent

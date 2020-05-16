@@ -215,7 +215,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             NotificationUnionType.AIRING -> {
                 (item as AiringNotificationModel).let {
                     //                    createMediaPendingIntent(it)
-                    notificationImage = it.commonMediaModel?.coverImage?.image
+                    notificationImage = it.commonMediaModel?.coverImage?.image(context)
                     String.format(
                         Locale.getDefault(),
                         context.getString(R.string.episode_airing_notif)
@@ -312,7 +312,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                         data.mediaId,
                         data.type!!,
                         data.title!!.romaji!!,
-                        data.coverImage!!.image,
+                        data.coverImage!!.image(context),
                         data.coverImage!!.largeImage,
                         data.bannerImage
                     )
