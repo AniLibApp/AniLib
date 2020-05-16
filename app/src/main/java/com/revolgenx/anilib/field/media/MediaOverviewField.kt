@@ -4,7 +4,7 @@ import com.revolgenx.anilib.MediaOverViewQuery
 import com.revolgenx.anilib.field.BaseField
 
 class MediaOverviewField :
-    BaseField<MediaOverViewQuery> {
+    BaseField<MediaOverViewQuery>() {
     var mediaId: Int? = null
     override fun toQueryOrMutation(): MediaOverViewQuery {
         return MediaOverViewQuery.builder()

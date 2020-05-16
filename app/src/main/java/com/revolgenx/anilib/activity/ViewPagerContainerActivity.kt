@@ -41,7 +41,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
-class ViewPagerContainerActivity : DynamicSystemActivity() {
+class ViewPagerContainerActivity : BaseDynamicActivity() {
 
     companion object {
         const val viewPagerContainerKey = "viewpager_activity_container_key"
@@ -68,28 +68,11 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
 
     private lateinit var viewPagerParcelableFragments: ViewPagerParcelableFragments
     private lateinit var viewPagerMeta: ViewPagerContainerMeta<Parcelable>
+    override val layoutRes: Int = R.layout.viewpager_container_activity
 
-    override fun getLocale(): Locale? {
-        return null
-    }
-
-
-    override fun getThemeRes(): Int {
-        return ThemeController.appStyle
-    }
-
-    override fun onCustomiseTheme() {
-        ThemeController.setLocalTheme()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        registerForEvent()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.viewpager_container_activity)
         viewPagerContainerLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
         setSupportActionBar(dynamicToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -213,15 +196,6 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
         }
     }
 
-    override fun setStatusBarColor(color: Int) {
-        super.setStatusBarColor(color)
-        setWindowStatusBarColor(statusBarColor);
-    }
-
-    override fun setNavigationBarTheme(): Boolean {
-        return AppController.instance.isThemeNavigationBar
-    }
-
     private fun themeBottomNavigation() {
         containerBottomNav.color = DynamicTheme.getInstance().get().primaryColor
         containerBottomNav.textColor = DynamicTheme.getInstance().get().accentColor
@@ -239,61 +213,6 @@ class ViewPagerContainerActivity : DynamicSystemActivity() {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBaseEvent(event: BaseEvent) {
-        when (event) {
-            is BrowseMediaEvent -> {
-                startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
-                    this.putExtra(MediaBrowseActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
-                })
-            }
-            is BrowseCharacterEvent -> {
-                openActivity(
-                    this,
-                    ViewPagerContainerMeta(
-                        ViewPagerContainerType.CHARACTER,
-                        event.meta
-                    )
-                )
-            }
-            is BrowseStaffEvent -> {
-                openActivity(
-                    this,
-                    ViewPagerContainerMeta(
-                        ViewPagerContainerType.STAFF,
-                        event.meta
-                    )
-                )
-            }
-            is ListEditorEvent -> {
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this,
-                    event.sharedElement,
-                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
-                )
-                ContainerActivity.openActivity(
-                    this,
-                    ParcelableFragment(
-                        EntryListEditorFragment::class.java,
-                        bundleOf(
-                            EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
-                        )
-                    )
-                    , options
-                )
-            }
-
-            is BrowseStudioEvent -> {
-                ContainerActivity.openActivity(
-                    this,
-                    ParcelableFragment(
-                        StudioFragment::class.java,
-                        bundleOf(StudioFragment.STUDIO_META_KEY to event.meta)
-                    )
-                )
-            }
-        }
-    }
 
     override fun onStop() {
         unRegisterForEvent()

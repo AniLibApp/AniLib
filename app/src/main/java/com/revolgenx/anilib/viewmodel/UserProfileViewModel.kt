@@ -58,6 +58,7 @@ class UserProfileViewModel(private val userService: UserService) : ViewModel() {
                 Status.ERROR -> {
                     callback.invoke(Resource.error(it.message!!, null, it.exception))
                 }
+                else -> {}
             }
         }
     }

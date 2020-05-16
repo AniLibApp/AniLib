@@ -5,7 +5,7 @@ import com.revolgenx.anilib.field.BaseField
 import com.revolgenx.anilib.type.RecommendationRating
 
 open class UpdateRecommendationField :
-    BaseField<UpdateRecommendationMutation> {
+    BaseField<UpdateRecommendationMutation>() {
     var mediaId: Int? = null
     var mediaRecommendationId: Int? = null
     var rating: Int = RecommendationRating.NO_RATING.ordinal

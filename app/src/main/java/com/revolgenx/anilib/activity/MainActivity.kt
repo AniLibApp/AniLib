@@ -85,10 +85,6 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         bottomNav.textColor = DynamicTheme.getInstance().get().accentColor
     }
 
-    override fun onStart() {
-        super.onStart()
-        registerForEvent()
-    }
 
     override val layoutRes: Int = R.layout.activity_main
 
@@ -372,66 +368,11 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         }
     }
 
-
-    /*Events*/
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBaseEvent(event: BaseEvent) {
-        when (event) {
-            is BrowseMediaEvent -> {
-                startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
-                    this.putExtra(MediaBrowseActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
-                })
-            }
-            is ListEditorEvent -> {
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this,
-                    event.sharedElement,
-                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
-                )
-                ContainerActivity.openActivity(
-                    this,
-                    ParcelableFragment(
-                        EntryListEditorFragment::class.java,
-                        bundleOf(
-                            EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
-                        )
-                    )
-                    , options
-                )
-            }
-            is BrowseGenreEvent -> {
-                BrowseActivity.openActivity(
-                    this, event.genre
-                )
-            }
-            is BrowseEvent -> {
-                BrowseActivity.openActivity(this)
-            }
-
-            is ImageClickedEvent -> {
-                SimpleDraweeViewerActivity.openActivity(this, DraweeViewerMeta(event.meta.url))
-            }
-
-            is YoutubeClickedEvent -> {
-                openLink(event.meta.url)
-            }
-            is VideoClickedEvent -> {
-                openLink(event.videoMeta.url)
-            }
-        }
-    }
-
-
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else
             super.onBackPressed()
-    }
-
-    override fun onStop() {
-        unRegisterForEvent()
-        super.onStop()
     }
 
 

@@ -30,6 +30,7 @@ class MediaWatchSource(
                     Status.ERROR -> {
                         postResult(page, Exception(res.message))
                     }
+                    else -> {}
                 }
             }
         } else {

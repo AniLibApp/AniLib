@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.fragment
+package com.revolgenx.anilib.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
