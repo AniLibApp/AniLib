@@ -56,7 +56,7 @@ class BrowseRelationshipPresenter(context: Context) : Presenter<MediaRelationshi
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image,
+                        item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     ), relationshipCoverImage

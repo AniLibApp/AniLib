@@ -97,7 +97,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
 
     private fun View.updateMedia(item: BaseModel) {
         val data = item as MediaFavouriteModel
-        searchMediaImageView.setImageURI(data.coverImage?.image)
+        searchMediaImageView.setImageURI(data.coverImage?.image(context))
         searchMediaTitleTv.text = data.title?.title(context)
         searchMediaRatingTv.text = data.averageScore?.toString().naText()
         searchMediaFormatTv.text =
@@ -115,7 +115,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
                     data.mediaId,
                     data.type!!,
                     data.title!!.romaji!!,
-                    data.coverImage!!.image,
+                    data.coverImage!!.image(context),
                     data.coverImage!!.largeImage,
                     data.bannerImage
                 ), searchMediaImageView
@@ -129,7 +129,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
                         data.mediaId,
                         data.type!!,
                         data.title!!.title(context)!!,
-                        data.coverImage!!.image,
+                        data.coverImage!!.image(context),
                         data.bannerImage
                     ), searchMediaImageView
                 ).postEvent

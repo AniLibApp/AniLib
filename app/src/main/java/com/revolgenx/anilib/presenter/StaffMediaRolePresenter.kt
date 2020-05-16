@@ -43,7 +43,7 @@ class StaffMediaRolePresenter(context: Context) : Presenter<StaffMediaRoleModel>
         val item = element.data ?: return
 
         holder.itemView.apply {
-            staffMediaRoleImageView.setImageURI(item.coverImage?.image)
+            staffMediaRoleImageView.setImageURI(item.coverImage?.image(context))
             staffMediaRoleRatingTv.text = item.averageScore?.toString().naText()
             staffMediaRoleTitleTv.text = item.title?.title(context)
             staffMediaRoleTv.text = item.staffRole
@@ -58,7 +58,7 @@ class StaffMediaRolePresenter(context: Context) : Presenter<StaffMediaRoleModel>
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image,
+                        item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     ), staffMediaRoleImageView
@@ -72,7 +72,7 @@ class StaffMediaRolePresenter(context: Context) : Presenter<StaffMediaRoleModel>
                             item.mediaId,
                             item.type!!,
                             item.title!!.title(context)!!,
-                            item.coverImage!!.image,
+                            item.coverImage!!.image(context),
                             item.bannerImage
                         ), staffMediaRoleImageView
                     ).postEvent

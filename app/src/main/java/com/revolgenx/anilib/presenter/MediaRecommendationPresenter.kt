@@ -65,7 +65,7 @@ class MediaRecommendationPresenter(
         val recommended = data.recommended ?: return
         itemView.apply {
             mediaRecommendationTitleTv.text = recommended.title?.title(context)
-            recommendationCoverImage.setImageURI(recommended.coverImage?.image)
+            recommendationCoverImage.setImageURI(recommended.coverImage?.image(context))
 
             mediaRatingTv.text = recommended.averageScore?.toString().naText()
 
@@ -99,7 +99,7 @@ class MediaRecommendationPresenter(
                         recommended.mediaId!!,
                         recommended.type!!,
                         recommended.title!!.romaji!!,
-                        recommended.coverImage!!.image,
+                        recommended.coverImage!!.image(context),
                         recommended.coverImage!!.largeImage,
                         recommended.bannerImage
                     ), recommendationCoverImage

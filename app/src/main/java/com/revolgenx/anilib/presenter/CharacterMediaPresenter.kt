@@ -49,7 +49,7 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
         val item = element.data ?: return
 
         holder.itemView.apply {
-            characterMediaImageView.setImageURI(item.coverImage?.image)
+            characterMediaImageView.setImageURI(item.coverImage?.image(context))
             characterMediaTitleTv.text = item.title?.title(context)
             characterMediaFormatTv.text =
                 context.getString(R.string.media_format_year_s).format(item.format?.let {
@@ -68,7 +68,7 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image,
+                        item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     ), characterMediaImageView
@@ -82,7 +82,7 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
                             item.mediaId,
                             item.type!!,
                             item.title!!.title(context)!!,
-                            item.coverImage!!.image,
+                            item.coverImage!!.image(context),
                             item.bannerImage
                         ), characterMediaImageView
                     ).postEvent

@@ -87,7 +87,7 @@ class ReviewFragment : BaseToolbarFragment() {
                             item.mediaId,
                             item.type!!,
                             item.title!!.romaji!!,
-                            item.coverImage!!.image,
+                            item.coverImage!!.image(requireContext()),
                             item.coverImage!!.largeImage,
                             item.bannerImage
                         ), null

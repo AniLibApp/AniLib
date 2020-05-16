@@ -67,6 +67,10 @@
 
     </style>
 
+    <style name="bottomNavTextAppearance" parent="TextAppearance.DynamicApp.Caption">
+        <item name="android:textSize">10sp</item>
+    </style>
+
 
     <color name="dark">#292728</color>
 </resources>

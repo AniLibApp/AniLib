@@ -87,7 +87,7 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
 
     private fun View.updateMedia(item: BaseModel) {
         val data = item as MediaSearchModel
-        searchMediaImageView.setImageURI(data.coverImage?.image)
+        searchMediaImageView.setImageURI(data.coverImage?.image(context))
         searchMediaTitleTv.text = data.title?.title(context)
         searchMediaRatingTv.text = data.averageScore?.toString().naText()
         searchMediaFormatTv.text =
@@ -105,7 +105,7 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
                     data.mediaId,
                     data.type!!,
                     data.title!!.romaji!!,
-                    data.coverImage!!.image,
+                    data.coverImage!!.image(context),
                     data.coverImage!!.largeImage,
                     data.bannerImage
                 ), searchMediaImageView
@@ -119,7 +119,7 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
                         data.mediaId,
                         data.type!!,
                         data.title!!.title(context)!!,
-                        data.coverImage!!.image,
+                        data.coverImage!!.image(context),
                         data.bannerImage
                     ), searchMediaImageView
                 ).postEvent

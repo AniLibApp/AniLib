@@ -122,7 +122,7 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                 }
                 NotificationUnionType.AIRING -> {
                     (item as AiringNotificationModel).let {
-                        notificationMediaDrawee.setImageURI(it.commonMediaModel?.coverImage?.image)
+                        notificationMediaDrawee.setImageURI(it.commonMediaModel?.coverImage?.image(context))
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text = String.format(
                             Locale.getDefault(),
@@ -141,7 +141,7 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                                     it.commonMediaModel?.mediaId,
                                     it.commonMediaModel?.type!!,
                                     it.commonMediaModel?.title!!.romaji!!,
-                                    it.commonMediaModel?.coverImage!!.image,
+                                    it.commonMediaModel?.coverImage!!.image(context),
                                     it.commonMediaModel?.coverImage!!.largeImage,
                                     it.commonMediaModel?.bannerImage
                                 ), notificationMediaDrawee
