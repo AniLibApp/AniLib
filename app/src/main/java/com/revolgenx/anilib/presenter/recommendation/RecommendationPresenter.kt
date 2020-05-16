@@ -75,7 +75,7 @@ class RecommendationPresenter(
         holder.itemView.apply {
             item.recommendationFrom?.let { from ->
                 recommendedFromTitleTv.text = from.title?.title(context)
-                recommendedFromImageView.setImageURI(from.coverImage?.image)
+                recommendedFromImageView.setImageURI(from.coverImage?.image(context))
                 recommendedFromRatingTv.text = from.averageScore?.toString().naText()
                 recommendedFromStatusTv.text = from.status?.let {
                     recommendedFromStatusTv.color = Color.parseColor(statusColors[it])
@@ -93,7 +93,7 @@ class RecommendationPresenter(
                             from.mediaId,
                             from.type!!,
                             from.title!!.romaji!!,
-                            from.coverImage!!.image,
+                            from.coverImage!!.image(context),
                             from.coverImage!!.largeImage,
                             from.bannerImage
                         ), recommendedFromImageView
@@ -107,7 +107,7 @@ class RecommendationPresenter(
                                 from.mediaId,
                                 from.type!!,
                                 from.title!!.title(context)!!,
-                                from.coverImage!!.image,
+                                from.coverImage!!.image(context),
                                 from.bannerImage
                             ), recommendedFromImageView
                         ).postEvent
@@ -120,7 +120,7 @@ class RecommendationPresenter(
 
             item.recommended?.let { rec ->
                 recommendedTitleTv.text = rec.title?.title(context)
-                recommendedImageView.setImageURI(rec.coverImage?.image)
+                recommendedImageView.setImageURI(rec.coverImage?.image(context))
                 recommendedMediaRatingTv.text = rec.averageScore?.toString().naText()
                 recommendedStatusTv.text = rec.status?.let {
                     recommendedStatusTv.color = Color.parseColor(statusColors[it])
@@ -138,7 +138,7 @@ class RecommendationPresenter(
                             rec.mediaId,
                             rec.type!!,
                             rec.title!!.romaji!!,
-                            rec.coverImage!!.image,
+                            rec.coverImage!!.image(context),
                             rec.coverImage!!.largeImage,
                             rec.bannerImage
                         ), recommendedImageView
@@ -152,7 +152,7 @@ class RecommendationPresenter(
                                 rec.mediaId,
                                 rec.type!!,
                                 rec.title!!.title(context)!!,
-                                rec.coverImage!!.image,
+                                rec.coverImage!!.image(context),
                                 rec.bannerImage
                             ), recommendedImageView
                         ).postEvent

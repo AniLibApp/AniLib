@@ -46,7 +46,7 @@ class StudioMediaPresenter(context: Context) : Presenter<StudioMediaModel>(conte
         val item = element.data ?: return
 
         holder.itemView.apply {
-            studioMediaImageView.setImageURI(item.coverImage?.image)
+            studioMediaImageView.setImageURI(item.coverImage?.image(context))
             studioMediaTitleTv.text = item.title?.title(context)
             studioMediaRatingTv.text = item.averageScore?.toString().naText()
             studioMediaFormatYearTv.text = context.getString(R.string.media_format_year_s).format(
@@ -62,7 +62,7 @@ class StudioMediaPresenter(context: Context) : Presenter<StudioMediaModel>(conte
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image,
+                        item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     ), holder.itemView.studioMediaImageView

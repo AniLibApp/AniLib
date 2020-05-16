@@ -56,7 +56,7 @@ class AiringPresenter(context: Context) : Presenter<AiringMediaModel>(context) {
         holder.itemView.apply {
 
             mediaTitleTv.naText(item.title!!.title(context))
-            coverImageIv.setImageURI(item.coverImage!!.image)
+            coverImageIv.setImageURI(item.coverImage!!.image(context))
             if (item.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeTv.text =
                     string(R.string.ep_d_s).format(item.episodes.naText(), item.duration.naText())
@@ -91,7 +91,7 @@ class AiringPresenter(context: Context) : Presenter<AiringMediaModel>(context) {
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image,
+                        item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     ), holder.itemView.coverImageIv
@@ -105,7 +105,7 @@ class AiringPresenter(context: Context) : Presenter<AiringMediaModel>(context) {
                             item.mediaId,
                             item.type!!,
                             item.title!!.title(context)!!,
-                            item.coverImage!!.image,
+                            item.coverImage!!.image(context),
                             item.bannerImage
                         ), holder.itemView.coverImageIv
                     ).postEvent

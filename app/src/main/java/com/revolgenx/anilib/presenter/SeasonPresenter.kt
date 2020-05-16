@@ -69,7 +69,7 @@ class SeasonPresenter(context: Context) :
         val item = element.data!!
         holder.itemView.apply {
             mediaTitleTv.naText(item.title!!.title(context))
-            coverImageIv.setImageURI(item.coverImage!!.image)
+            coverImageIv.setImageURI(item.coverImage!!.image(context))
             if (item.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeTv.text =
                     string(R.string.ep_d_s).format(item.episodes.naText(), item.duration.naText())
@@ -103,7 +103,7 @@ class SeasonPresenter(context: Context) :
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image,
+                        item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     ), holder.itemView.coverImageIv
@@ -117,7 +117,7 @@ class SeasonPresenter(context: Context) :
                             item.mediaId,
                             item.type!!,
                             item.title!!.title(context)!!,
-                            item.coverImage!!.image,
+                            item.coverImage!!.image(context),
                             item.bannerImage
                         ), holder.itemView.coverImageIv
                     ).postEvent

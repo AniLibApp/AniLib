@@ -164,7 +164,7 @@ class MediaListPresenter(
                         item.mediaId,
                         item.type!!,
                         item.title!!.userPreferred,
-                        item.coverImage!!.image,
+                        item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     ), mediaListCoverImageView
@@ -178,7 +178,7 @@ class MediaListPresenter(
                             item.mediaId,
                             item.type!!,
                             item.title!!.userPreferred,
-                            item.coverImage!!.image,
+                            item.coverImage!!.image(context),
                             item.bannerImage
                         ), mediaListCoverImageView
                     ).postEvent

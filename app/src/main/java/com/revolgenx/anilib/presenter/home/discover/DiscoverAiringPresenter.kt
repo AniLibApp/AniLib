@@ -46,7 +46,7 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
         super.onBind(page, holder, element)
         val item = element.data ?: return
         holder.itemView.apply {
-            airingMediaSimpleDrawee.setImageURI(item.coverImage?.image)
+            airingMediaSimpleDrawee.setImageURI(item.coverImage?.image(context))
             mediaRatingTv.text = item.averageScore?.toString().naText()
             airingMediaTitleTv.text = item.title?.title(context)
             airingFormatTv.text = context.getString(R.string.format_episode_s).format(
@@ -66,7 +66,7 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image,
+                        item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     ), airingMediaSimpleDrawee
@@ -80,7 +80,7 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
                             item.mediaId,
                             item.type!!,
                             item.title!!.title(context)!!,
-                            item.coverImage!!.image,
+                            item.coverImage!!.image(context),
                             item.bannerImage
                         ), airingMediaSimpleDrawee
                     ).postEvent

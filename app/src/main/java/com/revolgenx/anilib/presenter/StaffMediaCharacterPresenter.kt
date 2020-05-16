@@ -60,7 +60,7 @@ class StaffMediaCharacterPresenter(context: Context) :
 
         holder.itemView.apply {
 
-            staffMediaImageView.setImageURI(item.coverImage?.image)
+            staffMediaImageView.setImageURI(item.coverImage?.image(context))
             staffMediaTitleTv.text = item.title?.title(context)
             staffMediaRatingTv.text = item.averageScore?.toString().naText()
             staffMediaStatusTv.text = item.status?.let {
@@ -78,7 +78,7 @@ class StaffMediaCharacterPresenter(context: Context) :
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image,
+                        item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     ), staffMediaImageView
@@ -92,7 +92,7 @@ class StaffMediaCharacterPresenter(context: Context) :
                             item.mediaId,
                             item.type!!,
                             item.title!!.title(context)!!,
-                            item.coverImage!!.image,
+                            item.coverImage!!.image(context),
                             item.bannerImage
                         ), staffMediaImageView
                     ).postEvent
