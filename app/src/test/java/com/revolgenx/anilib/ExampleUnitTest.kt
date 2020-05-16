@@ -10,6 +10,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 import org.junit.Assert.*
+import java.util.regex.Pattern
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -93,7 +94,7 @@ class ExampleUnitTest {
         var nth2 = null
     }
 
-    internal  class testClass1 {
+    internal class testClass1 {
         var hlw: String? = null
         var nth: String? = null
         var nth2: String? = null
@@ -107,21 +108,28 @@ class ExampleUnitTest {
         println(System.currentTimeMillis())
         MediaBrowseFilterModel().also {
             it.countryOfOrigin = 1
-            it.tags  = listOf("evertying", "nth")
+            it.tags = listOf("evertying", "nth")
         }.let {
             println(System.currentTimeMillis())
             Gson().toJson(it as BrowseFilterModel)
         }.let {
             println(it)
-            println(Gson().fromJson("{\"yearEnabled\":false,\"countryOfOrigin\":1,\"tags\":[\"evertying\",\"nth\"],\"query\":\"sdasdfa\"}\n", JsonObject::class.java).get("countryOfOrigin"))
+            println(
+                Gson().fromJson(
+                    "{\"yearEnabled\":false,\"countryOfOrigin\":1,\"tags\":[\"evertying\",\"nth\"],\"query\":\"sdasdfa\"}\n",
+                    JsonObject::class.java
+                ).get("countryOfOrigin")
+            )
         }
         println(System.currentTimeMillis())
 
     }
 
-    val filter = "{\"type\":0,\"yearEnabled\":false,\"countryOfOrigin\":1,\"tags\":[\"evertying\",\"nth\"]}\n"
+    val filter =
+        "{\"type\":0,\"yearEnabled\":false,\"countryOfOrigin\":1,\"tags\":[\"evertying\",\"nth\"]}\n"
+
     @Test
-    fun type(){
+    fun type() {
         val gson = Gson()
         println(System.currentTimeMillis())
         val data = try {
@@ -154,7 +162,6 @@ class ExampleUnitTest {
     }
 
 
-
     @Test
     fun testTagPerf() {
         runBlocking {
@@ -172,4 +179,25 @@ class ExampleUnitTest {
         }
 
     }
+
+    @Test
+    fun testMatchers() {
+        val youtube =
+            "youtube(https://youtbe.com) youtube(https://youtbe.com)  youtube(https://youtbe.com)youtube(https://youtbe.com)"
+        val pattern = Pattern.compile("youtube\\(([^)]+)\\)")
+        val matches = pattern.matcher(youtube)
+        while (matches.find()) {
+            println(matches.group(1))
+            println(matches.start())
+        }
+        val patternimg: Pattern = Pattern.compile("img(\\d+)?\\(([^)]+)\\)")
+        val matcher = patternimg.matcher("img999(125)")
+        while (matcher.find()) {
+            println(
+                matcher.group(1) +
+                        matcher.group(2)
+            )
+        }
+    }
+
 }

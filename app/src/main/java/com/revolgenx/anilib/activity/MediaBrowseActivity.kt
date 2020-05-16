@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.activity
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
@@ -26,19 +25,14 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewpager.widget.ViewPager
 import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.appbar.AppBarLayout
-import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.controller.AppController
-import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.browse.*
 import com.revolgenx.anilib.field.ToggleFavouriteField
-import com.revolgenx.anilib.fragment.ReviewComposerFragment
-import com.revolgenx.anilib.fragment.studio.StudioFragment
+import com.revolgenx.anilib.fragment.review.ReviewComposerFragment
 import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.model.MediaBrowseModel
 import com.revolgenx.anilib.preference.loggedIn
@@ -56,7 +50,7 @@ import java.util.*
 import kotlin.math.abs
 
 //todo://handle review
-class MediaBrowseActivity : DynamicSystemActivity() {
+class MediaBrowseActivity : BaseDynamicActivity() {
     companion object {
         const val MEDIA_BROWSER_META = "media_browser_meta"
     }
@@ -103,28 +97,8 @@ class MediaBrowseActivity : DynamicSystemActivity() {
             }
         }
 
-
-    override fun getLocale(): Locale? {
-        return null
-    }
-
-
-    override fun getThemeRes(): Int {
-        return ThemeController.appStyle
-    }
-
-    override fun onCustomiseTheme() {
-        ThemeController.setLocalTheme()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        registerForEvent()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_media_browser)
         browserRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
         mediaAddButton.setCompoundDrawablesRelativeWithIntrinsicBounds(
             null,
@@ -384,6 +358,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
                 true
             }
             R.id.writeReviewMenu -> {
+                openReviewWriter()
                 true
             }
             R.id.toggleFavMenu -> {
@@ -474,9 +449,7 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         }
     }
 
-    override fun setNavigationBarTheme(): Boolean {
-        return AppController.instance.isThemeNavigationBar
-    }
+    override val layoutRes: Int = R.layout.activity_media_browser
 
 
     private fun setToolbarTheme() {
@@ -484,65 +457,6 @@ class MediaBrowseActivity : DynamicSystemActivity() {
         mediaBrowserCollapsingToolbar.setContentScrimColor(DynamicTheme.getInstance().get().primaryColor)
         mediaBrowserCollapsingToolbar.setCollapsedTitleTextColor(DynamicTheme.getInstance().get().tintPrimaryColor)
         mediaBrowserCollapsingToolbar.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBaseEvent(event: BaseEvent) {
-        when (event) {
-            is BrowseMediaEvent -> {
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this,
-                    event.sharedElement,
-                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
-                )
-
-                startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
-                    this.putExtra(MEDIA_BROWSER_META, event.mediaBrowserMeta)
-                }, options.toBundle())
-            }
-            is BrowseCharacterEvent -> {
-                ViewPagerContainerActivity.openActivity(
-                    this,
-                    ViewPagerContainerMeta(
-                        ViewPagerContainerType.CHARACTER,
-                        event.meta
-                    )
-                )
-            }
-            is BrowseStaffEvent -> {
-                ViewPagerContainerActivity.openActivity(
-                    this,
-                    ViewPagerContainerMeta(
-                        ViewPagerContainerType.STAFF,
-                        event.meta
-                    )
-                )
-            }
-            is BrowseStudioEvent -> {
-                ContainerActivity.openActivity(
-                    this,
-                    ParcelableFragment(
-                        StudioFragment::class.java,
-                        bundleOf(StudioFragment.STUDIO_META_KEY to event.meta)
-                    )
-                )
-            }
-            is BrowseTagEvent -> {
-                BrowseActivity.openActivity(
-                    this, event.model
-                )
-            }
-            is BrowseGenreEvent -> {
-                BrowseActivity.openActivity(
-                    this, event.genre
-                )
-            }
-
-            is ImageClickedEvent -> {
-                SimpleDraweeViewerActivity.openActivity(this, DraweeViewerMeta(event.meta.url))
-            }
-        }
     }
 
 
@@ -566,10 +480,6 @@ class MediaBrowseActivity : DynamicSystemActivity() {
 //        this.overridePendingTransition(0,android.R.anim.slide_out_right);
     }
 
-    override fun onStop() {
-        super.onStop()
-        unRegisterForEvent()
-    }
 
     override fun onDestroy() {
         circularProgressDrawable?.stop()

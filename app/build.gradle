@@ -177,6 +177,8 @@ dependencies {
     implementation"io.noties.markwon:linkify:$markwon_ver"
     implementation"io.noties.markwon:inline-parser:$markwon_ver"
     implementation "io.noties.markwon:recycler:$markwon_ver"
+    implementation "io.noties.markwon:simple-ext:$markwon_ver"
+
 
     //jsoup
     implementation 'org.jsoup:jsoup:1.13.1'

@@ -1,22 +1,14 @@
 package com.revolgenx.anilib.markwon.plugins
 
 import android.content.Context
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.LayerDrawable
 import android.text.style.ClickableSpan
-import android.view.Gravity
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.YOUTUBE
 import com.revolgenx.anilib.constant.YOUTUBE_IMG_URL
 import com.revolgenx.anilib.event.YoutubeClickedEvent
 import com.revolgenx.anilib.meta.YoutubeMeta
-import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.view.drawable.SpoilerDrawable
 import com.revolgenx.anilib.view.drawable.YoutubePlayBitmapDrawable
 import io.noties.markwon.*
@@ -34,6 +26,11 @@ class YoutubeTagPlugin(private val context: Context) : CustomPlugin() {
     private val playBitMapDrawable: YoutubePlayBitmapDrawable?
         get() = YoutubePlayBitmapDrawable(context)
 
+    companion object{
+        val youtubeRegex =
+            Regex("(?:youtube(?:-nocookie)?\\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\\.be/)([^\"&?/ ]{11})")
+    }
+
     override fun configure(registry: MarkwonPlugin.Registry) {
         registry.require(HtmlPlugin::class.java) { plugin ->
             plugin.addHandler(object : SimpleTagHandler() {
@@ -43,12 +40,12 @@ class YoutubeTagPlugin(private val context: Context) : CustomPlugin() {
                     tag: HtmlTag
                 ): Any? {
                     if (tag.attributes()[CLASS] != YOUTUBE) return null
-                    val source = tag.attributes()[ID] ?: return null
+                        val source = tag.attributes()[ID] ?: return null
                     val containsSpoiler = tag.attributes()[ALT] == MARKDOWN_SPOILER
 
                     renderProps.set(
                         ImageProps.DESTINATION,
-                        String.format(YOUTUBE_IMG_URL, source.substring(source.indexOf("?v=") + 3))
+                        String.format(YOUTUBE_IMG_URL, youtubeRegex.find(source)?.groupValues?.get(1) ?: "")
                     )
                     renderProps.set(
                         ImageProps.IMAGE_SIZE,

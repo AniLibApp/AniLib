@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.MediaFilterDialog
+import com.revolgenx.anilib.event.BrowseTrendingEvent
 import com.revolgenx.anilib.field.home.TrendingMediaField
+import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
 import com.revolgenx.anilib.presenter.home.MediaPresenter
 import com.revolgenx.anilib.source.MediaSource
 import com.revolgenx.anilib.type.MediaSort
@@ -82,7 +84,9 @@ open class DiscoverTrendingFragment : DiscoverAiringFragment() {
 
     private fun handleClick(which: Int) {
         if (which == 0) {
-
+            BrowseTrendingEvent(MediaBrowseFilterModel().also {
+                it.sort = MediaSort.TRENDING_DESC.ordinal
+            }).postEvent
         } else if (which == 1) {
             showMediaFilterDialog(
                 MediaFilterDialog.MediaFilterType.TRENDING.ordinal,

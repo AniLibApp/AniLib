@@ -3,7 +3,7 @@ package com.revolgenx.anilib.field.media
 import com.revolgenx.anilib.MediaStatsQuery
 import com.revolgenx.anilib.field.BaseField
 
-class MediaStatsField :BaseField<MediaStatsQuery>{
+class MediaStatsField :BaseField<MediaStatsQuery>(){
 
     var mediaId = -1
     override fun toQueryOrMutation(): MediaStatsQuery {

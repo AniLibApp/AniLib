@@ -1305,12 +1305,13 @@ query ReviewQuery($reviewId:Int, $mediaId:Int, $userId:Int){
         userId
         mediaId
         summary
-        body
+        body(asHtml:true)
         rating
         ratingAmount
         score
         private
         userRating
+        createdAt
         user{
             id
             name
@@ -1327,6 +1328,8 @@ query ReviewQuery($reviewId:Int, $mediaId:Int, $userId:Int){
             coverImage{
                 ... mediaCoverImage
             }
+            type
+            bannerImage
         }
     }
 }
@@ -1460,6 +1463,15 @@ mutation SaveReviewMutation(
         score:$score,
         private:$private_){
         id
+    }
+}
+
+mutation RateReviewMutation($reviewId:Int, $rating:ReviewRating){
+    RateReview(reviewId:$reviewId, rating:$rating){
+        id
+        userRating
+        rating
+        ratingAmount
     }
 }
 

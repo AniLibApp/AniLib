@@ -215,6 +215,9 @@
     <string name="review_summary">Review Summary (Min:20, Max:120)</string>
     <string name="save_review">Save Review</string>
     <string name="check_character_length">Check Character Length</string>
+    <string name="review_score_format">Score: %s/100</string>
+    <string name="review_by">Review by %s</string>
+    <string name="s_out_of_s_liked_this_review">%s out of %s liked this review</string>
 
     <string-array name="media_format">
         <item>Tv</item>
