@@ -39,6 +39,7 @@ abstract class MediaListViewModel(
                     listMap[res.data?.mediaId]?.progress =
                         res.data?.progress?.toString()
                 }
+                else -> {}
             }
             mCallback?.invoke(res)
         }

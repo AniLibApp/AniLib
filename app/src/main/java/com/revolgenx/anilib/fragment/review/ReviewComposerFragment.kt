@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.fragment
+package com.revolgenx.anilib.fragment.review
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -12,10 +12,10 @@ import androidx.lifecycle.observe
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.field.reivew.ReviewField
+import com.revolgenx.anilib.viewmodel.ReviewComposerViewModel
 import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.meta.ReviewComposerMeta
-import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.model.review.ReviewModel
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.repository.util.Status
@@ -154,7 +154,7 @@ class ReviewComposerFragment : BaseToolbarFragment() {
                 reviewSummaryEt.setText(it)
             }
 
-            body?.let {
+            body?.html?.let {
                 writeReviewEt.setText(it)
             }
 
@@ -240,7 +240,7 @@ class ReviewComposerFragment : BaseToolbarFragment() {
 
         viewModel.field.model?.apply {
             summary = reviewSummaryEt.text.toString()
-            body = writeReviewEt.text.toString()
+            body.html = writeReviewEt.text.toString()
             score = reviewScorePlusMinusTv.counterHolder.toInt()
         }
         return true

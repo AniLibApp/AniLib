@@ -4,29 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
-import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.controller.AppController
-import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.event.BaseEvent
-import com.revolgenx.anilib.event.BrowseMediaEvent
-import com.revolgenx.anilib.event.ListEditorEvent
-import com.revolgenx.anilib.event.UserBrowseEvent
-import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
-import com.revolgenx.anilib.meta.UserMeta
-import com.revolgenx.anilib.util.registerForEvent
-import com.revolgenx.anilib.util.unRegisterForEvent
-import kotlinx.android.synthetic.main.container_activity.*
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-import java.util.*
 
-class ContainerActivity : DynamicSystemActivity() {
+class ContainerActivity : BaseDynamicActivity() {
 
     companion object {
         const val fragmentContainerKey = "fragment_container_key"
@@ -43,30 +25,12 @@ class ContainerActivity : DynamicSystemActivity() {
 
     }
 
-    override fun getLocale(): Locale? {
-        return null
-    }
 
-
-    override fun getThemeRes(): Int {
-        return ThemeController.appStyle
-    }
-
-    override fun onCustomiseTheme() {
-        ThemeController.setLocalTheme()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        registerForEvent()
-    }
+    override val layoutRes: Int = R.layout.container_activity
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.container_activity)
-        fragmentContainer.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-        statusBarColor = statusBarColor
         val parcel =
             intent.getParcelableExtra<ParcelableFragment<BaseFragment>>(fragmentContainerKey)
                 ?: return
@@ -79,56 +43,10 @@ class ContainerActivity : DynamicSystemActivity() {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBaseEvent(event: BaseEvent) {
-
-        when (event) {
-            is BrowseMediaEvent -> {
-                startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
-                    this.putExtra(MediaBrowseActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
-                })
-            }
-            is ListEditorEvent -> {
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this,
-                    event.sharedElement,
-                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
-                )
-                ContainerActivity.openActivity(
-                    this,
-                    ParcelableFragment(
-                        EntryListEditorFragment::class.java,
-                        bundleOf(
-                            EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
-                        )
-                    )
-                    , options
-                )
-            }
-
-            is UserBrowseEvent -> {
-                UserProfileActivity.openActivity(this, UserMeta(event.userId, null))
-            }
-        }
-    }
-
-    override fun setStatusBarColor(color: Int) {
-        super.setStatusBarColor(color)
-        setWindowStatusBarColor(statusBarColor);
-    }
-
-    override fun setNavigationBarTheme(): Boolean {
-        return AppController.instance.isThemeNavigationBar
-    }
-
     override fun finishAfterTransition() {
         finish()
 //        this.overridePendingTransition(0,android.R.anim.slide_out_right);
     }
 
-    override fun onStop() {
-        unRegisterForEvent()
-        super.onStop()
-    }
 
 }

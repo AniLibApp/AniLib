@@ -106,11 +106,6 @@ class UserProfileActivity : BasePopupVideoActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        registerForEvent()
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -420,29 +415,25 @@ class UserProfileActivity : BasePopupVideoActivity() {
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: BaseEvent) {
-        when (event) {
-            is UserBrowseEvent -> {
-                openActivity(this, UserMeta(event.userId, null))
-            }
-            is ImageClickedEvent -> {
-                SimpleDraweeViewerActivity.openActivity(this, DraweeViewerMeta(event.meta.url))
-            }
-            is YoutubeClickedEvent -> {
-                openLink(event.meta.url)
-            }
-            is VideoClickedEvent -> {
-                ExoVideoInstance.getInstance().url = event.videoMeta.url
-                prepare()
-            }
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: BaseEvent) {
+//        when (event) {
+//            is UserBrowseEvent -> {
+//                openActivity(this, UserMeta(event.userId, null))
+//            }
+//            is ImageClickedEvent -> {
+//                SimpleDraweeViewerActivity.openActivity(this, DraweeViewerMeta(event.meta.url))
+//            }
+//            is YoutubeClickedEvent -> {
+//                openLink(event.meta.url)
+//            }
+//            is VideoClickedEvent -> {
+//                ExoVideoInstance.getInstance().url = event.videoMeta.url
+//                prepare()
+//            }
+//        }
+//    }
 
-    override fun onStop() {
-        super.onStop()
-        unRegisterForEvent()
-    }
 
     override fun onSupportNavigateUp(): Boolean {
         finish()

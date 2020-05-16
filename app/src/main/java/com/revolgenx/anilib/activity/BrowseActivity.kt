@@ -48,7 +48,7 @@ import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-class BrowseActivity : DynamicSystemActivity(),
+class BrowseActivity : BaseDynamicActivity(),
     BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener,
     TagChooserDialogFragment.OnDoneListener {
 
@@ -67,19 +67,6 @@ class BrowseActivity : DynamicSystemActivity(),
                 }
             })
         }
-    }
-
-
-    override fun getLocale(): Locale? {
-        return null
-    }
-
-    override fun getThemeRes(): Int {
-        return ThemeController.appStyle
-    }
-
-    override fun onCustomiseTheme() {
-        ThemeController.setLocalTheme()
     }
 
     private val tagAdapter: Adapter.Builder
@@ -103,15 +90,8 @@ class BrowseActivity : DynamicSystemActivity(),
 
     private val viewModel by viewModel<BrowseActivityViewModel>()
 
-
-    override fun onStart() {
-        super.onStart()
-        registerForEvent()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.browse_activity_layout)
         setUpTheme()
         setUpPersistentSearchView()
         setUpListener()
@@ -351,14 +331,7 @@ class BrowseActivity : DynamicSystemActivity(),
     }
 
 
-    override fun setStatusBarColor(color: Int) {
-        super.setStatusBarColor(color)
-        setWindowStatusBarColor(statusBarColor);
-    }
-
-    override fun setNavigationBarTheme(): Boolean {
-        return AppController.instance.isThemeNavigationBar
-    }
+    override val layoutRes: Int = R.layout.browse_activity_layout
 
 
     /**
@@ -462,75 +435,4 @@ class BrowseActivity : DynamicSystemActivity(),
         }
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBaseEvent(event: BaseEvent) {
-        when (event) {
-            is BrowseMediaEvent -> {
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this,
-                    event.sharedElement,
-                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
-                )
-
-                startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
-                    this.putExtra(MediaBrowseActivity.MEDIA_BROWSER_META, event.mediaBrowserMeta)
-                }, options.toBundle())
-            }
-            is BrowseCharacterEvent -> {
-                ViewPagerContainerActivity.openActivity(
-                    this,
-                    ViewPagerContainerMeta(
-                        ViewPagerContainerType.CHARACTER,
-                        event.meta
-                    )
-                )
-            }
-            is BrowseStaffEvent -> {
-                ViewPagerContainerActivity.openActivity(
-                    this,
-                    ViewPagerContainerMeta(
-                        ViewPagerContainerType.STAFF,
-                        event.meta
-                    )
-                )
-            }
-            is BrowseStudioEvent -> {
-                ContainerActivity.openActivity(
-                    this,
-                    ParcelableFragment(
-                        StudioFragment::class.java,
-                        bundleOf(StudioFragment.STUDIO_META_KEY to event.meta)
-                    )
-                )
-            }
-
-            is ListEditorEvent -> {
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this,
-                    event.sharedElement,
-                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
-                )
-                ContainerActivity.openActivity(
-                    this,
-                    ParcelableFragment(
-                        EntryListEditorFragment::class.java,
-                        bundleOf(
-                            EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
-                        )
-                    )
-                    , options
-                )
-            }
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        unRegisterForEvent()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }

@@ -6,12 +6,11 @@ import com.revolgenx.anilib.SaveReviewMutation
 import com.revolgenx.anilib.field.BaseField
 import com.revolgenx.anilib.model.review.ReviewModel
 
-class ReviewField : BaseField<Any> {
+class ReviewField : BaseField<Any>() {
+    var reviewId: Int? = null
     var mediaId: Int? = null
     var userId: Int? = null
-
     var type: ReviewFieldType = ReviewFieldType.QUERY
-
     var model: ReviewModel? = null
 
     override fun toQueryOrMutation(): Any {
@@ -19,7 +18,7 @@ class ReviewField : BaseField<Any> {
             ReviewFieldType.QUERY -> {
                 ReviewQuery.builder()
                     .apply {
-                        model?.reviewId?.let {
+                        reviewId?.let {
                             reviewId(it)
                         }
                         mediaId?.let {
@@ -43,7 +42,7 @@ class ReviewField : BaseField<Any> {
                                 mediaId(it)
                             }
 
-                            it.body?.let {
+                            it.body?.html?.let {
                                 body(it)
                             }
                             it.summary?.let {
