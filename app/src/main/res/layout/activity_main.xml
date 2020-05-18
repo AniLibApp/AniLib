@@ -10,6 +10,7 @@
         android:layout_height="match_parent">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout
+            android:id="@+id/mainActivityCoordinatorLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/bottomNav">
@@ -43,10 +44,8 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicBottomNavigationView
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="?actionBarSize"
             android:layout_alignParentBottom="true"
-            app:itemIconSize="22dp"
-            app:itemTextAppearanceActive="@style/bottomNavTextAppearance"
             app:menu="@menu/bottom_nav_menu" />
 
     </RelativeLayout>

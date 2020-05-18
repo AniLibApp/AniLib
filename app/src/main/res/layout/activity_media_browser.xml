@@ -43,6 +43,13 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="@drawable/transparent_gradient_background_black"
+                        app:layout_constraintBottom_toBottomOf="@id/mediaBrowserBannerImage"
+                        app:layout_constraintTop_toTopOf="@id/mediaBrowserBannerImage" />
+
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/mediaBrowserCoverImage"
@@ -64,8 +71,8 @@
                         android:layout_marginTop="24dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="24dp"
-                        android:drawablePadding="3dp"
                         android:background="@drawable/stroke_background"
+                        android:drawablePadding="3dp"
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:text="@string/add"

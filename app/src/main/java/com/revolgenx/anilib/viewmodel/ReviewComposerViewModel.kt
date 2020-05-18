@@ -2,7 +2,7 @@ package com.revolgenx.anilib.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import com.revolgenx.anilib.field.reivew.ReviewField
+import com.revolgenx.anilib.field.review.ReviewField
 import com.revolgenx.anilib.model.review.ReviewModel
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.service.review.ReviewService

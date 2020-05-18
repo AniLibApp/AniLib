@@ -181,7 +181,7 @@
             android:layout_height="18dp"
             android:layout_marginEnd="12dp"
             android:drawablePadding="4dp"
-            android:text="@string/s_s"
+            android:text="@string/s_slash_s"
             android:textSize="12sp"
             android:visibility="visible"
             app:ads_colorType="tint_surface"

@@ -90,9 +90,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         bottomNav.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-        statusBarColor = statusBarColor
         setSupportActionBar(mainToolbar)
         themeBottomNavigation()
 

@@ -151,7 +151,7 @@
     <string name="suggested">Suggested</string>
     <string name="suggestion">Suggestion</string>
     <string name="recommendation_filter">Recommendation Filter</string>
-    <string name="s_s">%s/%s</string>
+    <string name="s_slash_s">%s/%s</string>
     <string name="list">List</string>
     <string name="anime_list">Anime List</string>
     <string name="manga_list">Manga List</string>
@@ -200,7 +200,7 @@
     <string name="follow">Follow</string>
     <string name="episode_airing_notif">%s %s %s %s %s</string>
     <string name="thread_notif_s">%s %s %s</string>
-    <string name="activity_notif_s">%s %s</string>
+    <string name="s_space_s">%s %s</string>
     <string name="new_notification">New notification available</string>
     <string name="airing_schedules">Airing Schedules</string>
     <string name="airing_time_e_s_s">E: %s · %dd %dh %dm %ds </string>
@@ -218,6 +218,9 @@
     <string name="review_score_format">Score: %s/100</string>
     <string name="review_by">Review by %s</string>
     <string name="s_out_of_s_liked_this_review">%s out of %s liked this review</string>
+    <string name="review_of_s_by_s">Review of %s by %s</string>
+    <string name="recent_reviews">Recent Reviews</string>
+    <string name="reviews">Reviews</string>
 
     <string-array name="media_format">
         <item>Tv</item>
@@ -414,6 +417,7 @@
         <item>Highest Rated</item>
         <item>Lowest Rated</item>
     </string-array>
+
     <string-array name="score_toggle_list" >
         <item>Titles Watched</item>
         <item>Hour Watched</item>
@@ -424,7 +428,6 @@
         <item>Hour Watched</item>
         <item>Mean Score</item>
     </string-array>
-
 
     <string-array name="manga_score_toggle_list" >
         <item>Titles Watched</item>
@@ -437,5 +440,8 @@
         <item>Mean Score</item>
     </string-array>
 
+    <string-array name="review_sort">
+
+    </string-array>
 
 </resources>

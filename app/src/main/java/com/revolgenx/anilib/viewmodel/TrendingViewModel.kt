@@ -11,8 +11,6 @@ import com.revolgenx.anilib.type.MediaSort
 class TrendingViewModel(private val mediaService: MediaService) :
     SourceViewModel<MediaSource, TrendingMediaField>() {
 
-    var adapter: Adapter? = null
-
     override var field: TrendingMediaField = TrendingMediaField().also {
         it.sort = MediaSort.TRENDING_DESC.ordinal
     }

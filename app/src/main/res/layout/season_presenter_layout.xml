@@ -147,7 +147,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_margin="12dp"
                 android:drawablePadding="4dp"
-                android:text="@string/s_s"
+                android:text="@string/s_slash_s"
                 android:textSize="11sp"
                 android:visibility="gone"
                 app:ads_colorType="tint_surface"

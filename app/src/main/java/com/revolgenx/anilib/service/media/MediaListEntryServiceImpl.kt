@@ -72,7 +72,9 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
                 mediaId(model.mediaId)
 
                 if (model.type == MediaType.MANGA.ordinal) {
-                    progressVolumes(model.progressVolumes)
+                    model.progressVolumes?.let {
+                        progressVolumes(model.progressVolumes)
+                    }
                 }
                 model.progress?.let {
                     progress(it)

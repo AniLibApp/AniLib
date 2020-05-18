@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.field.reivew
+package com.revolgenx.anilib.field.review
 
 import com.revolgenx.anilib.RateReviewMutation
 import com.revolgenx.anilib.field.BaseField

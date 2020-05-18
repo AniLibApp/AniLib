@@ -11,7 +11,6 @@ import com.revolgenx.anilib.type.MediaSort
 class PopularViewModel(private val mediaService: MediaService) :
     SourceViewModel<MediaSource, PopularMediaField>() {
 
-    var adapter: Adapter? = null
 
     override var field: PopularMediaField = PopularMediaField().also {
         it.sort = MediaSort.POPULARITY_DESC.ordinal

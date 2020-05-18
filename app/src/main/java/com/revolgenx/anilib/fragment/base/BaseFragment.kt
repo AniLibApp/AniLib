@@ -1,8 +1,6 @@
 package com.revolgenx.anilib.fragment.base
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.fragment.DynamicFragment
 
 abstract class BaseFragment : DynamicFragment() {

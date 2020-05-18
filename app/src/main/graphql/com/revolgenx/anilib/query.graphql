@@ -1272,6 +1272,19 @@ query NotificationQuery($page:Int, $perPage:Int, $resetNotificationCount:Boolean
                     }
                 }
             }
+
+            ... on RelatedMediaAdditionNotification{
+                id
+                type
+                context
+                createdAt
+                media{
+                    ... on Media{
+                        ... basicMediaContent
+                    }
+
+                }
+            }
         }
     }
 }
@@ -1330,6 +1343,39 @@ query ReviewQuery($reviewId:Int, $mediaId:Int, $userId:Int){
             }
             type
             bannerImage
+        }
+    }
+}
+
+query AllReviewQuery($page:Int, $perPage:Int, $sort:[ReviewSort]){
+    Page(page:$page, perPage:$perPage){
+        reviews(sort:$sort){
+            id
+            summary
+            rating
+            ratingAmount
+            score
+            createdAt
+            user{
+                id
+                name
+                avatar{
+                    large
+                    medium
+                }
+            }
+            media{
+                id
+                title{
+                    ... mediaTitle
+                }
+                coverImage{
+                    ... mediaCoverImage
+                }
+                type
+                bannerImage
+                isAdult
+            }
         }
     }
 }
@@ -1632,22 +1678,13 @@ fragment notificationUserContent on User{
 fragment basicMediaContent on Media{
     id
     title {
-        ... on MediaTitle{
-            english
-            romaji
-            native
-            userPreferred
-        }
+        ... mediaTitle
     }
     isAdult
     format
     type
     coverImage {
-        ... on MediaCoverImage{
-            medium
-            large
-            extraLarge
-        }
+        ... mediaCoverImage
     }
     bannerImage
 }

@@ -8,15 +8,17 @@ import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.UserBrowseEvent
-import com.revolgenx.anilib.field.reivew.RateReviewField
+import com.revolgenx.anilib.field.review.RateReviewField
 import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.meta.ReviewMeta
 import com.revolgenx.anilib.model.review.ReviewModel
+import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.ReviewRating
+import com.revolgenx.anilib.util.makeLogInSnackBar
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.viewmodel.ReviewViewModel
 import kotlinx.android.synthetic.main.error_layout.*
@@ -78,7 +80,9 @@ class ReviewFragment : BaseToolbarFragment() {
         viewModel.field.model = model
 
         viewModel.field.model!!.apply {
-            reviewMediaBannerImage.setImageURI(mediaModel?.bannerImage)
+            reviewMediaBannerImage.setImageURI(
+                mediaModel?.bannerImage ?: mediaModel?.coverImage?.largeImage
+            )
             reviewMediaTitleTv.text = mediaModel!!.title!!.title(requireContext())
             reviewMediaTitleTv.setOnClickListener {
                 model.mediaModel?.let { item ->
@@ -109,34 +113,42 @@ class ReviewFragment : BaseToolbarFragment() {
 
     private fun initListenerForLikeDislike() {
         reviewLikeIv.setOnClickListener {
-            viewModel.rateReview(RateReviewField().also {
-                it.reviewId = reviewMeta.reviewId
-                when (viewModel.field.model?.userRating) {
-                    ReviewRating.UP_VOTE.ordinal -> {
-                        it.reviewRating = ReviewRating.NO_VOTE.ordinal
+            if (requireContext().loggedIn()) {
+                viewModel.rateReview(RateReviewField().also {
+                    it.reviewId = reviewMeta.reviewId
+                    when (viewModel.field.model?.userRating) {
+                        ReviewRating.UP_VOTE.ordinal -> {
+                            it.reviewRating = ReviewRating.NO_VOTE.ordinal
+                        }
+                        else -> {
+                            it.reviewRating = ReviewRating.UP_VOTE.ordinal
+                        }
                     }
-                    else -> {
-                        it.reviewRating = ReviewRating.UP_VOTE.ordinal
-                    }
+                }) {
+                    checkReviewRatingCondition(it)
                 }
-            }) {
-                checkReviewRatingCondition(it)
+            } else {
+                makeLogInSnackBar(reviewFragmentRootLayout)
             }
         }
 
         reviewDisLikeIv.setOnClickListener {
-            viewModel.rateReview(RateReviewField().also {
-                it.reviewId = reviewMeta.reviewId
-                when (viewModel.field.model?.userRating) {
-                    ReviewRating.DOWN_VOTE.ordinal -> {
-                        it.reviewRating = ReviewRating.NO_VOTE.ordinal
+            if (requireContext().loggedIn()) {
+                viewModel.rateReview(RateReviewField().also {
+                    it.reviewId = reviewMeta.reviewId
+                    when (viewModel.field.model?.userRating) {
+                        ReviewRating.DOWN_VOTE.ordinal -> {
+                            it.reviewRating = ReviewRating.NO_VOTE.ordinal
+                        }
+                        else -> {
+                            it.reviewRating = ReviewRating.DOWN_VOTE.ordinal
+                        }
                     }
-                    else -> {
-                        it.reviewRating = ReviewRating.DOWN_VOTE.ordinal
-                    }
+                }) {
+                    checkReviewRatingCondition(it)
                 }
-            }) {
-                checkReviewRatingCondition(it)
+            } else {
+                makeLogInSnackBar(reviewFragmentRootLayout)
             }
         }
     }
@@ -144,12 +156,15 @@ class ReviewFragment : BaseToolbarFragment() {
     private fun checkReviewRatingCondition(it: Resource<ReviewModel>) {
         when (it.status) {
             Status.SUCCESS -> {
-                viewModel.field.model?.let {model->
+                viewModel.field.model?.let { model ->
                     model.userRating = it.data?.userRating
                     model.ratingAmount = it.data?.ratingAmount
                     model.rating = it.data?.rating
                     reviewLikesInfo.text =
-                        getString(R.string.s_out_of_s_liked_this_review).format(model.rating, model.ratingAmount)
+                        getString(R.string.s_out_of_s_liked_this_review).format(
+                            model.rating,
+                            model.ratingAmount
+                        )
                 }
 
                 updateLikeDisLike(it.data?.userRating)

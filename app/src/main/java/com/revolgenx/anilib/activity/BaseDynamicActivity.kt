@@ -14,11 +14,10 @@ import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
+import com.revolgenx.anilib.fragment.review.AllReviewFragment
+import com.revolgenx.anilib.fragment.review.ReviewFragment
 import com.revolgenx.anilib.fragment.studio.StudioFragment
-import com.revolgenx.anilib.meta.DraweeViewerMeta
-import com.revolgenx.anilib.meta.UserMeta
-import com.revolgenx.anilib.meta.ViewPagerContainerMeta
-import com.revolgenx.anilib.meta.ViewPagerContainerType
+import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
@@ -170,6 +169,30 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
             is BrowseTagEvent -> {
                 BrowseActivity.openActivity(
                     this, event.model
+                )
+            }
+
+            is BrowseReviewEvent -> {
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        ReviewFragment::class.java,
+                        bundleOf(
+                            ReviewFragment.reviewMetaKey to ReviewMeta(
+                                event.reviewId
+                            )
+                        )
+                    )
+                )
+            }
+
+            is BrowseAllReviewsEvent -> {
+                ToolbarContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        AllReviewFragment::class.java,
+                        null
+                    )
                 )
             }
         }
