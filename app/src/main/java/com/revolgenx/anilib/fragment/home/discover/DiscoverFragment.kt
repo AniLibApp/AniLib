@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
-import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.home.NotificationFragment
 import com.revolgenx.anilib.meta.UserMeta
@@ -14,7 +13,7 @@ import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.util.makeSnakeBar
 
-class DiscoverFragment : DiscoverNewFragment() {
+class DiscoverFragment : DiscoverReviewFragment() {
 
     override fun onResume() {
         super.onResume()

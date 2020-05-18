@@ -5,8 +5,9 @@ import com.apollographql.apollo.exception.ApolloHttpException
 import com.revolgenx.anilib.DeleteReviewMutation
 import com.revolgenx.anilib.ReviewQuery
 import com.revolgenx.anilib.SaveReviewMutation
-import com.revolgenx.anilib.field.reivew.ReviewField
-import com.revolgenx.anilib.field.reivew.RateReviewField
+import com.revolgenx.anilib.field.review.AllReviewField
+import com.revolgenx.anilib.field.review.ReviewField
+import com.revolgenx.anilib.field.review.RateReviewField
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.BasicUserModel
 import com.revolgenx.anilib.model.CommonMediaModel
@@ -91,6 +92,63 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                     Timber.e(it)
                     reviewLiveData.value = Resource.error(it.message ?: ERROR, null, it)
                 }
+            })
+        compositeDisposable.add(disposable)
+    }
+
+
+    override fun getAllReview(
+        field: AllReviewField,
+        compositeDisposable: CompositeDisposable,
+        callback: (Resource<List<ReviewModel>>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation()).map {
+            it.data()?.Page()?.reviews()?.map {
+                ReviewModel().also { model ->
+                    model.reviewId = it.id()
+                    model.rating = it.rating()
+                    model.ratingAmount = it.ratingAmount()
+                    model.summary = it.summary()
+                    model.score = it.score()
+                    model.createdAt = it.createdAt().let {
+                        SimpleDateFormat.getDateInstance().format(
+                            DateTimeUtils.toDate(
+                                Instant.ofEpochSecond(
+                                    it.toLong()
+                                )
+                            )
+                        )
+                    }
+                    model.userModel = it.user()?.let {
+                        BasicUserModel().also { user ->
+                            user.userId = it.id()
+                            user.userName = it.name()
+                            user.avatar = it.avatar()?.let {
+                                UserAvatarImageModel().also { img ->
+                                    img.large = it.large()
+                                    img.medium = it.medium()
+                                }
+                            }
+                        }
+                    }
+                    model.mediaModel = it.media()?.let {
+                        CommonMediaModel().also { media ->
+                            media.mediaId = it.id()
+                            media.title = it.title()?.fragments()?.mediaTitle()?.toModel()
+                            media.coverImage =
+                                it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
+                            media.bannerImage = it.bannerImage() ?: media.coverImage?.largeImage
+                            media.type = it.type()?.ordinal
+                        }
+                    }
+                }
+            }
+        }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(it))
+            }, {
+                Timber.e(it)
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable.add(disposable)
     }

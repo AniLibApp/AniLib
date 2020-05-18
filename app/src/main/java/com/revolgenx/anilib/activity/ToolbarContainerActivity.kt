@@ -15,15 +15,15 @@ class ToolbarContainerActivity :BaseDynamicActivity(){
     override val layoutRes: Int = R.layout.toolbar_container_activity_layout
 
     companion object {
-        private const val fragmentContainerKey = "fragment_container_key"
+        private const val toolbarFragmentContainerKey = "toolbar_fragment_container_key"
 
         fun <T : BaseFragment> openActivity(
             context: Context,
             parcelableFragment: ParcelableFragment<T>,
             option: ActivityOptionsCompat? = null
         ) {
-            context.startActivity(Intent(context, ContainerActivity::class.java).also {
-                it.putExtra(fragmentContainerKey, parcelableFragment)
+            context.startActivity(Intent(context, ToolbarContainerActivity::class.java).also {
+                it.putExtra(toolbarFragmentContainerKey, parcelableFragment)
             }, option?.toBundle())
         }
     }
@@ -37,11 +37,10 @@ class ToolbarContainerActivity :BaseDynamicActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.container_activity)
         setSupportActionBar(dynamicToolbar)
 
         val parcel =
-            intent.getParcelableExtra<ParcelableFragment<BaseFragment>>(fragmentContainerKey)
+            intent.getParcelableExtra<ParcelableFragment<BaseFragment>>(toolbarFragmentContainerKey)
                 ?: return
 
         if (savedInstanceState == null) {

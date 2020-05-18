@@ -3,10 +3,7 @@ package com.revolgenx.anilib.repository.network.converter
 import com.revolgenx.anilib.BasicUserQuery
 import com.revolgenx.anilib.MediaOverViewQuery
 import com.revolgenx.anilib.MediaWatchQuery
-import com.revolgenx.anilib.fragment.MediaCoverImage
-import com.revolgenx.anilib.fragment.MediaListContent
-import com.revolgenx.anilib.fragment.MediaTitle
-import com.revolgenx.anilib.fragment.NarrowMediaContent
+import com.revolgenx.anilib.fragment.*
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.util.pmap
@@ -54,6 +51,16 @@ fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel):CommonMediaModel 
     model.mediaEntryListModel = MediaEntryListModel(mediaListEntry()?.let { it.progress() ?: 0 })
     model.bannerImage = bannerImage() ?: model.coverImage!!.extraLarge
     return model
+}
+
+
+fun BasicMediaContent.toBasiMediaContent() =       CommonMediaModel().also { media ->
+    media.mediaId = id()
+    media.title = title()?.fragments()?.mediaTitle()?.toModel()
+    media.coverImage = coverImage()?.fragments()?.mediaCoverImage()?.toModel()
+    media.type = type()?.ordinal
+    media.isAdult = isAdult ?: false
+    media.bannerImage = bannerImage()
 }
 
 fun BasicUserQuery.User.toBasicUserModel() = BasicUserModel().also {

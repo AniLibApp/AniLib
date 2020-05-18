@@ -66,8 +66,10 @@ val viewModelModules = module {
     viewModel { TrendingViewModel(get()) }
     viewModel { PopularViewModel(get()) }
     viewModel { DiscoverNewViewModel(get()) }
+    viewModel { DiscoverReviewViewModel(get()) }
 
     //review
     viewModel { ReviewComposerViewModel(get()) }
     viewModel { ReviewViewModel(get()) }
+    viewModel { AllReviewViewModel(get()) }
 }

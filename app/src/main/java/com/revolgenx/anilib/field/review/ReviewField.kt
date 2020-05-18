@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.field.reivew
+package com.revolgenx.anilib.field.review
 
 import com.revolgenx.anilib.DeleteReviewMutation
 import com.revolgenx.anilib.ReviewQuery

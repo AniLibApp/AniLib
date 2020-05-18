@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/discoverNestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -9,7 +9,7 @@
         android:id="@+id/discoverLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:orientation="vertical" />
 
-</androidx.core.widget.NestedScrollView>
+</com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>

@@ -11,7 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.observe
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.field.reivew.ReviewField
+import com.revolgenx.anilib.field.review.ReviewField
 import com.revolgenx.anilib.viewmodel.ReviewComposerViewModel
 import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl

@@ -25,6 +25,9 @@ class DiscoverNewViewModel(private val mediaService: MediaService) :
     fun updateField(context: Context) {
         getNewlyAddedField(context).let {
             field.format = it.format
+            field.seasonYear = it.seasonYear
+            field.season = it.season
+            field.status = it.status
         }
     }
 }

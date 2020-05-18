@@ -14,7 +14,6 @@ import androidx.core.os.bundleOf
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.facebook.common.references.CloseableReference
-import com.facebook.datasource.DataSource
 import com.facebook.datasource.DataSources
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.common.ImageDecodeOptions
@@ -45,7 +44,6 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import timber.log.Timber
 import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -233,6 +231,13 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 //                createUserPendingIntent(item as ActivityNotification)
                 createActivityNotif(item as ActivityNotification)
             }
+            NotificationUnionType.RELATED_MEDIA_ADDITION -> {
+                (item as RelatedMediaNotificationModel)
+                notificationImage = item.commonMediaModel?.coverImage?.image
+                return context.getString(R.string.s_space_s)
+                    .format(item.commonMediaModel?.title?.title(context), item.context)
+            }
+
             else -> ""
         }
 
@@ -246,7 +251,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
     private fun createActivityNotif(item: ActivityNotification): String {
         notificationImage = item.userModel?.avatar?.image
-        return context.getString(R.string.activity_notif_s)
+        return context.getString(R.string.s_space_s)
             .format(item.userModel?.userName, item.context)
     }
 

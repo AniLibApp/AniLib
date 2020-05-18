@@ -23,7 +23,6 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
-import com.revolgenx.anilib.viewmodel.SeasonViewModel
 import kotlinx.android.synthetic.main.season_presenter_layout.view.*
 
 class SeasonPresenter(context: Context) :
@@ -129,7 +128,7 @@ class SeasonPresenter(context: Context) :
             if (isLoggedIn) {
                 entryProgressTv.visibility = View.VISIBLE
                 entryProgressTv.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
-                entryProgressTv.text = context.getString(R.string.s_s).format(
+                entryProgressTv.text = context.getString(R.string.s_slash_s).format(
                     item.mediaEntryListModel?.progress?.toString().naText(),
                     when (item.type) {
                         MediaType.ANIME.ordinal -> {

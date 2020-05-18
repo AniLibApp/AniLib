@@ -11,6 +11,7 @@ import com.revolgenx.anilib.constant.NotificationUnionType
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.UserBrowseEvent
 import com.revolgenx.anilib.meta.MediaBrowserMeta
+import com.revolgenx.anilib.model.notification.FollowingNotificationModel
 import com.revolgenx.anilib.model.notification.NotificationModel
 import com.revolgenx.anilib.model.notification.activity.*
 import com.revolgenx.anilib.model.notification.thread.*
@@ -122,7 +123,11 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                 }
                 NotificationUnionType.AIRING -> {
                     (item as AiringNotificationModel).let {
-                        notificationMediaDrawee.setImageURI(it.commonMediaModel?.coverImage?.image(context))
+                        notificationMediaDrawee.setImageURI(
+                            it.commonMediaModel?.coverImage?.image(
+                                context
+                            )
+                        )
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text = String.format(
                             Locale.getDefault(),
@@ -151,13 +156,42 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                 }
 
                 NotificationUnionType.FOLLOWING -> {
-                    createActivityNotif(item as ActivityNotification)
+                    (item as FollowingNotificationModel)
+
+                    notificationMediaDrawee.setImageURI(item.userModel?.avatar?.image)
+                    notificationTitleTv.text = context.getString(R.string.s_space_s)
+                        .format(item.userModel?.userName, item.context)
                     setOnClickListener {
                         UserBrowseEvent(item.userModel?.userId).postEvent
                     }
                 }
                 NotificationUnionType.RELATED_MEDIA_ADDITION -> {
+                    (item as RelatedMediaNotificationModel).let {
+                        notificationMediaDrawee.setImageURI(
+                            it.commonMediaModel?.coverImage?.image(
+                                context
+                            )
+                        )
+                        notificationCreatedTv.text = it.createdAt
+                        notificationTitleTv.text =
+                            context.getString(R.string.s_space_s).format(
+                                it.commonMediaModel?.title?.title(context), it.context
+                            )
 
+                        setOnClickListener { _ ->
+                            BrowseMediaEvent(
+                                MediaBrowserMeta(
+                                    it.commonMediaModel?.mediaId,
+                                    it.commonMediaModel?.type!!,
+                                    it.commonMediaModel?.title!!.romaji!!,
+                                    it.commonMediaModel?.coverImage!!.image(context),
+                                    it.commonMediaModel?.coverImage!!.largeImage,
+                                    it.commonMediaModel?.bannerImage
+                                ), notificationMediaDrawee
+                            ).postEvent
+
+                        }
+                    }
                 }
             }
         }
@@ -187,7 +221,7 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
 
     private fun View.createActivityNotif(item: ActivityNotification) {
         notificationMediaDrawee.setImageURI(item.userModel?.avatar?.image)
-        notificationTitleTv.text = context.getString(R.string.activity_notif_s)
+        notificationTitleTv.text = context.getString(R.string.s_space_s)
             .format(item.userModel?.userName, item.context)
         notificationCreatedTv.text = item.createdAt
     }
