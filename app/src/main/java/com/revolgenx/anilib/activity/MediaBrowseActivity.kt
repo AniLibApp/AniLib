@@ -445,7 +445,7 @@ class MediaBrowseActivity : BaseDynamicActivity() {
                 )
             )
         } else {
-            browserRootLayout.makeSnakeBar(R.string.please_log_in)
+            makeLogInSnackBar(browserRootLayout)
         }
     }
 

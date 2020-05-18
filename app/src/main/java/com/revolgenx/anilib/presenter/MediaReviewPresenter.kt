@@ -13,6 +13,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
+import com.revolgenx.anilib.event.BrowseReviewEvent
 import com.revolgenx.anilib.event.UserBrowseEvent
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.review.ReviewFragment
@@ -64,18 +65,7 @@ class MediaReviewPresenter(context: Context) : Presenter<MediaReviewModel>(conte
             }
 
             reviewContainer.setOnClickListener{
-                ContainerActivity.openActivity(
-                    context,
-                    ParcelableFragment(
-                        ReviewFragment::class.java,
-                        bundleOf(
-                            ReviewFragment.reviewMetaKey to ReviewMeta(
-                                item.reviewId
-                            )
-                        )
-                    )
-                )
-                item.reviewId
+                BrowseReviewEvent(item.reviewId).postEvent
             }
         }
     }

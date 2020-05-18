@@ -85,7 +85,7 @@ class MediaListPresenter(
                 mediaStatus[it]
             }.naText()
 
-            mediaListProgressTv.text = context.getString(R.string.s_s).format(
+            mediaListProgressTv.text = context.getString(R.string.s_slash_s).format(
                 item.progress.naText(),
                 if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
             )
@@ -121,7 +121,7 @@ class MediaListPresenter(
                         when (res.status) {
                             Status.SUCCESS -> {
                                 if (res.data?.mediaId == item.mediaId) {
-                                    mediaListProgressTv.text = context.getString(R.string.s_s).format(
+                                    mediaListProgressTv.text = context.getString(R.string.s_slash_s).format(
                                         item.progress.naText(),
                                         if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
                                     )

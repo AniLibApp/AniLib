@@ -21,6 +21,7 @@ import com.revolgenx.anilib.model.notification.thread.*
 import com.revolgenx.anilib.model.thread.ThreadCommentModel
 import com.revolgenx.anilib.model.thread.ThreadModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.repository.network.converter.toBasiMediaContent
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.util.prettyTime
@@ -51,31 +52,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.AIRING
                                 episode = it.episode()
                                 contexts = it.contexts()
-                                commonMediaModel =
-                                    it.media()?.fragments()?.basicMediaContent()?.let {
-                                        CommonMediaModel().also { media ->
-                                            media.mediaId = it.id()
-                                            media.title = it.title()?.let { title ->
-                                                TitleModel().also { titleModel ->
-                                                    titleModel.romaji = title.romaji()
-                                                    titleModel.userPreferred = title.userPreferred()
-                                                    titleModel.native = title.native_()
-                                                    titleModel.english = title.english()
-                                                }
-                                            }
-                                            media.coverImage = it.coverImage()?.let {
-                                                CoverImageModel().also { img ->
-                                                    img.large = it.large()
-                                                    img.extraLarge = it.extraLarge()
-                                                    img.medium = it.medium()
-                                                }
-                                            }
-
-                                            media.type = it.type()?.ordinal
-                                            media.isAdult = it.isAdult ?: false
-                                            media.bannerImage = it.bannerImage()
-                                        }
-                                    }
+                                commonMediaModel = it.media()?.fragments()?.basicMediaContent()
+                                    ?.toBasiMediaContent()
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
 
                             }
@@ -613,6 +591,20 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                     }
                                 }
                                 context = it.context()
+                            }
+                        }
+                    }
+
+                    "RelatedMediaAdditionNotification" -> {
+                        (it as NotificationQuery.AsRelatedMediaAdditionNotification).let {
+                            RelatedMediaNotificationModel().apply {
+                                baseId = it.id()
+                                type = it.type()?.ordinal
+                                notificationUnionType = NotificationUnionType.RELATED_MEDIA_ADDITION
+                                context = it.context()
+                                commonMediaModel = it.media()?.fragments()?.basicMediaContent()
+                                    ?.toBasiMediaContent()
+                                createdAt = it.createdAt()?.toLong()?.prettyTime()
                             }
                         }
                     }

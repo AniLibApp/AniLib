@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.otaliastudios.elements.Adapter
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.MediaFilterDialog
@@ -106,6 +107,6 @@ open class DiscoverTrendingFragment : DiscoverAiringFragment() {
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {
         if (trendingRecyclerView == null) return
-        viewModel.adapter = trendingRecyclerView!!.createAdapter(source, presenter)
+        trendingRecyclerView!!.createAdapter(source, presenter)
     }
 }
