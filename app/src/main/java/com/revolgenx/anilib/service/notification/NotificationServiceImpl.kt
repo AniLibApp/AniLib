@@ -1,8 +1,6 @@
 package com.revolgenx.anilib.service.notification
 
-import android.content.Context
 import com.revolgenx.anilib.NotificationQuery
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.LIST_ACTIVITY
 import com.revolgenx.anilib.constant.MESSAGE_ACTIVITY
 import com.revolgenx.anilib.constant.NotificationUnionType
@@ -21,14 +19,13 @@ import com.revolgenx.anilib.model.notification.thread.*
 import com.revolgenx.anilib.model.thread.ThreadCommentModel
 import com.revolgenx.anilib.model.thread.ThreadModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.repository.network.converter.toBasiMediaContent
+import com.revolgenx.anilib.repository.network.converter.toBasicMediaContent
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.util.prettyTime
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
-import java.util.*
 
 
 //todo check all notification
@@ -53,7 +50,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 episode = it.episode()
                                 contexts = it.contexts()
                                 commonMediaModel = it.media()?.fragments()?.basicMediaContent()
-                                    ?.toBasiMediaContent()
+                                    ?.toBasicMediaContent()
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
 
                             }
@@ -603,7 +600,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.RELATED_MEDIA_ADDITION
                                 context = it.context()
                                 commonMediaModel = it.media()?.fragments()?.basicMediaContent()
-                                    ?.toBasiMediaContent()
+                                    ?.toBasicMediaContent()
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
                             }
                         }
