@@ -9,25 +9,29 @@ import com.revolgenx.anilib.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.util.pmap
 import kotlinx.coroutines.runBlocking
 
-fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel):CommonMediaModel {
+fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel): CommonMediaModel {
     model.mediaId = id()
-    model.title = TitleModel().also { title ->
-        title.english = title()!!.english() ?: title()!!.romaji()
-        title.romaji = title()!!.romaji()
-        title.native = title()!!.native_() ?: title()!!.romaji()
-        title.userPreferred = title()!!.userPreferred()
+    model.title = title()?.let { title ->
+        TitleModel().also { titleModel ->
+            titleModel.english = title.english()
+            titleModel.romaji = title.romaji()
+            titleModel.native = title.native_()
+            titleModel.userPreferred = title.userPreferred()
+        }
     }
-    model.format = format()!!.ordinal
-    model.type = type()!!.ordinal
+    model.format = format()?.ordinal
+    model.type = type()?.ordinal
     model.episodes = episodes()?.toString()
     model.duration = duration()?.toString()
     model.chapters = chapters()?.toString()
     model.volumes = volumes()?.toString()
-    model.status = status()!!.ordinal
-    model.coverImage = CoverImageModel().also { image ->
-        image.medium = coverImage()!!.medium()
-        image.large = coverImage()!!.large()
-        image.extraLarge = coverImage()!!.extraLarge()
+    model.status = status()?.ordinal
+    model.coverImage = coverImage()?.let {image->
+        CoverImageModel().also { img ->
+            img.medium = image.medium()
+            img.large = image.large()
+            img.extraLarge = image.extraLarge()
+        }
     }
     model.genres = genres()
     model.averageScore = averageScore()
@@ -48,13 +52,14 @@ fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel):CommonMediaModel 
         }
     }
     model.isAdult = isAdult ?: false
-    model.mediaEntryListModel = MediaEntryListModel(mediaListEntry()?.let { it.progress() ?: 0 })
+    model.mediaEntryListModel =
+        MediaEntryListModel(mediaListEntry()?.let { it.progress() ?: 0 })
     model.bannerImage = bannerImage() ?: model.coverImage!!.extraLarge
     return model
 }
 
 
-fun BasicMediaContent.toBasiMediaContent() =       CommonMediaModel().also { media ->
+fun BasicMediaContent.toBasicMediaContent() = CommonMediaModel().also { media ->
     media.mediaId = id()
     media.title = title()?.fragments()?.mediaTitle()?.toModel()
     media.coverImage = coverImage()?.fragments()?.mediaCoverImage()?.toModel()
@@ -67,9 +72,11 @@ fun BasicUserQuery.User.toBasicUserModel() = BasicUserModel().also {
     it.userId = id()
     it.userName = name()
     it.scoreFormat = mediaListOptions()!!.scoreFormat()!!.ordinal
-    it.avatar = UserAvatarImageModel().also { img ->
-        img.large = avatar()!!.large()
-        img.medium = avatar()!!.medium()
+    it.avatar = avatar()?.let {
+        UserAvatarImageModel().also { img ->
+            img.large = avatar()!!.large()
+            img.medium = avatar()!!.medium()
+        }
     }
     it.bannerImage = bannerImage() ?: ""
 }
@@ -79,20 +86,20 @@ fun MediaListContent.toListEditorMediaModel() = EntryListEditorMediaModel().also
     it.mediaId = mediaId()
     it.userId = userId()
     it.listId = id()
-    it.status = status()!!.ordinal
+    it.status = status()?.ordinal
     it.notes = notes() ?: ""
-    it.progress = progress()!!
+    it.progress = progress()
     it.progressVolumes = progressVolumes() ?: 0
-    it.private = private_()!!
-    it.repeat = repeat()!!
-    it.startDate = startedAt()!!.let {
+    it.private = private_()
+    it.repeat = repeat()
+    it.startDate = startedAt()?.let {
         DateModel().also { date ->
             date.day = it.day()
             date.month = it.month()
             date.year = it.year()
         }
     }
-    it.endDate = completedAt()!!.let {
+    it.endDate = completedAt()?.let {
         DateModel().also { date ->
             date.day = it.day()
             date.month = it.month()
