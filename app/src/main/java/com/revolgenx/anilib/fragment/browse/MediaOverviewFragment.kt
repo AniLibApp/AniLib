@@ -22,7 +22,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowseActivity
-import com.revolgenx.anilib.adapter.BrowseRelationshipPresenter
+import com.revolgenx.anilib.presenter.BrowseRelationshipPresenter
 import com.revolgenx.anilib.constant.*
 import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseStudioEvent
@@ -31,7 +31,6 @@ import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.meta.StudioMeta
 import com.revolgenx.anilib.field.media.MediaOverviewField
 import com.revolgenx.anilib.fragment.base.BaseFragment
-import com.revolgenx.anilib.field.media.MediaRecommendationField
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.MediaMetaCollection
 import com.revolgenx.anilib.model.MediaOverviewModel

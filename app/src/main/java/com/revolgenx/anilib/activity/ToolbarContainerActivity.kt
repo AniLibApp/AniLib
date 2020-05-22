@@ -3,6 +3,7 @@ package com.revolgenx.anilib.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.core.app.ActivityOptionsCompat
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.fragment.base.BaseFragment
@@ -48,6 +49,18 @@ class ToolbarContainerActivity :BaseDynamicActivity(){
             transaction.replace(R.id.containerFrameLayout, parcel.clzz.newInstance().apply {
                 this.arguments = parcel.bundle
             }).commitNow()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
     }
 

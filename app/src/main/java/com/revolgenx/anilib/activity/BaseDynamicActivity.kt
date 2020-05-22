@@ -73,7 +73,7 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBaseEvent(event: BaseEvent) {
+    fun onBaseEvent(event: CommonEvent) {
         when (event) {
             is BrowseMediaEvent -> {
                 startActivity(Intent(this, MediaBrowseActivity::class.java).apply {
