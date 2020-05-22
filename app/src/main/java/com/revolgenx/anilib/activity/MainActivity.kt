@@ -356,11 +356,12 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                 } else {
                     val accessToken = tokenResponse?.accessToken!!
                     logIn(accessToken)
+                    SessionEvent(true).postEvent
                     startActivity(Intent(this.context, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     })
-                    finish()
                     (supportFragmentManager.findFragmentByTag(authDialogTag) as? DynamicDialogFragment)?.dismiss()
+                    finish()
                 }
             }
         }

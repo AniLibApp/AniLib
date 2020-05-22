@@ -257,7 +257,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
 
 
     @Subscribe
-    fun onEvent(event: BaseEvent) {
+    fun onEvent(event: CommonEvent) {
         when (event) {
             is BrowseGenreEvent -> {
                 BrowseActivity.openActivity(

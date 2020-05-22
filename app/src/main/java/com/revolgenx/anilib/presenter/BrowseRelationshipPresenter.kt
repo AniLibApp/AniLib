@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.adapter
+package com.revolgenx.anilib.presenter
 
 import android.content.Context
 import android.graphics.Color

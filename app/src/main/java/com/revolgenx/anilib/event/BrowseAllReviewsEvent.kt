@@ -1,3 +1,3 @@
 package com.revolgenx.anilib.event
 
-class BrowseAllReviewsEvent:BaseEvent()
+class BrowseAllReviewsEvent:CommonEvent()

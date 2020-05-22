@@ -10,19 +10,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.RecommendationFilterDialog
-import com.revolgenx.anilib.event.BaseEvent
+import com.revolgenx.anilib.event.CommonEvent
 import com.revolgenx.anilib.event.BrowseEvent
 import com.revolgenx.anilib.event.RecommendationFilterEvent
-import com.revolgenx.anilib.field.recommendation.RecommendationField
 import com.revolgenx.anilib.field.recommendation.RecommendationFilterField
-import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.recommendation.RecommendationModel
 import com.revolgenx.anilib.preference.loggedIn
@@ -34,7 +29,6 @@ import com.revolgenx.anilib.viewmodel.RecommendationViewModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 //todo gridlayout
 class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
@@ -128,7 +122,7 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun event(event: BaseEvent) {
+    fun event(event: CommonEvent) {
         when (event) {
             is RecommendationFilterEvent -> {
                 if (requireContext().loggedIn()) {
