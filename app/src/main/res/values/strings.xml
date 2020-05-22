@@ -441,7 +441,16 @@
     </string-array>
 
     <string-array name="review_sort">
-
+        <item>Id</item>
+        <item>Id Desc</item>
+        <item>Score</item>
+        <item>Score Desc</item>
+        <item>Rating</item>
+        <item>Rating Desc</item>
+        <item>Created At</item>
+        <item>Created At Desc</item>
+        <item>Updated At</item>
+        <item>Updated At Desc</item>
     </string-array>
 
 </resources>
