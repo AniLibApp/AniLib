@@ -29,7 +29,6 @@ class AllReviewFragment : BasePresenterFragment<ReviewModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
         (activity as AppCompatActivity).supportActionBar?.let {
             it.title = getString(R.string.reviews)
             it.setHomeAsUpIndicator(R.drawable.ic_close)
@@ -47,6 +46,11 @@ class AllReviewFragment : BasePresenterFragment<ReviewModel>() {
                     }
                 }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
