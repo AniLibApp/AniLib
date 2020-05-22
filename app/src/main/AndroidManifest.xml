@@ -17,16 +17,19 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".activity.MediaBrowseActivity"/>
-        <activity
-            android:name=".activity.MainActivity"
-            android:launchMode="singleTask">
+
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".activity.MediaBrowseActivity" />
         <activity android:name=".activity.ContainerActivity" />
         <activity android:name="net.openid.appauth.RedirectUriReceiverActivity">
             <intent-filter>
@@ -40,16 +43,18 @@
                     android:scheme="callback" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ViewPagerContainerActivity"/>
+        <activity android:name=".activity.ViewPagerContainerActivity" />
         <activity android:name=".activity.BrowseActivity" />
         <activity android:name=".activity.MediaListActivity" />
         <activity android:name=".activity.BasePopupVideoActivity" />
         <activity android:name=".activity.UserProfileActivity" />
-        <activity android:name=".activity.ExoVideoPlayerActivity"
+        <activity
+            android:name=".activity.ExoVideoPlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
-            android:screenOrientation="fullSensor"/>
-        <activity android:name=".activity.SimpleDraweeViewerActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".activity.SimpleDraweeViewerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop" />
         <activity android:name=".activity.NavViewPagerContainerActivity" />

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="@dimen/ads_margin_splash"
+    app:ads_backgroundAware="disable"
+    app:ads_colorType="primary">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/splash_image"
+        android:layout_width="@dimen/ads_icon_splash"
+        android:layout_height="@dimen/ads_icon_splash"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/ads_margin_splash_small"
+        app:ads_colorType="none"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/ads_margin_splash_small"
+        android:orientation="vertical">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/splash_title"
+            android:textSize="@dimen/ads_font_size_headline6_splash"
+            android:alpha="0.8"
+            app:ads_linkColorType="tint_primary"
+            app:fontFamily="@font/berlinrounded_extra_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/app_name"
+            app:ads_colorType="tint_primary"
+            app:ads_contrastWithColorType="primary"
+            app:ads_rtlSupport="false" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/splash_subtitle"
+            style="@style/TextAppearance.DynamicApp.Subtitle1.Splash"
+            app:fontFamily="@font/open_sans_semi_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/app_subtitle"
+            app:ads_colorType="tint_primary"
+            app:ads_contrastWithColorType="primary"
+            app:ads_rtlSupport="false" />
+
+    </LinearLayout>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
