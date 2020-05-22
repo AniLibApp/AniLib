@@ -17,13 +17,10 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.controller.AppController
-import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.dialog.MediaListFilterDialog
-import com.revolgenx.anilib.event.BaseEvent
+import com.revolgenx.anilib.event.CommonEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.event.MediaListFilterEvent
@@ -40,8 +37,6 @@ import kotlinx.android.synthetic.main.media_list_activity_layout.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import timber.log.Timber
-import java.util.*
 
 class MediaListActivity : BaseDynamicActivity() {
 
@@ -275,7 +270,7 @@ class MediaListActivity : BaseDynamicActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: BaseEvent) {
+    fun onEvent(event: CommonEvent) {
         when (event) {
             is MediaListFilterEvent -> {
                 event.meta.let {

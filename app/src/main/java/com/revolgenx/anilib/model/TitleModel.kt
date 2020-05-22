@@ -11,9 +11,9 @@ class TitleModel {
 
     fun title(context: Context) = when (context.titlePref()) {
         0 -> romaji
-        1 -> english
-        2 -> native
-        3 -> userPreferred
+        1 -> english ?: romaji
+        2 -> native ?: romaji
+        3 -> userPreferred ?: romaji
         else -> ""
     }
 }

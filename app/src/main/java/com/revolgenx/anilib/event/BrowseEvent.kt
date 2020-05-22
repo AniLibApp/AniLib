@@ -1,3 +1,3 @@
 package com.revolgenx.anilib.event
 
-class BrowseEvent() : BaseEvent()
+class BrowseEvent() : CommonEvent()
