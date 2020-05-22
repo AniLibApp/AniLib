@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">AniLibv2</string>
+    <string name="app_name">AniLib</string>
+    <string name="app_subtitle">By the power of AniList</string>
     <string name="discover">Discover</string>
     <string name="season">Season</string>
     <string name="collection">Collection</string>
