@@ -1,7 +1,5 @@
 package com.revolgenx.anilib.constant
 
-import android.graphics.Bitmap
-
 
 const val PAGE_SIZE = 10
 const val PAGE_SIZE_HINT = 10

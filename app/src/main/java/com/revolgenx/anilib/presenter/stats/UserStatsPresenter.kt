@@ -17,7 +17,6 @@ import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
 import com.revolgenx.anilib.model.user.stats.*
 import kotlinx.android.synthetic.main.image_stats_presenter_layout.view.*
 import kotlinx.android.synthetic.main.text_stats_general_layout.view.*
-import kotlinx.android.synthetic.main.user_activity_layout.view.*
 
 class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) {
     override val elementTypes: Collection<Int>

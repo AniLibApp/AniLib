@@ -5,19 +5,14 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.event.BrowseReviewEvent
 import com.revolgenx.anilib.event.UserBrowseEvent
-import com.revolgenx.anilib.fragment.base.ParcelableFragment
-import com.revolgenx.anilib.fragment.review.ReviewFragment
-import com.revolgenx.anilib.meta.ReviewMeta
 import com.revolgenx.anilib.model.MediaReviewModel
 import kotlinx.android.synthetic.main.media_review_presenter_layout.view.*
 

@@ -2,7 +2,6 @@ package com.revolgenx.anilib.activity
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
@@ -10,10 +9,8 @@ import android.view.Display
 import android.view.View
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.preference.orientation
 import com.revolgenx.anilib.video.PlayerManager
 import com.revolgenx.anilib.video.PlayerManagerImpl
 import com.revolgenx.anilib.view.drawable.PlayPauseDrawable

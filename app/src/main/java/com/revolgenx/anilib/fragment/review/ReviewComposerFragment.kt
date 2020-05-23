@@ -12,7 +12,6 @@ import androidx.lifecycle.observe
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.field.review.ReviewField
-import com.revolgenx.anilib.viewmodel.ReviewComposerViewModel
 import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.meta.ReviewComposerMeta
@@ -22,6 +21,7 @@ import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.util.getClipBoardText
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.view.util.attachHelperToView
+import com.revolgenx.anilib.viewmodel.ReviewComposerViewModel
 import io.noties.markwon.editor.MarkwonEditorTextWatcher
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*

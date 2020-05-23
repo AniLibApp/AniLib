@@ -10,9 +10,6 @@
     <color name="black">#191919</color>
     <color name="red">#FF5252</color>
     <color name="transparent_dark">#12000000</color>
-    <color name="transparent_black">#A9000000</color>
-
-    <color name="colorSave">#02A4F8</color>
 
     <color name="anilistColor">#1f263f</color>
     //media status
@@ -24,11 +21,6 @@
         <item>#D50000</item>    <!--//CANCELLED-->
         <item>#FF6E40</item>
     </string-array>
-    <color name="colorReleasing">#00C853</color>
-    <color name="colorFinished">#02A4F8</color>
-    <color name="colorNotReleased">#673AB7</color>
-    <color name="colorCancelled">#D50000</color>
-    <color name="colorUnknown">#FF6E40</color>
 
     <color name="popular_color">#E85D75</color>
     <color name="rated_color">#F7BF63</color>

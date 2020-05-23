@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import androidx.annotation.StyleRes
 import androidx.multidex.MultiDex
 import androidx.work.*
-import com.facebook.common.logging.FLog
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.imagepipeline.listener.RequestListener
 import com.facebook.imagepipeline.listener.RequestLoggingListener
@@ -39,6 +38,8 @@ class App : DynamicApplication() {
     }
 
     override fun onInitialize() {
+        Timber.plant(Timber.DebugTree())
+
         AndroidThreeTen.init(this)
 //        Fresco.initialize(this)
 
@@ -48,14 +49,16 @@ class App : DynamicApplication() {
             .setRequestListeners(requestListeners)
             .build()
         BigImageViewer.initialize(FrescoImageLoader.with(this, config))
-        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
-
-        Timber.plant(Timber.DebugTree())
-//        MarkwonImpl.createHtmlInstance(this)
         startKoin {
             androidContext(this@App)
-
-            modules(listOf(viewModelModules, repositoryModules, networkModules, serviceModule))
+            modules(
+                listOf(
+                    viewModelModules,
+                    repositoryModules,
+                    networkModules,
+                    serviceModule
+                )
+            )
         }
 
 

@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.activity
 
 import android.content.Intent
-import android.graphics.drawable.Animatable
 import android.view.View
 import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatImageView

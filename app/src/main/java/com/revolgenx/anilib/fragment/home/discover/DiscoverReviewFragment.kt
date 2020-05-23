@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseAllReviewsEvent
@@ -66,7 +65,8 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        invalidateAdapter()
+        if (savedInstanceState == null)
+            invalidateAdapter()
     }
 
     /** call this method to load into recyclerview*/

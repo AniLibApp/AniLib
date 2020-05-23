@@ -23,7 +23,6 @@ import com.revolgenx.anilib.preference.getNewlyAddedField
 import com.revolgenx.anilib.preference.getPopularField
 import com.revolgenx.anilib.preference.getSeasonField
 import com.revolgenx.anilib.preference.getTrendingField
-import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.util.onItemSelected
 import kotlinx.android.synthetic.main.media_filter_layout.*
 import java.util.*

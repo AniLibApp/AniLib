@@ -1,12 +1,10 @@
 package com.revolgenx.anilib.view
 
 import android.content.Context
-import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.setPadding
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -14,7 +12,6 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.ThemeController
-import kotlinx.android.parcel.Parcelize
 
 class MediaSmileyScoreLayout(context: Context, attributeSet: AttributeSet?, style: Int) :
     DynamicLinearLayout(context, attributeSet, style) {

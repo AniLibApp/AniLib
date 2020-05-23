@@ -6,10 +6,9 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.revolgenx.anilib.meta.StaffMeta
-import com.revolgenx.anilib.field.staff.StaffMediaCharacterField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.fragment.staff.StaffFragment.Companion.STAFF_META_KEY
+import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.model.StaffMediaCharacterModel
 import com.revolgenx.anilib.presenter.StaffMediaCharacterPresenter
 import com.revolgenx.anilib.viewmodel.StaffMediaCharacterViewModel

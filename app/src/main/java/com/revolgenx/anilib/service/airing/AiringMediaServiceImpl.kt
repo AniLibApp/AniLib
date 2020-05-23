@@ -28,7 +28,7 @@ class AiringMediaServiceImpl(private val baseGraphRepository: BaseGraphRepositor
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Page()?.airingSchedules()
-                    ?.filter { it.media()?.fragments()?.narrowMediaContent()?.isAdult == false }
+                    ?.filter { if (field.canShowAdult) true else it.media()?.fragments()?.narrowMediaContent()?.isAdult == false }
                     ?.map {
                         AiringMediaModel().also { model ->
                             model.airingTimeModel = AiringTimeModel().also { airingTimeModel ->

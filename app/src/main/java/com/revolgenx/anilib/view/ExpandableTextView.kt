@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.view
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.core.content.res.ResourcesCompat
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.revolgenx.anilib.R
-import timber.log.Timber
 
 class ExpandableTextView(context: Context, attributeSet: AttributeSet?, style: Int) :
     DynamicTextView(context, attributeSet, style), View.OnClickListener {

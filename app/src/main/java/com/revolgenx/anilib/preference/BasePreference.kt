@@ -2,7 +2,6 @@ package com.revolgenx.anilib.preference
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import com.revolgenx.anilib.model.TitleModel
 
 
 fun Context.putBoolean(key: String, value: Boolean = false) =

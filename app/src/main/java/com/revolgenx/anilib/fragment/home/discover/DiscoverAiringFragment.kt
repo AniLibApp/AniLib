@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.otaliastudios.elements.Presenter
-import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
@@ -15,7 +13,6 @@ import com.revolgenx.anilib.fragment.airing.AiringFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.presenter.home.discover.DiscoverAiringPresenter
 import com.revolgenx.anilib.source.home.airing.AiringSource
-import com.revolgenx.anilib.type.AiringSort
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -60,7 +57,8 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        invalidateAdapter()
+        if (savedInstanceState == null)
+            invalidateAdapter()
     }
 
 

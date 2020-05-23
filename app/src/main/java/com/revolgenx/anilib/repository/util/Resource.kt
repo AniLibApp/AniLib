@@ -1,7 +1,5 @@
 package com.revolgenx.anilib.repository.util
 
-import java.lang.Exception
-
 data class Resource<T>(
     val status: Status,
     val data: T?,

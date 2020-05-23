@@ -13,10 +13,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
-import kotlinx.android.synthetic.main.browse_filter_navigation_view.*
 import kotlinx.android.synthetic.main.tag_chooser_dialog_fragment_layout.*
-import kotlinx.android.synthetic.main.tag_chooser_dialog_fragment_layout.tagRecyclerView
-import kotlinx.android.synthetic.main.tag_holder_layout.*
 import kotlinx.android.synthetic.main.tag_holder_layout.view.*
 
 class TagChooserDialogFragment : DynamicDialogFragment() {

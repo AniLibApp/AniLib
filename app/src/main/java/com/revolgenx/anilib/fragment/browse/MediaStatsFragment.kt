@@ -19,13 +19,12 @@ import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowseActivity
-import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.media.MediaStatsField
 import com.revolgenx.anilib.fragment.base.BaseFragment
+import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.user.stats.MediaStatsModel
 import com.revolgenx.anilib.presenter.RankingsPresenter
 import com.revolgenx.anilib.repository.util.Status.*
-import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.viewmodel.MediaStatsViewModel
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*

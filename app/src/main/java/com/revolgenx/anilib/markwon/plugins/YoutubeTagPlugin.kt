@@ -11,7 +11,9 @@ import com.revolgenx.anilib.event.YoutubeClickedEvent
 import com.revolgenx.anilib.meta.YoutubeMeta
 import com.revolgenx.anilib.view.drawable.SpoilerDrawable
 import com.revolgenx.anilib.view.drawable.YoutubePlayBitmapDrawable
-import io.noties.markwon.*
+import io.noties.markwon.MarkwonConfiguration
+import io.noties.markwon.MarkwonPlugin
+import io.noties.markwon.RenderProps
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.html.tag.SimpleTagHandler

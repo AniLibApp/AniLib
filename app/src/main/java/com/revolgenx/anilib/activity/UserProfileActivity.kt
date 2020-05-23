@@ -24,7 +24,6 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.MessageDialog
 import com.revolgenx.anilib.dialog.UserFollowerDialog
-import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.model.user.UserFollowerCountModel
@@ -32,8 +31,9 @@ import com.revolgenx.anilib.model.user.UserProfileModel
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.util.*
-import com.revolgenx.anilib.video.ExoVideoInstance
+import com.revolgenx.anilib.util.makeToast
+import com.revolgenx.anilib.util.openLink
+import com.revolgenx.anilib.util.prettyNumberFormat
 import com.revolgenx.anilib.viewmodel.UserProfileViewModel
 import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.android.synthetic.main.error_layout.*
@@ -41,8 +41,6 @@ import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import kotlinx.android.synthetic.main.user_activity_genre_presenter.view.*
 import kotlinx.android.synthetic.main.user_activity_layout.*
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 

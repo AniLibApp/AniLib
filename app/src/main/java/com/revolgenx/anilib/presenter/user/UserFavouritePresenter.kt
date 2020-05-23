@@ -14,10 +14,6 @@ import com.revolgenx.anilib.constant.BrowseTypes
 import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.model.BaseModel
-import com.revolgenx.anilib.model.search.CharacterSearchModel
-import com.revolgenx.anilib.model.search.MediaSearchModel
-import com.revolgenx.anilib.model.search.StaffSearchModel
-import com.revolgenx.anilib.model.search.StudioSearchModel
 import com.revolgenx.anilib.model.user.CharacterFavouriteModel
 import com.revolgenx.anilib.model.user.MediaFavouriteModel
 import com.revolgenx.anilib.model.user.StaffFavouriteModel

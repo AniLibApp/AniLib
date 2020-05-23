@@ -7,9 +7,8 @@ import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.model.search.filter.*
 import com.revolgenx.anilib.type.MediaSort
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 import java.util.regex.Pattern
 
 /**

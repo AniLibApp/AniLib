@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.observe
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.meta.StaffMeta
-import com.revolgenx.anilib.field.staff.StaffField
 import com.revolgenx.anilib.field.ToggleFavouriteField
+import com.revolgenx.anilib.field.staff.StaffField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
+import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.model.StaffModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Status

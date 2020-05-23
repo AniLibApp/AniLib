@@ -1,7 +1,5 @@
 package com.revolgenx.anilib.field
 
-import com.revolgenx.anilib.ToggleFavouriteMutation
-
 class ToggleFavouriteField {
     var animeId: Int? = null
     var mangaId: Int? = null

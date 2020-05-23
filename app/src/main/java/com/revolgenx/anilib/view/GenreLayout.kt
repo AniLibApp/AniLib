@@ -3,10 +3,8 @@ package com.revolgenx.anilib.view
 import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
-import com.google.android.flexbox.FlexboxLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils

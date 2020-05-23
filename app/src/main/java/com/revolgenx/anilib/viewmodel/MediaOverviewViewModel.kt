@@ -1,11 +1,13 @@
 package com.revolgenx.anilib.viewmodel
 
 import android.os.Handler
-import androidx.lifecycle.*
-import com.revolgenx.anilib.model.MediaOverviewModel
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.revolgenx.anilib.field.media.MediaOverviewField
-import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.field.media.MediaRecommendationField
+import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
+import com.revolgenx.anilib.model.MediaOverviewModel
 import com.revolgenx.anilib.model.MediaRecommendationModel
 import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.repository.util.Resource
