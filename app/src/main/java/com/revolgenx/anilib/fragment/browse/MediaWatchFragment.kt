@@ -4,15 +4,12 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.activity.MediaBrowseActivity
-import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.media.MediaWatchField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
+import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.MediaWatchModel
 import com.revolgenx.anilib.presenter.MediaWatchPresenter
 import com.revolgenx.anilib.viewmodel.MediaWatchViewModel

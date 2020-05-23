@@ -16,9 +16,9 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
+import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.meta.MediaBrowserMeta
-import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.model.recommendation.RecommendationModel
 import com.revolgenx.anilib.preference.loggedIn

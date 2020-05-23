@@ -7,7 +7,8 @@ import com.revolgenx.anilib.constant.NotificationUnionType
 import com.revolgenx.anilib.constant.TEXT_ACTIVITY
 import com.revolgenx.anilib.field.notification.NotificationField
 import com.revolgenx.anilib.fragment.NotificationActivity
-import com.revolgenx.anilib.model.*
+import com.revolgenx.anilib.model.BasicUserModel
+import com.revolgenx.anilib.model.UserAvatarImageModel
 import com.revolgenx.anilib.model.activity.ListActivityModel
 import com.revolgenx.anilib.model.activity.MessageActivityModel
 import com.revolgenx.anilib.model.activity.TextActivityModel

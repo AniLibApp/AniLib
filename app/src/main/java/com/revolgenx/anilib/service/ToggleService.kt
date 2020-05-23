@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.service
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.util.Resource

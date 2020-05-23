@@ -12,7 +12,8 @@ import com.revolgenx.anilib.constant.BrowseTypes
 import com.revolgenx.anilib.event.BrowseFilterAppliedEvent
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.BaseModel
-import com.revolgenx.anilib.model.search.filter.*
+import com.revolgenx.anilib.model.search.filter.BrowseFilterModel
+import com.revolgenx.anilib.model.search.filter.StudioBrowseFilterModel
 import com.revolgenx.anilib.presenter.search.BrowsePresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent

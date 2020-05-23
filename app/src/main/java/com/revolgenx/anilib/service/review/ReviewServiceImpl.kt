@@ -6,8 +6,8 @@ import com.revolgenx.anilib.DeleteReviewMutation
 import com.revolgenx.anilib.ReviewQuery
 import com.revolgenx.anilib.SaveReviewMutation
 import com.revolgenx.anilib.field.review.AllReviewField
-import com.revolgenx.anilib.field.review.ReviewField
 import com.revolgenx.anilib.field.review.RateReviewField
+import com.revolgenx.anilib.field.review.ReviewField
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.BasicUserModel
 import com.revolgenx.anilib.model.CommonMediaModel

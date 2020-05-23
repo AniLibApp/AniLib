@@ -26,15 +26,14 @@ import com.revolgenx.anilib.model.user.stats.StatsStatusDistributionModel
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.viewmodel.StatsOverviewViewModel
-import kotlinx.android.synthetic.main.stats_overview_fragment_layout.*
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import kotlinx.android.synthetic.main.stats_distribution_recycler_layout.view.*
+import kotlinx.android.synthetic.main.stats_overview_fragment_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 //todo: add piechart in distribution

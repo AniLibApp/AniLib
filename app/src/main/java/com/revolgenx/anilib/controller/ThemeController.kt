@@ -1,11 +1,9 @@
 package com.revolgenx.anilib.controller
 
 
-import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
-import com.pranavpandey.android.dynamic.support.model.DynamicAppTheme
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils

@@ -2,7 +2,6 @@ package com.revolgenx.anilib.field.media
 
 import com.revolgenx.anilib.MediaReviewQuery
 import com.revolgenx.anilib.field.BaseField
-import com.revolgenx.anilib.field.BaseField.Companion.PER_PAGE
 
 class MediaReviewField :BaseField<MediaReviewQuery>(){
     var mediaId = -1

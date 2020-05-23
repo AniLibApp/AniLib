@@ -72,7 +72,9 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
                 }
             }
         }
-        invalidateAdapter()
+
+        if (savedInstanceState == null)
+            invalidateAdapter()
     }
 
 

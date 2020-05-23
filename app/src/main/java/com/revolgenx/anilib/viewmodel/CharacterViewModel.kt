@@ -2,12 +2,12 @@ package com.revolgenx.anilib.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import com.revolgenx.anilib.field.character.CharacterField
 import com.revolgenx.anilib.field.ToggleFavouriteField
+import com.revolgenx.anilib.field.character.CharacterField
 import com.revolgenx.anilib.model.character.CharacterModel
 import com.revolgenx.anilib.repository.util.Resource
-import com.revolgenx.anilib.service.character.CharacterService
 import com.revolgenx.anilib.service.ToggleService
+import com.revolgenx.anilib.service.character.CharacterService
 import io.reactivex.disposables.CompositeDisposable
 
 class CharacterViewModel(

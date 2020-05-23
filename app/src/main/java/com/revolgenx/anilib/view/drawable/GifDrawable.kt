@@ -8,8 +8,6 @@ import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.text.TextPaint
 import androidx.core.content.res.ResourcesCompat
-import com.facebook.fresco.animation.backend.AnimationBackend
-import com.facebook.fresco.animation.drawable.AnimatedDrawable2
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.util.sp
 

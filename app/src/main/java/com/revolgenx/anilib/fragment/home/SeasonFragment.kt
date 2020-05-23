@@ -14,10 +14,10 @@ import com.revolgenx.anilib.activity.BrowseActivity
 import com.revolgenx.anilib.dialog.MediaFilterDialog
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.event.ListEditorResultEvent
-import com.revolgenx.anilib.fragment.base.BasePresenterFragment
-import com.revolgenx.anilib.field.home.SeasonField
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
+import com.revolgenx.anilib.field.home.SeasonField
+import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.presenter.SeasonPresenter
 import com.revolgenx.anilib.util.registerForEvent

@@ -9,7 +9,6 @@ import com.revolgenx.anilib.model.MediaWatchModel
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.service.media.MediaBrowseService
 import io.reactivex.disposables.CompositeDisposable
-import java.lang.Exception
 
 class MediaWatchSource(
     private val field: MediaWatchField,

@@ -16,8 +16,8 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.event.BrowseMediaEvent
-import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
+import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.MediaRecommendationModel
 import com.revolgenx.anilib.model.UpdateRecommendationModel
 import com.revolgenx.anilib.preference.loggedIn

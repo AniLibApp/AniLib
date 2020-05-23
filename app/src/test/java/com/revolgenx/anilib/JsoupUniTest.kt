@@ -4,8 +4,6 @@ import com.revolgenx.anilib.model.markwon.MarkdownImageModel
 import com.revolgenx.anilib.model.markwon.MarkdownVideoModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import org.jsoup.nodes.Entities
-import org.jsoup.nodes.TextNode
 import org.junit.Test
 
 class JsoupUniTest {

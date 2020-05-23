@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.viewmodel
 
 import android.content.Context
-import com.otaliastudios.elements.Adapter
 import com.revolgenx.anilib.field.home.TrendingMediaField
 import com.revolgenx.anilib.preference.getTrendingField
 import com.revolgenx.anilib.service.media.MediaService

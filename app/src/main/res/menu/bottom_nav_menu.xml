@@ -16,9 +16,5 @@
         android:icon="@drawable/ic_suggestion"
         android:title="@string/suggestion" />
 
-    <item
-        android:id="@+id/downloadMenu"
-        android:icon="@drawable/ic_download"
-        android:title="@string/download" />
 
 </menu>

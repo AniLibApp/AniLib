@@ -14,8 +14,8 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.RecommendationFilterDialog
-import com.revolgenx.anilib.event.CommonEvent
 import com.revolgenx.anilib.event.BrowseEvent
+import com.revolgenx.anilib.event.CommonEvent
 import com.revolgenx.anilib.event.RecommendationFilterEvent
 import com.revolgenx.anilib.field.recommendation.RecommendationFilterField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment

@@ -1,7 +1,5 @@
 package com.revolgenx.anilib.model
 
-import com.revolgenx.anilib.type.MediaFormat
-
 class MediaRelationshipModel : CommonMediaModel() {
     var relationshipType: Int? = null
 

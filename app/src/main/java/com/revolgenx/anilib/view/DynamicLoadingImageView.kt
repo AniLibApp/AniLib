@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-import io.noties.markwon.image.DrawableUtils
 
 
 class DynamicLoadingImageView(
