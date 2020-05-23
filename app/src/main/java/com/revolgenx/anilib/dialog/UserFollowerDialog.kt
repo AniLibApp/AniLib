@@ -2,10 +2,7 @@ package com.revolgenx.anilib.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
@@ -13,7 +10,6 @@ import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.meta.FollowerMeta
 import com.revolgenx.anilib.model.user.UserFollowersModel

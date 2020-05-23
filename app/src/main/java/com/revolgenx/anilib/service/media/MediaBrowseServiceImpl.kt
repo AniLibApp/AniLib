@@ -3,9 +3,8 @@ package com.revolgenx.anilib.service.media
 import androidx.lifecycle.LiveData
 import com.github.mikephil.charting.data.Entry
 import com.revolgenx.anilib.BrowseSimpleMediaQuery
-import com.revolgenx.anilib.model.*
-import com.revolgenx.anilib.field.media.MediaOverviewField
 import com.revolgenx.anilib.field.media.*
+import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.user.stats.*
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.converter.toMediaOverviewModel

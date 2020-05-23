@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.field.ToggleFavouriteField
+import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.model.MediaBrowseModel
 import com.revolgenx.anilib.repository.util.Resource
+import com.revolgenx.anilib.service.ToggleService
 import com.revolgenx.anilib.service.media.MediaBrowseService
 import com.revolgenx.anilib.service.media.MediaListEntryService
-import com.revolgenx.anilib.service.ToggleService
 import io.reactivex.disposables.CompositeDisposable
 
 class MediaEntryEditorViewModel(

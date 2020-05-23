@@ -1,11 +1,15 @@
 package com.revolgenx.anilib.fragment.home.discover
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
+import com.revolgenx.anilib.event.BrowseEvent
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.home.NotificationFragment
 import com.revolgenx.anilib.meta.UserMeta
@@ -36,6 +40,10 @@ class DiscoverFragment : DiscoverReviewFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.searchMenu -> {
+                BrowseEvent().postEvent
+                true
+            }
             R.id.notificationMenu -> {
                 ContainerActivity.openActivity(
                     requireContext(),

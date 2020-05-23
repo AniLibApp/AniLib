@@ -12,12 +12,13 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
-import com.pranavpandey.android.dynamic.support.widget.*
+import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+import com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowseActivity
-import com.revolgenx.anilib.meta.MediaBrowserMeta
-import com.revolgenx.anilib.field.media.MediaCharacterField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
+import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.MediaCharacterModel
 import com.revolgenx.anilib.presenter.MediaCharacterPresenter
 import com.revolgenx.anilib.type.MediaType

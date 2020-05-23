@@ -2,8 +2,6 @@ package com.revolgenx.anilib.util
 
 import android.os.Handler
 import com.revolgenx.anilib.model.AiringTime
-import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 
 typealias TimerCallback = (() -> Unit)?

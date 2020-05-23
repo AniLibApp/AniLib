@@ -6,9 +6,8 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.revolgenx.anilib.meta.StaffMeta
-import com.revolgenx.anilib.field.staff.StaffMediaRoleField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
+import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.model.StaffMediaRoleModel
 import com.revolgenx.anilib.presenter.StaffMediaRolePresenter
 import com.revolgenx.anilib.viewmodel.StaffMediaRoleViewModel

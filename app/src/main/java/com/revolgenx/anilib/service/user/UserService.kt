@@ -2,12 +2,12 @@ package com.revolgenx.anilib.service.user
 
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.field.user.UserFavouriteField
-import com.revolgenx.anilib.field.user.UserProfileField
 import com.revolgenx.anilib.field.user.UserFollowerField
+import com.revolgenx.anilib.field.user.UserProfileField
 import com.revolgenx.anilib.field.user.UserToggleFollowField
 import com.revolgenx.anilib.model.BaseModel
-import com.revolgenx.anilib.model.user.UserFollowersModel
 import com.revolgenx.anilib.model.user.UserFollowerCountModel
+import com.revolgenx.anilib.model.user.UserFollowersModel
 import com.revolgenx.anilib.model.user.UserProfileModel
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.disposables.CompositeDisposable

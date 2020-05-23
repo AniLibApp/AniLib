@@ -1,11 +1,12 @@
 package com.revolgenx.anilib.service.user
 
 import androidx.lifecycle.MutableLiveData
-import com.revolgenx.anilib.*
+import com.revolgenx.anilib.UserFollowersQuery
+import com.revolgenx.anilib.UserFollowingQuery
 import com.revolgenx.anilib.constant.BrowseTypes
 import com.revolgenx.anilib.field.user.UserFavouriteField
-import com.revolgenx.anilib.field.user.UserProfileField
 import com.revolgenx.anilib.field.user.UserFollowerField
+import com.revolgenx.anilib.field.user.UserProfileField
 import com.revolgenx.anilib.field.user.UserToggleFollowField
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.model.*

@@ -22,7 +22,6 @@ import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.type.MediaSeason
-import com.revolgenx.anilib.type.MediaSort
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -30,7 +29,6 @@ import org.greenrobot.eventbus.EventBus
 import org.ocpsoft.prettytime.PrettyTime
 import org.threeten.bp.DateTimeUtils
 import org.threeten.bp.Instant
-import org.threeten.bp.LocalDateTime
 import java.util.*
 
 

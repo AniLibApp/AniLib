@@ -5,18 +5,17 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
 import androidx.core.view.forEachIndexed
 import androidx.core.view.iterator
 import androidx.lifecycle.Observer
@@ -29,22 +28,23 @@ import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.AuthDialog
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
-import com.revolgenx.anilib.event.*
-import com.revolgenx.anilib.meta.MediaListMeta
+import com.revolgenx.anilib.event.SessionEvent
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
-import com.revolgenx.anilib.fragment.*
+import com.revolgenx.anilib.fragment.SettingFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
-import com.revolgenx.anilib.fragment.home.discover.DiscoverFragment
-import com.revolgenx.anilib.fragment.home.DownloadFragment
 import com.revolgenx.anilib.fragment.home.RecommendationFragment
 import com.revolgenx.anilib.fragment.home.SeasonFragment
-import com.revolgenx.anilib.meta.DraweeViewerMeta
+import com.revolgenx.anilib.fragment.home.discover.DiscoverFragment
+import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.meta.UserMeta
 import com.revolgenx.anilib.preference.*
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.util.*
+import com.revolgenx.anilib.util.BrowseFilterDataProvider
+import com.revolgenx.anilib.util.makeLogInSnackBar
+import com.revolgenx.anilib.util.makePagerAdapter
+import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
 import com.revolgenx.anilib.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -54,11 +54,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import net.openid.appauth.*
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
+
 //todo use common activity to subscribe event
 class MainActivity : BaseDynamicActivity(), CoroutineScope,
     BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener
@@ -74,6 +73,8 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         private const val authDialogTag = "auth_dialog_tag"
         private const val authorizationExtra = "com.revolgenx.anilib.HANDLE_AUTHORIZATION_RESPONSE"
     }
+
+    private var pressedTwice = false
 
     private val tagAdapter: Adapter.Builder
         get() {
@@ -99,8 +100,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                 listOf(
                     DiscoverFragment::class.java,
                     SeasonFragment::class.java,
-                    RecommendationFragment::class.java,
-                    DownloadFragment::class.java
+                    RecommendationFragment::class.java
                 )
             )
         )
@@ -331,6 +331,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         super.onNewIntent(intent)
     }
 
+
     private fun checkIntent(@Nullable intent: Intent?) {
         if (intent != null) {
             if (intent.hasExtra(authIntent)) {
@@ -370,8 +371,17 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
-        } else
-            super.onBackPressed()
+        } else {
+            if (pressedTwice) {
+                finish()
+            } else {
+                makeToast(R.string.press_again_to_exit, icon = R.drawable.ic_exit)
+                Handler().postDelayed({
+                    pressedTwice = false
+                }, 1000)
+            }
+            pressedTwice = true
+        }
     }
 
 

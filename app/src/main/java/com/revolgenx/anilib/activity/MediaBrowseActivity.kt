@@ -27,13 +27,16 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.browse.*
-import com.revolgenx.anilib.field.ToggleFavouriteField
 import com.revolgenx.anilib.fragment.review.ReviewComposerFragment
-import com.revolgenx.anilib.meta.*
+import com.revolgenx.anilib.meta.DraweeViewerMeta
+import com.revolgenx.anilib.meta.ListEditorMeta
+import com.revolgenx.anilib.meta.MediaBrowserMeta
+import com.revolgenx.anilib.meta.ReviewComposerMeta
 import com.revolgenx.anilib.model.MediaBrowseModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.util.Resource
@@ -43,10 +46,7 @@ import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.viewmodel.MediaBrowserViewModel
 import kotlinx.android.synthetic.main.activity_media_browser.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 import kotlin.math.abs
 
 //todo://handle review

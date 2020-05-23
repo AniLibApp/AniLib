@@ -11,7 +11,6 @@ import com.revolgenx.anilib.preference.saveBasicUserDetail
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.converter.toBasicUserModel
-import com.revolgenx.anilib.util.BrowseFilterDataProvider
 import com.revolgenx.anilib.util.makeToast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

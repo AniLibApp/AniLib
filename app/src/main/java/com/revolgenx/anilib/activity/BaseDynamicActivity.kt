@@ -132,9 +132,11 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
             is YoutubeClickedEvent -> {
                 openLink(event.meta.url)
             }
+
             is VideoClickedEvent -> {
                 openLink(event.videoMeta.url)
             }
+
             is UserBrowseEvent -> {
                 UserProfileActivity.openActivity(this, UserMeta(event.userId, null))
             }

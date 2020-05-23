@@ -2,8 +2,8 @@ package com.revolgenx.anilib.source
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.model.MediaRecommendationModel
 import com.revolgenx.anilib.field.media.MediaRecommendationField
+import com.revolgenx.anilib.model.MediaRecommendationModel
 import com.revolgenx.anilib.service.recommendation.RecommendationService
 import io.reactivex.disposables.CompositeDisposable
 

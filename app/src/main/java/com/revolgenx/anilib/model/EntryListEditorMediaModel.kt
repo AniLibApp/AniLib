@@ -2,8 +2,6 @@ package com.revolgenx.anilib.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.revolgenx.anilib.type.MediaListStatus
-import com.revolgenx.anilib.type.MediaType
 
 class EntryListEditorMediaModel() : Parcelable {
     var mediaId: Int? = null

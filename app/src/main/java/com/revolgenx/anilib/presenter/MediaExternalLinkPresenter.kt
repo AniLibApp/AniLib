@@ -12,7 +12,6 @@ import com.revolgenx.anilib.model.MediaExternalLinkModel
 import com.revolgenx.anilib.util.colorsMap
 import com.revolgenx.anilib.util.openLink
 import kotlinx.android.synthetic.main.external_link_presenter.view.*
-import timber.log.Timber
 
 class MediaExternalLinkPresenter(context: Context) : Presenter<MediaExternalLinkModel>(context) {
     override val elementTypes: Collection<Int>

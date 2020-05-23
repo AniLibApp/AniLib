@@ -1,8 +1,8 @@
 package com.revolgenx.anilib.field.browse
 
 import com.revolgenx.anilib.MediaSearchQuery
-import com.revolgenx.anilib.constant.CountryOfOrigins
 import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.constant.CountryOfOrigins
 import com.revolgenx.anilib.type.*
 
 class MediaBrowseField : BrowseField() {

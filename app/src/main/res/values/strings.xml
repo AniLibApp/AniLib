@@ -3,35 +3,17 @@
     <string name="app_subtitle">By the power of AniList</string>
     <string name="discover">Discover</string>
     <string name="season">Season</string>
-    <string name="collection">Collection</string>
-    <string name="download">Download</string>
-    <string name="profile">Profile</string>
 
     <string name="dynamically_apply_theme">Dynamically appy theme.</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="its_empty">Feeling empty</string>
-    <string name="releasing">Releasing</string>
-    <string name="finished">Finished</string>
-    <string name="cancelled">Cancelled</string>
-    <string name="not_released">Not released</string>
 
     <string name="ep_d_s">Ep: %s · D: %s min</string>
     <string name="chap_s">Chap: %s · Vol: %s</string>
 
     <!--Media format-->
-    <string name="tv">Tv</string>
-    <string name="tv_short">Tv Short</string>
-    <string name="movie">Movie</string>
-    <string name="special">Special</string>
-    <string name="ova">Ova</string>
-    <string name="ona">Ona</string>
-    <string name="music">Music</string>
     <string name="manga">Manga</string>
-    <string name="novel">Novel</string>
-    <string name="one_shot">One Shot</string>
-    <string name="unknown">Unknown</string>
     <string name="please_log_in">Please log in.</string>
-    <string name="home">Home</string>
     <string name="settings">Settings</string>
     <string name="account">Account</string>
     <string name="sign_in">Sign In</string>
@@ -127,8 +109,6 @@
     <string name="native_name">Native Name</string>
     <string name="alternative_name">Alternative Name</string>
     <string name="about">About</string>
-    <string name="roles">Roles</string>
-    <string name="actor">Actor</string>
     <string name="share">Share</string>
     <string name="invalid">Invalid</string>
     <string name="media">Media</string>
@@ -148,8 +128,6 @@
     <string name="cancel">Cancel</string>
     <string name="name">Name</string>
     <string name="unselect_all">Unselect All</string>
-    <string name="find">Find</string>
-    <string name="suggested">Suggested</string>
     <string name="suggestion">Suggestion</string>
     <string name="recommendation_filter">Recommendation Filter</string>
     <string name="s_slash_s">%s/%s</string>
@@ -157,7 +135,6 @@
     <string name="anime_list">Anime List</string>
     <string name="manga_list">Manga List</string>
     <string name="none">None</string>
-    <string name="current">Current</string>
     <string name="repeating">Repeating</string>
     <string name="spoiler_alert">Spoiler Alert</string>
     <string name="error">Failed to load</string>
@@ -171,7 +148,6 @@
     <string name="mean_score">Mean Score</string>
     <string name="total_manga">Total Manga</string>
     <string name="chapters_read">Chapters Read</string>
-    <string name="block">Block</string>
     <string name="saved_to_gallary">Saved to gallary</string>
     <string name="anime">Anime</string>
     <string name="gif">Gif</string>
@@ -182,7 +158,6 @@
     <string name="days_planned">Days Planned</string>
     <string name="standard_deviation">Standard Deviation</string>
     <string name="volumes_read">Volumes Read</string>
-    <string name="chapters_planned">Chapters Planned</string>
     <string name="format_distribution">Format Distribution</string>
     <string name="country_distribution">Country Distribution</string>
     <string name="release_year">Release Year</string>
@@ -222,6 +197,7 @@
     <string name="review_of_s_by_s">Review of %s by %s</string>
     <string name="recent_reviews">Recent Reviews</string>
     <string name="reviews">Reviews</string>
+    <string name="press_again_to_exit">Press again to exit</string>
 
     <string-array name="media_format">
         <item>Tv</item>

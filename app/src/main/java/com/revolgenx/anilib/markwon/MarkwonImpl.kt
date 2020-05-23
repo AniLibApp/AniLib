@@ -10,7 +10,9 @@ import com.revolgenx.anilib.markwon.plugins.markwon.YoutubeMarkwonPlugin
 import com.revolgenx.anilib.model.markwon.MarkdownImageModel
 import com.revolgenx.anilib.model.markwon.MarkdownModel
 import com.revolgenx.anilib.model.markwon.MarkdownVideoModel
-import io.noties.markwon.*
+import io.noties.markwon.AbstractMarkwonPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.MarkwonVisitor
 import io.noties.markwon.editor.MarkwonEditor
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.html.HtmlPlugin

@@ -60,6 +60,10 @@
         <activity android:name=".activity.NavViewPagerContainerActivity" />
         <activity android:name=".activity.ToolbarContainerActivity" />
 
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            tools:node="remove" />
     </application>
 
 </manifest>

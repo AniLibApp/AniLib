@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.service
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.IsFavouriteQuery
 import com.revolgenx.anilib.ToggleFavouriteMutation
 import com.revolgenx.anilib.field.ToggleFavouriteField

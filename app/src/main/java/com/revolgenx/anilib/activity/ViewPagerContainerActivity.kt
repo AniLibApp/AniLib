@@ -5,25 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.MenuItem
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
 import androidx.core.view.forEachIndexed
 import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.meta.ViewPagerContainerMeta
-import com.revolgenx.anilib.meta.ViewPagerContainerType
-import com.revolgenx.anilib.controller.AppController
-import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.event.*
-import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
-import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.base.ViewPagerParcelableFragments
 import com.revolgenx.anilib.fragment.character.CharacterActorFragment
 import com.revolgenx.anilib.fragment.character.CharacterFragment
@@ -31,15 +21,12 @@ import com.revolgenx.anilib.fragment.character.CharacterMediaFragment
 import com.revolgenx.anilib.fragment.staff.StaffFragment
 import com.revolgenx.anilib.fragment.staff.StaffMediaCharacterFragment
 import com.revolgenx.anilib.fragment.staff.StaffMediaRoleFragment
-import com.revolgenx.anilib.fragment.studio.StudioFragment
 import com.revolgenx.anilib.fragment.user.*
-import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.meta.ViewPagerContainerMeta
+import com.revolgenx.anilib.meta.ViewPagerContainerType
 import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.toolbar_layout.*
 import kotlinx.android.synthetic.main.viewpager_container_activity.*
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-import java.util.*
 
 class ViewPagerContainerActivity : BaseDynamicActivity() {
 

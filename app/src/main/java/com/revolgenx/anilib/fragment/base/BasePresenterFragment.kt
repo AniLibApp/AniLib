@@ -20,14 +20,15 @@ import kotlinx.android.synthetic.main.base_presenter_fragment_layout.view.*
  * BasePresenter class contains @property baseRecyclerView @property layoutManager
  *
  * */
-abstract class BasePresenterFragment<M : Any>() :
-    BaseFragment() {
+abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment() {
     abstract val basePresenter: Presenter<M>
     abstract val baseSource: Source<M>
 
     var visibleToUser = false
 
     var adapter: Adapter? = null
+
+    override val layoutRes: Int = R.layout.base_presenter_fragment_layout
 
     private val loadingPresenter: Presenter<Void> by lazy {
         Presenter.forLoadingIndicator(
@@ -52,7 +53,7 @@ abstract class BasePresenterFragment<M : Any>() :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.base_presenter_fragment_layout, container, false)
+        val v = super.onCreateView(inflater, container, savedInstanceState)!!
         baseRecyclerView = v.base_presenter_recycler_view
         baseSwipeRefreshLayout = v.base_swipe_to_refresh
         return v
