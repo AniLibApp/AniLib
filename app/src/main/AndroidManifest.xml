@@ -59,6 +59,7 @@
             android:launchMode="singleTop" />
         <activity android:name=".activity.NavViewPagerContainerActivity" />
         <activity android:name=".activity.ToolbarContainerActivity" />
+        <activity android:name=".activity.AboutActivity" />
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
