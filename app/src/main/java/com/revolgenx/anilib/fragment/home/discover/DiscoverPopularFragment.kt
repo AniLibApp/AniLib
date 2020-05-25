@@ -74,8 +74,7 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
             }
         }
 
-        if (savedInstanceState == null)
-            invalidateAdapter()
+        invalidateAdapter()
     }
 
 
