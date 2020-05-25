@@ -1,13 +1,16 @@
 package com.revolgenx.anilib.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.AboutActivity
+import com.revolgenx.anilib.fragment.about.AboutFragment
 import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
 import kotlinx.android.synthetic.main.setting_fragment_layout.*
 
 class SettingFragment : BaseToolbarFragment() {
 
-    override val title: Int= R.string.settings
+    override val title: Int = R.string.settings
 
     override val contentRes: Int by lazy {
         R.layout.setting_fragment_layout
@@ -22,6 +25,10 @@ class SettingFragment : BaseToolbarFragment() {
             )
                 .addToBackStack(null)
                 .commit()
+        }
+
+        aboutItemView.setOnClickListener {
+            startActivity(Intent(requireContext(), AboutActivity::class.java))
         }
     }
 

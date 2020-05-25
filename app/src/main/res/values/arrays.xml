@@ -279,4 +279,16 @@
         <item>Youkai</item>
         <item>Zombie</item>
     </string-array>
+
+
+    <integer-array name="license_links_icons_license">
+        <item>@drawable/ads_ic_license</item>
+        <item>@drawable/ads_ic_social_github</item>
+    </integer-array>
+
+    <integer-array name="license_links_colors_license">
+        <item>@color/ads_link_license</item>
+        <item>@color/ads_social_github</item>
+    </integer-array>
+
 </resources>
