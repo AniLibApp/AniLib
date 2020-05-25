@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.DynamicApp.Scroller.Padding.Vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,9 +17,22 @@
                 android:id="@+id/themeItemView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:ads_colorType="tint_surface"
                 app:ads_icon="@drawable/ads_ic_style"
                 app:ads_subtitle="@string/dynamically_apply_theme"
                 app:ads_title="@string/ads_dynamic_theme" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+
+            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+                android:id="@+id/aboutItemView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_colorType="tint_surface"
+                app:ads_icon="@drawable/ads_ic_info"
+                app:ads_title="@string/about" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
     </LinearLayout>
