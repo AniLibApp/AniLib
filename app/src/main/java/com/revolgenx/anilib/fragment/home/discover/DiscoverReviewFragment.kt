@@ -65,8 +65,7 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (savedInstanceState == null)
-            invalidateAdapter()
+        invalidateAdapter()
     }
 
     /** call this method to load into recyclerview*/

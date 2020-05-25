@@ -2,10 +2,15 @@ package com.revolgenx.anilib.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.AboutActivity
+import com.revolgenx.anilib.activity.ContainerActivity
+import com.revolgenx.anilib.activity.ToolbarContainerActivity
 import com.revolgenx.anilib.fragment.about.AboutFragment
 import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
+import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import kotlinx.android.synthetic.main.setting_fragment_layout.*
 
 class SettingFragment : BaseToolbarFragment() {
@@ -16,15 +21,24 @@ class SettingFragment : BaseToolbarFragment() {
         R.layout.setting_fragment_layout
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).also {
+            it.supportActionBar?.setDisplayShowHomeEnabled(true)
+            it.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
+        }
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         themeItemView.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(
-                R.id.fragmentContainer,
-                newInstance(ThemeControllerFragment::class.java)
+            ContainerActivity.openActivity(
+                requireContext(),
+                ParcelableFragment(
+                    ThemeControllerFragment::class.java,
+                    null
+                )
             )
-                .addToBackStack(null)
-                .commit()
         }
 
         aboutItemView.setOnClickListener {
