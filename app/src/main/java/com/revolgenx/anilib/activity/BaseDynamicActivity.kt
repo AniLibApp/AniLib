@@ -31,7 +31,6 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
         return null
     }
 
-
     override fun getThemeRes(): Int {
         return ThemeController.appStyle
     }
@@ -150,6 +149,7 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
                     )
                 )
             }
+
             is BrowseStaffEvent -> {
                 ViewPagerContainerActivity.openActivity(
                     this,
@@ -159,6 +159,7 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
                     )
                 )
             }
+
             is BrowseStudioEvent -> {
                 ContainerActivity.openActivity(
                     this,
@@ -168,6 +169,7 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
                     )
                 )
             }
+
             is BrowseTagEvent -> {
                 BrowseActivity.openActivity(
                     this, event.model

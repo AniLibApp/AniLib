@@ -45,7 +45,6 @@ class ContainerActivity : BaseDynamicActivity() {
 
     override fun finishAfterTransition() {
         finish()
-//        this.overridePendingTransition(0,android.R.anim.slide_out_right);
     }
 
 

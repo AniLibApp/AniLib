@@ -2,6 +2,7 @@ package com.revolgenx.anilib.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.pranavpandey.android.dynamic.support.setting.DynamicColorPreference
 import com.pranavpandey.android.dynamic.utils.DynamicWindowUtils
 import com.revolgenx.anilib.R
@@ -22,6 +23,12 @@ class ThemeControllerFragment : BaseToolbarFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).also {
+            it.supportActionBar?.setDisplayShowHomeEnabled(true)
+            it.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
+
+        }
+
         mAppThemeDay = view.findViewById(R.id.pref_app_theme_day)
         mAppThemeNight = view.findViewById(R.id.pref_app_theme_night)
 

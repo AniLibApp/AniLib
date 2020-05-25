@@ -57,8 +57,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (savedInstanceState == null)
-            invalidateAdapter()
+        invalidateAdapter()
     }
 
 
