@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.DynamicApp.Card">
+
+    <com.pranavpandey.android.dynamic.support.view.DynamicInfoViewBig
+        android:id="@+id/info_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ads_icon="@drawable/ic_launcher_foreground"
+        app:ads_iconBig="@drawable/ic_launcher_foreground"
+        app:ads_title="@string/app_name"
+        app:ads_subtitle="@string/app_subtitle"
+        app:ads_description="@string/app_description"
+        />
+
+<!--        app:ads_links="@array/info_app_links"-->
+<!--        app:ads_subtitles="@array/info_app_subtitles"-->
+<!--        app:ads_urls="@array/info_app_urls"-->
+<!--        app:ads_icons="@array/info_app_icons"-->
+<!--        app:ads_colors="@array/info_app_colors" />-->
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
