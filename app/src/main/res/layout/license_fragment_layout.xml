@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.revolgenx.anilib.view.license.LicenseView
+<com.revolgenx.anilib.view.about.LicenseView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/license_view"
     android:layout_width="match_parent"
