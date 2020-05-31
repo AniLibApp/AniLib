@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.view.license
+package com.revolgenx.anilib.view.about
 
 import android.content.Context
 import android.util.AttributeSet
@@ -455,7 +455,8 @@ class LicenseView : DynamicRecyclerViewFrame {
 
 
         // Set adapter for the recycler view.
-        adapter = LicensesAdapter(licenses)
+        adapter =
+            LicensesAdapter(licenses)
     }
 
     internal class LicensesAdapter(
