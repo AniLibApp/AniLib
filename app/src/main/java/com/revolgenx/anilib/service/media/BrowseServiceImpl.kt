@@ -109,7 +109,7 @@ class BrowseServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                                     model.studioName = it.name()
                                     model.studioMedia =
                                         it.media()?.nodes()
-                                            ?.filter { it.fragments().commonMediaContent().isAdult == false }
+                                            ?.filter { if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
                                             ?.map {
                                                 it.fragments().commonMediaContent().let {
                                                     MediaSearchModel().also { model ->

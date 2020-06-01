@@ -54,7 +54,7 @@ class StudioServiceImpl(private val graphRepository: BaseGraphRepository) : Stud
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Studio()?.media()?.nodes()?.filter { it.isAdult == false }?.map{
+                it.data()?.Studio()?.media()?.nodes()?.filter {if(field.canShowAdult) true else it.isAdult == false }?.map{
                     StudioMediaModel().also { model ->
                         model.mediaId = it.id()
                         model.title = it.title()?.let {

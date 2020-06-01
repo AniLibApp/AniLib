@@ -75,7 +75,7 @@ class StaffServiceImpl(
                 it.data()?.Staff()?.characters()?.nodes()?.forEach { charac ->
                     charac.media()?.edges()?.forEach cont@{ mid ->
                         mid.node()?.let { media ->
-                            if (media.isAdult == true) return@cont
+                            if (if(field.canShowAdult) false else media.isAdult == true) return@cont
                             StaffMediaCharacterModel().also { model ->
                                 model.mediaId = media.id()
                                 model.title = media.title()?.let {
@@ -141,7 +141,7 @@ class StaffServiceImpl(
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Staff()?.staffMedia()?.edges()?.map map2@{ edge ->
-                    if (edge.node()?.isAdult == true) return@map2
+                    if (if(field.canShowAdult) false else edge.node()?.isAdult == true) return@map2
                     edge.node()?.let { media ->
                         StaffMediaRoleModel().also { model ->
                             model.mediaId = media.id()
