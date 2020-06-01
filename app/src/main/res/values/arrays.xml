@@ -626,22 +626,46 @@
 
     <!--LICENSE-END-->
 
+    <!--appinfo-->
+    <string-array name="info_app_links">
+        <item>AniLib Site</item>
+    </string-array>
+
+    <string-array name="info_app_subtitles">
+        <item>Visit AniLib to know more.</item>
+    </string-array>
+
+    <string-array name="info_app_urls">
+        <item>@string/site_url</item>
+    </string-array>
+    <!--appinfo-->
+
     <!--Patreon-->
     <string-array name="patreon_source">
         <item>Patreon Page</item>
     </string-array>
     <string-array name="patreon_source_sub">
-        <item>View Patreon Page.</item>
+        <item>Visit Patreon Page.</item>
     </string-array>
     <string-array name="patreon_source_url">
-        <item>https://patreon.com/anilib</item>
+        <item>@string/patreon_link</item>
     </string-array>
     <integer-array name="url_link_icons">
         <item>@drawable/ic_link</item>
     </integer-array>
     <!--Patreon-end-->
 
-
+    <!--bmc-begin-->
+    <string-array name="bmc_source">
+        <item>Patreon Page</item>
+    </string-array>
+    <string-array name="bmc_source_sub">
+        <item>Visit Buy Me A Coffee.</item>
+    </string-array>
+    <string-array name="bmc_source_url">
+        <item>@string/bmc_link</item>
+    </string-array>
+    <!--bmc-end-->
 
     <integer-array name="license_links_icons_license">
         <item>@drawable/ads_ic_license</item>

@@ -4,15 +4,12 @@
     <string name="app_description">Your to be favourite place to manage, track, browse your Anime and Manga and much more.</string>
     <string name="discover">Discover</string>
     <string name="season">Season</string>
-
     <string name="dynamically_apply_theme">Dynamically appy theme.</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="its_empty">Feeling empty</string>
-
+    <string name="close">Close</string>
     <string name="ep_d_s">Ep: %s · D: %s min</string>
     <string name="chap_s">Chap: %s · Vol: %s</string>
-
-    <!--Media format-->
     <string name="manga">Manga</string>
     <string name="please_log_in">Please log in.</string>
     <string name="settings">Settings</string>
@@ -200,9 +197,11 @@
     <string name="reviews">Reviews</string>
     <string name="press_again_to_exit">Press again to exit</string>
     <string name="patreon">Patreon</string>
+    <string name="bmc_title">Buy Me A Coffee</string>
     <string name="support_the_app">Support Me On Patreon</string>
+    <string name="support_the_app_bmc">Support Me On BMC</string>
     <string name="help_this_app">Contribute AniLib to help me create and maintain awesome features.</string>
-
+    <string name="help_this_app_bmc">Help me get some caffeine power. Your one cup of coffee could bring out some latent power.⚡⚡⚡</string>
 
     <!--LICENSE-->
     <string name="apache_2">Apache 2.0</string>
@@ -271,7 +270,13 @@
 
     <string name="privacy_policy">Privacy Policy.</string>
     <string name="privacy_policy_desc">View complete privacy policy.</string>
-    <string name="privacy_policy_url">https://anilib.flycricket.io/privacy.html</string>
+    <string name="whats_new">Whats new.</string>
+    <string name="support">Support</string>
+    <string name="contribute">Contribute</string>
+    <string name="plus_ultra_version">Plus Ultra Version</string>
+    <string name="terms_and_condition">Terms and Condition</string>
+    <string name="terms_and_condition_desc">View Terms and Condition</string>
+    <string name="in_progress">In Progress.</string>
 
 
     <string-array name="media_format">

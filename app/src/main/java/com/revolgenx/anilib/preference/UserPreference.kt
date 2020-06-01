@@ -2,6 +2,7 @@ package com.revolgenx.anilib.preference
 
 import android.content.Context
 import com.auth0.android.jwt.JWT
+import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.model.BasicUserModel
 import com.revolgenx.anilib.type.ScoreFormat
@@ -17,6 +18,7 @@ private const val userBannerImageKey = "user_banner_image_key"
 private const val scoreFormatKey = "score_format_key"
 
 private const val lastNotificationKey = "last_notification_key"
+private const val versionKey = "versionKey"
 
 fun Context.loggedIn() = getBoolean(loggedInKey, false)
 fun Context.loggedIn(logIn: Boolean) = putBoolean(loggedInKey, logIn)
@@ -87,4 +89,10 @@ fun getLastNotification(context: Context): Int {
 
 fun setNewNotification(context: Context, notifId: Int = -1) {
     context.putInt(lastNotificationKey, notifId)
+}
+
+fun getVersion(context: Context): String {
+    val version = context.getString(versionKey) ?: ""
+    context.putString(versionKey, DynamicPackageUtils.getAppVersion(context))
+    return version
 }
