@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="release_info">
+        ## Whats new!!!. \n
+
+        ### v1.1.0-base \n
+        * New Design. Customizable theme.\n
+        * Browse media with complete detail.\n
+        * Browse Suggestion.\n
+        * Search Anime, Manga, Studio, Staff with customization\n
+        * Airing Schedules.\n
+        * Responsive bookmark icon.\n
+        * Supports Spoiler text, images, youtube, etc\n
+        * Support markdown for image, youtube, video, gif, etc\n
+        * See all the reviews and give review on media\n
+        * See user list, favourites, stats.\n
+        * User Info.\n
+        * In-built login.\n
+
+    </string>
+
+    <string name="studio_note">
+        ### More feature available in AniLib Plus Ultra Version. Visit [AniLib](https://anilib-site.web.app/#/) for more info.
+    </string>
+
+
+    <string name="site_url">https://anilib-site.web.app/#/</string>
+    <string name="privacy_policy_url">https://anilib-site.web.app/#/privacypolicy</string>
+    <string name="terms_and_condition_url">https://anilib-site.web.app/#/termsandcondition</string>
+    <string name="patreon_link">https://patreon.com/anilib</string>
+    <string name="bmc_link">https://www.buymeacoffee.com/9qP65KlG4</string>
+
+</resources>

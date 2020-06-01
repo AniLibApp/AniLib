@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.event.*
@@ -198,6 +199,10 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
                         null
                     )
                 )
+            }
+
+            is BrowseSiteEvent -> {
+                openLink(getString(R.string.site_url))
             }
         }
     }

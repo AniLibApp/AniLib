@@ -5,9 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.recyclerview.binder.DynamicRecyclerViewBinder
-import com.pranavpandey.android.dynamic.support.utils.DynamicLayoutUtils
 import com.pranavpandey.android.dynamic.support.view.DynamicHeader
-import com.pranavpandey.android.dynamic.support.view.DynamicInfoView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.adapter.AppInfoAdapter
 import com.revolgenx.anilib.util.openLink
@@ -37,12 +35,19 @@ class PrivacyPolicyBinder(binderAdapter: AppInfoAdapter) :
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val dynamicInfoView: DynamicHeader = view.findViewById(R.id.privacyPolicy)
+        private val privacyPolicy: DynamicHeader = view.findViewById(R.id.privacyPolicy)
+        private val termsAndCondition: DynamicHeader = view.findViewById(R.id.termsAndCondition)
 
         init {
-            dynamicInfoView.setOnClickListener {
+            privacyPolicy.setOnClickListener {
                 it.context.openLink(it.context.getString(R.string.privacy_policy_url))
             }
+
+            termsAndCondition.setOnClickListener {
+                it.context.openLink(it.context.getString(R.string.terms_and_condition_url))
+            }
+
+
         }
     }
 

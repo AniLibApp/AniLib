@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.recyclerview.adapter.DynamicItemsAdapter
 import com.pranavpandey.android.dynamic.support.recyclerview.binder.DynamicRecyclerViewBinder
+import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.utils.DynamicLayoutUtils
 import com.pranavpandey.android.dynamic.support.view.DynamicInfoView
 import com.pranavpandey.android.dynamic.theme.Theme
@@ -13,13 +14,12 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.adapter.AppInfoAdapter
 import com.revolgenx.anilib.util.openLink
 
-
-class AppInfoBinder(binderAdapter: AppInfoAdapter) : DynamicRecyclerViewBinder<AppInfoBinder.ViewHolder>(binderAdapter) {
+class BmcInfoBinder(binderAdapter: AppInfoAdapter) : DynamicRecyclerViewBinder<BmcInfoBinder.ViewHolder>(binderAdapter) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.layout_info_app, parent, false)
+                .inflate(R.layout.bmc_info_layout, parent, false)
         )
     }
 
@@ -27,6 +27,7 @@ class AppInfoBinder(binderAdapter: AppInfoAdapter) : DynamicRecyclerViewBinder<A
     }
 
     override fun getItemCount(): Int {
+        // Return item count.
         return 1
     }
 
@@ -45,10 +46,10 @@ class AppInfoBinder(binderAdapter: AppInfoAdapter) : DynamicRecyclerViewBinder<A
                 )
 
             dynamicInfoView.setOnClickListener {
-                view.context.openLink(view.context.getString(R.string.site_url))
+                view.context.openLink(view.context.getString(R.string.patreon_link))
             }
-            (dynamicInfoView.linksView.adapter as? DynamicItemsAdapter)?.dataSet?.forEach { it.colorType = Theme.ColorType.TINT_SURFACE }
 
+            (dynamicInfoView.linksView.adapter as? DynamicItemsAdapter)?.dataSet?.forEach { it.colorType = Theme.ColorType.TINT_SURFACE }
         }
     }
 }

@@ -66,7 +66,6 @@ object MarkwonImpl {
                 3, '~'
             ) { _, _ -> AlignmentSpan { Layout.Alignment.ALIGN_CENTER } }
         })
-
         .usePlugin(HtmlPlugin.create())
         .usePlugin(CenterPlugin())
         .usePlugin(ImageTagPlugin())
