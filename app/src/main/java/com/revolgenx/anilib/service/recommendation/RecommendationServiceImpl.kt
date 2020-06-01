@@ -82,7 +82,7 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Page()?.recommendations()
-                    ?.filter { if(field.canShowAdult) true else (it.media()?.fragments()?.commonMediaContent()?.isAdult == false) and (it.mediaRecommendation()?.fragments()?.commonMediaContent()?.isAdult == false) }
+                    ?.filter { if(field.canShowAdult) true else ((it.media()?.fragments()?.commonMediaContent()?.isAdult == false) and (it.mediaRecommendation()?.fragments()?.commonMediaContent()?.isAdult == false)) }
                     ?.map {
                         RecommendationModel().also { mod ->
                             mod.recommendationId = it.id()

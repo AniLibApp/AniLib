@@ -217,7 +217,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                 when (type) {
                     BrowseTypes.ANIME -> {
                         data?.anime()?.nodes()
-                            ?.filter { it.fragments().commonMediaContent().isAdult == false }
+                            ?.filter { if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
                             ?.map { map ->
                                 map.fragments().commonMediaContent().let {
                                     MediaFavouriteModel().also { model ->
@@ -251,7 +251,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                     }
                     BrowseTypes.MANGA -> {
                         data?.manga()?.nodes()
-                            ?.filter { it.fragments().commonMediaContent().isAdult == false }
+                            ?.filter {if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
                             ?.map { map ->
                                 map.fragments().commonMediaContent().let {
                                     MediaFavouriteModel().also { model ->
@@ -333,7 +333,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                                     model.studioName = it.name()
                                     model.studioMedia =
                                         it.media()?.nodes()
-                                            ?.filter { it.fragments().commonMediaContent().isAdult == false }
+                                            ?.filter {if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
                                             ?.map {
                                                 it.fragments().commonMediaContent().let {
                                                     MediaFavouriteModel().also { model ->

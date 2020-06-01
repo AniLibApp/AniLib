@@ -103,7 +103,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
         callback: (Resource<List<ReviewModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation()).map {
-            it.data()?.Page()?.reviews()?.map {
+            it.data()?.Page()?.reviews()?.filter{ if(field.canShowAdult) true else it.media()?.isAdult == false }?.map {
                 ReviewModel().also { model ->
                     model.reviewId = it.id()
                     model.rating = it.rating()
@@ -139,6 +139,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                                 it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
                             media.bannerImage = it.bannerImage() ?: media.coverImage?.largeImage
                             media.type = it.type()?.ordinal
+                            media.isAdult = it.isAdult ?:false
                         }
                     }
                 }
