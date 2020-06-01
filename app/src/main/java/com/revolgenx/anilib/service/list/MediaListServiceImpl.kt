@@ -19,7 +19,7 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.MediaListCollection()?.lists()?.firstOrNull()?.entries()?.map {
+                it.data()?.MediaListCollection()?.lists()?.firstOrNull()?.entries()?.filter { if (field.canShowAdult) true else it.media()?.isAdult == false }?.map {
                     MediaListModel().also { model ->
                         model.mediaListId = it.id()
                         model.progress = it.progress()?.toString()
@@ -41,7 +41,7 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                             model.status = media.status()?.ordinal
                         }
                     }
-                }?: emptyList()
+                } ?: emptyList()
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
