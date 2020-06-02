@@ -16,7 +16,7 @@ class ToolbarContainerActivity :BaseDynamicActivity(){
     override val layoutRes: Int = R.layout.toolbar_container_activity_layout
 
     companion object {
-        private const val toolbarFragmentContainerKey = "toolbar_fragment_container_key"
+        const val toolbarFragmentContainerKey = "toolbar_fragment_container_key"
 
         fun <T : BaseFragment> openActivity(
             context: Context,

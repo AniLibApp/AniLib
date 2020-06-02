@@ -170,7 +170,7 @@ fun Context.openLink(url: String?) {
     }
 }
 
-fun Long.prettyTime(): String? {
+fun Long.prettyTime(): String{
     return PrettyTime().format(DateTimeUtils.toDate(Instant.ofEpochSecond(this)))
 }
 

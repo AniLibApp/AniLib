@@ -53,7 +53,6 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 commonMediaModel = it.media()?.fragments()?.basicMediaContent()
                                     ?.toBasicMediaContent()
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
-
                             }
                         }
                     }
