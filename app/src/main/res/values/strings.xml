@@ -19,7 +19,7 @@
     <string name="nav_open">Nav Open</string>
     <string name="dynamic_theme">Dynamic Theme</string>
     <string name="notification">Notification</string>
-    <string name="notification_setting_sub">Control what you see in notification.</string>
+    <string name="notification_setting_sub">Control what you see in notification.(Login required)</string>
     <string name="sign_out">Sign Out</string>
     <string name="feed">Feed</string>
     <string name="activity">Activity</string>
