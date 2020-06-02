@@ -29,11 +29,9 @@ fun Context.token(token: String) = putString(tokenKey, token)
 fun Context.userId() = getInt(userIdKey, -1)
 fun Context.userId(userId: Int) = putInt(userIdKey, userId)
 
-fun Context.titlePref() = getInt(titleKey, 0)
-fun Context.titlePref(title: Int) = putInt(titleKey, title)
+fun Context.titlePref() = getString(titleKey, "0")
 
-fun Context.imageQuality() = getInt(imageQualityKey, 0)
-fun Context.imageQuality(quality: Int) = putInt(imageQualityKey, quality)
+fun Context.imageQuality() = getString(imageQualityKey, "0")
 
 fun Context.userScoreFormat() = getInt(scoreFormatKey, ScoreFormat.POINT_100.ordinal)
 fun Context.userScoreFormat(scoreFormat: Int?) =

@@ -37,6 +37,38 @@
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+
+            <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_description="@string/preferred_media_title"
+                app:ads_entries="@array/media_title_entries"
+                app:ads_icon="@drawable/ic_title"
+                app:ads_key="title_key"
+                app:ads_title="@string/media_title"
+                app:ads_value="0"
+                app:ads_values="@array/media_title_values" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+
+            <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_description="@string/preferred_image_quality_desc"
+                app:ads_entries="@array/image_entries"
+                app:ads_icon="@drawable/ic_image"
+                app:ads_key="image_quality_key"
+                app:ads_title="@string/cover_image_quality"
+                app:ads_value="0"
+                app:ads_values="@array/image_values" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
 
             <com.pranavpandey.android.dynamic.support.view.DynamicItemView

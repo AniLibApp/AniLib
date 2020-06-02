@@ -694,4 +694,32 @@
         <item>3</item>
     </string-array>
 
+    <!--title-->
+    <string-array name="media_title_entries">
+        <item>Romaji</item>
+        <item>English</item>
+        <item>Native</item>
+        <item>User Preferred</item>
+    </string-array>
+
+    <string-array name="media_title_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!--image-->
+    <string-array name="image_entries">
+        <item>Medium</item>
+        <item>Low</item>
+        <item>High</item>
+    </string-array>
+
+    <string-array name="image_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>

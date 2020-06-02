@@ -297,6 +297,11 @@
     <string name="forum_liked_notif">When someone likes my forum thread</string>
     <string name="episode_aired_notif">When episode on my list airs</string>
     <string name="related_media_added_notif">When related media is added to AniList</string>
+    <string name="media_title">Media Title</string>
+    <string name="notification_interval_desc">Checks if there is any notification after specified time interval.</string>
+    <string name="preferred_media_title">Select preferred media title</string>
+    <string name="cover_image_quality">Cover Image Quality</string>
+    <string name="preferred_image_quality_desc">Select your preferred image quality</string>
 
 
     <string-array name="media_format">

@@ -161,6 +161,8 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                     notificationMediaDrawee.setImageURI(item.userModel?.avatar?.image)
                     notificationTitleTv.text = context.getString(R.string.s_space_s)
                         .format(item.userModel?.userName, item.context)
+                    notificationCreatedTv.text = item.createdAt
+
                     setOnClickListener {
                         UserBrowseEvent(item.userModel?.userId).postEvent
                     }
