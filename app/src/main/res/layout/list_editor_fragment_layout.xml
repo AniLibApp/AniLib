@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
-            app:expandedTitleMarginBottom="140dp"
+            app:expandedTitleMarginBottom="135dp"
             app:expandedTitleMarginStart="132dp"
             app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"

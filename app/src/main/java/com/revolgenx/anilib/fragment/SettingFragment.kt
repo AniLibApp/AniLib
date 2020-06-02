@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.AboutActivity
 import com.revolgenx.anilib.activity.ContainerActivity
+import com.revolgenx.anilib.activity.ToolbarContainerActivity
 import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
+import com.revolgenx.anilib.fragment.notification.NotificationSettingFragment
 import kotlinx.android.synthetic.main.setting_fragment_layout.*
 
 class SettingFragment : BaseToolbarFragment() {
@@ -34,6 +36,16 @@ class SettingFragment : BaseToolbarFragment() {
                 requireContext(),
                 ParcelableFragment(
                     ThemeControllerFragment::class.java,
+                    null
+                )
+            )
+        }
+
+        notificationSetting.setOnClickListener {
+            ToolbarContainerActivity.openActivity(
+                requireContext(),
+                ParcelableFragment(
+                    NotificationSettingFragment::class.java,
                     null
                 )
             )

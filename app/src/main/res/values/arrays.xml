@@ -677,4 +677,21 @@
         <item>@color/ads_social_github</item>
     </integer-array>
 
+
+    <!--notification-->
+    <string-array name="notification_refresh_interval_entries">
+        <item>15 min</item>
+        <item>20 min</item>
+        <item>25 min</item>
+        <item>30 min</item>
+    </string-array>
+
+
+    <string-array name="notification_refresh_interval_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
 </resources>

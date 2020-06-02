@@ -16,6 +16,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.Constants
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.preference.getString
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.networkModules
 import com.revolgenx.anilib.repository.repositoryModules
@@ -66,11 +67,34 @@ class App : DynamicApplication() {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
-            val periodicWork = PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
-                .setConstraints(constraints).build()
-            WorkManager.getInstance(this).enqueueUniquePeriodicWork(NotificationWorker.NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.REPLACE, periodicWork)
-        }else{
-            WorkManager.getInstance(this).cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
+            val interval = when (context.getString("notification_refresh_interval", "0")) {
+                "0" -> {
+                    15
+                }
+                "1" -> {
+                    20
+                }
+                "2" -> {
+                    25
+                }
+                "3" -> {
+                    30
+                }
+                else -> {
+                    15
+                }
+            }
+            val periodicWork =
+                PeriodicWorkRequestBuilder<NotificationWorker>(interval.toLong(), TimeUnit.MINUTES)
+                    .setConstraints(constraints).build()
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                NotificationWorker.NOTIFICATION_WORKER_TAG,
+                ExistingPeriodicWorkPolicy.REPLACE,
+                periodicWork
+            )
+        } else {
+            WorkManager.getInstance(this)
+                .cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
         }
     }
 

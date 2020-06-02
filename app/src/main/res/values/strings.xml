@@ -19,6 +19,7 @@
     <string name="nav_open">Nav Open</string>
     <string name="dynamic_theme">Dynamic Theme</string>
     <string name="notification">Notification</string>
+    <string name="notification_setting_sub">Control what you see in notification.</string>
     <string name="sign_out">Sign Out</string>
     <string name="feed">Feed</string>
     <string name="activity">Activity</string>
@@ -277,6 +278,25 @@
     <string name="terms_and_condition">Terms and Condition</string>
     <string name="terms_and_condition_desc">View Terms and Condition</string>
     <string name="in_progress">In Progress.</string>
+
+
+    <!--notification-->
+    <string name="notification_setting">Notification Setting</string>
+    <string name="refresh_interval">Refresh Interval</string>
+    <string name="notifications">Notifications</string>
+    <string name="check_which_notif_to_show">Notify me when.</string>
+    <string name="when_someone_follows_me">When someone follows me</string>
+    <string name="receive_message_notif">When i receive a message</string>
+    <string name="mention_replay_notif">When I am @ mentioned in an activity or activity reply</string>
+    <string name="activity_like_notif">When someone likes my activity</string>
+    <string name="likes_activity_reply_notif">When someone likes my activity reply</string>
+    <string name="forum_reply_notif">When someone replies to my forum comment</string>
+    <string name="forum_mention_notif">When I am @ mentioned in a forum comment</string>
+    <string name="forum_coment_liked_notif">When someone likes my forum comment</string>
+    <string name="reply_to_subscribed_forum_notif">When someone replies to a forum thread I\'m subscribed to</string>
+    <string name="forum_liked_notif">When someone likes my forum thread</string>
+    <string name="episode_aired_notif">When episode on my list airs</string>
+    <string name="related_media_added_notif">When related media is added to AniList</string>
 
 
     <string-array name="media_format">

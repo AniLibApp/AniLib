@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="following_key">following_key</string>
+    <string name="activity_message_key">activity_message_key</string>
+    <string name="activity_reply_mention_key">activity_reply_mention_key</string>
+    <string name="activity_like_key">activity_like_key</string>
+    <string name="activity_reply_like_key">activity_reply_like_key</string>
+    <string name="thread_comment_reply_key">thread_comment_reply_key</string>
+    <string name="thread_comment_mention_key">thread_comment_mention_key</string>
+    <string name="thread_comment_like_key">thread_comment_like_key</string>
+    <string name="thread_subscribed_reply_key">thread_comment_like_key</string>
+    <string name="thread_like_key">thread_comment_like_key</string>
+    <string name="airing_notification_key">airing_notification_key</string>
+    <string name="related_media_addition_key">related_media_addition_key</string>
+</resources>
