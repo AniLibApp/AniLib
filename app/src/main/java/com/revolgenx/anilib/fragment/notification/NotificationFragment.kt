@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
@@ -29,36 +30,13 @@ class NotificationFragment : BasePresenterFragment<NotificationModel>() {
         return viewModel.createSource()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        val notView = inflater.inflate(R.layout.notification_fragment_layout, container, false)
-        with(activity as ContainerActivity) {
-            setSupportActionBar(notView.dynamicToolbar)
-            this.supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close)
-            supportActionBar!!.title = getString(R.string.notification)
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as? AppCompatActivity)?.supportActionBar?.let {
+            it.setHomeAsUpIndicator(R.drawable.ic_close)
+            it.title = getString(R.string.notification)
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
         }
-        notView.notificationContainerFrameLayout.addView(view)
-        return notView
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        return when (item.itemId) {
-            android.R.id.home -> {
-                finishActivity()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 }

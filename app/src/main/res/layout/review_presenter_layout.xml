@@ -78,6 +78,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="6dp"
+            app:ads_colorType="tint_surface"
+            app:fontFamily="@font/open_sans_semi_bold"
             app:layout_constraintTop_toBottomOf="@id/reviewMediaBannerImage" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView

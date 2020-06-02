@@ -19,10 +19,10 @@ class CoverImageModel {
 
     fun image(context: Context) =
         when (context.imageQuality()) {
-            0 -> image
-            1 -> sImage
-            2 -> largeImage
-            else ->""
+            "0" -> image
+            "1" -> sImage
+            "2" -> largeImage
+            else -> image
         }
 
 }

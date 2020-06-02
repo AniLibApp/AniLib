@@ -24,6 +24,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.activity.MediaBrowseActivity
+import com.revolgenx.anilib.activity.ToolbarContainerActivity
 import com.revolgenx.anilib.activity.UserProfileActivity
 import com.revolgenx.anilib.constant.NotificationUnionType
 import com.revolgenx.anilib.field.notification.NotificationField
@@ -204,7 +205,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                 createThreadNotif(thread)
             }
             NotificationUnionType.THREAD_SUBSCRIBED -> {
-
+                //todo://check for notification not added in here
                 val thread = item as ThreadCommentSubscribedNotification
                 //createThreadPendingLink(thread)
                 createThreadNotif(thread)
@@ -294,9 +295,9 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
 
     private fun createNotificationPendingIntent() {
-        val intent = Intent(context, ContainerActivity::class.java).also {
+        val intent = Intent(context, ToolbarContainerActivity::class.java).also {
             it.putExtra(
-                ContainerActivity.fragmentContainerKey, ParcelableFragment(
+                ToolbarContainerActivity.toolbarFragmentContainerKey, ParcelableFragment(
                     NotificationFragment::class.java,
                     bundleOf(
                         UserMeta.userMetaKey to UserMeta(

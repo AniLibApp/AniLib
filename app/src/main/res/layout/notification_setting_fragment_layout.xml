@@ -14,7 +14,7 @@
             <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:ads_description="Checks if there is any notification after specified time interval."
+                app:ads_description="@string/notification_interval_desc"
                 app:ads_entries="@array/notification_refresh_interval_entries"
                 app:ads_icon="@drawable/ic_planning"
                 app:ads_key="notification_refresh_interval"
