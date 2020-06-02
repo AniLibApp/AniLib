@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
-                app:expandedTitleMarginBottom="160dp"
+                app:expandedTitleMarginBottom="155dp"
                 app:expandedTitleMarginStart="160dp"
                 app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
                 app:layout_scrollFlags="scroll|snap|enterAlways|enterAlwaysCollapsed"
@@ -142,6 +142,10 @@
                     android:id="@+id/mediaBrowserToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
+                    app:contentInsetRight="0dp"
+                    app:contentInsetStart="0dp"
+                    app:contentInsetEnd="0dp"
+                    app:contentInsetLeft="0dp"
                     app:layout_collapseMode="pin" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>

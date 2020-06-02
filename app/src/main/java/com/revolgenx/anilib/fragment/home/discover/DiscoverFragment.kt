@@ -11,7 +11,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.event.BrowseEvent
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
-import com.revolgenx.anilib.fragment.home.NotificationFragment
+import com.revolgenx.anilib.fragment.notification.NotificationFragment
 import com.revolgenx.anilib.meta.UserMeta
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.preference.userId

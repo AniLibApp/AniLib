@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.fragment.home
+package com.revolgenx.anilib.fragment.notification
 
 import android.os.Bundle
 import android.view.LayoutInflater

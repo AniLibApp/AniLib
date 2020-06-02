@@ -27,6 +27,19 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
 
             <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+                android:id="@+id/notificationSetting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_colorType="tint_surface"
+                app:ads_icon="@drawable/ic_notifications"
+                app:ads_subtitle="@string/notification_setting_sub"
+                app:ads_title="@string/notification" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+
+            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
                 android:id="@+id/aboutItemView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
