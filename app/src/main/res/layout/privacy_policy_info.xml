@@ -29,4 +29,18 @@
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+
+        <com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_checked="true"
+            app:ads_key="crashReportKey"
+            app:ads_icon="@drawable/ic_bug_report"
+            app:ads_title="@string/crash_reporting"
+            app:ads_description="@string/crash_report_desc"/>
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

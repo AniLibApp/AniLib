@@ -59,6 +59,7 @@ import kotlinx.coroutines.launch
 import net.openid.appauth.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import java.lang.RuntimeException
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : BaseDynamicActivity(), CoroutineScope,

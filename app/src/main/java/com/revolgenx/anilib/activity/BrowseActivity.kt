@@ -221,8 +221,7 @@ class BrowseActivity : BaseDynamicActivity(),
                         }
                     }
                 }
-                Status.LOADING -> {
-                }
+                else->{}
             }
         }
 
