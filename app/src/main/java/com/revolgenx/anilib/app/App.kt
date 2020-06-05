@@ -13,9 +13,12 @@ import com.github.piasy.biv.loader.fresco.FrescoImageLoader
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.pranavpandey.android.dynamic.support.DynamicApplication
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.Constants
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.logger.AniLibDebugTree
+import com.revolgenx.anilib.logger.LoggerTree
 import com.revolgenx.anilib.preference.getString
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.repository.networkModules
@@ -39,10 +42,13 @@ class App : DynamicApplication() {
     }
 
     override fun onInitialize() {
-        Timber.plant(Timber.DebugTree())
+        if (BuildConfig.DEBUG) {
+            Timber.plant(LoggerTree())
+        } else {
+            Timber.plant(AniLibDebugTree(this))
+        }
 
         AndroidThreeTen.init(this)
-//        Fresco.initialize(this)
 
         val requestListeners: MutableSet<RequestListener> = HashSet()
         requestListeners.add(RequestLoggingListener())

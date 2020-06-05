@@ -1,9 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.apollographql.apollo'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.google.firebase.crashlytics'
+
 
 def anilistPropertiesFile = rootProject.file("anilist.properties");
 def anilistProperties = new Properties()
@@ -214,6 +217,10 @@ dependencies {
 
     //workmanager
     implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    //firebase
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.1'
+
 
 
     testImplementation 'junit:junit:4.12'
