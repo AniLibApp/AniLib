@@ -54,6 +54,15 @@ class SettingFragment : BaseToolbarFragment() {
         aboutItemView.setOnClickListener {
             startActivity(Intent(requireContext(), AboutActivity::class.java))
         }
+        log.setOnClickListener {
+            ToolbarContainerActivity.openActivity(
+                requireContext(),
+                ParcelableFragment(
+                    LogFragment::class.java,
+                    null
+                )
+            )
+        }
     }
 
 }

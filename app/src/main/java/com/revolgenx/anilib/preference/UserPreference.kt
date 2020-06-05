@@ -16,7 +16,7 @@ private const val userNameKey = "user_name_key"
 private const val userAvatarKey = "user_avatar_key"
 private const val userBannerImageKey = "user_banner_image_key"
 private const val scoreFormatKey = "score_format_key"
-
+private const val crashReportKey = "crash_report_key"
 private const val lastNotificationKey = "last_notification_key"
 private const val versionKey = "versionKey"
 
@@ -94,3 +94,12 @@ fun getVersion(context: Context): String {
     context.putString(versionKey, DynamicPackageUtils.getAppVersion(context))
     return version
 }
+
+fun isCrashReportEnabled(context: Context): Boolean {
+    return context.getBoolean(crashReportKey, true)
+}
+
+fun enableCrashReport(context: Context, enable: Boolean) {
+    context.putBoolean(crashReportKey, enable)
+}
+

@@ -535,5 +535,9 @@
         <item>Updated At Desc</item>
     </string-array>
 
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="crash_reporting">Crash Reporting</string>
+    <string name="crash_report_desc">Help improve AniLib\'s features. Automatically sends crash reports.</string>
+
 
 </resources>
