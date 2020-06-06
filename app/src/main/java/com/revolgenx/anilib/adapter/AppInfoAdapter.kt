@@ -6,7 +6,7 @@ import com.pranavpandey.android.dynamic.support.recyclerview.binder.DynamicRecyc
 import com.revolgenx.anilib.adapter.binder.AppInfoBinder
 import com.revolgenx.anilib.adapter.binder.BmcInfoBinder
 import com.revolgenx.anilib.adapter.binder.PatreonInfoBinder
-import com.revolgenx.anilib.adapter.binder.PrivacyPolicyBinder
+import com.revolgenx.anilib.adapter.binder.AboutOtherInfoBinder
 
 class AppInfoAdapter : DynamicSimpleBinderAdapter<DynamicRecyclerViewBinder<*>>() {
 
@@ -24,7 +24,7 @@ class AppInfoAdapter : DynamicSimpleBinderAdapter<DynamicRecyclerViewBinder<*>>(
             AppInfoBinder(this),
             PatreonInfoBinder(this),
             BmcInfoBinder(this),
-            PrivacyPolicyBinder(this)
+            AboutOtherInfoBinder(this)
         )
     }
 
