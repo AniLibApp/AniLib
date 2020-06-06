@@ -46,14 +46,11 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
                 if ((it is ApolloHttpException)) {
                     if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
                         mediaQueryEntryLiveData.value = Resource.success(null)
-                    } else {
-                        mediaQueryEntryLiveData.value = Resource.error(it.message ?: "Error", null)
+                        return@subscribe
                     }
-                    Timber.w(it)
-                } else {
-                    mediaQueryEntryLiveData.value = Resource.error(it.message ?: "Error", null)
-                    Timber.e(it)
                 }
+                mediaQueryEntryLiveData.value = Resource.error(it.message ?: "Error", null)
+                Timber.e(it)
             })
 
         compositeDisposable?.add(disposable)
@@ -114,7 +111,7 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 it.data()?.SaveMediaListEntry()?.let {
-                    saveMediaListEntryLiveData.value = Resource.success(model.also {mod->
+                    saveMediaListEntryLiveData.value = Resource.success(model.also { mod ->
                         mod.progress = it.progress()
                         mod.progressVolumes = it.progressVolumes()
                     })

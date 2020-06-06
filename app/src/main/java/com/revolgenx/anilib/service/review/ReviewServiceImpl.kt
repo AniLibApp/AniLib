@@ -84,14 +84,11 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                 if (it is ApolloHttpException) {
                     if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
                         reviewLiveData.value = Resource.success(null)
-                    } else {
-                        Timber.e(it)
-                        reviewLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+                        return@subscribe
                     }
-                } else {
-                    Timber.e(it)
-                    reviewLiveData.value = Resource.error(it.message ?: ERROR, null, it)
                 }
+                Timber.e(it)
+                reviewLiveData.value = Resource.error(it.message ?: ERROR, null, it)
             })
         compositeDisposable.add(disposable)
     }
@@ -103,7 +100,8 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
         callback: (Resource<List<ReviewModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation()).map {
-            it.data()?.Page()?.reviews()?.filter{ if(field.canShowAdult) true else it.media()?.isAdult == false }?.map {
+            it.data()?.Page()?.reviews()
+                ?.filter { if (field.canShowAdult) true else it.media()?.isAdult == false }?.map {
                 ReviewModel().also { model ->
                     model.reviewId = it.id()
                     model.rating = it.rating()
@@ -139,7 +137,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                                 it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
                             media.bannerImage = it.bannerImage() ?: media.coverImage?.largeImage
                             media.type = it.type()?.ordinal
-                            media.isAdult = it.isAdult ?:false
+                            media.isAdult = it.isAdult ?: false
                         }
                     }
                 }

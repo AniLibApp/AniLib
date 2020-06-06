@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:ads_checked="true"
-            app:ads_key="crashReportKey"
+            app:ads_key="crash_report_key"
             app:ads_icon="@drawable/ic_bug_report"
             app:ads_title="@string/crash_reporting"
             app:ads_description="@string/crash_report_desc"/>

@@ -16,7 +16,7 @@ class PrivacyPolicyBinder(binderAdapter: AppInfoAdapter) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.privacy_policy_info, parent, false)
+                .inflate(R.layout.about_other_info, parent, false)
         )
     }
 
