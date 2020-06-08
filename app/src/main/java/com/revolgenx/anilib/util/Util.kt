@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
 import com.pranavpandey.android.dynamic.toasts.DynamicToast
+import com.pranavpandey.android.dynamic.utils.DynamicLinkUtils
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.fragment.base.BaseFragment
@@ -134,9 +135,15 @@ fun Fragment.makeToast(@StringRes str: Int? = null, msg: String? = null, @Drawab
 fun Context.makeToast(@StringRes str: Int? = null, msg: String? = null, @DrawableRes icon: Int? = null) {
     if (icon != null) {
         val drawable = ContextCompat.getDrawable(this, icon)
-        DynamicToast.make(this, str?.let { getString(it) } ?: msg, drawable).show()
+        DynamicToast.make(this, str?.let { getString(it) } ?: msg, drawable).also {
+            it.view.findViewById<TextView?>(com.pranavpandey.android.dynamic.toasts.R.id.adt_toast_text)
+                ?.textSize = 13f
+        }.show()
     } else {
-        DynamicToast.make(this, str?.let { getString(it) } ?: msg).show()
+        DynamicToast.make(this, str?.let { getString(it) } ?: msg).also {
+            it.view.findViewById<TextView?>(com.pranavpandey.android.dynamic.toasts.R.id.adt_toast_text)
+                ?.textSize = 13f
+        }.show()
     }
 }
 
@@ -172,7 +179,7 @@ fun Context.openLink(url: String?) {
     }
 }
 
-fun Long.prettyTime(): String{
+fun Long.prettyTime(): String {
     return PrettyTime().format(DateTimeUtils.toDate(Instant.ofEpochSecond(this)))
 }
 
@@ -189,9 +196,6 @@ fun Context.getClipBoardText(): String {
 
 fun Context.copyToClipBoard(str: String?) {
     if (str == null) return
-    val clipboard: ClipboardManager =
-        ContextCompat.getSystemService<ClipboardManager>(this, ClipboardManager::class.java)!!
-    val clip = ClipData.newPlainText(string(R.string.app_name), str)
-    clipboard.setPrimaryClip(clip)
+    DynamicLinkUtils.copyToClipboard(this, str, str)
     makeToast(R.string.copied_to_clipboard)
 }
