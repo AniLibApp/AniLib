@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.fragment.browse
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.GridLayoutManager
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
@@ -55,6 +57,8 @@ class MediaStatsFragment : BaseFragment() {
         RankingsPresenter(requireContext(), mediaBrowserMeta!!.type)
     }
 
+    private var rankingAdapter:Adapter? = null
+
     private val listOfScores by lazy {
         listOf(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
     }
@@ -97,9 +101,21 @@ class MediaStatsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rankingRecyclerView.layoutManager = FlexboxLayoutManager(context).also { manager ->
-            manager.justifyContent = JustifyContent.SPACE_EVENLY;
-            manager.alignItems = AlignItems.FLEX_START;
+        val span =
+            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
+        rankingRecyclerView.layoutManager =  GridLayoutManager(
+            this.context,
+            span
+        ).also {
+            it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (rankingAdapter?.elementAt(position)?.element?.type == 0) {
+                        1
+                    } else {
+                        span
+                    }
+                }
+            }
         }
     }
 
@@ -152,7 +168,7 @@ class MediaStatsFragment : BaseFragment() {
 
 
         data.rankings?.let {
-            Adapter.builder(viewLifecycleOwner)
+            rankingAdapter = Adapter.builder(viewLifecycleOwner)
                 .addSource(Source.fromList(it))
                 .addPresenter(rankingsPresenter)
                 .into(rankingRecyclerView)
