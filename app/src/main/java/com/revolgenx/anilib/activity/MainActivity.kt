@@ -180,7 +180,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             headerView.navHeaderTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
 
             if (userBanner.isNotEmpty()) {
-                headerView.navHeaderBackground.setImageURI(userAvatar)
+                headerView.navHeaderBackground.setImageURI(userBanner)
             }
 
         }
