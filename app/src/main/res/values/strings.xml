@@ -23,7 +23,6 @@
     <string name="sign_out">Sign Out</string>
     <string name="feed">Feed</string>
     <string name="activity">Activity</string>
-    <string name="login_service">Login Service</string>
     <string name="authenticating">Authenticating</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
@@ -271,13 +270,13 @@
 
     <string name="privacy_policy">Privacy Policy.</string>
     <string name="privacy_policy_desc">View complete privacy policy.</string>
-    <string name="whats_new">Whats new.</string>
+    <string name="whats_new">What\'s new</string>
     <string name="support">Support</string>
     <string name="contribute">Contribute</string>
     <string name="plus_ultra_version">Plus Ultra Version</string>
     <string name="terms_and_condition">Terms and Condition</string>
     <string name="terms_and_condition_desc">View Terms and Condition</string>
-    <string name="in_progress">In Progress.</string>
+    <string name="in_progress">Working on it.</string>
 
 
     <!--notification-->
@@ -302,6 +301,16 @@
     <string name="preferred_media_title">Select preferred media title</string>
     <string name="cover_image_quality">Cover Image Quality</string>
     <string name="preferred_image_quality_desc">Select your preferred image quality</string>
+
+
+
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+
+    <!--crash report-->
+    <string name="crash_reporting">Crash Reporting</string>
+    <string name="crash_report_desc">Help improve AniLib\'s features. Automatically sends crash reports.</string>
+
+    <string name="change_log">Change log</string>
 
 
     <string-array name="media_format">
@@ -534,10 +543,5 @@
         <item>Updated At</item>
         <item>Updated At Desc</item>
     </string-array>
-
-    <string name="copied_to_clipboard">Copied to clipboard</string>
-    <string name="crash_reporting">Crash Reporting</string>
-    <string name="crash_report_desc">Help improve AniLib\'s features. Automatically sends crash reports.</string>
-
 
 </resources>

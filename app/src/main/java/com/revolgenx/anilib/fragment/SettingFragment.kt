@@ -8,6 +8,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.AboutActivity
 import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.activity.ToolbarContainerActivity
+import com.revolgenx.anilib.dialog.ReleaseInfoDialog
 import com.revolgenx.anilib.fragment.base.BaseToolbarFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.notification.NotificationSettingFragment
@@ -54,14 +55,8 @@ class SettingFragment : BaseToolbarFragment() {
         aboutItemView.setOnClickListener {
             startActivity(Intent(requireContext(), AboutActivity::class.java))
         }
-        log.setOnClickListener {
-            ToolbarContainerActivity.openActivity(
-                requireContext(),
-                ParcelableFragment(
-                    LogFragment::class.java,
-                    null
-                )
-            )
+        whatsNew.setOnClickListener {
+            ReleaseInfoDialog().show(childFragmentManager, ReleaseInfoDialog.tag)
         }
     }
 
