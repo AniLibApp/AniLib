@@ -27,7 +27,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.dialog.AuthDialog
+import com.revolgenx.anilib.dialog.AuthenticationDialog
 import com.revolgenx.anilib.dialog.ReleaseInfoDialog
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.event.BrowseSiteEvent
@@ -59,7 +59,6 @@ import kotlinx.coroutines.launch
 import net.openid.appauth.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.lang.RuntimeException
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : BaseDynamicActivity(), CoroutineScope,
@@ -268,7 +267,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                         })
                         finish()
                     } else {
-                        AuthDialog.newInstance().show(supportFragmentManager, authDialogTag)
+                        AuthenticationDialog.newInstance().show(supportFragmentManager, authDialogTag)
                         val serviceConfiguration =
                             AuthorizationServiceConfiguration(
                                 Uri.parse(BuildConfig.anilistAuthEndPoint) /* auth endpoint */,

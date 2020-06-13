@@ -85,12 +85,13 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
 
             <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-                android:id="@+id/log"
+                android:id="@+id/whatsNew"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ads_colorType="tint_surface"
-                app:ads_icon="@drawable/ads_ic_info"
-                app:ads_title="Log" />
+                app:ads_icon="@drawable/ic_new_releases"
+                app:ads_subtitle="@string/change_log"
+                app:ads_title="@string/whats_new" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
     </LinearLayout>
