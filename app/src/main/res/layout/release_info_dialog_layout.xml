@@ -9,12 +9,12 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
         android:id="@+id/studioNoteTv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"/>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_height="wrap_content">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/releaseInfo"
