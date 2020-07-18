@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.BasicUserQuery
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.field.TagField
-import com.revolgenx.anilib.model.BasicUserModel
+import com.revolgenx.anilib.model.UserPrefModel
 import com.revolgenx.anilib.preference.saveBasicUserDetail
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
@@ -30,9 +30,9 @@ class MainActivityViewModel(
         CompositeDisposable()
     }
 
-    private val basicUserLiveData = MutableLiveData<BasicUserModel>()
+    private val basicUserLiveData = MutableLiveData<UserPrefModel>()
 
-    fun getUserLiveData(): MutableLiveData<BasicUserModel> {
+    fun getUserLiveData(): MutableLiveData<UserPrefModel> {
         val disposable = repository.request(BasicUserQuery.builder().id(context.userId()).build())
             .map {
                 it.data()?.User()!!.toBasicUserModel()

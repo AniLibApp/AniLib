@@ -34,6 +34,7 @@ query MediaListEditorQuery($mediaId:Int,$userId:Int, $format:ScoreFormat){
     MediaList(mediaId:$mediaId, userId:$userId){
         ... mediaListContent
         score(format:$format)
+        advancedScores
     }
 }
 
@@ -629,7 +630,6 @@ query MediaListCollectinoQuery(
     $includeEpisode:Boolean!,
     $includeChapter:Boolean!
 ){
-    #Laevatein
     MediaListCollection(
         userId:$userId
         , userName:$userName
@@ -678,6 +678,14 @@ query BasicUserQuery($id:Int){
         bannerImage
         mediaListOptions{
             scoreFormat
+            animeList{
+                advancedScoring
+                advancedScoringEnabled
+            }
+            mangaList{
+                advancedScoring
+                advancedScoringEnabled
+            }
         }
     }
 }
@@ -1387,6 +1395,7 @@ mutation SaveMediaListEntryMutation(
     $listId:Int, $mediaId:Int,
     $status:MediaListStatus,
     $score:Float,
+    $advanceScores:[Float],
     $progress:Int,
     $progressVolumes:Int,
     $private_:Boolean,
@@ -1398,6 +1407,7 @@ mutation SaveMediaListEntryMutation(
     SaveMediaListEntry(id:$listId, mediaId:$mediaId
         , status:$status
         , score:$score
+        , advancedScores:$advanceScores
         , progress:$progress
         , progressVolumes:$progressVolumes
         ,repeat:$repeat

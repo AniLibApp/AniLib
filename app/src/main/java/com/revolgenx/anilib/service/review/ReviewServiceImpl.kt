@@ -9,7 +9,7 @@ import com.revolgenx.anilib.field.review.AllReviewField
 import com.revolgenx.anilib.field.review.RateReviewField
 import com.revolgenx.anilib.field.review.ReviewField
 import com.revolgenx.anilib.markwon.MarkwonImpl
-import com.revolgenx.anilib.model.BasicUserModel
+import com.revolgenx.anilib.model.UserPrefModel
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.model.UserAvatarImageModel
 import com.revolgenx.anilib.model.review.ReviewModel
@@ -53,8 +53,8 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                             )
                         )
                     }
-                    model.userModel = it.user()?.let {
-                        BasicUserModel().also { user ->
+                    model.userPrefModel = it.user()?.let {
+                        UserPrefModel().also { user ->
                             user.userId = it.id()
                             user.userName = it.name()
                             user.avatar = it.avatar()?.let {
@@ -117,8 +117,8 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                             )
                         )
                     }
-                    model.userModel = it.user()?.let {
-                        BasicUserModel().also { user ->
+                    model.userPrefModel = it.user()?.let {
+                        UserPrefModel().also { user ->
                             user.userId = it.id()
                             user.userName = it.name()
                             user.avatar = it.avatar()?.let {

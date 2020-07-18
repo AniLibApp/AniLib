@@ -222,16 +222,16 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
     }
 
     private fun View.createActivityNotif(item: ActivityNotification) {
-        notificationMediaDrawee.setImageURI(item.userModel?.avatar?.image)
+        notificationMediaDrawee.setImageURI(item.userPrefModel?.avatar?.image)
         notificationTitleTv.text = context.getString(R.string.s_space_s)
-            .format(item.userModel?.userName, item.context)
+            .format(item.userPrefModel?.userName, item.context)
         notificationCreatedTv.text = item.createdAt
     }
 
     private fun View.createThreadNotif(item: ThreadNotification) {
-        notificationMediaDrawee.setImageURI(item.userModel?.avatar?.image)
+        notificationMediaDrawee.setImageURI(item.userPrefModel?.avatar?.image)
         notificationTitleTv.text = context.getString(R.string.thread_notif_s)
-            .format(item.userModel?.userName, item.context, item.threadModel?.title)
+            .format(item.userPrefModel?.userName, item.context, item.threadModel?.title)
         notificationCreatedTv.text = item.createdAt
     }
 }

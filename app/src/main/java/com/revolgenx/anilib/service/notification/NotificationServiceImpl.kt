@@ -7,7 +7,7 @@ import com.revolgenx.anilib.constant.NotificationUnionType
 import com.revolgenx.anilib.constant.TEXT_ACTIVITY
 import com.revolgenx.anilib.field.notification.NotificationField
 import com.revolgenx.anilib.fragment.NotificationActivity
-import com.revolgenx.anilib.model.BasicUserModel
+import com.revolgenx.anilib.model.UserPrefModel
 import com.revolgenx.anilib.model.UserAvatarImageModel
 import com.revolgenx.anilib.model.activity.ListActivityModel
 import com.revolgenx.anilib.model.activity.MessageActivityModel
@@ -64,7 +64,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 type = it.type()?.ordinal
                                 notificationUnionType = NotificationUnionType.FOLLOWING
                                 userModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    BasicUserModel().also { user ->
+                                    UserPrefModel().also { user ->
                                         user.userId = it.id()
                                         user.userName = it.name()
                                         user.avatar = it.avatar()?.let {
@@ -87,8 +87,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 baseId = it.id()
                                 type = it.type()?.ordinal
                                 notificationUnionType = NotificationUnionType.ACTIVITY_MESSAGE
-                                userModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    BasicUserModel().also { user ->
+                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
+                                    UserPrefModel().also { user ->
                                         user.userId = it.id()
                                         user.userName = it.name()
                                         user.avatar = it.avatar()?.let {
@@ -122,8 +122,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.ACTIVITY_MENTION
                                 activityId = it.activityId()
                                 context = it.context()
-                                userModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    BasicUserModel().also { user ->
+                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
+                                    UserPrefModel().also { user ->
                                         user.userId = it.id()
                                         user.userName = it.name()
                                         user.avatar = it.avatar()?.let {
@@ -179,8 +179,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.ACTIVITY_REPLY
                                 activityId = it.activityId()
                                 context = it.context()
-                                userModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    BasicUserModel().also { user ->
+                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
+                                    UserPrefModel().also { user ->
                                         user.userId = it.id()
                                         user.userName = it.name()
                                         user.avatar = it.avatar()?.let {
@@ -235,8 +235,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.ACTIVITY_REPLY
                                 activityId = it.activityId()
                                 context = it.context()
-                                userModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    BasicUserModel().also { user ->
+                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
+                                    UserPrefModel().also { user ->
                                         user.userId = it.id()
                                         user.userName = it.name()
                                         user.avatar = it.avatar()?.let {
@@ -291,8 +291,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.ACTIVITY_LIKE
                                 activityId = it.activityId()
                                 context = it.context()
-                                userModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    BasicUserModel().also { user ->
+                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
+                                    UserPrefModel().also { user ->
                                         user.userId = it.id()
                                         user.userName = it.name()
                                         user.avatar = it.avatar()?.let {
@@ -343,8 +343,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 baseId = it.id()
                                 type = it.type()?.ordinal
                                 notificationUnionType = NotificationUnionType.ACTIVITY_REPLY_LIKE
-                                userModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    BasicUserModel().also { user ->
+                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
+                                    UserPrefModel().also { user ->
                                         user.userId = it.id()
                                         user.userName = it.name()
                                         user.avatar = it.avatar()?.let {
@@ -399,9 +399,9 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 baseId = it.id()
                                 type = it.type()?.ordinal
                                 notificationUnionType = NotificationUnionType.THREAD_COMMENT_MENTION
-                                userModel =
+                                userPrefModel =
                                     it.user()?.fragments()?.notificationUserContent()?.let {
-                                        BasicUserModel().also { user ->
+                                        UserPrefModel().also { user ->
                                             user.userId = it.id()
                                             user.userName = it.name()
                                             user.avatar = it.avatar()?.let {
@@ -443,9 +443,9 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.THREAD_COMMENT_REPLY
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
 
-                                userModel =
+                                userPrefModel =
                                     it.user()?.fragments()?.notificationUserContent()?.let {
-                                        BasicUserModel().also { user ->
+                                        UserPrefModel().also { user ->
                                             user.userId = it.id()
                                             user.userName = it.name()
                                             user.avatar = it.avatar()?.let {
@@ -484,9 +484,9 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.THREAD_SUBSCRIBED
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
 
-                                userModel =
+                                userPrefModel =
                                     it.user()?.fragments()?.notificationUserContent()?.let {
-                                        BasicUserModel().also { user ->
+                                        UserPrefModel().also { user ->
                                             user.userId = it.id()
                                             user.userName = it.name()
                                             user.avatar = it.avatar()?.let {
@@ -525,9 +525,9 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.THREAD_COMMENT_LIKE
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
 
-                                userModel =
+                                userPrefModel =
                                     it.user()?.fragments()?.notificationUserContent()?.let {
-                                        BasicUserModel().also { user ->
+                                        UserPrefModel().also { user ->
                                             user.userId = it.id()
                                             user.userName = it.name()
                                             user.avatar = it.avatar()?.let {
@@ -565,9 +565,9 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 type = it.type()?.ordinal
                                 notificationUnionType = NotificationUnionType.THREAD_LIKE
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
-                                userModel =
+                                userPrefModel =
                                     it.user()?.fragments()?.notificationUserContent()?.let {
-                                        BasicUserModel().also { user ->
+                                        UserPrefModel().also { user ->
                                             user.userId = it.id()
                                             user.userName = it.name()
                                             user.avatar = it.avatar()?.let {

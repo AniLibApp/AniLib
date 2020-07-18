@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.model.review
 
 import com.revolgenx.anilib.model.BaseModel
-import com.revolgenx.anilib.model.BasicUserModel
+import com.revolgenx.anilib.model.UserPrefModel
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.model.markwon.MarkdownModel
 
@@ -14,7 +14,7 @@ open class ReviewModel : BaseModel() {
     var ratingAmount: Int? = null
     var score: Int? = null
     var private: Boolean? = null
-    var userModel: BasicUserModel? = null
+    var userPrefModel: UserPrefModel? = null
     var mediaModel: CommonMediaModel? = null
     var createdAt: String? = null
 }
