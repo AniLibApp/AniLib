@@ -17,10 +17,7 @@ import io.noties.markwon.RenderProps
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.html.tag.SimpleTagHandler
-import io.noties.markwon.image.AsyncDrawableSpan
-import io.noties.markwon.image.DrawableUtils
-import io.noties.markwon.image.ImageProps
-import io.noties.markwon.image.ImageSize
+import io.noties.markwon.image.*
 import org.commonmark.node.Image
 import java.util.*
 
@@ -28,7 +25,7 @@ class YoutubeTagPlugin(private val context: Context) : CustomPlugin() {
     private val playBitMapDrawable: YoutubePlayBitmapDrawable?
         get() = YoutubePlayBitmapDrawable(context)
 
-    companion object{
+    companion object {
         val youtubeRegex =
             Regex("(?:youtube(?:-nocookie)?\\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\\.be/)([^\"&?/ ]{11})")
     }
@@ -42,22 +39,29 @@ class YoutubeTagPlugin(private val context: Context) : CustomPlugin() {
                     tag: HtmlTag
                 ): Any? {
                     if (tag.attributes()[CLASS] != YOUTUBE) return null
-                        val source = tag.attributes()[ID] ?: return null
+                    val source = tag.attributes()[ID] ?: return null
                     val containsSpoiler = tag.attributes()[ALT] == MARKDOWN_SPOILER
 
                     renderProps.set(
                         ImageProps.DESTINATION,
-                        String.format(YOUTUBE_IMG_URL, youtubeRegex.find(source)?.groupValues?.get(1) ?: "")
+                        String.format(
+                            YOUTUBE_IMG_URL,
+                            youtubeRegex.find(source)?.groupValues?.get(1) ?: ""
+                        )
                     )
                     renderProps.set(
                         ImageProps.IMAGE_SIZE,
                         ImageSize(ImageSize.Dimension(100f, "%"), null)
                     )
 
-                    val youtubeSpan = configuration.spansFactory().get(Image::class.java)?.getSpans(
+                    var youtubeSpan = configuration.spansFactory().get(Image::class.java)?.getSpans(
                         configuration,
                         renderProps
-                    ) as AsyncDrawableSpan
+                    ) as? AsyncDrawableSpan
+
+                    if (youtubeSpan == null){
+                        youtubeSpan = ImageSpanFactory().getSpans(configuration, renderProps) as AsyncDrawableSpan
+                    }
 
 
                     youtubeSpan.drawable.result = if (!containsSpoiler) LayerDrawable(

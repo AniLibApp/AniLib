@@ -29,11 +29,12 @@ class AiringSource(
     override fun onPageClosed(page: Page) {
         super.onPageClosed(page)
         page.elements().forEach {
-            (it.data as AiringMediaModel).airingTimeModel?.commonTimer?.handler?.removeCallbacksAndMessages(
-                null
-            )
-            (it.data as AiringMediaModel).airingTimeModel?.commonTimer?.handler = null
+            if (it.data is AiringMediaModel) {
+                (it.data as? AiringMediaModel)?.airingTimeModel?.commonTimer?.handler?.removeCallbacksAndMessages(
+                    null
+                )
+                (it.data as? AiringMediaModel)?.airingTimeModel?.commonTimer?.handler = null
+            }
         }
     }
-
 }

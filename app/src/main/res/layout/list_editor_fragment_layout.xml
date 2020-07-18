@@ -130,7 +130,9 @@
                 android:id="@+id/listEditorToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin"
+                app:contentInsetStart="0dp"
+                app:contentInsetEnd="0dp"/>
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -279,12 +281,31 @@
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="80dp"
                     android:background="@null"
                     android:minHeight="48dp"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp"
                     android:textSize="16sp" />
+
+                <LinearLayout
+                    android:id="@+id/advancedScoreLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="80dp" >
+
+                    <com.pranavpandey.android.dynamic.support.view.DynamicHeader
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:ads_fillSpace="true"
+                        app:ads_title="@string/advanced_scores" />
+
+                    <com.revolgenx.anilib.view.advance_score.AdvancedScoreView
+                        android:id="@+id/advanceScoreView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
         </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

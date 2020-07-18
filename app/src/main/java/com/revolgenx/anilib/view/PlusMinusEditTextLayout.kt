@@ -16,6 +16,7 @@ import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.makeToast
 
+//todo add min max filter
 class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set: Int = 0) :
     RelativeLayout(context, attributeSet, set) {
 
@@ -51,7 +52,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
             dynamicNumberEditText.inputType = field!!
         }
 
-    val dynamicNumberEditText by lazy {
+    private val dynamicNumberEditText by lazy {
         DynamicEditText(context, attributeSet).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, dp(40f)).also {
                 it.addRule(LEFT_OF, R.id.decrementButtonId)
@@ -60,11 +61,11 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
             }
             this.background = null
             typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
-            textSize = 16f
+            textSize = 14f
         }
     }
 
-    val dynamicIncrementIv by lazy {
+    private val dynamicIncrementIv by lazy {
         DynamicImageView(context, attributeSet).apply {
             this.id = R.id.incrementButtonId
             layoutParams = LayoutParams(
@@ -79,7 +80,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
             this.color = accentColor
         }
     }
-    val dynamicDecrementIv by lazy {
+    private val dynamicDecrementIv by lazy {
         DynamicImageView(context, attributeSet).apply {
             this.id = R.id.decrementButtonId
             layoutParams = LayoutParams(
@@ -162,6 +163,11 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
             return
         }
         counterHolder = counter
+        if(max != null) {
+            if (counter > max!!) {
+                counterHolder = max!!
+            }
+        }
         updateDynamicText()
     }
 

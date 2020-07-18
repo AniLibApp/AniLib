@@ -22,7 +22,6 @@ import com.facebook.imagepipeline.image.CloseableStaticBitmap
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.activity.ToolbarContainerActivity
 import com.revolgenx.anilib.activity.UserProfileActivity
@@ -271,15 +270,15 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
     }
 
     private fun createThreadNotif(item: ThreadNotification): String {
-        notificationImage = item.userModel?.avatar?.image
+        notificationImage = item.userPrefModel?.avatar?.image
         return context.getString(R.string.thread_notif_s)
-            .format(item.userModel?.userName, item.context, item.threadModel?.title)
+            .format(item.userPrefModel?.userName, item.context, item.threadModel?.title)
     }
 
     private fun createActivityNotif(item: ActivityNotification): String {
-        notificationImage = item.userModel?.avatar?.image
+        notificationImage = item.userPrefModel?.avatar?.image
         return context.getString(R.string.s_space_s)
-            .format(item.userModel?.userName, item.context)
+            .format(item.userPrefModel?.userName, item.context)
     }
 
     private fun createThreadPendingLink(thread: ThreadNotification) {
@@ -359,7 +358,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
         val intent = Intent(context, UserProfileActivity::class.java).also {
             it.putExtra(
                 UserProfileActivity.USER_ACTIVITY_META_KEY,
-                UserMeta(item.userModel?.userId, null)
+                UserMeta(item.userPrefModel?.userId, null)
             )
         }
         pendingIntent =

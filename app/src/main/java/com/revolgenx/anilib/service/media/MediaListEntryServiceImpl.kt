@@ -7,6 +7,7 @@ import com.revolgenx.anilib.DeleteMediaListEntryMutation
 import com.revolgenx.anilib.MediaListEditorQuery
 import com.revolgenx.anilib.SaveMediaListEntryMutation
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
+import com.revolgenx.anilib.model.entry.AdvancedScore
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.preference.userScoreFormat
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
@@ -35,10 +36,17 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
                 .format(ScoreFormat.values()[context.userScoreFormat()])
                 .build()
         ).map { response ->
-            response.data()?.MediaList()!!.fragments().mediaListContent().toListEditorMediaModel()
-                .also {
-                    it.score = response.data()?.MediaList()!!.score()!!
-                }
+            response.data()?.MediaList()!!.let { mediaList ->
+                mediaList.fragments().mediaListContent().toListEditorMediaModel()
+                    .also {
+                        it.score = mediaList.score()!!
+                        it.advancedScoring =
+                            (mediaList.advancedScores() as? Map<String, Double>)?.map {
+                                AdvancedScore(it.key, it.value)
+                            }
+                        it.isUserList = true
+                    }
+            }
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 mediaQueryEntryLiveData.value = Resource.success(it)
@@ -85,6 +93,9 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
                 model.score?.let {
                     score(model.score)
                 }
+                model.advancedScoring?.let {
+                    advanceScores(it.map { it.score })
+                }
                 model.repeat?.let {
                     repeat(model.repeat)
                 }
@@ -94,16 +105,18 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
 
                 model.startDate?.year?.let {
                     startedAt(
-                        FuzzyDateInput.builder().day(model.startDate!!.day).month(model.startDate!!.month).year(
-                            it
-                        ).build()
+                        FuzzyDateInput.builder().day(model.startDate!!.day)
+                            .month(model.startDate!!.month).year(
+                                it
+                            ).build()
                     )
                 } ?: startedAt(null)
                 model.endDate?.year?.let {
-                    startedAt(
-                        FuzzyDateInput.builder().day(model.endDate!!.day).month(model.endDate!!.month).year(
-                            it
-                        ).build()
+                    completedAt(
+                        FuzzyDateInput.builder().day(model.endDate!!.day)
+                            .month(model.endDate!!.month).year(
+                                it
+                            ).build()
                     )
                 } ?: completedAt(null)
             }.build()

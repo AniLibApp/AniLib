@@ -5,7 +5,10 @@ import com.revolgenx.anilib.MediaOverViewQuery
 import com.revolgenx.anilib.MediaWatchQuery
 import com.revolgenx.anilib.fragment.*
 import com.revolgenx.anilib.model.*
+import com.revolgenx.anilib.model.entry.AdvancedScore
 import com.revolgenx.anilib.model.entry.MediaEntryListModel
+import com.revolgenx.anilib.model.list.MediaListOptionModel
+import com.revolgenx.anilib.model.list.MediaListOptionTypeModel
 import com.revolgenx.anilib.util.pmap
 import kotlinx.coroutines.runBlocking
 
@@ -26,7 +29,7 @@ fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel): CommonMediaModel
     model.chapters = chapters()?.toString()
     model.volumes = volumes()?.toString()
     model.status = status()?.ordinal
-    model.coverImage = coverImage()?.let {image->
+    model.coverImage = coverImage()?.let { image ->
         CoverImageModel().also { img ->
             img.medium = image.medium()
             img.large = image.large()
@@ -68,10 +71,26 @@ fun BasicMediaContent.toBasicMediaContent() = CommonMediaModel().also { media ->
     media.bannerImage = bannerImage()
 }
 
-fun BasicUserQuery.User.toBasicUserModel() = BasicUserModel().also {
+fun BasicUserQuery.User.toBasicUserModel() = UserPrefModel().also {
     it.userId = id()
     it.userName = name()
-    it.scoreFormat = mediaListOptions()!!.scoreFormat()!!.ordinal
+    it.mediaListOption = mediaListOptions()?.let {
+        MediaListOptionModel().apply {
+            scoreFormat = it.scoreFormat()!!.ordinal
+            animeList = it.animeList()?.let {
+                MediaListOptionTypeModel().also { typeModel ->
+                    typeModel.advancedScoringEnabled = it.advancedScoringEnabled()!!
+                    typeModel.advancedScoring = it.advancedScoring()?.map { AdvancedScore(it, 0.0) }
+                }
+            }
+            mangaList = it.mangaList()?.let {
+                MediaListOptionTypeModel().also { typeModel ->
+                    typeModel.advancedScoringEnabled = it.advancedScoringEnabled()!!
+                    typeModel.advancedScoring = it.advancedScoring()?.map { AdvancedScore(it, 0.0) }
+                }
+            }
+        }
+    }
     it.avatar = avatar()?.let {
         UserAvatarImageModel().also { img ->
             img.large = avatar()!!.large()

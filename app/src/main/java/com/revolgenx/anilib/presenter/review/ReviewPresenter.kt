@@ -26,7 +26,7 @@ class ReviewPresenter(context: Context) : Presenter<ReviewModel>(context) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
         holder.itemView.apply {
-            item.userModel?.let { user ->
+            item.userPrefModel?.let { user ->
                 reviewByTv.text = context.getString(R.string.review_of_s_by_s).format(
                     item.mediaModel?.title?.title(context),
                     user.userName

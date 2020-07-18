@@ -71,7 +71,7 @@ class ReviewFragment : BaseToolbarFragment() {
     private fun initListener() {
         if (viewModel.field.model == null) return
         reviewByIv.setOnClickListener {
-            UserBrowseEvent(viewModel.field.model?.userModel?.userId).postEvent
+            UserBrowseEvent(viewModel.field.model?.userPrefModel?.userId).postEvent
         }
     }
 
@@ -98,8 +98,8 @@ class ReviewFragment : BaseToolbarFragment() {
                     ).postEvent
                 }
             }
-            reviewByIv.setImageURI(userModel?.avatar?.image)
-            reviewByTv.text = getString(R.string.review_by).format(userModel?.userName)
+            reviewByIv.setImageURI(userPrefModel?.avatar?.image)
+            reviewByTv.text = getString(R.string.review_by).format(userPrefModel?.userName)
             createdAtTv.text = createdAt
             reviewByScoreTv.text = getString(R.string.review_score_format).format(score?.toString())
             MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(reviewTv, body.html ?: "")

@@ -37,7 +37,7 @@ class MediaReviewPresenter(context: Context) : Presenter<MediaReviewModel>(conte
         val item = element.data ?: return
 
         holder.itemView.apply {
-            reviewUserIv.setImageURI(item.userModel?.avatar?.large)
+            reviewUserIv.setImageURI(item.userPrefModel?.avatar?.large)
 
             reviewSummaryTv.text = item.summary
             likedReviewTv.text = item.rating?.toString()
@@ -56,7 +56,7 @@ class MediaReviewPresenter(context: Context) : Presenter<MediaReviewModel>(conte
             )
 
             reviewUserIv.setOnClickListener {
-                UserBrowseEvent(item.userModel?.userId ?: -1).postEvent
+                UserBrowseEvent(item.userPrefModel?.userId ?: -1).postEvent
             }
 
             reviewContainer.setOnClickListener{
