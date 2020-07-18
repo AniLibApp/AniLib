@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.fragment
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -23,10 +24,12 @@ import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.meta.ListEditorResultMeta
 import com.revolgenx.anilib.model.DateModel
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
+import com.revolgenx.anilib.preference.getUserPrefModel
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.preference.userScoreFormat
 import com.revolgenx.anilib.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.util.COLLAPSED
 import com.revolgenx.anilib.util.EXPANDED
 import com.revolgenx.anilib.util.makeToast
@@ -36,29 +39,32 @@ import kotlinx.android.synthetic.main.list_editor_fragment_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.util.*
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 
-//todo:// check for manga
 class EntryListEditorFragment : BaseFragment() {
 
     companion object {
-        const val LIST_EDITOR_MODEL = "list_editor_model"
         const val LIST_EDITOR_META_KEY = "list_editor_meta_key"
     }
 
     private var state = COLLAPSED //collapsed
-    private var fetched = false
     private lateinit var mediaMeta: ListEditorMeta
     private val viewModel by viewModel<MediaEntryEditorViewModel>()
-    private var modelEntry: EntryListEditorMediaModel? = null
 
     private var saving = false
     private var deleting = false
     private var toggling = false
-    private var apiModelEntry: EntryListEditorMediaModel? = null
     private var isFavourite = false
+
+    private var apiModelEntry
+        get() = viewModel.apiModelEntry
+        set(value) {
+            viewModel.apiModelEntry = value
+        }
 
 
     private val calendarDrawable by lazy {
@@ -141,14 +147,8 @@ class EntryListEditorFragment : BaseFragment() {
                     listEditorContainer.visibility = View.VISIBLE
                     progressLayout.visibility = View.VISIBLE
                     errorLayout.visibility = View.GONE
-                    fetched = true
-                    modelEntry = resource.data
-
-                    apiModelEntry = if (savedInstanceState == null) {
-                        if (modelEntry == null) createListEditorMediaModel() else modelEntry
-                    } else {
-                        savedInstanceState.getParcelable(LIST_EDITOR_MODEL)
-                            ?: if (modelEntry == null) createListEditorMediaModel() else modelEntry
+                    if (apiModelEntry == null) {
+                        apiModelEntry = resource.data ?: createListEditorMediaModel()
                     }
                     updateView()
                     invalidateOptionMenu()
@@ -158,14 +158,12 @@ class EntryListEditorFragment : BaseFragment() {
                     listEditorContainer.visibility = View.GONE
                     progressLayout.visibility = View.GONE
                     errorLayout.visibility = View.VISIBLE
-                    fetched = false
                 }
                 LOADING -> {
                     resourceStatusContainer.visibility = View.VISIBLE
                     listEditorContainer.visibility = View.GONE
                     progressLayout.visibility = View.VISIBLE
                     errorLayout.visibility = View.GONE
-                    fetched = false
                 }
             }
         })
@@ -211,7 +209,7 @@ class EntryListEditorFragment : BaseFragment() {
                     ListEditorResultEvent(
                         ListEditorResultMeta(
                             apiModelEntry!!.mediaId,
-                            apiModelEntry!!.progress?:0,
+                            apiModelEntry!!.progress ?: 0,
                             apiModelEntry!!.status
                         )
                     ).postSticky
@@ -237,7 +235,7 @@ class EntryListEditorFragment : BaseFragment() {
                         ListEditorResultMeta(
                             apiModelEntry!!.mediaId,
                             status = apiModelEntry!!.status,
-                            deleted =  true
+                            deleted = true
                         )
                     ).postSticky
                     finishActivity()
@@ -373,6 +371,7 @@ class EntryListEditorFragment : BaseFragment() {
         listEditorBannerImage.setImageURI(mediaMeta.bannerImage)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initListener() {
         appbarLayout.addOnOffsetChangedListener(offSetChangeListener)
 
@@ -440,9 +439,9 @@ class EntryListEditorFragment : BaseFragment() {
                         }
                     updateView()
                 },
-                apiModelEntry!!.startDate?.year ?: calendar.get(Calendar.YEAR),
-                apiModelEntry!!.startDate?.month?.minus(1) ?: calendar.get(Calendar.MONTH),
-                apiModelEntry!!.startDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
+                apiModelEntry!!.endDate?.year ?: calendar.get(Calendar.YEAR),
+                apiModelEntry!!.endDate?.month?.minus(1) ?: calendar.get(Calendar.MONTH),
+                apiModelEntry!!.endDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
 
@@ -487,26 +486,72 @@ class EntryListEditorFragment : BaseFragment() {
         totalRewatchesLayout.textChangeListener {
             apiModelEntry!!.repeat = it.toString().toInt()
         }
+
+        advanceScoreView.advanceScoreObserver = {
+            apiModelEntry?.advancedScoring?.let { advanceScoring ->
+                val meanScore = advanceScoring.map { it.score }.sum().div(advanceScoring.count { it.score != 0.0 }.takeIf { it != 0 } ?: 1)
+                listEditorScoreLayout.mediaListScore  = (meanScore * 10).roundToInt() / 10.0
+            }
+        }
     }
 
     private fun updateView() {
-        if (apiModelEntry == null) return
-        apiModelEntry!!.status?.let {
-            statusSpinner.setSelection(it)
-        }
-        listEditorScoreLayout.mediaListScore = apiModelEntry!!.score ?: 0.0
-        privateToggleButton.checked = apiModelEntry!!.private == true
-        listEditorEpisodeLayout.setCounter(apiModelEntry!!.progress?.toDouble())
-        totalRewatchesLayout.setCounter(apiModelEntry!!.repeat?.toDouble())
-        listEditorVolumeProgressLayout.setCounter(apiModelEntry!!.progressVolumes?.toDouble())
-        notesEt.setText(apiModelEntry!!.notes)
+        apiModelEntry?.let { entry ->
+            entry.status?.let {
+                statusSpinner.setSelection(it)
+            }
+            listEditorScoreLayout.mediaListScore = entry.score ?: 0.0
+            privateToggleButton.checked = entry.private == true
+            listEditorEpisodeLayout.setCounter(entry.progress?.toDouble())
+            totalRewatchesLayout.setCounter(entry.repeat?.toDouble())
+            listEditorVolumeProgressLayout.setCounter(entry.progressVolumes?.toDouble())
+            notesEt.setText(entry.notes)
 
-        if (apiModelEntry!!.startDate?.year != null) {
-            startDateDynamicEt.setText(apiModelEntry!!.startDate!!.let { "${it.year}-${it.month}-${it.day}" })
-        }
+            if (entry.startDate?.year != null) {
+                startDateDynamicEt.setText(apiModelEntry!!.startDate!!.let { "${it.year}-${it.month}-${it.day}" })
+            }
 
-        if (apiModelEntry!!.endDate?.year != null) {
-            endDateDynamicEt.setText(apiModelEntry!!.endDate!!.let { "${it.year}-${it.month}-${it.day}" })
+            if (entry.endDate?.year != null) {
+                endDateDynamicEt.setText(apiModelEntry!!.endDate!!.let { "${it.year}-${it.month}-${it.day}" })
+            }
+
+            getUserPrefModel(requireContext()).mediaListOption?.let { option ->
+                if (option.scoreFormat == ScoreFormat.POINT_10_DECIMAL.ordinal || option.scoreFormat == ScoreFormat.POINT_100.ordinal) {
+                    if (entry.type == MediaType.ANIME.ordinal) {
+                        option.animeList?.let { animeListOption ->
+                            if (animeListOption.advancedScoringEnabled) {
+                                if (entry.advancedScoring == null) {
+                                    entry.advancedScoring = option.animeList?.advancedScoring
+                                }
+                                if (entry.advancedScoring != null) {
+                                    advanceScoreView.setAdvanceScore(entry.advancedScoring!!)
+                                } else {
+                                    advancedScoreLayout.visibility = View.GONE
+                                }
+                            } else {
+                                advancedScoreLayout.visibility = View.GONE
+                            }
+                        }
+                    } else {
+                        option.mangaList?.let { mangaListOptions ->
+                            if (mangaListOptions.advancedScoringEnabled) {
+                                if (entry.advancedScoring == null) {
+                                    entry.advancedScoring = option.mangaList?.advancedScoring
+                                }
+                                if (entry.advancedScoring != null) {
+                                    advanceScoreView.setAdvanceScore(entry.advancedScoring!!)
+                                } else {
+                                    advancedScoreLayout.visibility = View.GONE
+                                }
+                            } else {
+                                advancedScoreLayout.visibility = View.GONE
+                            }
+                        }
+                    }
+                }else{
+                    advancedScoreLayout.visibility = View.GONE
+                }
+            }
         }
     }
 
@@ -540,7 +585,7 @@ class EntryListEditorFragment : BaseFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (state == EXPANDED) {
-            if (modelEntry == null) {
+            if (apiModelEntry?.isUserList == false) {
                 listDeleteButton.visibility = View.GONE
             } else {
                 listDeleteButton.visibility = View.VISIBLE
@@ -554,7 +599,7 @@ class EntryListEditorFragment : BaseFragment() {
 
         inflater.inflate(R.menu.list_editor_menu, menu)
 
-        if (modelEntry == null) {
+        if (apiModelEntry?.isUserList == false) {
             menu.findItem(R.id.listDeleteMenu).isVisible = false
             listDeleteButton.visibility = View.GONE
         } else {
@@ -565,11 +610,6 @@ class EntryListEditorFragment : BaseFragment() {
             val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite)
             menu.findItem(R.id.listFavMenu).icon = drawable
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(LIST_EDITOR_MODEL, apiModelEntry)
-        super.onSaveInstanceState(outState)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -599,10 +639,18 @@ class EntryListEditorFragment : BaseFragment() {
 
 
     private fun setToolbarTheme() {
-        listEditorCollapsingToolbar.setStatusBarScrimColor(DynamicTheme.getInstance().get().primaryColorDark)
-        listEditorCollapsingToolbar.setContentScrimColor(DynamicTheme.getInstance().get().primaryColor)
-        listEditorCollapsingToolbar.setCollapsedTitleTextColor(DynamicTheme.getInstance().get().tintPrimaryColor)
-        listEditorCollapsingToolbar.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
+        listEditorCollapsingToolbar.setStatusBarScrimColor(
+            DynamicTheme.getInstance().get().primaryColorDark
+        )
+        listEditorCollapsingToolbar.setContentScrimColor(
+            DynamicTheme.getInstance().get().primaryColor
+        )
+        listEditorCollapsingToolbar.setCollapsedTitleTextColor(
+            DynamicTheme.getInstance().get().tintPrimaryColor
+        )
+        listEditorCollapsingToolbar.setBackgroundColor(
+            DynamicTheme.getInstance().get().backgroundColor
+        )
     }
 
 

@@ -4,7 +4,7 @@ import com.revolgenx.anilib.MediaListCollectinoQuery
 import com.revolgenx.anilib.field.BaseSourceField
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
-
+//TODO://MediaListCollectinoQuery TYPO
 class MediaListField : BaseSourceField<MediaListCollectinoQuery>() {
     var userId: Int? = null
     var userName: String? = null

@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.model.user
 
-import com.revolgenx.anilib.model.BasicUserModel
+import com.revolgenx.anilib.model.UserPrefModel
 
-class UserFollowersModel:BasicUserModel() {
+class UserFollowersModel:UserPrefModel() {
 
 }
