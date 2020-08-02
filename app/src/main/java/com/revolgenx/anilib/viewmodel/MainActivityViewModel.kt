@@ -22,9 +22,9 @@ class MainActivityViewModel(
 ) : ViewModel() {
 
 
-    var genreTagFields: MutableList<TagField>? = null
-    var tagTagFields: MutableList<TagField>? = null
-    var streamTagFields: MutableList<TagField>? = null
+    var genreTagFields: MutableList<TagField> = mutableListOf()
+    var tagTagFields: MutableList<TagField> = mutableListOf()
+    var streamTagFields: MutableList<TagField> = mutableListOf()
 
     private val compositeDisposable by lazy {
         CompositeDisposable()
@@ -51,9 +51,9 @@ class MainActivityViewModel(
 
     override fun onCleared() {
         compositeDisposable.clear()
-        genreTagFields?.clear()
-        tagTagFields?.clear()
-        streamTagFields?.clear()
+        genreTagFields.clear()
+        tagTagFields.clear()
+        streamTagFields.clear()
         super.onCleared()
     }
 }

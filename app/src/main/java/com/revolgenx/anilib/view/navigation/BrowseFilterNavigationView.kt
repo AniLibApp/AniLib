@@ -20,6 +20,9 @@ import com.revolgenx.anilib.constant.BrowseTypes
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.model.search.filter.*
+import com.revolgenx.anilib.preference.getUserGenre
+import com.revolgenx.anilib.preference.getUserStream
+import com.revolgenx.anilib.preference.getUserTag
 import com.revolgenx.anilib.presenter.TagPresenter
 import com.revolgenx.anilib.util.hideKeyboard
 import com.revolgenx.anilib.util.onItemSelected
@@ -76,15 +79,14 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
 
     private val streamingOnList
         get() =
-            context.resources.getStringArray(R.array.streaming_on)
+            getUserStream(context)
 
     private val tagList
-        get() =
-            context.resources.getStringArray(R.array.media_tags)
+        get() = getUserTag(context)
 
     private val genreList
         get() =
-            context.resources.getStringArray(R.array.media_genre)
+            getUserGenre(context)
 
     private var genreTagMap: MutableMap<String, TagField>? = null
         get() {
@@ -134,8 +136,16 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
         addView(rView)
         rView.browseSearchInputLayout.apply {
-            this.setEndIconTintList(ColorStateList.valueOf(DynamicTheme.getInstance().get().tintAccentColor))
-            this.setStartIconTintList(ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor))
+            this.setEndIconTintList(
+                ColorStateList.valueOf(
+                    DynamicTheme.getInstance().get().tintAccentColor
+                )
+            )
+            this.setStartIconTintList(
+                ColorStateList.valueOf(
+                    DynamicTheme.getInstance().get().accentColor
+                )
+            )
         }
         updateTheme(rView)
         updateView(rView)
@@ -161,7 +171,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
 
     fun buildGenreAdapter(builder: Adapter.Builder, list: List<TagField>) {
         list.forEach {
-            genreTagMap!![it.tag]?.isTagged = it.isTagged
+            genreTagMap!![it.tag] = it
         }
         invalidateGenreAdapter(builder)
     }
@@ -172,6 +182,31 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
             tagTagMap!![it.tag]?.isTagged = it.isTagged
         }
         invalidateTagAdapter(builder)
+    }
+
+    fun addTagField(list: List<TagField>) {
+        list.forEach { tagTagMap!![it.tag] = it }
+    }
+
+    fun addGenreField(list: List<TagField>) {
+        list.forEach { genreTagMap!![it.tag] = it }
+
+    }
+
+    fun addStreamField(list: List<TagField>) {
+        list.forEach { streamingTagMap!![it.tag] = it }
+    }
+
+    fun removeTagField(list: List<TagField>) {
+        list.forEach { tagTagMap!!.remove(it.tag) }
+    }
+
+    fun removeGenreField(list: List<TagField>) {
+        list.forEach { genreTagMap!!.remove(it.tag) }
+    }
+
+    fun removeStreamField(list: List<TagField>) {
+        list.forEach { streamingTagMap!!.remove(it.tag) }
     }
 
 
