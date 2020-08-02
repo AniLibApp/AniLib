@@ -539,7 +539,8 @@ query MediaSearchQuery($search:String, $page:Int, $perPage:Int
     ,$genre:[String]
     ,$tag:[String]
     ,$sort:[MediaSort]
-    ,$country:CountryCode){
+    ,$country:CountryCode
+    ,$isAdult:Boolean){
     Page(page:$page,perPage:$perPage){
         media(search:$search
             , type:$type
@@ -555,7 +556,7 @@ query MediaSearchQuery($search:String, $page:Int, $perPage:Int
             , tag_in:$tag
             , sort:$sort
             , countryOfOrigin:$country
-            , isAdult:false){
+            , isAdult:$isAdult){
             id
             title{
                 romaji
