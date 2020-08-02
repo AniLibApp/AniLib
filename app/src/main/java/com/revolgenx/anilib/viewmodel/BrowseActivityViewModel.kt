@@ -8,9 +8,9 @@ import com.revolgenx.anilib.repository.util.Resource
 class BrowseActivityViewModel : ViewModel() {
     var searchQuery: String = ""
     var searchLiveData = MutableLiveData<Resource<SearchData>>()
-    var genreTagFields: MutableList<TagField>? = null
-    var tagTagFields: MutableList<TagField>? = null
-    var streamTagFields: MutableList<TagField>? = null
+    var genreTagFields: MutableList<TagField> = mutableListOf()
+    var tagTagFields: MutableList<TagField> = mutableListOf()
+    var streamTagFields: MutableList<TagField> = mutableListOf()
 
     fun searchNow() {
         searchLiveData.value =
@@ -18,9 +18,9 @@ class BrowseActivityViewModel : ViewModel() {
     }
 
     override fun onCleared() {
-        genreTagFields?.clear()
-        tagTagFields?.clear()
-        streamTagFields?.clear()
+        genreTagFields.clear()
+        tagTagFields.clear()
+        streamTagFields.clear()
         super.onCleared()
     }
 

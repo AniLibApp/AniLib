@@ -9,8 +9,8 @@ import com.revolgenx.anilib.preference.getBrowseFilterPreference
 import com.revolgenx.anilib.preference.setBrowseFilterPreference
 
 object BrowseFilterDataProvider {
-    var data: BrowseFilterModel? = null
-    val gson by lazy { Gson() }
+    private var data: BrowseFilterModel? = null
+    private val gson by lazy { Gson() }
 
     fun getBrowseFilterData(context: Context): BrowseFilterModel? {
         if (data != null) return data

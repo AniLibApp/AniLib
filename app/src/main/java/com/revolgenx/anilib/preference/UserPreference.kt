@@ -18,6 +18,7 @@ private const val userIdKey = "user_id_key"
 private const val crashReportKey = "crash_report_key"
 private const val lastNotificationKey = "last_notification_key"
 private const val versionKey = "versionKey"
+private const val sharedPrefSyncKey = "sharedPrefSyncKey"
 
 fun Context.loggedIn() = getBoolean(loggedInKey, false)
 fun Context.loggedIn(logIn: Boolean) = putBoolean(loggedInKey, logIn)
@@ -111,4 +112,12 @@ fun isCrashReportEnabled(context: Context): Boolean {
 fun enableCrashReport(context: Context, enable: Boolean) {
     context.putBoolean(crashReportKey, enable)
 }
+
+fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
+    if (synced == null) {
+        context.getBoolean(sharedPrefSyncKey, false)
+    } else {
+        context.putBoolean(sharedPrefSyncKey, synced)
+        synced
+    }
 

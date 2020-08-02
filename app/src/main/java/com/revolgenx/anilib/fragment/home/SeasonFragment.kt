@@ -11,25 +11,31 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.BrowseActivity
+import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.dialog.MediaFilterDialog
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.event.ListEditorResultEvent
+import com.revolgenx.anilib.event.TagEvent
+import com.revolgenx.anilib.event.TagOperationType
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.field.home.SeasonField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.CommonMediaModel
+import com.revolgenx.anilib.preference.getUserGenre
+import com.revolgenx.anilib.preference.getUserTag
 import com.revolgenx.anilib.presenter.SeasonPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.viewmodel.SeasonViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
-    TagChooserDialogFragment.OnDoneListener {
+    TagChooserDialogFragment.TagChooserDialogCallback {
 
     private val viewModel by viewModel<SeasonViewModel>()
 
@@ -66,10 +72,10 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             viewModel.field = SeasonField.create(requireContext())
-            requireContext().resources.getStringArray(R.array.media_tags).forEach {
+            getUserTag(requireContext()).forEach {
                 viewModel.field.tagTagFields[it] = TagField(it, false)
             }
-            requireContext().resources.getStringArray(R.array.media_genre).forEach {
+            getUserGenre(requireContext()).forEach {
                 viewModel.field.genreTagFields[it] = TagField(it, false)
             }
             viewModel.field.genres?.forEach {
@@ -113,12 +119,13 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
                 true
             }
             R.id.filterSeasonId -> {
-                MediaFilterDialog.newInstance(MediaFilterDialog.MediaFilterType.SEASON.ordinal).also {
-                    it.onDoneListener = {
-                        renewAdapter()
+                MediaFilterDialog.newInstance(MediaFilterDialog.MediaFilterType.SEASON.ordinal)
+                    .also {
+                        it.onDoneListener = {
+                            renewAdapter()
+                        }
+                        it.show(childFragmentManager, SEASON_FILTER_DIALOG_TAG)
                     }
-                    it.show(childFragmentManager, SEASON_FILTER_DIALOG_TAG)
-                }
                 true
             }
             R.id.filterSeasonGenreId -> {
@@ -136,7 +143,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
             R.id.filterSeasonTagId -> {
                 TagChooserDialogFragment.newInstance(
                     TagChooserField(
-                        requireContext().getString(R.string.genre),
+                        requireContext().getString(R.string.tags),
                         viewModel.field.tagTagFields.values.toList()
                     )
                 ).also {
@@ -183,7 +190,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
         }
     }
 
-    override fun onDone(fragmentTag: String?, list: List<TagField>) {
+    override fun onTagChooserDone(fragmentTag: String?, list: List<TagField>) {
         when (fragmentTag) {
             BrowseActivity.TAG_CHOOSER_DIALOG_TAG -> {
                 list.forEach {
@@ -202,6 +209,85 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(),
         }
 
         renewAdapter()
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onTagEvent(event: TagEvent) {
+        val fragmentTag = event.tag
+        val tagFields = event.tagFields;
+        when (event.tag) {
+            BrowseActivity.TAG_CHOOSER_DIALOG_TAG -> {
+                when (event.operationType) {
+                    TagOperationType.ADD_TAG -> {
+                        tagFields.forEach {
+                            viewModel.field.tagTagFields[it.tag] = it
+                        }
+                        addTagToNavView(fragmentTag, tagFields)
+
+                    }
+                    TagOperationType.DELETE_TAG -> {
+                        tagFields.forEach {
+                            viewModel.field.tagTagFields.remove(it.tag)
+                        }
+                        removeTagToNavView(fragmentTag, tagFields)
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+            BrowseActivity.GENRE_CHOOSER_DIALOG_TAG -> {
+                when (event.operationType) {
+                    TagOperationType.ADD_GENRE -> {
+                        tagFields.forEach {
+                        viewModel.field.genreTagFields[it.tag] = it
+                    }
+                    }
+                    TagOperationType.DELETE_GENRE -> {
+                        tagFields.forEach {
+                            viewModel.field.genreTagFields.remove(it.tag)
+                        }
+                        removeTagToNavView(fragmentTag, tagFields)
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+            else -> {
+
+            }
+        }
+    }
+
+
+    private fun addTagToNavView(fragmentTag: String?, tags: List<TagField>) {
+        when (fragmentTag) {
+            BrowseActivity.TAG_CHOOSER_DIALOG_TAG -> {
+                (activity as? MainActivity)?.mainBrowseFilterNavView?.addTagField(tags)
+            }
+            BrowseActivity.GENRE_CHOOSER_DIALOG_TAG -> {
+                (activity as? MainActivity)?.mainBrowseFilterNavView?.addGenreField(tags)
+            }
+            else -> {
+
+            }
+        }
+    }
+
+    private fun removeTagToNavView(fragmentTag: String?, tags: List<TagField>) {
+        when (fragmentTag) {
+            BrowseActivity.TAG_CHOOSER_DIALOG_TAG -> {
+                (activity as? MainActivity)?.mainBrowseFilterNavView?.removeTagField(tags)
+            }
+            BrowseActivity.GENRE_CHOOSER_DIALOG_TAG -> {
+                (activity as? MainActivity)?.mainBrowseFilterNavView?.removeGenreField(tags)
+            }
+            else -> {
+
+            }
+        }
     }
 
     private fun renewAdapter() {

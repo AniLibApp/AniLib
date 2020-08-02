@@ -28,6 +28,7 @@ import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.model.user.UserFollowerCountModel
 import com.revolgenx.anilib.model.user.UserProfileModel
+import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
@@ -57,27 +58,8 @@ class UserProfileActivity : BasePopupVideoActivity() {
         }
 
         const val USER_ACTIVITY_META_KEY = "USER_ACTIVITY_META_KEY"
-        const val combined =
-            "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n" +
-                    "\n" +
-                    "Why do we use it?\n" +
-                    "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).\n" +
-                    "\norem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n" +
-                    "\n" +
-                    "Why do we use it?\n" +
-                    "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).\n" +
-                    "\norem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n" +
-                    "\n" +
-                    "Why do we use it?\n" +
-                    "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).\n" +
-                    "\norem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n" +
-                    "\n" +
-                    "Why do we use it? <img width='440'  src='https://dream-wonderland.com/blog/wp-content/uploads/2017/08/Ohys-Raws-Aikatsu-Stars-69-TX-1280x720-x264-AAC.mp4_20170820_005650.721.jpg'>" +
-                    "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).\n" +
-                    "\n<video muted loop autoplay alt='markdown_spoiler' controls><source src='https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' type='video/webm'>video###https://media1.tenor.com/images/fcdbd7e6438f73799ba0c0704b44daa6/tenor.gif?itemid=3558286</video>\n" +
-                    "<span class='markdown_spoiler'><span><div class='youtube' alt='markdown_spoiler' id='https://www.youtube.com/watch?v=XoyLbuX8EXU'><p>youtube###https://www.youtube.com/watch?v=XoyLbuX8EXU</p></div></span></span>\n"
-
     }
+
 
     private var userProfileModel: UserProfileModel? = null
 
@@ -94,12 +76,16 @@ class UserProfileActivity : BasePopupVideoActivity() {
     private fun toggleFollow() {
         if (::userMeta.isInitialized) {
             viewModel.toggleFollowField.userId = userMeta.userId
-            viewModel.toggleFollow {
-                if (it.status == Status.SUCCESS) {
-                    updateFollowView()
-                } else if (it.status == Status.ERROR) {
-                    makeToast(R.string.operation_failed, icon = R.drawable.ic_error)
+            if (loggedIn()) {
+                viewModel.toggleFollow {
+                    if (it.status == Status.SUCCESS) {
+                        updateFollowView()
+                    } else if (it.status == Status.ERROR) {
+                        makeToast(R.string.operation_failed, icon = R.drawable.ic_error)
+                    }
                 }
+            } else {
+                makeToast(R.string.please_log_in, icon = R.drawable.ic_error)
             }
         }
     }
@@ -185,7 +171,8 @@ class UserProfileActivity : BasePopupVideoActivity() {
         }
 
         followers?.following?.let {
-            followingTv.text = getString(R.string.s_following).format("${it.prettyNumberFormat()} ")
+            followingTv.text =
+                getString(R.string.s_following).format("${it.prettyNumberFormat()} ")
         }
     }
 
@@ -292,15 +279,16 @@ class UserProfileActivity : BasePopupVideoActivity() {
         }
         seasonGenreRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        Adapter.builder(this).addSource(Source.fromList(data.genreOverView.toList())).addPresenter(
-            Presenter.simple<Pair<String, Int>>(
-                this,
-                R.layout.user_activity_genre_presenter,
-                0
-            ) { view, genres ->
-                view.userGenreHeader.title = genres.first
-                view.userGenreHeader.subtitle = genres.second.toString()
-            }).into(seasonGenreRecyclerView)
+        Adapter.builder(this).addSource(Source.fromList(data.genreOverView.toList()))
+            .addPresenter(
+                Presenter.simple<Pair<String, Int>>(
+                    this,
+                    R.layout.user_activity_genre_presenter,
+                    0
+                ) { view, genres ->
+                    view.userGenreHeader.title = genres.first
+                    view.userGenreHeader.subtitle = genres.second.toString()
+                }).into(seasonGenreRecyclerView)
 
         initListener()
     }
@@ -439,10 +427,18 @@ class UserProfileActivity : BasePopupVideoActivity() {
     }
 
     private fun setToolbarTheme() {
-        userCollapsingToolbar.setStatusBarScrimColor(DynamicTheme.getInstance().get().primaryColorDark)
-        userCollapsingToolbar.setContentScrimColor(DynamicTheme.getInstance().get().primaryColor)
-        userCollapsingToolbar.setCollapsedTitleTextColor(DynamicTheme.getInstance().get().tintPrimaryColor)
-        userCollapsingToolbar.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
+        userCollapsingToolbar.setStatusBarScrimColor(
+            DynamicTheme.getInstance().get().primaryColorDark
+        )
+        userCollapsingToolbar.setContentScrimColor(
+            DynamicTheme.getInstance().get().primaryColor
+        )
+        userCollapsingToolbar.setCollapsedTitleTextColor(
+            DynamicTheme.getInstance().get().tintPrimaryColor
+        )
+        userCollapsingToolbar.setBackgroundColor(
+            DynamicTheme.getInstance().get().backgroundColor
+        )
         userCollapsingToolbar.setExpandedTitleColor(Color.TRANSPARENT)
     }
 

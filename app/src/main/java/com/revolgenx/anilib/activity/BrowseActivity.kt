@@ -20,6 +20,8 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.event.BrowseFilterAppliedEvent
+import com.revolgenx.anilib.event.TagEvent
+import com.revolgenx.anilib.event.TagOperationType
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.fragment.BrowseFragment
@@ -27,14 +29,18 @@ import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.model.search.filter.BrowseFilterModel
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.util.DataProvider
+import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
 import com.revolgenx.anilib.viewmodel.BrowseActivityViewModel
 import kotlinx.android.synthetic.main.browse_activity_layout.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BrowseActivity : BaseDynamicActivity(),
     BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener,
-    TagChooserDialogFragment.OnDoneListener {
+    TagChooserDialogFragment.TagChooserDialogCallback {
 
     companion object {
         const val GENRE_CHOOSER_DIALOG_TAG = "genre_chooser_tag"
@@ -74,6 +80,17 @@ class BrowseActivity : BaseDynamicActivity(),
 
     private val viewModel by viewModel<BrowseActivityViewModel>()
 
+
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unRegisterForEvent()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setUpTheme()
@@ -101,13 +118,13 @@ class BrowseActivity : BaseDynamicActivity(),
     ) as? BrowseFragment
 
     private fun setUpViews() {
-        viewModel.tagTagFields?.let {
+        viewModel.tagTagFields.takeIf { it.isNotEmpty() }?.let {
             invalidateTagFilter(it)
         }
-        viewModel.genreTagFields?.let {
+        viewModel.genreTagFields.takeIf { it.isNotEmpty() }?.let {
             invalidateGenreFilter(it)
         }
-        viewModel.streamTagFields?.let {
+        viewModel.streamTagFields.takeIf { it.isNotEmpty() }?.let {
             invalidateStreamFilter(it)
         }
     }
@@ -221,7 +238,7 @@ class BrowseActivity : BaseDynamicActivity(),
                         }
                     }
                 }
-                else->{}
+                else -> {}
             }
         }
 
@@ -267,7 +284,7 @@ class BrowseActivity : BaseDynamicActivity(),
     }
 
 
-    override fun onDone(fragmentTag: String?, list: List<TagField>) {
+    override fun onTagChooserDone(fragmentTag: String?, list: List<TagField>) {
         when (fragmentTag) {
             TAG_CHOOSER_DIALOG_TAG -> {
                 invalidateTagFilter(list)
@@ -277,6 +294,107 @@ class BrowseActivity : BaseDynamicActivity(),
             }
             STREAM_CHOOSER_DIALOG_TAG -> {
                 invalidateStreamFilter(list)
+            }
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onTagEvent(event: TagEvent) {
+        val fragmentTag = event.tag
+        val tagFields = event.tagFields;
+        when (event.tag) {
+            TAG_CHOOSER_DIALOG_TAG -> {
+                when (event.operationType) {
+                    TagOperationType.ADD_TAG -> {
+                        viewModel.tagTagFields.addAll(tagFields)
+                        addTagToNavView(fragmentTag, tagFields)
+                    }
+                    TagOperationType.DELETE_TAG -> {
+                        viewModel.tagTagFields.removeAll { r ->
+                            tagFields.any { it.tag == r.tag }
+                        }
+                        removeTagToNavView(fragmentTag, tagFields)
+
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+            GENRE_CHOOSER_DIALOG_TAG -> {
+                when (event.operationType) {
+                    TagOperationType.ADD_GENRE -> {
+                        viewModel.genreTagFields.addAll(tagFields)
+                        addTagToNavView(fragmentTag, tagFields)
+                    }
+                    TagOperationType.DELETE_GENRE -> {
+                        viewModel.genreTagFields.removeAll { r ->
+                            tagFields.any { it.tag == r.tag }
+                        }
+                        removeTagToNavView(fragmentTag, tagFields)
+
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+            STREAM_CHOOSER_DIALOG_TAG -> {
+                when (event.operationType) {
+                    TagOperationType.ADD_STREAM -> {
+                        viewModel.streamTagFields.addAll(tagFields)
+                        addTagToNavView(fragmentTag, tagFields)
+                    }
+                    TagOperationType.DELETE_STREAM -> {
+                        viewModel.streamTagFields.removeAll { r ->
+                            tagFields.any { it.tag == r.tag }
+                        }
+                        removeTagToNavView(fragmentTag, tagFields)
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+            else -> {
+
+            }
+        }
+    }
+
+    private fun addTagToNavView(fragmentTag: String?, tags: List<TagField>) {
+        when (fragmentTag) {
+            TAG_CHOOSER_DIALOG_TAG -> {
+                browseFilterNavView.addTagField(tags)
+            }
+            GENRE_CHOOSER_DIALOG_TAG -> {
+                browseFilterNavView.addGenreField(tags)
+            }
+            STREAM_CHOOSER_DIALOG_TAG -> {
+                browseFilterNavView.addStreamField(tags)
+            }
+            else -> {
+
+            }
+        }
+    }
+
+
+    private fun removeTagToNavView(fragmentTag: String?, tags: List<TagField>) {
+        when (fragmentTag) {
+            TAG_CHOOSER_DIALOG_TAG -> {
+                browseFilterNavView.removeTagField(tags)
+            }
+            GENRE_CHOOSER_DIALOG_TAG -> {
+                browseFilterNavView.removeGenreField(tags)
+
+            }
+            STREAM_CHOOSER_DIALOG_TAG -> {
+                browseFilterNavView.removeStreamField(tags)
+            }
+            else -> {
+
             }
         }
     }
@@ -321,22 +439,23 @@ class BrowseActivity : BaseDynamicActivity(),
      * Called by advance search filter nav view
      * */
     override fun onGenreChoose(tags: List<TagField>) {
-        openTagChooserDialog(tags, GENRE_CHOOSER_DIALOG_TAG)
+        openTagChooserDialog(tags, GENRE_CHOOSER_DIALOG_TAG, getString(R.string.genre))
     }
 
     /**
      * Called by advance search filter nav view
      * */
     override fun onStreamChoose(tags: List<TagField>) {
-        openTagChooserDialog(tags, STREAM_CHOOSER_DIALOG_TAG)
+        openTagChooserDialog(tags, STREAM_CHOOSER_DIALOG_TAG, getString(R.string.streaming_on))
     }
 
     /**
      * Called by advance search filter nav view
      * */
     override fun onTagChoose(tags: List<TagField>) {
-        openTagChooserDialog(tags, TAG_CHOOSER_DIALOG_TAG)
+        openTagChooserDialog(tags, TAG_CHOOSER_DIALOG_TAG, getString(R.string.tags))
     }
+
 
     override fun onGenreAdd(tags: List<TagField>) {
         viewModel.genreTagFields = tags.toMutableList()
@@ -351,21 +470,15 @@ class BrowseActivity : BaseDynamicActivity(),
     }
 
     override fun onTagRemoved(tag: String) {
-        viewModel.tagTagFields?.find { it.tag == tag }?.let {
-            viewModel.tagTagFields?.remove(it)
-        }
+        viewModel.tagTagFields.removeAll { it.tag == tag }
     }
 
     override fun onGenreRemoved(tag: String) {
-        viewModel.genreTagFields?.find { it.tag == tag }?.let {
-            viewModel.genreTagFields?.remove(it)
-        }
+        viewModel.genreTagFields.removeAll { it.tag == tag }
     }
 
     override fun onStreamRemoved(tag: String) {
-        viewModel.streamTagFields?.find { it.tag == tag }?.let {
-            viewModel.streamTagFields?.remove(it)
-        }
+        viewModel.streamTagFields.removeAll { it.tag == tag }
     }
 
     /**
@@ -406,10 +519,14 @@ class BrowseActivity : BaseDynamicActivity(),
     }
 
 
-    private fun openTagChooserDialog(tags: List<TagField>, dialogTag: String) {
+    private fun openTagChooserDialog(
+        tags: List<TagField>,
+        dialogTag: String,
+        tagHeader: String
+    ) {
         TagChooserDialogFragment.newInstance(
             TagChooserField(
-                getString(R.string.tags),
+                tagHeader,
                 tags
             )
         ).apply {
