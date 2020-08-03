@@ -1,5 +1,10 @@
 v-1.1.2
+* Added custom tag feature to manually add tags, genre and streams.\n
+* optimization.
+
+v-1.1.1
 added advance scoring
 end date not persisting fix which saving media
 crash fixes
 optimization
+

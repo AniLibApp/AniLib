@@ -21,8 +21,8 @@ android {
         applicationId "com.revolgenx.anilib"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 15
-        versionName "1.1.1-base"
+        versionCode 17
+        versionName "1.1.2-base"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
