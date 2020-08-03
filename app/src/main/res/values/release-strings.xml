@@ -3,6 +3,10 @@
     <string name="release_info">
         ## Whats new!!!. \n
 
+        ### -v1.1.2-base \n
+        * Added custom tag feature to manually add tags, genre and streams.\n
+        * optimization. \n
+
         ### -v1.1.1-base \n
         * Added Advance Scoring.\n
         * Completed Date not persisting fixed.\n
