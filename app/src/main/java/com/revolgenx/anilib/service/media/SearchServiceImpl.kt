@@ -1,17 +1,11 @@
 package com.revolgenx.anilib.service.media
 
 import com.apollographql.apollo.api.Query
-import com.revolgenx.anilib.CharacterSearchQuery
-import com.revolgenx.anilib.MediaSearchQuery
-import com.revolgenx.anilib.StaffSearchQuery
-import com.revolgenx.anilib.StudioSearchQuery
-import com.revolgenx.anilib.field.browse.BrowseField
+import com.revolgenx.anilib.*
+import com.revolgenx.anilib.field.search.SearchField
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.character.CharacterNameModel
-import com.revolgenx.anilib.model.search.CharacterSearchModel
-import com.revolgenx.anilib.model.search.MediaSearchModel
-import com.revolgenx.anilib.model.search.StaffSearchModel
-import com.revolgenx.anilib.model.search.StudioSearchModel
+import com.revolgenx.anilib.model.search.*
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
@@ -19,11 +13,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
-class BrowseServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
-    BrowseService {
+class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
+    SearchService {
 
     override fun search(
-        field: BrowseField,
+        field: SearchField,
         compositeDisposable: CompositeDisposable,
         callback: (Resource<List<BaseModel>>) -> Unit
     ) {
@@ -109,28 +103,35 @@ class BrowseServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                                     model.studioName = it.name()
                                     model.studioMedia =
                                         it.media()?.nodes()
-                                            ?.filter { if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
+                                            ?.filter {
+                                                if (field.canShowAdult) true else it.fragments()
+                                                    .commonMediaContent().isAdult == false
+                                            }
                                             ?.map {
                                                 it.fragments().commonMediaContent().let {
                                                     MediaSearchModel().also { model ->
                                                         model.mediaId = it.id()
                                                         model.averageScore = it.averageScore()
-                                                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
-                                                            TitleModel().also { ti ->
-                                                                ti.userPreferred =
-                                                                    it.userPreferred()
-                                                                ti.romaji = it.romaji()
-                                                                ti.english = it.english()
-                                                                ti.native = it.native_()
+                                                        model.title =
+                                                            it.title()?.fragments()?.mediaTitle()
+                                                                ?.let {
+                                                                    TitleModel().also { ti ->
+                                                                        ti.userPreferred =
+                                                                            it.userPreferred()
+                                                                        ti.romaji = it.romaji()
+                                                                        ti.english = it.english()
+                                                                        ti.native = it.native_()
+                                                                    }
+                                                                }
+                                                        model.coverImage =
+                                                            it.coverImage()?.fragments()
+                                                                ?.mediaCoverImage()?.let {
+                                                                CoverImageModel().also { img ->
+                                                                    img.large = it.large()
+                                                                    img.medium = it.medium()
+                                                                    img.extraLarge = it.extraLarge()
+                                                                }
                                                             }
-                                                        }
-                                                        model.coverImage = it.coverImage()?.fragments()?.mediaCoverImage()?.let {
-                                                            CoverImageModel().also { img ->
-                                                                img.large = it.large()
-                                                                img.medium = it.medium()
-                                                                img.extraLarge = it.extraLarge()
-                                                            }
-                                                        }
                                                         model.bannerImage =
                                                             it.bannerImage()
                                                                 ?: model.coverImage?.largeImage
@@ -144,6 +145,20 @@ class BrowseServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                                 }
                             }
                         }?.filter { it.studioMedia.isNullOrEmpty().not() }
+                    }
+                    is UserSearchQuery.Data -> {
+                        data.Page()?.users()?.map {
+                            UserSearchModel().apply {
+                                userId = it.id()
+                                userName = it.name()
+                                avatar = it.avatar()?.let {
+                                    UserAvatarImageModel().also { img->
+                                        img.large = it.large()
+                                        img.medium = it.medium()
+                                    }
+                                }
+                            }
+                        }
                     }
                     else -> {
                         emptyList()

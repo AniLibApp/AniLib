@@ -44,7 +44,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ViewPagerContainerActivity" />
-        <activity android:name=".activity.BrowseActivity" />
+        <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.MediaListActivity" />
         <activity android:name=".activity.BasePopupVideoActivity" />
         <activity android:name=".activity.UserProfileActivity" />

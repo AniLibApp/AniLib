@@ -2,9 +2,9 @@ package com.revolgenx.anilib.model.search.filter
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.revolgenx.anilib.field.browse.BrowseField
+import com.revolgenx.anilib.field.search.SearchField
 
-abstract class BrowseFilterModel() : Parcelable {
+abstract class SearchFilterModel() : Parcelable {
 
     constructor(parcel: Parcel?) : this() {
         query = parcel?.readString() ?: ""
@@ -12,7 +12,7 @@ abstract class BrowseFilterModel() : Parcelable {
     abstract var type: Int
     var query: String? = null
 
-    abstract fun toField(): BrowseField
+    abstract fun toField(): SearchField
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(query)

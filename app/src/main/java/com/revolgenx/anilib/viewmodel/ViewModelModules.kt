@@ -29,7 +29,7 @@ val viewModelModules = module {
 
     //search | browse
     viewModel { BrowseActivityViewModel() }
-    viewModel { BrowseFragmentViewModel(get()) }
+    viewModel { SearchFragmentViewModel(get()) }
 
     //recommendation
     viewModel { RecommendationViewModel(get()) }

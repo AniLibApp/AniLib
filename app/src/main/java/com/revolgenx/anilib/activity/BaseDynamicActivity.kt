@@ -98,31 +98,31 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
                 )
             }
             is BrowseGenreEvent -> {
-                BrowseActivity.openActivity(
+                SearchActivity.openActivity(
                     this, event.genre
                 )
             }
 
             is BrowseTrendingEvent -> {
-                BrowseActivity.openActivity(
+                SearchActivity.openActivity(
                     this, event.trending
                 )
             }
 
             is BrowsePopularEvent -> {
-                BrowseActivity.openActivity(
+                SearchActivity.openActivity(
                     this, event.popular
                 )
             }
 
             is BrowseNewlyAddedEvent -> {
-                BrowseActivity.openActivity(
+                SearchActivity.openActivity(
                     this, event.newlyAdded
                 )
             }
 
             is BrowseEvent -> {
-                BrowseActivity.openActivity(this)
+                SearchActivity.openActivity(this)
             }
 
             is ImageClickedEvent -> {
@@ -172,7 +172,7 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
             }
 
             is BrowseTagEvent -> {
-                BrowseActivity.openActivity(
+                SearchActivity.openActivity(
                     this, event.model
                 )
             }

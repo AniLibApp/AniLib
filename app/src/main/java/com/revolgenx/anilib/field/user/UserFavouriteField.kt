@@ -1,14 +1,14 @@
 package com.revolgenx.anilib.field.user
 
 import com.revolgenx.anilib.UserFavouriteQuery
-import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.field.BaseSourceField
 
 class UserFavouriteField : BaseSourceField<UserFavouriteQuery>() {
 
     var userId: Int? = null
     var userName: String? = null
-    var favType: BrowseTypes? = null
+    var favType: SearchTypes? = null
     override fun toQueryOrMutation(): UserFavouriteQuery {
         return UserFavouriteQuery.builder().apply {
             userId?.let {
@@ -21,14 +21,14 @@ class UserFavouriteField : BaseSourceField<UserFavouriteQuery>() {
             page(page)
             perPage(perPage)
             when (favType) {
-                BrowseTypes.ANIME -> {
+                SearchTypes.ANIME -> {
                     includeAnime(true)
                     includeManga(false)
                     includeCharacter(false)
                     includeStaff(false)
                     includeStudio(false)
                 }
-                BrowseTypes.MANGA -> {
+                SearchTypes.MANGA -> {
 
                     includeAnime(false)
                     includeManga(true)
@@ -36,7 +36,7 @@ class UserFavouriteField : BaseSourceField<UserFavouriteQuery>() {
                     includeStaff(false)
                     includeStudio(false)
                 }
-                BrowseTypes.CHARACTER -> {
+                SearchTypes.CHARACTER -> {
 
                     includeAnime(false)
                     includeManga(false)
@@ -44,7 +44,7 @@ class UserFavouriteField : BaseSourceField<UserFavouriteQuery>() {
                     includeStaff(false)
                     includeStudio(false)
                 }
-                BrowseTypes.STAFF -> {
+                SearchTypes.STAFF -> {
 
                     includeAnime(false)
                     includeManga(false)
@@ -52,7 +52,7 @@ class UserFavouriteField : BaseSourceField<UserFavouriteQuery>() {
                     includeStaff(true)
                     includeStudio(false)
                 }
-                BrowseTypes.STUDIO -> {
+                SearchTypes.STUDIO -> {
 
                     includeAnime(false)
                     includeManga(false)

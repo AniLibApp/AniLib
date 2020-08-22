@@ -1,11 +1,11 @@
-package com.revolgenx.anilib.field.browse
+package com.revolgenx.anilib.field.search
 
 import com.revolgenx.anilib.StaffSearchQuery
-import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.constant.SearchTypes
 
-class StaffBrowseField : BrowseField() {
+class StaffSearchField : SearchField() {
 
-    override val type: Int =BrowseTypes.STAFF.ordinal
+    override val type: Int =SearchTypes.STAFF.ordinal
     override fun toQueryOrMutation(): Any {
         return StaffSearchQuery.builder()
             .page(page)

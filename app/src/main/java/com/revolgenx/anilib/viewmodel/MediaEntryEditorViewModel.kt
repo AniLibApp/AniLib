@@ -59,7 +59,7 @@ class MediaEntryEditorViewModel(
         CompositeDisposable()
     }
 
-    var apiModelEntry: EntryListEditorMediaModel? = null
+    var apiModelEntry: EntryListEditorMediaModel = EntryListEditorMediaModel()
 
     fun queryMediaListEntry(mediaId: Int?) {
         queryMediaListEntryLiveData.value = Resource.loading(null)

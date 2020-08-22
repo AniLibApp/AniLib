@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-        android:id="@+id/browseStudioHeader"
+        android:id="@+id/searchStudioHeader"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="10dp"
@@ -16,7 +16,7 @@
         app:ads_colorType="accent" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-        android:id="@+id/browseStudioMedia"
+        android:id="@+id/searchStudioMedia"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:nestedScrollingEnabled="false"/>

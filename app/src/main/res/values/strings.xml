@@ -406,6 +406,7 @@
         <item>Characters</item>
         <item>Staff</item>
         <item>Studios</item>
+        <item>Users</item>
     </string-array>
 
     <string-array name="advance_search_season">

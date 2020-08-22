@@ -121,6 +121,12 @@ class EntryListEditorFragment : BaseFragment() {
         arguments?.classLoader = ListEditorMeta::class.java.classLoader
         mediaMeta = arguments?.getParcelable(LIST_EDITOR_META_KEY) ?: return
 
+        apiModelEntry.also {
+            it.mediaId = mediaMeta.mediaId
+            it.type = mediaMeta.type
+            it.userId = requireContext().userId()
+        }
+
         setToolbarTheme()
         showViews()
         initListener()
@@ -147,8 +153,9 @@ class EntryListEditorFragment : BaseFragment() {
                     listEditorContainer.visibility = View.VISIBLE
                     progressLayout.visibility = View.VISIBLE
                     errorLayout.visibility = View.GONE
-                    if (apiModelEntry == null) {
-                        apiModelEntry = resource.data ?: createListEditorMediaModel()
+                    if (apiModelEntry.hasData.not() && resource.data != null) {
+                        apiModelEntry = resource.data
+                        apiModelEntry.hasData = true
                     }
                     updateView()
                     invalidateOptionMenu()
@@ -208,9 +215,9 @@ class EntryListEditorFragment : BaseFragment() {
                 SUCCESS -> {
                     ListEditorResultEvent(
                         ListEditorResultMeta(
-                            apiModelEntry!!.mediaId,
-                            apiModelEntry!!.progress ?: 0,
-                            apiModelEntry!!.status
+                            apiModelEntry.mediaId,
+                            apiModelEntry.progress,
+                            apiModelEntry.status
                         )
                     ).postSticky
                     finishActivity()
@@ -233,8 +240,8 @@ class EntryListEditorFragment : BaseFragment() {
                 SUCCESS -> {
                     ListEditorResultEvent(
                         ListEditorResultMeta(
-                            apiModelEntry!!.mediaId,
-                            status = apiModelEntry!!.status,
+                            apiModelEntry.mediaId,
+                            status = apiModelEntry.status,
                             deleted = true
                         )
                     ).postSticky
@@ -255,18 +262,6 @@ class EntryListEditorFragment : BaseFragment() {
 
         if (savedInstanceState == null)
             viewModel.queryMediaListEntry(mediaMeta.mediaId)
-    }
-
-    private fun createListEditorMediaModel(): EntryListEditorMediaModel {
-        return EntryListEditorMediaModel().also {
-            mediaMeta.mediaId?.let { id ->
-                it.mediaId = id
-            }
-            mediaMeta.type?.let { type ->
-                it.type = type
-            }
-            it.userId = requireContext().userId()
-        }
     }
 
     private fun showViews() {
@@ -391,22 +386,28 @@ class EntryListEditorFragment : BaseFragment() {
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= (startDateDynamicEt.right - startDateDynamicEt.compoundDrawablesRelative[2].bounds.width())) {
                     startDateDynamicEt.setText("")
-                    apiModelEntry!!.startDate = null
+                    apiModelEntry.startDate = null
                     true
+                } else {
+                    false
                 }
+            } else {
+                false
             }
-            false
         }
 
         endDateDynamicEt.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= (startDateDynamicEt.right - startDateDynamicEt.compoundDrawablesRelative[2].bounds.width())) {
                     endDateDynamicEt.setText("")
-                    apiModelEntry!!.endDate = null
+                    apiModelEntry.endDate = null
                     true
+                } else {
+                    false
                 }
+            } else {
+                false
             }
-            false
         }
 
 
@@ -414,34 +415,34 @@ class EntryListEditorFragment : BaseFragment() {
         startDateDynamicEt.setOnClickListener {
             DatePickerDialog(
                 requireContext(), { view, year, month, dayOfMonth ->
-                    apiModelEntry!!.startDate =
-                        (apiModelEntry!!.startDate ?: DateModel()).also {
+                    apiModelEntry.startDate =
+                        (apiModelEntry.startDate ?: DateModel()).also {
                             it.year = year
                             it.month = month + 1
                             it.day = dayOfMonth
                         }
-                    updateView()
+                    updateMediaProgressDate()
                 },
-                apiModelEntry!!.startDate?.year ?: calendar.get(Calendar.YEAR),
-                apiModelEntry!!.startDate?.month?.minus(1) ?: calendar.get(Calendar.MONTH),
-                apiModelEntry!!.startDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
+                apiModelEntry.startDate?.year ?: calendar.get(Calendar.YEAR),
+                apiModelEntry.startDate?.month?.minus(1) ?: calendar.get(Calendar.MONTH),
+                apiModelEntry.startDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
 
         endDateDynamicEt.setOnClickListener {
             DatePickerDialog(
                 requireContext(), { view, year, month, dayOfMonth ->
-                    apiModelEntry!!.endDate =
-                        (apiModelEntry!!.endDate ?: DateModel()).also {
+                    apiModelEntry.endDate =
+                        (apiModelEntry.endDate ?: DateModel()).also {
                             it.year = year
                             it.month = month + 1
                             it.day = dayOfMonth
                         }
-                    updateView()
+                    updateMediaProgressDate()
                 },
-                apiModelEntry!!.endDate?.year ?: calendar.get(Calendar.YEAR),
-                apiModelEntry!!.endDate?.month?.minus(1) ?: calendar.get(Calendar.MONTH),
-                apiModelEntry!!.endDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
+                apiModelEntry.endDate?.year ?: calendar.get(Calendar.YEAR),
+                apiModelEntry.endDate?.month?.minus(1) ?: calendar.get(Calendar.MONTH),
+                apiModelEntry.endDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
 
@@ -455,23 +456,23 @@ class EntryListEditorFragment : BaseFragment() {
                 position: Int,
                 id: Long
             ) {
-                apiModelEntry!!.status = position
+                apiModelEntry.status = position
             }
         }
 
         listEditorEpisodeLayout.textChangeListener {
-            apiModelEntry!!.progress = it.toString().toInt()
+            apiModelEntry.progress = it.toString().toInt()
         }
 
         listEditorVolumeProgressLayout.textChangeListener {
-            apiModelEntry!!.progressVolumes = it.toString().toInt()
+            apiModelEntry.progressVolumes = it.toString().toInt()
         }
 
         listEditorScoreLayout.onScoreChangeListener {
-            apiModelEntry!!.score = it.toDouble()
+            apiModelEntry.score = it.toDouble()
         }
         privateToggleButton.setToggleListener {
-            apiModelEntry!!.private = it
+            apiModelEntry.private = it
         }
 
         privateToggleButton.setOnLongClickListener {
@@ -480,84 +481,88 @@ class EntryListEditorFragment : BaseFragment() {
         }
 
         notesEt.doOnTextChanged { text, _, _, _ ->
-            apiModelEntry!!.notes = text.toString()
+            apiModelEntry.notes = text.toString()
         }
 
         totalRewatchesLayout.textChangeListener {
-            apiModelEntry!!.repeat = it.toString().toInt()
+            apiModelEntry.repeat = it.toString().toInt()
         }
 
         advanceScoreView.advanceScoreObserver = {
-            apiModelEntry?.advancedScoring?.let { advanceScoring ->
-                val meanScore = advanceScoring.map { it.score }.sum().div(advanceScoring.count { it.score != 0.0 }.takeIf { it != 0 } ?: 1)
-                listEditorScoreLayout.mediaListScore  = (meanScore * 10).roundToInt() / 10.0
+            apiModelEntry.advancedScoring?.let { advanceScoring ->
+                val meanScore = advanceScoring.map { it.score }.sum()
+                    .div(advanceScoring.count { it.score != 0.0 }.takeIf { it != 0 } ?: 1)
+                listEditorScoreLayout.mediaListScore = (meanScore * 10).roundToInt() / 10.0
             }
         }
     }
 
     private fun updateView() {
-        apiModelEntry?.let { entry ->
-            entry.status?.let {
-                statusSpinner.setSelection(it)
-            }
-            listEditorScoreLayout.mediaListScore = entry.score ?: 0.0
-            privateToggleButton.checked = entry.private == true
-            listEditorEpisodeLayout.setCounter(entry.progress?.toDouble())
-            totalRewatchesLayout.setCounter(entry.repeat?.toDouble())
-            listEditorVolumeProgressLayout.setCounter(entry.progressVolumes?.toDouble())
-            notesEt.setText(entry.notes)
+        apiModelEntry.status?.let {
+            statusSpinner.setSelection(it)
+        }
+        listEditorScoreLayout.mediaListScore = apiModelEntry.score ?: 0.0
+        privateToggleButton.checked = apiModelEntry.private == true
+        listEditorEpisodeLayout.setCounter(apiModelEntry.progress?.toDouble())
+        totalRewatchesLayout.setCounter(apiModelEntry.repeat?.toDouble())
+        listEditorVolumeProgressLayout.setCounter(apiModelEntry.progressVolumes?.toDouble())
+        notesEt.setText(apiModelEntry.notes)
 
-            if (entry.startDate?.year != null) {
-                startDateDynamicEt.setText(apiModelEntry!!.startDate!!.let { "${it.year}-${it.month}-${it.day}" })
-            }
+        updateMediaProgressDate()
 
-            if (entry.endDate?.year != null) {
-                endDateDynamicEt.setText(apiModelEntry!!.endDate!!.let { "${it.year}-${it.month}-${it.day}" })
-            }
-
-            getUserPrefModel(requireContext()).mediaListOption?.let { option ->
-                if (option.scoreFormat == ScoreFormat.POINT_10_DECIMAL.ordinal || option.scoreFormat == ScoreFormat.POINT_100.ordinal) {
-                    if (entry.type == MediaType.ANIME.ordinal) {
-                        option.animeList?.let { animeListOption ->
-                            if (animeListOption.advancedScoringEnabled) {
-                                if (entry.advancedScoring == null) {
-                                    entry.advancedScoring = option.animeList?.advancedScoring
-                                }
-                                if (entry.advancedScoring != null) {
-                                    advanceScoreView.setAdvanceScore(entry.advancedScoring!!)
-                                } else {
-                                    advancedScoreLayout.visibility = View.GONE
-                                }
+        getUserPrefModel(requireContext()).mediaListOption?.let { option ->
+            if (option.scoreFormat == ScoreFormat.POINT_10_DECIMAL.ordinal || option.scoreFormat == ScoreFormat.POINT_100.ordinal) {
+                if (apiModelEntry.type == MediaType.ANIME.ordinal) {
+                    option.animeList?.let { animeListOption ->
+                        if (animeListOption.advancedScoringEnabled) {
+                            if (apiModelEntry.advancedScoring == null) {
+                                apiModelEntry.advancedScoring = option.animeList?.advancedScoring
+                            }
+                            if (apiModelEntry.advancedScoring != null) {
+                                advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
                             } else {
                                 advancedScoreLayout.visibility = View.GONE
                             }
-                        }
-                    } else {
-                        option.mangaList?.let { mangaListOptions ->
-                            if (mangaListOptions.advancedScoringEnabled) {
-                                if (entry.advancedScoring == null) {
-                                    entry.advancedScoring = option.mangaList?.advancedScoring
-                                }
-                                if (entry.advancedScoring != null) {
-                                    advanceScoreView.setAdvanceScore(entry.advancedScoring!!)
-                                } else {
-                                    advancedScoreLayout.visibility = View.GONE
-                                }
-                            } else {
-                                advancedScoreLayout.visibility = View.GONE
-                            }
+                        } else {
+                            advancedScoreLayout.visibility = View.GONE
                         }
                     }
-                }else{
-                    advancedScoreLayout.visibility = View.GONE
+                } else {
+                    option.mangaList?.let { mangaListOptions ->
+                        if (mangaListOptions.advancedScoringEnabled) {
+                            if (apiModelEntry.advancedScoring == null) {
+                                apiModelEntry.advancedScoring = option.mangaList?.advancedScoring
+                            }
+                            if (apiModelEntry.advancedScoring != null) {
+                                advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
+                            } else {
+                                advancedScoreLayout.visibility = View.GONE
+                            }
+                        } else {
+                            advancedScoreLayout.visibility = View.GONE
+                        }
+                    }
                 }
+            } else {
+                advancedScoreLayout.visibility = View.GONE
             }
         }
     }
 
 
+    private fun updateMediaProgressDate() {
+        if (apiModelEntry.startDate?.year != null) {
+            startDateDynamicEt.setText(this.apiModelEntry.startDate!!.let { "${it.year}-${it.month}-${it.day}" })
+        }
+
+        if (apiModelEntry.endDate?.year != null) {
+            endDateDynamicEt.setText(this.apiModelEntry.endDate!!.let { "${it.year}-${it.month}-${it.day}" })
+        }
+    }
+
+
     private fun toggleFav() {
-        if (toggling || apiModelEntry == null) return
+        if (toggling) return
         viewModel.toggleMediaFavourite(ToggleFavouriteField().also {
             when (mediaMeta.type) {
                 MediaType.ANIME.ordinal -> {
@@ -571,21 +576,21 @@ class EntryListEditorFragment : BaseFragment() {
     }
 
     private fun deleteList() {
-        if (deleting || apiModelEntry == null) return
-        apiModelEntry!!.listId.takeIf { it != -1 }?.let {
+        if (deleting || !apiModelEntry.hasData) return
+        apiModelEntry.listId.takeIf { it != -1 }?.let {
             viewModel.deleteMediaListEntry(it)
         }
     }
 
     private fun saveList() {
-        if (saving || apiModelEntry == null) return
-        viewModel.saveMediaListEntry(apiModelEntry!!)
+        if (saving) return
+        viewModel.saveMediaListEntry(apiModelEntry)
     }
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (state == EXPANDED) {
-            if (apiModelEntry?.isUserList == false) {
+            if (!apiModelEntry.isUserList) {
                 listDeleteButton.visibility = View.GONE
             } else {
                 listDeleteButton.visibility = View.VISIBLE
@@ -599,7 +604,7 @@ class EntryListEditorFragment : BaseFragment() {
 
         inflater.inflate(R.menu.list_editor_menu, menu)
 
-        if (apiModelEntry?.isUserList == false) {
+        if (!apiModelEntry.isUserList) {
             menu.findItem(R.id.listDeleteMenu).isVisible = false
             listDeleteButton.visibility = View.GONE
         } else {

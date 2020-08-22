@@ -112,21 +112,20 @@ class MediaListPresenter(
 
             if (isLoggedInUser) {
                 mediaListProgressIncrease.setOnClickListener {
-                    viewModel.addMediaListUpdateObserver(viewLifecycleOwner)
-                    viewModel.saveMediaListEntry(EntryListEditorMediaModel().also {
+                    viewModel.increaseProgress(EntryListEditorMediaModel().also {
                         it.mediaId = item.mediaId
                         it.listId = item.mediaListId
-                        it.progress = item.progress?.toInt()?.plus(1)
-                    }) { res ->
-                        when (res.status) {
+                        it.progress = (item.progress?.toInt() ?: 0).plus(1)
+                    }){res->
+                        when(res.status){
                             Status.SUCCESS -> {
                                 if (res.data?.mediaId == item.mediaId) {
+                                    item.progress = res.data?.progress?.toString().naText()
                                     mediaListProgressTv.text = context.getString(R.string.s_slash_s).format(
-                                        item.progress.naText(),
+                                        item.progress,
                                         if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
                                     )
                                 }
-                                viewModel.removeObserver(viewLifecycleOwner)
                             }
                             Status.ERROR -> {
                                 if (res.exception is ApolloHttpException) {
@@ -151,9 +150,14 @@ class MediaListPresenter(
                                     )
                                 }
                             }
+                            Status.LOADING -> {
+
+                            }
                         }
+
                     }
                 }
+
             } else {
                 mediaListProgressIncrease.visibility = View.GONE
             }

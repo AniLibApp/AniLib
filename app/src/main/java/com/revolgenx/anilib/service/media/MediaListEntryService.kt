@@ -35,4 +35,10 @@ abstract class MediaListEntryService(
         listId: Int,
         compositeDisposable: CompositeDisposable? = null
     ): MutableLiveData<Resource<Boolean>>
+
+    abstract fun increaseProgress(
+        model: EntryListEditorMediaModel,
+        compositeDisposable: CompositeDisposable? = null,
+        callback: (Resource<EntryListEditorMediaModel>) -> Unit
+    )
 }

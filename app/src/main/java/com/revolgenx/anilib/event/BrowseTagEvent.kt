@@ -1,5 +1,5 @@
 package com.revolgenx.anilib.event
 
-import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
+import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 
-data class BrowseTagEvent(var model: MediaBrowseFilterModel):CommonEvent()
+data class BrowseTagEvent(var model: MediaSearchFilterModel):CommonEvent()

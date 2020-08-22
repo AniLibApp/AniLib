@@ -16,7 +16,7 @@ import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicNavigationView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.model.search.filter.*
@@ -110,6 +110,16 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                 streamingOnList.forEach { map[it] = TagField(it, false) }
             }
             return field
+        }
+
+    private var searchText: String?
+        set(value) {
+            if (value != null){
+                browseSearchEt.setText(value)
+            }
+        }
+        get() {
+            return browseSearchEt.text.toString()
         }
 
     val drawerListener = object : DrawerLayout.DrawerListener {
@@ -403,11 +413,11 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     }
 
 
-    fun getFilter(): BrowseFilterModel? {
+    fun getFilter(): SearchFilterModel {
         return when (browseTypeSpinner.selectedItemPosition) {
-            BrowseTypes.ANIME.ordinal, BrowseTypes.MANGA.ordinal -> {
-                MediaBrowseFilterModel().apply {
-                    query = browseSearchEt?.text?.toString()
+            SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
+                MediaSearchFilterModel().apply {
+                    query = searchText
                     season = browseSeasonSpinner?.selectedItemPosition?.minus(1)
                         ?.takeIf { it >= 0 }
 
@@ -448,33 +458,41 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                     tags = tagTagMap!!.values.filter { it.isTagged }.map { it.tag }
                 }
             }
-            BrowseTypes.CHARACTER.ordinal -> {
-                CharacterBrowseFilterModel().apply {
-                    query = browseSearchEt?.text?.toString()
+            SearchTypes.CHARACTER.ordinal -> {
+                CharacterSearchFilterModel().apply {
+                    query = searchText
                 }
             }
-            BrowseTypes.STAFF.ordinal -> {
-                StaffBrowseFilterModel().apply {
-                    query = browseSearchEt?.text?.toString()
+            SearchTypes.STAFF.ordinal -> {
+                StaffSearchFilterModel().apply {
+                    query = searchText
                 }
             }
-            BrowseTypes.STUDIO.ordinal -> {
-                StudioBrowseFilterModel().apply {
-                    query = browseSearchEt?.text?.toString()
+            SearchTypes.STUDIO.ordinal -> {
+                StudioSearchFilterModel().apply {
+                    query = searchText
+                }
+            }
+            SearchTypes.USER.ordinal -> {
+                UserSearchFilterModel().apply {
+                    query = searchText
                 }
             }
             else -> {
-                null
+                MediaSearchFilterModel().apply {
+                    query = searchText
+                }
             }
         }
     }
 
-    fun setFilter(value: BrowseFilterModel, applyFilter: Boolean = true) {
+
+    fun setFilter(value: SearchFilterModel, applyFilter: Boolean = true) {
         browseTypeSpinner?.setSelection(value.type)
         when (value) {
-            is MediaBrowseFilterModel -> {
+            is MediaSearchFilterModel -> {
                 value.let {
-                    browseSearchEt?.setText(value.query ?: "")
+                    searchText = value.query
                     it.season?.let {
                         browseSeasonSpinner?.setSelection(it + 1)
                     }
@@ -524,18 +542,22 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                     mListener?.updateStream()
                 }
             }
-            is CharacterBrowseFilterModel -> {
-                browseSearchEt?.setText(value.query ?: "")
+            is CharacterSearchFilterModel -> {
+                searchText = value.query
             }
-            is StaffBrowseFilterModel -> {
-                browseSearchEt?.setText(value.query ?: "")
+            is StaffSearchFilterModel -> {
+                searchText = value.query
             }
-            is StudioBrowseFilterModel -> {
-                browseSearchEt?.setText(value.query ?: "")
+            is StudioSearchFilterModel -> {
+                searchText = value.query
+            }
+            is UserSearchFilterModel -> {
+                searchText = value.query
             }
         }
-        if (applyFilter)
+        if (applyFilter){
             applyFilter()
+        }
     }
 
     private fun applyFilter() {

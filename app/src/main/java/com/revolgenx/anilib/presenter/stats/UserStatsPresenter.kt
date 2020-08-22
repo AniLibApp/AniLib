@@ -13,7 +13,7 @@ import com.revolgenx.anilib.event.BrowseStudioEvent
 import com.revolgenx.anilib.event.BrowseTagEvent
 import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.meta.StudioMeta
-import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
+import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.model.user.stats.*
 import kotlinx.android.synthetic.main.image_stats_presenter_layout.view.*
 import kotlinx.android.synthetic.main.text_stats_general_layout.view.*
@@ -52,7 +52,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                     item.genre?.let { genre ->
                         statsTitleTv.text = genre
                         setOnClickListener { _ ->
-                            BrowseGenreEvent(MediaBrowseFilterModel().also {
+                            BrowseGenreEvent(MediaSearchFilterModel().also {
                                 it.genre = listOf(genre.trim())
                             }).postEvent
                         }
@@ -62,7 +62,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                     item.tag?.let { tag ->
                         statsTitleTv.text = tag
                         setOnClickListener { _ ->
-                            BrowseTagEvent(MediaBrowseFilterModel().also {
+                            BrowseTagEvent(MediaSearchFilterModel().also {
                                 it.tags = listOf(tag.trim())
                             }).postEvent
                         }

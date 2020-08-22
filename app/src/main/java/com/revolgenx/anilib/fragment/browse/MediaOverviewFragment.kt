@@ -39,7 +39,7 @@ import com.revolgenx.anilib.model.MediaMetaCollection
 import com.revolgenx.anilib.model.MediaOverviewModel
 import com.revolgenx.anilib.model.MediaRelationshipModel
 import com.revolgenx.anilib.model.MediaStudioModel
-import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
+import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.presenter.BrowseRelationshipPresenter
 import com.revolgenx.anilib.presenter.MediaExternalLinkPresenter
 import com.revolgenx.anilib.presenter.MediaMetaPresenter
@@ -371,7 +371,7 @@ class MediaOverviewFragment : BaseFragment() {
                 spannableStringBuilder.setSpan(
                     object : ClickableSpan() {
                         override fun onClick(widget: View) {
-                            BrowseGenreEvent(MediaBrowseFilterModel().also {
+                            BrowseGenreEvent(MediaSearchFilterModel().also {
                                 it.genre = listOf(genre.trim())
                             }).postEvent
                         }
@@ -412,7 +412,7 @@ class MediaOverviewFragment : BaseFragment() {
 
                         override fun onClick(widget: View) {
                             if (shown)
-                                BrowseTagEvent(MediaBrowseFilterModel().also {
+                                BrowseTagEvent(MediaSearchFilterModel().also {
                                     it.tags = listOf(tag.name!!.trim())
                                 }).postEvent
                             else {
@@ -429,7 +429,7 @@ class MediaOverviewFragment : BaseFragment() {
                 } else {
                     object : ClickableSpan() {
                         override fun onClick(widget: View) {
-                            BrowseTagEvent(MediaBrowseFilterModel().also {
+                            BrowseTagEvent(MediaSearchFilterModel().also {
                                 it.tags = listOf(tag.name!!.trim())
                             }).postEvent
                         }

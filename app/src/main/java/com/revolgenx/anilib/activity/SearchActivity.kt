@@ -24,9 +24,9 @@ import com.revolgenx.anilib.event.TagEvent
 import com.revolgenx.anilib.event.TagOperationType
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
-import com.revolgenx.anilib.fragment.BrowseFragment
+import com.revolgenx.anilib.fragment.search.SearchFragment
 import com.revolgenx.anilib.fragment.base.BaseFragment
-import com.revolgenx.anilib.model.search.filter.BrowseFilterModel
+import com.revolgenx.anilib.model.search.filter.SearchFilterModel
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.util.DataProvider
 import com.revolgenx.anilib.util.registerForEvent
@@ -38,7 +38,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class BrowseActivity : BaseDynamicActivity(),
+class SearchActivity : BaseDynamicActivity(),
     BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener,
     TagChooserDialogFragment.TagChooserDialogCallback {
 
@@ -50,9 +50,9 @@ class BrowseActivity : BaseDynamicActivity(),
         const val ADVANCE_SEARCH_INTENT_KEY = "advance_search_intent_key"
 
 
-        fun openActivity(context: Context, browseFilterModel: BrowseFilterModel? = null) {
-            context.startActivity(Intent(context, BrowseActivity::class.java).also { intent ->
-                browseFilterModel?.let {
+        fun openActivity(context: Context, searchFilterModel: SearchFilterModel? = null) {
+            context.startActivity(Intent(context, SearchActivity::class.java).also { intent ->
+                searchFilterModel?.let {
                     intent.putExtra(ADVANCE_SEARCH_INTENT_KEY, it)
                 }
             })
@@ -101,12 +101,12 @@ class BrowseActivity : BaseDynamicActivity(),
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(
                 R.id.browseFragmentContainer,
-                BaseFragment.newInstance(BrowseFragment::class.java),
+                BaseFragment.newInstance(SearchFragment::class.java),
                 ADVANCE_SEARCH_FRAGMENT_TAG
             ).commitNow()
 
             if (intent.hasExtra(ADVANCE_SEARCH_INTENT_KEY)) {
-                intent.getParcelableExtra<BrowseFilterModel>(ADVANCE_SEARCH_INTENT_KEY)?.let {
+                intent.getParcelableExtra<SearchFilterModel>(ADVANCE_SEARCH_INTENT_KEY)?.let {
                     browseFilterNavView.setFilter(it)
                 }
             }
@@ -115,7 +115,7 @@ class BrowseActivity : BaseDynamicActivity(),
 
     private fun getAdvanceSearchFragment() = supportFragmentManager.findFragmentByTag(
         ADVANCE_SEARCH_FRAGMENT_TAG
-    ) as? BrowseFragment
+    ) as? SearchFragment
 
     private fun setUpViews() {
         viewModel.tagTagFields.takeIf { it.isNotEmpty() }?.let {
@@ -171,7 +171,7 @@ class BrowseActivity : BaseDynamicActivity(),
                 setCardBackgroundColor(it)
             }
 
-            ResourcesCompat.getFont(this@BrowseActivity, R.font.open_sans_regular)?.let {
+            ResourcesCompat.getFont(this@SearchActivity, R.font.open_sans_regular)?.let {
                 setQueryTextTypeface(it)
                 setSuggestionTextTypeface(it)
             }
@@ -216,7 +216,7 @@ class BrowseActivity : BaseDynamicActivity(),
             }
         }
         with(browseFilterNavView) {
-            setNavigationCallbackListener(this@BrowseActivity)
+            setNavigationCallbackListener(this@SearchActivity)
         }
         rootDrawerLayout.addDrawerListener(browseFilterNavView.drawerListener)
 
@@ -530,7 +530,7 @@ class BrowseActivity : BaseDynamicActivity(),
                 tags
             )
         ).apply {
-            onDoneListener(this@BrowseActivity)
+            onDoneListener(this@SearchActivity)
             show(supportFragmentManager, dialogTag)
         }
     }

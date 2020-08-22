@@ -16,7 +16,7 @@
 
 
         <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/browseStaffImageView"
+            android:id="@+id/searchStaffImageView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:transitionName="character_image_transition"
@@ -28,12 +28,12 @@
             app:roundedCornerRadius="4dp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/browseStaffNameTv"
+            android:id="@+id/searchStaffNameTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/browseStaffImageView"
-            app:layout_constraintRight_toRightOf="@id/browseStaffImageView"
-            app:layout_constraintTop_toBottomOf="@id/browseStaffImageView"
+            app:layout_constraintLeft_toLeftOf="@id/searchStaffImageView"
+            app:layout_constraintRight_toRightOf="@id/searchStaffImageView"
+            app:layout_constraintTop_toBottomOf="@id/searchStaffImageView"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"

@@ -34,7 +34,7 @@ data class Resource<T>(
     }
 }
 
-val ERROR = "ERROR"
+const val ERROR = "ERROR"
 
 enum class Status {
     SUCCESS,

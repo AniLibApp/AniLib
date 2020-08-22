@@ -15,7 +15,7 @@ import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.CommonMediaModel
-import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
+import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
@@ -58,7 +58,7 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                 item.episodes.naText()
             )
             mediaGenreLayout.addGenre(item.genres?.take(3)) { genre ->
-                BrowseGenreEvent(MediaBrowseFilterModel().also {
+                BrowseGenreEvent(MediaSearchFilterModel().also {
                     it.genre = listOf(genre.trim())
                 }).postEvent
             }
