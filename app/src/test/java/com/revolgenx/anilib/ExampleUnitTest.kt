@@ -2,7 +2,7 @@ package com.revolgenx.anilib
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.model.search.filter.*
 import com.revolgenx.anilib.type.MediaSort
@@ -105,12 +105,12 @@ class ExampleUnitTest {
     @Test
     fun gsonTest() {
         println(System.currentTimeMillis())
-        MediaBrowseFilterModel().also {
+        MediaSearchFilterModel().also {
             it.countryOfOrigin = 1
             it.tags = listOf("evertying", "nth")
         }.let {
             println(System.currentTimeMillis())
-            Gson().toJson(it as BrowseFilterModel)
+            Gson().toJson(it as SearchFilterModel)
         }.let {
             println(it)
             println(
@@ -133,17 +133,17 @@ class ExampleUnitTest {
         println(System.currentTimeMillis())
         val data = try {
             when (gson.fromJson(filter, JsonObject::class.java).get("type").asInt) {
-                BrowseTypes.ANIME.ordinal, BrowseTypes.MANGA.ordinal -> {
-                    gson.fromJson(filter, MediaBrowseFilterModel::class.java)
+                SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
+                    gson.fromJson(filter, MediaSearchFilterModel::class.java)
                 }
-                BrowseTypes.CHARACTER.ordinal -> {
-                    gson.fromJson(filter, CharacterBrowseFilterModel::class.java)
+                SearchTypes.CHARACTER.ordinal -> {
+                    gson.fromJson(filter, CharacterSearchFilterModel::class.java)
                 }
-                BrowseTypes.STAFF.ordinal -> {
-                    gson.fromJson(filter, StaffBrowseFilterModel::class.java)
+                SearchTypes.STAFF.ordinal -> {
+                    gson.fromJson(filter, StaffSearchFilterModel::class.java)
                 }
-                BrowseTypes.STUDIO.ordinal -> {
-                    gson.fromJson(filter, StudioBrowseFilterModel::class.java)
+                SearchTypes.STUDIO.ordinal -> {
+                    gson.fromJson(filter, StudioSearchFilterModel::class.java)
                 }
                 else -> null
             }

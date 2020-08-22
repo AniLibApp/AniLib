@@ -1,14 +1,11 @@
 package com.revolgenx.anilib.viewmodel
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.observe
 import androidx.lifecycle.viewModelScope
 import com.revolgenx.anilib.field.MediaListFilterField
 import com.revolgenx.anilib.field.list.MediaListField
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.model.list.MediaListModel
 import com.revolgenx.anilib.repository.util.Resource
-import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.service.list.MediaListService
 import com.revolgenx.anilib.service.media.MediaListEntryService
 import com.revolgenx.anilib.source.MediaListSource
@@ -29,25 +26,6 @@ abstract class MediaListViewModel(
     var filter = MediaListFilterField()
 
     override var field: MediaListField = MediaListField()
-
-    private var mCallback: ((Resource<EntryListEditorMediaModel>) -> Unit)? = null
-
-    fun addMediaListUpdateObserver(viewLifecycleOwner: LifecycleOwner) {
-        entryService.saveMediaListEntryLiveData.observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                Status.SUCCESS -> {
-                    listMap[res.data?.mediaId]?.progress =
-                        res.data?.progress?.toString()
-                }
-                else -> {}
-            }
-            mCallback?.invoke(res)
-        }
-    }
-
-    fun removeObserver(viewLifecycleOwner: LifecycleOwner){
-        entryService.saveMediaListEntryLiveData.removeObservers(viewLifecycleOwner)
-    }
 
     override fun createSource(): MediaListSource {
         filteredList = null
@@ -79,16 +57,12 @@ abstract class MediaListViewModel(
     }
 
 
-    fun saveMediaListEntry(
-        model: EntryListEditorMediaModel,
-        callback: (Resource<EntryListEditorMediaModel>) -> Unit
-    ) {
-        mCallback = callback
-        entryService.saveMediaListEntry(
-            model,
-            compositeDisposable
-        )
+
+    fun increaseProgress(model:EntryListEditorMediaModel, callback: (Resource<EntryListEditorMediaModel>) -> Unit){
+        entryService.increaseProgress(model, compositeDisposable, callback)
     }
+
+
 
     override fun onCleared() {
         listMap.clear()

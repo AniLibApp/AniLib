@@ -3,7 +3,7 @@ package com.revolgenx.anilib.service.user
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.UserFollowersQuery
 import com.revolgenx.anilib.UserFollowingQuery
-import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.field.user.UserFavouriteField
 import com.revolgenx.anilib.field.user.UserFollowerField
 import com.revolgenx.anilib.field.user.UserProfileField
@@ -194,28 +194,28 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                 val type = it.data()?.User()?.favourites()?.let { fav ->
                     when {
                         fav.anime() != null -> {
-                            BrowseTypes.ANIME
+                            SearchTypes.ANIME
                         }
                         fav.manga() != null -> {
-                            BrowseTypes.MANGA
+                            SearchTypes.MANGA
                         }
                         fav.characters() != null -> {
-                            BrowseTypes.CHARACTER
+                            SearchTypes.CHARACTER
                         }
                         fav.staff() != null -> {
-                            BrowseTypes.STAFF
+                            SearchTypes.STAFF
                         }
                         fav.studios() != null -> {
-                            BrowseTypes.STUDIO
+                            SearchTypes.STUDIO
                         }
                         else -> {
-                            BrowseTypes.UNKNOWN
+                            SearchTypes.UNKNOWN
                         }
                     }
                 }
                 val data = it.data()?.User()?.favourites()
                 when (type) {
-                    BrowseTypes.ANIME -> {
+                    SearchTypes.ANIME -> {
                         data?.anime()?.nodes()
                             ?.filter { if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
                             ?.map { map ->
@@ -249,7 +249,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                                 }
                             }
                     }
-                    BrowseTypes.MANGA -> {
+                    SearchTypes.MANGA -> {
                         data?.manga()?.nodes()
                             ?.filter {if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
                             ?.map { map ->
@@ -283,7 +283,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                                 }
                             }
                     }
-                    BrowseTypes.CHARACTER -> {
+                    SearchTypes.CHARACTER -> {
                         data?.characters()?.nodes()?.map { map ->
                             map.fragments().narrowCharacterContent().let {
                                 CharacterFavouriteModel().also { model ->
@@ -304,7 +304,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                         }
                     }
 
-                    BrowseTypes.STAFF -> {
+                    SearchTypes.STAFF -> {
                         data?.staff()?.nodes()?.map { map ->
                             map.fragments().narrowStaffContent().let {
                                 StaffFavouriteModel().also { model ->
@@ -325,7 +325,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                         }
                     }
 
-                    BrowseTypes.STUDIO -> {
+                    SearchTypes.STUDIO -> {
                         data?.studios()?.nodes()?.map { map ->
                             map.fragments().studioContent().let {
                                 StudioFavouriteModel().also { model ->

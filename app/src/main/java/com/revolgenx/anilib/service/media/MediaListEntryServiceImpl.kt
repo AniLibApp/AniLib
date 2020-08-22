@@ -12,6 +12,7 @@ import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.preference.userScoreFormat
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.repository.network.converter.toListEditorMediaModel
+import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.type.FuzzyDateInput
 import com.revolgenx.anilib.type.MediaListStatus
@@ -85,22 +86,22 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
                     progress(it)
                 }
                 model.private?.let {
-                    private_(model.private)
+                    private_(it)
                 }
                 model.status?.let {
                     status(MediaListStatus.values()[it])
                 }
                 model.score?.let {
-                    score(model.score)
+                    score(it)
                 }
                 model.advancedScoring?.let {
                     advanceScores(it.map { it.score })
                 }
                 model.repeat?.let {
-                    repeat(model.repeat)
+                    repeat(it)
                 }
                 model.notes?.let {
-                    notes(model.notes)
+                    notes(it)
                 }
 
                 model.startDate?.year?.let {
@@ -125,7 +126,7 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
             .subscribe({
                 it.data()?.SaveMediaListEntry()?.let {
                     saveMediaListEntryLiveData.value = Resource.success(model.also { mod ->
-                        mod.progress = it.progress()
+                        mod.progress = it.progress() ?: 0
                         mod.progressVolumes = it.progressVolumes()
                     })
                 }
@@ -157,4 +158,25 @@ class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepo
         return deleteMediaListEntryLiveData
     }
 
+    override fun increaseProgress(
+        model: EntryListEditorMediaModel,
+        compositeDisposable: CompositeDisposable?,
+        callback: (Resource<EntryListEditorMediaModel>) -> Unit
+    ) {
+        val disposable = graphRepository.request(
+            SaveMediaListEntryMutation.builder().apply {
+                listId(model.listId)
+                model.mediaId?.let {
+                    mediaId(it)
+                }
+                progress(model.progress!!)
+            }.build()
+        ).observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(model))
+            }, {
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+        compositeDisposable?.add(disposable)
+    }
 }

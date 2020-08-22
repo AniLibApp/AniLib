@@ -17,7 +17,7 @@ import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.CommonMediaModel
-import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
+import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeSnakeBar
@@ -80,7 +80,7 @@ class SeasonPresenter(context: Context) :
             mediaGenreLayout.addGenre(
                 item.genres?.take(5)
             ) { genre ->
-                BrowseGenreEvent(MediaBrowseFilterModel().also {
+                BrowseGenreEvent(MediaSearchFilterModel().also {
                     it.genre = listOf(genre.trim())
                 }).postEvent
             }

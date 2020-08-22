@@ -7,5 +7,5 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StatsStudioFragment : UserStatsFragment() {
     override val viewModel by viewModel<StatsStudioViewModel>()
-    override val statsType: UserStatsField.UserStatsType = UserStatsField.UserStatsType.GENRE
+    override val statsType: UserStatsField.UserStatsType = UserStatsField.UserStatsType.STUDIO
 }

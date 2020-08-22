@@ -1,5 +1,5 @@
 package com.revolgenx.anilib.event
 
-import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
+import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 
-data class BrowseTrendingEvent(val trending: MediaBrowseFilterModel) : CommonEvent()
+data class BrowseTrendingEvent(val trending: MediaSearchFilterModel) : CommonEvent()

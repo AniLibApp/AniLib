@@ -10,26 +10,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.*
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.model.BaseModel
-import com.revolgenx.anilib.model.search.CharacterSearchModel
-import com.revolgenx.anilib.model.search.MediaSearchModel
-import com.revolgenx.anilib.model.search.StaffSearchModel
-import com.revolgenx.anilib.model.search.StudioSearchModel
+import com.revolgenx.anilib.model.search.*
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
-import kotlinx.android.synthetic.main.browse_character_layout.view.*
-import kotlinx.android.synthetic.main.browse_media_layout.view.*
-import kotlinx.android.synthetic.main.browse_staff_layout.view.*
-import kotlinx.android.synthetic.main.browse_studio_layout.view.*
+import kotlinx.android.synthetic.main.search_character_layout.view.*
+import kotlinx.android.synthetic.main.search_media_layout.view.*
+import kotlinx.android.synthetic.main.search_staff_layout.view.*
+import kotlinx.android.synthetic.main.search_studio_layout.view.*
 
-class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwner) :
+class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwner) :
     Presenter<BaseModel>(context) {
     override val elementTypes: Collection<Int>
-        get() = BrowseTypes.values().map { it.ordinal }
+        get() = SearchTypes.values().map { it.ordinal }
 
     private val statusColors by lazy {
         context.resources.getStringArray(R.array.status_color)
@@ -47,17 +44,20 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         val holderRes = when (elementType) {
-            BrowseTypes.ANIME.ordinal, BrowseTypes.MANGA.ordinal -> {
-                R.layout.browse_media_layout
+            SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
+                R.layout.search_media_layout
             }
-            BrowseTypes.CHARACTER.ordinal -> {
-                R.layout.browse_character_layout
+            SearchTypes.CHARACTER.ordinal -> {
+                R.layout.search_character_layout
             }
-            BrowseTypes.STAFF.ordinal -> {
-                R.layout.browse_staff_layout
+            SearchTypes.STAFF.ordinal -> {
+                R.layout.search_staff_layout
             }
-            BrowseTypes.STUDIO.ordinal -> {
-                R.layout.browse_studio_layout
+            SearchTypes.STUDIO.ordinal -> {
+                R.layout.search_studio_layout
+            }
+            SearchTypes.USER.ordinal -> {
+                R.layout.search_user_layout
             }
             else -> {
                 R.layout.empty_layout
@@ -72,32 +72,34 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
 
         val item = element.data ?: return
         when (holder.elementType) {
-            BrowseTypes.ANIME.ordinal, BrowseTypes.MANGA.ordinal -> {
-                holder.itemView.updateMedia(item)
+            SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
+                holder.itemView.updateMedia(item as MediaSearchModel)
             }
-            BrowseTypes.CHARACTER.ordinal -> {
-                holder.itemView.updateCharacter(item)
+            SearchTypes.CHARACTER.ordinal -> {
+                holder.itemView.updateCharacter(item as CharacterSearchModel)
             }
-            BrowseTypes.STAFF.ordinal -> {
-                holder.itemView.updateStaff(item)
+            SearchTypes.STAFF.ordinal -> {
+                holder.itemView.updateStaff(item as StaffSearchModel)
             }
-            BrowseTypes.STUDIO.ordinal -> {
-                holder.itemView.updateStudio(item)
+            SearchTypes.STUDIO.ordinal -> {
+                holder.itemView.updateStudio(item as StudioSearchModel)
+            }
+            SearchTypes.USER.ordinal -> {
+                holder.itemView.updateUser(item as UserSearchModel)
             }
         }
     }
 
 
-    private fun View.updateMedia(item: BaseModel) {
-        val data = item as MediaSearchModel
-        searchMediaImageView.setImageURI(data.coverImage?.image(context))
-        searchMediaTitleTv.text = data.title?.title(context)
-        searchMediaRatingTv.text = data.averageScore?.toString().naText()
+    private fun View.updateMedia(item: MediaSearchModel) {
+        searchMediaImageView.setImageURI(item.coverImage?.image(context))
+        searchMediaTitleTv.text = item.title?.title(context)
+        searchMediaRatingTv.text = item.averageScore?.toString().naText()
         searchMediaFormatTv.text =
-            context.getString(R.string.media_format_year_s).format(data.format?.let {
+            context.getString(R.string.media_format_year_s).format(item.format?.let {
                 mediaFormats[it]
-            }.naText(), data.seasonYear?.toString().naText())
-        searchMediaStatusTv.text = data.status?.let {
+            }.naText(), item.seasonYear?.toString().naText())
+        searchMediaStatusTv.text = item.status?.let {
             searchMediaStatusTv.color = Color.parseColor(statusColors[it])
             mediaStatus[it]
         }
@@ -105,12 +107,12 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
         setOnClickListener {
             BrowseMediaEvent(
                 MediaBrowserMeta(
-                    data.mediaId,
-                    data.type!!,
-                    data.title!!.romaji!!,
-                    data.coverImage!!.image(context),
-                    data.coverImage!!.largeImage,
-                    data.bannerImage
+                    item.mediaId,
+                    item.type!!,
+                    item.title!!.romaji!!,
+                    item.coverImage!!.image(context),
+                    item.coverImage!!.largeImage,
+                    item.bannerImage
                 ), searchMediaImageView
             ).postEvent
         }
@@ -119,11 +121,11 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
             if (context.loggedIn()) {
                 ListEditorEvent(
                     ListEditorMeta(
-                        data.mediaId,
-                        data.type!!,
-                        data.title!!.title(context)!!,
-                        data.coverImage!!.image(context),
-                        data.bannerImage
+                        item.mediaId,
+                        item.type!!,
+                        item.title!!.title(context)!!,
+                        item.coverImage!!.image(context),
+                        item.bannerImage
                     ), searchMediaImageView
                 ).postEvent
             } else {
@@ -134,44 +136,50 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
 
     }
 
-    private fun View.updateCharacter(item: BaseModel) {
-        val data = item as CharacterSearchModel
-        browseCharacterImageView.setImageURI(data.characterImageModel?.image)
-        browseCharacterNameTv.text = data.name?.full
+    private fun View.updateCharacter(item: CharacterSearchModel) {
+        searchCharacterImageView.setImageURI(item.characterImageModel?.image)
+        searchCharacterNameTv.text = item.name?.full
         setOnClickListener {
             BrowseCharacterEvent(
                 CharacterMeta(
                     item.characterId ?: -1,
                     item.characterImageModel?.image
                 ),
-                browseCharacterImageView
+                searchCharacterImageView
             ).postEvent
         }
     }
 
-    private fun View.updateStaff(item: BaseModel) {
-        val data = item as StaffSearchModel
-        browseStaffImageView.setImageURI(data.staffImage?.image)
-        browseStaffNameTv.text = data.staffName?.full
+    private fun View.updateStaff(item: StaffSearchModel) {
+        searchStaffImageView.setImageURI(item.staffImage?.image)
+        searchStaffNameTv.text = item.staffName?.full
         setOnClickListener {
             BrowseStaffEvent(StaffMeta(item.staffId ?: -1, item.staffImage?.image)).postEvent
         }
     }
 
-    private fun View.updateStudio(item: BaseModel) {
-        val data = item as StudioSearchModel
-        browseStudioHeader.text = data.studioName + " >>"
-        browseStudioMedia.layoutManager =
+    private fun View.updateStudio(item: StudioSearchModel) {
+        searchStudioHeader.text = item.studioName + " >>"
+        searchStudioMedia.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
-        browseStudioHeader.setOnClickListener {
-            BrowseStudioEvent(StudioMeta(data.studioId)).postEvent
+        searchStudioHeader.setOnClickListener {
+            BrowseStudioEvent(StudioMeta(item.studioId)).postEvent
         }
 
         Adapter.builder(lifecycleOwner)
-            .addSource(Source.fromList(data.studioMedia!!))
+            .addSource(Source.fromList(item.studioMedia!!))
             .addPresenter(BrowseStudioMediaPresenter())
-            .into(browseStudioMedia)
+            .into(searchStudioMedia)
+    }
+
+
+    private fun View.updateUser(item: UserSearchModel) {
+        searchCharacterImageView.setImageURI(item.avatar?.image)
+        searchCharacterNameTv.text = item.userName
+        setOnClickListener {
+            UserBrowseEvent(item.userId).postEvent
+        }
     }
 
 
@@ -196,3 +204,4 @@ class BrowsePresenter(context: Context, private val lifecycleOwner: LifecycleOwn
         }
     }
 }
+

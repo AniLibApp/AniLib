@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.*
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.model.BaseModel
@@ -21,31 +21,31 @@ import com.revolgenx.anilib.model.user.StudioFavouriteModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
-import kotlinx.android.synthetic.main.browse_character_layout.view.*
-import kotlinx.android.synthetic.main.browse_media_layout.view.*
-import kotlinx.android.synthetic.main.browse_staff_layout.view.*
-import kotlinx.android.synthetic.main.browse_studio_layout.view.*
+import kotlinx.android.synthetic.main.search_character_layout.view.*
+import kotlinx.android.synthetic.main.search_media_layout.view.*
+import kotlinx.android.synthetic.main.search_staff_layout.view.*
+import kotlinx.android.synthetic.main.search_studio_layout.view.*
 
 //todo://studio rotation
 class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner: LifecycleOwner) :
     Presenter<BaseModel>(requireContext) {
     override val elementTypes: Collection<Int>
-        get() = BrowseTypes.values().map { it.ordinal }
+        get() = SearchTypes.values().map { it.ordinal }
 
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         val holderRes = when (elementType) {
-            BrowseTypes.ANIME.ordinal, BrowseTypes.MANGA.ordinal -> {
-                R.layout.browse_media_layout
+            SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
+                R.layout.search_media_layout
             }
-            BrowseTypes.CHARACTER.ordinal -> {
-                R.layout.browse_character_layout
+            SearchTypes.CHARACTER.ordinal -> {
+                R.layout.search_character_layout
             }
-            BrowseTypes.STAFF.ordinal -> {
-                R.layout.browse_staff_layout
+            SearchTypes.STAFF.ordinal -> {
+                R.layout.search_staff_layout
             }
-            BrowseTypes.STUDIO.ordinal -> {
-                R.layout.browse_studio_layout
+            SearchTypes.STUDIO.ordinal -> {
+                R.layout.search_studio_layout
             }
             else -> {
                 R.layout.empty_layout
@@ -75,16 +75,16 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
 
         val item = element.data ?: return
         when (holder.elementType) {
-            BrowseTypes.ANIME.ordinal, BrowseTypes.MANGA.ordinal -> {
+            SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
                 holder.itemView.updateMedia(item)
             }
-            BrowseTypes.CHARACTER.ordinal -> {
+            SearchTypes.CHARACTER.ordinal -> {
                 holder.itemView.updateCharacter(item)
             }
-            BrowseTypes.STAFF.ordinal -> {
+            SearchTypes.STAFF.ordinal -> {
                 holder.itemView.updateStaff(item)
             }
-            BrowseTypes.STUDIO.ordinal -> {
+            SearchTypes.STUDIO.ordinal -> {
                 holder.itemView.updateStudio(item)
             }
         }
@@ -139,23 +139,23 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
 
     private fun View.updateCharacter(item: BaseModel) {
         val data = item as CharacterFavouriteModel
-        browseCharacterImageView.setImageURI(data.characterImageModel?.image)
-        browseCharacterNameTv.text = data.name?.full
+        searchCharacterImageView.setImageURI(data.characterImageModel?.image)
+        searchCharacterNameTv.text = data.name?.full
         setOnClickListener {
             BrowseCharacterEvent(
                 CharacterMeta(
                     item.characterId ?: -1,
                     item.characterImageModel?.image
                 ),
-                browseCharacterImageView
+                searchCharacterImageView
             ).postEvent
         }
     }
 
     private fun View.updateStaff(item: BaseModel) {
         val data = item as StaffFavouriteModel
-        browseStaffImageView.setImageURI(data.staffImage?.image)
-        browseStaffNameTv.text = data.staffName?.full
+        searchStaffImageView.setImageURI(data.staffImage?.image)
+        searchStaffNameTv.text = data.staffName?.full
         setOnClickListener {
             BrowseStaffEvent(StaffMeta(item.staffId ?: -1, item.staffImage?.image)).postEvent
         }
@@ -163,18 +163,18 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
 
     private fun View.updateStudio(item: BaseModel) {
         val data = item as StudioFavouriteModel
-        browseStudioHeader.text = data.studioName + " >>"
-        browseStudioMedia.layoutManager =
+        searchStudioHeader.text = data.studioName + " >>"
+        searchStudioMedia.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
-        browseStudioHeader.setOnClickListener {
+        searchStudioHeader.setOnClickListener {
             BrowseStudioEvent(StudioMeta(data.studioId)).postEvent
         }
 
         Adapter.builder(lifecycleOwner)
             .addSource(Source.fromList(data.studioMedia!!))
             .addPresenter(BrowseStudioMediaPresenter())
-            .into(browseStudioMedia)
+            .into(searchStudioMedia)
     }
 
 

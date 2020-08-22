@@ -12,7 +12,7 @@ import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.BrowseActivity
+import com.revolgenx.anilib.activity.SearchActivity
 import com.revolgenx.anilib.event.TagEvent
 import com.revolgenx.anilib.event.TagOperationType
 import com.revolgenx.anilib.field.TagChooserField
@@ -123,17 +123,17 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
                     it.add(TagField(newTag, false))
                 }
                 when (tag) {
-                    BrowseActivity.TAG_CHOOSER_DIALOG_TAG -> {
+                    SearchActivity.TAG_CHOOSER_DIALOG_TAG -> {
                         TagPrefUtil.saveTagPref(context, tagChooserField.tags.map { it.tag })
                         TagPrefUtil.invalidateAll(context)
                         TagEvent(TagOperationType.ADD_TAG, tag, tagChooserField.tags).postEvent
                     }
-                    BrowseActivity.GENRE_CHOOSER_DIALOG_TAG -> {
+                    SearchActivity.GENRE_CHOOSER_DIALOG_TAG -> {
                         TagPrefUtil.saveGenrePref(context, tagChooserField.tags.map { it.tag })
                         TagPrefUtil.invalidateAll(context)
                         TagEvent(TagOperationType.ADD_GENRE, tag, tagChooserField.tags).postEvent
                     }
-                    BrowseActivity.STREAM_CHOOSER_DIALOG_TAG -> {
+                    SearchActivity.STREAM_CHOOSER_DIALOG_TAG -> {
                         TagPrefUtil.saveStreamingOnPref(
                             context,
                             tagChooserField.tags.map { it.tag })
@@ -153,17 +153,17 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
                         tagChooserField.tags = newTags
 
                         when (tag) {
-                            BrowseActivity.TAG_CHOOSER_DIALOG_TAG -> {
+                            SearchActivity.TAG_CHOOSER_DIALOG_TAG -> {
                                 TagPrefUtil.saveTagPref(context, newTags.map { it.tag })
                                 TagPrefUtil.invalidateAll(context)
                                 TagEvent(TagOperationType.DELETE_TAG, tag, remainingTags).postEvent
                             }
-                            BrowseActivity.GENRE_CHOOSER_DIALOG_TAG -> {
+                            SearchActivity.GENRE_CHOOSER_DIALOG_TAG -> {
                                 TagPrefUtil.saveGenrePref(context, newTags.map { it.tag })
                                 TagPrefUtil.invalidateAll(context)
                                 TagEvent(TagOperationType.DELETE_GENRE, tag, remainingTags).postEvent
                             }
-                            BrowseActivity.STREAM_CHOOSER_DIALOG_TAG -> {
+                            SearchActivity.STREAM_CHOOSER_DIALOG_TAG -> {
                                 TagPrefUtil.saveStreamingOnPref(context, newTags.map { it.tag })
                                 TagPrefUtil.invalidateAll(context)
                                 TagEvent(TagOperationType.DELETE_STREAM, tag, remainingTags).postEvent
@@ -175,11 +175,11 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
                 }
                 3 -> {
                     when (tag) {
-                        BrowseActivity.TAG_CHOOSER_DIALOG_TAG -> {
+                        SearchActivity.TAG_CHOOSER_DIALOG_TAG -> {
                             tagChooserField.tags = TagPrefUtil.reloadTagPref(context)
                             TagEvent(TagOperationType.ADD_TAG, tag, tagChooserField.tags).postEvent
                         }
-                        BrowseActivity.GENRE_CHOOSER_DIALOG_TAG -> {
+                        SearchActivity.GENRE_CHOOSER_DIALOG_TAG -> {
                             tagChooserField.tags = TagPrefUtil.reloadGenrePref(context)
                             TagEvent(
                                 TagOperationType.ADD_GENRE,
@@ -187,7 +187,7 @@ class TagChooserDialogFragment : DynamicDialogFragment() {
                                 tagChooserField.tags
                             ).postEvent
                         }
-                        BrowseActivity.STREAM_CHOOSER_DIALOG_TAG -> {
+                        SearchActivity.STREAM_CHOOSER_DIALOG_TAG -> {
                             tagChooserField.tags = TagPrefUtil.reloadStreamingPref(context)
                             TagEvent(
                                 TagOperationType.ADD_STREAM,

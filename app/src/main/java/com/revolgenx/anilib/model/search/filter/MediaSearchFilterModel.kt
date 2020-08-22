@@ -2,13 +2,13 @@ package com.revolgenx.anilib.model.search.filter
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.revolgenx.anilib.constant.BrowseTypes
-import com.revolgenx.anilib.field.browse.BrowseField
-import com.revolgenx.anilib.field.browse.MediaBrowseField
+import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.field.search.SearchField
+import com.revolgenx.anilib.field.search.MediaSearchField
 
-class MediaBrowseFilterModel : BrowseFilterModel {
+class MediaSearchFilterModel : SearchFilterModel {
 
-    override var type: Int = BrowseTypes.ANIME.ordinal
+    override var type: Int = SearchTypes.ANIME.ordinal
     var season: Int? = null
     var minYear: Int? = null
     var maxYear: Int? = null
@@ -61,20 +61,20 @@ class MediaBrowseFilterModel : BrowseFilterModel {
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<MediaBrowseFilterModel> {
-        override fun createFromParcel(parcel: Parcel): MediaBrowseFilterModel {
-            return MediaBrowseFilterModel(
+    companion object CREATOR : Parcelable.Creator<MediaSearchFilterModel> {
+        override fun createFromParcel(parcel: Parcel): MediaSearchFilterModel {
+            return MediaSearchFilterModel(
                 parcel
             )
         }
 
-        override fun newArray(size: Int): Array<MediaBrowseFilterModel?> {
+        override fun newArray(size: Int): Array<MediaSearchFilterModel?> {
             return arrayOfNulls(size)
         }
     }
 
-    override fun toField(): BrowseField {
-        return MediaBrowseField().also {
+    override fun toField(): SearchField {
+        return MediaSearchField().also {
             it.query = query
             it.minYear = minYear
             it.maxYear = maxYear

@@ -107,9 +107,9 @@ fun MediaListContent.toListEditorMediaModel() = EntryListEditorMediaModel().also
     it.listId = id()
     it.status = status()?.ordinal
     it.notes = notes() ?: ""
-    it.progress = progress()
+    it.progress = progress()?:0
     it.progressVolumes = progressVolumes() ?: 0
-    it.private = private_()
+    it.private = private_()?:false
     it.repeat = repeat()
     it.startDate = startedAt()?.let {
         DateModel().also { date ->

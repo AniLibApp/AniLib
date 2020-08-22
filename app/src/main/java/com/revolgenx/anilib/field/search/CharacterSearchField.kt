@@ -1,10 +1,10 @@
-package com.revolgenx.anilib.field.browse
+package com.revolgenx.anilib.field.search
 
 import com.revolgenx.anilib.CharacterSearchQuery
-import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.constant.SearchTypes
 
-class CharacterBrowseField : BrowseField() {
-    override val type: Int = BrowseTypes.CHARACTER.ordinal
+class CharacterSearchField : SearchField() {
+    override val type: Int = SearchTypes.CHARACTER.ordinal
 
     override fun toQueryOrMutation(): Any {
         return CharacterSearchQuery.builder()

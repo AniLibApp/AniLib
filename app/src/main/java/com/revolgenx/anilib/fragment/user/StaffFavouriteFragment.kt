@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.fragment.user
 
-import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.constant.SearchTypes
 
 class StaffFavouriteFragment :UserFavouriteFragment(){
-    override val favouriteType: BrowseTypes = BrowseTypes.STAFF
+    override val favouriteType: SearchTypes = SearchTypes.STAFF
 }

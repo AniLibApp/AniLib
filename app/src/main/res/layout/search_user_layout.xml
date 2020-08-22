@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="2dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/searchCharacterImageView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:padding="12dp"
+        android:transitionName="character_image_transition"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:roundAsCircle="true" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/searchCharacterNameTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textSize="12sp"
+        app:ads_colorType="tint_surface"
+        app:ads_rtlSupport="false"
+        app:layout_constraintLeft_toLeftOf="@id/searchCharacterImageView"
+        app:layout_constraintRight_toRightOf="@id/searchCharacterImageView"
+        app:layout_constraintTop_toBottomOf="@id/searchCharacterImageView"
+        tools:ignore="SmallSp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

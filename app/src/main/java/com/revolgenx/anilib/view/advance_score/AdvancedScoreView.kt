@@ -24,7 +24,7 @@ class AdvancedScoreView : DynamicRecyclerView {
         def
     ) {
         mAdapter = AdvancedScoringAdapter()
-        layoutManager =  GridLayoutManager(
+        layoutManager = GridLayoutManager(
             context,
             if (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
         )
@@ -32,10 +32,11 @@ class AdvancedScoreView : DynamicRecyclerView {
     }
 
     var advanceScoreObserver: (() -> Unit)? = null
-    var advancedScores: List<AdvancedScore> = mutableListOf()
+    var advancedScores = mutableListOf<AdvancedScore>()
 
     fun setAdvanceScore(advancedScores: List<AdvancedScore>) {
-        this.advancedScores = advancedScores
+        this.advancedScores.clear()
+        this.advancedScores.addAll(advancedScores)
         mAdapter.notifyDataSetChanged()
     }
 
@@ -69,6 +70,11 @@ class AdvancedScoreView : DynamicRecyclerView {
                     }
                 }
             }
+        }
+
+        override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+            advancedScores.clear()
+            super.onDetachedFromRecyclerView(recyclerView)
         }
     }
 

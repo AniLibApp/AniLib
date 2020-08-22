@@ -6,7 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.revolgenx.anilib.constant.BrowseTypes
+import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.UserMeta
 import com.revolgenx.anilib.model.BaseModel
@@ -29,7 +29,7 @@ abstract class UserFavouriteFragment() : BasePresenterFragment<BaseModel>() {
         const val USER_FAVOURITE_PARCELABLE_KEY = "user_favourite_parcelable_key"
     }
 
-    abstract val favouriteType: BrowseTypes
+    abstract val favouriteType: SearchTypes
 
     private val viewModel by viewModel<UserFavouriteViewModel>()
 
@@ -55,10 +55,10 @@ abstract class UserFavouriteFragment() : BasePresenterFragment<BaseModel>() {
             it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return if (adapter?.elementAt(position)?.element?.type?.let {
-                            it == BrowseTypes.MANGA.ordinal
-                                    || it == BrowseTypes.ANIME.ordinal
-                                    || it == BrowseTypes.CHARACTER.ordinal
-                                    || it == BrowseTypes.STAFF.ordinal
+                            it == SearchTypes.MANGA.ordinal
+                                    || it == SearchTypes.ANIME.ordinal
+                                    || it == SearchTypes.CHARACTER.ordinal
+                                    || it == SearchTypes.STAFF.ordinal
                         } == true) {
                         1
                     } else {

@@ -10,7 +10,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.MediaFilterDialog
 import com.revolgenx.anilib.event.BrowseTrendingEvent
 import com.revolgenx.anilib.field.home.NewlyAddedMediaField
-import com.revolgenx.anilib.model.search.filter.MediaBrowseFilterModel
+import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.presenter.home.MediaPresenter
 import com.revolgenx.anilib.source.MediaSource
 import com.revolgenx.anilib.type.MediaSort
@@ -90,7 +90,7 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
 
     private fun handleClick(which: Int) {
         if (which == 0) {
-            BrowseTrendingEvent(MediaBrowseFilterModel().also {
+            BrowseTrendingEvent(MediaSearchFilterModel().also {
                 it.sort = MediaSort.ID_DESC.ordinal
             }).postEvent
         } else if (which == 1) {

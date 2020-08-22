@@ -1,3 +1,10 @@
+v-1.1.3
+Added user search in search type.
+EntryList View Bug fixes.
+Anime/Manga List not showing all media issue fixed.
+User Studio Stats showing Genre stats instead of Studio issue fixed.
+Bug fixes.
+
 v-1.1.2
 * Added custom tag feature to manually add tags, genre and streams.\n
 * optimization.

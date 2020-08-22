@@ -691,6 +691,22 @@ query BasicUserQuery($id:Int){
     }
 }
 
+query UserSearchQuery(
+    $page:Int,
+    $perPage:Int,
+    $search:String){
+    Page(page:$page, perPage:$perPage){
+        users(search:$search){
+            id
+            name
+            avatar{
+                large
+                medium
+            }
+        }
+    }
+}
+
 query UserProfileQuery($name:String, $id:Int){
     User(name:$name, id:$id){
         id

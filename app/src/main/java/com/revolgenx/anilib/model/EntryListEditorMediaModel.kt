@@ -19,4 +19,5 @@ class EntryListEditorMediaModel {
     var endDate: DateModel? = null
 
     var isUserList = false
+    var hasData = false
 }

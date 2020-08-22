@@ -14,7 +14,7 @@
         android:padding="6dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/browseCharacterImageView"
+            android:id="@+id/searchCharacterImageView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_alignParentTop="true"
@@ -27,7 +27,7 @@
             app:roundedCornerRadius="4dp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/browseCharacterNameTv"
+            android:id="@+id/searchCharacterNameTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -37,9 +37,9 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:textSize="11sp"
-            app:layout_constraintLeft_toLeftOf="@id/browseCharacterImageView"
-            app:layout_constraintRight_toRightOf="@id/browseCharacterImageView"
-            app:layout_constraintTop_toBottomOf="@id/browseCharacterImageView"
+            app:layout_constraintLeft_toLeftOf="@id/searchCharacterImageView"
+            app:layout_constraintRight_toRightOf="@id/searchCharacterImageView"
+            app:layout_constraintTop_toBottomOf="@id/searchCharacterImageView"
             tools:ignore="SmallSp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

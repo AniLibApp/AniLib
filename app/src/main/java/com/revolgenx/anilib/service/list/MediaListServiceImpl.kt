@@ -19,29 +19,38 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.MediaListCollection()?.lists()?.firstOrNull()?.entries()?.filter { if (field.canShowAdult) true else it.media()?.isAdult == false }?.map {
-                    MediaListModel().also { model ->
-                        model.mediaListId = it.id()
-                        model.progress = it.progress()?.toString()
-                        model.score = it.score()
-                        model.scoreFormat = it.user()?.mediaListOptions()?.scoreFormat()?.ordinal
-                        it.media()?.let { media ->
-                            model.mediaId = media.id()
-                            model.episodes = media.episodes()?.toString()
-                            model.chapters = media.chapters()?.toString()
-                            model.title = media.title()?.userPreferred()?.let {
-                                TitleModel().apply { userPreferred = it }
+                val mediaListCollection = mutableListOf<MediaListModel>()
+                it.data()?.MediaListCollection()?.lists()?.forEach { list ->
+                    list.entries()
+                        ?.filter { if (field.canShowAdult) true else it.media()?.isAdult == false }
+                        ?.map {
+                            MediaListModel().also { model ->
+                                model.mediaListId = it.id()
+                                model.progress = it.progress()?.toString()
+                                model.score = it.score()
+                                model.scoreFormat =
+                                    it.user()?.mediaListOptions()?.scoreFormat()?.ordinal
+                                it.media()?.let { media ->
+                                    model.mediaId = media.id()
+                                    model.episodes = media.episodes()?.toString()
+                                    model.chapters = media.chapters()?.toString()
+                                    model.title = media.title()?.userPreferred()?.let {
+                                        TitleModel().apply { userPreferred = it }
+                                    }
+                                    model.coverImage = media.coverImage()?.large()?.let {
+                                        CoverImageModel().apply { large = it }
+                                    }
+                                    model.type = field.type
+                                    model.genres = media.genres()
+                                    model.format = media.format()?.ordinal
+                                    model.status = media.status()?.ordinal
+                                }
                             }
-                            model.coverImage = media.coverImage()?.large()?.let {
-                                CoverImageModel().apply { large = it }
-                            }
-                            model.type = field.type
-                            model.genres = media.genres()
-                            model.format = media.format()?.ordinal
-                            model.status = media.status()?.ordinal
+                        }?.let { mediaList ->
+                            mediaListCollection.addAll(mediaList)
                         }
-                    }
-                } ?: emptyList()
+                }
+                mediaListCollection
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
