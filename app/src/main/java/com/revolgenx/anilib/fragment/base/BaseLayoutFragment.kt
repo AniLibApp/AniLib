@@ -15,7 +15,7 @@ abstract class BaseLayoutFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return inflater.inflate(layoutRes, container, false)
     }
 

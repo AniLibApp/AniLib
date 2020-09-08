@@ -35,7 +35,7 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
-import com.revolgenx.anilib.viewmodel.UserProfileViewModel
+import com.revolgenx.anilib.viewmodel.user.UserProfileViewModel
 import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
@@ -277,7 +277,7 @@ class UserProfileActivity : BasePopupVideoActivity() {
         data.mangaMeanScore?.let {
             mangaMeanScoreTv.title = it.toString()
         }
-        seasonGenreRecyclerView.layoutManager =
+        tagGenreRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         Adapter.builder(this).addSource(Source.fromList(data.genreOverView.toList()))
             .addPresenter(
@@ -288,7 +288,7 @@ class UserProfileActivity : BasePopupVideoActivity() {
                 ) { view, genres ->
                     view.userGenreHeader.title = genres.first
                     view.userGenreHeader.subtitle = genres.second.toString()
-                }).into(seasonGenreRecyclerView)
+                }).into(tagGenreRecyclerView)
 
         initListener()
     }

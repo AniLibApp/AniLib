@@ -12,7 +12,7 @@ import com.revolgenx.anilib.event.BrowseAllReviewsEvent
 import com.revolgenx.anilib.presenter.review.ReviewPresenter
 import com.revolgenx.anilib.source.home.discover.AllReviewSource
 import com.revolgenx.anilib.util.dp
-import com.revolgenx.anilib.viewmodel.DiscoverReviewViewModel
+import com.revolgenx.anilib.viewmodel.home.discover.DiscoverReviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverReviewFragment : DiscoverNewFragment() {

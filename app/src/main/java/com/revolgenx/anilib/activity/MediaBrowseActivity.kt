@@ -43,7 +43,7 @@ import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.*
-import com.revolgenx.anilib.viewmodel.MediaBrowserViewModel
+import com.revolgenx.anilib.viewmodel.media.MediaBrowserViewModel
 import kotlinx.android.synthetic.main.activity_media_browser.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -52,8 +52,8 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = super.onCreateView(inflater, container, savedInstanceState)!!
+    ): View {
+        val v = super.onCreateView(inflater, container, savedInstanceState)
         baseRecyclerView = v.base_presenter_recycler_view
         baseSwipeRefreshLayout = v.base_swipe_to_refresh
         return v

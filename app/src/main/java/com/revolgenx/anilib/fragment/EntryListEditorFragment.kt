@@ -23,7 +23,6 @@ import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.meta.ListEditorResultMeta
 import com.revolgenx.anilib.model.DateModel
-import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.preference.getUserPrefModel
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.preference.userScoreFormat
@@ -33,13 +32,12 @@ import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.util.COLLAPSED
 import com.revolgenx.anilib.util.EXPANDED
 import com.revolgenx.anilib.util.makeToast
-import com.revolgenx.anilib.viewmodel.MediaEntryEditorViewModel
+import com.revolgenx.anilib.viewmodel.entry.MediaEntryEditorViewModel
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.list_editor_fragment_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt

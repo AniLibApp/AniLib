@@ -25,6 +25,10 @@ class MainActivityViewModel(
     var genreTagFields: MutableList<TagField> = mutableListOf()
     var tagTagFields: MutableList<TagField> = mutableListOf()
     var streamTagFields: MutableList<TagField> = mutableListOf()
+    var genreIncludeTagFields: MutableList<TagField> = mutableListOf()
+    var genreExcludeTagFields: MutableList<TagField> = mutableListOf()
+    var tagIncludeTagFields: MutableList<TagField> = mutableListOf()
+    var tagExcludeTagFields: MutableList<TagField> = mutableListOf()
 
     private val compositeDisposable by lazy {
         CompositeDisposable()

@@ -14,7 +14,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.meta.FollowerMeta
 import com.revolgenx.anilib.model.user.UserFollowersModel
 import com.revolgenx.anilib.presenter.user.UserFollowerPresenter
-import com.revolgenx.anilib.viewmodel.UserFollowerViewModel
+import com.revolgenx.anilib.viewmodel.user.UserFollowerViewModel
 import kotlinx.android.synthetic.main.follower_dialog_layout.*
 import kotlinx.android.synthetic.main.user_followr_title_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

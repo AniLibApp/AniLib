@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_notifications"
         android:title="@string/notification"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/orderMenu"
+        android:icon="@drawable/ic_arrow_down"
+        android:title="@string/order"
+        app:showAsAction="never" />
 </menu>

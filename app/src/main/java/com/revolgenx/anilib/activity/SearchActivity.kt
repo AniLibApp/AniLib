@@ -18,10 +18,10 @@ import com.paulrybitskyi.persistentsearchview.listeners.OnSuggestionChangeListen
 import com.paulrybitskyi.persistentsearchview.utils.SuggestionCreationUtil
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.event.BrowseFilterAppliedEvent
 import com.revolgenx.anilib.event.TagEvent
-import com.revolgenx.anilib.event.TagOperationType
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.fragment.search.SearchFragment
@@ -32,21 +32,17 @@ import com.revolgenx.anilib.util.DataProvider
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
-import com.revolgenx.anilib.viewmodel.BrowseActivityViewModel
+import com.revolgenx.anilib.viewmodel.browse.BrowseActivityViewModel
 import kotlinx.android.synthetic.main.browse_activity_layout.*
 import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : BaseDynamicActivity(),
-    BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener,
-    TagChooserDialogFragment.TagChooserDialogCallback {
+    BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener {
 
     companion object {
-        const val GENRE_CHOOSER_DIALOG_TAG = "genre_chooser_tag"
         const val TAG_CHOOSER_DIALOG_TAG = "tag_chooser_tag"
         const val ADVANCE_SEARCH_FRAGMENT_TAG = "advance_search_fragment_tag"
-        const val STREAM_CHOOSER_DIALOG_TAG = "stream_chooser_tag"
         const val ADVANCE_SEARCH_INTENT_KEY = "advance_search_intent_key"
 
 
@@ -203,7 +199,6 @@ class SearchActivity : BaseDynamicActivity(),
 
 
     private fun setUpListener() {
-        checkDialogs()
         with(persistentSearchView) {
             setOnLeftBtnClickListener {
                 if (isExpanded) {
@@ -263,139 +258,14 @@ class SearchActivity : BaseDynamicActivity(),
         })
     }
 
-
-    private fun checkDialogs() {
-        val dialog = when {
-            supportFragmentManager.findFragmentByTag(TAG_CHOOSER_DIALOG_TAG) != null -> {
-                supportFragmentManager.findFragmentByTag(TAG_CHOOSER_DIALOG_TAG)
-            }
-            supportFragmentManager.findFragmentByTag(GENRE_CHOOSER_DIALOG_TAG) != null -> {
-                supportFragmentManager.findFragmentByTag(GENRE_CHOOSER_DIALOG_TAG)
-            }
-            supportFragmentManager.findFragmentByTag(STREAM_CHOOSER_DIALOG_TAG) != null -> {
-                supportFragmentManager.findFragmentByTag(STREAM_CHOOSER_DIALOG_TAG)
-            }
-            else -> null
-        }
-
-        if (dialog != null) {
-            (dialog as TagChooserDialogFragment).onDoneListener(this)
-        }
-    }
-
-
-    override fun onTagChooserDone(fragmentTag: String?, list: List<TagField>) {
-        when (fragmentTag) {
-            TAG_CHOOSER_DIALOG_TAG -> {
-                invalidateTagFilter(list)
-            }
-            GENRE_CHOOSER_DIALOG_TAG -> {
-                invalidateGenreFilter(list)
-            }
-            STREAM_CHOOSER_DIALOG_TAG -> {
-                invalidateStreamFilter(list)
-            }
-        }
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onTagEvent(event: TagEvent) {
-        val fragmentTag = event.tag
-        val tagFields = event.tagFields;
-        when (event.tag) {
-            TAG_CHOOSER_DIALOG_TAG -> {
-                when (event.operationType) {
-                    TagOperationType.ADD_TAG -> {
-                        viewModel.tagTagFields.addAll(tagFields)
-                        addTagToNavView(fragmentTag, tagFields)
-                    }
-                    TagOperationType.DELETE_TAG -> {
-                        viewModel.tagTagFields.removeAll { r ->
-                            tagFields.any { it.tag == r.tag }
-                        }
-                        removeTagToNavView(fragmentTag, tagFields)
-
-                    }
-                    else -> {
-
-                    }
-                }
-            }
-            GENRE_CHOOSER_DIALOG_TAG -> {
-                when (event.operationType) {
-                    TagOperationType.ADD_GENRE -> {
-                        viewModel.genreTagFields.addAll(tagFields)
-                        addTagToNavView(fragmentTag, tagFields)
-                    }
-                    TagOperationType.DELETE_GENRE -> {
-                        viewModel.genreTagFields.removeAll { r ->
-                            tagFields.any { it.tag == r.tag }
-                        }
-                        removeTagToNavView(fragmentTag, tagFields)
-
-                    }
-                    else -> {
-
-                    }
-                }
-            }
-            STREAM_CHOOSER_DIALOG_TAG -> {
-                when (event.operationType) {
-                    TagOperationType.ADD_STREAM -> {
-                        viewModel.streamTagFields.addAll(tagFields)
-                        addTagToNavView(fragmentTag, tagFields)
-                    }
-                    TagOperationType.DELETE_STREAM -> {
-                        viewModel.streamTagFields.removeAll { r ->
-                            tagFields.any { it.tag == r.tag }
-                        }
-                        removeTagToNavView(fragmentTag, tagFields)
-                    }
-                    else -> {
-
-                    }
-                }
-            }
-            else -> {
-
-            }
-        }
-    }
-
-    private fun addTagToNavView(fragmentTag: String?, tags: List<TagField>) {
-        when (fragmentTag) {
-            TAG_CHOOSER_DIALOG_TAG -> {
-                browseFilterNavView.addTagField(tags)
-            }
-            GENRE_CHOOSER_DIALOG_TAG -> {
-                browseFilterNavView.addGenreField(tags)
-            }
-            STREAM_CHOOSER_DIALOG_TAG -> {
-                browseFilterNavView.addStreamField(tags)
-            }
-            else -> {
-
-            }
-        }
-    }
-
-
-    private fun removeTagToNavView(fragmentTag: String?, tags: List<TagField>) {
-        when (fragmentTag) {
-            TAG_CHOOSER_DIALOG_TAG -> {
-                browseFilterNavView.removeTagField(tags)
-            }
-            GENRE_CHOOSER_DIALOG_TAG -> {
-                browseFilterNavView.removeGenreField(tags)
-
-            }
-            STREAM_CHOOSER_DIALOG_TAG -> {
-                browseFilterNavView.removeStreamField(tags)
-            }
-            else -> {
-
-            }
+    @Subscribe
+    fun onTagEvent(event: TagEvent){
+        when(event.tagType){
+            MediaTagFilterTypes.TAGS -> invalidateTagFilter(event.tagFields)
+            MediaTagFilterTypes.GENRES -> invalidateGenreFilter(event.tagFields)
+            MediaTagFilterTypes.STREAMING_ON -> invalidateStreamFilter(event.tagFields)
+            MediaTagFilterTypes.TAG_EXCLUDE -> invalidateTagExcludeFilter(event.tagFields)
+            MediaTagFilterTypes.GENRE_EXCLUDE -> invalidateGenreExcludeFilter(event.tagFields)
         }
     }
 
@@ -422,6 +292,20 @@ class SearchActivity : BaseDynamicActivity(),
             list
         )
     }
+    private fun invalidateTagExcludeFilter(list: List<TagField>) {
+        viewModel.tagExcludeTagFields = list.toMutableList()
+        browseFilterNavView.buildTagExcludeAdapter(
+            tagAdapter,
+            list
+        )
+    }
+    private fun invalidateGenreExcludeFilter(list: List<TagField>) {
+        viewModel.genreExcludeTagFields = list.toMutableList()
+        browseFilterNavView.buildGenreExcludeAdapter(
+            tagAdapter,
+            list
+        )
+    }
 
 
     override fun onBackPressed() {
@@ -435,51 +319,77 @@ class SearchActivity : BaseDynamicActivity(),
     override val layoutRes: Int = R.layout.browse_activity_layout
 
 
-    /**
-     * Called by advance search filter nav view
-     * */
-    override fun onGenreChoose(tags: List<TagField>) {
-        openTagChooserDialog(tags, GENRE_CHOOSER_DIALOG_TAG, getString(R.string.genre))
+
+    override fun openTagChooserDialog(tags: List<TagField>, tagType: MediaTagFilterTypes) {
+        TagChooserDialogFragment.newInstance(
+            TagChooserField(
+                tagType,
+                tags
+            )
+        ).show(supportFragmentManager, TagChooserDialogFragment::class.java.simpleName)
     }
 
-    /**
-     * Called by advance search filter nav view
-     * */
-    override fun onStreamChoose(tags: List<TagField>) {
-        openTagChooserDialog(tags, STREAM_CHOOSER_DIALOG_TAG, getString(R.string.streaming_on))
+    override fun onTagAdd(tags: List<TagField>, tagType: MediaTagFilterTypes) {
+        when(tagType){
+            MediaTagFilterTypes.TAGS -> {
+                viewModel.tagTagFields = tags.toMutableList()
+            }
+            MediaTagFilterTypes.GENRES -> {
+                viewModel.genreTagFields = tags.toMutableList()
+            }
+            MediaTagFilterTypes.STREAMING_ON -> {
+                viewModel.streamTagFields = tags.toMutableList()
+            }
+            MediaTagFilterTypes.TAG_EXCLUDE -> {
+                viewModel.tagExcludeTagFields = tags.toMutableList()
+            }
+            MediaTagFilterTypes.GENRE_EXCLUDE -> {
+                viewModel.genreExcludeTagFields = tags.toMutableList()
+            }
+        }
+
     }
 
-    /**
-     * Called by advance search filter nav view
-     * */
-    override fun onTagChoose(tags: List<TagField>) {
-        openTagChooserDialog(tags, TAG_CHOOSER_DIALOG_TAG, getString(R.string.tags))
+    override fun onTagRemoved(tag: String, tagType: MediaTagFilterTypes) {
+        when(tagType){
+            MediaTagFilterTypes.TAGS -> {
+                viewModel.tagTagFields.removeAll { it.tag == tag }
+            }
+            MediaTagFilterTypes.GENRES -> {
+                viewModel.genreTagFields.removeAll { it.tag == tag }
+            }
+            MediaTagFilterTypes.STREAMING_ON -> {
+                viewModel.streamTagFields.removeAll { it.tag == tag }
+            }
+            MediaTagFilterTypes.TAG_EXCLUDE -> {
+                viewModel.tagExcludeTagFields.removeAll { it.tag == tag }
+            }
+            MediaTagFilterTypes.GENRE_EXCLUDE -> {
+                viewModel.genreExcludeTagFields.removeAll { it.tag == tag }
+            }
+        }
     }
 
-
-    override fun onGenreAdd(tags: List<TagField>) {
-        viewModel.genreTagFields = tags.toMutableList()
+    override fun updateTags(tagType: MediaTagFilterTypes) {
+        when(tagType){
+            MediaTagFilterTypes.TAGS -> {
+                browseFilterNavView.invalidateTagAdapter(tagAdapter)
+            }
+            MediaTagFilterTypes.GENRES -> {
+                browseFilterNavView.invalidateGenreAdapter(tagAdapter)
+            }
+            MediaTagFilterTypes.STREAMING_ON -> {
+                browseFilterNavView.invalidateStreamAdapter(tagAdapter)
+            }
+            MediaTagFilterTypes.TAG_EXCLUDE -> {
+                browseFilterNavView.invalidateTagExcludeAdapter(tagAdapter)
+            }
+            MediaTagFilterTypes.GENRE_EXCLUDE -> {
+                browseFilterNavView.invalidateGenreExcludeAdapter(tagAdapter)
+            }
+        }
     }
 
-    override fun onTagAdd(tags: List<TagField>) {
-        viewModel.tagTagFields = tags.toMutableList()
-    }
-
-    override fun onStreamAdd(tags: List<TagField>) {
-        viewModel.streamTagFields = tags.toMutableList()
-    }
-
-    override fun onTagRemoved(tag: String) {
-        viewModel.tagTagFields.removeAll { it.tag == tag }
-    }
-
-    override fun onGenreRemoved(tag: String) {
-        viewModel.genreTagFields.removeAll { it.tag == tag }
-    }
-
-    override fun onStreamRemoved(tag: String) {
-        viewModel.streamTagFields.removeAll { it.tag == tag }
-    }
 
     /**
      * Called by advance search filter nav view to fill search box
@@ -488,17 +398,6 @@ class SearchActivity : BaseDynamicActivity(),
         return viewModel.searchQuery
     }
 
-    override fun updateGenre() {
-        browseFilterNavView.invalidateGenreAdapter(tagAdapter)
-    }
-
-    override fun updateStream() {
-        browseFilterNavView.invalidateStreamAdapter(tagAdapter)
-    }
-
-    override fun updateTags() {
-        browseFilterNavView.invalidateTagAdapter(tagAdapter)
-    }
 
     override fun applyFilter() {
         if (rootDrawerLayout.isDrawerOpen(GravityCompat.END)) {
@@ -515,23 +414,6 @@ class SearchActivity : BaseDynamicActivity(),
         browseFilterNavView.getFilter()?.let {
             it.query = viewModel.searchQuery
             BrowseFilterAppliedEvent(it).postSticky
-        }
-    }
-
-
-    private fun openTagChooserDialog(
-        tags: List<TagField>,
-        dialogTag: String,
-        tagHeader: String
-    ) {
-        TagChooserDialogFragment.newInstance(
-            TagChooserField(
-                tagHeader,
-                tags
-            )
-        ).apply {
-            onDoneListener(this@SearchActivity)
-            show(supportFragmentManager, dialogTag)
         }
     }
 

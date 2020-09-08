@@ -34,21 +34,8 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                 it.data()?.Media()?.let {
                     MediaBrowseModel().also { model ->
                         model.mediaId = it.id()
-                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
-                            TitleModel().also { tModel ->
-                                tModel.userPreferred = it.userPreferred()
-                                tModel.native = it.native_()
-                                tModel.romaji = it.romaji()
-                                tModel.english = it.english()
-                            }
-                        }
-                        model.coverImage = it.coverImage()?.let {
-                            CoverImageModel().also { cModel ->
-                                cModel.extraLarge = it.extraLarge()
-                                cModel.large = it.large()
-                                cModel.medium = it.medium()
-                            }
-                        }
+                        model.title = it.title()?.fragments()?.mediaTitle()?.toModel()
+                        model.coverImage = it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
                         model.mediaListStatus = it.mediaListEntry()?.status()?.ordinal
                         model.bannerImage = it.bannerImage() ?: model.coverImage?.largeImage
                     }
@@ -298,41 +285,4 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
         return mediaStatsLiveData
     }
 
-    override fun getMediaIn(
-        field: MediaInField,
-        compositeDisposable: CompositeDisposable,
-        resourceCallback: (Resource<List<CommonMediaModel>>) -> Unit
-    ) {
-        val disposable = graphRepository.request(field.toQueryOrMutation()).map {
-            it.data()?.Media()?.let { media ->
-                CommonMediaModel().also { model ->
-                    model.mediaId = media.id()
-                    model.title = media.title()?.let {
-                        TitleModel().also { mod ->
-                            mod.romaji = it.romaji()
-                        }
-                    }
-
-                    model.type = media.type()!!.ordinal
-                    model.coverImage = media.coverImage()?.fragments()?.mediaCoverImage()?.let {
-                        CoverImageModel().also { image ->
-                            image.medium = it.medium()
-                            image.large = it.large()
-                            image.extraLarge = it.extraLarge()
-                        }
-                    }
-                    model.bannerImage = media.bannerImage()
-                    model.averageScore = media.averageScore()
-                }
-            }
-        }.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-
-            }, {
-                Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
-            })
-
-        compositeDisposable.add(disposable)
-    }
 }

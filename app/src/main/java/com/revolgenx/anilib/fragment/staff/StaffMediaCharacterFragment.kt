@@ -10,14 +10,16 @@ import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.fragment.staff.StaffFragment.Companion.STAFF_META_KEY
 import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.model.StaffMediaCharacterModel
-import com.revolgenx.anilib.presenter.StaffMediaCharacterPresenter
-import com.revolgenx.anilib.viewmodel.StaffMediaCharacterViewModel
+import com.revolgenx.anilib.presenter.staff.StaffMediaCharacterPresenter
+import com.revolgenx.anilib.viewmodel.staff.StaffMediaCharacterViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 //voice roles
 class StaffMediaCharacterFragment : BasePresenterFragment<StaffMediaCharacterModel>() {
     override val basePresenter: Presenter<StaffMediaCharacterModel>
-        get() = StaffMediaCharacterPresenter(requireContext())
+        get() = StaffMediaCharacterPresenter(
+            requireContext()
+        )
 
     override val baseSource: Source<StaffMediaCharacterModel>
         get() = viewModel.source ?: createSource()

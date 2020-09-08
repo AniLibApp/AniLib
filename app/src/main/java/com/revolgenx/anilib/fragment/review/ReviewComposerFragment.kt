@@ -21,7 +21,7 @@ import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.util.getClipBoardText
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.view.util.attachHelperToView
-import com.revolgenx.anilib.viewmodel.ReviewComposerViewModel
+import com.revolgenx.anilib.viewmodel.review.ReviewComposerViewModel
 import io.noties.markwon.editor.MarkwonEditorTextWatcher
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*

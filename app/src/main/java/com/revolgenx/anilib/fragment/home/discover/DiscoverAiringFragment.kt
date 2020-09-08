@@ -11,6 +11,9 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.fragment.airing.AiringFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
+import com.revolgenx.anilib.model.home.HomeOrderType
+import com.revolgenx.anilib.model.home.OrderedViewModel
+import com.revolgenx.anilib.preference.getHomeOrderFromType
 import com.revolgenx.anilib.presenter.home.discover.DiscoverAiringPresenter
 import com.revolgenx.anilib.source.home.airing.AiringSource
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,12 +30,14 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     private var discoverAiringRecyclerView: DynamicRecyclerView? = null
     private val viewModel by viewModel<DiscoverAiringViewModel>()
 
+    private val order: Int
+        get() = getHomeOrderFromType(requireContext(), HomeOrderType.AIRING)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = super.onCreateView(inflater, container, savedInstanceState)
         discoverAiringRecyclerView = DynamicRecyclerView(requireContext()).also {
             it.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -40,13 +45,15 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
             )
             it.isNestedScrollingEnabled = false
         }
-        addView(
-            discoverAiringRecyclerView!!,
-            " >>> " + getString(R.string.airing_schedules) + " <<<", showSetting = false
+        orderedViewList.add(OrderedViewModel(
+            discoverAiringRecyclerView!!, order,
+            " >>> " + getString(R.string.airing_schedules) + " <<<"
+            , showSetting = false
         ) {
             this@DiscoverAiringFragment.handleClick(it)
-        }
-        return v
+        })
+
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

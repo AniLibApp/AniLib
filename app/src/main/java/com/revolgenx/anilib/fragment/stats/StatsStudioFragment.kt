@@ -2,7 +2,7 @@ package com.revolgenx.anilib.fragment.stats
 
 
 import com.revolgenx.anilib.field.stats.UserStatsField
-import com.revolgenx.anilib.viewmodel.StatsStudioViewModel
+import com.revolgenx.anilib.viewmodel.stats.StatsStudioViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StatsStudioFragment : UserStatsFragment() {

@@ -11,15 +11,17 @@ import com.revolgenx.anilib.field.media.MediaStaffField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.MediaStaffModel
-import com.revolgenx.anilib.presenter.MediaStaffPresenter
-import com.revolgenx.anilib.viewmodel.MediaStaffViewModel
+import com.revolgenx.anilib.presenter.media.MediaStaffPresenter
+import com.revolgenx.anilib.viewmodel.media.MediaStaffViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaStaffFragment : BasePresenterFragment<MediaStaffModel>() {
 
     override val basePresenter: Presenter<MediaStaffModel>
         get() {
-            return MediaStaffPresenter(requireContext())
+            return MediaStaffPresenter(
+                requireContext()
+            )
         }
 
     override val baseSource: Source<MediaStaffModel>

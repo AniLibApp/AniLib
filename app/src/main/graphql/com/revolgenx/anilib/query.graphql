@@ -1,4 +1,3 @@
-
 query MediaQuery($page: Int!
     , $perPage: Int!
     , $seasonYear: Int
@@ -9,6 +8,7 @@ query MediaQuery($page: Int!
     , $genre_in:[String]
     , $tag_in:[String]
     , $sort: [MediaSort]
+    , $idIn: [Int]
     , $isAdult:Boolean  = false) {
     Page(page: $page, perPage: $perPage) {
         media(seasonYear: $seasonYear
@@ -19,6 +19,7 @@ query MediaQuery($page: Int!
             , genre_in: $genre_in
             , tag_in: $tag_in
             , sort: $sort
+            , id_in:$idIn
             , isAdult:$isAdult) {
             ... on Media{
                 ... narrowMediaContent
@@ -207,30 +208,11 @@ query BrowseSimpleMediaQuery($mediaId:Int){
             ... mediaTitle
         }
         coverImage {
-            ... on MediaCoverImage{
-                medium
-                large
-                extraLarge
-            }
+            ... mediaCoverImage
         }
         mediaListEntry{
             status
         }
-        bannerImage
-    }
-}
-
-query MediaInQuery($idIn:[Int]){
-    Media(id_in:$idIn){
-        id
-        title {
-            romaji
-        }
-        coverImage {
-            ... mediaCoverImage
-        }
-        type
-        averageScore
         bannerImage
     }
 }
@@ -538,6 +520,8 @@ query MediaSearchQuery($search:String, $page:Int, $perPage:Int
     ,$streamingOn:[String]
     ,$genre:[String]
     ,$tag:[String]
+    ,$tagNotIn:[String]
+    ,$genreNotIn:[String]
     ,$sort:[MediaSort]
     ,$country:CountryCode
     ,$isAdult:Boolean){
@@ -554,6 +538,8 @@ query MediaSearchQuery($search:String, $page:Int, $perPage:Int
             , licensedBy_in:$streamingOn
             , genre_in:$genre
             , tag_in:$tag
+            , tag_not_in:$tagNotIn
+            , genre_not_in:$genreNotIn
             , sort:$sort
             , countryOfOrigin:$country
             , isAdult:$isAdult){
@@ -622,26 +608,68 @@ query RecommendationQuery($page:Int, $perPage:Int, $onList:Boolean, $sort:[Recom
     }
 }
 
-
-query MediaListCollectinoQuery(
+query MediaListQuery(
+    $page:Int,
+    $perPage:Int,
     $userId:Int,
     $userName:String,
     $type:MediaType,
     $status:MediaListStatus,
-    $includeEpisode:Boolean!,
-    $includeChapter:Boolean!
+    $sort:[MediaListSort]
+){
+    Page(page:$page, perPage:$perPage){
+        mediaList(userId:$userId
+            , userName:$userName
+            , type:$type
+            , status:$status
+            , sort: $sort){
+            id
+            score
+            progress
+            startedAt{
+                ... fuzzyDate
+            }
+            completedAt{
+                ... fuzzyDate
+            }
+            user{
+                mediaListOptions{
+                    scoreFormat
+                }
+            }
+            media{
+                ... narrowMediaContent
+            }
+        }
+    }
+}
+
+query MediaListCollectionQuery(
+    $userId:Int,
+    $userName:String,
+    $type:MediaType,
+    $status:MediaListStatus
 ){
     MediaListCollection(
         userId:$userId
         , userName:$userName
         , type:$type
         , status:$status
+        , forceSingleCompletedList:true
     ){
         lists{
             entries{
                 id
                 score
                 progress
+                startedAt{
+                    ... fuzzyDate
+                }
+                completedAt{
+                    ... fuzzyDate
+                }
+                updatedAt
+                createdAt
                 user{
                     mediaListOptions{
                         scoreFormat
@@ -655,12 +683,17 @@ query MediaListCollectinoQuery(
                     coverImage{
                         large
                     }
+                    startDate {
+                        ... fuzzyDate
+                    }
                     format
                     status
                     genres
+                    popularity
+                    averageScore
                     isAdult
-                    episodes @include(if:$includeEpisode)
-                    chapters @include(if:$includeChapter)
+                    episodes
+                    chapters
                 }
             }
         }
@@ -962,10 +995,10 @@ query UserStatsQuery($id:Int
             anime @include(if:$includeAnime){
                 genres(sort:$sort) @include(if:$includeGenre){
                     count
-                    #mediaIds
                     genre
                     minutesWatched
                     meanScore
+                    mediaIds
                 }
                 tags(sort:$sort) @include(if:$includeTag){
                     count
@@ -975,6 +1008,7 @@ query UserStatsQuery($id:Int
                     }
                     minutesWatched
                     meanScore
+                    mediaIds
                 }
                 studios(sort:$sort)  @include(if:$includeStudio){
                     count
@@ -984,12 +1018,14 @@ query UserStatsQuery($id:Int
                     }
                     minutesWatched
                     meanScore
+                    mediaIds
                 }
 
                 voiceActors(sort:$sort) @include(if:$includeVoiceActor){
                     count
                     meanScore
                     minutesWatched
+                    mediaIds
                     voiceActor{
                         id
                         name{
@@ -1007,6 +1043,7 @@ query UserStatsQuery($id:Int
                     count
                     meanScore
                     minutesWatched
+                    mediaIds
                     staff{
                         id
                         name{
@@ -1024,10 +1061,11 @@ query UserStatsQuery($id:Int
             manga @include(if:$includeManga){
                 genres(sort:$sort) @include(if:$includeGenre){
                     count
-                    #mediaIds
+                    mediaIds
                     genre
                     chaptersRead
                     meanScore
+                    mediaIds
                 }
                 tags(sort:$sort) @include(if:$includeTag){
                     count
@@ -1037,11 +1075,13 @@ query UserStatsQuery($id:Int
                     }
                     chaptersRead
                     meanScore
+                    mediaIds
                 }
                 staff(sort:$sort) @include(if:$includeStaff){
                     count
                     meanScore
                     chaptersRead
+                    mediaIds
                     staff{
                         id
                         name{

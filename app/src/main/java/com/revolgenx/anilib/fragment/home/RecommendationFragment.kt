@@ -25,7 +25,7 @@ import com.revolgenx.anilib.preference.setRecommendationField
 import com.revolgenx.anilib.presenter.recommendation.RecommendationPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
-import com.revolgenx.anilib.viewmodel.RecommendationViewModel
+import com.revolgenx.anilib.viewmodel.home.RecommendationViewModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -9,12 +9,13 @@ import com.revolgenx.anilib.type.MediaStatus
 
 open class MediaField : BaseSourceField<MediaQuery>() {
     var genres: List<String>? = null
-    var tags:List<String>? = null
+    var tags: List<String>? = null
     var format: Int? = null
     var sort: Int? = null
     var seasonYear: Int? = null
     var season: Int? = null
-    var status:Int? = null
+    var status: Int? = null
+    var mediaIdsIn: List<Int>? = null
     override fun toQueryOrMutation(): MediaQuery {
         return MediaQuery.builder()
             .page(page)
@@ -23,7 +24,7 @@ open class MediaField : BaseSourceField<MediaQuery>() {
                 if (genres?.isNullOrEmpty() == false) {
                     genre_in(genres)
                 }
-                if(tags?.isNullOrEmpty() == false) {
+                if (tags?.isNullOrEmpty() == false) {
                     tag_in(tags)
                 }
                 sort?.let {
@@ -40,6 +41,9 @@ open class MediaField : BaseSourceField<MediaQuery>() {
                 }
                 status?.let {
                     status(MediaStatus.values()[it])
+                }
+                mediaIdsIn?.let {
+                    idIn(it)
                 }
             }
             .build()

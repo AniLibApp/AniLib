@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.fragment.list
 
 import com.revolgenx.anilib.type.MediaListStatus
-import com.revolgenx.anilib.viewmodel.RepeatingViewModel
+import com.revolgenx.anilib.viewmodel.media_list.RepeatingViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RepeatingFragment : MediaListFragment() {

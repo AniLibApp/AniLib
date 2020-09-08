@@ -10,8 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="6dp">
+        android:layout_height="wrap_content">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/mangaCharacterImageView"
@@ -30,9 +29,9 @@
             android:id="@+id/mangaCharacterNameTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="6dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="10sp"
@@ -45,9 +44,7 @@
             android:id="@+id/mangaCharacterRoleTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_margin="6dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="10sp"
@@ -55,6 +52,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/mangaCharacterImageView"
             app:layout_constraintRight_toRightOf="@+id/mangaCharacterImageView"
             app:layout_constraintTop_toBottomOf="@+id/mangaCharacterNameTv"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="SmallSp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

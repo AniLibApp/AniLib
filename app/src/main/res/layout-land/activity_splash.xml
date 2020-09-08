@@ -26,6 +26,14 @@
         android:layout_margin="@dimen/ads_margin_splash_small"
         android:orientation="vertical">
 
+
+        <com.revolgenx.anilib.view.CustomSpinKit
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            style="@style/SpinKitView.Small.CubeGrid"/>
+
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/splash_title"
             android:textSize="@dimen/ads_font_size_headline6_splash"

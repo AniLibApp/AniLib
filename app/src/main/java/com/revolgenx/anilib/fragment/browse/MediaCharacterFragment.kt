@@ -20,17 +20,19 @@ import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.MediaCharacterModel
-import com.revolgenx.anilib.presenter.MediaCharacterPresenter
+import com.revolgenx.anilib.presenter.media.MediaCharacterPresenter
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.dp
-import com.revolgenx.anilib.viewmodel.MediaCharacterViewModel
+import com.revolgenx.anilib.viewmodel.media.MediaCharacterViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
 
     override val basePresenter: Presenter<MediaCharacterModel>
         get() {
-            return MediaCharacterPresenter(requireContext())
+            return MediaCharacterPresenter(
+                requireContext()
+            )
         }
 
     override val baseSource: Source<MediaCharacterModel>
@@ -51,7 +53,7 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val v = super.onCreateView(inflater, container, savedInstanceState)
 
         languageSpinner = DynamicSpinner(requireContext()).also {

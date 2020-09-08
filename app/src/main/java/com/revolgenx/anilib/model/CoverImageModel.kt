@@ -17,6 +17,13 @@ class CoverImageModel {
     val largeImage: String
         get() = extraLarge ?: ""//image
 
+    constructor()
+    constructor(medium: String?, large: String?, extraLarge: String?) {
+        this.medium = medium
+        this.large = large
+        this.extraLarge = extraLarge
+    }
+
     fun image(context: Context) =
         when (context.imageQuality()) {
             "0" -> image

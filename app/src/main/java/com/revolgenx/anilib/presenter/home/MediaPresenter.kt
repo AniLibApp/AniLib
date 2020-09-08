@@ -17,6 +17,7 @@ import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.preference.loggedIn
+import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.media_presenter_layout.view.*
@@ -24,6 +25,9 @@ import kotlinx.android.synthetic.main.media_presenter_layout.view.*
 class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
+
+    private val cornerRadius = dp(8f).toFloat()
+
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         return Holder(
@@ -38,6 +42,7 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                         200
                     )
                 )
+                it.mediaPresenterContainer.corner = cornerRadius
             })
     }
 

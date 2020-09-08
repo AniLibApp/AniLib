@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/characterActorPresenterContainer">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="6dp">
+        android:layout_height="wrap_content">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/actorImageView"
@@ -28,9 +28,9 @@
             android:id="@+id/actorNameTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="6dp"
             android:ellipsize="end"
             android:lines="2"
             android:maxLines="2"
@@ -45,9 +45,7 @@
             android:id="@+id/actorLanguageTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_margin="6dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="10sp"
@@ -55,6 +53,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/actorImageView"
             app:layout_constraintRight_toRightOf="@+id/actorImageView"
             app:layout_constraintTop_toBottomOf="@+id/actorNameTv"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="SmallSp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

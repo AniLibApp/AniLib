@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
@@ -16,6 +17,7 @@ import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicNavigationView
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.field.TagField
@@ -46,17 +48,20 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     private val rippleDrawable: RippleDrawable
         get() = RippleDrawable(ColorStateList.valueOf(accentColor), null, null)
 
-    private val accentColor: Int
-        get() = DynamicTheme.getInstance().get().accentColor
+    private val accentColor: Int = DynamicTheme.getInstance().get().accentColor
 
     private lateinit var streamAdapter: Adapter
     private lateinit var genreAdapter: Adapter
     private lateinit var tagAdapter: Adapter
+    private lateinit var tagExcludeAdapter: Adapter
+    private lateinit var genreExcludeAdapter: Adapter
+
+
     private val streamPresenter by lazy {
         TagPresenter(context).also {
             it.tagRemoved {
                 streamingTagMap!![it]?.isTagged = false
-                mListener?.onStreamRemoved(it)
+                mListener?.onTagRemoved(it, MediaTagFilterTypes.STREAMING_ON)
             }
         }
     }
@@ -64,15 +69,34 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         TagPresenter(context).also {
             it.tagRemoved {
                 genreTagMap!![it]?.isTagged = false
-                mListener?.onGenreRemoved(it)
+                mListener?.onTagRemoved(it, MediaTagFilterTypes.GENRES)
             }
         }
     }
+
     private val tagPresenter by lazy {
         TagPresenter(context).also {
             it.tagRemoved {
                 tagTagMap!![it]?.isTagged = false
-                mListener?.onTagRemoved(it)
+                mListener?.onTagRemoved(it, MediaTagFilterTypes.TAGS)
+            }
+        }
+    }
+
+    private val tagExcludePresenter by lazy {
+        TagPresenter(context).also {
+            it.tagRemoved {
+                tagExcludedTagMap!![it]?.isTagged = false
+                mListener?.onTagRemoved(it, MediaTagFilterTypes.TAG_EXCLUDE)
+            }
+        }
+    }
+
+    private val genreExcludePresenter by lazy {
+        TagPresenter(context).also {
+            it.tagRemoved {
+                genreExcludedTagMap!![it]?.isTagged = false
+                mListener?.onTagRemoved(it, MediaTagFilterTypes.GENRE_EXCLUDE)
             }
         }
     }
@@ -104,6 +128,22 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
             return field
         }
 
+    private var genreExcludedTagMap: MutableMap<String, TagField>? = null
+        get() {
+            field = field ?: mutableMapOf<String, TagField>().also { map ->
+                genreList.forEach { map[it] = TagField(it, false) }
+            }
+            return field
+        }
+
+    private var tagExcludedTagMap: MutableMap<String, TagField>? = null
+        get() {
+            field = field ?: mutableMapOf<String, TagField>().also { map ->
+                tagList.forEach { map[it] = TagField(it, false) }
+            }
+            return field
+        }
+
     private var streamingTagMap: MutableMap<String, TagField>? = null
         get() {
             field = field ?: mutableMapOf<String, TagField>().also { map ->
@@ -114,7 +154,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
 
     private var searchText: String?
         set(value) {
-            if (value != null){
+            if (value != null) {
                 browseSearchEt.setText(value)
             }
         }
@@ -124,15 +164,12 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
 
     val drawerListener = object : DrawerLayout.DrawerListener {
         override fun onDrawerStateChanged(newState: Int) {
-
         }
 
         override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-
         }
 
         override fun onDrawerClosed(drawerView: View) {
-
         }
 
         override fun onDrawerOpened(drawerView: View) {
@@ -142,6 +179,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         }
     }
 
+    //region ctor
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
         addView(rView)
@@ -157,21 +195,12 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                 )
             )
         }
-        updateTheme(rView)
-        updateView(rView)
-        updateRecyclerView(rView)
-        updateListener(rView)
+        rView.updateTheme()
+        rView.updateView()
+        rView.updateListener()
     }
 
-    private fun updateRecyclerView(rView: View) {
-        rView.apply {
-            streamingOnRecyclerView.layoutManager = FlexboxLayoutManager(context)
-            seasonGenreRecyclerView.layoutManager = FlexboxLayoutManager(context)
-            tagRecyclerView.layoutManager = FlexboxLayoutManager(context)
-        }
-    }
-
-
+    //endregion ctor
     fun buildStreamAdapter(builder: Adapter.Builder, list: List<TagField>) {
         list.forEach {
             streamingTagMap!![it.tag]?.isTagged = it.isTagged
@@ -194,31 +223,31 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         invalidateTagAdapter(builder)
     }
 
-    fun addTagField(list: List<TagField>) {
-        list.forEach { tagTagMap!![it.tag] = it }
+
+    fun buildTagExcludeAdapter(builder: Adapter.Builder, list: List<TagField>) {
+        list.forEach {
+            tagExcludedTagMap!![it.tag]?.isTagged = it.isTagged
+        }
+        invalidateTagExcludeAdapter(builder)
     }
 
-    fun addGenreField(list: List<TagField>) {
-        list.forEach { genreTagMap!![it.tag] = it }
 
+    fun buildGenreExcludeAdapter(builder: Adapter.Builder, list: List<TagField>) {
+        list.forEach {
+            genreExcludedTagMap!![it.tag]?.isTagged = it.isTagged
+        }
+        invalidateGenreExcludeAdapter(builder)
     }
 
-    fun addStreamField(list: List<TagField>) {
-        list.forEach { streamingTagMap!![it.tag] = it }
-    }
 
-    fun removeTagField(list: List<TagField>) {
-        list.forEach { tagTagMap!!.remove(it.tag) }
+    fun invalidateStreamAdapter(builder: Adapter.Builder) {
+        streamAdapter = builder
+            .addSource(
+                Source.fromList(streamingTagMap!!.values.filter { it.isTagged }.map { it.tag })
+            )
+            .addPresenter(streamPresenter)
+            .into(streamingOnRecyclerView)
     }
-
-    fun removeGenreField(list: List<TagField>) {
-        list.forEach { genreTagMap!!.remove(it.tag) }
-    }
-
-    fun removeStreamField(list: List<TagField>) {
-        list.forEach { streamingTagMap!!.remove(it.tag) }
-    }
-
 
     fun invalidateGenreAdapter(builder: Adapter.Builder) {
         genreAdapter = builder
@@ -226,7 +255,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                 Source.fromList(genreTagMap!!.values.filter { it.isTagged }.map { it.tag })
             )
             .addPresenter(genrePresenter)
-            .into(seasonGenreRecyclerView)
+            .into(tagGenreRecyclerView)
     }
 
 
@@ -239,91 +268,190 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
             .into(tagRecyclerView)
     }
 
-    fun invalidateStreamAdapter(builder: Adapter.Builder) {
-        streamAdapter = builder
+    fun invalidateTagExcludeAdapter(builder: Adapter.Builder) {
+        tagExcludeAdapter = builder
             .addSource(
-                Source.fromList(streamingTagMap!!.values.filter { it.isTagged }.map { it.tag })
+                Source.fromList(tagExcludedTagMap!!.values.filter { it.isTagged }.map { it.tag })
             )
-            .addPresenter(streamPresenter)
-            .into(streamingOnRecyclerView)
+            .addPresenter(tagExcludePresenter)
+            .into(tagExcludeRecyclerView)
+    }
+
+    fun invalidateGenreExcludeAdapter(builder: Adapter.Builder) {
+        genreExcludeAdapter = builder
+            .addSource(
+                Source.fromList(genreExcludedTagMap!!.values.filter { it.isTagged }.map { it.tag })
+            )
+            .addPresenter(genreExcludePresenter)
+            .into(genreExcludeRecyclerView)
     }
 
 
-    fun updateView(rView: View) {
-        val searchTypeItems: List<DynamicSpinnerItem>
-        val searchSeasonItems: List<DynamicSpinnerItem>
-        val searchSortItems: List<DynamicSpinnerItem>
-        val searchFormatItems: List<DynamicSpinnerItem>
-        val searchStatusItems: List<DynamicSpinnerItem>
-        val searchSourceItems: List<DynamicSpinnerItem>
-        val searchCountryItems: List<DynamicSpinnerItem>
-
-        rView.apply {
-            searchTypeItems = context.resources.getStringArray(R.array.advance_search_type).map {
+    fun View.updateView() {
+        val searchTypeItems: List<DynamicSpinnerItem> =
+            context.resources.getStringArray(R.array.advance_search_type).map {
                 DynamicSpinnerItem(
                     null, it
                 )
             }
-            searchSeasonItems =
-                context.resources.getStringArray(R.array.advance_search_season).map {
-                    DynamicSpinnerItem(
-                        null, it
-                    )
-                }
-            searchSortItems = context.resources.getStringArray(R.array.advance_search_sort).map {
+        val searchSeasonItems: List<DynamicSpinnerItem> =
+            context.resources.getStringArray(R.array.advance_search_season).map {
+                DynamicSpinnerItem(
+                    null, it
+                )
+            }
+        val searchSortItems: List<DynamicSpinnerItem> =
+            context.resources.getStringArray(R.array.advance_search_sort).map {
                 DynamicSpinnerItem(
                     null, it
                 )
             }
 
-            searchFormatItems =
-                context.resources.getStringArray(R.array.advance_search_format).map {
-                    DynamicSpinnerItem(
-                        null, it
-                    )
-                }
+        val searchFormatItems: List<DynamicSpinnerItem> =
+            context.resources.getStringArray(R.array.advance_search_format).map {
+                DynamicSpinnerItem(
+                    null, it
+                )
+            }
 
-            searchStatusItems =
-                context.resources.getStringArray(R.array.advance_search_status).map {
-                    DynamicSpinnerItem(
-                        null, it
-                    )
-                }
+        val searchStatusItems: List<DynamicSpinnerItem> =
+            context.resources.getStringArray(R.array.advance_search_status).map {
+                DynamicSpinnerItem(
+                    null, it
+                )
+            }
 
-            searchSourceItems =
-                context.resources.getStringArray(R.array.advance_search_source).map {
-                    DynamicSpinnerItem(
-                        null, it
-                    )
-                }
-            searchCountryItems =
-                context.resources.getStringArray(R.array.advance_search_country).map {
-                    DynamicSpinnerItem(
-                        null, it
-                    )
-                }
+        val searchSourceItems: List<DynamicSpinnerItem> =
+            context.resources.getStringArray(R.array.advance_search_source).map {
+                DynamicSpinnerItem(
+                    null, it
+                )
+            }
+        val searchCountryItems: List<DynamicSpinnerItem> =
+            context.resources.getStringArray(R.array.advance_search_country).map {
+                DynamicSpinnerItem(
+                    null, it
+                )
+            }
 
-            browseTypeSpinner.adapter = makeSpinnerAdapter(searchTypeItems)
-            browseSeasonSpinner.adapter = makeSpinnerAdapter(searchSeasonItems)
-            browseSortSpinner.adapter = makeSpinnerAdapter(searchSortItems)
-            browseFormatSpinner.adapter = makeSpinnerAdapter(searchFormatItems)
-            browseStatusSpinner.adapter = makeSpinnerAdapter(searchStatusItems)
-            browseSourceSpinner.adapter = makeSpinnerAdapter(searchSourceItems)
-            browseCountrySpinner.adapter = makeSpinnerAdapter(searchCountryItems)
+        browseTypeSpinner.adapter = makeSpinnerAdapter(searchTypeItems)
+        browseSeasonSpinner.adapter = makeSpinnerAdapter(searchSeasonItems)
+        browseSortSpinner.adapter = makeSpinnerAdapter(searchSortItems)
+        browseFormatSpinner.adapter = makeSpinnerAdapter(searchFormatItems)
+        browseStatusSpinner.adapter = makeSpinnerAdapter(searchStatusItems)
+        browseSourceSpinner.adapter = makeSpinnerAdapter(searchSourceItems)
+        browseCountrySpinner.adapter = makeSpinnerAdapter(searchCountryItems)
 
-            browseYearSeekBar.isEnabled = enableYearCheckBox.isChecked
-            val currentYear = Calendar.getInstance().get(Calendar.YEAR) + 1f
-            browseYearSeekBar.setRange(1950f, currentYear)
-            browseYearSeekBar.setProgress(1950f, currentYear)
-            yearTv.text =
-                if (enableYearCheckBox.isChecked)
-                    context.getString(R.string.year)
-                else
-                    context.getString(R.string.year_disabled)
-            browseYearSeekBar.progressLeft = 1950
+        browseYearSeekBar.isEnabled = enableYearCheckBox.isChecked
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR) + 1f
+        browseYearSeekBar.setRange(1950f, currentYear)
+        browseYearSeekBar.setProgress(1950f, currentYear)
+        yearTv.text =
+            if (enableYearCheckBox.isChecked)
+                context.getString(R.string.year)
+            else
+                context.getString(R.string.year_disabled)
+        browseYearSeekBar.progressLeft = 1950
+
+        tagRecyclerView.layoutManager = FlexboxLayoutManager(context)
+        tagGenreRecyclerView.layoutManager  = FlexboxLayoutManager(context)
+        streamingOnRecyclerView.layoutManager  = FlexboxLayoutManager(context)
+        tagExcludeRecyclerView.layoutManager  = FlexboxLayoutManager(context)
+        genreExcludeRecyclerView.layoutManager  = FlexboxLayoutManager(context)
+    }
+
+    private fun View.updateTheme() {
+        ThemeController.lightSurfaceColor().let {
+            searchTypeFrameLayout.setBackgroundColor(it)
+            browseSeasonFrameLayout.setBackgroundColor(it)
+            browseSortFrameLayout.setBackgroundColor(it)
+            browseFormatFrameLayout.setBackgroundColor(it)
+            browseStatusFrameLayout.setBackgroundColor(it)
+            browseSourceFrameLayout.setBackgroundColor(it)
+            browseCountryFrameLayout.setBackgroundColor(it)
+            browseStreamingFrameLayout.setBackgroundColor(it)
+            genreFrameLayout.setBackgroundColor(it)
+            tagFrameLayout.setBackgroundColor(it)
+            tagExcludeFrameLayout.setBackgroundColor(it)
+            genreExcludeFrameLayout.setBackgroundColor(it)
+            tagAddIv.background = rippleDrawable
+            genreAddIv.background = rippleDrawable
+            streamAddIv.background = rippleDrawable
+            tagExcludeAddIv.background = rippleDrawable
+            genreExcludeAddIv.background = rippleDrawable
+            browseYearSeekBar.setIndicatorTextDecimalFormat("0")
+            browseYearSeekBar.setTypeface(
+                ResourcesCompat.getFont(
+                    context,
+                    R.font.open_sans_light
+                )
+            )
 
         }
 
+        DynamicTheme.getInstance().get().accentColor.let {
+            browseYearSeekBar.progressColor = it
+            browseYearSeekBar.leftSeekBar?.indicatorBackgroundColor = it
+            browseYearSeekBar.rightSeekBar?.indicatorBackgroundColor = it
+        }
+    }
+
+    private fun View.updateListener() {
+        enableYearCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            browseYearSeekBar.isEnabled = isChecked
+            yearTv.text =
+                if (isChecked)
+                    context.getString(R.string.year)
+                else
+                    context.getString(R.string.year_disabled)
+        }
+
+
+        browseTypeSpinner.onItemSelected {
+            if (it == 0 || it == 1) {
+                browseMediaFilterContainer.visibility = View.VISIBLE
+
+            } else {
+                browseMediaFilterContainer.visibility = View.GONE
+            }
+        }
+
+        streamAddIv.setOnClickListener {
+            mListener?.openTagChooserDialog(
+                streamingTagMap!!.values.toList(),
+                MediaTagFilterTypes.STREAMING_ON
+            )
+        }
+
+        genreAddIv.setOnClickListener {
+            mListener?.openTagChooserDialog(
+                genreTagMap!!.values.toList(),
+                MediaTagFilterTypes.GENRES
+            )
+        }
+
+        tagAddIv.setOnClickListener {
+            mListener?.openTagChooserDialog(tagTagMap!!.values.toList(), MediaTagFilterTypes.TAGS)
+        }
+
+        tagExcludeAddIv.setOnClickListener {
+            mListener?.openTagChooserDialog(
+                tagExcludedTagMap!!.values.toList(),
+                MediaTagFilterTypes.TAG_EXCLUDE
+            )
+        }
+
+        genreExcludeAddIv.setOnClickListener {
+            mListener?.openTagChooserDialog(
+                genreExcludedTagMap!!.values.toList(),
+                MediaTagFilterTypes.GENRE_EXCLUDE
+            )
+        }
+
+        applyFilterCardView.setOnClickListener {
+            context.hideKeyboard(browseSearchEt)
+            applyFilter()
+        }
     }
 
     private fun View.makeSpinnerAdapter(items: List<DynamicSpinnerItem>) =
@@ -333,84 +461,6 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
             R.id.ads_spinner_item_icon,
             R.id.ads_spinner_item_text, items
         )
-
-    private fun updateTheme(rView: View) {
-        rView.apply {
-            ThemeController.lightSurfaceColor().let {
-                searchTypeFrameLayout.setBackgroundColor(it)
-                browseSeasonFrameLayout.setBackgroundColor(it)
-                browseSortFrameLayout.setBackgroundColor(it)
-                browseFormatFrameLayout.setBackgroundColor(it)
-                browseStatusFrameLayout.setBackgroundColor(it)
-                browseSourceFrameLayout.setBackgroundColor(it)
-                browseCountryFrameLayout.setBackgroundColor(it)
-                browseStreamingFrameLayout.setBackgroundColor(it)
-                genreFrameLayout.setBackgroundColor(it)
-                tagFrameLayout.setBackgroundColor(it)
-                tagAddIv.background = rippleDrawable
-                genreAddIv.background = rippleDrawable
-                streamAddIv.background = rippleDrawable
-
-                browseYearSeekBar.setIndicatorTextDecimalFormat("0")
-                browseYearSeekBar.setTypeface(
-                    ResourcesCompat.getFont(
-                        context,
-                        R.font.open_sans_light
-                    )
-                )
-
-            }
-
-            DynamicTheme.getInstance().get().accentColor.let {
-                browseYearSeekBar.progressColor = it
-                browseYearSeekBar.leftSeekBar?.indicatorBackgroundColor = it
-                browseYearSeekBar.rightSeekBar?.indicatorBackgroundColor = it
-            }
-        }
-    }
-
-
-    private fun updateListener(rView: View) {
-        rView.apply {
-            enableYearCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                browseYearSeekBar.isEnabled = isChecked
-                yearTv.text =
-                    if (isChecked)
-                        context.getString(R.string.year)
-                    else
-                        context.getString(R.string.year_disabled)
-            }
-
-
-            browseTypeSpinner.onItemSelected {
-                if (it == 0 || it == 1) {
-                    browseMediaFilterContainer.visibility = View.VISIBLE
-
-                } else {
-                    browseMediaFilterContainer.visibility = View.GONE
-                }
-            }
-
-            streamAddIv.setOnClickListener {
-                mListener?.onStreamChoose(streamingTagMap!!.values.toList())
-            }
-
-            genreAddIv.setOnClickListener {
-                mListener?.onGenreChoose(genreTagMap!!.values.toList())
-            }
-
-            tagAddIv.setOnClickListener {
-                mListener?.onTagChoose(tagTagMap!!.values.toList())
-            }
-
-
-
-            applyFilterCardView.setOnClickListener {
-                context.hideKeyboard(browseSearchEt)
-                applyFilter()
-            }
-        }
-    }
 
 
     fun getFilter(): SearchFilterModel {
@@ -431,31 +481,27 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                             ceil(it).toInt()
                         }
                     }
-
                     sort = browseSortSpinner?.selectedItemPosition?.minus(1)?.takeIf {
                         it >= 0
                     }
-                    format =
-                        browseFormatSpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                            it >= 0
-                        }
-
-                    status =
-                        browseStatusSpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                            it >= 0
-                        }
-
+                    format = browseFormatSpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                        it >= 0
+                    }
+                    status = browseStatusSpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                        it >= 0
+                    }
+                    countryOfOrigin = browseCountrySpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                        it >= 0
+                    }
+                    source = browseSourceSpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                        it >= 0
+                    }
                     streamingOn = streamingTagMap!!.values.filter { it.isTagged }.map { it.tag }
-                    countryOfOrigin =
-                        browseCountrySpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                            it >= 0
-                        }
-                    source =
-                        browseSourceSpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                            it >= 0
-                        }
                     genre = genreTagMap!!.values.filter { it.isTagged }.map { it.tag }
                     tags = tagTagMap!!.values.filter { it.isTagged }.map { it.tag }
+                    tagsToExclude = tagExcludedTagMap!!.values.filter { it.isTagged }.map { it.tag }
+                    genreToExclude =
+                        genreExcludedTagMap!!.values.filter { it.isTagged }.map { it.tag }
                 }
             }
             SearchTypes.CHARACTER.ordinal -> {
@@ -513,8 +559,11 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                     it.status?.let {
                         browseStatusSpinner?.setSelection(it + 1)
                     }
-                    it.streamingOn?.forEach {
+                    it.streamingOn?.mapNotNull {
                         streamingTagMap!![it]?.isTagged = true
+                        streamingTagMap!![it]
+                    }?.let {
+                        mListener?.onTagAdd(it, MediaTagFilterTypes.STREAMING_ON)
                     }
 
                     it.countryOfOrigin?.let {
@@ -527,19 +576,35 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                         genreTagMap!![it]?.isTagged = true
                         genreTagMap!![it]
                     }?.let {
-                        mListener?.onGenreAdd(it)
+                        mListener?.onTagAdd(it, MediaTagFilterTypes.GENRES)
                     }
 
                     it.tags?.mapNotNull {
                         tagTagMap!![it]?.isTagged = true
                         tagTagMap!![it]
                     }?.let {
-                        mListener?.onTagAdd(it)
+                        mListener?.onTagAdd(it, MediaTagFilterTypes.TAGS)
                     }
 
-                    mListener?.updateTags()
-                    mListener?.updateGenre()
-                    mListener?.updateStream()
+                    it.tagsToExclude?.mapNotNull {
+                        tagExcludedTagMap!![it]?.isTagged = true
+                        tagExcludedTagMap!![it]
+                    }?.let {
+                        mListener?.onTagAdd(it, MediaTagFilterTypes.TAG_EXCLUDE)
+                    }
+
+                    it.genreToExclude?.mapNotNull {
+                        genreExcludedTagMap!![it]?.isTagged = true
+                        genreExcludedTagMap!![it]
+                    }?.let {
+                        mListener?.onTagAdd(it, MediaTagFilterTypes.GENRE_EXCLUDE)
+                    }
+
+                    mListener?.updateTags(MediaTagFilterTypes.TAGS)
+                    mListener?.updateTags(MediaTagFilterTypes.GENRES)
+                    mListener?.updateTags(MediaTagFilterTypes.STREAMING_ON)
+                    mListener?.updateTags(MediaTagFilterTypes.TAG_EXCLUDE)
+                    mListener?.updateTags(MediaTagFilterTypes.GENRE_EXCLUDE)
                 }
             }
             is CharacterSearchFilterModel -> {
@@ -555,7 +620,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                 searchText = value.query
             }
         }
-        if (applyFilter){
+        if (applyFilter) {
             applyFilter()
         }
     }
@@ -570,21 +635,12 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     }
 
     interface AdvanceBrowseNavigationCallbackListener {
-        fun onGenreChoose(tags: List<TagField>)
-        fun onStreamChoose(tags: List<TagField>)
-        fun onTagChoose(tags: List<TagField>)
-        fun onGenreAdd(tags: List<TagField>)
-        fun onStreamAdd(tags: List<TagField>)
-        fun onTagAdd(tags: List<TagField>)
-        fun onTagRemoved(tag: String)
-        fun onGenreRemoved(tag: String)
-        fun onStreamRemoved(tag: String)
-        fun updateGenre()
-        fun updateTags()
-        fun updateStream()
+        fun openTagChooserDialog(tags: List<TagField>, tagType: MediaTagFilterTypes)
+        fun onTagAdd(tags: List<TagField>, tagType: MediaTagFilterTypes)
+        fun onTagRemoved(tag: String, tagType: MediaTagFilterTypes)
+        fun updateTags(tagType: MediaTagFilterTypes)
         fun getQuery(): String
         fun applyFilter()
     }
-
 
 }

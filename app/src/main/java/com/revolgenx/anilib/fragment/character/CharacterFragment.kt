@@ -16,7 +16,7 @@ import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
-import com.revolgenx.anilib.viewmodel.CharacterViewModel
+import com.revolgenx.anilib.viewmodel.character.CharacterViewModel
 import kotlinx.android.synthetic.main.character_fragment_layout.*
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*

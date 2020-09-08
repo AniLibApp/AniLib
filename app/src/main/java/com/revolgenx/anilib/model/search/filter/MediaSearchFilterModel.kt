@@ -21,6 +21,8 @@ class MediaSearchFilterModel : SearchFilterModel {
     var source: Int? = null
     var genre: List<String>? = null
     var tags: List<String>? = null
+    var genreToExclude:List<String>? = null
+    var tagsToExclude: List<String>? = null
 
     constructor() : super()
 
@@ -37,6 +39,8 @@ class MediaSearchFilterModel : SearchFilterModel {
         source = parcel.readValue(Int::class.java.classLoader) as? Int
         genre = parcel.createStringArrayList()
         tags = parcel.createStringArrayList()
+        tagsToExclude = parcel.createStringArrayList()
+        genreToExclude = parcel.createStringArrayList()
         type = parcel.readInt()
     }
 
@@ -54,6 +58,8 @@ class MediaSearchFilterModel : SearchFilterModel {
         parcel.writeValue(source)
         parcel.writeStringList(genre)
         parcel.writeStringList(tags)
+        parcel.writeStringList(tagsToExclude)
+        parcel.writeStringList(genreToExclude)
         parcel.writeInt(type)
     }
 
@@ -89,6 +95,8 @@ class MediaSearchFilterModel : SearchFilterModel {
             it.genre = genre
             it.season = season
             it.type = type
+            it.genreNotIn = genreToExclude
+            it.tagsNotIn = tagsToExclude
         }
     }
 

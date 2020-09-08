@@ -17,6 +17,7 @@ import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.airing.AiringMediaModel
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.preference.loggedIn
+import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.discover_airing_presenter_layout.view.*
@@ -32,7 +33,12 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
                 parent,
                 false
             ).also {
-                it.mediaMetaBackground.setBackgroundColor(ColorUtils.setAlphaComponent(DynamicTheme.getInstance().get().backgroundColor, 200))
+                it.mediaMetaBackground.setBackgroundColor(
+                    ColorUtils.setAlphaComponent(
+                        DynamicTheme.getInstance().get().backgroundColor, 200
+                    )
+                )
+                it.discoverAiringContainer.corner = commonCornerRadiusDimen
             }
         )
     }
@@ -40,6 +46,7 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
     private val mediaFormats by lazy {
         context.resources.getStringArray(R.array.media_format)
     }
+
 
     override fun onBind(page: Page, holder: Holder, element: Element<AiringMediaModel>) {
         super.onBind(page, holder, element)

@@ -235,6 +235,11 @@ dependencies {
     //firebase
     implementation 'com.google.firebase:firebase-crashlytics:17.0.1'
 
+    //draglistview
+    implementation 'com.github.woxthebox:draglistview:1.7.2'
+
+    //spinkit
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
 
     testImplementation 'junit:junit:4.12'

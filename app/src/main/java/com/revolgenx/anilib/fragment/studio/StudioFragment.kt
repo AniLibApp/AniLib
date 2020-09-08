@@ -64,7 +64,7 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val v = super.onCreateView(inflater, container, savedInstanceState)
 
         val nV = inflater.inflate(R.layout.studio_fragment_layout, container, false)

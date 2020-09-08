@@ -13,7 +13,7 @@ import com.revolgenx.anilib.event.ListEditorResultEvent
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.airing.AiringMediaModel
 import com.revolgenx.anilib.presenter.airing.AiringPresenter
-import com.revolgenx.anilib.viewmodel.AiringViewModel
+import com.revolgenx.anilib.viewmodel.airing.AiringViewModel
 import kotlinx.android.synthetic.main.airing_fragment_layout.view.*
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
 import org.greenrobot.eventbus.EventBus
@@ -47,7 +47,7 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         val airingView = inflater.inflate(R.layout.airing_fragment_layout, container, false)
         with(activity as ContainerActivity) {

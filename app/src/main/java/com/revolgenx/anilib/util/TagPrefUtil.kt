@@ -3,10 +3,9 @@ package com.revolgenx.anilib.util
 import android.content.Context
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.field.TagField
+import com.revolgenx.anilib.field.home.SeasonField
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
-import com.revolgenx.anilib.preference.setUserGenre
-import com.revolgenx.anilib.preference.setUserStream
-import com.revolgenx.anilib.preference.setUserTag
+import com.revolgenx.anilib.preference.*
 import com.revolgenx.anilib.util.BrowseFilterDataProvider.getBrowseFilterData
 import com.revolgenx.anilib.util.BrowseFilterDataProvider.setBrowseFilterData
 
@@ -33,14 +32,14 @@ object TagPrefUtil {
         return tags.map { TagField(it, false) }
     }
 
+    fun getUserPrefTags(context: Context): List<String> = getUserTag(context)
+    fun getUserPrefGenres(context: Context) = getUserGenre(context)
+    fun getUserPrefStreamingOn(context: Context) = getUserStream(context)
+
+
     fun reloadGenrePref(context: Context): List<TagField> {
         val tags = context.resources.getStringArray(R.array.media_genre).toList()
-
-        saveGenrePref(
-            context,
-            tags
-        )
-
+        saveGenrePref(context, tags)
         return tags.map { TagField(it, false) }
     }
 
@@ -64,5 +63,7 @@ object TagPrefUtil {
             }
             setBrowseFilterData(context, it)
         }
+        storeSeasonTag(context, null)
+        storeSeasonGenre(context, null)
     }
 }

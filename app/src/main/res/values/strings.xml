@@ -312,6 +312,16 @@
     <string name="change_log">Change log</string>
 
     <string name="are_you_sure">Are you sure?</string>
+    <string name="order">Order</string>
+    <string name="home_order_drag_message">Drag icon to change order</string>
+    <string name="reading">Reading</string>
+    <string name="View">view</string>
+    <string name="include_tags">Include Tags</string>
+    <string name="include_genres">Include Genres</string>
+    <string name="exclude_genres">Exclude Genres</string>
+    <string name="exclude_tags">Exclude Tags</string>
+    <string name="custom_filters">Customize Filters</string>
+    <string name="custom_filter_desc">Customize tags, genre and others</string>
 
 
     <string-array name="media_format">

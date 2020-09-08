@@ -10,11 +10,14 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.MediaFilterDialog
 import com.revolgenx.anilib.event.BrowseTrendingEvent
 import com.revolgenx.anilib.field.home.NewlyAddedMediaField
+import com.revolgenx.anilib.model.home.HomeOrderType
+import com.revolgenx.anilib.model.home.OrderedViewModel
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
+import com.revolgenx.anilib.preference.getHomeOrderFromType
 import com.revolgenx.anilib.presenter.home.MediaPresenter
 import com.revolgenx.anilib.source.MediaSource
 import com.revolgenx.anilib.type.MediaSort
-import com.revolgenx.anilib.viewmodel.DiscoverNewViewModel
+import com.revolgenx.anilib.viewmodel.home.discover.DiscoverNewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverNewFragment : DiscoverPopularFragment() {
@@ -28,12 +31,15 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
     private val source: MediaSource
         get() = viewModel.source ?: viewModel.createSource()
 
+    private val order: Int
+        get() = getHomeOrderFromType(requireContext(), HomeOrderType.NEWLY_ADDED)
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = super.onCreateView(inflater, container, savedInstanceState)
         discoverNewRecyclerView = DynamicRecyclerView(requireContext()).also {
             it.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -42,13 +48,13 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
             it.isNestedScrollingEnabled = false
         }
 
-        addView(
-            discoverNewRecyclerView,
+        orderedViewList.add(OrderedViewModel(
+            discoverNewRecyclerView, order,
             " >>> " + getString(R.string.newly_added) + " <<<", showSetting = true
         ) {
             handleClick(it)
-        }
-        return v
+        })
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
 

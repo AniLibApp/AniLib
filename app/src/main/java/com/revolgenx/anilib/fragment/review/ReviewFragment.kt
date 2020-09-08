@@ -20,7 +20,7 @@ import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.ReviewRating
 import com.revolgenx.anilib.util.makeLogInSnackBar
 import com.revolgenx.anilib.util.makeToast
-import com.revolgenx.anilib.viewmodel.ReviewViewModel
+import com.revolgenx.anilib.viewmodel.review.ReviewViewModel
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.resourceStatusContainer

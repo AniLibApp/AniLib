@@ -19,7 +19,9 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.MediaFilterDialog
+import com.revolgenx.anilib.dialog.DiscoverMediaListFilterDialog
 import com.revolgenx.anilib.fragment.base.BaseFragment
+import com.revolgenx.anilib.model.home.OrderedViewModel
 import com.revolgenx.anilib.util.dp
 import kotlinx.android.synthetic.main.discover_fragment_layout.view.*
 
@@ -49,8 +51,11 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
         const val MEDIA_TRENDING_TAG = "MEDIA_TRENDING_TAG"
         const val MEDIA_POPULAR_TAG = "MEDIA_POPULAR_TAG"
         const val NEWLY_ADDED_TAG = "NEWLY_ADDED_TAG"
+        const val MEDIA_LIST_WATCHING_TAG = "MEDIA_LIST_WATCHING_TAG"
+        const val MEDIA_LIST_READING_TAG = "MEDIA_LIST_READING_TAG"
     }
 
+    protected val orderedViewList = mutableListOf<OrderedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,6 +64,12 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
     ): View? {
         val v = inflater.inflate(R.layout.discover_fragment_layout, container, false)
         discoverLayout = v.discoverLinearLayout
+
+        orderedViewList.sortBy { it.order }
+        orderedViewList.forEach {
+            addView(it.oView, it.title, it.showSetting, it.onClick)
+        }
+        orderedViewList.clear()
         return v
     }
 
@@ -190,6 +201,14 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
 
     protected fun showMediaFilterDialog(type: Int, tag: String, callback: (() -> Unit)) {
         MediaFilterDialog.newInstance(type).also {
+            it.onDoneListener = callback
+            it.show(childFragmentManager, tag)
+        }
+    }
+
+
+    protected fun showMediaListFilterDialog(type: Int, tag: String, callback: (() -> Unit)) {
+        DiscoverMediaListFilterDialog.newInstance(type).also {
             it.onDoneListener = callback
             it.show(childFragmentManager, tag)
         }

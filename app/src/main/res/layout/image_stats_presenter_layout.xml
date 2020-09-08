@@ -2,9 +2,10 @@
 
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/imageStatsPresenterContainer"
     style="@style/Widget.DynamicApp.Card.Margin.Clickable"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="wrap_content">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="match_parent"
@@ -13,13 +14,13 @@
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/imageSimpleDrawee"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="150dp"
             app:roundedCornerRadius="6dp" />
 
         <include
             layout="@layout/text_stats_general_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="4dp" />
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
