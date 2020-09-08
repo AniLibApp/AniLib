@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.fragment.stats
 
 import com.revolgenx.anilib.field.stats.UserStatsField
-import com.revolgenx.anilib.viewmodel.StatsGenreViewModel
+import com.revolgenx.anilib.viewmodel.stats.StatsGenreViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 //TODO SHOW ANIME

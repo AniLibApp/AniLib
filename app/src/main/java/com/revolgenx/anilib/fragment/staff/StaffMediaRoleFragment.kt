@@ -9,14 +9,16 @@ import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.model.StaffMediaRoleModel
-import com.revolgenx.anilib.presenter.StaffMediaRolePresenter
-import com.revolgenx.anilib.viewmodel.StaffMediaRoleViewModel
+import com.revolgenx.anilib.presenter.staff.StaffMediaRolePresenter
+import com.revolgenx.anilib.viewmodel.staff.StaffMediaRoleViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 //staff roles
 class StaffMediaRoleFragment : BasePresenterFragment<StaffMediaRoleModel>() {
     override val basePresenter: Presenter<StaffMediaRoleModel>
-        get() = StaffMediaRolePresenter(requireContext())
+        get() = StaffMediaRolePresenter(
+            requireContext()
+        )
     override val baseSource: Source<StaffMediaRoleModel>
         get() = viewModel.source ?: createSource()
 

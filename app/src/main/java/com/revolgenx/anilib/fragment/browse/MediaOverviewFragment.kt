@@ -41,9 +41,9 @@ import com.revolgenx.anilib.model.MediaRelationshipModel
 import com.revolgenx.anilib.model.MediaStudioModel
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.presenter.BrowseRelationshipPresenter
-import com.revolgenx.anilib.presenter.MediaExternalLinkPresenter
-import com.revolgenx.anilib.presenter.MediaMetaPresenter
-import com.revolgenx.anilib.presenter.MediaRecommendationPresenter
+import com.revolgenx.anilib.presenter.media.MediaExternalLinkPresenter
+import com.revolgenx.anilib.presenter.media.MediaMetaPresenter
+import com.revolgenx.anilib.presenter.media.MediaRecommendationPresenter
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.source.MediaOverviewRecommendationSource
 import com.revolgenx.anilib.type.MediaType
@@ -51,7 +51,7 @@ import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.view.airing.AiringEpisodeView
 import com.revolgenx.anilib.view.span.SpoilerSpan
-import com.revolgenx.anilib.viewmodel.MediaOverviewViewModel
+import com.revolgenx.anilib.viewmodel.media.MediaOverviewViewModel
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.media_overview_fragment.*
@@ -70,7 +70,11 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private val recommendationPresenter by lazy {
-        MediaRecommendationPresenter(viewLifecycleOwner, requireContext(), viewModel)
+        MediaRecommendationPresenter(
+            viewLifecycleOwner,
+            requireContext(),
+            viewModel
+        )
     }
     private val loadingPresenter: Presenter<Void> by lazy {
         Presenter.forLoadingIndicator(
@@ -341,13 +345,21 @@ class MediaOverviewFragment : BaseFragment() {
         overview.externalLink?.let {
             metaLinkAdapter = Adapter.builder(viewLifecycleOwner)
                 .addSource(Source.fromList(it))
-                .addPresenter(MediaExternalLinkPresenter(requireContext()))
+                .addPresenter(
+                    MediaExternalLinkPresenter(
+                        requireContext()
+                    )
+                )
                 .into(metaLinkRecyclerView)
         }
 
         metaContainerAdapter = Adapter.builder(viewLifecycleOwner)
             .addSource(Source.fromList(mediaMetaList))
-            .addPresenter(MediaMetaPresenter(requireContext()))
+            .addPresenter(
+                MediaMetaPresenter(
+                    requireContext()
+                )
+            )
             .into(metaContainerRecyclerView)
 
     }

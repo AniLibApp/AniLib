@@ -10,14 +10,18 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.MediaFilterDialog
 import com.revolgenx.anilib.event.BrowseTrendingEvent
 import com.revolgenx.anilib.field.home.TrendingMediaField
+import com.revolgenx.anilib.model.home.HomeOrderType
+import com.revolgenx.anilib.model.home.OrderedViewModel
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
+import com.revolgenx.anilib.preference.getHomeOrderFromType
 import com.revolgenx.anilib.presenter.home.MediaPresenter
 import com.revolgenx.anilib.source.MediaSource
 import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.viewmodel.TrendingViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
-open class DiscoverTrendingFragment : DiscoverAiringFragment() {
+open class DiscoverTrendingFragment : DiscoverReadingFragment() {
 
     private var trendingRecyclerView: DynamicRecyclerView? = null
 
@@ -29,12 +33,14 @@ open class DiscoverTrendingFragment : DiscoverAiringFragment() {
 
     private val viewModel by viewModel<TrendingViewModel>()
 
+    private val order: Int
+        get() = getHomeOrderFromType(requireContext(), HomeOrderType.TRENDING)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = super.onCreateView(inflater, container, savedInstanceState)
         trendingRecyclerView = DynamicRecyclerView(requireContext()).also {
             it.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -43,14 +49,15 @@ open class DiscoverTrendingFragment : DiscoverAiringFragment() {
             it.isNestedScrollingEnabled = false
         }
 
-        addView(
-            trendingRecyclerView!!,
-            " >>> " + getString(R.string.trending) + " <<<", showSetting = true
+        orderedViewList.add(OrderedViewModel(
+            trendingRecyclerView!!, order,
+            " >>> " + getString(R.string.trending) + " <<<"
+            , showSetting = true
         ) {
             handleClick(it)
-        }
+        })
 
-        return v
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

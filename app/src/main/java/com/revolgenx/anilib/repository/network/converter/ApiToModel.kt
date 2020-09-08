@@ -12,7 +12,7 @@ import com.revolgenx.anilib.model.list.MediaListOptionTypeModel
 import com.revolgenx.anilib.util.pmap
 import kotlinx.coroutines.runBlocking
 
-fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel): CommonMediaModel {
+fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel = CommonMediaModel()): CommonMediaModel {
     model.mediaId = id()
     model.title = title()?.let { title ->
         TitleModel().also { titleModel ->
@@ -107,9 +107,9 @@ fun MediaListContent.toListEditorMediaModel() = EntryListEditorMediaModel().also
     it.listId = id()
     it.status = status()?.ordinal
     it.notes = notes() ?: ""
-    it.progress = progress()?:0
+    it.progress = progress() ?: 0
     it.progressVolumes = progressVolumes() ?: 0
-    it.private = private_()?:false
+    it.private = private_() ?: false
     it.repeat = repeat()
     it.startDate = startedAt()?.let {
         DateModel().also { date ->
@@ -133,20 +133,9 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
     runBlocking {
 
         it.mediaId = id()
-        it.title = title()?.fragments()?.mediaTitle()?.let {
-            TitleModel().also { title ->
-                title.english = it.english()
-                title.romaji = it.romaji()
-                title.native = it.native_()
-                title.userPreferred = it.userPreferred()
-            }
-        }
-        it.startDate = startDate()?.fragments()?.fuzzyDate()?.let {
-            DateModel(it.year(), it.month(), it.day())
-        }
-        it.endDate = endDate()?.fragments()?.fuzzyDate()?.let {
-            DateModel(it.year(), it.month(), it.day())
-        }
+        it.title = title()?.fragments()?.mediaTitle()?.toModel()
+        it.startDate = startDate()?.fragments()?.fuzzyDate()?.toModel()
+        it.endDate = endDate()?.fragments()?.fuzzyDate()?.toModel()
         it.genres = genres()
         it.episodes = episodes()?.toString()
         it.chapters = chapters()?.toString()
@@ -177,26 +166,13 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
                 rel.relationshipType = it.relationType()?.ordinal
                 it.node()?.let { node ->
                     rel.mediaId = node.id()
-                    rel.title = node.title()?.fragments()?.mediaTitle()?.let {
-                        TitleModel().also { titleModel ->
-                            titleModel.english = it.english()
-                            titleModel.romaji = it.romaji()
-                            titleModel.native = it.native_()
-                            titleModel.userPreferred = it.userPreferred()
-                        }
-                    }
+                    rel.title = node.title()?.fragments()?.mediaTitle()?.toModel()
                     rel.format = node.format()?.ordinal
                     rel.type = node.type()?.ordinal
                     rel.status = node.status()?.ordinal
                     rel.averageScore = node.averageScore()
                     rel.seasonYear = node.seasonYear()
-                    rel.coverImage = node.coverImage()?.fragments()?.mediaCoverImage()?.let {
-                        CoverImageModel().also { model ->
-                            model.large = it.large()
-                            model.extraLarge = it.extraLarge()
-                            model.medium = it.medium()
-                        }
-                    }
+                    rel.coverImage = node.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
                     rel.bannerImage = node.bannerImage() ?: rel.coverImage?.largeImage
                 }
             }
@@ -242,15 +218,8 @@ fun MediaWatchQuery.Media.toModel() = streamingEpisodes()?.map {
     }
 }
 
-fun MediaTitle.toModel() = TitleModel().also {
-    it.english = english()
-    it.native = native_()
-    it.romaji = romaji()
-    it.userPreferred = userPreferred()
-}
+fun MediaTitle.toModel() = TitleModel(english(), romaji(), native_(), userPreferred())
 
-fun MediaCoverImage.toModel() = CoverImageModel().also {
-    it.medium = medium()
-    it.large = large()
-    it.extraLarge = extraLarge()
-}
+fun MediaCoverImage.toModel() = CoverImageModel(medium(), large(), extraLarge())
+
+fun FuzzyDate.toModel() = DateModel(year(), month(), day())

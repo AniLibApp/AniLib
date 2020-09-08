@@ -9,14 +9,16 @@ import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.CharacterMeta
 import com.revolgenx.anilib.model.VoiceActorModel
-import com.revolgenx.anilib.presenter.CharacterActorPresenter
-import com.revolgenx.anilib.viewmodel.CharacterActorViewModel
+import com.revolgenx.anilib.presenter.character.CharacterActorPresenter
+import com.revolgenx.anilib.viewmodel.character.CharacterActorViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CharacterActorFragment : BasePresenterFragment<VoiceActorModel>() {
 
     override val basePresenter: Presenter<VoiceActorModel> by lazy {
-        CharacterActorPresenter(requireContext())
+        CharacterActorPresenter(
+            requireContext()
+        )
     }
 
     override val baseSource: Source<VoiceActorModel>

@@ -395,7 +395,7 @@
                 app:ads_elevationOnSameBackground="true">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-                    android:id="@+id/seasonGenreRecyclerView"
+                    android:id="@+id/tagGenreRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false" />

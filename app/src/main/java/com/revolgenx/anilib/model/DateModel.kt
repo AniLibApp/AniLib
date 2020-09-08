@@ -2,6 +2,8 @@ package com.revolgenx.anilib.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import org.threeten.bp.LocalDate
+import java.util.*
 
 class DateModel(var year: Int? = null, var month: Int? = null, var day: Int? = null) : Parcelable {
     var date: String = ""
@@ -18,6 +20,7 @@ class DateModel(var year: Int? = null, var month: Int? = null, var day: Int? = n
         return (year?.let { "$it" } ?: "") + (month?.let { "-$it" } ?: "") + (day?.let { "-$it" }
             ?: "")
     }
+
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(year)
@@ -39,4 +42,11 @@ class DateModel(var year: Int? = null, var month: Int? = null, var day: Int? = n
             return arrayOfNulls(size)
         }
     }
+}
+
+
+fun DateModel?.toDate(): Date {
+    val c = Calendar.getInstance();
+    c.set(this?.year ?: 0, this?.month ?: 0, this?.day ?: 0)
+    return c.time
 }

@@ -15,6 +15,7 @@ abstract class BaseStatsModel : BaseModel() {
         }
     var chaptersRead: Int? = null
     var hoursWatched: Int? = null
+    var mediaIds:List<Int>? = null
 
 
     var day: Long = 0

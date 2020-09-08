@@ -1,53 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tagRecyclerView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-        android:id="@+id/tagRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/doneLayout"
-        android:layout_alignParentTop="true"/>
-
-    <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
-        android:id="@+id/doneLayout"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_alignParentBottom="true">
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/doneTv"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:text="@string/done" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/cancelTv"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/doneTv"
-            android:gravity="center"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:text="@string/cancel" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/unSelectAllTv"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:text="@string/unselect_all" />
-
-    </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
-</com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
+    android:layout_height="wrap_content"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

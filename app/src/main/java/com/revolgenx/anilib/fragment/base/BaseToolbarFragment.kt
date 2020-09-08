@@ -24,7 +24,7 @@ abstract class BaseToolbarFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val v = inflater.inflate(R.layout.base_toolbar_fragment_layout, container, false)
         toolbar = v.dynamicToolbar
         val content = inflater.inflate(contentRes, container, false)

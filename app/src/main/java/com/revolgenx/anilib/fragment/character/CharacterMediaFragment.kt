@@ -9,8 +9,8 @@ import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.CharacterMeta
 import com.revolgenx.anilib.model.character.CharacterMediaModel
-import com.revolgenx.anilib.presenter.CharacterMediaPresenter
-import com.revolgenx.anilib.viewmodel.CharacterMediaViewModel
+import com.revolgenx.anilib.presenter.character.CharacterMediaPresenter
+import com.revolgenx.anilib.viewmodel.character.CharacterMediaViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CharacterMediaFragment : BasePresenterFragment<CharacterMediaModel>() {
@@ -18,7 +18,9 @@ class CharacterMediaFragment : BasePresenterFragment<CharacterMediaModel>() {
     private lateinit var characterMeta: CharacterMeta
     override val basePresenter: Presenter<CharacterMediaModel>
         get() {
-            return CharacterMediaPresenter(requireContext())
+            return CharacterMediaPresenter(
+                requireContext()
+            )
         }
 
     private val viewModel by viewModel<CharacterMediaViewModel>()

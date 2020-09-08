@@ -231,6 +231,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.count = genre.count()
                 model.minutesWatched = genre.minutesWatched()
                 model.meanScore = genre.meanScore()
+                model.mediaIds = genre.mediaIds()
             }
         }
     }
@@ -243,6 +244,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.count = genre.count()
                 model.chaptersRead = genre.chaptersRead()
                 model.meanScore = genre.meanScore()
+                model.mediaIds = genre.mediaIds()
             }
         }
     }
@@ -255,6 +257,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.count = tag.count()
                 model.meanScore = tag.meanScore()
                 model.minutesWatched = tag.minutesWatched()
+                model.mediaIds = tag.mediaIds()
             }
         }
     }
@@ -267,6 +270,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.count = tag.count()
                 model.meanScore = tag.meanScore()
                 model.chaptersRead = tag.chaptersRead()
+                model.mediaIds = tag.mediaIds()
             }
         }
     }
@@ -281,6 +285,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.meanScore = staf.meanScore()
                 model.minutesWatched = staf.minutesWatched()
                 model.image = staf.staff()?.image()?.let { it.large() ?: it.large() }
+                model.mediaIds = staf.mediaIds()
             }
         }
     }
@@ -295,6 +300,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.meanScore = staf.meanScore()
                 model.chaptersRead = staf.chaptersRead()
                 model.image = staf.staff()?.image()?.let { it.large() ?: it.large() }
+                model.mediaIds = staf.mediaIds()
             }
         }
     }
@@ -308,6 +314,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.count = studio.count()
                 model.meanScore = studio.meanScore()
                 model.minutesWatched = studio.minutesWatched()
+                model.mediaIds = studio.mediaIds()
             }
         }
     }
@@ -321,6 +328,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 model.meanScore = voiceActor.meanScore()
                 model.minutesWatched = voiceActor.minutesWatched()
                 model.image = voiceActor.voiceActor()?.image()?.let { it.large() ?: it.medium() }
+                model.mediaIds = voiceActor.mediaIds()
             }
         }
     }

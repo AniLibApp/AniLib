@@ -8,7 +8,7 @@ import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFra
 import com.pranavpandey.android.dynamic.support.widget.DynamicButton
 
 
-typealias OnShowListener = ((dialog: DynamicDialog) -> Unit)?
+typealias OnShowListener = ((dialog: DynamicDialog, savedInstanceState:Bundle?) -> Unit)?
 typealias OnButtonClickedListener = ((dialogInterface: DialogInterface, which: Int) -> Unit)?
 
 open class BaseDialogFragment : DynamicDialogFragment() {
@@ -38,10 +38,9 @@ open class BaseDialogFragment : DynamicDialogFragment() {
         onButtonClickedListener?.invoke(dialogInterface, which)
     }
 
-    protected open fun onShowListener(alertDialog: DynamicDialog) {
-        onShowListener?.invoke(alertDialog)
+    protected open fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
+        onShowListener?.invoke(alertDialog, savedInstanceState)
     }
-
 
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,
@@ -100,7 +99,7 @@ open class BaseDialogFragment : DynamicDialogFragment() {
                     (it as DynamicButton).isAllCaps = false
                 }
 
-                onShowListener(alertDialog)
+                onShowListener(alertDialog, savedInstanceState)
             }
         }
         return super.onCustomiseDialog(alertDialog, savedInstanceState)

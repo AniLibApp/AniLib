@@ -1,18 +1,21 @@
 package com.revolgenx.anilib.field.list
 
-import com.revolgenx.anilib.MediaListCollectinoQuery
-import com.revolgenx.anilib.field.BaseSourceField
+import com.revolgenx.anilib.MediaListQuery
+import com.revolgenx.anilib.field.BaseSourceUserField
+import com.revolgenx.anilib.type.MediaListSort
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
-//TODO://MediaListCollectinoQuery TYPO
-class MediaListField : BaseSourceField<MediaListCollectinoQuery>() {
-    var userId: Int? = null
-    var userName: String? = null
-    var type: Int? = null
-    var mediaListStatus: Int? = null
 
-    override fun toQueryOrMutation(): MediaListCollectinoQuery {
-        return MediaListCollectinoQuery.builder()
+class MediaListField : BaseSourceUserField<MediaListQuery>() {
+
+    var type: Int? = null
+    var status: Int? = null
+    var sort: Int? = null
+
+    override fun toQueryOrMutation(): MediaListQuery {
+        return MediaListQuery.builder()
+            .page(page)
+            .perPage(perPage)
             .apply {
                 userId?.let {
                     userId(it)
@@ -20,21 +23,17 @@ class MediaListField : BaseSourceField<MediaListCollectinoQuery>() {
                 userName?.let {
                     userName(it)
                 }
+
                 type?.let {
                     type(MediaType.values()[it])
                 }
-                mediaListStatus?.let {
+
+                status?.let {
                     status(MediaListStatus.values()[it])
                 }
-                when (type) {
-                    MediaType.ANIME.ordinal -> {
-                        includeEpisode(true)
-                        includeChapter(false)
-                    }
-                    MediaType.MANGA.ordinal -> {
-                        includeChapter(true)
-                        includeEpisode(false)
-                    }
+
+                sort?.let {
+                    sort(listOf(MediaListSort.values()[it]))
                 }
             }.build()
     }

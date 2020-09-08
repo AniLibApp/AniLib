@@ -15,6 +15,7 @@ import com.revolgenx.anilib.model.notification.FollowingNotificationModel
 import com.revolgenx.anilib.model.notification.NotificationModel
 import com.revolgenx.anilib.model.notification.activity.*
 import com.revolgenx.anilib.model.notification.thread.*
+import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.openLink
 import kotlinx.android.synthetic.main.notification_presenter_layout.view.*
 import java.util.*
@@ -30,7 +31,9 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                 R.layout.notification_presenter_layout,
                 parent,
                 false
-            )
+            ).also {
+                it.notificationPresenterContainer.corner = commonCornerRadiusDimen
+            }
         )
     }
 

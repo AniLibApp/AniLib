@@ -28,7 +28,7 @@ import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
-import com.revolgenx.anilib.viewmodel.StatsOverviewViewModel
+import com.revolgenx.anilib.viewmodel.stats.StatsOverviewViewModel
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*
@@ -175,6 +175,11 @@ class StatsOverviewFragment : BaseFragment() {
                 setDrawCircleHole(false)
                 setDrawCircles(false)
                 setDrawFilled(true)
+                this.valueFormatter =  object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return value.toInt().toString()
+                    }
+                }
             }.let { set ->
                 watchYearLineChart.let { perYear ->
                     perYear.setTouchEnabled(true)
@@ -198,7 +203,7 @@ class StatsOverviewFragment : BaseFragment() {
 
                         valueFormatter = object : ValueFormatter() {
                             override fun getFormattedValue(value: Float): String {
-                                return value.toString()
+                                return value.toInt().toString()
                             }
                         }
                         setDrawGridLines(false)
@@ -245,6 +250,11 @@ class StatsOverviewFragment : BaseFragment() {
                 setDrawCircleHole(false)
                 setDrawCircles(false)
                 setDrawFilled(true)
+                this.valueFormatter =  object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return value.toInt().toString()
+                    }
+                }
             }.let { set ->
                 releaseYearBarChart.let { perYear ->
                     perYear.setTouchEnabled(true)
@@ -267,7 +277,7 @@ class StatsOverviewFragment : BaseFragment() {
                     perYear.xAxis.apply {
                         valueFormatter = object : ValueFormatter() {
                             override fun getFormattedValue(value: Float): String {
-                                return value.toString()
+                                return value.toInt().toString()
                             }
                         }
                         setDrawGridLines(false)
@@ -351,6 +361,11 @@ class StatsOverviewFragment : BaseFragment() {
                 val dataSet = BarDataSet(it, getString(R.string.score_distribution)).also {
                     it.color = DynamicTheme.getInstance().get().tintAccentColor
                     it.valueTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
+                    it.valueFormatter = object : ValueFormatter() {
+                        override fun getFormattedValue(value: Float): String {
+                            return value.toInt().toString()
+                        }
+                    }
                 }
                 scoreBarChart.apply {
                     legend.textColor = DynamicTheme.getInstance().get().tintSurfaceColor

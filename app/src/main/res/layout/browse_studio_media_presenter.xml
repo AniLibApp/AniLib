@@ -10,8 +10,7 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="6dp">
+        android:orientation="vertical">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:id="@+id/searchMediaImageContainer"
@@ -66,9 +65,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/searchMediaFormatTv"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="6dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
@@ -82,9 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_margin="6dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"

@@ -8,15 +8,17 @@ import com.revolgenx.anilib.field.media.MediaReviewField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.MediaReviewModel
-import com.revolgenx.anilib.presenter.MediaReviewPresenter
-import com.revolgenx.anilib.viewmodel.MediaReviewViewModel
+import com.revolgenx.anilib.presenter.media.MediaReviewPresenter
+import com.revolgenx.anilib.viewmodel.media.MediaReviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaReviewFragment : BasePresenterFragment<MediaReviewModel>() {
 
     override val basePresenter: Presenter<MediaReviewModel>
         get() {
-            return MediaReviewPresenter(requireContext())
+            return MediaReviewPresenter(
+                requireContext()
+            )
         }
 
     override val baseSource: Source<MediaReviewModel>

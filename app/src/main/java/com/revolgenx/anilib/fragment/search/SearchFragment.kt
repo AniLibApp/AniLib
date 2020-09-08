@@ -17,7 +17,7 @@ import com.revolgenx.anilib.model.search.filter.StudioSearchFilterModel
 import com.revolgenx.anilib.presenter.search.SearchPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
-import com.revolgenx.anilib.viewmodel.SearchFragmentViewModel
+import com.revolgenx.anilib.viewmodel.search.SearchFragmentViewModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

@@ -16,7 +16,7 @@ import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
-import com.revolgenx.anilib.viewmodel.StaffViewModel
+import com.revolgenx.anilib.viewmodel.staff.StaffViewModel
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*

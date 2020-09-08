@@ -280,7 +280,6 @@
         <item>Zombie</item>
     </string-array>
 
-
     <!--Apollo Android-->
     <string-array name="license_links_apollo_android">
         <item>@string/mit</item>
@@ -720,6 +719,72 @@
         <item>0</item>
         <item>1</item>
         <item>2</item>
+    </string-array>
+
+
+    <string-array name="media_list_collection_sort">
+        <item>Title</item>
+        <item>Title Desc</item>
+        <item>Score</item>
+        <item>Score Desc</item>
+        <item>Progress</item>
+        <item>Progress Desc</item>
+        <item>Last Updated</item>
+        <item>Last Updated Desc</item>
+        <item>Last Added</item>
+        <item>Last Added Desc</item>
+        <item>Start Date</item>
+        <item>Start Date Desc</item>
+        <item>Completed Date</item>
+        <item>Completed Date Desc</item>
+        <item>Release Date</item>
+        <item>Release Date Desc</item>
+        <item>Average Score</item>
+        <item>Average Score Desc</item>
+        <item>Popularity</item>
+        <item>Popularity Desc</item>
+    </string-array>
+
+    <string-array name="home_list_order">
+        <item>Airing</item>
+        <item>Trending</item>
+        <item>Popular</item>
+        <item>Newly Added</item>
+        <item>Watching</item>
+        <item>Reading</item>
+    </string-array>
+
+    <string-array name="media_list_sort">
+        <item>Media Id</item>
+        <item>Media Id Desc</item>
+        <item>Score</item>
+        <item>Score Desc</item>
+        <item>Status</item>
+        <item>Status Desc</item>
+        <item>Progress</item>
+        <item>Progress Desc</item>
+        <item>Progress Volume</item>
+        <item>Progress Volume Desc</item>
+        <item>Repeat</item>
+        <item>Repeat Desc</item>
+        <item>Priority</item>
+        <item>Priority Desc</item>
+        <item>Started On</item>
+        <item>Started On Desc</item>
+        <item>Finished On</item>
+        <item>Finished On Desc</item>
+        <item>Added</item>
+        <item>Added Desc</item>
+        <item>Updated</item>
+        <item>Updated Desc</item>
+        <item>Title Romaji</item>
+        <item>Title Romaji Desc</item>
+        <item>Title English</item>
+        <item>Title English Desc</item>
+        <item>Title Native</item>
+        <item>Title Native Desc</item>
+        <item>Popularity</item>
+        <item>Popularity Desc</item>
     </string-array>
 
 </resources>

@@ -10,12 +10,16 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.MediaFilterDialog
 import com.revolgenx.anilib.event.BrowseTrendingEvent
 import com.revolgenx.anilib.field.home.PopularMediaField
+import com.revolgenx.anilib.model.home.HomeOrderType
+import com.revolgenx.anilib.model.home.OrderedViewModel
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
+import com.revolgenx.anilib.preference.getHomeOrderFromType
 import com.revolgenx.anilib.presenter.home.MediaPresenter
 import com.revolgenx.anilib.source.MediaSource
 import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.viewmodel.PopularViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 open class DiscoverPopularFragment : DiscoverTrendingFragment() {
 
@@ -29,12 +33,14 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
 
     private val viewModel by viewModel<PopularViewModel>()
 
+    private val order: Int
+        get() = getHomeOrderFromType(requireContext(), HomeOrderType.POPULAR)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = super.onCreateView(inflater, container, savedInstanceState)
         popularRecyclerView = DynamicRecyclerView(requireContext()).also {
             it.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -43,14 +49,14 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
             it.isNestedScrollingEnabled = false
         }
 
-        addView(
-            popularRecyclerView,
+
+        orderedViewList.add(OrderedViewModel(
+            popularRecyclerView, order,
             " >>> " + getString(R.string.popular) + " <<<", showSetting = true
         ) {
             handleClick(it)
-        }
-
-        return v
+        })
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
 

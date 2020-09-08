@@ -20,6 +20,7 @@ import com.revolgenx.anilib.model.CommonMediaModel
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
@@ -58,7 +59,9 @@ class SeasonPresenter(context: Context) :
                 R.layout.season_presenter_layout,
                 parent,
                 false
-            )
+            ).also {
+                it.mediaCardView.corner = commonCornerRadiusDimen
+            }
         )
     }
 

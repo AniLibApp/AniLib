@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
 import com.apollographql.apollo.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
@@ -12,6 +11,7 @@ import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
+import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.meta.ListEditorMeta
@@ -19,23 +19,21 @@ import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.model.list.MediaListModel
+import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.preference.userName
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
-import com.revolgenx.anilib.util.makeSnakeBar
-import com.revolgenx.anilib.util.makeToast
-import com.revolgenx.anilib.util.naText
-import com.revolgenx.anilib.viewmodel.MediaListViewModel
-import kotlinx.android.synthetic.main.media_list_presenter_layout.view.*
+import com.revolgenx.anilib.util.*
+import com.revolgenx.anilib.viewmodel.media_list.MediaListViewModel
+import kotlinx.android.synthetic.main.media_list_presenter.view.*
 
 class MediaListPresenter(
     context: Context,
     private val mediaListMeta: MediaListMeta,
-    private val viewModel: MediaListViewModel,
-    private val viewLifecycleOwner: LifecycleOwner
+    private val viewModel: MediaListViewModel
 ) :
     Presenter<MediaListModel>(context) {
 
@@ -64,10 +62,12 @@ class MediaListPresenter(
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         return Holder(
             getLayoutInflater().inflate(
-                R.layout.media_list_presenter_layout,
+                R.layout.media_list_presenter,
                 parent,
                 false
-            )
+            ).also {
+                it.mediaListContainer.corner = commonCornerRadiusDimen
+            }
         )
     }
 
@@ -86,11 +86,18 @@ class MediaListPresenter(
             }.naText()
 
             mediaListProgressTv.text = context.getString(R.string.s_slash_s).format(
-                item.progress.naText(),
+                item.progress?.toString().naText(),
                 if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
             )
 
             mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
+
+            mediaListGenreLayout.addGenre(item.genres?.take(3)) { genre ->
+                BrowseGenreEvent(MediaSearchFilterModel().also {
+                    it.genre = listOf(genre.trim())
+                }).postEvent
+            }
+
 
             when (item.scoreFormat) {
                 ScoreFormat.POINT_3.ordinal -> {
@@ -102,7 +109,7 @@ class MediaListPresenter(
                     }
                     mediaListRatingIv.setImageResource(drawable)
                 }
-                ScoreFormat.POINT_10_DECIMAL.ordinal->{
+                ScoreFormat.POINT_10_DECIMAL.ordinal -> {
                     mediaListRatingTv.text = item.score?.toString().naText()
                 }
                 else -> {
@@ -115,16 +122,17 @@ class MediaListPresenter(
                     viewModel.increaseProgress(EntryListEditorMediaModel().also {
                         it.mediaId = item.mediaId
                         it.listId = item.mediaListId
-                        it.progress = (item.progress?.toInt() ?: 0).plus(1)
-                    }){res->
-                        when(res.status){
+                        it.progress = (item.progress ?: 0).plus(1)
+                    }) { res ->
+                        when (res.status) {
                             Status.SUCCESS -> {
                                 if (res.data?.mediaId == item.mediaId) {
-                                    item.progress = res.data?.progress?.toString().naText()
-                                    mediaListProgressTv.text = context.getString(R.string.s_slash_s).format(
-                                        item.progress,
-                                        if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
-                                    )
+                                    item.progress = res.data?.progress
+                                    mediaListProgressTv.text =
+                                        context.getString(R.string.s_slash_s).format(
+                                            item.progress?.toString().naText(),
+                                            if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
+                                        )
                                 }
                             }
                             Status.ERROR -> {

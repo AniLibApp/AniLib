@@ -12,6 +12,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.dialog.MediaViewDialog
 import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
@@ -203,6 +204,18 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
 
             is BrowseSiteEvent -> {
                 openLink(getString(R.string.site_url))
+            }
+
+            is BrowseMediaListEvent -> {
+                MediaListActivity.openActivity(
+                    this,
+                    event.mediaListMeta
+                )
+            }
+
+            is MediaViewDialogEvent -> {
+                MediaViewDialog.newInstance(event.mediaIdsIn)
+                    .show(supportFragmentManager, MediaViewDialog::class.java.simpleName)
             }
         }
     }

@@ -13,9 +13,6 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
@@ -27,7 +24,7 @@ import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.user.stats.MediaStatsModel
 import com.revolgenx.anilib.presenter.RankingsPresenter
 import com.revolgenx.anilib.repository.util.Status.*
-import com.revolgenx.anilib.viewmodel.MediaStatsViewModel
+import com.revolgenx.anilib.viewmodel.media.MediaStatsViewModel
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.media_stats_fragment_layout.*

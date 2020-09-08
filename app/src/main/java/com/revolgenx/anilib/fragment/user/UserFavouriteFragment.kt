@@ -11,7 +11,7 @@ import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.UserMeta
 import com.revolgenx.anilib.model.BaseModel
 import com.revolgenx.anilib.presenter.user.UserFavouritePresenter
-import com.revolgenx.anilib.viewmodel.UserFavouriteViewModel
+import com.revolgenx.anilib.viewmodel.user.UserFavouriteViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class UserFavouriteFragment() : BasePresenterFragment<BaseModel>() {

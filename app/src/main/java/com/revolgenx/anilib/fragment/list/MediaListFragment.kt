@@ -8,14 +8,14 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.activity.MediaListActivity
 import com.revolgenx.anilib.event.ListEditorResultEvent
-import com.revolgenx.anilib.field.MediaListFilterField
+import com.revolgenx.anilib.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.model.list.MediaListModel
-import com.revolgenx.anilib.presenter.list.MediaListPresenter
+import com.revolgenx.anilib.presenter.list.MediaListCollectionPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
-import com.revolgenx.anilib.viewmodel.MediaListViewModel
+import com.revolgenx.anilib.viewmodel.media_list.MediaListCollectionViewModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -23,11 +23,11 @@ import org.greenrobot.eventbus.ThreadMode
 abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
 
     override val basePresenter: Presenter<MediaListModel>
-        get() = MediaListPresenter(requireContext(), mediaListMeta!!, viewModel, viewLifecycleOwner)
+        get() = MediaListCollectionPresenter(requireContext(), mediaListMeta!!, viewModel)
     override val baseSource: Source<MediaListModel>
         get() = viewModel.source ?: createSource()
 
-    abstract val viewModel: MediaListViewModel
+    abstract val viewModel: MediaListCollectionViewModel
     abstract val mediaListStatus: Int
 
     protected var mediaListMeta: MediaListMeta? = null
@@ -81,7 +81,7 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
         }
     }
 
-    fun filter(mediaListFilterField: MediaListFilterField) {
+    fun filter(mediaListFilterField: MediaListCollectionFilterField) {
         viewModel.filter = mediaListFilterField
         if (visibleToUser) {
             createSource()
@@ -100,7 +100,7 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
                 invalidateAdapter()
             } else {
                 viewModel.listMap[it.mediaId]?.apply {
-                    progress = it.progress?.toString()
+                    progress = it.progress
                 }
                 adapter?.notifyDataSetChanged()
             }

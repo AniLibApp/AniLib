@@ -10,6 +10,7 @@ import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.activity.ToolbarContainerActivity
+import com.revolgenx.anilib.dialog.HomeOrderDialog
 import com.revolgenx.anilib.event.BrowseEvent
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.notification.NotificationFragment
@@ -59,6 +60,10 @@ class DiscoverFragment : DiscoverReviewFragment() {
                         )
                     )
                 )
+                true
+            }
+            R.id.orderMenu->{
+                HomeOrderDialog().show(childFragmentManager, HomeOrderDialog::class.java.simpleName)
                 true
             }
             else -> super.onOptionsItemSelected(item)

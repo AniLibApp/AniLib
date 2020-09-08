@@ -11,8 +11,8 @@ import com.revolgenx.anilib.field.media.MediaWatchField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.MediaWatchModel
-import com.revolgenx.anilib.presenter.MediaWatchPresenter
-import com.revolgenx.anilib.viewmodel.MediaWatchViewModel
+import com.revolgenx.anilib.presenter.media.MediaWatchPresenter
+import com.revolgenx.anilib.viewmodel.media.MediaWatchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaWatchFragment : BasePresenterFragment<MediaWatchModel>() {

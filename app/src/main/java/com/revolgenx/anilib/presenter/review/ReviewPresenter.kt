@@ -11,6 +11,7 @@ import com.revolgenx.anilib.event.BrowseReviewEvent
 import com.revolgenx.anilib.event.UserBrowseEvent
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.review.ReviewModel
+import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.review_presenter_layout.view.*
 
@@ -18,8 +19,12 @@ class ReviewPresenter(context: Context) : Presenter<ReviewModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
+
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(getLayoutInflater().inflate(R.layout.review_presenter_layout, parent, false))
+        return Holder(
+            getLayoutInflater().inflate(R.layout.review_presenter_layout, parent, false).also {
+                it.reviewPresenterContainer.corner = commonCornerRadiusDimen
+            })
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<ReviewModel>) {

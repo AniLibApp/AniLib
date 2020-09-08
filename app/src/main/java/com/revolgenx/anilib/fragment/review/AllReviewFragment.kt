@@ -12,7 +12,7 @@ import com.revolgenx.anilib.dialog.ReviewsFilterDialog
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.review.ReviewModel
 import com.revolgenx.anilib.presenter.review.ReviewPresenter
-import com.revolgenx.anilib.viewmodel.AllReviewViewModel
+import com.revolgenx.anilib.viewmodel.review.AllReviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AllReviewFragment : BasePresenterFragment<ReviewModel>() {

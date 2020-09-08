@@ -9,7 +9,7 @@ import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.UserStatsMeta
 import com.revolgenx.anilib.model.user.stats.BaseStatsModel
 import com.revolgenx.anilib.presenter.stats.UserStatsPresenter
-import com.revolgenx.anilib.viewmodel.UserStatsViewModel
+import com.revolgenx.anilib.viewmodel.user.UserStatsViewModel
 
 abstract class UserStatsFragment : BasePresenterFragment<BaseStatsModel>() {
 

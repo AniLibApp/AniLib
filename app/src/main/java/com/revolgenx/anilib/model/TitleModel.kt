@@ -9,6 +9,20 @@ class TitleModel {
     var native: String? = null
     var userPreferred: String? = null
 
+    constructor()
+    constructor(
+        english: String?,
+        romaji: String?,
+        native: String?,
+        userPreferred: String?
+    ) {
+        this.english = english
+        this.romaji = romaji
+        this.native = native
+        this.userPreferred = userPreferred
+    }
+
+
     fun title(context: Context) = when (context.titlePref()) {
         "0" -> romaji
         "1" -> english ?: romaji

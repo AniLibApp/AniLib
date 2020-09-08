@@ -11,8 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="6dp">
+        android:layout_height="wrap_content">
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
@@ -56,9 +55,9 @@
             android:id="@+id/staffMediaRoleTitleTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="6dp"
             android:ellipsize="end"
             android:lines="2"
             android:maxLines="2"
@@ -73,9 +72,9 @@
             android:id="@+id/staffMediaRoleFormatYearTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="6dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="10sp"
@@ -90,9 +89,7 @@
             android:id="@+id/staffMediaRoleTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_margin="6dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="10sp"
@@ -100,6 +97,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/staffMediaRoleImageContainer"
             app:layout_constraintRight_toRightOf="@+id/staffMediaRoleImageContainer"
             app:layout_constraintTop_toBottomOf="@+id/staffMediaRoleFormatYearTv"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="SmallSp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

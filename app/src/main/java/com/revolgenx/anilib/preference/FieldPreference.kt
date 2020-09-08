@@ -5,7 +5,11 @@ import com.revolgenx.anilib.field.home.NewlyAddedMediaField
 import com.revolgenx.anilib.field.home.PopularMediaField
 import com.revolgenx.anilib.field.home.SeasonField
 import com.revolgenx.anilib.field.home.TrendingMediaField
+import com.revolgenx.anilib.field.list.MediaListField
 import com.revolgenx.anilib.field.recommendation.RecommendationFilterField
+import com.revolgenx.anilib.fragment.home.discover.DiscoverReadingFragment
+import com.revolgenx.anilib.model.home.HomeOrderType
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.getSeasonFromMonth
 import org.threeten.bp.LocalDateTime
 
@@ -42,6 +46,18 @@ const val RECOMMENDATION_SORT_KEY = "RECOMMENDATION_SORT_KEY"
 const val DEFAULT_FORMAT = -1
 const val DEFAULT_STATUS = -1
 const val DEFAULT_SORT = -1
+
+
+const val AIRING_ORDER_KEY = "AIRING_ORDER_KEY"
+const val POPULAR_ORDER_KEY = "POPULAR_ORDER_KEY"
+const val TRENDING_ORDER_KEY = "TRENDING_ORDER_KEY"
+const val NEWLY_ADDED_ORDER_KEY = "NEWLY_ADDED_ORDER_KEY"
+const val WATCHING_ORDER_KEY = "WATCHING_ORDER_KEY"
+const val READING_ORDER_KEY = "READING_ORDER_KEY"
+
+const val DISCOVER_READING_SORT_KEY = "DISCOVER_READING_SORT_KEY"
+const val DISCOVER_WATCHING_SORT_KEY = "DISCOVER_WATCHING_SORT_KEY"
+
 
 fun getSeasonField(context: Context) = SeasonField().apply {
     format = context.getInt(SEASON_FORMAT_KEY, DEFAULT_FORMAT).takeIf { it > -1 }
@@ -86,6 +102,7 @@ fun getNewlyAddedField(context: Context) = NewlyAddedMediaField().apply {
     ).takeIf { it > -1 }
     status = context.getInt(NEWLY_ADDED_STATUS_KEY, DEFAULT_STATUS).takeIf { it > -1 }
 }
+
 
 fun storeNewlyAddedField(context: Context, field: NewlyAddedMediaField) {
     with(field) {
@@ -138,14 +155,14 @@ fun storePopularField(context: Context, field: PopularMediaField) {
 }
 
 
-fun storeSeasonGenre(context: Context, field: SeasonField) {
+fun storeSeasonGenre(context: Context, field: SeasonField?) {
     context.sharedPreference().edit()
-        .putStringSet(SEASON_GENRES_KEY, field.genres?.toSet() ?: emptySet()).apply()
+        .putStringSet(SEASON_GENRES_KEY, field?.genres?.toSet() ?: emptySet()).apply()
 }
 
-fun storeSeasonTag(context: Context, field: SeasonField) {
+fun storeSeasonTag(context: Context, field: SeasonField?) {
     context.sharedPreference().edit()
-        .putStringSet(SEASON_TAGS_KEY, field.tags?.toSet() ?: emptySet()).apply()
+        .putStringSet(SEASON_TAGS_KEY, field?.tags?.toSet() ?: emptySet()).apply()
 }
 
 fun getRecommendationField(context: Context) = RecommendationFilterField(
@@ -156,4 +173,51 @@ fun getRecommendationField(context: Context) = RecommendationFilterField(
 fun setRecommendationField(context: Context, field: RecommendationFilterField) {
     context.putBoolean(RECOMMENDATION_ON_LIST_KEY, field.onList)
     context.putInt(RECOMMENDATION_SORT_KEY, field.sorting)
+}
+
+fun getHomeOrderFromType(context: Context, type: HomeOrderType): Int {
+    return when (type) {
+        HomeOrderType.AIRING -> context.getInt(AIRING_ORDER_KEY, 0)
+        HomeOrderType.TRENDING -> context.getInt(TRENDING_ORDER_KEY, 1)
+        HomeOrderType.POPULAR -> context.getInt(POPULAR_ORDER_KEY, 2)
+        HomeOrderType.NEWLY_ADDED -> context.getInt(NEWLY_ADDED_ORDER_KEY, 3)
+        HomeOrderType.WATCHING -> context.getInt(WATCHING_ORDER_KEY, 4)
+        HomeOrderType.READING -> context.getInt(READING_ORDER_KEY, 5)
+    }
+}
+
+fun setHomeOrderFromType(context: Context, type: HomeOrderType, order: Int) {
+    when (type) {
+        HomeOrderType.AIRING -> context.putInt(AIRING_ORDER_KEY, order)
+        HomeOrderType.TRENDING -> context.putInt(TRENDING_ORDER_KEY, order)
+        HomeOrderType.POPULAR -> context.putInt(POPULAR_ORDER_KEY, order)
+        HomeOrderType.NEWLY_ADDED -> context.putInt(NEWLY_ADDED_ORDER_KEY, order)
+        HomeOrderType.WATCHING -> context.putInt(WATCHING_ORDER_KEY, order)
+        HomeOrderType.READING -> context.putInt(READING_ORDER_KEY, order)
+    }
+}
+
+
+fun setDiscoverMediaListSort(context: Context, type: Int, sort: Int?) {
+    when (type) {
+        MediaType.ANIME.ordinal -> {
+            context.putInt(DISCOVER_WATCHING_SORT_KEY, sort ?: -1)
+        }
+        MediaType.MANGA.ordinal -> {
+            context.putInt(DISCOVER_READING_SORT_KEY, sort ?: -1)
+        }
+    }
+}
+
+
+fun getDiscoverMediaListSort(context: Context, type: Int): Int? {
+    return when (type) {
+        MediaType.ANIME.ordinal -> {
+            context.getInt(DISCOVER_WATCHING_SORT_KEY, -1).takeIf { it > -1 }
+        }
+        MediaType.MANGA.ordinal -> {
+            context.getInt(DISCOVER_READING_SORT_KEY, -1).takeIf { it > -1 }
+        }
+        else -> null
+    }
 }
