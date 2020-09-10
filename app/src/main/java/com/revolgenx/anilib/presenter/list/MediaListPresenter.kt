@@ -65,9 +65,7 @@ class MediaListPresenter(
                 R.layout.media_list_presenter,
                 parent,
                 false
-            ).also {
-                it.mediaListContainer.corner = commonCornerRadiusDimen
-            }
+            )
         )
     }
 

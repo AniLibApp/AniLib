@@ -9,7 +9,6 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
-import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.meta.FollowerMeta
 import com.revolgenx.anilib.model.user.UserFollowersModel
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.user_followr_title_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class UserFollowerDialog : DynamicDialogFragment() {
+class UserFollowerDialog : BaseDialogFragment() {
 
     companion object {
         fun newInstance(followerMeta: FollowerMeta) = UserFollowerDialog().also {
@@ -31,21 +30,17 @@ class UserFollowerDialog : DynamicDialogFragment() {
     }
 
     private val viewModel by viewModel<UserFollowerViewModel>()
-
     private val loadingPresenter: Presenter<Void> by lazy {
         Presenter.forLoadingIndicator(
             requireContext(), R.layout.loading_layout
         )
     }
-
     private val errorPresenter: Presenter<Void> by lazy {
         Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
     }
-
     private val emptyPresenter: Presenter<Void> by lazy {
         Presenter.forEmptyIndicator(requireContext(), R.layout.empty_layout)
     }
-
     private val basePresenter: Presenter<UserFollowersModel>
         get() {
             return UserFollowerPresenter(requireContext())
@@ -60,6 +55,8 @@ class UserFollowerDialog : DynamicDialogFragment() {
     }
 
     private var baseRecyclerView: RecyclerView? = null
+    override var viewRes: Int? = R.layout.follower_dialog_layout
+
 
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,
@@ -78,38 +75,30 @@ class UserFollowerDialog : DynamicDialogFragment() {
         }
         with(dialogBuilder) {
             setCustomTitle(titleView)
-            setView(R.layout.follower_dialog_layout)
         }
-
         return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
     }
 
-    override fun onCustomiseDialog(
-        alertDialog: DynamicDialog,
-        savedInstanceState: Bundle?
-    ): DynamicDialog {
+    override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         val followerMeta = arguments?.getParcelable<FollowerMeta>(FOLLOWING_META_KEY)
-            ?: return super.onCustomiseDialog(alertDialog, savedInstanceState)
+            ?: return
 
-        alertDialog.apply {
-            setOnShowListener {
-                viewModel.field.also {
-                    it.userId = followerMeta.userId
-                    it.isFollowing = followerMeta.isFollowing
-                }
-                with(recyclerViewFrame) {
-                    baseRecyclerView = recyclerView
-                    setOnRefreshListener {
-                        createSource()
-                        swipeRefreshLayout.isRefreshing = false
-                        invalidateAdapter()
-                    }
+        with(alertDialog) {
+            viewModel.field.also {
+                it.userId = followerMeta.userId
+                it.isFollowing = followerMeta.isFollowing
+            }
+            with(recyclerViewFrame) {
+                baseRecyclerView = recyclerView
+                setOnRefreshListener {
+                    createSource()
+                    swipeRefreshLayout.isRefreshing = false
                     invalidateAdapter()
                 }
-
+                invalidateAdapter()
             }
+
         }
-        return super.onCustomiseDialog(alertDialog, savedInstanceState)
     }
 
     private fun invalidateAdapter() {

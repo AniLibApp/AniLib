@@ -156,7 +156,7 @@
         <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
             android:id="@+id/scoreToggleSwitch"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/toggle_switch_dime"
             android:layout_margin="10dp"
             android:textSize="11sp"
             tools:ignore="SmallSp" />
@@ -277,7 +277,7 @@
             <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
                 android:id="@+id/releaseYearToggleSwitch"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="@dimen/toggle_switch_dime"
                 android:layout_margin="10dp"
                 android:textSize="11sp"
                 tools:ignore="SmallSp" />
@@ -317,7 +317,7 @@
             <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
                 android:id="@+id/watchYearToggleSwitch"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="@dimen/toggle_switch_dime"
                 android:layout_margin="10dp"
                 android:textSize="11sp"
                 tools:ignore="SmallSp" />

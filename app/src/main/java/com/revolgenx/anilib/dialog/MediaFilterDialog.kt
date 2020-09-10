@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.dialog
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -28,7 +29,7 @@ import kotlinx.android.synthetic.main.media_filter_layout.*
 import java.util.*
 import kotlin.math.round
 
-class MediaFilterDialog : DynamicDialogFragment() {
+class MediaFilterDialog : BaseDialogFragment() {
 
     var onDoneListener: (() -> Unit)? = null
 
@@ -107,154 +108,128 @@ class MediaFilterDialog : DynamicDialogFragment() {
         SEASON, TRENDING, POPULAR, NEWLY_ADDED
     }
 
+    override var titleRes: Int? = R.string.filter
+    override var viewRes: Int? = R.layout.media_filter_layout
+    override var positiveText: Int? = R.string.done
+    override var negativeText: Int? = R.string.cancel
 
-    override fun onCustomiseBuilder(
-        dialogBuilder: DynamicDialog.Builder,
-        savedInstanceState: Bundle?
-    ): DynamicDialog.Builder {
-        with(dialogBuilder) {
-            setTitle(R.string.filter)
-            setView(R.layout.media_filter_layout)
-            setPositiveButton(R.string.done) { dialogInterface, _ ->
-                if (dialogInterface is DynamicDialog) {
-                    when (field) {
-                        is SeasonField -> (field as SeasonField).saveSeasonField(requireContext())
-                        is TrendingMediaField -> {
-                            if (!dialogInterface.enableYearCheckBox.isChecked) {
-                                field.seasonYear = null
-                            }
-                            (field as TrendingMediaField).saveTrendingField(requireContext())
-                        }
-                        is PopularMediaField -> {
-                            if (!dialogInterface.enableYearCheckBox.isChecked) {
-                                field.seasonYear = null
-                            }
-                            (field as PopularMediaField).savePopularField(requireContext())
-                        }
-                        is NewlyAddedMediaField -> {
-                            if (!dialogInterface.enableYearCheckBox.isChecked) {
-                                field.seasonYear = null
-                            }
-                            (field as NewlyAddedMediaField).saveNewlyAddedField(requireContext())
-                        }
+    override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
+        if (dialogInterface is DynamicDialog) {
+            when (field) {
+                is SeasonField -> (field as SeasonField).saveSeasonField(requireContext())
+                is TrendingMediaField -> {
+                    if (!dialogInterface.enableYearCheckBox.isChecked) {
+                        field.seasonYear = null
                     }
-                    onDoneListener?.invoke()
+                    (field as TrendingMediaField).saveTrendingField(requireContext())
+                }
+                is PopularMediaField -> {
+                    if (!dialogInterface.enableYearCheckBox.isChecked) {
+                        field.seasonYear = null
+                    }
+                    (field as PopularMediaField).savePopularField(requireContext())
+                }
+                is NewlyAddedMediaField -> {
+                    if (!dialogInterface.enableYearCheckBox.isChecked) {
+                        field.seasonYear = null
+                    }
+                    (field as NewlyAddedMediaField).saveNewlyAddedField(requireContext())
                 }
             }
-
-            setNegativeButton(R.string.cancel) { _, _ ->
-                dismiss()
-            }
-            isAutoDismiss = false
+            onDoneListener?.invoke()
         }
-        return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
     }
 
-    override fun onCustomiseDialog(
-        alertDialog: DynamicDialog,
-        savedInstanceState: Bundle?
-    ): DynamicDialog {
+    override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         with(alertDialog) {
-            setOnShowListener {
-                getButton(AlertDialog.BUTTON_POSITIVE)?.let {
-                    (it as DynamicButton).isAllCaps = false
+            seasonFormatSpinner.adapter = makeSpinnerAdapter(listFormatItems)
+            seasonStatusSpinner.adapter = makeSpinnerAdapter(listStatusItems)
+            seasonSpinner.adapter = makeSpinnerAdapter(seasons)
+
+            if (field is SeasonField) {
+                seasonSortSpinner.adapter = makeSpinnerAdapter(listSortItems)
+                field.sort?.let {
+                    seasonSortSpinner.setSelection(it + 1)
                 }
 
-                getButton(AlertDialog.BUTTON_NEGATIVE)?.let {
-                    (it as DynamicButton).isAllCaps = false
+                seasonSortSpinner.onItemSelected {
+                    field.sort = it.minus(1).takeIf { it >= 0 }
                 }
-
-                seasonFormatSpinner.adapter = makeSpinnerAdapter(listFormatItems)
-                seasonStatusSpinner.adapter = makeSpinnerAdapter(listStatusItems)
-                seasonSpinner.adapter = makeSpinnerAdapter(seasons)
-
-                if (field is SeasonField) {
-                    seasonSortSpinner.adapter = makeSpinnerAdapter(listSortItems)
-                    field.sort?.let {
-                        seasonSortSpinner.setSelection(it + 1)
-                    }
-
-                    seasonSortSpinner.onItemSelected {
-                        field.sort = it.minus(1).takeIf { it >= 0 }
-                    }
-                }else{
-                    seasonSortHeaderLayout.visibility = View.GONE
-                }
-
-                field.status?.let {
-                    seasonStatusSpinner.setSelection(it + 1)
-                }
-                field.format?.let {
-                    seasonFormatSpinner.setSelection(it + 1)
-                }
-                field.season?.let {
-                    seasonSpinner.setSelection(if (field is SeasonField) it else it + 1)
-                }
-
-
-                seasonYearSeekBar.setIndicatorTextDecimalFormat("0")
-                seasonYearSeekBar.setTypeface(
-                    ResourcesCompat.getFont(
-                        context,
-                        R.font.open_sans_light
-                    )
-                )
-
-                DynamicTheme.getInstance().get().accentColor.let {
-                    seasonYearSeekBar.progressColor = it
-                    seasonYearSeekBar.leftSeekBar?.indicatorBackgroundColor = it
-                }
-
-                val currentYear = Calendar.getInstance().get(Calendar.YEAR) + 1f
-
-                seasonYearSeekBar.setRange(1950f, currentYear)
-
-
-                if (field !is SeasonField) {
-                    enableYearCheckBox.visibility = View.VISIBLE
-                    enableYearCheckBox.isChecked = field.seasonYear != null
-                    seasonYearSeekBar.isEnabled = field.seasonYear != null
-                }
-
-                field.seasonYear?.toFloat()?.let {
-                    seasonYearSeekBar.setProgress(it)
-                }
-
-                enableYearCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                    seasonYearSeekBar.isEnabled = isChecked
-                }
-                seasonStatusSpinner.onItemSelected {
-                    field.status = it.minus(1).takeIf { it >= 0 }
-                }
-                seasonFormatSpinner.onItemSelected {
-                    field.format = it.minus(1).takeIf { it >= 0 }
-                }
-                seasonSpinner.onItemSelected {
-                    field.season = if (field is SeasonField) it else it.minus(1).takeIf { it >= 0 }
-                }
-                seasonYearSeekBar.setOnRangeChangedListener(object : OnRangeChangedListener {
-                    override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
-                    }
-
-                    override fun onRangeChanged(
-                        view: RangeSeekBar?,
-                        leftValue: Float,
-                        rightValue: Float,
-                        isFromUser: Boolean
-                    ) {
-                    }
-
-                    override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
-                        view?.leftSeekBar?.progress?.let {
-                            field.seasonYear = round(it).toInt()
-                        }
-                    }
-                })
+            } else {
+                seasonSortHeaderLayout.visibility = View.GONE
             }
-            return super.onCustomiseDialog(alertDialog, savedInstanceState)
+
+            field.status?.let {
+                seasonStatusSpinner.setSelection(it + 1)
+            }
+            field.format?.let {
+                seasonFormatSpinner.setSelection(it + 1)
+            }
+            field.season?.let {
+                seasonSpinner.setSelection(if (field is SeasonField) it else it + 1)
+            }
+
+
+            seasonYearSeekBar.setIndicatorTextDecimalFormat("0")
+            seasonYearSeekBar.setTypeface(
+                ResourcesCompat.getFont(
+                    context,
+                    R.font.open_sans_light
+                )
+            )
+
+            DynamicTheme.getInstance().get().accentColor.let {
+                seasonYearSeekBar.progressColor = it
+                seasonYearSeekBar.leftSeekBar?.indicatorBackgroundColor = it
+            }
+
+            val currentYear = Calendar.getInstance().get(Calendar.YEAR) + 1f
+
+            seasonYearSeekBar.setRange(1950f, currentYear)
+
+
+            if (field !is SeasonField) {
+                enableYearCheckBox.visibility = View.VISIBLE
+                enableYearCheckBox.isChecked = field.seasonYear != null
+                seasonYearSeekBar.isEnabled = field.seasonYear != null
+            }
+
+            field.seasonYear?.toFloat()?.let {
+                seasonYearSeekBar.setProgress(it)
+            }
+
+            enableYearCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                seasonYearSeekBar.isEnabled = isChecked
+            }
+            seasonStatusSpinner.onItemSelected {
+                field.status = it.minus(1).takeIf { it >= 0 }
+            }
+            seasonFormatSpinner.onItemSelected {
+                field.format = it.minus(1).takeIf { it >= 0 }
+            }
+            seasonSpinner.onItemSelected {
+                field.season = if (field is SeasonField) it else it.minus(1).takeIf { it >= 0 }
+            }
+            seasonYearSeekBar.setOnRangeChangedListener(object : OnRangeChangedListener {
+                override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
+                }
+
+                override fun onRangeChanged(
+                    view: RangeSeekBar?,
+                    leftValue: Float,
+                    rightValue: Float,
+                    isFromUser: Boolean
+                ) {
+                }
+
+                override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
+                    view?.leftSeekBar?.progress?.let {
+                        field.seasonYear = round(it).toInt()
+                    }
+                }
+            })
         }
     }
-
 
     private fun makeSpinnerAdapter(items: List<DynamicSpinnerItem>) =
         DynamicSpinnerImageAdapter(

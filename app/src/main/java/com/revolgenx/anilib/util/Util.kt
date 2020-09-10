@@ -204,4 +204,3 @@ fun Context.copyToClipBoard(str: String?) {
     makeToast(R.string.copied_to_clipboard)
 }
 
-val commonCornerRadiusDimen = dp(8f).toFloat()

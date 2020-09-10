@@ -15,7 +15,6 @@ import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.character.CharacterMediaModel
 import com.revolgenx.anilib.preference.loggedIn
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.character_media_presenter.view.*
@@ -41,9 +40,7 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
                 R.layout.character_media_presenter,
                 parent,
                 false
-            ).also {
-                it.characterMediaContainer.corner = commonCornerRadiusDimen
-            }
+            )
         )
     }
 

@@ -8,16 +8,13 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.dialog.MediaViewDialog
 import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.meta.StudioMeta
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.model.user.stats.*
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import kotlinx.android.synthetic.main.image_stats_presenter_layout.view.*
 import kotlinx.android.synthetic.main.text_stats_general_layout.view.*
-import kotlinx.android.synthetic.main.text_stats_presenter_layout.view.*
 
 class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) {
     override val elementTypes: Collection<Int>
@@ -31,9 +28,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                     parent,
                     false
                 ).also {
-                    it.textStatsPresenterContainer.corner = commonCornerRadiusDimen
                     it.statsMediaTv.compoundDrawablesRelative[0].setTint(DynamicTheme.getInstance().get().tintSurfaceColor)
-
                 }
             )
         else
@@ -43,7 +38,6 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                     parent,
                     false
                 ).also {
-                    it.imageStatsPresenterContainer.corner = commonCornerRadiusDimen
                     it.statsMediaTv.compoundDrawablesRelative[0].setTint(DynamicTheme.getInstance().get().tintSurfaceColor)
                 }
             )

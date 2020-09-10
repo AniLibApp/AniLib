@@ -16,7 +16,7 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.controller.themeIt
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.meta.UserStatsMeta
 import com.revolgenx.anilib.model.user.stats.StatsCountryDistributionModel
@@ -26,7 +26,6 @@ import com.revolgenx.anilib.model.user.stats.StatsStatusDistributionModel
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.viewmodel.stats.StatsOverviewViewModel
 import kotlinx.android.synthetic.main.error_layout.*
@@ -420,21 +419,13 @@ class StatsOverviewFragment : BaseFragment() {
 
     private fun updateTheme() {
         scoreToggleSwitch?.let {
-            it.uncheckedBackgroundColor = ThemeController.lightSurfaceColor()
-            it.checkedBackgroundColor = DynamicTheme.getInstance().get().tintAccentColor
-            it.borderRadius = dp(6f).toFloat()
-            it.elevation = dp(1f).toFloat()
-            it.checkedTextColor = DynamicTheme.getInstance().get().accentColor
-            it.uncheckedTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
-            it.reDraw()
-
+            it.themeIt()
             it.setEntries(
                 if (userStatsMeta.type == MediaType.ANIME.ordinal)
                     R.array.score_toggle_list
                 else
                     R.array.manga_score_toggle_list
             )
-
             it.setCheckedPosition(
                 viewModel.scoreTogglePos
             )
@@ -442,13 +433,7 @@ class StatsOverviewFragment : BaseFragment() {
 
 
         releaseYearToggleSwitch?.let {
-            it.uncheckedBackgroundColor = ThemeController.lightSurfaceColor()
-            it.checkedBackgroundColor = DynamicTheme.getInstance().get().tintAccentColor
-            it.borderRadius = dp(6f).toFloat()
-            it.elevation = dp(1f).toFloat()
-            it.checkedTextColor = DynamicTheme.getInstance().get().accentColor
-            it.uncheckedTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
-            it.reDraw()
+            it.themeIt()
             it.setEntries(
                 if (userStatsMeta.type == MediaType.ANIME.ordinal)
                     R.array.stats_toggle_list
@@ -462,13 +447,7 @@ class StatsOverviewFragment : BaseFragment() {
 
 
         watchYearToggleSwitch?.let {
-            it.uncheckedBackgroundColor = ThemeController.lightSurfaceColor()
-            it.checkedBackgroundColor = DynamicTheme.getInstance().get().tintAccentColor
-            it.borderRadius = dp(6f).toFloat()
-            it.elevation = dp(1f).toFloat()
-            it.checkedTextColor = DynamicTheme.getInstance().get().accentColor
-            it.uncheckedTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
-            it.reDraw()
+            it.themeIt()
             it.setEntries(
                 if (userStatsMeta.type == MediaType.ANIME.ordinal)
                     R.array.stats_toggle_list

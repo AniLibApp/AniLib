@@ -17,7 +17,6 @@ import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.StaffMediaCharacterModel
 import com.revolgenx.anilib.preference.loggedIn
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.staff_media_character_presenter.view.*
@@ -52,9 +51,7 @@ class StaffMediaCharacterPresenter(context: Context) :
                 R.layout.staff_media_character_presenter,
                 parent,
                 false
-            ).also {
-                it.staffMediaCharacterContainer.corner = commonCornerRadiusDimen
-            }
+            )
         )
     }
     override fun onBind(page: Page, holder: Holder, element: Element<StaffMediaCharacterModel>) {

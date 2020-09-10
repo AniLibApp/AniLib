@@ -2,13 +2,16 @@ package com.revolgenx.anilib.dialog
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.support.widget.DynamicButton
+import com.revolgenx.anilib.R
 
 
-typealias OnShowListener = ((dialog: DynamicDialog, savedInstanceState:Bundle?) -> Unit)?
+typealias OnShowListener = ((dialog: DynamicDialog, savedInstanceState: Bundle?) -> Unit)?
 typealias OnButtonClickedListener = ((dialogInterface: DialogInterface, which: Int) -> Unit)?
 
 open class BaseDialogFragment : DynamicDialogFragment() {
@@ -21,7 +24,8 @@ open class BaseDialogFragment : DynamicDialogFragment() {
     protected open var neutralText: Int? = null
     protected open var messageText: Int? = null
 
-    var isAutoDismissEnabled = false
+    protected open var isAutoDismissEnabled = false
+    protected open var dismissOnTouchOutside = true
 
     var onShowListener: OnShowListener = null
     var onButtonClickedListener: OnButtonClickedListener = null
@@ -88,6 +92,9 @@ open class BaseDialogFragment : DynamicDialogFragment() {
     ): DynamicDialog {
         with(alertDialog) {
             setOnShowListener {
+                this.setCanceledOnTouchOutside(dismissOnTouchOutside)
+                findViewById<TextView>(com.pranavpandey.android.dynamic.support.R.id.alertTitle)?.typeface =
+                    ResourcesCompat.getFont(requireContext(), R.font.berlinrounded_extra_bold)
                 getButton(AlertDialog.BUTTON_POSITIVE)?.let {
                     (it as DynamicButton).isAllCaps = false
                 }

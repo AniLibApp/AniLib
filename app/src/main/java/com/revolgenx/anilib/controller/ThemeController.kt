@@ -17,7 +17,7 @@ object ThemeController {
     /**
      * `true` if `auto` theme is selected.
      */
-    val isAutoTheme: Boolean get() = appThemeColor == Theme.NIGHT
+    val isAutoTheme: Boolean get() = appThemeColor == Theme.AUTO
 
 
     /**
@@ -108,7 +108,8 @@ object ThemeController {
             .setPrimaryColorDark(Theme.AUTO)
             .setAccentColor(AppController.instance.colorAccentApp)
             .setBackgroundColor(backgroundColor)
-            .setSurfaceColor(Theme.AUTO).autoGenerateColors();
+            .setSurfaceColor(Theme.AUTO).autoGenerateColors()
+            .setCornerRadiusDp(10f);
     }
 
     /**
@@ -121,6 +122,7 @@ object ThemeController {
             .setAccentColor(AppController.instance.colorAccentApp)
             .setBackgroundColor(backgroundColor)
             .setSurfaceColor(Theme.AUTO).autoGenerateColors()
+            .setCornerRadiusDp(10f)
     }
 
 

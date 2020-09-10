@@ -70,4 +70,5 @@ class SettingFragment : BaseToolbarFragment() {
         }
     }
 
+
 }

@@ -49,6 +49,7 @@ import com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
 import com.revolgenx.anilib.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_layout.view.*
+import kotlinx.android.synthetic.main.toolbar_layout.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -111,7 +112,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         }
 
         bottomNav.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-        setSupportActionBar(mainToolbar)
+        setSupportActionBar(dynamicToolbar)
         themeBottomNavigation()
 
         mainViewPager.adapter = makePagerAdapter(
@@ -171,11 +172,12 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             val userBanner = userBannerImage()
             val userName = userName()
 
+            headerView.headerIconCardView.corner = dp(16f).toFloat()
             if (userAvatar.isNullOrEmpty()) {
                 headerView.navHeaderIcon.setImageDrawable(
                     AppCompatDrawableManager.get().getDrawable(
                         context,
-                        R.mipmap.ic_launcher
+                        R.drawable.ic_drawable_launcher
                     )
                 )
 
@@ -236,7 +238,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
-            mainToolbar,
+            dynamicToolbar,
             R.string.nav_open,
             R.string.nav_close
         )

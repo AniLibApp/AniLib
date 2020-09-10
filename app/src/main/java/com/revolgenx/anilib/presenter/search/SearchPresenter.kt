@@ -16,7 +16,6 @@ import com.revolgenx.anilib.meta.*
 import com.revolgenx.anilib.model.BaseModel
 import com.revolgenx.anilib.model.search.*
 import com.revolgenx.anilib.preference.loggedIn
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.search_character_layout.view.*
@@ -47,21 +46,15 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
         val v = when (elementType) {
             SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.search_media_layout, parent, false).also {
-                    it.searchMediaContainer.corner = commonCornerRadiusDimen
-                }
+                    .inflate(R.layout.search_media_layout, parent, false)
             }
             SearchTypes.CHARACTER.ordinal -> {
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.search_character_layout, parent, false).also {
-                    it.searchCharacterContainer.corner = commonCornerRadiusDimen
-                }
+                    .inflate(R.layout.search_character_layout, parent, false)
             }
             SearchTypes.STAFF.ordinal -> {
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.search_staff_layout, parent, false).also {
-                    it.searchStaffContainer.corner = commonCornerRadiusDimen
-                }
+                    .inflate(R.layout.search_staff_layout, parent, false)
             }
             SearchTypes.STUDIO.ordinal -> {
                 LayoutInflater.from(parent.context)
@@ -73,9 +66,7 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
             }
             else -> {
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.search_media_layout, parent, false).also {
-                    it.searchMediaContainer.corner = commonCornerRadiusDimen
-                }
+                    .inflate(R.layout.search_media_layout, parent, false)
             }
         }
 

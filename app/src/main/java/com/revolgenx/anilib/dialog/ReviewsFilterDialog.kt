@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.dialog
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
@@ -12,7 +13,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.util.onItemSelected
 import kotlinx.android.synthetic.main.reviews_filter_dialog_layout.*
 
-class ReviewsFilterDialog : DynamicDialogFragment() {
+class ReviewsFilterDialog : BaseDialogFragment() {
 
 
     companion object {
@@ -35,48 +36,27 @@ class ReviewsFilterDialog : DynamicDialogFragment() {
 
     var positiveCallback: ((Int?) -> Unit)? = null
 
-    override fun onCustomiseBuilder(
-        dialogBuilder: DynamicDialog.Builder,
-        savedInstanceState: Bundle?
-    ): DynamicDialog.Builder {
-        with(dialogBuilder) {
-            setTitle(R.string.filter)
-            setPositiveButton(R.string.done) { dialogInterface, _ ->
-                if (dialogInterface is DynamicDialog) {
-                    positiveCallback?.invoke(arguments?.getInt(reviews_filter_key))
-                }
-            }
-            setNegativeButton(R.string.cancel) { _, _ ->
-                dismiss()
-            }
-            setView(R.layout.reviews_filter_dialog_layout)
-            isAutoDismiss = false
+    override var titleRes: Int? = R.string.filter
+    override var viewRes: Int? = R.layout.reviews_filter_dialog_layout
+    override var positiveText: Int? = R.string.done
+    override var negativeText: Int? = R.string.cancel
+
+    override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
+        super.onPositiveClicked(dialogInterface, which)
+        if (dialogInterface is DynamicDialog) {
+            positiveCallback?.invoke(arguments?.getInt(reviews_filter_key))
         }
-        return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
     }
 
-    override fun onCustomiseDialog(
-        alertDialog: DynamicDialog,
-        savedInstanceState: Bundle?
-    ): DynamicDialog {
-        with(alertDialog) {
-            setOnShowListener {
-                getButton(AlertDialog.BUTTON_POSITIVE)?.let {
-                    (it as DynamicButton).isAllCaps = false
-                }
-                getButton(AlertDialog.BUTTON_NEGATIVE)?.let {
-                    (it as DynamicButton).isAllCaps = false
-                }
-                reviewsFilterSpinner.adapter = makeSpinnerAdapter(reviewsFilterSpinnerItem)
-                reviewsFilterSpinner.setSelection(arguments?.getInt(reviews_filter_key) ?: 0)
-                reviewsFilterSpinner.onItemSelected {
-                    arguments = bundleOf(reviews_filter_key to it)
-                }
+    override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
+        with(alertDialog){
+            reviewsFilterSpinner.adapter = makeSpinnerAdapter(reviewsFilterSpinnerItem)
+            reviewsFilterSpinner.setSelection(arguments?.getInt(reviews_filter_key) ?: 0)
+            reviewsFilterSpinner.onItemSelected {
+                arguments = bundleOf(reviews_filter_key to it)
             }
         }
-        return super.onCustomiseDialog(alertDialog, savedInstanceState)
     }
-
 
     private fun makeSpinnerAdapter(items: List<DynamicSpinnerItem>) =
         DynamicSpinnerImageAdapter(

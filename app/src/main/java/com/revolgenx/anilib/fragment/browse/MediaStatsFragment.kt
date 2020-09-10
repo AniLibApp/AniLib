@@ -182,6 +182,11 @@ class MediaStatsFragment : BaseFragment() {
                 setDrawCircleHole(false)
                 setDrawCircles(false)
                 setDrawFilled(true)
+                valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return value.toInt().toString()
+                    }
+                }
             }.let { set ->
                 activityPerDayLineChart.let { perDay ->
                     perDay.setTouchEnabled(false)
@@ -288,6 +293,11 @@ class MediaStatsFragment : BaseFragment() {
             val dataSet = BarDataSet(it, getString(R.string.score_distribution)).also {
                 it.colors = barColors
                 it.valueTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
+                it.valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return value.toInt().toString()
+                    }
+                }
             }
             scoreDistributionBarChart.apply {
                 legend.textColor = DynamicTheme.getInstance().get().tintSurfaceColor

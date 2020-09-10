@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:textSize="16sp"
+        android:layout_toStartOf="@id/dialogDismissButton"
         android:paddingTop="8dp"
-        app:fontFamily="@font/qanelassoft_extra_bold"
-        android:layout_toStartOf="@id/dialogDismissButton"/>
+        android:textSize="16sp"
+        app:fontFamily="@font/qanelassoft_extra_bold" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
         android:id="@+id/dialogDismissButton"
@@ -22,5 +22,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:padding="4dp"
+        app:ads_colorType="tint_surface"
         app:srcCompat="@drawable/ic_close" />
+
 </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>

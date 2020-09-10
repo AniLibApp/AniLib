@@ -44,6 +44,7 @@
 
     <!-- Default app theme night colors. -->
     <integer-array name="pref_app_theme_night_colors">
+        <item>@color/colorPrimaryDark</item>
         <item>@color/ads_window_background</item>
         <item>@color/ads_window_background_dark</item>
         <item>@color/ads_window_background_indigo</item>

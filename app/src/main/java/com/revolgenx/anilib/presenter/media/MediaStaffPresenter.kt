@@ -10,7 +10,6 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseStaffEvent
 import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.model.MediaStaffModel
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import kotlinx.android.synthetic.main.media_staff_presenter_layout.view.*
 
 class MediaStaffPresenter(context: Context) : Presenter<MediaStaffModel>(context) {
@@ -23,9 +22,7 @@ class MediaStaffPresenter(context: Context) : Presenter<MediaStaffModel>(context
                 R.layout.media_staff_presenter_layout,
                 parent,
                 false
-            ).also {
-                it.mediaStaffPresenterContainer.corner = commonCornerRadiusDimen
-            }
+            )
         )
     }
 

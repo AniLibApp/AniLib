@@ -14,7 +14,6 @@ import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.StaffMediaRoleModel
 import com.revolgenx.anilib.preference.loggedIn
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.staff_media_role_presenter.view.*
@@ -35,9 +34,7 @@ class StaffMediaRolePresenter(context: Context) : Presenter<StaffMediaRoleModel>
                 R.layout.staff_media_role_presenter,
                 parent,
                 false
-            ).also {
-                it.staffMediaRoleContainer.corner = commonCornerRadiusDimen
-            }
+            )
         )
     }
 

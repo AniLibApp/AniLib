@@ -25,5 +25,9 @@
         android:text="@string/overview"
         android:textSize="11sp"
         android:visibility="visible"
+        app:fontFamily="@font/berlinrounded_regular"
+        android:maxLines="1"
+        android:ellipsize="end"
         tools:ignore="SmallSp" />
+
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
