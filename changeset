@@ -1,9 +1,11 @@
 v-1.1.4
 anime/manga list sorting
+adding/removing genre, tags and others moved to setting
 added watching/reading on discover page for tracking
-change order of discover page
-media list is user's anime/manga stats
-graph ui changes
+change order of discover page from discover menu
+media list in user's anime/manga stats
+exclude tags and genre from search filter
+graph formatting changes
 ui changes
 
 v-1.1.3
