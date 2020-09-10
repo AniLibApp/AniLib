@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.DynamicApp.Light" />
+    <style name="AppTheme" parent="Theme.DynamicApp" />
 
     <style name="BaseTheme" parent="AppTheme">
         <!-- Customize your theme here. -->
@@ -14,7 +14,7 @@
         <item name="android:textColorPrimaryInverse">@color/white</item>
     </style>
 
-    <style name="BaseTheme.Dark" parent="Theme.DynamicApp">
+    <style name="BaseTheme.Dark" parent="Theme.DynamicApp.Light">
         <!-- Customize your theme here. -->
 
         <item name="colorPrimary">@color/colorPrimary</item>

@@ -9,7 +9,7 @@
         android:id="@+id/mediaBrowserCoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/smartTabLayout">
+        android:layout_above="@+id/dynamicSmartTab">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
             android:id="@+id/appbarLayout"
@@ -156,7 +156,6 @@
             android:id="@+id/browseMediaViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/smartTabLayout"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
@@ -164,6 +163,5 @@
 
     <include
         layout="@layout/custom_bottom_navigation_view"/>
-
 
 </RelativeLayout>
