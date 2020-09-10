@@ -11,7 +11,6 @@ class CustomSmartTab(context: Context, attributeSet: AttributeSet?, style: Int) 
     SmartTabLayout(context, attributeSet, style) {
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
-
     }
 
     fun getTabs(): Sequence<View> {

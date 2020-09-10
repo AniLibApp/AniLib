@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.revolgenx.anilib.view.CustomSmartTab xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dynamicSmartTab"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    android:layout_alignParentBottom="true"
+    app:stl_distributeEvenly="true"
+    app:stl_dividerThickness="0dp"
+    app:stl_indicatorColor="@android:color/transparent"
+    app:stl_indicatorInterpolation="linear"
+    app:stl_underlineThickness="0dp" />

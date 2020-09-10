@@ -10,7 +10,6 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.event.BrowseStaffEvent
 import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.model.VoiceActorModel
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import kotlinx.android.synthetic.main.character_actor_presenter_layout.view.*
 
 class CharacterActorPresenter(context: Context) : Presenter<VoiceActorModel>(context) {
@@ -23,9 +22,7 @@ class CharacterActorPresenter(context: Context) : Presenter<VoiceActorModel>(con
                 R.layout.character_actor_presenter_layout,
                 parent,
                 false
-            ).also {
-                it.characterActorPresenterContainer.corner = commonCornerRadiusDimen
-            }
+            )
         )
     }
 

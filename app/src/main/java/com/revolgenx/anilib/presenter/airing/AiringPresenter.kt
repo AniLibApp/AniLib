@@ -19,7 +19,6 @@ import com.revolgenx.anilib.model.airing.AiringMediaModel
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
@@ -30,9 +29,7 @@ class AiringPresenter(context: Context) : Presenter<AiringMediaModel>(context) {
         get() = listOf(0)
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(getLayoutInflater().inflate(R.layout.airing_presenter_layout, parent, false).also {
-            it.airingCardView.corner = commonCornerRadiusDimen
-        })
+        return Holder(getLayoutInflater().inflate(R.layout.airing_presenter_layout, parent, false))
     }
 
     private val statusColors by lazy {

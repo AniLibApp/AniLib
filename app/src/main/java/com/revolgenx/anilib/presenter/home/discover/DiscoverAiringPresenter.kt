@@ -17,7 +17,6 @@ import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.airing.AiringMediaModel
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.preference.loggedIn
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.naText
 import kotlinx.android.synthetic.main.discover_airing_presenter_layout.view.*
@@ -38,7 +37,6 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
                         DynamicTheme.getInstance().get().backgroundColor, 200
                     )
                 )
-                it.discoverAiringContainer.corner = commonCornerRadiusDimen
             }
         )
     }

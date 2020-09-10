@@ -24,7 +24,6 @@ import com.revolgenx.anilib.preference.userName
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.naText
@@ -66,9 +65,7 @@ class MediaListCollectionPresenter(
                 R.layout.media_list_collection_presenter_layout,
                 parent,
                 false
-            ).also {
-                it.mediaListContainer.corner = commonCornerRadiusDimen
-            }
+            )
         )
     }
 

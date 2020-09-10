@@ -160,7 +160,7 @@ class UserProfileActivity : BasePopupVideoActivity() {
 
     private fun resolveChange() {
         (supportFragmentManager.findFragmentByTag(MessageDialog.messageDialogTag) as? MessageDialog)?.let {
-            it.dialogCallback = toggleFollowCallback
+            it.onButtonClickedListener = toggleFollowCallback
         }
     }
 
@@ -376,7 +376,7 @@ class UserProfileActivity : BasePopupVideoActivity() {
                     positiveTextRes = R.string.yes
                     negativeTextRes = R.string.no
                     build().let {
-                        it.dialogCallback = toggleFollowCallback
+                        it.onButtonClickedListener = toggleFollowCallback
                         it.show(supportFragmentManager, messageDialogTag)
                     }
                 }

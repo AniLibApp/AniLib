@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -107,5 +107,5 @@
                 app:ads_title="@string/whats_new" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-    </LinearLayout>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>

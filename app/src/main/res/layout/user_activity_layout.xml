@@ -13,6 +13,7 @@
             android:id="@+id/userCollapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="136dp"
+            app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
             app:layout_scrollFlags="scroll|snap|enterAlways|enterAlwaysCollapsed">
 
             <com.facebook.drawee.view.SimpleDraweeView
@@ -25,6 +26,11 @@
                 android:id="@+id/userToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStartWithNavigation="0dp"
                 app:layout_collapseMode="pin" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
@@ -133,83 +139,87 @@
 
             <include layout="@layout/resource_status_container_layout" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/stroke_background"
-                android:orientation="horizontal">
+                android:layout_marginTop="20dp">
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                    android:id="@+id/userAnimeListFrameLayout"
-                    android:layout_width="0dp"
+                <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="?selectableItemBackground"
-                    android:clickable="true">
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <com.revolgenx.anilib.view.ImageHeaderLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:headerImage="@drawable/ic_media"
-                        app:title="@string/anime_list" />
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                        android:id="@+id/userAnimeListFrameLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?selectableItemBackground"
+                        android:clickable="true">
 
-                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+                        <com.revolgenx.anilib.view.ImageHeaderLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:headerImage="@drawable/ic_media"
+                            app:title="@string/anime_list" />
 
-
-                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                    android:id="@+id/userMangaListFrameLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="?selectableItemBackground"
-                    android:clickable="true">
-
-                    <com.revolgenx.anilib.view.ImageHeaderLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:headerImage="@drawable/ic_manga"
-                        app:title="@string/manga_list" />
-                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
-
-                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                    android:id="@+id/userFavouriteFrameLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="?selectableItemBackground"
-                    android:clickable="true">
-
-                    <com.revolgenx.anilib.view.ImageHeaderLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:headerImage="@drawable/ic_favorite"
-                        app:title="@string/favourites" />
-                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+                    </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                    android:id="@+id/userStatsFrameLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="?selectableItemBackground"
-                    android:clickable="true">
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                        android:id="@+id/userMangaListFrameLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?selectableItemBackground"
+                        android:clickable="true">
 
-                    <com.revolgenx.anilib.view.ImageHeaderLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:headerImage="@drawable/ic_chart"
-                        app:title="@string/stats" />
+                        <com.revolgenx.anilib.view.ImageHeaderLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:headerImage="@drawable/ic_manga"
+                            app:title="@string/manga_list" />
+                    </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
-                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
-            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                        android:id="@+id/userFavouriteFrameLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?selectableItemBackground"
+                        android:clickable="true">
 
+                        <com.revolgenx.anilib.view.ImageHeaderLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:headerImage="@drawable/ic_favorite"
+                            app:title="@string/favourites" />
+                    </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                        android:id="@+id/userStatsFrameLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?selectableItemBackground"
+                        android:clickable="true">
+
+                        <com.revolgenx.anilib.view.ImageHeaderLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:headerImage="@drawable/ic_chart"
+                            app:title="@string/stats" />
+
+                    </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+                </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:layout_width="match_parent"
@@ -225,23 +235,23 @@
                 android:layout_marginTop="16dp"
                 android:nestedScrollingEnabled="true">
 
-<!--                <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:nestedScrollingEnabled="true">-->
+                <!--                <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:nestedScrollingEnabled="true">-->
 
-<!--                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView-->
-<!--                        android:id="@+id/userAboutTv"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content" />-->
-<!--                </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>-->
+                <!--                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView-->
+                <!--                        android:id="@+id/userAboutTv"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content" />-->
+                <!--                </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>-->
 
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                     android:id="@+id/userAboutRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </com.revolgenx.anilib.view.MaxHeightFrameLayout>
 
@@ -258,9 +268,7 @@
                 style="@style/Widget.DynamicApp.Card.Clickable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:ads_cardElevation="1dp"
-                app:ads_elevationOnSameBackground="true">
+                android:layout_marginTop="10dp">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                     android:layout_width="match_parent"
@@ -320,9 +328,7 @@
                 style="@style/Widget.DynamicApp.Card.Clickable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:ads_cardElevation="1dp"
-                app:ads_elevationOnSameBackground="true">
+                android:layout_marginTop="10dp">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                     android:layout_width="match_parent"
@@ -390,9 +396,7 @@
                 style="@style/Widget.DynamicApp.Card.Clickable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:ads_cardElevation="1dp"
-                app:ads_elevationOnSameBackground="true">
+                android:layout_marginTop="10dp">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                     android:id="@+id/tagGenreRecyclerView"

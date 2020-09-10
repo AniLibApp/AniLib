@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.dialog
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
@@ -16,7 +17,7 @@ import com.revolgenx.anilib.meta.MediaListFilterMeta
 import kotlinx.android.synthetic.main.list_collection_filter_dialog_layout.*
 
 
-class MediaListCollectionFilterDialog : DynamicDialogFragment() {
+class MediaListCollectionFilterDialog : BaseDialogFragment() {
     companion object {
         fun newInstance(mediaListFilterField: MediaListCollectionFilterField) = MediaListCollectionFilterDialog().also {
             it.arguments = bundleOf(LIST_FILTER_PARCEL_KEY to mediaListFilterField)
@@ -30,39 +31,28 @@ class MediaListCollectionFilterDialog : DynamicDialogFragment() {
     }
 
     private var alertDialog: DynamicDialog? = null
+    override var titleRes: Int? = R.string.filter
+    override var viewRes: Int? = R.layout.list_collection_filter_dialog_layout
+    override var positiveText: Int? = R.string.done
+    override var negativeText: Int? = R.string.cancel
 
-    override fun onCustomiseBuilder(
-        dialogBuilder: DynamicDialog.Builder,
-        savedInstanceState: Bundle?
-    ): DynamicDialog.Builder {
-        with(dialogBuilder) {
-            setTitle(R.string.filter)
-            setPositiveButton(R.string.done) { dialogInterface, _ ->
-                if (dialogInterface is DynamicDialog) {
-                    MediaListFilterMeta(
-                        format = (dialogInterface.listFormatSpinner.selectedItemPosition - 1).takeIf { it >= 0 },
-                        status = (dialogInterface.listStatusSpinner.selectedItemPosition - 1).takeIf { it >= 0 },
-                        genres = dialogInterface.listGenreSpinner.let { spin ->
-                            (spin.selectedItemPosition - 1).takeIf { it >= 0 }
-                                ?.let { (spin.selectedItem as DynamicSpinnerItem).text.toString() }
-                        },
-                        mediaListSort =  (dialogInterface.listSortSpinner.selectedItemPosition - 1).takeIf { it >= 0 }
-                    ).let {
-                        MediaListCollectionFilterEvent(it).postEvent
-                    }
-                }
+
+    override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
+        if (dialogInterface is DynamicDialog) {
+            MediaListFilterMeta(
+                format = (dialogInterface.listFormatSpinner.selectedItemPosition - 1).takeIf { it >= 0 },
+                status = (dialogInterface.listStatusSpinner.selectedItemPosition - 1).takeIf { it >= 0 },
+                genres = dialogInterface.listGenreSpinner.let { spin ->
+                    (spin.selectedItemPosition - 1).takeIf { it >= 0 }
+                        ?.let { (spin.selectedItem as DynamicSpinnerItem).text.toString() }
+                },
+                mediaListSort =  (dialogInterface.listSortSpinner.selectedItemPosition - 1).takeIf { it >= 0 }
+            ).let {
+                MediaListCollectionFilterEvent(it).postEvent
             }
-
-            setNegativeButton(R.string.cancel) { _, _ ->
-                dismiss()
-            }
-
-            setView(R.layout.list_collection_filter_dialog_layout)
-            isAutoDismiss = false
         }
-
-        return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         alertDialog?.let {
@@ -74,19 +64,12 @@ class MediaListCollectionFilterDialog : DynamicDialogFragment() {
         super.onSaveInstanceState(outState)
     }
 
-
-    override fun onCustomiseDialog(
-        dialog: DynamicDialog,
-        savedInstanceState: Bundle?
-    ): DynamicDialog {
-        alertDialog = dialog
-        dialog.apply {
-            setOnShowListener {
-                this.updateTheme()
-                this.updateView(savedInstanceState)
-            }
+    override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
+        with(alertDialog){
+            this@MediaListCollectionFilterDialog.alertDialog = this
+            this.updateTheme()
+            this.updateView(savedInstanceState)
         }
-        return super.onCustomiseDialog(dialog, savedInstanceState)
     }
 
 
@@ -146,12 +129,6 @@ class MediaListCollectionFilterDialog : DynamicDialogFragment() {
             }
         }
 
-        getButton(AlertDialog.BUTTON_POSITIVE)?.let {
-            (it as DynamicButton).isAllCaps = false
-        }
-        getButton(AlertDialog.BUTTON_NEGATIVE)?.let {
-            (it as DynamicButton).isAllCaps = false
-        }
     }
 
     private fun makeSpinnerAdapter(items: List<DynamicSpinnerItem>) =

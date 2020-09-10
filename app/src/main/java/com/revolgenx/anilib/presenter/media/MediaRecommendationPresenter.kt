@@ -25,7 +25,6 @@ import com.revolgenx.anilib.repository.util.Resource
 import com.revolgenx.anilib.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.RecommendationRating
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.naText
@@ -51,9 +50,7 @@ class MediaRecommendationPresenter(
                 R.layout.overview_recommendation_presnter_layout,
                 parent,
                 false
-            ).also {
-                it.mediaRecommendationCardView.corner = commonCornerRadiusDimen
-            }
+            )
         )
     }
 

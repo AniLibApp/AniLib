@@ -1,18 +1,13 @@
 package com.revolgenx.anilib.dialog
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
-import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.support.widget.DynamicButton
 
-class MessageDialog : DynamicDialogFragment() {
-    var dialogCallback: ((dialogInterface: DialogInterface, which: Int) -> Unit)? = null
-    var dialogOnShowListener: DialogInterface.OnShowListener? = null
-
+class MessageDialog : BaseDialogFragment() {
     companion object Builder {
 
         val messageDialogTag = MessageDialog::class.java.simpleName
@@ -55,7 +50,7 @@ class MessageDialog : DynamicDialogFragment() {
         with(dialogBuilder) {
             arguments?.apply {
                 if (getInt(titleKey) != 0) {
-                    setTitle(getInt(titleKey))
+                    titleRes = getInt(titleKey)
                 }
 
                 if (getInt(messageResKey) != 0) {
@@ -67,29 +62,22 @@ class MessageDialog : DynamicDialogFragment() {
                     setMessage(it)
                 }
                 if (getInt(viewKey) != 0) {
-                    setView(getInt(viewKey))
+                    viewRes = getInt(viewKey)
                 }
                 if (getInt(positiveKey) != 0) {
-                    setPositiveButton(getInt(positiveKey)) { dialogInterface, which ->
-                        dialogCallback?.invoke(dialogInterface, which)
-                    }
+                    positiveText = getInt(positiveKey)
                 }
                 if (getInt(negativeKey) != 0) {
-                    setNegativeButton(getInt(negativeKey)) { dialogInterface, which ->
-                        dialogCallback?.invoke(dialogInterface, which)
-                    }
+                    negativeText = getInt(negativeKey)
                 }
                 if (getInt(neutralKey) != 0) {
-                    setNeutralButton(getInt(neutralKey)) { dialogInterface, which ->
-                        dialogCallback?.invoke(dialogInterface, which)
-                    }
+                    neutralText = getInt(neutralKey)
                 }
             }
         }
 
         return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
     }
-
 
     override fun onCustomiseDialog(
         alertDialog: DynamicDialog,
@@ -98,7 +86,6 @@ class MessageDialog : DynamicDialogFragment() {
         with(alertDialog) {
             setOnShowListener {
                 findViewById<TextView>(android.R.id.message)?.textSize = 14f
-                dialogOnShowListener?.onShow(it)
                 getButton(AlertDialog.BUTTON_POSITIVE)?.let {
                     (it as DynamicButton).isAllCaps = false
                 }

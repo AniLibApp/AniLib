@@ -14,6 +14,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
@@ -29,8 +30,10 @@ import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
+import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
 import kotlinx.android.synthetic.main.media_list_activity_layout.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
+import kotlinx.android.synthetic.main.toolbar_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -85,8 +88,8 @@ class MediaListActivity : BaseDynamicActivity() {
 
 
             override fun onPageSelected(position: Int) {
-                listSmartTab.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
-                listSmartTab.getTabAt(position).tabTextTv.visibility = View.VISIBLE
+                dynamicSmartTab.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
+                dynamicSmartTab.getTabAt(position).tabTextTv.visibility = View.VISIBLE
             }
         }
     }
@@ -124,10 +127,10 @@ class MediaListActivity : BaseDynamicActivity() {
         super.onCreate(savedInstanceState)
         listRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
 
-        setSupportActionBar(listToolbar)
+        setSupportActionBar(dynamicToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        listSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
+        dynamicSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
         statusBarColor = statusBarColor
 
         mediaListMeta = intent.getParcelableExtra(MEDIA_LIST_META_KEY) ?: return
@@ -144,7 +147,7 @@ class MediaListActivity : BaseDynamicActivity() {
         }
 
         val inflater = LayoutInflater.from(this)
-        listSmartTab.setCustomTabView { container, position, adapter ->
+        dynamicSmartTab.setCustomTabView { container, position, adapter ->
             val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
             when (position) {
                 0 -> {
@@ -174,7 +177,7 @@ class MediaListActivity : BaseDynamicActivity() {
         mediaListViewPager.addOnPageChangeListener(pageChangeListener)
         mediaListViewPager.adapter = MediaListAdapter(mediaListFragment)
         mediaListViewPager.offscreenPageLimit = 5
-        listSmartTab.setViewPager(mediaListViewPager, null)
+        dynamicSmartTab.setViewPager(mediaListViewPager, null)
         mediaListViewPager.setCurrentItem(0, false)
         mediaListViewPager.post {
             pageChangeListener.onPageSelected(mediaListViewPager.currentItem)

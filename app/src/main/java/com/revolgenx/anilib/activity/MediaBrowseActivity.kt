@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -45,6 +46,7 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.viewmodel.media.MediaBrowserViewModel
 import kotlinx.android.synthetic.main.activity_media_browser.*
+import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
@@ -69,8 +71,8 @@ class MediaBrowseActivity : BaseDynamicActivity() {
         object :
             ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                smartTabLayout.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
-                smartTabLayout.getTabAt(position).tabTextTv.visibility = View.VISIBLE
+                dynamicSmartTab.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
+                dynamicSmartTab.getTabAt(position).tabTextTv.visibility = View.VISIBLE
                 if (position == 0) return
                 appbarLayout.setExpanded(false)
             }
@@ -154,7 +156,7 @@ class MediaBrowseActivity : BaseDynamicActivity() {
                 intArrayOf(android.R.attr.state_enabled)
             ), colors
         )
-        smartTabLayout.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
+        dynamicSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
         statusBarColor = statusBarColor
         setToolbarTheme()
 
@@ -162,7 +164,7 @@ class MediaBrowseActivity : BaseDynamicActivity() {
         initListener()
 
         val inflater = LayoutInflater.from(this)
-        smartTabLayout.setCustomTabView { container, position, adapter ->
+        dynamicSmartTab.setCustomTabView { container, position, adapter ->
             val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
             when (position) {
                 0 -> {
@@ -253,7 +255,7 @@ class MediaBrowseActivity : BaseDynamicActivity() {
 
         browseMediaViewPager.adapter = MediaBrowserAdapter(animeBrowserList)
         browseMediaViewPager.offscreenPageLimit = 5
-        smartTabLayout.setViewPager(browseMediaViewPager) {
+        dynamicSmartTab.setViewPager(browseMediaViewPager) {
             if (it == 0) return@setViewPager
             appbarLayout.setExpanded(false)
         }

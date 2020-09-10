@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
@@ -21,6 +23,7 @@ import com.revolgenx.anilib.fragment.base.NavViewPagerParcelableFragments
 import com.revolgenx.anilib.fragment.stats.*
 import com.revolgenx.anilib.meta.NavViewPagerContainerMeta
 import com.revolgenx.anilib.meta.NavViewPagerContainerType
+import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
 import kotlinx.android.synthetic.main.nav_view_pager_container_activity_layout.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
@@ -74,8 +77,8 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-                navViewPagerSmartTab.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
-                navViewPagerSmartTab.getTabAt(position).tabTextTv.visibility = View.VISIBLE
+                dynamicSmartTab.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
+                dynamicSmartTab.getTabAt(position).tabTextTv.visibility = View.VISIBLE
             }
         }
     }
@@ -89,7 +92,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
         setSupportActionBar(dynamicToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        navViewPagerSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
+        dynamicSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
 
         viewPagerMeta = intent.getParcelableExtra(NavViewPagerContainerMetaKey) ?: return
         prepareViews(viewPagerMeta)
@@ -97,7 +100,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
         navViewPager.addOnPageChangeListener(pageChangeListener)
         navViewPager.adapter = ViewPagerContainerAdapter()
         navViewPager.offscreenPageLimit = viewPagerParcelableFragments.clzzes.size - 1
-        navViewPagerSmartTab.setViewPager(navViewPager, null)
+        dynamicSmartTab.setViewPager(navViewPager, null)
         navViewPager.setCurrentItem(0, false)
         navViewPager.post {
             pageChangeListener.onPageSelected(navViewPager.currentItem)
@@ -175,7 +178,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
         when (containerType) {
             NavViewPagerContainerType.ANIME_STATS -> {
                 val inflater = LayoutInflater.from(this)
-                navViewPagerSmartTab.setCustomTabView { container, position, adapter ->
+                dynamicSmartTab.setCustomTabView { container, position, adapter ->
                     val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
                     when (position) {
                         0 -> {
@@ -204,7 +207,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
             }
             NavViewPagerContainerType.MANGA_STATS -> {
                 val inflater = LayoutInflater.from(this)
-                navViewPagerSmartTab.setCustomTabView { container, position, adapter ->
+                dynamicSmartTab.setCustomTabView { container, position, adapter ->
                     val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
                     when (position) {
                         0 -> {

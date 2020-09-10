@@ -14,7 +14,6 @@ import com.revolgenx.anilib.dialog.TagFilterSettingDialogFragment
 import com.revolgenx.anilib.fragment.base.BaseLayoutFragment
 import com.revolgenx.anilib.meta.TagFilterMetaType
 import com.revolgenx.anilib.meta.TagFilterSettingMeta
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import kotlinx.android.synthetic.main.customize_filter_adapter_fragment_layout.view.*
 import kotlinx.android.synthetic.main.customize_filter_fragment_layout.*
 
@@ -53,7 +52,6 @@ class CustomizeFilterFragment : BaseLayoutFragment() {
                 ) { v, p ->
                     with(v) {
                         this.filterIv.setImageResource(p.second)
-                        this.filterChooseCardView.corner = commonCornerRadiusDimen
                         val dialogFragment = when(p.first){
                             MediaTagFilterTypes.GENRES -> {
                                 this.filterName.text = getString(R.string.genre)

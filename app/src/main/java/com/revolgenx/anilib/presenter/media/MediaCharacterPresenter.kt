@@ -12,7 +12,6 @@ import com.revolgenx.anilib.event.BrowseStaffEvent
 import com.revolgenx.anilib.meta.CharacterMeta
 import com.revolgenx.anilib.meta.StaffMeta
 import com.revolgenx.anilib.model.MediaCharacterModel
-import com.revolgenx.anilib.util.commonCornerRadiusDimen
 import kotlinx.android.synthetic.main.anime_character_presenter_layout.view.*
 import kotlinx.android.synthetic.main.manga_character_presenter_layout.view.*
 
@@ -39,12 +38,6 @@ class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>
                 parent,
                 false
             )
-        when (elementType) {
-            1 -> v.mangaCharacterContainer.corner = commonCornerRadiusDimen
-            else ->
-                v.animeCharacterContainer.corner = commonCornerRadiusDimen
-        }
-
 
         return Holder(v);
     }

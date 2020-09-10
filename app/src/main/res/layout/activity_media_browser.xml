@@ -162,17 +162,8 @@
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout>
 
-
-    <com.revolgenx.anilib.view.CustomSmartTab
-        android:id="@+id/smartTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_alignParentBottom="true"
-        app:stl_distributeEvenly="true"
-        app:stl_dividerThickness="0dp"
-        app:stl_indicatorColor="@android:color/transparent"
-        app:stl_indicatorInterpolation="linear"
-        app:stl_underlineThickness="0dp" />
+    <include
+        layout="@layout/custom_bottom_navigation_view"/>
 
 
 </RelativeLayout>

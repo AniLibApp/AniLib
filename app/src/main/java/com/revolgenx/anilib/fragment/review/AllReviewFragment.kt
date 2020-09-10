@@ -40,9 +40,11 @@ class AllReviewFragment : BasePresenterFragment<ReviewModel>() {
             childFragmentManager.findFragmentByTag(ReviewsFilterDialog::class.java.simpleName)
                 ?.let {
                     (it as ReviewsFilterDialog).positiveCallback = {
-                        it?.let { viewModel.field.reviewSort = it }
-                        createSource()
-                        invalidateAdapter()
+                        it?.let {
+                            viewModel.field.reviewSort = it
+                            createSource()
+                            invalidateAdapter()
+                        }
                     }
                 }
         }
