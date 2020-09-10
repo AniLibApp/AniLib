@@ -41,13 +41,13 @@ import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import kotlinx.android.synthetic.main.user_activity_genre_presenter.view.*
-import kotlinx.android.synthetic.main.user_activity_layout.*
+import kotlinx.android.synthetic.main.user_profile_acitivty_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
 //todo://handle intent, handle review //stats
 class UserProfileActivity : BasePopupVideoActivity() {
-    override val layoutRes: Int = R.layout.user_activity_layout
+    override val layoutRes: Int = R.layout.user_profile_acitivty_layout
     private lateinit var userMeta: UserMeta
 
     companion object {

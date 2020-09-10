@@ -8,7 +8,7 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/listSmartTab"
+        android:layout_above="@+id/dynamicSmartTab"
         android:layout_alignParentTop="true">
 
         <include layout="@layout/toolbar_layout"/>
