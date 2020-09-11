@@ -3,6 +3,18 @@
     <string name="release_info">
         ## Whats new!!!. \n
 
+        ### -v1.1.4-base \n
+
+        * anime/manga list sorting \n
+        * adding/removing genre, tags and others moved to setting \n
+        * added watching/reading on discover page for tracking \n
+        * change order of discover page from discover menu \n
+        * media list in users anime/manga stats \n
+        * exclude tags and genre from search filter \n
+        * graph formatting changes \n
+        * ui changes \n
+        * optimization and bug fixes \n
+
         ### -v1.1.3-base \n
 
         * Added user search in search type.\n
