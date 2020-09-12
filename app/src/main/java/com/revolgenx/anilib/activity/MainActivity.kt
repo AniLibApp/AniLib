@@ -177,7 +177,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                 headerView.navHeaderIcon.setImageDrawable(
                     AppCompatDrawableManager.get().getDrawable(
                         context,
-                        R.drawable.ic_drawable_launcher
+                        R.drawable.ic_main_with_background
                     )
                 )
 
