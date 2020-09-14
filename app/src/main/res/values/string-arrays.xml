@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="streaming_on">
+        <item>Crunchyroll</item>
+        <item>Funimation</item>
+        <item>Netflix</item>
+        <item>Amazon</item>
+        <item>Hidive</item>
+        <item>Hulu</item>
+        <item>Animelab</item>
+        <item>Viewster</item>
+        <item>Animax</item>
+        <item>Viz</item>
+    </string-array>
+
+    <string-array name="media_genre">
+        <item>Action</item>
+        <item>Adventure</item>
+        <item>Comedy</item>
+        <item>Drama</item>
+        <item>Ecchi</item>
+        <item>Fantasy</item>
+        <item>Horror</item>
+        <item>Mahou Shoujo</item>
+        <item>Mecha</item>
+        <item>Music</item>
+        <item>Mystery</item>
+        <item>Psychological</item>
+        <item>Romance</item>
+        <item>Sci-Fi</item>
+        <item>Slice of Life</item>
+        <item>Sports</item>
+        <item>Supernatural</item>
+        <item>Thriller</item>
+    </string-array>
+
+    <string-array name="media_tags">
+        <item>4-koma</item>
+        <item>Achronological Order</item>
+        <item>Afterlife</item>
+        <item>Age Gap</item>
+        <item>Airsoft</item>
+        <item>Aliens</item>
+        <item>Alternate Universe</item>
+        <item>American Football</item>
+        <item>Amnesia</item>
+        <item>Anti-Hero</item>
+        <item>Archery</item>
+        <item>Assassins</item>
+        <item>Athletics</item>
+        <item>Augmented Reality</item>
+        <item>Aviation</item>
+        <item>Badminton</item>
+        <item>Band</item>
+        <item>Bar</item>
+        <item>Baseball</item>
+        <item>Basketball</item>
+        <item>Battle Royale</item>
+        <item>Biographical</item>
+        <item>Bisexual</item>
+        <item>Body Swapping</item>
+        <item>Boxing</item>
+        <item>Bullying</item>
+        <item>Calligraphy</item>
+        <item>Card Battle</item>
+        <item>Cars</item>
+        <item>CGI</item>
+        <item>Chibi</item>
+        <item>Chuunibyou</item>
+        <item>Classic Literature</item>
+        <item>College</item>
+        <item>Coming of Age</item>
+        <item>Cosplay</item>
+        <item>Crossdressing</item>
+        <item>Crossover</item>
+        <item>Cultivation</item>
+        <item>Cute Girls Doing Cute Things</item>
+        <item>Cyberpunk</item>
+        <item>Cycling</item>
+        <item>Dancing</item>
+        <item>Delinquents</item>
+        <item>Demons</item>
+        <item>Development</item>
+        <item>Dragons</item>
+        <item>Drawing</item>
+        <item>Dystopian</item>
+        <item>Economics</item>
+        <item>Educational</item>
+        <item>Ensemble Cast</item>
+        <item>Environmental</item>
+        <item>Episodic</item>
+        <item>Espionage</item>
+        <item>Fairy Tale</item>
+        <item>Family Life</item>
+        <item>Fashion</item>
+        <item>Female Protagonist</item>
+        <item>Fishing</item>
+        <item>Fitness</item>
+        <item>Flash</item>
+        <item>Food</item>
+        <item>Football</item>
+        <item>Foreign</item>
+        <item>Fugitive</item>
+        <item>Full CGI</item>
+        <item>Full Color</item>
+        <item>Gambling</item>
+        <item>Gangs</item>
+        <item>Gender Bending</item>
+        <item>Gender Neutral</item>
+        <item>Ghost</item>
+        <item>Gods</item>
+        <item>Gore</item>
+        <item>Guns</item>
+        <item>Gyaru</item>
+        <item>Harem</item>
+        <item>Henshin</item>
+        <item>Hikikomori</item>
+        <item>Historical</item>
+        <item>Ice Skating</item>
+        <item>Idol</item>
+        <item>Isekai</item>
+        <item>Iyashikei</item>
+        <item>Josei</item>
+        <item>Kaiju</item>
+        <item>Karuta</item>
+        <item>Kemonomimi</item>
+        <item>Kids</item>
+        <item>Love Triangle</item>
+        <item>Mafia</item>
+        <item>Magic</item>
+        <item>Mahjong</item>
+        <item>Maids</item>
+        <item>Male Protagonist</item>
+        <item>Martial Arts</item>
+        <item>Memory Manipulation</item>
+        <item>Meta</item>
+        <item>Military</item>
+        <item>Monster Girl</item>
+        <item>Mopeds</item>
+        <item>Motorcycles</item>
+        <item>Musical</item>
+        <item>Mythology</item>
+        <item>Nekomimi</item>
+        <item>Ninja</item>
+        <item>No Dialogue</item>
+        <item>Noir</item>
+        <item>Nudity</item>
+        <item>Otaku Culture</item>
+        <item>Outdoor</item>
+        <item>Parody</item>
+        <item>Philosophy</item>
+        <item>Photography</item>
+        <item>Pirates</item>
+        <item>Poker</item>
+        <item>Police</item>
+        <item>Politics</item>
+        <item>Post-Apocalyptic</item>
+        <item>Primarily Adult Cast</item>
+        <item>Primarily Female Cast</item>
+        <item>Primarily Male Cast</item>
+        <item>Puppetry</item>
+        <item>Real Robot</item>
+        <item>Rehabilitation</item>
+        <item>Reincarnation</item>
+        <item>Revenge</item>
+        <item>Reverse Harem</item>
+        <item>Robots</item>
+        <item>Rugby</item>
+        <item>Rural</item>
+        <item>Samurai</item>
+        <item>Satire</item>
+        <item>School</item>
+        <item>School Club</item>
+        <item>Seinen</item>
+        <item>Ships</item>
+        <item>Shogi</item>
+        <item>Shoujo</item>
+        <item>Shoujo Ai</item>
+        <item>Shounen</item>
+        <item>Shounen Ai</item>
+        <item>Slapstick</item>
+        <item>Slavery</item>
+        <item>Space</item>
+        <item>Space Opera</item>
+        <item>Steampunk</item>
+        <item>Stop Motion</item>
+        <item>Super Power</item>
+        <item>Super Robot</item>
+        <item>Superhero</item>
+        <item>Surreal Comedy</item>
+        <item>Survival</item>
+        <item>Swimming</item>
+        <item>Swordplay</item>
+        <item>Table Tennis</item>
+        <item>Tanks</item>
+        <item>Teacher</item>
+        <item>Tennis</item>
+        <item>Terrorism</item>
+        <item>Time Manipulation</item>
+        <item>Time Skip</item>
+        <item>Tragedy</item>
+        <item>Trains</item>
+        <item>Triads</item>
+        <item>Tsundere</item>
+        <item>Urban Fantasy</item>
+        <item>Vampire</item>
+        <item>Video Games</item>
+        <item>Virtual World</item>
+        <item>Volleyball</item>
+        <item>War</item>
+        <item>Witch</item>
+        <item>Work</item>
+        <item>Wrestling</item>
+        <item>Writing</item>
+        <item>Wuxia</item>
+        <item>Yakuza</item>
+        <item>Yandere</item>
+        <item>Youkai</item>
+        <item>Zombie</item>
+    </string-array>
+
+    <!--notification-->
+    <string-array name="notification_refresh_interval_entries">
+        <item>@string/fifteen_min</item>
+        <item>@string/twenty_min</item>
+        <item>@string/twenty_five_min</item>
+        <item>@string/thirty_min</item>
+    </string-array>
+
+
+    <string-array name="notification_refresh_interval_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!--title-->
+    <string-array name="media_title_entries">
+        <item>@string/romaji</item>
+        <item>@string/english</item>
+        <item>@string/_native</item>
+        <item>@string/user_preferred</item>
+    </string-array>
+
+    <string-array name="media_title_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!--image-->
+    <string-array name="image_entries">
+        <item>@string/medium</item>
+        <item>@string/low</item>
+        <item>@string/high</item>
+    </string-array>
+
+    <string-array name="image_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+
+    <string-array name="media_list_collection_sort">
+        <item>@string/title</item>
+        <item>@string/title_desc</item>
+        <item>@string/score</item>
+        <item>@string/score_desc</item>
+        <item>@string/progress</item>
+        <item>@string/progress_desc</item>
+        <item>@string/last_updated</item>
+        <item>@string/last_updated_desc</item>
+        <item>@string/last_added</item>
+        <item>@string/last_added_desc</item>
+        <item>@string/start_date</item>
+        <item>@string/start_date_desc</item>
+        <item>@string/completed_date</item>
+        <item>@string/completed_date_desc</item>
+        <item>@string/release_date</item>
+        <item>@string/release_date_desc</item>
+        <item>@string/average_score</item>
+        <item>@string/average_score_desc</item>
+        <item>@string/popularity</item>
+        <item>@string/popularity_desc</item>
+    </string-array>
+
+    <string-array name="home_list_order">
+        <item>@string/airing</item>
+        <item>@string/trending</item>
+        <item>@string/popular</item>
+        <item>@string/newly_added</item>
+        <item>@string/watching</item>
+        <item>@string/reading</item>
+    </string-array>
+
+    <string-array name="media_list_sort">
+        <item>Media Id</item>
+        <item>Media Id Desc</item>
+        <item>Score</item>
+        <item>Score Desc</item>
+        <item>Status</item>
+        <item>Status Desc</item>
+        <item>Progress</item>
+        <item>Progress Desc</item>
+        <item>Progress Volume</item>
+        <item>Progress Volume Desc</item>
+        <item>Repeat</item>
+        <item>Repeat Desc</item>
+        <item>Priority</item>
+        <item>Priority Desc</item>
+        <item>Started On</item>
+        <item>Started On Desc</item>
+        <item>Finished On</item>
+        <item>Finished On Desc</item>
+        <item>Added</item>
+        <item>Added Desc</item>
+        <item>Updated</item>
+        <item>Updated Desc</item>
+        <item>Title Romaji</item>
+        <item>Title Romaji Desc</item>
+        <item>Title English</item>
+        <item>Title English Desc</item>
+        <item>Title Native</item>
+        <item>Title Native Desc</item>
+        <item>Popularity</item>
+        <item>Popularity Desc</item>
+    </string-array>
+
+    <string-array name="media_format">
+        <item>@string/tv</item>
+        <item>@string/tv_short</item>
+        <item>@string/movie</item>
+        <item>@string/special</item>
+        <item>@string/ova</item>
+        <item>@string/ona</item>
+        <item>@string/music</item>
+        <item>@string/manga</item>
+        <item>@string/novel</item>
+        <item>@string/one_shot</item>
+        <item>@string/unknown</item>
+    </string-array>
+
+    <string-array name="media_source">
+        <item>@string/original</item>
+        <item>@string/manga</item>
+        <item>@string/light_novel</item>
+        <item>@string/visual_novel</item>
+        <item>@string/video_game</item>
+        <item>@string/other</item>
+        <item>@string/novel</item>
+        <item>@string/doujinshi</item>
+        <item>@string/anime</item>
+        <item>@string/unknown</item>
+    </string-array>
+
+    <string-array name="media_relation">
+        <item>@string/adaptation</item>
+        <item>@string/prequel</item>
+        <item>@string/sequel</item>
+        <item>@string/parent</item>
+        <item>@string/side_story</item>
+        <item>@string/character</item>
+        <item>@string/summary</item>
+        <item>@string/alternative</item>
+        <item>@string/spin_off</item>
+        <item>@string/other</item>
+        <item>@string/source</item>
+        <item>@string/compilation</item>
+        <item>@string/contains</item>
+    </string-array>
+
+    <string-array name="character_role">
+        <item>@string/main</item>
+        <item>@string/supporting</item>
+        <item>@string/background</item>
+    </string-array>
+
+    <string-array name="staff_language">
+        <item>@string/Japanese</item>
+        <item>@string/English</item>
+        <item>@string/Korean</item>
+        <item>@string/Italian</item>
+        <item>@string/Spanish</item>
+        <item>@string/Portuguese</item>
+        <item>@string/French</item>
+        <item>@string/German</item>
+        <item>@string/Hebrew</item>
+        <item>@string/Hungarian</item>
+    </string-array>
+
+    <string-array name="media_status">
+        <item>@string/finished</item>
+        <item>@string/releasing</item>
+        <item>@string/not_yet_released</item>
+        <item>@string/cancelled</item>
+    </string-array>
+
+    <string-array name="media_season">
+        <item>@string/winter</item>
+        <item>@string/spring</item>
+        <item>@string/summer</item>
+        <item>@string/fall</item>
+    </string-array>
+
+    <string-array name="media_list_status">
+        <item>@string/current</item>
+        <item>@string/planning</item>
+        <item>@string/completed</item>
+        <item>@string/dropped</item>
+        <item>@string/paused</item>
+        <item>@string/repeating</item>
+    </string-array>
+
+    <string-array name="advance_search_type">
+        <item>@string/anime</item>
+        <item>@string/manga</item>
+        <item>@string/character</item>
+        <item>@string/staff</item>
+        <item>@string/studios</item>
+        <item>@string/users</item>
+    </string-array>
+
+    <string-array name="advance_search_season">
+        <item>@string/all</item>
+        <item>@string/winter</item>
+        <item>@string/spring</item>
+        <item>@string/summer</item>
+        <item>@string/fall</item>
+    </string-array>
+
+    <string-array name="advance_search_sort">
+        <item>@string/none</item>
+        <item>@string/id</item>
+        <item>@string/id_desc</item>
+        <item>@string/title_romaji</item>
+        <item>@string/title_romaji_desc</item>
+        <item>@string/title_english</item>
+        <item>@string/title_english_desc</item>
+        <item>@string/title_native</item>
+        <item>@string/title_native_desc</item>
+        <item>@string/type</item>
+        <item>@string/type_desc</item>
+        <item>@string/format</item>
+        <item>@string/format_desc</item>
+        <item>@string/start_date</item>
+        <item>@string/start_date_desc</item>
+        <item>@string/end_date</item>
+        <item>@string/end_date_desc</item>
+        <item>@string/score</item>
+        <item>@string/score_desc</item>
+        <item>@string/popularity</item>
+        <item>@string/popularity_desc</item>
+        <item>@string/trending</item>
+        <item>@string/trending_desc</item>
+        <item>@string/episodes</item>
+        <item>@string/episodes_desc</item>
+        <item>@string/duration</item>
+        <item>@string/duration_desc</item>
+        <item>@string/status</item>
+        <item>@string/status_desc</item>
+        <item>@string/chapters</item>
+        <item>@string/chapters_desc</item>
+        <item>@string/volumes</item>
+        <item>@string/volumes_desc</item>
+        <item>@string/updated_at</item>
+        <item>@string/updated_at_desc</item>
+        <item>@string/search_match</item>
+        <item>@string/favourites</item>
+        <item>@string/favourites_desc</item>
+    </string-array>
+
+    <string-array name="advance_search_format">
+        <item>@string/none</item>
+        <item>@string/tv</item>
+        <item>@string/tv_short</item>
+        <item>@string/movie</item>
+        <item>@string/special</item>
+        <item>@string/ova</item>
+        <item>@string/ona</item>
+        <item>@string/music</item>
+        <item>@string/manga</item>
+        <item>@string/novel</item>
+        <item>@string/one_shot</item>
+    </string-array>
+
+    <string-array name="advance_search_country">
+        <item>@string/none</item>
+        <item>@string/Japan</item>
+        <item>@string/South_Korean</item>
+        <item>@string/China</item>
+    </string-array>
+
+    <string-array name="advance_search_status">
+        <item>@string/none</item>
+        <item>@string/finished</item>
+        <item>@string/releasing</item>
+        <item>@string/not_yet_released</item>
+        <item>@string/cancelled</item>
+    </string-array>
+
+    <string-array name="advance_search_source">
+        <item>@string/none</item>
+        <item>@string/original</item>
+        <item>@string/manga</item>
+        <item>@string/light_novel</item>
+        <item>@string/visual_novel</item>
+        <item>@string/video_game</item>
+        <item>@string/other</item>
+        <item>@string/novel</item>
+        <item>@string/doujinshi</item>
+        <item>@string/anime</item>
+    </string-array>
+
+    <string-array name="on_list">
+        <item>@string/all</item>
+        <item>@string/on_list</item>
+    </string-array>
+
+    <string-array name="recommendation_sort">
+        <item>@string/recent</item>
+        <item>@string/highest_rated</item>
+        <item>@string/lowest_rated</item>
+    </string-array>
+
+    <string-array name="score_toggle_list">
+        <item>@string/titles_watched</item>
+        <item>@string/hour_watched</item>
+    </string-array>
+
+    <string-array name="stats_toggle_list">
+        <item>@string/titles_watched</item>
+        <item>@string/hour_watched</item>
+        <item>@string/mean_score</item>
+    </string-array>
+
+    <string-array name="manga_score_toggle_list">
+        <item>@string/titles_watched</item>
+        <item>@string/chapters_read</item>
+    </string-array>
+
+    <string-array name="manga_stats_toggle_list">
+        <item>@string/titles_read</item>
+        <item>@string/chapters_read</item>
+        <item>@string/mean_score</item>
+    </string-array>
+
+    <string-array name="review_sort">
+        <item>@string/id</item>
+        <item>@string/id_desc</item>
+        <item>@string/score</item>
+        <item>@string/score_desc</item>
+        <item>@string/rating</item>
+        <item>@string/rating_desc</item>
+        <item>@string/created_at</item>
+        <item>@string/created_at_desc</item>
+        <item>@string/updated_at</item>
+        <item>@string/updated_at_desc</item>
+    </string-array>
+
+</resources>

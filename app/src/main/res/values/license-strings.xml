@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--LICENSE-->
+    <string name="apache_2">Apache 2.0</string>
+    <string name="mit">MIT</string>
+    <string name="sources">Sources</string>
+    <string name="license_desc">View full license.</string>
+    <string name="license_sources_desc">View sources on GitHub.</string>
+    <string name="apache_url">http://www.apache.org/licenses/LICENSE-2.0</string>
+    <!--Apollo Android-->
+    <string name="license_apollo_android">Apollo-Android</string>
+    <string name="license_copy_apollo_android">Copyright © 2019 Meteor Development Group, Inc.</string>
+    <!--rx-->
+    <string name="license_rx_android">RxAndroid</string>
+    <string name="license_copy_rx_android">Copyright 2015 The RxAndroid authors</string>
+    <!--EventBus-->
+    <string name="license_eventbus">EventBus</string>
+    <string name="license_copy_eventbus">CCopyright © 2012–2020 Markus Junginger, greenrobot</string>
+    <!--Koin-->
+    <string name="license_koin">Koin</string>
+    <!--Coroutines-->
+    <string name="license_coroutines">Coroutines</string>
+    <!--Elements-->
+    <string name="license_elements">Elements</string>
+    <!--fresco-->
+    <string name="license_fresco">Fresco</string>
+    <string name="license_copy_fresco">Copyright © Facebook, Inc. and its affiliates.</string>
+    <!--timber-->
+    <string name="license_timber">Timber</string>
+    <string name="license_copy_timber">Copyright 2013 Jake Wharton</string>
+    <!--AppAuth-->
+    <string name="license_app_auth">app_auth</string>
+    <!--JWTDecode-->
+    <string name="license_jwt_auth">jwt_auth</string>
+    <string name="license_copy_jwt_auth">Copyright © 2016 Auth0</string>
+    <!--SmartTab-->
+    <string name="license_smarttab">SmartTab</string>
+    <string name="license_copy_smarttab">Copyright © 2015 ogaclejapan \n Copyright © 2013 The Android Open Source Project</string>
+    <!--MPAndroidChart-->
+    <string name="license_mpandroidchart">MPAndroidChart</string>
+    <string name="license_copy_mpandroidchart">Copyright 2020 Philipp Jahoda</string>
+    <!--Markwon-->
+    <string name="license_markwon">Markwon</string>
+    <string name="license_copy_markwon">Copyright 2019 Dimitry Ivanov (legal@noties.io)</string>
+    <!--Jsoup-->
+    <string name="license_jsoup">Jsoup</string>
+    <string name="license_copy_jsoup">Copyright © 2009–2020 Jonathan Hedley </string>
+    <!--ExoPlayer-->
+    <string name="license_exoplayer">ExoPlayer</string>
+    <!--persistentsearchview-->
+    <string name="license_persistentsearchview">PersistentSearchView</string>
+    <!--RangeSeekBar-->
+    <string name="license_rangeseekbar">RangeSeekBar</string>
+    <string name="license_copy_rangeseekbar">Copyright 2018–2019 JayGoo</string>
+    <!--Android-Toggle-Switch-->
+    <string name="license_android_toggle_switch">Android-Toggle-Switch</string>
+    <string name="license_copy_android_toggle_switch">Copyright © 2017 Lorenzo Rigato</string>
+    <!--Hauler-->
+    <string name="license_hauler">Hauler</string>
+    <string name="license_copy_hauler">Copyright © 2020 Futured apps s.r.o.</string>
+    <!--BigImageViewer-->
+    <string name="license_bigimageviewer">BigImageViewer</string>
+    <string name="license_copy_bigimageviewer">Copyright © 2018 Piasy</string>
+    <!--PrettyTime-->
+    <string name="license_prettytime">PrettyTime</string>
+    <!--LICENSE-END-->
+
+    <!--Apollo Android-->
+    <string-array name="license_links_apollo_android">
+        <item>@string/mit</item>
+        <item>@string/ads_license_sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_apollo_android">
+        <item>@string/ads_license_desc</item>
+        <item>@string/ads_license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_apollo_android">
+        <item>https://github.com/apollographql/apollo-android/blob/master/LICENSE</item>
+        <item>https://github.com/apollographql/apollo-android</item>
+    </string-array>
+
+    <!--rx-->
+    <string-array name="license_links_rx_android">
+        <item>@string/apache_2</item>
+        <item>@string/ads_license_sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_rx_android">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_rx_android">
+        <item>@string/apache_url</item>
+        <item>https://github.com/ReactiveX/RxAndroid</item>
+    </string-array>
+
+    <!--EventBus-->
+    <string-array name="license_links_eventbus">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_eventbus">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_eventbus">
+        <item>@string/apache_url</item>
+        <item>https://github.com/greenrobot/EventBus</item>
+    </string-array>
+
+    <!--Koin-->
+    <string-array name="license_links_koin">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_koin">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_koin">
+        <item>@string/apache_url</item>
+        <item>https://github.com/InsertKoinIO/koin</item>
+    </string-array>
+
+    <!--Coroutines-->
+    <string-array name="license_links_coroutines">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_coroutines">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_coroutines">
+        <item>@string/apache_url</item>
+        <item>https://github.com/Kotlin/kotlinx.coroutines</item>
+    </string-array>
+
+    <!--Elements-->
+    <string-array name="license_links_elements">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_elements">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_elements">
+        <item>@string/apache_url</item>
+        <item>https://github.com/natario1/Elements</item>
+    </string-array>
+
+    <!--fresco-->
+    <string-array name="license_links_fresco">
+        <item>@string/mit</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_fresco">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_fresco">
+        <item>https://github.com/facebook/fresco/blob/master/LICENSE</item>
+        <item>https://github.com/facebook/fresco/</item>
+    </string-array>
+
+    <!--timber-->
+    <string-array name="license_links_timber">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_timber">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_timber">
+        <item>@string/apache_url</item>
+        <item>https://github.com/JakeWharton/timber</item>
+    </string-array>
+
+    <!--AppAuth-->
+    <string-array name="license_links_app_auth">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_app_auth">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_app_auth">
+        <item>@string/apache_url</item>
+        <item>https://github.com/openid/AppAuth-Android</item>
+    </string-array>
+
+    <!--JWTDecode-->
+    <string-array name="license_links_jwt_auth">
+        <item>@string/mit</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_jwt_auth">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_jwt_auth">
+        <item>https://github.com/auth0/JWTDecode.Android/blob/master/LICENSE</item>
+        <item>https://github.com/auth0/JWTDecode.Android</item>
+    </string-array>
+
+    <!--SmartTab-->
+    <string-array name="license_links_smarttab">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_smarttab">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_smarttab">
+        <item>@string/apache_url</item>
+        <item>https://github.com/auth0/JWTDecode.Android</item>
+    </string-array>
+
+    <!--MPAndroidChart-->
+    <string-array name="license_links_mpandroidchart">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_mpandroidchart">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_mpandroidchart">
+        <item>@string/apache_url</item>
+        <item>https://github.com/PhilJay/MPAndroidChart</item>
+    </string-array>
+
+
+    <!--Markwon-->
+    <string-array name="license_links_markwon">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_markwon">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_markwon">
+        <item>@string/apache_url</item>
+        <item>https://github.com/PhilJay/markwon</item>
+    </string-array>
+
+
+    <!--Jsoup-->
+    <string-array name="license_links_jsoup">
+        <item>@string/mit</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_jsoup">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_jsoup">
+        <item>https://github.com/jhy/jsoup/blob/master/LICENSE</item>
+        <item>https://github.com/jhy/jsoup</item>
+    </string-array>
+
+
+    <!--ExoPlayer-->
+    <string-array name="license_links_exoplayer">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_exoplayer">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_exoplayer">
+        <item>@string/apache_url</item>
+        <item>https://github.com/google/ExoPlayer</item>
+    </string-array>
+
+    <!--persistentsearchview-->
+    <string-array name="license_links_persistentsearchview">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_persistentsearchview">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_persistentsearchview">
+        <item>@string/apache_url</item>
+        <item>https://github.com/mars885/persistentsearchview</item>
+    </string-array>
+
+
+    <!--RangeSeekBar-->
+    <string-array name="license_links_rangeseekbar">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_rangeseekbar">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_rangeseekbar">
+        <item>@string/apache_url</item>
+        <item>https://github.com/Jay-Goo/RangeSeekBar</item>
+    </string-array>
+
+    <!--Android-Toggle-Switch-->
+    <string-array name="license_links_android_toggle_switch">
+        <item>@string/mit</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_android_toggle_switch">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_android_toggle_switch">
+        <item>https://github.com/llollox/Android-Toggle-Switch/blob/master/LICENSE.md</item>
+        <item>https://github.com/llollox/Android-Toggle-Switch</item>
+    </string-array>
+
+    <!--Hauler-->
+    <string-array name="license_links_hauler">
+        <item>@string/mit</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_hauler">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_hauler">
+        <item>https://github.com/futuredapp/hauler/blob/master/LICENSE</item>
+        <item>https://github.com/futuredapp/hauler/blob/master/LICENSE</item>
+    </string-array>
+
+
+    <!--BigImageViewer-->
+    <string-array name="license_links_bigimageviewer">
+        <item>@string/mit</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_bigimageviewer">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_bigimageviewer">
+        <item>https://github.com/Piasy/BigImageViewer/blob/master/LICENSE</item>
+        <item>https://github.com/Piasy/BigImageViewer/blob/master/LICENSE</item>
+    </string-array>
+
+
+    <!--PrettyTime-->
+    <string-array name="license_links_prettytime">
+        <item>@string/apache_2</item>
+        <item>@string/sources</item>
+    </string-array>
+
+    <string-array name="license_links_subtitles_prettytime">
+        <item>@string/license_desc</item>
+        <item>@string/license_sources_desc</item>
+    </string-array>
+
+    <string-array name="license_links_url_prettytime">
+        <item>@string/apache_url</item>
+        <item>https://github.com/ocpsoft/prettytime</item>
+    </string-array>
+
+
+    <!--LICENSE-END-->
+</resources>

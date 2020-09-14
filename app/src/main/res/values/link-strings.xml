@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="site_url" translatable="false">https://anilib.onrender.com/#/</string>
+    <string name="privacy_policy_url" translatable="false">https://anilib.onrender.com/#/privacypolicy</string>
+    <string name="terms_and_condition_url" translatable="false">https://anilib.onrender.com/#/termsandcondition</string>
+    <string name="patreon_link" translatable="false">https://patreon.com/anilib</string>
+    <string name="bmc_link" translatable="false">https://www.buymeacoffee.com/9qP65KlG4</string>
+</resources>

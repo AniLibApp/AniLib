@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="following_key">following_key</string>
     <string name="activity_message_key">activity_message_key</string>
     <string name="activity_reply_mention_key">activity_reply_mention_key</string>

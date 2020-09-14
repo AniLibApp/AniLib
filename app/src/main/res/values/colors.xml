@@ -25,5 +25,6 @@
     <color name="popular_color">#E85D75</color>
     <color name="rated_color">#F7BF63</color>
     <color name="tag_color">#12000000</color>
+    <color name="window_background_light">#F1F1F1</color>
 
 </resources>
