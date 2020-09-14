@@ -100,44 +100,70 @@
                     </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
                 </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
 
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+                    android:id="@+id/hentaiSwitchContainerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:padding="6dp">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/hentaiTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/enableYearCheckBox"
+                        android:text="@string/hentai_only"
+                        android:textSize="12sp"
+                        tools:ignore="SmallSp"
+                        android:layout_weight="2"
+                        android:layout_gravity="center_vertical"/>
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+                        android:id="@+id/hentaiOnlySwtich"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="end"
+                        android:checked="false"/>
+
+                </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+
                 <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+                        android:id="@+id/yearSwitchContainerLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:padding="6dp">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                             android:id="@+id/yearTv"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toStartOf="@id/enableYearCheckBox"
                             android:text="@string/year"
-                            android:textSize="11sp"
-                            tools:ignore="SmallSp" />
+                            android:textSize="12sp"
+                            tools:ignore="SmallSp"
+                            android:layout_weight="2"
+                            android:layout_gravity="center_vertical"/>
 
-                        <!--                        <com.revolgenx.anilib.view.DynamicToggleButton-->
-                        <!--                            android:id="@+id/yearRangeToggleButton"-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_centerVertical="true"-->
-                        <!--                            android:layout_toStartOf="@id/enableYearCheckBox"-->
-                        <!--                            app:srcCompat="@drawable/ic_range"/>-->
-
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
                             android:id="@+id/enableYearCheckBox"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:scaleX="0.7"
-                            android:scaleY="0.7" />
+                            android:layout_weight="1"
+                            android:layout_gravity="end"/>
 
-                    </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
+                    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
                     <com.jaygoo.widget.RangeSeekBar
                         android:id="@+id/browseYearSeekBar"
@@ -415,7 +441,7 @@
                             android:layout_marginTop="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_toStartOf="@id/tagExcludeAddIv"
-                            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"/>
+                            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                             android:id="@+id/tagExcludeAddIv"

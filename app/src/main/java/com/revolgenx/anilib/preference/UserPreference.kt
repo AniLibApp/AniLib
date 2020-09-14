@@ -99,6 +99,11 @@ fun setNewNotification(context: Context, notifId: Int = -1) {
     context.putInt(lastNotificationKey, notifId)
 }
 
+
+fun canShowAdult(context: Context):Boolean {
+    return false
+}
+
 fun getVersion(context: Context): String {
     val version = context.getString(versionKey) ?: ""
     context.putString(versionKey, DynamicPackageUtils.getAppVersion(context))
