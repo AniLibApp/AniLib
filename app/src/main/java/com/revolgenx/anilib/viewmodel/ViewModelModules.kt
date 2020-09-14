@@ -33,28 +33,12 @@ import org.koin.dsl.module
 
 val viewModelModules = module {
     viewModel { SeasonViewModel(get()) }
-    viewModel {
-        MediaEntryEditorViewModel(
-            get(),
-            get(),
-            get()
-        )
-    }
+    viewModel { MediaEntryEditorViewModel(get(), get(), get()) }
     viewModel { MainActivityViewModel(get(), get()) }
-    viewModel {
-        MediaBrowserViewModel(
-            get(),
-            get()
-        )
-    }
+    viewModel { MediaBrowserViewModel(get(), get()) }
 
     //overview
-    viewModel {
-        MediaOverviewViewModel(
-            get(),
-            get()
-        )
-    }
+    viewModel { MediaOverviewViewModel(get(), get()) }
     viewModel { MediaWatchViewModel(get()) }
     viewModel { MediaCharacterViewModel(get()) }
     viewModel { MediaStaffViewModel(get()) }
@@ -62,33 +46,11 @@ val viewModelModules = module {
     viewModel { MediaStatsViewModel(get()) }
 
     //character|staff|studio
-    viewModel {
-        CharacterViewModel(
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        CharacterMediaViewModel(
-            get()
-        )
-    }
-    viewModel {
-        CharacterActorViewModel(
-            get()
-        )
-    }
-    viewModel {
-        StaffViewModel(
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        StaffMediaCharacterViewModel(
-            get()
-        )
-    }
+    viewModel { CharacterViewModel(get(), get()) }
+    viewModel { CharacterMediaViewModel(get()) }
+    viewModel { CharacterActorViewModel(get()) }
+    viewModel { StaffViewModel(get(), get()) }
+    viewModel { StaffMediaCharacterViewModel(get()) }
     viewModel { StaffMediaRoleViewModel(get()) }
     viewModel { StudioViewModel(get(), get()) }
 
@@ -100,42 +62,12 @@ val viewModelModules = module {
     viewModel { RecommendationViewModel(get()) }
 
     //medialist
-    viewModel {
-        WatchingViewModel(
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        PlanningViewModel(
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        CompletedViewModel(
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        DroppedViewModel(
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        PausedViewModel(
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        RepeatingViewModel(
-            get(),
-            get()
-        )
-    }
+    viewModel { WatchingViewModel(get(), get()) }
+    viewModel { PlanningViewModel(get(), get()) }
+    viewModel { CompletedViewModel(get(), get()) }
+    viewModel { DroppedViewModel(get(), get()) }
+    viewModel { PausedViewModel(get(), get()) }
+    viewModel { RepeatingViewModel(get(), get()) }
 
     //userprofile
     viewModel { UserProfileViewModel(get()) }
@@ -151,11 +83,7 @@ val viewModelModules = module {
     viewModel { StatsStaffViewModel(get()) }
 
     //notification
-    viewModel {
-        NotificationViewModel(
-            get()
-        )
-    }
+    viewModel { NotificationViewModel(get()) }
 
     //airing
     viewModel { AiringViewModel(get()) }
