@@ -22,6 +22,7 @@ import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.field.TagField
 import com.revolgenx.anilib.model.search.filter.*
+import com.revolgenx.anilib.preference.canShowAdult
 import com.revolgenx.anilib.preference.getUserGenre
 import com.revolgenx.anilib.preference.getUserStream
 import com.revolgenx.anilib.preference.getUserTag
@@ -288,6 +289,9 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
 
 
     fun View.updateView() {
+        hentaiSwitchContainerLayout.visibility =
+            if (canShowAdult(context)) View.VISIBLE else View.GONE
+
         val searchTypeItems: List<DynamicSpinnerItem> =
             context.resources.getStringArray(R.array.advance_search_type).map {
                 DynamicSpinnerItem(
@@ -354,10 +358,10 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         browseYearSeekBar.progressLeft = 1950
 
         tagRecyclerView.layoutManager = FlexboxLayoutManager(context)
-        tagGenreRecyclerView.layoutManager  = FlexboxLayoutManager(context)
-        streamingOnRecyclerView.layoutManager  = FlexboxLayoutManager(context)
-        tagExcludeRecyclerView.layoutManager  = FlexboxLayoutManager(context)
-        genreExcludeRecyclerView.layoutManager  = FlexboxLayoutManager(context)
+        tagGenreRecyclerView.layoutManager = FlexboxLayoutManager(context)
+        streamingOnRecyclerView.layoutManager = FlexboxLayoutManager(context)
+        tagExcludeRecyclerView.layoutManager = FlexboxLayoutManager(context)
+        genreExcludeRecyclerView.layoutManager = FlexboxLayoutManager(context)
     }
 
     private fun View.updateTheme() {
@@ -397,6 +401,13 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     }
 
     private fun View.updateListener() {
+        hentaiSwitchContainerLayout.setOnClickListener {
+            hentaiOnlySwtich.isChecked = !hentaiOnlySwtich.isChecked
+        }
+        yearSwitchContainerLayout.setOnClickListener {
+            enableYearCheckBox.isChecked = !enableYearCheckBox.isChecked
+        }
+
         enableYearCheckBox.setOnCheckedChangeListener { _, isChecked ->
             browseYearSeekBar.isEnabled = isChecked
             yearTv.text =
@@ -502,6 +513,8 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                     tagsToExclude = tagExcludedTagMap!!.values.filter { it.isTagged }.map { it.tag }
                     genreToExclude =
                         genreExcludedTagMap!!.values.filter { it.isTagged }.map { it.tag }
+
+                    hentaiOnly = hentaiOnlySwtich.isChecked
                 }
             }
             SearchTypes.CHARACTER.ordinal -> {
@@ -599,6 +612,8 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                     }?.let {
                         mListener?.onTagAdd(it, MediaTagFilterTypes.GENRE_EXCLUDE)
                     }
+
+                    hentaiOnlySwtich.isChecked = it.hentaiOnly
 
                     mListener?.updateTags(MediaTagFilterTypes.TAGS)
                     mListener?.updateTags(MediaTagFilterTypes.GENRES)
