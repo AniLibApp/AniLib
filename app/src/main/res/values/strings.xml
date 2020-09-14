@@ -2,6 +2,8 @@
     <string name="app_name">AniLib</string>
     <string name="app_subtitle">By the power of AniList</string>
     <string name="app_description">Your to be favourite place to manage, track, browse your Anime and Manga and much more.</string>
+    <string name="anilib_site">AniLib Site</string>
+    <string name="visit_site_desc">Visit AniLib to know more.</string>
     <string name="discover">Discover</string>
     <string name="season">Season</string>
     <string name="dynamically_apply_theme">Dynamically appy theme.</string>
@@ -27,8 +29,7 @@
     <string name="previous">Previous</string>
     <string name="next">Next</string>
     <string name="filter">Filter</string>
-
-
+    <string name="users">Users</string>
     <string name="user_detail_fetch_failed">Failed to fetch user detail.</string>
     <string name="save">Save</string>
     <string name="status">Status</string>
@@ -36,6 +37,7 @@
     <string name="invalid_input_type">Invalid input type.</string>
 
     <!--media list status-->
+    <string name="current">Current</string>
     <string name="watching">Watching</string>
     <string name="planning">Planning</string>
     <string name="completed">Completed</string>
@@ -180,6 +182,7 @@
     <string name="airing_time_e_s_s">E: %s · %dd %dh %dm %ds </string>
     <string name="format_episode_s">%s · E: %s</string>
     <string name="select_date">Select Date</string>
+    <string name="airing">Airing</string>
     <string name="trending">Trending</string>
     <string name="popular">Popular</string>
     <string name="newly_added">Newly Added</string>
@@ -196,78 +199,17 @@
     <string name="recent_reviews">Recent Reviews</string>
     <string name="reviews">Reviews</string>
     <string name="press_again_to_exit">Press again to exit</string>
+
     <string name="patreon">Patreon</string>
     <string name="bmc_title">Buy Me A Coffee</string>
+    <string name="patreon_page">Patreon Page</string>
+    <string name="patreon_page_sub">Visit Patreon Page.</string>
     <string name="support_the_app">Support Me On Patreon</string>
     <string name="support_the_app_bmc">Support Me On BMC</string>
+    <string name="bmc_page">BuyMeACoffee Page</string>
+    <string name="bmc_page_sub">Visit Buy Me A Coffee.</string>
     <string name="help_this_app">Contribute AniLib to help me create and maintain awesome features.</string>
     <string name="help_this_app_bmc">Help me get some caffeine power. Your one cup of coffee could bring out some latent power.⚡⚡⚡</string>
-
-    <!--LICENSE-->
-    <string name="apache_2">Apache 2.0</string>
-    <string name="mit">MIT</string>
-    <string name="sources">Sources</string>
-    <string name="license_desc">View full license.</string>
-    <string name="license_sources_desc">View sources on GitHub.</string>
-    <string name="apache_url">http://www.apache.org/licenses/LICENSE-2.0</string>
-    <!--Apollo Android-->
-    <string name="license_apollo_android">Apollo-Android</string>
-    <string name="license_copy_apollo_android">Copyright © 2019 Meteor Development Group, Inc.</string>
-    <!--rx-->
-    <string name="license_rx_android">RxAndroid</string>
-    <string name="license_copy_rx_android">Copyright 2015 The RxAndroid authors</string>
-    <!--EventBus-->
-    <string name="license_eventbus">EventBus</string>
-    <string name="license_copy_eventbus">CCopyright © 2012–2020 Markus Junginger, greenrobot</string>
-    <!--Koin-->
-    <string name="license_koin">Koin</string>
-    <!--Coroutines-->
-    <string name="license_coroutines">Coroutines</string>
-    <!--Elements-->
-    <string name="license_elements">Elements</string>
-    <!--fresco-->
-    <string name="license_fresco">Fresco</string>
-    <string name="license_copy_fresco">Copyright © Facebook, Inc. and its affiliates.</string>
-    <!--timber-->
-    <string name="license_timber">Timber</string>
-    <string name="license_copy_timber">Copyright 2013 Jake Wharton</string>
-    <!--AppAuth-->
-    <string name="license_app_auth">app_auth</string>
-    <!--JWTDecode-->
-    <string name="license_jwt_auth">jwt_auth</string>
-    <string name="license_copy_jwt_auth">Copyright © 2016 Auth0</string>
-    <!--SmartTab-->
-    <string name="license_smarttab">SmartTab</string>
-    <string name="license_copy_smarttab">Copyright © 2015 ogaclejapan \n Copyright © 2013 The Android Open Source Project</string>
-    <!--MPAndroidChart-->
-    <string name="license_mpandroidchart">MPAndroidChart</string>
-    <string name="license_copy_mpandroidchart">Copyright 2020 Philipp Jahoda</string>
-    <!--Markwon-->
-    <string name="license_markwon">Markwon</string>
-    <string name="license_copy_markwon">Copyright 2019 Dimitry Ivanov (legal@noties.io)</string>
-    <!--Jsoup-->
-    <string name="license_jsoup">Jsoup</string>
-    <string name="license_copy_jsoup">Copyright © 2009–2020 Jonathan Hedley </string>
-    <!--ExoPlayer-->
-    <string name="license_exoplayer">ExoPlayer</string>
-    <!--persistentsearchview-->
-    <string name="license_persistentsearchview">PersistentSearchView</string>
-    <!--RangeSeekBar-->
-    <string name="license_rangeseekbar">RangeSeekBar</string>
-    <string name="license_copy_rangeseekbar">Copyright 2018–2019 JayGoo</string>
-    <!--Android-Toggle-Switch-->
-    <string name="license_android_toggle_switch">Android-Toggle-Switch</string>
-    <string name="license_copy_android_toggle_switch">Copyright © 2017 Lorenzo Rigato</string>
-    <!--Hauler-->
-    <string name="license_hauler">Hauler</string>
-    <string name="license_copy_hauler">Copyright © 2020 Futured apps s.r.o.</string>
-    <!--BigImageViewer-->
-    <string name="license_bigimageviewer">BigImageViewer</string>
-    <string name="license_copy_bigimageviewer">Copyright © 2018 Piasy</string>
-    <!--PrettyTime-->
-    <string name="license_prettytime">PrettyTime</string>
-    <!--LICENSE-END-->
-
     <string name="privacy_policy">Privacy Policy.</string>
     <string name="privacy_policy_desc">View complete privacy policy.</string>
     <string name="whats_new">What\'s new</string>
@@ -305,12 +247,8 @@
     <string name="cover_image_quality">Cover Image Quality</string>
     <string name="preferred_image_quality_desc">Select your preferred image quality</string>
     <string name="advanced_scores">Advanced Scores</string>
-
-
-
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="change_log">Change log</string>
-
     <string name="are_you_sure">Are you sure?</string>
     <string name="order">Order</string>
     <string name="home_order_drag_message">Drag icon to change order</string>
@@ -323,237 +261,143 @@
     <string name="custom_filters">Customize Filters</string>
     <string name="custom_filter_desc">Customize tags, genre and others</string>
 
+    <string name="fifteen_min">15 min</string>
+    <string name="twenty_min">20 min</string>
+    <string name="twenty_five_min">25 min</string>
+    <string name="thirty_min">30 min</string>
 
-    <string-array name="media_format">
-        <item>Tv</item>
-        <item>Tv Short</item>
-        <item>Movie</item>
-        <item>Special</item>
-        <item>Ova</item>
-        <item>Ona</item>
-        <item>Music</item>
-        <item>Manga</item>
-        <item>Novel</item>
-        <item>One Shot</item>
-        <item>Unknown</item>
-    </string-array>
+    <!--media title-->
+    <string name="romaji">Romaji</string>
+    <string name="english">English</string>
+    <string name="user_preferred">User Preferred</string>
+    <string name="_native">Native</string>
 
-    <string-array name="media_source">
-        <item>Original</item>
-        <item>Manga</item>
-        <item>Light Novel</item>
-        <item>Visual Novel</item>
-        <item>Video Game</item>
-        <item>Other</item>
-        <item>Novel</item>
-        <item>Doujinshi</item>
-        <item>Anime</item>
-        <item>Unknown</item>
-    </string-array>
+    <!--image quality-->
+    <string name="high">High</string>
+    <string name="low">Low</string>
+    <string name="medium">Medium</string>
 
-    <string-array name="media_relation">
-        <item>Adaptation</item>
-        <item>Prequel</item>
-        <item>Sequel</item>
-        <item>Parent</item>
-        <item>Side story</item>
-        <item>Character</item>
-        <item>Summary</item>
-        <item>Alternative</item>
-        <item>Spin off</item>
-        <item>Other</item>
-        <item>Source</item>
-        <item>Compilation</item>
-        <item>Contains</item>
-    </string-array>
+    <string name="title">Title</string>
+    <string name="title_desc">Title Desc</string>
+    <string name="score_desc">Score Desc</string>
+    <string name="progress">Progress</string>
+    <string name="progress_desc">Progress Desc</string>
+    <string name="last_updated">Last Updated</string>
+    <string name="last_updated_desc">Last Updated Desc</string>
+    <string name="last_added">Last Added</string>
+    <string name="last_added_desc">Last Added Desc</string>
+    <string name="start_date_desc">Start Date Desc</string>
+    <string name="completed_date">Completed Date</string>
+    <string name="completed_date_desc">Completed Date Desc</string>
+    <string name="release_date">Release Date</string>
+    <string name="release_date_desc">Release Date Desc</string>
+    <string name="average_score_desc">Average Score Desc</string>
+    <string name="popularity_desc">Popularity Desc</string>
 
-    <string-array name="character_role">
-        <item>Main</item>
-        <item>Supporting</item>
-        <item>Background</item>
-    </string-array>
+    <!--media_format-->
+    <string name="tv">Tv</string>
+    <string name="tv_short">Tv Short</string>
+    <string name="movie">Movie</string>
+    <string name="special">Special</string>
+    <string name="ova">Ova</string>
+    <string name="ona">Ona</string>
+    <string name="one_shot">One Shot</string>
+    <string name="novel">Novel</string>
+    <string name="music">Music</string>
+    <string name="unknown">Unknown</string>
 
-    <string-array name="staff_language">
-        <item>Japanese</item>
-        <item>English</item>
-        <item>Korean</item>
-        <item>Italian</item>
-        <item>Spanish</item>
-        <item>Portuguese</item>
-        <item>French</item>
-        <item>German</item>
-        <item>Hebrew</item>
-        <item>Hungarian</item>
-    </string-array>
+    <!--media_source-->
+    <string name="original">Original</string>
+    <string name="light_novel">Light Novel</string>
+    <string name="visual_novel">Visual Novel</string>
+    <string name="video_game">Video Game</string>
+    <string name="other">Other</string>
+    <string name="doujinshi">Doujinshi</string>
+
+    <!--media_relation-->
+    <string name="contains">Contains</string>
+    <string name="compilation">Compilation</string>
+    <string name="spin_off">Spin off</string>
+    <string name="alternative">Alternative</string>
+    <string name="side_story">Side Story</string>
+    <string name="parent">Parent</string>
+    <string name="sequel">Sequel</string>
+    <string name="prequel">Prequel</string>
+    <string name="adaptation">Adaptation</string>
+
+    <!--character_role-->
+    <string name="background">Background</string>
+    <string name="supporting">Supporting</string>
+    <string name="main">Main</string>
+
+    <!--languages-->
+    <string name="Japanese">Japanese</string>
+    <string name="English">English</string>
+    <string name="Korean">Korean</string>
+    <string name="Italian">Italian</string>
+    <string name="Spanish">Spanish</string>
+    <string name="Portuguese">Portuguese</string>
+    <string name="French">French</string>
+    <string name="German">German</string>
+    <string name="Hebrew">Hebrew</string>
+    <string name="Hungarian">Hungarian</string>
+
+    <!--media_status-->
+    <string name="cancelled">Cancelled</string>
+    <string name="not_yet_released">Not yet released</string>
+    <string name="releasing">Releasing</string>
+    <string name="finished">Finished</string>
+
+    <!--media_season-->
+    <string name="all">All</string>
+    <string name="winter">Winter</string>
+    <string name="spring">Spring</string>
+    <string name="summer">Summer</string>
+    <string name="fall">Fall</string>
 
 
-    <string-array name="media_status">
-        <item>Finished</item>
-        <item>Releasing</item>
-        <item>Not yet released</item>
-        <item>Cancelled</item>
-    </string-array>
+    <!--advance_search_sort-->
+    <string name="id">Id</string>
+    <string name="id_desc">Id Desc</string>
+    <string name="title_romaji">Title Romaji</string>
+    <string name="title_romaji_desc">Title Romaji Desc</string>
+    <string name="title_english">Title English</string>
+    <string name="title_english_desc">Title English Desc</string>
+    <string name="title_native">Title Native</string>
+    <string name="title_native_desc">Title Native Desc</string>
+    <string name="type_desc">Type Desc</string>
+    <string name="format_desc">Format Desc</string>
+    <string name="end_date_desc">End Date Desc</string>
+    <string name="trending_desc">Trending Desc</string>
+    <string name="episodes_desc">Episodes Desc</string>
+    <string name="duration_desc">Duration Desc</string>
+    <string name="status_desc">Status Desc</string>
+    <string name="chapters_desc">Chapters Desc</string>
+    <string name="volumes_desc">Volumes Desc</string>
+    <string name="updated_at">Updated At</string>
+    <string name="updated_at_desc">Updated At Desc</string>
+    <string name="search_match">Search Match</string>
+    <string name="favourites_desc">Favourites Desc</string>
 
-    <string-array name="media_season">
-        <item>Winter</item>
-        <item>Spring</item>
-        <item>Summer</item>
-        <item>Fall</item>
-    </string-array>
+    <!--country of origin-->
+    <string name="China">China</string>
+    <string name="South_Korean">South Korean</string>
+    <string name="Japan">Japan</string>
 
-    <string-array name="media_list_status">
-        <item>Current</item>
-        <item>Planning</item>
-        <item>Completed</item>
-        <item>Dropped</item>
-        <item>Paused</item>
-        <item>Repeating</item>
-    </string-array>
+    <!--recommendation_sort-->
+    <string name="on_list">On List</string>
+    <string name="recent">Recent</string>
+    <string name="highest_rated">Highest Rated</string>
+    <string name="lowest_rated">Lowest Rated</string>
 
-    <string-array name="advance_search_type">
-        <item>Anime</item>
-        <item>Manga</item>
-        <item>Characters</item>
-        <item>Staff</item>
-        <item>Studios</item>
-        <item>Users</item>
-    </string-array>
 
-    <string-array name="advance_search_season">
-        <item>All</item>
-        <item>Winter</item>
-        <item>Spring</item>
-        <item>Summer</item>
-        <item>Fall</item>
-    </string-array>
-
-    <string-array name="advance_search_sort">
-        <item>None</item>
-        <item>Id</item>
-        <item>Id Desc</item>
-        <item>Title Romaji</item>
-        <item>Title Romaji Desc</item>
-        <item>Title English</item>
-        <item>Title English Desc</item>
-        <item>Title Native</item>
-        <item>Title Native Desc</item>
-        <item>Type</item>
-        <item>Type Desc</item>
-        <item>Format</item>
-        <item>Format Desc</item>
-        <item>Start Date</item>
-        <item>Start Date Desc</item>
-        <item>End Date</item>
-        <item>End Date Desc</item>
-        <item>Score</item>
-        <item>Score Desc</item>
-        <item>Popularity</item>
-        <item>Popularity Desc</item>
-        <item>Trending</item>
-        <item>Trending Desc</item>
-        <item>Episodes</item>
-        <item>Episodes Desc</item>
-        <item>Duration</item>
-        <item>Duration Desc</item>
-        <item>Status</item>
-        <item>Status Desc</item>
-        <item>Chapters</item>
-        <item>Chapters Desc</item>
-        <item>Volumes</item>
-        <item>Volumes Desc</item>
-        <item>Updated At</item>
-        <item>Updated At Desc</item>
-        <item>Search Match</item>
-        <item>Favourites</item>
-        <item>Favourites Desc</item>
-    </string-array>
-
-    <string-array name="advance_search_format">
-        <item>None</item>
-        <item>Tv</item>
-        <item>Tv Short</item>
-        <item>Movie</item>
-        <item>Special</item>
-        <item>Ova</item>
-        <item>Ona</item>
-        <item>Music</item>
-        <item>Manga</item>
-        <item>Novel</item>
-        <item>One Shot</item>
-    </string-array>
-
-    <string-array name="advance_search_country">
-        <item>None</item>
-        <item>Japan</item>
-        <item>South korean</item>
-        <item>China</item>
-    </string-array>
-
-    <string-array name="advance_search_status">
-        <item>None</item>
-        <item>Finished</item>
-        <item>Releasing</item>
-        <item>Not yet released</item>
-        <item>Cancelled</item>
-    </string-array>
-
-    <string-array name="advance_search_source">
-        <item>None</item>
-        <item>Original</item>
-        <item>Manga</item>
-        <item>Light Novel</item>
-        <item>Visual Novel</item>
-        <item>Video Game</item>
-        <item>Other</item>
-        <item>Novel</item>
-        <item>Doujinshi</item>
-        <item>Anime</item>
-    </string-array>
-
-    <string-array name="on_list">
-        <item>All</item>
-        <item>On List</item>
-    </string-array>
-
-    <string-array name="recommendation_sort">
-        <item>Recent</item>
-        <item>Highest Rated</item>
-        <item>Lowest Rated</item>
-    </string-array>
-
-    <string-array name="score_toggle_list">
-        <item>Titles Watched</item>
-        <item>Hour Watched</item>
-    </string-array>
-
-    <string-array name="stats_toggle_list">
-        <item>Titles Watched</item>
-        <item>Hour Watched</item>
-        <item>Mean Score</item>
-    </string-array>
-
-    <string-array name="manga_score_toggle_list">
-        <item>Titles Watched</item>
-        <item>Chapters Read</item>
-    </string-array>
-
-    <string-array name="manga_stats_toggle_list">
-        <item>Titles Read</item>
-        <item>Chapters Read</item>
-        <item>Mean Score</item>
-    </string-array>
-
-    <string-array name="review_sort">
-        <item>Id</item>
-        <item>Id Desc</item>
-        <item>Score</item>
-        <item>Score Desc</item>
-        <item>Rating</item>
-        <item>Rating Desc</item>
-        <item>Created At</item>
-        <item>Created At Desc</item>
-        <item>Updated At</item>
-        <item>Updated At Desc</item>
-    </string-array>
+    <!--toggle-->
+    <string name="titles_watched">Titles Watched</string>
+    <string name="hour_watched">Hour Watched</string>
+    <string name="titles_read">Titles Read</string>
+    <string name="rating">Rating</string>
+    <string name="rating_desc">Rating Desc</string>
+    <string name="created_at">Created At</string>
+    <string name="created_at_desc">Created At Desc</string>
 
 </resources>

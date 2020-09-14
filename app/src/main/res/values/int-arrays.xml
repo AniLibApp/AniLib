@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default app theme colors. -->
+    <integer-array name="pref_app_theme_colors">
+        <item>-3</item>
+        <item>@color/window_background_light</item>
+        <item>@color/ads_window_background</item>
+        <item>@color/ads_window_background_yellow</item>
+        <item>@color/ads_window_background_indigo_light</item>
+        <item>@color/ads_window_background_red_light</item>
+        <item>@color/ads_window_background_green_light</item>
+        <item>@color/ads_window_background_blue_light</item>
+        <item>@color/ads_window_background_teal_light</item>
+        <item>@color/ads_window_background_purple_light</item>
+        <item>@color/ads_window_background_orange_light</item>
+        <item>@color/ads_window_background_brown_light</item>
+        <item>@color/ads_window_background_gray</item>
+        <item>@color/ads_window_background_dark</item>
+        <item>@color/ads_window_background_indigo</item>
+        <item>@color/ads_window_background_red</item>
+        <item>@color/ads_window_background_green</item>
+        <item>@color/ads_window_background_blue</item>
+        <item>@color/ads_window_background_teal</item>
+        <item>@color/ads_window_background_purple</item>
+        <item>@color/ads_window_background_orange</item>
+        <item>@color/ads_window_background_brown</item>
+        <item>@color/ads_window_background_gray</item>
+    </integer-array>
+
+    <!-- Default app theme day colors. -->
+    <integer-array name="pref_app_theme_day_colors">
+        <item>@color/window_background_light</item>
+        <item>@color/ads_window_background_yellow</item>
+        <item>@color/ads_window_background_indigo_light</item>
+        <item>@color/ads_window_background_red_light</item>
+        <item>@color/ads_window_background_green_light</item>
+        <item>@color/ads_window_background_blue_light</item>
+        <item>@color/ads_window_background_teal_light</item>
+        <item>@color/ads_window_background_purple_light</item>
+        <item>@color/ads_window_background_orange_light</item>
+        <item>@color/ads_window_background_brown_light</item>
+        <item>@color/ads_window_background_gray_light</item>
+    </integer-array>
+
+    <!-- Default app theme night colors. -->
+    <integer-array name="pref_app_theme_night_colors">
+        <item>@color/colorPrimaryDark</item>
+        <item>@color/ads_window_background</item>
+        <item>@color/ads_window_background_dark</item>
+        <item>@color/ads_window_background_indigo</item>
+        <item>@color/ads_window_background_red</item>
+        <item>@color/ads_window_background_green</item>
+        <item>@color/ads_window_background_blue</item>
+        <item>@color/ads_window_background_teal</item>
+        <item>@color/ads_window_background_purple</item>
+        <item>@color/ads_window_background_orange</item>
+        <item>@color/ads_window_background_brown</item>
+        <item>@color/ads_window_background_gray</item>
+    </integer-array>
+
+</resources>

@@ -54,10 +54,4 @@
     </string>
 
 
-    <string name="site_url">https://anilib.onrender.com/#/</string>
-    <string name="privacy_policy_url">https://anilib.onrender.com/#/privacypolicy</string>
-    <string name="terms_and_condition_url">https://anilib.onrender.com/#/termsandcondition</string>
-    <string name="patreon_link">https://patreon.com/anilib</string>
-    <string name="bmc_link">https://www.buymeacoffee.com/9qP65KlG4</string>
-
 </resources>
