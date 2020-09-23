@@ -215,14 +215,15 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
     }
 
     protected fun RecyclerView.createAdapter(
-        source: Any,
-        presenter: Any
+        source: Source<*>,
+        presenter: Presenter<*>,
+        loader: Presenter<*>? = null
     ): Adapter {
         return Adapter.builder(viewLifecycleOwner, 10)
             .setPager(PageSizePager(10))
-            .addSource(source as Source<*>)
-            .addPresenter(presenter as Presenter<*>)
-            .addPresenter(loadingPresenter)
+            .addSource(source)
+            .addPresenter(presenter)
+            .addPresenter(loader ?: loadingPresenter)
             .addPresenter(errorPresenter)
             .addPresenter(emptyPresenter)
             .into(this)
