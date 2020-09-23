@@ -6,11 +6,12 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.fragment.about.AboutFragment
+import com.revolgenx.anilib.preference.getApplicationLocale
 import java.util.*
 
 class AboutActivity : DynamicActivity() {
     override fun getLocale(): Locale? {
-        return null
+        return Locale(getApplicationLocale())
     }
 
     override fun getThemeRes(): Int {

@@ -16,6 +16,7 @@ import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.meta.DraweeViewerMeta
+import com.revolgenx.anilib.preference.getApplicationLocale
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.thefuntasty.hauler.setOnDragDismissedListener
@@ -48,7 +49,7 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
     }
 
     override fun getLocale(): Locale? {
-        return null
+        return Locale(getApplicationLocale())
     }
 
     private var draweeMeta:DraweeViewerMeta? = null
