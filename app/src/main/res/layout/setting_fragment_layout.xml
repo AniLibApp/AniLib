@@ -11,6 +11,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/application"
+            android:textSize="14sp"
+            app:fontFamily="@font/berlinrounded_bold"
+            android:layout_margin="10dp"/>
+
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
 
             <com.pranavpandey.android.dynamic.support.view.DynamicItemView
@@ -23,6 +32,30 @@
                 app:ads_title="@string/ads_dynamic_theme" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+
+            <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_description="@string/preferred_media_title"
+                app:ads_entries="@array/application_language_entries"
+                app:ads_icon="@drawable/ads_ic_language"
+                app:ads_key="@string/application_language_key"
+                app:ads_title="@string/application_language"
+                app:ads_value="0"
+                app:ads_values="@array/application_language_values" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/media"
+            android:textSize="14sp"
+            app:fontFamily="@font/berlinrounded_bold"
+            android:layout_margin="10dp"/>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
 
@@ -81,6 +114,16 @@
                 app:ads_title="@string/custom_filters" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/other"
+            android:textSize="14sp"
+            app:fontFamily="@font/berlinrounded_bold"
+            android:layout_margin="10dp"/>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
 

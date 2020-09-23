@@ -8,6 +8,7 @@ import com.pranavpandey.android.dynamic.support.splash.DynamicSplashActivity
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.controller.AppController
 import com.revolgenx.anilib.controller.ThemeController
+import com.revolgenx.anilib.preference.getApplicationLocale
 import java.util.*
 
 /**
@@ -21,8 +22,7 @@ class SplashActivity : DynamicSplashActivity() {
     private var mSplash: AppCompatImageView? = null
 
     override fun getLocale(): Locale? {
-        // TODO: Not implementing multiple locales so, returning null.
-        return null
+        return Locale(getApplicationLocale())
     }
 
     @StyleRes

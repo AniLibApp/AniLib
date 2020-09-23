@@ -251,6 +251,19 @@
         <item>3</item>
     </string-array>
 
+    <!--application language-->
+    <string-array name="application_language_entries">
+        <item>English</item>
+        <item>Italiano</item>
+    </string-array>
+
+    <string-array name="application_language_values">
+        <item>en</item>
+        <item>it</item>
+    </string-array>
+
+
+
     <!--image-->
     <string-array name="image_entries">
         <item>@string/medium</item>
