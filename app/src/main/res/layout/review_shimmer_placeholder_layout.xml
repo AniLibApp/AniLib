@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/reviewPresenterContainer"
+    style="@style/Widget.DynamicApp.Card"
+    android:layout_width="match_parent"
+    android:layout_height="190dp"
+    android:alpha="0.2"
+    app:ads_colorType="tint_surface" />

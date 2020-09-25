@@ -106,7 +106,7 @@ class MediaStatsFragment : BaseFragment() {
         ).also {
             it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
-                    return if (rankingAdapter?.elementAt(position)?.element?.type == 0) {
+                    return if (rankingAdapter?.getItemViewType(position) == 0) {
                         1
                     } else {
                         span

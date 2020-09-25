@@ -91,7 +91,7 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
 
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {
-        viewModel.adapter = discoverNewRecyclerView.createAdapter(source, presenter)
+        viewModel.adapter = discoverNewRecyclerView.createAdapter(source, presenter, true)
     }
 
     private fun handleClick(which: Int) {

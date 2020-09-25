@@ -41,6 +41,7 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
 
                                 model.scoreFormat =
                                     it.user()?.mediaListOptions()?.scoreFormat()?.ordinal
+
                                 it.media()?.let { media ->
                                     model.mediaId = media.id()
                                     model.episodes = media.episodes()?.toString()
@@ -53,6 +54,8 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                                     }
                                     model.startDate =
                                         media.startDate()?.fragments()?.fuzzyDate()?.toModel()
+                                    model.endDate =
+                                        media.endDate()?.fragments()?.fuzzyDate()?.toModel()
                                     model.averageScore = media.averageScore()
                                     model.popularity = media.popularity()
                                     model.type = field.type
@@ -84,7 +87,10 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Page()?.mediaList()?.filter { if(field.canShowAdult) true else it.media()?.fragments()?.narrowMediaContent()?.isAdult == false}?.map {
+                it.data()?.Page()?.mediaList()?.filter {
+                    if (field.canShowAdult) true else it.media()?.fragments()
+                        ?.narrowMediaContent()?.isAdult == false
+                }?.map {
                     MediaListModel().also { model ->
                         model.mediaListId = it.id()
                         model.progress = it.progress()

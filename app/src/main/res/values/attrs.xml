@@ -41,5 +41,14 @@
         <attr name="headerImage" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="DynamicShimmerView">
+        <attr name="shimmerLayout" format="reference" />
+        <attr name="totalShimmer" format="integer" />
+        <attr name="portraitShimmer" format="integer" />
+        <attr name="landscapeShimmer" format="integer" />
+        <attr name="shimmerOrientation" format="integer" />
+        <attr name="shimmerLayoutManager" format="integer" />
+    </declare-styleable>
+
 
 </resources>

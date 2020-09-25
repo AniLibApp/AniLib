@@ -89,6 +89,6 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     private fun invalidateAdapter() {
         if (discoverAiringRecyclerView == null) return
         viewModel.adapter =
-            discoverAiringRecyclerView!!.createAdapter(source, presenter)
+            discoverAiringRecyclerView!!.createAdapter(source, presenter, true)
     }
 }

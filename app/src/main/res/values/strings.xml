@@ -131,6 +131,7 @@
     <string name="suggestion">Suggestion</string>
     <string name="recommendation_filter">Recommendation Filter</string>
     <string name="s_slash_s">%1$s/%2$s</string>
+    <string name="s_slash_s_brackets">%1$s/%2$s (%3$s)</string>
     <string name="list">List</string>
     <string name="anime_list">Anime List</string>
     <string name="manga_list">Manga List</string>
@@ -405,5 +406,7 @@
     <string name="hentai_only">Hentai</string>
     <string name="application">Application</string>
     <string name="_default">Default</string>
+    <string name="change_display_mode">Change display mode</string>
+    <string name="startdate_format">%1$s ~ %2$s</string>
 
 </resources>

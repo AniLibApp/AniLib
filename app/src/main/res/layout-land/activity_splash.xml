@@ -28,37 +28,39 @@
 
 
         <com.revolgenx.anilib.view.CustomSpinKit
+            style="@style/SpinKitView.Small.CubeGrid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="20dp"
-            style="@style/SpinKitView.Small.CubeGrid"/>
+            android:layout_margin="20dp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/splash_title"
-            android:textSize="@dimen/ads_font_size_headline6_splash"
-            android:alpha="0.8"
-            app:ads_linkColorType="tint_primary"
-            app:fontFamily="@font/berlinrounded_extra_bold"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:alpha="0.8"
             android:gravity="center"
             android:text="@string/app_name"
+            android:textSize="@dimen/ads_font_size_headline6_splash"
             app:ads_colorType="tint_primary"
             app:ads_contrastWithColorType="primary"
-            app:ads_rtlSupport="false" />
+            app:ads_linkColorType="tint_primary"
+            app:ads_rtlSupport="false"
+            android:layout_gravity="center"
+            app:fontFamily="@font/berlinrounded_extra_bold" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/splash_subtitle"
             style="@style/TextAppearance.DynamicApp.Subtitle1.Splash"
-            app:fontFamily="@font/open_sans_semi_bold"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/app_subtitle"
             app:ads_colorType="tint_primary"
             app:ads_contrastWithColorType="primary"
-            app:ads_rtlSupport="false" />
+            app:ads_rtlSupport="false"
+            android:layout_gravity="center"
+            app:fontFamily="@font/open_sans_semi_bold" />
 
     </LinearLayout>
 

@@ -112,6 +112,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="8dp"
+                android:maxLines="1"
                 android:textSize="11sp"
                 tools:ignore="SmallSp" />
 
@@ -123,6 +124,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="8dp"
+                android:maxLines="1"
                 android:textSize="11sp"
                 tools:ignore="SmallSp" />
 
@@ -136,6 +138,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:textSize="10sp"
+                android:maxLines="1"
                 app:ads_colorType="accent"
                 tools:ignore="SmallSp" />
 
@@ -150,6 +153,7 @@
                 android:text="@string/s_slash_s"
                 android:textSize="11sp"
                 android:visibility="gone"
+                android:maxLines="1"
                 app:ads_colorType="tint_surface"
                 app:drawableStartCompat="@drawable/ic_eye_16dp"
                 tools:ignore="SmallSp" />

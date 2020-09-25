@@ -37,6 +37,11 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
     override val baseSource: Source<RecommendationModel>
         get() = viewModel.source ?: createSource()
 
+    override val loadingPresenter: Presenter<Void>
+        get() = Presenter.forLoadingIndicator(
+            requireContext(), R.layout.recommendation_shimmer_loader_layout
+        )
+
     private val viewModel by viewModel<RecommendationViewModel>()
 
     override fun createSource(): Source<RecommendationModel> {
@@ -58,7 +63,7 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
             ).also {
                 it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.elementAt(position)?.element?.type == 0) {
+                        return if (adapter?.getItemViewType(position) == 0) {
                             1
                         } else {
                             span

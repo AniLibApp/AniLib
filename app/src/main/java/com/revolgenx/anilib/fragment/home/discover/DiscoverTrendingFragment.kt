@@ -31,6 +31,7 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
     private val source: MediaSource
         get() = viewModel.source ?: viewModel.createSource()
 
+
     private val viewModel by viewModel<TrendingViewModel>()
 
     private val order: Int
@@ -113,6 +114,6 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {
         if (trendingRecyclerView == null) return
-        trendingRecyclerView!!.createAdapter(source, presenter)
+        trendingRecyclerView!!.createAdapter(source, presenter, true)
     }
 }

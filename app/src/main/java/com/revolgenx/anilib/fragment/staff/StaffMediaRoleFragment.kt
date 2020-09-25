@@ -39,7 +39,7 @@ class StaffMediaRoleFragment : BasePresenterFragment<StaffMediaRoleModel>() {
             ).also {
                 it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.elementAt(position)?.element?.type == 0) {
+                        return if (adapter?.getItemViewType(position) == 0) {
                             1
                         } else {
                             span

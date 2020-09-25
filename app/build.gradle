@@ -238,6 +238,8 @@ dependencies {
     //spinkit
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
+    //shimmer layout
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

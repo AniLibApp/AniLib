@@ -14,6 +14,7 @@ import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout
 import com.revolgenx.anilib.R
 import kotlinx.android.synthetic.main.base_presenter_fragment_layout.view.*
+import timber.log.Timber
 
 
 /**
@@ -30,11 +31,10 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment() {
 
     override val layoutRes: Int = R.layout.base_presenter_fragment_layout
 
-    private val loadingPresenter: Presenter<Void> by lazy {
-        Presenter.forLoadingIndicator(
+    protected open val loadingPresenter: Presenter<Void>
+        get() = Presenter.forLoadingIndicator(
             requireContext(), R.layout.loading_layout
         )
-    }
 
     private val errorPresenter: Presenter<Void> by lazy {
         Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
@@ -61,17 +61,34 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val span =
+            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
         layoutManager =
             GridLayoutManager(
                 this.context,
-                if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
-            )
+                span
+            ).also {
+                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (adapter?.getItemViewType(position) == 0) {
+                            1
+                        } else {
+                            span
+                        }
+                    }
+                }
+            }
+
+    }
+
+    protected open fun reloadLayoutManager() {
+        baseRecyclerView.layoutManager = layoutManager
     }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        baseRecyclerView.layoutManager = layoutManager
+        reloadLayoutManager()
 
         if (savedInstanceState == null)
             createSource()

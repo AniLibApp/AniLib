@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.preference
 
 import android.content.Context
+import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.revolgenx.anilib.field.home.NewlyAddedMediaField
 import com.revolgenx.anilib.field.home.PopularMediaField
 import com.revolgenx.anilib.field.home.SeasonField
@@ -57,6 +58,8 @@ const val READING_ORDER_KEY = "READING_ORDER_KEY"
 
 const val DISCOVER_READING_SORT_KEY = "DISCOVER_READING_SORT_KEY"
 const val DISCOVER_WATCHING_SORT_KEY = "DISCOVER_WATCHING_SORT_KEY"
+
+const val MEDIA_LIST_GRID_PRESENTER_KEY = "MEDIA_LIST_GRID_PRESENTER_KEY"
 
 
 fun getSeasonField(context: Context) = SeasonField().apply {
@@ -221,3 +224,16 @@ fun getDiscoverMediaListSort(context: Context, type: Int): Int? {
         else -> null
     }
 }
+
+
+fun getMediaListGridPresenter(): Int {
+    return DynamicPreferences.getInstance()
+        .load(MEDIA_LIST_GRID_PRESENTER_KEY, 0) //0 for single gird
+}
+
+fun setMediaListGridPresenter() {
+    val whichView = if (getMediaListGridPresenter() == 0) 1 else 0
+    return DynamicPreferences.getInstance().save(MEDIA_LIST_GRID_PRESENTER_KEY, whichView)
+}
+
+
