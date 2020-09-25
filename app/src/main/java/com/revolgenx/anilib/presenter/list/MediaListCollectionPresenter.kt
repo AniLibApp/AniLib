@@ -11,6 +11,7 @@ import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
+import com.revolgenx.anilib.event.BrowseGenreEvent
 import com.revolgenx.anilib.event.BrowseMediaEvent
 import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.meta.ListEditorMeta
@@ -18,6 +19,8 @@ import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.model.list.MediaListModel
+import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
+import com.revolgenx.anilib.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.preference.loggedIn
 import com.revolgenx.anilib.preference.userId
 import com.revolgenx.anilib.preference.userName
@@ -28,7 +31,17 @@ import com.revolgenx.anilib.util.makeSnakeBar
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.viewmodel.media_list.MediaListCollectionViewModel
+import kotlinx.android.synthetic.main.media_list_collection_loose_presenter_layout.view.*
 import kotlinx.android.synthetic.main.media_list_collection_presenter_layout.view.*
+import kotlinx.android.synthetic.main.media_list_collection_presenter_layout.view.mediaListContainer
+import kotlinx.android.synthetic.main.media_list_collection_presenter_layout.view.mediaListCoverImageView
+import kotlinx.android.synthetic.main.media_list_collection_presenter_layout.view.mediaListFormatTv
+import kotlinx.android.synthetic.main.media_list_collection_presenter_layout.view.mediaListProgressIncrease
+import kotlinx.android.synthetic.main.media_list_collection_presenter_layout.view.mediaListProgressTv
+import kotlinx.android.synthetic.main.media_list_collection_presenter_layout.view.mediaListRatingIv
+import kotlinx.android.synthetic.main.media_list_collection_presenter_layout.view.mediaListRatingTv
+import kotlinx.android.synthetic.main.media_list_collection_presenter_layout.view.mediaListStatusTv
+import kotlinx.android.synthetic.main.media_list_collection_presenter_layout.view.mediaListTitleTv
 
 class MediaListCollectionPresenter(
     context: Context,
@@ -37,32 +50,30 @@ class MediaListCollectionPresenter(
 ) :
     Presenter<MediaListModel>(context) {
 
-    override val elementTypes: Collection<Int>
-        get() = listOf(0)
-
-    private val mediaFormats by lazy {
+    override val elementTypes: Collection<Int> = listOf(0)
+    private val mediaFormats =
         context.resources.getStringArray(R.array.media_format)
-    }
-
-    private val mediaStatus by lazy {
+    private val mediaStatus =
         context.resources.getStringArray(R.array.media_status)
-    }
-    private val statusColors by lazy {
+    private val statusColors =
         context.resources.getStringArray(R.array.status_color)
-    }
-
-    private val tintSurfaceColor by lazy {
+    private val tintSurfaceColor =
         DynamicTheme.getInstance().get().tintSurfaceColor
-    }
-
-    private val isLoggedInUser by lazy {
+    private val isLoggedInUser =
         mediaListMeta.userId == context.userId() || mediaListMeta.userName == context.userName()
-    }
+    private val displayMode = getMediaListGridPresenter()
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         return Holder(
             getLayoutInflater().inflate(
-                R.layout.media_list_collection_presenter_layout,
+                when (getMediaListGridPresenter()) {
+                    0 -> {
+                        R.layout.media_list_collection_presenter_layout
+                    }
+                    else -> {
+                        R.layout.media_list_collection_loose_presenter_layout
+                    }
+                },
                 parent,
                 false
             )
@@ -83,10 +94,20 @@ class MediaListCollectionPresenter(
                 mediaStatus[it]
             }.naText()
 
-            mediaListProgressTv.text = context.getString(R.string.s_slash_s).format(
-                item.progress?.toString().naText(),
-                if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
-            )
+            mediaListProgressTv.text =  if (displayMode == 0) {
+                context.getString(R.string.s_slash_s)
+                    .format(
+                        item.progress?.toString().naText(),
+                        if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
+                    )
+            }else{
+                context.getString(R.string.s_slash_s_brackets)
+                    .format(
+                        item.progress?.toString().naText(),
+                        if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText(),
+                        context.getString(R.string.startdate_format).format(item.listStartDate?.toString().naText(), item.listCompletedDate?.toString().naText())
+                    )
+            }
 
             mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
 
@@ -100,12 +121,23 @@ class MediaListCollectionPresenter(
                     }
                     mediaListRatingIv.setImageResource(drawable)
                 }
-                ScoreFormat.POINT_10_DECIMAL.ordinal->{
+                ScoreFormat.POINT_10_DECIMAL.ordinal -> {
                     mediaListRatingTv.text = item.score?.toString().naText()
                 }
                 else -> {
                     mediaListRatingTv.text = item.score?.toInt()?.toString().naText()
                 }
+            }
+
+            if (displayMode == 1) {
+                mediaListGenreLayout.addGenre(item.genres?.take(3)) { genre ->
+                    BrowseGenreEvent(MediaSearchFilterModel().also {
+                        it.genre = listOf(genre.trim())
+                    }).postEvent
+                }
+
+                mediaListStartDateTv.text = context.getString(R.string.startdate_format)
+                    .format(item.startDate?.toString().naText(), item.endDate?.toString().naText())
             }
 
             if (isLoggedInUser) {
@@ -114,15 +146,26 @@ class MediaListCollectionPresenter(
                         it.mediaId = item.mediaId
                         it.listId = item.mediaListId
                         it.progress = (item.progress ?: 0).plus(1)
-                    }){res->
-                        when(res.status){
+                    }) { res ->
+                        when (res.status) {
                             Status.SUCCESS -> {
                                 if (res.data?.mediaId == item.mediaId) {
                                     item.progress = res.data?.progress
-                                    mediaListProgressTv.text = context.getString(R.string.s_slash_s).format(
-                                        item.progress?.toString().naText(),
-                                        if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
-                                    )
+                                    mediaListProgressTv.text =
+                                        if (displayMode == 0) {
+                                            context.getString(R.string.s_slash_s)
+                                                .format(
+                                                    item.progress?.toString().naText(),
+                                                    if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
+                                                )
+                                        }else{
+                                            context.getString(R.string.s_slash_s_brackets)
+                                                .format(
+                                                    item.progress?.toString().naText(),
+                                                    if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText(),
+                                                    context.getString(R.string.startdate_format).format(item.listStartDate?.toString().naText(), item.listCompletedDate?.toString().naText())
+                                                )
+                                        }
                                 }
                             }
                             Status.ERROR -> {

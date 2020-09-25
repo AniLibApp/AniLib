@@ -24,6 +24,7 @@ import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.model.home.OrderedViewModel
 import com.revolgenx.anilib.util.dp
 import kotlinx.android.synthetic.main.discover_fragment_layout.view.*
+import kotlinx.android.synthetic.main.discover_shimmer_layout.view.*
 
 abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
 
@@ -36,6 +37,10 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
                 requireContext(), R.layout.loading_layout
             )
         }
+
+    protected val shimmerLoader: Presenter<Void>
+        get() = Presenter.forLoadingIndicator(requireContext(), R.layout.discover_shimmer_layout)
+
 
     protected val errorPresenter: Presenter<Void>
         get() {
@@ -217,13 +222,14 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
     protected fun RecyclerView.createAdapter(
         source: Source<*>,
         presenter: Presenter<*>,
+        useShimmerLoader: Boolean = false,
         loader: Presenter<*>? = null
     ): Adapter {
         return Adapter.builder(viewLifecycleOwner, 10)
             .setPager(PageSizePager(10))
             .addSource(source)
             .addPresenter(presenter)
-            .addPresenter(loader ?: loadingPresenter)
+            .addPresenter(loader ?: if (useShimmerLoader) shimmerLoader else loadingPresenter)
             .addPresenter(errorPresenter)
             .addPresenter(emptyPresenter)
             .into(this)

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.DynamicApp.Card.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/base_list_adapter_height"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="10dp">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.2"
+        app:ads_colorType="tint_surface"/>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+        android:layout_width="104dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:alpha="0.4"
+        app:ads_colorType="tint_surface"/>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

@@ -43,6 +43,11 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
         SeasonPresenter(requireContext())
     }
 
+    override val loadingPresenter: Presenter<Void>
+        get() = Presenter.forLoadingIndicator(
+            requireContext(), R.layout.season_shimmer_loader_layout
+        )
+
     override val baseSource: Source<CommonMediaModel>
         get() {
             return viewModel.source ?: createSource()

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recommendationCardView"
+    style="@style/Widget.DynamicApp.Card.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/baseRecShimmerLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1.7"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.2"
+            app:ads_colorType="tint_surface"
+            app:layout_constraintBottom_toBottomOf="@+id/baseRecShimmerLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/dummyTextView"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:alpha="0.2"
+            app:ads_colorType="tint_surface"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/baseRecShimmerLayout" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="4dp"
+            android:alpha="0.5"
+            android:orientation="horizontal"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            app:ads_colorType="tint_surface"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dummyTextView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+

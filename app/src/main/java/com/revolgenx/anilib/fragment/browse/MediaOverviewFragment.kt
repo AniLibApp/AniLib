@@ -125,7 +125,7 @@ class MediaOverviewFragment : BaseFragment() {
             ).also {
                 it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (metaContainerAdapter?.elementAt(position)?.element?.type == 0) {
+                        return if (metaContainerAdapter?.getItemViewType(position) == 0) {
                             1
                         } else {
                             span
@@ -141,7 +141,7 @@ class MediaOverviewFragment : BaseFragment() {
             ).also {
                 it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (metaLinkAdapter?.elementAt(position)?.element?.type == 0) {
+                        return if (metaLinkAdapter?.getItemViewType(position) == 0) {
                             1
                         } else {
                             span

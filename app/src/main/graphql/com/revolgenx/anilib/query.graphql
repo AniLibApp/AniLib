@@ -686,6 +686,9 @@ query MediaListCollectionQuery(
                     startDate {
                         ... fuzzyDate
                     }
+                    endDate{
+                        ... fuzzyDate
+                    }
                     format
                     status
                     genres

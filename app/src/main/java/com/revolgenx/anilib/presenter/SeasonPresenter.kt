@@ -76,7 +76,7 @@ class SeasonPresenter(context: Context) :
                 mediaEpisodeTv.text =
                     string(R.string.chap_s).format(item.chapters.naText(), item.volumes.naText())
             }
-            mediaStartDateTv.text = item.startDate?.date.naText() + " ~ " + item.endDate?.date?.naText()
+            mediaStartDateTv.text = item.startDate?.date.naText() + " ~ " + item.endDate?.date.naText()
             mediaGenreLayout.addGenre(
                 item.genres?.take(5)
             ) { genre ->

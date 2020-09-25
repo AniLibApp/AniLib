@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.activity.MediaListActivity
+import com.revolgenx.anilib.event.DisplayModeChangedEvent
+import com.revolgenx.anilib.event.DisplayTypes
 import com.revolgenx.anilib.event.ListEditorResultEvent
 import com.revolgenx.anilib.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.model.list.MediaListModel
+import com.revolgenx.anilib.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.presenter.list.MediaListCollectionPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
@@ -37,9 +40,14 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
         return viewModel.createSource()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val span =
+    override fun reloadLayoutManager() {
+        var span =
             if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
+
+        if (getMediaListGridPresenter() == 1) {
+            span /= 2
+        }
+
         layoutManager =
             GridLayoutManager(
                 this.context,
@@ -47,7 +55,7 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
             ).also {
                 it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.elementAt(position)?.element?.type == 0) {
+                        return if (adapter?.getItemViewType(position) == 0) {
                             1
                         } else {
                             span
@@ -55,6 +63,8 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
                     }
                 }
             }
+
+        super.reloadLayoutManager()
     }
 
     override fun onStart() {
@@ -88,6 +98,23 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
             invalidateAdapter()
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDisplayModeEvent(event: DisplayModeChangedEvent) {
+        when (event.whichDisplay) {
+            DisplayTypes.MEDIA_LIST -> {
+                changePresenterLayout()
+            }
+        }
+    }
+
+    private fun changePresenterLayout() {
+        reloadLayoutManager()
+        if (visibleToUser) {
+            invalidateAdapter()
+        }
+    }
+
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onListEditorEvent(event: ListEditorResultEvent) {

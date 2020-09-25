@@ -131,6 +131,7 @@
     <string name="suggestion">Suggeriti</string>
     <string name="recommendation_filter">Filtri Raccomandati</string>
     <string name="s_slash_s">%1$s/%2$s</string>
+    <string name="s_slash_s_brackets">%1$s/%2$s(%3$s)</string>
     <string name="list">Lista</string>
     <string name="anime_list">Lista Anime</string>
     <string name="manga_list">Lista Manga</string>

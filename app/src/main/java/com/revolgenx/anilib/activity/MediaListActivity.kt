@@ -22,11 +22,14 @@ import androidx.viewpager.widget.ViewPager
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.dialog.MediaListCollectionFilterDialog
+import com.revolgenx.anilib.event.DisplayModeChangedEvent
+import com.revolgenx.anilib.event.DisplayTypes
 import com.revolgenx.anilib.event.MediaListCollectionFilterEvent
 import com.revolgenx.anilib.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.list.*
 import com.revolgenx.anilib.meta.MediaListMeta
+import com.revolgenx.anilib.preference.setMediaListGridPresenter
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
@@ -236,6 +239,11 @@ class MediaListActivity : BaseDynamicActivity() {
                     .show(supportFragmentManager, "media_filter_dialog")
                 true
             }
+            R.id.listDisplayModeMenu -> {
+                setMediaListGridPresenter()
+                DisplayModeChangedEvent(DisplayTypes.MEDIA_LIST).postEvent
+                true
+            }
             android.R.id.home -> {
                 finish()
                 true
@@ -285,7 +293,10 @@ class MediaListActivity : BaseDynamicActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(MediaListCollectionFilterDialog.LIST_FILTER_PARCEL_KEY, mediaListFilterField)
+        outState.putParcelable(
+            MediaListCollectionFilterDialog.LIST_FILTER_PARCEL_KEY,
+            mediaListFilterField
+        )
         super.onSaveInstanceState(outState)
     }
 

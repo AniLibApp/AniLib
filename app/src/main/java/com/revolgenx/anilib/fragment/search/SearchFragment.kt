@@ -52,7 +52,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>() {
         ).also {
             it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
-                    return if (adapter?.elementAt(position)?.element?.type?.let {
+                    return if (adapter?.getItemViewType(position)?.let {
                             it == SearchTypes.MANGA.ordinal
                                     || it == SearchTypes.ANIME.ordinal
                                     || it == SearchTypes.CHARACTER.ordinal
@@ -89,7 +89,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>() {
                     ).also {
                         it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                             override fun getSpanSize(position: Int): Int {
-                                return if (adapter?.elementAt(position)?.element?.type == 0) {
+                                return if (adapter?.getItemViewType(position) == 0) {
                                     1
                                 } else {
                                     span

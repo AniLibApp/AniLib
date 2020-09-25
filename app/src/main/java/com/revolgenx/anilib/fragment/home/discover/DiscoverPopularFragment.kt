@@ -109,6 +109,6 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
 
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {
-        popularRecyclerView.createAdapter(source, presenter)
+        popularRecyclerView.createAdapter(source, presenter, true)
     }
 }
