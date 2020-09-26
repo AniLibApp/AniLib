@@ -37,7 +37,7 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
     override val baseSource: Source<RecommendationModel>
         get() = viewModel.source ?: createSource()
 
-    override val loadingPresenter: Presenter<Void>
+    override val loadingPresenter: Presenter<Unit>
         get() = Presenter.forLoadingIndicator(
             requireContext(), R.layout.recommendation_shimmer_loader_layout
         )

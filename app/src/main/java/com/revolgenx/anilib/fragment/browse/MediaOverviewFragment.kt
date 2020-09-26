@@ -76,7 +76,7 @@ class MediaOverviewFragment : BaseFragment() {
             viewModel
         )
     }
-    private val loadingPresenter: Presenter<Void> by lazy {
+    private val loadingPresenter: Presenter<Unit> by lazy {
         Presenter.forLoadingIndicator(
             requireContext(),
             R.layout.loading_layout
@@ -92,11 +92,11 @@ class MediaOverviewFragment : BaseFragment() {
         mutableListOf<MediaMetaCollection>()
     }
 
-    private val errorPresenter: Presenter<Void> by lazy {
+    private val errorPresenter: Presenter<Unit> by lazy {
         Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
     }
 
-    private val emptyPresenter: Presenter<Void> by lazy {
+    private val emptyPresenter: Presenter<Unit> by lazy {
         Presenter.forEmptyIndicator(requireContext(), R.layout.empty_layout)
     }
 

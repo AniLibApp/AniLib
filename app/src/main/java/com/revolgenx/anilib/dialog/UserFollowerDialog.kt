@@ -30,15 +30,15 @@ class UserFollowerDialog : BaseDialogFragment() {
     }
 
     private val viewModel by viewModel<UserFollowerViewModel>()
-    private val loadingPresenter: Presenter<Void> by lazy {
+    private val loadingPresenter: Presenter<Unit> by lazy {
         Presenter.forLoadingIndicator(
             requireContext(), R.layout.loading_layout
         )
     }
-    private val errorPresenter: Presenter<Void> by lazy {
+    private val errorPresenter: Presenter<Unit> by lazy {
         Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
     }
-    private val emptyPresenter: Presenter<Void> by lazy {
+    private val emptyPresenter: Presenter<Unit> by lazy {
         Presenter.forEmptyIndicator(requireContext(), R.layout.empty_layout)
     }
     private val basePresenter: Presenter<UserFollowersModel>

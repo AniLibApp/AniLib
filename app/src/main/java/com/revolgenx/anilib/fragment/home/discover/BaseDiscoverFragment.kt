@@ -31,23 +31,23 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
     protected lateinit var discoverLayout: ViewGroup
     protected lateinit var garlandLayout: View
 
-    protected val loadingPresenter: Presenter<Void>
+    protected val loadingPresenter: Presenter<Unit>
         get() {
             return Presenter.forLoadingIndicator(
                 requireContext(), R.layout.loading_layout
             )
         }
 
-    protected val shimmerLoader: Presenter<Void>
+    protected val shimmerLoader: Presenter<Unit>
         get() = Presenter.forLoadingIndicator(requireContext(), R.layout.discover_shimmer_layout)
 
 
-    protected val errorPresenter: Presenter<Void>
+    protected val errorPresenter: Presenter<Unit>
         get() {
             return Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
         }
 
-    protected val emptyPresenter: Presenter<Void>
+    protected val emptyPresenter: Presenter<Unit>
         get() {
             return Presenter.forEmptyIndicator(requireContext(), R.layout.empty_layout)
         }

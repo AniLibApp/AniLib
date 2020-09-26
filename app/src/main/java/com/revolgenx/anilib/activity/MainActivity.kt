@@ -81,6 +81,14 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             return Adapter.builder(this)
         }
 
+    private val discoverFragments by lazy {
+        listOf(
+            DiscoverFragment::class.java,
+            SeasonFragment::class.java,
+            RecommendationFragment::class.java
+        )
+    }
+
     private fun themeBottomNavigation() {
         bottomNav.color = DynamicTheme.getInstance().get().primaryColor
         bottomNav.textColor = DynamicTheme.getInstance().get().accentColor
@@ -117,11 +125,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
         mainViewPager.adapter = makePagerAdapter(
             BaseFragment.newInstances(
-                listOf(
-                    DiscoverFragment::class.java,
-                    SeasonFragment::class.java,
-                    RecommendationFragment::class.java
-                )
+                discoverFragments
             )
         )
 

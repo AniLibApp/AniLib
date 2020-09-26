@@ -24,7 +24,7 @@ class AllReviewFragment : BasePresenterFragment<ReviewModel>() {
     private val viewModel by viewModel<AllReviewViewModel>()
 
 
-    override val loadingPresenter: Presenter<Void>
+    override val loadingPresenter: Presenter<Unit>
         get() = Presenter.forLoadingIndicator(
             requireContext(), R.layout.review_shimmer_loader_layout
         )
