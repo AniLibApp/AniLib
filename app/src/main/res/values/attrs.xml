@@ -8,10 +8,10 @@
     <item name="customTextViewDescriptionId" type="id" />
     <item name="customTextViewTitleId" type="id" />
 
-    <item name="garlandTitleTv" type="id"/>
-    <item name="garlandSettingIv" type="id"/>
-    <item name="garlandConstraintLayout" type="id"/>
-    <item name="gralandFrameContainer" type="id"/>
+    <item name="garlandTitleTv" type="id" />
+    <item name="garlandSettingIv" type="id" />
+    <item name="garlandConstraintLayout" type="id" />
+    <item name="gralandFrameContainer" type="id" />
 
     <item name="airingEpisode" type="id" />
     <declare-styleable name="TitleTextView">
@@ -23,22 +23,22 @@
     </declare-styleable>
 
     <declare-styleable name="DynamicHeaderLinearLayout">
-        <attr name="headerName" format="string"/>
+        <attr name="headerName" format="string" />
     </declare-styleable>
 
 
     <declare-styleable name="CheckBoxHeaderLinearLayout">
-        <attr name="checkBoxHeaderName" format="string"/>
+        <attr name="checkBoxHeaderName" format="string" />
     </declare-styleable>
 
     <declare-styleable name="MaxHeightScrollView">
-        <attr name="maxHeight" format="dimension"/>
+        <attr name="maxHeight" format="dimension" />
     </declare-styleable>
 
 
     <declare-styleable name="ImageHeaderLayout">
-        <attr name="title" format="string"/>
-        <attr name="headerImage" format="reference"/>
+        <attr name="title" format="string" />
+        <attr name="headerImage" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="DynamicShimmerView">
@@ -50,5 +50,8 @@
         <attr name="shimmerLayoutManager" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="DynamicTriStatesCheckbox">
+        <attr name="mode" format="integer" />
+    </declare-styleable>
 
 </resources>

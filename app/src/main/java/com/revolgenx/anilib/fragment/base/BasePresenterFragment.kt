@@ -31,16 +31,16 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment() {
 
     override val layoutRes: Int = R.layout.base_presenter_fragment_layout
 
-    protected open val loadingPresenter: Presenter<Void>
+    protected open val loadingPresenter: Presenter<Unit>
         get() = Presenter.forLoadingIndicator(
             requireContext(), R.layout.loading_layout
         )
 
-    private val errorPresenter: Presenter<Void> by lazy {
+    private val errorPresenter: Presenter<Unit> by lazy {
         Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
     }
 
-    private val emptyPresenter: Presenter<Void> by lazy {
+    private val emptyPresenter: Presenter<Unit> by lazy {
         Presenter.forEmptyIndicator(requireContext(), R.layout.empty_layout)
     }
 

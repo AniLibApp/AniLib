@@ -66,10 +66,10 @@ class TagChooserDialogFragment : BaseDialogFragment() {
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         with(alertDialog) {
-            alertDialog.window.let { window ->
-                window!!.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
-                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-            }
+//            alertDialog.window.let { window ->
+//                window!!.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+//                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+//            }
             getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
                 tagAdapter.deSelectAll()
             }
