@@ -243,10 +243,8 @@
     <string name="episode_aired_notif">When episode on my list airs</string>
     <string name="related_media_added_notif">When related media is added to AniList</string>
     <string name="media_title">Media Title</string>
-    <string name="application_language">Application Language</string>
     <string name="notification_interval_desc">Checks if there is any notification after specified time interval.</string>
     <string name="preferred_media_title">Select preferred media title</string>
-    <string name="preferred_application_language">Select preferred application language</string>
     <string name="cover_image_quality">Cover Image Quality</string>
     <string name="preferred_image_quality_desc">Select your preferred image quality</string>
     <string name="advanced_scores">Advanced Scores</string>
@@ -404,6 +402,10 @@
     <string name="created_at_desc">Created At Desc</string>
 
     <string name="hentai_only">Hentai</string>
+
+    <string name="application_language">Application Language</string>
+    <string name="preferred_application_language">Select preferred application language</string>
+
     <string name="application">Application</string>
     <string name="_default">Default</string>
     <string name="change_display_mode">Change display mode</string>

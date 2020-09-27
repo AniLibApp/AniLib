@@ -264,8 +264,6 @@ class SearchActivity : BaseDynamicActivity(),
             MediaTagFilterTypes.TAGS -> invalidateTagFilter(event.tagFields)
             MediaTagFilterTypes.GENRES -> invalidateGenreFilter(event.tagFields)
             MediaTagFilterTypes.STREAMING_ON -> invalidateStreamFilter(event.tagFields)
-            MediaTagFilterTypes.TAG_EXCLUDE -> invalidateTagExcludeFilter(event.tagFields)
-            MediaTagFilterTypes.GENRE_EXCLUDE -> invalidateGenreExcludeFilter(event.tagFields)
         }
     }
 
@@ -292,21 +290,6 @@ class SearchActivity : BaseDynamicActivity(),
             list
         )
     }
-    private fun invalidateTagExcludeFilter(list: List<TagField>) {
-        viewModel.tagExcludeTagFields = list.toMutableList()
-        browseFilterNavView.buildTagExcludeAdapter(
-            tagAdapter,
-            list
-        )
-    }
-    private fun invalidateGenreExcludeFilter(list: List<TagField>) {
-        viewModel.genreExcludeTagFields = list.toMutableList()
-        browseFilterNavView.buildGenreExcludeAdapter(
-            tagAdapter,
-            list
-        )
-    }
-
 
     override fun onBackPressed() {
         if (rootDrawerLayout.isDrawerOpen(GravityCompat.END)) {
@@ -340,12 +323,6 @@ class SearchActivity : BaseDynamicActivity(),
             MediaTagFilterTypes.STREAMING_ON -> {
                 viewModel.streamTagFields = tags.toMutableList()
             }
-            MediaTagFilterTypes.TAG_EXCLUDE -> {
-                viewModel.tagExcludeTagFields = tags.toMutableList()
-            }
-            MediaTagFilterTypes.GENRE_EXCLUDE -> {
-                viewModel.genreExcludeTagFields = tags.toMutableList()
-            }
         }
 
     }
@@ -361,12 +338,6 @@ class SearchActivity : BaseDynamicActivity(),
             MediaTagFilterTypes.STREAMING_ON -> {
                 viewModel.streamTagFields.removeAll { it.tag == tag }
             }
-            MediaTagFilterTypes.TAG_EXCLUDE -> {
-                viewModel.tagExcludeTagFields.removeAll { it.tag == tag }
-            }
-            MediaTagFilterTypes.GENRE_EXCLUDE -> {
-                viewModel.genreExcludeTagFields.removeAll { it.tag == tag }
-            }
         }
     }
 
@@ -380,12 +351,6 @@ class SearchActivity : BaseDynamicActivity(),
             }
             MediaTagFilterTypes.STREAMING_ON -> {
                 browseFilterNavView.invalidateStreamAdapter(tagAdapter)
-            }
-            MediaTagFilterTypes.TAG_EXCLUDE -> {
-                browseFilterNavView.invalidateTagExcludeAdapter(tagAdapter)
-            }
-            MediaTagFilterTypes.GENRE_EXCLUDE -> {
-                browseFilterNavView.invalidateGenreExcludeAdapter(tagAdapter)
             }
         }
     }
