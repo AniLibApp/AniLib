@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
@@ -21,6 +20,7 @@ import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.controller.ThemeController
 import com.revolgenx.anilib.field.TagField
+import com.revolgenx.anilib.field.TagState
 import com.revolgenx.anilib.model.search.filter.*
 import com.revolgenx.anilib.preference.canShowAdult
 import com.revolgenx.anilib.preference.getUserGenre
@@ -54,14 +54,12 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     private lateinit var streamAdapter: Adapter
     private lateinit var genreAdapter: Adapter
     private lateinit var tagAdapter: Adapter
-    private lateinit var tagExcludeAdapter: Adapter
-    private lateinit var genreExcludeAdapter: Adapter
 
 
     private val streamPresenter by lazy {
         TagPresenter(context).also {
             it.tagRemoved {
-                streamingTagMap!![it]?.isTagged = false
+                streamingTagMap!![it]?.tagState = TagState.EMPTY
                 mListener?.onTagRemoved(it, MediaTagFilterTypes.STREAMING_ON)
             }
         }
@@ -69,7 +67,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     private val genrePresenter by lazy {
         TagPresenter(context).also {
             it.tagRemoved {
-                genreTagMap!![it]?.isTagged = false
+                genreTagMap!![it]?.tagState = TagState.EMPTY
                 mListener?.onTagRemoved(it, MediaTagFilterTypes.GENRES)
             }
         }
@@ -78,26 +76,8 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     private val tagPresenter by lazy {
         TagPresenter(context).also {
             it.tagRemoved {
-                tagTagMap!![it]?.isTagged = false
+                tagTagMap!![it]?.tagState = TagState.EMPTY
                 mListener?.onTagRemoved(it, MediaTagFilterTypes.TAGS)
-            }
-        }
-    }
-
-    private val tagExcludePresenter by lazy {
-        TagPresenter(context).also {
-            it.tagRemoved {
-                tagExcludedTagMap!![it]?.isTagged = false
-                mListener?.onTagRemoved(it, MediaTagFilterTypes.TAG_EXCLUDE)
-            }
-        }
-    }
-
-    private val genreExcludePresenter by lazy {
-        TagPresenter(context).also {
-            it.tagRemoved {
-                genreExcludedTagMap!![it]?.isTagged = false
-                mListener?.onTagRemoved(it, MediaTagFilterTypes.GENRE_EXCLUDE)
             }
         }
     }
@@ -116,7 +96,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     private var genreTagMap: MutableMap<String, TagField>? = null
         get() {
             field = field ?: mutableMapOf<String, TagField>().also { map ->
-                genreList.forEach { map[it] = TagField(it, false) }
+                genreList.forEach { map[it] = TagField(it, TagState.EMPTY) }
             }
             return field
         }
@@ -124,31 +104,16 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     private var tagTagMap: MutableMap<String, TagField>? = null
         get() {
             field = field ?: mutableMapOf<String, TagField>().also { map ->
-                tagList.forEach { map[it] = TagField(it, false) }
+                tagList.forEach { map[it] = TagField(it, TagState.EMPTY) }
             }
             return field
         }
 
-    private var genreExcludedTagMap: MutableMap<String, TagField>? = null
-        get() {
-            field = field ?: mutableMapOf<String, TagField>().also { map ->
-                genreList.forEach { map[it] = TagField(it, false) }
-            }
-            return field
-        }
-
-    private var tagExcludedTagMap: MutableMap<String, TagField>? = null
-        get() {
-            field = field ?: mutableMapOf<String, TagField>().also { map ->
-                tagList.forEach { map[it] = TagField(it, false) }
-            }
-            return field
-        }
 
     private var streamingTagMap: MutableMap<String, TagField>? = null
         get() {
             field = field ?: mutableMapOf<String, TagField>().also { map ->
-                streamingOnList.forEach { map[it] = TagField(it, false) }
+                streamingOnList.forEach { map[it] = TagField(it, TagState.EMPTY) }
             }
             return field
         }
@@ -204,7 +169,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     //endregion ctor
     fun buildStreamAdapter(builder: Adapter.Builder, list: List<TagField>) {
         list.forEach {
-            streamingTagMap!![it.tag]?.isTagged = it.isTagged
+            streamingTagMap!![it.tag]?.tagState = it.tagState
         }
         invalidateStreamAdapter(builder)
     }
@@ -219,32 +184,16 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
 
     fun buildTagAdapter(builder: Adapter.Builder, list: List<TagField>) {
         list.forEach {
-            tagTagMap!![it.tag]?.isTagged = it.isTagged
+            tagTagMap!![it.tag]?.tagState = it.tagState
         }
         invalidateTagAdapter(builder)
-    }
-
-
-    fun buildTagExcludeAdapter(builder: Adapter.Builder, list: List<TagField>) {
-        list.forEach {
-            tagExcludedTagMap!![it.tag]?.isTagged = it.isTagged
-        }
-        invalidateTagExcludeAdapter(builder)
-    }
-
-
-    fun buildGenreExcludeAdapter(builder: Adapter.Builder, list: List<TagField>) {
-        list.forEach {
-            genreExcludedTagMap!![it.tag]?.isTagged = it.isTagged
-        }
-        invalidateGenreExcludeAdapter(builder)
     }
 
 
     fun invalidateStreamAdapter(builder: Adapter.Builder) {
         streamAdapter = builder
             .addSource(
-                Source.fromList(streamingTagMap!!.values.filter { it.isTagged }.map { it.tag })
+                Source.fromList(streamingTagMap!!.values.filter { it.tagState == TagState.TAGGED || it.tagState == TagState.UNTAGGED })
             )
             .addPresenter(streamPresenter)
             .into(streamingOnRecyclerView)
@@ -253,7 +202,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     fun invalidateGenreAdapter(builder: Adapter.Builder) {
         genreAdapter = builder
             .addSource(
-                Source.fromList(genreTagMap!!.values.filter { it.isTagged }.map { it.tag })
+                Source.fromList(genreTagMap!!.values.filter { it.tagState == TagState.TAGGED || it.tagState == TagState.UNTAGGED })
             )
             .addPresenter(genrePresenter)
             .into(tagGenreRecyclerView)
@@ -263,28 +212,10 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     fun invalidateTagAdapter(builder: Adapter.Builder) {
         tagAdapter = builder
             .addSource(
-                Source.fromList(tagTagMap!!.values.filter { it.isTagged }.map { it.tag })
+                Source.fromList(tagTagMap!!.values.filter { it.tagState == TagState.TAGGED || it.tagState == TagState.UNTAGGED })
             )
             .addPresenter(tagPresenter)
             .into(tagRecyclerView)
-    }
-
-    fun invalidateTagExcludeAdapter(builder: Adapter.Builder) {
-        tagExcludeAdapter = builder
-            .addSource(
-                Source.fromList(tagExcludedTagMap!!.values.filter { it.isTagged }.map { it.tag })
-            )
-            .addPresenter(tagExcludePresenter)
-            .into(tagExcludeRecyclerView)
-    }
-
-    fun invalidateGenreExcludeAdapter(builder: Adapter.Builder) {
-        genreExcludeAdapter = builder
-            .addSource(
-                Source.fromList(genreExcludedTagMap!!.values.filter { it.isTagged }.map { it.tag })
-            )
-            .addPresenter(genreExcludePresenter)
-            .into(genreExcludeRecyclerView)
     }
 
 
@@ -360,8 +291,6 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         tagRecyclerView.layoutManager = FlexboxLayoutManager(context)
         tagGenreRecyclerView.layoutManager = FlexboxLayoutManager(context)
         streamingOnRecyclerView.layoutManager = FlexboxLayoutManager(context)
-        tagExcludeRecyclerView.layoutManager = FlexboxLayoutManager(context)
-        genreExcludeRecyclerView.layoutManager = FlexboxLayoutManager(context)
     }
 
     private fun View.updateTheme() {
@@ -376,13 +305,9 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
             browseStreamingFrameLayout.setBackgroundColor(it)
             genreFrameLayout.setBackgroundColor(it)
             tagFrameLayout.setBackgroundColor(it)
-            tagExcludeFrameLayout.setBackgroundColor(it)
-            genreExcludeFrameLayout.setBackgroundColor(it)
             tagAddIv.background = rippleDrawable
             genreAddIv.background = rippleDrawable
             streamAddIv.background = rippleDrawable
-            tagExcludeAddIv.background = rippleDrawable
-            genreExcludeAddIv.background = rippleDrawable
             browseYearSeekBar.setIndicatorTextDecimalFormat("0")
             browseYearSeekBar.setTypeface(
                 ResourcesCompat.getFont(
@@ -445,20 +370,6 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
             mListener?.openTagChooserDialog(tagTagMap!!.values.toList(), MediaTagFilterTypes.TAGS)
         }
 
-        tagExcludeAddIv.setOnClickListener {
-            mListener?.openTagChooserDialog(
-                tagExcludedTagMap!!.values.toList(),
-                MediaTagFilterTypes.TAG_EXCLUDE
-            )
-        }
-
-        genreExcludeAddIv.setOnClickListener {
-            mListener?.openTagChooserDialog(
-                genreExcludedTagMap!!.values.toList(),
-                MediaTagFilterTypes.GENRE_EXCLUDE
-            )
-        }
-
         applyFilterCardView.setOnClickListener {
             context.hideKeyboard(browseSearchEt)
             applyFilter()
@@ -507,12 +418,11 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                     source = browseSourceSpinner?.selectedItemPosition?.minus(1)?.takeIf {
                         it >= 0
                     }
-                    streamingOn = streamingTagMap!!.values.filter { it.isTagged }.map { it.tag }
-                    genre = genreTagMap!!.values.filter { it.isTagged }.map { it.tag }
-                    tags = tagTagMap!!.values.filter { it.isTagged }.map { it.tag }
-                    tagsToExclude = tagExcludedTagMap!!.values.filter { it.isTagged }.map { it.tag }
-                    genreToExclude =
-                        genreExcludedTagMap!!.values.filter { it.isTagged }.map { it.tag }
+                    streamingOn = streamingTagMap!!.values.filter { it.tagState == TagState.TAGGED }.map { it.tag }
+                    genre = genreTagMap!!.values.filter { it.tagState == TagState.TAGGED }.map { it.tag }
+                    genreToExclude = genreTagMap!!.values.filter { it.tagState == TagState.UNTAGGED }.map { it.tag }
+                    tags = tagTagMap!!.values.filter { it.tagState == TagState.TAGGED}.map { it.tag }
+                    tagsToExclude = tagTagMap!!.values.filter { it.tagState == TagState.UNTAGGED}.map { it.tag }
 
                     hentaiOnly = hentaiOnlySwtich.isChecked
                 }
@@ -573,7 +483,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                         browseStatusSpinner?.setSelection(it + 1)
                     }
                     it.streamingOn?.mapNotNull {
-                        streamingTagMap!![it]?.isTagged = true
+                        streamingTagMap!![it]?.tagState = TagState.TAGGED
                         streamingTagMap!![it]
                     }?.let {
                         mListener?.onTagAdd(it, MediaTagFilterTypes.STREAMING_ON)
@@ -586,31 +496,31 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                         browseSourceSpinner.setSelection(it + 1)
                     }
                     it.genre?.mapNotNull {
-                        genreTagMap!![it]?.isTagged = true
+                        genreTagMap!![it]?.tagState = TagState.TAGGED
                         genreTagMap!![it]
                     }?.let {
                         mListener?.onTagAdd(it, MediaTagFilterTypes.GENRES)
                     }
 
                     it.tags?.mapNotNull {
-                        tagTagMap!![it]?.isTagged = true
+                        tagTagMap!![it]?.tagState = TagState.TAGGED
                         tagTagMap!![it]
                     }?.let {
                         mListener?.onTagAdd(it, MediaTagFilterTypes.TAGS)
                     }
 
                     it.tagsToExclude?.mapNotNull {
-                        tagExcludedTagMap!![it]?.isTagged = true
-                        tagExcludedTagMap!![it]
+                        tagTagMap!![it]?.tagState = TagState.UNTAGGED
+                        tagTagMap!![it]
                     }?.let {
-                        mListener?.onTagAdd(it, MediaTagFilterTypes.TAG_EXCLUDE)
+                        mListener?.onTagAdd(it, MediaTagFilterTypes.TAGS)
                     }
 
                     it.genreToExclude?.mapNotNull {
-                        genreExcludedTagMap!![it]?.isTagged = true
-                        genreExcludedTagMap!![it]
+                        genreTagMap!![it]?.tagState = TagState.UNTAGGED
+                        genreTagMap!![it]
                     }?.let {
-                        mListener?.onTagAdd(it, MediaTagFilterTypes.GENRE_EXCLUDE)
+                        mListener?.onTagAdd(it, MediaTagFilterTypes.GENRES)
                     }
 
                     hentaiOnlySwtich.isChecked = it.hentaiOnly
@@ -618,8 +528,6 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                     mListener?.updateTags(MediaTagFilterTypes.TAGS)
                     mListener?.updateTags(MediaTagFilterTypes.GENRES)
                     mListener?.updateTags(MediaTagFilterTypes.STREAMING_ON)
-                    mListener?.updateTags(MediaTagFilterTypes.TAG_EXCLUDE)
-                    mListener?.updateTags(MediaTagFilterTypes.GENRE_EXCLUDE)
                 }
             }
             is CharacterSearchFilterModel -> {

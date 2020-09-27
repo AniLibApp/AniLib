@@ -17,6 +17,7 @@ import com.revolgenx.anilib.event.ListEditorResultEvent
 import com.revolgenx.anilib.event.TagEvent
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
+import com.revolgenx.anilib.field.TagState
 import com.revolgenx.anilib.field.home.SeasonField
 import com.revolgenx.anilib.fragment.base.BasePresenterFragment
 import com.revolgenx.anilib.model.CommonMediaModel
@@ -74,16 +75,16 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
         if (savedInstanceState == null) {
             viewModel.field = SeasonField.create(requireContext())
             getUserTag(requireContext()).forEach {
-                viewModel.field.tagTagFields[it] = TagField(it, false)
+                viewModel.field.tagTagFields[it] = TagField(it, TagState.EMPTY)
             }
             getUserGenre(requireContext()).forEach {
-                viewModel.field.genreTagFields[it] = TagField(it, false)
+                viewModel.field.genreTagFields[it] = TagField(it, TagState.EMPTY)
             }
             viewModel.field.genres?.forEach {
-                viewModel.field.genreTagFields[it]?.isTagged = true
+                viewModel.field.genreTagFields[it]?.tagState = TagState.TAGGED
             }
             viewModel.field.tags?.forEach {
-                viewModel.field.tagTagFields[it]?.isTagged = true
+                viewModel.field.tagTagFields[it]?.tagState = TagState.TAGGED
             }
         }
         super.onActivityCreated(savedInstanceState)
@@ -175,17 +176,17 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
         when(event.tagType){
             MediaTagFilterTypes.SEASON_TAG->{
                 event.tagFields.forEach {
-                    viewModel.field.tagTagFields[it.tag]?.isTagged = it.isTagged
+                    viewModel.field.tagTagFields[it.tag]?.tagState = it.tagState
                 }
-                viewModel.field.tags = event.tagFields.filter { it.isTagged }.map { it.tag }.toList()
+                viewModel.field.tags = event.tagFields.filter { it.tagState == TagState.TAGGED }.map { it.tag }.toList()
                 viewModel.field.saveTags(requireContext())
                 renewAdapter()
             }
             MediaTagFilterTypes.SEASON_GENRE->{
                 event.tagFields.forEach {
-                    viewModel.field.genreTagFields[it.tag]?.isTagged = it.isTagged
+                    viewModel.field.genreTagFields[it.tag]?.tagState = it.tagState
                 }
-                viewModel.field.genres = event.tagFields.filter { it.isTagged }.map { it.tag }.toList()
+                viewModel.field.genres = event.tagFields.filter { it.tagState == TagState.TAGGED}.map { it.tag }.toList()
                 viewModel.field.saveGenre(requireContext())
                 renewAdapter()
             }

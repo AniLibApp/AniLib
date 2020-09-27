@@ -3,22 +3,16 @@ package com.revolgenx.anilib.dialog
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.core.os.bundleOf
-import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.adapter.TagAdapter
 import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.event.TagEvent
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
+import com.revolgenx.anilib.ui.view.TriStateMode
 import kotlinx.android.synthetic.main.tag_chooser_dialog_fragment_layout.*
-import kotlinx.android.synthetic.main.tag_holder_layout.view.*
 
 class TagChooserDialogFragment : BaseDialogFragment() {
     override var positiveText: Int? = R.string.done
@@ -37,7 +31,7 @@ class TagChooserDialogFragment : BaseDialogFragment() {
             return arguments?.getParcelable<TagChooserField>(
                 TAG_KEY
             )!!.also { arg ->
-                arg.tags = arg.tags.map { TagField(it.tag, it.isTagged) }
+                arg.tags = arg.tags.map { TagField(it.tag, it.tagState) }
             }
         }
 
@@ -49,10 +43,10 @@ class TagChooserDialogFragment : BaseDialogFragment() {
     ): DynamicDialog.Builder {
         dialogBuilder.setTitle(
             when (tagChooserField.tagType) {
-                MediaTagFilterTypes.TAGS, MediaTagFilterTypes.TAG_EXCLUDE, MediaTagFilterTypes.SEASON_TAG -> {
+                MediaTagFilterTypes.TAGS, MediaTagFilterTypes.SEASON_TAG -> {
                     getString(R.string.tags)
                 }
-                MediaTagFilterTypes.GENRES, MediaTagFilterTypes.GENRE_EXCLUDE, MediaTagFilterTypes.SEASON_GENRE -> {
+                MediaTagFilterTypes.GENRES, MediaTagFilterTypes.SEASON_GENRE -> {
                     getString(R.string.genre)
                 }
                 MediaTagFilterTypes.STREAMING_ON -> {
@@ -73,7 +67,11 @@ class TagChooserDialogFragment : BaseDialogFragment() {
             getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
                 tagAdapter.deSelectAll()
             }
-            tagAdapter = TagAdapter()
+            val tagMode = when(tagChooserField.tagType){
+                MediaTagFilterTypes.TAGS, MediaTagFilterTypes.GENRES -> {TriStateMode.TRI_MODE}
+                MediaTagFilterTypes.STREAMING_ON,MediaTagFilterTypes.SEASON_GENRE, MediaTagFilterTypes.SEASON_TAG -> {TriStateMode.BI_MODE}
+            }
+            tagAdapter = TagAdapter(tagMode)
             tagAdapter.submitList(tagChooserField.tags)
             tagRecyclerView.adapter = tagAdapter
         }

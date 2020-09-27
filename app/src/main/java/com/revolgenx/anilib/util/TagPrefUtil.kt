@@ -3,6 +3,7 @@ package com.revolgenx.anilib.util
 import android.content.Context
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.field.TagField
+import com.revolgenx.anilib.field.TagState
 import com.revolgenx.anilib.field.home.SeasonField
 import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.preference.*
@@ -29,7 +30,7 @@ object TagPrefUtil {
             context,
             tags
         )
-        return tags.map { TagField(it, false) }
+        return tags.map { TagField(it, TagState.EMPTY) }
     }
 
     fun getUserPrefTags(context: Context): List<String> = getUserTag(context)
@@ -40,7 +41,7 @@ object TagPrefUtil {
     fun reloadGenrePref(context: Context): List<TagField> {
         val tags = context.resources.getStringArray(R.array.media_genre).toList()
         saveGenrePref(context, tags)
-        return tags.map { TagField(it, false) }
+        return tags.map { TagField(it, TagState.EMPTY) }
     }
 
     fun reloadStreamingPref(context: Context): List<TagField> {
@@ -51,7 +52,7 @@ object TagPrefUtil {
             tags
         )
 
-        return tags.map { TagField(it, false) }
+        return tags.map { TagField(it, TagState.EMPTY) }
     }
 
     fun invalidateAll(context: Context) {

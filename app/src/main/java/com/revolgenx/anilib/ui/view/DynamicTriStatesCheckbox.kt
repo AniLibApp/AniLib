@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
 import com.revolgenx.anilib.R
 
+
 class DynamicTriStatesCheckbox : DynamicCheckBox {
 
     private var mListener: ((state: TriStateCheckState) -> Unit)? = null
@@ -44,8 +45,9 @@ class DynamicTriStatesCheckbox : DynamicCheckBox {
         updateView()
     }
 
+
     private fun updateView() {
-        setOnCheckedChangeListener { _, _ ->
+        setOnClickListener { _ ->
             checkedState = if (triStateMode == TriStateMode.BI_MODE) {
                 if (checkedState == TriStateCheckState.TICK) TriStateCheckState.EMPTY else TriStateCheckState.TICK
             } else {
@@ -70,8 +72,7 @@ class DynamicTriStatesCheckbox : DynamicCheckBox {
         setButtonDrawable(checkboxDrawable)
     }
 
-
-    fun setStateChangeListener(listener:(state: TriStateCheckState) -> Unit){
+    fun setStateChangeListener(listener: (state: TriStateCheckState) -> Unit){
         mListener = listener
     }
 

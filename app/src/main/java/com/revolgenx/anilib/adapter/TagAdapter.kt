@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.field.TagField
+import com.revolgenx.anilib.field.TagState
+import com.revolgenx.anilib.ui.view.TriStateCheckState
+import com.revolgenx.anilib.ui.view.TriStateMode
 import kotlinx.android.synthetic.main.tag_holder_layout.view.*
 
-class TagAdapter : RecyclerView.Adapter<TagAdapter.TagHolder>() {
+class TagAdapter(private val tagMode: TriStateMode) : RecyclerView.Adapter<TagAdapter.TagHolder>() {
     private val textColor =
         DynamicTheme.getInstance().get().tintSurfaceColor
 
@@ -25,7 +28,7 @@ class TagAdapter : RecyclerView.Adapter<TagAdapter.TagHolder>() {
         )
     }
 
-    fun submitList(tags:List<TagField>){
+    fun submitList(tags: List<TagField>) {
         this.tags = tags
         notifyDataSetChanged()
     }
@@ -41,7 +44,7 @@ class TagAdapter : RecyclerView.Adapter<TagAdapter.TagHolder>() {
 
     fun deSelectAll() {
         tags.forEach {
-            it.isTagged = false
+            it.tagState = TagState.EMPTY
         }
         notifyDataSetChanged()
     }
@@ -49,12 +52,13 @@ class TagAdapter : RecyclerView.Adapter<TagAdapter.TagHolder>() {
     inner class TagHolder(v: View) : RecyclerView.ViewHolder(v) {
         fun bind(item: TagField) {
             itemView.apply {
-                tagCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                    item.isTagged = isChecked
+                tagCheckBox.triStateMode = tagMode
+                tagCheckBox.setStateChangeListener { state ->
+                    item.tagState = TagState.values()[state.ordinal]
                 }
                 tagCheckBox.setTextColor(textColor)
                 tagCheckBox.text = item.tag
-                tagCheckBox.isChecked = item.isTagged
+                tagCheckBox.checkedState = TriStateCheckState.values()[item.tagState.ordinal]
             }
         }
     }

@@ -3,6 +3,7 @@ package com.revolgenx.anilib.viewmodel.setting
 import android.content.Context
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.field.TagField
+import com.revolgenx.anilib.field.TagState
 import com.revolgenx.anilib.meta.TagFilterMetaType
 import com.revolgenx.anilib.util.TagPrefUtil
 import com.revolgenx.anilib.viewmodel.BaseViewModel
@@ -27,7 +28,7 @@ class TagFilterSettingDialogViewModel : BaseViewModel() {
             }
         }
 
-        tagFields.addAll(tags.map { TagField(it, false) })
+        tagFields.addAll(tags.map { TagField(it, TagState.EMPTY) })
     }
 
     fun reloadTagFields(context: Context) {
@@ -43,11 +44,11 @@ class TagFilterSettingDialogViewModel : BaseViewModel() {
                 context.resources.getStringArray(R.array.streaming_on).toList()
             }
         }
-        tagFields.addAll(tags.map { TagField(it, false) })
+        tagFields.addAll(tags.map { TagField(it, TagState.EMPTY) })
     }
 
     fun removeTagFields() {
-        tagFields.removeAll { it.isTagged }
+        tagFields.removeAll { it.tagState == TagState.TAGGED }
     }
 
     fun saveTagFields(context: Context) {

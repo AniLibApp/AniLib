@@ -13,14 +13,14 @@ import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.field.TagField
+import com.revolgenx.anilib.field.TagState
 import com.revolgenx.anilib.meta.TagFilterMetaType
 import com.revolgenx.anilib.meta.TagFilterSettingMeta
-import com.revolgenx.anilib.util.TagPrefUtil
 import com.revolgenx.anilib.viewmodel.setting.TagEditMode
 import com.revolgenx.anilib.viewmodel.setting.TagFilterSettingDialogViewModel
 import kotlinx.android.synthetic.main.tag_chooser_dialog_header_layout.view.*
 import kotlinx.android.synthetic.main.tag_filter_setting_dialog_fragment_layout.*
-import kotlinx.android.synthetic.main.tag_holder_layout.view.*
+import kotlinx.android.synthetic.main.tag_filter_setting_holder_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TagFilterSettingDialogFragment : BaseDialogFragment() {
@@ -153,7 +153,7 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
     private fun View.initHeaderListener() {
         addTagFromEtIv.setOnClickListener {
             tagAddEt.text.toString().takeIf { it.isNotEmpty() }?.let { newTag ->
-                viewModel.tagFields.add(TagField(newTag, false))
+                viewModel.tagFields.add(TagField(newTag, TagState.EMPTY))
                 tagAddEt.setText("")
                 adapter.notifyDataSetChanged()
             }
@@ -185,7 +185,7 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagHolder {
             return TagHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.tag_holder_layout,
+                    R.layout.tag_filter_setting_holder_layout,
                     parent,
                     false
                 )
@@ -202,19 +202,19 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
         }
 
         fun deSelectAll() {
-            viewModel.tagFields.forEach { it.isTagged = false }
+            viewModel.tagFields.forEach { it.tagState = TagState.EMPTY }
             notifyDataSetChanged()
         }
 
         inner class TagHolder(v: View) : RecyclerView.ViewHolder(v) {
             fun bind(item: TagField) {
                 itemView.apply {
-                    tagCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                        item.isTagged = isChecked
+                    this.tagChooserCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                        item.tagState = if(isChecked) TagState.TAGGED else TagState.EMPTY
                     }
-                    tagCheckBox.setTextColor(textColor)
-                    tagCheckBox.text = item.tag
-                    tagCheckBox.isChecked = item.isTagged
+                    tagChooserCheckBox.setTextColor(textColor)
+                    tagChooserCheckBox.text = item.tag
+                    tagChooserCheckBox.isChecked = item.tagState == TagState.TAGGED
                 }
             }
 

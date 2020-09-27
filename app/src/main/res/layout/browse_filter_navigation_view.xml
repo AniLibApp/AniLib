@@ -356,39 +356,6 @@
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
                 </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
 
-
-                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:headerName="@string/exclude_genres">
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
-                        android:id="@+id/genreExcludeFrameLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="40dp">
-
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-                            android:id="@+id/genreExcludeRecyclerView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginTop="6dp"
-                            android:layout_marginBottom="6dp"
-                            android:layout_toStartOf="@id/genreExcludeAddIv"
-                            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
-
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                            android:id="@+id/genreExcludeAddIv"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_alignParentEnd="true"
-                            android:padding="10dp"
-                            app:ads_colorType="accent"
-                            app:srcCompat="@drawable/ic_add" />
-                    </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
-                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
-
                 <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -421,38 +388,6 @@
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
                 </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
 
-
-                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:headerName="@string/exclude_tags">
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
-                        android:id="@+id/tagExcludeFrameLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="40dp">
-
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-                            android:id="@+id/tagExcludeRecyclerView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginTop="6dp"
-                            android:layout_marginBottom="6dp"
-                            android:layout_toStartOf="@id/tagExcludeAddIv"
-                            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
-
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                            android:id="@+id/tagExcludeAddIv"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_alignParentEnd="true"
-                            android:padding="10dp"
-                            app:ads_colorType="accent"
-                            app:srcCompat="@drawable/ic_add" />
-                    </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
-                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
