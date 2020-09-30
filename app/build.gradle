@@ -20,8 +20,8 @@ android {
         applicationId "com.revolgenx.anilib"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 19
-        versionName "1.1.4-base"
+        versionCode 20
+        versionName "1.1.5-base"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
@@ -235,6 +235,9 @@ dependencies {
 
     //shimmer layout
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    //material datetimepicker
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
