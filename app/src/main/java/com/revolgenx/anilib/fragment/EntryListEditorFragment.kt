@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.fragment
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
@@ -33,6 +32,7 @@ import com.revolgenx.anilib.util.COLLAPSED
 import com.revolgenx.anilib.util.EXPANDED
 import com.revolgenx.anilib.util.makeToast
 import com.revolgenx.anilib.viewmodel.entry.MediaEntryEditorViewModel
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.list_editor_fragment_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
@@ -47,6 +47,7 @@ class EntryListEditorFragment : BaseFragment() {
 
     companion object {
         const val LIST_EDITOR_META_KEY = "list_editor_meta_key"
+        private const val DatePickerDialogTag ="DatePickerDialogTag"
     }
 
     private var state = COLLAPSED //collapsed
@@ -411,8 +412,8 @@ class EntryListEditorFragment : BaseFragment() {
 
 
         startDateDynamicEt.setOnClickListener {
-            DatePickerDialog(
-                requireContext(), { view, year, month, dayOfMonth ->
+            val datePickerDialog = DatePickerDialog.newInstance(
+                { _, year, month, dayOfMonth ->
                     apiModelEntry.startDate =
                         (apiModelEntry.startDate ?: DateModel()).also {
                             it.year = year
@@ -424,12 +425,15 @@ class EntryListEditorFragment : BaseFragment() {
                 apiModelEntry.startDate?.year ?: calendar.get(Calendar.YEAR),
                 apiModelEntry.startDate?.month?.minus(1) ?: calendar.get(Calendar.MONTH),
                 apiModelEntry.startDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
+            )
+
+            datePickerDialog.accentColor = DynamicTheme.getInstance().get().accentColor
+            datePickerDialog.show(childFragmentManager, DatePickerDialogTag)
         }
 
         endDateDynamicEt.setOnClickListener {
-            DatePickerDialog(
-                requireContext(), { view, year, month, dayOfMonth ->
+            val datePickerDialog = DatePickerDialog.newInstance(
+                { _, year, month, dayOfMonth ->
                     apiModelEntry.endDate =
                         (apiModelEntry.endDate ?: DateModel()).also {
                             it.year = year
@@ -441,7 +445,9 @@ class EntryListEditorFragment : BaseFragment() {
                 apiModelEntry.endDate?.year ?: calendar.get(Calendar.YEAR),
                 apiModelEntry.endDate?.month?.minus(1) ?: calendar.get(Calendar.MONTH),
                 apiModelEntry.endDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
+            )
+            datePickerDialog.accentColor = DynamicTheme.getInstance().get().accentColor
+            datePickerDialog.show(childFragmentManager, DatePickerDialogTag)
         }
 
         statusSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
