@@ -18,4 +18,4 @@ jobs:
           java-version: 1.8
 
       - name: Build app
-        run: ./gradlew assembleStandardDebug
+        run: ./gradlew assemble
