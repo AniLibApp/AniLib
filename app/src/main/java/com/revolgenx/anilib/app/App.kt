@@ -35,7 +35,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class App : DynamicApplication() {
+open class App : DynamicApplication() {
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
@@ -60,14 +60,7 @@ class App : DynamicApplication() {
         BigImageViewer.initialize(FrescoImageLoader.with(this, config))
         startKoin {
             androidContext(this@App)
-            modules(
-                listOf(
-                    viewModelModules,
-                    repositoryModules,
-                    networkModules,
-                    serviceModule
-                )
-            )
+            modules(getKoinModules())
         }
 
 
@@ -105,6 +98,13 @@ class App : DynamicApplication() {
                 .cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
         }
     }
+
+    protected open fun getKoinModules() = listOf(
+        viewModelModules,
+        repositoryModules,
+        networkModules,
+        serviceModule
+    )
 
     @StyleRes
     override fun getThemeRes(): Int {
