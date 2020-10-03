@@ -29,8 +29,16 @@ android {
                 appAuthRedirectScheme: 'callback'
         ]
 
-        buildConfigField "String", "anilistclientId", anilistProperties['anilist_client_id']
-        buildConfigField "String", "anilistclientSecret", anilistProperties['anilist_client_secret']
+        if (rootProject.file("secrets.properties").exists()) {
+            def secretProps = new Properties()
+            secretProps.load(new FileInputStream(rootProject.file("secret.properties")))
+            buildConfigField "String", "anilistclientId", secretProps['anilist_client_id']
+            buildConfigField "String", "anilistclientSecret", secretProps['anilist_client_secret']
+        }else{
+            buildConfigField "String", "anilistclientId", "anilistclientId"
+            buildConfigField "String", "anilistclientSecret", "anilistclientSecret"
+        }
+
         buildConfigField "String", "anilistRedirectUri", anilistProperties['anilist_redirect_uri']
         buildConfigField "String", "anilistAuthEndPoint", anilistProperties['anilist_auth_endpoint']
         buildConfigField "String", "anilistTokenEndPoint", anilistProperties['anilist_token_endpoint']
@@ -236,7 +244,7 @@ dependencies {
     //shimmer layout
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
-    //material datetimepicker
+    //material datetimepicker /*remove later*/
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 
     testImplementation 'junit:junit:4.12'
