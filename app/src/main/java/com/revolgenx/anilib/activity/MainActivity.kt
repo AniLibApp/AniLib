@@ -264,10 +264,10 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                     true
                 }
 
-                R.id.contribute -> {
-                    startActivity(Intent(this, AboutActivity::class.java))
-                    true
-                }
+//                R.id.contribute -> {
+//                    startActivity(Intent(this, AboutActivity::class.java))
+//                    true
+//                }
                 R.id.stageVersion -> {
                     BrowseSiteEvent().postEvent
                     true

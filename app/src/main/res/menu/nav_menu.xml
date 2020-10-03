@@ -37,10 +37,10 @@
 
     <item android:title="@string/support">
         <menu>
-            <item
-                android:id="@+id/contribute"
-                android:icon="@drawable/ic_favorite"
-                android:title="@string/contribute" />
+<!--            <item-->
+<!--                android:id="@+id/contribute"-->
+<!--                android:icon="@drawable/ic_favorite"-->
+<!--                android:title="@string/contribute"/>-->
             <item
                 android:id="@+id/stageVersion"
                 android:icon="@drawable/ic_anilib_inline"
