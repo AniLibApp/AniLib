@@ -22,8 +22,8 @@ class AppInfoAdapter : DynamicSimpleBinderAdapter<DynamicRecyclerViewBinder<*>>(
     init {
         addDataBinders(
             AppInfoBinder(this),
-            PatreonInfoBinder(this),
-            BmcInfoBinder(this),
+//            PatreonInfoBinder(this),
+//            BmcInfoBinder(this),
             AboutOtherInfoBinder(this)
         )
     }
