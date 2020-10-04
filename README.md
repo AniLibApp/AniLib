@@ -1,4 +1,10 @@
-<p align="center"> <img src="./.github/assets/anilib_icon.png" width="80px" > </p>
+<img src="https://github.com/rev0lgenX/AnilibAssets/raw/master/1_1_4_base/simple_banner.jpg" width="20%" >
+
+## 
+
+App for tracking anime/manga by the power of AniList.
+
+![Display](https://github.com/rev0lgenX/AnilibAssets/raw/master/1_1_4_base/combined.jpg)
 
 ## Development Setup
 <details><summary>Api Keys</summary>
@@ -11,6 +17,9 @@ anilist_client_id=<here>
 anilist_client_secret=<here>
 ```    
 </details>
+
+## Issue
+
 
 ## License
 
