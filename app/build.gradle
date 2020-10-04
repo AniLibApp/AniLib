@@ -20,7 +20,7 @@ android {
         applicationId "com.revolgenx.anilib"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 20
+        versionCode 22
         versionName "1.1.5-base"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -29,14 +29,14 @@ android {
                 appAuthRedirectScheme: 'callback'
         ]
 
-        if (rootProject.file("secrets.properties").exists()) {
+        if (rootProject.file("secret.properties").exists()) {
             def secretProps = new Properties()
             secretProps.load(new FileInputStream(rootProject.file("secret.properties")))
             buildConfigField "String", "anilistclientId", secretProps['anilist_client_id']
             buildConfigField "String", "anilistclientSecret", secretProps['anilist_client_secret']
         }else{
-            buildConfigField "String", "anilistclientId", "anilistclientId"
-            buildConfigField "String", "anilistclientSecret", "anilistclientSecret"
+            buildConfigField "String", "anilistclientId", '"anilist_client_id"'
+            buildConfigField "String", "anilistclientSecret", '"anilist_client_secret"'
         }
 
         buildConfigField "String", "anilistRedirectUri", anilistProperties['anilist_redirect_uri']
@@ -246,6 +246,7 @@ dependencies {
 
     //material datetimepicker /*remove later*/
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
