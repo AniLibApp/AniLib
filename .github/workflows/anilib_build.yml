@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v2.2.0
         with:
             name: AniLib-Debug
-            path: app/build/outputs/apk/debug/Anilib*.apk
+            path: app/build/outputs/apk/debug/*.apk
             
         
         
