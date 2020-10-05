@@ -7,7 +7,7 @@ App for tracking anime/manga by the power of AniList.
 
 ![Display](https://github.com/rev0lgenX/AnilibAssets/raw/master/1_1_4_base/combined.jpg)
 
-## Development Setup
+## Development
 <details><summary>Api Keys</summary>
         
 Supply AniList Api Keys into `secret.properties`.
@@ -19,8 +19,24 @@ anilist_client_secret=<here>
 ```    
 </details>
 
-## Issue
+<details><summary>Contribution</summary>
+        
+* Always create pull request to dev branch.<br>
+* Please pull before sending pull request to avoid merge conflict.<br>
+* Create description about what it does or solve.<br>
 
+</details>
+
+## Issues
+Before creating an issue check if it is already opened. 
+
+<details><summary>Bugs</summary>
+        
+* Check if bug is already fixed.<br>
+* Create an issue with steps to reproduce the bug and a screenshot would help.
+* Report/Discuss about the issue in chat if you are unsure about it. 
+
+</details>
 
 ## License
 
