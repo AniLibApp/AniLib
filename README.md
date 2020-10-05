@@ -2,7 +2,7 @@
 
 ## 
 
-![Build Check](https://img.shields.io/github/workflow/status/rev0lgenX/AniLib/AniLib%20build%20check/dev)
+[![Build Check](https://github.com/rev0lgenX/AniLib/workflows/AniLib%20build%20check/badge.svg?branch=dev&event=push)](https://github.com/rev0lgenX/AniLib/actions)   [![Discord](https://img.shields.io/discord/762249048748589066?color=%236E85D3&label=Discord&logo=Discord)](https://discord.gg/Gd2TVQT)
 
 ## About
 App for tracking anime/manga by the power of AniList.
@@ -36,7 +36,7 @@ Before creating an issue check if it is already opened.
         
 * Check if bug is already fixed.<br>
 * Create an issue with steps to reproduce the bug and a screenshot would help.
-* Report/Discuss about the issue in chat if you are unsure about it. 
+* Report/Discuss about the issue in chat if you are unsure about it. [![Discord Issue](https://img.shields.io/discord/762249048748589066?logo=Discord)](https://discord.gg/AtqszAG)
 
 </details>
 
