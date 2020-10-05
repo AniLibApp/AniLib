@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/rev0lgenX/AnilibAssets/raw/master/1_1_4_base/simple_banner.jpg" width="20%" ></p>
+<p align="center"><img src="https://github.com/rev0lgenX/AnilibAssets/raw/master/1_1_4_base/simple_banner.jpg" width="180px" ></p>
 
 ## 
 
