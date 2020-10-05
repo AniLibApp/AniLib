@@ -2,6 +2,8 @@
 
 ## 
 
+![Build Check](https://img.shields.io/github/workflow/status/rev0lgenX/AniLib/AniLib%20build%20check/dev)
+
 ## About
 App for tracking anime/manga by the power of AniList.
 
