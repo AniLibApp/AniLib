@@ -19,10 +19,10 @@ anilist_client_secret=<here>
 ```    
 </details>
 
-<details><summary>Contribution</summary>
+<details><summary>Contributions</summary>
         
 * Always create pull request to dev branch.<br>
-* Please pull before sending pull request to avoid merge conflict.<br>
+* Please pull to latest before sending pull request to avoid merge conflict.<br>
 * Create description about what it does or solve.<br>
 
 </details>
