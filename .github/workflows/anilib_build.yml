@@ -24,7 +24,7 @@ jobs:
         env:
           ANILIST_SECRET: ${{ secrets.ANILIST_SECRET }}
         run:          
-          echo "$ANILIST_SECRET" | base64 -d > ./secrets.properties
+          echo "$ANILIST_SECRET" | base64 -d > ./secret.properties
         
       - name: Build app
         run: ./gradlew build
