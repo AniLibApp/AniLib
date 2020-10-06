@@ -29,10 +29,13 @@ jobs:
       - name: Build app
         run: ./gradlew build
       
+      - name: Set CURRENT_SHA
+        run: echo "::set-env name=CURRENT_SHA::$(git rev-parse --short HEAD)"
+      
       - name: Upload apk
         uses: actions/upload-artifact@v2.2.0
         with:
-            name: AniLib-Debug
+            name: AniLib-${{env.CURRENT_SHA}}
             path: app/build/outputs/apk/debug/*.apk
             
         
