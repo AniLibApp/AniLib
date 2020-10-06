@@ -1,4 +1,4 @@
-name: create AniLib apk artifact
+name: AniLib build artifact
 on: workflow_dispatch
 
 jobs:
