@@ -4,43 +4,29 @@
     <!--region appinfo-->
     <string-array name="info_app_links">
         <item>@string/anilib_site</item>
+        <item>@string/source</item>
+        <item>@string/apache_2</item>
     </string-array>
 
     <string-array name="info_app_subtitles">
         <item>@string/visit_site_desc</item>
+        <item>@string/github_desc</item>
+        <item>@string/license_desc</item>
     </string-array>
 
     <string-array name="info_app_urls">
         <item>@string/site_url</item>
+        <item>@string/github_link</item>
+        <item>@string/apache_url</item>
     </string-array>
     <!--endregion-->
 
-    <!--Patreon-->
-    <string-array name="patreon_source">
-        <item>@string/patreon_page</item>
-    </string-array>
-    <string-array name="patreon_source_sub">
-        <item>@string/patreon_page_sub</item>
-    </string-array>
-    <string-array name="patreon_source_url">
-        <item>@string/patreon_link</item>
-    </string-array>
     <integer-array name="url_link_icons">
-        <item>@drawable/ic_link</item>
+        <item>@drawable/ic_anilib_inline</item>
+        <item>@drawable/ads_ic_social_github</item>
+        <item>@drawable/ads_ic_license</item>
     </integer-array>
-    <!--Patreon-end-->
 
-    <!--bmc-begin-->
-    <string-array name="bmc_source">
-        <item>@string/bmc_page</item>
-    </string-array>
-    <string-array name="bmc_source_sub">
-        <item>@string/bmc_page_sub</item>
-    </string-array>
-    <string-array name="bmc_source_url">
-        <item>@string/bmc_link</item>
-    </string-array>
-    <!--bmc-end-->
 
     <integer-array name="license_links_icons_license">
         <item>@drawable/ads_ic_license</item>

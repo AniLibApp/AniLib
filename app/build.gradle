@@ -21,7 +21,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 22
-        versionName "1.1.5-base"
+        versionName "1.1.4-base"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
@@ -136,6 +136,7 @@ ext {
 
     crashlytics_version = '17.2.2'
     timber_version = '4.7.1'
+    appupdater_version = '2.7'
 }
 
 dependencies {
@@ -274,6 +275,9 @@ dependencies {
 
     //material datetimepicker /*remove later*/
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
+
+    //update checker
+    implementation "com.github.javiersantos:AppUpdater:$appupdater_version"
 
 
     testImplementation 'junit:junit:4.12'

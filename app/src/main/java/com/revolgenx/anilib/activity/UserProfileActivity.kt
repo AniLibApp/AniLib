@@ -368,7 +368,7 @@ class UserProfileActivity : BasePopupVideoActivity() {
             }
 
             if (userProfileModel!!.isFollowing == true) {
-                with(MessageDialog.Builder) {
+                with(MessageDialog.Companion.Builder()) {
                     titleRes = R.string.unfollow
                     message = getString(R.string.stop_following_s).format(
                         userProfileModel?.userName ?: ""
@@ -377,7 +377,7 @@ class UserProfileActivity : BasePopupVideoActivity() {
                     negativeTextRes = R.string.no
                     build().let {
                         it.onButtonClickedListener = toggleFollowCallback
-                        it.show(supportFragmentManager, messageDialogTag)
+                        it.show(supportFragmentManager, MessageDialog.messageDialogTag)
                     }
                 }
                 return@setOnClickListener
