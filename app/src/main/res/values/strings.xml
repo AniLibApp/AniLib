@@ -410,5 +410,16 @@
     <string name="_default">Default</string>
     <string name="change_display_mode">Change display mode</string>
     <string name="startdate_format">%1$s ~ %2$s</string>
+    <string name="new_update_available">New update available!</string>
+    <string name="new_update_description">Update to newer version of AniLib?</string>
+    <string name="check_for_update">Check for update</string>
+    <string name="no_thanks">No, Thanks</string>
+    <string name="no_update_available">No update available</string>
+    <string name="no_update_description">You have the latest version of AniLib</string>
+    <string name="checking_for_update">Checking for update</string>
+    <string name="checking_for_update_failed">Chekcing for update failed</string>
+    <string name="discord">Discord</string>
+    <string name="github_desc">View source on Github.</string>
+
 
 </resources>

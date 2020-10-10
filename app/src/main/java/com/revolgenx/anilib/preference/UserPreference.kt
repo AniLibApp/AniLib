@@ -16,12 +16,9 @@ private const val tokenKey = "token_key"
 private const val titleKey = "title_key"
 private const val imageQualityKey = "image_quality_key"
 private const val userIdKey = "user_id_key"
-private const val crashReportKey = "crash_report_key"
 private const val lastNotificationKey = "last_notification_key"
-private const val versionKey = "versionKey"
 private const val sharedPrefSyncKey = "sharedPrefSyncKey"
 
-const val languagePrefKey = "application_language_key"
 
 fun Context.loggedIn() = getBoolean(loggedInKey, false)
 fun Context.loggedIn(logIn: Boolean) = putBoolean(loggedInKey, logIn)
@@ -107,20 +104,6 @@ fun canShowAdult(context: Context): Boolean {
     return false
 }
 
-fun getVersion(context: Context): String {
-    val version = context.getString(versionKey) ?: ""
-    context.putString(versionKey, DynamicPackageUtils.getAppVersion(context))
-    return version
-}
-
-fun isCrashReportEnabled(context: Context): Boolean {
-    return context.getBoolean(crashReportKey, true)
-}
-
-fun enableCrashReport(context: Context, enable: Boolean) {
-    context.putBoolean(crashReportKey, enable)
-}
-
 fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
     if (synced == null) {
         context.getBoolean(sharedPrefSyncKey, false)
@@ -129,6 +112,3 @@ fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
         synced
     }
 
-fun getApplicationLocale(): String {
-    return DynamicPreferences.getInstance().load(languagePrefKey, "en")!!
-}

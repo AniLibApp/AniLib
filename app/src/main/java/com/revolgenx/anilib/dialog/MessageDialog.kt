@@ -8,9 +8,7 @@ import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.widget.DynamicButton
 
 class MessageDialog : BaseDialogFragment() {
-    companion object Builder {
-
-        val messageDialogTag = MessageDialog::class.java.simpleName
+    companion object {
 
         const val titleKey = "titleKey"
         const val messageKey = "messageKey"
@@ -19,26 +17,30 @@ class MessageDialog : BaseDialogFragment() {
         const val negativeKey = "negativeKey"
         const val neutralKey = "neutralKey"
         const val viewKey = "viewKey"
+        val messageDialogTag = MessageDialog::class.java.simpleName
 
-        var titleRes: Int? = null
-        var messageRes: Int? = null
-        var message: String? = null
-        var view: Int? = null
-        var positiveTextRes: Int? = null
-        var negativeTextRes: Int? = null
-        var neutralTextRes: Int? = null
+        class Builder {
 
-        fun build(): MessageDialog {
-            return MessageDialog().also {
-                it.arguments = bundleOf(
-                    titleKey to titleRes,
-                    messageResKey to messageRes,
-                    messageKey to message,
-                    positiveKey to positiveTextRes,
-                    negativeKey to negativeTextRes,
-                    neutralKey to neutralTextRes,
-                    viewKey to view
-                )
+            var titleRes: Int? = null
+            var messageRes: Int? = null
+            var message: String? = null
+            var view: Int? = null
+            var positiveTextRes: Int? = null
+            var negativeTextRes: Int? = null
+            var neutralTextRes: Int? = null
+
+            fun build(): MessageDialog {
+                return MessageDialog().also {
+                    it.arguments = bundleOf(
+                        titleKey to titleRes,
+                        messageResKey to messageRes,
+                        messageKey to message,
+                        positiveKey to positiveTextRes,
+                        negativeKey to negativeTextRes,
+                        neutralKey to neutralTextRes,
+                        viewKey to view
+                    )
+                }
             }
         }
     }
