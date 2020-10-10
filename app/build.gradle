@@ -34,7 +34,7 @@ android {
             secretProps.load(new FileInputStream(rootProject.file("secret.properties")))
             buildConfigField "String", "anilistclientId", secretProps['anilist_client_id']
             buildConfigField "String", "anilistclientSecret", secretProps['anilist_client_secret']
-        }else{
+        } else {
             buildConfigField "String", "anilistclientId", '"anilist_client_id"'
             buildConfigField "String", "anilistclientSecret", '"anilist_client_secret"'
         }
@@ -86,11 +86,11 @@ android {
         }
 
         applicationVariants.all { variant ->
-            if(variant.buildType.name == "release"){
+            if (variant.buildType.name == "release") {
                 variant.outputs.all {
                     outputFileName = "AniLib-${defaultConfig.versionName}.apk"
                 }
-            }else if(variant.buildType.name == "debug"){
+            } else if (variant.buildType.name == "debug") {
                 variant.outputs.all {
                     outputFileName = "AniLib-${defaultConfig.versionName}-debug.apk"
                 }
@@ -100,21 +100,42 @@ android {
 }
 
 ext {
-    eventbus_ver = '3.2.0'
-    multidex_ver = '1.0.3'
-    preference_ver = '1.1.0'
-    koin_ver = '2.0.1'
-    dynamic_ver = '3.2.0'
-    elements_ver = '0.4.0'
-    threetenabp_ver = '1.2.2'
-    apollo_ver = "1.3.2"
-    fresco_ver = '2.1.0'
-    markwon_ver = '4.2.2'
+    multidex_version = '1.0.3'
+    preference_version = '1.1.0'
+    koin_version = '2.0.1'
     lifecycle_version = '2.2.0'
     coroutine_version = '1.3.2'
-    persistent_s_ver = '1.1.2'
-    exo_ver = '2.11.4'
-    work_version = "2.4.0-alpha03"
+
+    dynamic_version = '3.2.0'
+    elements_version = '0.4.0'
+    threetenabp_version = '1.2.2'
+    eventbus_version = '3.2.0'
+    okhttp_version = '4.4.0'
+    apollo_version = '1.3.2'
+    fresco_version = '2.1.0'
+    big_image_viewer_version = '1.6.4'
+    markwon_version = '4.2.2'
+    jsoup_version = '1.13.1'
+
+    range_seekbar_version = '3.0.0'
+    hauler_version = '3.1.0'
+    flex_box_version = '2.0.1'
+    persistent_search_version = '1.1.2'
+    shimmer_version = '0.5.0'
+    spin_kit_version = '1.4.0'
+    draglist_version = '1.7.2'
+    mpandroid_version = 'v3.1.0'
+    smarttab_version = '2.0.0@aar'
+
+    preetytime_version = '4.0.4.Final'
+
+    exo_version = '2.11.4'
+    work_version = '2.4.0-alpha03'
+    rx_version = '2.1.1'
+    jwt_token_version = '1.2.0'
+
+    crashlytics_version = '17.2.2'
+    timber_version = '4.7.1'
 }
 
 dependencies {
@@ -124,24 +145,24 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     //apollo
-    implementation("com.apollographql.apollo:apollo-runtime:$apollo_ver")
-    implementation "com.apollographql.apollo:apollo-rx2-support:$apollo_ver"
+    implementation("com.apollographql.apollo:apollo-runtime:$apollo_version")
+    implementation "com.apollographql.apollo:apollo-rx2-support:$apollo_version"
 
     //rx
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation "io.reactivex.rxjava2:rxandroid:$rx_version"
 
     //multidex
-    implementation "com.android.support:multidex:$multidex_ver"
+    implementation "com.android.support:multidex:$multidex_version"
 
     //eventbus
-    implementation "org.greenrobot:eventbus:$eventbus_ver"
+    implementation "org.greenrobot:eventbus:$eventbus_version"
 
     //preference
-    implementation "androidx.preference:preference-ktx:$preference_ver"
+    implementation "androidx.preference:preference-ktx:$preference_version"
 
     //koin
-    implementation "org.koin:koin-android:$koin_ver"
-    implementation "org.koin:koin-androidx-viewmodel:$koin_ver"
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
 
     //coroutine
@@ -155,101 +176,101 @@ dependencies {
 
 
     //dynamic theming
-    implementation "com.pranavpandey.android:dynamic-support:$dynamic_ver"
+    implementation "com.pranavpandey.android:dynamic-support:$dynamic_version"
 
     //element ver
-    implementation "com.otaliastudios:elements:$elements_ver"
+    implementation "com.otaliastudios:elements:$elements_version"
 
     //threetenabp
-    implementation "com.jakewharton.threetenabp:threetenabp:$threetenabp_ver"
+    implementation "com.jakewharton.threetenabp:threetenabp:$threetenabp_version"
 
     //flexbox
-    implementation 'com.google.android:flexbox:2.0.1'
+    implementation "com.google.android:flexbox:$flex_box_version"
 
     //okhttp
-    implementation("com.squareup.okhttp3:okhttp:4.4.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.4.0")
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     //image fresco
-    implementation "com.facebook.fresco:fresco:$fresco_ver"
-    implementation "com.facebook.fresco:animated-gif:$fresco_ver"
-    implementation "com.facebook.fresco:animated-webp:$fresco_ver"
-    implementation "com.facebook.fresco:webpsupport:$fresco_ver"
-    implementation "com.facebook.fresco:animated-base:$fresco_ver"
+    implementation "com.facebook.fresco:fresco:$fresco_version"
+    implementation "com.facebook.fresco:animated-gif:$fresco_version"
+    implementation "com.facebook.fresco:animated-webp:$fresco_version"
+    implementation "com.facebook.fresco:webpsupport:$fresco_version"
+    implementation "com.facebook.fresco:animated-base:$fresco_version"
 
 
     //timber
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation "com.jakewharton.timber:timber:$timber_version"
 
-    //app auth
+    //app auth (check for official version later)
     implementation 'com.github.openid:AppAuth-Android:27b62d5da9'
 
     //jwt token
-    implementation 'com.auth0.android:jwtdecode:1.2.0'
+    implementation "com.auth0.android:jwtdecode:$jwt_token_version"
 
     //smarttab
-    implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
+    implementation "com.ogaclejapan.smarttablayout:library:$smarttab_version"
 
     //mp chart
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation "com.github.PhilJay:MPAndroidChart:$mpandroid_version"
 
     //markwon
-    implementation "io.noties.markwon:core:$markwon_ver"
-    implementation "io.noties.markwon:html:$markwon_ver"
-    implementation "io.noties.markwon:editor:$markwon_ver"
-    implementation "io.noties.markwon:ext-strikethrough:$markwon_ver"
-    implementation"io.noties.markwon:linkify:$markwon_ver"
-    implementation"io.noties.markwon:inline-parser:$markwon_ver"
-    implementation "io.noties.markwon:recycler:$markwon_ver"
-    implementation "io.noties.markwon:simple-ext:$markwon_ver"
+    implementation "io.noties.markwon:core:$markwon_version"
+    implementation "io.noties.markwon:html:$markwon_version"
+    implementation "io.noties.markwon:editor:$markwon_version"
+    implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
+    implementation "io.noties.markwon:linkify:$markwon_version"
+    implementation "io.noties.markwon:inline-parser:$markwon_version"
+    implementation "io.noties.markwon:recycler:$markwon_version"
+    implementation "io.noties.markwon:simple-ext:$markwon_version"
 
 
     //jsoup
-    implementation 'org.jsoup:jsoup:1.13.1'
+    implementation "org.jsoup:jsoup:$jsoup_version"
 
     //exoplayer
-    implementation "com.google.android.exoplayer:exoplayer-core:$exo_ver"
-    implementation "com.google.android.exoplayer:exoplayer-ui:$exo_ver"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exo_version"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exo_version"
 
 
-    //searchview
-    implementation "com.paulrybitskyi.persistentsearchview:persistentsearchview:$persistent_s_ver"
+    //searchview /*make own view implementation, remove later*/
+    implementation "com.paulrybitskyi.persistentsearchview:persistentsearchview:$persistent_search_version"
     implementation "com.arthurivanets.adapster:adapster:1.0.12"
 
 
     //range seekbar
-    implementation 'com.github.Jay-Goo:RangeSeekBar:3.0.0'
+    implementation "com.github.Jay-Goo:RangeSeekBar:$range_seekbar_version"
 
     //toggle
     implementation 'com.llollox:androidtoggleswitch:2.0.1'
 
     //hauler
-    implementation("com.thefuntasty.hauler:core:3.1.0")
+    implementation "com.thefuntasty.hauler:core:$hauler_version"
 
     //bigimageviewer
-    implementation 'com.github.piasy:BigImageViewer:1.6.4'
-    implementation 'com.github.piasy:FrescoImageLoader:1.6.4'
-    implementation 'com.github.piasy:FrescoImageViewFactory:1.6.4'
-    implementation 'com.github.piasy:ProgressPieIndicator:1.6.4'
+    implementation "com.github.piasy:BigImageViewer:$big_image_viewer_version"
+    implementation "com.github.piasy:FrescoImageLoader:$big_image_viewer_version"
+    implementation "com.github.piasy:FrescoImageViewFactory:$big_image_viewer_version"
+    implementation "com.github.piasy:ProgressPieIndicator:$big_image_viewer_version"
 
 
     //preetytime
-    implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
+    implementation "org.ocpsoft.prettytime:prettytime:$preetytime_version"
 
     //workmanager
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
     //firebase
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+    implementation "com.google.firebase:firebase-crashlytics:$crashlytics_version"
 
     //draglistview
-    implementation 'com.github.woxthebox:draglistview:1.7.2'
+    implementation "com.github.woxthebox:draglistview:$draglist_version"
 
     //spinkit
-    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+    implementation "com.github.ybq:Android-SpinKit:$spin_kit_version"
 
     //shimmer layout
-    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation "com.facebook.shimmer:shimmer:$shimmer_version"
 
     //material datetimepicker /*remove later*/
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
