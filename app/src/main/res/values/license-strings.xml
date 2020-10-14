@@ -2,68 +2,68 @@
 <resources>
 
     <!--LICENSE-->
-    <string name="apache_2">Apache 2.0</string>
-    <string name="mit">MIT</string>
-    <string name="sources">Sources</string>
-    <string name="license_desc">View full license.</string>
-    <string name="license_sources_desc">View sources on GitHub.</string>
-    <string name="apache_url">http://www.apache.org/licenses/LICENSE-2.0</string>
+    <string name="apache_2" translatable="false">Apache 2.0</string>
+    <string name="mit" translatable="false">MIT</string>
+    <string name="sources" translatable="false">Sources</string>
+    <string name="license_desc" translatable="false">View full license.</string>
+    <string name="license_sources_desc" translatable="false">View sources on GitHub.</string>
+    <string name="apache_url" translatable="false">http://www.apache.org/licenses/LICENSE-2.0</string>
     <!--Apollo Android-->
-    <string name="license_apollo_android">Apollo-Android</string>
-    <string name="license_copy_apollo_android">Copyright © 2019 Meteor Development Group, Inc.</string>
+    <string name="license_apollo_android" translatable="false">Apollo-Android</string>
+    <string name="license_copy_apollo_android" translatable="false">Copyright © 2019 Meteor Development Group, Inc.</string>
     <!--rx-->
-    <string name="license_rx_android">RxAndroid</string>
-    <string name="license_copy_rx_android">Copyright 2015 The RxAndroid authors</string>
+    <string name="license_rx_android" translatable="false">RxAndroid</string>
+    <string name="license_copy_rx_android" translatable="false">Copyright 2015 The RxAndroid authors</string>
     <!--EventBus-->
-    <string name="license_eventbus">EventBus</string>
-    <string name="license_copy_eventbus">CCopyright © 2012–2020 Markus Junginger, greenrobot</string>
+    <string name="license_eventbus" translatable="false">EventBus</string>
+    <string name="license_copy_eventbus" translatable="false">CCopyright © 2012–2020 Markus Junginger, greenrobot</string>
     <!--Koin-->
-    <string name="license_koin">Koin</string>
+    <string name="license_koin" translatable="false">Koin</string>
     <!--Coroutines-->
-    <string name="license_coroutines">Coroutines</string>
+    <string name="license_coroutines" translatable="false">Coroutines</string>
     <!--Elements-->
-    <string name="license_elements">Elements</string>
+    <string name="license_elements" translatable="false">Elements</string>
     <!--fresco-->
-    <string name="license_fresco">Fresco</string>
-    <string name="license_copy_fresco">Copyright © Facebook, Inc. and its affiliates.</string>
+    <string name="license_fresco" translatable="false">Fresco</string>
+    <string name="license_copy_fresco" translatable="false">Copyright © Facebook, Inc. and its affiliates.</string>
     <!--timber-->
-    <string name="license_timber">Timber</string>
-    <string name="license_copy_timber">Copyright 2013 Jake Wharton</string>
+    <string name="license_timber" translatable="false">Timber</string>
+    <string name="license_copy_timber" translatable="false">Copyright 2013 Jake Wharton</string>
     <!--AppAuth-->
-    <string name="license_app_auth">app_auth</string>
+    <string name="license_app_auth" translatable="false">app_auth</string>
     <!--JWTDecode-->
-    <string name="license_jwt_auth">jwt_auth</string>
-    <string name="license_copy_jwt_auth">Copyright © 2016 Auth0</string>
+    <string name="license_jwt_auth" translatable="false">jwt_auth</string>
+    <string name="license_copy_jwt_auth" translatable="false">Copyright © 2016 Auth0</string>
     <!--SmartTab-->
-    <string name="license_smarttab">SmartTab</string>
-    <string name="license_copy_smarttab">Copyright © 2015 ogaclejapan \n Copyright © 2013 The Android Open Source Project</string>
+    <string name="license_smarttab" translatable="false">SmartTab</string>
+    <string name="license_copy_smarttab" translatable="false">Copyright © 2015 ogaclejapan \n Copyright © 2013 The Android Open Source Project</string>
     <!--MPAndroidChart-->
-    <string name="license_mpandroidchart">MPAndroidChart</string>
-    <string name="license_copy_mpandroidchart">Copyright 2020 Philipp Jahoda</string>
+    <string name="license_mpandroidchart" translatable="false">MPAndroidChart</string>
+    <string name="license_copy_mpandroidchart" translatable="false">Copyright 2020 Philipp Jahoda</string>
     <!--Markwon-->
-    <string name="license_markwon">Markwon</string>
-    <string name="license_copy_markwon">Copyright 2019 Dimitry Ivanov (legal@noties.io)</string>
+    <string name="license_markwon" translatable="false">Markwon</string>
+    <string name="license_copy_markwon" translatable="false">Copyright 2019 Dimitry Ivanov (legal@noties.io)</string>
     <!--Jsoup-->
-    <string name="license_jsoup">Jsoup</string>
-    <string name="license_copy_jsoup">Copyright © 2009–2020 Jonathan Hedley </string>
+    <string name="license_jsoup" translatable="false">Jsoup</string>
+    <string name="license_copy_jsoup" translatable="false">Copyright © 2009–2020 Jonathan Hedley </string>
     <!--ExoPlayer-->
-    <string name="license_exoplayer">ExoPlayer</string>
+    <string name="license_exoplayer" translatable="false">ExoPlayer</string>
     <!--persistentsearchview-->
-    <string name="license_persistentsearchview">PersistentSearchView</string>
+    <string name="license_persistentsearchview" translatable="false">PersistentSearchView</string>
     <!--RangeSeekBar-->
-    <string name="license_rangeseekbar">RangeSeekBar</string>
-    <string name="license_copy_rangeseekbar">Copyright 2018–2019 JayGoo</string>
+    <string name="license_rangeseekbar" translatable="false">RangeSeekBar</string>
+    <string name="license_copy_rangeseekbar" translatable="false">Copyright 2018–2019 JayGoo</string>
     <!--Android-Toggle-Switch-->
-    <string name="license_android_toggle_switch">Android-Toggle-Switch</string>
-    <string name="license_copy_android_toggle_switch">Copyright © 2017 Lorenzo Rigato</string>
+    <string name="license_android_toggle_switch" translatable="false">Android-Toggle-Switch</string>
+    <string name="license_copy_android_toggle_switch" translatable="false">Copyright © 2017 Lorenzo Rigato</string>
     <!--Hauler-->
-    <string name="license_hauler">Hauler</string>
-    <string name="license_copy_hauler">Copyright © 2020 Futured apps s.r.o.</string>
+    <string name="license_hauler" translatable="false">Hauler</string>
+    <string name="license_copy_hauler" translatable="false">Copyright © 2020 Futured apps s.r.o.</string>
     <!--BigImageViewer-->
-    <string name="license_bigimageviewer">BigImageViewer</string>
-    <string name="license_copy_bigimageviewer">Copyright © 2018 Piasy</string>
+    <string name="license_bigimageviewer" translatable="false">BigImageViewer</string>
+    <string name="license_copy_bigimageviewer" translatable="false">Copyright © 2018 Piasy</string>
     <!--PrettyTime-->
-    <string name="license_prettytime">PrettyTime</string>
+    <string name="license_prettytime" translatable="false">PrettyTime</string>
     <!--LICENSE-END-->
 
     <!--Apollo Android-->

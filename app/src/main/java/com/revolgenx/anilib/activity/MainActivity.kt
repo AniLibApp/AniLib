@@ -28,9 +28,7 @@ import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.MediaTagFilterTypes
-import com.revolgenx.anilib.dialog.AuthenticationDialog
-import com.revolgenx.anilib.dialog.ReleaseInfoDialog
-import com.revolgenx.anilib.dialog.TagChooserDialogFragment
+import com.revolgenx.anilib.dialog.*
 import com.revolgenx.anilib.event.*
 import com.revolgenx.anilib.field.TagChooserField
 import com.revolgenx.anilib.field.TagField
@@ -134,7 +132,16 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         updateNavView()
         updateRightNavView()
         silentFetchUserInfo()
+
+        if (savedInstanceState == null) {
+            checkForUpdate()
+        }
     }
+
+    private fun checkForUpdate(manualCheck: Boolean = false) {
+        AppUpdater.startAppUpdater(this, supportFragmentManager, manualCheck)
+    }
+
 
     private fun updateSharedPreference() {
         if (!isSharedPreferenceSynced(context)) {
@@ -264,10 +271,6 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                     true
                 }
 
-//                R.id.contribute -> {
-//                    startActivity(Intent(this, AboutActivity::class.java))
-//                    true
-//                }
                 R.id.stageVersion -> {
                     BrowseSiteEvent().postEvent
                     true
@@ -335,6 +338,15 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                             authorizationService.performAuthorizationRequest(request, pendingIntent)
                         }
                     }
+                    true
+                }
+
+                R.id.checkUpdate -> {
+                    checkForUpdate(true)
+                    true
+                }
+                R.id.discordMenu -> {
+                    openLink(getString(R.string.discord_invite_link))
                     true
                 }
                 else -> false
@@ -557,5 +569,6 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             drawerLayout.closeDrawer(GravityCompat.END)
         }
     }
+
 
 }
