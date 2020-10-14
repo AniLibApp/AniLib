@@ -14,8 +14,13 @@
 
     <item
         android:id="@+id/navMediaList"
-        android:title="@string/list">
+        android:title="@string/main">
         <menu>
+            <item
+                android:id="@+id/navHomeId"
+                android:icon="@drawable/ic_home"
+                android:title="@string/discover" />
+
             <item
                 android:id="@+id/navAnimeListId"
                 android:icon="@drawable/ic_media"
