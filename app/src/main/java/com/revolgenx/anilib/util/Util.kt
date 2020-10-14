@@ -39,15 +39,6 @@ const val COLLAPSED = 0
 const val EXPANDED = 1
 
 
-fun AppCompatActivity.makePagerAdapter(fragments: List<BaseFragment>) =
-    object : FragmentPagerAdapter(
-        this@makePagerAdapter.supportFragmentManager,
-        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-    ) {
-        override fun getItem(position: Int) = fragments[position]
-        override fun getCount(): Int = fragments.size
-    }
-
 fun getSeasonFromMonth(monthOfYear: Int): MediaSeason {
     monthOfYear.let {
         return if (it == 12 || it == 1 || it == 2) {
