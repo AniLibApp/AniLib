@@ -84,25 +84,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/mediaBrowserBannerImage"
                         app:layout_constraintVertical_bias="0.36" />
 
-                    <!--                    <com.revolgenx.anilib.view.DynamicLoadingImageView-->
-                    <!--                        android:id="@+id/mediaAddButton"-->
-                    <!--                        android:layout_width="0dp"-->
-                    <!--                        android:layout_height="0dp"-->
-                    <!--                        android:layout_marginTop="24dp"-->
-                    <!--                        android:layout_marginEnd="16dp"-->
-                    <!--                        android:layout_marginBottom="24dp"-->
-                    <!--                        android:background="@drawable/stroke_background"-->
-                    <!--                        android:padding="10dp"-->
-                    <!--                        android:src="@drawable/ic_plus"-->
-                    <!--                        app:layout_constraintBottom_toBottomOf="@+id/mediaBrowserCoverImage"-->
-                    <!--                        app:layout_constraintDimensionRatio="1:1"-->
-                    <!--                        app:layout_constraintEnd_toStartOf="@+id/mediaReviewButton"-->
-                    <!--                        app:layout_constraintHorizontal_bias="1.0"-->
-                    <!--                        app:layout_constraintHorizontal_chainStyle="packed"-->
-                    <!--                        app:layout_constraintStart_toEndOf="@+id/mediaBrowserCoverImage"-->
-                    <!--                        app:layout_constraintTop_toBottomOf="@+id/mediaBrowserBannerImage"-->
-                    <!--                        app:layout_constraintVertical_bias="0.36" />-->
-
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                         android:id="@+id/mediaReviewButton"
