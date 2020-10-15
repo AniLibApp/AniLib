@@ -9,7 +9,6 @@ import android.os.Handler
 import android.view.View
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.SharedElementCallback
@@ -84,6 +83,12 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
     override val layoutRes: Int = R.layout.activity_main
 
 
+    private fun mediaListMeta(mediaType: Int) = MediaListMeta(
+        context.userId(),
+        null,
+        mediaType
+    )
+
     override fun onStart() {
         super.onStart()
         registerForEvent()
@@ -109,18 +114,44 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         updateNavView()
         updateRightNavView()
         silentFetchUserInfo()
+        setupNavigationComponent()
 
+        if (savedInstanceState == null) {
+            checkForUpdate()
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun setupNavigationComponent() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainNavHost)!!
         mainNavController.navigatorProvider += KeepStateNavigator(
             this,
             navHostFragment.childFragmentManager,
             R.id.mainNavHost
         )
-        mainNavController.setGraph(R.navigation.main_activity_navigation)
+        val graph = mainNavController.navInflater.inflate(R.navigation.main_activity_navigation)
 
-        if (savedInstanceState == null) {
-            checkForUpdate()
+        val startupNavArgs = when (getStartNavigation(this)) {
+            DISCOVER_NAV_POS -> {
+                graph.startDestination = R.id.discoverViewPagerFragment
+                navView.setCheckedItem(R.id.navHomeId)
+                null
+            }
+            ANIME_LIST_NAV_POS -> {
+                graph.startDestination = R.id.animeListContainerFragment
+                navView.setCheckedItem(R.id.navAnimeListId)
+                bundleOf("mediaListMeta" to mediaListMeta(MediaType.ANIME.ordinal))
+            }
+            MANGA_LIST_NAV_POS -> {
+                graph.startDestination = R.id.mangaListContainerFragment
+                navView.setCheckedItem(R.id.navMangaListId)
+                bundleOf("mediaListMeta" to mediaListMeta(MediaType.MANGA.ordinal))
+            }
+            else -> null
         }
+
+        mainNavController.setGraph(graph, startupNavArgs)
+
     }
 
     private fun checkForUpdate(manualCheck: Boolean = false) {
@@ -249,22 +280,14 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
                 R.id.navAnimeListId -> {
                     navigateToAnimeList(
-                        MediaListMeta(
-                            context.userId(),
-                            null,
-                            MediaType.ANIME.ordinal
-                        )
+                        mediaListMeta(MediaType.ANIME.ordinal)
                     )
                     true
                 }
 
                 R.id.navMangaListId -> {
                     navigateToMangaList(
-                        MediaListMeta(
-                            context.userId(),
-                            null,
-                            MediaType.MANGA.ordinal
-                        )
+                        mediaListMeta(MediaType.MANGA.ordinal)
                     )
                     true
                 }
