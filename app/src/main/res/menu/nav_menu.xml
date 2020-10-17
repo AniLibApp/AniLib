@@ -60,7 +60,7 @@
             <item
                 android:id="@+id/stageVersion"
                 android:icon="@drawable/ic_anilib_inline"
-                android:title="@string/plus_ultra_version" />
+                android:title="@string/studio_version" />
 
             <item
                 android:id="@+id/discordMenu"
