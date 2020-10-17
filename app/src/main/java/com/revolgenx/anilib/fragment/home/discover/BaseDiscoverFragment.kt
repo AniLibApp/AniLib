@@ -24,7 +24,6 @@ import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.model.home.OrderedViewModel
 import com.revolgenx.anilib.util.dp
 import kotlinx.android.synthetic.main.discover_fragment_layout.view.*
-import kotlinx.android.synthetic.main.discover_shimmer_layout.view.*
 
 abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
 
