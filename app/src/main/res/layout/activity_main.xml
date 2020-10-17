@@ -27,7 +27,8 @@
         android:fitsSystemWindows="true"
         android:theme="@style/Widget.DynamicApp.NavigationView.ThemeOverlay"
         app:headerLayout="@layout/nav_header_layout"
-        app:menu="@menu/nav_menu" />
+        app:menu="@menu/nav_menu"
+        app:itemTextAppearance="@style/NavigationTextAppearance"/>
 
     <com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
         android:id="@+id/mainBrowseFilterNavView"

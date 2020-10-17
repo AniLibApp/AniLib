@@ -422,6 +422,7 @@
     <string name="github_desc">View source on Github.</string>
     <string name="start_nav_page_desc">Configure startup page.</string>
     <string name="startup_page">Startup Page</string>
+    <string name="update_">update</string>
 
 
 </resources>
