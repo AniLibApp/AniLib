@@ -40,6 +40,7 @@ import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.meta.UserMeta
 import com.revolgenx.anilib.preference.*
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
 import com.revolgenx.anilib.viewmodel.MainActivityViewModel
@@ -176,7 +177,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
     private fun silentFetchUserInfo() {
         if (loggedIn()) {
-            viewModel.getUserLiveData().observe(this, Observer {
+            viewModel.getUserLiveData().observe(this, {
                 updateNavView()
             })
         }
