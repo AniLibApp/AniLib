@@ -22,7 +22,8 @@
             android:layout_marginEnd="10dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:visibility="gone"/>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/toastIconTv"
