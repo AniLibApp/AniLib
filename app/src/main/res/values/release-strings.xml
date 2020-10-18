@@ -65,8 +65,8 @@
 
     </string>
 
-    <string name="studio_note">
-        ### More feature available in AniLib Plus Ultra Version. Visit [AniLib](https://anilib.onrender.com/#/) for more info.
+    <string name="studio_note" translatable="false">
+        ### Visit [AniLib](https://anilib.onrender.com/#/) for more info.
     </string>
 
 
