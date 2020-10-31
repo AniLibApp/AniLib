@@ -21,8 +21,8 @@ android {
         applicationId "com.revolgenx.anilib"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 22
-        versionName "1.1.5-base"
+        versionCode 23
+        versionName "1.1.6-base"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
@@ -78,7 +78,7 @@ android {
 
     buildTypes {
         debug {
-
+            applicationIdSuffix ".debug"
         }
         release {
             minifyEnabled false
@@ -93,7 +93,7 @@ android {
                 }
             } else if (variant.buildType.name == "debug") {
                 variant.outputs.all {
-                    outputFileName = "AniLib-${defaultConfig.versionName}-debug.apk"
+                        outputFileName = "AniLib-${defaultConfig.versionName}-debug.apk"
                 }
             }
         }

@@ -24,8 +24,10 @@ import com.revolgenx.anilib.event.MediaListCollectionFilterEvent
 import com.revolgenx.anilib.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.fragment.base.BaseTransitiveLayoutFragment
 import com.revolgenx.anilib.meta.MediaListMeta
+import com.revolgenx.anilib.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.preference.setMediaListGridPresenter
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.view.makePopupMenu
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.activity_main.*
@@ -35,6 +37,7 @@ import kotlinx.android.synthetic.main.smart_tab_layout.view.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 
 abstract class MediaListContainerFragment : BaseTransitiveLayoutFragment() {
     override val layoutRes: Int = R.layout.media_list_container_fragment_layout
@@ -93,8 +96,7 @@ abstract class MediaListContainerFragment : BaseTransitiveLayoutFragment() {
                 arrayOf(
                     intArrayOf(android.R.attr.state_selected),
                     intArrayOf(android.R.attr.state_enabled)
-                )
-                , intArrayOf(
+                ), intArrayOf(
                     DynamicTheme.getInstance().get().accentColor,
                     DynamicTheme.getInstance().get().tintPrimaryColor
                 )
@@ -111,7 +113,7 @@ abstract class MediaListContainerFragment : BaseTransitiveLayoutFragment() {
     override val toolbar: Toolbar
         get() = dynamicToolbar
 
-    protected abstract fun mediaListMetaArgs():MediaListMeta
+    protected abstract fun mediaListMetaArgs(): MediaListMeta
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -250,8 +252,18 @@ abstract class MediaListContainerFragment : BaseTransitiveLayoutFragment() {
                 true
             }
             R.id.listDisplayModeMenu -> {
-                setMediaListGridPresenter()
-                DisplayModeChangedEvent(DisplayTypes.MEDIA_LIST).postEvent
+                val popupMenu = makePopupMenu(
+                    R.menu.display_mode_menu,
+                    requireView().findViewById(R.id.listDisplayModeMenu)
+                ) { menuItem ->
+
+                    setMediaListGridPresenter(menuItem.order)
+                    DisplayModeChangedEvent(DisplayTypes.MEDIA_LIST).postEvent
+                    true
+                }
+
+                popupMenu.menu.getItem(getMediaListGridPresenter()).isChecked = true
+                popupMenu.show()
                 true
             }
             else -> super.onOptionsItemSelected(item)

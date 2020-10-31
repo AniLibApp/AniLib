@@ -47,6 +47,7 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/searchMediaTitleTv"
+            style="@style/titleFontStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/searchMediaImageContainer"
@@ -56,7 +57,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:textSize="10sp"
+            android:textSize="11sp"
             app:ads_colorType="tint_surface"
             tools:ignore="SmallSp" />
 

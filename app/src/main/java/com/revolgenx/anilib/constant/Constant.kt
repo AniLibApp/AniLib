@@ -14,3 +14,7 @@ const val YOUTUBE_START_INDEX = 10
 const val VIDEO_START_INDEX = 8
 const val HTTP_TOO_MANY_REQUEST = 429
 
+
+enum class  DisplayMode{
+    COMPACT, NORMAL, CARD
+}

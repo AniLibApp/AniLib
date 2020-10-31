@@ -35,6 +35,8 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:textSize="11sp"
+            style="@style/titleFontStyle"
+            app:ads_colorType="tint_surface"
             app:layout_constraintLeft_toLeftOf="@id/searchStaffImageView"
             app:layout_constraintRight_toRightOf="@id/searchStaffImageView"
             app:layout_constraintTop_toBottomOf="@id/searchStaffImageView"

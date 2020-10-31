@@ -69,4 +69,10 @@
         <item name="fontFamily">@font/berlinrounded_extra_bold</item>
         <item name="android:fontFamily">@font/berlinrounded_extra_bold</item>
     </style>
+
+
+    <style name="titleFontStyle">
+        <item name="fontFamily">@font/open_sans_semi_bold</item>
+    </style>
+
 </resources>

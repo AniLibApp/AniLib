@@ -61,6 +61,7 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/staffMediaTitleTv"
+                style="@style/titleFontStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -69,7 +70,8 @@
                 android:ellipsize="end"
                 android:lines="2"
                 android:maxLines="2"
-                android:textSize="10sp"
+                android:textSize="11sp"
+                app:ads_colorType="tint_surface"
                 app:layout_constraintLeft_toLeftOf="@id/staffMediaImageContainer"
                 app:layout_constraintRight_toRightOf="@id/staffMediaImageContainer"
                 app:layout_constraintTop_toBottomOf="@id/staffMediaImageContainer"
@@ -130,6 +132,7 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/staffCharacterNameTv"
+                style="@style/titleFontStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -138,7 +141,8 @@
                 android:ellipsize="end"
                 android:lines="2"
                 android:maxLines="2"
-                android:textSize="10sp"
+                android:textSize="11sp"
+                app:ads_colorType="tint_surface"
                 app:layout_constraintLeft_toLeftOf="@id/staffCharacterImageView"
                 app:layout_constraintRight_toRightOf="@id/staffCharacterImageView"
                 app:layout_constraintTop_toBottomOf="@+id/staffCharacterImageView"

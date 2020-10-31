@@ -2,10 +2,10 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/animeCharacterContainer"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/animeCharacterContainer">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -38,6 +38,7 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/characterNameTv"
+                style="@style/titleFontStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -61,10 +62,10 @@
                 android:maxLines="1"
                 android:textSize="10sp"
                 app:ads_colorType="accent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/characterImageView"
                 app:layout_constraintRight_toRightOf="@+id/characterImageView"
                 app:layout_constraintTop_toBottomOf="@+id/characterNameTv"
-                app:layout_constraintBottom_toBottomOf="parent"
                 tools:ignore="SmallSp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -93,6 +94,7 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/voiceActorNameTv"
+                style="@style/titleFontStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -101,7 +103,7 @@
                 android:ellipsize="end"
                 android:lines="2"
                 android:maxLines="2"
-                android:textSize="10sp"
+                android:textSize="11sp"
                 app:layout_constraintLeft_toLeftOf="@+id/voiceActorImageView"
                 app:layout_constraintRight_toRightOf="@+id/voiceActorImageView"
                 app:layout_constraintTop_toBottomOf="@+id/voiceActorImageView"
@@ -116,10 +118,10 @@
                 android:maxLines="1"
                 android:textSize="10sp"
                 app:ads_colorType="accent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/voiceActorImageView"
                 app:layout_constraintRight_toRightOf="@+id/voiceActorImageView"
                 app:layout_constraintTop_toBottomOf="@+id/voiceActorNameTv"
-                app:layout_constraintBottom_toBottomOf="parent"
                 tools:ignore="SmallSp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -231,9 +231,8 @@ fun getMediaListGridPresenter(): Int {
         .load(MEDIA_LIST_GRID_PRESENTER_KEY, 0) //0 for single gird
 }
 
-fun setMediaListGridPresenter() {
-    val whichView = if (getMediaListGridPresenter() == 0) 1 else 0
-    return DynamicPreferences.getInstance().save(MEDIA_LIST_GRID_PRESENTER_KEY, whichView)
+fun setMediaListGridPresenter(which:Int) {
+    return DynamicPreferences.getInstance().save(MEDIA_LIST_GRID_PRESENTER_KEY, which)
 }
 
 

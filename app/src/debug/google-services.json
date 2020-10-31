@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "177309007619",
+    "firebase_url": "https://anilib-dev.firebaseio.com",
+    "project_id": "anilib-dev",
+    "storage_bucket": "anilib-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177309007619:android:a4b51c42159936c6367336",
+        "android_client_info": {
+          "package_name": "com.revolgenx.anilib.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "177309007619-a6v94327jrdqkdcefsof9g5fvqu7snni.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB6DJLWFrfXo1GWzRkyBgZoIUN_llbeeo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "177309007619-a6v94327jrdqkdcefsof9g5fvqu7snni.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
