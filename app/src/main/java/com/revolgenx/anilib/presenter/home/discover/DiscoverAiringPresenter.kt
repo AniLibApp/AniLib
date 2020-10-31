@@ -34,7 +34,7 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
             ).also {
                 it.mediaMetaBackground.setBackgroundColor(
                     ColorUtils.setAlphaComponent(
-                        DynamicTheme.getInstance().get().backgroundColor, 200
+                        DynamicTheme.getInstance().get().backgroundColor, 220
                     )
                 )
             }

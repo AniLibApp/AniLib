@@ -67,7 +67,8 @@
                 android:layout_toStartOf="@id/bookmarkIv"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textSize="14sp"
+                android:textSize="13sp"
+                app:fontFamily="@font/open_sans_semi_bold"
                 app:ads_colorType="tint_surface" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView

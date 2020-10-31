@@ -35,7 +35,7 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                 it.mediaMetaBackground.setBackgroundColor(
                     ColorUtils.setAlphaComponent(
                         DynamicTheme.getInstance().get().backgroundColor,
-                        200
+                        220
                     )
                 )
             })

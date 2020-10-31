@@ -14,7 +14,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
@@ -29,8 +28,10 @@ import com.revolgenx.anilib.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.fragment.list.*
 import com.revolgenx.anilib.meta.MediaListMeta
+import com.revolgenx.anilib.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.preference.setMediaListGridPresenter
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.view.makePopupMenu
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
@@ -240,8 +241,18 @@ class MediaListActivity : BaseDynamicActivity() {
                 true
             }
             R.id.listDisplayModeMenu -> {
-                setMediaListGridPresenter()
-                DisplayModeChangedEvent(DisplayTypes.MEDIA_LIST).postEvent
+                val popupMenu = makePopupMenu(
+                    R.menu.display_mode_menu,
+                    findViewById(R.id.listDisplayModeMenu)
+                ) { menuItem ->
+
+                    setMediaListGridPresenter(menuItem.order)
+                    DisplayModeChangedEvent(DisplayTypes.MEDIA_LIST).postEvent
+                    true
+                }
+
+                popupMenu.menu.getItem(getMediaListGridPresenter()).isChecked = true
+                popupMenu.show()
                 true
             }
             android.R.id.home -> {
