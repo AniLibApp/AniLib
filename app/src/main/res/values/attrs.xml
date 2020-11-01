@@ -55,4 +55,28 @@
         <attr name="mode" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="IndicatorTextView">
+        <attr format="integer" name="textSize"/>
+        <attr format="enum" name="textColorType">
+            <enum name="none" value="0"/>
+            <enum name="primary" value="1"/>
+            <enum name="primary_dark" value="2"/>
+            <enum name="accent" value="3"/>
+            <enum name="accent_dark" value="4"/>
+            <enum name="tint_primary" value="5"/>
+            <enum name="tint_primary_dark" value="6"/>
+            <enum name="tint_accent" value="7"/>
+            <enum name="tint_accent_dark" value="8"/>
+            <enum name="custom" value="9"/>
+            <enum name="background" value="10"/>
+            <enum name="tint_background" value="11"/>
+            <enum name="text_primary" value="12"/>
+            <enum name="text_secondary" value="13"/>
+            <enum name="text_primary_inverse" value="14"/>
+            <enum name="text_secondary_inverse" value="15"/>
+            <enum name="surface" value="16"/>
+            <enum name="tint_surface" value="17"/>
+        </attr>
+    </declare-styleable>
+
 </resources>

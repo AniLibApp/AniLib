@@ -91,6 +91,8 @@ class SeasonPresenter(context: Context) :
                 mediaFormats[it]
             }.naText()
 
+            mediaFormatTv.status = item.mediaEntryListModel?.status
+
             mediaStatusTv.naText(item.status?.let {
                 mediaStatusTv.color = Color.parseColor(statusColors[it])
                 mediaStatus[it]

@@ -57,7 +57,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
 
 
     private val statusColors by lazy {
-        context.resources.getStringArray(R.array.status_color)
+        context.resources.getStringArray(R.array.status_color).map { Color.parseColor(it) }
     }
 
 
@@ -100,8 +100,11 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
             context.getString(R.string.media_format_year_s).format(data.format?.let {
                 mediaFormats[it]
             }.naText(), data.seasonYear?.toString().naText())
+
+        searchMediaFormatTv.status  = data.mediaEntryListModel?.status
+
         searchMediaStatusTv.text = data.status?.let {
-            searchMediaStatusTv.color = Color.parseColor(statusColors[it])
+            searchMediaStatusTv.color = statusColors[it]
             mediaStatus[it]
         }
 

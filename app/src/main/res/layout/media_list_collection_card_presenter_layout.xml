@@ -66,11 +66,6 @@
                 android:layout_gravity="bottom"
                 android:orientation="vertical">
 
-                <View
-                    android:id="@+id/statusDivider"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@color/ads_color_gray" />
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                     android:id="@+id/mediaListTitleTv"
@@ -135,6 +130,11 @@
 
                 </LinearLayout>
 
+                <View
+                    android:id="@+id/statusDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/ads_color_gray" />
             </LinearLayout>
         </FrameLayout>
 

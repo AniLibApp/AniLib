@@ -12,8 +12,8 @@
     <color name="transparent_dark">#12000000</color>
 
     <color name="anilistColor">#1f263f</color>
-    //media status
 
+    <!--media status-->
     <string-array name="status_color">
         <item>#02A4F8</item>    <!--//finished-->
         <item>#00C853</item>    <!--//releasing-->
@@ -22,9 +22,20 @@
         <item>#FF6E40</item>
     </string-array>
 
+    <!--media entry list status-->
+    <string-array name="media_list_status_color">
+        <item>#3FB2F0</item>    <!--watching-->
+        <item>#F09967</item>    <!--planning-->
+        <item>#7AD358</item>    <!--completed-->
+        <item>#E45E77</item>    <!--dropped-->
+        <item>#F37A7D</item>    <!--paused-->
+        <item>#3EB3F0</item>    <!--rewatching-->
+    </string-array>
+
     <color name="popular_color">#E85D75</color>
     <color name="rated_color">#F7BF63</color>
     <color name="tag_color">#12000000</color>
     <color name="window_background_light">#F1F1F1</color>
+
 
 </resources>

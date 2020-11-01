@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class MediaEntryListModel(var progress:Int?) : Parcelable
+data class MediaEntryListModel(var progress: Int?, var status: Int?) : Parcelable

@@ -7,7 +7,9 @@ import com.revolgenx.anilib.field.staff.StaffMediaCharacterField
 import com.revolgenx.anilib.field.staff.StaffMediaRoleField
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.character.CharacterNameModel
+import com.revolgenx.anilib.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -75,31 +77,9 @@ class StaffServiceImpl(
                 it.data()?.Staff()?.characters()?.nodes()?.forEach { charac ->
                     charac.media()?.edges()?.forEach cont@{ mid ->
                         mid.node()?.let { media ->
-                            if (if(field.canShowAdult) false else media.isAdult == true) return@cont
+                            if (if (field.canShowAdult) false else media.fragments().commonMediaContent().isAdult == true) return@cont
                             StaffMediaCharacterModel().also { model ->
-                                model.mediaId = media.id()
-                                model.title = media.title()?.let {
-                                    TitleModel().also { titleModel ->
-                                        titleModel.english = it.english()
-                                        titleModel.native = it.native_()
-                                        titleModel.romaji = it.romaji()
-                                        titleModel.userPreferred = it.userPreferred()
-                                    }
-                                }
-                                model.coverImage = media.coverImage()?.let {
-                                    CoverImageModel().also { img ->
-                                        img.medium = it.medium()
-                                        img.large = it.large()
-                                        img.extraLarge = it.extraLarge()
-                                    }
-                                }
-                                model.bannerImage =
-                                    media.bannerImage() ?: model.coverImage?.largeImage
-                                model.status = media.status()?.ordinal
-                                model.format = media.format()?.ordinal
-                                model.type = media.type()?.ordinal
-                                model.seasonYear = media.seasonYear()
-                                model.averageScore = media.averageScore()
+                                media.fragments().commonMediaContent().getCommonMedia(model)
                                 model.characterId = charac.id()
                                 model.characterName = charac.name()?.let {
                                     CharacterNameModel().also { c ->
@@ -113,7 +93,6 @@ class StaffServiceImpl(
                                         img.medium = it.medium()
                                     }
                                 }
-
                                 characList.add(model)
                             }
                         }
@@ -141,33 +120,11 @@ class StaffServiceImpl(
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Staff()?.staffMedia()?.edges()?.map map2@{ edge ->
-                    if (if(field.canShowAdult) false else edge.node()?.isAdult == true) return@map2
-                    edge.node()?.let { media ->
+                    if (if (field.canShowAdult) false else edge.node()?.fragments()?.commonMediaContent()?.isAdult == true) return@map2
                         StaffMediaRoleModel().also { model ->
-                            model.mediaId = media.id()
-                            model.title = media.title()?.let {
-                                TitleModel().also { ti ->
-                                    ti.romaji = it.romaji()
-                                    ti.english = it.english()
-                                    ti.native = it.native_()
-                                    ti.userPreferred = it.userPreferred()
-                                }
-                            }
-                            model.coverImage = media.coverImage()?.let {
-                                CoverImageModel().also { img ->
-                                    img.extraLarge = it.extraLarge()
-                                    img.large = it.large()
-                                    img.medium = it.medium()
-                                }
-                            }
-                            model.bannerImage = media.bannerImage() ?: model.coverImage?.largeImage
-                            model.averageScore = media.averageScore()
-                            model.seasonYear = media.seasonYear()
-                            model.format = media.format()?.ordinal
-                            model.type = media.type()?.ordinal
+                            edge.node()?.fragments()?.commonMediaContent()?.getCommonMedia(model)
                             model.staffRole = edge.staffRole()
                             list.add(model)
-                        }
                     }
                 }
             }.observeOn(AndroidSchedulers.mainThread())

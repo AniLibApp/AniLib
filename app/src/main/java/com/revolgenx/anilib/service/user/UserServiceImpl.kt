@@ -13,6 +13,7 @@ import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.character.CharacterNameModel
 import com.revolgenx.anilib.model.user.*
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -219,68 +220,14 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                         data?.anime()?.nodes()
                             ?.filter { if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
                             ?.map { map ->
-                                map.fragments().commonMediaContent().let {
-                                    MediaFavouriteModel().also { model ->
-                                        model.mediaId = it.id()
-                                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
-                                            TitleModel().also { ti ->
-                                                ti.romaji = it.romaji()
-                                                ti.english = it.english()
-                                                ti.native = it.native_()
-                                                ti.userPreferred = it.userPreferred()
-                                            }
-                                        }
-                                        model.coverImage =
-                                            it.coverImage()?.fragments()?.mediaCoverImage()?.let {
-                                                CoverImageModel().also { img ->
-                                                    img.extraLarge = it.extraLarge()
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                        model.bannerImage =
-                                            it.bannerImage() ?: model.coverImage?.largeImage
-                                        model.type = it.type()?.ordinal
-                                        model.format = it.format()?.ordinal
-                                        model.status = it.status()?.ordinal
-                                        model.seasonYear = it.seasonYear()
-                                        model.averageScore = it.averageScore()
-                                    }
-                                }
+                                map.fragments().commonMediaContent().getCommonMedia(MediaFavouriteModel())
                             }
                     }
                     SearchTypes.MANGA -> {
                         data?.manga()?.nodes()
                             ?.filter {if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
                             ?.map { map ->
-                                map.fragments().commonMediaContent().let {
-                                    MediaFavouriteModel().also { model ->
-                                        model.mediaId = it.id()
-                                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
-                                            TitleModel().also { ti ->
-                                                ti.romaji = it.romaji()
-                                                ti.english = it.english()
-                                                ti.native = it.native_()
-                                                ti.userPreferred = it.userPreferred()
-                                            }
-                                        }
-                                        model.coverImage =
-                                            it.coverImage()?.fragments()?.mediaCoverImage()?.let {
-                                                CoverImageModel().also { img ->
-                                                    img.extraLarge = it.extraLarge()
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                        model.bannerImage =
-                                            it.bannerImage() ?: model.coverImage?.largeImage
-                                        model.type = it.type()?.ordinal
-                                        model.format = it.format()?.ordinal
-                                        model.status = it.status()?.ordinal
-                                        model.seasonYear = it.seasonYear()
-                                        model.averageScore = it.averageScore()
-                                    }
-                                }
+                                map.fragments().commonMediaContent().getCommonMedia(MediaFavouriteModel())
                             }
                     }
                     SearchTypes.CHARACTER -> {
@@ -335,40 +282,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                                         it.media()?.nodes()
                                             ?.filter {if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
                                             ?.map {
-                                                it.fragments().commonMediaContent().let {
-                                                    MediaFavouriteModel().also { model ->
-                                                        model.mediaId = it.id()
-                                                        model.averageScore = it.averageScore()
-                                                        model.title =
-                                                            it.title()?.fragments()?.mediaTitle()
-                                                                ?.let {
-                                                                    TitleModel().also { ti ->
-                                                                        ti.userPreferred =
-                                                                            it.userPreferred()
-                                                                        ti.romaji = it.romaji()
-                                                                        ti.english = it.english()
-                                                                        ti.native = it.native_()
-                                                                    }
-                                                                }
-                                                        model.coverImage =
-                                                            it.coverImage()?.fragments()
-                                                                ?.mediaCoverImage()?.let {
-                                                                    CoverImageModel().also { img ->
-                                                                        img.large = it.large()
-                                                                        img.medium = it.medium()
-                                                                        img.extraLarge =
-                                                                            it.extraLarge()
-                                                                    }
-                                                                }
-                                                        model.bannerImage =
-                                                            it.bannerImage()
-                                                                ?: model.coverImage?.largeImage
-                                                        model.type = it.type()?.ordinal
-                                                        model.format = it.format()?.ordinal
-                                                        model.status = it.status()?.ordinal
-                                                        model.seasonYear = it.seasonYear()
-                                                    }
-                                                }
+                                                it.fragments().commonMediaContent().getCommonMedia(MediaFavouriteModel())
                                             }
                                 }
                             }

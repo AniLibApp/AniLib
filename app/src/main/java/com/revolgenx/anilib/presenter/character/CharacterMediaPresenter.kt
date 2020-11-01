@@ -55,7 +55,7 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
                 context.getString(R.string.media_format_year_s).format(item.format?.let {
                     mediaFormatList[it]
                 }.naText(), item.seasonYear?.toString().naText())
-
+            characterMediaFormatTv.status = item.mediaEntryListModel?.status
             characterMediaStatusTv.text = item.status?.let {
                 characterMediaStatusTv.color = Color.parseColor(statusColors[it])
                 mediaStatus[it]

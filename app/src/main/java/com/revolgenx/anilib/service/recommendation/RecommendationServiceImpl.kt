@@ -10,6 +10,7 @@ import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.recommendation.RecommendationModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,42 +29,14 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Media()?.recommendations()?.nodes()
-                    ?.filter { if (field.canShowAdult) true else it.mediaRecommendation()?.isAdult == false }
+                    ?.filter { if (field.canShowAdult) true else it.mediaRecommendation()?.fragments()?.narrowMediaContent()?.isAdult == false }
                     ?.map { node ->
                         MediaRecommendationModel().also { mod ->
                             mod.recommendationId = node.id()
                             mod.rating = node.rating()
                             mod.userRating = node.userRating()?.ordinal
                             mod.mediaId = node.media()!!.id()
-                            mod.recommended = node.mediaRecommendation()?.let {
-                                CommonMediaModel().also { model ->
-                                    mod.mediaRecommendationId = it.id()
-                                    model.mediaId = it.id()
-                                    model.title = it.title()?.fragments()?.mediaTitle()?.let {
-                                        TitleModel().also { title ->
-                                            title.romaji = it.romaji()
-                                            title.english = it.english()
-                                            title.native = it.native_()
-                                            title.userPreferred = it.userPreferred()
-                                        }
-                                    }
-                                    model.seasonYear = it.seasonYear()
-                                    model.status = it.status()?.ordinal
-                                    model.format = it.format()?.ordinal
-                                    model.type = it.type()?.ordinal
-                                    model.averageScore = it.averageScore()
-                                    model.coverImage =
-                                        it.coverImage()?.fragments()?.mediaCoverImage()?.let {
-                                            CoverImageModel().also { img ->
-                                                img.medium = it.medium()
-                                                img.large = it.large()
-                                                img.extraLarge = it.extraLarge()
-                                            }
-                                        }
-                                    model.bannerImage =
-                                        it.bannerImage() ?: model.coverImage?.largeImage
-                                }
-                            }
+                            mod.recommended = node.mediaRecommendation()?.fragments()?.narrowMediaContent()?.getCommonMedia(CommonMediaModel())
                         }
                     }
             }.observeOn(AndroidSchedulers.mainThread())
@@ -98,65 +71,9 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
                             mod.rating = it.rating()
                             mod.userRating = it.userRating()?.ordinal
                             mod.recommendationFrom =
-                                it.media()!!.fragments().commonMediaContent().let {
-                                    CommonMediaModel().also { model ->
-                                        model.mediaId = it.id()
-                                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
-                                            TitleModel().also { title ->
-                                                title.romaji = it.romaji()
-                                                title.english = it.english()
-                                                title.native = it.native_()
-                                                title.userPreferred = it.userPreferred()
-                                            }
-                                        }
-                                        model.seasonYear = it.seasonYear()
-                                        model.status = it.status()?.ordinal
-                                        model.format = it.format()?.ordinal
-                                        model.type = it.type()?.ordinal
-                                        model.averageScore = it.averageScore()
-                                        model.coverImage =
-                                            it.coverImage()?.fragments()?.mediaCoverImage()?.let {
-                                                CoverImageModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                    img.extraLarge = it.extraLarge()
-                                                }
-                                            }
-                                        model.bannerImage =
-                                            it.bannerImage() ?: model.coverImage?.largeImage
-                                    }
-                                }
-
+                                it.media()!!.fragments().commonMediaContent().getCommonMedia(CommonMediaModel())
                             mod.recommended =
-                                it.mediaRecommendation()!!.fragments().commonMediaContent().let {
-                                    CommonMediaModel().also { model ->
-                                        model.mediaId = it.id()
-                                        model.title = it.title()?.fragments()?.mediaTitle()?.let {
-                                            TitleModel().also { title ->
-                                                title.romaji = it.romaji()
-                                                title.english = it.english()
-                                                title.native = it.native_()
-                                                title.userPreferred = it.userPreferred()
-                                            }
-                                        }
-                                        model.seasonYear = it.seasonYear()
-                                        model.status = it.status()?.ordinal
-                                        model.format = it.format()?.ordinal
-                                        model.type = it.type()?.ordinal
-                                        model.averageScore = it.averageScore()
-                                        model.coverImage =
-                                            it.coverImage()?.fragments()?.mediaCoverImage()?.let {
-                                                CoverImageModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                    img.extraLarge = it.extraLarge()
-                                                }
-                                            }
-                                        model.bannerImage =
-                                            it.bannerImage() ?: model.coverImage?.largeImage
-                                    }
-                                }
-
+                                it.mediaRecommendation()!!.fragments().commonMediaContent().getCommonMedia(CommonMediaModel())
                         }
                     }
             }.observeOn(AndroidSchedulers.mainThread())

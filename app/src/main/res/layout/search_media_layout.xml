@@ -84,19 +84,16 @@
             tools:ignore="SmallSp" />
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        <com.revolgenx.anilib.ui.view.IndicatorTextView
             android:id="@+id/searchMediaFormatTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textSize="10sp"
-            app:ads_colorType="accent"
+            app:textColorType="accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/searchMediaImageContainer"
             app:layout_constraintRight_toRightOf="@id/searchMediaImageContainer"
             app:layout_constraintTop_toBottomOf="@id/searchMediaStatusTv"
-            tools:ignore="SmallSp" />
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

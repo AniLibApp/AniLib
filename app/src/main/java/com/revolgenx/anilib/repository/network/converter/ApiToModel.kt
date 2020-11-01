@@ -12,16 +12,9 @@ import com.revolgenx.anilib.model.list.MediaListOptionTypeModel
 import com.revolgenx.anilib.util.pmap
 import kotlinx.coroutines.runBlocking
 
-fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel = CommonMediaModel()): CommonMediaModel {
+fun <T : CommonMediaModel> NarrowMediaContent.getCommonMedia(model: T): T {
     model.mediaId = id()
-    model.title = title()?.let { title ->
-        TitleModel().also { titleModel ->
-            titleModel.english = title.english()
-            titleModel.romaji = title.romaji()
-            titleModel.native = title.native_()
-            titleModel.userPreferred = title.userPreferred()
-        }
-    }
+    model.title = title()?.fragments()?.mediaTitle()?.toModel()
     model.format = format()?.ordinal
     model.type = type()?.ordinal
     model.episodes = episodes()?.toString()
@@ -29,37 +22,48 @@ fun NarrowMediaContent.getCommonMedia(model: CommonMediaModel = CommonMediaModel
     model.chapters = chapters()?.toString()
     model.volumes = volumes()?.toString()
     model.status = status()?.ordinal
-    model.coverImage = coverImage()?.let { image ->
-        CoverImageModel().also { img ->
-            img.medium = image.medium()
-            img.large = image.large()
-            img.extraLarge = image.extraLarge()
-        }
-    }
+    model.coverImage = coverImage()?.fragments()?.mediaCoverImage()?.toModel()
     model.genres = genres()
     model.averageScore = averageScore()
-    startDate()?.let { date ->
-        model.startDate = DateModel().also { dateModel ->
-            dateModel.year = date.year()
-            dateModel.month = date.month()
-            dateModel.day = date.day()
-            dateModel.date = dateModel.toString()
-        }
-    }
-    endDate()?.let { date ->
-        model.endDate = DateModel().also { dateModel ->
-            dateModel.year = date.year()
-            dateModel.month = date.month()
-            dateModel.day = date.day()
-            dateModel.date = dateModel.toString()
-        }
-    }
-    model.isAdult = isAdult ?: false
-    model.mediaEntryListModel =
-        MediaEntryListModel(mediaListEntry()?.let { it.progress() ?: 0 })
+    model.season = season()?.ordinal
+    model.seasonYear = seasonYear()
+
+    model.startDate = startDate()?.fragments()?.fuzzyDate()?.toModel()
+    model.endDate = endDate()?.fragments()?.fuzzyDate()?.toModel()
     model.bannerImage = bannerImage() ?: model.coverImage!!.extraLarge
+
+    model.isAdult = isAdult ?: false
+    model.mediaEntryListModel = mediaListEntry()?.let {
+        MediaEntryListModel(
+            it.progress() ?: 0,
+            it.status()?.ordinal
+        )
+    }
     return model
 }
+
+fun <T : CommonMediaModel> CommonMediaContent.getCommonMedia(model: T): T {
+    model.mediaId = id()
+    model.title = title()?.fragments()?.mediaTitle()?.toModel()
+    model.format = format()?.ordinal
+    model.type = type()?.ordinal
+    model.status = status()?.ordinal
+    model.coverImage = coverImage()?.fragments()?.mediaCoverImage()?.toModel()
+    model.averageScore = averageScore()
+    model.season = season()?.ordinal
+    model.seasonYear = seasonYear()
+    model.bannerImage = bannerImage() ?: model.coverImage!!.extraLarge
+
+    model.isAdult = isAdult ?: false
+    model.mediaEntryListModel = mediaListEntry()?.let {
+        MediaEntryListModel(
+            it.progress() ?: 0,
+            it.status()?.ordinal
+        )
+    }
+    return model
+}
+
 
 
 fun BasicMediaContent.toBasicMediaContent() = CommonMediaModel().also { media ->

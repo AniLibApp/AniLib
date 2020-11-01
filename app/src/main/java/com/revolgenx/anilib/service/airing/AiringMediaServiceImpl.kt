@@ -28,7 +28,10 @@ class AiringMediaServiceImpl(private val baseGraphRepository: BaseGraphRepositor
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Page()?.airingSchedules()
-                    ?.filter { if (field.canShowAdult) true else it.media()?.fragments()?.narrowMediaContent()?.isAdult == false }
+                    ?.filter {
+                        if (field.canShowAdult) true else it.media()?.fragments()
+                            ?.narrowMediaContent()?.isAdult == false
+                    }
                     ?.map {
                         AiringMediaModel().also { model ->
                             model.airingTimeModel = AiringTimeModel().also { airingTimeModel ->
@@ -42,10 +45,13 @@ class AiringMediaServiceImpl(private val baseGraphRepository: BaseGraphRepositor
                                         CommonTimer(Handler(), airingTimeModel.airingTime!!)
                                 }
                             }
-                            model.mediaEntryListModel =
-                                MediaEntryListModel(it.media()?.fragments()?.narrowMediaContent()?.mediaListEntry()?.let {
-                                    it.progress() ?: 0
-                                })
+                            it.media()?.fragments()?.narrowMediaContent()?.mediaListEntry()?.let {
+                                model.mediaEntryListModel = MediaEntryListModel(
+                                    it.progress() ?: 0,
+                                    it.status()?.ordinal
+                                )
+                            }
+
                             it.media()?.fragments()?.narrowMediaContent()?.getCommonMedia(model)
                         }
                     }

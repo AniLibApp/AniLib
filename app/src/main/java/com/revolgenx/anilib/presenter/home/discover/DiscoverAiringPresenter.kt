@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.presenter.home.discover
 
 import android.content.Context
-import android.view.View
+import android.graphics.Color
 import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
 import com.otaliastudios.elements.Element
@@ -57,6 +57,9 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
                 item.format?.let { mediaFormats[it] }.naText(),
                 item.episodes.naText()
             )
+
+            airingFormatTv.status = item.mediaEntryListModel?.status
+
             airingTimeTv.setAiringText(item.airingTimeModel)
             airingGenreLayout.addGenre(item.genres?.take(3)) { genre ->
                 BrowseGenreEvent(MediaSearchFilterModel().also {

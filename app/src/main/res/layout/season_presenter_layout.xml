@@ -68,8 +68,8 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textSize="13sp"
-                app:fontFamily="@font/open_sans_semi_bold"
-                app:ads_colorType="tint_surface" />
+                app:ads_colorType="tint_surface"
+                app:fontFamily="@font/open_sans_semi_bold" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                 android:id="@+id/bookmarkIv"
@@ -130,7 +130,7 @@
                 tools:ignore="SmallSp" />
 
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            <com.revolgenx.anilib.ui.view.IndicatorTextView
                 android:id="@+id/mediaFormatTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,10 +138,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:textSize="10sp"
-                android:maxLines="1"
-                app:ads_colorType="accent"
-                tools:ignore="SmallSp" />
+                app:textColorType="accent"
+                app:textSize="10" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/entryProgressTv"
@@ -151,10 +149,10 @@
                 android:layout_alignParentBottom="true"
                 android:layout_margin="12dp"
                 android:drawablePadding="4dp"
+                android:maxLines="1"
                 android:text="@string/s_slash_s"
                 android:textSize="11sp"
                 android:visibility="gone"
-                android:maxLines="1"
                 app:ads_colorType="tint_surface"
                 app:drawableStartCompat="@drawable/ic_eye_16dp"
                 tools:ignore="SmallSp" />

@@ -36,6 +36,7 @@ import com.revolgenx.anilib.fragment.home.DiscoverContainerFragmentDirections
 import com.revolgenx.anilib.fragment.list.AnimeListContainerFragmentDirections
 import com.revolgenx.anilib.fragment.list.MangaListContainerFragmentDirections
 import com.revolgenx.anilib.fragment.navigator.KeepStateNavigator
+import com.revolgenx.anilib.fragment.notification.NotificationFragment
 import com.revolgenx.anilib.meta.MediaListMeta
 import com.revolgenx.anilib.meta.UserMeta
 import com.revolgenx.anilib.preference.*
@@ -457,6 +458,23 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             MediaTagFilterTypes.GENRES -> invalidateGenreFilter(event.tagFields)
             MediaTagFilterTypes.STREAMING_ON -> invalidateStreamFilter(event.tagFields)
         }
+    }
+
+    @Subscribe
+    fun onNotificationEvent(event:BrowseNotificationEvent){
+        ToolbarContainerActivity.openActivity(
+            this,
+            ParcelableFragment(
+                NotificationFragment::class.java,
+                bundleOf(
+                    UserMeta.userMetaKey to UserMeta(
+                        userId(),
+                        null,
+                        true
+                    )
+                )
+            )
+        )
     }
 
 

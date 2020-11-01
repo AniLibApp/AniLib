@@ -85,6 +85,7 @@ class RecommendationPresenter(
                         from.format?.let { mediaFormats[it] }.naText(),
                         from.seasonYear?.toString().naText()
                     )
+                recommendedFromFormatYearTv.status = from.mediaEntryListModel?.status
 
                 recommendedFromImageConstraintLayout.setOnClickListener {
                     BrowseMediaEvent(
@@ -130,7 +131,7 @@ class RecommendationPresenter(
                         rec.format?.let { mediaFormats[it] }.naText(),
                         rec.seasonYear?.toString().naText()
                     )
-
+                recommendedFormatYearTv.status = rec.mediaEntryListModel?.status
                 recommendedImageConstraintLayout.setOnClickListener {
                     BrowseMediaEvent(
                         MediaBrowserMeta(
