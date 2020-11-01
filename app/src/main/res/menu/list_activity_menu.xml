@@ -18,7 +18,7 @@
     <item
         android:id="@+id/listDisplayModeMenu"
         android:title="@string/change_display_mode"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:icon="@drawable/ic_eye"/>
 
     <item
