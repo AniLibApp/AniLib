@@ -14,7 +14,8 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
             android:id="@+id/appbarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:expanded="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/mediaBrowserCollapsingToolbar"

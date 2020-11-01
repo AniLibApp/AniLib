@@ -18,6 +18,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaListActivity
 import com.revolgenx.anilib.adapter.MediaListAdapter
 import com.revolgenx.anilib.dialog.MediaListCollectionFilterDialog
+import com.revolgenx.anilib.event.BrowseNotificationEvent
 import com.revolgenx.anilib.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.event.DisplayTypes
 import com.revolgenx.anilib.event.MediaListCollectionFilterEvent
@@ -244,6 +245,10 @@ abstract class MediaListContainerFragment : BaseTransitiveLayoutFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.listSearchMenu -> {
+                true
+            }
+            R.id.listNotificationMenu->{
+                BrowseNotificationEvent().postEvent
                 true
             }
             R.id.listFilterMenu -> {

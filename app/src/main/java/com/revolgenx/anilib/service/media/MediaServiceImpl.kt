@@ -20,7 +20,7 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Page()?.media()?.filter { if(field.canShowAdult) true else it.fragments().narrowMediaContent().isAdult == false}?.map {
-                    it.fragments().narrowMediaContent().getCommonMedia()
+                    it.fragments().narrowMediaContent().getCommonMedia(CommonMediaModel())
                 }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({

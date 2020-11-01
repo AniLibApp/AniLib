@@ -8,6 +8,9 @@ import java.util.*
 class DateModel(var year: Int? = null, var month: Int? = null, var day: Int? = null) : Parcelable {
     var date: String = ""
 
+    init {
+        date = toString()
+    }
 
     constructor(parcel: Parcel) : this() {
         year = parcel.readValue(Int::class.java.classLoader) as? Int

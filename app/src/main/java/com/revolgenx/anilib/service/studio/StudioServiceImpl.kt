@@ -5,9 +5,11 @@ import com.revolgenx.anilib.field.studio.StudioField
 import com.revolgenx.anilib.field.studio.StudioMediaField
 import com.revolgenx.anilib.model.CoverImageModel
 import com.revolgenx.anilib.model.TitleModel
+import com.revolgenx.anilib.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.model.studio.StudioMediaModel
 import com.revolgenx.anilib.model.studio.StudioModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -54,34 +56,13 @@ class StudioServiceImpl(private val graphRepository: BaseGraphRepository) : Stud
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Studio()?.media()?.nodes()?.filter {if(field.canShowAdult) true else it.isAdult == false }?.map{
-                    StudioMediaModel().also { model ->
-                        model.mediaId = it.id()
-                        model.title = it.title()?.let {
-                            TitleModel().also { title ->
-                                title.english = it.english()
-                                title.native = it.native_()
-                                title.romaji = it.romaji()
-                                title.userPreferred = it.userPreferred()
-                            }
-                        }
-
-                        model.coverImage = it.coverImage()?.let {
-                            CoverImageModel().also { img ->
-                                img.large = it.large()
-                                img.medium = it.medium()
-                                img.extraLarge = it.extraLarge()
-                            }
-                        }
-
-                        model.bannerImage = it.bannerImage() ?: model.coverImage?.extraLarge
-                        model.averageScore = it.averageScore()
-                        model.format = it.format()?.ordinal
-                        model.type = it.type()?.ordinal
-                        model.status = it.status()?.ordinal
-                        model.seasonYear = it.seasonYear()
+                it.data()?.Studio()?.media()?.nodes()
+                    ?.filter {
+                        if (field.canShowAdult) true else it.fragments()
+                            .commonMediaContent().isAdult == false
+                    }?.map {
+                        it.fragments().commonMediaContent().getCommonMedia(StudioMediaModel())
                     }
-                }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))

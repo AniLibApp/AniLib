@@ -72,6 +72,7 @@ class StaffMediaCharacterPresenter(context: Context) :
                     item.format?.let { mediaFormats[it] }.naText(),
                     item.seasonYear?.toString().naText()
                 )
+            staffMediaFormatYearTv.status = item.mediaEntryListModel?.status
             staffMediaContainer.setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(

@@ -89,21 +89,19 @@
             app:layout_constraintRight_toRightOf="@id/mediaCoverFrameLayout" />
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        <com.revolgenx.anilib.ui.view.IndicatorTextView
             android:id="@+id/mediaFormatTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginBottom="@dimen/discover_text_separation"
             android:layout_marginEnd="4dp"
-            android:ellipsize="end"
-            android:maxLines="1"
+            android:layout_marginBottom="@dimen/discover_text_separation"
             android:paddingBottom="4dp"
-            android:textSize="10sp"
-            app:ads_colorType="tint_accent"
+            app:textColorType="tint_accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/mediaCoverFrameLayout"
             app:layout_constraintRight_toRightOf="@id/mediaCoverFrameLayout"
+            app:textSize="10"
             tools:ignore="SmallSp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

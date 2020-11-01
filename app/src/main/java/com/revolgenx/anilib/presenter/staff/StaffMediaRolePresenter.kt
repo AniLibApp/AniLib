@@ -52,6 +52,7 @@ class StaffMediaRolePresenter(context: Context) : Presenter<StaffMediaRoleModel>
                     item.format?.let { mediaFormats[it] }.naText(),
                     item.seasonYear?.toString().naText()
                 )
+            staffMediaRoleFormatYearTv.status = item.mediaEntryListModel?.status
             staffMediaRoleContainer.setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(

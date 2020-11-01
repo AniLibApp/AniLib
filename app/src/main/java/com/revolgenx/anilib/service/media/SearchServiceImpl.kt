@@ -5,8 +5,10 @@ import com.revolgenx.anilib.*
 import com.revolgenx.anilib.field.search.SearchField
 import com.revolgenx.anilib.model.*
 import com.revolgenx.anilib.model.character.CharacterNameModel
+import com.revolgenx.anilib.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.model.search.*
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,31 +28,7 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                 when (val data = it.data()) {
                     is MediaSearchQuery.Data -> {
                         data.Page()?.media()?.map {
-                            MediaSearchModel().also { model ->
-                                model.mediaId = it.id()
-                                model.title = it.title()?.let {
-                                    TitleModel().also { ti ->
-                                        ti.romaji = it.romaji()
-                                        ti.english = it.english()
-                                        ti.native = it.native_()
-                                        ti.userPreferred = it.userPreferred()
-                                    }
-                                }
-                                model.coverImage = it.coverImage()?.let {
-                                    CoverImageModel().also { img ->
-                                        img.extraLarge = it.extraLarge()
-                                        img.medium = it.medium()
-                                        img.large = it.large()
-                                    }
-                                }
-                                model.bannerImage = it.bannerImage() ?: model.coverImage?.largeImage
-                                model.type = it.type()?.ordinal
-                                model.format = it.format()?.ordinal
-                                model.status = it.status()?.ordinal
-                                model.seasonYear = it.seasonYear()
-                                model.season = it.season()?.ordinal
-                                model.averageScore = it.averageScore()
-                            }
+                            it.fragments().commonMediaContent().getCommonMedia(MediaSearchModel())
                         }
                     }
                     is CharacterSearchQuery.Data -> {
@@ -108,39 +86,7 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                                                     .commonMediaContent().isAdult == false
                                             }
                                             ?.map {
-                                                it.fragments().commonMediaContent().let {
-                                                    MediaSearchModel().also { model ->
-                                                        model.mediaId = it.id()
-                                                        model.averageScore = it.averageScore()
-                                                        model.title =
-                                                            it.title()?.fragments()?.mediaTitle()
-                                                                ?.let {
-                                                                    TitleModel().also { ti ->
-                                                                        ti.userPreferred =
-                                                                            it.userPreferred()
-                                                                        ti.romaji = it.romaji()
-                                                                        ti.english = it.english()
-                                                                        ti.native = it.native_()
-                                                                    }
-                                                                }
-                                                        model.coverImage =
-                                                            it.coverImage()?.fragments()
-                                                                ?.mediaCoverImage()?.let {
-                                                                CoverImageModel().also { img ->
-                                                                    img.large = it.large()
-                                                                    img.medium = it.medium()
-                                                                    img.extraLarge = it.extraLarge()
-                                                                }
-                                                            }
-                                                        model.bannerImage =
-                                                            it.bannerImage()
-                                                                ?: model.coverImage?.largeImage
-                                                        model.type = it.type()?.ordinal
-                                                        model.format = it.format()?.ordinal
-                                                        model.status = it.status()?.ordinal
-                                                        model.seasonYear = it.seasonYear()
-                                                    }
-                                                }
+                                                it.fragments().commonMediaContent().getCommonMedia(MediaSearchModel())
                                             }
                                 }
                             }

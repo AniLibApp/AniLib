@@ -41,7 +41,6 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
         context.resources.getStringArray(R.array.media_status)
     }
 
-
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         val v = when (elementType) {
             SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
@@ -105,6 +104,9 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
             context.getString(R.string.media_format_year_s).format(item.format?.let {
                 mediaFormats[it]
             }.naText(), item.seasonYear?.toString().naText())
+
+        searchMediaFormatTv.status = item.mediaEntryListModel?.status
+
         searchMediaStatusTv.text = item.status?.let {
             searchMediaStatusTv.color = Color.parseColor(statusColors[it])
             mediaStatus[it]

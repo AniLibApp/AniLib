@@ -10,6 +10,7 @@ import com.revolgenx.anilib.model.character.CharacterMediaModel
 import com.revolgenx.anilib.model.character.CharacterModel
 import com.revolgenx.anilib.model.character.CharacterNameModel
 import com.revolgenx.anilib.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.repository.util.ERROR
 import com.revolgenx.anilib.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -70,30 +71,7 @@ class CharacterServiceImpl(
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Character()?.media()?.nodes()?.map {
-                    CharacterMediaModel().also { model ->
-                        model.mediaId = it.id()
-                        model.title = it.title()?.let {
-                            TitleModel().also { title ->
-                                title.romaji = it.romaji()
-                                title.english = it.english()
-                                title.native = it.native_()
-                                title.userPreferred = it.userPreferred()
-                            }
-                        }
-                        model.season = it.season()?.ordinal
-                        model.seasonYear = it.seasonYear()
-                        model.status = it.status()?.ordinal
-                        model.format = it.format()?.ordinal
-                        model.type = it.type()?.ordinal
-                        model.averageScore = it.averageScore()
-                        model.coverImage = it.coverImage()?.let {
-                            CoverImageModel().also { img ->
-                                img.large = it.large()
-                                img.extraLarge = it.extraLarge()
-                            }
-                        }
-                        model.bannerImage = it.bannerImage() ?: model.coverImage?.largeImage
-                    }
+                    it.fragments().commonMediaContent().getCommonMedia(CharacterMediaModel())
                 }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({

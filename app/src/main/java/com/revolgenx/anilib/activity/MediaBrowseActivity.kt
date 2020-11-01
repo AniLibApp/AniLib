@@ -304,6 +304,11 @@ class MediaBrowseActivity : BaseDynamicActivity() {
             )
         }
 
+        mediaBrowserBannerImage.setOnLongClickListener {
+            copyToClipBoard(mediaBrowserMeta.title)
+            true
+        }
+
         /**problem with transition
          * {@link https://github.com/facebook/fresco/issues/1445}*/
         ActivityCompat.setExitSharedElementCallback(this, object : SharedElementCallback() {

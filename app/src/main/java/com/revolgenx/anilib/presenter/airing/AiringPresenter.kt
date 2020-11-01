@@ -80,6 +80,9 @@ class AiringPresenter(context: Context) : Presenter<AiringMediaModel>(context) {
                 mediaFormats[it]
             }.naText()
 
+            mediaFormatTv.status  = item.mediaEntryListModel?.status
+
+
             mediaStatusTv.naText(item.status?.let {
                 mediaStatusTv.color = Color.parseColor(statusColors[it])
                 mediaStatus[it]

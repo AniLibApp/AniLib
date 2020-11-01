@@ -9,6 +9,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ToolbarContainerActivity
 import com.revolgenx.anilib.dialog.HomeOrderDialog
 import com.revolgenx.anilib.event.BrowseEvent
+import com.revolgenx.anilib.event.BrowseNotificationEvent
 import com.revolgenx.anilib.fragment.base.ParcelableFragment
 import com.revolgenx.anilib.fragment.notification.NotificationFragment
 import com.revolgenx.anilib.meta.UserMeta
@@ -43,19 +44,7 @@ class DiscoverFragment : DiscoverReviewFragment() {
                 true
             }
             R.id.notificationMenu -> {
-                ToolbarContainerActivity.openActivity(
-                    requireContext(),
-                    ParcelableFragment(
-                        NotificationFragment::class.java,
-                        bundleOf(
-                            UserMeta.userMetaKey to UserMeta(
-                                requireContext().userId(),
-                                null,
-                                true
-                            )
-                        )
-                    )
-                )
+                BrowseNotificationEvent().postEvent
                 true
             }
             R.id.orderMenu->{

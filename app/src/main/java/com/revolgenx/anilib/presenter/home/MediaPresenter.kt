@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.presenter.home
 
 import android.content.Context
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
@@ -57,6 +58,8 @@ class MediaPresenter(context: Context) : Presenter<CommonMediaModel>(context) {
                 item.format?.let { mediaFormats[it] }.naText(),
                 item.episodes.naText()
             )
+            mediaFormatTv.status = item.mediaEntryListModel?.status
+
             mediaGenreLayout.addGenre(item.genres?.take(3)) { genre ->
                 BrowseGenreEvent(MediaSearchFilterModel().also {
                     it.genre = listOf(genre.trim())

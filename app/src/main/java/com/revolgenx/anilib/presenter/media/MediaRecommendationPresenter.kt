@@ -16,7 +16,9 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.event.BrowseMediaEvent
+import com.revolgenx.anilib.event.ListEditorEvent
 import com.revolgenx.anilib.field.recommendation.UpdateRecommendationField
+import com.revolgenx.anilib.meta.ListEditorMeta
 import com.revolgenx.anilib.meta.MediaBrowserMeta
 import com.revolgenx.anilib.model.MediaRecommendationModel
 import com.revolgenx.anilib.model.UpdateRecommendationModel
@@ -40,7 +42,7 @@ class MediaRecommendationPresenter(
         get() = listOf(0)
 
     private val statusColors by lazy {
-        context.resources.getStringArray(R.array.status_color)
+        context.resources.getStringArray(R.array.status_color).map { Color.parseColor(it) }
     }
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
@@ -61,30 +63,32 @@ class MediaRecommendationPresenter(
     }
 
     private fun Holder.updateView(data: MediaRecommendationModel) {
-        val recommended = data.recommended ?: return
+        val item = data.recommended ?: return
         itemView.apply {
-            mediaRecommendationTitleTv.text = recommended.title?.title(context)
-            recommendationCoverImage.setImageURI(recommended.coverImage?.image(context))
+            mediaRecommendationTitleTv.text = item.title?.title(context)
+            recommendationCoverImage.setImageURI(item.coverImage?.image(context))
 
-            mediaRatingTv.text = recommended.averageScore?.toString().naText()
+            mediaRatingTv.text = item.averageScore?.toString().naText()
 
-            if (recommended.type == MediaType.ANIME.ordinal) {
+            if (item.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeFormatTv.text = context.getString(R.string.episode_format_s).format(
-                    recommended.episodes.naText(),
-                    recommended.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText()
+                    item.episodes.naText(),
+                    item.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText()
                 )
             } else {
                 mediaEpisodeFormatTv.text = context.getString(R.string.chapter_format_s).format(
-                    recommended.chapters.naText(),
-                    recommended.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText()
+                    item.chapters.naText(),
+                    item.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText()
                 )
             }
-            mediaSeasonYearTv.text = recommended.seasonYear?.toString().naText()
+
+            mediaEpisodeFormatTv.status = item.mediaEntryListModel?.status
+            mediaSeasonYearTv.text = item.seasonYear?.toString().naText()
             mediaRecommendationRating.text = data.rating?.toString()
             mediaRecommendationRating.setTextColor(Color.WHITE)
 
-            recommended.status?.let {
-                statusDivider.setBackgroundColor(Color.parseColor(statusColors[it]))
+            item.status?.let {
+                statusDivider.setBackgroundColor(statusColors[it])
             }
 
             updateRecommendationLikeView(data)
@@ -95,14 +99,31 @@ class MediaRecommendationPresenter(
             this.setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(
-                        recommended.mediaId!!,
-                        recommended.type!!,
-                        recommended.title!!.romaji!!,
-                        recommended.coverImage!!.image(context),
-                        recommended.coverImage!!.largeImage,
-                        recommended.bannerImage
+                        item.mediaId!!,
+                        item.type!!,
+                        item.title!!.romaji!!,
+                        item.coverImage!!.image(context),
+                        item.coverImage!!.largeImage,
+                        item.bannerImage
                     ), recommendationCoverImage
                 ).postEvent
+            }
+
+            this.setOnLongClickListener {
+                if (context.loggedIn()) {
+                    ListEditorEvent(
+                        ListEditorMeta(
+                            item.mediaId,
+                            item.type!!,
+                            item.title!!.title(context)!!,
+                            item.coverImage!!.image(context),
+                            item.bannerImage
+                        ), recommendationCoverImage
+                    ).postEvent
+                } else {
+                    context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
+                }
+                true
             }
 
             mediaRecommendationLikeIv.setOnClickListener {

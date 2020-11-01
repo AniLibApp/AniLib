@@ -92,20 +92,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/staffMediaTitleTv"
                 tools:ignore="SmallSp" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            <com.revolgenx.anilib.ui.view.IndicatorTextView
                 android:id="@+id/staffMediaFormatYearTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textSize="10sp"
-                app:ads_colorType="accent"
+                app:textColorType="accent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@id/staffMediaImageContainer"
                 app:layout_constraintRight_toRightOf="@id/staffMediaImageContainer"
-                app:layout_constraintTop_toBottomOf="@+id/staffMediaStatusTv"
-                tools:ignore="SmallSp" />
+                app:layout_constraintTop_toBottomOf="@+id/staffMediaStatusTv" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

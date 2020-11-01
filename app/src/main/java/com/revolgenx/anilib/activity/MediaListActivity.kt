@@ -206,6 +206,7 @@ class MediaListActivity : BaseDynamicActivity() {
             menu.setOptionalIconsVisible(true)
         }
 
+        menu?.findItem(R.id.listNotificationMenu)?.isVisible = false
         menu?.findItem(R.id.listSearchMenu)?.let { item ->
             menuItem = item
             (item.actionView as SearchView).also {
