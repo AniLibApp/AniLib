@@ -16,11 +16,11 @@ open class SpoilerSpan() : ClickableSpan() {
     }
 
     override fun updateDrawState(ds: TextPaint) {
-        val accent = DynamicTheme.getInstance().get().tintAccentColor
         if (shown) {
             ds.color = DynamicTheme.getInstance().get().tintSurfaceColor
             ds.bgColor = DynamicTheme.getInstance().get().surfaceColor
         } else {
+            val accent = DynamicTheme.getInstance().get().tintAccentColor
             ds.color = accent
             ds.bgColor = accent
         }
