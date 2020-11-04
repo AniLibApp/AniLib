@@ -244,7 +244,7 @@ class MediaListActivity : BaseDynamicActivity() {
             R.id.listDisplayModeMenu -> {
                 val popupMenu = makePopupMenu(
                     R.menu.display_mode_menu,
-                    findViewById(R.id.listDisplayModeMenu)
+                    findViewById(R.id.listSearchMenu)
                 ) { menuItem ->
 
                     setMediaListGridPresenter(menuItem.order)

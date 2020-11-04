@@ -258,7 +258,7 @@ abstract class MediaListContainerFragment : BaseTransitiveLayoutFragment() {
             R.id.listDisplayModeMenu -> {
                 val popupMenu = makePopupMenu(
                     R.menu.display_mode_menu,
-                    requireView().findViewById(R.id.listDisplayModeMenu)
+                    requireView().findViewById(R.id.listNotificationMenu)
                 ) { menuItem ->
 
                     setMediaListGridPresenter(menuItem.order)
