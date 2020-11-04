@@ -2,6 +2,7 @@ package com.revolgenx.anilib.ui.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -66,8 +67,8 @@ fun makeDynamicToastView(
 }
 
 @SuppressLint("RestrictedApi")
-fun makePopupMenu(@MenuRes res:Int, view:View, listener:PopupMenu.OnMenuItemClickListener): PopupMenu {
-    return PopupMenu(view.context, view).apply {
+fun makePopupMenu(@MenuRes res:Int, view:View, gravity: Int = Gravity.NO_GRAVITY,  listener:PopupMenu.OnMenuItemClickListener): PopupMenu {
+    return PopupMenu(view.context, view, gravity).apply {
         inflate(res)
         if(menu is MenuBuilder){
             (menu as MenuBuilder).setOptionalIconsVisible(true)
