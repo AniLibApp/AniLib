@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_activity_navigation">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <keep_state_fragment
         android:id="@+id/discoverViewPagerFragment"
-        android:name="com.revolgenx.anilib.fragment.home.DiscoverContainerFragment"
+        android:name="com.revolgenx.anilib.ui.fragment.home.DiscoverContainerFragment"
         android:label="DiscoverViewPagerFragment">
         <action
             android:id="@+id/discoverToAnimeNav"
@@ -17,11 +16,11 @@
 
     <keep_state_fragment
         android:id="@+id/animeListContainerFragment"
-        android:name="com.revolgenx.anilib.fragment.list.AnimeListContainerFragment"
+        android:name="com.revolgenx.anilib.ui.fragment.list.AnimeListContainerFragment"
         android:label="AnimeListContainerFragment">
         <argument
             android:name="mediaListMeta"
-            app:argType="com.revolgenx.anilib.meta.MediaListMeta" />
+            app:argType="com.revolgenx.anilib.data.meta.MediaListMeta" />
         <action
             android:id="@+id/animeToMangaNav"
             app:destination="@id/mangaListContainerFragment" />
@@ -32,11 +31,11 @@
 
     <keep_state_fragment
         android:id="@+id/mangaListContainerFragment"
-        android:name="com.revolgenx.anilib.fragment.list.MangaListContainerFragment"
+        android:name="com.revolgenx.anilib.ui.fragment.list.MangaListContainerFragment"
         android:label="MangaListContainerFragment">
         <argument
             android:name="mediaListMeta"
-            app:argType="com.revolgenx.anilib.meta.MediaListMeta" />
+            app:argType="com.revolgenx.anilib.data.meta.MediaListMeta" />
         <action
             android:id="@+id/mangaToAnimeNav"
             app:destination="@id/animeListContainerFragment" />

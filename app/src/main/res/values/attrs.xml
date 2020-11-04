@@ -4,7 +4,6 @@
     <item name="incrementButtonId" type="id" />
     <item name="decrementButtonId" type="id" />
 
-    <item name="mediaBrowserBottomNavId" type="id" />
     <item name="customTextViewDescriptionId" type="id" />
     <item name="customTextViewTitleId" type="id" />
 
@@ -14,7 +13,6 @@
     <item name="garlandConstraintLayout" type="id" />
     <item name="gralandFrameContainer" type="id" />
 
-    <item name="airingEpisode" type="id" />
     <declare-styleable name="TitleTextView">
         <attr name="titleName" format="string" />
     </declare-styleable>

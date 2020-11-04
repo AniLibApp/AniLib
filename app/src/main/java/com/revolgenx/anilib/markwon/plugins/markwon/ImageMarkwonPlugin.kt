@@ -4,9 +4,9 @@ import android.content.Context
 import android.graphics.drawable.LayerDrawable
 import android.text.style.ClickableSpan
 import android.view.View
-import com.revolgenx.anilib.event.ImageClickedEvent
-import com.revolgenx.anilib.meta.ImageMeta
-import com.revolgenx.anilib.view.drawable.SpoilerDrawable
+import com.revolgenx.anilib.infrastructure.event.ImageClickedEvent
+import com.revolgenx.anilib.data.meta.ImageMeta
+import com.revolgenx.anilib.ui.view.drawable.SpoilerDrawable
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.MarkwonPlugin
 import io.noties.markwon.MarkwonVisitor

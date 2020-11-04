@@ -7,7 +7,6 @@
     android:layout_height="match_parent">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout
-        android:id="@+id/viewPagerCoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/containerBottomNav">

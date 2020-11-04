@@ -6,7 +6,6 @@
     android:padding="10dp">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-        android:id="@+id/filterChooseCardView"
         style="@style/Widget.DynamicApp.Card.Clickable"
         android:layout_width="0dp"
         android:layout_height="0dp"

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.adapter.DynamicShimmerAdapter
+import com.revolgenx.anilib.ui.adapter.DynamicShimmerAdapter
 
 class DynamicShimmerView : ShimmerFrameLayout {
 

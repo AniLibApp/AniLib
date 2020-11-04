@@ -33,7 +33,7 @@
                     app:ads_fillSpace="true"
                     app:ads_title="@string/write_review" />
 
-                <com.revolgenx.anilib.view.MaxHeightFrameLayout
+                <com.revolgenx.anilib.ui.view.MaxHeightFrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="true">
@@ -63,7 +63,7 @@
                         </com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout>
                     </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
 
-                </com.revolgenx.anilib.view.MaxHeightFrameLayout>
+                </com.revolgenx.anilib.ui.view.MaxHeightFrameLayout>
 
                 <include layout="@layout/markwon_helper_layout" />
 
@@ -133,13 +133,12 @@
                 android:orientation="vertical">
 
                 <com.pranavpandey.android.dynamic.support.view.DynamicHeader
-                    android:id="@+id/scoreHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:ads_fillSpace="true"
                     app:ads_title="@string/score" />
 
-                <com.revolgenx.anilib.view.PlusMinusEditTextLayout
+                <com.revolgenx.anilib.ui.view.PlusMinusEditTextLayout
                     android:id="@+id/reviewScorePlusMinusTv"
                     android:layout_width="match_parent"
                     android:layout_height="48dp" />

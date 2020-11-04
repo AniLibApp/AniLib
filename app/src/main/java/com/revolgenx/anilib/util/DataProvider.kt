@@ -1,8 +1,8 @@
 package com.revolgenx.anilib.util
 
 import android.content.Context
-import com.revolgenx.anilib.preference.getAllSearchHistories
-import com.revolgenx.anilib.preference.saveSearchHistories
+import com.revolgenx.anilib.common.preference.getAllSearchHistories
+import com.revolgenx.anilib.common.preference.saveSearchHistories
 
 class DataProvider(private val context: Context) {
     private val searchHistories = mutableListOf<String>()

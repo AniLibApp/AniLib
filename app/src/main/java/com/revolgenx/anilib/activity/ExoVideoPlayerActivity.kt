@@ -10,11 +10,11 @@ import android.view.View
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.preference.getApplicationLocale
+import com.revolgenx.anilib.app.theme.ThemeController
+import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.video.PlayerManager
 import com.revolgenx.anilib.video.PlayerManagerImpl
-import com.revolgenx.anilib.view.drawable.PlayPauseDrawable
+import com.revolgenx.anilib.ui.view.drawable.PlayPauseDrawable
 import kotlinx.android.synthetic.main.exo_video_player_activity.*
 import kotlinx.android.synthetic.main.exo_video_player_controller_layout.*
 import java.util.*

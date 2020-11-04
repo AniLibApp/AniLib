@@ -85,7 +85,7 @@
             tools:ignore="SmallSp" />
 
 
-        <com.revolgenx.anilib.view.GenreLayout
+        <com.revolgenx.anilib.ui.view.GenreLayout
             android:id="@+id/mediaListGenreLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

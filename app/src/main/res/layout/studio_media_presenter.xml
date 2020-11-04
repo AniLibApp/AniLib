@@ -6,7 +6,6 @@
     android:layout_height="wrap_content">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-        android:id="@+id/studioMediaContainer"
         style="@style/Widget.DynamicApp.Card.Clickable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

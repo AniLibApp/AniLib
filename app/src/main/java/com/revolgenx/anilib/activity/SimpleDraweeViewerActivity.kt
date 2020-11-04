@@ -14,14 +14,13 @@ import com.github.piasy.biv.view.FrescoImageViewFactory
 import com.github.piasy.biv.view.ImageSaveCallback
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.meta.DraweeViewerMeta
-import com.revolgenx.anilib.preference.getApplicationLocale
+import com.revolgenx.anilib.app.theme.ThemeController
+import com.revolgenx.anilib.data.meta.DraweeViewerMeta
+import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.thefuntasty.hauler.setOnDragDismissedListener
 import kotlinx.android.synthetic.main.simple_drawee_viewer_activity.*
-import timber.log.Timber
 import java.util.*
 
 class SimpleDraweeViewerActivity : DynamicSystemActivity() {

@@ -82,7 +82,7 @@
                 app:ads_colorType="tint_primary"
                 app:srcCompat="@drawable/ic_bookmark" />
 
-            <com.revolgenx.anilib.view.GenreLayout
+            <com.revolgenx.anilib.ui.view.GenreLayout
                 android:id="@+id/mediaGenreLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

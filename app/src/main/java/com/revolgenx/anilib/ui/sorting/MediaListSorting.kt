@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.ui.sorting
 
-import com.revolgenx.anilib.model.list.MediaListModel
-import com.revolgenx.anilib.model.toDate
+import com.revolgenx.anilib.data.model.list.MediaListModel
+import com.revolgenx.anilib.data.model.toDate
 import com.revolgenx.anilib.util.getOrDefault
 
 class MediaListSorting() :

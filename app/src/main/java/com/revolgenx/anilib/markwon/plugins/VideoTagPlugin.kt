@@ -5,10 +5,10 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.LayerDrawable
 import android.text.style.ClickableSpan
 import android.view.View
-import com.revolgenx.anilib.event.VideoClickedEvent
-import com.revolgenx.anilib.meta.VideoMeta
-import com.revolgenx.anilib.view.drawable.SpoilerDrawable
-import com.revolgenx.anilib.view.drawable.VideoPlayBitmapDrawable
+import com.revolgenx.anilib.infrastructure.event.VideoClickedEvent
+import com.revolgenx.anilib.data.meta.VideoMeta
+import com.revolgenx.anilib.ui.view.drawable.SpoilerDrawable
+import com.revolgenx.anilib.ui.view.drawable.VideoPlayBitmapDrawable
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.MarkwonPlugin
 import io.noties.markwon.RenderProps

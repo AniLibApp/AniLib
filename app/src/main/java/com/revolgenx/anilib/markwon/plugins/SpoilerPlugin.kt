@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.markwon.plugins
 
-import com.revolgenx.anilib.view.span.SpoilerSpan
+import com.revolgenx.anilib.ui.view.span.SpoilerSpan
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.MarkwonPlugin
 import io.noties.markwon.RenderProps

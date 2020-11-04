@@ -2,7 +2,6 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/searchMediaContainer"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="120dp"
     android:layout_height="@dimen/mini_card_dimen">

@@ -26,7 +26,7 @@
         android:layout_margin="@dimen/ads_margin_splash_small"
         android:orientation="vertical">
 
-        <com.revolgenx.anilib.view.CustomSpinKit
+        <com.revolgenx.anilib.ui.view.CustomSpinKit
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -34,7 +34,6 @@
             style="@style/SpinKitView.Small.CubeGrid"/>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/splash_title"
             android:textSize="@dimen/ads_font_size_headline6_splash"
             android:alpha="0.8"
             app:ads_linkColorType="tint_primary"
@@ -48,7 +47,6 @@
             app:ads_rtlSupport="false" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/splash_subtitle"
             style="@style/TextAppearance.DynamicApp.Subtitle1.Splash"
             android:layout_width="match_parent"
             app:fontFamily="@font/open_sans_semi_bold"

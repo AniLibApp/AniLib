@@ -83,7 +83,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_bookmark" />
 
-        <com.revolgenx.anilib.view.GenreLayout
+        <com.revolgenx.anilib.ui.view.GenreLayout
             android:id="@+id/mediaGenreLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
             app:textSize="11"
             tools:ignore="SmallSp" />
 
-        <com.revolgenx.anilib.view.airing.AiringDynamicTextView
+        <com.revolgenx.anilib.ui.view.airing.AiringDynamicTextView
             android:id="@+id/airingTimeTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
