@@ -1,7 +1,7 @@
 package com.revolgenx.anilib
 
-import com.revolgenx.anilib.model.markwon.MarkdownImageModel
-import com.revolgenx.anilib.model.markwon.MarkdownVideoModel
+import com.revolgenx.anilib.data.model.markwon.MarkdownImageModel
+import com.revolgenx.anilib.data.model.markwon.MarkdownVideoModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.junit.Test

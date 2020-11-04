@@ -11,8 +11,6 @@
     <color name="red">#FF5252</color>
     <color name="transparent_dark">#12000000</color>
 
-    <color name="anilistColor">#1f263f</color>
-
     <!--media status-->
     <string-array name="status_color">
         <item>#02A4F8</item>    <!--//finished-->

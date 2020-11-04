@@ -89,7 +89,7 @@
             tools:ignore="SmallSp" />
 
 
-        <com.revolgenx.anilib.view.GenreLayout
+        <com.revolgenx.anilib.ui.view.GenreLayout
             android:id="@+id/mediaListGenreLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -149,7 +149,6 @@
             tools:ignore="SmallSp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/mediaListUserStartDateTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"

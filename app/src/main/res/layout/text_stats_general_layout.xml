@@ -61,7 +61,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.revolgenx.anilib.view.header.CustomDynamicHeader
+            <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                 android:id="@+id/statsCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +74,6 @@
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-            android:id="@+id/statsMeanScoreFrameLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -82,7 +81,7 @@
             app:layout_constraintRight_toLeftOf="@+id/statsTimeWatchedFrameLayout"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.revolgenx.anilib.view.header.CustomDynamicHeader
+            <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                 android:id="@+id/statsMeanScoreTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,7 +101,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.revolgenx.anilib.view.header.CustomDynamicHeader
+            <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                 android:id="@+id/statsTimeWatched"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

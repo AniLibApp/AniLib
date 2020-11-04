@@ -132,7 +132,6 @@
     <string name="recommendation_filter">Recommendation Filter</string>
     <string name="s_slash_s">%1$s/%2$s</string>
     <string name="s_slash_s_brackets">%1$s/%2$s (%3$s)</string>
-    <string name="list">List</string>
     <string name="anime_list">Anime List</string>
     <string name="manga_list">Manga List</string>
     <string name="none">None</string>
@@ -201,21 +200,9 @@
     <string name="reviews">Reviews</string>
     <string name="press_again_to_exit">Press again to exit</string>
 
-    <string name="patreon">Patreon</string>
-    <string name="bmc_title">Buy Me A Coffee</string>
-    <string name="patreon_page">Patreon Page</string>
-    <string name="patreon_page_sub">Visit Patreon Page.</string>
-    <string name="support_the_app">Support Me On Patreon</string>
-    <string name="support_the_app_bmc">Support Me On BMC</string>
-    <string name="bmc_page">BuyMeACoffee Page</string>
-    <string name="bmc_page_sub">Visit Buy Me A Coffee.</string>
-    <string name="help_this_app">Contribute AniLib to help me create and maintain awesome features.</string>
-    <string name="help_this_app_bmc">Help me get some caffeine power. Your one cup of coffee could bring out some latent power.⚡⚡⚡</string>
     <string name="privacy_policy">Privacy Policy.</string>
     <string name="privacy_policy_desc">View complete privacy policy.</string>
     <string name="whats_new">What\'s new</string>
-    <string name="support">Support</string>
-    <string name="contribute">Contribute</string>
     <string name="studio_version">Studio Version</string>
     <string name="terms_and_condition">Terms and Condition</string>
     <string name="terms_and_condition_desc">View Terms and Condition</string>
@@ -254,11 +241,6 @@
     <string name="order">Order</string>
     <string name="home_order_drag_message">Drag icon to change order</string>
     <string name="reading">Reading</string>
-    <string name="View">view</string>
-    <string name="include_tags">Include Tags</string>
-    <string name="include_genres">Include Genres</string>
-    <string name="exclude_genres">Exclude Genres</string>
-    <string name="exclude_tags">Exclude Tags</string>
     <string name="custom_filters">Customize Filters</string>
     <string name="custom_filter_desc">Customize tags, genre and others</string>
 
@@ -404,10 +386,8 @@
     <string name="hentai_only">Hentai</string>
 
     <string name="application_language">Application Language</string>
-    <string name="preferred_application_language">Select preferred application language</string>
 
     <string name="application">Application</string>
-    <string name="_default">Default</string>
     <string name="change_display_mode">Change display mode</string>
     <string name="startdate_format">%1$s ~ %2$s</string>
     <string name="new_update_available">New update available!</string>

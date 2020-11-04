@@ -17,7 +17,6 @@
 
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
-        android:id="@+id/layout_seekBar"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_above="@id/layout_btn_bot"

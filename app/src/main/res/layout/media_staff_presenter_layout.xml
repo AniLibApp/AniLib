@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/mediaStaffPresenterContainer">
+    android:layout_height="wrap_content">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

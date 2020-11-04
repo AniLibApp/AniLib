@@ -17,7 +17,7 @@
             android:layout_height="wrap_content" />
 
 
-        <com.revolgenx.anilib.view.header.CustomDynamicHeader
+        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:ads_fillSpace="true"
@@ -40,7 +40,7 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:ads_fillSpace="true"
@@ -67,7 +67,7 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:ads_fillSpace="true"
@@ -94,7 +94,7 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:ads_fillSpace="true"

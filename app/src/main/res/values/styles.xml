@@ -43,14 +43,6 @@
         <item name="fontFamily">@font/berlinrounded_extra_bold</item>
     </style>
 
-    <style name="searchFilterHeaderTextStyle" parent="Widget.AppCompat.TextView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">11sp</item>
-        <item name="android:padding">5dp</item>
-        <item name="android:layout_marginBottom">6dp</item>
-    </style>
-
     <style name="DynamicToolbarTitleTheme" parent="TextAppearance.DynamicApp.Toolbar">
         <item name="fontFamily">@font/berlinrounded_extra_bold</item>
     </style>

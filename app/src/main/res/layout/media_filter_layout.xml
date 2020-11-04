@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
-            android:id="@+id/seasonFormatHeaderLayout"
+        <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -20,7 +19,6 @@
             app:headerName="@string/format">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                android:id="@+id/seasonFormatLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -31,11 +29,10 @@
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
-        </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+        </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
 
-        <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
-            android:id="@+id/seasonStatusHeaderLayout"
+        <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -43,7 +40,6 @@
             app:headerName="@string/status">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                android:id="@+id/seasonStatusFrameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -52,10 +48,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
-        </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+        </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
-        <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
-            android:id="@+id/seasonHeaderLayout"
+        <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -63,7 +58,6 @@
             app:headerName="@string/season">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                android:id="@+id/seasonFrameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -72,10 +66,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
-        </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+        </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
 
-        <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+        <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
             android:id="@+id/seasonSortHeaderLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,7 +78,6 @@
             app:headerName="@string/sort">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                android:id="@+id/seasonSortFrameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -94,7 +87,7 @@
                     android:layout_height="wrap_content" />
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
-        </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+        </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout

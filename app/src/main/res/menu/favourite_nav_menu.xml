@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/animeFavouriteNav"
         android:icon="@drawable/ic_media"
         android:title="@string/anime" />
     <item
-        android:id="@+id/mangaFavouriteNav"
         android:icon="@drawable/ic_manga"
         android:title="@string/manga" />
     <item
-        android:id="@+id/characterFavouriteNav"
         android:icon="@drawable/ic_role"
         android:title="@string/character" />
     <item
-        android:id="@+id/staffFavouriteNav"
         android:icon="@drawable/ic_staff"
         android:title="@string/staff" />
     <item
-        android:id="@+id/studioFavouriteNav"
         android:icon="@drawable/ic_studio"
         android:title="@string/studio" />
 
