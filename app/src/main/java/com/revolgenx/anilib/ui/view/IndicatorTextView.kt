@@ -12,6 +12,7 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.pranavpandey.android.dynamic.utils.DynamicDrawableUtils
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.util.dp
 
 class IndicatorTextView : DynamicLinearLayout {
@@ -32,11 +33,35 @@ class IndicatorTextView : DynamicLinearLayout {
                 indicator.visibility = View.GONE
             } else {
                 indicator.visibility = View.VISIBLE
+                val statusDrawable = when (status) {
+                    MediaListStatus.CURRENT.ordinal -> {
+                        R.drawable.ic_watching
+                    }
+                    MediaListStatus.PLANNING.ordinal->{
+                        R.drawable.ic_planning
+                    }
+                    MediaListStatus.DROPPED.ordinal -> {
+                        R.drawable.ic_dropped
+                    }
+                    MediaListStatus.COMPLETED.ordinal -> {
+                        R.drawable.ic_completed
+                    }
+                    MediaListStatus.PAUSED.ordinal -> {
+                        R.drawable.ic_paused_filled
+                    }
+                    MediaListStatus.REPEATING.ordinal -> {
+                        R.drawable.ic_rewatching
+                    }
+                    else -> {
+                        R.drawable.ads_ic_info
+                    }
+                }
                 indicator.background =
                     DynamicDrawableUtils.colorizeDrawable(
-                        ContextCompat.getDrawable(context, R.drawable.ic_circle),
+                        ContextCompat.getDrawable(context, statusDrawable),
                         mediaListStatusColors[value]
                     )
+
             }
         }
 
@@ -73,7 +98,7 @@ class IndicatorTextView : DynamicLinearLayout {
 
         orientation = HORIZONTAL
         indicator = View(context).apply {
-            layoutParams = LayoutParams(dp(10f), dp(10f)).also {
+            layoutParams = LayoutParams(dp(11f), dp(11f)).also {
                 it.gravity = Gravity.CENTER_VERTICAL
                 it.marginEnd = dp(4f)
             }

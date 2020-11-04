@@ -260,7 +260,6 @@ class MediaBrowseActivity : BaseDynamicActivity() {
             if (it == 0) return@setViewPager
             appbarLayout.setExpanded(false)
         }
-
         browseMediaViewPager.setCurrentItem(0, false)
         browseMediaViewPager.post {
             pageChangeListener.onPageSelected(browseMediaViewPager.currentItem)
@@ -341,7 +340,7 @@ class MediaBrowseActivity : BaseDynamicActivity() {
 
     @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (state == EXPANDED) return false
+        if (state == EXPANDED) return true
 
         menuInflater.inflate(R.menu.media_browser_menu, menu)
         if (menu is MenuBuilder) {
@@ -354,6 +353,7 @@ class MediaBrowseActivity : BaseDynamicActivity() {
         }
         return true
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
