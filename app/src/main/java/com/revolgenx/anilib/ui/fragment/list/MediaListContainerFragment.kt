@@ -50,22 +50,22 @@ abstract class MediaListContainerFragment : BaseTransitiveLayoutFragment() {
 
     private val mediaListFragment by lazy {
         listOf(
-            newInstance(WatchingFragment::class.java).apply {
+            WatchingFragment().apply {
                 arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            newInstance(PlanningFragment::class.java).apply {
+            PlanningFragment().apply {
                 arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            newInstance(CompletedFragment::class.java).apply {
+            CompletedFragment().apply {
                 arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            newInstance(DroppedFragment::class.java).apply {
+            DroppedFragment().apply {
                 arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            newInstance(PausedFragment::class.java).apply {
+            PausedFragment().apply {
                 arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            newInstance(RepeatingFragment::class.java).apply {
+            RepeatingFragment().apply {
                 arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
             }
         )

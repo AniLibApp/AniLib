@@ -160,7 +160,7 @@
     <string name="volumes_read">Volumi Letti</string>
     <string name="format_distribution">Diffusione Formato</string>
     <string name="country_distribution">Diffusione Paese</string>
-    <string name="release_year">Anno d'uscita</string>
+    <string name="release_year">Anno d\'uscita</string>
     <string name="watch_year">Anno Visto</string>
     <string name="read_year">Anno Letto</string>
     <string name="count">Conteggio</string>
@@ -218,7 +218,7 @@
     <string name="check_which_notif_to_show">Avvisami quando.</string>
     <string name="when_someone_follows_me">Qualcuno mi segue</string>
     <string name="receive_message_notif">Ricevo un messaggio</string>
-    <string name="mention_replay_notif">Sono @ menzionato in un'attività o ricevo una risposta attività.</string>
+    <string name="mention_replay_notif">Sono @ menzionato in un\'attività o ricevo una risposta attività.</string>
     <string name="activity_like_notif">Qualcuno piace la mia attività</string>
     <string name="likes_activity_reply_notif">Qualcuno piace la mia risposta attività</string>
     <string name="forum_reply_notif">Qualcuno risponde ad un commento.</string>
@@ -226,13 +226,13 @@
     <string name="forum_coment_liked_notif">Qualuno piace il commento</string>
     <string name="reply_to_subscribed_forum_notif">Qualcuno risponde in un thread di un forum a cui sono iscritto.</string>
     <string name="forum_liked_notif">Qualcuno piace il mio thread forum</string>
-    <string name="episode_aired_notif">L'episodio è sulla mia lista airs</string>
+    <string name="episode_aired_notif">L\'episodio è sulla mia lista airs</string>
     <string name="related_media_added_notif">Dei messaggi informativi sono aggiunti su AniList</string>
     <string name="media_title">Carattere Titolo</string>
     <string name="notification_interval_desc">Controlla se ci sono notifiche dopo uno specifico intervallo di tempo.</string>
     <string name="preferred_media_title">Selezione carattere titolo preferito.</string>
     <string name="cover_image_quality">Qualità Immagine Cover</string>
-    <string name="preferred_image_quality_desc">Seleziona la tua qualità preferita dell'immagine</string>
+    <string name="preferred_image_quality_desc">Seleziona la tua qualità preferita dell\'immagine</string>
     <string name="advanced_scores">Punteggi Avanzati</string>
     <string name="copied_to_clipboard">Copiato negli Appunti</string>
     <string name="change_log">Change log</string>
@@ -385,7 +385,7 @@
     <string name="hentai_only">Hentai</string>
 
     <string name="application_language">Lningua Applicazione</string>
-    <string name="preferred_application_language">Seleziona lingua preferita dell'applicazione</string>
+    <string name="preferred_application_language">Seleziona lingua preferita dell\'applicazione</string>
 
     <string name="application">Applicazione</string>
     <string name="change_display_mode">Cambia modalità di visualizzazione</string>

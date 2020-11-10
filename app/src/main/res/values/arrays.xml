@@ -19,7 +19,30 @@
         <item>@string/github_link</item>
         <item>@string/apache_url</item>
     </string-array>
+
     <!--endregion-->
+
+    <!--region translators-->
+    <string-array name="info_translators_authors">
+        <item>@string/ads_translators_translate_summary</item>
+        <item>Yoshimitsu</item>
+    </string-array>
+
+    <string-array name="info_translators_languages">
+        <item>@string/ads_translators_translate</item>
+        <item>@string/ads_locale_it</item>
+    </string-array>
+
+    <string-array name="info_translators_flags">
+        <item>@drawable/ads_ic_translate</item>
+        <item>@drawable/ads_ic_flag_it</item>
+    </string-array>
+
+    <string-array name="info_translators_urls">
+        <item>https://poeditor.com/join/project?hash=d9NRHxgZSb</item>
+        <item>@null</item>
+    </string-array>
+    <!--end region-->
 
     <integer-array name="url_link_icons">
         <item>@drawable/ic_anilib_inline</item>

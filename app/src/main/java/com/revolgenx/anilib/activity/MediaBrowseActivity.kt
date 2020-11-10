@@ -193,22 +193,22 @@ class MediaBrowseActivity : BaseDynamicActivity() {
 
 
         val animeBrowserList = listOf(
-            BaseFragment.newInstance(MediaOverviewFragment::class.java).apply {
+            MediaOverviewFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             },
-            BaseFragment.newInstance(MediaWatchFragment::class.java).apply {
+            MediaWatchFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             },
-            BaseFragment.newInstance(MediaCharacterFragment::class.java).apply {
+            MediaCharacterFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             },
-            BaseFragment.newInstance(MediaStaffFragment::class.java).apply {
+            MediaStaffFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             },
-            BaseFragment.newInstance(MediaReviewFragment::class.java).apply {
+            MediaReviewFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             },
-            BaseFragment.newInstance(MediaStatsFragment::class.java).apply {
+            MediaStatsFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             }
         )

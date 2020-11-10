@@ -1,3 +1,11 @@
+v-1.1.7
+Italian Support. Huge thanks to Yoshimitsu
+Added cardview inside anime/manga list
+Added user list status indicator in media.
+Added search and notification menu in anime/manga list
+Ui changes.
+Bug fixes and optimization
+
 v-1.1.6
 OpenSource
 Change startup page.

@@ -50,8 +50,7 @@
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-            style="@style/Widget.DynamicApp.Card"
-            android:visibility="gone">
+            style="@style/Widget.DynamicApp.Card">
 
             <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
                 android:layout_width="match_parent"

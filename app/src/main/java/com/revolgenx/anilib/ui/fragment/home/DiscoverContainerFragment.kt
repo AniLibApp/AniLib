@@ -25,13 +25,11 @@ class DiscoverContainerFragment : BaseTransitiveLayoutFragment() {
 
     private lateinit var adapter: FragmentPagerAdapter
 
-    private val discoverFragments by lazy{
-        newInstances(
-            listOf(
-                DiscoverFragment::class.java,
-                SeasonFragment::class.java,
-                RecommendationFragment::class.java
-            )
+    private val discoverFragments by lazy {
+        listOf(
+            DiscoverFragment(),
+            SeasonFragment(),
+            RecommendationFragment()
         )
     }
 
