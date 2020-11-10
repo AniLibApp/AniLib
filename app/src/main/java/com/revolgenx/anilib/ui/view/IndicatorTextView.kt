@@ -98,7 +98,7 @@ class IndicatorTextView : DynamicLinearLayout {
 
         orientation = HORIZONTAL
         indicator = View(context).apply {
-            layoutParams = LayoutParams(dp(11f), dp(11f)).also {
+            layoutParams = LayoutParams(dp(14f), dp(14f)).also {
                 it.gravity = Gravity.CENTER_VERTICAL
                 it.marginEnd = dp(4f)
             }
