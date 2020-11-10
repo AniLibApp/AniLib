@@ -97,7 +97,7 @@ class SearchActivity : BaseDynamicActivity(),
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(
                 R.id.browseFragmentContainer,
-                BaseFragment.newInstance(SearchFragment::class.java),
+                SearchFragment(),
                 ADVANCE_SEARCH_FRAGMENT_TAG
             ).commitNow()
 

@@ -58,22 +58,22 @@ class MediaListActivity : BaseDynamicActivity() {
 
     private val mediaListFragment by lazy {
         listOf(
-            BaseFragment.newInstance(WatchingFragment::class.java).apply {
+            WatchingFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            BaseFragment.newInstance(PlanningFragment::class.java).apply {
+            PlanningFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            BaseFragment.newInstance(CompletedFragment::class.java).apply {
+            CompletedFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            BaseFragment.newInstance(DroppedFragment::class.java).apply {
+            DroppedFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            BaseFragment.newInstance(PausedFragment::class.java).apply {
+            PausedFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            BaseFragment.newInstance(RepeatingFragment::class.java).apply {
+            RepeatingFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             }
         )

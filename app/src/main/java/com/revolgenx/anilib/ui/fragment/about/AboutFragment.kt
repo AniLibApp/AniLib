@@ -39,6 +39,7 @@ class AboutFragment : DynamicViewPagerFragment() {
 
         titles.add(getString(R.string.ads_menu_info))
         titles.add(getString(R.string.ads_licenses))
+        titles.add(getString(R.string.ads_translators))
 
         // Return all the added tab titles.
         return titles
@@ -48,8 +49,9 @@ class AboutFragment : DynamicViewPagerFragment() {
         // Initialize an empty fragment array for view pages pages.
         val pages = ArrayList<androidx.fragment.app.Fragment>()
 
-        pages.add(BaseFragment.newInstance(AppInfoFragment::class.java))
-        pages.add(BaseFragment.newInstance(LicensesFragment::class.java))
+        pages.add(AppInfoFragment())
+        pages.add(LicensesFragment())
+        pages.add(TranslatorsFragment())
 
         // Return all the added fragments.
         return pages
