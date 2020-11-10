@@ -56,7 +56,7 @@
             <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:ads_description="@string/preferred_media_title"
+                app:ads_description="@string/preferred_application_language"
                 app:ads_entries="@array/application_language_entries"
                 app:ads_icon="@drawable/ic_language"
                 app:ads_key="@string/application_language_key"
