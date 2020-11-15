@@ -3,6 +3,7 @@ package com.revolgenx.anilib.common.preference
 import android.content.Context
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
+import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 
 private const val crashReportKey = "crash_report_key"
@@ -49,3 +50,5 @@ fun setStartNavigation(context: Context, navigation: String) {
 
 fun getStartNavigation(context: Context) =
     DynamicPreferences.getInstance().load(context.getString(R.string.start_navigation_key), DISCOVER_NAV_POS)
+
+fun isStudioFlavor() = BuildConfig.FLAVOR == "studio"

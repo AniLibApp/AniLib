@@ -384,6 +384,8 @@
     <string name="created_at_desc">Created At Desc</string>
 
     <string name="hentai_only">Hentai</string>
+    <string name="show_adult_content">Show Adult Content</string>
+    <string name="show_adult_content_desc">Enabling it will show adult media content.</string>
 
     <string name="application_language">Application Language</string>
     <string name="preferred_application_language">Select preferred application language</string>

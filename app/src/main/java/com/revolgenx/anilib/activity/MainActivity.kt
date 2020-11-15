@@ -195,6 +195,10 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             navView.menu.findItem(R.id.navAuth).title = getString(R.string.sign_out)
         }
 
+        if(isStudioFlavor()){
+            navView.menu.findItem(R.id.stageVersion).isVisible = false
+        }
+
         navView.getHeaderView(0).let { headerView ->
             val userAvatar = userAvatar()
             val userBanner = userBannerImage()

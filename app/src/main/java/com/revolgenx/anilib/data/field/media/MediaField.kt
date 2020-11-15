@@ -45,6 +45,9 @@ open class MediaField : BaseSourceField<MediaQuery>() {
                 mediaIdsIn?.let {
                     idIn(it)
                 }
+                if (!canShowAdult) {
+                    isAdult(false)
+                }
             }
             .build()
     }

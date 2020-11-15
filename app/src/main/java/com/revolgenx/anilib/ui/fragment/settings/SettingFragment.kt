@@ -5,18 +5,16 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.AboutActivity
 import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.activity.ToolbarContainerActivity
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.ui.dialog.ReleaseInfoDialog
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.ui.fragment.notification.NotificationSettingFragment
-import com.revolgenx.anilib.common.preference.DISCOVER_NAV_POS
-import com.revolgenx.anilib.common.preference.getStartNavigation
-import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.common.preference.setStartNavigation
 import com.revolgenx.anilib.ui.view.makeToast
 import kotlinx.android.synthetic.main.setting_fragment_layout.*
 
@@ -65,6 +63,8 @@ class SettingFragment : BaseToolbarFragment() {
                 )
             )
         }
+
+        adultContentPrefCardView.visibility = if(isStudioFlavor()) View.VISIBLE else View.GONE
 
         aboutItemView.setOnClickListener {
             startActivity(Intent(requireContext(), AboutActivity::class.java))

@@ -16,6 +16,10 @@ class MediaRecommendationField : BaseSourceField<MediaRecommendationQuery>() {
                 sort?.let {
                     sort(listOf(RecommendationSort.values()[it]))
                 }
+            }.apply {
+                if (!canShowAdult) {
+                    isAdult(false)
+                }
             }
             .build()
     }

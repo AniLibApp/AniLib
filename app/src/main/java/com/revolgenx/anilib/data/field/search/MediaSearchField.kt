@@ -1,6 +1,9 @@
 package com.revolgenx.anilib.data.field.search
 
+
+import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.MediaSearchQuery
+import com.revolgenx.anilib.common.preference.isStudioFlavor
 import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.constant.CountryOfOrigins
 import com.revolgenx.anilib.type.*
@@ -106,10 +109,17 @@ class MediaSearchField : SearchField() {
                     country(CountryOfOrigins.values()[it].name)
                 }
 
-                isAdult(canShowAdult)
+                if (isStudioFlavor()) {
+                    if (!canShowAdult) {
+                        isAdult(canShowAdult)
+                    }
 
-                if(hentaiOnly){
-                    isAdult(hentaiOnly)
+                    if (hentaiOnly && canShowAdult) {
+                        isAdult(hentaiOnly)
+                    }
+
+                } else {
+                    isAdult(canShowAdult)
                 }
 
             }
