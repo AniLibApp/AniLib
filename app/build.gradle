@@ -86,17 +86,6 @@ android {
 
         }
 
-        applicationVariants.all { variant ->
-            if (variant.buildType.name == "release") {
-                variant.outputs.all {
-                    outputFileName = "AniLib-${defaultConfig.versionName}.apk"
-                }
-            } else if (variant.buildType.name == "debug") {
-                variant.outputs.all {
-                    outputFileName = "AniLib-${defaultConfig.versionName}-debug.apk"
-                }
-            }
-        }
     }
 
     flavorDimensions 'default'
