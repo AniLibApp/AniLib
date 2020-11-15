@@ -9,7 +9,7 @@ query MediaQuery($page: Int!
     , $tag_in:[String]
     , $sort: [MediaSort]
     , $idIn: [Int]
-    , $isAdult:Boolean  = false) {
+    , $isAdult:Boolean) {
     Page(page: $page, perPage: $perPage) {
         media(seasonYear: $seasonYear
             , season: $season
@@ -40,8 +40,9 @@ query MediaListEditorQuery($mediaId:Int,$userId:Int, $format:ScoreFormat){
 }
 
 query MediaRecommendationQuery($mediaId:Int, $page:Int, $perPage:Int
-    , $sort:[RecommendationSort] ){
-    Media(id:$mediaId, isAdult:false){
+    , $sort:[RecommendationSort]
+    , $isAdult:Boolean){
+    Media(id:$mediaId, isAdult:$isAdult){
         recommendations(page:$page, perPage:$perPage,sort:$sort){
             nodes{
                 id

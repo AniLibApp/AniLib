@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 class MediaSource(
     private val mediaService: MediaService,
-    field: com.revolgenx.anilib.data.field.media.MediaField,
+    field: MediaField,
     private val compositeDisposable: CompositeDisposable
 ) : BaseRecyclerSource<CommonMediaModel, MediaField>(field) {
 

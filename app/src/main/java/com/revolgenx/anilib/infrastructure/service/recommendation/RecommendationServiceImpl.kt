@@ -29,7 +29,6 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Media()?.recommendations()?.nodes()
-                    ?.filter { if (field.canShowAdult) true else it.mediaRecommendation()?.fragments()?.narrowMediaContent()?.isAdult == false }
                     ?.map { node ->
                         MediaRecommendationModel().also { mod ->
                             mod.recommendationId = node.id()
