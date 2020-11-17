@@ -224,7 +224,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/relations"
                     android:textSize="18sp"
-                    app:fontFamily="@font/qanelassoft_extra_bold" />
+                    app:fontFamily="@font/berlinrounded_extra_bold" />
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                     android:id="@+id/relationRecyclerView"
@@ -255,7 +255,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/info"
                     android:textSize="18sp"
-                    app:fontFamily="@font/qanelassoft_extra_bold" />
+                    app:fontFamily="@font/berlinrounded_extra_bold" />
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                     android:id="@+id/metaContainerRecyclerView"
@@ -285,7 +285,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/recommendations"
                     android:textSize="18sp"
-                    app:fontFamily="@font/qanelassoft_extra_bold" />
+                    app:fontFamily="@font/berlinrounded_extra_bold" />
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                     android:id="@+id/recommendationRecyclerView"
@@ -314,7 +314,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/links"
                     android:textSize="18sp"
-                    app:fontFamily="@font/qanelassoft_extra_bold" />
+                    app:fontFamily="@font/berlinrounded_extra_bold" />
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                     android:id="@+id/metaLinkRecyclerView"

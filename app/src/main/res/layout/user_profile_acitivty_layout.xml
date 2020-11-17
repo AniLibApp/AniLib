@@ -79,7 +79,7 @@
                     android:text="@string/follow"
                     android:textSize="16sp"
                     android:visibility="gone"
-                    app:fontFamily="@font/qanelassoft_extra_bold" />
+                    app:fontFamily="@font/berlinrounded_extra_bold" />
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
 
@@ -92,7 +92,7 @@
                 android:text="UserName"
                 android:textSize="22sp"
                 app:ads_colorType="text_primary_inverse"
-                app:fontFamily="@font/qanelassoft_extra_bold" />
+                app:fontFamily="@font/berlinrounded_extra_bold" />
 
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
@@ -113,7 +113,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
-                        app:fontFamily="@font/qanelassoft_extra_bold" />
+                        app:fontFamily="@font/berlinrounded_extra_bold" />
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
@@ -131,7 +131,7 @@
                         android:layout_marginStart="6dp"
                         android:background="?selectableItemBackground"
                         android:textSize="12sp"
-                        app:fontFamily="@font/qanelassoft_extra_bold" />
+                        app:fontFamily="@font/berlinrounded_extra_bold" />
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
@@ -226,7 +226,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/about"
                 android:textSize="18sp"
-                app:fontFamily="@font/qanelassoft_extra_bold" />
+                app:fontFamily="@font/berlinrounded_extra_bold" />
 
             <com.revolgenx.anilib.ui.view.MaxHeightFrameLayout
                 android:layout_width="match_parent"
@@ -261,7 +261,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/overview"
                 android:textSize="18sp"
-                app:fontFamily="@font/qanelassoft_extra_bold" />
+                app:fontFamily="@font/berlinrounded_extra_bold" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
                 style="@style/Widget.DynamicApp.Card.Clickable"
@@ -389,7 +389,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/genre"
                 android:textSize="18sp"
-                app:fontFamily="@font/qanelassoft_extra_bold" />
+                app:fontFamily="@font/berlinrounded_extra_bold" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
                 style="@style/Widget.DynamicApp.Card.Clickable"

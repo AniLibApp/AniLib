@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">"AniLib"</string>
     <string name="app_subtitle">"Pelo poder do AniList"</string>
     <string name="app_description">"Seu lugar favorito para gerenciar, monitorar, navegar pelos seus Animes e Mangás e muito mais."</string>
     <string name="anilib_site">"Site do AniLib"</string>
@@ -400,4 +399,6 @@
     <string name="normal_mode">"Modo Normal"</string>
     <string name="card_mode">"Modo de Cartão"</string>
     <string name="preferred_application_language">"Selecione o idioma preferido do aplicativo"</string>
+    <string name="show_adult_content">"Mostrar conteúdo adulto"</string>
+    <string name="show_adult_content_desc">"Ativá-lo mostrará conteúdo de mídia adulto."</string>
 </resources>

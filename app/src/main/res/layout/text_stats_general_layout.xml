@@ -22,7 +22,7 @@
             android:paddingTop="6dp"
             android:paddingEnd="10dp"
             android:textSize="18sp"
-            app:fontFamily="@font/qanelassoft_extra_bold" />
+            app:fontFamily="@font/berlinrounded_extra_bold" />
 
         <FrameLayout
             android:id="@+id/statsMediaLayout"
