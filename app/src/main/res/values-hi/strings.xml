@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">"AniLib"</string>
     <string name="app_subtitle">"एनिलिस्ट !"</string>
     <string name="app_description">"आपका पसंदीदा स्थान जिसमें आप एनीमे और मंगा ब्राउज़ एवं मैनेज करने के अलावा और भी बहुत कुछ कर सकते हैं"</string>
     <string name="anilib_site">"AniLib साइट"</string>
@@ -144,7 +143,7 @@
     <string name="total_anime">"टोटल एनिमे"</string>
 
     <!-- Days Watched -->
-    <string name="days_watched">"डेस वॉंचड"</string>
+    <string name="days_watched">"डे वॉंचड"</string>
     <string name="mean_score">"माध्य स्कोर"</string>
     <string name="total_manga">"टोटल मंगा"</string>
     <string name="chapters_read">"अध्याय पढ़ चुके"</string>
@@ -232,7 +231,7 @@
     <string name="notification_interval_desc">"यह निर्दिष्ट समय अंतराल के बाद कोई नोटिफिकेशन है या नहीं, इसकी जाँच करता है"</string>
     <string name="preferred_media_title">"पसंदीदा मीडिया टाइटिल चुनें"</string>
     <string name="cover_image_quality">"कवर छवि गुणवत्ता"</string>
-    <string name="preferred_image_quality_desc">"अपनी पसंदीदा छवि गुणवत्ता चुनें"</string>
+    <string name="preferred_image_quality_desc">"छवि का गुणवत्ता चुनें"</string>
     <string name="advanced_scores">"उन्नत स्कोरस"</string>
     <string name="copied_to_clipboard">"Copied to clipboard"</string>
     <string name="change_log">"लॉग में बदलाव"</string>
@@ -398,5 +397,7 @@
     <string name="compact_mode">"कॉम्पैक्ट मोड"</string>
     <string name="normal_mode">"सामान्य मोड"</string>
     <string name="card_mode">"कार्ड मोड"</string>
-    <string name="preferred_application_language">"पसंदीदा एप्लिकेशन का भाषा चयन करें"</string>
+    <string name="preferred_application_language">"पसंदीदा भाषा चयन करें"</string>
+    <string name="show_adult_content">"एडल्ट कंटेंट दिखाई दे"</string>
+    <string name="show_adult_content_desc">"इसे सक्रिय करने पर एडल्ट कंटेंट सामग्री दिखाई देगा"</string>
 </resources>
