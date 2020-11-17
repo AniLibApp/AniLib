@@ -30,6 +30,7 @@ import com.revolgenx.anilib.data.model.user.UserFollowerCountModel
 import com.revolgenx.anilib.data.model.user.UserProfileModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
+import com.revolgenx.anilib.common.preference.userName
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
@@ -45,7 +46,7 @@ import kotlinx.android.synthetic.main.user_profile_acitivty_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
-//todo://handle intent, handle review //stats
+//todo://, handle review //stats
 class UserProfileActivity : BasePopupVideoActivity() {
     override val layoutRes: Int = R.layout.user_profile_acitivty_layout
     private lateinit var userMeta: UserMeta
@@ -93,7 +94,23 @@ class UserProfileActivity : BasePopupVideoActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userMeta = intent.getParcelableExtra(USER_ACTIVITY_META_KEY) ?: return
+
+        if (intent == null) return
+
+        userMeta = if (intent.action == Intent.ACTION_VIEW) {
+            val data = intent.data ?: return
+            val paths = data.pathSegments
+            val userId = paths[1].toIntOrNull()
+            val username = paths[1].toString()
+            UserMeta(
+                userId,
+                if (userId == null) username else null,
+                userId == userId() || username == userName()
+            )
+        } else {
+            intent.getParcelableExtra(USER_ACTIVITY_META_KEY) ?: return
+        }
+
         setSupportActionBar(userToolbar)
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

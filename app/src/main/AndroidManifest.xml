@@ -27,9 +27,30 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
 
-        <activity android:name=".activity.MediaBrowseActivity" />
+        <activity android:name=".activity.MediaBrowseActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPrefix="/anime/"
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="anilist.co"
+                    android:pathPrefix="/manga/"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".activity.ContainerActivity" />
         <activity android:name="net.openid.appauth.RedirectUriReceiverActivity">
             <intent-filter>
@@ -47,7 +68,18 @@
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.MediaListActivity" />
         <activity android:name=".activity.BasePopupVideoActivity" />
-        <activity android:name=".activity.UserProfileActivity" />
+        <activity android:name=".activity.UserProfileActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="anilist.co"
+                    android:pathPrefix="/user/"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.ExoVideoPlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
