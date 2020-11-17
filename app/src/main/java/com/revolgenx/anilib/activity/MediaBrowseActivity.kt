@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
@@ -39,6 +40,7 @@ import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.meta.ReviewComposerMeta
 import com.revolgenx.anilib.data.model.MediaBrowseModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.constant.PatternConstant
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
@@ -49,6 +51,7 @@ import kotlinx.android.synthetic.main.activity_media_browser.*
 import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.regex.Pattern
 import kotlin.math.abs
 
 //todo://handle review
@@ -110,11 +113,31 @@ class MediaBrowseActivity : BaseDynamicActivity() {
             },
             null
         )
-        //todo:initialize with manifest
-        mediaBrowserMeta = intent.getParcelableExtra(MEDIA_BROWSER_META) ?: return
 
-        //initialize or do nth
+        if (intent == null) {
+            return
+        }
+        mediaBrowserMeta =  if (intent.action == Intent.ACTION_VIEW) {
+            val data = intent.data ?: return
+            val paths = data.pathSegments
+            val type = if (paths[0].compareTo("anime", true) == 0) {
+                MediaType.ANIME.ordinal
+            } else {
+                MediaType.MANGA.ordinal
+            }
+            val mediaId = paths[1].toIntOrNull() ?: return
 
+            MediaBrowserMeta(
+                mediaId = mediaId,
+                type,
+                null,
+                null,
+                null,
+                null
+            )
+        } else {
+            intent.getParcelableExtra(MEDIA_BROWSER_META) ?: return
+        }
 
         viewModel.mediaLiveData.observe(this) {
             when (it.status) {
