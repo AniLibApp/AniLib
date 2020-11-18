@@ -254,7 +254,7 @@
     <!--application language-->
     <string-array name="application_language_entries">
         <item>English</item>
-        <item>@string/arabic</item>
+<!--        <item>@string/arabic</item>-->
         <item>@string/spanish</item>
         <item>@string/hindi</item>
         <item>@string/italian</item>
@@ -263,7 +263,7 @@
 
     <string-array name="application_language_values">
         <item>en</item>
-        <item>ar</item>
+<!--        <item>ar</item>-->
         <item>es</item>
         <item>hi</item>
         <item>it</item>
