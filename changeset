@@ -1,10 +1,18 @@
 v-1.1.7
-Italian Support. Huge thanks to Yoshimitsu
+
 Added cardview inside anime/manga list
 Added user list status indicator in media.
 Added search and notification menu in anime/manga list
+Deeplink to url(anime/manga/user) to show app from chooser
 Ui changes.
 Bug fixes and optimization
+
+Huge thanks to translator for their support
+Italian - Yoshimitsu
+Hindi - Manoj Chetry (KcMj)
+Portuguese - Satoru
+Spanish - ricardoric_03
+
 
 v-1.1.6
 OpenSource
