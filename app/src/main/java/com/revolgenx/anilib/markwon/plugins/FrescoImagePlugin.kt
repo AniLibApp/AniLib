@@ -22,8 +22,8 @@ import com.facebook.imagepipeline.image.CloseableImage
 import com.facebook.imagepipeline.image.CloseableStaticBitmap
 import com.facebook.imagepipeline.nativecode.NativeBlurFilter
 import com.facebook.imagepipeline.request.ImageRequestBuilder
-import com.revolgenx.anilib.view.drawable.GifDrawable
-import com.revolgenx.anilib.view.drawable.SpoilerDrawable
+import com.revolgenx.anilib.ui.view.drawable.GifDrawable
+import com.revolgenx.anilib.ui.view.drawable.SpoilerDrawable
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.MarkwonSpansFactory

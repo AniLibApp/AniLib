@@ -27,7 +27,7 @@
         android:orientation="vertical">
 
 
-        <com.revolgenx.anilib.view.CustomSpinKit
+        <com.revolgenx.anilib.ui.view.CustomSpinKit
             style="@style/SpinKitView.Small.CubeGrid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,6 @@
             android:layout_margin="20dp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/splash_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.8"
@@ -50,7 +49,6 @@
             app:fontFamily="@font/berlinrounded_extra_bold" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/splash_subtitle"
             style="@style/TextAppearance.DynamicApp.Subtitle1.Splash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

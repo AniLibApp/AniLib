@@ -1,12 +1,17 @@
 package com.revolgenx.anilib.ui.view
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.DrawableRes
+import androidx.annotation.MenuRes
 import androidx.annotation.StringRes
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.toasts.internal.ToastCompat
@@ -59,4 +64,15 @@ fun makeDynamicToastView(
         show()
     }
 
+}
+
+@SuppressLint("RestrictedApi")
+fun makePopupMenu(@MenuRes res:Int, view:View, gravity: Int = Gravity.NO_GRAVITY,  listener:PopupMenu.OnMenuItemClickListener): PopupMenu {
+    return PopupMenu(view.context, view, gravity).apply {
+        inflate(res)
+        if(menu is MenuBuilder){
+            (menu as MenuBuilder).setOptionalIconsVisible(true)
+        }
+        setOnMenuItemClickListener(listener)
+    }
 }

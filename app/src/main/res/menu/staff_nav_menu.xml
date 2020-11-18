@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/about_character_menu"
         android:icon="@drawable/ic_role"
         android:title="@string/about" />
 
     <item
-        android:id="@+id/character_role_menu"
         android:icon="@drawable/ic_voice_role"
         android:title="@string/voice_role" />
 
     <item
-        android:id="@+id/voice_actor_menu"
         android:icon="@drawable/ic_staff"
         android:title="@string/staff_role" />
 </menu>

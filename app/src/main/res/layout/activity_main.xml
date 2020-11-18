@@ -30,7 +30,7 @@
         app:menu="@menu/nav_menu"
         app:itemTextAppearance="@style/NavigationTextAppearance"/>
 
-    <com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
+    <com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
         android:id="@+id/mainBrowseFilterNavView"
         style="@style/Widget.DynamicApp.NavigationView"
         android:layout_width="match_parent"

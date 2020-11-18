@@ -15,7 +15,6 @@ import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.plusAssign
 import com.facebook.drawee.view.SimpleDraweeView
@@ -26,24 +25,25 @@ import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.MediaTagFilterTypes
-import com.revolgenx.anilib.dialog.*
-import com.revolgenx.anilib.event.*
-import com.revolgenx.anilib.field.TagChooserField
-import com.revolgenx.anilib.field.TagField
-import com.revolgenx.anilib.fragment.settings.SettingFragment
-import com.revolgenx.anilib.fragment.base.ParcelableFragment
-import com.revolgenx.anilib.fragment.home.DiscoverContainerFragmentDirections
-import com.revolgenx.anilib.fragment.list.AnimeListContainerFragmentDirections
-import com.revolgenx.anilib.fragment.list.MangaListContainerFragmentDirections
-import com.revolgenx.anilib.fragment.navigator.KeepStateNavigator
-import com.revolgenx.anilib.meta.MediaListMeta
-import com.revolgenx.anilib.meta.UserMeta
-import com.revolgenx.anilib.preference.*
+import com.revolgenx.anilib.ui.dialog.*
+import com.revolgenx.anilib.infrastructure.event.*
+import com.revolgenx.anilib.data.field.TagChooserField
+import com.revolgenx.anilib.data.field.TagField
+import com.revolgenx.anilib.ui.fragment.settings.SettingFragment
+import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
+import com.revolgenx.anilib.ui.fragment.home.DiscoverContainerFragmentDirections
+import com.revolgenx.anilib.ui.fragment.list.AnimeListContainerFragmentDirections
+import com.revolgenx.anilib.ui.fragment.list.MangaListContainerFragmentDirections
+import com.revolgenx.anilib.ui.fragment.navigator.KeepStateNavigator
+import com.revolgenx.anilib.ui.fragment.notification.NotificationFragment
+import com.revolgenx.anilib.data.meta.MediaListMeta
+import com.revolgenx.anilib.data.meta.UserMeta
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
-import com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
-import com.revolgenx.anilib.viewmodel.MainActivityViewModel
+import com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
+import com.revolgenx.anilib.ui.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_layout.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -193,6 +193,10 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         } else {
             navView.menu.findItem(R.id.navFeedId).isVisible = false
             navView.menu.findItem(R.id.navAuth).title = getString(R.string.sign_out)
+        }
+
+        if(isStudioFlavor()){
+            navView.menu.findItem(R.id.stageVersion).isVisible = false
         }
 
         navView.getHeaderView(0).let { headerView ->
@@ -457,6 +461,23 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             MediaTagFilterTypes.GENRES -> invalidateGenreFilter(event.tagFields)
             MediaTagFilterTypes.STREAMING_ON -> invalidateStreamFilter(event.tagFields)
         }
+    }
+
+    @Subscribe
+    fun onNotificationEvent(event:BrowseNotificationEvent){
+        ToolbarContainerActivity.openActivity(
+            this,
+            ParcelableFragment(
+                NotificationFragment::class.java,
+                bundleOf(
+                    UserMeta.userMetaKey to UserMeta(
+                        userId(),
+                        null,
+                        true
+                    )
+                )
+            )
+        )
     }
 
 

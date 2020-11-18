@@ -9,7 +9,7 @@ query MediaQuery($page: Int!
     , $tag_in:[String]
     , $sort: [MediaSort]
     , $idIn: [Int]
-    , $isAdult:Boolean  = false) {
+    , $isAdult:Boolean) {
     Page(page: $page, perPage: $perPage) {
         media(seasonYear: $seasonYear
             , season: $season
@@ -40,8 +40,9 @@ query MediaListEditorQuery($mediaId:Int,$userId:Int, $format:ScoreFormat){
 }
 
 query MediaRecommendationQuery($mediaId:Int, $page:Int, $perPage:Int
-    , $sort:[RecommendationSort] ){
-    Media(id:$mediaId, isAdult:false){
+    , $sort:[RecommendationSort]
+    , $isAdult:Boolean){
+    Media(id:$mediaId, isAdult:$isAdult){
         recommendations(page:$page, perPage:$perPage,sort:$sort){
             nodes{
                 id
@@ -51,22 +52,7 @@ query MediaRecommendationQuery($mediaId:Int, $page:Int, $perPage:Int
                     id
                 }
                 mediaRecommendation{
-                    id
-                    format
-                    type
-                    episodes
-                    chapters
-                    status
-                    seasonYear
-                    title{
-                        ... mediaTitle
-                    }
-                    coverImage{
-                        ... mediaCoverImage
-                    }
-                    bannerImage
-                    averageScore
-                    isAdult
+                    ... narrowMediaContent
                 }
             }
         }
@@ -325,24 +311,9 @@ query CharacterMediaQuery($characterId:Int, $page:Int, $perPage:Int){
     Character(id:$characterId){
         media(page:$page, perPage:$perPage){
             nodes{
-                id
-                averageScore
-                coverImage{
-                    large
-                    extraLarge
+                ... on Media{
+                    ... commonMediaContent
                 }
-                title{
-                    romaji
-                    english
-                    native
-                    userPreferred
-                }
-                bannerImage
-                format
-                type
-                season
-                status
-                seasonYear
             }
         }
     }
@@ -411,25 +382,9 @@ query StaffCharacterMediaQuery($staffId:Int, $page:Int, $perPage:Int){
                     edges{
                         characterRole
                         node{
-                            id
-                            title{
-                                romaji
-                                english
-                                native
-                                userPreferred
+                            ... on Media{
+                                ... commonMediaContent
                             }
-                            averageScore
-                            coverImage{
-                                medium
-                                large
-                                extraLarge
-                            }
-                            bannerImage
-                            isAdult
-                            status
-                            format
-                            type
-                            seasonYear
                         }
                     }
                 }
@@ -443,25 +398,9 @@ query StaffMediaRoleQuery($staffId:Int,$page:Int,$perPage:Int){
         staffMedia(page:$page,perPage:$perPage){
             edges{
                 node{
-                    id
-                    title{
-                        romaji
-                        english
-                        native
-                        userPreferred
+                    ... on Media{
+                        ... commonMediaContent
                     }
-                    coverImage{
-                        extraLarge
-                        large
-                        medium
-                    }
-                    bannerImage
-                    status
-                    type
-                    format
-                    averageScore
-                    seasonYear
-                    isAdult
                 }
                 staffRole
             }
@@ -483,25 +422,9 @@ query StudioMediaQuery($studioId:Int,$page:Int, $perPage:Int){
     Studio(id:$studioId){
         media(page:$page,perPage:$perPage){
             nodes{
-                id
-                title{
-                    romaji
-                    english
-                    native
-                    userPreferred
+                ... on Media{
+                    ... commonMediaContent
                 }
-                coverImage{
-                    extraLarge
-                    large
-                    medium
-                }
-                isAdult
-                averageScore
-                bannerImage
-                format
-                seasonYear
-                type
-                status
             }
         }
     }
@@ -543,25 +466,9 @@ query MediaSearchQuery($search:String, $page:Int, $perPage:Int
             , sort:$sort
             , countryOfOrigin:$country
             , isAdult:$isAdult){
-            id
-            title{
-                romaji
-                english
-                native
-                userPreferred
+            ... on Media{
+                ... commonMediaContent
             }
-            coverImage{
-                extraLarge
-                large
-                medium
-            }
-            bannerImage
-            averageScore
-            type
-            format
-            status
-            season
-            seasonYear
         }
     }
 }
@@ -1619,10 +1526,7 @@ fragment narrowMediaContent on Media{
     id
     title {
         ... on MediaTitle{
-            english
-            romaji
-            native
-            userPreferred
+            ... mediaTitle
         }
     }
     isAdult
@@ -1630,6 +1534,8 @@ fragment narrowMediaContent on Media{
     type
     genres
     status
+    season
+    seasonYear
     averageScore
     episodes
     chapters
@@ -1637,27 +1543,22 @@ fragment narrowMediaContent on Media{
     duration
     startDate {
         ... on FuzzyDate{
-            year
-            month
-            day
+            ... fuzzyDate
         }
     }
     endDate{
         ... on FuzzyDate{
-            year
-            month
-            day
+            ... fuzzyDate
         }
     }
     coverImage {
         ... on MediaCoverImage{
-            medium
-            large
-            extraLarge
+            ... mediaCoverImage
         }
     }
     bannerImage
     mediaListEntry{
+        status
         progress
     }
 }
@@ -1697,8 +1598,14 @@ fragment commonMediaContent on Media{
     type
     format
     status
+    season
     seasonYear
     isAdult
+
+    mediaListEntry{
+        status
+        progress
+    }
 }
 
 

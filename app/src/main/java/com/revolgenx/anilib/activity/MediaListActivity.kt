@@ -14,23 +14,24 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.dialog.MediaListCollectionFilterDialog
-import com.revolgenx.anilib.event.DisplayModeChangedEvent
-import com.revolgenx.anilib.event.DisplayTypes
-import com.revolgenx.anilib.event.MediaListCollectionFilterEvent
-import com.revolgenx.anilib.field.MediaListCollectionFilterField
-import com.revolgenx.anilib.fragment.base.BaseFragment
-import com.revolgenx.anilib.fragment.list.*
-import com.revolgenx.anilib.meta.MediaListMeta
-import com.revolgenx.anilib.preference.setMediaListGridPresenter
+import com.revolgenx.anilib.ui.dialog.MediaListCollectionFilterDialog
+import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
+import com.revolgenx.anilib.infrastructure.event.DisplayTypes
+import com.revolgenx.anilib.infrastructure.event.MediaListCollectionFilterEvent
+import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
+import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.ui.fragment.list.*
+import com.revolgenx.anilib.data.meta.MediaListMeta
+import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
+import com.revolgenx.anilib.common.preference.setMediaListGridPresenter
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.view.makePopupMenu
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
@@ -57,22 +58,22 @@ class MediaListActivity : BaseDynamicActivity() {
 
     private val mediaListFragment by lazy {
         listOf(
-            BaseFragment.newInstance(WatchingFragment::class.java).apply {
+            WatchingFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            BaseFragment.newInstance(PlanningFragment::class.java).apply {
+            PlanningFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            BaseFragment.newInstance(CompletedFragment::class.java).apply {
+            CompletedFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            BaseFragment.newInstance(DroppedFragment::class.java).apply {
+            DroppedFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            BaseFragment.newInstance(PausedFragment::class.java).apply {
+            PausedFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            BaseFragment.newInstance(RepeatingFragment::class.java).apply {
+            RepeatingFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             }
         )
@@ -205,6 +206,7 @@ class MediaListActivity : BaseDynamicActivity() {
             menu.setOptionalIconsVisible(true)
         }
 
+        menu?.findItem(R.id.listNotificationMenu)?.isVisible = false
         menu?.findItem(R.id.listSearchMenu)?.let { item ->
             menuItem = item
             (item.actionView as SearchView).also {
@@ -240,8 +242,18 @@ class MediaListActivity : BaseDynamicActivity() {
                 true
             }
             R.id.listDisplayModeMenu -> {
-                setMediaListGridPresenter()
-                DisplayModeChangedEvent(DisplayTypes.MEDIA_LIST).postEvent
+                val popupMenu = makePopupMenu(
+                    R.menu.display_mode_menu,
+                    findViewById(R.id.listSearchMenu)
+                ) { menuItem ->
+
+                    setMediaListGridPresenter(menuItem.order)
+                    DisplayModeChangedEvent(DisplayTypes.MEDIA_LIST).postEvent
+                    true
+                }
+
+                popupMenu.menu.getItem(getMediaListGridPresenter()).isChecked = true
+                popupMenu.show()
                 true
             }
             android.R.id.home -> {

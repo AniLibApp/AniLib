@@ -2,8 +2,7 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Widget.DynamicApp.Card.Margin.Clickable"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/textStatsPresenterContainer">
+    android:layout_height="wrap_content">
 
     <include
         layout="@layout/text_stats_general_layout"

@@ -3,7 +3,6 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mediaPresenterContainer"
     style="@style/Widget.DynamicApp.Card.Margin.Clickable"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -65,11 +64,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
+            android:layout_marginBottom="@dimen/discover_text_separation"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:paddingTop="4dp"
-            android:textColor="@color/white"
-            android:textSize="11sp"
+            android:maxLines="2"
+            android:paddingTop="6dp"
+            android:textSize="12sp"
             app:ads_colorType="tint_surface"
             app:fontFamily="@font/open_sans_semi_bold"
             app:layout_constraintBottom_toTopOf="@id/mediaGenreLayout"
@@ -78,7 +77,7 @@
             tools:ignore="SmallSp" />
 
 
-        <com.revolgenx.anilib.view.GenreLayout
+        <com.revolgenx.anilib.ui.view.GenreLayout
             android:id="@+id/mediaGenreLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -89,21 +88,19 @@
             app:layout_constraintRight_toRightOf="@id/mediaCoverFrameLayout" />
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        <com.revolgenx.anilib.ui.view.IndicatorTextView
             android:id="@+id/mediaFormatTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
-            android:ellipsize="end"
-            android:maxLines="1"
+            android:layout_marginBottom="@dimen/discover_text_separation"
             android:paddingBottom="4dp"
-            android:textSize="10sp"
-            app:ads_colorType="tint_accent"
+            app:textColorType="tint_accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/mediaCoverFrameLayout"
             app:layout_constraintRight_toRightOf="@id/mediaCoverFrameLayout"
+            app:textSize="10"
             tools:ignore="SmallSp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

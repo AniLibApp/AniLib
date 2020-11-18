@@ -3,7 +3,6 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/recommendationCardView"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -61,6 +60,7 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/recommendedFromTitleTv"
+                style="@style/titleFontStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -69,7 +69,8 @@
                 android:ellipsize="end"
                 android:lines="2"
                 android:maxLines="2"
-                android:textSize="10sp"
+                android:textSize="11sp"
+                app:ads_colorType="tint_surface"
                 app:layout_constraintLeft_toLeftOf="@+id/recommendedFromImageContainer"
                 app:layout_constraintRight_toRightOf="@+id/recommendedFromImageContainer"
                 app:layout_constraintTop_toBottomOf="@+id/recommendedFromImageContainer"
@@ -90,21 +91,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/recommendedFromTitleTv"
                 tools:ignore="SmallSp" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            <com.revolgenx.anilib.ui.view.IndicatorTextView
                 android:id="@+id/recommendedFromFormatYearTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="4dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textSize="10sp"
-                app:ads_colorType="accent"
+                app:textColorType="accent"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintLeft_toLeftOf="@+id/recommendedFromImageContainer"
                 app:layout_constraintRight_toRightOf="@+id/recommendedFromImageContainer"
-                app:layout_constraintTop_toBottomOf="@id/recommendedFromStatusTv"
-                tools:ignore="SmallSp" />
+                app:layout_constraintTop_toBottomOf="@id/recommendedFromStatusTv" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -157,6 +154,7 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/recommendedTitleTv"
+                style="@style/titleFontStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -165,7 +163,7 @@
                 android:ellipsize="end"
                 android:lines="2"
                 android:maxLines="2"
-                android:textSize="10sp"
+                android:textSize="11sp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintLeft_toLeftOf="@+id/recommendedImageContainer"
                 app:layout_constraintRight_toRightOf="@+id/recommendedImageContainer"
@@ -187,19 +185,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/recommendedTitleTv"
                 tools:ignore="SmallSp" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            <com.revolgenx.anilib.ui.view.IndicatorTextView
                 android:id="@+id/recommendedFormatYearTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textSize="10sp"
-                app:ads_colorType="accent"
+                app:textColorType="accent"
                 app:layout_constraintLeft_toLeftOf="@+id/recommendedImageContainer"
                 app:layout_constraintRight_toRightOf="@+id/recommendedImageContainer"
-                app:layout_constraintTop_toBottomOf="@+id/recommendedStatusTv"
-                tools:ignore="SmallSp" />
+                app:layout_constraintTop_toBottomOf="@+id/recommendedStatusTv" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -207,10 +201,10 @@
             android:layout_width="0dp"
             android:layout_height="28dp"
             android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginTop="4dp"
             android:orientation="horizontal"
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
-            android:layout_marginTop="4dp"
             app:ads_colorType="tint_surface"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/recommendedFromImageConstraintLayout"

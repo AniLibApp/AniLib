@@ -12,9 +12,7 @@
         </menu>
     </item>
 
-    <item
-        android:id="@+id/navMediaList"
-        android:title="@string/main">
+    <item android:title="@string/main">
         <menu>
             <group android:checkableBehavior="single">
                 <item

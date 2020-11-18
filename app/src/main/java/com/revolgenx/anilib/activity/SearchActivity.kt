@@ -19,20 +19,20 @@ import com.paulrybitskyi.persistentsearchview.utils.SuggestionCreationUtil
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.MediaTagFilterTypes
-import com.revolgenx.anilib.dialog.TagChooserDialogFragment
-import com.revolgenx.anilib.event.BrowseFilterAppliedEvent
-import com.revolgenx.anilib.event.TagEvent
-import com.revolgenx.anilib.field.TagChooserField
-import com.revolgenx.anilib.field.TagField
-import com.revolgenx.anilib.fragment.search.SearchFragment
-import com.revolgenx.anilib.fragment.base.BaseFragment
-import com.revolgenx.anilib.model.search.filter.SearchFilterModel
-import com.revolgenx.anilib.repository.util.Status
+import com.revolgenx.anilib.ui.dialog.TagChooserDialogFragment
+import com.revolgenx.anilib.infrastructure.event.BrowseFilterAppliedEvent
+import com.revolgenx.anilib.infrastructure.event.TagEvent
+import com.revolgenx.anilib.data.field.TagChooserField
+import com.revolgenx.anilib.data.field.TagField
+import com.revolgenx.anilib.ui.fragment.search.SearchFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.data.model.search.filter.SearchFilterModel
+import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.util.DataProvider
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
-import com.revolgenx.anilib.view.navigation.BrowseFilterNavigationView
-import com.revolgenx.anilib.viewmodel.browse.BrowseActivityViewModel
+import com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
+import com.revolgenx.anilib.ui.viewmodel.browse.BrowseActivityViewModel
 import kotlinx.android.synthetic.main.browse_activity_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -97,7 +97,7 @@ class SearchActivity : BaseDynamicActivity(),
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(
                 R.id.browseFragmentContainer,
-                BaseFragment.newInstance(SearchFragment::class.java),
+                SearchFragment(),
                 ADVANCE_SEARCH_FRAGMENT_TAG
             ).commitNow()
 

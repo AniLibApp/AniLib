@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.app.ActivityOptionsCompat
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.fragment.base.BaseFragment
-import com.revolgenx.anilib.fragment.base.ParcelableFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.toolbar_layout.*

@@ -2,17 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/discoverMenu"
         android:icon="@drawable/ic_discover"
         android:title="@string/discover" />
 
     <item
-        android:id="@+id/seasonMenu"
         android:icon="@drawable/ic_media"
         android:title="@string/season" />
 
     <item
-        android:id="@+id/collectionMenu"
         android:icon="@drawable/ic_suggestion"
         android:title="@string/suggestion" />
 

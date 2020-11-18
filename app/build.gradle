@@ -21,8 +21,8 @@ android {
         applicationId "com.revolgenx.anilib"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 23
-        versionName "1.1.6-base"
+        versionCode 24
+        versionName "1.1.7"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
@@ -78,7 +78,7 @@ android {
 
     buildTypes {
         debug {
-
+            applicationIdSuffix ".debug"
         }
         release {
             minifyEnabled false
@@ -86,16 +86,17 @@ android {
 
         }
 
-        applicationVariants.all { variant ->
-            if (variant.buildType.name == "release") {
-                variant.outputs.all {
-                    outputFileName = "AniLib-${defaultConfig.versionName}.apk"
-                }
-            } else if (variant.buildType.name == "debug") {
-                variant.outputs.all {
-                        outputFileName = "AniLib-${defaultConfig.versionName}-debug.apk"
-                }
-            }
+    }
+
+    flavorDimensions 'default'
+
+    productFlavors {
+        base {
+            dimension 'default'
+        }
+        studio {
+            dimension 'default'
+            applicationIdSuffix ".studio"
         }
     }
 }
@@ -136,7 +137,6 @@ ext {
     rx_version = '2.1.1'
     jwt_token_version = '1.2.0'
 
-    crashlytics_version = '17.2.2'
     timber_version = '4.7.1'
     appupdater_version = '2.7'
 }
@@ -264,7 +264,9 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
     //firebase
-    implementation "com.google.firebase:firebase-crashlytics:$crashlytics_version"
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
 
     //draglistview
     implementation "com.github.woxthebox:draglistview:$draglist_version"

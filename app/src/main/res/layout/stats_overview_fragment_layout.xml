@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/totalCountTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/episodeWatched"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/daysWatchedTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/dayPlannedTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/statsStandardDeviationTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/statsMeanScoreTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
             android:padding="6dp"
             android:text="@string/score"
             android:textSize="16sp"
-            app:fontFamily="@font/qanelassoft_extra_bold" />
+            app:fontFamily="@font/berlinrounded_extra_bold" />
 
         <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
             android:id="@+id/scoreToggleSwitch"
@@ -182,7 +182,7 @@
             android:padding="6dp"
             android:text="@string/format_distribution"
             android:textSize="16sp"
-            app:fontFamily="@font/qanelassoft_extra_bold" />
+            app:fontFamily="@font/berlinrounded_extra_bold" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
@@ -210,7 +210,7 @@
             android:padding="6dp"
             android:text="@string/status_distribution"
             android:textSize="16sp"
-            app:fontFamily="@font/qanelassoft_extra_bold" />
+            app:fontFamily="@font/berlinrounded_extra_bold" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
@@ -238,7 +238,7 @@
             android:padding="6dp"
             android:text="@string/country_distribution"
             android:textSize="16sp"
-            app:fontFamily="@font/qanelassoft_extra_bold" />
+            app:fontFamily="@font/berlinrounded_extra_bold" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
@@ -272,7 +272,7 @@
                 android:padding="6dp"
                 android:text="@string/release_year"
                 android:textSize="16sp"
-                app:fontFamily="@font/qanelassoft_extra_bold" />
+                app:fontFamily="@font/berlinrounded_extra_bold" />
 
             <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
                 android:id="@+id/releaseYearToggleSwitch"
@@ -312,7 +312,7 @@
                 android:padding="6dp"
                 android:text="@string/watch_year"
                 android:textSize="16sp"
-                app:fontFamily="@font/qanelassoft_extra_bold" />
+                app:fontFamily="@font/berlinrounded_extra_bold" />
 
             <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
                 android:id="@+id/watchYearToggleSwitch"

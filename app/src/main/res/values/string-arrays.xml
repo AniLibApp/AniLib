@@ -254,12 +254,20 @@
     <!--application language-->
     <string-array name="application_language_entries">
         <item>English</item>
-        <item>Italiano</item>
+<!--        <item>@string/arabic</item>-->
+        <item>@string/spanish</item>
+        <item>@string/hindi</item>
+        <item>@string/italian</item>
+        <item>@string/portuguese</item>
     </string-array>
 
     <string-array name="application_language_values">
         <item>en</item>
+<!--        <item>ar</item>-->
+        <item>es</item>
+        <item>hi</item>
         <item>it</item>
+        <item>pt</item>
     </string-array>
 
     <!--application startup page-->
@@ -586,4 +594,9 @@
         <item>@string/updated_at_desc</item>
     </string-array>
 
+    <string name="portuguese" translatable="false">Português</string>
+    <string name="hindi" translatable="false">हिंदी</string>
+    <string name="italian" translatable="false">Italiano</string>
+    <string name="spanish" translatable="false">Español</string>
+    <string name="arabic" translatable="false">عربى</string>
 </resources>

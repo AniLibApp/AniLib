@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.ActivityOptionsCompat
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.fragment.base.BaseFragment
-import com.revolgenx.anilib.fragment.base.ParcelableFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 
 class ContainerActivity : BaseDynamicActivity() {
 

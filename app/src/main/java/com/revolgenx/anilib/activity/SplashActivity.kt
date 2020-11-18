@@ -6,9 +6,9 @@ import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatImageView
 import com.pranavpandey.android.dynamic.support.splash.DynamicSplashActivity
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.controller.AppController
-import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.preference.getApplicationLocale
+import com.revolgenx.anilib.app.theme.AppController
+import com.revolgenx.anilib.app.theme.ThemeController
+import com.revolgenx.anilib.common.preference.getApplicationLocale
 import java.util.*
 
 /**

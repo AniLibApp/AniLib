@@ -6,7 +6,6 @@
     android:layout_height="match_parent">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout
-        android:id="@+id/mediaBrowserCoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/dynamicSmartTab">
@@ -14,7 +13,8 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
             android:id="@+id/appbarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:expanded="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/mediaBrowserCollapsingToolbar"
@@ -75,7 +75,7 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:text="@string/add"
-                        app:fontFamily="@font/qanelassoft_extra_bold"
+                        app:fontFamily="@font/berlinrounded_extra_bold"
                         app:layout_constraintBottom_toBottomOf="@+id/mediaBrowserCoverImage"
                         app:layout_constraintEnd_toStartOf="@+id/mediaReviewButton"
                         app:layout_constraintHorizontal_bias="1.0"
@@ -102,7 +102,7 @@
                         app:layout_constraintTop_toTopOf="@+id/mediaAddButton" />
 
 
-                    <com.revolgenx.anilib.view.DynamicLoadingImageView
+                    <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
                         android:id="@+id/mediaFavButton"
                         android:layout_width="0dp"
                         android:layout_height="0dp"

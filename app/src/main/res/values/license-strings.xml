@@ -52,7 +52,6 @@
     <string name="license_persistentsearchview" translatable="false">PersistentSearchView</string>
     <!--RangeSeekBar-->
     <string name="license_rangeseekbar" translatable="false">RangeSeekBar</string>
-    <string name="license_copy_rangeseekbar" translatable="false">Copyright 2018–2019 JayGoo</string>
     <!--Android-Toggle-Switch-->
     <string name="license_android_toggle_switch" translatable="false">Android-Toggle-Switch</string>
     <string name="license_copy_android_toggle_switch" translatable="false">Copyright © 2017 Lorenzo Rigato</string>

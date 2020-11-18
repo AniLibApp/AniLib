@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.util
 
 import android.app.Activity
-import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -10,20 +9,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.TextView
 import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
-import com.google.android.material.snackbar.Snackbar
 import com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-import com.pranavpandey.android.dynamic.toasts.DynamicToast
 import com.pranavpandey.android.dynamic.utils.DynamicLinkUtils
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.fragment.base.BaseFragment
 import com.revolgenx.anilib.type.MediaSeason
 import com.revolgenx.anilib.ui.view.makeToast
 import kotlinx.coroutines.async

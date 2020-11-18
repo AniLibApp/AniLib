@@ -7,9 +7,9 @@ import com.revolgenx.anilib.markwon.plugins.*
 import com.revolgenx.anilib.markwon.plugins.markwon.ImageMarkwonPlugin
 import com.revolgenx.anilib.markwon.plugins.markwon.MarkwonInlineParserPlugin
 import com.revolgenx.anilib.markwon.plugins.markwon.YoutubeMarkwonPlugin
-import com.revolgenx.anilib.model.markwon.MarkdownImageModel
-import com.revolgenx.anilib.model.markwon.MarkdownModel
-import com.revolgenx.anilib.model.markwon.MarkdownVideoModel
+import com.revolgenx.anilib.data.model.markwon.MarkdownImageModel
+import com.revolgenx.anilib.data.model.markwon.MarkdownModel
+import com.revolgenx.anilib.data.model.markwon.MarkdownVideoModel
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonVisitor

@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
@@ -15,7 +16,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -28,28 +28,30 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.field.ToggleFavouriteField
-import com.revolgenx.anilib.fragment.EntryListEditorFragment
-import com.revolgenx.anilib.fragment.base.BaseFragment
-import com.revolgenx.anilib.fragment.base.ParcelableFragment
-import com.revolgenx.anilib.fragment.browse.*
-import com.revolgenx.anilib.fragment.review.ReviewComposerFragment
-import com.revolgenx.anilib.meta.DraweeViewerMeta
-import com.revolgenx.anilib.meta.ListEditorMeta
-import com.revolgenx.anilib.meta.MediaBrowserMeta
-import com.revolgenx.anilib.meta.ReviewComposerMeta
-import com.revolgenx.anilib.model.MediaBrowseModel
-import com.revolgenx.anilib.preference.loggedIn
-import com.revolgenx.anilib.repository.util.Resource
-import com.revolgenx.anilib.repository.util.Status.*
+import com.revolgenx.anilib.data.field.ToggleFavouriteField
+import com.revolgenx.anilib.ui.fragment.EntryListEditorFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
+import com.revolgenx.anilib.ui.fragment.browse.*
+import com.revolgenx.anilib.ui.fragment.review.ReviewComposerFragment
+import com.revolgenx.anilib.data.meta.DraweeViewerMeta
+import com.revolgenx.anilib.data.meta.ListEditorMeta
+import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.data.meta.ReviewComposerMeta
+import com.revolgenx.anilib.data.model.MediaBrowseModel
+import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.constant.PatternConstant
+import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
-import com.revolgenx.anilib.viewmodel.media.MediaBrowserViewModel
+import com.revolgenx.anilib.ui.viewmodel.media.MediaBrowserViewModel
 import kotlinx.android.synthetic.main.activity_media_browser.*
 import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.regex.Pattern
 import kotlin.math.abs
 
 //todo://handle review
@@ -111,11 +113,31 @@ class MediaBrowseActivity : BaseDynamicActivity() {
             },
             null
         )
-        //todo:initialize with manifest
-        mediaBrowserMeta = intent.getParcelableExtra(MEDIA_BROWSER_META) ?: return
 
-        //initialize or do nth
+        if (intent == null) {
+            return
+        }
+        mediaBrowserMeta =  if (intent.action == Intent.ACTION_VIEW) {
+            val data = intent.data ?: return
+            val paths = data.pathSegments
+            val type = if (paths[0].compareTo("anime", true) == 0) {
+                MediaType.ANIME.ordinal
+            } else {
+                MediaType.MANGA.ordinal
+            }
+            val mediaId = paths[1].toIntOrNull() ?: return
 
+            MediaBrowserMeta(
+                mediaId = mediaId,
+                type,
+                null,
+                null,
+                null,
+                null
+            )
+        } else {
+            intent.getParcelableExtra(MEDIA_BROWSER_META) ?: return
+        }
 
         viewModel.mediaLiveData.observe(this) {
             when (it.status) {
@@ -194,22 +216,22 @@ class MediaBrowseActivity : BaseDynamicActivity() {
 
 
         val animeBrowserList = listOf(
-            BaseFragment.newInstance(MediaOverviewFragment::class.java).apply {
+            MediaOverviewFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             },
-            BaseFragment.newInstance(MediaWatchFragment::class.java).apply {
+            MediaWatchFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             },
-            BaseFragment.newInstance(MediaCharacterFragment::class.java).apply {
+            MediaCharacterFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             },
-            BaseFragment.newInstance(MediaStaffFragment::class.java).apply {
+            MediaStaffFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             },
-            BaseFragment.newInstance(MediaReviewFragment::class.java).apply {
+            MediaReviewFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             },
-            BaseFragment.newInstance(MediaStatsFragment::class.java).apply {
+            MediaStatsFragment().apply {
                 arguments = bundleOf(MEDIA_BROWSER_META to mediaBrowserMeta)
             }
         )
@@ -260,7 +282,6 @@ class MediaBrowseActivity : BaseDynamicActivity() {
             if (it == 0) return@setViewPager
             appbarLayout.setExpanded(false)
         }
-
         browseMediaViewPager.setCurrentItem(0, false)
         browseMediaViewPager.post {
             pageChangeListener.onPageSelected(browseMediaViewPager.currentItem)
@@ -304,6 +325,11 @@ class MediaBrowseActivity : BaseDynamicActivity() {
             )
         }
 
+        mediaBrowserBannerImage.setOnLongClickListener {
+            copyToClipBoard(mediaBrowserMeta.title)
+            true
+        }
+
         /**problem with transition
          * {@link https://github.com/facebook/fresco/issues/1445}*/
         ActivityCompat.setExitSharedElementCallback(this, object : SharedElementCallback() {
@@ -336,7 +362,7 @@ class MediaBrowseActivity : BaseDynamicActivity() {
 
     @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (state == EXPANDED) return false
+        if (state == EXPANDED) return true
 
         menuInflater.inflate(R.menu.media_browser_menu, menu)
         if (menu is MenuBuilder) {
@@ -349,6 +375,7 @@ class MediaBrowseActivity : BaseDynamicActivity() {
         }
         return true
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

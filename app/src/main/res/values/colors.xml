@@ -11,9 +11,7 @@
     <color name="red">#FF5252</color>
     <color name="transparent_dark">#12000000</color>
 
-    <color name="anilistColor">#1f263f</color>
-    //media status
-
+    <!--media status-->
     <string-array name="status_color">
         <item>#02A4F8</item>    <!--//finished-->
         <item>#00C853</item>    <!--//releasing-->
@@ -22,9 +20,32 @@
         <item>#FF6E40</item>
     </string-array>
 
+    <!--media entry list status-->
+    <string-array name="media_list_status_color">
+        <item>#42A5F5</item>    <!--watching-->
+        <item>#F09967</item>    <!--planning-->
+        <item>#7AD358</item>    <!--completed-->
+        <item>#F8375B</item>    <!--dropped-->
+        <item>#F37A7D</item>    <!--paused-->
+        <item>#9C27B0</item>    <!--rewatching-->
+    </string-array>
+
     <color name="popular_color">#E85D75</color>
     <color name="rated_color">#F7BF63</color>
     <color name="tag_color">#12000000</color>
     <color name="window_background_light">#F1F1F1</color>
+
+    <string-array name="bar_color">
+        <item>#ff8a65</item>
+        <item>#ffab91</item>
+        <item>#ffccbc</item>
+        <item>#ffe0b2</item>
+        <item>#ffe082</item>
+        <item>#ffcc80</item>
+        <item>#e6ee9c</item>
+        <item>#c5e1a5</item>
+        <item>#a5d6a7</item>
+        <item>#81c784</item>
+    </string-array>
 
 </resources>

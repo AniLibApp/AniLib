@@ -22,20 +22,21 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.dialog.MessageDialog
-import com.revolgenx.anilib.dialog.UserFollowerDialog
+import com.revolgenx.anilib.ui.dialog.MessageDialog
+import com.revolgenx.anilib.ui.dialog.UserFollowerDialog
 import com.revolgenx.anilib.markwon.MarkwonImpl
-import com.revolgenx.anilib.meta.*
-import com.revolgenx.anilib.model.user.UserFollowerCountModel
-import com.revolgenx.anilib.model.user.UserProfileModel
-import com.revolgenx.anilib.preference.loggedIn
-import com.revolgenx.anilib.preference.userId
-import com.revolgenx.anilib.repository.util.Status
+import com.revolgenx.anilib.data.meta.*
+import com.revolgenx.anilib.data.model.user.UserFollowerCountModel
+import com.revolgenx.anilib.data.model.user.UserProfileModel
+import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.common.preference.userId
+import com.revolgenx.anilib.common.preference.userName
+import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
-import com.revolgenx.anilib.viewmodel.user.UserProfileViewModel
+import com.revolgenx.anilib.ui.viewmodel.user.UserProfileViewModel
 import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.loading_layout.*
@@ -45,7 +46,7 @@ import kotlinx.android.synthetic.main.user_profile_acitivty_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
-//todo://handle intent, handle review //stats
+//todo://, handle review //stats
 class UserProfileActivity : BasePopupVideoActivity() {
     override val layoutRes: Int = R.layout.user_profile_acitivty_layout
     private lateinit var userMeta: UserMeta
@@ -93,7 +94,23 @@ class UserProfileActivity : BasePopupVideoActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userMeta = intent.getParcelableExtra(USER_ACTIVITY_META_KEY) ?: return
+
+        if (intent == null) return
+
+        userMeta = if (intent.action == Intent.ACTION_VIEW) {
+            val data = intent.data ?: return
+            val paths = data.pathSegments
+            val userId = paths[1].toIntOrNull()
+            val username = paths[1].toString()
+            UserMeta(
+                userId,
+                if (userId == null) username else null,
+                userId == userId() || username == userName()
+            )
+        } else {
+            intent.getParcelableExtra(USER_ACTIVITY_META_KEY) ?: return
+        }
+
         setSupportActionBar(userToolbar)
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

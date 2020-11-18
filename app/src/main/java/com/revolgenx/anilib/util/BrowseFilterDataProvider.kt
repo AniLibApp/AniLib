@@ -4,9 +4,9 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.revolgenx.anilib.constant.SearchTypes
-import com.revolgenx.anilib.model.search.filter.*
-import com.revolgenx.anilib.preference.getBrowseFilterPreference
-import com.revolgenx.anilib.preference.setBrowseFilterPreference
+import com.revolgenx.anilib.data.model.search.filter.*
+import com.revolgenx.anilib.common.preference.getBrowseFilterPreference
+import com.revolgenx.anilib.common.preference.setBrowseFilterPreference
 
 object BrowseFilterDataProvider {
     private var data: SearchFilterModel? = null
