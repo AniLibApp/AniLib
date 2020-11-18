@@ -2,11 +2,10 @@ package com.revolgenx.anilib.util
 
 import android.content.Context
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.field.TagField
-import com.revolgenx.anilib.field.TagState
-import com.revolgenx.anilib.field.home.SeasonField
-import com.revolgenx.anilib.model.search.filter.MediaSearchFilterModel
-import com.revolgenx.anilib.preference.*
+import com.revolgenx.anilib.data.field.TagField
+import com.revolgenx.anilib.data.field.TagState
+import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.util.BrowseFilterDataProvider.getBrowseFilterData
 import com.revolgenx.anilib.util.BrowseFilterDataProvider.setBrowseFilterData
 

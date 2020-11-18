@@ -7,7 +7,6 @@
     app:ads_colorType="primary">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/navHeaderLayout"
         android:layout_width="match_parent"
         android:layout_height="180dp">
 

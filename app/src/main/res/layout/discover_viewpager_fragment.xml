@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout
-        android:id="@+id/mainActivityCoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constrainedHeight="true"

@@ -14,3 +14,11 @@ const val YOUTUBE_START_INDEX = 10
 const val VIDEO_START_INDEX = 8
 const val HTTP_TOO_MANY_REQUEST = 429
 
+
+object PatternConstant{
+    const val MEDIA_INTENT_PATTERN = "https:\\/\\/(?:www.)?anilist.co\\/(anime|manga)\\/(\\d+)(?:\\/.+)?"
+}
+
+enum class  DisplayMode{
+    COMPACT, NORMAL, CARD
+}

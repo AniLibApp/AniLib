@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/listEditorRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -50,7 +49,7 @@
                     app:roundAsCircle="false"
                     app:roundedCornerRadius="4dp" />
 
-                <com.revolgenx.anilib.view.DynamicLoadingImageView
+                <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
                     android:id="@+id/listSaveButton"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -69,7 +68,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/listEditorBannerImage" />
 
 
-                <com.revolgenx.anilib.view.DynamicLoadingImageView
+                <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
                     android:id="@+id/listFavButton"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -99,7 +98,7 @@
                     app:layout_constraintStart_toEndOf="@+id/listFavButton"
                     app:layout_constraintTop_toTopOf="@+id/listFavButton">
 
-                    <com.revolgenx.anilib.view.DynamicToggleButton
+                    <com.revolgenx.anilib.ui.view.DynamicToggleButton
                         android:id="@+id/_privateToggleButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -108,7 +107,7 @@
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
 
-                <com.revolgenx.anilib.view.DynamicLoadingImageView
+                <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
                     android:id="@+id/listDeleteButton"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -139,7 +138,6 @@
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
-        android:id="@+id/listEditorNestedScrollView"
         style="@style/Widget.DynamicApp.Scroller.Padding.Vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -186,7 +184,7 @@
                     app:ads_fillSpace="true"
                     app:ads_title="@string/score" />
 
-                <com.revolgenx.anilib.view.MediaListEditorScoreLayout
+                <com.revolgenx.anilib.ui.view.MediaListEditorScoreLayout
                     android:id="@+id/listEditorScoreLayout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp" />
@@ -198,7 +196,7 @@
                     app:ads_fillSpace="true"
                     app:ads_title="@string/episode_progress" />
 
-                <com.revolgenx.anilib.view.PlusMinusEditTextLayout
+                <com.revolgenx.anilib.ui.view.PlusMinusEditTextLayout
                     android:id="@+id/listEditorEpisodeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp" />
@@ -211,7 +209,7 @@
                     app:ads_fillSpace="true"
                     app:ads_title="@string/volume_progress" />
 
-                <com.revolgenx.anilib.view.PlusMinusEditTextLayout
+                <com.revolgenx.anilib.ui.view.PlusMinusEditTextLayout
                     android:id="@+id/listEditorVolumeProgressLayout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -265,7 +263,7 @@
                     app:ads_fillSpace="true"
                     app:ads_title="@string/total_rewatch" />
 
-                <com.revolgenx.anilib.view.PlusMinusEditTextLayout
+                <com.revolgenx.anilib.ui.view.PlusMinusEditTextLayout
                     android:id="@+id/totalRewatchesLayout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp" />
@@ -300,7 +298,7 @@
                         app:ads_fillSpace="true"
                         app:ads_title="@string/advanced_scores" />
 
-                    <com.revolgenx.anilib.view.advance_score.AdvancedScoreView
+                    <com.revolgenx.anilib.ui.view.advance_score.AdvancedScoreView
                         android:id="@+id/advanceScoreView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>

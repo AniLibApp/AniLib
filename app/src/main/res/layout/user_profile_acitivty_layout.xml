@@ -39,7 +39,6 @@
 
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
-        android:id="@+id/userNestedScrollView"
         style="@style/Widget.DynamicApp.Scroller.Nested"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -80,7 +79,7 @@
                     android:text="@string/follow"
                     android:textSize="16sp"
                     android:visibility="gone"
-                    app:fontFamily="@font/qanelassoft_extra_bold" />
+                    app:fontFamily="@font/berlinrounded_extra_bold" />
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
 
@@ -93,7 +92,7 @@
                 android:text="UserName"
                 android:textSize="22sp"
                 app:ads_colorType="text_primary_inverse"
-                app:fontFamily="@font/qanelassoft_extra_bold" />
+                app:fontFamily="@font/berlinrounded_extra_bold" />
 
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
@@ -114,7 +113,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
-                        app:fontFamily="@font/qanelassoft_extra_bold" />
+                        app:fontFamily="@font/berlinrounded_extra_bold" />
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
@@ -132,7 +131,7 @@
                         android:layout_marginStart="6dp"
                         android:background="?selectableItemBackground"
                         android:textSize="12sp"
-                        app:fontFamily="@font/qanelassoft_extra_bold" />
+                        app:fontFamily="@font/berlinrounded_extra_bold" />
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
@@ -158,7 +157,7 @@
                         android:background="?selectableItemBackground"
                         android:clickable="true">
 
-                        <com.revolgenx.anilib.view.ImageHeaderLayout
+                        <com.revolgenx.anilib.ui.view.ImageHeaderLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -176,7 +175,7 @@
                         android:background="?selectableItemBackground"
                         android:clickable="true">
 
-                        <com.revolgenx.anilib.view.ImageHeaderLayout
+                        <com.revolgenx.anilib.ui.view.ImageHeaderLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -192,7 +191,7 @@
                         android:background="?selectableItemBackground"
                         android:clickable="true">
 
-                        <com.revolgenx.anilib.view.ImageHeaderLayout
+                        <com.revolgenx.anilib.ui.view.ImageHeaderLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -209,7 +208,7 @@
                         android:background="?selectableItemBackground"
                         android:clickable="true">
 
-                        <com.revolgenx.anilib.view.ImageHeaderLayout
+                        <com.revolgenx.anilib.ui.view.ImageHeaderLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -227,9 +226,9 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/about"
                 android:textSize="18sp"
-                app:fontFamily="@font/qanelassoft_extra_bold" />
+                app:fontFamily="@font/berlinrounded_extra_bold" />
 
-            <com.revolgenx.anilib.view.MaxHeightFrameLayout
+            <com.revolgenx.anilib.ui.view.MaxHeightFrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -253,7 +252,7 @@
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            </com.revolgenx.anilib.view.MaxHeightFrameLayout>
+            </com.revolgenx.anilib.ui.view.MaxHeightFrameLayout>
 
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -262,7 +261,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/overview"
                 android:textSize="18sp"
-                app:fontFamily="@font/qanelassoft_extra_bold" />
+                app:fontFamily="@font/berlinrounded_extra_bold" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
                 style="@style/Widget.DynamicApp.Card.Clickable"
@@ -281,7 +280,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                             android:id="@+id/totalCountTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -297,7 +296,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                             android:id="@+id/daysWatchedTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -312,7 +311,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                             android:id="@+id/animeMeanScoreTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -341,7 +340,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                             android:id="@+id/totalMangaTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -357,7 +356,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                             android:id="@+id/chaptersReadTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -372,7 +371,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <com.revolgenx.anilib.view.header.CustomDynamicHeader
+                        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                             android:id="@+id/mangaMeanScoreTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -390,7 +389,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/genre"
                 android:textSize="18sp"
-                app:fontFamily="@font/qanelassoft_extra_bold" />
+                app:fontFamily="@font/berlinrounded_extra_bold" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
                 style="@style/Widget.DynamicApp.Card.Clickable"

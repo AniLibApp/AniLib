@@ -4,7 +4,6 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mediaRecommendationCardView"
     style="@style/Widget.DynamicApp.Card.Margin.Clickable"
     android:layout_width="185dp"
     android:layout_height="330dp">
@@ -64,18 +63,14 @@
             android:paddingEnd="10dp"
             android:textSize="12sp" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        <com.revolgenx.anilib.ui.view.IndicatorTextView
             android:id="@+id/mediaEpisodeFormatTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="@string/episode_format_s"
-            android:textSize="11sp"
-            app:ads_colorType="accent"
-            tools:ignore="SmallSp" />
+            app:textSize="11"
+            app:textColorType="accent"/>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/mediaSeasonYearTv"

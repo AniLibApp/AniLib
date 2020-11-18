@@ -11,10 +11,10 @@ import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.GITHUB_NAME
 import com.revolgenx.anilib.constant.PROJECT_NAME
-import com.revolgenx.anilib.dialog.LoadingDialog
-import com.revolgenx.anilib.dialog.MessageDialog
-import com.revolgenx.anilib.preference.getUpdateVersion
-import com.revolgenx.anilib.preference.setUpdateVersion
+import com.revolgenx.anilib.ui.dialog.LoadingDialog
+import com.revolgenx.anilib.ui.dialog.MessageDialog
+import com.revolgenx.anilib.common.preference.getUpdateVersion
+import com.revolgenx.anilib.common.preference.setUpdateVersion
 import com.revolgenx.anilib.ui.view.makeToast
 import timber.log.Timber
 

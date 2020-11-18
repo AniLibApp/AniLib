@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.ui.sorting
 
-import com.revolgenx.anilib.model.list.MediaListModel
+import com.revolgenx.anilib.data.model.list.MediaListModel
 
 class MediaListSortingComparator(
     private val sorting: MediaListSorting,

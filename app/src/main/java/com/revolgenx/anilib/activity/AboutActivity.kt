@@ -3,10 +3,10 @@ package com.revolgenx.anilib.activity
 import android.os.Bundle
 import com.pranavpandey.android.dynamic.support.activity.DynamicActivity
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.controller.AppController
-import com.revolgenx.anilib.controller.ThemeController
-import com.revolgenx.anilib.fragment.about.AboutFragment
-import com.revolgenx.anilib.preference.getApplicationLocale
+import com.revolgenx.anilib.app.theme.AppController
+import com.revolgenx.anilib.app.theme.ThemeController
+import com.revolgenx.anilib.ui.fragment.about.AboutFragment
+import com.revolgenx.anilib.common.preference.getApplicationLocale
 import java.util.*
 
 class AboutActivity : DynamicActivity() {

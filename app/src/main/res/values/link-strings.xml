@@ -3,8 +3,6 @@
     <string name="site_url" translatable="false">https://anilib.onrender.com/#/</string>
     <string name="privacy_policy_url" translatable="false">https://anilib.onrender.com/#/privacypolicy</string>
     <string name="terms_and_condition_url" translatable="false">https://anilib.onrender.com/#/termsandcondition</string>
-    <string name="patreon_link" translatable="false">https://patreon.com/anilib</string>
-    <string name="bmc_link" translatable="false">https://www.buymeacoffee.com/9qP65KlG4</string>
     <string name="playstore" translatable="false">https://play.google.com/store/apps/details?id=com.revolgenx.anilib</string>
     <string name="github_link" translatable="false">https://github.com/rev0lgenX/AniLib</string>
     <string name="discord_invite_link" translatable="false">https://discord.gg/Gd2TVQT</string>

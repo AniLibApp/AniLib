@@ -2,7 +2,6 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/characterMediaContainer"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -52,6 +51,7 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/characterMediaTitleTv"
+            style="@style/titleFontStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
@@ -60,7 +60,7 @@
             android:ellipsize="end"
             android:lines="2"
             android:maxLines="2"
-            android:textSize="10sp"
+            android:textSize="11sp"
             app:ads_colorType="tint_surface"
             app:layout_constraintLeft_toLeftOf="@+id/characterMediaImageContainer"
             app:layout_constraintRight_toRightOf="@+id/characterMediaImageContainer"
@@ -84,20 +84,16 @@
             tools:ignore="SmallSp" />
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        <com.revolgenx.anilib.ui.view.IndicatorTextView
             android:id="@+id/characterMediaFormatTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textSize="10sp"
-            app:ads_colorType="accent"
+            app:textColorType="accent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/characterMediaImageContainer"
             app:layout_constraintRight_toRightOf="@+id/characterMediaImageContainer"
-            app:layout_constraintTop_toBottomOf="@+id/characterMediaStatusTv"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:ignore="SmallSp" />
+            app:layout_constraintTop_toBottomOf="@+id/characterMediaStatusTv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

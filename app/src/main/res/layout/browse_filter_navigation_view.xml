@@ -42,7 +42,6 @@
     </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
-        android:id="@+id/browseFilterNestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/applyFilterCardView"
@@ -55,7 +54,7 @@
             android:padding="6dp">
 
 
-            <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+            <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
@@ -72,7 +71,7 @@
                         android:layout_height="wrap_content" />
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
-            </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+            </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
@@ -82,7 +81,7 @@
                 android:orientation="vertical">
 
 
-                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+                <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
@@ -98,7 +97,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
-                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+                </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
@@ -110,7 +109,6 @@
                     android:padding="6dp">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                        android:id="@+id/hentaiTv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -186,7 +184,7 @@
                 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
 
-                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+                <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
@@ -204,9 +202,9 @@
 
                     </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
-                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+                </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
-                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+                <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
@@ -224,9 +222,9 @@
 
                     </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
-                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+                </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
-                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+                <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
@@ -244,10 +242,10 @@
 
                     </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
-                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+                </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
 
-                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+                <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:headerName="@string/streaming_on">
@@ -279,10 +277,10 @@
                             app:srcCompat="@drawable/ic_add" />
 
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
-                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+                </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
 
-                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+                <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
@@ -300,10 +298,10 @@
 
                     </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
-                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+                </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
 
-                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+                <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
@@ -321,10 +319,10 @@
 
                     </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
-                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+                </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
 
-                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+                <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:headerName="@string/genre">
@@ -354,9 +352,9 @@
                             app:ads_colorType="accent"
                             app:srcCompat="@drawable/ic_add" />
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
-                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+                </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
-                <com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout
+                <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:headerName="@string/tags">
@@ -386,7 +384,7 @@
                             app:ads_colorType="accent"
                             app:srcCompat="@drawable/ic_add" />
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
-                </com.revolgenx.anilib.view.header.DynamicHeaderLinearLayout>
+                </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 

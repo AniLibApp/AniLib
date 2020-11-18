@@ -7,10 +7,10 @@ import android.text.style.ClickableSpan
 import android.view.View
 import com.revolgenx.anilib.constant.YOUTUBE
 import com.revolgenx.anilib.constant.YOUTUBE_IMG_URL
-import com.revolgenx.anilib.event.YoutubeClickedEvent
-import com.revolgenx.anilib.meta.YoutubeMeta
-import com.revolgenx.anilib.view.drawable.SpoilerDrawable
-import com.revolgenx.anilib.view.drawable.YoutubePlayBitmapDrawable
+import com.revolgenx.anilib.infrastructure.event.YoutubeClickedEvent
+import com.revolgenx.anilib.data.meta.YoutubeMeta
+import com.revolgenx.anilib.ui.view.drawable.SpoilerDrawable
+import com.revolgenx.anilib.ui.view.drawable.YoutubePlayBitmapDrawable
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.MarkwonPlugin
 import io.noties.markwon.RenderProps

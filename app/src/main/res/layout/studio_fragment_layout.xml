@@ -2,7 +2,6 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/studioCoordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/toolbar_layout" />
@@ -48,7 +47,7 @@
                     app:ads_colorType="accent"
                     tools:ignore="SmallSp" />
 
-                <com.revolgenx.anilib.view.DynamicLoadingImageView
+                <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
                     android:id="@+id/studioFavIv"
                     android:layout_width="14dp"
                     android:layout_height="14dp"

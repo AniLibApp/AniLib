@@ -27,6 +27,7 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/mangaCharacterNameTv"
+            style="@style/titleFontStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
@@ -49,10 +50,10 @@
             android:maxLines="1"
             android:textSize="10sp"
             app:ads_colorType="accent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/mangaCharacterImageView"
             app:layout_constraintRight_toRightOf="@+id/mangaCharacterImageView"
             app:layout_constraintTop_toBottomOf="@+id/mangaCharacterNameTv"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="SmallSp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
