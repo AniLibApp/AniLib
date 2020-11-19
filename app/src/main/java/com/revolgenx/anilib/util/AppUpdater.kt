@@ -14,6 +14,7 @@ import com.revolgenx.anilib.constant.PROJECT_NAME
 import com.revolgenx.anilib.ui.dialog.LoadingDialog
 import com.revolgenx.anilib.ui.dialog.MessageDialog
 import com.revolgenx.anilib.common.preference.getUpdateVersion
+import com.revolgenx.anilib.common.preference.isStudioFlavor
 import com.revolgenx.anilib.common.preference.setUpdateVersion
 import com.revolgenx.anilib.ui.view.makeToast
 import timber.log.Timber
@@ -76,8 +77,7 @@ object AppUpdater {
                 }
 
                 override fun onFailed(error: AppUpdaterError?) {
-                    Timber.d("success updatesu failed")
-                    Timber.d(error.toString())
+                    Timber.w(error.toString())
                     loadingDialog?.dismiss()
                     if (manualCheck) {
                         context.makeToast(R.string.checking_for_update_failed)
@@ -89,11 +89,7 @@ object AppUpdater {
     fun openUpdateLink(context: Context) {
         val updateUrl =
             context.getString(
-                if (BuildConfig.APPLICATION_ID.contains(
-                        "ultra",
-                        true
-                    )
-                ) R.string.site_url else R.string.playstore
+                if (isStudioFlavor()) R.string.site_url else R.string.playstore
             )
         context.openLink(updateUrl)
     }

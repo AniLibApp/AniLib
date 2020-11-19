@@ -21,7 +21,7 @@ android {
         applicationId "com.revolgenx.anilib"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 24
+        versionCode 25
         versionName "1.1.7"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -97,6 +97,12 @@ android {
         studio {
             dimension 'default'
             applicationIdSuffix ".studio"
+        }
+    }
+
+    bundle {
+        language {
+            enableSplit = false
         }
     }
 }
