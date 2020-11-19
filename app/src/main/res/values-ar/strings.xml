@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">"أنيمي ليب AniLib"</string>
-    <string name="app_subtitle">"يعمل من خلال AniList"</string>
+    <string name="app_subtitle">"يستند على موقع AniList"</string>
     <string name="app_description">"مكانك المفضل لادارة وتتبع واستكشاف اعمال الأنيمي والمانغا والمزيد."</string>
     <string name="anilib_site">"موقع AniLib"</string>
     <string name="visit_site_desc">"قم بزيارة موقع AniLib لمعرفة المزيد."</string>
@@ -44,9 +43,9 @@
     <string name="paused">"استراحة مؤقتة"</string>
     <string name="rewatching">"أعدت مشاهدته"</string>
     <string name="episode_progress">"تقدم الحلقة"</string>
-    <string name="start_date">"تاريخ البدأ"</string>
+    <string name="start_date">"تاريخ البث"</string>
     <string name="end_date">"تاريخ الانتهاء"</string>
-    <string name="total_rewatch">"عدد مرات أعادة المشاهدة"</string>
+    <string name="total_rewatch">"أعدت مشاهدته"</string>
     <string name="private_">"خاص"</string>
     <string name="notes">"ملاحظات"</string>
     <string name="failed_to_save">"فشل الحفظ."</string>
@@ -57,12 +56,12 @@
     <string name="manga_progress">"تقدم المانغا"</string>
     <string name="make_private">"أجعله خاص"</string>
     <string name="overview">"نظرة عامة"</string>
-    <string name="character">"الشخصية"</string>
-    <string name="stats">"احصائيات"</string>
+    <string name="character">"الشخصيات"</string>
+    <string name="stats">"الاحصائيات"</string>
     <string name="staff">"فريق العمل"</string>
-    <string name="review">"مراجعة"</string>
+    <string name="review">"المراجعات"</string>
     <string name="watch">"مشاهدة"</string>
-    <string name="open_list_editor">"فتح محرر القائمة"</string>
+    <string name="open_list_editor">"فتح قائمة التحرير"</string>
     <string name="delete">"حذف"</string>
     <string name="toggle_fav">"تبديل المفضلة"</string>
     <string name="operation_failed">"فشلت العملية"</string>
@@ -81,15 +80,15 @@
     <string name="description">"الوصف"</string>
     <string name="episode_format_s">"ح: %1$s · %2$s"</string>
     <string name="too_many_request">"عدد كبير جدًا من الطلبات"</string>
-    <string name="recommendations">"توصيات"</string>
+    <string name="recommendations">"التوصيات"</string>
     <string name="chapter_format_s">"ف: %1$s · %2$s"</string>
     <string name="source_seasonyear_s">"%1$s · %2$s"</string>
     <string name="format_status_s">"%1$s · %2$s"</string>
-    <string name="relations">"علاقات"</string>
+    <string name="relations">"ذات صلة"</string>
     <string name="genre">"التصنيف"</string>
-    <string name="tags">"الوسوم"</string>
+    <string name="tags">"العلامات"</string>
     <string name="studios">"الأستوديوهات"</string>
-    <string name="producers">"المنتجات"</string>
+    <string name="producers">"المنتجين"</string>
     <string name="hashtag">"الوسم"</string>
     <string name="average_score">"متوسط التقييم"</string>
     <string name="popularity">"الشعبية"</string>
@@ -141,7 +140,7 @@
     <string name="blocked">"حظر"</string>
     <string name="s_following">"%1$sمتابَع"</string>
     <string name="s_followers">"%1$sمتابِع"</string>
-    <string name="total_anime">"اجمالي الأنيمي"</string>
+    <string name="total_anime">"كل الأنيمي"</string>
     <string name="days_watched">"ايام المشاهدة"</string>
     <string name="mean_score">"متوسط التقييم"</string>
     <string name="total_manga">"كل المانغا"</string>
@@ -211,16 +210,16 @@
 
     <!-- notification -->
     <string name="notification_setting">"اعدادات الاشعارات"</string>
-    <string name="refresh_interval">"مدة التنشيط"</string>
+    <string name="refresh_interval">"مدة التحديث"</string>
     <string name="notifications">"الاشعارات"</string>
     <string name="check_which_notif_to_show">"أبلغني عندما."</string>
     <string name="when_someone_follows_me">"عندما يتابعني شخص ما"</string>
     <string name="receive_message_notif">"عندما أتلقى رسالة"</string>
-    <string name="mention_replay_notif">"عندما يتم @ ذكر اسمي في نشاط أو رد"</string>
+    <string name="mention_replay_notif">"عندما يتم ذكر اسمي في نشاط أو رد"</string>
     <string name="activity_like_notif">"عندما يرسل أحدهم اعجابًا لنشاطي"</string>
     <string name="likes_activity_reply_notif">"عندما يرسل أحدهم اعجابًا لاحد ردودي"</string>
     <string name="forum_reply_notif">"عندما يقوم أحدهم بالرد علي في المنتدى"</string>
-    <string name="forum_mention_notif">"عندما يتم @ ذكري في المنتدى"</string>
+    <string name="forum_mention_notif">"عندما يتم ذكري في المنتدى"</string>
     <string name="forum_coment_liked_notif">"عندما يرسل احدهم اعجابًا لي في المنتدى"</string>
     <string name="reply_to_subscribed_forum_notif">"عندما يقوم احدهم بالرد على موضوع المنتدى الذي أشترك فيه"</string>
     <string name="forum_liked_notif">"عندما يرسل احدهم اعجابًا لموضوعي في المنتدى"</string>
@@ -388,7 +387,7 @@
     <string name="no_update_description">"لديك النسخة الأحدث من AniLib"</string>
     <string name="checking_for_update">"يجري البحث عن تحديث جديد"</string>
     <string name="checking_for_update_failed">"فشل البحث عن التحديثات"</string>
-    <string name="discord">"Discord"</string>
+    <string name="discord">"ديسكورد"</string>
     <string name="github_desc">"رؤية المصدر على Github."</string>
     <string name="start_nav_page_desc">"تعيين صفحة الرئيسية."</string>
     <string name="startup_page">"الصفحة الرئيسية"</string>
@@ -397,4 +396,6 @@
     <string name="normal_mode">"شكل أعتيادي"</string>
     <string name="card_mode">"شكل بطاقات"</string>
     <string name="preferred_application_language">"أختر لغة التطبيق"</string>
+    <string name="show_adult_content">"العرض دون حجب المحتوى الجنسي"</string>
+    <string name="show_adult_content_desc">"بتفعيل هذا لن يكون المحتوى الجنسي مخفيًا لديك."</string>
 </resources>
