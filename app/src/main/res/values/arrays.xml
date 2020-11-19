@@ -29,7 +29,7 @@
         <item>Manoj Chetry (KcMj)</item>
         <item>Satoru</item>
         <item>ricardoric_03</item>
-<!--        <item>Sakugaky</item>-->
+        <item>Sakugaky</item>
     </string-array>
 
     <string-array name="info_translators_languages">
@@ -38,7 +38,7 @@
         <item>@string/hindi</item>
         <item>@string/portuguese</item>
         <item>@string/spanish</item>
-<!--        <item>@string/arabic</item>-->
+        <item>@string/arabic</item>
     </string-array>
 
     <string-array name="info_translators_flags">
@@ -47,7 +47,7 @@
         <item>@drawable/ads_ic_flag_hi</item>
         <item>@drawable/ic_flag_pt</item>
         <item>@drawable/ads_ic_flag_es</item>
-<!--        <item>@drawable/ic_flag_ar</item>-->
+        <item>@drawable/ic_flag_ar</item>
     </string-array>
 
     <string-array name="info_translators_urls">
@@ -56,7 +56,7 @@
         <item>@null</item>
         <item>@null</item>
         <item>@null</item>
-<!--        <item>@null</item>-->
+        <item>@null</item>
     </string-array>
     <!--end region-->
 
