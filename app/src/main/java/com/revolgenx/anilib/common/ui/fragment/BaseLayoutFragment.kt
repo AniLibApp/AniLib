@@ -5,18 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
+import com.revolgenx.anilib.ui.`interface`.ViewBindingInterface
 
-abstract class BaseLayoutFragment : BaseFragment() {
-    abstract val layoutRes: Int
+abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment(), ViewBindingInterface<T> {
     protected open var titleRes: Int? = null
     protected open var setHomeAsUp = false
+
+    override var _binding: T? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(layoutRes, container, false)
+        _binding = bindView(inflater, container)
+        return binding.root
     }
 
 
@@ -31,6 +35,11 @@ abstract class BaseLayoutFragment : BaseFragment() {
                 it.setDisplayHomeAsUpEnabled(true)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

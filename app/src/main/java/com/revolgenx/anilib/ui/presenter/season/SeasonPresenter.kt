@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.ui.presenter
+package com.revolgenx.anilib.ui.presenter.season
 
 import android.content.Context
 import android.graphics.Color
@@ -44,9 +44,8 @@ class SeasonPresenter(context: Context) :
         context.resources.getStringArray(R.array.media_status)
     }
 
-    private val tintSurfaceColor by lazy {
-        DynamicTheme.getInstance().get().tintSurfaceColor
-    }
+    private val textPrimary =
+        DynamicTheme.getInstance().get().textPrimaryColor
 
     private val isLoggedIn by lazy {
         context.loggedIn()
@@ -129,7 +128,7 @@ class SeasonPresenter(context: Context) :
 
             if (isLoggedIn) {
                 entryProgressTv.visibility = View.VISIBLE
-                entryProgressTv.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
+                entryProgressTv.compoundDrawablesRelative[0]?.setTint(textPrimary)
                 entryProgressTv.text = context.getString(R.string.s_slash_s).format(
                     item.mediaEntryListModel?.progress?.toString().naText(),
                     when (item.type) {

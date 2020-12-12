@@ -5,10 +5,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
@@ -40,7 +37,7 @@ import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.meta.ReviewComposerMeta
 import com.revolgenx.anilib.data.model.MediaBrowseModel
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.constant.PatternConstant
+import com.revolgenx.anilib.databinding.ActivityMediaBrowserBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
@@ -51,11 +48,10 @@ import kotlinx.android.synthetic.main.activity_media_browser.*
 import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.regex.Pattern
 import kotlin.math.abs
 
 //todo://handle review
-class MediaBrowseActivity : BaseDynamicActivity() {
+class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
     companion object {
         const val MEDIA_BROWSER_META = "media_browser_meta"
     }
@@ -101,6 +97,13 @@ class MediaBrowseActivity : BaseDynamicActivity() {
                 invalidateOptionsMenu()
             }
         }
+
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): ActivityMediaBrowserBinding {
+        return ActivityMediaBrowserBinding.inflate(inflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -191,7 +194,7 @@ class MediaBrowseActivity : BaseDynamicActivity() {
             val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
             when (position) {
                 0 -> {
-                    createTabView(view, R.drawable.ic_overview, R.string.overview)
+                    createTabView(view, R.drawable.ic_fire, R.string.overview)
                 }
                 1 -> {
                     createTabView(view, R.drawable.ic_watch, R.string.watch)
@@ -479,7 +482,6 @@ class MediaBrowseActivity : BaseDynamicActivity() {
         }
     }
 
-    override val layoutRes: Int = R.layout.activity_media_browser
 
 
     private fun setToolbarTheme() {

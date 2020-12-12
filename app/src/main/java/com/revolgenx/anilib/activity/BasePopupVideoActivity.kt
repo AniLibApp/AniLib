@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.PopupWindow
+import androidx.viewbinding.ViewBinding
 import com.google.android.exoplayer2.ui.PlayerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.util.openLink
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.popup_video_controller_layout.view.*
 import kotlinx.android.synthetic.main.popup_video_layout.view.*
 
 
-abstract class BasePopupVideoActivity : BaseDynamicActivity() {
+abstract class BasePopupVideoActivity<T:ViewBinding> : BaseDynamicActivity<T>() {
 //    override val layoutRes: Int = R.layout.test_activty_layout
 
     private var popupSize = PopupSize.LARGE

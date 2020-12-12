@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.ui.dialog.MediaFilterDialog
 import com.revolgenx.anilib.infrastructure.event.BrowseTrendingEvent
@@ -15,20 +14,24 @@ import com.revolgenx.anilib.data.model.home.OrderedViewModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.getHomeOrderFromType
 import com.revolgenx.anilib.ui.presenter.home.MediaPresenter
-import com.revolgenx.anilib.infrastructure.source.MediaSource
+import com.revolgenx.anilib.infrastructure.source.discover.DiscoverMediaSource
 import com.revolgenx.anilib.type.MediaSort
+import com.revolgenx.anilib.ui.view.showcase.DiscoverMediaShowcaseLayout
 import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverNewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverNewFragment : DiscoverPopularFragment() {
 
-    private lateinit var discoverNewRecyclerView: DynamicRecyclerView
+    private var discoverNewShowCaseLayout: DiscoverMediaShowcaseLayout? = null
+
     private val viewModel by viewModel<DiscoverNewViewModel>()
 
     private val presenter
-        get() = MediaPresenter(requireContext())
+        get() = MediaPresenter(requireContext()) { mod ->
+            discoverNewShowCaseLayout?.bindShowCaseMedia(mod)
+        }
 
-    private val source: MediaSource
+    private val source: DiscoverMediaSource
         get() = viewModel.source ?: viewModel.createSource()
 
     private val order: Int
@@ -39,18 +42,17 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        discoverNewRecyclerView = DynamicRecyclerView(requireContext()).also {
-            it.layoutParams = ViewGroup.LayoutParams(
+    ): View {
+        discoverNewShowCaseLayout = DiscoverMediaShowcaseLayout(requireContext()).also { vi ->
+            vi.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            it.isNestedScrollingEnabled = false
         }
 
         orderedViewList.add(OrderedViewModel(
-            discoverNewRecyclerView, order,
-            getString(R.string.newly_added), showSetting = true
+            discoverNewShowCaseLayout!!, order,
+            getString(R.string.newly_added), R.drawable.ic_new, showSetting = true
         ) {
             handleClick(it)
         })
@@ -60,7 +62,7 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        discoverNewRecyclerView.layoutManager =
+        discoverNewShowCaseLayout!!.showcaseRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 
@@ -91,7 +93,7 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
 
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {
-        viewModel.adapter = discoverNewRecyclerView.createAdapter(source, presenter, true)
+        discoverNewShowCaseLayout?.showcaseRecyclerView?.createAdapter(source, presenter, true)
     }
 
     private fun handleClick(which: Int) {

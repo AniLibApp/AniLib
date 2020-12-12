@@ -63,11 +63,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/open_sans_light"
+                    android:fontFamily="@font/cabin_regular"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
-                    android:textSize="12sp"
-                    app:ads_colorType="tint_surface" />
+                    android:textSize="14sp"/>
 
 
                 <RelativeLayout
@@ -85,7 +84,6 @@
                         android:gravity="center_vertical"
                         android:text="@string/start_s_end_s"
                         android:textSize="10sp"
-                        app:ads_colorType="tint_surface"
                         tools:ignore="SmallSp" />
 
 

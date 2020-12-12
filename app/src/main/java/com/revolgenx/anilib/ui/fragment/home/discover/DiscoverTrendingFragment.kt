@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.ui.dialog.MediaFilterDialog
 import com.revolgenx.anilib.infrastructure.event.BrowseTrendingEvent
@@ -15,23 +14,26 @@ import com.revolgenx.anilib.data.model.home.OrderedViewModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.getHomeOrderFromType
 import com.revolgenx.anilib.ui.presenter.home.MediaPresenter
-import com.revolgenx.anilib.infrastructure.source.MediaSource
+import com.revolgenx.anilib.infrastructure.source.discover.DiscoverMediaSource
 import com.revolgenx.anilib.type.MediaSort
-import com.revolgenx.anilib.ui.viewmodel.TrendingViewModel
+import com.revolgenx.anilib.ui.view.showcase.DiscoverMediaShowcaseLayout
+import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverTrendingViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverTrendingFragment : DiscoverReadingFragment() {
 
-    private var trendingRecyclerView: DynamicRecyclerView? = null
+    private var trendingShowCaseLayout: DiscoverMediaShowcaseLayout? = null
 
     private val presenter
-        get() = MediaPresenter(requireContext())
+        get() = MediaPresenter(requireContext()) { mod ->
+            trendingShowCaseLayout?.bindShowCaseMedia(mod)
+        }
 
-    private val source: MediaSource
+    private val source: DiscoverMediaSource
         get() = viewModel.source ?: viewModel.createSource()
 
 
-    private val viewModel by viewModel<TrendingViewModel>()
+    private val viewModel by viewModel<DiscoverTrendingViewModel>()
 
     private val order: Int
         get() = getHomeOrderFromType(requireContext(), HomeOrderType.TRENDING)
@@ -40,19 +42,17 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        trendingRecyclerView = DynamicRecyclerView(requireContext()).also {
-            it.layoutParams = ViewGroup.LayoutParams(
+    ): View {
+        trendingShowCaseLayout= DiscoverMediaShowcaseLayout(requireContext()).also {vi->
+            vi.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            it.isNestedScrollingEnabled = false
         }
 
         orderedViewList.add(OrderedViewModel(
-            trendingRecyclerView!!, order,
-            getString(R.string.trending)
-            , showSetting = true
+            trendingShowCaseLayout!!, order,
+            getString(R.string.trending), icon = R.drawable.ic_fire,showSetting = true
         ) {
             handleClick(it)
         })
@@ -62,29 +62,23 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        trendingRecyclerView!!.layoutManager =
+        trendingShowCaseLayout!!.showcaseRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 
-    override fun reloadAll() {
-        super.reloadAll()
-
-    }
-
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null)
+        super.onActivityCreated(savedInstanceState)
+        if (savedInstanceState != null) {
             viewModel.field = TrendingMediaField.create(requireContext()).also {
                 it.sort = MediaSort.TRENDING_DESC.ordinal
             }
-        super.onActivityCreated(savedInstanceState)
-        if (savedInstanceState != null) {
             childFragmentManager.findFragmentByTag(MEDIA_TRENDING_TAG)?.let {
                 (it as MediaFilterDialog).onDoneListener = {
                     renewAdapter()
                 }
             }
         }
+
         invalidateAdapter()
     }
 
@@ -112,7 +106,6 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
 
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {
-        if (trendingRecyclerView == null) return
-        trendingRecyclerView!!.createAdapter(source, presenter, true)
+        trendingShowCaseLayout?.showcaseRecyclerView?.createAdapter(source, presenter, true)
     }
 }

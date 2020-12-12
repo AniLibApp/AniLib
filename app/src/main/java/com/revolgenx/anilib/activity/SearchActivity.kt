@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
@@ -25,19 +27,18 @@ import com.revolgenx.anilib.infrastructure.event.TagEvent
 import com.revolgenx.anilib.data.field.TagChooserField
 import com.revolgenx.anilib.data.field.TagField
 import com.revolgenx.anilib.ui.fragment.search.SearchFragment
-import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.data.model.search.filter.SearchFilterModel
+import com.revolgenx.anilib.databinding.SearchActivityLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.util.DataProvider
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
 import com.revolgenx.anilib.ui.viewmodel.browse.BrowseActivityViewModel
-import kotlinx.android.synthetic.main.browse_activity_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : BaseDynamicActivity(),
+class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
     BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener {
 
     companion object {
@@ -76,6 +77,12 @@ class SearchActivity : BaseDynamicActivity(),
 
     private val viewModel by viewModel<BrowseActivityViewModel>()
 
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): SearchActivityLayoutBinding {
+        return SearchActivityLayoutBinding.inflate(inflater)
+    }
 
     override fun onStart() {
         super.onStart()
@@ -103,7 +110,7 @@ class SearchActivity : BaseDynamicActivity(),
 
             if (intent.hasExtra(ADVANCE_SEARCH_INTENT_KEY)) {
                 intent.getParcelableExtra<SearchFilterModel>(ADVANCE_SEARCH_INTENT_KEY)?.let {
-                    browseFilterNavView.setFilter(it)
+                    binding.browseFilterNavView.setFilter(it)
                 }
             }
         }
@@ -126,7 +133,7 @@ class SearchActivity : BaseDynamicActivity(),
     }
 
     private fun setUpPersistentSearchView() {
-        with(persistentSearchView) {
+        with(binding.persistentSearchView) {
             setLeftButtonDrawable(backDrawable)
             setRightButtonDrawable(filterDrawable)
             showRightButton()
@@ -138,7 +145,7 @@ class SearchActivity : BaseDynamicActivity(),
                 dataProvider.addToSearchHistory(query)
                 viewModel.searchQuery = query
                 viewModel.searchNow()
-                persistentSearchView.collapse(false)
+                binding.persistentSearchView.collapse(false)
             }
 
             setOnSuggestionChangeListener(object : OnSuggestionChangeListener {
@@ -162,7 +169,7 @@ class SearchActivity : BaseDynamicActivity(),
     }
 
     private fun setUpTheme() {
-        with(persistentSearchView) {
+        with(binding.persistentSearchView) {
             DynamicTheme.getInstance().get().primaryColor.let {
                 setCardBackgroundColor(it)
             }
@@ -190,8 +197,8 @@ class SearchActivity : BaseDynamicActivity(),
 
 
         DynamicTheme.getInstance().get().backgroundColor.let {
-            rootDrawerLayout.setBackgroundColor(it)
-            advanceSearchCoordinatorLayout.setBackgroundColor(it)
+            binding.rootDrawerLayout.setBackgroundColor(it)
+            binding.advanceSearchCoordinatorLayout.setBackgroundColor(it)
         }
         statusBarColor = statusBarColor
 
@@ -199,7 +206,7 @@ class SearchActivity : BaseDynamicActivity(),
 
 
     private fun setUpListener() {
-        with(persistentSearchView) {
+        with(binding.persistentSearchView) {
             setOnLeftBtnClickListener {
                 if (isExpanded) {
                     collapse(true)
@@ -207,16 +214,16 @@ class SearchActivity : BaseDynamicActivity(),
                     finish()
             }
             setOnRightBtnClickListener {
-                rootDrawerLayout.openDrawer(GravityCompat.END)
+                binding.rootDrawerLayout.openDrawer(GravityCompat.END)
             }
         }
-        with(browseFilterNavView) {
+        with(binding.browseFilterNavView) {
             setNavigationCallbackListener(this@SearchActivity)
         }
-        rootDrawerLayout.addDrawerListener(browseFilterNavView.drawerListener)
+        binding.rootDrawerLayout.addDrawerListener(binding.browseFilterNavView.drawerListener)
 
         dataProvider.onDataChanged {
-            persistentSearchView.setSuggestions(
+            binding.persistentSearchView.setSuggestions(
                 SuggestionCreationUtil.asRecentSearchSuggestions(dataProvider.getAllHistory()),
                 false
             )
@@ -269,7 +276,7 @@ class SearchActivity : BaseDynamicActivity(),
 
     private fun invalidateStreamFilter(list: List<TagField>) {
         viewModel.streamTagFields = list.toMutableList()
-        browseFilterNavView.buildStreamAdapter(
+        binding.browseFilterNavView.buildStreamAdapter(
             tagAdapter,
             list
         )
@@ -277,7 +284,7 @@ class SearchActivity : BaseDynamicActivity(),
 
     private fun invalidateGenreFilter(list: List<TagField>) {
         viewModel.genreTagFields = list.toMutableList()
-        browseFilterNavView.buildGenreAdapter(
+        binding.browseFilterNavView.buildGenreAdapter(
             tagAdapter,
             list
         )
@@ -285,21 +292,20 @@ class SearchActivity : BaseDynamicActivity(),
 
     private fun invalidateTagFilter(list: List<TagField>) {
         viewModel.tagTagFields = list.toMutableList()
-        browseFilterNavView.buildTagAdapter(
+        binding.browseFilterNavView.buildTagAdapter(
             tagAdapter,
             list
         )
     }
 
     override fun onBackPressed() {
-        if (rootDrawerLayout.isDrawerOpen(GravityCompat.END)) {
-            rootDrawerLayout.closeDrawer(GravityCompat.END)
+        if (binding.rootDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+            binding.rootDrawerLayout.closeDrawer(GravityCompat.END)
         } else
             super.onBackPressed()
     }
 
 
-    override val layoutRes: Int = R.layout.browse_activity_layout
 
 
 
@@ -344,13 +350,13 @@ class SearchActivity : BaseDynamicActivity(),
     override fun updateTags(tagType: MediaTagFilterTypes) {
         when(tagType){
             MediaTagFilterTypes.TAGS -> {
-                browseFilterNavView.invalidateTagAdapter(tagAdapter)
+                binding.browseFilterNavView.invalidateTagAdapter(tagAdapter)
             }
             MediaTagFilterTypes.GENRES -> {
-                browseFilterNavView.invalidateGenreAdapter(tagAdapter)
+                binding. browseFilterNavView.invalidateGenreAdapter(tagAdapter)
             }
             MediaTagFilterTypes.STREAMING_ON -> {
-                browseFilterNavView.invalidateStreamAdapter(tagAdapter)
+                binding.browseFilterNavView.invalidateStreamAdapter(tagAdapter)
             }
         }
     }
@@ -365,18 +371,18 @@ class SearchActivity : BaseDynamicActivity(),
 
 
     override fun applyFilter() {
-        if (rootDrawerLayout.isDrawerOpen(GravityCompat.END)) {
-            rootDrawerLayout.closeDrawer(GravityCompat.END)
+        if (binding.rootDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+            binding.rootDrawerLayout.closeDrawer(GravityCompat.END)
         }
-        browseFilterNavView.getFilter()?.let {
+        binding.browseFilterNavView.getFilter()?.let {
             viewModel.searchQuery = it.query!!
-            persistentSearchView.inputQuery = viewModel.searchQuery
+            binding.persistentSearchView.inputQuery = viewModel.searchQuery
             BrowseFilterAppliedEvent(it).postSticky
         }
     }
 
     private fun search() {
-        browseFilterNavView.getFilter()?.let {
+        binding.browseFilterNavView.getFilter()?.let {
             it.query = viewModel.searchQuery
             BrowseFilterAppliedEvent(it).postSticky
         }

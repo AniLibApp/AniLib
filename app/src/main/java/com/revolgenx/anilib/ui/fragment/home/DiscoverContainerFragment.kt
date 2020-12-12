@@ -1,27 +1,21 @@
 package com.revolgenx.anilib.ui.fragment.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.forEachIndexed
-import androidx.core.view.iterator
+import android.view.ViewGroup
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
-import com.revolgenx.anilib.common.ui.fragment.BaseTransitiveLayoutFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.databinding.DiscoverContainerFragmentBinding
+import com.revolgenx.anilib.infrastructure.event.BrowseEvent
+import com.revolgenx.anilib.infrastructure.event.BrowseNotificationEvent
 import com.revolgenx.anilib.ui.fragment.home.discover.DiscoverFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.discover_viewpager_fragment.*
-import kotlinx.android.synthetic.main.toolbar_layout.*
+import com.revolgenx.anilib.ui.fragment.home.season.SeasonFragment
 
-class DiscoverContainerFragment : BaseTransitiveLayoutFragment() {
-    override val layoutRes: Int = R.layout.discover_viewpager_fragment
-
-    override val toolbar: Toolbar
-        get() = dynamicToolbar
+class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBinding>() {
 
     private lateinit var adapter: FragmentPagerAdapter
 
@@ -33,64 +27,37 @@ class DiscoverContainerFragment : BaseTransitiveLayoutFragment() {
         )
     }
 
-    companion object {
-        fun newInstance() = DiscoverContainerFragment()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        bottomNav.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-        themeBottomNavigation()
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): DiscoverContainerFragmentBinding {
+        return DiscoverContainerFragmentBinding.inflate(inflater, parent, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        initListener()
+        binding.initListener()
+
+        binding.discoverNotificationIv.visibility = if(requireContext().loggedIn()) View.VISIBLE else View.GONE
+
         adapter = makePagerAdapter(
-            discoverFragments
+            discoverFragments,
+            resources.getStringArray(R.array.discover_tab_menu)
         )
-        mainViewPager.adapter = adapter
-        mainViewPager.offscreenPageLimit = 3
+        binding.discoverContainerViewPager.adapter = adapter
+        binding.discoverContainerViewPager.offscreenPageLimit = 3
+        binding.discoverMainTabLayout.setupWithViewPager(binding.discoverContainerViewPager)
+
     }
 
-    private fun initListener() {
-
-        val toggle = ActionBarDrawerToggle(
-            requireActivity(),
-            requireActivity().drawerLayout,
-            dynamicToolbar,
-            R.string.nav_open,
-            R.string.nav_close
-        )
-
-        requireActivity().drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-
-        mainViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected(position: Int) {
-                bottomNav.menu.iterator().forEach {
-                    it.isChecked = false
-                }
-                bottomNav.menu.getItem(position).isChecked = true
-            }
-        })
-
-        bottomNav.setOnNavigationItemSelectedListener {
-            bottomNav.menu.forEachIndexed { index, item ->
-                if (it == item) {
-                    mainViewPager.setCurrentItem(index, true)
-                    return@setOnNavigationItemSelectedListener true
-                }
-            }
-            false
+    private fun DiscoverContainerFragmentBinding.initListener(){
+        discoverSearchIv.setOnClickListener {
+            BrowseEvent().postEvent
         }
-    }
-
-    private fun themeBottomNavigation() {
-        bottomNav.color = DynamicTheme.getInstance().get().primaryColor
-        bottomNav.textColor = DynamicTheme.getInstance().get().accentColor
+        discoverNotificationIv.setOnClickListener {
+            BrowseNotificationEvent().postEvent
+        }
     }
 
 }

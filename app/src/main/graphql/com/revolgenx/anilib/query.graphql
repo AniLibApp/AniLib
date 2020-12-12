@@ -1,5 +1,5 @@
-query MediaQuery($page: Int!
-    , $perPage: Int!
+query MediaQuery($page: Int
+    , $perPage: Int
     , $seasonYear: Int
     , $season: MediaSeason
     , $status: MediaStatus

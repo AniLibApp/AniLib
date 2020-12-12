@@ -70,7 +70,6 @@
                 android:lines="2"
                 android:maxLines="2"
                 android:textSize="11sp"
-                app:ads_colorType="tint_surface"
                 app:layout_constraintLeft_toLeftOf="@+id/recommendedFromImageContainer"
                 app:layout_constraintRight_toRightOf="@+id/recommendedFromImageContainer"
                 app:layout_constraintTop_toBottomOf="@+id/recommendedFromImageContainer"

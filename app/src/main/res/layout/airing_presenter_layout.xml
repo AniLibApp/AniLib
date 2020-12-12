@@ -5,9 +5,7 @@
     android:id="@+id/airingCardView"
     style="@style/Widget.DynamicApp.Card.Margin.Clickable"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:focusable="true">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -66,7 +64,6 @@
             android:includeFontPadding="false"
             android:maxLines="2"
             android:textSize="13sp"
-            app:ads_colorType="tint_surface"
             app:layout_constraintLeft_toRightOf="@+id/mediaImageLayout"
             app:layout_constraintRight_toLeftOf="@+id/bookmarkIv"
             app:layout_constraintTop_toTopOf="parent" />
@@ -78,7 +75,7 @@
             android:layout_height="40dp"
             android:background="?selectableItemBackground"
             android:padding="10dp"
-            app:ads_colorType="tint_primary"
+            app:ads_colorType="text_primary"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_bookmark" />
@@ -183,7 +180,6 @@
             android:text="@string/s_slash_s"
             android:textSize="12sp"
             android:visibility="visible"
-            app:ads_colorType="tint_surface"
             app:drawableStartCompat="@drawable/ic_eye_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"

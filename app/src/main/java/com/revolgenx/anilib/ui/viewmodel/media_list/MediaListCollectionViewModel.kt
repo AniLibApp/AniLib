@@ -27,7 +27,6 @@ abstract class MediaListCollectionViewModel(
     val listMap by lazy { mutableMapOf<Int, MediaListModel>() }
     var filter = MediaListCollectionFilterField()
 
-    override var field: MediaListCollectionField = MediaListCollectionField()
 
     override fun createSource(): MediaListCollectionSource {
         filteredList = null

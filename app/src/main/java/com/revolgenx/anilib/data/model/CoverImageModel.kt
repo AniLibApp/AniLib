@@ -15,7 +15,7 @@ class CoverImageModel {
         get() = large ?: medium ?: ""
 
     val largeImage: String
-        get() = extraLarge ?: ""//image
+        get() = extraLarge ?: image
 
     constructor()
     constructor(medium: String?, large: String?, extraLarge: String?) {

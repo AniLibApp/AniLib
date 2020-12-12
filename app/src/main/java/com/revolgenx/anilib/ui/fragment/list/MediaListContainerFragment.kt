@@ -1,124 +1,95 @@
 package com.revolgenx.anilib.ui.fragment.list
 
-import android.annotation.SuppressLint
-import android.content.res.ColorStateList
-import android.graphics.drawable.RippleDrawable
+import android.content.res.Configuration
 import android.os.Bundle
-import android.view.*
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.view.menu.MenuBuilder
-import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
-import androidx.viewpager.widget.ViewPager
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
-import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MediaListActivity
-import com.revolgenx.anilib.ui.adapter.MediaListAdapter
-import com.revolgenx.anilib.ui.dialog.MediaListCollectionFilterDialog
-import com.revolgenx.anilib.infrastructure.event.BrowseNotificationEvent
+import androidx.recyclerview.widget.GridLayoutManager
+import com.otaliastudios.elements.Presenter
+import com.otaliastudios.elements.Source
+import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
+import com.revolgenx.anilib.data.meta.MediaListMeta
+import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
+import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
+import com.revolgenx.anilib.data.meta.MediaListFilterMeta
+import com.revolgenx.anilib.data.model.list.MediaListModel
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
-import com.revolgenx.anilib.infrastructure.event.MediaListCollectionFilterEvent
-import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
-import com.revolgenx.anilib.common.ui.fragment.BaseTransitiveLayoutFragment
-import com.revolgenx.anilib.data.meta.MediaListMeta
-import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
-import com.revolgenx.anilib.common.preference.setMediaListGridPresenter
-import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.ui.view.makePopupMenu
+import com.revolgenx.anilib.ui.dialog.MediaListCollectionFilterDialog
+import com.revolgenx.anilib.ui.presenter.list.MediaListCollectionPresenter
+import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListContainerViewModel
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
-import kotlinx.android.synthetic.main.media_list_activity_layout.*
-import kotlinx.android.synthetic.main.smart_tab_layout.view.*
-import kotlinx.android.synthetic.main.toolbar_layout.*
 import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-abstract class MediaListContainerFragment : BaseTransitiveLayoutFragment() {
-    override val layoutRes: Int = R.layout.media_list_container_fragment_layout
+abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel>(),
+    MediaListCallbackInterface {
+
+
+    override val basePresenter: Presenter<MediaListModel>
+        get() = MediaListCollectionPresenter(
+            requireContext(),
+            mediaListMeta,
+            viewModel.mediaListViewModel
+        )
+    override val baseSource: Source<MediaListModel>
+        get() = viewModel.mediaListViewModel.source ?: createSource()
+
+    private val viewModel by viewModel<MediaListContainerViewModel>()
+
+    override var portraitMaxSpan: Int = 4
+    override var portraitMinSpan: Int = 2
 
     private val mediaListMeta: MediaListMeta by lazy {
         mediaListMetaArgs()
     }
 
-    private var menuItem: MenuItem? = null
 
-    private val mediaListFragment by lazy {
-        listOf(
-            WatchingFragment().apply {
-                arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
-            },
-            PlanningFragment().apply {
-                arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
-            },
-            CompletedFragment().apply {
-                arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
-            },
-            DroppedFragment().apply {
-                arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
-            },
-            PausedFragment().apply {
-                arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
-            },
-            RepeatingFragment().apply {
-                arguments = bundleOf(MediaListActivity.MEDIA_LIST_META_KEY to mediaListMeta)
-            }
-        )
+    override fun createSource(): Source<MediaListModel> {
+        return viewModel.mediaListViewModel.createSource()
     }
 
-    private val pageChangeListener
-        get() =
-            object : ViewPager.SimpleOnPageChangeListener() {
-                override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
-                ) {
-                    if (menuItem?.isActionViewExpanded == true)
-                        menuItem?.collapseActionView()
-                }
-
-
-                override fun onPageSelected(position: Int) {
-                    dynamicSmartTab.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
-                    dynamicSmartTab.getTabAt(position).tabTextTv.visibility = View.VISIBLE
-                }
-            }
-
-    private val tabColorStateList: ColorStateList
-        get() {
-            return ColorStateList(
-                arrayOf(
-                    intArrayOf(android.R.attr.state_selected),
-                    intArrayOf(android.R.attr.state_enabled)
-                ), intArrayOf(
-                    DynamicTheme.getInstance().get().accentColor,
-                    DynamicTheme.getInstance().get().tintPrimaryColor
-                )
-            )
-        }
-
-    private val accentColor =
-        DynamicTheme.getInstance().get().accentColor
-    private val tintAccentColor =
-        DynamicTheme.getInstance().get().tintAccentColor
-
-    private var mediaListFilterField = MediaListCollectionFilterField()
-
-    override val toolbar: Toolbar
-        get() = dynamicToolbar
+    private fun renewSource(){
+        viewModel.mediaListViewModel.renewSource()
+    }
 
     protected abstract fun mediaListMetaArgs(): MediaListMeta
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        dynamicSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
+    protected fun getCurrentStatus(): Int {
+        return viewModel.currentListStatus
     }
+
+    override fun setCurrentStatus(status: Int) {
+        viewModel.currentListStatus = status
+        invalidateAdapter()
+    }
+
+    override fun reloadLayoutManager() {
+        var span =
+            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
+
+        if (getMediaListGridPresenter() == 1) {
+            span /= 2
+        }
+
+        layoutManager =
+            GridLayoutManager(
+                this.context,
+                span
+            ).also {
+                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (adapter?.getItemViewType(position) == 0) {
+                            1
+                        } else {
+                            span
+                        }
+                    }
+                }
+            }
+
+        super.reloadLayoutManager()
+    }
+
 
     override fun onStart() {
         super.onStart()
@@ -130,179 +101,84 @@ abstract class MediaListContainerFragment : BaseTransitiveLayoutFragment() {
         unRegisterForEvent()
     }
 
-    override fun onResume() {
-        super.onResume()
-        setHasOptionsMenu(true)
+
+    @Subscribe()
+    fun onDisplayModeEvent(event: DisplayModeChangedEvent) {
+        when (event.whichDisplay) {
+            DisplayTypes.MEDIA_LIST -> {
+                changePresenterLayout()
+            }
+        }
+    }
+
+    private fun changePresenterLayout() {
+        reloadLayoutManager()
+        if (visibleToUser) {
+            invalidateAdapter()
+        }
     }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+
         super.onActivityCreated(savedInstanceState)
-        initListener()
         if ((mediaListMeta.userId == null && mediaListMeta.userName == null)) {
             return
         }
 
-        toolbarTitle = when (mediaListMeta.type) {
-            MediaType.ANIME.ordinal -> {
-                getString(R.string.anime_list)
-            }
-            else -> {
-                getString(R.string.manga_list)
-            }
+        baseSwipeRefreshLayout.setOnRefreshListener {
+            renewSource()
+            baseSwipeRefreshLayout.isRefreshing = false
+            invalidateAdapter()
         }
 
 
-        val inflater = LayoutInflater.from(requireContext())
-        dynamicSmartTab.setCustomTabView { container, position, _ ->
-            val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
-            when (position) {
-                0 -> {
-                    createTabView(view, R.drawable.ic_watching, R.string.watching)
-                }
-                1 -> {
-                    createTabView(view, R.drawable.ic_planning, R.string.planning)
-                }
-                2 -> {
-                    createTabView(view, R.drawable.ic_completed, R.string.completed)
-                }
-                3 -> {
-                    createTabView(view, R.drawable.ic_dropped, R.string.dropped)
-                }
-                4 -> {
-                    createTabView(view, R.drawable.ic_paused_filled, R.string.paused)
-                }
-                5 -> {
-                    createTabView(view, R.drawable.ic_rewatching, R.string.repeating)
-                }
-                else -> {
-                    null
-                }
+        if (savedInstanceState == null) {
+            with(viewModel.mediaListField) {
+                userId = mediaListMeta.userId
+                type = mediaListMeta.type
+                viewModel.mediaListField = this
             }
         }
 
-        mediaListViewPager.addOnPageChangeListener(pageChangeListener)
-        mediaListViewPager.adapter = MediaListAdapter(childFragmentManager, mediaListFragment)
-        mediaListViewPager.offscreenPageLimit = 5
-        dynamicSmartTab.setViewPager(mediaListViewPager, null)
-        mediaListViewPager.setCurrentItem(0, false)
-        mediaListViewPager.post {
-            pageChangeListener.onPageSelected(mediaListViewPager.currentItem)
-        }
-
-        (savedInstanceState?.getParcelable(MediaListCollectionFilterDialog.LIST_FILTER_PARCEL_KEY) as? MediaListCollectionFilterField)?.let { field ->
-            mediaListFilterField = field
-            if (field.search.isNullOrEmpty().not()) {
-                menuItem?.expandActionView()
-                (menuItem?.actionView as? SearchView)?.let {
-                    it.setQuery(field.search!!, true)
-                }
-            }
-        }
+//        (savedInstanceState?.getParcelable(MediaListCollectionFilterDialog.LIST_FILTER_PARCEL_KEY) as? MediaListCollectionFilterField)?.let { field ->
+//            mediaListFilterField = field
+//            if (field.search.isNullOrEmpty().not()) {
+//                menuItem?.expandActionView()
+//                (menuItem?.actionView as? SearchView)?.let {
+//                    it.setQuery(field.search!!, true)
+//                }
+//            }
+//        }
     }
 
-    private fun initListener() {
-        val toggle = ActionBarDrawerToggle(
-            requireActivity(),
-            requireActivity().drawerLayout,
-            dynamicToolbar,
-            R.string.nav_open,
-            R.string.nav_close
-        )
-
-        requireActivity().drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+    override fun openListFilterDialog() {
+        MediaListCollectionFilterDialog.newInstance(viewModel.mediaListViewModel.filter)
+            .show(childFragmentManager, "media_filter_dialog")
     }
 
-    @SuppressLint("RestrictedApi")
-    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.list_activity_menu, menu)
-        if (menu is MenuBuilder) {
-            menu.setOptionalIconsVisible(true)
-        }
-
-        menu.findItem(R.id.listSearchMenu)?.let { item ->
-            menuItem = item
-            (item.actionView as SearchView).also {
-                it.setOnQueryTextListener(object :
-                    SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        return false
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        mediaListFilterField.search = newText
-                        filterMediaList()
-                        return true
-                    }
-                })
+    override fun filterList(mediaListFilterMeta: MediaListFilterMeta) {
+        viewModel.mediaListViewModel.filter.apply {
+            mediaListFilterMeta.let {
+                format = it.format
+                status = it.status
+                genre = it.genres
+                listSort = it.mediaListSort
             }
         }
-        super.onCreateOptionsMenu(menu, menuInflater)
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.listSearchMenu -> {
-                true
-            }
-            R.id.listNotificationMenu->{
-                BrowseNotificationEvent().postEvent
-                true
-            }
-            R.id.listFilterMenu -> {
-                MediaListCollectionFilterDialog.newInstance(mediaListFilterField)
-                    .show(childFragmentManager, "media_filter_dialog")
-                true
-            }
-            R.id.listDisplayModeMenu -> {
-                val popupMenu = makePopupMenu(
-                    R.menu.display_mode_menu,
-                    requireView().findViewById(R.id.listNotificationMenu)
-                ) { menuItem ->
-
-                    setMediaListGridPresenter(menuItem.order)
-                    DisplayModeChangedEvent(DisplayTypes.MEDIA_LIST).postEvent
-                    true
-                }
-
-                popupMenu.menu.getItem(getMediaListGridPresenter()).isChecked = true
-                popupMenu.show()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+        if (visibleToUser) {
+            createSource()
+            invalidateAdapter()
         }
-    }
-
-
-    private fun filterMediaList() {
-        mediaListViewPager?.let {
-            getViewPagerFragment(it.currentItem)?.filter(mediaListFilterField)
-        }
-    }
-
-    private fun getViewPagerFragment(pos: Int) =
-        childFragmentManager.findFragmentByTag("android:switcher:${R.id.mediaListViewPager}:$pos") as? MediaListFragment
-
-
-    private fun createTabView(view: View, @DrawableRes src: Int, @StringRes str: Int): View {
-        view.tabImageView.imageTintList = tabColorStateList
-        view.tabImageView.setImageResource(src)
-        view.tabTextTv.text = getString(str)
-        view.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
-        view.tabTextTv.setTextColor(accentColor)
-        return view
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: MediaListCollectionFilterEvent) {
-        event.meta.let {
-            mediaListFilterField.format = it.format
-            mediaListFilterField.status = it.status
-            mediaListFilterField.genre = it.genres
-            mediaListFilterField.listSort = it.mediaListSort
-        }
-        filterMediaList()
     }
 }
+
+interface MediaListCallbackInterface {
+    fun getStatusName(): String
+    fun getStatus(): Array<out String>
+    fun setCurrentStatus(status: Int)
+    fun openListFilterDialog()
+    fun filterList(mediaListFilterMeta: MediaListFilterMeta)
+}
+

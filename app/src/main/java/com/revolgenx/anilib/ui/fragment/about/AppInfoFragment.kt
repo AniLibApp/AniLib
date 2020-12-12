@@ -1,8 +1,12 @@
 package com.revolgenx.anilib.ui.fragment.about
 
-import com.revolgenx.anilib.R
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.databinding.AppInfoFragmentLayoutBinding
 
-class AppInfoFragment: BaseLayoutFragment() {
-    override val layoutRes: Int = R.layout.app_info_fragment_layout
+class AppInfoFragment : BaseLayoutFragment<AppInfoFragmentLayoutBinding>() {
+    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?): AppInfoFragmentLayoutBinding {
+        return AppInfoFragmentLayoutBinding.inflate(inflater, parent, false)
+    }
 }

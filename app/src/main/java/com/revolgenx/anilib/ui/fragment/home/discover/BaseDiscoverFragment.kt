@@ -5,8 +5,10 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
@@ -21,15 +23,15 @@ import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.ui.dialog.MediaFilterDialog
 import com.revolgenx.anilib.ui.dialog.DiscoverMediaListFilterDialog
-import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
-import com.revolgenx.anilib.ui.view.DynamicBackgroundView
+import com.revolgenx.anilib.databinding.DiscoverFragmentLayoutBinding
 import com.revolgenx.anilib.util.dp
-import kotlinx.android.synthetic.main.discover_fragment_layout.view.*
 
-abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
+abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutBinding>(),
+    BaseDiscoverHelper {
 
-    protected lateinit var discoverLayout: ViewGroup
+    protected val discoverLayout: ViewGroup get() = binding.discoverLinearLayout
     protected lateinit var garlandLayout: View
 
     protected val loadingPresenter: Presenter<Unit>
@@ -63,26 +65,34 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
 
     protected val orderedViewList = mutableListOf<OrderedViewModel>()
 
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): DiscoverFragmentLayoutBinding {
+        return DiscoverFragmentLayoutBinding.inflate(inflater, parent, false)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.discover_fragment_layout, container, false)
-        discoverLayout = v.discoverLinearLayout
+    ): View {
+        val v = super.onCreateView(inflater, container, savedInstanceState)
 
         orderedViewList.sortBy { it.order }
         orderedViewList.forEach {
-            addView(it.oView, it.title, it.showSetting, it.onClick)
+            addView(it.oView, it.title, it.showSetting, it.icon, onClick = it.onClick)
         }
         orderedViewList.clear()
         return v
     }
 
+
     override fun addView(
-        view: View,
+        discoverChildView: View,
         title: String,
         showSetting: Boolean,
+        @DrawableRes icon: Int?,
         onClick: ((which: Int) -> Unit)?
     ) {
         val constraintLayout = ConstraintLayout(requireContext()).also {
@@ -93,15 +103,6 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
             )
         }
 
-        val garlandStickView = DynamicBackgroundView(requireContext()).also {
-            it.id = R.id.garlandStickView
-            it.layoutParams =
-                ConstraintLayout.LayoutParams(
-                    dp(4f),
-                    0
-                )
-            it.setPadding(0,dp(2f),0,dp(2f))
-        }
 
         val garlandTextView = DynamicTextView(requireContext()).also {
             it.id = R.id.garlandTitleTv
@@ -111,18 +112,26 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
             it.textSize = 16f
-            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.berlinrounded_extra_bold)
-            it.setPadding(dp(10f))
+            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.cabin_semi_bold)
+            it.setPadding(dp(4f), dp(10f), dp(4f), dp(10f))
+            it.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                icon?.let { ContextCompat.getDrawable(requireContext(), it) },
+                null,
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_angle_right),
+                null
+            )
+            it.compoundDrawablePadding = dp(6f)
             it.gravity = Gravity.CENTER_VERTICAL
         }
 
         val garlandSettingIv = DynamicImageView(requireContext()).also {
             it.id = R.id.garlandSettingIv
             it.layoutParams = ViewGroup.LayoutParams(0, 0)
-            it.setImageResource(R.drawable.ic_button_setting)
-            it.colorType = Theme.ColorType.TINT_SURFACE
-            it.setPadding(dp(8f))
+            it.setImageResource(R.drawable.ic_filter)
+            it.colorType = Theme.ColorType.TEXT_PRIMARY
+            it.setPadding(dp(10f))
             it.visibility = View.GONE
+            it.setBackgroundResource(R.drawable.ads_button_remote)
         }
 
         val garlandContainer = DynamicFrameLayout(requireContext()).also {
@@ -145,19 +154,17 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
             onClick?.invoke(0)
         }
 
-        constraintLayout.addView(garlandStickView)
         constraintLayout.addView(garlandTextView)
         constraintLayout.addView(garlandSettingIv)
         constraintLayout.addView(garlandContainer)
-        garlandContainer.addView(view)
+        garlandContainer.addView(discoverChildView)
 
         val constraintSet = ConstraintSet()
         constraintSet.clone(constraintLayout)
 
-        constraintSet.constrainPercentHeight(garlandStickView.id, 1f)
 
         constraintSet.connect(
-            garlandStickView.id,
+            garlandTextView.id,
             ConstraintSet.START,
             constraintLayout.id,
             ConstraintSet.START,
@@ -165,34 +172,18 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
         )
 
         constraintSet.connect(
-            garlandStickView.id,
-            ConstraintSet.TOP,
             garlandTextView.id,
             ConstraintSet.TOP,
-            dp(2f)
-        )
-
-        constraintSet.connect(
-            garlandStickView.id,
-            ConstraintSet.BOTTOM,
-            garlandTextView.id,
-            ConstraintSet.BOTTOM,
-            dp(2f)
-        )
-
-        constraintSet.connect(
-            garlandTextView.id,
-            ConstraintSet.START,
-            garlandStickView.id,
-            ConstraintSet.END,
+            constraintLayout.id,
+            ConstraintSet.TOP,
             0
         )
 
         constraintSet.connect(
             garlandTextView.id,
-            ConstraintSet.TOP,
-            constraintLayout.id,
-            ConstraintSet.TOP,
+            ConstraintSet.END,
+            garlandSettingIv.id,
+            ConstraintSet.START,
             0
         )
 
@@ -231,7 +222,8 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
             ConstraintSet.BOTTOM
         )
 
-//        constraintSet.setMargin(garlandTextView.id, ConstraintSet.TOP, dp(10f))
+
+        constraintSet.setHorizontalBias(garlandTextView.id, 0f)
         constraintSet.setDimensionRatio(garlandSettingIv.id, "1:1")
         constraintSet.applyTo(constraintLayout)
 

@@ -1,22 +1,15 @@
-package com.revolgenx.anilib.ui.viewmodel
+package com.revolgenx.anilib.ui.viewmodel.home.discover
 
 import android.content.Context
 import com.revolgenx.anilib.data.field.home.TrendingMediaField
 import com.revolgenx.anilib.common.preference.getTrendingField
 import com.revolgenx.anilib.infrastructure.service.media.MediaService
-import com.revolgenx.anilib.infrastructure.source.MediaSource
 import com.revolgenx.anilib.type.MediaSort
 
-class TrendingViewModel(private val mediaService: MediaService) :
-    SourceViewModel<MediaSource, TrendingMediaField>() {
+class DiscoverTrendingViewModel(mediaService: MediaService) : BaseDiscoverViewModel<TrendingMediaField>(mediaService) {
 
     override var field: TrendingMediaField = TrendingMediaField().also {
         it.sort = MediaSort.TRENDING_DESC.ordinal
-    }
-
-    override fun createSource(): MediaSource {
-        source = MediaSource(mediaService, field, compositeDisposable)
-        return source!!
     }
 
     fun updateField(context: Context) {

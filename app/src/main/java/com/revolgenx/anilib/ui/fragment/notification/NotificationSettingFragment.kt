@@ -1,21 +1,20 @@
 package com.revolgenx.anilib.ui.fragment.notification
 
-import android.content.SharedPreferences
-import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.databinding.NotificationSettingFragmentLayoutBinding
 
-class NotificationSettingFragment : BaseLayoutFragment(){
-    override val layoutRes: Int = R.layout.notification_setting_fragment_layout
+class NotificationSettingFragment : BaseLayoutFragment<NotificationSettingFragmentLayoutBinding>(){
     override var titleRes: Int? = R.string.notification_setting
     override var setHomeAsUp: Boolean = true
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): NotificationSettingFragmentLayoutBinding {
+        return NotificationSettingFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        super.onSharedPreferenceChanged(sharedPreferences, key)
-    }
 }

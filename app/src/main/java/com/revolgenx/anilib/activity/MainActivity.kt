@@ -6,7 +6,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.AppCompatDrawableManager
@@ -15,8 +17,10 @@ import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
-import androidx.navigation.findNavController
-import androidx.navigation.plusAssign
+import androidx.core.view.forEachIndexed
+import androidx.core.view.iterator
+import androidx.viewpager.widget.ViewPager
+import com.angcyo.tablayout.delegate.ViewPager1Delegate
 import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Adapter
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
@@ -31,15 +35,14 @@ import com.revolgenx.anilib.data.field.TagChooserField
 import com.revolgenx.anilib.data.field.TagField
 import com.revolgenx.anilib.ui.fragment.settings.SettingFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
-import com.revolgenx.anilib.ui.fragment.home.DiscoverContainerFragmentDirections
-import com.revolgenx.anilib.ui.fragment.list.AnimeListContainerFragmentDirections
-import com.revolgenx.anilib.ui.fragment.list.MangaListContainerFragmentDirections
-import com.revolgenx.anilib.ui.fragment.navigator.KeepStateNavigator
 import com.revolgenx.anilib.ui.fragment.notification.NotificationFragment
-import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.meta.UserMeta
 import com.revolgenx.anilib.common.preference.*
-import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
+import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.databinding.ActivityMainBinding
+import com.revolgenx.anilib.ui.fragment.home.DiscoverContainerFragment
+import com.revolgenx.anilib.ui.fragment.list.ListContainerFragment
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
@@ -56,7 +59,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-class MainActivity : BaseDynamicActivity(), CoroutineScope,
+class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener {
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -77,18 +80,18 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             return Adapter.builder(this)
         }
 
-    private val mainNavController
-        get() = findNavController(R.id.mainNavHost)
+    private val discoverContainerFragment by lazy {
+        DiscoverContainerFragment()
+    }
 
+    private val listContainerFragment by lazy {
+        ListContainerFragment()
+    }
 
-    override val layoutRes: Int = R.layout.activity_main
+    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?): ActivityMainBinding {
+        return ActivityMainBinding.inflate(inflater)
+    }
 
-
-    private fun mediaListMeta(mediaType: Int) = MediaListMeta(
-        context.userId(),
-        null,
-        mediaType
-    )
 
     override fun onStart() {
         super.onStart()
@@ -114,44 +117,45 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         initListener()
         updateNavView()
         updateRightNavView()
+        binding.updateView()
         silentFetchUserInfo()
-        setupNavigationComponent()
 
         if (savedInstanceState == null) {
             checkForUpdate()
         }
     }
 
-    @SuppressLint("RestrictedApi")
-    private fun setupNavigationComponent() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainNavHost)!!
-        mainNavController.navigatorProvider += KeepStateNavigator(
-            this,
-            navHostFragment.childFragmentManager,
-            R.id.mainNavHost
-        )
-        val graph = mainNavController.navInflater.inflate(R.navigation.main_activity_navigation)
+    private fun ActivityMainBinding.updateView() {
+        val pagerFragments = mutableListOf<BaseFragment>()
 
-        val startupNavArgs = when (getStartNavigation(this)) {
-            DISCOVER_NAV_POS -> {
-                graph.startDestination = R.id.discoverViewPagerFragment
-                navView.setCheckedItem(R.id.navHomeId)
-                null
-            }
-            ANIME_LIST_NAV_POS -> {
-                graph.startDestination = R.id.animeListContainerFragment
-                navView.setCheckedItem(R.id.navAnimeListId)
-                bundleOf("mediaListMeta" to mediaListMeta(MediaType.ANIME.ordinal))
-            }
-            MANGA_LIST_NAV_POS -> {
-                graph.startDestination = R.id.mangaListContainerFragment
-                navView.setCheckedItem(R.id.navMangaListId)
-                bundleOf("mediaListMeta" to mediaListMeta(MediaType.MANGA.ordinal))
-            }
-            else -> null
+        pagerFragments.add(discoverContainerFragment)
+        if (loggedIn()) {
+            pagerFragments.add(listContainerFragment)
         }
 
-        mainNavController.setGraph(graph, startupNavArgs)
+        val pagerAdapter = makePagerAdapter(pagerFragments)
+        binding.mainViewPager.adapter = pagerAdapter
+        binding.mainViewPager.offscreenPageLimit = 3
+
+
+        binding.mainBottomNavView.setOnNavigationItemSelectedListener {
+            mainBottomNavView.menu.forEachIndexed { index, item ->
+                if (it == item) {
+                    mainViewPager.setCurrentItem(index, true)
+                }
+            }
+            false
+        }
+
+
+        mainViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                mainBottomNavView.menu.iterator().forEach {
+                    it.isChecked = false
+                }
+                mainBottomNavView.menu.getItem(position).isChecked = true
+            }
+        })
 
     }
 
@@ -193,9 +197,11 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         } else {
             navView.menu.findItem(R.id.navFeedId).isVisible = false
             navView.menu.findItem(R.id.navAuth).title = getString(R.string.sign_out)
+
+            showListMenu(true)
         }
 
-        if(isStudioFlavor()){
+        if (isStudioFlavor()) {
             navView.menu.findItem(R.id.stageVersion).isVisible = false
         }
 
@@ -249,15 +255,24 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
     private fun simpleNavView() {
         navView.menu.findItem(R.id.navAuth).title =
             getString(R.string.sign_in)
+
         with(navView.menu) {
             findItem(R.id.navFeedId).isVisible = false
             findItem(R.id.navAnimeListId).isVisible = false
             findItem(R.id.navMangaListId).isVisible = false
         }
+
+        showListMenu(false)
+
+    }
+
+    private fun showListMenu(bool: Boolean) {
+        binding.mainBottomNavView.menu.findItem(R.id.list_navigation_menu).isVisible = bool
     }
 
 
     private fun initListener() {
+
         navView.setNavigationItemSelectedListener {
             val isClicked = when (it.itemId) {
 
@@ -278,24 +293,12 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
                     true
                 }
 
-                R.id.navHomeId -> {
-                    navigateToHome()
-                    true
-                }
-
-                R.id.navAnimeListId -> {
-                    navigateToAnimeList(
-                        mediaListMeta(MediaType.ANIME.ordinal)
-                    )
-                    true
-                }
-
-                R.id.navMangaListId -> {
-                    navigateToMangaList(
-                        mediaListMeta(MediaType.MANGA.ordinal)
-                    )
-                    true
-                }
+//                R.id.navMangaListId -> {
+//                    navigateToMangaList(
+//                        mediaListMeta(MediaType.MANGA.ordinal)
+//                    )
+//                    true
+//                }
 
                 R.id.navAuth -> {
                     if (loggedIn()) {
@@ -427,11 +430,11 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
     override fun onBackPressed() {
         when {
-            drawerLayout.isDrawerOpen(GravityCompat.START) -> {
-                drawerLayout.closeDrawer(GravityCompat.START)
+            binding.drawerLayout.isDrawerOpen(GravityCompat.START) -> {
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
             }
-            drawerLayout.isDrawerOpen(GravityCompat.END) -> {
-                drawerLayout.closeDrawer(GravityCompat.END)
+            binding.drawerLayout.isDrawerOpen(GravityCompat.END) -> {
+                binding.drawerLayout.closeDrawer(GravityCompat.END)
             }
             else -> {
                 if (pressedTwice) {
@@ -464,7 +467,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
     }
 
     @Subscribe
-    fun onNotificationEvent(event:BrowseNotificationEvent){
+    fun onNotificationEvent(event: BrowseNotificationEvent) {
         ToolbarContainerActivity.openActivity(
             this,
             ParcelableFragment(
@@ -557,46 +560,6 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         }
     }
 
-    private fun navigateToAnimeList(meta: MediaListMeta) {
-        when (mainNavController.currentDestination?.id) {
-            R.id.discoverViewPagerFragment -> {
-                mainNavController.navigate(
-                    DiscoverContainerFragmentDirections.discoverToAnimeNav(
-                        meta
-                    )
-                )
-            }
-            R.id.mangaListContainerFragment -> {
-                mainNavController.navigate(MangaListContainerFragmentDirections.mangaToAnimeNav(meta))
-            }
-        }
-    }
-
-    private fun navigateToMangaList(meta: MediaListMeta) {
-        when (mainNavController.currentDestination?.id) {
-            R.id.discoverViewPagerFragment -> {
-                mainNavController.navigate(
-                    DiscoverContainerFragmentDirections.discoverToMangaNav(
-                        meta
-                    )
-                )
-            }
-            R.id.animeListContainerFragment -> {
-                mainNavController.navigate(AnimeListContainerFragmentDirections.animeToMangaNav(meta))
-            }
-        }
-    }
-
-    private fun navigateToHome() {
-        when (mainNavController.currentDestination?.id) {
-            R.id.animeListContainerFragment -> {
-                mainNavController.navigate(AnimeListContainerFragmentDirections.animeToDiscoverNav())
-            }
-            R.id.mangaListContainerFragment -> {
-                mainNavController.navigate(MangaListContainerFragmentDirections.mangaToDiscoverNav())
-            }
-        }
-    }
 
     override fun getQuery(): String {
         return ""
@@ -610,15 +573,17 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             )
         }
 
-        if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
-            drawerLayout.closeDrawer(GravityCompat.END)
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
         }
     }
 
 
     private fun closeNavDrawer() {
         Handler().post {
-            drawerLayout?.closeDrawers()
+            binding.drawerLayout.closeDrawers()
         }
     }
+
+
 }

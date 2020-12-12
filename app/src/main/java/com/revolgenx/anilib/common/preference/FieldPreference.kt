@@ -6,7 +6,6 @@ import com.revolgenx.anilib.data.field.home.NewlyAddedMediaField
 import com.revolgenx.anilib.data.field.home.PopularMediaField
 import com.revolgenx.anilib.data.field.home.SeasonField
 import com.revolgenx.anilib.data.field.home.TrendingMediaField
-import com.revolgenx.anilib.data.field.recommendation.RecommendationFilterField
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.getSeasonFromMonth
@@ -166,15 +165,10 @@ fun storeSeasonTag(context: Context, field: SeasonField?) {
         .putStringSet(SEASON_TAGS_KEY, field?.tags?.toSet() ?: emptySet()).apply()
 }
 
-fun getRecommendationField(context: Context) = RecommendationFilterField(
-    onList = context.getBoolean(RECOMMENDATION_ON_LIST_KEY, false),
-    sorting = context.getInt(RECOMMENDATION_SORT_KEY, 0)
-)
+fun getRecommendationSort(context: Context) = context.getInt(RECOMMENDATION_SORT_KEY, 0)
+fun getRecommendationOnList(context: Context)=  context.getBoolean(RECOMMENDATION_ON_LIST_KEY, false)
+fun setRecommendationSort(context: Context, sort:Int) = context.putInt(RECOMMENDATION_SORT_KEY,sort)
 
-fun setRecommendationField(context: Context, field: RecommendationFilterField) {
-    context.putBoolean(RECOMMENDATION_ON_LIST_KEY, field.onList)
-    context.putInt(RECOMMENDATION_SORT_KEY, field.sorting)
-}
 
 fun getHomeOrderFromType(context: Context, type: HomeOrderType): Int {
     return when (type) {

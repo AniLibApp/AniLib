@@ -9,4 +9,11 @@
     <dimen name="bottom_navigation_text_size">14sp</dimen>
 
     <dimen name="discover_text_separation">6dp</dimen>
+
+
+    <dimen name="toolbar_size">48dp</dimen>
+
+    <dimen name="discover_media_width">155dp</dimen>
+    <dimen name="discover_media_height">248dp</dimen>
+    <dimen name="discover_recycler_height">252dp</dimen>
 </resources>
