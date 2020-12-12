@@ -7,41 +7,38 @@
         android:name="com.revolgenx.anilib.ui.fragment.home.DiscoverContainerFragment"
         android:label="DiscoverViewPagerFragment">
         <action
-            android:id="@+id/discoverToAnimeNav"
-            app:destination="@id/animeListContainerFragment" />
-        <action
-            android:id="@+id/discoverToMangaNav"
-            app:destination="@id/mangaListContainerFragment" />
+            android:id="@+id/discover_to_list_nav"
+            app:destination="@id/list_container_fragment" />
+<!--        <action-->
+<!--            android:id="@+id/discoverToMangaNav"-->
+<!--            app:destination="@id/mangaListContainerFragment" />-->
     </keep_state_fragment>
 
     <keep_state_fragment
-        android:id="@+id/animeListContainerFragment"
-        android:name="com.revolgenx.anilib.ui.fragment.list.AnimeListContainerFragment"
-        android:label="AnimeListContainerFragment">
-        <argument
-            android:name="mediaListMeta"
-            app:argType="com.revolgenx.anilib.data.meta.MediaListMeta" />
+        android:id="@+id/list_container_fragment"
+        android:name="com.revolgenx.anilib.ui.fragment.list.ListContainerFragment"
+        android:label="ListContainerFragment">
+<!--        <action-->
+<!--            android:id="@+id/animeToMangaNav"-->
+<!--            app:destination="@id/mangaListContainerFragment" />-->
         <action
-            android:id="@+id/animeToMangaNav"
-            app:destination="@id/mangaListContainerFragment" />
-        <action
-            android:id="@+id/animeToDiscoverNav"
+            android:id="@+id/list_to_discover_nav"
             app:destination="@id/discoverViewPagerFragment" />
     </keep_state_fragment>
 
-    <keep_state_fragment
-        android:id="@+id/mangaListContainerFragment"
-        android:name="com.revolgenx.anilib.ui.fragment.list.MangaListContainerFragment"
-        android:label="MangaListContainerFragment">
-        <argument
-            android:name="mediaListMeta"
-            app:argType="com.revolgenx.anilib.data.meta.MediaListMeta" />
-        <action
-            android:id="@+id/mangaToAnimeNav"
-            app:destination="@id/animeListContainerFragment" />
-        <action
-            android:id="@+id/mangaToDiscoverNav"
-            app:destination="@id/discoverViewPagerFragment" />
-    </keep_state_fragment>
+<!--    <keep_state_fragment-->
+<!--        android:id="@+id/mangaListContainerFragment"-->
+<!--        android:name="com.revolgenx.anilib.ui.fragment.list.MangaListContainerFragment"-->
+<!--        android:label="MangaListContainerFragment">-->
+<!--        <argument-->
+<!--            android:name="mediaListMeta"-->
+<!--            app:argType="com.revolgenx.anilib.data.meta.MediaListMeta" />-->
+<!--        <action-->
+<!--            android:id="@+id/mangaToAnimeNav"-->
+<!--            app:destination="@id/list_container_fragment" />-->
+<!--        <action-->
+<!--            android:id="@+id/mangaToDiscoverNav"-->
+<!--            app:destination="@id/discoverViewPagerFragment" />-->
+<!--    </keep_state_fragment>-->
 
 </navigation>

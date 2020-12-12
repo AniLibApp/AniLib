@@ -30,7 +30,7 @@ fun <T : CommonMediaModel> NarrowMediaContent.getCommonMedia(model: T): T {
 
     model.startDate = startDate()?.fragments()?.fuzzyDate()?.toModel()
     model.endDate = endDate()?.fragments()?.fuzzyDate()?.toModel()
-    model.bannerImage = bannerImage() ?: model.coverImage!!.extraLarge
+    model.bannerImage = bannerImage() ?: model.coverImage!!.largeImage
 
     model.isAdult = isAdult ?: false
     model.mediaEntryListModel = mediaListEntry()?.let {
@@ -52,7 +52,7 @@ fun <T : CommonMediaModel> CommonMediaContent.getCommonMedia(model: T): T {
     model.averageScore = averageScore()
     model.season = season()?.ordinal
     model.seasonYear = seasonYear()
-    model.bannerImage = bannerImage() ?: model.coverImage!!.extraLarge
+    model.bannerImage = bannerImage() ?: model.coverImage!!.largeImage
 
     model.isAdult = isAdult ?: false
     model.mediaEntryListModel = mediaListEntry()?.let {

@@ -599,4 +599,65 @@
     <string name="italian" translatable="false">Italiano</string>
     <string name="spanish" translatable="false">Español</string>
     <string name="arabic" translatable="false">عربى</string>
+
+
+
+    <string-array name="anime_list_status">
+        <item>@string/watching</item>
+        <item>@string/planning</item>
+        <item>@string/completed</item>
+        <item>@string/dropped</item>
+        <item>@string/paused</item>
+        <item>@string/repeating</item>
+    </string-array>
+
+    <string-array name="manga_list_status">
+        <item>@string/reading</item>
+        <item>@string/planning</item>
+        <item>@string/completed</item>
+        <item>@string/dropped</item>
+        <item>@string/paused</item>
+        <item>@string/repeating</item>
+    </string-array>
+
+
+    <string-array name="discover_tab_menu">
+        <item>@string/discover</item>
+        <item>@string/season</item>
+        <item>@string/recommendations</item>
+    </string-array>
+
+    <string-array name="list_tab_menu">
+        <item>@string/anime_list</item>
+        <item>@string/manga_list</item>
+    </string-array>
+
+    <string-array name="list_option_menu">
+        <item>@string/change_display_mode</item>
+        <item>@string/filter</item>
+    </string-array>
+
+
+    <string-array name="list_display_modes">
+        <item>@string/compact_mode</item>
+        <item>@string/normal_mode</item>
+        <item>@string/card_mode</item>
+    </string-array>
+
+    <string-array name="season_filter_entries">
+        <item>@string/filter</item>
+        <item>@string/genre</item>
+        <item>@string/tags</item>
+    </string-array>
+
+    <string-array name="days_of_week">
+        <item>@string/sun</item>
+        <item>@string/mon</item>
+        <item>@string/tue</item>
+        <item>@string/wed</item>
+        <item>@string/thu</item>
+        <item>@string/fri</item>
+        <item>@string/sat</item>
+    </string-array>
+
 </resources>

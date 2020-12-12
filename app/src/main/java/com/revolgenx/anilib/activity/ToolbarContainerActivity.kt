@@ -3,17 +3,19 @@ package com.revolgenx.anilib.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
+import com.revolgenx.anilib.databinding.ToolbarContainerActivityLayoutBinding
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.toolbar_layout.*
 
-class ToolbarContainerActivity :BaseDynamicActivity(){
-    override val layoutRes: Int = R.layout.toolbar_container_activity_layout
+class ToolbarContainerActivity :BaseDynamicActivity<ToolbarContainerActivityLayoutBinding>(){
 
     companion object {
         const val toolbarFragmentContainerKey = "toolbar_fragment_container_key"
@@ -27,6 +29,13 @@ class ToolbarContainerActivity :BaseDynamicActivity(){
                 it.putExtra(toolbarFragmentContainerKey, parcelableFragment)
             }, option?.toBundle())
         }
+    }
+
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): ToolbarContainerActivityLayoutBinding {
+        return ToolbarContainerActivityLayoutBinding.inflate(inflater)
     }
 
     override fun onStart() {

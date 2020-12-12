@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.core.view.setMargins
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
@@ -21,6 +23,7 @@ import com.revolgenx.anilib.infrastructure.source.media_list.MediaListSource
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverWatchingViewModel
+import com.revolgenx.anilib.util.dp
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverWatchingFragment : DiscoverAiringFragment() {
@@ -45,19 +48,22 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         if (requireContext().loggedIn()) {
             watchingRecyclerView = DynamicRecyclerView(requireContext()).also {
-                it.layoutParams = ViewGroup.LayoutParams(
+                it.layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
-                )
+                ).also {
+                    it.setMargins(dp(10f))
+                }
                 it.isNestedScrollingEnabled = false
             }
 
             orderedViewList.add(OrderedViewModel(
                 watchingRecyclerView!!, order,
-                getString(R.string.watching)
+                getString(R.string.watching),
+                R.drawable.ic_media
                 , showSetting = true
             ) {
                 handleClick(it)

@@ -15,22 +15,25 @@ import com.revolgenx.anilib.data.model.home.OrderedViewModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.getHomeOrderFromType
 import com.revolgenx.anilib.ui.presenter.home.MediaPresenter
-import com.revolgenx.anilib.infrastructure.source.MediaSource
+import com.revolgenx.anilib.infrastructure.source.discover.DiscoverMediaSource
 import com.revolgenx.anilib.type.MediaSort
-import com.revolgenx.anilib.ui.viewmodel.PopularViewModel
+import com.revolgenx.anilib.ui.view.showcase.DiscoverMediaShowcaseLayout
+import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverPopularViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverPopularFragment : DiscoverTrendingFragment() {
 
-    private lateinit var popularRecyclerView: DynamicRecyclerView
+    private var popularShowCaseLayout: DiscoverMediaShowcaseLayout? = null
 
     private val presenter
-        get() = MediaPresenter(requireContext())
+        get() = MediaPresenter(requireContext()) { mod ->
+            popularShowCaseLayout?.bindShowCaseMedia(mod)
+        }
 
-    private val source: MediaSource
+    private val source: DiscoverMediaSource
         get() = viewModel.source ?: viewModel.createSource()
 
-    private val viewModel by viewModel<PopularViewModel>()
+    private val viewModel by viewModel<DiscoverPopularViewModel>()
 
     private val order: Int
         get() = getHomeOrderFromType(requireContext(), HomeOrderType.POPULAR)
@@ -39,19 +42,18 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        popularRecyclerView = DynamicRecyclerView(requireContext()).also {
-            it.layoutParams = ViewGroup.LayoutParams(
+    ): View {
+
+        popularShowCaseLayout = DiscoverMediaShowcaseLayout(requireContext()).also { vi ->
+            vi.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            it.isNestedScrollingEnabled = false
         }
 
-
         orderedViewList.add(OrderedViewModel(
-            popularRecyclerView, order,
-            getString(R.string.popular), showSetting = true
+            popularShowCaseLayout!!, order,
+            getString(R.string.popular),R.drawable.ic_popular, showSetting = true
         ) {
             handleClick(it)
         })
@@ -61,7 +63,7 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        popularRecyclerView.layoutManager =
+        popularShowCaseLayout!!.showcaseRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 
@@ -108,6 +110,6 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
 
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {
-        popularRecyclerView.createAdapter(source, presenter, true)
+        popularShowCaseLayout?.showcaseRecyclerView?.createAdapter(source, presenter, true)
     }
 }

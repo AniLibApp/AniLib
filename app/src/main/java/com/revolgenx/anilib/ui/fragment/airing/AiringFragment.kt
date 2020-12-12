@@ -75,7 +75,8 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
                 true
             }
             R.id.airing_next -> {
-                viewModel.next()
+                viewModel.
+                next()
                 updateToolbarTitle()
                 createSource()
                 invalidateAdapter()

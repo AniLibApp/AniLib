@@ -18,9 +18,12 @@ open class MediaField : BaseSourceField<MediaQuery>() {
     var mediaIdsIn: List<Int>? = null
     override fun toQueryOrMutation(): MediaQuery {
         return MediaQuery.builder()
-            .page(page)
-            .perPage(perPage)
             .apply {
+
+                if (page != null) {
+                    page(page!!)
+                    perPage(perPage)
+                }
                 if (genres?.isNullOrEmpty() == false) {
                     genre_in(genres)
                 }

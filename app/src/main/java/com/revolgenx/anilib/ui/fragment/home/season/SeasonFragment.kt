@@ -1,12 +1,7 @@
-package com.revolgenx.anilib.ui.fragment.home
+package com.revolgenx.anilib.ui.fragment.home.season
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.MenuBuilder
+import android.view.*
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
@@ -23,7 +18,8 @@ import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.data.model.CommonMediaModel
 import com.revolgenx.anilib.common.preference.getUserGenre
 import com.revolgenx.anilib.common.preference.getUserTag
-import com.revolgenx.anilib.ui.presenter.SeasonPresenter
+import com.revolgenx.anilib.databinding.SeasonFragmentBinding
+import com.revolgenx.anilib.ui.presenter.season.SeasonPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.ui.viewmodel.home.SeasonViewModel
@@ -58,17 +54,21 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
         requireContext().resources.getStringArray(R.array.media_season)
     }
 
+    private lateinit var seasonBinding: SeasonFragmentBinding
+
     override fun createSource(): Source<CommonMediaModel> {
         return viewModel.createSource()
     }
 
-
-    @SuppressLint("RestrictedApi")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.season_menu, menu)
-        if (menu is MenuBuilder) {
-            menu.setOptionalIconsVisible(true)
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        seasonBinding = SeasonFragmentBinding.inflate(inflater, container, false)
+        val v = super.onCreateView(inflater, container, savedInstanceState)
+        seasonBinding.seasonRootLayout.addView(v)
+        return seasonBinding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -89,55 +89,63 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
         }
         super.onActivityCreated(savedInstanceState)
 
+        initListener()
+
         if (savedInstanceState != null) {
             updateSeasonDialogListener()
         }
     }
 
+
+    private fun initListener() {
+        seasonBinding.apply {
+            seasonPreviousIv.setOnClickListener {
+                viewModel.previousSeason(requireContext())
+                renewAdapter()
+            }
+
+            seasonNextIv.setOnClickListener {
+                viewModel.nextSeason(requireContext())
+                renewAdapter()
+            }
+
+            seasonFilterIv.onPopupMenuClickListener = { _, position ->
+                when(position){
+                    0->{
+                        MediaFilterDialog.newInstance(MediaFilterDialog.MediaFilterType.SEASON.ordinal)
+                            .also {
+                                it.onDoneListener = {
+                                    renewAdapter()
+                                }
+                                it.show(childFragmentManager, SEASON_FILTER_DIALOG_TAG)
+                            }
+                    }
+                    1->{
+                        openTagChooserDialog(
+                            viewModel.field.genreTagFields.values.toList(),
+                            MediaTagFilterTypes.SEASON_GENRE
+                        )
+                    }
+                    2->{
+                        openTagChooserDialog(
+                            viewModel.field.tagTagFields.values.toList(),
+                            MediaTagFilterTypes.SEASON_TAG
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+
     override fun onResume() {
         super.onResume()
-        invalidateOptionMenu()
-        setHasOptionsMenu(true)
         updateToolbarTitle()
     }
 
     override fun onStart() {
         super.onStart()
         registerForEvent()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.prevSeasonId -> {
-                viewModel.previousSeason(requireContext())
-                renewAdapter()
-                true
-            }
-            R.id.nextSeasonId -> {
-                viewModel.nextSeason(requireContext())
-                renewAdapter()
-                true
-            }
-            R.id.filterSeasonId -> {
-                MediaFilterDialog.newInstance(MediaFilterDialog.MediaFilterType.SEASON.ordinal)
-                    .also {
-                        it.onDoneListener = {
-                            renewAdapter()
-                        }
-                        it.show(childFragmentManager, SEASON_FILTER_DIALOG_TAG)
-                    }
-                true
-            }
-            R.id.filterSeasonGenreId -> {
-                openTagChooserDialog(viewModel.field.genreTagFields.values.toList(), MediaTagFilterTypes.SEASON_GENRE)
-                true
-            }
-            R.id.filterSeasonTagId -> {
-                openTagChooserDialog(viewModel.field.tagTagFields.values.toList(), MediaTagFilterTypes.SEASON_TAG)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun openTagChooserDialog(tags: List<TagField>, tagType: MediaTagFilterTypes) {
@@ -159,34 +167,38 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
 
 
     private fun updateToolbarTitle() {
-        (activity as? AppCompatActivity)?.let {
+        seasonBinding.apply {
             viewModel.field.let { field ->
                 field.season?.let { season ->
-                    it.supportActionBar?.title = seasons[season]
+                    seasonNameTv.text = seasons[season]
                 }
-                field.seasonYear?.let { year ->
-                    it.supportActionBar?.subtitle = year.toString()
+                field.seasonYear?.let {
+                    seasonYearTv.text = it.toString()
                 }
             }
         }
     }
 
     @Subscribe
-    fun onTagEvent(event:TagEvent){
-        when(event.tagType){
-            MediaTagFilterTypes.SEASON_TAG->{
+    fun onTagEvent(event: TagEvent) {
+        when (event.tagType) {
+            MediaTagFilterTypes.SEASON_TAG -> {
                 event.tagFields.forEach {
                     viewModel.field.tagTagFields[it.tag]?.tagState = it.tagState
                 }
-                viewModel.field.tags = event.tagFields.filter { it.tagState == TagState.TAGGED }.map { it.tag }.toList()
+                viewModel.field.tags =
+                    event.tagFields.filter { it.tagState == TagState.TAGGED }.map { it.tag }
+                        .toList()
                 viewModel.field.saveTags(requireContext())
                 renewAdapter()
             }
-            MediaTagFilterTypes.SEASON_GENRE->{
+            MediaTagFilterTypes.SEASON_GENRE -> {
                 event.tagFields.forEach {
                     viewModel.field.genreTagFields[it.tag]?.tagState = it.tagState
                 }
-                viewModel.field.genres = event.tagFields.filter { it.tagState == TagState.TAGGED}.map { it.tag }.toList()
+                viewModel.field.genres =
+                    event.tagFields.filter { it.tagState == TagState.TAGGED }.map { it.tag }
+                        .toList()
                 viewModel.field.saveGenre(requireContext())
                 renewAdapter()
             }

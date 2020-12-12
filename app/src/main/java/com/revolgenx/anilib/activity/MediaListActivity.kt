@@ -6,10 +6,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
@@ -30,6 +27,7 @@ import com.revolgenx.anilib.ui.fragment.list.*
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.common.preference.setMediaListGridPresenter
+import com.revolgenx.anilib.databinding.MediaListActivityLayoutBinding
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makePopupMenu
 import com.revolgenx.anilib.util.registerForEvent
@@ -41,7 +39,7 @@ import kotlinx.android.synthetic.main.toolbar_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class MediaListActivity : BaseDynamicActivity() {
+class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() {
 
     companion object {
         fun openActivity(context: Context, mediaListMeta: MediaListMeta) {
@@ -53,8 +51,14 @@ class MediaListActivity : BaseDynamicActivity() {
         const val MEDIA_LIST_META_KEY = "MEDIA_LIST_INTENT_KEY"
     }
 
-    override val layoutRes: Int = R.layout.media_list_activity_layout
     private var menuItem: MenuItem? = null
+
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): MediaListActivityLayoutBinding {
+        return MediaListActivityLayoutBinding.inflate(inflater)
+    }
 
     private val mediaListFragment by lazy {
         listOf(

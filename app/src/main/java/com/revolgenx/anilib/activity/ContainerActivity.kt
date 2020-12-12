@@ -3,12 +3,15 @@ package com.revolgenx.anilib.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
+import com.revolgenx.anilib.databinding.ContainerActivityBinding
 
-class ContainerActivity : BaseDynamicActivity() {
+class ContainerActivity : BaseDynamicActivity<ContainerActivityBinding>() {
 
     companion object {
         const val fragmentContainerKey = "fragment_container_key"
@@ -26,8 +29,9 @@ class ContainerActivity : BaseDynamicActivity() {
     }
 
 
-    override val layoutRes: Int = R.layout.container_activity
-
+    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?): ContainerActivityBinding {
+        return ContainerActivityBinding.inflate(inflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

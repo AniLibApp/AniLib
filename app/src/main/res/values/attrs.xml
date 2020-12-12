@@ -77,4 +77,34 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="CustomCheckPreference">
+        <attr name="text_size" format="dimension"/>
+    </declare-styleable>
+
+
+
+    <attr name="entries" format="reference"/>
+    <attr name="icons" format="reference"/>
+
+    <declare-styleable name="DynamicIconDslTabLayout">
+        <attr name="icons"/>
+    </declare-styleable>
+
+    <declare-styleable name="DynamicChipDslTabLayout">
+        <attr name="entries"/>
+    </declare-styleable>
+
+    <declare-styleable name="DynamicDslTabLayout">
+        <attr name="entries"/>
+    </declare-styleable>
+
+    <declare-styleable name="DynamicTextTabLayout">
+        <attr name="entries"/>
+    </declare-styleable>
+
+    <declare-styleable name="DynamicPopUpMenu">
+        <attr name="entries"/>
+        <attr name="icons"/>
+    </declare-styleable>
+
 </resources>

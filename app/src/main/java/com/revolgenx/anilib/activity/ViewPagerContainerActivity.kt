@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.forEachIndexed
 import androidx.core.view.iterator
@@ -24,11 +26,12 @@ import com.revolgenx.anilib.ui.fragment.staff.StaffMediaRoleFragment
 import com.revolgenx.anilib.ui.fragment.user.*
 import com.revolgenx.anilib.data.meta.ViewPagerContainerMeta
 import com.revolgenx.anilib.data.meta.ViewPagerContainerType
+import com.revolgenx.anilib.databinding.ViewpagerContainerActivityBinding
 import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.toolbar_layout.*
 import kotlinx.android.synthetic.main.viewpager_container_activity.*
 
-class ViewPagerContainerActivity : BaseDynamicActivity() {
+class ViewPagerContainerActivity : BaseDynamicActivity<ViewpagerContainerActivityBinding>() {
 
     companion object {
         const val viewPagerContainerKey = "viewpager_activity_container_key"
@@ -53,9 +56,15 @@ class ViewPagerContainerActivity : BaseDynamicActivity() {
         }
     }
 
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): ViewpagerContainerActivityBinding {
+        return ViewpagerContainerActivityBinding.inflate(inflater)
+    }
+
     private lateinit var viewPagerParcelableFragments: ViewPagerParcelableFragments
     private lateinit var viewPagerMeta: ViewPagerContainerMeta<Parcelable>
-    override val layoutRes: Int = R.layout.viewpager_container_activity
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

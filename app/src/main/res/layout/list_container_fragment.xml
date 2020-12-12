@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/ads_fab_behavior">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ads_color="@android:color/transparent"
+        app:ads_colorType="custom"
+        app:elevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicTextTabLayout
+                android:id="@+id/list_tab_layout"
+                style="@style/DynamicTextTabLayoutStyle"
+                app:ads_backgroundColorType="background"
+                app:ads_colorType="accent"
+                app:ads_contrastWithColorType="primary"
+                app:ads_textColorType="tint_primary"
+                app:layout_constraintEnd_toStartOf="@id/list_search_iv"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                android:id="@+id/list_search_iv"
+                style="@style/DynamicDslTabOptionStyle"
+                app:ads_colorType="text_primary"
+                app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
+                app:layout_constraintRight_toLeftOf="@id/list_notification_iv"
+                app:layout_constraintTop_toTopOf="@id/list_tab_layout"
+                app:srcCompat="@drawable/ic_search" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                android:id="@+id/list_notification_iv"
+                style="@style/DynamicDslTabOptionStyle"
+                app:ads_colorType="text_primary"
+                app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
+                app:layout_constraintRight_toLeftOf="@id/list_more_iv"
+                app:layout_constraintTop_toTopOf="@id/list_tab_layout"
+                app:srcCompat="@drawable/ic_notification" />
+
+            <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
+                android:id="@+id/list_more_iv"
+                style="@style/DynamicDslTabOptionStyle"
+                app:ads_colorType="text_primary"
+                app:entries="@array/list_option_menu"
+                app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/list_tab_layout"
+                app:srcCompat="@drawable/ads_ic_more" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager
+        android:id="@+id/list_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicExtendedFloatingActionButton
+        android:id="@+id/list_extended_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/ads_fab_margin"
+        app:ads_colorType="background"
+        app:icon="@drawable/ic_filter"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

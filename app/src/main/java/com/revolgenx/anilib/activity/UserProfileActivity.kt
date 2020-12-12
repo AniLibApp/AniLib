@@ -6,9 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.PopupMenu
@@ -31,6 +29,7 @@ import com.revolgenx.anilib.data.model.user.UserProfileModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userName
+import com.revolgenx.anilib.databinding.UserProfileAcitivtyLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
@@ -47,8 +46,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
 //todo://, handle review //stats
-class UserProfileActivity : BasePopupVideoActivity() {
-    override val layoutRes: Int = R.layout.user_profile_acitivty_layout
+class UserProfileActivity : BaseDynamicActivity<UserProfileAcitivtyLayoutBinding>() {
     private lateinit var userMeta: UserMeta
 
     companion object {
@@ -72,6 +70,14 @@ class UserProfileActivity : BasePopupVideoActivity() {
                 toggleFollow()
             }
         }
+    }
+
+
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): UserProfileAcitivtyLayoutBinding {
+        return UserProfileAcitivtyLayoutBinding.inflate(inflater)
     }
 
     private fun toggleFollow() {

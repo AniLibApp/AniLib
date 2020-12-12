@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
@@ -28,18 +29,21 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val v = super.onCreateView(inflater, container, savedInstanceState)
         discoverNewRecyclerView = DynamicRecyclerView(requireContext()).also {
-            it.layoutParams = ViewGroup.LayoutParams(
+            it.layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 dp(600f)
-            )
+            ).also {
+                it.setMargins(0, dp(10f),0,0)
+            }
         }
+
 
         addView(
             discoverNewRecyclerView,
-            getString(R.string.recent_reviews), showSetting = false
+            getString(R.string.recent_reviews),icon = R.drawable.ic_review, showSetting = false
         ) {
             handleClick(it)
         }

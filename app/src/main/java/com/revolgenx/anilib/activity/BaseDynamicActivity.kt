@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
+import androidx.viewbinding.ViewBinding
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
@@ -21,6 +22,7 @@ import com.revolgenx.anilib.ui.fragment.review.ReviewFragment
 import com.revolgenx.anilib.ui.fragment.studio.StudioFragment
 import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.common.preference.getApplicationLocale
+import com.revolgenx.anilib.ui.`interface`.ViewBindingInterface
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
@@ -28,7 +30,18 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
-abstract class BaseDynamicActivity : DynamicSystemActivity() {
+abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(),
+    ViewBindingInterface<T> {
+
+
+//    private var _binding: T? = null
+//    protected var binding: T
+//        set(value) {
+//            _binding = value
+//        }
+//        get() = _binding!!
+
+    override var _binding: T? = null
 
     override fun getLocale(): Locale? {
         return Locale(getApplicationLocale())
@@ -51,12 +64,12 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
         return AppController.instance.isThemeNavigationBar
     }
 
-    abstract val layoutRes: Int
     lateinit var rootLayout: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layoutRes)
+        _binding = bindView(layoutInflater)
+        setContentView(binding.root)
         rootLayout = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
         rootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
         statusBarColor = statusBarColor
@@ -72,6 +85,11 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
     override fun onStop() {
         unRegisterForEvent()
         super.onStop()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -95,8 +113,7 @@ abstract class BaseDynamicActivity : DynamicSystemActivity() {
                         bundleOf(
                             EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
                         )
-                    )
-                    , options
+                    ), options
                 )
             }
             is BrowseGenreEvent -> {

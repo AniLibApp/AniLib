@@ -3,7 +3,9 @@ package com.revolgenx.anilib.ui.fragment.settings
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
@@ -14,17 +16,24 @@ import com.revolgenx.anilib.ui.dialog.TagFilterSettingDialogFragment
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.meta.TagFilterMetaType
 import com.revolgenx.anilib.data.meta.TagFilterSettingMeta
-import kotlinx.android.synthetic.main.customize_filter_adapter_fragment_layout.view.*
-import kotlinx.android.synthetic.main.customize_filter_fragment_layout.*
+import com.revolgenx.anilib.databinding.CustomizeFilterAdapterFragmentLayoutBinding
+import com.revolgenx.anilib.databinding.CustomizeFilterFragmentLayoutBinding
 
-class CustomizeFilterFragment : BaseLayoutFragment() {
-    override val layoutRes: Int = R.layout.customize_filter_fragment_layout
+class CustomizeFilterFragment : BaseLayoutFragment<CustomizeFilterFragmentLayoutBinding>() {
     override var titleRes: Int? = R.string.custom_filters
     override var setHomeAsUp: Boolean = true
 
+
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): CustomizeFilterFragmentLayoutBinding {
+        return CustomizeFilterFragmentLayoutBinding.inflate(inflater, parent, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        customizeFilterRecyclerView.layoutManager = GridLayoutManager(
+        binding.customizeFilterRecyclerView.layoutManager = GridLayoutManager(
             this.context,
             if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 3
         )
@@ -51,30 +60,52 @@ class CustomizeFilterFragment : BaseLayoutFragment() {
                     0
                 ) { v, p ->
                     with(v) {
-                        this.filterIv.setImageResource(p.second)
-                        val dialogFragment = when(p.first){
+
+                        val filterAdapterBinding = CustomizeFilterAdapterFragmentLayoutBinding.bind(this)
+
+                        filterAdapterBinding.filterIv.setImageResource(p.second)
+                        val dialogFragment = when (p.first) {
                             MediaTagFilterTypes.GENRES -> {
-                                this.filterName.text = getString(R.string.genre)
-                                    TagFilterSettingDialogFragment.newInstance(TagFilterSettingMeta(TagFilterMetaType.GENRE))
+                                filterAdapterBinding.filterName.text = getString(R.string.genre)
+                                TagFilterSettingDialogFragment.newInstance(
+                                    TagFilterSettingMeta(
+                                        TagFilterMetaType.GENRE
+                                    )
+                                )
                             }
-                            MediaTagFilterTypes.TAGS ->{
-                                this.filterName.text = getString(R.string.tags)
-                                    TagFilterSettingDialogFragment.newInstance(TagFilterSettingMeta(TagFilterMetaType.TAG))
+                            MediaTagFilterTypes.TAGS -> {
+                                filterAdapterBinding.filterName.text = getString(R.string.tags)
+                                TagFilterSettingDialogFragment.newInstance(
+                                    TagFilterSettingMeta(
+                                        TagFilterMetaType.TAG
+                                    )
+                                )
                             }
                             MediaTagFilterTypes.STREAMING_ON -> {
-                                this.filterName.text = getString(R.string.streaming_on)
-                                    TagFilterSettingDialogFragment.newInstance(TagFilterSettingMeta(TagFilterMetaType.STREAMING_ON))
+                                filterAdapterBinding.filterName.text = getString(R.string.streaming_on)
+                                TagFilterSettingDialogFragment.newInstance(
+                                    TagFilterSettingMeta(
+                                        TagFilterMetaType.STREAMING_ON
+                                    )
+                                )
                             }
-                            else->{
-                                TagFilterSettingDialogFragment.newInstance(TagFilterSettingMeta(TagFilterMetaType.TAG))
+                            else -> {
+                                TagFilterSettingDialogFragment.newInstance(
+                                    TagFilterSettingMeta(
+                                        TagFilterMetaType.TAG
+                                    )
+                                )
                             }
                         }
                         this.setOnClickListener {
-                            dialogFragment.show(childFragmentManager, TagFilterSettingDialogFragment::class.java.simpleName)
+                            dialogFragment.show(
+                                childFragmentManager,
+                                TagFilterSettingDialogFragment::class.java.simpleName
+                            )
                         }
                     }
                 }).build()
 
-        customizeFilterRecyclerView.adapter = adapter;
+        binding.customizeFilterRecyclerView.adapter = adapter;
     }
 }

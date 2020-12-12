@@ -3,34 +3,22 @@ package com.revolgenx.anilib.ui.fragment.home
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.ui.dialog.RecommendationFilterDialog
-import com.revolgenx.anilib.infrastructure.event.BrowseEvent
-import com.revolgenx.anilib.infrastructure.event.CommonEvent
-import com.revolgenx.anilib.infrastructure.event.RecommendationFilterEvent
-import com.revolgenx.anilib.data.field.recommendation.RecommendationFilterField
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.data.model.recommendation.RecommendationModel
-import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.common.preference.setRecommendationField
+import com.revolgenx.anilib.databinding.RecommendationFragmentLayoutBinding
 import com.revolgenx.anilib.ui.presenter.recommendation.RecommendationPresenter
-import com.revolgenx.anilib.util.registerForEvent
-import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.ui.viewmodel.home.RecommendationViewModel
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import com.revolgenx.anilib.util.onItemSelected
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-//todo gridlayout
 class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
     override val basePresenter: Presenter<RecommendationModel>
         get() = RecommendationPresenter(requireContext(), viewLifecycleOwner, viewModel)
@@ -44,13 +32,24 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
 
     private val viewModel by viewModel<RecommendationViewModel>()
 
+    private var _recommendationBinding: RecommendationFragmentLayoutBinding? = null
+    private val recommendationBinding: RecommendationFragmentLayoutBinding get() = _recommendationBinding!!
+
     override fun createSource(): Source<RecommendationModel> {
         return viewModel.createSource()
     }
 
-    override fun onStart() {
-        super.onStart()
-        registerForEvent()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val v = super.onCreateView(inflater, container, savedInstanceState)
+        _recommendationBinding =
+            RecommendationFragmentLayoutBinding.inflate(inflater, container, false)
+        recommendationBinding.recommendationLinearLayout.addView(v)
+        return recommendationBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -96,55 +95,40 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null)
-            viewModel.field.apply {
-                RecommendationFilterField.field(requireContext()).let {
-                    sort = it.sorting
-                    if (requireContext().loggedIn())
-                        onList = it.onList
-                }
-            }
         super.onActivityCreated(savedInstanceState)
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.searchMenu -> {
-                BrowseEvent().postEvent
-                true
-            }
+        recommendationBinding.initListener()
+        recommendationBinding.recommendationOnListCheckBox.visibility =
+            if (requireContext().loggedIn()) View.VISIBLE else View.GONE
 
-            R.id.recommendationFilter -> {
-                RecommendationFilterDialog.newInstance().show(childFragmentManager, "filter_tag")
-                true
-            }
-            else -> {
-                super.onOptionsItemSelected(item)
+        if (savedInstanceState == null) {
+            with(viewModel.field) {
+                sort = getRecommendationSort(requireContext())
+                onList = getRecommendationOnList(requireContext())
             }
         }
 
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun event(event: CommonEvent) {
-        when (event) {
-            is RecommendationFilterEvent -> {
-                if (requireContext().loggedIn()) {
-                    viewModel.field.onList = event.field.onList
-                } else {
-                    viewModel.field.onList = null
-                }
-                viewModel.field.sort = event.field.sorting
-                setRecommendationField(requireContext(), event.field)
-                createSource()
-                invalidateAdapter()
+    private fun RecommendationFragmentLayoutBinding.initListener() {
+        recommendationOnListCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            if (requireContext().loggedIn()) {
+                viewModel.field.onList = isChecked
+            } else {
+                viewModel.field.onList = null
             }
+            createSource()
+            invalidateAdapter()
         }
+
+        recommendationSortSpinner.onItemSelected { position ->
+            viewModel.field.sort = position
+            if (!visibleToUser) return@onItemSelected
+            setRecommendationSort(requireContext(), position)
+            createSource()
+            invalidateAdapter()
+        }
+
     }
 
-    override fun onStop() {
-        super.onStop()
-        unRegisterForEvent()
-    }
 }

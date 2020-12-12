@@ -4,4 +4,5 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class MediaListMeta(var userId: Int?, var userName: String? = null,var type:Int = 0) : Parcelable
+data class MediaListMeta(var userId: Int?, var userName: String? = null, var type: Int = 0) :
+    Parcelable

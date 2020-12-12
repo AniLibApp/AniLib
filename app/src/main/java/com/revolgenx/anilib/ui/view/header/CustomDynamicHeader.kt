@@ -13,15 +13,16 @@ class CustomDynamicHeader(context: Context, attributeSet: AttributeSet?, defAttS
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
-        titleView.typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
-        subtitleView.typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
-        subtitleView.textSize = 11f
+        titleView.typeface = ResourcesCompat.getFont(context, R.font.cabin_semi_bold)
+        titleView.textSize = 15f
+        subtitleView.typeface = ResourcesCompat.getFont(context, R.font.cabin_regular)
+        subtitleView.textSize = 14f
         subtitleView.setOnLongClickListener {
             subtitleView.text.trim().takeIf { it.isNotEmpty() }?.let {
                 context.copyToClipBoard(it.toString())
                 true
             } ?: false
         }
-        subtitleView.setTextColor(DynamicTheme.getInstance().get().tintSurfaceColor)
+        subtitleView.setTextColor(DynamicTheme.getInstance().get().textPrimaryColor)
     }
 }

@@ -1,18 +1,16 @@
 package com.revolgenx.anilib.ui.viewmodel
 
+import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.ui.fragment.home.discover.DiscoverAiringViewModel
 import com.revolgenx.anilib.ui.viewmodel.airing.AiringViewModel
 import com.revolgenx.anilib.ui.viewmodel.browse.BrowseActivityViewModel
 import com.revolgenx.anilib.ui.viewmodel.character.CharacterActorViewModel
 import com.revolgenx.anilib.ui.viewmodel.character.CharacterMediaViewModel
 import com.revolgenx.anilib.ui.viewmodel.character.CharacterViewModel
-import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverNewViewModel
-import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverReviewViewModel
 import com.revolgenx.anilib.ui.viewmodel.entry.MediaEntryEditorViewModel
 import com.revolgenx.anilib.ui.viewmodel.home.RecommendationViewModel
 import com.revolgenx.anilib.ui.viewmodel.home.SeasonViewModel
-import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverReadingViewModel
-import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverWatchingViewModel
+import com.revolgenx.anilib.ui.viewmodel.home.discover.*
 import com.revolgenx.anilib.ui.viewmodel.media.*
 import com.revolgenx.anilib.ui.viewmodel.media_list.*
 import com.revolgenx.anilib.ui.viewmodel.notification.NotificationViewModel
@@ -68,6 +66,36 @@ val viewModelModules = module {
     viewModel { DroppedViewModel(get(), get()) }
     viewModel { PausedViewModel(get(), get()) }
     viewModel { RepeatingViewModel(get(), get()) }
+    viewModel {
+        MediaListContainerViewModel(
+            mapOf(
+                Pair(
+                    MediaListStatus.CURRENT.ordinal,
+                    get<WatchingViewModel>()
+                ),
+                Pair(
+                    MediaListStatus.PLANNING.ordinal,
+                    get<PlanningViewModel>()
+                ),
+                Pair(
+                    MediaListStatus.COMPLETED.ordinal,
+                    get<CompletedViewModel>()
+                ),
+                Pair(
+                    MediaListStatus.DROPPED.ordinal,
+                    get<DroppedViewModel>()
+                ),
+                Pair(
+                    MediaListStatus.PAUSED.ordinal,
+                    get<PausedViewModel>()
+                ),
+                Pair(
+                    MediaListStatus.REPEATING.ordinal,
+                    get<RepeatingViewModel>()
+                ),
+            )
+        )
+    }
 
     //userprofile
     viewModel { UserProfileViewModel(get()) }
@@ -90,8 +118,8 @@ val viewModelModules = module {
 
     //discover
     viewModel { DiscoverAiringViewModel(get()) }
-    viewModel { TrendingViewModel(get()) }
-    viewModel { PopularViewModel(get()) }
+    viewModel { DiscoverTrendingViewModel(get()) }
+    viewModel { DiscoverPopularViewModel(get()) }
     viewModel { DiscoverNewViewModel(get()) }
     viewModel { DiscoverReviewViewModel(get()) }
     viewModel { DiscoverWatchingViewModel(get(), get()) }

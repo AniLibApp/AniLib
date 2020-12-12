@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
@@ -21,13 +22,13 @@ import com.revolgenx.anilib.common.ui.fragment.NavViewPagerParcelableFragments
 import com.revolgenx.anilib.ui.fragment.stats.*
 import com.revolgenx.anilib.data.meta.NavViewPagerContainerMeta
 import com.revolgenx.anilib.data.meta.NavViewPagerContainerType
+import com.revolgenx.anilib.databinding.NavViewPagerContainerActivityLayoutBinding
 import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
 import kotlinx.android.synthetic.main.nav_view_pager_container_activity_layout.*
 import kotlinx.android.synthetic.main.smart_tab_layout.view.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
 
-class NavViewPagerContainerActivity : BaseDynamicActivity() {
-    override val layoutRes: Int = R.layout.nav_view_pager_container_activity_layout
+class NavViewPagerContainerActivity : BaseDynamicActivity<NavViewPagerContainerActivityLayoutBinding>() {
 
     companion object {
         const val NavViewPagerContainerMetaKey = "NavviewPagerContainerMetaKey"
@@ -84,6 +85,12 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
     private lateinit var viewPagerParcelableFragments: NavViewPagerParcelableFragments
     private lateinit var viewPagerMeta: NavViewPagerContainerMeta<Parcelable>
 
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): NavViewPagerContainerActivityLayoutBinding {
+        return NavViewPagerContainerActivityLayoutBinding.inflate(inflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -180,7 +187,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
                     val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
                     when (position) {
                         0 -> {
-                            createTabView(view, R.drawable.ic_overview, R.string.overview)
+                            createTabView(view, R.drawable.ic_fire, R.string.overview)
                         }
                         1 -> {
                             createTabView(view, R.drawable.ic_genre, R.string.genre)
@@ -209,7 +216,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity() {
                     val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
                     when (position) {
                         0 -> {
-                            createTabView(view, R.drawable.ic_overview, R.string.overview)
+                            createTabView(view, R.drawable.ic_fire, R.string.overview)
                         }
                         1 -> {
                             createTabView(view, R.drawable.ic_genre, R.string.genre)

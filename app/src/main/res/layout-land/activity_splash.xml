@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     android:padding="@dimen/ads_margin_splash"
     app:ads_backgroundAware="disable"
-    app:ads_colorType="primary">
+    app:ads_colorType="background">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
         android:id="@+id/splash_image"
@@ -37,28 +37,23 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:alpha="0.8"
             android:gravity="center"
             android:text="@string/app_name"
             android:textSize="@dimen/ads_font_size_headline6_splash"
-            app:ads_colorType="tint_primary"
-            app:ads_contrastWithColorType="primary"
-            app:ads_linkColorType="tint_primary"
             app:ads_rtlSupport="false"
-            android:layout_gravity="center"
-            app:fontFamily="@font/berlinrounded_extra_bold" />
+            app:fontFamily="@font/cabin_bold" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             style="@style/TextAppearance.DynamicApp.Subtitle1.Splash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/app_subtitle"
-            app:ads_colorType="tint_primary"
-            app:ads_contrastWithColorType="primary"
             app:ads_rtlSupport="false"
-            android:layout_gravity="center"
-            app:fontFamily="@font/open_sans_semi_bold" />
+            app:fontFamily="@font/cabin_semi_bold" />
 
     </LinearLayout>
 
