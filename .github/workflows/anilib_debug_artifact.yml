@@ -30,7 +30,10 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Set CURRENT_SHA
-        run: echo "::set-env name=CURRENT_SHA::$(git rev-parse --short HEAD)"
+        run: |
+          set -x
+          echo "CURRENT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
 
       - name: Upload apk
         uses: actions/upload-artifact@v2.2.0
