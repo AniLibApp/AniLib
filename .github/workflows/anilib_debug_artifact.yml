@@ -27,7 +27,7 @@ jobs:
           echo "$ANILIST_SECRET" | base64 -d > ./secret.properties
 
       - name: Build app
-        run: ./gradlew build
+        run: ./gradlew assembleDebug
 
       - name: Set CURRENT_SHA
         run: echo "::set-env name=CURRENT_SHA::$(git rev-parse --short HEAD)"
