@@ -50,7 +50,7 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/searchMediaTitleTv"
-            style="@style/titleFontStyle"
+            style="@style/TitleFontStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
@@ -60,7 +60,6 @@
             android:lines="2"
             android:maxLines="2"
             android:textSize="11sp"
-            app:ads_colorType="tint_surface"
             app:layout_constraintLeft_toLeftOf="@id/searchMediaImageContainer"
             app:layout_constraintRight_toRightOf="@id/searchMediaImageContainer"
             app:layout_constraintTop_toBottomOf="@id/searchMediaImageContainer"

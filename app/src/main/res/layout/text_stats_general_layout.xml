@@ -7,13 +7,12 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/statsTitleTv"
+            android:id="@+id/stats_title_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -22,10 +21,10 @@
             android:paddingTop="6dp"
             android:paddingEnd="10dp"
             android:textSize="18sp"
-            app:fontFamily="@font/berlinrounded_extra_bold" />
+            app:fontFamily="@font/cabin_semi_bold" />
 
         <FrameLayout
-            android:id="@+id/statsMediaLayout"
+            android:id="@+id/stats_media_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -33,7 +32,7 @@
             android:background="?selectableItemBackground">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/statsMediaTv"
+                android:id="@+id/stats_media_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -62,12 +61,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
-                android:id="@+id/statsCount"
+                android:id="@+id/stats_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:ads_fillSpace="true"
                 app:ads_subtitle="@string/count"
+                app:titleTextSize="11sp"
                 app:ads_title="0" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
@@ -82,11 +82,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
-                android:id="@+id/statsMeanScoreTv"
+                android:id="@+id/stats_mean_score_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:ads_fillSpace="true"
+                app:titleTextSize="11sp"
                 app:ads_subtitle="@string/mean_score"
                 app:ads_title="0" />
 
@@ -102,11 +103,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
-                android:id="@+id/statsTimeWatched"
+                android:id="@+id/stats_time_watched"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:ads_fillSpace="true"
+                app:titleTextSize="11sp"
                 app:ads_subtitle="@string/time_watched"
                 app:ads_title="0" />
 

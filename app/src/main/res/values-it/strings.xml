@@ -135,7 +135,7 @@
     <string name="none">"Nessuno"</string>
     <string name="repeating">"Ripeti"</string>
     <string name="spoiler_alert">"Allerta Spoiler"</string>
-    <string name="error">"Caricamento non Riuscito"</string>
+    <string name="failed_to_load">"Caricamento non Riuscito"</string>
     <string name="follower">"Follower"</string>
     <string name="following">"Segui"</string>
     <string name="blocked">"Blocca"</string>

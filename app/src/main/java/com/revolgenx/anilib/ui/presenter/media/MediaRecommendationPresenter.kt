@@ -158,6 +158,7 @@ class MediaRecommendationPresenter(
                                         this@updateView.itemView.context.makeToast(R.string.operation_failed)
                                     }
                                 }
+                                else -> {}
                             }
                         }
                     }
@@ -203,6 +204,7 @@ class MediaRecommendationPresenter(
                                         this@updateView.itemView.context.makeToast(R.string.operation_failed)
                                     }
                                 }
+                                else -> {}
                             }
                         }
                     }

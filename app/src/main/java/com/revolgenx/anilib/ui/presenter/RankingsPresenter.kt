@@ -31,7 +31,7 @@ class RankingsPresenter(context: Context, private val mediaType: Int?) :
     }
 
     private val popularDrawable by lazy {
-        ContextCompat.getDrawable(context, R.drawable.ic_favorite)?.mutate()?.also {
+        ContextCompat.getDrawable(context, R.drawable.ic_favourite)?.mutate()?.also {
             it.setTint(
                 ContextCompat.getColor(
                     context,
@@ -64,8 +64,7 @@ class RankingsPresenter(context: Context, private val mediaType: Int?) :
             rankingTv.text =
                 (item.rank?.let { "#$it " } ?: "") +
                         (item.context?.trim()?.split(" ")?.joinToString(separator = " ") { it.capitalize() }
-                        + " "
-                            ?: "") +
+                        + " ") +
                         (item.season?.let { seasons[it] + " " } ?: "") +
                         (item.year ?: "")
 

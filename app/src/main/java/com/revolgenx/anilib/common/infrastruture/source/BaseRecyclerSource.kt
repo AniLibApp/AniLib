@@ -25,6 +25,7 @@ abstract class BaseRecyclerSource<M : Any, F>(protected var field: F) : MainSour
 
     }
 
+    @Suppress("UNCHECKED_CAST")
     protected open fun <R> postResult(page: Page, resource: Resource<R>) {
         when (resource.status) {
             Status.SUCCESS -> {
@@ -33,6 +34,8 @@ abstract class BaseRecyclerSource<M : Any, F>(protected var field: F) : MainSour
             Status.ERROR -> {
                 postResult(page, Exception(resource.exception))
             }
+            else->{}
+
         }
     }
 

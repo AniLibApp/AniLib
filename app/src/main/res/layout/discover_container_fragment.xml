@@ -21,9 +21,10 @@
             <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicTextTabLayout
                 android:id="@+id/discover_main_tab_layout"
                 style="@style/DynamicTextTabLayoutStyle"
+                android:layout_width="0dp"
                 app:ads_backgroundColorType="background"
                 app:ads_colorType="accent"
-                app:ads_contrastWithColorType="primary"
+                app:ads_contrastWithColorType="background"
                 app:ads_textColorType="tint_primary"
                 app:layout_constraintEnd_toStartOf="@id/discover_search_iv"
                 app:layout_constraintHorizontal_bias="0"
@@ -32,7 +33,7 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                 android:id="@+id/discover_search_iv"
-                style="@style/DynamicDslTabOptionStyle"
+                style="@style/TabOptionMenuStyle"
                 app:ads_colorType="text_primary"
                 app:layout_constraintBottom_toBottomOf="@id/discover_main_tab_layout"
                 app:layout_constraintEnd_toStartOf="@id/discover_notification_iv"
@@ -41,7 +42,7 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                 android:id="@+id/discover_notification_iv"
-                style="@style/DynamicDslTabOptionStyle"
+                style="@style/TabOptionMenuStyle"
                 app:ads_colorType="text_primary"
                 app:layout_constraintBottom_toBottomOf="@id/discover_main_tab_layout"
                 app:layout_constraintEnd_toEndOf="parent"

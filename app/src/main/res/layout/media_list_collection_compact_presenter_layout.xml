@@ -2,7 +2,7 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mediaListContainer"
+    android:id="@+id/media_list_container"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -12,18 +12,18 @@
         android:layout_height="wrap_content">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-            android:id="@+id/mediaListImageContainer"
+            android:id="@+id/media_list_image_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1.7"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.4">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/mediaListCoverImageView"
+                android:id="@+id/media_list_cover_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:transitionName="media_cover_transition"
@@ -43,7 +43,7 @@
                 android:paddingBottom="2dp">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                    android:id="@+id/mediaListRatingIv"
+                    android:id="@+id/media_list_rating_iv"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
@@ -51,7 +51,7 @@
                     app:srcCompat="@drawable/ic_star" />
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                    android:id="@+id/mediaListRatingTv"
+                    android:id="@+id/media_list_rating_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -67,29 +67,26 @@
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/mediaListTitleTv"
+            android:id="@+id/media_list_title_tv"
+            style="@style/TitleFontStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="6dp"
-            android:layout_toEndOf="@id/mediaListImageContainer"
             android:ellipsize="end"
             android:lines="2"
             android:maxLines="2"
             android:textSize="11sp"
-            app:ads_colorType="tint_surface"
-            style="@style/titleFontStyle"
-            app:layout_constraintLeft_toRightOf="@+id/mediaListImageContainer"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/media_list_image_container"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="SmallSp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/mediaListStatusTv"
+            android:id="@+id/media_list_status_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mediaListTitleTv"
             android:layout_marginStart="6dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="6dp"
@@ -97,17 +94,17 @@
             android:maxLines="1"
             android:textSize="10sp"
             app:ads_colorType="accent"
-            app:layout_constraintLeft_toRightOf="@+id/mediaListImageContainer"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mediaListTitleTv"
+            app:layout_constraintStart_toEndOf="@+id/media_list_image_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/media_list_title_tv"
             tools:ignore="SmallSp" />
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/mediaListFormatTv"
+            android:id="@+id/media_list_format_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mediaListStatusTv"
+            android:layout_below="@+id/media_list_status_tv"
             android:layout_marginStart="6dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="6dp"
@@ -115,13 +112,13 @@
             android:maxLines="1"
             android:textSize="10sp"
             app:ads_colorType="accent"
-            app:layout_constraintLeft_toRightOf="@+id/mediaListImageContainer"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mediaListStatusTv"
+            app:layout_constraintStart_toEndOf="@+id/media_list_image_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/media_list_status_tv"
             tools:ignore="SmallSp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/mediaListProgressTv"
+            android:id="@+id/media_list_progress_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -129,24 +126,23 @@
             android:layout_marginEnd="6dp"
             android:drawablePadding="4dp"
             android:textSize="10sp"
-            app:ads_colorType="tint_surface"
             app:drawableStartCompat="@drawable/ic_eye_16dp"
-            app:layout_constraintBottom_toBottomOf="@id/mediaListProgressIncrease"
-            app:layout_constraintLeft_toRightOf="@+id/mediaListImageContainer"
-            app:layout_constraintRight_toLeftOf="@+id/mediaListProgressIncrease"
-            app:layout_constraintTop_toTopOf="@id/mediaListProgressIncrease"
+            app:layout_constraintBottom_toBottomOf="@id/media_list_progress_increase"
+            app:layout_constraintStart_toEndOf="@+id/media_list_image_container"
+            app:layout_constraintEnd_toStartOf="@+id/media_list_progress_increase"
+            app:layout_constraintTop_toTopOf="@id/media_list_progress_increase"
             tools:ignore="SmallSp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-            android:id="@+id/mediaListProgressIncrease"
+            android:id="@+id/media_list_progress_increase"
             style="@style/Widget.DynamicApp.Image"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:background="?selectableItemBackground"
             android:padding="4dp"
-            app:ads_colorType="tint_surface"
+            app:ads_colorType="text_primary"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_plus" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -440,7 +440,7 @@
     </string-array>
 
     <string-array name="media_list_status">
-        <item>@string/current</item>
+        <item>@string/watching</item>
         <item>@string/planning</item>
         <item>@string/completed</item>
         <item>@string/dropped</item>
@@ -601,7 +601,6 @@
     <string name="arabic" translatable="false">عربى</string>
 
 
-
     <string-array name="anime_list_status">
         <item>@string/watching</item>
         <item>@string/planning</item>
@@ -627,9 +626,42 @@
         <item>@string/recommendations</item>
     </string-array>
 
+
     <string-array name="list_tab_menu">
         <item>@string/anime_list</item>
         <item>@string/manga_list</item>
+    </string-array>
+
+
+    <string-array name="profile_tab_menu">
+        <item>@string/overview</item>
+        <item>@string/favourites</item>
+        <item>@string/anime_stats</item>
+        <item>@string/manga_stats</item>
+    </string-array>
+
+    <string-array name="user_favourite_tab_menu">
+        <item>@string/anime</item>
+        <item>@string/manga</item>
+        <item>@string/character</item>
+        <item>@string/staff</item>
+        <item>@string/studio</item>
+    </string-array>
+
+    <string-array name="user_anime_stats_tab_menu">
+        <item>@string/overview</item>
+        <item>@string/genre</item>
+        <item>@string/tags</item>
+        <item>@string/voice_actors</item>
+        <item>@string/studio</item>
+        <item>@string/staff</item>
+    </string-array>
+
+    <string-array name="user_manga_stats_tab_menu">
+        <item>@string/overview</item>
+        <item>@string/genre</item>
+        <item>@string/tags</item>
+        <item>@string/staff</item>
     </string-array>
 
     <string-array name="list_option_menu">
@@ -642,6 +674,9 @@
         <item>@string/compact_mode</item>
         <item>@string/normal_mode</item>
         <item>@string/card_mode</item>
+        <item>@string/card_classic_mode</item>
+        <item>@string/minimal_mode</item>
+        <item>@string/minimal_list_mode</item>
     </string-array>
 
     <string-array name="season_filter_entries">
@@ -658,6 +693,30 @@
         <item>@string/thu</item>
         <item>@string/fri</item>
         <item>@string/sat</item>
+    </string-array>
+
+
+    <!--more actions-->
+    <string-array name="station_more_actions">
+        <item>@string/open_website</item>
+    </string-array>
+
+    <string-array name="favourite_station_more_actions">
+        <item>@string/remove_from_favourite</item>
+    </string-array>
+
+    <string-array name="user_profile_more_actions">
+        <item>@string/settings</item>
+        <item>@string/discord</item>
+        <item>@string/translate</item>
+        <item>@string/share</item>
+        <item>@string/sign_out</item>
+    </string-array>
+    <!--more action-->
+
+
+    <string-array name="music_entries">
+        <item>@string/radio_station</item>
     </string-array>
 
 </resources>

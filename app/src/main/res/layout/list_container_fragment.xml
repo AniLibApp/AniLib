@@ -21,9 +21,10 @@
             <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicTextTabLayout
                 android:id="@+id/list_tab_layout"
                 style="@style/DynamicTextTabLayoutStyle"
+                android:layout_width="0dp"
                 app:ads_backgroundColorType="background"
                 app:ads_colorType="accent"
-                app:ads_contrastWithColorType="primary"
+                app:ads_contrastWithColorType="background"
                 app:ads_textColorType="tint_primary"
                 app:layout_constraintEnd_toStartOf="@id/list_search_iv"
                 app:layout_constraintHorizontal_bias="0"
@@ -32,32 +33,31 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                 android:id="@+id/list_search_iv"
-                style="@style/DynamicDslTabOptionStyle"
+                style="@style/TabOptionMenuStyle"
                 app:ads_colorType="text_primary"
                 app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
-                app:layout_constraintRight_toLeftOf="@id/list_notification_iv"
+                app:layout_constraintEnd_toStartOf="@id/list_notification_iv"
                 app:layout_constraintTop_toTopOf="@id/list_tab_layout"
                 app:srcCompat="@drawable/ic_search" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                 android:id="@+id/list_notification_iv"
-                style="@style/DynamicDslTabOptionStyle"
+                style="@style/TabOptionMenuStyle"
                 app:ads_colorType="text_primary"
                 app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
-                app:layout_constraintRight_toLeftOf="@id/list_more_iv"
+                app:layout_constraintEnd_toStartOf="@id/list_more_iv"
                 app:layout_constraintTop_toTopOf="@id/list_tab_layout"
                 app:srcCompat="@drawable/ic_notification" />
 
             <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
                 android:id="@+id/list_more_iv"
-                style="@style/DynamicDslTabOptionStyle"
+                style="@style/TabOptionMenuStyle"
                 app:ads_colorType="text_primary"
                 app:entries="@array/list_option_menu"
                 app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/list_tab_layout"
                 app:srcCompat="@drawable/ads_ic_more" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>

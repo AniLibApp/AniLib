@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.net.toUri
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -283,6 +282,7 @@ class MediaOverviewFragment : BaseFragment() {
                         params.marginStart = dp(2f)
                         params.bottomMargin = dp(20f)
                     }
+                    it.useCompatPadding = true
                 }.also {
                     it.addView(
                         AiringEpisodeView(

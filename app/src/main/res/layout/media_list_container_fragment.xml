@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/media_list_linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+        android:id="@+id/media_list_search_et"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_size"
+        android:hint="@string/search"
+        android:visibility="gone"
+        android:focusable="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        />
+
+</LinearLayout>

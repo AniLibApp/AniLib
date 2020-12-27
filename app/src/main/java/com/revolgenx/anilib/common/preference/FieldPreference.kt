@@ -2,6 +2,7 @@ package com.revolgenx.anilib.common.preference
 
 import android.content.Context
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
+import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.data.field.home.NewlyAddedMediaField
 import com.revolgenx.anilib.data.field.home.PopularMediaField
 import com.revolgenx.anilib.data.field.home.SeasonField
@@ -107,10 +108,10 @@ fun getNewlyAddedField(context: Context) = NewlyAddedMediaField().apply {
 fun storeNewlyAddedField(context: Context, field: NewlyAddedMediaField) {
     with(field) {
         context.putInt(NEWLY_ADDED_FORMAT_KEY, format ?: DEFAULT_FORMAT)
-        context.putInt(NEWLY_ADDED_YEAR_KEY, seasonYear ?: LocalDateTime.now().year)
+        context.putInt(NEWLY_ADDED_YEAR_KEY, seasonYear ?: -1)
         context.putInt(
             NEWLY_ADDED_SEASON_KEY,
-            season ?: getSeasonFromMonth(LocalDateTime.now().monthValue).ordinal
+            season ?: -1
         )
         context.putInt(NEWLY_ADDED_STATUS_KEY, status ?: DEFAULT_STATUS)
     }
@@ -218,9 +219,9 @@ fun getDiscoverMediaListSort(context: Context, type: Int): Int? {
 }
 
 
-fun getMediaListGridPresenter(): Int {
-    return DynamicPreferences.getInstance()
-        .load(MEDIA_LIST_GRID_PRESENTER_KEY, 0) //0 for single gird
+fun getMediaListGridPresenter(): MediaListDisplayMode {
+    return MediaListDisplayMode.values()[DynamicPreferences.getInstance()
+        .load(MEDIA_LIST_GRID_PRESENTER_KEY, 0)] //0 for compact gird 1 normal 2 card
 }
 
 fun setMediaListGridPresenter(which:Int) {

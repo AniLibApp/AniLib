@@ -2,10 +2,7 @@ package com.revolgenx.anilib.data.model
 
 
 class MediaOverviewModel : CommonMediaModel() {
-    var popularity: Int? = null
-    var favourites: Int? = null
     var meanScore:Int? = null
-    var description: String? = null
     var source: Int? = null
     var hashTag: String? = null  /*can be null*/
     var airingTimeModel:AiringTimeModel? = null

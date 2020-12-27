@@ -7,7 +7,7 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/dynamicSmartTab"
+        android:layout_above="@+id/base_dynamic_smart_tab"
         android:layout_alignParentTop="true">
 
 

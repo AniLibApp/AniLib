@@ -86,13 +86,21 @@ fun makePopupMenu(
     }
 }
 
-fun makeArrayPopupMenu(anchor: View, entries: Array<String>, icons: IntArray? = null, viewType:Int = DynamicPopup.Type.LIST, onItemClickListener: AdapterView.OnItemClickListener) {
-    DynamicArrayPopup(
+fun makeArrayPopupMenu(
+    anchor: View,
+    entries: Array<String>,
+    icons: IntArray? = null,
+    selectedPosition: Int = -1,
+    viewType: Int = DynamicPopup.Type.LIST,
+    onItemClickListener: AdapterView.OnItemClickListener
+): DynamicArrayPopup {
+    return DynamicArrayPopup(
         anchor,
         entries,
         icons,
         onItemClickListener
-    ).let { popup ->
+    ).also { popup ->
+        popup.selectedPosition = selectedPosition
         popup.viewType = viewType
         popup.build().show()
     }

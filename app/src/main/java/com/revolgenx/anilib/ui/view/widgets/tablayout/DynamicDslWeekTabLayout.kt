@@ -2,18 +2,10 @@ package com.revolgenx.anilib.ui.view.widgets.tablayout
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
-import androidx.appcompat.view.ContextThemeWrapper
-import com.angcyo.tablayout.DslTabLayout
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicTabLayout
-import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-import com.pranavpandey.android.dynamic.theme.Theme
+import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.ui.view.makeToast
-import org.threeten.bp.LocalTime
-import org.threeten.bp.ZoneOffset
-import org.threeten.bp.ZonedDateTime
 import java.util.*
 
 class DynamicDslWeekTabLayout : DynamicTabLayout {
@@ -38,7 +30,13 @@ class DynamicDslWeekTabLayout : DynamicTabLayout {
             addTab(this.newTab().setText(it))
         }
 
-        setTabTextColors(dynamicTheme.textPrimaryColor, dynamicTheme.accentColor)
+
+        val selectedColor = DynamicColorUtils.getContrastColor(
+            dynamicTheme.accentColor,
+            dynamicTheme.backgroundColor
+        )
+
+        setTabTextColors(dynamicTheme.textPrimaryColor, selectedColor)
     }
 
 }

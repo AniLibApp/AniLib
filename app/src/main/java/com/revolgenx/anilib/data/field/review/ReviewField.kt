@@ -42,7 +42,7 @@ class ReviewField : BaseField<Any>() {
                                 mediaId(it)
                             }
 
-                            it.body?.html?.let {
+                            it.body.html?.let {
                                 body(it)
                             }
                             it.summary?.let {

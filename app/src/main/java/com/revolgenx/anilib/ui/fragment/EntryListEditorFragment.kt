@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
@@ -140,6 +139,7 @@ class EntryListEditorFragment : BaseFragment() {
                         showMetaViews()
                     }
                 }
+                else->{}
             }
         }
 
@@ -178,7 +178,7 @@ class EntryListEditorFragment : BaseFragment() {
             when (it.status) {
                 SUCCESS -> {
                     isFavourite = it.data!!
-                    listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                    listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
                     invalidateOptionMenu()
                 }
                 ERROR -> {
@@ -193,7 +193,7 @@ class EntryListEditorFragment : BaseFragment() {
                 SUCCESS -> {
                     isFavourite = !isFavourite
                     listFavButton.showLoading(false)
-                    listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                    listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
                     invalidateOptionMenu()
                     false
                 }
@@ -381,7 +381,7 @@ class EntryListEditorFragment : BaseFragment() {
             toggleFav()
         }
 
-        startDateDynamicEt.setOnTouchListener { v, event ->
+        startDateDynamicEt.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= (startDateDynamicEt.right - startDateDynamicEt.compoundDrawablesRelative[2].bounds.width())) {
                     startDateDynamicEt.setText("")
@@ -395,7 +395,7 @@ class EntryListEditorFragment : BaseFragment() {
             }
         }
 
-        endDateDynamicEt.setOnTouchListener { v, event ->
+        endDateDynamicEt.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= (startDateDynamicEt.right - startDateDynamicEt.compoundDrawablesRelative[2].bounds.width())) {
                     endDateDynamicEt.setText("")
@@ -601,7 +601,7 @@ class EntryListEditorFragment : BaseFragment() {
             }
 
             if (isFavourite) {
-                listFavButton.setImageResource(R.drawable.ic_favorite)
+                listFavButton.setImageResource(R.drawable.ic_favourite)
             }
             return
         }
@@ -616,7 +616,7 @@ class EntryListEditorFragment : BaseFragment() {
         }
 
         if (isFavourite) {
-            val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite)
+            val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favourite)
             menu.findItem(R.id.listFavMenu).icon = drawable
         }
     }

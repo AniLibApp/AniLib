@@ -9,11 +9,13 @@
         android:id="@+id/dsl_week_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_size"
-        app:ads_backgroundColorType="background" />
+        app:ads_backgroundColorType="background"
+        app:ads_colorType="accent"
+        app:ads_contrastWithColorType="background" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
         android:id="@+id/discover_airing_recycler_view"
-        style="@style/DiscoverCardViewContainerStyle"
+        style="@style/DiscoverRecyclerContainerStyle"
         android:nestedScrollingEnabled="false" />
 
 </LinearLayout>

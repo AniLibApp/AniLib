@@ -22,13 +22,14 @@ import com.revolgenx.anilib.databinding.SeasonFragmentBinding
 import com.revolgenx.anilib.ui.presenter.season.SeasonPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
-import com.revolgenx.anilib.ui.viewmodel.home.SeasonViewModel
+import com.revolgenx.anilib.ui.viewmodel.home.season.SeasonViewModel
+import com.revolgenx.anilib.util.EventBusListener
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
+class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListener {
 
     private val viewModel by viewModel<SeasonViewModel>()
 
@@ -202,6 +203,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>() {
                 viewModel.field.saveGenre(requireContext())
                 renewAdapter()
             }
+            else -> {}
         }
 
     }

@@ -137,7 +137,7 @@
     <string name="none">None</string>
     <string name="repeating">Repeating</string>
     <string name="spoiler_alert">Spoiler Alert</string>
-    <string name="error">Failed to load</string>
+    <string name="failed_to_load">Failed to load</string>
     <string name="follower">Follower</string>
     <string name="following">Following</string>
     <string name="blocked">Blocked</string>
@@ -405,7 +405,7 @@
     <string name="github_desc">View source on Github.</string>
     <string name="start_nav_page_desc">Configure startup page.</string>
     <string name="startup_page">Startup Page</string>
-    <string name="update_">update</string>
+    <string name="update_">Update</string>
     <string name="compact_mode">Compact mode</string>
     <string name="normal_mode">Normal mode</string>
     <string name="card_mode">Card mode</string>
@@ -420,5 +420,31 @@
     <string name="thu">Thu</string>
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
+    <string name="card_classic_mode">Classic Mode</string>
+    <string name="minimal_mode">Minimal Round Mode</string>
+    <string name="minimal_list_mode">Minimal List Mode</string>
+
+    //radio
+    <string name="radio">Radio</string>
+
+    <string name="notification_channel">Now Playing</string>
+    <string name="notification_channel_description">Shows what radio is currently playing</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="buffering">Buffering … </string>
+    <string name="loading">Loading … </string>
+    <string name="error">Error</string>
+    <string name="notification_content_text">%1$s%2$s</string>
+    <string name="radio_station">Radio Station</string>
+    <string name="network_error">Network error</string>
+    <string name="all_radio_stations">All Radio Stations</string>
+    <string name="stopped">Stopped</string>
+    <string name="favourite_radio_station">Favourite Stations</string>
+    <string name="recently_played_stations">Recently Played Stations</string>
+    <string name="remove_from_favourite">Remove from Favourites</string>
+    <string name="open_website">Open Website</string>
+    <string name="no_description">No Description</string>
+    <string name="translate">Translate</string>
+
 
 </resources>

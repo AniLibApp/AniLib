@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicTextTabLayout
+        android:id="@+id/user_favourite_tab_layout"
+        style="@style/DynamicTextTabLayoutStyle.Background"
+        app:tabTextAppearance="@style/SubTabTextAppearance"/>
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/user_favourite_container_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

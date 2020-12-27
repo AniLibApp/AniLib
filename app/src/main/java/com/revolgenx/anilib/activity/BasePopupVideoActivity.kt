@@ -57,6 +57,7 @@ abstract class BasePopupVideoActivity<T:ViewBinding> : BaseDynamicActivity<T>() 
         playerManager.play()
     }
 
+    @Suppress("DEPRECATION")
     private fun showVideoPopUp() {
         removePopUpView()
         playerManager.init()

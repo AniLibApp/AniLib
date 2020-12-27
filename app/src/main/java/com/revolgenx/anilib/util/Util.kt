@@ -72,18 +72,20 @@ fun Long.prettyNumberFormat(): String { //Long.MIN_VALUE == -Long.MIN_VALUE so w
 }
 
 
-fun <T> T.registerForEvent() {
+fun <T:EventBusListener> T.registerForEvent() {
     val bus = EventBus.getDefault()
     if (!bus.isRegistered(this))
         bus.register(this)
 }
 
-fun <T> T.unRegisterForEvent() {
+fun <T:EventBusListener> T.unRegisterForEvent() {
     val bus = EventBus.getDefault()
     if (bus.isRegistered(this)) {
         bus.unregister(this)
     }
 }
+
+interface EventBusListener
 
 suspend fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = coroutineScope {
     map { async { f(it) } }.awaitAll()

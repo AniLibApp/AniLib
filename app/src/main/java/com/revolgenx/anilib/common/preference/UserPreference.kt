@@ -102,11 +102,15 @@ fun setNewNotification(context: Context, notifId: Int = -1) {
 
 
 fun canShowAdult(context: Context): Boolean {
-    return if(isStudioFlavor()){
+    return if (userEnabledAdultContent(context)) {
         context.getBoolean(canShowAdultKey, true)
-    }else{
+    } else {
         false
     }
+}
+
+fun userEnabledAdultContent(context: Context): Boolean {
+    return getUserPrefModel(context).displayAdultContent == true
 }
 
 fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
@@ -117,10 +121,10 @@ fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
         synced
     }
 
-fun resetNavigationItemPosition(context: Context){
+fun resetNavigationItemPosition(context: Context) {
     val startNavigation = getStartNavigation(context)
     //check if other navigation is added for now check only discover
-    if(startNavigation != DISCOVER_NAV_POS){
+    if (startNavigation != DISCOVER_NAV_POS) {
         setStartNavigation(context, DISCOVER_NAV_POS)
     }
 }

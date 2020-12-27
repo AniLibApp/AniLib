@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
-import com.pranavpandey.android.dynamic.locale.DynamicLocaleUtils
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
@@ -19,6 +18,7 @@ import com.revolgenx.anilib.common.preference.getHomeOrderFromType
 import com.revolgenx.anilib.databinding.DiscoverAiringFragmentLayoutBinding
 import com.revolgenx.anilib.ui.presenter.home.discover.DiscoverAiringPresenter
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
+import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverAiringViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

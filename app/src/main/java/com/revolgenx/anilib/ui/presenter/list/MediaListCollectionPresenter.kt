@@ -8,17 +8,16 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.constant.DisplayMode.*
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.list.MediaListModel
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userName
-import com.revolgenx.anilib.ui.presenter.list.binding.CardHolderBinding
-import com.revolgenx.anilib.ui.presenter.list.binding.CompactHolderBinding
-import com.revolgenx.anilib.ui.presenter.list.binding.NormalHolderBinding
+import com.revolgenx.anilib.constant.MediaListDisplayMode
+import com.revolgenx.anilib.databinding.*
+import com.revolgenx.anilib.ui.presenter.Constant.PRESENTER_BINDING_KEY
+import com.revolgenx.anilib.ui.presenter.list.binding.*
 import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListCollectionViewModel
-import kotlinx.android.synthetic.main.media_list_collection_card_presenter_layout.view.*
 
 class MediaListCollectionPresenter(
     context: Context,
@@ -27,9 +26,9 @@ class MediaListCollectionPresenter(
 ) :
     Presenter<MediaListModel>(context) {
 
-    companion object{
-        val tintSurfaceColor by lazy {
-            DynamicTheme.getInstance().get().tintSurfaceColor
+    companion object {
+        val textPrimaryColor by lazy {
+            DynamicTheme.getInstance().get().textPrimaryColor
         }
     }
 
@@ -42,46 +41,62 @@ class MediaListCollectionPresenter(
         context.resources.getStringArray(R.array.status_color)
     private val isLoggedInUser =
         mediaListMeta.userId == context.userId() || mediaListMeta.userName == context.userName()
-    private val displayMode = values()[getMediaListGridPresenter()]
+    private val displayMode = getMediaListGridPresenter()
 
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            getLayoutInflater().inflate(
-                when (displayMode) {
-                    COMPACT -> {
-                        R.layout.media_list_collection_compact_presenter_layout
-                    }
-                    NORMAL -> {
-                        R.layout.media_list_collection_normal_presenter_layout
-                    }
-                    else -> {
-                        R.layout.media_list_collection_card_presenter_layout
-                    }
-                },
-                parent,
-                false
-            ).also {
-                if(displayMode == CARD){
+        return when (displayMode) {
+            MediaListDisplayMode.COMPACT -> {
+                MediaListCollectionCompactPresenterLayoutBinding.inflate(getLayoutInflater(), parent, false).let {
+                    Holder(it.root).also { h->h[PRESENTER_BINDING_KEY] = it }
+                }
+            }
+            MediaListDisplayMode.NORMAL -> {
+                MediaListCollectionNormalPresenterLayoutBinding.inflate(getLayoutInflater(), parent, false).let {
+                    Holder(it.root).also { h->h[PRESENTER_BINDING_KEY] = it }
+                }
+            }
+            MediaListDisplayMode.CARD -> {
+                MediaListCollectionCardPresenterLayoutBinding.inflate(getLayoutInflater(), parent, false).let {
                     it.mediaMetaBackground.setBackgroundColor(
                         ColorUtils.setAlphaComponent(
                             DynamicTheme.getInstance().get().backgroundColor,
                             200
                         )
                     )
+                    Holder(it.root).also { h->h[PRESENTER_BINDING_KEY] = it }
+
                 }
             }
-        )
+            MediaListDisplayMode.MINIMAL->{
+                MediaListCollectionMinimalPresenterLayoutBinding.inflate(getLayoutInflater(), parent, false).let {
+                    Holder(it.root).also { h->h[PRESENTER_BINDING_KEY] = it }
+                }
+            }
+            MediaListDisplayMode.MINIMAL_LIST->{
+                MediaListPresenterListMinimalPresenterBinding.inflate(getLayoutInflater(), parent, false).let {
+                    Holder(it.root).also { h->h[PRESENTER_BINDING_KEY] = it }
+                }
+            }
+            else ->{
+                MediaListCollectionClassicCardPresenterLayoutBinding.inflate(getLayoutInflater(), parent, false).let {
+                    Holder(it.root).also { h->h[PRESENTER_BINDING_KEY] = it }
+                }
+            }
+        }
+
     }
 
+    @Suppress("UNUSED_VARIABLE")
     override fun onBind(page: Page, holder: Holder, element: Element<MediaListModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
+        val binding: Any = holder[PRESENTER_BINDING_KEY] ?: return
 
-
-        when(displayMode){
-            COMPACT -> CompactHolderBinding.bind(
-                holder.itemView,
+        when (displayMode) {
+            MediaListDisplayMode.COMPACT -> CompactHolderBinding.bind(
+                holder[PRESENTER_BINDING_KEY],
+                context,
                 item,
                 mediaFormats,
                 mediaStatus,
@@ -89,8 +104,9 @@ class MediaListCollectionPresenter(
                 isLoggedInUser,
                 viewModel
             )
-            NORMAL -> NormalHolderBinding.bind(
-                holder.itemView,
+            MediaListDisplayMode.NORMAL -> NormalHolderBinding.bind(
+                holder[PRESENTER_BINDING_KEY],
+                context,
                 item,
                 mediaFormats,
                 mediaStatus,
@@ -98,12 +114,42 @@ class MediaListCollectionPresenter(
                 isLoggedInUser,
                 viewModel
             )
-            CARD -> {
+            MediaListDisplayMode.CARD -> {
                 CardHolderBinding.bind(
-                    holder.itemView,
+                    holder[PRESENTER_BINDING_KEY],
+                    context,
                     item,
                     mediaFormats,
                     statusColors,
+                    isLoggedInUser,
+                    viewModel
+                )
+            }
+            MediaListDisplayMode.CLASSIC -> {
+                ClassicCardHolderBinding.bind(
+                    holder[PRESENTER_BINDING_KEY],
+                    context,
+                    item,
+                    mediaFormats,
+                    mediaStatus,
+                    isLoggedInUser,
+                    viewModel
+                )
+            }
+            MediaListDisplayMode.MINIMAL->{
+                MinimalHolderBinding.bindView(
+                    holder[PRESENTER_BINDING_KEY],
+                    context,
+                    item,
+                    isLoggedInUser,
+                    viewModel
+                )
+            }
+            MediaListDisplayMode.MINIMAL_LIST->{
+                MinimalListHolderBinding.bindView(
+                    holder[PRESENTER_BINDING_KEY],
+                    context,
+                    item,
                     isLoggedInUser,
                     viewModel
                 )

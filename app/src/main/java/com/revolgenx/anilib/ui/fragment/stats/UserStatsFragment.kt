@@ -29,11 +29,13 @@ abstract class UserStatsFragment : BasePresenterFragment<BaseStatsModel>() {
         super.onViewCreated(view, savedInstanceState)
         val userStatsMeta =
             arguments?.getParcelable<UserStatsMeta>(StatsOverviewFragment.USER_STATS_PARCEL_KEY)
-        with(viewModel.field) {
-            userId = userStatsMeta?.userMeta?.userId
-            userName = userStatsMeta?.userMeta?.userName
-            type = userStatsMeta?.type
-            userStatsType = statsType
+        if(userStatsMeta != null){
+            with(viewModel.field) {
+                userId = userStatsMeta.userMeta.userId
+                userName = userStatsMeta.userMeta.userName
+                type = userStatsMeta.type
+                userStatsType = statsType
+            }
         }
     }
 

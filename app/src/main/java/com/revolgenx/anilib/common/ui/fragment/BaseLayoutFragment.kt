@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.revolgenx.anilib.ui.`interface`.ViewBindingInterface
 
-abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment(), ViewBindingInterface<T> {
+abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment(){
     protected open var titleRes: Int? = null
     protected open var setHomeAsUp = false
 
-    override var _binding: T? = null
+
+    private var _binding: T? = null
+    protected val binding: T get() = _binding!!
+
+    abstract fun bindView(inflater: LayoutInflater, parent: ViewGroup? = null): T
 
     override fun onCreateView(
         inflater: LayoutInflater,

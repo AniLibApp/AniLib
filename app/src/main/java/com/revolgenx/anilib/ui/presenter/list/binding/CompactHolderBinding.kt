@@ -1,9 +1,11 @@
 package com.revolgenx.anilib.ui.presenter.list.binding
 
+import android.content.Context
 import android.graphics.Color
 import android.view.View
 import com.apollographql.apollo.exception.ApolloHttpException
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
 import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
@@ -11,7 +13,7 @@ import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.data.model.list.MediaListModel
-import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.databinding.MediaListCollectionCompactPresenterLayoutBinding
 import com.revolgenx.anilib.ui.presenter.list.MediaListCollectionPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
@@ -19,13 +21,13 @@ import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListCollectionViewModel
-import kotlinx.android.synthetic.main.media_list_collection_compact_presenter_layout.view.*
 
 
 object CompactHolderBinding {
 
     fun bind(
-        view: View,
+        binding: MediaListCollectionCompactPresenterLayoutBinding,
+        context: Context,
         item: MediaListModel,
         mediaFormats: Array<String>,
         mediaStatus: Array<String>,
@@ -33,7 +35,7 @@ object CompactHolderBinding {
         isLoggedInUser: Boolean,
         viewModel: MediaListCollectionViewModel
     ) {
-        view.apply {
+        binding.apply {
             mediaListTitleTv.text = item.title?.userPreferred
             mediaListCoverImageView.setImageURI(item.coverImage?.large)
             mediaListFormatTv.text = item.format?.let {
@@ -46,13 +48,13 @@ object CompactHolderBinding {
             }.naText()
 
             mediaListProgressTv.text =
-                context.getString(R.string.s_slash_s)
+                root.context.getString(R.string.s_slash_s)
                     .format(
                         item.progress?.toString().naText(),
                         if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
                     )
 
-            mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(MediaListCollectionPresenter.tintSurfaceColor)
+            mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(MediaListCollectionPresenter.textPrimaryColor)
 
             when (item.scoreFormat) {
                 ScoreFormat.POINT_3.ordinal -> {

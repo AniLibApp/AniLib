@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicTabLayout
+import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
 
 class DynamicTextTabLayout :DynamicTabLayout{
@@ -25,6 +26,11 @@ class DynamicTextTabLayout :DynamicTabLayout{
         }
 
 
-        setTabTextColors(dynamicTheme.textPrimaryColor, dynamicTheme.accentColor)
+        val selectedColor = DynamicColorUtils.getContrastColor(
+            dynamicTheme.accentColor,
+            dynamicTheme.backgroundColor
+        )
+
+        setTabTextColors(dynamicTheme.textPrimaryColor, selectedColor)
     }
 }

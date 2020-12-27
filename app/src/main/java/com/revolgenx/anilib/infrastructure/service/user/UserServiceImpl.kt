@@ -53,6 +53,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                             stats.anime()?.let { a ->
                                 model.totalAnime = a.count()
                                 model.daysWatched = a.minutesWatched().toDouble().div(60).div(24)
+                                model.episodesWatched = a.episodesWatched()
                                 model.animeMeanScore = a.meanScore()
                                 a.genres()?.forEach { g ->
                                     model.genreOverView[g.genre()!!] = g.count()
@@ -61,6 +62,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                             stats.manga()?.let { m ->
                                 model.totalManga = m.count()
                                 model.chaptersRead = m.chaptersRead()
+                                model.volumeRead = m.volumesRead()
                                 model.mangaMeanScore = m.meanScore()
                                 m.genres()?.forEach { g ->
                                     if (model.genreOverView.containsKey(g.genre())) {

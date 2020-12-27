@@ -9,6 +9,7 @@ import android.graphics.drawable.LayerDrawable
 import android.text.Spanned
 import android.widget.TextView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import com.facebook.common.executors.CallerThreadExecutor
 import com.facebook.common.references.CloseableReference
@@ -84,9 +85,11 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
 
         override fun load(drawable: AsyncDrawable) {
             val dataSource = Fresco.getImagePipeline().fetchDecodedImage(
-                ImageRequestBuilder.
-                    newBuilderWithSource(drawable.destination.toUri())
-                    .setImageDecodeOptions(ImageDecodeOptions.newBuilder().setDecodePreviewFrame(true).setDecodeAllFrames(false).build())
+                ImageRequestBuilder.newBuilderWithSource(drawable.destination.toUri())
+                    .setImageDecodeOptions(
+                        ImageDecodeOptions.newBuilder().setDecodePreviewFrame(true)
+                            .setDecodeAllFrames(false).build()
+                    )
                     .setLocalThumbnailPreviewsEnabled(true)
                     .build(),
                 context
@@ -103,6 +106,11 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                     dataSource.result?.let {
                         try {
                             val resource = createDrawable(it.get()) ?: return
+
+
+                            closeableReferences[drawable.destination]?.get()?.close()
+                            closeableReferences.remove(drawable.destination)
+
                             if (drawable.result is LayerDrawable && drawable.hasResult()) {
                                 val layerDrawable = drawable.result as LayerDrawable
                                 val spoilerDrawable = layerDrawable.getDrawable(1)
@@ -117,9 +125,14 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                                     DrawableUtils.applyIntrinsicBounds(finalDrawable)
                                     drawable.result = finalDrawable
                                 } else {
+//                                    val newBlurBitmap = resource.toBitmap(
+//                                        (resource.intrinsicWidth * 0.3).toInt().takeIf { it >= 1 } ?: 1,
+//                                        (resource.intrinsicHeight * 0.3).toInt().takeIf { it >= 1 } ?: 1
+//                                    )
+
                                     val newBlurBitmap = resource.toBitmap(
-                                        (resource.intrinsicWidth * 0.3).toInt().takeIf { it >= 1 } ?: 1,
-                                        (resource.intrinsicHeight * 0.3).toInt().takeIf { it >= 1 } ?: 1
+                                        resource.intrinsicWidth,
+                                        resource.intrinsicHeight
                                     )
 
                                     NativeBlurFilter.iterativeBoxBlur(newBlurBitmap, 5, 1)
@@ -142,10 +155,16 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                                 }
                                 return
                             } else if (drawable.result is ColorDrawable) {
+//                                val newBlurBitmap = resource.toBitmap(
+//                                    (resource.intrinsicWidth * 0.3).toInt().takeIf { it >= 1 } ?: 1,
+//                                    (resource.intrinsicHeight * 0.3).toInt().takeIf { it >= 1 } ?: 1
+//                                )
+
                                 val newBlurBitmap = resource.toBitmap(
-                                    (resource.intrinsicWidth * 0.3).toInt().takeIf { it >= 1 } ?: 1,
-                                    (resource.intrinsicHeight * 0.3).toInt().takeIf { it >= 1 } ?: 1
+                                    resource.intrinsicWidth,
+                                    resource.intrinsicHeight
                                 )
+
 
                                 NativeBlurFilter.iterativeBoxBlur(newBlurBitmap, 8, 1)
                                 val finalDrawable =
@@ -170,7 +189,7 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
                         } catch (e: Exception) {
                             Timber.e(e, "Fresco Plugin Exception")
                         } finally {
-                            CloseableReference.closeSafely(it)
+                            dataSource.close()
                         }
                     }
                 }
@@ -183,46 +202,50 @@ class FrescoImagePlugin(private val frescoAsyncDrawableLoader: FrescoAsyncDrawab
         }
 
         override fun cancel(drawable: AsyncDrawable) {
-            if (closeableReferences.containsKey(drawable.destination)) {
-                closeableReferences[drawable.destination]!!.get()?.close()
-                closeableReferences.remove(drawable.destination)
-            }
+            closeableReferences[drawable.destination]?.get()?.close()
+            closeableReferences.remove(drawable.destination)
         }
 
 
         private fun createDrawable(closeableImage: CloseableImage): Drawable? {
             return when (closeableImage) {
                 is CloseableAnimatedImage -> {
-                    (Fresco.getImagePipelineFactory().getAnimatedDrawableFactory(context)?.createDrawable(
-                        closeableImage
-                    ) as? AnimatedDrawable2)?.let {
-                        val bitmap = closeableImage.imageResult.previewBitmap.get().copy(
-                            closeableImage.imageResult.previewBitmap.get().config,
-                            true
-                        )
-                        GifDrawable(
-                            context, Bitmap.createScaledBitmap(
-                                bitmap,
-                                (bitmap.width * 0.7).toInt().takeIf { it >= 1 } ?: 1,
-                                (bitmap.height * 0.7).toInt().takeIf { it >= 1 } ?: 1, false
-                            )
-                        )
+                    (Fresco.getImagePipelineFactory().getAnimatedDrawableFactory(context)
+                        ?.createDrawable(
+                            closeableImage
+                        ) as? AnimatedDrawable2)?.let {
+                        closeableImage.imageResult.previewBitmap.get()
+                            .let { it.copy(it.config, false) }.toDrawable(context.resources)
+//                        val bitmap = closeableImage.imageResult.previewBitmap.get().copy(
+//                            closeableImage.imageResult.previewBitmap.get().config,
+//                            true
+//                        )
+//                        GifDrawable(
+//                            context, Bitmap.createScaledBitmap(
+//                                bitmap,
+//                                (bitmap.width * 0.7).toInt().takeIf { it >= 1 } ?: 1,
+//                                (bitmap.height * 0.7).toInt().takeIf { it >= 1 } ?: 1, false
+//                            )
+//                        )
                     }
                 }
                 is CloseableStaticBitmap -> {
-                    val bitmap = closeableImage.underlyingBitmap.copy(
-                        closeableImage.underlyingBitmap.config,
-                        true
-                    )
-                    closeableImage.originalEncodedImageInfo
-                    closeableImage.originalEncodedImageInfo.callerContext
-                    BitmapDrawable(
-                        context.resources,
-                        Bitmap.createScaledBitmap(
-                            bitmap, (bitmap.width * 0.7).toInt().takeIf { it >= 1 } ?: 1,
-                            (bitmap.height * 0.7).toInt().takeIf { it >= 1 } ?: 1, false
-                        )
-                    )
+                    closeableImage.underlyingBitmap.let { it.copy(it.config, false) }
+                        .toDrawable(context.resources)
+//                    val bitmap = closeableImage.underlyingBitmap.copy(
+//                        closeableImage.underlyingBitmap.config,
+//                        true
+//                    )
+//                    bitmap
+//                    closeableImage.originalEncodedImageInfo
+//                    closeableImage.originalEncodedImageInfo.callerContext
+//                    BitmapDrawable(
+//                        context.resources,
+//                        Bitmap.createScaledBitmap(
+//                            bitmap, (bitmap.width * 0.7).toInt().takeIf { it >= 1 } ?: 1,
+//                            (bitmap.height * 0.7).toInt().takeIf { it >= 1 } ?: 1, false
+//                        )
+//                    )
                 }
                 else -> {
                     null

@@ -12,7 +12,6 @@ import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.observe
 import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Adapter
 import com.paulrybitskyi.persistentsearchview.adapters.model.SuggestionItem
@@ -271,6 +270,7 @@ class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
             MediaTagFilterTypes.TAGS -> invalidateTagFilter(event.tagFields)
             MediaTagFilterTypes.GENRES -> invalidateGenreFilter(event.tagFields)
             MediaTagFilterTypes.STREAMING_ON -> invalidateStreamFilter(event.tagFields)
+            else->{}
         }
     }
 
@@ -329,6 +329,8 @@ class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
             MediaTagFilterTypes.STREAMING_ON -> {
                 viewModel.streamTagFields = tags.toMutableList()
             }
+            else->{}
+
         }
 
     }
@@ -344,6 +346,8 @@ class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
             MediaTagFilterTypes.STREAMING_ON -> {
                 viewModel.streamTagFields.removeAll { it.tag == tag }
             }
+            else->{}
+
         }
     }
 
@@ -358,6 +362,8 @@ class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
             MediaTagFilterTypes.STREAMING_ON -> {
                 binding.browseFilterNavView.invalidateStreamAdapter(tagAdapter)
             }
+            else->{}
+
         }
     }
 
@@ -374,7 +380,7 @@ class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
         if (binding.rootDrawerLayout.isDrawerOpen(GravityCompat.END)) {
             binding.rootDrawerLayout.closeDrawer(GravityCompat.END)
         }
-        binding.browseFilterNavView.getFilter()?.let {
+        binding.browseFilterNavView.getFilter().let {
             viewModel.searchQuery = it.query!!
             binding.persistentSearchView.inputQuery = viewModel.searchQuery
             BrowseFilterAppliedEvent(it).postSticky
@@ -382,7 +388,7 @@ class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
     }
 
     private fun search() {
-        binding.browseFilterNavView.getFilter()?.let {
+        binding.browseFilterNavView.getFilter().let {
             it.query = viewModel.searchQuery
             BrowseFilterAppliedEvent(it).postSticky
         }

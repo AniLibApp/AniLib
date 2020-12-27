@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.AboutActivity
 import com.revolgenx.anilib.activity.ContainerActivity
@@ -64,7 +63,7 @@ class SettingFragment : BaseToolbarFragment() {
             )
         }
 
-        adultContentPrefCardView.visibility = if(isStudioFlavor()) View.VISIBLE else View.GONE
+        adultContentPrefCardView.visibility = if(userEnabledAdultContent(requireContext())) View.VISIBLE else View.GONE
 
         aboutItemView.setOnClickListener {
             startActivity(Intent(requireContext(), AboutActivity::class.java))

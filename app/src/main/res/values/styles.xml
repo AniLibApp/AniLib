@@ -19,34 +19,23 @@
     </style>
 
     <style name="ExpandedTitleAppearance" parent="Widget.AppCompat.TextView">
-        <item name="android:textSize">17sp</item>
-        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@android:color/transparent</item>
         <item name="android:visibility">gone</item>
-        <item name="android:shadowColor">@color/black</item>
-        <item name="android:shadowRadius">2</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowDx">1</item>
-        <item name="fontFamily">@font/open_sans_semi_bold</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">0.1sp</item>
     </style>
 
 
     <style name="CollapsedTitleAppearance" parent="TextAppearance.DynamicApp.Toolbar">
-        <item name="fontFamily">@font/berlinrounded_extra_bold</item>
+        <item name="fontFamily">@font/cabin_semi_bold</item>
     </style>
 
     <style name="DynamicToolbarTitleTheme" parent="TextAppearance.DynamicApp.Toolbar">
-        <item name="fontFamily">@font/berlinrounded_extra_bold</item>
+        <item name="fontFamily">@font/cabin_semi_bold</item>
     </style>
 
     <style name="DynamicToolbarSubTitleTheme" parent="TextAppearance.DynamicApp.Toolbar">
-        <item name="fontFamily">@font/berlinrounded_regular</item>
+        <item name="fontFamily">@font/cabin_regular</item>
         <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="BottomNavigationTextAppearance" parent="TextAppearance">
-        <item name="fontFamily">@font/berlinrounded_regular</item>
-        <item name="android:textSize">@dimen/bottom_navigation_text_size</item>
     </style>
 
 
@@ -56,7 +45,7 @@
     </style>
 
 
-    <style name="titleFontStyle">
+    <style name="TitleFontStyle">
         <item name="fontFamily">@font/cabin_semi_bold</item>
     </style>
 
@@ -68,66 +57,21 @@
         <item name="tabIndicatorHeight">1dp</item>
     </style>
 
-
-    <style name="DynamicIconDslTabLayoutStyle">
-        <item name="android:layout_height">@dimen/toolbar_size</item>
-        <item name="android:layout_width">match_parent</item>
+    <style name="DynamicTextTabLayoutStyle.Background">
+        <item name="ads_backgroundColorType">background</item>
+        <item name="ads_colorType">accent</item>
+        <item name="ads_textColorType">text_primary</item>
+        <item name="ads_contrastWithColorType">background</item>
     </style>
 
-    <style name="DynamicDslTabOptionStyle" parent="AppWidget.DynamicApp.Image.Action">
+    <style name="SubTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="TabOptionMenuStyle" parent="AppWidget.DynamicApp.Image.Action">
         <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_marginEnd">10dp</item>
     </style>
-
-    <style name="DynamicChipDslTabLayoutStyle">
-        <item name="android:layout_height">40dp</item>
-        <item name="android:layout_width">match_parent</item>
-    </style>
-
-    <style name="DslTabLayoutTextStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">18sp</item>
-        <item name="fontFamily">@font/cabincondensed_medium</item>
-        <item name="android:paddingStart">10dp</item>
-        <item name="android:paddingEnd">10dp</item>
-    </style>
-
-    <style name="DslTabLayoutChipStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">14sp</item>
-        <item name="fontFamily">@font/cabincondensed_medium</item>
-        <item name="android:paddingStart">10dp</item>
-        <item name="android:paddingEnd">10dp</item>
-    </style>
-
-
-    <style name="DslWeekTabStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">18sp</item>
-        <item name="fontFamily">@font/cabincondensed_medium</item>
-        <item name="android:paddingStart">10dp</item>
-        <item name="android:paddingEnd">10dp</item>
-    </style>
-
-
-
-    <style name="DslTabLayoutIconStyle">
-        <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">24dp</item>
-        <item name="android:padding">10dp</item>
-    </style>
-
-    <style name="FilterHeaderStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">?actionBarSize</item>
-    </style>
-
 
     <style name="FilterHeaderKeyTextStyle">
         <item name="android:layout_width">wrap_content</item>
@@ -154,7 +98,7 @@
         <item name="android:layout_marginEnd">8dp</item>
     </style>
     
-    <style name="DiscoverCardViewContainerStyle">
+    <style name="DiscoverRecyclerContainerStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/discover_recycler_height</item>
         <item name="android:layout_marginTop">10dp</item>
@@ -162,21 +106,15 @@
     </style>
 
 
-    <style name="DiscoverHeaderStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="RadioHeaderTextStyle">
         <item name="fontFamily">@font/cabin_semi_bold</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_marginEnd">10dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
     </style>
 
-    <style name="DiscoverHeaderButtonStyle">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:padding">10dp</item>
-        <item name="ads_colorType">text_primary</item>
-    </style>
+
 
 </resources>

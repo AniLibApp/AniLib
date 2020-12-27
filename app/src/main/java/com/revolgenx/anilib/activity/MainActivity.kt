@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.activity
 
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
@@ -11,20 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
-import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.SharedElementCallback
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.core.view.forEachIndexed
 import androidx.core.view.iterator
 import androidx.viewpager.widget.ViewPager
-import com.angcyo.tablayout.delegate.ViewPager1Delegate
 import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Adapter
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
@@ -33,7 +28,6 @@ import com.revolgenx.anilib.ui.dialog.*
 import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.data.field.TagChooserField
 import com.revolgenx.anilib.data.field.TagField
-import com.revolgenx.anilib.ui.fragment.settings.SettingFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.ui.fragment.notification.NotificationFragment
 import com.revolgenx.anilib.data.meta.UserMeta
@@ -41,14 +35,15 @@ import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.databinding.ActivityMainBinding
-import com.revolgenx.anilib.ui.fragment.home.DiscoverContainerFragment
-import com.revolgenx.anilib.ui.fragment.list.ListContainerFragment
+import com.revolgenx.anilib.radio.ui.fragments.RadioFragment
+import com.revolgenx.anilib.ui.fragment.home.discover.DiscoverContainerFragment
+import com.revolgenx.anilib.ui.fragment.home.list.ListContainerFragment
+import com.revolgenx.anilib.ui.fragment.home.profile.ProfileFragment
+import com.revolgenx.anilib.ui.fragment.home.profile.UserLoginFragment
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
 import com.revolgenx.anilib.ui.viewmodel.MainActivityViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.nav_header_layout.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -60,7 +55,7 @@ import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
-    BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener {
+    BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener, EventBusListener {
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
@@ -86,6 +81,18 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private val listContainerFragment by lazy {
         ListContainerFragment()
+    }
+
+    private val radioFragment by lazy {
+        RadioFragment()
+    }
+
+    private val profileFragment by lazy {
+        ProfileFragment()
+    }
+
+    private val loginFragment by lazy {
+        UserLoginFragment()
     }
 
     override fun bindView(inflater: LayoutInflater, parent: ViewGroup?): ActivityMainBinding {
@@ -132,16 +139,32 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         if (loggedIn()) {
             pagerFragments.add(listContainerFragment)
         }
+        pagerFragments.add(radioFragment)
+
+        if (loggedIn()) {
+            pagerFragments.add(profileFragment)
+        } else {
+            pagerFragments.add(loginFragment)
+        }
 
         val pagerAdapter = makePagerAdapter(pagerFragments)
-        binding.mainViewPager.adapter = pagerAdapter
-        binding.mainViewPager.offscreenPageLimit = 3
+        mainViewPager.adapter = pagerAdapter
+        mainViewPager.offscreenPageLimit = pagerAdapter.count - 1
 
 
-        binding.mainBottomNavView.setOnNavigationItemSelectedListener {
+        mainBottomNavView.setOnNavigationItemSelectedListener {
             mainBottomNavView.menu.forEachIndexed { index, item ->
                 if (it == item) {
-                    mainViewPager.setCurrentItem(index, true)
+                    val newIndex = if (loggedIn()) {
+                        index
+                    } else {
+                        if (index != 0) {
+                            index - 1
+                        } else {
+                            0
+                        }
+                    }
+                    mainViewPager.setCurrentItem(newIndex, true)
                 }
             }
             false
@@ -153,7 +176,16 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 mainBottomNavView.menu.iterator().forEach {
                     it.isChecked = false
                 }
-                mainBottomNavView.menu.getItem(position).isChecked = true
+                val newPosition = if (loggedIn()) {
+                    position
+                } else {
+                    if (position != 0) {
+                        position + 1
+                    } else {
+                        0
+                    }
+                }
+                mainBottomNavView.menu.getItem(newPosition).isChecked = true
             }
         })
 
@@ -176,193 +208,32 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private fun updateRightNavView() {
         val filter = BrowseFilterDataProvider.getBrowseFilterData(this) ?: return
-        mainBrowseFilterNavView.setFilter(filter, false)
+        binding.mainBrowseFilterNavView.setFilter(filter, false)
     }
 
     private fun silentFetchUserInfo() {
         if (loggedIn()) {
-            viewModel.getUserLiveData().observe(this, {
-                updateNavView()
-            })
+            viewModel.getUserLiveData()
         }
     }
 
-
-    @SuppressLint("RestrictedApi")
     private fun updateNavView() {
-        if (navView == null) return
+        binding.mainBottomNavView.menu.findItem(R.id.list_navigation_menu).isVisible = loggedIn()
+    }
 
-        if (!loggedIn()) {
-            simpleNavView()
-        } else {
-            navView.menu.findItem(R.id.navFeedId).isVisible = false
-            navView.menu.findItem(R.id.navAuth).title = getString(R.string.sign_out)
+    fun goToList(type: Int) {
+        binding.mainViewPager.setCurrentItem(1, false)
 
-            showListMenu(true)
-        }
-
-        if (isStudioFlavor()) {
-            navView.menu.findItem(R.id.stageVersion).isVisible = false
-        }
-
-        navView.getHeaderView(0).let { headerView ->
-            val userAvatar = userAvatar()
-            val userBanner = userBannerImage()
-            val userName = userName()
-
-            headerView.headerIconCardView.corner = dp(16f).toFloat()
-            if (userAvatar.isNullOrEmpty()) {
-                headerView.navHeaderIcon.setImageDrawable(
-                    AppCompatDrawableManager.get().getDrawable(
-                        context,
-                        R.drawable.ic_main_with_background
-                    )
-                )
-
-            } else {
-                headerView.navHeaderIcon.setImageURI(userAvatar)
-            }
-
-            headerView.navHeaderIcon.setOnClickListener {
-                if (loggedIn()) {
-                    UserProfileActivity.openActivity(this, UserMeta(context.userId(), null, true))
-                } else {
-                    makeToast(R.string.please_log_in)
-                }
-            }
-
-            headerView.navHeaderIcon.hierarchy.let {
-                it.roundingParams =
-                    it.roundingParams?.setBorderColor(
-                        DynamicTheme.getInstance().get().tintAccentColor
-                    )
-            }
-
-            DynamicTheme.getInstance().get().primaryColorDark
-
-            headerView.navHeaderTitle.text = userName
-            headerView.navHeaderTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
-
-            if (!userBanner.isNullOrEmpty()) {
-                headerView.navHeaderBackground.setImageURI(userBanner)
-            }
-
-        }
+        (getViewPagerFragment(1) as? ListContainerFragment)?.goToListType(type)
     }
 
 
-    @SuppressLint("RestrictedApi")
-    private fun simpleNavView() {
-        navView.menu.findItem(R.id.navAuth).title =
-            getString(R.string.sign_in)
-
-        with(navView.menu) {
-            findItem(R.id.navFeedId).isVisible = false
-            findItem(R.id.navAnimeListId).isVisible = false
-            findItem(R.id.navMangaListId).isVisible = false
-        }
-
-        showListMenu(false)
-
-    }
-
-    private fun showListMenu(bool: Boolean) {
-        binding.mainBottomNavView.menu.findItem(R.id.list_navigation_menu).isVisible = bool
-    }
+    private fun getViewPagerFragment(pos: Int) =
+        supportFragmentManager.findFragmentByTag("android:switcher:${R.id.main_view_pager}:$pos")
 
 
     private fun initListener() {
-
-        navView.setNavigationItemSelectedListener {
-            val isClicked = when (it.itemId) {
-
-                R.id.navActivityId -> {
-                    makeToast(R.string.in_progress, icon = R.drawable.ic_planning)
-                    true
-                }
-                R.id.navSetting -> {
-                    ContainerActivity.openActivity(
-                        this,
-                        ParcelableFragment(SettingFragment::class.java, bundleOf())
-                    )
-                    true
-                }
-
-                R.id.stageVersion -> {
-                    BrowseSiteEvent().postEvent
-                    true
-                }
-
-//                R.id.navMangaListId -> {
-//                    navigateToMangaList(
-//                        mediaListMeta(MediaType.MANGA.ordinal)
-//                    )
-//                    true
-//                }
-
-                R.id.navAuth -> {
-                    if (loggedIn()) {
-                        context.logOut()
-                        SessionEvent(false).postEvent
-                        startActivity(Intent(this.context, MainActivity::class.java).apply {
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        })
-                        finish()
-                    } else {
-                        AuthenticationDialog.newInstance()
-                            .show(supportFragmentManager, authDialogTag)
-                        val serviceConfiguration =
-                            AuthorizationServiceConfiguration(
-                                Uri.parse(BuildConfig.anilistAuthEndPoint) /* auth endpoint */,
-                                Uri.parse(BuildConfig.anilistTokenEndPoint) /* token endpoint */
-                            )
-
-                        val clientId = BuildConfig.anilistclientId
-                        val redirectUri = Uri.parse(BuildConfig.anilistRedirectUri)
-                        val builder = AuthorizationRequest.Builder(
-                            serviceConfiguration,
-                            clientId,
-                            ResponseTypeValues.CODE,
-                            redirectUri
-                        )
-                        val request = builder.build()
-                        val authorizationService = AuthorizationService(this)
-
-                        val postAuthorizationIntent = Intent(this, MainActivity::class.java)
-                            .also {
-                                it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                                it.putExtra(authIntent, authorizationExtra)
-                            }
-                        val pendingIntent = PendingIntent.getActivity(
-                            this,
-                            0,
-                            postAuthorizationIntent,
-                            0
-                        )
-                        launch(Dispatchers.IO) {
-                            authorizationService.performAuthorizationRequest(request, pendingIntent)
-                        }
-                    }
-                    true
-                }
-
-                R.id.checkUpdate -> {
-                    checkForUpdate(true)
-                    true
-                }
-                R.id.discordMenu -> {
-                    openLink(getString(R.string.discord_invite_link))
-                    true
-                }
-                else -> false
-
-
-            }
-            closeNavDrawer()
-            isClicked
-        }
-
-        mainBrowseFilterNavView.setNavigationCallbackListener(this)
+        binding.mainBrowseFilterNavView.setNavigationCallbackListener(this)
 
         /**problem with transition
          * {@link https://github.com/facebook/fresco/issues/1445}*/
@@ -458,11 +329,59 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
 
     @Subscribe
+    fun signInEvent(event: AuthenticateEvent) {
+        if (loggedIn()) {
+            context.logOut()
+            SessionEvent(false).postEvent
+            startActivity(Intent(this.context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
+            finish()
+        } else {
+            AuthenticationDialog.newInstance()
+                .show(supportFragmentManager, authDialogTag)
+            val serviceConfiguration =
+                AuthorizationServiceConfiguration(
+                    Uri.parse(BuildConfig.anilistAuthEndPoint) /* auth endpoint */,
+                    Uri.parse(BuildConfig.anilistTokenEndPoint) /* token endpoint */
+                )
+
+            val clientId = BuildConfig.anilistclientId
+            val redirectUri = Uri.parse(BuildConfig.anilistRedirectUri)
+            val builder = AuthorizationRequest.Builder(
+                serviceConfiguration,
+                clientId,
+                ResponseTypeValues.CODE,
+                redirectUri
+            )
+            val request = builder.build()
+            val authorizationService = AuthorizationService(this)
+
+            val postAuthorizationIntent = Intent(this, MainActivity::class.java)
+                .also {
+                    it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    it.putExtra(authIntent, authorizationExtra)
+                }
+            val pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                postAuthorizationIntent,
+                0
+            )
+            launch(Dispatchers.IO) {
+                authorizationService.performAuthorizationRequest(request, pendingIntent)
+            }
+        }
+    }
+
+    @Subscribe
     fun onTagEvent(event: TagEvent) {
         when (event.tagType) {
             MediaTagFilterTypes.TAGS -> invalidateTagFilter(event.tagFields)
             MediaTagFilterTypes.GENRES -> invalidateGenreFilter(event.tagFields)
             MediaTagFilterTypes.STREAMING_ON -> invalidateStreamFilter(event.tagFields)
+            else -> {
+            }
         }
     }
 
@@ -486,7 +405,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private fun invalidateStreamFilter(list: List<TagField>) {
         viewModel.streamTagFields = list.toMutableList()
-        mainBrowseFilterNavView.buildStreamAdapter(
+        binding.mainBrowseFilterNavView.buildStreamAdapter(
             tagAdapter,
             list
         )
@@ -494,7 +413,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private fun invalidateGenreFilter(list: List<TagField>) {
         viewModel.genreTagFields = list.toMutableList()
-        mainBrowseFilterNavView.buildGenreAdapter(
+        binding.mainBrowseFilterNavView.buildGenreAdapter(
             tagAdapter,
             list
         )
@@ -502,7 +421,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private fun invalidateTagFilter(list: List<TagField>) {
         viewModel.tagTagFields = list.toMutableList()
-        mainBrowseFilterNavView.buildTagAdapter(
+        binding.mainBrowseFilterNavView.buildTagAdapter(
             tagAdapter,
             list
         )
@@ -528,6 +447,8 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             MediaTagFilterTypes.STREAMING_ON -> {
                 viewModel.streamTagFields = tags.toMutableList()
             }
+            else -> {
+            }
         }
 
     }
@@ -543,19 +464,23 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             MediaTagFilterTypes.STREAMING_ON -> {
                 viewModel.streamTagFields.removeAll { it.tag == tag }
             }
+            else -> {
+            }
         }
     }
 
     override fun updateTags(tagType: MediaTagFilterTypes) {
         when (tagType) {
             MediaTagFilterTypes.TAGS -> {
-                mainBrowseFilterNavView.invalidateTagAdapter(tagAdapter)
+                binding.mainBrowseFilterNavView.invalidateTagAdapter(tagAdapter)
             }
             MediaTagFilterTypes.GENRES -> {
-                mainBrowseFilterNavView.invalidateGenreAdapter(tagAdapter)
+                binding.mainBrowseFilterNavView.invalidateGenreAdapter(tagAdapter)
             }
             MediaTagFilterTypes.STREAMING_ON -> {
-                mainBrowseFilterNavView.invalidateStreamAdapter(tagAdapter)
+                binding.mainBrowseFilterNavView.invalidateStreamAdapter(tagAdapter)
+            }
+            else -> {
             }
         }
     }
@@ -566,7 +491,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
     override fun applyFilter() {
-        mainBrowseFilterNavView.getFilter().let {
+        binding.mainBrowseFilterNavView.getFilter().let {
             BrowseFilterDataProvider.setBrowseFilterData(context, it)
             SearchActivity.openActivity(
                 this, it

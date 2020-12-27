@@ -76,8 +76,8 @@ class NavViewPagerContainerActivity : BaseDynamicActivity<NavViewPagerContainerA
             }
 
             override fun onPageSelected(position: Int) {
-                dynamicSmartTab.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
-                dynamicSmartTab.getTabAt(position).tabTextTv.visibility = View.VISIBLE
+                base_dynamic_smart_tab.getTabs().forEach { it.tab_text_tv.visibility = View.GONE }
+                base_dynamic_smart_tab.getTabAt(position).tab_text_tv.visibility = View.VISIBLE
             }
         }
     }
@@ -97,7 +97,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity<NavViewPagerContainerA
         setSupportActionBar(dynamicToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        dynamicSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
+        base_dynamic_smart_tab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
 
         viewPagerMeta = intent.getParcelableExtra(NavViewPagerContainerMetaKey) ?: return
         prepareViews(viewPagerMeta)
@@ -105,7 +105,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity<NavViewPagerContainerA
         navViewPager.addOnPageChangeListener(pageChangeListener)
         navViewPager.adapter = ViewPagerContainerAdapter()
         navViewPager.offscreenPageLimit = viewPagerParcelableFragments.clzzes.size - 1
-        dynamicSmartTab.setViewPager(navViewPager, null)
+        base_dynamic_smart_tab.setViewPager(navViewPager, null)
         navViewPager.setCurrentItem(0, false)
         navViewPager.post {
             pageChangeListener.onPageSelected(navViewPager.currentItem)
@@ -183,7 +183,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity<NavViewPagerContainerA
         when (containerType) {
             NavViewPagerContainerType.ANIME_STATS -> {
                 val inflater = LayoutInflater.from(this)
-                dynamicSmartTab.setCustomTabView { container, position, adapter ->
+                base_dynamic_smart_tab.setCustomTabView { container, position, _ ->
                     val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
                     when (position) {
                         0 -> {
@@ -212,7 +212,7 @@ class NavViewPagerContainerActivity : BaseDynamicActivity<NavViewPagerContainerA
             }
             NavViewPagerContainerType.MANGA_STATS -> {
                 val inflater = LayoutInflater.from(this)
-                dynamicSmartTab.setCustomTabView { container, position, adapter ->
+                base_dynamic_smart_tab.setCustomTabView { container, position, _ ->
                     val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
                     when (position) {
                         0 -> {
@@ -237,11 +237,11 @@ class NavViewPagerContainerActivity : BaseDynamicActivity<NavViewPagerContainerA
     }
 
     private fun createTabView(view: View, @DrawableRes src: Int, @StringRes str: Int): View {
-        view.tabImageView.imageTintList = tabColorStateList
-        view.tabImageView.setImageResource(src)
-        view.tabTextTv.text = getString(str)
+        view.tab_image_view.imageTintList = tabColorStateList
+        view.tab_image_view.setImageResource(src)
+        view.tab_text_tv.text = getString(str)
         view.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
-        view.tabTextTv.setTextColor(accentColor)
+        view.tab_text_tv.setTextColor(accentColor)
         return view
     }
 

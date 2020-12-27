@@ -27,7 +27,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.RecommendationRating
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
-import com.revolgenx.anilib.ui.viewmodel.home.RecommendationViewModel
+import com.revolgenx.anilib.ui.viewmodel.home.recommendation.RecommendationViewModel
 import kotlinx.android.synthetic.main.recommendation_presenter_layout.view.*
 
 class RecommendationPresenter(
@@ -197,6 +197,7 @@ class RecommendationPresenter(
                                         context.makeToast(R.string.operation_failed)
                                     }
                                 }
+                                else->{}
                             }
                         }
                     }
@@ -231,6 +232,7 @@ class RecommendationPresenter(
                                 Status.ERROR -> {
                                     context.makeToast(R.string.operation_failed)
                                 }
+                                else->{}
                             }
                         }
                     }
