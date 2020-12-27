@@ -27,7 +27,7 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/mangaCharacterNameTv"
-            style="@style/titleFontStyle"
+            style="@style/TitleFontStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"

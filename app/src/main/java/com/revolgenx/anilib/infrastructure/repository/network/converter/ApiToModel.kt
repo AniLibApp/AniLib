@@ -15,6 +15,9 @@ import kotlinx.coroutines.runBlocking
 fun <T : CommonMediaModel> NarrowMediaContent.getCommonMedia(model: T): T {
     model.mediaId = id()
     model.title = title()?.fragments()?.mediaTitle()?.toModel()
+    model.description = description() ?: ""
+    model.popularity = popularity()
+    model.favourites = favourites()
     model.format = format()?.ordinal
     model.type = type()?.ordinal
     model.episodes = episodes()?.toString()
@@ -65,7 +68,6 @@ fun <T : CommonMediaModel> CommonMediaContent.getCommonMedia(model: T): T {
 }
 
 
-
 fun BasicMediaContent.toBasicMediaContent() = CommonMediaModel().also { media ->
     media.mediaId = id()
     media.title = title()?.fragments()?.mediaTitle()?.toModel()
@@ -101,6 +103,7 @@ fun BasicUserQuery.User.toBasicUserModel() = UserPrefModel().also {
             img.medium = avatar()!!.medium()
         }
     }
+    it.displayAdultContent = options()?.displayAdultContent()
     it.bannerImage = bannerImage() ?: ""
 }
 

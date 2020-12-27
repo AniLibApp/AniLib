@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.observe
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
@@ -38,7 +37,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 //todo: add piechart in distribution
 class StatsOverviewFragment : BaseFragment() {
     companion object {
-        const val USER_STATS_PARCEL_KEY = "ANIME_STATS_PARCEL_KEY"
+        const val USER_STATS_PARCEL_KEY = "USER_STATS_PARCEL_KEY"
     }
 
     private val viewModel by viewModel<StatsOverviewViewModel>()
@@ -136,7 +135,7 @@ class StatsOverviewFragment : BaseFragment() {
             }
 
             meanScore?.let {
-                statsMeanScoreTv.title = it.toString()
+                stats_mean_score_tv.title = it.toString()
             }
 
             updateScoreChart()

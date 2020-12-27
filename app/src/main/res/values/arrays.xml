@@ -85,4 +85,13 @@
         <item>@drawable/ic_media_list</item>
     </array>
 
+
+    <array name="station_more_action_icons">
+        <item>@drawable/ic_favourite</item>
+    </array>
+
+    <array name="favourite_station_more_action_icons">
+        <item>@drawable/ic_not_favourite</item>
+    </array>
+
 </resources>

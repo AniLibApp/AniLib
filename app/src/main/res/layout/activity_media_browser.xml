@@ -8,7 +8,7 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/dynamicSmartTab">
+        android:layout_above="@+id/dynamic_smart_tab">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
             android:id="@+id/appbarLayout"
@@ -17,116 +17,134 @@
             app:expanded="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/mediaBrowserCollapsingToolbar"
+                android:id="@+id/media_browser_collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
-                app:expandedTitleMarginBottom="155dp"
-                app:expandedTitleMarginStart="160dp"
                 app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
-                app:layout_scrollFlags="scroll|snap|enterAlways|enterAlwaysCollapsed"
-                app:maxLines="2">
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
-                    app:layout_collapseMode="parallax">
+                    app:layout_collapseMode="none">
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/mediaBrowserBannerImage"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_height="160dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:background="@drawable/transparent_gradient_background_black"
-                        app:layout_constraintBottom_toBottomOf="@id/mediaBrowserBannerImage"
-                        app:layout_constraintTop_toTopOf="@id/mediaBrowserBannerImage" />
 
 
                     <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/mediaBrowserCoverImage"
+                        android:id="@+id/media_browser_cover_image"
                         android:layout_width="120dp"
                         android:layout_height="175dp"
-                        android:layout_marginStart="16dp"
                         android:transitionName="media_cover_transition"
                         app:layout_constraintBottom_toBottomOf="@id/mediaBrowserBannerImage"
                         app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/mediaBrowserBannerImage"
                         app:roundAsCircle="false"
                         app:roundedCornerRadius="4dp" />
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                        android:id="@+id/mediaAddButton"
+                        android:id="@+id/media_title_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        app:layout_constraintBottom_toTopOf="@id/media_add_container_layout"
+                        android:textSize="18sp"
+                        app:ads_rtlSupport="false"
+                        app:fontFamily="@font/cabin_bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/media_browser_cover_image" />
+
+
+                    <LinearLayout
+                        android:id="@+id/media_add_container_layout"
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_height="42dp"
+                        android:layout_marginBottom="16dp"
                         android:background="@drawable/stroke_background"
-                        android:drawablePadding="3dp"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:text="@string/add"
-                        app:fontFamily="@font/berlinrounded_extra_bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/mediaBrowserCoverImage"
-                        app:layout_constraintEnd_toStartOf="@+id/mediaReviewButton"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintHorizontal_chainStyle="packed"
-                        app:layout_constraintStart_toEndOf="@+id/mediaBrowserCoverImage"
-                        app:layout_constraintTop_toBottomOf="@+id/mediaBrowserBannerImage"
-                        app:layout_constraintVertical_bias="0.36" />
-
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                        android:id="@+id/mediaReviewButton"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@drawable/stroke_background"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_review"
-                        app:ads_colorType="tint_surface"
-                        app:layout_constraintBottom_toBottomOf="@+id/mediaAddButton"
-                        app:layout_constraintDimensionRatio="1:1"
-                        app:layout_constraintEnd_toStartOf="@+id/mediaFavButton"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/mediaAddButton"
-                        app:layout_constraintTop_toTopOf="@+id/mediaAddButton" />
-
-
-                    <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
-                        android:id="@+id/mediaFavButton"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@drawable/stroke_background"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_not_favourite"
-                        app:ads_colorType="tint_surface"
-                        app:layout_constraintBottom_toBottomOf="@+id/mediaReviewButton"
-                        app:layout_constraintDimensionRatio="1:1"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/mediaReviewButton"
-                        app:layout_constraintTop_toTopOf="@+id/mediaReviewButton" />
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/media_title_tv">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            android:id="@+id/media_add_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/add"
+                            android:textSize="14sp"
+                            android:background="@drawable/ads_button_remote"
+                            app:fontFamily="@font/cabin_semi_bold" />
+
+                        <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
+                            android:id="@+id/media_add_more_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            app:ads_colorType="text_primary"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            app:entries="@array/media_list_status"
+                            android:background="@drawable/ads_button_remote"
+                            app:srcCompat="@drawable/ads_ic_more_horizontal" />
+
+                        <View
+                            android:layout_width="0.5dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginBottom="4dp"
+                            android:background="@color/translucent_gray" />
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:id="@+id/media_review_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:src="@drawable/ic_review"
+                            app:ads_colorType="text_primary"
+                            android:background="@drawable/ads_button_remote"/>
+
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:id="@+id/media_fav_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_not_favourite"
+                            app:ads_colorType="text_primary"
+                            android:background="@drawable/ads_button_remote" />
+
+                    </LinearLayout>
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+
                 <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
-                    android:id="@+id/mediaBrowserToolbar"
+                    android:id="@+id/media_browser_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
-                    app:contentInsetRight="0dp"
-                    app:contentInsetStart="0dp"
                     app:contentInsetEnd="0dp"
                     app:contentInsetLeft="0dp"
+                    app:contentInsetRight="0dp"
+                    app:contentInsetStart="0dp"
                     app:contentInsetStartWithNavigation="0dp"
                     app:layout_collapseMode="pin" />
 
@@ -144,6 +162,7 @@
     </com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout>
 
     <include
-        layout="@layout/custom_bottom_navigation_view"/>
+        android:id="@+id/dynamic_smart_tab"
+        layout="@layout/custom_bottom_navigation_view" />
 
 </RelativeLayout>

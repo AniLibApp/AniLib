@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".app.App"
@@ -92,6 +93,12 @@
         <activity android:name=".activity.NavViewPagerContainerActivity" />
         <activity android:name=".activity.ToolbarContainerActivity" />
         <activity android:name=".activity.AboutActivity" />
+
+        <service android:name=".radio.service.RadioService">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"

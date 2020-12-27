@@ -52,7 +52,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
     companion object {
         const val CHANNEL_ID = "com.revolgenx.anilib.notification.CHANNEL_ID"
-        const val CHANNEL_NAME = "AniLibChannel"
+        const val CHANNEL_NAME = "AniLib"
         const val NOTIFICATION_ID = 102020
 
         const val NOTIFICATION_WORKER_TAG = "ANILIB_NOTIFICATION_WORKER_TAG"

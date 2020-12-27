@@ -29,7 +29,7 @@ import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.common.preference.setMediaListGridPresenter
 import com.revolgenx.anilib.databinding.MediaListActivityLayoutBinding
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.ui.view.makePopupMenu
+import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
@@ -96,8 +96,8 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
 
 
             override fun onPageSelected(position: Int) {
-                dynamicSmartTab.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
-                dynamicSmartTab.getTabAt(position).tabTextTv.visibility = View.VISIBLE
+                base_dynamic_smart_tab.getTabs().forEach { it.tab_text_tv.visibility = View.GONE }
+                base_dynamic_smart_tab.getTabAt(position).tab_text_tv.visibility = View.VISIBLE
             }
         }
     }
@@ -138,7 +138,7 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
         setSupportActionBar(dynamicToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        dynamicSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
+        base_dynamic_smart_tab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
         statusBarColor = statusBarColor
 
         mediaListMeta = intent.getParcelableExtra(MEDIA_LIST_META_KEY) ?: return
@@ -155,7 +155,7 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
         }
 
         val inflater = LayoutInflater.from(this)
-        dynamicSmartTab.setCustomTabView { container, position, adapter ->
+        base_dynamic_smart_tab.setCustomTabView { container, position, _ ->
             val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
             when (position) {
                 0 -> {
@@ -185,7 +185,7 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
         mediaListViewPager.addOnPageChangeListener(pageChangeListener)
         mediaListViewPager.adapter = MediaListAdapter(mediaListFragment)
         mediaListViewPager.offscreenPageLimit = 5
-        dynamicSmartTab.setViewPager(mediaListViewPager, null)
+        base_dynamic_smart_tab.setViewPager(mediaListViewPager, null)
         mediaListViewPager.setCurrentItem(0, false)
         mediaListViewPager.post {
             pageChangeListener.onPageSelected(mediaListViewPager.currentItem)
@@ -246,18 +246,14 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
                 true
             }
             R.id.listDisplayModeMenu -> {
-                val popupMenu = makePopupMenu(
-                    R.menu.display_mode_menu,
-                    findViewById(R.id.listSearchMenu)
-                ) { menuItem ->
-
-                    setMediaListGridPresenter(menuItem.order)
+                makeArrayPopupMenu(
+                    findViewById(R.id.listSearchMenu),
+                    resources.getStringArray(R.array.list_display_modes),
+                    selectedPosition = getMediaListGridPresenter().ordinal
+                ) { _, _, index, _ ->
+                    setMediaListGridPresenter(index)
                     DisplayModeChangedEvent(DisplayTypes.MEDIA_LIST).postEvent
-                    true
                 }
-
-                popupMenu.menu.getItem(getMediaListGridPresenter()).isChecked = true
-                popupMenu.show()
                 true
             }
             android.R.id.home -> {
@@ -270,11 +266,11 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
 
 
     private fun createTabView(view: View, @DrawableRes src: Int, @StringRes str: Int): View {
-        view.tabImageView.imageTintList = tabColorStateList
-        view.tabImageView.setImageResource(src)
-        view.tabTextTv.text = getString(str)
+        view.tab_image_view.imageTintList = tabColorStateList
+        view.tab_image_view.setImageResource(src)
+        view.tab_text_tv.text = getString(str)
         view.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
-        view.tabTextTv.setTextColor(accentColor)
+        view.tab_text_tv.setTextColor(accentColor)
         return view
     }
 

@@ -134,7 +134,7 @@
     <string name="none">"لا شيء"</string>
     <string name="repeating">"التكرار"</string>
     <string name="spoiler_alert">"تنبيه بوجود سبويلر/حرق"</string>
-    <string name="error">"فشل التحميل"</string>
+    <string name="failed_to_load">"فشل التحميل"</string>
     <string name="follower">"متابِع"</string>
     <string name="following">"متابَع"</string>
     <string name="blocked">"حظر"</string>

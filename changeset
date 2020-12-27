@@ -11,6 +11,14 @@ discover_fragment_menu remove
 
 HomeOrderDialog remove
 ic_discover remove
+display_mode_menu remove
+
+navheaderlayout remove
+
+v-1.1.8
+front ui redesign for easy access.
+
+anime/manga list minimal round,minimal list, normal modes
 
 v-1.1.7
 

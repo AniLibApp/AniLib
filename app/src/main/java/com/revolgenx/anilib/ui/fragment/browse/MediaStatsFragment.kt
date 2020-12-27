@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -265,7 +264,7 @@ class MediaStatsFragment : BaseFragment() {
 
         val scores = data.scoreDistribution?.map { it.score!! } ?: emptyList()
 
-        listOfScores.mapIndexed { index, score ->
+        listOfScores.map { score ->
             if (scores.contains(score)) {
                 BarEntry(
                     score.toFloat(),

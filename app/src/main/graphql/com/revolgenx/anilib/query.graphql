@@ -620,6 +620,9 @@ query BasicUserQuery($id:Int){
             large
         }
         bannerImage
+        options{
+          displayAdultContent
+        }
         mediaListOptions{
             scoreFormat
             animeList{
@@ -669,6 +672,7 @@ query UserProfileQuery($name:String, $id:Int){
                 count
                 minutesWatched
                 meanScore
+                episodesWatched
                 genres{
                     count
                     genre
@@ -679,7 +683,7 @@ query UserProfileQuery($name:String, $id:Int){
                 count
                 chaptersRead
                 meanScore
-
+                volumesRead
                 genres{
                     count
                     genre
@@ -1529,6 +1533,7 @@ fragment narrowMediaContent on Media{
             ... mediaTitle
         }
     }
+    description(asHtml:true)
     isAdult
     format
     type
@@ -1541,6 +1546,8 @@ fragment narrowMediaContent on Media{
     chapters
     volumes
     duration
+    popularity
+    favourites
     startDate {
         ... on FuzzyDate{
             ... fuzzyDate

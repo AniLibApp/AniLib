@@ -1,9 +1,8 @@
 package com.revolgenx.anilib.data.field.search
 
 
-import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.MediaSearchQuery
-import com.revolgenx.anilib.common.preference.isStudioFlavor
+import com.revolgenx.anilib.common.preference.userEnabledAdultContent
 import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.constant.CountryOfOrigins
 import com.revolgenx.anilib.type.*
@@ -109,7 +108,7 @@ class MediaSearchField : SearchField() {
                     country(CountryOfOrigins.values()[it].name)
                 }
 
-                if (isStudioFlavor()) {
+                if (userEnabledAdultContent(context)) {
                     if (!canShowAdult) {
                         isAdult(canShowAdult)
                     }

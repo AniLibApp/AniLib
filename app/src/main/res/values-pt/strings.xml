@@ -134,7 +134,7 @@
     <string name="none">"Nada"</string>
     <string name="repeating">"Repetindo"</string>
     <string name="spoiler_alert">"Alerta de Spoiler"</string>
-    <string name="error">"Falha ao Carregar"</string>
+    <string name="failed_to_load">"Falha ao Carregar"</string>
     <string name="follower">"Seguidor"</string>
     <string name="following">"Seguindo"</string>
     <string name="blocked">"Bloqueado"</string>

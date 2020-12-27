@@ -26,6 +26,7 @@ import com.revolgenx.anilib.ui.dialog.DiscoverMediaListFilterDialog
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
 import com.revolgenx.anilib.databinding.DiscoverFragmentLayoutBinding
+import com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
 import com.revolgenx.anilib.util.dp
 
 abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutBinding>(),
@@ -104,7 +105,7 @@ abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutB
         }
 
 
-        val garlandTextView = DynamicTextView(requireContext()).also {
+        val garlandTextView = DynamicDrawableTextView(requireContext()).also {
             it.id = R.id.garlandTitleTv
             it.layoutParams =
                 ConstraintLayout.LayoutParams(
@@ -114,11 +115,9 @@ abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutB
             it.textSize = 16f
             it.typeface = ResourcesCompat.getFont(requireContext(), R.font.cabin_semi_bold)
             it.setPadding(dp(4f), dp(10f), dp(4f), dp(10f))
-            it.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                icon?.let { ContextCompat.getDrawable(requireContext(), it) },
-                null,
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_angle_right),
-                null
+            it.setDrawables(
+                icon,
+                R.drawable.ic_angle_right
             )
             it.compoundDrawablePadding = dp(6f)
             it.gravity = Gravity.CENTER_VERTICAL

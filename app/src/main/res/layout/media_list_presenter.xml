@@ -28,7 +28,8 @@
                 android:layout_height="match_parent"
                 android:transitionName="media_cover_transition"
                 app:roundAsCircle="false"
-                app:roundedCornerRadius="4dp" />
+                app:roundedCornerRadius="4dp"
+                app:actualImageScaleType="centerCrop"/>
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                 android:layout_width="wrap_content"
@@ -78,7 +79,6 @@
             android:lines="2"
             android:maxLines="2"
             android:textSize="12sp"
-            app:ads_colorType="tint_surface"
             app:layout_constraintLeft_toRightOf="@+id/mediaListImageContainer"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -141,7 +141,6 @@
             android:drawableStart="@drawable/ic_eye_16dp"
             android:drawablePadding="4dp"
             android:textSize="10sp"
-            app:ads_colorType="tint_surface"
             app:layout_constraintBottom_toBottomOf="@id/mediaListProgressIncrease"
             app:layout_constraintLeft_toRightOf="@+id/mediaListImageContainer"
             app:layout_constraintRight_toLeftOf="@+id/mediaListProgressIncrease"
@@ -155,7 +154,7 @@
             android:layout_height="26dp"
             android:background="?selectableItemBackground"
             android:padding="4dp"
-            app:ads_colorType="tint_surface"
+            app:ads_colorType="text_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:srcCompat="@drawable/ic_plus" />

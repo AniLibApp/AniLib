@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
@@ -140,7 +139,7 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
                         studioModel?.isFavourite = studioModel?.isFavourite?.not() ?: false
                         studioFavIv.setImageResource(
                             if (studioModel?.isFavourite == true) {
-                                R.drawable.ic_favorite
+                                R.drawable.ic_favourite
                             } else {
                                 R.drawable.ic_not_favourite
                             }
@@ -200,7 +199,7 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
         studioNameTv.text = item.studioName
         studioFavCountTv.text = item.favourites?.toString().naText()
         if (item.isFavourite) {
-            studioFavIv.setImageResource(R.drawable.ic_favorite)
+            studioFavIv.setImageResource(R.drawable.ic_favourite)
         }
     }
 

@@ -19,8 +19,7 @@ import com.revolgenx.anilib.databinding.BasePresenterFragmentLayoutBinding
  * BasePresenter class contains @property baseRecyclerView @property layoutManager
  *
  * */
-abstract class BasePresenterFragment<M : Any>() :
-    BaseLayoutFragment<BasePresenterFragmentLayoutBinding>() {
+abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment<BasePresenterFragmentLayoutBinding>() {
     abstract val basePresenter: Presenter<M>
     abstract val baseSource: Source<M>
 
@@ -29,9 +28,7 @@ abstract class BasePresenterFragment<M : Any>() :
     var adapter: Adapter? = null
 
     protected open val loadingPresenter: Presenter<Unit>
-        get() = Presenter.forLoadingIndicator(
-            requireContext(), R.layout.loading_layout
-        )
+        get() = Presenter.forLoadingIndicator(requireContext(), R.layout.loading_layout)
 
     private val errorPresenter: Presenter<Unit> by lazy {
         Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
@@ -46,35 +43,29 @@ abstract class BasePresenterFragment<M : Any>() :
 
     lateinit var layoutManager: RecyclerView.LayoutManager
 
-    open protected var portraitMinSpan = 1
-    open protected var portraitMaxSpan = 2
+    open protected var gridMinSpan = 1
+    open protected var gridMaxSpan = 2
 
-    override fun bindView(
-        inflater: LayoutInflater,
-        parent: ViewGroup?
-    ): BasePresenterFragmentLayoutBinding {
+    var span: Int = 0
+
+    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?): BasePresenterFragmentLayoutBinding {
         return BasePresenterFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val span =
-            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) portraitMaxSpan else portraitMinSpan
-        layoutManager =
-            GridLayoutManager(
-                this.context,
-                span
-            ).also {
-                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.getItemViewType(position) == 0) {
-                            1
-                        } else {
-                            span
-                        }
+        span = if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) gridMaxSpan else gridMinSpan
+        layoutManager = GridLayoutManager(this.context, span).also {
+            it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (adapter?.getItemViewType(position) == 0) {
+                        1
+                    } else {
+                        span
                     }
                 }
             }
+        }
 
     }
 
@@ -97,8 +88,7 @@ abstract class BasePresenterFragment<M : Any>() :
 
     override fun onResume() {
         super.onResume()
-        if (!visibleToUser)
-            invalidateAdapter()
+        if (!visibleToUser) invalidateAdapter()
         visibleToUser = true
     }
 
@@ -115,13 +105,7 @@ abstract class BasePresenterFragment<M : Any>() :
     }
 
     protected open fun adapterBuilder(): Adapter.Builder {
-        return Adapter.builder(this, 10)
-            .setPager(PageSizePager(10))
-            .addSource(baseSource)
-            .addPresenter(basePresenter)
-            .addPresenter(loadingPresenter)
-            .addPresenter(errorPresenter)
-            .addPresenter(emptyPresenter)
+        return Adapter.builder(this, 10).setPager(PageSizePager(10)).addSource(baseSource).addPresenter(basePresenter).addPresenter(loadingPresenter).addPresenter(errorPresenter).addPresenter(emptyPresenter)
     }
 
 }

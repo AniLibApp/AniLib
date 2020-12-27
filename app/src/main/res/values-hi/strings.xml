@@ -134,7 +134,7 @@
     <string name="none">"कोई भी नहीं"</string>
     <string name="repeating">"दोहराया गया"</string>
     <string name="spoiler_alert">"स्पॉइलर अलर्ट"</string>
-    <string name="error">"लोड करने में विफल"</string>
+    <string name="failed_to_load">"लोड करने में विफल"</string>
     <string name="follower">"फोल्लोवेर"</string>
     <string name="following">"फोल्लोवंग"</string>
     <string name="blocked">"अवरोधित"</string>

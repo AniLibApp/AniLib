@@ -136,7 +136,7 @@
     <string name="none">"Niguno"</string>
     <string name="repeating">"Repitiendo"</string>
     <string name="spoiler_alert">"Alerta de Spoiler"</string>
-    <string name="error">"No se pudo cargar"</string>
+    <string name="failed_to_load">"No se pudo cargar"</string>
     <string name="follower">"Seguidor"</string>
     <string name="following">"Siguiendo"</string>
     <string name="blocked">"Bloqueado"</string>

@@ -3,6 +3,10 @@ package com.revolgenx.anilib.ui.presenter.stats
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.viewbinding.ViewBinding
+import com.facebook.drawee.view.DraweeView
+import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
@@ -13,47 +17,70 @@ import com.revolgenx.anilib.data.meta.StaffMeta
 import com.revolgenx.anilib.data.meta.StudioMeta
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.data.model.user.stats.*
-import kotlinx.android.synthetic.main.image_stats_presenter_layout.view.*
-import kotlinx.android.synthetic.main.text_stats_general_layout.view.*
+import com.revolgenx.anilib.databinding.ImageStatsPresenterLayoutBinding
+import com.revolgenx.anilib.databinding.TextStatsPresenterLayoutBinding
+import com.revolgenx.anilib.ui.presenter.Constant.PRESENTER_BINDING_KEY
+import com.revolgenx.anilib.ui.view.header.HorizontalHeaderLayout
 
 class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0, 1)
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return if (elementType == 0)
-            Holder(
-                getLayoutInflater().inflate(
-                    R.layout.text_stats_presenter_layout,
-                    parent,
-                    false
-                ).also {
-                    it.statsMediaTv.compoundDrawablesRelative[0].setTint(DynamicTheme.getInstance().get().tintSurfaceColor)
-                }
+        return if (elementType == 0) {
+            val binding =
+                TextStatsPresenterLayoutBinding.inflate(getLayoutInflater(), parent, false)
+            binding.statsMediaTv.compoundDrawablesRelative[0].setTint(
+                DynamicTheme.getInstance().get().tintBackgroundColor
             )
-        else
-            Holder(
-                getLayoutInflater().inflate(
-                    R.layout.image_stats_presenter_layout,
-                    parent,
-                    false
-                ).also {
-                    it.statsMediaTv.compoundDrawablesRelative[0].setTint(DynamicTheme.getInstance().get().tintSurfaceColor)
-                }
+            Holder(binding.root).also {
+                it[PRESENTER_BINDING_KEY] = binding
+            }
+        } else {
+            val binding =
+                ImageStatsPresenterLayoutBinding.inflate(getLayoutInflater(), parent, false)
+            binding.statsMediaTv.compoundDrawablesRelative[0].setTint(
+                DynamicTheme.getInstance().get().tintBackgroundColor
             )
+            Holder(binding.root).also {
+                it[PRESENTER_BINDING_KEY] = binding
+            }
+        }
     }
 
 
     override fun onBind(page: Page, holder: Holder, element: Element<BaseStatsModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-        holder.itemView.apply {
-            this.updateCommonItem(item)
+        val binding: ViewBinding = holder[PRESENTER_BINDING_KEY] ?: return
+        val statsTitleTv: TextView
+        val statsMediaTv: TextView
+        val statsMediaLayout: View
+        var statsImageDraweeView: SimpleDraweeView? = null
+        if (element.type == 0 && binding is TextStatsPresenterLayoutBinding) {
+            statsTitleTv = binding.statsTitleTv
+            statsMediaTv = binding.statsMediaTv
+            statsMediaLayout = binding.statsMediaLayout
+            binding.updateCommonItem(item)
+
+        } else {
+            if (binding is ImageStatsPresenterLayoutBinding) {
+                statsTitleTv = binding.statsTitleTv
+                statsMediaTv = binding.statsMediaTv
+                statsMediaLayout = binding.statsMediaLayout
+                statsImageDraweeView = binding.imageSimpleDrawee
+                binding.updateCommonItem(item)
+            } else {
+                return
+            }
+        }
+
+        binding.apply {
             when (item) {
                 is StatsGenreModel -> {
                     item.genre?.let { genre ->
                         statsTitleTv.text = genre
-                        setOnClickListener { _ ->
+                        root.setOnClickListener { _ ->
                             BrowseGenreEvent(MediaSearchFilterModel().also {
                                 it.genre = listOf(genre.trim())
                             }).postEvent
@@ -67,7 +94,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                             MediaViewDialogEvent(item.mediaIds ?: emptyList()).postEvent;
                             return@setOnClickListener;
                         }
-                        setOnClickListener { _ ->
+                        root.setOnClickListener { _ ->
                             BrowseTagEvent(MediaSearchFilterModel().also {
                                 it.tags = listOf(tag.trim())
                             }).postEvent
@@ -77,7 +104,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                 is StatsStudioModel -> {
                     item.studio?.let {
                         statsTitleTv.text = it
-                        setOnClickListener {
+                        root.setOnClickListener {
                             BrowseStudioEvent(StudioMeta(item.baseId)).postEvent
                         }
                     }
@@ -87,7 +114,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                         statsTitleTv.text = it
                     }
                     item.baseId?.let {
-                        setOnClickListener { _ ->
+                        root.setOnClickListener { _ ->
                             BrowseStaffEvent(
                                 StaffMeta(
                                     it,
@@ -96,7 +123,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                             ).postEvent
                         }
                     }
-                    imageSimpleDrawee.setImageURI(item.image)
+                    statsImageDraweeView?.setImageURI(item.image)
                 }
                 is StatsStaffModel -> {
                     item.name?.let {
@@ -104,7 +131,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                     }
 
                     item.baseId?.let {
-                        setOnClickListener { _ ->
+                        root.setOnClickListener { _ ->
                             BrowseStaffEvent(
                                 StaffMeta(
                                     it,
@@ -113,7 +140,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                             ).postEvent
                         }
                     }
-                    imageSimpleDrawee.setImageURI(item.image)
+                    statsImageDraweeView?.setImageURI(item.image)
                 }
             }
 
@@ -126,7 +153,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
         }
     }
 
-    private fun View.updateCommonItem(item: BaseStatsModel) {
+    private fun TextStatsPresenterLayoutBinding.updateCommonItem(item: BaseStatsModel) {
         item.count?.let {
             statsCount.title = it.toString()
         }
@@ -141,6 +168,24 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
         item.chaptersRead?.let {
             statsTimeWatched.subtitle = context.getString(R.string.chapters_read)
             statsTimeWatched.title = it.toString()
+        }
+    }
+
+    private fun ImageStatsPresenterLayoutBinding.updateCommonItem(item: BaseStatsModel) {
+        item.count?.let {
+            statsCount.subtitle = it.toString()
+        }
+
+        item.meanScore?.let {
+            statsMeanScoreTv.subtitle = "$it%"
+        }
+
+        statsTimeWatched.subtitle =
+            context.getString(R.string.s_day_s_hour).format(item.day, item.hour)
+
+        item.chaptersRead?.let {
+            statsTimeWatched.title = context.getString(R.string.chapters_read)
+            statsTimeWatched.subtitle = it.toString()
         }
     }
 }

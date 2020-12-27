@@ -18,7 +18,7 @@
             android:layout_gravity="start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1.6"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.26">
 
@@ -53,7 +53,7 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/mediaTitleTv"
-            style="@style/titleFontStyle"
+            style="@style/TitleFontStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -64,8 +64,8 @@
             android:includeFontPadding="false"
             android:maxLines="2"
             android:textSize="13sp"
-            app:layout_constraintLeft_toRightOf="@+id/mediaImageLayout"
-            app:layout_constraintRight_toLeftOf="@+id/bookmarkIv"
+            app:layout_constraintStart_toEndOf="@+id/mediaImageLayout"
+            app:layout_constraintEnd_toStartOf="@+id/bookmarkIv"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -76,7 +76,7 @@
             android:background="?selectableItemBackground"
             android:padding="10dp"
             app:ads_colorType="text_primary"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_bookmark" />
 
@@ -86,8 +86,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="4dp"
-            app:layout_constraintLeft_toLeftOf="@+id/mediaTitleTv"
-            app:layout_constraintRight_toRightOf="@id/mediaTitleTv"
+            app:layout_constraintStart_toStartOf="@+id/mediaTitleTv"
+            app:layout_constraintEnd_toEndOf="@id/mediaTitleTv"
             app:layout_constraintTop_toBottomOf="@+id/mediaTitleTv" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -98,8 +98,8 @@
             android:includeFontPadding="false"
             android:maxLines="1"
             android:textSize="11sp"
-            app:layout_constraintLeft_toLeftOf="@+id/mediaTitleTv"
-            app:layout_constraintRight_toRightOf="@id/mediaTitleTv"
+            app:layout_constraintStart_toStartOf="@+id/mediaTitleTv"
+            app:layout_constraintEnd_toEndOf="@id/mediaTitleTv"
             app:layout_constraintTop_toBottomOf="@+id/mediaGenreLayout"
             tools:ignore="SmallSp" />
 
@@ -112,8 +112,8 @@
             android:layout_marginEnd="8dp"
             android:includeFontPadding="false"
             android:textSize="11sp"
-            app:layout_constraintLeft_toLeftOf="@id/mediaStatusTv"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@id/mediaStatusTv"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mediaStatusTv"
             tools:ignore="SmallSp" />
 
@@ -126,8 +126,8 @@
             android:layout_marginEnd="8dp"
             android:includeFontPadding="false"
             android:textSize="11sp"
-            app:layout_constraintLeft_toLeftOf="@id/mediaStartDateTv"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@id/mediaStartDateTv"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mediaStartDateTv"
             tools:ignore="SmallSp" />
 
@@ -141,8 +141,8 @@
             android:layout_marginEnd="8dp"
             android:includeFontPadding="false"
             app:textColorType="accent"
-            app:layout_constraintLeft_toLeftOf="@id/mediaEpisodeTv"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@id/mediaEpisodeTv"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mediaEpisodeTv"
             app:layout_constraintVertical_bias="0"
             app:textSize="11"
@@ -163,8 +163,8 @@
             app:ads_colorType="accent"
             app:fontFamily="@font/open_sans_semi_bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/mediaFormatTv"
-            app:layout_constraintRight_toLeftOf="@id/entryProgressTv"
+            app:layout_constraintStart_toStartOf="@+id/mediaFormatTv"
+            app:layout_constraintEnd_toStartOf="@id/entryProgressTv"
             app:layout_constraintTop_toBottomOf="@+id/mediaFormatTv"
             app:layout_constraintVertical_bias="0.7"
             app:layout_goneMarginEnd="4dp"
@@ -182,7 +182,7 @@
             android:visibility="visible"
             app:drawableStartCompat="@drawable/ic_eye_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mediaFormatTv"
             app:layout_constraintVertical_bias="0.7" />
 

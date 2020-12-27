@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/options_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/app_name"
+            android:textSize="16sp"
+            app:fontFamily="@font/cabin_semi_bold"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/setting_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ads_button_remote"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_settings"
+            app:ads_title="@string/settings" />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/update_check_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ads_button_remote"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_update"
+            app:ads_title="@string/check_for_update" />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/discord_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ads_button_remote"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_discord"
+            app:ads_title="@string/discord" />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/translate_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ads_button_remote"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ads_ic_translate"
+            app:ads_title="@string/translate" />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/sign_in_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ads_button_remote"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_person"
+            app:ads_title="@string/sign_in" />
+
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -23,14 +23,15 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             style="@style/FilterHeaderKeyTextStyle"
             android:text="@string/sort"
-            android:paddingStart="0dp"/>
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"/>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
             android:id="@+id/recommendation_sort_spinner"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:entries="@array/recommendation_sort" />
 
     </LinearLayout>

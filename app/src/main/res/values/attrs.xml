@@ -12,6 +12,14 @@
     <item name="garlandSettingIv" type="id" />
     <item name="garlandConstraintLayout" type="id" />
     <item name="gralandFrameContainer" type="id" />
+    <item name="showCaseCardView" type="id"/>
+    <item name="showCaseImageView" type="id"/>
+    <item name="showCaseTitleView" type="id"/>
+    <item name="showCaseDescriptionView" type="id"/>
+    <item name="showCaseFavouriteTv" type="id"/>
+    <item name="showCasePopularTv" type="id"/>
+    <item name="showCaseConstraintLayout" type="id"/>
+    <item name="kaoMojiTv" type="id" />
 
     <declare-styleable name="TitleTextView">
         <attr name="titleName" format="string" />
@@ -105,6 +113,25 @@
     <declare-styleable name="DynamicPopUpMenu">
         <attr name="entries"/>
         <attr name="icons"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircleSimpleDraweeView">
+        <attr name="showBorder" format="boolean" />
+        <attr name="colorType" format="boolean" />
+    </declare-styleable>
+
+
+    <declare-styleable name="CustomDynamicHeader">
+        <attr name="titleAlignCenter" format="boolean"/>
+        <attr name="subtitleAlignCenter" format="boolean"/>
+        <attr name="titleTextSize" format="dimension"/>
+        <attr name="subtitleTextSize" format="dimension"/>
+        <attr name="copySubtitleOnLongClick" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="HorizontalHeaderLayout">
+        <attr name="titleText" format="string"/>
+        <attr name="subtitleText" format="string"/>
     </declare-styleable>
 
 </resources>

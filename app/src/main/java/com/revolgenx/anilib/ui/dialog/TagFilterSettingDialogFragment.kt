@@ -110,6 +110,7 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
         when (viewModel.editMode) {
             TagEditMode.ADD -> addTagFromLayout.visibility = View.VISIBLE
             TagEditMode.DELETE, TagEditMode.RELOAD -> areYouSureLayout.visibility = View.VISIBLE
+            else -> {}
         }
         setUpHeaderVisibility()
         initHeaderListener()
@@ -172,6 +173,7 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
                     adapter.notifyDataSetChanged()
                     areYouSureLayout.visibility = View.GONE
                 }
+                else -> {}
             }
             viewModel.editMode = TagEditMode.DEFAULT
         }

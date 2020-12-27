@@ -30,22 +30,11 @@
             app:labelVisibilityMode="unlabeled"
             app:ads_textColorType="accent"
             app:ads_colorType="background"
+            app:ads_contrastWithColorType="background"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicNavigationView
-        android:id="@+id/navView"
-        style="@style/Widget.DynamicApp.NavigationView"
-        android:layout_width="@dimen/ads_drawer_size"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        android:theme="@style/Widget.DynamicApp.NavigationView.ThemeOverlay"
-        app:headerLayout="@layout/nav_header_layout"
-        app:itemTextAppearance="@style/NavigationTextAppearance"
-        app:menu="@menu/nav_menu"
-        />
 
     <com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
         android:id="@+id/mainBrowseFilterNavView"

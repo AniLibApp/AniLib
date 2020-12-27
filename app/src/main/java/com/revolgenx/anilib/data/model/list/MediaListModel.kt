@@ -8,7 +8,6 @@ class MediaListModel : CommonMediaModel() {
     var score: Double? = null
     var scoreFormat: Int? = null
     var progress: Int? = null
-    var popularity: Int? = null
     var listStartDate: DateModel? = null
     var listCompletedDate: DateModel? = null
     var listUpdatedDate:Int? = null

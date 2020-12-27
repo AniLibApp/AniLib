@@ -7,14 +7,12 @@ import com.github.javiersantos.appupdater.AppUpdaterUtils
 import com.github.javiersantos.appupdater.enums.AppUpdaterError
 import com.github.javiersantos.appupdater.enums.UpdateFrom
 import com.github.javiersantos.appupdater.objects.Update
-import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.GITHUB_NAME
 import com.revolgenx.anilib.constant.PROJECT_NAME
 import com.revolgenx.anilib.ui.dialog.LoadingDialog
 import com.revolgenx.anilib.ui.dialog.MessageDialog
 import com.revolgenx.anilib.common.preference.getUpdateVersion
-import com.revolgenx.anilib.common.preference.isStudioFlavor
 import com.revolgenx.anilib.common.preference.setUpdateVersion
 import com.revolgenx.anilib.ui.view.makeToast
 import timber.log.Timber
@@ -89,7 +87,7 @@ object AppUpdater {
     fun openUpdateLink(context: Context) {
         val updateUrl =
             context.getString(
-                if (isStudioFlavor()) R.string.site_url else R.string.playstore
+                R.string.playstore
             )
         context.openLink(updateUrl)
     }

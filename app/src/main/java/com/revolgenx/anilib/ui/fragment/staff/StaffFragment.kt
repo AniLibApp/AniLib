@@ -2,7 +2,6 @@ package com.revolgenx.anilib.ui.fragment.staff
 
 import android.os.Bundle
 import android.view.*
-import androidx.lifecycle.observe
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.data.field.staff.StaffField
@@ -107,7 +106,7 @@ class StaffFragment : BaseFragment() {
                         staffModel?.isFavourite = staffModel?.isFavourite?.not() ?: false
                         staffFavIv.setImageResource(
                             if (staffModel?.isFavourite == true) {
-                                R.drawable.ic_favorite
+                                R.drawable.ic_favourite
                             } else {
                                 R.drawable.ic_not_favourite
                             }
@@ -175,7 +174,7 @@ class StaffFragment : BaseFragment() {
         }
 
         if (item.isFavourite) {
-            staffFavIv.setImageResource(R.drawable.ic_favorite)
+            staffFavIv.setImageResource(R.drawable.ic_favourite)
         }
 
         MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(staffDescriptionTv, item.description ?: "")

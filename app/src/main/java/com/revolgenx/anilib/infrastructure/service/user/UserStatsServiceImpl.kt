@@ -250,7 +250,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
     }
 
     private fun getStatsTagModel(tags: @Nullable MutableList<UserStatsQuery.Tag>): List<StatsTagModel> {
-        return tags.mapIndexed { index, tag ->
+        return tags.mapIndexed { _, tag ->
             StatsTagModel().also { model ->
                 model.baseId = tag.tag()?.id()
                 model.tag = tag.tag()?.name()
@@ -263,7 +263,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
     }
 
     private fun getStatsTagModel1(tags: @Nullable MutableList<UserStatsQuery.Tag2>): List<StatsTagModel> {
-        return tags.mapIndexed { index, tag ->
+        return tags.mapIndexed { _, tag ->
             StatsTagModel().also { model ->
                 model.baseId = tag.tag()?.id()
                 model.tag = tag.tag()?.name()
@@ -277,7 +277,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
 
 
     private fun getStatsStaffModel(staff: @Nullable MutableList<UserStatsQuery.Staff>): List<StatsStaffModel> {
-        return staff.mapIndexed { index, staf ->
+        return staff.mapIndexed { _, staf ->
             StatsStaffModel().also { model ->
                 model.staffId = staf.staff()?.id()
                 model.name = staf.staff()?.name()?.full()
@@ -292,7 +292,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
 
 
     private fun getStatsStaffModel1(staff: @Nullable MutableList<UserStatsQuery.Staff2>): List<StatsStaffModel> {
-        return staff.mapIndexed { index, staf ->
+        return staff.mapIndexed { _, staf ->
             StatsStaffModel().also { model ->
                 model.staffId = staf.staff()?.id()
                 model.name = staf.staff()?.name()?.full()
@@ -307,7 +307,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
 
 
     private fun getStatsStudioModel(studios: @Nullable MutableList<UserStatsQuery.Studio>): List<StatsStudioModel> {
-        return studios.mapIndexed { index, studio ->
+        return studios.mapIndexed { _, studio ->
             StatsStudioModel().also { model ->
                 model.baseId = studio.studio()?.id()
                 model.studio = studio.studio()?.name()
@@ -320,7 +320,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
     }
 
     private fun getStatsVoiceActorModel(voiceActors: @Nullable MutableList<UserStatsQuery.VoiceActor>): List<StatsVoiceActorModel> {
-        return voiceActors.mapIndexed { index, voiceActor ->
+        return voiceActors.mapIndexed { _, voiceActor ->
             StatsVoiceActorModel().also { model ->
                 model.voiceActorId = voiceActor.voiceActor()?.id()
                 model.name = voiceActor.voiceActor()?.name()?.full()

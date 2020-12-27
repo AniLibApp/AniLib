@@ -1,16 +1,17 @@
 package com.revolgenx.anilib.ui.viewmodel
 
 import com.revolgenx.anilib.type.MediaListStatus
-import com.revolgenx.anilib.ui.fragment.home.discover.DiscoverAiringViewModel
+import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverAiringViewModel
 import com.revolgenx.anilib.ui.viewmodel.airing.AiringViewModel
 import com.revolgenx.anilib.ui.viewmodel.browse.BrowseActivityViewModel
 import com.revolgenx.anilib.ui.viewmodel.character.CharacterActorViewModel
 import com.revolgenx.anilib.ui.viewmodel.character.CharacterMediaViewModel
 import com.revolgenx.anilib.ui.viewmodel.character.CharacterViewModel
 import com.revolgenx.anilib.ui.viewmodel.entry.MediaEntryEditorViewModel
-import com.revolgenx.anilib.ui.viewmodel.home.RecommendationViewModel
-import com.revolgenx.anilib.ui.viewmodel.home.SeasonViewModel
+import com.revolgenx.anilib.ui.viewmodel.home.recommendation.RecommendationViewModel
+import com.revolgenx.anilib.ui.viewmodel.home.season.SeasonViewModel
 import com.revolgenx.anilib.ui.viewmodel.home.discover.*
+import com.revolgenx.anilib.ui.viewmodel.home.list.MediaListContainerViewModel
 import com.revolgenx.anilib.ui.viewmodel.media.*
 import com.revolgenx.anilib.ui.viewmodel.media_list.*
 import com.revolgenx.anilib.ui.viewmodel.notification.NotificationViewModel
@@ -33,7 +34,7 @@ val viewModelModules = module {
     viewModel { SeasonViewModel(get()) }
     viewModel { MediaEntryEditorViewModel(get(), get(), get()) }
     viewModel { MainActivityViewModel(get(), get()) }
-    viewModel { MediaBrowserViewModel(get(), get()) }
+    viewModel { MediaBrowserViewModel(get(), get(), get()) }
 
     //overview
     viewModel { MediaOverviewViewModel(get(), get()) }

@@ -32,7 +32,5 @@
         android:id="@+id/containerBottomNav"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:layout_alignParentBottom="true"
-        app:itemTextAppearanceActive="@style/BottomNavigationTextAppearance"
-        app:itemTextAppearanceInactive="@style/BottomNavigationTextAppearance"/>
+        android:layout_alignParentBottom="true"/>
 </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>

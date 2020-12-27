@@ -14,15 +14,17 @@ import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.list.MediaListModel
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
+import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.ui.presenter.list.MediaListCollectionPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListCollectionViewModel
+import com.revolgenx.anilib.util.EventBusListener
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
+abstract class MediaListFragment : BasePresenterFragment<MediaListModel>(), EventBusListener {
 
     override val basePresenter: Presenter<MediaListModel>
         get() = MediaListCollectionPresenter(requireContext(), mediaListMeta!!, viewModel)
@@ -43,8 +45,23 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
         var span =
             if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
 
-        if (getMediaListGridPresenter() == 1) {
-            span /= 2
+        when (getMediaListGridPresenter()) {
+            MediaListDisplayMode.COMPACT -> {
+
+            }
+
+            MediaListDisplayMode.NORMAL, MediaListDisplayMode.MINIMAL_LIST -> {
+                span /= 2
+            }
+
+            MediaListDisplayMode.CARD -> {
+
+            }
+
+            MediaListDisplayMode.CLASSIC, MediaListDisplayMode.MINIMAL -> {
+                span += 1
+            }
+
         }
 
         layoutManager =

@@ -15,13 +15,13 @@
 
     <item
         android:id="@+id/music_navigation_menu"
-        android:icon="@drawable/ic_home"
-        android:title="@string/music" />
+        android:icon="@drawable/ic_radio"
+        android:title="@string/radio" />
 
 
     <item
         android:id="@+id/profile_navigation_menu"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/ic_person"
         android:title="@string/profile" />
 
 </menu>

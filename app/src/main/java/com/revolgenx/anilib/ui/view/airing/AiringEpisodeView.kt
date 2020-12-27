@@ -100,6 +100,7 @@ class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet
                     params.weight = 1f
                     params.gravity = Gravity.CENTER
                 }
+            tv.textSize = 14f
             tv.gravity = View.TEXT_ALIGNMENT_CENTER
             tv.colorType = Theme.ColorType.TINT_ACCENT
         }

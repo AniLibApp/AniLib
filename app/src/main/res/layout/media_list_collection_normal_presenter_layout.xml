@@ -71,7 +71,7 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/mediaListTitleTv"
-            style="@style/titleFontStyle"
+            style="@style/TitleFontStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
@@ -148,19 +148,6 @@
             tools:ignore="SmallSp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="6dp"
-            android:maxLines="1"
-            android:textSize="11sp"
-            app:layout_constraintLeft_toRightOf="@+id/mediaListImageContainer"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mediaListFormatTv"
-            tools:ignore="SmallSp" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/mediaListProgressTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -171,10 +158,11 @@
             android:textSize="10sp"
             app:ads_colorType="text_primary"
             app:drawableStartCompat="@drawable/ic_eye_16dp"
-            app:layout_constraintBottom_toBottomOf="@id/mediaListProgressIncrease"
+            app:layout_constraintTop_toBottomOf="@id/mediaListFormatTv"
             app:layout_constraintLeft_toRightOf="@+id/mediaListImageContainer"
             app:layout_constraintRight_toLeftOf="@+id/mediaListProgressIncrease"
-            app:layout_constraintTop_toTopOf="@id/mediaListProgressIncrease"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1"
             tools:ignore="SmallSp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView

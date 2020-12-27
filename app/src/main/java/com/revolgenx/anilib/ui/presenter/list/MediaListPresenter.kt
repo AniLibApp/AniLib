@@ -23,13 +23,14 @@ import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userName
+import com.revolgenx.anilib.databinding.MediaListPresenterBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
+import com.revolgenx.anilib.ui.presenter.Constant.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListViewModel
-import kotlinx.android.synthetic.main.media_list_presenter.view.*
 
 class MediaListPresenter(
     context: Context,
@@ -61,19 +62,16 @@ class MediaListPresenter(
     }
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            getLayoutInflater().inflate(
-                R.layout.media_list_presenter,
-                parent,
-                false
-            )
-        )
+        return MediaListPresenterBinding.inflate(getLayoutInflater(), parent, false).let {
+            Holder(it.root).also { h -> h[PRESENTER_BINDING_KEY] = it }
+        }
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<MediaListModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-        holder.itemView.apply {
+        val binding: MediaListPresenterBinding = holder[PRESENTER_BINDING_KEY] ?: return
+        binding.apply {
             mediaListTitleTv.text = item.title?.userPreferred
             mediaListCoverImageView.setImageURI(item.coverImage?.large)
             mediaListFormatTv.text = item.format?.let {

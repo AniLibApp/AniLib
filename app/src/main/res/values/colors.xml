@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#171E28</color>
     <color name="colorAccent">#02A4F8</color>
     <color name="translucent_dark">#7E181818</color>
+    <color name="translucent_darker">#94000000</color>
+    <color name="translucent_gray">#94575757</color>
 
 
     <color name="white">#ffffff</color>

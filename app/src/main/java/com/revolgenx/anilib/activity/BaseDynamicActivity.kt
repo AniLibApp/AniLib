@@ -2,6 +2,7 @@ package com.revolgenx.anilib.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
@@ -22,7 +23,8 @@ import com.revolgenx.anilib.ui.fragment.review.ReviewFragment
 import com.revolgenx.anilib.ui.fragment.studio.StudioFragment
 import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.common.preference.getApplicationLocale
-import com.revolgenx.anilib.ui.`interface`.ViewBindingInterface
+import com.revolgenx.anilib.ui.fragment.settings.SettingFragment
+import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
@@ -30,18 +32,14 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
-abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(),
-    ViewBindingInterface<T> {
+abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), EventBusListener {
 
+    private var _binding: T? = null
+    protected val binding: T get() = _binding!!
+    fun isBindingEmpty() = _binding == null
 
-//    private var _binding: T? = null
-//    protected var binding: T
-//        set(value) {
-//            _binding = value
-//        }
-//        get() = _binding!!
+    abstract fun bindView(inflater: LayoutInflater, parent: ViewGroup? = null): T
 
-    override var _binding: T? = null
 
     override fun getLocale(): Locale? {
         return Locale(getApplicationLocale())
@@ -234,6 +232,12 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(),
             is MediaViewDialogEvent -> {
                 MediaViewDialog.newInstance(event.mediaIdsIn)
                     .show(supportFragmentManager, MediaViewDialog::class.java.simpleName)
+            }
+            is SettingEvent -> {
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(SettingFragment::class.java, bundleOf())
+                )
             }
         }
     }

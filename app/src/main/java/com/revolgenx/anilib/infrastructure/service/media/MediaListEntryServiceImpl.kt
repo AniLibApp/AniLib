@@ -26,6 +26,7 @@ import java.net.HttpURLConnection
 class MediaListEntryServiceImpl(context: Context, graphRepository: BaseGraphRepository) :
     MediaListEntryService(context, graphRepository) {
 
+    @Suppress("UNCHECKED_CAST")
     override fun queryMediaListEntry(
         mediaId: Int?,
         compositeDisposable: CompositeDisposable?

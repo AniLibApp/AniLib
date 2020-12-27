@@ -21,7 +21,7 @@ class SplashActivity : DynamicSplashActivity() {
      */
     private var mSplash: AppCompatImageView? = null
 
-    override fun getLocale(): Locale? {
+    override fun getLocale(): Locale {
         return Locale(getApplicationLocale())
     }
 
@@ -58,9 +58,6 @@ class SplashActivity : DynamicSplashActivity() {
     }
 
     override fun onPreSplash() {
-//        if (mSplash != null) {
-//            (mSplash!!.drawable as Animatable).start()
-//        }
     }
 
     override fun doBehindSplash() {
