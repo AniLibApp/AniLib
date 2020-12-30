@@ -28,8 +28,6 @@ import com.revolgenx.anilib.data.meta.ViewPagerContainerMeta
 import com.revolgenx.anilib.data.meta.ViewPagerContainerType
 import com.revolgenx.anilib.databinding.ViewpagerContainerActivityBinding
 import com.revolgenx.anilib.util.unRegisterForEvent
-import kotlinx.android.synthetic.main.toolbar_layout.*
-import kotlinx.android.synthetic.main.viewpager_container_activity.*
 
 class ViewPagerContainerActivity : BaseDynamicActivity<ViewpagerContainerActivityBinding>() {
 
@@ -46,9 +44,9 @@ class ViewPagerContainerActivity : BaseDynamicActivity<ViewpagerContainerActivit
             })
         }
 
-        fun <T : Parcelable> openActivity(
+        fun openActivity(
             context: Context,
-            meta: ViewPagerContainerMeta<T>
+            meta: ViewPagerContainerMeta
         ) {
             context.startActivity(Intent(context, ViewPagerContainerActivity::class.java).also {
                 it.putExtra(viewPagerContainerMetaKey, meta)
@@ -64,13 +62,13 @@ class ViewPagerContainerActivity : BaseDynamicActivity<ViewpagerContainerActivit
     }
 
     private lateinit var viewPagerParcelableFragments: ViewPagerParcelableFragments
-    private lateinit var viewPagerMeta: ViewPagerContainerMeta<Parcelable>
+    private lateinit var viewPagerMeta: ViewPagerContainerMeta
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewPagerContainerLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-        setSupportActionBar(dynamicToolbar)
+        binding.viewPagerContainerLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
+        setSupportActionBar(binding.viewPagerToolbar.dynamicToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         statusBarColor = statusBarColor
         themeBottomNavigation()
@@ -83,10 +81,10 @@ class ViewPagerContainerActivity : BaseDynamicActivity<ViewpagerContainerActivit
         prepareViews(viewPagerMeta)
 
 
-        containerBottomNav.setOnNavigationItemSelectedListener {
-            containerBottomNav.menu.forEachIndexed { index, item ->
+        binding.containerBottomNav.setOnNavigationItemSelectedListener {
+            binding.containerBottomNav.menu.forEachIndexed { index, item ->
                 if (it == item) {
-                    containerViewPager.setCurrentItem(index, true)
+                    binding.containerViewPager.setCurrentItem(index, true)
                     return@setOnNavigationItemSelectedListener true
                 }
             }
@@ -94,28 +92,25 @@ class ViewPagerContainerActivity : BaseDynamicActivity<ViewpagerContainerActivit
         }
 
 
-        containerViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+        binding.containerViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                containerBottomNav.menu.iterator().forEach {
+                binding.containerBottomNav.menu.iterator().forEach {
                     it.isChecked = false
                 }
-                containerBottomNav.menu.getItem(position).isChecked = true
+                binding.containerBottomNav.menu.getItem(position).isChecked = true
             }
         })
 
-        containerViewPager.offscreenPageLimit = viewPagerParcelableFragments.clzzes.size - 1
-        containerViewPager.adapter = ViewPagerContainerAdapter()
-//        containerViewPager.post {
-//            ActivityCompat.startPostponedEnterTransition(this)
-//        }
+        binding.containerViewPager.offscreenPageLimit = viewPagerParcelableFragments.clzzes.size - 1
+        binding.containerViewPager.adapter = ViewPagerContainerAdapter()
     }
 
 
-    private fun prepareViews(viewPagerMeta: ViewPagerContainerMeta<Parcelable>) {
+    private fun prepareViews(viewPagerMeta: ViewPagerContainerMeta) {
         when (viewPagerMeta.containerType) {
             ViewPagerContainerType.CHARACTER -> {
                 supportActionBar?.title = getString(R.string.character)
-                containerBottomNav.inflateMenu(R.menu.character_nav_menu)
+                binding.containerBottomNav.inflateMenu(R.menu.character_nav_menu)
                 viewPagerParcelableFragments = ViewPagerParcelableFragments(
                     listOf(
                         CharacterFragment::class.java.name,
@@ -138,7 +133,7 @@ class ViewPagerContainerActivity : BaseDynamicActivity<ViewpagerContainerActivit
 
             ViewPagerContainerType.STAFF -> {
                 supportActionBar?.title = getString(R.string.staff)
-                containerBottomNav.inflateMenu(R.menu.staff_nav_menu)
+                binding.containerBottomNav.inflateMenu(R.menu.staff_nav_menu)
                 viewPagerParcelableFragments = ViewPagerParcelableFragments(
                     listOf(
                         StaffFragment::class.java.name,
@@ -161,7 +156,7 @@ class ViewPagerContainerActivity : BaseDynamicActivity<ViewpagerContainerActivit
 
             ViewPagerContainerType.FAVOURITE -> {
                 supportActionBar?.title = getString(R.string.favourites)
-                containerBottomNav.inflateMenu(R.menu.favourite_nav_menu)
+                binding.containerBottomNav.inflateMenu(R.menu.favourite_nav_menu)
                 viewPagerParcelableFragments = ViewPagerParcelableFragments(
                     listOf(
                         AnimeFavouriteFragment::class.java.name,
@@ -193,8 +188,8 @@ class ViewPagerContainerActivity : BaseDynamicActivity<ViewpagerContainerActivit
     }
 
     private fun themeBottomNavigation() {
-        containerBottomNav.color = DynamicTheme.getInstance().get().primaryColor
-        containerBottomNav.textColor = DynamicTheme.getInstance().get().accentColor
+        binding.containerBottomNav.color = DynamicTheme.getInstance().get().primaryColor
+        binding.containerBottomNav.textColor = DynamicTheme.getInstance().get().accentColor
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

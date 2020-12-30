@@ -2,12 +2,12 @@ package com.revolgenx.anilib.ui.presenter.airing
 
 import android.content.Context
 import android.graphics.Color
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseGenreEvent
@@ -18,18 +18,23 @@ import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.airing.AiringMediaModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.databinding.AiringPresenterLayoutBinding
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
-import kotlinx.android.synthetic.main.airing_presenter_layout.view.*
 
-class AiringPresenter(context: Context) : Presenter<AiringMediaModel>(context) {
+class AiringPresenter(context: Context) : BasePresenter<AiringPresenterLayoutBinding, AiringMediaModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(getLayoutInflater().inflate(R.layout.airing_presenter_layout, parent, false))
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): AiringPresenterLayoutBinding {
+        return AiringPresenterLayoutBinding.inflate(inflater, parent, false)
     }
 
     private val statusColors by lazy {
@@ -53,16 +58,16 @@ class AiringPresenter(context: Context) : Presenter<AiringMediaModel>(context) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
 
-        holder.itemView.apply {
+        holder.getBinding()?.apply {
 
             mediaTitleTv.naText(item.title!!.title(context))
             coverImageIv.setImageURI(item.coverImage!!.image(context))
             if (item.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeTv.text =
-                    string(R.string.ep_d_s).format(item.episodes.naText(), item.duration.naText())
+                    context.string(R.string.ep_d_s).format(item.episodes.naText(), item.duration.naText())
             } else {
                 mediaEpisodeTv.text =
-                    string(R.string.chap_s).format(item.chapters.naText(), item.volumes.naText())
+                    context.string(R.string.chap_s).format(item.chapters.naText(), item.volumes.naText())
             }
             mediaStartDateTv.text = item.startDate?.date.naText() + " ~ " + item.endDate?.date?.naText()
 
@@ -97,7 +102,7 @@ class AiringPresenter(context: Context) : Presenter<AiringMediaModel>(context) {
                         item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
-                    ), holder.itemView.coverImageIv
+                    ), coverImageIv
                 ).postEvent
             }
 
@@ -110,7 +115,7 @@ class AiringPresenter(context: Context) : Presenter<AiringMediaModel>(context) {
                             item.title!!.title(context)!!,
                             item.coverImage!!.image(context),
                             item.bannerImage
-                        ), holder.itemView.coverImageIv
+                        ), coverImageIv
                     ).postEvent
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

@@ -18,7 +18,7 @@
     <string name="settings">"Impostazioni"</string>
     <string name="account">"Account"</string>
     <string name="sign_in">"Accesso"</string>
-    <string name="dynamic_theme">"Tema Dinamico"</string>
+    <string name="theme">"Tema"</string>
     <string name="notification">"Notifiche"</string>
     <string name="notification_setting_sub">"Impostazione barra delle notifiche(Login richiesto)"</string>
     <string name="sign_out">"Esci"</string>

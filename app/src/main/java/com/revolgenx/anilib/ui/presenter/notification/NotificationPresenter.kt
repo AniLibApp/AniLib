@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.ui.presenter.notification
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
@@ -15,42 +16,41 @@ import com.revolgenx.anilib.data.model.notification.FollowingNotificationModel
 import com.revolgenx.anilib.data.model.notification.NotificationModel
 import com.revolgenx.anilib.data.model.notification.activity.*
 import com.revolgenx.anilib.data.model.notification.thread.*
+import com.revolgenx.anilib.databinding.NotificationPresenterLayoutBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.util.openLink
-import kotlinx.android.synthetic.main.notification_presenter_layout.view.*
 import java.util.*
 
 
-class NotificationPresenter(context: Context) : Presenter<NotificationModel>(context) {
+class NotificationPresenter(context: Context) : BasePresenter<NotificationPresenterLayoutBinding, NotificationModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            getLayoutInflater().inflate(
-                R.layout.notification_presenter_layout,
-                parent,
-                false
-            )
-        )
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): NotificationPresenterLayoutBinding {
+        return NotificationPresenterLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<NotificationModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
 
-        holder.itemView.apply {
+        holder.getBinding()?.apply {
             when (item.notificationUnionType) {
                 NotificationUnionType.ACTIVITY_MESSAGE -> {
                     val activity = item as ActivityMessageNotification
                     createActivityNotif(activity)
-                    setOnClickListener {
+                    root.setOnClickListener {
                         openActivityLink(activity)
                     }
                 }
                 NotificationUnionType.ACTIVITY_REPLY -> {
                     val activity = item as ActivityReplyNotification
                     createActivityNotif(activity)
-                    setOnClickListener {
+                    root.setOnClickListener {
                         openActivityLink(activity)
                     }
                 }
@@ -58,7 +58,7 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
 
                     val activity = item as ActivityMentionNotification
                     createActivityNotif(activity)
-                    setOnClickListener {
+                    root.setOnClickListener {
                         openActivityLink(activity)
                     }
                 }
@@ -66,7 +66,7 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
 
                     val activity = item as ActivityLikeNotification
                     createActivityNotif(activity)
-                    setOnClickListener {
+                    root.setOnClickListener {
                         openActivityLink(activity)
                     }
                 }
@@ -74,14 +74,14 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
 
                     val activity = item as ActivityReplyLikeNotification
                     createActivityNotif(activity)
-                    setOnClickListener {
+                    root.setOnClickListener {
                         openActivityLink(activity)
                     }
                 }
                 NotificationUnionType.ACTIVITY_REPLY_SUBSCRIBED -> {
                     val activity = item as ActivityReplySubscribedNotification
                     createActivityNotif(activity)
-                    setOnClickListener {
+                    root.setOnClickListener {
                         openActivityLink(activity)
                     }
                 }
@@ -89,35 +89,35 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                 NotificationUnionType.THREAD_COMMENT_MENTION -> {
                     val thread = item as ThreadCommentMentionNotification
                     createThreadNotif(thread)
-                    setOnClickListener {
+                    root.setOnClickListener {
                         openThreadLink(thread)
                     }
                 }
                 NotificationUnionType.THREAD_SUBSCRIBED -> {
                     val thread = item as ThreadCommentSubscribedNotification
                     createThreadNotif(thread)
-                    setOnClickListener {
+                    root.setOnClickListener {
                         openThreadLink(thread)
                     }
                 }
                 NotificationUnionType.THREAD_COMMENT_REPLY -> {
                     val thread = item as ThreadCommentReplyNotification
                     createThreadNotif(thread)
-                    setOnClickListener {
+                    root.setOnClickListener {
                         openThreadLink(thread)
                     }
                 }
                 NotificationUnionType.THREAD_LIKE -> {
                     val thread = item as ThreadLikeNotification
                     createThreadNotif(thread)
-                    setOnClickListener {
+                    root.setOnClickListener {
                         openThreadLink(thread)
                     }
                 }
                 NotificationUnionType.THREAD_COMMENT_LIKE -> {
                     val thread = item as ThreadCommentLikeNotification
                     createThreadNotif(thread)
-                    setOnClickListener {
+                    root.setOnClickListener {
                         openThreadLink(thread)
                     }
                 }
@@ -140,7 +140,7 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                             it.contexts!![2]
                         )
 
-                        setOnClickListener { _ ->
+                        root.setOnClickListener { _ ->
                             BrowseMediaEvent(
                                 MediaBrowserMeta(
                                     it.commonMediaModel?.mediaId,
@@ -163,7 +163,7 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                         .format(item.userModel?.userName, item.context)
                     notificationCreatedTv.text = item.createdAt
 
-                    setOnClickListener {
+                    root.setOnClickListener {
                         UserBrowseEvent(item.userModel?.userId).postEvent
                     }
                 }
@@ -180,7 +180,7 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
                                 it.commonMediaModel?.title?.title(context), it.context
                             )
 
-                        setOnClickListener { _ ->
+                        root.setOnClickListener { _ ->
                             BrowseMediaEvent(
                                 MediaBrowserMeta(
                                     it.commonMediaModel?.mediaId,
@@ -221,14 +221,14 @@ class NotificationPresenter(context: Context) : Presenter<NotificationModel>(con
         context.openLink(siteUrl)
     }
 
-    private fun View.createActivityNotif(item: ActivityNotification) {
+    private fun NotificationPresenterLayoutBinding.createActivityNotif(item: ActivityNotification) {
         notificationMediaDrawee.setImageURI(item.userPrefModel?.avatar?.image)
         notificationTitleTv.text = context.getString(R.string.s_space_s)
             .format(item.userPrefModel?.userName, item.context)
         notificationCreatedTv.text = item.createdAt
     }
 
-    private fun View.createThreadNotif(item: ThreadNotification) {
+    private fun NotificationPresenterLayoutBinding.createThreadNotif(item: ThreadNotification) {
         notificationMediaDrawee.setImageURI(item.userPrefModel?.avatar?.image)
         notificationTitleTv.text = context.getString(R.string.thread_notif_s)
             .format(item.userPrefModel?.userName, item.context, item.threadModel?.title)

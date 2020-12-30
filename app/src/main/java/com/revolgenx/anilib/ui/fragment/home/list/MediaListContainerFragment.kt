@@ -26,7 +26,6 @@ import com.revolgenx.anilib.ui.viewmodel.home.list.MediaListContainerViewModel
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
-import kotlinx.android.synthetic.main.review_composer_fragment_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -83,7 +82,7 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
                 mediaListBinding.mediaListSearchEt.setText("")
                 mediaListBinding.mediaListSearchEt.requestFocus()
                 (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
-                    writeReviewEt,
+                    mediaListBinding.mediaListSearchEt,
                     0
                 )
             }else{

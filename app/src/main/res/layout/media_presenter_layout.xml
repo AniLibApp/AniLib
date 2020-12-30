@@ -3,10 +3,10 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicMaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/media_presenter_card_view"
     style="@style/DiscoverCardViewStyle"
     app:strokeColor="@color/red"
-    app:strokeWidth="1dp"
-    android:id="@+id/media_presenter_card_view">
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -25,9 +25,9 @@
                 android:id="@+id/media_simple_drawee"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:actualImageScaleType="centerCrop"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:actualImageScaleType="centerCrop"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/mediaRatingTv"

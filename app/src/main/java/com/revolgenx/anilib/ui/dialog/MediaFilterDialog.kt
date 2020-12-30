@@ -22,8 +22,8 @@ import com.revolgenx.anilib.common.preference.getNewlyAddedField
 import com.revolgenx.anilib.common.preference.getPopularField
 import com.revolgenx.anilib.common.preference.getSeasonField
 import com.revolgenx.anilib.common.preference.getTrendingField
+import com.revolgenx.anilib.databinding.MediaFilterLayoutBinding
 import com.revolgenx.anilib.util.onItemSelected
-import kotlinx.android.synthetic.main.media_filter_layout.*
 import java.util.*
 import kotlin.math.round
 
@@ -112,23 +112,24 @@ class MediaFilterDialog : BaseDialogFragment() {
     override var negativeText: Int? = R.string.cancel
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
+        val binding = MediaFilterLayoutBinding.bind(dialogView)
         if (dialogInterface is DynamicDialog) {
             when (field) {
                 is SeasonField -> (field as SeasonField).saveSeasonField(requireContext())
                 is TrendingMediaField -> {
-                    if (!dialogInterface.enableYearCheckBox.isChecked) {
+                    if (!binding.enableYearCheckBox.isChecked) {
                         field.seasonYear = null
                     }
                     (field as TrendingMediaField).saveTrendingField(requireContext())
                 }
                 is PopularMediaField -> {
-                    if (!dialogInterface.enableYearCheckBox.isChecked) {
+                    if (!binding.enableYearCheckBox.isChecked) {
                         field.seasonYear = null
                     }
                     (field as PopularMediaField).savePopularField(requireContext())
                 }
                 is NewlyAddedMediaField -> {
-                    if (!dialogInterface.enableYearCheckBox.isChecked) {
+                    if (!binding.enableYearCheckBox.isChecked) {
                         field.seasonYear = null
                     }
                     (field as NewlyAddedMediaField).saveNewlyAddedField(requireContext())
@@ -139,7 +140,9 @@ class MediaFilterDialog : BaseDialogFragment() {
     }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
-        with(alertDialog) {
+        val binding = MediaFilterLayoutBinding.bind(dialogView)
+
+        with(binding) {
             seasonFormatSpinner.adapter = makeSpinnerAdapter(listFormatItems)
             seasonStatusSpinner.adapter = makeSpinnerAdapter(listStatusItems)
             seasonSpinner.adapter = makeSpinnerAdapter(seasons)
@@ -171,7 +174,7 @@ class MediaFilterDialog : BaseDialogFragment() {
             seasonYearSeekBar.setIndicatorTextDecimalFormat("0")
             seasonYearSeekBar.setTypeface(
                 ResourcesCompat.getFont(
-                    context,
+                    requireContext(),
                     R.font.open_sans_light
                 )
             )

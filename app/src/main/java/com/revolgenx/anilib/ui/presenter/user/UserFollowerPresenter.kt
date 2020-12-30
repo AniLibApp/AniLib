@@ -1,36 +1,37 @@
 package com.revolgenx.anilib.ui.presenter.user
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.UserBrowseEvent
 import com.revolgenx.anilib.data.model.user.UserFollowersModel
-import kotlinx.android.synthetic.main.user_follower_presenter_layout.view.*
+import com.revolgenx.anilib.databinding.UserFollowerPresenterLayoutBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 
 class UserFollowerPresenter(requireContext: Context) :
-    Presenter<UserFollowersModel>(requireContext) {
+    BasePresenter<UserFollowerPresenterLayoutBinding, UserFollowersModel>(requireContext) {
     override val elementTypes: Collection<Int> = listOf(0)
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            getLayoutInflater().inflate(
-                R.layout.user_follower_presenter_layout,
-                parent,
-                false
-            )
-        )
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): UserFollowerPresenterLayoutBinding {
+        return UserFollowerPresenterLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<UserFollowersModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-        holder.itemView.apply {
+        val binding = holder.getBinding() ?:return
+
+        binding.apply {
             userFollowerSimpleDrawee.setImageURI(item.avatar?.medium)
             userFollowerTv.text = item.userName
-            setOnClickListener {
+            root.setOnClickListener {
                 UserBrowseEvent(item.userId).postEvent
             }
         }

@@ -17,7 +17,7 @@
     <string name="settings">"الاعدادات"</string>
     <string name="account">"الحساب"</string>
     <string name="sign_in">"تسجيل الدخول"</string>
-    <string name="dynamic_theme">"مظهر التطبيق"</string>
+    <string name="theme">"موضوع"</string>
     <string name="notification">"الاشعارات"</string>
     <string name="notification_setting_sub">"التحكم بما تراه في الاشعارات. (مطلوب تسجيل الدخول)"</string>
     <string name="sign_out">"تسجيل الخروج"</string>

@@ -68,7 +68,6 @@
         <activity android:name=".activity.ViewPagerContainerActivity" />
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.MediaListActivity" />
-        <activity android:name=".activity.BasePopupVideoActivity" />
         <activity android:name=".activity.UserProfileActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -81,11 +80,11 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.ExoVideoPlayerActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTop"
-            android:screenOrientation="fullSensor" />
+<!--        <activity-->
+<!--            android:name=".activity.ExoVideoPlayerActivity"-->
+<!--            android:configChanges="orientation|screenSize|keyboardHidden"-->
+<!--            android:launchMode="singleTop"-->
+<!--            android:screenOrientation="fullSensor" />-->
         <activity
             android:name=".activity.SimpleDraweeViewerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

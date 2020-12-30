@@ -6,15 +6,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.studio.StudioMediaModel
+import com.revolgenx.anilib.databinding.StudioMediaPresenterBinding
 import com.revolgenx.anilib.util.naText
-import kotlinx.android.synthetic.main.studio_media_presenter.view.*
 
-class StudioMediaPresenter(context: Context) : Presenter<StudioMediaModel>(context) {
+class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresenterBinding, StudioMediaModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -31,21 +30,19 @@ class StudioMediaPresenter(context: Context) : Presenter<StudioMediaModel>(conte
         context.resources.getStringArray(R.array.media_status)
     }
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(context).inflate(
-                R.layout.studio_media_presenter,
-                parent,
-                false
-            )
-        )
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): StudioMediaPresenterBinding {
+        return StudioMediaPresenterBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<StudioMediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
 
-        holder.itemView.apply {
+        holder.getBinding()?.apply {
             studioMediaImageView.setImageURI(item.coverImage?.image(context))
             studioMediaTitleTv.text = item.title?.title(context)
             studioMediaRatingTv.text = item.averageScore?.toString().naText()
@@ -56,7 +53,7 @@ class StudioMediaPresenter(context: Context) : Presenter<StudioMediaModel>(conte
                 studioMediaStatusTv.color = Color.parseColor(statusColors[it])
                 mediaStatus[it]
             }.naText()
-            setOnClickListener {
+            root.setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(
                         item.mediaId,
@@ -65,7 +62,7 @@ class StudioMediaPresenter(context: Context) : Presenter<StudioMediaModel>(conte
                         item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
-                    ), holder.itemView.studioMediaImageView
+                    ), studioMediaImageView
                 ).postEvent
             }
         }

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
 import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
@@ -14,11 +13,12 @@ import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.character.CharacterMediaModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.databinding.CharacterMediaPresenterBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
-import kotlinx.android.synthetic.main.character_media_presenter.view.*
 
-class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>(context) {
+class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPresenterBinding, CharacterMediaModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -33,21 +33,19 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
         context.resources.getStringArray(R.array.status_color)
     }
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.character_media_presenter,
-                parent,
-                false
-            )
-        )
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): CharacterMediaPresenterBinding {
+        return CharacterMediaPresenterBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<CharacterMediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
 
-        holder.itemView.apply {
+        holder.getBinding()?.apply {
             characterMediaImageView.setImageURI(item.coverImage?.image(context))
             characterMediaTitleTv.text = item.title?.title(context)
             characterMediaFormatTv.text =
@@ -61,7 +59,7 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
             }.naText()
 
             characterMediaRatingTv.text = item.averageScore?.toString().naText()
-            setOnClickListener {
+            root.setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(
                         item.mediaId,
@@ -74,7 +72,7 @@ class CharacterMediaPresenter(context: Context) : Presenter<CharacterMediaModel>
                 ).postEvent
             }
 
-            setOnLongClickListener {
+            root.setOnLongClickListener {
                 if (context.loggedIn()) {
                     ListEditorEvent(
                         ListEditorMeta(

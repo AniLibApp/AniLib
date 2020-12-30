@@ -18,22 +18,19 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.data.field.media.MediaStatsField
-import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.user.stats.MediaStatsModel
+import com.revolgenx.anilib.databinding.MediaStatsFragmentLayoutBinding
 import com.revolgenx.anilib.ui.presenter.RankingsPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.ui.viewmodel.media.MediaStatsViewModel
-import kotlinx.android.synthetic.main.error_layout.*
-import kotlinx.android.synthetic.main.loading_layout.*
-import kotlinx.android.synthetic.main.media_stats_fragment_layout.*
-import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
 
-class MediaStatsFragment : BaseFragment() {
+class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>() {
     val viewModel by viewModel<MediaStatsViewModel>()
     private var mediaBrowserMeta: MediaBrowserMeta? = null
 
@@ -72,19 +69,18 @@ class MediaStatsFragment : BaseFragment() {
 
     }
 
-    override fun onCreateView(
+    override fun bindView(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.media_stats_fragment_layout, container, false)
+        parent: ViewGroup?
+    ): MediaStatsFragmentLayoutBinding {
+        return MediaStatsFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val span =
             if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
-        rankingRecyclerView.layoutManager =  GridLayoutManager(
+        binding.rankingRecyclerView.layoutManager =  GridLayoutManager(
             this.context,
             span
         ).also {
@@ -107,23 +103,24 @@ class MediaStatsFragment : BaseFragment() {
 
         visibleToUser = savedInstanceState?.getBoolean(visibleToUserKey) ?: false
 
+        val statusLayout = binding.resourceStatusLayout
         viewModel.statsLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 SUCCESS -> {
-                    resourceStatusContainer.visibility = View.GONE
-                    progressLayout.visibility = View.VISIBLE
-                    updateView(res.data!!)
-                    errorLayout.visibility = View.GONE
+                    statusLayout.resourceStatusContainer.visibility = View.GONE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    binding.updateView(res.data!!)
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                 }
                 ERROR -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    progressLayout.visibility = View.GONE
-                    errorLayout.visibility = View.VISIBLE
+                    statusLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
                 }
                 LOADING -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    progressLayout.visibility = View.VISIBLE
-                    errorLayout.visibility = View.GONE
+                    statusLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                 }
             }
         }
@@ -144,7 +141,7 @@ class MediaStatsFragment : BaseFragment() {
         super.onSaveInstanceState(outState)
     }
 
-    private fun updateView(data: MediaStatsModel) {
+    private fun MediaStatsFragmentLayoutBinding.updateView(data: MediaStatsModel) {
         context ?: return
 
 

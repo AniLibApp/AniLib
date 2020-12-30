@@ -13,16 +13,15 @@ import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.databinding.ToolbarContainerActivityLayoutBinding
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
-import kotlinx.android.synthetic.main.toolbar_layout.*
 
 class ToolbarContainerActivity :BaseDynamicActivity<ToolbarContainerActivityLayoutBinding>(){
 
     companion object {
         const val toolbarFragmentContainerKey = "toolbar_fragment_container_key"
 
-        fun <T : BaseFragment> openActivity(
+        fun openActivity(
             context: Context,
-            parcelableFragment: ParcelableFragment<T>,
+            parcelableFragment: ParcelableFragment,
             option: ActivityOptionsCompat? = null
         ) {
             context.startActivity(Intent(context, ToolbarContainerActivity::class.java).also {
@@ -47,15 +46,15 @@ class ToolbarContainerActivity :BaseDynamicActivity<ToolbarContainerActivityLayo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setSupportActionBar(dynamicToolbar)
+        setSupportActionBar(binding.toolbarActivityToolbar.dynamicToolbar)
 
-        val parcel =
-            intent.getParcelableExtra<ParcelableFragment<BaseFragment>>(toolbarFragmentContainerKey)
+        val parcel:ParcelableFragment =
+            intent.getParcelableExtra(toolbarFragmentContainerKey)
                 ?: return
 
         if (savedInstanceState == null) {
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.containerFrameLayout, parcel.clzz.newInstance().apply {
+            transaction.replace(R.id.containerFrameLayout, (parcel.clzz as Class<BaseFragment>).newInstance().apply {
                 this.arguments = parcel.bundle
             }).commitNow()
         }

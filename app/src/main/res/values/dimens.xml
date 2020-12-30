@@ -15,7 +15,7 @@
 
     <dimen name="discover_media_width">155dp</dimen>
     <dimen name="discover_media_height">248dp</dimen>
-    <dimen name="discover_recycler_height">252dp</dimen>
+    <dimen name="discover_recycler_height">254dp</dimen>
     <dimen name="profile_title_size">17sp</dimen>
     <dimen name="profile_subtitle_size">13sp</dimen>
     <dimen name="profile_stats_subtitle_size">11sp</dimen>

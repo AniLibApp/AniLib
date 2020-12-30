@@ -10,12 +10,13 @@
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/markdownHelperLayout"
+        app:layout_constraintBottom_toTopOf="@id/markwon_helper"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/resource_status_container_layout" />
+        <include layout="@layout/resource_status_container_layout"
+            android:id="@+id/resource_status_layout"/>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             style="@style/Widget.DynamicApp.Card.Margin.Clickable"
@@ -65,7 +66,8 @@
 
                 </com.revolgenx.anilib.ui.view.MaxHeightFrameLayout>
 
-                <include layout="@layout/markwon_helper_layout" />
+                <include layout="@layout/markwon_helper_layout"
+                    android:id="@+id/markwon_helper"/>
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 

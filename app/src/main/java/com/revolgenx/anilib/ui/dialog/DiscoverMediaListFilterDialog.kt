@@ -10,7 +10,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.common.preference.getDiscoverMediaListSort
 import com.revolgenx.anilib.common.preference.setDiscoverMediaListSort
-import kotlinx.android.synthetic.main.media_list_filter_dialog_layout.*
+import com.revolgenx.anilib.databinding.MediaListFilterDialogLayoutBinding
 
 class DiscoverMediaListFilterDialog : BaseDialogFragment() {
     override var positiveText: Int? = R.string.done
@@ -39,7 +39,8 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment() {
     }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
-        with(alertDialog) {
+        val binding = MediaListFilterDialogLayoutBinding.bind(dialogView)
+        with(binding) {
             val type = arguments?.getInt(MEDIA_LIST_FILTER_TYPE)!!
             val mediaListSortItems = mutableListOf<DynamicSpinnerItem>().apply {
                 add(DynamicSpinnerItem(null, getString(R.string.none)))
@@ -59,17 +60,17 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment() {
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
+        val binding = MediaListFilterDialogLayoutBinding.bind(dialogView)
+
         if (dialogInterface is DynamicDialog) {
-            with(dialogInterface) {
-                val mediaListSort =
-                    (mediaListSortSpinner.selectedItemPosition - 1).takeIf { it >= 0 }
-                setDiscoverMediaListSort(
-                    requireContext(),
-                    arguments?.getInt(MEDIA_LIST_FILTER_TYPE)!!,
-                    mediaListSort
-                )
-                onDoneListener?.invoke()
-            }
+            val mediaListSort =
+                (binding.mediaListSortSpinner.selectedItemPosition - 1).takeIf { it >= 0 }
+            setDiscoverMediaListSort(
+                requireContext(),
+                arguments?.getInt(MEDIA_LIST_FILTER_TYPE)!!,
+                mediaListSort
+            )
+            onDoneListener?.invoke()
         }
     }
 
@@ -82,10 +83,12 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment() {
         )
 
     override fun onSaveInstanceState(outState: Bundle) {
+        val binding = MediaListFilterDialogLayoutBinding.bind(dialogView)
+
         super.onSaveInstanceState(outState)
         outState.putInt(
             MEDIA_LIST_SORT_KEY,
-            dialog?.mediaListSortSpinner!!.selectedItemPosition
+            binding.mediaListSortSpinner.selectedItemPosition
         )
     }
 }

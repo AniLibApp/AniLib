@@ -7,28 +7,24 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseReviewEvent
 import com.revolgenx.anilib.infrastructure.event.UserBrowseEvent
 import com.revolgenx.anilib.data.model.MediaReviewModel
-import kotlinx.android.synthetic.main.media_review_presenter_layout.view.*
+import com.revolgenx.anilib.databinding.MediaReviewPresenterLayoutBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 
-class MediaReviewPresenter(context: Context) : Presenter<MediaReviewModel>(context) {
+class MediaReviewPresenter(context: Context) : BasePresenter<MediaReviewPresenterLayoutBinding, MediaReviewModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(context).inflate(
-                R.layout.media_review_presenter_layout,
-                parent,
-                false
-            )
-        )
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): MediaReviewPresenterLayoutBinding {
+        return MediaReviewPresenterLayoutBinding.inflate(inflater, parent, false)
     }
 
     @SuppressLint("RestrictedApi")
@@ -36,7 +32,7 @@ class MediaReviewPresenter(context: Context) : Presenter<MediaReviewModel>(conte
         super.onBind(page, holder, element)
         val item = element.data ?: return
 
-        holder.itemView.apply {
+        holder.getBinding()?.apply {
             reviewUserIv.setImageURI(item.userPrefModel?.avatar?.large)
 
             reviewSummaryTv.text = item.summary

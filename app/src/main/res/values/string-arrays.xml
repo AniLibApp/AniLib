@@ -594,6 +594,17 @@
         <item>@string/updated_at_desc</item>
     </string-array>
 
+    <string-array name="airing_sort">
+        <item>@string/id</item>
+        <item>@string/id_desc</item>
+        <item>@string/media_id</item>
+        <item>@string/media_id_desc</item>
+        <item>@string/time</item>
+        <item>@string/time_desc</item>
+        <item>@string/episodes</item>
+        <item>@string/episodes_desc</item>
+    </string-array>
+
     <string name="portuguese" translatable="false">Português</string>
     <string name="hindi" translatable="false">हिंदी</string>
     <string name="italian" translatable="false">Italiano</string>
@@ -703,14 +714,6 @@
 
     <string-array name="favourite_station_more_actions">
         <item>@string/remove_from_favourite</item>
-    </string-array>
-
-    <string-array name="user_profile_more_actions">
-        <item>@string/settings</item>
-        <item>@string/discord</item>
-        <item>@string/translate</item>
-        <item>@string/share</item>
-        <item>@string/sign_out</item>
     </string-array>
     <!--more action-->
 

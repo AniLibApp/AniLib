@@ -10,14 +10,12 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.databinding.UserActivityGenrePresenterBinding
 import com.revolgenx.anilib.databinding.UserOverviewFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.ui.viewmodel.user.UserProfileViewModel
 import com.revolgenx.anilib.util.getOrDefault
-import kotlinx.android.synthetic.main.user_activity_genre_presenter.view.*
-import kotlinx.android.synthetic.main.user_profile_acitivty_layout.*
-import timber.log.Timber
 
 class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBinding>() {
 
@@ -59,8 +57,9 @@ class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBindin
                                     R.layout.user_activity_genre_presenter,
                                     0
                                 ) { view, genres ->
-                                    view.userGenreHeader.title = genres.first
-                                    view.userGenreHeader.subtitle = genres.second.toString()
+                                    val genreBind = UserActivityGenrePresenterBinding.bind(view)
+                                    genreBind.userGenreHeader.title = genres.first
+                                    genreBind.userGenreHeader.subtitle = genres.second.toString()
                                 }).into(tagGenreRecyclerView)
 
 

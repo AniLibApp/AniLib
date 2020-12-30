@@ -245,12 +245,10 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
 
         showcaseRecyclerView = DynamicRecyclerView(context).also {
             it.layoutParams = LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,context.resources.getDimensionPixelSize(
-                    R.dimen.discover_media_height
+                ViewGroup.LayoutParams.MATCH_PARENT, context.resources.getDimensionPixelSize(
+                    R.dimen.discover_recycler_height
                 )
-            ).also {
-                it.setMargins(0, dp(10f), 0, dp(10f))
-            }
+            )
             it.isNestedScrollingEnabled = false
         }
 

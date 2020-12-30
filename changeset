@@ -14,6 +14,9 @@ ic_discover remove
 display_mode_menu remove
 
 navheaderlayout remove
+CustomizeFilterFragment remove
+
+check userfavourite, season, mediaview, mediacharacter, search
 
 v-1.1.8
 front ui redesign for easy access.

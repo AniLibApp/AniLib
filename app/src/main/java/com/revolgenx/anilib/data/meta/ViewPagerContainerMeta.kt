@@ -1,12 +1,12 @@
 package com.revolgenx.anilib.data.meta
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ViewPagerContainerMeta<T : Parcelable>(
+class ViewPagerContainerMeta(
     var containerType: ViewPagerContainerType,
-    var data: T
+    var data: Parcelable
 ) : Parcelable
 
 enum class ViewPagerContainerType {

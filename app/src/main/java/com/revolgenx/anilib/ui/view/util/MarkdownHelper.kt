@@ -1,15 +1,14 @@
 package com.revolgenx.anilib.ui.view.util
 
-import android.view.View
 import android.widget.EditText
+import com.revolgenx.anilib.databinding.MarkwonHelperLayoutBinding
 import com.revolgenx.anilib.util.getClipBoardText
-import kotlinx.android.synthetic.main.markwon_helper_layout.view.*
 
 
-fun attachHelperToView(view: View, editText: EditText) {
-    view.apply {
+fun attachHelperToView(binding: MarkwonHelperLayoutBinding, editText: EditText) {
+    binding.apply {
         pasteIv.setOnClickListener {
-            editText.addMarkdown(context.getClipBoardText(), 0)
+            editText.addMarkdown(binding.root.context.getClipBoardText(), 0)
         }
         boldIv.setOnClickListener {
             editText.addMarkdown("____", 2)

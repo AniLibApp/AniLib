@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <include
+            android:id="@+id/resource_status_layout"
             layout="@layout/resource_status_container_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

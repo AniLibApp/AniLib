@@ -3,8 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/userShareMenu"
+        android:id="@+id/setting_menu"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/discord_menu"
+        android:title="@string/discord"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/translate_menu"
+        android:title="@string/translate"
+        app:showAsAction="never"
+        />
+
+
+    <item
+        android:id="@+id/user_share_menu"
         android:title="@string/share"
-        android:icon="@drawable/ads_ic_share"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/sign_out_menu"
+        android:title="@string/sign_out"
+        app:showAsAction="never"/>
+
 </menu>
