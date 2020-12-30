@@ -12,10 +12,9 @@ import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.data.model.airing.AiringMediaModel
+import com.revolgenx.anilib.databinding.AiringFragmentLayoutBinding
 import com.revolgenx.anilib.ui.presenter.airing.AiringPresenter
 import com.revolgenx.anilib.ui.viewmodel.airing.AiringViewModel
-import kotlinx.android.synthetic.main.airing_fragment_layout.view.*
-import kotlinx.android.synthetic.main.toolbar_layout.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -49,15 +48,15 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
         savedInstanceState: Bundle?
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        val airingView = inflater.inflate(R.layout.airing_fragment_layout, container, false)
+        val airingViewBinding = AiringFragmentLayoutBinding.inflate(LayoutInflater.from(requireContext()), container, false)
         with(activity as ContainerActivity) {
-            setSupportActionBar(airingView.dynamicToolbar)
+            setSupportActionBar(airingViewBinding.airingToolbar.dynamicToolbar)
             this.supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close)
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
-        airingView.airingContainerFrameLayout.addView(view)
-        return airingView
+        airingViewBinding.airingContainerFrameLayout.addView(view)
+        return airingViewBinding.root
     }
 
     @SuppressLint("RestrictedApi")

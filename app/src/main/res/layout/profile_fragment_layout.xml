@@ -9,8 +9,6 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ads_color="@android:color/transparent"
-        app:ads_colorType="custom"
         app:elevation="0dp">
 
 
@@ -19,12 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+            app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_collapseMode="pin">
+                app:layout_collapseMode="none">
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/user_banner_iv"
@@ -34,35 +33,35 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    app:layout_constraintTop_toTopOf="parent">
+                <!--                <FrameLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="?actionBarSize"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent">-->
 
 
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                        android:id="@+id/user_profile_more_iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:ads_color="@color/translucent_dark"
-                        android:paddingEnd="8dp"
-                        android:paddingStart="8dp"
-                        app:ads_colorType="custom"
-                        android:layout_gravity="end|center_vertical"
-                        app:srcCompat="@drawable/ic_more_circle" />
+                <!--                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView-->
+                <!--                        android:id="@+id/user_profile_more_iv"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        app:ads_color="@color/translucent_dark"-->
+                <!--                        android:paddingEnd="8dp"-->
+                <!--                        android:paddingStart="8dp"-->
+                <!--                        app:ads_colorType="custom"-->
+                <!--                        android:layout_gravity="end|center_vertical"-->
+                <!--                        app:srcCompat="@drawable/ic_more_circle" />-->
 
 
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                        android:id="@+id/user_profile_back_iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:visibility="gone"
-                        app:ads_colorType="tint_primary"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:layout_gravity="start|center_vertical"
-                        app:srcCompat="@drawable/ads_ic_back" />
-                </FrameLayout>
+                <!--                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView-->
+                <!--                        android:id="@+id/user_profile_back_iv"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:visibility="gone"-->
+                <!--                        app:ads_colorType="tint_primary"-->
+                <!--                        android:paddingStart="8dp"-->
+                <!--                        android:paddingEnd="8dp"-->
+                <!--                        android:layout_gravity="start|center_vertical"-->
+                <!--                        app:srcCompat="@drawable/ads_ic_back" />-->
+                <!--                </FrameLayout>-->
 
                 <com.revolgenx.anilib.radio.ui.view.CircleSimpleDraweeView
                     android:id="@+id/user_avatar_iv"
@@ -185,9 +184,14 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+                android:id="@+id/profile_fragment_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:layout_collapseMode="pin" />
+
         </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
-
-
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 
     <LinearLayout

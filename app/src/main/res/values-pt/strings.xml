@@ -17,7 +17,7 @@
     <string name="settings">"Configurações"</string>
     <string name="account">"Conta"</string>
     <string name="sign_in">"Fazer login"</string>
-    <string name="dynamic_theme">"Tema dinâmico"</string>
+    <string name="theme">"Tema"</string>
     <string name="notification">"Notificações"</string>
     <string name="notification_setting_sub">"Controle o que vê na notificação. (Login necessário)"</string>
     <string name="sign_out">"Desconectar"</string>

@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.ui.fragment.home.discover
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import com.google.android.material.tabs.TabLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
+import com.revolgenx.anilib.common.preference.getAiringField
 import com.revolgenx.anilib.ui.fragment.airing.AiringFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.data.model.home.HomeOrderType
@@ -18,6 +20,8 @@ import com.revolgenx.anilib.common.preference.getHomeOrderFromType
 import com.revolgenx.anilib.databinding.DiscoverAiringFragmentLayoutBinding
 import com.revolgenx.anilib.ui.presenter.home.discover.DiscoverAiringPresenter
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
+import com.revolgenx.anilib.ui.dialog.AiringFilterDialog
+import com.revolgenx.anilib.ui.dialog.MediaFilterDialog
 import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverAiringViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -66,7 +70,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
 
         orderedViewList.add(OrderedViewModel(
             airingBinding.root, order,
-            getString(R.string.airing_schedules),R.drawable.ic_airing, showSetting = false
+            getString(R.string.airing_schedules), R.drawable.ic_airing, showSetting = true
         ) {
             this@DiscoverAiringFragment.handleClick(it)
         })
@@ -86,7 +90,8 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
         airingBinding.dslWeekTabLayout.addOnTabSelectedListener(onDaySelectListener)
         airingBinding.dslWeekTabLayout.getTabAt(viewModel.selectedDay)?.select()
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
+            viewModel.updateField(requireContext())
             viewModel.createSource()
         }
         invalidateAdapter()
@@ -99,16 +104,36 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     }
 
     private fun handleClick(which: Int) {
-        if (which == 0) {
-            ContainerActivity.openActivity(
-                requireContext(),
-                ParcelableFragment(
-                    AiringFragment::class.java,
-                    bundleOf()
+        when (which) {
+            0 -> {
+                ContainerActivity.openActivity(
+                    requireContext(),
+                    ParcelableFragment(
+                        AiringFragment::class.java,
+                        bundleOf()
+                    )
                 )
-            )
+            }
+            1 -> {
+                val airingDialog = AiringFilterDialog()
+                airingDialog.onButtonClickedListener = { _, w ->
+                    when (w) {
+                        AlertDialog.BUTTON_POSITIVE -> {
+                            renewAdapter()
+                        }
+                    }
+                }
+                airingDialog.show(childFragmentManager, "Airing_Filter_Dialog")
+            }
         }
     }
+
+    private fun renewAdapter() {
+        viewModel.updateField(requireContext())
+        viewModel.createSource()
+        invalidateAdapter()
+    }
+
 
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {

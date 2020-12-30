@@ -3,19 +3,20 @@ package com.revolgenx.anilib.ui.presenter.media
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.viewbinding.ViewBinding
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseCharacterEvent
 import com.revolgenx.anilib.infrastructure.event.BrowseStaffEvent
 import com.revolgenx.anilib.data.meta.CharacterMeta
 import com.revolgenx.anilib.data.meta.StaffMeta
 import com.revolgenx.anilib.data.model.MediaCharacterModel
-import kotlinx.android.synthetic.main.anime_character_presenter_layout.view.*
-import kotlinx.android.synthetic.main.manga_character_presenter_layout.view.*
+import com.revolgenx.anilib.databinding.AnimeCharacterPresenterLayoutBinding
+import com.revolgenx.anilib.databinding.MangaCharacterPresenterLayoutBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 
-class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>(context) {
+class MediaCharacterPresenter(context: Context) : BasePresenter<ViewBinding, MediaCharacterModel>(context) {
 
     override val elementTypes: Collection<Int>
         get() = listOf(0, 1)
@@ -27,27 +28,24 @@ class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>
         context.resources.getStringArray(R.array.staff_language)
     }
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        val v =
-            LayoutInflater.from(parent.context).inflate(
-                when (elementType) {
-                    1 -> R.layout.manga_character_presenter_layout
-                    else ->
-                        R.layout.anime_character_presenter_layout
-                },
-                parent,
-                false
-            )
 
-        return Holder(v);
+    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?, elementType: Int): ViewBinding {
+        return when(elementType){
+            1->{
+                MangaCharacterPresenterLayoutBinding.inflate(inflater, parent,false)
+            }else->{
+                AnimeCharacterPresenterLayoutBinding.inflate(inflater, parent, false)
+            }
+        }
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<MediaCharacterModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
+        val binding = holder.getBinding() ?: return
         when (holder.elementType) {
             0 -> {
-                holder.itemView.apply {
+                (binding as AnimeCharacterPresenterLayoutBinding).apply {
                     characterImageView.setImageURI(item.characterImageModel?.image)
                     characterNameTv.text = item.name
                     characterRoleTv.text = item.role?.let { characterRoles[it] }
@@ -81,7 +79,7 @@ class MediaCharacterPresenter(context: Context) : Presenter<MediaCharacterModel>
                 }
             }
             1 -> {
-                holder.itemView.apply {
+                (binding as MangaCharacterPresenterLayoutBinding).apply {
                     mangaCharacterImageView.setImageURI(item.characterImageModel?.image)
                     mangaCharacterNameTv.text = item.name
                     mangaCharacterRoleTv.text = item.role?.let { characterRoles[it] }

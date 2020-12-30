@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+        android:id="@+id/show_all_airing_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_all" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+        android:id="@+id/airing_sort_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

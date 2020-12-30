@@ -1,6 +1,9 @@
 package com.revolgenx.anilib.ui.viewmodel.home.discover
 
+import android.content.Context
 import com.otaliastudios.elements.Adapter
+import com.revolgenx.anilib.common.preference.getAiringField
+import com.revolgenx.anilib.common.preference.getTrendingField
 import com.revolgenx.anilib.data.field.home.AiringMediaField
 import com.revolgenx.anilib.infrastructure.service.airing.AiringMediaService
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
@@ -38,6 +41,14 @@ class DiscoverAiringViewModel(private val airingMediaService: AiringMediaService
         field.airingGreaterThan = startDateTime.plusDays(day.toLong()).toEpochSecond().toInt()
         field.airingLessThan = endDateTime.plusDays(day.toLong()).toEpochSecond().toInt()
         compositeDisposable.clear()
+    }
+
+
+    fun updateField(context: Context) {
+        getAiringField(context).let {
+            field.notYetAired = it.notYetAired
+            field.sort = it.sort
+        }
     }
 
 

@@ -5,35 +5,32 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseStaffEvent
 import com.revolgenx.anilib.data.meta.StaffMeta
 import com.revolgenx.anilib.data.model.MediaStaffModel
-import kotlinx.android.synthetic.main.media_staff_presenter_layout.view.*
+import com.revolgenx.anilib.databinding.MediaStaffPresenterLayoutBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 
-class MediaStaffPresenter(context: Context) : Presenter<MediaStaffModel>(context) {
+class MediaStaffPresenter(context: Context) : BasePresenter<MediaStaffPresenterLayoutBinding, MediaStaffModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.media_staff_presenter_layout,
-                parent,
-                false
-            )
-        )
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): MediaStaffPresenterLayoutBinding {
+        return MediaStaffPresenterLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<MediaStaffModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-        holder.itemView.apply {
+        holder.getBinding()?.apply {
             staffNameTv.text = item.name
             staffRoleTv.text = item.role
             staffImageView.setImageURI(item.staffImage?.image)
-            setOnClickListener {
+            root.setOnClickListener {
                 BrowseStaffEvent(StaffMeta(item.staffId ?: -1, item.staffImage?.image)).postEvent
             }
         }

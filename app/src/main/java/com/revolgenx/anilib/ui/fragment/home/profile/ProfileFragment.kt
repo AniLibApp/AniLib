@@ -3,15 +3,15 @@ package com.revolgenx.anilib.ui.fragment.home.profile
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.os.bundleOf
+import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.activity.MediaListActivity
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
+import com.revolgenx.anilib.common.preference.userName
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.meta.*
@@ -33,6 +33,7 @@ import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.user.UserProfileViewModel
 import com.revolgenx.anilib.util.getOrDefault
+import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -47,7 +48,6 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
     private val viewModel by viewModel<UserProfileViewModel>()
     private var userProfileModel: UserProfileModel? = null
 
-
     private val userProfileFragments by lazy {
         listOf(
             UserOverviewFragment(),
@@ -57,7 +57,6 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
         )
     }
 
-
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?
@@ -65,19 +64,43 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
         return ProfileFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setCollapsingToolbarTheme()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         val userMeta: UserMeta? = arguments?.getParcelable(USER_PROFILE_INFO_KEY)
 
+
         val showUserInfo = if (userMeta != null) {
+            binding.profileFragmentToolbar.inflateMenu(R.menu.user_profile_menu)
+
             with(viewModel.userField) {
                 userId = userMeta.userId
                 userName = userMeta.userName
             }
-            binding.userProfileBackIv.visibility = View.VISIBLE
-            binding.userProfileBackIv.setOnClickListener {
-                finishActivity()
+            with(binding.profileFragmentToolbar) {
+                setNavigationIcon(R.drawable.ads_ic_back)
+                setNavigationOnClickListener {
+                    finishActivity()
+                }
+
+                menu.findItem(R.id.setting_menu).isVisible = false
+                menu.findItem(R.id.discord_menu).isVisible = false
+                menu.findItem(R.id.translate_menu).isVisible = false
+                menu.findItem(R.id.sign_out_menu).isVisible = false
+
+                setOnMenuItemClickListener {
+                    if (it.itemId == R.id.user_share_menu) {
+                        requireContext().openLink(userProfileModel?.siteUrl)
+                        true
+                    } else {
+                        false
+                    }
+                }
             }
 
             binding.animeCountHeader.setOnClickListener {
@@ -94,19 +117,11 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                 )
             }
 
-            binding.userProfileMoreIv.setOnClickListener {
-                makeArrayPopupMenu(it, arrayOf(getString(R.string.share))) { _, _, position, _ ->
-                    when (position) {
-                        0 -> {
-                            requireContext().openLink(userProfileModel?.siteUrl)
-                        }
-                    }
-                }
-            }
-
             true
         } else {
             if (requireContext().loggedIn()) {
+                binding.profileFragmentToolbar.inflateMenu(R.menu.user_profile_menu)
+
                 viewModel.userField.userId = requireContext().userId()
 
                 binding.animeCountHeader.setOnClickListener {
@@ -123,29 +138,29 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                     }
                 }
 
-
-                binding.userProfileMoreIv.setOnClickListener {
-                    makeArrayPopupMenu(
-                        it,
-                        resources.getStringArray(R.array.user_profile_more_actions)
-                    ) { _, _, position, _ ->
-                        when (position) {
-                            0 -> {
-                                SettingEvent().postEvent
-                            }
-                            1 -> {
-                                requireContext().openLink(getString(R.string.discord_invite_link))
-                            }
-                            2 -> {
-                                requireContext().openLink(getString(R.string.translate_link))
-                            }
-                            3 -> {
-                                requireContext().openLink(userProfileModel?.siteUrl)
-                            }
-                            4 -> {
-                                AuthenticateEvent().postEvent
-                            }
+                binding.profileFragmentToolbar.setOnMenuItemClickListener {
+                    when(it.itemId){
+                        R.id.setting_menu->{
+                            SettingEvent().postEvent
+                            true
                         }
+                        R.id.discord_menu->{
+                            requireContext().openLink(getString(R.string.discord_invite_link))
+                            true
+                        }
+                        R.id.translate_menu->{
+                            requireContext().openLink(getString(R.string.translate_link))
+                            true
+                        }
+                        R.id.user_share_menu->{
+                            requireContext().openLink(userProfileModel?.siteUrl)
+                            true
+                        }
+                        R.id.sign_out_menu->{
+                            AuthenticateEvent().postEvent
+                            true
+                        }
+                        else->false
                     }
                 }
                 true
@@ -162,6 +177,24 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
         }
     }
 
+
+
+    private fun setCollapsingToolbarTheme() {
+        binding.userCollapsingToolbar.setStatusBarScrimColor(
+            DynamicTheme.getInstance().get().primaryColorDark
+        )
+        binding.userCollapsingToolbar.setContentScrimColor(
+            DynamicTheme.getInstance().get().primaryColor
+        )
+        binding.userCollapsingToolbar.setCollapsedTitleTextColor(
+            DynamicTheme.getInstance().get().tintPrimaryColor
+        )
+        binding.userCollapsingToolbar.setBackgroundColor(
+            DynamicTheme.getInstance().get().backgroundColor
+        )
+    }
+
+
     private fun ProfileFragmentLayoutBinding.bindUserView(savedInstanceState: Bundle?) {
         viewModel.userProfileLiveData.observe(viewLifecycleOwner) {
             when (it.status) {
@@ -171,6 +204,9 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                         userAvatarIv.setImageURI(model.avatar?.image)
                         userBannerIv.setImageURI(model.bannerImage ?: model.avatar?.image)
                         usernameTv.text = model.userName
+
+                        binding.profileFragmentToolbar.title = userProfileModel?.userName.naText()
+
 
                         animeCountHeader.title =
                             model.totalAnime.getOrDefault().prettyNumberFormat()

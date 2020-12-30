@@ -123,7 +123,8 @@
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
-        <include layout="@layout/resource_status_container_layout" />
+        <include layout="@layout/resource_status_container_layout"
+            android:id="@+id/resource_status_layout"/>
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>

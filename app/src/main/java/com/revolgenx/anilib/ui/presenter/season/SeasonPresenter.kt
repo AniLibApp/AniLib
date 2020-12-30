@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseGenreEvent
@@ -19,14 +18,15 @@ import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.CommonMediaModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.databinding.SeasonPresenterLayoutBinding
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
-import kotlinx.android.synthetic.main.season_presenter_layout.view.*
 
 class SeasonPresenter(context: Context) :
-    Presenter<CommonMediaModel>(context) {
+    BasePresenter<SeasonPresenterLayoutBinding, CommonMediaModel>(context) {
 
     override val elementTypes: Collection<Int>
         get() = listOf(0)
@@ -51,31 +51,32 @@ class SeasonPresenter(context: Context) :
         context.loggedIn()
     }
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.season_presenter_layout,
-                parent,
-                false
-            )
-        )
+
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): SeasonPresenterLayoutBinding {
+        return SeasonPresenterLayoutBinding.inflate(inflater, parent, false)
     }
 
 
     override fun onBind(page: Page, holder: Holder, element: Element<CommonMediaModel>) {
         super.onBind(page, holder, element)
-        val item = element.data!!
-        holder.itemView.apply {
+        val item = element.data ?: return
+        val binding = holder.getBinding() ?: return
+        binding.apply {
             mediaTitleTv.naText(item.title!!.title(context))
             coverImageIv.setImageURI(item.coverImage!!.image(context))
             if (item.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeTv.text =
-                    string(R.string.ep_d_s).format(item.episodes.naText(), item.duration.naText())
+                    context.string(R.string.ep_d_s).format(item.episodes.naText(), item.duration.naText())
             } else {
                 mediaEpisodeTv.text =
-                    string(R.string.chap_s).format(item.chapters.naText(), item.volumes.naText())
+                    context.string(R.string.chap_s).format(item.chapters.naText(), item.volumes.naText())
             }
-            mediaStartDateTv.text = item.startDate?.date.naText() + " ~ " + item.endDate?.date.naText()
+            mediaStartDateTv.text =
+                item.startDate?.date.naText() + " ~ " + item.endDate?.date.naText()
             mediaGenreLayout.addGenre(
                 item.genres?.take(5)
             ) { genre ->
@@ -106,7 +107,7 @@ class SeasonPresenter(context: Context) :
                         item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
-                    ), holder.itemView.coverImageIv
+                    ), coverImageIv
                 ).postEvent
             }
 
@@ -119,7 +120,7 @@ class SeasonPresenter(context: Context) :
                             item.title!!.title(context)!!,
                             item.coverImage!!.image(context),
                             item.bannerImage
-                        ), holder.itemView.coverImageIv
+                        ), coverImageIv
                     ).postEvent
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
@@ -159,7 +160,7 @@ class SeasonPresenter(context: Context) :
                         )
                     }
                 }
-            }else{
+            } else {
                 entryProgressTv.visibility = View.GONE
             }
 

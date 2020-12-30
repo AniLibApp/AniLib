@@ -12,7 +12,7 @@ import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.infrastructure.event.MediaListCollectionFilterEvent
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.data.meta.MediaListFilterMeta
-import kotlinx.android.synthetic.main.list_collection_filter_dialog_layout.*
+import com.revolgenx.anilib.databinding.ListCollectionFilterDialogLayoutBinding
 
 
 class MediaListCollectionFilterDialog : BaseDialogFragment() {
@@ -28,7 +28,6 @@ class MediaListCollectionFilterDialog : BaseDialogFragment() {
         const val LIST_FILTER_PARCEL_KEY = "LIST_FILTER_PARCEL_KEY"
     }
 
-    private var alertDialog: DynamicDialog? = null
     override var titleRes: Int? = R.string.filter
     override var viewRes: Int? = R.layout.list_collection_filter_dialog_layout
     override var positiveText: Int? = R.string.done
@@ -36,15 +35,16 @@ class MediaListCollectionFilterDialog : BaseDialogFragment() {
 
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
+        val binding = ListCollectionFilterDialogLayoutBinding.bind(dialogView)
         if (dialogInterface is DynamicDialog) {
             MediaListFilterMeta(
-                format = (dialogInterface.listFormatSpinner.selectedItemPosition - 1).takeIf { it >= 0 },
-                status = (dialogInterface.listStatusSpinner.selectedItemPosition - 1).takeIf { it >= 0 },
-                genres = dialogInterface.listGenreSpinner.let { spin ->
+                format = (binding.listFormatSpinner.selectedItemPosition - 1).takeIf { it >= 0 },
+                status = (binding.listStatusSpinner.selectedItemPosition - 1).takeIf { it >= 0 },
+                genres = binding.listGenreSpinner.let { spin ->
                     (spin.selectedItemPosition - 1).takeIf { it >= 0 }
                         ?.let { (spin.selectedItem as DynamicSpinnerItem).text.toString() }
                 },
-                mediaListSort =  (dialogInterface.listSortSpinner.selectedItemPosition - 1).takeIf { it >= 0 }
+                mediaListSort =  (binding.listSortSpinner.selectedItemPosition - 1).takeIf { it >= 0 }
             ).let {
                 MediaListCollectionFilterEvent(it).postEvent
             }
@@ -53,7 +53,8 @@ class MediaListCollectionFilterDialog : BaseDialogFragment() {
 
 
     override fun onSaveInstanceState(outState: Bundle) {
-        alertDialog?.let {
+        val binding = ListCollectionFilterDialogLayoutBinding.bind(dialogView)
+        binding.let {
             outState.putInt(LIST_FORMAT_KEY, it.listFormatSpinner.selectedItemPosition)
             outState.putInt(LIST_STATUS_KEY, it.listStatusSpinner.selectedItemPosition)
             outState.putInt(LIST_GENRE_KEY, it.listGenreSpinner.selectedItemPosition)
@@ -63,15 +64,16 @@ class MediaListCollectionFilterDialog : BaseDialogFragment() {
     }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
-        with(alertDialog){
-            this@MediaListCollectionFilterDialog.alertDialog = this
+        val binding = ListCollectionFilterDialogLayoutBinding.bind(dialogView)
+
+        with(binding){
             this.updateTheme()
             this.updateView(savedInstanceState)
         }
     }
 
 
-    private fun DynamicDialog.updateTheme() {
+    private fun ListCollectionFilterDialogLayoutBinding.updateTheme() {
         ThemeController.lightSurfaceColor().let {
             listFormatFrameLayout.setBackgroundColor(it)
             listStatusFrameLayout.setBackgroundColor(it)
@@ -80,19 +82,19 @@ class MediaListCollectionFilterDialog : BaseDialogFragment() {
         }
     }
 
-    private fun DynamicDialog.updateView(savedInstanceState: Bundle?) {
-        val listFormatItems = context.resources.getStringArray(R.array.advance_search_format).map {
+    private fun ListCollectionFilterDialogLayoutBinding.updateView(savedInstanceState: Bundle?) {
+        val listFormatItems = requireContext().resources.getStringArray(R.array.advance_search_format).map {
             DynamicSpinnerItem(
                 null, it
             )
         }
-        val listStatusItems = context.resources.getStringArray(R.array.advance_search_status).map {
+        val listStatusItems = requireContext().resources.getStringArray(R.array.advance_search_status).map {
             DynamicSpinnerItem(
                 null, it
             )
         }
 
-        val genre = context.resources.getStringArray(R.array.media_genre)
+        val genre = requireContext().resources.getStringArray(R.array.media_genre)
         val listGenreItems = mutableListOf<DynamicSpinnerItem>().apply {
             add(DynamicSpinnerItem(null, getString(R.string.none)))
             addAll(genre.map {
@@ -100,7 +102,7 @@ class MediaListCollectionFilterDialog : BaseDialogFragment() {
             })
         }
 
-        val mediaListSort = context.resources.getStringArray(R.array.media_list_collection_sort)
+        val mediaListSort = requireContext().resources.getStringArray(R.array.media_list_collection_sort)
         val mediaListSortItems = mutableListOf<DynamicSpinnerItem>().apply {
             add(DynamicSpinnerItem(null, getString(R.string.none)))
             addAll(mediaListSort.map {

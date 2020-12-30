@@ -6,32 +6,29 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.model.MediaExternalLinkModel
+import com.revolgenx.anilib.databinding.ExternalLinkPresenterBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.util.colorsMap
 import com.revolgenx.anilib.util.openLink
-import kotlinx.android.synthetic.main.external_link_presenter.view.*
 
-class MediaExternalLinkPresenter(context: Context) : Presenter<MediaExternalLinkModel>(context) {
+class MediaExternalLinkPresenter(context: Context) : BasePresenter<ExternalLinkPresenterBinding, MediaExternalLinkModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.external_link_presenter,
-                parent,
-                false
-            )
-        )
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): ExternalLinkPresenterBinding {
+        return ExternalLinkPresenterBinding.inflate(inflater, parent,false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<MediaExternalLinkModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-        holder.itemView.apply {
+        holder.getBinding()?.apply {
             mediaExternalLinkTv.text = item.site
 
             item.site?.toLowerCase()?.let { st ->

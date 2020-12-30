@@ -8,6 +8,7 @@ import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.DrawableRes
+import androidx.annotation.NonNull
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.SearchView
@@ -28,14 +29,11 @@ import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.common.preference.setMediaListGridPresenter
 import com.revolgenx.anilib.databinding.MediaListActivityLayoutBinding
+import com.revolgenx.anilib.databinding.SmartTabLayoutBinding
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
-import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
-import kotlinx.android.synthetic.main.media_list_activity_layout.*
-import kotlinx.android.synthetic.main.smart_tab_layout.view.*
-import kotlinx.android.synthetic.main.toolbar_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -96,8 +94,8 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
 
 
             override fun onPageSelected(position: Int) {
-                base_dynamic_smart_tab.getTabs().forEach { it.tab_text_tv.visibility = View.GONE }
-                base_dynamic_smart_tab.getTabAt(position).tab_text_tv.visibility = View.VISIBLE
+                binding.mediaListSmartTab.baseDynamicSmartTab.getTabs().forEach { it.findViewById<View>(R.id.tab_text_tv).visibility = View.GONE }
+                binding.mediaListSmartTab.baseDynamicSmartTab.getTabAt(position).findViewById<View>(R.id.tab_text_tv).visibility = View.VISIBLE
             }
         }
     }
@@ -133,12 +131,11 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        listRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
 
-        setSupportActionBar(dynamicToolbar)
+        setSupportActionBar(binding.mediaListToolbar.dynamicToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        base_dynamic_smart_tab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
+        binding.mediaListSmartTab.baseDynamicSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
         statusBarColor = statusBarColor
 
         mediaListMeta = intent.getParcelableExtra(MEDIA_LIST_META_KEY) ?: return
@@ -155,40 +152,38 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
         }
 
         val inflater = LayoutInflater.from(this)
-        base_dynamic_smart_tab.setCustomTabView { container, position, _ ->
-            val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
+        binding.mediaListSmartTab.baseDynamicSmartTab.setCustomTabView { container, position, _ ->
+            val binding = SmartTabLayoutBinding.inflate(inflater, container, false)
             when (position) {
                 0 -> {
-                    createTabView(view, R.drawable.ic_watching, R.string.watching)
+                    createTabView(binding, R.drawable.ic_watching, R.string.watching)
                 }
                 1 -> {
-                    createTabView(view, R.drawable.ic_planning, R.string.planning)
+                    createTabView(binding, R.drawable.ic_planning, R.string.planning)
                 }
                 2 -> {
-                    createTabView(view, R.drawable.ic_completed, R.string.completed)
+                    createTabView(binding, R.drawable.ic_completed, R.string.completed)
                 }
                 3 -> {
-                    createTabView(view, R.drawable.ic_dropped, R.string.dropped)
+                    createTabView(binding, R.drawable.ic_dropped, R.string.dropped)
                 }
                 4 -> {
-                    createTabView(view, R.drawable.ic_paused_filled, R.string.paused)
+                    createTabView(binding, R.drawable.ic_paused_filled, R.string.paused)
                 }
                 5 -> {
-                    createTabView(view, R.drawable.ic_rewatching, R.string.repeating)
-                }
-                else -> {
-                    null
+                    createTabView(binding, R.drawable.ic_rewatching, R.string.repeating)
                 }
             }
+            binding.root
         }
 
-        mediaListViewPager.addOnPageChangeListener(pageChangeListener)
-        mediaListViewPager.adapter = MediaListAdapter(mediaListFragment)
-        mediaListViewPager.offscreenPageLimit = 5
-        base_dynamic_smart_tab.setViewPager(mediaListViewPager, null)
-        mediaListViewPager.setCurrentItem(0, false)
-        mediaListViewPager.post {
-            pageChangeListener.onPageSelected(mediaListViewPager.currentItem)
+        binding.mediaListViewPager.addOnPageChangeListener(pageChangeListener)
+        binding.mediaListViewPager.adapter = MediaListAdapter(mediaListFragment)
+        binding.mediaListViewPager.offscreenPageLimit = 5
+        binding.mediaListSmartTab.baseDynamicSmartTab.setViewPager(binding.mediaListViewPager, null)
+        binding.mediaListViewPager.setCurrentItem(0, false)
+        binding.mediaListViewPager.post {
+            pageChangeListener.onPageSelected(binding.mediaListViewPager.currentItem)
         }
 
         (savedInstanceState?.getParcelable(MediaListCollectionFilterDialog.LIST_FILTER_PARCEL_KEY) as? MediaListCollectionFilterField)?.let { field ->
@@ -265,13 +260,12 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
     }
 
 
-    private fun createTabView(view: View, @DrawableRes src: Int, @StringRes str: Int): View {
-        view.tab_image_view.imageTintList = tabColorStateList
-        view.tab_image_view.setImageResource(src)
-        view.tab_text_tv.text = getString(str)
-        view.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
-        view.tab_text_tv.setTextColor(accentColor)
-        return view
+    private fun createTabView(view: SmartTabLayoutBinding, @DrawableRes src: Int, @StringRes str: Int){
+        view.tabImageView.imageTintList = tabColorStateList
+        view.tabImageView.setImageResource(src)
+        view.tabTextTv.text = getString(str)
+        view.root.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
+        view.tabTextTv.setTextColor(accentColor)
     }
 
     inner class MediaListAdapter(private val fragmentList: List<BaseFragment>) :
@@ -313,7 +307,7 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
     }
 
     private fun filterMediaList() {
-        mediaListViewPager?.let {
+        binding.mediaListViewPager.let {
             getViewPagerFragment(it.currentItem)?.filter(mediaListFilterField)
         }
     }

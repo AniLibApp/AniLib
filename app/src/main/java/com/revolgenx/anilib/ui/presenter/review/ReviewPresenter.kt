@@ -1,33 +1,36 @@
 package com.revolgenx.anilib.ui.presenter.review
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
 import com.revolgenx.anilib.infrastructure.event.BrowseReviewEvent
 import com.revolgenx.anilib.infrastructure.event.UserBrowseEvent
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.review.ReviewModel
+import com.revolgenx.anilib.databinding.ReviewPresenterLayoutBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.util.naText
-import kotlinx.android.synthetic.main.review_presenter_layout.view.*
 
-class ReviewPresenter(context: Context) : Presenter<ReviewModel>(context) {
+class ReviewPresenter(context: Context) : BasePresenter<ReviewPresenterLayoutBinding, ReviewModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            getLayoutInflater().inflate(R.layout.review_presenter_layout, parent, false))
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): ReviewPresenterLayoutBinding {
+        return ReviewPresenterLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<ReviewModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-        holder.itemView.apply {
+        holder.getBinding()?.apply {
             item.userPrefModel?.let { user ->
                 reviewByTv.text = context.getString(R.string.review_of_s_by_s).format(
                     item.mediaModel?.title?.title(context),
@@ -61,7 +64,7 @@ class ReviewPresenter(context: Context) : Presenter<ReviewModel>(context) {
             }
             reviewLikeTv.text = item.rating?.toString().naText()
 
-            setOnClickListener {
+            root.setOnClickListener {
                 BrowseReviewEvent(item.reviewId).postEvent
             }
         }

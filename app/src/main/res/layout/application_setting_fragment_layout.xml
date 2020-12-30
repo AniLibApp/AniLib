@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/themeItemView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="tint_surface"
+            app:ads_icon="@drawable/ic_style"
+            android:layout_marginTop="6dp"
+            app:ads_subtitle="@string/dynamically_apply_theme"
+            app:ads_title="@string/theme" />
+
+
+        <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_description="@string/start_nav_page_desc"
+            app:ads_entries="@array/application_startup_page_entries"
+            app:ads_icon="@drawable/ic_navigation"
+            app:ads_key="@string/start_navigation_key"
+            app:ads_title="@string/startup_page"
+            app:ads_value="0"
+            app:ads_values="@array/application_startup_values" />
+
+
+        <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_description="@string/preferred_application_language"
+            app:ads_entries="@array/application_language_entries"
+            app:ads_icon="@drawable/ic_language"
+            app:ads_key="@string/application_language_key"
+            app:ads_title="@string/application_language"
+            app:ads_value="0"
+            app:ads_values="@array/application_language_values" />
+
+        <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_description="@string/preferred_image_quality_desc"
+            app:ads_entries="@array/image_entries"
+            app:ads_icon="@drawable/ic_image"
+            app:ads_key="image_quality_key"
+            app:ads_title="@string/cover_image_quality"
+            app:ads_value="0"
+            app:ads_values="@array/image_values" />
+
+        <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_description="@string/preferred_media_title"
+            app:ads_entries="@array/media_title_entries"
+            app:ads_icon="@drawable/ic_title"
+            app:ads_key="title_key"
+            app:ads_title="@string/media_title"
+            app:ads_value="0"
+            app:ads_values="@array/media_title_values" />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:fontFamily="@font/cabin_semi_bold"
+            android:textSize="16sp"
+            app:ads_title="@string/custom_filters"/>
+
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/add_remove_tag_iv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="tint_surface"
+            app:ads_icon="@drawable/ic_tag"
+            app:ads_subtitle="@string/add_remove_tags"
+            app:ads_title="@string/tags" />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/add_remove_genre_iv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="tint_surface"
+            app:ads_icon="@drawable/ic_genre"
+            app:ads_subtitle="@string/add_remove_genre"
+            app:ads_title="@string/tags" />
+
+    </LinearLayout>
+
+
+</androidx.core.widget.NestedScrollView>

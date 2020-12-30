@@ -6,15 +6,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.MediaRelationshipModel
+import com.revolgenx.anilib.databinding.BrowserRelationshipPresenterLayoutBinding
 import com.revolgenx.anilib.util.naText
-import kotlinx.android.synthetic.main.browser_relationship_presenter_layout.view.*
 
-class BrowseRelationshipPresenter(context: Context) : Presenter<MediaRelationshipModel>(context) {
+class BrowseRelationshipPresenter(context: Context) : BasePresenter<BrowserRelationshipPresenterLayoutBinding, MediaRelationshipModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -22,21 +21,18 @@ class BrowseRelationshipPresenter(context: Context) : Presenter<MediaRelationshi
         context.resources.getStringArray(R.array.status_color)
     }
 
-
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.browser_relationship_presenter_layout,
-                parent,
-                false
-            )
-        )
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): BrowserRelationshipPresenterLayoutBinding {
+        return BrowserRelationshipPresenterLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<MediaRelationshipModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-        holder.itemView.apply {
+        holder.getBinding()?.apply {
             relationshipTitleTv.text = item.title!!.title(context)
             relationshipCoverImage.setImageURI(item.coverImage?.largeImage)
             relationshipMediaRatingTv.text = item.averageScore?.toString().naText()
@@ -50,7 +46,7 @@ class BrowseRelationshipPresenter(context: Context) : Presenter<MediaRelationshi
                 item.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText(),
                 item.status?.let { context.resources.getStringArray(R.array.media_status)[it] }.naText()
             )
-            setOnClickListener {
+            root.setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(
                         item.mediaId,

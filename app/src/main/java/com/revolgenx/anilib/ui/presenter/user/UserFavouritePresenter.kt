@@ -3,11 +3,11 @@ package com.revolgenx.anilib.ui.presenter.user
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.otaliastudios.elements.*
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.SearchTypes
@@ -19,40 +19,41 @@ import com.revolgenx.anilib.data.model.user.MediaFavouriteModel
 import com.revolgenx.anilib.data.model.user.StaffFavouriteModel
 import com.revolgenx.anilib.data.model.user.StudioFavouriteModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.databinding.*
+import com.revolgenx.anilib.ui.presenter.BasePresenter
+import com.revolgenx.anilib.ui.presenter.Constant.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
-import kotlinx.android.synthetic.main.search_character_layout.view.*
-import kotlinx.android.synthetic.main.search_media_layout.view.*
-import kotlinx.android.synthetic.main.search_staff_layout.view.*
-import kotlinx.android.synthetic.main.search_studio_layout.view.*
 
 //todo://studio rotation
 class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner: LifecycleOwner) :
-    Presenter<BaseModel>(requireContext) {
+    BasePresenter<ViewBinding, BaseModel>(requireContext) {
     override val elementTypes: Collection<Int>
         get() = SearchTypes.values().map { it.ordinal }
 
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        val holderRes = when (elementType) {
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): ViewBinding {
+        return when (elementType) {
             SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
-                R.layout.search_media_layout
+                SearchMediaLayoutBinding.inflate(getLayoutInflater(), parent, false)
             }
             SearchTypes.CHARACTER.ordinal -> {
-                R.layout.search_character_layout
+                SearchCharacterLayoutBinding.inflate(getLayoutInflater(), parent, false)
             }
             SearchTypes.STAFF.ordinal -> {
-                R.layout.search_staff_layout
+                SearchStaffLayoutBinding.inflate(getLayoutInflater(), parent, false)
             }
             SearchTypes.STUDIO.ordinal -> {
-                R.layout.search_studio_layout
+                SearchStudioLayoutBinding.inflate(getLayoutInflater(), parent, false)
             }
             else -> {
-                R.layout.empty_layout
+                EmptyLayoutBinding.inflate(getLayoutInflater(), parent, false)
             }
         }
-
-        return Holder(LayoutInflater.from(parent.context).inflate(holderRes, parent, false))
     }
 
 
@@ -74,24 +75,26 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
         super.onBind(page, holder, element)
 
         val item = element.data ?: return
+        val binding: ViewBinding = holder.getBinding() ?: return
+
         when (holder.elementType) {
             SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
-                holder.itemView.updateMedia(item)
+                (binding as SearchMediaLayoutBinding).updateMedia(item)
             }
             SearchTypes.CHARACTER.ordinal -> {
-                holder.itemView.updateCharacter(item)
+                (binding as SearchCharacterLayoutBinding).updateCharacter(item)
             }
             SearchTypes.STAFF.ordinal -> {
-                holder.itemView.updateStaff(item)
+                (binding as SearchStaffLayoutBinding).updateStaff(item)
             }
             SearchTypes.STUDIO.ordinal -> {
-                holder.itemView.updateStudio(item)
+                (binding as SearchStudioLayoutBinding).updateStudio(item)
             }
         }
     }
 
 
-    private fun View.updateMedia(item: BaseModel) {
+    private fun SearchMediaLayoutBinding.updateMedia(item: BaseModel) {
         val data = item as MediaFavouriteModel
         searchMediaImageView.setImageURI(data.coverImage?.image(context))
         searchMediaTitleTv.text = data.title?.title(context)
@@ -101,14 +104,14 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
                 mediaFormats[it]
             }.naText(), data.seasonYear?.toString().naText())
 
-        searchMediaFormatTv.status  = data.mediaEntryListModel?.status
+        searchMediaFormatTv.status = data.mediaEntryListModel?.status
 
         searchMediaStatusTv.text = data.status?.let {
             searchMediaStatusTv.color = statusColors[it]
             mediaStatus[it]
         }
 
-        setOnClickListener {
+        root.setOnClickListener {
             BrowseMediaEvent(
                 MediaBrowserMeta(
                     data.mediaId,
@@ -121,7 +124,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
             ).postEvent
         }
 
-        setOnLongClickListener {
+        root.setOnLongClickListener {
             if (context.loggedIn()) {
                 ListEditorEvent(
                     ListEditorMeta(
@@ -140,11 +143,11 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
 
     }
 
-    private fun View.updateCharacter(item: BaseModel) {
+    private fun SearchCharacterLayoutBinding.updateCharacter(item: BaseModel) {
         val data = item as CharacterFavouriteModel
         searchCharacterImageView.setImageURI(data.characterImageModel?.image)
         searchCharacterNameTv.text = data.name?.full
-        setOnClickListener {
+        root.setOnClickListener {
             BrowseCharacterEvent(
                 CharacterMeta(
                     item.characterId,
@@ -155,16 +158,16 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
         }
     }
 
-    private fun View.updateStaff(item: BaseModel) {
+    private fun SearchStaffLayoutBinding.updateStaff(item: BaseModel) {
         val data = item as StaffFavouriteModel
         searchStaffImageView.setImageURI(data.staffImage?.image)
         searchStaffNameTv.text = data.staffName?.full
-        setOnClickListener {
+        root.setOnClickListener {
             BrowseStaffEvent(StaffMeta(item.staffId ?: -1, item.staffImage?.image)).postEvent
         }
     }
 
-    private fun View.updateStudio(item: BaseModel) {
+    private fun SearchStudioLayoutBinding.updateStudio(item: BaseModel) {
         val data = item as StudioFavouriteModel
         searchStudioHeader.text = data.studioName + " >>"
         searchStudioMedia.layoutManager =
@@ -181,24 +184,71 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
     }
 
 
-    inner class BrowseStudioMediaPresenter : Presenter<MediaFavouriteModel>(context) {
+    inner class BrowseStudioMediaPresenter : BasePresenter<BrowseStudioMediaPresenterBinding, MediaFavouriteModel>(context) {
         override val elementTypes: Collection<Int>
             get() = listOf(0)
 
-        override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-            return Holder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.browse_studio_media_presenter,
-                    parent,
-                    false
-                )
-            )
+        override fun bindView(
+            inflater: LayoutInflater,
+            parent: ViewGroup?,
+            elementType: Int
+        ): BrowseStudioMediaPresenterBinding {
+            return BrowseStudioMediaPresenterBinding.inflate(inflater, parent, false)
         }
 
         override fun onBind(page: Page, holder: Holder, element: Element<MediaFavouriteModel>) {
             super.onBind(page, holder, element)
             val item = element.data ?: return
-            holder.itemView.updateMedia(item)
+            val binding: BrowseStudioMediaPresenterBinding = holder.getBinding() ?: return
+
+
+            binding.apply {
+
+                searchMediaImageView.setImageURI(item.coverImage?.image(context))
+                searchMediaTitleTv.text = item.title?.title(context)
+                searchMediaRatingTv.text = item.averageScore?.toString().naText()
+                searchMediaFormatTv.text =
+                    context.getString(R.string.media_format_year_s).format(item.format?.let {
+                        mediaFormats[it]
+                    }.naText(), item.seasonYear?.toString().naText())
+
+                searchMediaFormatTv.status = item.mediaEntryListModel?.status
+
+                searchMediaStatusTv.text = item.status?.let {
+                    searchMediaStatusTv.color = statusColors[it]
+                    mediaStatus[it]
+                }
+
+                root.setOnClickListener {
+                    BrowseMediaEvent(
+                        MediaBrowserMeta(
+                            item.mediaId,
+                            item.type!!,
+                            item.title!!.romaji!!,
+                            item.coverImage!!.image(context),
+                            item.coverImage!!.largeImage,
+                            item.bannerImage
+                        ), searchMediaImageView
+                    ).postEvent
+                }
+
+                root.setOnLongClickListener {
+                    if (context.loggedIn()) {
+                        ListEditorEvent(
+                            ListEditorMeta(
+                                item.mediaId,
+                                item.type!!,
+                                item.title!!.title(context)!!,
+                                item.coverImage!!.image(context),
+                                item.bannerImage
+                            ), searchMediaImageView
+                        ).postEvent
+                    } else {
+                        context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
+                    }
+                    true
+                }
+            }
         }
     }
 

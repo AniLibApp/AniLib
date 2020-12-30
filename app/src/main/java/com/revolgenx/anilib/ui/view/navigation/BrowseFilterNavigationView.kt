@@ -26,10 +26,10 @@ import com.revolgenx.anilib.common.preference.canShowAdult
 import com.revolgenx.anilib.common.preference.getUserGenre
 import com.revolgenx.anilib.common.preference.getUserStream
 import com.revolgenx.anilib.common.preference.getUserTag
+import com.revolgenx.anilib.databinding.BrowseFilterNavigationViewBinding
 import com.revolgenx.anilib.ui.presenter.TagPresenter
 import com.revolgenx.anilib.util.hideKeyboard
 import com.revolgenx.anilib.util.onItemSelected
-import kotlinx.android.synthetic.main.browse_filter_navigation_view.view.*
 import java.util.*
 import kotlin.math.ceil
 
@@ -38,13 +38,11 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     DynamicNavigationView(context, attributeSet, style) {
 
     private var mListener: AdvanceBrowseNavigationCallbackListener? = null
-    private val rView by lazy {
-        LayoutInflater.from(context).inflate(
-            R.layout.browse_filter_navigation_view,
-            null,
-            false
-        )
+    private val rView get() = rViewBinding.root
+    private val rViewBinding by lazy {
+        BrowseFilterNavigationViewBinding.inflate(LayoutInflater.from(context), null, false)
     }
+
 
     private val rippleDrawable: RippleDrawable
         get() = RippleDrawable(ColorStateList.valueOf(accentColor), null, null)
@@ -121,11 +119,11 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     private var searchText: String?
         set(value) {
             if (value != null) {
-                browseSearchEt.setText(value)
+                rViewBinding.browseSearchEt.setText(value)
             }
         }
         get() {
-            return browseSearchEt.text.toString()
+            return rViewBinding.browseSearchEt.text.toString()
         }
 
     val drawerListener = object : DrawerLayout.DrawerListener {
@@ -140,7 +138,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
 
         override fun onDrawerOpened(drawerView: View) {
             mListener?.getQuery()?.let {
-                browseSearchEt.setText(it)
+                rViewBinding.browseSearchEt.setText(it)
             }
         }
     }
@@ -149,7 +147,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
         addView(rView)
-        rView.browseSearchInputLayout.apply {
+        rViewBinding.browseSearchInputLayout.apply {
             this.setEndIconTintList(
                 ColorStateList.valueOf(
                     DynamicTheme.getInstance().get().tintAccentColor
@@ -161,9 +159,9 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                 )
             )
         }
-        rView.updateTheme()
-        rView.updateView()
-        rView.updateListener()
+        rViewBinding.updateTheme()
+        rViewBinding.updateView()
+        rViewBinding.updateListener()
     }
 
     //endregion ctor
@@ -196,7 +194,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                 Source.fromList(streamingTagMap!!.values.filter { it.tagState == TagState.TAGGED || it.tagState == TagState.UNTAGGED })
             )
             .addPresenter(streamPresenter)
-            .into(streamingOnRecyclerView)
+            .into(rViewBinding.streamingOnRecyclerView)
     }
 
     fun invalidateGenreAdapter(builder: Adapter.Builder) {
@@ -205,7 +203,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                 Source.fromList(genreTagMap!!.values.filter { it.tagState == TagState.TAGGED || it.tagState == TagState.UNTAGGED })
             )
             .addPresenter(genrePresenter)
-            .into(tagGenreRecyclerView)
+            .into(rViewBinding.tagGenreRecyclerView)
     }
 
 
@@ -215,11 +213,11 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                 Source.fromList(tagTagMap!!.values.filter { it.tagState == TagState.TAGGED || it.tagState == TagState.UNTAGGED })
             )
             .addPresenter(tagPresenter)
-            .into(tagRecyclerView)
+            .into(rViewBinding.tagRecyclerView)
     }
 
 
-    fun View.updateView() {
+    fun BrowseFilterNavigationViewBinding.updateView() {
         hentaiSwitchContainerLayout.visibility =
             if (canShowAdult(context)) View.VISIBLE else View.GONE
 
@@ -293,7 +291,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         streamingOnRecyclerView.layoutManager = FlexboxLayoutManager(context)
     }
 
-    private fun View.updateTheme() {
+    private fun BrowseFilterNavigationViewBinding.updateTheme() {
         ThemeController.lightSurfaceColor().let {
             searchTypeFrameLayout.setBackgroundColor(it)
             browseSeasonFrameLayout.setBackgroundColor(it)
@@ -325,7 +323,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         }
     }
 
-    private fun View.updateListener() {
+    private fun BrowseFilterNavigationViewBinding.updateListener() {
         hentaiSwitchContainerLayout.setOnClickListener {
             hentaiOnlySwtich.isChecked = !hentaiOnlySwtich.isChecked
         }
@@ -386,45 +384,55 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
 
 
     fun getFilter(): SearchFilterModel {
-        return when (browseTypeSpinner.selectedItemPosition) {
+        return when (rViewBinding.browseTypeSpinner.selectedItemPosition) {
             SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
                 MediaSearchFilterModel().apply {
                     query = searchText
-                    season = browseSeasonSpinner?.selectedItemPosition?.minus(1)
-                        ?.takeIf { it >= 0 }
+                    season = rViewBinding.browseSeasonSpinner.selectedItemPosition.minus(1)
+                        .takeIf { it >= 0 }
 
-                    type = browseTypeSpinner.selectedItemPosition
-                    yearEnabled = enableYearCheckBox.isChecked
+                    type = rViewBinding.browseTypeSpinner.selectedItemPosition
+                    yearEnabled = rViewBinding.enableYearCheckBox.isChecked
                     if (yearEnabled) {
-                        minYear = browseYearSeekBar?.leftSeekBar?.progress?.let {
+                        minYear = rViewBinding.browseYearSeekBar.leftSeekBar.progress.let {
                             ceil(it).toInt()
                         }
-                        maxYear = browseYearSeekBar?.rightSeekBar?.progress?.let {
+                        maxYear = rViewBinding.browseYearSeekBar.rightSeekBar.progress.let {
                             ceil(it).toInt()
                         }
                     }
-                    sort = browseSortSpinner?.selectedItemPosition?.minus(1)?.takeIf {
+                    sort = rViewBinding.browseSortSpinner.selectedItemPosition.minus(1).takeIf {
                         it >= 0
                     }
-                    format = browseFormatSpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                        it >= 0
-                    }
-                    status = browseStatusSpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                        it >= 0
-                    }
-                    countryOfOrigin = browseCountrySpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                        it >= 0
-                    }
-                    source = browseSourceSpinner?.selectedItemPosition?.minus(1)?.takeIf {
-                        it >= 0
-                    }
-                    streamingOn = streamingTagMap!!.values.filter { it.tagState == TagState.TAGGED }.map { it.tag }
-                    genre = genreTagMap!!.values.filter { it.tagState == TagState.TAGGED }.map { it.tag }
-                    genreToExclude = genreTagMap!!.values.filter { it.tagState == TagState.UNTAGGED }.map { it.tag }
-                    tags = tagTagMap!!.values.filter { it.tagState == TagState.TAGGED}.map { it.tag }
-                    tagsToExclude = tagTagMap!!.values.filter { it.tagState == TagState.UNTAGGED}.map { it.tag }
+                    format =
+                        rViewBinding.browseFormatSpinner.selectedItemPosition.minus(1).takeIf {
+                            it >= 0
+                        }
+                    status =
+                        rViewBinding.browseStatusSpinner.selectedItemPosition.minus(1).takeIf {
+                            it >= 0
+                        }
+                    countryOfOrigin =
+                        rViewBinding.browseCountrySpinner.selectedItemPosition.minus(1).takeIf {
+                            it >= 0
+                        }
+                    source =
+                        rViewBinding.browseSourceSpinner.selectedItemPosition.minus(1).takeIf {
+                            it >= 0
+                        }
+                    streamingOn = streamingTagMap!!.values.filter { it.tagState == TagState.TAGGED }
+                        .map { it.tag }
+                    genre = genreTagMap!!.values.filter { it.tagState == TagState.TAGGED }
+                        .map { it.tag }
+                    genreToExclude =
+                        genreTagMap!!.values.filter { it.tagState == TagState.UNTAGGED }
+                            .map { it.tag }
+                    tags =
+                        tagTagMap!!.values.filter { it.tagState == TagState.TAGGED }.map { it.tag }
+                    tagsToExclude = tagTagMap!!.values.filter { it.tagState == TagState.UNTAGGED }
+                        .map { it.tag }
 
-                    hentaiOnly = hentaiOnlySwtich.isChecked
+                    hentaiOnly = rViewBinding.hentaiOnlySwtich.isChecked
                 }
             }
             SearchTypes.CHARACTER.ordinal -> {
@@ -457,30 +465,30 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
 
 
     fun setFilter(value: SearchFilterModel, applyFilter: Boolean = true) {
-        browseTypeSpinner?.setSelection(value.type)
+        rViewBinding.browseTypeSpinner.setSelection(value.type)
         when (value) {
             is MediaSearchFilterModel -> {
                 value.let {
                     searchText = value.query
                     it.season?.let {
-                        browseSeasonSpinner?.setSelection(it + 1)
+                        rViewBinding.browseSeasonSpinner.setSelection(it + 1)
                     }
-                    enableYearCheckBox.isChecked = it.yearEnabled
-                    browseYearSeekBar.isEnabled = it.yearEnabled
+                    rViewBinding.enableYearCheckBox.isChecked = it.yearEnabled
+                    rViewBinding.browseYearSeekBar.isEnabled = it.yearEnabled
 
                     if (it.minYear != null && it.maxYear != null)
-                        browseYearSeekBar?.setProgress(
+                        rViewBinding.browseYearSeekBar.setProgress(
                             it.minYear!!.toFloat(),
                             it.maxYear!!.toFloat()
                         )
                     it.sort?.let {
-                        browseSortSpinner?.setSelection(it + 1)
+                        rViewBinding.browseSortSpinner.setSelection(it + 1)
                     }
                     it.format?.let {
-                        browseFormatSpinner?.setSelection(it + 1)
+                        rViewBinding.browseFormatSpinner.setSelection(it + 1)
                     }
                     it.status?.let {
-                        browseStatusSpinner?.setSelection(it + 1)
+                        rViewBinding.browseStatusSpinner.setSelection(it + 1)
                     }
                     it.streamingOn?.mapNotNull {
                         streamingTagMap!![it]?.tagState = TagState.TAGGED
@@ -490,10 +498,10 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                     }
 
                     it.countryOfOrigin?.let {
-                        browseCountrySpinner.setSelection(it + 1)
+                        rViewBinding.browseCountrySpinner.setSelection(it + 1)
                     }
                     it.source?.let {
-                        browseSourceSpinner.setSelection(it + 1)
+                        rViewBinding.browseSourceSpinner.setSelection(it + 1)
                     }
                     it.genre?.mapNotNull {
                         genreTagMap!![it]?.tagState = TagState.TAGGED
@@ -523,7 +531,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                         mListener?.onTagAdd(it, MediaTagFilterTypes.GENRES)
                     }
 
-                    hentaiOnlySwtich.isChecked = it.hentaiOnly
+                    rViewBinding.hentaiOnlySwtich.isChecked = it.hentaiOnly
 
                     mListener?.updateTags(MediaTagFilterTypes.TAGS)
                     mListener?.updateTags(MediaTagFilterTypes.GENRES)

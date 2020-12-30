@@ -19,7 +19,7 @@
     <string name="sign_in">Sign In</string>
     <string name="nav_close" translatable="false">Nav Close</string>
     <string name="nav_open" translatable="false">Nav Open</string>
-    <string name="dynamic_theme">Dynamic Theme</string>
+    <string name="theme">Theme</string>
     <string name="notification">Notification</string>
     <string name="notification_setting_sub">Control what you see in notification.(Login required)</string>
     <string name="sign_out">Sign Out</string>
@@ -231,7 +231,7 @@
     <string name="related_media_added_notif">When related media is added to AniList</string>
     <string name="media_title">Media Title</string>
     <string name="notification_interval_desc">Checks if there is any notification after specified time interval.</string>
-    <string name="preferred_media_title">Select preferred media title</string>
+    <string name="preferred_media_title">Select preferred media title(AniList setting will override this after login)</string>
     <string name="cover_image_quality">Cover Image Quality</string>
     <string name="preferred_image_quality_desc">Select your preferred image quality</string>
     <string name="advanced_scores">Advanced Scores</string>
@@ -373,6 +373,11 @@
     <string name="highest_rated">Highest Rated</string>
     <string name="lowest_rated">Lowest Rated</string>
 
+    <!--airing sort-->
+    <string name="media_id">Media Id</string>
+    <string name="media_id_desc">Media Id Desc</string>
+    <string name="time">Time</string>
+    <string name="time_desc">Time Desc</string>
 
     <!--toggle-->
     <string name="titles_watched">Titles Watched</string>
@@ -445,6 +450,10 @@
     <string name="open_website">Open Website</string>
     <string name="no_description">No Description</string>
     <string name="translate">Translate</string>
+    <string name="show_all">Show All</string>
+    <string name="anilist" translatable="false">AniList</string>
+    <string name="add_remove_tags">Add/Remove Tags</string>
+    <string name="add_remove_genre">Add/Remove Genre</string>
 
 
 </resources>

@@ -5,23 +5,20 @@ import android.view.*
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.data.field.character.CharacterField
-import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.meta.CharacterMeta
 import com.revolgenx.anilib.data.model.character.CharacterModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.databinding.CharacterFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
 import com.revolgenx.anilib.ui.viewmodel.character.CharacterViewModel
-import kotlinx.android.synthetic.main.character_fragment_layout.*
-import kotlinx.android.synthetic.main.error_layout.*
-import kotlinx.android.synthetic.main.loading_layout.*
-import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CharacterFragment : BaseFragment() {
+class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
     companion object {
         const val CHARACTER_META_KEY = "character_meta_key"
     }
@@ -42,12 +39,11 @@ class CharacterFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateView(
+    override fun bindView(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.character_fragment_layout, container, false)
+        parent: ViewGroup?
+    ): CharacterFragmentLayoutBinding {
+        return CharacterFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
 
@@ -74,24 +70,25 @@ class CharacterFragment : BaseFragment() {
         arguments?.classLoader = CharacterMeta::class.java.classLoader
         characterMeta = arguments?.getParcelable(CHARACTER_META_KEY) ?: return
 
-        characterIv.setImageURI(characterMeta.characterUrl)
+        binding.characterIv.setImageURI(characterMeta.characterUrl)
         viewModel.characterInfoLiveData.observe(viewLifecycleOwner) { res ->
+            val resourceLayout = binding.resourceStatusLayout
             when (res.status) {
                 SUCCESS -> {
-                    resourceStatusContainer.visibility = View.GONE
-                    progressLayout.visibility = View.VISIBLE
-                    errorLayout.visibility = View.GONE
-                    updateView(res.data!!)
+                    resourceLayout.resourceStatusContainer.visibility = View.GONE
+                    resourceLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    resourceLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
+                    binding.updateView(res.data!!)
                 }
                 ERROR -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    progressLayout.visibility = View.GONE
-                    errorLayout.visibility = View.VISIBLE
+                    resourceLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    resourceLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
+                    resourceLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
                 }
                 LOADING -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    progressLayout.visibility = View.VISIBLE
-                    errorLayout.visibility = View.GONE
+                    resourceLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    resourceLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    resourceLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                 }
             }
         }
@@ -99,10 +96,10 @@ class CharacterFragment : BaseFragment() {
         viewModel.toggleFavouriteLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 SUCCESS -> {
-                    characterFavIv.showLoading(false)
+                    binding.characterFavIv.showLoading(false)
                     if (res.data == true) {
                         characterModel?.isFavourite = characterModel?.isFavourite?.not() ?: false
-                        characterFavIv.setImageResource(
+                        binding.characterFavIv.setImageResource(
                             if (characterModel?.isFavourite == true) {
                                 R.drawable.ic_favourite
                             } else {
@@ -112,11 +109,11 @@ class CharacterFragment : BaseFragment() {
                     }
                 }
                 ERROR -> {
-                    characterFavIv.showLoading(false)
+                    binding.characterFavIv.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ads_ic_error)
                 }
                 LOADING -> {
-                    characterFavIv.showLoading(true)
+                    binding.characterFavIv.showLoading(true)
                 }
             }
         }
@@ -129,7 +126,7 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun initListener() {
-        characterFavLayout.setOnClickListener {
+        binding.characterFavLayout.setOnClickListener {
             if (requireContext().loggedIn()) {
                 viewModel.toggleCharacterFav(toggleFavouriteField)
             } else {
@@ -144,7 +141,7 @@ class CharacterFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    private fun updateView(item: CharacterModel) {
+    private fun CharacterFragmentLayoutBinding.updateView(item: CharacterModel) {
         characterModel = item
         characterNameTv.text = item.name?.full
         characterFavCountTv.text = item.favourites?.toLong()?.prettyNumberFormat()

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
 import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
@@ -13,12 +12,13 @@ import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.StaffMediaRoleModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.databinding.StaffMediaRolePresenterBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
-import kotlinx.android.synthetic.main.staff_media_role_presenter.view.*
 
 //staff roles
-class StaffMediaRolePresenter(context: Context) : Presenter<StaffMediaRoleModel>(context) {
+class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePresenterBinding,StaffMediaRoleModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -27,21 +27,21 @@ class StaffMediaRolePresenter(context: Context) : Presenter<StaffMediaRoleModel>
         context.resources.getStringArray(R.array.media_format)
     }
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.staff_media_role_presenter,
-                parent,
-                false
-            )
-        )
+
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): StaffMediaRolePresenterBinding {
+        return StaffMediaRolePresenterBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<StaffMediaRoleModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
+        val binding = holder.getBinding() ?: return
 
-        holder.itemView.apply {
+        binding.apply {
             staffMediaRoleImageView.setImageURI(item.coverImage?.image(context))
             staffMediaRoleRatingTv.text = item.averageScore?.toString().naText()
             staffMediaRoleTitleTv.text = item.title?.title(context)

@@ -2,7 +2,6 @@ package com.revolgenx.anilib.ui.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,7 @@ import com.pranavpandey.android.dynamic.support.popup.DynamicPopup
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.toasts.internal.ToastCompat
 import com.revolgenx.anilib.R
-import kotlinx.android.synthetic.main.dynamic_toast_view_layout.view.*
+import com.revolgenx.anilib.databinding.DynamicToastViewLayoutBinding
 
 private val tintSurface by lazy {
     DynamicTheme.getInstance().get().tintSurfaceColor
@@ -48,22 +47,21 @@ fun makeDynamicToastView(
     msg: String? = null,
     @DrawableRes drawable: Int? = null
 ) {
-    val toastView =
-        LayoutInflater.from(context).inflate(
-            R.layout.dynamic_toast_view_layout, LinearLayout(
-                context
-            ), false
-        )
-    toastView.apply {
-        drawable?.let {
-            toastIconIv.visibility = View.VISIBLE
-            toastIconIv.setImageResource(drawable)
-            toastIconIv.setColorFilter(tintSurface)
-        }
-        toastIconTv.text = msg
+    val toastBinding = DynamicToastViewLayoutBinding.inflate(
+        LayoutInflater.from(context), LinearLayout(
+            context
+        ), false
+    )
+
+    drawable?.let {
+        toastBinding.toastIconIv.visibility = View.VISIBLE
+        toastBinding.toastIconIv.setImageResource(drawable)
+        toastBinding.toastIconIv.setColorFilter(tintSurface)
     }
+    toastBinding.toastIconTv.text = msg
+
     ToastCompat(context, Toast(context)).apply {
-        view = toastView
+        view = toastBinding.root
         duration = Toast.LENGTH_SHORT
         show()
     }

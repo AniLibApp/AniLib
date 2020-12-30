@@ -3,11 +3,9 @@ package com.revolgenx.anilib.common.preference
 import android.content.Context
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.revolgenx.anilib.constant.MediaListDisplayMode
-import com.revolgenx.anilib.data.field.home.NewlyAddedMediaField
-import com.revolgenx.anilib.data.field.home.PopularMediaField
-import com.revolgenx.anilib.data.field.home.SeasonField
-import com.revolgenx.anilib.data.field.home.TrendingMediaField
+import com.revolgenx.anilib.data.field.home.*
 import com.revolgenx.anilib.data.model.home.HomeOrderType
+import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.getSeasonFromMonth
 import org.threeten.bp.LocalDateTime
@@ -38,6 +36,10 @@ const val NEWLY_ADDED_YEAR_KEY = "NEWLY_ADDED_YEAR_KEY"
 const val NEWLY_ADDED_SEASON_KEY = "NEWLY_ADDED_SEASON_KEY"
 const val NEWLY_ADDED_STATUS_KEY = "NEWLY_ADDED_STATUS_KEY"
 
+const val AIRING_NOT_AIRED_KEY = "AIRING_NOT_AIRED_KEY"
+const val AIRING_SORT_KEY = "AIRING_SORT_KEY"
+
+
 
 const val RECOMMENDATION_ON_LIST_KEY = "RECOMMENDATION_ON_LIST_KEY"
 const val RECOMMENDATION_SORT_KEY = "RECOMMENDATION_SORT_KEY"
@@ -58,6 +60,13 @@ const val DISCOVER_READING_SORT_KEY = "DISCOVER_READING_SORT_KEY"
 const val DISCOVER_WATCHING_SORT_KEY = "DISCOVER_WATCHING_SORT_KEY"
 
 const val MEDIA_LIST_GRID_PRESENTER_KEY = "MEDIA_LIST_GRID_PRESENTER_KEY"
+
+
+
+fun getAiringField(context: Context) =  AiringMediaField().apply {
+    notYetAired = context.getBoolean(AIRING_NOT_AIRED_KEY, true)
+    sort = context.getInt(AIRING_ORDER_KEY, AiringSort.TIME.ordinal)
+}
 
 
 fun getSeasonField(context: Context) = SeasonField().apply {
@@ -104,6 +113,13 @@ fun getNewlyAddedField(context: Context) = NewlyAddedMediaField().apply {
     status = context.getInt(NEWLY_ADDED_STATUS_KEY, DEFAULT_STATUS).takeIf { it > -1 }
 }
 
+
+fun storeAiringField(context: Context, field:AiringMediaField){
+    with(field){
+        context.putInt(AIRING_ORDER_KEY, sort?:AiringSort.TIME.ordinal)
+        context.putBoolean(AIRING_NOT_AIRED_KEY, notYetAired)
+    }
+}
 
 fun storeNewlyAddedField(context: Context, field: NewlyAddedMediaField) {
     with(field) {
@@ -167,8 +183,11 @@ fun storeSeasonTag(context: Context, field: SeasonField?) {
 }
 
 fun getRecommendationSort(context: Context) = context.getInt(RECOMMENDATION_SORT_KEY, 0)
-fun getRecommendationOnList(context: Context)=  context.getBoolean(RECOMMENDATION_ON_LIST_KEY, false)
-fun setRecommendationSort(context: Context, sort:Int) = context.putInt(RECOMMENDATION_SORT_KEY,sort)
+fun getRecommendationOnList(context: Context) =
+    context.getBoolean(RECOMMENDATION_ON_LIST_KEY, false)
+
+fun setRecommendationSort(context: Context, sort: Int) =
+    context.putInt(RECOMMENDATION_SORT_KEY, sort)
 
 
 fun getHomeOrderFromType(context: Context, type: HomeOrderType): Int {
@@ -224,7 +243,7 @@ fun getMediaListGridPresenter(): MediaListDisplayMode {
         .load(MEDIA_LIST_GRID_PRESENTER_KEY, 0)] //0 for compact gird 1 normal 2 card
 }
 
-fun setMediaListGridPresenter(which:Int) {
+fun setMediaListGridPresenter(which: Int) {
     return DynamicPreferences.getInstance().save(MEDIA_LIST_GRID_PRESENTER_KEY, which)
 }
 

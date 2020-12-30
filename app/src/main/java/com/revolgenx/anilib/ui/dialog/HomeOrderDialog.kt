@@ -3,7 +3,6 @@ package com.revolgenx.anilib.ui.dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,10 +13,9 @@ import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.HomeOrderedAdapterItem
 import com.revolgenx.anilib.common.preference.getHomeOrderFromType
 import com.revolgenx.anilib.common.preference.setHomeOrderFromType
+import com.revolgenx.anilib.databinding.HomeOrderAdapterLayoutBinding
+import com.revolgenx.anilib.databinding.HomeOrderDialogLayoutBinding
 import com.woxthebox.draglistview.DragItemAdapter
-import kotlinx.android.synthetic.main.home_order_adapter_layout.view.*
-import kotlinx.android.synthetic.main.home_order_dialog_layout.*
-
 
 class HomeOrderDialog : BaseDialogFragment(){
 
@@ -35,7 +33,8 @@ class HomeOrderDialog : BaseDialogFragment(){
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         super.onShowListener(alertDialog, savedInstanceState)
-        with(alertDialog){
+        val binding = HomeOrderDialogLayoutBinding.bind(dialogView)
+        with(binding){
             mDragListView.setCanDragHorizontally(false)
             mDragListView.setLayoutManager(LinearLayoutManager(requireContext()))
 
@@ -67,9 +66,9 @@ class HomeOrderDialog : BaseDialogFragment(){
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view: View = LayoutInflater.from(parent.context).inflate(R.layout.home_order_adapter_layout, parent, false)
-            view.homeOrderAdapterItemLayout.corner = 20f
-            return ViewHolder(view)
+            val binding = HomeOrderAdapterLayoutBinding.inflate(LayoutInflater.from(parent.context), parent,false)
+            binding.homeOrderAdapterItemLayout.corner = 20f
+            return ViewHolder(binding)
         }
 
 
@@ -82,7 +81,7 @@ class HomeOrderDialog : BaseDialogFragment(){
             return mItemList[position].first
         }
 
-        inner class ViewHolder(itemView: View) : DragItemAdapter.ViewHolder(itemView, R.id.homeOrderDragIcon, false) {
+        inner class ViewHolder(itemView: HomeOrderAdapterLayoutBinding) : DragItemAdapter.ViewHolder(itemView.root, R.id.homeOrderDragIcon, false) {
             private var mText: TextView = itemView.homeOrderName
 
             fun bind(item: Pair<Long, HomeOrderedAdapterItem>) {

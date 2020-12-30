@@ -99,7 +99,7 @@
                     app:layout_constraintTop_toTopOf="@+id/listFavButton">
 
                     <com.revolgenx.anilib.ui.view.DynamicToggleButton
-                        android:id="@+id/_privateToggleButton"
+                        android:id="@+id/privateToggleButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="10dp"
@@ -148,7 +148,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/resource_status_container_layout" />
+            <include layout="@layout/resource_status_container_layout"
+                android:id="@+id/resource_status_layout"/>
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                 android:id="@+id/listEditorContainer"

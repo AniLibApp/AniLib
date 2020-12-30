@@ -2,6 +2,8 @@ package com.revolgenx.anilib.common.ui.dialog
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
@@ -30,6 +32,8 @@ open class BaseDialogFragment : DynamicDialogFragment() {
     var onShowListener: OnShowListener = null
     var onButtonClickedListener: OnButtonClickedListener = null
 
+    lateinit var dialogView: View
+
     protected open fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
         onButtonClickedListener?.invoke(dialogInterface, which)
     }
@@ -55,10 +59,10 @@ open class BaseDialogFragment : DynamicDialogFragment() {
                 setTitle(it)
             }
             viewRes?.let {
-                setView(it)
+                dialogView = LayoutInflater.from(requireContext()).inflate(it, null)
+                setView(dialogView)
             }
             messageText?.let {
-
                 setMessage(it)
             }
 
@@ -83,6 +87,10 @@ open class BaseDialogFragment : DynamicDialogFragment() {
             isAutoDismiss = isAutoDismissEnabled
         }
         return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
+    }
+
+    protected fun getBinding(){
+
     }
 
 

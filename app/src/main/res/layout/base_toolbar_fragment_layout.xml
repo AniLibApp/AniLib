@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar_layout"
+        android:id="@+id/toolbar_layout"/>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-        android:id="@+id/toolbarContainerLayout"
+        android:id="@+id/toolbar_container_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>

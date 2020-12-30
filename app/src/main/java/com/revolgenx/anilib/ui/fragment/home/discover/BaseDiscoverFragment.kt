@@ -218,7 +218,8 @@ abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutB
             garlandContainer.id,
             ConstraintSet.TOP,
             garlandTextView.id,
-            ConstraintSet.BOTTOM
+            ConstraintSet.BOTTOM,
+            0
         )
 
 
