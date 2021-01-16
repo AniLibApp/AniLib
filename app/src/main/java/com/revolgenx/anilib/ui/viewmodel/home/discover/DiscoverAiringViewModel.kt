@@ -48,6 +48,8 @@ class DiscoverAiringViewModel(private val airingMediaService: AiringMediaService
         getAiringField(context).let {
             field.notYetAired = it.notYetAired
             field.sort = it.sort
+            field.showFromPlanning = it.showFromPlanning
+            field.showFromWatching = it.showFromWatching
         }
     }
 

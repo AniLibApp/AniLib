@@ -14,11 +14,13 @@ import com.revolgenx.anilib.ui.viewmodel.home.discover.*
 import com.revolgenx.anilib.ui.viewmodel.home.list.MediaListContainerViewModel
 import com.revolgenx.anilib.ui.viewmodel.media.*
 import com.revolgenx.anilib.ui.viewmodel.media_list.*
+import com.revolgenx.anilib.ui.viewmodel.notification.NotificationSettingViewModel
 import com.revolgenx.anilib.ui.viewmodel.notification.NotificationViewModel
 import com.revolgenx.anilib.ui.viewmodel.review.AllReviewViewModel
 import com.revolgenx.anilib.ui.viewmodel.review.ReviewComposerViewModel
 import com.revolgenx.anilib.ui.viewmodel.review.ReviewViewModel
 import com.revolgenx.anilib.ui.viewmodel.search.SearchFragmentViewModel
+import com.revolgenx.anilib.ui.viewmodel.setting.SettingViewModel
 import com.revolgenx.anilib.ui.viewmodel.setting.TagFilterSettingDialogViewModel
 import com.revolgenx.anilib.ui.viewmodel.staff.StaffMediaCharacterViewModel
 import com.revolgenx.anilib.ui.viewmodel.staff.StaffMediaRoleViewModel
@@ -113,6 +115,7 @@ val viewModelModules = module {
 
     //notification
     viewModel { NotificationViewModel(get()) }
+    viewModel { NotificationSettingViewModel(get()) }
 
     //airing
     viewModel { AiringViewModel(get()) }
@@ -136,4 +139,5 @@ val viewModelModules = module {
 
     //setting
     viewModel { TagFilterSettingDialogViewModel() }
+    viewModel { SettingViewModel(get()) }
 }

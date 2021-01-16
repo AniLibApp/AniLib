@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.ui.presenter.list
+package com.revolgenx.anilib.ui.presenter.home.discover
 
 import android.content.Context
 import android.view.ViewGroup

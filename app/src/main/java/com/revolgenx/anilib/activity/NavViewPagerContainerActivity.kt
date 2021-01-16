@@ -112,68 +112,68 @@ class NavViewPagerContainerActivity : BaseDynamicActivity<NavViewPagerContainerA
 
 
     private fun prepareViews(viewPagerMeta: NavViewPagerContainerMeta) {
-        when (viewPagerMeta.containerType) {
-            NavViewPagerContainerType.ANIME_STATS -> {
-                supportActionBar?.title = getString(R.string.anime_stats)
-                inflateBottomNav(viewPagerMeta.containerType)
-                viewPagerParcelableFragments = NavViewPagerParcelableFragments(
-                    listOf(
-                        StatsOverviewFragment::class.java.name,
-                        StatsGenreFragment::class.java.name,
-                        StatsTagFragment::class.java.name,
-                        StatsVoiceActorFragment::class.java.name,
-                        StatsStudioFragment::class.java.name,
-                        StatsStaffFragment::class.java.name
-                    ),
-                    listOf(
-                        bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
-                        ),
-                        bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
-                        ),
-                        bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
-                        ),
-                        bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
-                        ),
-                        bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
-                        ),
-                        bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
-                        )
-                    )
-                )
-            }
-            NavViewPagerContainerType.MANGA_STATS -> {
-                supportActionBar?.title = getString(R.string.manga_stats)
-                inflateBottomNav(viewPagerMeta.containerType)
-                viewPagerParcelableFragments = NavViewPagerParcelableFragments(
-                    listOf(
-                        StatsOverviewFragment::class.java.name,
-                        StatsGenreFragment::class.java.name,
-                        StatsTagFragment::class.java.name,
-                        StatsStaffFragment::class.java.name
-                    ),
-                    listOf(
-                        bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
-                        ),
-                        bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
-                        ),
-                        bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
-                        ),
-                        bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
-                        )
-                    )
-                )
-            }
-        }
+//        when (viewPagerMeta.containerType) {
+//            NavViewPagerContainerType.ANIME_STATS -> {
+//                supportActionBar?.title = getString(R.string.anime_stats)
+//                inflateBottomNav(viewPagerMeta.containerType)
+//                viewPagerParcelableFragments = NavViewPagerParcelableFragments(
+//                    listOf(
+//                        StatsOverviewFragment::class.java.name,
+//                        StatsGenreFragment::class.java.name,
+//                        StatsTagFragment::class.java.name,
+//                        StatsVoiceActorFragment::class.java.name,
+//                        StatsStudioFragment::class.java.name,
+//                        StatsStaffFragment::class.java.name
+//                    ),
+//                    listOf(
+//                        bundleOf(
+//                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
+//                        ),
+//                        bundleOf(
+//                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
+//                        ),
+//                        bundleOf(
+//                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
+//                        ),
+//                        bundleOf(
+//                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
+//                        ),
+//                        bundleOf(
+//                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
+//                        ),
+//                        bundleOf(
+//                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
+//                        )
+//                    )
+//                )
+//            }
+//            NavViewPagerContainerType.MANGA_STATS -> {
+//                supportActionBar?.title = getString(R.string.manga_stats)
+//                inflateBottomNav(viewPagerMeta.containerType)
+//                viewPagerParcelableFragments = NavViewPagerParcelableFragments(
+//                    listOf(
+//                        StatsOverviewFragment::class.java.name,
+//                        StatsGenreFragment::class.java.name,
+//                        StatsTagFragment::class.java.name,
+//                        StatsStaffFragment::class.java.name
+//                    ),
+//                    listOf(
+//                        bundleOf(
+//                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
+//                        ),
+//                        bundleOf(
+//                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
+//                        ),
+//                        bundleOf(
+//                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
+//                        ),
+//                        bundleOf(
+//                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to viewPagerMeta.data
+//                        )
+//                    )
+//                )
+//            }
+//        }
     }
 
     private fun inflateBottomNav(containerType: NavViewPagerContainerType) {

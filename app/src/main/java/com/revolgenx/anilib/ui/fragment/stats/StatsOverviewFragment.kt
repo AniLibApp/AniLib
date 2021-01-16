@@ -17,6 +17,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.themeIt
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.constant.UserConstant
 import com.revolgenx.anilib.data.meta.UserStatsMeta
 import com.revolgenx.anilib.data.model.user.stats.StatsCountryDistributionModel
 import com.revolgenx.anilib.data.model.user.stats.StatsFormatDistributionModel
@@ -33,9 +34,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 //todo: add piechart in distribution
 class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBinding>() {
-    companion object {
-        const val USER_STATS_PARCEL_KEY = "USER_STATS_PARCEL_KEY"
-    }
 
     private val viewModel by viewModel<StatsOverviewViewModel>()
     private lateinit var userStatsMeta: UserStatsMeta
@@ -59,7 +57,7 @@ class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBind
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        userStatsMeta = arguments?.getParcelable(USER_STATS_PARCEL_KEY) ?: return
+        userStatsMeta = arguments?.getParcelable(UserConstant.USER_STATS_META_KEY) ?: return
 
         binding.updateTheme()
         binding.initListener()

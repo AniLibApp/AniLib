@@ -16,6 +16,7 @@ import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.common.preference.disableCardStyleInHomeScreen
 import com.revolgenx.anilib.data.model.home.SelectableCommonMediaModel
 import com.revolgenx.anilib.databinding.MediaPresenterLayoutBinding
 import com.revolgenx.anilib.ui.presenter.Constant
@@ -51,6 +52,10 @@ class MediaPresenter(
         context.resources.getStringArray(R.array.media_format)
     }
 
+    private val disableCardInHomeScreen: Boolean by lazy {
+        disableCardStyleInHomeScreen()
+    }
+
     private val dynamicTheme get() = DynamicTheme.getInstance().get()
     private val accentColor = dynamicTheme.accentColor
 
@@ -78,20 +83,23 @@ class MediaPresenter(
             }
 
             mediaPresenterCardView.strokeColor =
-                if (item.isSelected) accentColor else Color.TRANSPARENT
+                if (item.isSelected && !disableCardInHomeScreen) accentColor else Color.TRANSPARENT
 
-            item.selectionListener = { selected ->
-                mediaPresenterCardView.strokeColor =
-                    if (selected) accentColor else Color.TRANSPARENT
-                mediaPresenterCardView.invalidate()
+            if (!disableCardInHomeScreen) {
+                item.selectionListener = { selected ->
+                    mediaPresenterCardView.strokeColor =
+                        if (selected) accentColor else Color.TRANSPARENT
+                    mediaPresenterCardView.invalidate()
+                }
+
+                if (item.isSelected) {
+                    onMediaClickedListener.invoke(item.also { it.isSelected = true })
+                }
             }
 
-            if (item.isSelected) {
-                onMediaClickedListener.invoke(item.also { it.isSelected = true })
-            }
 
             holder.itemView.setOnClickListener {
-                if (item.isSelected) {
+                if (item.isSelected || disableCardInHomeScreen) {
                     BrowseMediaEvent(
                         MediaBrowserMeta(
                             item.mediaId,

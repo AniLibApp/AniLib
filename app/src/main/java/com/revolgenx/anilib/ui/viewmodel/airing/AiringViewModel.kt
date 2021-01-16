@@ -3,6 +3,7 @@ package com.revolgenx.anilib.ui.viewmodel.airing
 import com.revolgenx.anilib.data.field.home.AiringMediaField
 import com.revolgenx.anilib.infrastructure.service.airing.AiringMediaService
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
+import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.ui.viewmodel.SourceViewModel
 import org.threeten.bp.LocalTime
 import org.threeten.bp.ZoneOffset
@@ -23,12 +24,13 @@ class AiringViewModel(private val airingMediaService: AiringMediaService) :
             this.field.airingLessThan = field.toEpochSecond().toInt()
         }
 
-    override var field: AiringMediaField =  AiringMediaField()
+    override var field: AiringMediaField = AiringMediaField()
         .also {
-        it.notYetAired = false
-        it.airingGreaterThan = startDateTime.toEpochSecond().toInt()
-        it.airingLessThan = endDateTime.toEpochSecond().toInt()
-    }
+            it.notYetAired = false
+            it.airingGreaterThan = startDateTime.toEpochSecond().toInt()
+            it.airingLessThan = endDateTime.toEpochSecond().toInt()
+            it.sort = AiringSort.TIME_DESC.ordinal
+        }
 
     override fun createSource(): AiringSource {
         source = AiringSource(field, airingMediaService, compositeDisposable)
@@ -47,13 +49,13 @@ class AiringViewModel(private val airingMediaService: AiringMediaService) :
         compositeDisposable.clear()
     }
 
-    fun updateDate(zonedDateTime: ZonedDateTime){
+    fun updateDate(zonedDateTime: ZonedDateTime) {
         startDateTime = zonedDateTime.with(LocalTime.MIN)
         endDateTime = zonedDateTime.with(LocalTime.MAX)
         compositeDisposable.clear()
     }
 
-    fun updateMediaProgress(mediaId: Int?, progress: Int?){
+    fun updateMediaProgress(mediaId: Int?, progress: Int?) {
 
     }
 }

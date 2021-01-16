@@ -18,3 +18,9 @@ const val HTTP_TOO_MANY_REQUEST = 429
 object PatternConstant{
     const val MEDIA_INTENT_PATTERN = "https:\\/\\/(?:www.)?anilist.co\\/(anime|manga)\\/(\\d+)(?:\\/.+)?"
 }
+
+
+object UserConstant{
+    const val USER_META_KEY = "USER_META_KEY"
+    const val USER_STATS_META_KEY = "USER_STATS_META_KEY"
+}

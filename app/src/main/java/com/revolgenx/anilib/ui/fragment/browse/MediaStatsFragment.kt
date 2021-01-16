@@ -40,8 +40,6 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
         }
     }
 
-    private var visibleToUser = false
-
     private val mediaListStatus by lazy {
         requireContext().resources.getStringArray(R.array.media_list_status)
     }

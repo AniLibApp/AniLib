@@ -3,11 +3,12 @@ package com.revolgenx.anilib.common.preference
 import android.content.Context
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
-import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.model.UserPrefModel
-import com.revolgenx.anilib.data.model.list.MediaListOptionModel
+import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
+import com.revolgenx.anilib.data.model.setting.MediaOptionModel
 import com.revolgenx.anilib.type.ScoreFormat
+import com.revolgenx.anilib.type.UserTitleLanguage
 
 private const val userModelKey = "user_model_key"
 private const val loggedInKey = "logged_in_key"
@@ -30,12 +31,11 @@ fun Context.userId() = getInt(userIdKey, -1)
 fun Context.userId(userId: Int) = putInt(userIdKey, userId)
 
 fun Context.titlePref() = getString(titleKey, "0")
+fun titlePref(context:Context, pref:String) = context.putString(titleKey, pref)
 
 fun Context.imageQuality() = getString(imageQualityKey, "0")
 
 fun Context.userName() = getUserPrefModel(this).userName
-fun Context.userAvatar() = getUserPrefModel(this).avatar?.image
-fun Context.userBannerImage() = getUserPrefModel(this).bannerImage
 fun Context.userScoreFormat() =
     getUserPrefModel(this).mediaListOption!!.scoreFormat!!
 
@@ -52,10 +52,17 @@ fun getUserPrefModel(context: Context): UserPrefModel {
             Gson().fromJson(context.getString(userModelKey, ""), UserPrefModel::class.java)
                 ?: UserPrefModel().also { model ->
                     model.userName = context.getString(R.string.app_name)
-                    model.mediaListOption = MediaListOptionModel().also { mediaListOptionModel ->
-                        mediaListOptionModel.scoreFormat = ScoreFormat.POINT_100.ordinal
-                    }
                 }
+    }
+
+    if(userPrefModelPref!!.mediaOptions == null){
+        userPrefModelPref!!.mediaOptions = MediaOptionModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
+    }
+
+    if(userPrefModelPref!!.mediaListOption == null){
+        userPrefModelPref!!.mediaListOption = MediaListOptionModel().also { mediaListOptionModel ->
+            mediaListOptionModel.scoreFormat = ScoreFormat.POINT_100.ordinal
+        }
     }
 
     return userPrefModelPref!!
@@ -68,6 +75,7 @@ fun removeBasicUserDetail(context: Context) {
         it.mediaListOption = MediaListOptionModel().also { option ->
             option.scoreFormat = ScoreFormat.`$UNKNOWN`.ordinal
         }
+        it.mediaOptions = MediaOptionModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
     }
     context.putString(userModelKey, Gson().toJson(userPrefModelPref))
 }
@@ -76,9 +84,9 @@ fun Context.logOut() {
     loggedIn(false)
     token("")
     userId(-1)
+    titlePref(this, "0")
     removeNotification(this)
     removeBasicUserDetail(this)
-    resetNavigationItemPosition(this)
 }
 
 fun removeNotification(context: Context) {
@@ -90,6 +98,7 @@ fun Context.logIn(accessToken: String) {
     token(accessToken)
     val userId = JWT(accessToken).subject?.trim()?.toInt() ?: -1
     userId(userId)
+    titlePref(this, "3")
 }
 
 fun getLastNotification(context: Context): Int {
@@ -110,7 +119,7 @@ fun canShowAdult(context: Context): Boolean {
 }
 
 fun userEnabledAdultContent(context: Context): Boolean {
-    return getUserPrefModel(context).displayAdultContent == true
+    return getStoredMediaOptions(context).displayAdultContent
 }
 
 fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
@@ -121,10 +130,30 @@ fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
         synced
     }
 
-fun resetNavigationItemPosition(context: Context) {
-    val startNavigation = getStartNavigation(context)
-    //check if other navigation is added for now check only discover
-    if (startNavigation != DISCOVER_NAV_POS) {
-        setStartNavigation(context, DISCOVER_NAV_POS)
-    }
+
+fun storeMediaOption(context: Context, model: MediaOptionModel?) {
+    if (model == null) return
+
+    val userPrefModel = getUserPrefModel(context)
+    userPrefModel.mediaOptions = model
+    context.saveBasicUserDetail(userPrefModel)
 }
+
+fun getStoredMediaOptions(context: Context): MediaOptionModel {
+    return getUserPrefModel(context).mediaOptions!!
+}
+
+fun storeMediaListOptions(context: Context, model: MediaListOptionModel?) {
+    if (model == null) return
+
+    val userPrefModel = getUserPrefModel(context)
+    userPrefModel.mediaListOption = model
+    context.saveBasicUserDetail(userPrefModel)
+}
+
+fun getStoredMediaListOptions(context: Context): MediaListOptionModel {
+    return getUserPrefModel(context).mediaListOption!!
+}
+
+
+

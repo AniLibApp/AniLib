@@ -11,17 +11,18 @@ import com.google.android.material.tabs.TabLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
-import com.revolgenx.anilib.common.preference.getAiringField
 import com.revolgenx.anilib.ui.fragment.airing.AiringFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
 import com.revolgenx.anilib.common.preference.getHomeOrderFromType
+import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.common.preference.userId
+import com.revolgenx.anilib.common.preference.userName
 import com.revolgenx.anilib.databinding.DiscoverAiringFragmentLayoutBinding
 import com.revolgenx.anilib.ui.presenter.home.discover.DiscoverAiringPresenter
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
-import com.revolgenx.anilib.ui.dialog.AiringFilterDialog
-import com.revolgenx.anilib.ui.dialog.MediaFilterDialog
+import com.revolgenx.anilib.ui.dialog.DiscoverAiringFilterDialog
 import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverAiringViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -92,6 +93,12 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
 
         if (savedInstanceState == null) {
             viewModel.updateField(requireContext())
+            if(requireContext().loggedIn()){
+                with(viewModel.field){
+                    userName = requireContext().userName()
+                    userId = requireContext().userId()
+                }
+            }
             viewModel.createSource()
         }
         invalidateAdapter()
@@ -115,7 +122,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
                 )
             }
             1 -> {
-                val airingDialog = AiringFilterDialog()
+                val airingDialog = DiscoverAiringFilterDialog()
                 airingDialog.onButtonClickedListener = { _, w ->
                     when (w) {
                         AlertDialog.BUTTON_POSITIVE -> {

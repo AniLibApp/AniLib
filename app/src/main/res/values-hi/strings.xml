@@ -201,7 +201,6 @@
     <string name="privacy_policy">"गोपनीयता नीति"</string>
     <string name="privacy_policy_desc">"पूरी गोपनीयता नीति देखें"</string>
     <string name="whats_new">"नया क्या है"</string>
-    <string name="studio_version">"स्टूडियो संस्करण"</string>
     <string name="terms_and_condition">"नियम और शर्तें"</string>
     <string name="terms_and_condition_desc">"नियम और शर्तें देखें"</string>
     <string name="in_progress">"इस पर अभी काम चल रहा है"</string>
@@ -214,7 +213,6 @@
     <string name="notification_setting">"नोटिफिकेशन सेटिंग"</string>
     <string name="refresh_interval">"पुनश्चर्या अंतराल"</string>
     <string name="notifications">"नोटिफिकेशनस"</string>
-    <string name="check_which_notif_to_show">"मुझे कब सूचित करना है"</string>
     <string name="when_someone_follows_me">"जब कोई मुझे फौलो करें"</string>
     <string name="receive_message_notif">"जब मुझे कोई संदेश मिले"</string>
     <string name="mention_replay_notif">"जब मुझे किसी गतिविधि या गतिविधि उत्तर में @ का उल्लेख करते है"</string>

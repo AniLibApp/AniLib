@@ -3,7 +3,6 @@ package com.revolgenx.anilib.ui.dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
@@ -11,11 +10,11 @@ import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.common.preference.getDiscoverMediaListSort
 import com.revolgenx.anilib.common.preference.setDiscoverMediaListSort
 import com.revolgenx.anilib.databinding.MediaListFilterDialogLayoutBinding
+import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 
-class DiscoverMediaListFilterDialog : BaseDialogFragment() {
+class DiscoverMediaListFilterDialog : BaseDialogFragment<MediaListFilterDialogLayoutBinding>() {
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
-    override var viewRes: Int? = R.layout.media_list_filter_dialog_layout
     override var titleRes: Int? = R.string.filter
 
 
@@ -25,6 +24,9 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment() {
         requireContext().resources.getStringArray(R.array.media_list_sort)
     }
 
+    override fun bindView(): MediaListFilterDialogLayoutBinding {
+        return MediaListFilterDialogLayoutBinding.inflate(provideLayoutInflater())
+    }
 
     companion object {
         private const val MEDIA_LIST_FILTER_TYPE = "MEDIA_LIST_FILTER_TYPE"
@@ -39,7 +41,6 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment() {
     }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
-        val binding = MediaListFilterDialogLayoutBinding.bind(dialogView)
         with(binding) {
             val type = arguments?.getInt(MEDIA_LIST_FILTER_TYPE)!!
             val mediaListSortItems = mutableListOf<DynamicSpinnerItem>().apply {
@@ -48,7 +49,7 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment() {
                     DynamicSpinnerItem(null, it)
                 })
             }
-            mediaListSortSpinner.adapter = makeSpinnerAdapter(mediaListSortItems)
+            mediaListSortSpinner.adapter = makeSpinnerAdapter(requireContext(), mediaListSortItems)
             savedInstanceState?.let {
                 mediaListSortSpinner.setSelection(it.getInt(MEDIA_LIST_SORT_KEY))
             } ?: let {
@@ -60,8 +61,6 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment() {
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
-        val binding = MediaListFilterDialogLayoutBinding.bind(dialogView)
-
         if (dialogInterface is DynamicDialog) {
             val mediaListSort =
                 (binding.mediaListSortSpinner.selectedItemPosition - 1).takeIf { it >= 0 }
@@ -74,17 +73,7 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment() {
         }
     }
 
-    private fun makeSpinnerAdapter(items: List<DynamicSpinnerItem>) =
-        DynamicSpinnerImageAdapter(
-            requireContext(),
-            R.layout.ads_layout_spinner_item,
-            R.id.ads_spinner_item_icon,
-            R.id.ads_spinner_item_text, items
-        )
-
     override fun onSaveInstanceState(outState: Bundle) {
-        val binding = MediaListFilterDialogLayoutBinding.bind(dialogView)
-
         super.onSaveInstanceState(outState)
         outState.putInt(
             MEDIA_LIST_SORT_KEY,

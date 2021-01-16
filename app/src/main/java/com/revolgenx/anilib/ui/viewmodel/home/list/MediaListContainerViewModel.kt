@@ -5,7 +5,7 @@ import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.ui.viewmodel.BaseViewModel
 import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListCollectionViewModel
 
-class MediaListContainerViewModel(private val listStatusViewModel: Map<Int, MediaListCollectionViewModel>) :
+class MediaListContainerViewModel(val listStatusViewModel: Map<Int, MediaListCollectionViewModel>) :
     BaseViewModel() {
 
     var currentListStatus: Int = MediaListStatus.CURRENT.ordinal
@@ -22,7 +22,11 @@ class MediaListContainerViewModel(private val listStatusViewModel: Map<Int, Medi
             }
         }
 
+
+
     val mediaListViewModel: MediaListCollectionViewModel
         get() = listStatusViewModel[currentListStatus] ?: error("no viewmodel")
+
+
 
 }

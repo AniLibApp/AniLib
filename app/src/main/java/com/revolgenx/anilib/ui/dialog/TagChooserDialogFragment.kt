@@ -15,10 +15,9 @@ import com.revolgenx.anilib.data.field.TagField
 import com.revolgenx.anilib.databinding.TagChooserDialogFragmentLayoutBinding
 import com.revolgenx.anilib.ui.view.TriStateMode
 
-class TagChooserDialogFragment : BaseDialogFragment() {
+class TagChooserDialogFragment : BaseDialogFragment<TagChooserDialogFragmentLayoutBinding>() {
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
-    override var viewRes: Int? = R.layout.tag_chooser_dialog_fragment_layout
 
     companion object {
         const val TAG_KEY = "tag_key"
@@ -38,6 +37,9 @@ class TagChooserDialogFragment : BaseDialogFragment() {
 
     private lateinit var tagAdapter: TagAdapter
 
+    override fun bindView(): TagChooserDialogFragmentLayoutBinding {
+        return TagChooserDialogFragmentLayoutBinding.inflate(provideLayoutInflater())
+    }
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,
         savedInstanceState: Bundle?
@@ -72,7 +74,7 @@ class TagChooserDialogFragment : BaseDialogFragment() {
             }
             tagAdapter = TagAdapter(tagMode)
             tagAdapter.submitList(tagChooserField.tags)
-            TagChooserDialogFragmentLayoutBinding.bind(dialogView).tagRecyclerView.adapter = tagAdapter
+            binding.tagRecyclerView.adapter = tagAdapter
         }
     }
 

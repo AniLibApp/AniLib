@@ -2,53 +2,61 @@ package com.revolgenx.anilib.ui.dialog
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.View
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.getAiringField
+import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.storeAiringField
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.databinding.AiringFilterDialogLayoutBinding
+import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 
-class AiringFilterDialog : BaseDialogFragment() {
+class DiscoverAiringFilterDialog : BaseDialogFragment<AiringFilterDialogLayoutBinding>() {
 
     private val airingField by lazy {
         getAiringField(requireContext())
     }
 
-    override var viewRes: Int? = R.layout.airing_filter_dialog_layout
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
+    override var titleRes: Int? = R.string.filter
 
-    private lateinit var binding:AiringFilterDialogLayoutBinding
 
+    override fun bindView(): AiringFilterDialogLayoutBinding {
+        return AiringFilterDialogLayoutBinding.inflate(provideLayoutInflater())
+    }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
-        binding = AiringFilterDialogLayoutBinding.bind(dialogView)
         binding.showAllAiringSwitch.isChecked = !airingField.notYetAired
 
-        binding.airingSortSpinner.adapter = makeSpinnerAdapter(resources.getStringArray(R.array.airing_sort).map { DynamicSpinnerItem(
-            null, it
-        ) })
+        if (requireContext().loggedIn()) {
+            binding.showFromWatchListSwitch.visibility = View.VISIBLE
+            binding.showFromPlanningListSwitch.visibility = View.VISIBLE
+            binding.showFromPlanningListSwitch.isChecked = airingField.showFromPlanning
+            binding.showFromWatchListSwitch.isChecked = airingField.showFromWatching
+        }
+
+        binding.airingSortSpinner.adapter =
+            makeSpinnerAdapter(requireContext(), resources.getStringArray(R.array.airing_sort).map {
+                DynamicSpinnerItem(
+                    null, it
+                )
+            })
 
         binding.airingSortSpinner.setSelection(airingField.sort!!)
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
-        super.onPositiveClicked(dialogInterface, which)
         airingField.notYetAired = !binding.showAllAiringSwitch.isChecked
+        airingField.showFromPlanning = binding.showFromPlanningListSwitch.isChecked
+        airingField.showFromWatching = binding.showFromWatchListSwitch.isChecked
+
         airingField.sort = binding.airingSortSpinner.selectedItemPosition
         storeAiringField(requireContext(), airingField)
+        super.onPositiveClicked(dialogInterface, which)
     }
-
-
-    private fun makeSpinnerAdapter(items: List<DynamicSpinnerItem>) =
-        DynamicSpinnerImageAdapter(
-            requireContext(),
-            R.layout.ads_layout_spinner_item,
-            R.id.ads_spinner_item_icon,
-            R.id.ads_spinner_item_text, items
-        )
 
 }

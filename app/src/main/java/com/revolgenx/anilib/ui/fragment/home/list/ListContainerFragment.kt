@@ -3,6 +3,7 @@ package com.revolgenx.anilib.ui.fragment.home.list
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.pranavpandey.android.dynamic.support.popup.DynamicArrayPopup
@@ -18,6 +19,7 @@ import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
 import com.revolgenx.anilib.infrastructure.event.MediaListCollectionFilterEvent
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.bottomsheet.list.MediaListFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.registerForEvent
@@ -84,7 +86,6 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
                 binding.listExtendedFab.isExtended = true
             }
 
-
         }
     }
 
@@ -98,7 +99,7 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         listTabLayout.setupWithViewPager(listViewPager)
 
         listSearchIv.setOnClickListener {
-            getCurrentListFragment().showSearchET(true)
+            getCurrentListFragment().showSearchET()
         }
 
         listExtendedFab.setOnClickListener {
@@ -115,7 +116,8 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         }
 
         listExtendedFab.setOnLongClickListener {
-            getCurrentListFragment().openListFilterDialog()
+            MediaListFilterBottomSheetFragment().show(requireContext(), listViewPager.currentItem) {
+            }
             true
         }
 
@@ -136,7 +138,11 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
                     }
                 }
                 1 -> {
-                    getCurrentListFragment().openListFilterDialog()
+                    MediaListFilterBottomSheetFragment().show(
+                        requireContext(),
+                        listViewPager.currentItem
+                    ) {
+                    }
                 }
             }
         }
@@ -146,8 +152,8 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         return listContainerFragments[listViewPager.currentItem]
     }
 
-    fun goToListType(type:Int){
-        binding.listViewPager.setCurrentItem(if(type == MediaType.ANIME.ordinal) 0 else 1, false)
+    fun goToListType(type: Int) {
+        binding.listViewPager.setCurrentItem(if (type == MediaType.ANIME.ordinal) 0 else 1, false)
     }
 
     override fun onDestroyView() {

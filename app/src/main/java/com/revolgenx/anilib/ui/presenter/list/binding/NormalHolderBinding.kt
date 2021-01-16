@@ -16,7 +16,7 @@ import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.data.model.list.MediaListModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.databinding.MediaListCollectionNormalPresenterLayoutBinding
-import com.revolgenx.anilib.ui.presenter.list.MediaListCollectionPresenter
+import com.revolgenx.anilib.ui.presenter.home.discover.MediaListCollectionPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
@@ -150,31 +150,60 @@ object NormalHolderBinding {
             }
 
             mediaListContainer.setOnClickListener {
-                BrowseMediaEvent(
-                    MediaBrowserMeta(
-                        item.mediaId,
-                        item.type!!,
-                        item.title!!.userPreferred,
-                        item.coverImage!!.image(context),
-                        item.coverImage!!.largeImage,
-                        item.bannerImage
-                    ), mediaListCoverImageView
-                ).postEvent
-            }
-
-            mediaListContainer.setOnLongClickListener {
-                if (context.loggedIn()) {
-                    ListEditorEvent(
-                        ListEditorMeta(
+                if (isLoggedInUser) {
+                    if (context.loggedIn()) {
+                        ListEditorEvent(
+                            ListEditorMeta(
+                                item.mediaId,
+                                item.type!!,
+                                item.title!!.userPreferred,
+                                item.coverImage!!.image(context),
+                                item.bannerImage
+                            ), mediaListCoverImageView
+                        ).postEvent
+                    } else {
+                        context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
+                    }
+                } else {
+                    BrowseMediaEvent(
+                        MediaBrowserMeta(
                             item.mediaId,
                             item.type!!,
                             item.title!!.userPreferred,
                             item.coverImage!!.image(context),
+                            item.coverImage!!.largeImage,
+                            item.bannerImage
+                        ), mediaListCoverImageView
+                    ).postEvent
+                }
+            }
+
+            mediaListContainer.setOnLongClickListener {
+                if (isLoggedInUser) {
+                    BrowseMediaEvent(
+                        MediaBrowserMeta(
+                            item.mediaId,
+                            item.type!!,
+                            item.title!!.userPreferred,
+                            item.coverImage!!.image(context),
+                            item.coverImage!!.largeImage,
                             item.bannerImage
                         ), mediaListCoverImageView
                     ).postEvent
                 } else {
-                    context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
+                    if (context.loggedIn()) {
+                        ListEditorEvent(
+                            ListEditorMeta(
+                                item.mediaId,
+                                item.type!!,
+                                item.title!!.userPreferred,
+                                item.coverImage!!.image(context),
+                                item.bannerImage
+                            ), mediaListCoverImageView
+                        ).postEvent
+                    } else {
+                        context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
+                    }
                 }
                 true
             }

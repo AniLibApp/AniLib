@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.ui.dialog.MediaFilterDialog
 import com.revolgenx.anilib.infrastructure.event.BrowseTrendingEvent
 import com.revolgenx.anilib.data.field.home.NewlyAddedMediaField
 import com.revolgenx.anilib.data.model.home.HomeOrderType
@@ -16,6 +15,7 @@ import com.revolgenx.anilib.common.preference.getHomeOrderFromType
 import com.revolgenx.anilib.ui.presenter.home.MediaPresenter
 import com.revolgenx.anilib.infrastructure.source.discover.DiscoverMediaSource
 import com.revolgenx.anilib.type.MediaSort
+import com.revolgenx.anilib.ui.bottomsheet.discover.MediaFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.showcase.DiscoverMediaShowcaseLayout
 import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverNewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -73,14 +73,6 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
                 it.sort = MediaSort.ID_DESC.ordinal
             }
         super.onActivityCreated(savedInstanceState)
-        if (savedInstanceState != null) {
-            childFragmentManager.findFragmentByTag(NEWLY_ADDED_TAG)?.let {
-                (it as MediaFilterDialog).onDoneListener = {
-                    renewAdapter()
-                }
-            }
-        }
-
         invalidateAdapter()
     }
 
@@ -103,8 +95,7 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
             }).postEvent
         } else if (which == 1) {
             showMediaFilterDialog(
-                MediaFilterDialog.MediaFilterType.NEWLY_ADDED.ordinal,
-                NEWLY_ADDED_TAG
+                MediaFilterBottomSheetFragment.MediaFilterType.NEWLY_ADDED.ordinal
             ) {
                 renewAdapter()
             }

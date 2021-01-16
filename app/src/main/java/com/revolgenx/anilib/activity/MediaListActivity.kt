@@ -8,7 +8,6 @@ import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.DrawableRes
-import androidx.annotation.NonNull
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.SearchView
@@ -18,7 +17,6 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.ui.dialog.MediaListCollectionFilterDialog
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
 import com.revolgenx.anilib.infrastructure.event.MediaListCollectionFilterEvent
@@ -31,6 +29,7 @@ import com.revolgenx.anilib.common.preference.setMediaListGridPresenter
 import com.revolgenx.anilib.databinding.MediaListActivityLayoutBinding
 import com.revolgenx.anilib.databinding.SmartTabLayoutBinding
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.bottomsheet.list.MediaListFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
@@ -94,8 +93,10 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
 
 
             override fun onPageSelected(position: Int) {
-                binding.mediaListSmartTab.baseDynamicSmartTab.getTabs().forEach { it.findViewById<View>(R.id.tab_text_tv).visibility = View.GONE }
-                binding.mediaListSmartTab.baseDynamicSmartTab.getTabAt(position).findViewById<View>(R.id.tab_text_tv).visibility = View.VISIBLE
+                binding.mediaListSmartTab.baseDynamicSmartTab.getTabs()
+                    .forEach { it.findViewById<View>(R.id.tab_text_tv).visibility = View.GONE }
+                binding.mediaListSmartTab.baseDynamicSmartTab.getTabAt(position)
+                    .findViewById<View>(R.id.tab_text_tv).visibility = View.VISIBLE
             }
         }
     }
@@ -107,8 +108,7 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
                 arrayOf(
                     intArrayOf(android.R.attr.state_selected),
                     intArrayOf(android.R.attr.state_enabled)
-                )
-                , intArrayOf(
+                ), intArrayOf(
                     DynamicTheme.getInstance().get().accentColor,
                     DynamicTheme.getInstance().get().tintPrimaryColor
                 )
@@ -135,7 +135,9 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
         setSupportActionBar(binding.mediaListToolbar.dynamicToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        binding.mediaListSmartTab.baseDynamicSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
+        binding.mediaListSmartTab.baseDynamicSmartTab.setBackgroundColor(
+            DynamicTheme.getInstance().get().primaryColor
+        )
         statusBarColor = statusBarColor
 
         mediaListMeta = intent.getParcelableExtra(MEDIA_LIST_META_KEY) ?: return
@@ -186,7 +188,7 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
             pageChangeListener.onPageSelected(binding.mediaListViewPager.currentItem)
         }
 
-        (savedInstanceState?.getParcelable(MediaListCollectionFilterDialog.LIST_FILTER_PARCEL_KEY) as? MediaListCollectionFilterField)?.let { field ->
+        (savedInstanceState?.getParcelable(MediaListFilterBottomSheetFragment.LIST_FILTER_PARCEL_KEY) as? MediaListCollectionFilterField)?.let { field ->
             mediaListFilterField = field
             if (field.search.isNullOrEmpty().not()) {
                 menuItem?.expandActionView()
@@ -236,8 +238,10 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
                 true
             }
             R.id.listFilterMenu -> {
-                MediaListCollectionFilterDialog.newInstance(mediaListFilterField)
-                    .show(supportFragmentManager, "media_filter_dialog")
+                MediaListFilterBottomSheetFragment().show(this, mediaListMeta.type) {
+                    arguments =
+                        bundleOf(MediaListFilterBottomSheetFragment.LIST_FILTER_PARCEL_KEY to mediaListFilterField)
+                }
                 true
             }
             R.id.listDisplayModeMenu -> {
@@ -260,7 +264,11 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
     }
 
 
-    private fun createTabView(view: SmartTabLayoutBinding, @DrawableRes src: Int, @StringRes str: Int){
+    private fun createTabView(
+        view: SmartTabLayoutBinding,
+        @DrawableRes src: Int,
+        @StringRes str: Int
+    ) {
         view.tabImageView.imageTintList = tabColorStateList
         view.tabImageView.setImageResource(src)
         view.tabTextTv.text = getString(str)
@@ -285,7 +293,7 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MediaListCollectionFilterEvent) {
         event.meta.let {
-            mediaListFilterField.format = it.format
+            mediaListFilterField.formatsIn = it.formatsIn
             mediaListFilterField.status = it.status
             mediaListFilterField.genre = it.genres
             mediaListFilterField.listSort = it.mediaListSort
@@ -293,14 +301,10 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
         filterMediaList()
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelable(
-            MediaListCollectionFilterDialog.LIST_FILTER_PARCEL_KEY,
+            MediaListFilterBottomSheetFragment.LIST_FILTER_PARCEL_KEY,
             mediaListFilterField
         )
         super.onSaveInstanceState(outState)

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.constant.UserConstant
 import com.revolgenx.anilib.data.meta.UserStatsMeta
 import com.revolgenx.anilib.databinding.UserStatsContainerFragmentLayoutBinding
 import com.revolgenx.anilib.type.MediaType
@@ -43,7 +44,7 @@ class UserStatsContainerFragment : BaseLayoutFragment<UserStatsContainerFragment
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val userStatsMeta: UserStatsMeta = arguments?.getParcelable(StatsOverviewFragment.USER_STATS_PARCEL_KEY)
+        val userStatsMeta: UserStatsMeta = arguments?.getParcelable(UserConstant.USER_STATS_META_KEY)
                 ?: return
 
         val adapter: FragmentPagerAdapter
@@ -52,7 +53,7 @@ class UserStatsContainerFragment : BaseLayoutFragment<UserStatsContainerFragment
             MediaType.ANIME.ordinal -> {
                 userAnimeStatsFragments.forEach {
                     it.arguments = bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to userStatsMeta
+                        UserConstant.USER_STATS_META_KEY to userStatsMeta
                     )
                 }
 
@@ -61,7 +62,7 @@ class UserStatsContainerFragment : BaseLayoutFragment<UserStatsContainerFragment
             else ->{
                 userMangaStatsFragments.forEach {
                     it.arguments = bundleOf(
-                            StatsOverviewFragment.USER_STATS_PARCEL_KEY to userStatsMeta
+                        UserConstant.USER_STATS_META_KEY to userStatsMeta
                     )
                 }
                 adapter = makePagerAdapter(userMangaStatsFragments, resources.getStringArray(R.array.user_manga_stats_tab_menu))

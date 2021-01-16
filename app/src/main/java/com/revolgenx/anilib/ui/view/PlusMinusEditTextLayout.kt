@@ -10,21 +10,16 @@ import androidx.core.widget.doOnTextChanged
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicEditText
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.ThemeController
+import com.revolgenx.anilib.app.theme.textColorPrimary
 import com.revolgenx.anilib.util.dp
 
 //todo add min max filter
 class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set: Int = 0) :
     RelativeLayout(context, attributeSet, set) {
-
-    private val accentColor by lazy {
-        DynamicTheme.getInstance().get().accentColor
-    }
-    private val surfaceColor by lazy {
-        ThemeController.lightSurfaceColor()
-    }
 
     var max: Double? = null
 
@@ -76,7 +71,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
             }
             this.setPadding(DynamicUnitUtils.convertDpToPixels(10f))
             setImageResource(R.drawable.ic_plus)
-            this.color = accentColor
+            this.color = textColorPrimary
         }
     }
     private val dynamicDecrementIv by lazy {
@@ -91,7 +86,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
             }
             this.setPadding(DynamicUnitUtils.convertDpToPixels(10f))
             setImageResource(R.drawable.ic_minus)
-            this.color = accentColor
+            this.color = textColorPrimary
         }
     }
 
@@ -122,8 +117,6 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
         }
         dynamicInputType = InputType.TYPE_CLASS_NUMBER
         updateDynamicText()
-
-        this.setBackgroundColor(surfaceColor)
 
         dynamicIncrementIv.setOnClickListener {
             //            counterHolder = (((counterHolder * 10).toInt() + 10) / 10).toDouble()

@@ -13,11 +13,12 @@ import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.ThemeController
+import com.revolgenx.anilib.app.theme.textColorPrimary
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.data.field.ToggleFavouriteField
-import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.ListEditorResultMeta
 import com.revolgenx.anilib.data.model.DateModel
@@ -44,7 +45,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
     companion object {
         const val LIST_EDITOR_META_KEY = "list_editor_meta_key"
-        private const val DatePickerDialogTag ="DatePickerDialogTag"
+        private const val DatePickerDialogTag = "DatePickerDialogTag"
     }
 
     private var state = COLLAPSED //collapsed
@@ -65,19 +66,16 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
     private val calendarDrawable by lazy {
         ContextCompat.getDrawable(requireContext(), R.drawable.ic_calendar)!!.mutate().also {
-            it.setTint(tintAccentColor)
+            it.setTint(textColorPrimary)
         }
     }
 
     private val crossDrawable by lazy {
         ContextCompat.getDrawable(requireContext(), R.drawable.ic_close)!!.mutate().also {
-            it.setTint(tintAccentColor)
+            it.setTint(textColorPrimary)
         }
     }
 
-    private val tintAccentColor by lazy {
-        DynamicTheme.getInstance().get().tintAccentColor
-    }
 
     private val calendar by lazy {
         Calendar.getInstance()
@@ -136,7 +134,8 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                         binding.showMetaViews()
                     }
                 }
-                else->{}
+                else -> {
+                }
             }
         }
 
@@ -144,7 +143,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
         val statusLayout = binding.resourceStatusLayout
 
-        viewModel.queryMediaListEntryLiveData.observe(viewLifecycleOwner, Observer { resource ->
+        viewModel.queryMediaListEntryLiveData.observe(viewLifecycleOwner, { resource ->
             when (resource.status) {
                 SUCCESS -> {
                     statusLayout.resourceStatusContainer.visibility = View.GONE
@@ -173,7 +172,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             }
         })
 
-        viewModel.isFavouriteQuery(mediaMeta.mediaId).observe(viewLifecycleOwner, Observer {
+        viewModel.isFavouriteQuery(mediaMeta.mediaId).observe(viewLifecycleOwner, {
             when (it.status) {
                 SUCCESS -> {
                     isFavourite = it.data!!
@@ -187,7 +186,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             }
         })
 
-        viewModel.toggleFavMediaLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.toggleFavMediaLiveData.observe(viewLifecycleOwner, {
             toggling = when (it.status) {
                 SUCCESS -> {
                     isFavourite = !isFavourite
@@ -208,7 +207,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             }
         })
 
-        viewModel.saveMediaListEntryLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.saveMediaListEntryLiveData.observe(viewLifecycleOwner, {
             saving = when (it.status) {
                 SUCCESS -> {
                     ListEditorResultEvent(
@@ -233,7 +232,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             }
         })
 
-        viewModel.deleteMediaListEntryLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.deleteMediaListEntryLiveData.observe(viewLifecycleOwner, {
             deleting = when (it.status) {
                 SUCCESS -> {
                     ListEditorResultEvent(
@@ -276,11 +275,11 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             listEditorVolumeProgressLayout.visibility = View.VISIBLE
         }
 
-        val lightSurfaceColor = ThemeController.lightSurfaceColor()
-        startDateDynamicEt.setBackgroundColor(lightSurfaceColor)
-        endDateDynamicEt.setBackgroundColor(lightSurfaceColor)
-        notesEt.setBackgroundColor(lightSurfaceColor)
-        statusContainerSpinner.setBackgroundColor(lightSurfaceColor)
+//        val lightSurfaceColor = ThemeController.lightSurfaceColor()
+//        startDateDynamicEt.setBackgroundColor(lightSurfaceColor)
+//        endDateDynamicEt.setBackgroundColor(lightSurfaceColor)
+//        notesEt.setBackgroundColor(lightSurfaceColor)
+//        statusContainerSpinner.setBackgroundColor(lightSurfaceColor)
 
         startDateDynamicEt.setCompoundDrawablesRelativeWithIntrinsicBounds(
             calendarDrawable,
@@ -360,6 +359,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             act.supportActionBar!!.title = mediaMeta.title
             act.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         }
+        mediaTitleTv.text = mediaMeta.title
         listEditorCoverImage.setImageURI(mediaMeta.coverImage)
         listEditorBannerImage.setImageURI(mediaMeta.bannerImage)
     }
@@ -472,7 +472,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
         }
 
         listEditorScoreLayout.onScoreChangeListener {
-            apiModelEntry.score = it.toDouble()
+            apiModelEntry.score = it
         }
         privateToggleButton.setToggleListener {
             apiModelEntry.private = it
@@ -513,34 +513,27 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
         updateMediaProgressDate()
 
-        getUserPrefModel(requireContext()).mediaListOption?.let { option ->
-            if (option.scoreFormat == ScoreFormat.POINT_10_DECIMAL.ordinal || option.scoreFormat == ScoreFormat.POINT_100.ordinal) {
+        getUserPrefModel(requireContext()).mediaListOption?.let { optionSetting ->
+            if (optionSetting.scoreFormat == ScoreFormat.POINT_10_DECIMAL.ordinal || optionSetting.scoreFormat == ScoreFormat.POINT_100.ordinal) {
                 if (apiModelEntry.type == MediaType.ANIME.ordinal) {
-                    option.animeList?.let { animeListOption ->
+                    optionSetting.animeList?.let { animeListOption ->
                         if (animeListOption.advancedScoringEnabled) {
                             if (apiModelEntry.advancedScoring == null) {
-                                apiModelEntry.advancedScoring = option.animeList?.advancedScoring
+                                apiModelEntry.advancedScoring =
+                                    optionSetting.animeList?.advancedScoring
                             }
-                            if (apiModelEntry.advancedScoring != null) {
-                                advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
-                            } else {
-                                advancedScoreLayout.visibility = View.GONE
-                            }
+                            advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
                         } else {
                             advancedScoreLayout.visibility = View.GONE
                         }
                     }
                 } else {
-                    option.mangaList?.let { mangaListOptions ->
+                    optionSetting.animeList?.let { mangaListOptions ->
                         if (mangaListOptions.advancedScoringEnabled) {
                             if (apiModelEntry.advancedScoring == null) {
-                                apiModelEntry.advancedScoring = option.mangaList?.advancedScoring
+                                apiModelEntry.advancedScoring = mangaListOptions.advancedScoring
                             }
-                            if (apiModelEntry.advancedScoring != null) {
-                                advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
-                            } else {
-                                advancedScoreLayout.visibility = View.GONE
-                            }
+                            advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
                         } else {
                             advancedScoreLayout.visibility = View.GONE
                         }

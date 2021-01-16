@@ -272,9 +272,9 @@
 
     <!--application startup page-->
     <string-array name="application_startup_page_entries">
-        <item>Discover</item>
-        <item>Anime List</item>
-        <item>Manga List</item>
+        <item>Home</item>
+        <item>List</item>
+        <item>Radio</item>
     </string-array>
 
     <string-array name="application_startup_values">
@@ -296,7 +296,6 @@
         <item>1</item>
         <item>2</item>
     </string-array>
-
 
     <string-array name="media_list_collection_sort">
         <item>@string/title</item>
@@ -328,6 +327,12 @@
         <item>@string/newly_added</item>
         <item>@string/watching</item>
         <item>@string/reading</item>
+    </string-array>
+
+    <string-array name="home_page_list_order">
+        <item>@string/home</item>
+        <item>@string/list</item>
+        <item>@string/radio</item>
     </string-array>
 
     <string-array name="media_list_sort">
@@ -605,13 +610,6 @@
         <item>@string/episodes_desc</item>
     </string-array>
 
-    <string name="portuguese" translatable="false">Português</string>
-    <string name="hindi" translatable="false">हिंदी</string>
-    <string name="italian" translatable="false">Italiano</string>
-    <string name="spanish" translatable="false">Español</string>
-    <string name="arabic" translatable="false">عربى</string>
-
-
     <string-array name="anime_list_status">
         <item>@string/watching</item>
         <item>@string/planning</item>
@@ -717,9 +715,32 @@
     </string-array>
     <!--more action-->
 
+    <!--setting-->
+    <string-array name="title_language_list">
+        <item>@string/romaji</item>
+        <item>@string/english</item>
+        <item>@string/_native</item>
+    </string-array>
+
+    <string-array name="media_list_order_list">
+        <item>@string/score</item>
+        <item>@string/title</item>
+        <item>@string/last_updated</item>
+        <item>@string/last_added</item>
+    </string-array>
+
+    <string-array name="scoring_system_list">
+        <item>100 Point (55/100)</item>
+        <item>10 Point Decimal (5.5/10)</item>
+        <item>10 Point (5/10)</item>
+        <item>5 Star (3/5)</item>
+        <item>3 Point Smiley :)</item>
+    </string-array>
+    <!--setting-->
 
     <string-array name="music_entries">
         <item>@string/radio_station</item>
     </string-array>
+
 
 </resources>

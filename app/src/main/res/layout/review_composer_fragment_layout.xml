@@ -47,10 +47,11 @@
                         <com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout
                             android:id="@+id/writeReviewTextInputLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             app:counterEnabled="true"
                             app:counterMaxLength="2200"
-                            app:hintEnabled="false">
+                            app:hintEnabled="false"
+                            android:padding="10dp">
 
                             <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
                                 android:id="@+id/writeReviewEt"
@@ -96,7 +97,8 @@
                     android:layout_height="wrap_content"
                     app:counterEnabled="true"
                     app:counterMaxLength="120"
-                    app:hintEnabled="false">
+                    app:hintEnabled="false"
+                    android:padding="10dp">
 
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicEditText

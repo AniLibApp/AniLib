@@ -20,22 +20,36 @@
             app:ads_cardCornerRadius="20dp"
             app:ads_cardElevation="6dp">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/homeOrderName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="20dp"
-                android:textSize="14sp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                android:id="@+id/homeOrderDragIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginEnd="8dp"
-                app:ads_colorType="tint_surface"
-                app:srcCompat="@drawable/ic_drag" />
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/homeOrderName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/homeOrderDragIcon"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                    android:id="@+id/homeOrderDragIcon"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:layout_gravity="end"
+                    android:padding="8dp"
+                    app:ads_colorType="text_primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_drag" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 

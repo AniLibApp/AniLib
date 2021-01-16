@@ -14,6 +14,7 @@ import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userName
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.constant.UserConstant
 import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.data.model.user.UserFollowerCountModel
 import com.revolgenx.anilib.data.model.user.UserProfileModel
@@ -44,6 +45,7 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
         const val USER_PROFILE_INFO_KEY = "USER_PROFILE_INFO_KEY"
     }
 
+    var showUserInfo:Boolean = false
 
     private val viewModel by viewModel<UserProfileViewModel>()
     private var userProfileModel: UserProfileModel? = null
@@ -75,7 +77,7 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
         val userMeta: UserMeta? = arguments?.getParcelable(USER_PROFILE_INFO_KEY)
 
 
-        val showUserInfo = if (userMeta != null) {
+        showUserInfo = if (userMeta != null) {
             binding.profileFragmentToolbar.inflateMenu(R.menu.user_profile_menu)
 
             with(viewModel.userField) {
@@ -106,14 +108,14 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
             binding.animeCountHeader.setOnClickListener {
                 MediaListActivity.openActivity(
                     requireContext(),
-                    MediaListMeta(userMeta.userId, null, MediaType.ANIME.ordinal)
+                    MediaListMeta(userMeta.userId, userMeta.userName, MediaType.ANIME.ordinal)
                 )
             }
 
             binding.mangaCountHeader.setOnClickListener {
                 MediaListActivity.openActivity(
                     requireContext(),
-                    MediaListMeta(userMeta.userId, null, MediaType.MANGA.ordinal)
+                    MediaListMeta(userMeta.userId, userMeta.userName, MediaType.MANGA.ordinal)
                 )
             }
 
@@ -172,8 +174,13 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
         if (showUserInfo) {
             binding.bindUserView(savedInstanceState)
-        } else {
-            binding.bindLogInView()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(!visibleToUser){
+
         }
     }
 
@@ -201,6 +208,13 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                 Status.SUCCESS -> {
                     it.data?.let { model ->
                         userProfileModel = model
+
+                        viewModel.userField.userId = model.userId
+
+                        if(savedInstanceState == null){
+                            viewModel.getFollower()
+                        }
+
                         userAvatarIv.setImageURI(model.avatar?.image)
                         userBannerIv.setImageURI(model.bannerImage ?: model.avatar?.image)
                         usernameTv.text = model.userName
@@ -249,7 +263,6 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
         if (savedInstanceState == null) {
             viewModel.getProfile()
-            viewModel.getFollower()
         }
 
         val userMeta = UserMeta(
@@ -258,17 +271,15 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
             false
         )
 
-        (userProfileFragments[0] as UserOverviewFragment).userProfileViewModel =
-            viewModel
-        (userProfileFragments[1] as UserFavouriteContainerFragment).userProfileViewModel =
-            viewModel
 
-        (userProfileFragments[2] as UserStatsContainerFragment).arguments = bundleOf(
-            StatsOverviewFragment.USER_STATS_PARCEL_KEY
+        userProfileFragments[0].arguments = bundleOf(UserConstant.USER_META_KEY to userMeta)
+        userProfileFragments[1].arguments = bundleOf(UserConstant.USER_META_KEY to userMeta)
+        userProfileFragments[2].arguments = bundleOf(
+            UserConstant.USER_STATS_META_KEY
                     to UserStatsMeta(userMeta, MediaType.ANIME.ordinal)
         )
-        (userProfileFragments[3] as UserStatsContainerFragment).arguments = bundleOf(
-            StatsOverviewFragment.USER_STATS_PARCEL_KEY
+        userProfileFragments[3].arguments = bundleOf(
+            UserConstant.USER_STATS_META_KEY
                     to UserStatsMeta(userMeta, MediaType.MANGA.ordinal)
         )
 
@@ -354,9 +365,6 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
         }
     }
 
-    private fun ProfileFragmentLayoutBinding.bindLogInView() {
-
-    }
 
     private fun toggleFollow() {
         with(viewModel.userField) {

@@ -14,6 +14,8 @@ import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
+import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.popup.DynamicArrayPopup
 import com.pranavpandey.android.dynamic.support.popup.DynamicPopup
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
@@ -103,3 +105,11 @@ fun makeArrayPopupMenu(
         popup.build().show()
     }
 }
+
+fun makeSpinnerAdapter(context: Context, items: List<DynamicSpinnerItem>) =
+    DynamicSpinnerImageAdapter(
+        context,
+        R.layout.ads_layout_spinner_item,
+        R.id.ads_spinner_item_icon,
+        R.id.ads_spinner_item_text, items
+    )

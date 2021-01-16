@@ -10,7 +10,7 @@ import com.revolgenx.anilib.common.preference.getApplicationLocale
 import java.util.*
 
 class AboutActivity : DynamicActivity() {
-    override fun getLocale(): Locale? {
+    override fun getLocale(): Locale {
         return Locale(getApplicationLocale())
     }
 
@@ -33,7 +33,7 @@ class AboutActivity : DynamicActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setNavigationClickListener(R.drawable.ic_close) {
+        setNavigationClickListener {
             finish()
         }
         if (savedInstanceState == null) {

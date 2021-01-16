@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.ui.presenter.list
+package com.revolgenx.anilib.ui.presenter.home.discover
 
 import android.content.Context
 import android.graphics.Color
@@ -167,7 +167,7 @@ class MediaListPresenter(
                 mediaListProgressIncrease.visibility = View.GONE
             }
 
-            mediaListContainer.setOnClickListener {
+            mediaListContainer.setOnLongClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(
                         item.mediaId,
@@ -178,9 +178,10 @@ class MediaListPresenter(
                         item.bannerImage
                     ), mediaListCoverImageView
                 ).postEvent
+                true
             }
 
-            mediaListContainer.setOnLongClickListener {
+            mediaListContainer.setOnClickListener {
                 if (context.loggedIn()) {
                     ListEditorEvent(
                         ListEditorMeta(
@@ -194,7 +195,6 @@ class MediaListPresenter(
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                 }
-                true
             }
         }
     }

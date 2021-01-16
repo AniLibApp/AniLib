@@ -24,11 +24,9 @@ import com.revolgenx.anilib.ui.viewmodel.setting.TagEditMode
 import com.revolgenx.anilib.ui.viewmodel.setting.TagFilterSettingDialogViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TagFilterSettingDialogFragment : BaseDialogFragment() {
+class TagFilterSettingDialogFragment : BaseDialogFragment<TagFilterSettingDialogFragmentLayoutBinding>() {
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
-    override var viewRes: Int? = R.layout.tag_filter_setting_dialog_fragment_layout
-
 
     companion object {
         const val TAG_SETTING_FILTER_META_KEY = "TAG_SETTING_FILTER_META_KEY"
@@ -42,6 +40,10 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
 
     private val viewModel by viewModel<TagFilterSettingDialogViewModel>()
     private lateinit var adapter: TagAdapter
+
+    override fun bindView(): TagFilterSettingDialogFragmentLayoutBinding {
+        return TagFilterSettingDialogFragmentLayoutBinding.inflate(provideLayoutInflater())
+    }
 
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,
@@ -81,9 +83,8 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
             adapter.deSelectAll()
         }
 
-        val bind = TagFilterSettingDialogFragmentLayoutBinding.bind(dialogView)
         adapter = TagAdapter()
-        bind.tagFilterSettingRecyclerView.adapter = adapter
+        binding.tagFilterSettingRecyclerView.adapter = adapter
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {

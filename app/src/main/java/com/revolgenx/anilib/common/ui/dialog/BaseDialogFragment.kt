@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
+import androidx.viewbinding.ViewBinding
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.support.widget.DynamicButton
@@ -16,10 +17,9 @@ import com.revolgenx.anilib.R
 typealias OnShowListener = ((dialog: DynamicDialog, savedInstanceState: Bundle?) -> Unit)?
 typealias OnButtonClickedListener = ((dialogInterface: DialogInterface, which: Int) -> Unit)?
 
-open class BaseDialogFragment : DynamicDialogFragment() {
+abstract class BaseDialogFragment<V : ViewBinding> : DynamicDialogFragment() {
 
     protected open var titleRes: Int? = null
-    protected open var viewRes: Int? = null
     protected open var positiveText: Int? = null
     protected open var negativeText: Int? = null
 
@@ -29,10 +29,11 @@ open class BaseDialogFragment : DynamicDialogFragment() {
     protected open var isAutoDismissEnabled = false
     protected open var dismissOnTouchOutside = true
 
+    private var _binding: V? = null
+    val binding get() = _binding!!
+
     var onShowListener: OnShowListener = null
     var onButtonClickedListener: OnButtonClickedListener = null
-
-    lateinit var dialogView: View
 
     protected open fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
         onButtonClickedListener?.invoke(dialogInterface, which)
@@ -50,6 +51,8 @@ open class BaseDialogFragment : DynamicDialogFragment() {
         onShowListener?.invoke(alertDialog, savedInstanceState)
     }
 
+    protected abstract fun bindView(): V?
+
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,
         savedInstanceState: Bundle?
@@ -58,9 +61,9 @@ open class BaseDialogFragment : DynamicDialogFragment() {
             titleRes?.let {
                 setTitle(it)
             }
-            viewRes?.let {
-                dialogView = LayoutInflater.from(requireContext()).inflate(it, null)
-                setView(dialogView)
+            _binding = bindView()
+            _binding?.let {
+                setView(it.root)
             }
             messageText?.let {
                 setMessage(it)
@@ -89,9 +92,8 @@ open class BaseDialogFragment : DynamicDialogFragment() {
         return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
     }
 
-    protected fun getBinding(){
 
-    }
+    protected fun provideLayoutInflater() = LayoutInflater.from(requireContext())
 
 
     override fun onCustomiseDialog(
@@ -118,5 +120,10 @@ open class BaseDialogFragment : DynamicDialogFragment() {
             }
         }
         return super.onCustomiseDialog(alertDialog, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

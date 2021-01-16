@@ -24,7 +24,7 @@ data class Resource<T>(
             )
         }
 
-        fun <T> loading(data: T?): Resource<T> {
+        fun <T> loading(data: T? = null): Resource<T> {
             return Resource(
                 Status.LOADING,
                 data,

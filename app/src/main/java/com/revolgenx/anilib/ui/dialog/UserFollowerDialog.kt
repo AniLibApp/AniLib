@@ -19,7 +19,7 @@ import com.revolgenx.anilib.ui.viewmodel.user.UserFollowerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class UserFollowerDialog : BaseDialogFragment() {
+class UserFollowerDialog : BaseDialogFragment<FollowerDialogLayoutBinding>() {
 
     companion object {
         fun newInstance(followerMeta: FollowerMeta) = UserFollowerDialog().also {
@@ -54,8 +54,9 @@ class UserFollowerDialog : BaseDialogFragment() {
         return viewModel.createSource()
     }
 
-    override var viewRes: Int? = R.layout.follower_dialog_layout
-
+    override fun bindView(): FollowerDialogLayoutBinding {
+        return FollowerDialogLayoutBinding.inflate(provideLayoutInflater())
+    }
 
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,
@@ -80,6 +81,7 @@ class UserFollowerDialog : BaseDialogFragment() {
         with(dialogBuilder) {
             setCustomTitle(userFollowerBinding.root)
         }
+
         return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
     }
 
@@ -87,18 +89,17 @@ class UserFollowerDialog : BaseDialogFragment() {
         val followerMeta = arguments?.getParcelable<FollowerMeta>(FOLLOWING_META_KEY)
             ?: return
 
-        val followerBinding = FollowerDialogLayoutBinding.bind(dialogView)
         viewModel.field.also {
             it.userId = followerMeta.userId
             it.isFollowing = followerMeta.isFollowing
-            followerBinding.recyclerViewFrame.setOnRefreshListener {
+            binding.recyclerViewFrame.setOnRefreshListener {
                 createSource()
-                followerBinding.recyclerViewFrame.swipeRefreshLayout.isRefreshing = false
+                binding.recyclerViewFrame.swipeRefreshLayout.isRefreshing = false
                 createAdapter()
-                    .into(followerBinding.recyclerViewFrame.recyclerView)
+                    .into(binding.recyclerViewFrame.recyclerView)
             }
             createAdapter()
-                .into(followerBinding.recyclerViewFrame.recyclerView)
+                .into(binding.recyclerViewFrame.recyclerView)
         }
     }
 
