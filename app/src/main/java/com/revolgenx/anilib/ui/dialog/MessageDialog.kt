@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
+import androidx.viewbinding.ViewBinding
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.widget.DynamicButton
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 
-class MessageDialog : BaseDialogFragment() {
+class MessageDialog : BaseDialogFragment<ViewBinding>() {
     companion object {
 
         const val titleKey = "titleKey"
@@ -46,6 +47,10 @@ class MessageDialog : BaseDialogFragment() {
         }
     }
 
+    override fun bindView(): ViewBinding? {
+        return null
+    }
+
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,
         savedInstanceState: Bundle?
@@ -65,7 +70,8 @@ class MessageDialog : BaseDialogFragment() {
                     setMessage(it)
                 }
                 if (getInt(viewKey) != 0) {
-                    viewRes = getInt(viewKey)
+                    val viewRes = getInt(viewKey)
+                    setView(viewRes)
                 }
                 if (getInt(positiveKey) != 0) {
                     positiveText = getInt(positiveKey)

@@ -54,84 +54,90 @@
                         android:id="@+id/media_title_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:padding="10dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginBottom="6dp"
-                        app:layout_constraintBottom_toTopOf="@id/media_add_container_layout"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
                         android:textSize="18sp"
                         app:ads_rtlSupport="false"
                         app:fontFamily="@font/cabin_bold"
+                        app:layout_constraintBottom_toTopOf="@id/media_add_stroke_layout"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/media_browser_cover_image" />
 
 
-                    <LinearLayout
-                        android:id="@+id/media_add_container_layout"
+                    <com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout
+                        android:id="@+id/media_add_stroke_layout"
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/stroke_background"
-                        android:orientation="horizontal"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
+                        android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/media_title_tv">
+                        app:layout_constraintTop_toBottomOf="@+id/media_title_tv"
+                        android:layout_marginBottom="16dp"
+                        >
 
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                            android:id="@+id/media_add_button"
+                        <LinearLayout
+                            android:id="@+id/media_add_container_layout"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:text="@string/add"
-                            android:textSize="14sp"
-                            android:background="@drawable/ads_button_remote"
-                            app:fontFamily="@font/cabin_semi_bold" />
+                            android:layout_height="42dp"
+                            android:orientation="horizontal"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp">
 
-                        <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
-                            android:id="@+id/media_add_more_iv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            app:ads_colorType="text_primary"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            app:entries="@array/media_list_status"
-                            android:background="@drawable/ads_button_remote"
-                            app:srcCompat="@drawable/ads_ic_more_horizontal" />
+                            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                                android:id="@+id/media_add_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/ads_button_remote"
+                                android:gravity="center_vertical"
+                                android:text="@string/add"
+                                android:textSize="14sp"
+                                app:fontFamily="@font/cabin_semi_bold" />
 
-                        <View
-                            android:layout_width="0.5dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="6dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="6dp"
-                            android:layout_marginBottom="4dp"
-                            android:background="@color/translucent_gray" />
+                            <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
+                                android:id="@+id/media_add_more_iv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/ads_button_remote"
+                                app:ads_colorType="text_primary"
+                                app:entries="@array/media_list_status"
+                                app:srcCompat="@drawable/ads_ic_more_horizontal" />
 
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                            android:id="@+id/media_review_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:src="@drawable/ic_review"
-                            app:ads_colorType="text_primary"
-                            android:background="@drawable/ads_button_remote"/>
+                            <View
+                                android:layout_width="0.5dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="6dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="6dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/translucent_gray" />
+
+                            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                                android:id="@+id/media_review_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/ads_button_remote"
+                                android:src="@drawable/ic_review"
+                                app:ads_colorType="text_primary" />
 
 
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                            android:id="@+id/media_fav_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_not_favourite"
-                            app:ads_colorType="text_primary"
-                            android:background="@drawable/ads_button_remote" />
+                            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                                android:id="@+id/media_fav_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/ads_button_remote"
+                                android:src="@drawable/ic_not_favourite"
+                                app:ads_colorType="text_primary" />
 
-                    </LinearLayout>
+                        </LinearLayout>
+                    </com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

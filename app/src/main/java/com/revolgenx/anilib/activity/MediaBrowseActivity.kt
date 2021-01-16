@@ -112,14 +112,6 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        media_add_button.setCompoundDrawablesRelativeWithIntrinsicBounds(
-//            null,
-//            null,
-//            ContextCompat.getDrawable(this, R.drawable.ic_arrow_down)?.also {
-//                it.setTint(DynamicTheme.getInstance().get().tintSurfaceColor)
-//            },
-//            null
-//        )
 
         if (intent == null) {
             return

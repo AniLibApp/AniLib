@@ -51,17 +51,52 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
             )
         }
 
-        binding.notificationSetting.setOnClickListener {
+        if(requireContext().loggedIn()) {
+            binding.notificationSetting.setOnClickListener {
+                ToolbarContainerActivity.openActivity(
+                    requireContext(),
+                    ParcelableFragment(
+                        NotificationSettingFragment::class.java,
+                        null
+                    )
+                )
+            }
+
+            binding.mediaSettingIv.setOnClickListener {
+                ToolbarContainerActivity.openActivity(
+                    requireContext(),
+                    ParcelableFragment(
+                        MediaSettingFragment::class.java,
+                        null
+                    )
+                )
+            }
+
+            binding.listSettingIv.setOnClickListener {
+                ToolbarContainerActivity.openActivity(
+                    requireContext(),
+                    ParcelableFragment(
+                        MediaListSettingFragment::class.java,
+                        null
+                    )
+                )
+            }
+        }else{
+            binding.notificationSetting.visibility = View.GONE
+            binding.listSettingIv.visibility = View.GONE
+            binding.mediaSettingIv.visibility = View.GONE
+        }
+
+
+        binding.filterSetting.setOnClickListener {
             ToolbarContainerActivity.openActivity(
                 requireContext(),
                 ParcelableFragment(
-                    NotificationSettingFragment::class.java,
+                    CustomizeFilterFragment::class.java,
                     null
                 )
             )
         }
-
-        binding.adultContentPrefCardView.visibility = if(userEnabledAdultContent(requireContext())) View.VISIBLE else View.GONE
 
         binding.aboutItemView.setOnClickListener {
             startActivity(Intent(requireContext(), AboutActivity::class.java))

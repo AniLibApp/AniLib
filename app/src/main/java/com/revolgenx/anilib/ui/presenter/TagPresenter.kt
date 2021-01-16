@@ -16,8 +16,6 @@ class TagPresenter(context: Context) : BasePresenter<TagPresenterLayoutBinding, 
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-    private lateinit var elements: MutableList<TagField>
-
     private var tagRemovedListener: ((elements: String) -> Unit)? = null
 
     private val normalTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
@@ -34,9 +32,6 @@ class TagPresenter(context: Context) : BasePresenter<TagPresenterLayoutBinding, 
     override fun onBind(page: Page, holder: Holder, element: Element<TagField>) {
         super.onBind(page, holder, element)
         val data = element.data ?: return
-        if (page.isFirstPage()) {
-            elements = page.elements().map { it.data as TagField}.toMutableList()
-        }
 
         holder.getBinding()?.apply {
             val textColor = when(data.tagState){
@@ -53,7 +48,6 @@ class TagPresenter(context: Context) : BasePresenter<TagPresenterLayoutBinding, 
             tagName.text = data.tag
             root.setOnClickListener {
                 page.removeElement(element)
-                elements.remove(data)
                 tagRemovedListener?.invoke(data.tag)
             }
         }

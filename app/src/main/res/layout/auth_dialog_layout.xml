@@ -39,7 +39,7 @@
         android:id="@+id/authenticating"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:fontFamily="@font/berlinrounded_extra_bold"
+        app:fontFamily="@font/cabin_semi_bold"
         android:gravity="center_vertical"
         android:text="@string/authenticating"
         android:textSize="14sp"

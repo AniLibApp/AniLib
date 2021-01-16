@@ -10,17 +10,19 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.constant.UserConstant
+import com.revolgenx.anilib.data.meta.UserMeta
 import com.revolgenx.anilib.databinding.UserActivityGenrePresenterBinding
 import com.revolgenx.anilib.databinding.UserOverviewFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.ui.viewmodel.user.UserProfileViewModel
 import com.revolgenx.anilib.util.getOrDefault
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBinding>() {
 
-
-    lateinit var userProfileViewModel: UserProfileViewModel
+    private val userProfileViewModel by viewModel<UserProfileViewModel>()
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -29,9 +31,10 @@ class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBindin
         return UserOverviewFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        val userMeta: UserMeta = arguments?.getParcelable(UserConstant.USER_META_KEY) ?: return
 
         userProfileViewModel.userProfileLiveData.observe(viewLifecycleOwner) {
             when (it.status) {
@@ -80,6 +83,15 @@ class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBindin
 
                 }
             }
+        }
+
+
+        if (savedInstanceState == null && isVisible) {
+            with(userProfileViewModel.userField) {
+                userId = userMeta.userId
+                userName = userMeta.userName
+            }
+            userProfileViewModel.getProfile()
         }
     }
 

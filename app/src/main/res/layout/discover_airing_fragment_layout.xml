@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clipChildren="false"
     android:orientation="vertical">
 
     <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicDslWeekTabLayout
         android:id="@+id/dsl_week_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_size"
+        android:layout_height="40dp"
+        android:layout_marginBottom="6dp"
         app:ads_backgroundColorType="background"
-        app:ads_colorType="accent"
-        app:ads_contrastWithColorType="background"
-        android:layout_marginBottom="10dp"
-        />
+        app:tabMode="fixed"
+        app:tabTextAppearance="@style/SubTabTextAppearance" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
         android:id="@+id/discover_airing_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/discover_recycler_height"
-        android:nestedScrollingEnabled="false"/>
+        android:nestedScrollingEnabled="false" />
 
 
 </LinearLayout>

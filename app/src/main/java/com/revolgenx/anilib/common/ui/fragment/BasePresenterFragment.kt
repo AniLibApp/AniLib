@@ -23,7 +23,6 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment<BasePresent
     abstract val basePresenter: Presenter<M>
     abstract val baseSource: Source<M>
 
-    var visibleToUser = false
 
     var adapter: Adapter? = null
 

@@ -1,13 +1,13 @@
 package com.revolgenx.anilib.infrastructure.repository.network.converter
 
-import com.revolgenx.anilib.BasicUserQuery
-import com.revolgenx.anilib.MediaOverViewQuery
-import com.revolgenx.anilib.MediaWatchQuery
+import com.revolgenx.anilib.*
 import com.revolgenx.anilib.data.model.*
 import com.revolgenx.anilib.data.model.entry.AdvancedScore
 import com.revolgenx.anilib.data.model.entry.MediaEntryListModel
-import com.revolgenx.anilib.data.model.list.MediaListOptionModel
-import com.revolgenx.anilib.data.model.list.MediaListOptionTypeModel
+import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
+import com.revolgenx.anilib.data.model.setting.MediaListOptionTypeModel
+import com.revolgenx.anilib.data.model.setting.MediaOptionModel
+import com.revolgenx.anilib.data.model.setting.getRowOrder
 import com.revolgenx.anilib.fragment.*
 import com.revolgenx.anilib.util.pmap
 import kotlinx.coroutines.runBlocking
@@ -80,31 +80,8 @@ fun BasicMediaContent.toBasicMediaContent() = CommonMediaModel().also { media ->
 fun BasicUserQuery.User.toBasicUserModel() = UserPrefModel().also {
     it.userId = id()
     it.userName = name()
-    it.mediaListOption = mediaListOptions()?.let {
-        MediaListOptionModel().apply {
-            scoreFormat = it.scoreFormat()!!.ordinal
-            animeList = it.animeList()?.let {
-                MediaListOptionTypeModel().also { typeModel ->
-                    typeModel.advancedScoringEnabled = it.advancedScoringEnabled()!!
-                    typeModel.advancedScoring = it.advancedScoring()?.map { AdvancedScore(it, 0.0) }
-                }
-            }
-            mangaList = it.mangaList()?.let {
-                MediaListOptionTypeModel().also { typeModel ->
-                    typeModel.advancedScoringEnabled = it.advancedScoringEnabled()!!
-                    typeModel.advancedScoring = it.advancedScoring()?.map { AdvancedScore(it, 0.0) }
-                }
-            }
-        }
-    }
-    it.avatar = avatar()?.let {
-        UserAvatarImageModel().also { img ->
-            img.large = avatar()!!.large()
-            img.medium = avatar()!!.medium()
-        }
-    }
-    it.displayAdultContent = options()?.displayAdultContent()
-    it.bannerImage = bannerImage() ?: ""
+    it.mediaListOption = mediaListOptions()?.fragments()?.userMediaListOptions()?.toModel()
+    it.mediaOptions = options()?.fragments()?.userMediaOptions()?.toModel()
 }
 
 
@@ -222,6 +199,24 @@ fun MediaWatchQuery.Media.toModel() = streamingEpisodes()?.map {
         model.thumbnail = it.thumbnail()
         model.title = it.title()
         model.url = it.url()
+    }
+}
+
+
+fun UserMediaOptions.toModel() = MediaOptionModel(
+    titleLanguage()!!.ordinal,
+    displayAdultContent()!!,
+    airingNotifications()!!,
+    profileColor())
+
+fun UserMediaListOptions.toModel() = MediaListOptionModel().also {
+    it.rowOrder = getRowOrder(rowOrder()!!)
+    it.scoreFormat = scoreFormat()!!.ordinal
+    it.animeList = animeList()?.let {
+        MediaListOptionTypeModel().also { optionModel->
+            optionModel.advancedScoringEnabled = it.advancedScoringEnabled()!!
+            optionModel.advancedScoring = it.advancedScoring()?.map { AdvancedScore(it, 0.0) }?.toMutableList()
+        }
     }
 }
 

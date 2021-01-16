@@ -2,11 +2,11 @@ package com.revolgenx.anilib.ui.fragment.home.season
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.os.bundleOf
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.MediaTagFilterTypes
-import com.revolgenx.anilib.ui.dialog.MediaFilterDialog
 import com.revolgenx.anilib.ui.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.infrastructure.event.TagEvent
@@ -19,6 +19,7 @@ import com.revolgenx.anilib.data.model.CommonMediaModel
 import com.revolgenx.anilib.common.preference.getUserGenre
 import com.revolgenx.anilib.common.preference.getUserTag
 import com.revolgenx.anilib.databinding.SeasonFragmentBinding
+import com.revolgenx.anilib.ui.bottomsheet.discover.MediaFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.presenter.season.SeasonPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
@@ -32,10 +33,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListener {
 
     private val viewModel by viewModel<SeasonViewModel>()
-
-    companion object {
-        const val SEASON_FILTER_DIALOG_TAG = "season_filter_dialog"
-    }
 
     override val basePresenter: Presenter<CommonMediaModel> by lazy {
         SeasonPresenter(requireContext())
@@ -91,10 +88,6 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
         super.onActivityCreated(savedInstanceState)
 
         initListener()
-
-        if (savedInstanceState != null) {
-            updateSeasonDialogListener()
-        }
     }
 
 
@@ -112,14 +105,13 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
 
             seasonFilterIv.onPopupMenuClickListener = { _, position ->
                 when(position){
-                    0->{
-                        MediaFilterDialog.newInstance(MediaFilterDialog.MediaFilterType.SEASON.ordinal)
-                            .also {
-                                it.onDoneListener = {
-                                    renewAdapter()
-                                }
-                                it.show(childFragmentManager, SEASON_FILTER_DIALOG_TAG)
+                    0 -> {
+                        MediaFilterBottomSheetFragment().show(requireContext()) {
+                            arguments = bundleOf(MediaFilterBottomSheetFragment.mediaFilterTypeKey to MediaFilterBottomSheetFragment.MediaFilterType.SEASON.ordinal)
+                            onDoneListener = {
+                                renewAdapter()
                             }
+                        }
                     }
                     1->{
                         openTagChooserDialog(
@@ -157,15 +149,6 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
             )
         ).show(childFragmentManager, TagChooserDialogFragment::class.java.simpleName)
     }
-
-    private fun updateSeasonDialogListener() {
-        childFragmentManager.findFragmentByTag(SEASON_FILTER_DIALOG_TAG)?.let {
-            (it as MediaFilterDialog).onDoneListener = {
-                renewAdapter()
-            }
-        }
-    }
-
 
     private fun updateToolbarTitle() {
         seasonBinding.apply {

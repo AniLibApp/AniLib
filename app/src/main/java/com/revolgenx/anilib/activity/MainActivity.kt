@@ -6,10 +6,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
+import androidx.annotation.*
 import androidx.core.app.ActivityCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.os.bundleOf
@@ -34,6 +34,7 @@ import com.revolgenx.anilib.data.meta.UserMeta
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.data.model.home.HomePageOrderType
 import com.revolgenx.anilib.databinding.ActivityMainBinding
 import com.revolgenx.anilib.radio.ui.fragments.RadioFragment
 import com.revolgenx.anilib.ui.fragment.home.discover.DiscoverContainerFragment
@@ -122,7 +123,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         }
 
         initListener()
-        updateNavView()
         updateRightNavView()
         binding.updateView()
         silentFetchUserInfo()
@@ -133,21 +133,22 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
     private fun ActivityMainBinding.updateView() {
-        val pagerFragments = mutableListOf<BaseFragment>()
+        val menuList = mutableListOf<HomeMenuItem>()
 
-        pagerFragments.add(discoverContainerFragment)
-        if (loggedIn()) {
-            pagerFragments.add(listContainerFragment)
+        menuList.add(HomeMenuItem(R.id.home_navigation_menu, R.string.home, R.drawable.ic_home, getHomePageOrderFromType(this@MainActivity, HomePageOrderType.HOME), discoverContainerFragment))
+        if(loggedIn()){
+            menuList.add(HomeMenuItem(R.id.list_navigation_menu, R.string.list, R.drawable.ic_media_list, getHomePageOrderFromType(this@MainActivity, HomePageOrderType.LIST), listContainerFragment))
         }
-        pagerFragments.add(radioFragment)
+        menuList.add(HomeMenuItem(R.id.music_navigation_menu, R.string.radio, R.drawable.ic_radio, getHomePageOrderFromType(this@MainActivity, HomePageOrderType.RADIO),radioFragment))
 
-        if (loggedIn()) {
-            pagerFragments.add(profileFragment)
-        } else {
-            pagerFragments.add(loginFragment)
+        menuList.add(HomeMenuItem(R.id.profile_navigation_menu, R.string.profile, R.drawable.ic_person, HomePageOrderType.values().size, if(loggedIn()) profileFragment else loginFragment))
+
+        menuList.sortBy { it.order }
+        menuList.forEach {
+            mainBottomNavView.menu.add(Menu.NONE, it.id, Menu.NONE, it.text).setIcon(it.drawRes)
         }
 
-        val pagerAdapter = makePagerAdapter(pagerFragments)
+        val pagerAdapter = makePagerAdapter(menuList.map { it.fragment })
         mainViewPager.adapter = pagerAdapter
         mainViewPager.offscreenPageLimit = pagerAdapter.count - 1
 
@@ -155,16 +156,16 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         mainBottomNavView.setOnNavigationItemSelectedListener {
             mainBottomNavView.menu.forEachIndexed { index, item ->
                 if (it == item) {
-                    val newIndex = if (loggedIn()) {
-                        index
-                    } else {
-                        if (index != 0) {
-                            index - 1
-                        } else {
-                            0
-                        }
-                    }
-                    mainViewPager.setCurrentItem(newIndex, true)
+//                    val newIndex = if (loggedIn()) {
+//                        index
+//                    } else {
+//                        if (index != 0) {
+//                            index - 1
+//                        } else {
+//                            0
+//                        }
+//                    }
+                    mainViewPager.setCurrentItem(index, true)
                 }
             }
             false
@@ -176,16 +177,16 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 mainBottomNavView.menu.iterator().forEach {
                     it.isChecked = false
                 }
-                val newPosition = if (loggedIn()) {
-                    position
-                } else {
-                    if (position != 0) {
-                        position + 1
-                    } else {
-                        0
-                    }
-                }
-                mainBottomNavView.menu.getItem(newPosition).isChecked = true
+//                val newPosition = if (loggedIn()) {
+//                    position
+//                } else {
+//                    if (position != 0) {
+//                        position + 1
+//                    } else {
+//                        0
+//                    }
+//                }
+                mainBottomNavView.menu.getItem(position).isChecked = true
             }
         })
 
@@ -215,10 +216,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         if (loggedIn()) {
             viewModel.getUserLiveData()
         }
-    }
-
-    private fun updateNavView() {
-        binding.mainBottomNavView.menu.findItem(R.id.list_navigation_menu).isVisible = loggedIn()
     }
 
     fun goToList(type: Int) {
@@ -504,11 +501,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
 
-    private fun closeNavDrawer() {
-        Handler().post {
-            binding.drawerLayout.closeDrawers()
-        }
-    }
-
+    internal data class HomeMenuItem(@IdRes val id:Int, @StringRes val text:Int, @DrawableRes val drawRes:Int, val order:Int, val fragment:BaseFragment)
 
 }

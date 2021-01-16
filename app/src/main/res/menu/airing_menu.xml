@@ -17,4 +17,10 @@
         android:title="@string/select_date"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/airing_filter"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/filter"
+        app:showAsAction="ifRoom"/>
+
 </menu>

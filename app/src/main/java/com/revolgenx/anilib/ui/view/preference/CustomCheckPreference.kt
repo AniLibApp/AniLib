@@ -5,11 +5,9 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.sp
 
 class CustomCheckPreference : DynamicCheckPreference {
@@ -36,7 +34,6 @@ class CustomCheckPreference : DynamicCheckPreference {
             a.recycle()
         }
 
-        findViewById<LinearLayout?>(com.pranavpandey.android.dynamic.support.R.id.ads_preference)?.setPadding(dp(14f),dp(4f),dp(14f),dp(4f))
         findViewById<ImageView?>(com.pranavpandey.android.dynamic.support.R.id.ads_preference_icon)?.visibility = View.GONE
     }
 }

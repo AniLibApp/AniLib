@@ -18,6 +18,12 @@ CustomizeFilterFragment remove
 
 check userfavourite, season, mediaview, mediacharacter, search
 
+remove format
+remove mediafilterdialog
+
+
+list preference saved
+
 v-1.1.8
 front ui redesign for easy access.
 

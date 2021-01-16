@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicProgressBar
+            android:id="@+id/media_setting_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:ads_fillSpace="true"
+            app:ads_title="@string/title_language" />
+
+
+        <com.revolgenx.anilib.ui.view.widgets.spinner.AniLibSpinnerLayout
+            android:id="@+id/title_language_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+            android:id="@+id/airing_anime_notification_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/airing_anime_notifications" />
+
+        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+            android:id="@+id/adult_content_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:ads_description="@string/show_adult_content_desc"
+            app:ads_key="can_show_adult_key"
+            app:ads_title="@string/show_adult_content" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

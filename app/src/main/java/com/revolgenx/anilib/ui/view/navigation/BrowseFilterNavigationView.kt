@@ -28,6 +28,7 @@ import com.revolgenx.anilib.common.preference.getUserStream
 import com.revolgenx.anilib.common.preference.getUserTag
 import com.revolgenx.anilib.databinding.BrowseFilterNavigationViewBinding
 import com.revolgenx.anilib.ui.presenter.TagPresenter
+import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.util.hideKeyboard
 import com.revolgenx.anilib.util.onItemSelected
 import java.util.*
@@ -267,13 +268,13 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                 )
             }
 
-        browseTypeSpinner.adapter = makeSpinnerAdapter(searchTypeItems)
-        browseSeasonSpinner.adapter = makeSpinnerAdapter(searchSeasonItems)
-        browseSortSpinner.adapter = makeSpinnerAdapter(searchSortItems)
-        browseFormatSpinner.adapter = makeSpinnerAdapter(searchFormatItems)
-        browseStatusSpinner.adapter = makeSpinnerAdapter(searchStatusItems)
-        browseSourceSpinner.adapter = makeSpinnerAdapter(searchSourceItems)
-        browseCountrySpinner.adapter = makeSpinnerAdapter(searchCountryItems)
+        browseTypeSpinner.adapter = makeSpinnerAdapter(context, searchTypeItems)
+        browseSeasonSpinner.adapter = makeSpinnerAdapter(context,searchSeasonItems)
+        browseSortSpinner.adapter = makeSpinnerAdapter(context,searchSortItems)
+        browseFormatSpinner.adapter = makeSpinnerAdapter(context,searchFormatItems)
+        browseStatusSpinner.adapter = makeSpinnerAdapter(context,searchStatusItems)
+        browseSourceSpinner.adapter = makeSpinnerAdapter(context,searchSourceItems)
+        browseCountrySpinner.adapter = makeSpinnerAdapter(context,searchCountryItems)
 
         browseYearSeekBar.isEnabled = enableYearCheckBox.isChecked
         val currentYear = Calendar.getInstance().get(Calendar.YEAR) + 1f
@@ -373,14 +374,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
             applyFilter()
         }
     }
-
-    private fun View.makeSpinnerAdapter(items: List<DynamicSpinnerItem>) =
-        DynamicSpinnerImageAdapter(
-            context,
-            R.layout.ads_layout_spinner_item,
-            R.id.ads_spinner_item_icon,
-            R.id.ads_spinner_item_text, items
-        )
+    
 
 
     fun getFilter(): SearchFilterModel {

@@ -18,6 +18,7 @@ class DiscoverTrendingViewModel(mediaService: MediaService) : BaseDiscoverViewMo
             field.seasonYear = it.seasonYear
             field.format = it.format
             field.status = it.status
+            field.formatsIn = it.formatsIn
         }
     }
 }

@@ -11,15 +11,20 @@
     <item name="garlandTitleTv" type="id" />
     <item name="garlandSettingIv" type="id" />
     <item name="garlandConstraintLayout" type="id" />
+    <item name="garlandLinearLayout" type="id" />
     <item name="gralandFrameContainer" type="id" />
-    <item name="showCaseCardView" type="id"/>
-    <item name="showCaseImageView" type="id"/>
-    <item name="showCaseTitleView" type="id"/>
-    <item name="showCaseDescriptionView" type="id"/>
-    <item name="showCaseFavouriteTv" type="id"/>
-    <item name="showCasePopularTv" type="id"/>
-    <item name="showCaseConstraintLayout" type="id"/>
+    <item name="showCaseCardView" type="id" />
+    <item name="showCaseImageView" type="id" />
+    <item name="showCaseTitleView" type="id" />
+    <item name="showCaseDescriptionView" type="id" />
+    <item name="showCaseFavouriteTv" type="id" />
+    <item name="showCasePopularTv" type="id" />
+    <item name="showCaseConstraintLayout" type="id" />
     <item name="kaoMojiTv" type="id" />
+    <item name="home_navigation_menu" type="id" />
+    <item name="list_navigation_menu" type="id" />
+    <item name="music_navigation_menu" type="id" />
+    <item name="profile_navigation_menu" type="id" />
 
     <declare-styleable name="TitleTextView">
         <attr name="titleName" format="string" />
@@ -62,57 +67,56 @@
     </declare-styleable>
 
     <declare-styleable name="IndicatorTextView">
-        <attr format="integer" name="textSize"/>
-        <attr format="enum" name="textColorType">
-            <enum name="none" value="0"/>
-            <enum name="primary" value="1"/>
-            <enum name="primary_dark" value="2"/>
-            <enum name="accent" value="3"/>
-            <enum name="accent_dark" value="4"/>
-            <enum name="tint_primary" value="5"/>
-            <enum name="tint_primary_dark" value="6"/>
-            <enum name="tint_accent" value="7"/>
-            <enum name="tint_accent_dark" value="8"/>
-            <enum name="custom" value="9"/>
-            <enum name="background" value="10"/>
-            <enum name="tint_background" value="11"/>
-            <enum name="text_primary" value="12"/>
-            <enum name="text_secondary" value="13"/>
-            <enum name="text_primary_inverse" value="14"/>
-            <enum name="text_secondary_inverse" value="15"/>
-            <enum name="surface" value="16"/>
-            <enum name="tint_surface" value="17"/>
+        <attr name="textSize" format="integer" />
+        <attr name="textColorType" format="enum">
+            <enum name="none" value="0" />
+            <enum name="primary" value="1" />
+            <enum name="primary_dark" value="2" />
+            <enum name="accent" value="3" />
+            <enum name="accent_dark" value="4" />
+            <enum name="tint_primary" value="5" />
+            <enum name="tint_primary_dark" value="6" />
+            <enum name="tint_accent" value="7" />
+            <enum name="tint_accent_dark" value="8" />
+            <enum name="custom" value="9" />
+            <enum name="background" value="10" />
+            <enum name="tint_background" value="11" />
+            <enum name="text_primary" value="12" />
+            <enum name="text_secondary" value="13" />
+            <enum name="text_primary_inverse" value="14" />
+            <enum name="text_secondary_inverse" value="15" />
+            <enum name="surface" value="16" />
+            <enum name="tint_surface" value="17" />
         </attr>
     </declare-styleable>
 
     <declare-styleable name="CustomCheckPreference">
-        <attr name="text_size" format="dimension"/>
+        <attr name="text_size" format="dimension" />
     </declare-styleable>
 
 
-
-    <attr name="entries" format="reference"/>
-    <attr name="icons" format="reference"/>
+    <attr name="entries" format="reference" />
+    <attr name="icons" format="reference" />
 
     <declare-styleable name="DynamicIconDslTabLayout">
-        <attr name="icons"/>
+        <attr name="icons" />
     </declare-styleable>
 
     <declare-styleable name="DynamicChipDslTabLayout">
-        <attr name="entries"/>
+        <attr name="entries" />
     </declare-styleable>
 
     <declare-styleable name="DynamicDslTabLayout">
-        <attr name="entries"/>
+        <attr name="entries" />
     </declare-styleable>
 
     <declare-styleable name="DynamicTextTabLayout">
-        <attr name="entries"/>
+        <attr name="entries" />
     </declare-styleable>
 
     <declare-styleable name="DynamicPopUpMenu">
-        <attr name="entries"/>
-        <attr name="icons"/>
+        <attr name="entries" />
+        <attr name="icons" />
     </declare-styleable>
 
     <declare-styleable name="CircleSimpleDraweeView">
@@ -122,16 +126,19 @@
 
 
     <declare-styleable name="CustomDynamicHeader">
-        <attr name="titleAlignCenter" format="boolean"/>
-        <attr name="subtitleAlignCenter" format="boolean"/>
-        <attr name="titleTextSize" format="dimension"/>
-        <attr name="subtitleTextSize" format="dimension"/>
-        <attr name="copySubtitleOnLongClick" format="boolean"/>
+        <attr name="titleAlignCenter" format="boolean" />
+        <attr name="subtitleAlignCenter" format="boolean" />
+        <attr name="titleTextSize" format="dimension" />
+        <attr name="subtitleTextSize" format="dimension" />
+        <attr name="copySubtitleOnLongClick" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="HorizontalHeaderLayout">
-        <attr name="titleText" format="string"/>
-        <attr name="subtitleText" format="string"/>
+        <attr name="titleText" format="string" />
+        <attr name="subtitleText" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="AniLibSpinner">
+        <attr name="add_stroke" format="boolean" />
+    </declare-styleable>
 </resources>

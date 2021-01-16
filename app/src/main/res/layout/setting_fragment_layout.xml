@@ -24,10 +24,22 @@
 
 
         <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/media_setting_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:ads_icon="@drawable/ic_api_setting"
-            app:ads_title="@string/anilist"
+            app:ads_title="@string/anilist_and_manga"
+            app:ads_colorType="text_primary"
+            android:layout_marginTop="6dp"
+            />
+
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/list_setting_iv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_icon="@drawable/ic_media_list"
+            app:ads_title="@string/list"
             app:ads_colorType="text_primary"
             android:layout_marginTop="6dp"
             />
@@ -40,6 +52,15 @@
             app:ads_icon="@drawable/ic_notifications"
             android:layout_marginTop="6dp"
             app:ads_title="@string/notification" />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/filter_Setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_filter"
+            android:layout_marginTop="6dp"
+            app:ads_title="@string/filter" />
 
         <com.pranavpandey.android.dynamic.support.view.DynamicItemView
             android:id="@+id/aboutItemView"
@@ -59,22 +80,6 @@
             app:ads_icon="@drawable/ic_new_releases"
             android:layout_marginTop="6dp"
             app:ads_title="@string/whats_new" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-            android:id="@+id/adultContentPrefCardView"
-            style="@style/Widget.DynamicApp.Card"
-            android:visibility="gone">
-
-            <com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_checked="true"
-                app:ads_description="@string/show_adult_content_desc"
-                app:ads_icon="@drawable/ic_dropped"
-                app:ads_key="can_show_adult_key"
-                app:ads_title="@string/show_adult_content" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

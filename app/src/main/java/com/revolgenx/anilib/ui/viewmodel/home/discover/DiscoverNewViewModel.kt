@@ -23,6 +23,7 @@ class DiscoverNewViewModel(mediaService: MediaService) :
             field.seasonYear = it.seasonYear
             field.season = it.season
             field.status = it.status
+            field.formatsIn = it.formatsIn
         }
     }
 }

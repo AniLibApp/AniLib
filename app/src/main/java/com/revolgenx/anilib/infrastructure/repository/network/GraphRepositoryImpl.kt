@@ -11,11 +11,11 @@ import io.reactivex.schedulers.Schedulers
 
 class GraphRepositoryImpl(private val apolloClient: ApolloClient): BaseGraphRepository {
     override fun <D : Operation.Data, T, V : Operation.Variables> request(query: Query<D, T, V>): Observable<Response<T>> {
-        return Rx2Apollo.from(apolloClient.query(query)).observeOn(Schedulers.io())
+        return Rx2Apollo.from(apolloClient.query(query)).subscribeOn(Schedulers.io())
     }
 
     override fun <D : Operation.Data, T, V : Operation.Variables> request(mutate: Mutation<D, T, V>): Observable<Response<T>> {
-        return Rx2Apollo.from(apolloClient.mutate(mutate)).observeOn(Schedulers.io())
+        return Rx2Apollo.from(apolloClient.mutate(mutate)).subscribeOn(Schedulers.io())
     }
 
 

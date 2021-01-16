@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.ui.dialog.MediaFilterDialog
 import com.revolgenx.anilib.infrastructure.event.BrowseTrendingEvent
 import com.revolgenx.anilib.data.field.home.PopularMediaField
 import com.revolgenx.anilib.data.model.home.HomeOrderType
@@ -17,6 +15,7 @@ import com.revolgenx.anilib.common.preference.getHomeOrderFromType
 import com.revolgenx.anilib.ui.presenter.home.MediaPresenter
 import com.revolgenx.anilib.infrastructure.source.discover.DiscoverMediaSource
 import com.revolgenx.anilib.type.MediaSort
+import com.revolgenx.anilib.ui.bottomsheet.discover.MediaFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.showcase.DiscoverMediaShowcaseLayout
 import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverPopularViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -73,14 +72,6 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
                 it.sort = MediaSort.POPULARITY_DESC.ordinal
             }
         super.onActivityCreated(savedInstanceState)
-        if (savedInstanceState != null) {
-            childFragmentManager.findFragmentByTag(MEDIA_POPULAR_TAG)?.let {
-                (it as MediaFilterDialog).onDoneListener = {
-                    renewAdapter()
-                }
-            }
-        }
-
         invalidateAdapter()
     }
 
@@ -92,8 +83,7 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
             }).postEvent
         } else if (which == 1) {
             showMediaFilterDialog(
-                MediaFilterDialog.MediaFilterType.POPULAR.ordinal,
-                MEDIA_POPULAR_TAG
+                MediaFilterBottomSheetFragment.MediaFilterType.POPULAR.ordinal
             ) {
                 renewAdapter()
             }

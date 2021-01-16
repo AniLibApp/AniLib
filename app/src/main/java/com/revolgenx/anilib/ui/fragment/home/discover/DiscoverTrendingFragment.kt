@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.ui.dialog.MediaFilterDialog
 import com.revolgenx.anilib.infrastructure.event.BrowseTrendingEvent
 import com.revolgenx.anilib.data.field.home.TrendingMediaField
 import com.revolgenx.anilib.data.model.home.HomeOrderType
@@ -16,6 +15,7 @@ import com.revolgenx.anilib.common.preference.getHomeOrderFromType
 import com.revolgenx.anilib.ui.presenter.home.MediaPresenter
 import com.revolgenx.anilib.infrastructure.source.discover.DiscoverMediaSource
 import com.revolgenx.anilib.type.MediaSort
+import com.revolgenx.anilib.ui.bottomsheet.discover.MediaFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.showcase.DiscoverMediaShowcaseLayout
 import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverTrendingViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -72,11 +72,6 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
             viewModel.field = TrendingMediaField.create(requireContext()).also {
                 it.sort = MediaSort.TRENDING_DESC.ordinal
             }
-            childFragmentManager.findFragmentByTag(MEDIA_TRENDING_TAG)?.let {
-                (it as MediaFilterDialog).onDoneListener = {
-                    renewAdapter()
-                }
-            }
         }
 
         invalidateAdapter()
@@ -90,8 +85,7 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
             }).postEvent
         } else if (which == 1) {
             showMediaFilterDialog(
-                MediaFilterDialog.MediaFilterType.TRENDING.ordinal,
-                MEDIA_TRENDING_TAG
+                MediaFilterBottomSheetFragment.MediaFilterType.TRENDING.ordinal
             ) {
                 renewAdapter()
             }

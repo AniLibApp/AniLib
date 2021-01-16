@@ -15,7 +15,10 @@ abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment(){
     private var _binding: T? = null
     protected val binding: T get() = _binding!!
 
+    var visibleToUser = false
+
     abstract fun bindView(inflater: LayoutInflater, parent: ViewGroup? = null): T
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

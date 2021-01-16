@@ -7,17 +7,18 @@ import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.databinding.ReleaseInfoDialogLayoutBinding
 import com.revolgenx.anilib.markwon.MarkwonImpl
 
-class ReleaseInfoDialog : BaseDialogFragment() {
+class ReleaseInfoDialog : BaseDialogFragment<ReleaseInfoDialogLayoutBinding>() {
     companion object {
         val tag = ReleaseInfoDialog::class.java.name
     }
 
-    override var viewRes: Int? = R.layout.release_info_dialog_layout
     override var positiveText: Int? = R.string.close
 
+    override fun bindView(): ReleaseInfoDialogLayoutBinding {
+        return ReleaseInfoDialogLayoutBinding.inflate(provideLayoutInflater())
+    }
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         super.onShowListener(alertDialog, savedInstanceState)
-        val binding = ReleaseInfoDialogLayoutBinding.bind(dialogView)
         MarkwonImpl.createInstance(requireContext())
             .setMarkdown(binding.releaseInfo, requireContext().getString(R.string.release_info))
 

@@ -17,7 +17,7 @@ import com.revolgenx.anilib.data.model.home.OrderedViewModel
 import com.revolgenx.anilib.common.preference.getHomeOrderFromType
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
-import com.revolgenx.anilib.ui.presenter.list.MediaListPresenter
+import com.revolgenx.anilib.ui.presenter.home.discover.MediaListPresenter
 import com.revolgenx.anilib.infrastructure.source.media_list.MediaListSource
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType

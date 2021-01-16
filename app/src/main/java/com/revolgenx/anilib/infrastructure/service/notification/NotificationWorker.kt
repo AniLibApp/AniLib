@@ -155,50 +155,37 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
     private fun getNotificationString(item: NotificationModel): String {
         return when (item.notificationUnionType) {
             NotificationUnionType.ACTIVITY_MESSAGE -> {
-                if(!getNotificationPreference(context.getString(R.string.activity_message_key))) return ""
                 val activity = item as ActivityMessageNotification
                 //createActivityPendingLink(activity)
                 createActivityNotif(activity)
             }
             NotificationUnionType.ACTIVITY_REPLY -> {
-                if(!getNotificationPreference(context.getString(R.string.activity_reply_mention_key))) return ""
-
                 val activity = item as ActivityReplyNotification
                 //createActivityPendingLink(activity)
                 createActivityNotif(activity)
             }
             NotificationUnionType.ACTIVITY_MENTION -> {
-                if(!getNotificationPreference(context.getString(R.string.activity_reply_mention_key))) return ""
-
                 val activity = item as ActivityMentionNotification
                 //createActivityPendingLink(activity)
                 createActivityNotif(activity)
             }
             NotificationUnionType.ACTIVITY_LIKE -> {
-                if(!getNotificationPreference(context.getString(R.string.activity_like_key))) return ""
-
                 val activity = item as ActivityLikeNotification
                 //createActivityPendingLink(activity)
                 createActivityNotif(activity)
             }
             NotificationUnionType.ACTIVITY_REPLY_LIKE -> {
-                if(!getNotificationPreference(context.getString(R.string.activity_reply_like_key))) return ""
-
                 val activity = item as ActivityReplyLikeNotification
                 //createActivityPendingLink(activity)
                 createActivityNotif(activity)
             }
             NotificationUnionType.ACTIVITY_REPLY_SUBSCRIBED -> {
-                if(!getNotificationPreference(context.getString(R.string.activity_reply_mention_key))) return ""
-
                 val activity = item as ActivityReplySubscribedNotification
                 //createActivityPendingLink(activity)
                 createActivityNotif(activity)
             }
 
             NotificationUnionType.THREAD_COMMENT_MENTION -> {
-                if(!getNotificationPreference(context.getString(R.string.thread_comment_mention_key))) return ""
-
                 val thread = item as ThreadCommentMentionNotification
                 //createThreadPendingLink(thread)
                 createThreadNotif(thread)
@@ -210,29 +197,21 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                 createThreadNotif(thread)
             }
             NotificationUnionType.THREAD_COMMENT_REPLY -> {
-                if(!getNotificationPreference(context.getString(R.string.thread_comment_reply_key))) return ""
-
                 val thread = item as ThreadCommentReplyNotification
                 //createThreadPendingLink(thread)
                 createThreadNotif(thread)
             }
             NotificationUnionType.THREAD_LIKE -> {
-                if(!getNotificationPreference(context.getString(R.string.thread_like_key))) return ""
-
                 val thread = item as ThreadLikeNotification
                 //createThreadPendingLink(thread)
                 createThreadNotif(thread)
             }
             NotificationUnionType.THREAD_COMMENT_LIKE -> {
-                if(!getNotificationPreference(context.getString(R.string.thread_comment_like_key))) return ""
-
                 val thread = item as ThreadCommentLikeNotification
                 //createThreadPendingLink(thread)
                 createThreadNotif(thread)
             }
             NotificationUnionType.AIRING -> {
-                if(!getNotificationPreference(context.getString(R.string.airing_notification_key))) return ""
-
                 (item as AiringNotificationModel).let {
                     //                    createMediaPendingIntent(it)
                     notificationImage = it.commonMediaModel?.coverImage?.image(context)
@@ -250,8 +229,6 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             }
 
             NotificationUnionType.FOLLOWING -> {
-                if(!getNotificationPreference(context.getString(R.string.following_key))) return ""
-
 //                createUserPendingIntent(item as ActivityNotification)
                 createActivityNotif(item as ActivityNotification)
             }

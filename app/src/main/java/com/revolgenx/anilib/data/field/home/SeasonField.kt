@@ -56,6 +56,7 @@ class SeasonField : MediaField() {
             this.tags = it.tags
             this.genres = it.genres
             this.format = it.format
+            this.formatsIn = it.formatsIn
             this.sort = it.sort
             this.status = it.status
         }

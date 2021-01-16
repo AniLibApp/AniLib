@@ -17,23 +17,25 @@ import com.revolgenx.anilib.databinding.HomeOrderAdapterLayoutBinding
 import com.revolgenx.anilib.databinding.HomeOrderDialogLayoutBinding
 import com.woxthebox.draglistview.DragItemAdapter
 
-class HomeOrderDialog : BaseDialogFragment(){
+class HomeOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>(){
 
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
 
     override var titleRes: Int? = R.string.home_order_drag_message
-    override var viewRes: Int? = R.layout.home_order_dialog_layout
 
     private val homeListOrder by lazy {
         requireContext().resources.getStringArray(R.array.home_list_order)
     }
 
-    private lateinit var adapter:HomeOrderRecyclerAdapter
+    override fun bindView(): HomeOrderDialogLayoutBinding {
+        return HomeOrderDialogLayoutBinding.inflate(provideLayoutInflater())
+    }
+
+    private lateinit var adapterPage:HomeOrderRecyclerAdapter
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         super.onShowListener(alertDialog, savedInstanceState)
-        val binding = HomeOrderDialogLayoutBinding.bind(dialogView)
         with(binding){
             mDragListView.setCanDragHorizontally(false)
             mDragListView.setLayoutManager(LinearLayoutManager(requireContext()))
@@ -43,17 +45,16 @@ class HomeOrderDialog : BaseDialogFragment(){
                 Pair(index.toLong(), HomeOrderedAdapterItem(s, getHomeOrderFromType(requireContext(), homeOrderTypes[index]), homeOrderTypes[index]))
             }.sortedBy { it.second.order }.toMutableList()
 
-            adapter = HomeOrderRecyclerAdapter(orderList);
-            mDragListView.setAdapter(adapter, true)
+            adapterPage = HomeOrderRecyclerAdapter(orderList);
+            mDragListView.setAdapter(adapterPage, true)
         }
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
-        adapter.itemList.forEachIndexed { index, pair ->
+        adapterPage.itemList.forEachIndexed { index, pair ->
             setHomeOrderFromType(requireContext(), pair.second.orderType, index + 1)
         }
         dismiss()
-        activity?.recreate()
     }
 
 

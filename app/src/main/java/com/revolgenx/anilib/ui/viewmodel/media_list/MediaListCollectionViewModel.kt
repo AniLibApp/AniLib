@@ -1,6 +1,8 @@
 package com.revolgenx.anilib.ui.viewmodel.media_list
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.revolgenx.anilib.common.preference.loadMediaListFilter
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.data.field.list.MediaListCollectionField
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
@@ -25,8 +27,11 @@ abstract class MediaListCollectionViewModel(
     SourceViewModel<MediaListCollectionSource, MediaListCollectionField>() {
     var filteredList: MutableList<MediaListModel>? = null
     val listMap by lazy { mutableMapOf<Int, MediaListModel>() }
-    var filter = MediaListCollectionFilterField()
 
+
+    fun updateFilter(filter:MediaListCollectionFilterField){
+        this.field.filter = filter
+    }
 
     override fun createSource(): MediaListCollectionSource {
         filteredList = null
@@ -39,35 +44,7 @@ abstract class MediaListCollectionViewModel(
                     compositeDisposable
                 )
         } else {
-            viewModelScope.launch(Dispatchers.IO) {
-                filteredList = if (filter.format == null) listMap.values else {
-                    listMap.values.filter { it.format == filter.format }
-                }.let {
-                    if (filter.status == null) it else it.filter { it.status == filter.status }
-                }.let {
-                    if (filter.genre == null) it else it.filter { it.genres?.contains(filter.genre!!) == true }
-                }.let {
-                    if (filter.search.isNullOrEmpty()) it else {
-                        it.filter {
-                            it.title?.userPreferred?.contains(
-                                filter.search!!, true
-                            ) == true
-                        }
-                    }
-                }.let {
-                    if (filter.listSort == null) it else it.sortedWith(
-                        makeMediaListSortingComparator(
-                            MediaListSorting.MediaListSortingType.values()[filter.listSort!!]
-                        )
-                    )
-                }.toMutableList()
-
-                launch(Dispatchers.Main) {
-                    filteredList?.let {
-                        source?.filterPage(it)
-                    }
-                }
-            }
+            source!!.filterPage()
         }
         return source!!
     }

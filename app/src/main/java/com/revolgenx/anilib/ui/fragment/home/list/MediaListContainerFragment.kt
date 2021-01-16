@@ -6,22 +6,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.core.widget.doOnTextChanged
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
+import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
+import com.revolgenx.anilib.common.preference.loadMediaListFilter
+import com.revolgenx.anilib.common.preference.storeMediaListFilterField
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.constant.MediaListDisplayMode
+import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.data.meta.MediaListFilterMeta
 import com.revolgenx.anilib.data.model.list.MediaListModel
 import com.revolgenx.anilib.databinding.MediaListContainerFragmentBinding
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
-import com.revolgenx.anilib.ui.dialog.MediaListCollectionFilterDialog
-import com.revolgenx.anilib.ui.presenter.list.MediaListCollectionPresenter
+import com.revolgenx.anilib.ui.presenter.home.discover.MediaListCollectionPresenter
 import com.revolgenx.anilib.ui.viewmodel.home.list.MediaListContainerViewModel
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.registerForEvent
@@ -69,24 +74,45 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
     }
 
     override fun setCurrentStatus(status: Int) {
-        viewModel.mediaListViewModel.filter.search = null
+        viewModel.mediaListViewModel.field.filter.search = null
         showSearchET(false)
         viewModel.currentListStatus = status
         invalidateAdapter()
     }
 
-    fun showSearchET(b: Boolean) {
+    fun showSearchET(b: Boolean? = null) {
         mediaListBinding.mediaListSearchEt.let {
-            if(b){
-                it.visibility = View.VISIBLE
-                mediaListBinding.mediaListSearchEt.setText("")
-                mediaListBinding.mediaListSearchEt.requestFocus()
-                (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
-                    mediaListBinding.mediaListSearchEt,
-                    0
-                )
-            }else{
-                it.visibility = View.GONE
+            if (b == null) {
+                val searchLayoutIsVisible = mediaListBinding.mediaListSearchLayout.isVisible
+                mediaListBinding.mediaListSearchLayout.visibility =
+                    if (searchLayoutIsVisible) {
+                        mediaListBinding.mediaListSearchEt.setText("")
+                        mediaListBinding.mediaListSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
+                        View.GONE
+                    } else {
+                        mediaListBinding.mediaListSearchEt.setText("")
+                        mediaListBinding.mediaListSearchEt.requestFocus()
+                        (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
+                            mediaListBinding.mediaListSearchEt,
+                            0
+                        )
+                        View.VISIBLE
+                    }
+            } else {
+                if (b == true) {
+                    mediaListBinding.mediaListSearchLayout.visibility = View.VISIBLE
+                    mediaListBinding.mediaListSearchEt.setText("")
+                    mediaListBinding.mediaListSearchEt.requestFocus()
+                    (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
+                        mediaListBinding.mediaListSearchEt,
+                        0
+                    )
+                } else {
+                    mediaListBinding.mediaListSearchEt.setText("")
+                    mediaListBinding.mediaListSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
+                    mediaListBinding.mediaListSearchLayout.visibility = View.GONE
+                    return
+                }
             }
         }
     }
@@ -98,7 +124,7 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
         when (getMediaListGridPresenter()) {
             MediaListDisplayMode.COMPACT -> {
             }
-            MediaListDisplayMode.NORMAL , MediaListDisplayMode.MINIMAL_LIST-> {
+            MediaListDisplayMode.NORMAL, MediaListDisplayMode.MINIMAL_LIST -> {
                 span /= 2
             }
             MediaListDisplayMode.CARD -> {
@@ -163,6 +189,12 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
         val v = super.onCreateView(inflater, container, savedInstanceState)
         _mediaListBinding = MediaListContainerFragmentBinding.inflate(inflater, container, false)
         mediaListBinding.mediaListLinearLayout.addView(v)
+        mediaListBinding.mediaListSearchEt.typeface =
+            ResourcesCompat.getFont(requireContext(), R.font.cabin_regular)
+        mediaListBinding.clearText.setOnClickListener {
+            mediaListBinding.mediaListSearchEt.setText("")
+            mediaListBinding.mediaListSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
+        }
         return mediaListBinding.root
     }
 
@@ -180,10 +212,14 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
             invalidateAdapter()
         }
 
-        mediaListBinding.mediaListSearchEt.doOnTextChanged { text, _, _, _ ->
-            viewModel.mediaListViewModel.filter.search = text.toString()
+        mediaListBinding.mediaListSearchEt.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId != EditorInfo.IME_ACTION_SEARCH) return@setOnEditorActionListener false
+
+            viewModel.mediaListViewModel.field.filter.search =
+                mediaListBinding.mediaListSearchEt.text?.toString() ?: ""
             createSource()
             invalidateAdapter()
+            true
         }
 
 
@@ -192,6 +228,19 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
                 userId = mediaListMeta.userId
                 type = mediaListMeta.type
                 viewModel.mediaListField = this
+            }
+
+            val mediaListFilterField = MediaListCollectionFilterField().apply {
+                loadMediaListFilter(requireContext(), mediaListMeta.type).let {
+                    formatsIn = it.formatsIn
+                    status = it.status
+                    genre = it.genre
+                    listSort = it.listSort
+                }
+            }
+
+            viewModel.listStatusViewModel.forEach {
+                it.value.updateFilter(mediaListFilterField)
             }
         }
 
@@ -202,19 +251,16 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
         super.onDestroyView()
     }
 
-    override fun openListFilterDialog() {
-        MediaListCollectionFilterDialog.newInstance(viewModel.mediaListViewModel.filter)
-            .show(childFragmentManager, "media_filter_dialog")
-    }
-
     override fun filterList(mediaListFilterMeta: MediaListFilterMeta) {
-        viewModel.mediaListViewModel.filter.apply {
-            mediaListFilterMeta.let {
-                format = it.format
-                status = it.status
-                genre = it.genres
-                listSort = it.mediaListSort
-            }
+        val mediaListFilterField = MediaListCollectionFilterField(
+            formatsIn = mediaListFilterMeta.formatsIn,
+            status = mediaListFilterMeta.status,
+            genre = mediaListFilterMeta.genres,
+            listSort = mediaListFilterMeta.mediaListSort
+        )
+        storeMediaListFilterField(requireContext(), mediaListFilterField, mediaListMeta.type)
+        viewModel.listStatusViewModel.forEach {
+            it.value.updateFilter(mediaListFilterField)
         }
 
         if (visibleToUser) {
@@ -228,7 +274,6 @@ interface MediaListCallbackInterface {
     fun getStatusName(): String
     fun getStatus(): Array<out String>
     fun setCurrentStatus(status: Int)
-    fun openListFilterDialog()
     fun filterList(mediaListFilterMeta: MediaListFilterMeta)
 }
 

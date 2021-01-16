@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
@@ -17,7 +18,7 @@ import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverReviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverReviewFragment : DiscoverNewFragment() {
-    private lateinit var discoverNewRecyclerView: DynamicRecyclerView
+    private lateinit var discoverReviewRecyclerView: DynamicRecyclerView
     private val viewModel by viewModel<DiscoverReviewViewModel>()
     private val presenter
         get() = ReviewPresenter(requireContext())
@@ -31,19 +32,28 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
         savedInstanceState: Bundle?
     ): View {
         val v = super.onCreateView(inflater, container, savedInstanceState)
-        discoverNewRecyclerView = DynamicRecyclerView(requireContext()).also {
+
+        val discoverRecyclerContainer = FrameLayout(requireContext()).also {
+            it.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+        discoverReviewRecyclerView = DynamicRecyclerView(requireContext()).also {
             it.layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 dp(600f)
             ).also {
-                it.setMargins(0, dp(10f),0,0)
+                it.setMargins(0, dp(10f), 0, 0)
             }
         }
 
+        discoverRecyclerContainer.addView(discoverReviewRecyclerView)
+
 
         addView(
-            discoverNewRecyclerView,
-            getString(R.string.recent_reviews),icon = R.drawable.ic_review, showSetting = false
+            discoverRecyclerContainer,
+            getString(R.string.recent_reviews), icon = R.drawable.ic_review, showSetting = false
         ) {
             handleClick(it)
         }
@@ -59,7 +69,7 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        discoverNewRecyclerView.layoutManager =
+        discoverReviewRecyclerView.layoutManager =
             GridLayoutManager(
                 this.context,
                 if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
@@ -74,6 +84,6 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
 
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {
-        discoverNewRecyclerView.createAdapter(source, presenter)
+        discoverReviewRecyclerView.createAdapter(source, presenter)
     }
 }

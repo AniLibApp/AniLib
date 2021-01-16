@@ -18,8 +18,7 @@ import com.revolgenx.anilib.infrastructure.source.MediaSource
 import com.revolgenx.anilib.ui.viewmodel.media.MediaViewDialogViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaViewDialog : BaseDialogFragment() {
-    override var viewRes: Int? = R.layout.media_view_dialog_layout
+class MediaViewDialog : BaseDialogFragment<MediaViewDialogLayoutBinding>() {
 
     private lateinit var adapter: Adapter
 
@@ -56,6 +55,9 @@ class MediaViewDialog : BaseDialogFragment() {
 
     private val viewModel by viewModel<MediaViewDialogViewModel>()
 
+    override fun bindView(): MediaViewDialogLayoutBinding {
+        return MediaViewDialogLayoutBinding.inflate(provideLayoutInflater())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +65,6 @@ class MediaViewDialog : BaseDialogFragment() {
     }
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         super.onShowListener(alertDialog, savedInstanceState)
-        val binding =  MediaViewDialogLayoutBinding.bind(dialogView)
         with(binding) {
             mediaViewDone.setOnClickListener {
                 dismiss()

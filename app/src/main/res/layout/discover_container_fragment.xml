@@ -33,21 +33,29 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                 android:id="@+id/discover_search_iv"
-                style="@style/TabOptionMenuStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@drawable/ads_button_remote"
                 app:ads_colorType="text_primary"
                 app:layout_constraintBottom_toBottomOf="@id/discover_main_tab_layout"
                 app:layout_constraintEnd_toStartOf="@id/discover_notification_iv"
                 app:layout_constraintTop_toTopOf="@id/discover_main_tab_layout"
-                app:srcCompat="@drawable/ic_search" />
+                app:srcCompat="@drawable/ic_search"
+                android:paddingEnd="6dp"
+                android:paddingStart="6dp"/>
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                 android:id="@+id/discover_notification_iv"
-                style="@style/TabOptionMenuStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@drawable/ads_button_remote"
                 app:ads_colorType="text_primary"
                 app:layout_constraintBottom_toBottomOf="@id/discover_main_tab_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/discover_main_tab_layout"
-                app:srcCompat="@drawable/ic_notification" />
+                app:srcCompat="@drawable/ic_notification"
+                android:paddingEnd="6dp"
+                android:paddingStart="6dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>

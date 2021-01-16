@@ -6,6 +6,8 @@ import com.revolgenx.anilib.constant.MESSAGE_ACTIVITY
 import com.revolgenx.anilib.constant.NotificationUnionType
 import com.revolgenx.anilib.constant.TEXT_ACTIVITY
 import com.revolgenx.anilib.data.field.notification.NotificationField
+import com.revolgenx.anilib.data.field.notification.UserNotificationMutateField
+import com.revolgenx.anilib.data.field.notification.UserNotificationSettingField
 import com.revolgenx.anilib.data.model.UserPrefModel
 import com.revolgenx.anilib.data.model.UserAvatarImageModel
 import com.revolgenx.anilib.data.model.activity.ListActivityModel
@@ -23,6 +25,7 @@ import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepositor
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toBasicMediaContent
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.type.NotificationType
 import com.revolgenx.anilib.util.prettyTime
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -87,19 +90,20 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 baseId = it.id()
                                 type = it.type()?.ordinal
                                 notificationUnionType = NotificationUnionType.ACTIVITY_MESSAGE
-                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    UserPrefModel().also { user ->
-                                        user.userId = it.id()
-                                        user.userName = it.name()
-                                        user.avatar = it.avatar()?.let {
-                                            UserAvatarImageModel().also { img ->
-                                                img.medium = it.medium()
-                                                img.large = it.large()
+                                userPrefModel =
+                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                        UserPrefModel().also { user ->
+                                            user.userId = it.id()
+                                            user.userName = it.name()
+                                            user.avatar = it.avatar()?.let {
+                                                UserAvatarImageModel().also { img ->
+                                                    img.medium = it.medium()
+                                                    img.large = it.large()
+                                                }
                                             }
+                                            user.bannerImage = it.bannerImage()
                                         }
-                                        user.bannerImage = it.bannerImage()
                                     }
-                                }
                                 messageActivityModel = it.message()?.let {
                                     MessageActivityModel().also { msg ->
                                         msg.baseId = it.id()
@@ -122,23 +126,25 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.ACTIVITY_MENTION
                                 activityId = it.activityId()
                                 context = it.context()
-                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    UserPrefModel().also { user ->
-                                        user.userId = it.id()
-                                        user.userName = it.name()
-                                        user.avatar = it.avatar()?.let {
-                                            UserAvatarImageModel().also { img ->
-                                                img.medium = it.medium()
-                                                img.large = it.large()
+                                userPrefModel =
+                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                        UserPrefModel().also { user ->
+                                            user.userId = it.id()
+                                            user.userName = it.name()
+                                            user.avatar = it.avatar()?.let {
+                                                UserAvatarImageModel().also { img ->
+                                                    img.medium = it.medium()
+                                                    img.large = it.large()
+                                                }
                                             }
+                                            user.bannerImage = it.bannerImage()
                                         }
-                                        user.bannerImage = it.bannerImage()
                                     }
-                                }
 
                                 when (it.activity()?.__typename()) {
                                     TEXT_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsTextActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsTextActivity).let {
                                             textActivityModel = TextActivityModel().also { model ->
                                                 model.baseId = it.id()
                                                 model.siteUrl = it.siteUrl()
@@ -146,7 +152,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                         }
                                     }
                                     LIST_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsListActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsListActivity).let {
                                             listActivityModel = ListActivityModel().also { model ->
                                                 model.baseId = it.id()
                                                 model.siteUrl = it.siteUrl()
@@ -154,7 +161,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                         }
                                     }
                                     MESSAGE_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
                                             messageActivityModel =
                                                 MessageActivityModel().also { model ->
                                                     model.baseId = it.id()
@@ -179,24 +187,26 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.ACTIVITY_REPLY
                                 activityId = it.activityId()
                                 context = it.context()
-                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    UserPrefModel().also { user ->
-                                        user.userId = it.id()
-                                        user.userName = it.name()
-                                        user.avatar = it.avatar()?.let {
-                                            UserAvatarImageModel().also { img ->
-                                                img.medium = it.medium()
-                                                img.large = it.large()
+                                userPrefModel =
+                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                        UserPrefModel().also { user ->
+                                            user.userId = it.id()
+                                            user.userName = it.name()
+                                            user.avatar = it.avatar()?.let {
+                                                UserAvatarImageModel().also { img ->
+                                                    img.medium = it.medium()
+                                                    img.large = it.large()
+                                                }
                                             }
+                                            user.bannerImage = it.bannerImage()
                                         }
-                                        user.bannerImage = it.bannerImage()
                                     }
-                                }
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
 
                                 when (it.activity()?.__typename()) {
                                     TEXT_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsTextActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsTextActivity).let {
                                             textActivityModel = TextActivityModel().also { model ->
                                                 model.baseId = it.id()
                                                 model.siteUrl = it.siteUrl()
@@ -204,7 +214,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                         }
                                     }
                                     LIST_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsListActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsListActivity).let {
                                             listActivityModel = ListActivityModel().also { model ->
                                                 model.baseId = it.id()
                                                 model.siteUrl = it.siteUrl()
@@ -212,7 +223,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                         }
                                     }
                                     MESSAGE_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
                                             messageActivityModel =
                                                 MessageActivityModel().also { model ->
                                                     model.baseId = it.id()
@@ -235,24 +247,26 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.ACTIVITY_REPLY
                                 activityId = it.activityId()
                                 context = it.context()
-                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    UserPrefModel().also { user ->
-                                        user.userId = it.id()
-                                        user.userName = it.name()
-                                        user.avatar = it.avatar()?.let {
-                                            UserAvatarImageModel().also { img ->
-                                                img.medium = it.medium()
-                                                img.large = it.large()
+                                userPrefModel =
+                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                        UserPrefModel().also { user ->
+                                            user.userId = it.id()
+                                            user.userName = it.name()
+                                            user.avatar = it.avatar()?.let {
+                                                UserAvatarImageModel().also { img ->
+                                                    img.medium = it.medium()
+                                                    img.large = it.large()
+                                                }
                                             }
+                                            user.bannerImage = it.bannerImage()
                                         }
-                                        user.bannerImage = it.bannerImage()
                                     }
-                                }
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
 
                                 when (it.activity()?.__typename()) {
                                     TEXT_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsTextActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsTextActivity).let {
                                             textActivityModel = TextActivityModel().also { model ->
                                                 model.baseId = it.id()
                                                 model.siteUrl = it.siteUrl()
@@ -260,7 +274,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                         }
                                     }
                                     LIST_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsListActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsListActivity).let {
                                             listActivityModel = ListActivityModel().also { model ->
                                                 model.baseId = it.id()
                                                 model.siteUrl = it.siteUrl()
@@ -268,7 +283,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                         }
                                     }
                                     MESSAGE_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
                                             messageActivityModel =
                                                 MessageActivityModel().also { model ->
                                                     model.baseId = it.id()
@@ -291,24 +307,26 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 notificationUnionType = NotificationUnionType.ACTIVITY_LIKE
                                 activityId = it.activityId()
                                 context = it.context()
-                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    UserPrefModel().also { user ->
-                                        user.userId = it.id()
-                                        user.userName = it.name()
-                                        user.avatar = it.avatar()?.let {
-                                            UserAvatarImageModel().also { img ->
-                                                img.medium = it.medium()
-                                                img.large = it.large()
+                                userPrefModel =
+                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                        UserPrefModel().also { user ->
+                                            user.userId = it.id()
+                                            user.userName = it.name()
+                                            user.avatar = it.avatar()?.let {
+                                                UserAvatarImageModel().also { img ->
+                                                    img.medium = it.medium()
+                                                    img.large = it.large()
+                                                }
                                             }
+                                            user.bannerImage = it.bannerImage()
                                         }
-                                        user.bannerImage = it.bannerImage()
                                     }
-                                }
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
 
                                 when (it.activity()?.__typename()) {
                                     TEXT_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsTextActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsTextActivity).let {
                                             textActivityModel = TextActivityModel().also { model ->
                                                 model.baseId = it.id()
                                                 model.siteUrl = it.siteUrl()
@@ -316,7 +334,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                         }
                                     }
                                     LIST_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsListActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsListActivity).let {
                                             listActivityModel = ListActivityModel().also { model ->
                                                 model.baseId = it.id()
                                                 model.siteUrl = it.siteUrl()
@@ -324,7 +343,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                         }
                                     }
                                     MESSAGE_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
                                             messageActivityModel =
                                                 MessageActivityModel().also { model ->
                                                     model.baseId = it.id()
@@ -343,19 +363,20 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 baseId = it.id()
                                 type = it.type()?.ordinal
                                 notificationUnionType = NotificationUnionType.ACTIVITY_REPLY_LIKE
-                                userPrefModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    UserPrefModel().also { user ->
-                                        user.userId = it.id()
-                                        user.userName = it.name()
-                                        user.avatar = it.avatar()?.let {
-                                            UserAvatarImageModel().also { img ->
-                                                img.medium = it.medium()
-                                                img.large = it.large()
+                                userPrefModel =
+                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                        UserPrefModel().also { user ->
+                                            user.userId = it.id()
+                                            user.userName = it.name()
+                                            user.avatar = it.avatar()?.let {
+                                                UserAvatarImageModel().also { img ->
+                                                    img.medium = it.medium()
+                                                    img.large = it.large()
+                                                }
                                             }
+                                            user.bannerImage = it.bannerImage()
                                         }
-                                        user.bannerImage = it.bannerImage()
                                     }
-                                }
 
                                 activityId = it.activityId()
                                 context = it.context()
@@ -363,7 +384,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
 
                                 when (it.activity()?.__typename()) {
                                     TEXT_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsTextActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsTextActivity).let {
                                             textActivityModel = TextActivityModel().also { model ->
                                                 model.baseId = it.id()
                                                 model.siteUrl = it.siteUrl()
@@ -371,7 +393,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                         }
                                     }
                                     LIST_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsListActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsListActivity).let {
                                             listActivityModel = ListActivityModel().also { model ->
                                                 model.baseId = it.id()
                                                 model.siteUrl = it.siteUrl()
@@ -379,7 +402,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                         }
                                     }
                                     MESSAGE_ACTIVITY -> {
-                                        (it.activity()?.fragments()?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
+                                        (it.activity()?.fragments()
+                                            ?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
                                             messageActivityModel =
                                                 MessageActivityModel().also { model ->
                                                     model.baseId = it.id()
@@ -615,6 +639,42 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                 Timber.e(it)
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
+        compositeDisposable.add(disposable)
+    }
+
+
+    override fun saveNotificationSettings(
+        field: UserNotificationMutateField,
+        compositeDisposable: CompositeDisposable,
+        callback: (Resource<Boolean>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(true))
+            }, {
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+        compositeDisposable.add(disposable)
+    }
+
+    override fun getNotificationSettings(
+        field: UserNotificationSettingField,
+        compositeDisposable: CompositeDisposable,
+        callback: (Resource<Map<NotificationType, Boolean>>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map {
+                it.data()?.User()?.options()?.notificationOptions()
+                    ?.associateBy({ it.type()!! }, { it.enabled() == true })
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(it))
+            }, {
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+
         compositeDisposable.add(disposable)
     }
 }

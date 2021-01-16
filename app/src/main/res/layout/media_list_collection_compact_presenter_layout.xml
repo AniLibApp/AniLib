@@ -127,10 +127,12 @@
             android:drawablePadding="4dp"
             android:textSize="10sp"
             app:drawableStartCompat="@drawable/ic_eye_16dp"
-            app:layout_constraintBottom_toBottomOf="@id/media_list_progress_increase"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/media_list_image_container"
             app:layout_constraintEnd_toStartOf="@+id/media_list_progress_increase"
-            app:layout_constraintTop_toTopOf="@id/media_list_progress_increase"
+            app:layout_constraintTop_toBottomOf="@id/media_list_format_tv"
+            app:layout_constraintVertical_bias="1"
+            android:layout_marginBottom="2dp"
             tools:ignore="SmallSp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
