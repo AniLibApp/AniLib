@@ -1,3 +1,5 @@
 package com.revolgenx.anilib.radio.data.events
 
-data class FavouriteEvent(val id: Long, val isFavourite:Boolean)
+import com.revolgenx.anilib.infrastructure.event.BaseEvent
+
+data class FavouriteEvent(val id: Long, val isFavourite:Boolean):BaseEvent()

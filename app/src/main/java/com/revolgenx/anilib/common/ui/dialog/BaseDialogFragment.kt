@@ -104,7 +104,7 @@ abstract class BaseDialogFragment<V : ViewBinding> : DynamicDialogFragment() {
             setOnShowListener {
                 this.setCanceledOnTouchOutside(dismissOnTouchOutside)
                 findViewById<TextView>(com.pranavpandey.android.dynamic.support.R.id.alertTitle)?.typeface =
-                    ResourcesCompat.getFont(requireContext(), R.font.berlinrounded_extra_bold)
+                    ResourcesCompat.getFont(requireContext(), R.font.cabin_semi_bold)
                 getButton(AlertDialog.BUTTON_POSITIVE)?.let {
                     (it as DynamicButton).isAllCaps = false
                 }

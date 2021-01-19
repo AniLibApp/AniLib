@@ -170,7 +170,7 @@ dependencies {
 
 
     //dynamic theming
-    implementation "com.github.rev0lgenX:dynamic-support:$dynamic_version"
+    implementation "com.pranavpandey.android:dynamic-support:$dynamic_version"
 
     //element ver
     implementation "com.otaliastudios:elements:$elements_version"

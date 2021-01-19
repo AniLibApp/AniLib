@@ -164,7 +164,7 @@
             android:padding="6dp"
             android:text="@string/score"
             android:textSize="16sp"
-            app:fontFamily="@font/berlinrounded_extra_bold" />
+            app:fontFamily="@font/cabin_semi_bold" />
 
         <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
             android:id="@+id/scoreToggleSwitch"
@@ -195,7 +195,7 @@
             android:padding="6dp"
             android:text="@string/format_distribution"
             android:textSize="16sp"
-            app:fontFamily="@font/berlinrounded_extra_bold" />
+            app:fontFamily="@font/cabin_semi_bold" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
@@ -223,7 +223,7 @@
             android:padding="6dp"
             android:text="@string/status_distribution"
             android:textSize="16sp"
-            app:fontFamily="@font/berlinrounded_extra_bold" />
+            app:fontFamily="@font/cabin_semi_bold" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
@@ -251,7 +251,7 @@
             android:padding="6dp"
             android:text="@string/country_distribution"
             android:textSize="16sp"
-            app:fontFamily="@font/berlinrounded_extra_bold" />
+            app:fontFamily="@font/cabin_semi_bold" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
@@ -285,7 +285,7 @@
                 android:padding="6dp"
                 android:text="@string/release_year"
                 android:textSize="16sp"
-                app:fontFamily="@font/berlinrounded_extra_bold" />
+                app:fontFamily="@font/cabin_semi_bold" />
 
             <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
                 android:id="@+id/releaseYearToggleSwitch"
@@ -325,7 +325,7 @@
                 android:padding="6dp"
                 android:text="@string/watch_year"
                 android:textSize="16sp"
-                app:fontFamily="@font/berlinrounded_extra_bold" />
+                app:fontFamily="@font/cabin_semi_bold" />
 
             <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
                 android:id="@+id/watchYearToggleSwitch"

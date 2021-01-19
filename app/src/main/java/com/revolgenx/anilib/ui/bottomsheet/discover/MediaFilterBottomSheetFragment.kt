@@ -200,7 +200,7 @@ class MediaFilterBottomSheetFragment : DynamicBottomSheetFragment<MediaFilterBot
             seasonYearSeekBar.setTypeface(
                 ResourcesCompat.getFont(
                     requireContext(),
-                    R.font.open_sans_light
+                    R.font.cabincondensed_regular
                 )
             )
 

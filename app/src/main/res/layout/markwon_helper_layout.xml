@@ -19,7 +19,7 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:padding="@dimen/markdown_helper_icon_dimen"
-            app:ads_colorType="tint_surface"
+            app:ads_colorType="text_primary"
             app:srcCompat="@drawable/ic_paste" />
 
 
@@ -28,7 +28,7 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:padding="@dimen/markdown_helper_icon_dimen"
-            app:ads_colorType="tint_surface"
+            app:ads_colorType="text_primary"
             app:srcCompat="@drawable/ic_bold" />
 
 
@@ -37,7 +37,7 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:padding="@dimen/markdown_helper_icon_dimen"
-            app:ads_colorType="tint_surface"
+            app:ads_colorType="text_primary"
             app:srcCompat="@drawable/ic_italics" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -45,7 +45,7 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:padding="@dimen/markdown_helper_icon_dimen"
-            app:ads_colorType="tint_surface"
+            app:ads_colorType="text_primary"
             app:srcCompat="@drawable/ic_dropped" />
 
 
@@ -54,7 +54,7 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:padding="@dimen/markdown_helper_icon_dimen"
-            app:ads_colorType="tint_surface"
+            app:ads_colorType="text_primary"
             app:srcCompat="@drawable/ic_link" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -62,7 +62,7 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:padding="@dimen/markdown_helper_icon_dimen"
-            app:ads_colorType="tint_surface"
+            app:ads_colorType="text_primary"
             app:srcCompat="@drawable/ic_image" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -79,6 +79,7 @@
             android:layout_height="match_parent"
             android:padding="@dimen/markdown_helper_icon_dimen"
             app:ads_colorType="tint_accent"
+            app:ads_contrastWithColorType="background"
             app:srcCompat="@drawable/ic_play_cirle" />
 
 

@@ -18,6 +18,7 @@ import com.revolgenx.anilib.radio.repository.api.ResourceWrapper
 import com.revolgenx.anilib.radio.repository.room.RadioStation
 import com.revolgenx.anilib.radio.ui.source.RadioStationListSource
 import com.revolgenx.anilib.radio.source.RadioStationSource
+import com.revolgenx.anilib.radio.ui.adapter.RadioListAdapter
 import com.revolgenx.anilib.radio.ui.presenter.AllRadioStationPresenter
 import com.revolgenx.anilib.radio.ui.presenter.FavouriteRadioStationPresenter
 import com.revolgenx.anilib.radio.ui.presenter.RecentRadioStationPresenter
@@ -38,9 +39,7 @@ class RadioFragment : BaseLayoutFragment<RadioFragmentBinding>(), EventBusListen
     private val favouriteRadioSource by lazy {
         RadioStationListSource()
     }
-    private val allRadioStationSource by lazy {
-        RadioStationListSource()
-    }
+
     private val recentRadioStationSource by lazy {
         RadioStationListSource()
     }
@@ -58,7 +57,7 @@ class RadioFragment : BaseLayoutFragment<RadioFragmentBinding>(), EventBusListen
     }
 
     private lateinit var favouriteStationAdapter: Adapter
-    private lateinit var allStationAdapter: Adapter
+    private lateinit var allStationAdapter: RadioListAdapter
     private lateinit var recentStationAdapter: Adapter
 
 
@@ -89,8 +88,7 @@ class RadioFragment : BaseLayoutFragment<RadioFragmentBinding>(), EventBusListen
             Adapter.builder(viewLifecycleOwner).addSource(favouriteRadioSource)
                 .addPresenter(favouriteStationPresenter).build()
         allStationAdapter =
-            Adapter.builder(viewLifecycleOwner).addSource(allRadioStationSource)
-                .addPresenter(allRadioStationPresenter).build()
+            RadioListAdapter(requireContext())
 
         binding.radioStationRecyclerView.adapter = allStationAdapter
         binding.favouriteStationRecyclerView.adapter = favouriteStationAdapter
@@ -98,7 +96,6 @@ class RadioFragment : BaseLayoutFragment<RadioFragmentBinding>(), EventBusListen
 
 
         radioStoreSource.recentRadioStations.observe(viewLifecycleOwner) {
-
             binding.recentStationLayout.visibility =
                 if (it.isEmpty()) View.GONE else View.VISIBLE
 
@@ -119,7 +116,7 @@ class RadioFragment : BaseLayoutFragment<RadioFragmentBinding>(), EventBusListen
         }
 
         radioStoreSource.radioStations.observe(viewLifecycleOwner) {
-            allRadioStationSource.submitList(it)
+            allStationAdapter.submitList(it)
         }
 
         radioStoreSource.storeStateCallback.observe(viewLifecycleOwner, onResourceLoaded)
@@ -174,6 +171,7 @@ class RadioFragment : BaseLayoutFragment<RadioFragmentBinding>(), EventBusListen
     @Subscribe
     fun onFavouriteEvent(event: FavouriteEvent) {
         radioStoreSource.setFavourite(event.id, event.isFavourite)
+        allStationAdapter.onRadioItemChanged(event.id)
     }
 
     override fun onStop() {

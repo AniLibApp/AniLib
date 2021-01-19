@@ -139,6 +139,7 @@ class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
 
             setOnSearchConfirmedListener { _, query ->
                 if (query.isEmpty()) {
+                    binding.persistentSearchView.collapse(false)
                     return@setOnSearchConfirmedListener
                 }
                 dataProvider.addToSearchHistory(query)
@@ -173,7 +174,7 @@ class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
                 setCardBackgroundColor(it)
             }
 
-            ResourcesCompat.getFont(this@SearchActivity, R.font.open_sans_regular)?.let {
+            ResourcesCompat.getFont(this@SearchActivity, R.font.cabin_regular)?.let {
                 setQueryTextTypeface(it)
                 setSuggestionTextTypeface(it)
             }

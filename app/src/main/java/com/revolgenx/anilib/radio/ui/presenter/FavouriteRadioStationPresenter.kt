@@ -10,7 +10,9 @@ import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.databinding.FavouriteRadioStationPresenterBinding
 import com.revolgenx.anilib.radio.data.PlaybackState
+import com.revolgenx.anilib.radio.data.events.FavouriteEvent
 import com.revolgenx.anilib.radio.repository.room.RadioStation
+import com.revolgenx.anilib.radio.ui.util.RadioPlayerHelper
 import com.revolgenx.anilib.ui.presenter.Constant
 
 class FavouriteRadioStationPresenter(context: Context) : Presenter<RadioStation>(context) {
@@ -31,7 +33,8 @@ class FavouriteRadioStationPresenter(context: Context) : Presenter<RadioStation>
     override fun onBind(page: Page, holder: Holder, element: Element<RadioStation>) {
         super.onBind(page, holder, element)
         val station = element.data ?: return
-        val binding = holder.get<FavouriteRadioStationPresenterBinding>(Constant.PRESENTER_BINDING_KEY)
+        val binding =
+            holder.get<FavouriteRadioStationPresenterBinding>(Constant.PRESENTER_BINDING_KEY)
 
         binding.radioStationNameTv.text = station.name
         binding.radioStationIv.setImageURI(station.logo)
@@ -47,8 +50,19 @@ class FavouriteRadioStationPresenter(context: Context) : Presenter<RadioStation>
         binding.favouriteMoreIv.contrastWithColor = cardBackgroundColor
 
 
+        binding.root.setOnClickListener {
+            RadioPlayerHelper.pausePlay(context, station.id)
+        }
 
-        when(station.playbackState){
+        binding.favouriteMoreIv.onPopupMenuClickListener = { _, post ->
+            if (post == 0) {
+                station.isFavourite = false
+                FavouriteEvent(station.id, station.isFavourite).postEvent
+            }
+        }
+
+
+        when (station.playbackState) {
             is PlaybackState.RadioPlayState -> {
 
             }
