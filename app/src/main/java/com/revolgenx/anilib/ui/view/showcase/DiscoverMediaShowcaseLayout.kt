@@ -51,7 +51,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
                         R.dimen.discover_media_height
                     )
                 ).also { params ->
-                    params.setMargins(dp(10f),0,dp(10f),0)
+                    params.setMargins(dp(10f),0,dp(10f),dp(16f))
                 }
             }
 

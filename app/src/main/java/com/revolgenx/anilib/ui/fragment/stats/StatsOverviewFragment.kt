@@ -186,7 +186,7 @@ class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBind
                         left.axisMinimum = 0f
                         left.labelCount = 4
                         left.typeface =
-                            ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
+                            ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         left.textSize = 10f
                         left.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                     }
@@ -202,7 +202,7 @@ class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBind
                         setDrawAxisLine(false)
                         position = XAxis.XAxisPosition.BOTTOM
                         gridLineWidth = 2f
-                        typeface = ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
+                        typeface = ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                     }
 
@@ -261,7 +261,7 @@ class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBind
                         left.axisMinimum = 0f
                         left.labelCount = 4
                         left.typeface =
-                            ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
+                            ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         left.textSize = 10f
                         left.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                     }
@@ -276,7 +276,7 @@ class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBind
                         setDrawAxisLine(false)
                         position = XAxis.XAxisPosition.BOTTOM
                         gridLineWidth = 2f
-                        typeface = ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
+                        typeface = ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                     }
 
@@ -370,12 +370,12 @@ class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBind
                     axisLeft.isEnabled = false
                     xAxis.let { axis ->
                         axis.typeface =
-                            ResourcesCompat.getFont(requireContext(), R.font.open_sans_regular)
+                            ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         axis.position = XAxis.XAxisPosition.BOTTOM
                         axis.setDrawGridLines(false)
                         axis.setDrawAxisLine(false)
                         axis.typeface =
-                            ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
+                            ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         axis.textSize = 10f
                         axis.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                         axis.labelCount = 10

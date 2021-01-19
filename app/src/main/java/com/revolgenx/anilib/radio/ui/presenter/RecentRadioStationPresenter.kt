@@ -9,6 +9,7 @@ import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.databinding.RecentRadioStationPresenterBinding
 import com.revolgenx.anilib.radio.repository.room.RadioStation
+import com.revolgenx.anilib.radio.ui.util.RadioPlayerHelper
 import com.revolgenx.anilib.ui.presenter.Constant
 
 class RecentRadioStationPresenter(context: Context) : Presenter<RadioStation>(context) {
@@ -34,6 +35,9 @@ class RecentRadioStationPresenter(context: Context) : Presenter<RadioStation>(co
         binding.radioStationNameTv.text = station.name
         binding.radioStationIv.setImageURI(station.logo)
 
+        binding.root.setOnClickListener {
+            RadioPlayerHelper.pausePlay(context, station.id)
+        }
     }
 
 }

@@ -61,7 +61,6 @@
             android:lines="2"
             android:maxLines="2"
             android:textSize="11sp"
-            app:ads_colorType="tint_surface"
             app:layout_constraintLeft_toLeftOf="@+id/characterMediaImageContainer"
             app:layout_constraintRight_toRightOf="@+id/characterMediaImageContainer"
             app:layout_constraintTop_toBottomOf="@+id/characterMediaImageContainer"

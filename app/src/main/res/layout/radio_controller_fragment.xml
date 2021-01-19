@@ -51,13 +51,14 @@
             android:ellipsize="end"
             android:maxLines="2"/>
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/station_play_state_layout"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal">
 
             <com.revolgenx.anilib.radio.ui.view.PausePlayButtonView
                 android:id="@+id/station_play_state_iv"
@@ -65,7 +66,18 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center" />
 
-        </FrameLayout>
+            <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
+                android:id="@+id/station_more_option"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:padding="6dp"
+                app:srcCompat="@drawable/ads_ic_more"
+                app:ads_colorType="text_primary"
+                app:entries="@array/radio_controller_more_actions"
+                app:icons="@array/station_controller_more_icons"/>
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

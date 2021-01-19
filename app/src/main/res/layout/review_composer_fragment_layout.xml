@@ -117,7 +117,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="10dp"
-                    app:ads_colorType="tint_surface"
+                    app:ads_colorType="text_primary"
                     app:srcCompat="@drawable/ic_paste" />
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

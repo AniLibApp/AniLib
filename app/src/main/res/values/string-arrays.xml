@@ -707,7 +707,7 @@
 
     <!--more actions-->
     <string-array name="station_more_actions">
-        <item>@string/open_website</item>
+        <item>@string/share</item>
     </string-array>
 
     <string-array name="favourite_station_more_actions">
@@ -740,6 +740,11 @@
 
     <string-array name="music_entries">
         <item>@string/radio_station</item>
+    </string-array>
+
+    <string-array name="radio_controller_more_actions">
+        <item>@string/copy_playing_radio</item>
+        <item>@string/share</item>
     </string-array>
 
 

@@ -311,7 +311,7 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
             browseYearSeekBar.setTypeface(
                 ResourcesCompat.getFont(
                     context,
-                    R.font.open_sans_light
+                    R.font.cabincondensed_regular
                 )
             )
 

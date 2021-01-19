@@ -456,7 +456,6 @@
     <string name="favourite_radio_station">Favourite Stations</string>
     <string name="recently_played_stations">Recently Played Stations</string>
     <string name="remove_from_favourite">Remove from Favourites</string>
-    <string name="open_website">Open Website</string>
     <string name="no_description">No Description</string>
     <string name="translate">Translate</string>
     <string name="include_already_aired">Include Already Aired</string>
@@ -479,6 +478,7 @@
     <string name="activity_subscription">Activity Subscription</string>
     <string name="automatically_subscribe_me_to_activity_i_create">Automatically subscribe me to activity I create</string>
     <string name="automatically_subscribe_me_to_activity_i_reply_to">Automatically subscribe me to activity I reply to</string>
+    <string name="copy_playing_radio">Copy playing radio title</string>
 
 
 </resources>

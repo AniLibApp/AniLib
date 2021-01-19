@@ -87,11 +87,16 @@
 
 
     <array name="station_more_action_icons">
-        <item>@drawable/ic_favourite</item>
+        <item>@drawable/ads_ic_share</item>
     </array>
 
     <array name="favourite_station_more_action_icons">
         <item>@drawable/ic_not_favourite</item>
+    </array>
+
+    <array name="station_controller_more_icons">
+        <item>@drawable/ads_ic_copy</item>
+        <item>@drawable/ads_ic_share</item>
     </array>
 
 </resources>

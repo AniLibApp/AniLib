@@ -9,6 +9,8 @@ import com.revolgenx.anilib.databinding.RadioControllerFragmentBinding
 import com.revolgenx.anilib.radio.data.PlaybackState
 import com.revolgenx.anilib.radio.source.RadioStationSource
 import com.revolgenx.anilib.radio.ui.util.RadioPlayerHelper
+import com.revolgenx.anilib.util.copyToClipBoard
+import com.revolgenx.anilib.util.openLink
 import org.koin.android.ext.android.inject
 
 class RadioControllerFragment : BaseLayoutFragment<RadioControllerFragmentBinding>() {
@@ -41,6 +43,17 @@ class RadioControllerFragment : BaseLayoutFragment<RadioControllerFragmentBindin
                 currentRadioStation.value?.id ?: return@setOnClickListener
 
             RadioPlayerHelper.pausePlay(requireContext(), radioStationId)
+        }
+
+        binding.stationMoreOption.onPopupMenuClickListener = { _, pos ->
+            when(pos){
+                0->{
+                    requireContext().copyToClipBoard(currentRadioStation.value?.streamTitle)
+                }
+                1->{
+                    requireContext().openLink(currentRadioStation.value?.site)
+                }
+            }
         }
 
         playbackState.observe(viewLifecycleOwner) {
