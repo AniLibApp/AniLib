@@ -54,6 +54,14 @@ class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBind
         return StatsOverviewFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(!visibleToUser){
+            viewModel.getOverview()
+        }
+        visibleToUser = true
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -90,7 +98,6 @@ class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBind
             viewModel.field.userName = userStatsMeta.userMeta.userName
             viewModel.field.userId = userStatsMeta.userMeta.userId
 
-            viewModel.getOverview()
         }
     }
 

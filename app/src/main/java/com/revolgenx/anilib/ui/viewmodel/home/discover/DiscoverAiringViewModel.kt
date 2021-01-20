@@ -4,6 +4,7 @@ import android.content.Context
 import com.otaliastudios.elements.Adapter
 import com.revolgenx.anilib.common.preference.getAiringField
 import com.revolgenx.anilib.common.preference.getTrendingField
+import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.data.field.home.AiringMediaField
 import com.revolgenx.anilib.infrastructure.service.airing.AiringMediaService
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource

@@ -61,11 +61,17 @@ const val DEFAULT_SORT = -1
 
 
 const val AIRING_ORDER_KEY = "AIRING_ORDER_KEY"
+const val AIRING_ORDER_ENABLED_KEY = "AIRING_ORDER_ENABLED_KEY"
 const val POPULAR_ORDER_KEY = "POPULAR_ORDER_KEY"
+const val POPULAR_ORDER_ENABLED_KEY = "POPULAR_ORDER_ENABLED_KEY"
 const val TRENDING_ORDER_KEY = "TRENDING_ORDER_KEY"
+const val TRENDING_ORDER_ENABLED_KEY = "TRENDING_ORDER_ENABLED_KEY"
 const val NEWLY_ADDED_ORDER_KEY = "NEWLY_ADDED_ORDER_KEY"
+const val NEWLY_ADDED_ORDER_ENABLED_KEY = "NEWLY_ADDED_ORDER_ENABLED_KEY"
 const val WATCHING_ORDER_KEY = "WATCHING_ORDER_KEY"
+const val WATCHING_ORDER_ENABLED_KEY = "WATCHING_ORDER_ENABLED_KEY"
 const val READING_ORDER_KEY = "READING_ORDER_KEY"
+const val READING_ORDER_ENABLED_KEY = "READING_ORDER_ENABLED_KEY"
 
 const val HOME_PAGE_ORDER_KEY = "HOME_PAGE_ORDER_KEY"
 const val LIST_PAGE_ORDER_KEY = "LIST_PAGE_ORDER_KEY"
@@ -229,28 +235,62 @@ fun getHomeOrderFromType(context: Context, type: HomeOrderType): Int {
     }
 }
 
-fun setHomeOrderFromType(context: Context, type: HomeOrderType, order: Int) {
+fun isHomeOrderEnabled(context: Context, type: HomeOrderType): Boolean {
+    return when (type) {
+        HomeOrderType.AIRING -> context.getBoolean(AIRING_ORDER_ENABLED_KEY, true)
+        HomeOrderType.TRENDING -> context.getBoolean(TRENDING_ORDER_ENABLED_KEY, true)
+        HomeOrderType.POPULAR -> context.getBoolean(POPULAR_ORDER_ENABLED_KEY, true)
+        HomeOrderType.NEWLY_ADDED -> context.getBoolean(NEWLY_ADDED_ORDER_ENABLED_KEY, true)
+        HomeOrderType.WATCHING -> context.getBoolean(WATCHING_ORDER_ENABLED_KEY, true)
+        HomeOrderType.READING -> context.getBoolean(READING_ORDER_ENABLED_KEY, true)
+    }
+}
+
+fun setHomeOrderFromType(
+    context: Context,
+    type: HomeOrderType,
+    order: Int,
+    isEnabled: Boolean = false
+) {
     when (type) {
-        HomeOrderType.AIRING -> context.putInt(AIRING_ORDER_KEY, order)
-        HomeOrderType.TRENDING -> context.putInt(TRENDING_ORDER_KEY, order)
-        HomeOrderType.POPULAR -> context.putInt(POPULAR_ORDER_KEY, order)
-        HomeOrderType.NEWLY_ADDED -> context.putInt(NEWLY_ADDED_ORDER_KEY, order)
-        HomeOrderType.WATCHING -> context.putInt(WATCHING_ORDER_KEY, order)
-        HomeOrderType.READING -> context.putInt(READING_ORDER_KEY, order)
+        HomeOrderType.AIRING -> {
+            context.putInt(AIRING_ORDER_KEY, order)
+            context.putBoolean(AIRING_ORDER_ENABLED_KEY, isEnabled)
+        }
+        HomeOrderType.TRENDING -> {
+            context.putInt(TRENDING_ORDER_KEY, order)
+            context.putBoolean(TRENDING_ORDER_ENABLED_KEY, isEnabled)
+        }
+        HomeOrderType.POPULAR -> {
+            context.putInt(POPULAR_ORDER_KEY, order)
+            context.putBoolean(POPULAR_ORDER_ENABLED_KEY, isEnabled)
+        }
+        HomeOrderType.NEWLY_ADDED -> {
+            context.putInt(NEWLY_ADDED_ORDER_KEY, order)
+            context.putBoolean(NEWLY_ADDED_ORDER_ENABLED_KEY, isEnabled)
+        }
+        HomeOrderType.WATCHING -> {
+            context.putInt(WATCHING_ORDER_KEY, order)
+            context.putBoolean(WATCHING_ORDER_ENABLED_KEY, isEnabled)
+        }
+        HomeOrderType.READING -> {
+            context.putInt(READING_ORDER_KEY, order)
+            context.putBoolean(READING_ORDER_ENABLED_KEY, isEnabled)
+        }
     }
 }
 
 
-fun setHomePageOrderFromType(context: Context, type:HomePageOrderType, order:Int){
-    when(type){
+fun setHomePageOrderFromType(context: Context, type: HomePageOrderType, order: Int) {
+    when (type) {
         HomePageOrderType.HOME -> context.putInt(HOME_PAGE_ORDER_KEY, order)
         HomePageOrderType.LIST -> context.putInt(LIST_PAGE_ORDER_KEY, order)
         HomePageOrderType.RADIO -> context.putInt(RADIO_PAGE_ORDER_KEY, order)
     }
 }
 
-fun getHomePageOrderFromType(context: Context, type:HomePageOrderType): Int {
-    return when (type){
+fun getHomePageOrderFromType(context: Context, type: HomePageOrderType): Int {
+    return when (type) {
         HomePageOrderType.HOME -> context.getInt(HOME_PAGE_ORDER_KEY, 0)
         HomePageOrderType.LIST -> context.getInt(LIST_PAGE_ORDER_KEY, 1)
         HomePageOrderType.RADIO -> context.getInt(RADIO_PAGE_ORDER_KEY, 2)

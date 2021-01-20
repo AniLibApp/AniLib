@@ -12,6 +12,7 @@ import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.getHomeOrderFromType
+import com.revolgenx.anilib.common.preference.isHomeOrderEnabled
 import com.revolgenx.anilib.ui.presenter.home.MediaPresenter
 import com.revolgenx.anilib.infrastructure.source.discover.DiscoverMediaSource
 import com.revolgenx.anilib.type.MediaSort
@@ -38,42 +39,62 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
         get() = getHomeOrderFromType(requireContext(), HomeOrderType.NEWLY_ADDED)
 
 
+    private val isSectionEnabled: Boolean
+        get() = isHomeOrderEnabled(requireContext(), HomeOrderType.NEWLY_ADDED)
+
+    private var sectionVisibleToUser = false
+
+    override fun onResume() {
+        super.onResume()
+        if (isSectionEnabled) {
+            if (!sectionVisibleToUser) {
+                invalidateAdapter()
+            }
+            sectionVisibleToUser = true
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        discoverNewShowCaseLayout = DiscoverMediaShowcaseLayout(requireContext()).also { vi ->
-            vi.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-        }
+        if (isSectionEnabled) {
+            discoverNewShowCaseLayout = DiscoverMediaShowcaseLayout(requireContext()).also { vi ->
+                vi.layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            }
 
-        orderedViewList.add(OrderedViewModel(
-            discoverNewShowCaseLayout!!, order,
-            getString(R.string.newly_added), R.drawable.ic_new, showSetting = true
-        ) {
-            handleClick(it)
-        })
+            orderedViewList.add(OrderedViewModel(
+                discoverNewShowCaseLayout!!, order,
+                getString(R.string.newly_added), R.drawable.ic_new, showSetting = true
+            ) {
+                handleClick(it)
+            })
+        }
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        discoverNewShowCaseLayout!!.showcaseRecyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        if (isSectionEnabled) {
+            discoverNewShowCaseLayout!!.showcaseRecyclerView.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
     }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null)
-            viewModel.field = NewlyAddedMediaField.create(requireContext()).also {
-                it.sort = MediaSort.ID_DESC.ordinal
-            }
+        if (isSectionEnabled) {
+            if (savedInstanceState == null)
+                viewModel.field = NewlyAddedMediaField.create(requireContext()).also {
+                    it.sort = MediaSort.ID_DESC.ordinal
+                }
+        }
         super.onActivityCreated(savedInstanceState)
-        invalidateAdapter()
     }
 
 
