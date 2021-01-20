@@ -14,21 +14,21 @@ import com.revolgenx.anilib.common.preference.setMediaListGridPresenter
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.ListContainerFragmentBinding
-import com.revolgenx.anilib.infrastructure.event.BrowseNotificationEvent
-import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
-import com.revolgenx.anilib.infrastructure.event.DisplayTypes
-import com.revolgenx.anilib.infrastructure.event.MediaListCollectionFilterEvent
+import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.bottomsheet.list.MediaListFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
 class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>(), EventBusListener {
 
     private lateinit var adapter: FragmentPagerAdapter
+
+    private var currentItem: Int? = null
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -78,7 +78,13 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
 
             listViewPager.adapter = adapter
 
+
             initListener()
+
+            currentItem?.let {
+                listViewPager.currentItem = it
+                currentItem = null
+            }
 
             listViewPager.post {
                 setCurrentStatusFab()
@@ -146,14 +152,25 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
                 }
             }
         }
+
+
     }
 
     private fun ListContainerFragmentBinding.getCurrentListFragment(): MediaListContainerFragment {
         return listContainerFragments[listViewPager.currentItem]
     }
 
-    fun goToListType(type: Int) {
-        binding.listViewPager.setCurrentItem(if (type == MediaType.ANIME.ordinal) 0 else 1, false)
+    @Subscribe(sticky = true)
+    fun getToListPage(event: ChangeViewPagerPageEvent) {
+        if (event.data is ListContainerFragmentPage) {
+            EventBus.getDefault().removeStickyEvent(event)
+            val listOrderPage = event.data.ordinal
+            if (::adapter.isInitialized) {
+                binding.listViewPager.currentItem = listOrderPage
+            } else {
+                currentItem = listOrderPage
+            }
+        }
     }
 
     override fun onDestroyView() {

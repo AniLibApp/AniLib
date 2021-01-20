@@ -19,9 +19,7 @@ import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.data.model.user.UserFollowerCountModel
 import com.revolgenx.anilib.data.model.user.UserProfileModel
 import com.revolgenx.anilib.databinding.ProfileFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.AuthenticateEvent
-import com.revolgenx.anilib.infrastructure.event.ImageClickedEvent
-import com.revolgenx.anilib.infrastructure.event.SettingEvent
+import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.dialog.MessageDialog
@@ -127,17 +125,13 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                 viewModel.userField.userId = requireContext().userId()
 
                 binding.animeCountHeader.setOnClickListener {
-                    val mainActivity = requireActivity()
-                    if (mainActivity is MainActivity) {
-                        mainActivity.goToList(MediaType.ANIME.ordinal)
-                    }
+                    ChangeViewPagerPageEvent(MainActivityPage.LIST).postEvent
+                    ChangeViewPagerPageEvent(ListContainerFragmentPage.ANIME).postEvent
                 }
 
                 binding.mangaCountHeader.setOnClickListener {
-                    val mainActivity = requireActivity()
-                    if (mainActivity is MainActivity) {
-                        mainActivity.goToList(MediaType.MANGA.ordinal)
-                    }
+                    ChangeViewPagerPageEvent(MainActivityPage.LIST).postEvent
+                    ChangeViewPagerPageEvent(ListContainerFragmentPage.MANGA).postEvent
                 }
 
                 binding.profileFragmentToolbar.setOnMenuItemClickListener {

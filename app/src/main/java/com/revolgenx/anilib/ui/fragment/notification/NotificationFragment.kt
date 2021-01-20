@@ -28,7 +28,7 @@ class NotificationFragment : BasePresenterFragment<NotificationModel>() {
         super.onViewCreated(view, savedInstanceState)
         (activity as? AppCompatActivity)?.supportActionBar?.let {
             it.setHomeAsUpIndicator(R.drawable.ic_close)
-            it.title = getString(R.string.notification)
+            it.setTitle(R.string.notification)
             it.setDisplayHomeAsUpEnabled(true)
             it.setDisplayShowHomeEnabled(true)
         }

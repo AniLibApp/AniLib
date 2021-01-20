@@ -127,21 +127,84 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         binding.updateView()
         silentFetchUserInfo()
 
+        checkIsFromShortcut()
+
         if (savedInstanceState == null) {
             checkForUpdate()
+        }
+    }
+
+
+    private fun checkIsFromShortcut(newIntent: Intent? = null){
+        val intent = newIntent ?: intent
+        if (intent.action == Intent.ACTION_VIEW) {
+            if (intent.hasExtra(LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY)) {
+                val currentShortcut = intent.getIntExtra(
+                    LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
+                    LauncherShortcuts.HOME.ordinal
+                )
+                when(LauncherShortcuts.values()[currentShortcut]){
+                    LauncherShortcuts.HOME -> {
+                        binding.mainBottomNavView.selectedItemId = R.id.home_navigation_menu
+                    }
+                    LauncherShortcuts.ANIME -> {
+                        binding.mainBottomNavView.selectedItemId = R.id.list_navigation_menu
+                        ChangeViewPagerPageEvent(ListContainerFragmentPage.ANIME).postSticky
+                    }
+                    LauncherShortcuts.MANGA -> {
+                        binding.mainBottomNavView.selectedItemId = R.id.list_navigation_menu
+                        ChangeViewPagerPageEvent(ListContainerFragmentPage.MANGA).postSticky
+                    }
+                    LauncherShortcuts.RADIO -> {
+                        binding.mainBottomNavView.selectedItemId = R.id.music_navigation_menu
+                    }
+                }
+            }
         }
     }
 
     private fun ActivityMainBinding.updateView() {
         val menuList = mutableListOf<HomeMenuItem>()
 
-        menuList.add(HomeMenuItem(R.id.home_navigation_menu, R.string.home, R.drawable.ic_home, getHomePageOrderFromType(this@MainActivity, HomePageOrderType.HOME), discoverContainerFragment))
-        if(loggedIn()){
-            menuList.add(HomeMenuItem(R.id.list_navigation_menu, R.string.list, R.drawable.ic_media_list, getHomePageOrderFromType(this@MainActivity, HomePageOrderType.LIST), listContainerFragment))
+        menuList.add(
+            HomeMenuItem(
+                R.id.home_navigation_menu,
+                R.string.home,
+                R.drawable.ic_home,
+                getHomePageOrderFromType(this@MainActivity, HomePageOrderType.HOME),
+                discoverContainerFragment
+            )
+        )
+        if (loggedIn()) {
+            menuList.add(
+                HomeMenuItem(
+                    R.id.list_navigation_menu,
+                    R.string.list,
+                    R.drawable.ic_media_list,
+                    getHomePageOrderFromType(this@MainActivity, HomePageOrderType.LIST),
+                    listContainerFragment
+                )
+            )
         }
-        menuList.add(HomeMenuItem(R.id.music_navigation_menu, R.string.radio, R.drawable.ic_radio, getHomePageOrderFromType(this@MainActivity, HomePageOrderType.RADIO),radioFragment))
+        menuList.add(
+            HomeMenuItem(
+                R.id.music_navigation_menu,
+                R.string.radio,
+                R.drawable.ic_radio,
+                getHomePageOrderFromType(this@MainActivity, HomePageOrderType.RADIO),
+                radioFragment
+            )
+        )
 
-        menuList.add(HomeMenuItem(R.id.profile_navigation_menu, R.string.profile, R.drawable.ic_person, HomePageOrderType.values().size, if(loggedIn()) profileFragment else loginFragment))
+        menuList.add(
+            HomeMenuItem(
+                R.id.profile_navigation_menu,
+                R.string.profile,
+                R.drawable.ic_person,
+                HomePageOrderType.values().size,
+                if (loggedIn()) profileFragment else loginFragment
+            )
+        )
 
         menuList.sortBy { it.order }
         menuList.forEach {
@@ -218,10 +281,23 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         }
     }
 
-    fun goToList(type: Int) {
-        binding.mainViewPager.setCurrentItem(1, false)
+    @Subscribe
+    fun goToPageEvent(event: ChangeViewPagerPageEvent) {
+        if (event.data is MainActivityPage) {
+            val homePageOrder = when (event.data) {
+                MainActivityPage.HOME -> {
+                    getHomePageOrderFromType(this, HomePageOrderType.HOME)
+                }
+                MainActivityPage.LIST -> {
+                    getHomePageOrderFromType(this, HomePageOrderType.LIST)
+                }
+                MainActivityPage.RADIO -> {
+                    getHomePageOrderFromType(this, HomePageOrderType.RADIO)
+                }
+            }
 
-        (getViewPagerFragment(1) as? ListContainerFragment)?.goToListType(type)
+            binding.mainViewPager.setCurrentItem(homePageOrder, false)
+        }
     }
 
 
@@ -256,6 +332,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     override fun onNewIntent(intent: Intent?) {
         checkIntent(intent)
+        checkIsFromShortcut(intent)
         super.onNewIntent(intent)
     }
 
@@ -384,19 +461,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     @Subscribe
     fun onNotificationEvent(event: BrowseNotificationEvent) {
-        ToolbarContainerActivity.openActivity(
-            this,
-            ParcelableFragment(
-                NotificationFragment::class.java,
-                bundleOf(
-                    UserMeta.userMetaKey to UserMeta(
-                        userId(),
-                        null,
-                        true
-                    )
-                )
-            )
-        )
+        startActivity(Intent(this, NotificationActivity::class.java))
     }
 
 
@@ -501,6 +566,12 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
 
-    internal data class HomeMenuItem(@IdRes val id:Int, @StringRes val text:Int, @DrawableRes val drawRes:Int, val order:Int, val fragment:BaseFragment)
+    internal data class HomeMenuItem(
+        @IdRes val id: Int,
+        @StringRes val text: Int,
+        @DrawableRes val drawRes: Int,
+        val order: Int,
+        val fragment: BaseFragment
+    )
 
 }

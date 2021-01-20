@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ShortcutManager
+import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
@@ -31,6 +33,14 @@ import java.util.*
 const val COLLAPSED = 0
 const val EXPANDED = 1
 
+object LauncherShortcutKeys{
+    const val LAUNCHER_SHORTCUT_EXTRA_KEY = "LAUNCHER_SHORTCUT_EXTRA_KEY"
+
+}
+
+enum class LauncherShortcuts{
+    HOME, ANIME, MANGA, RADIO,NOTIFICATION
+}
 
 fun getSeasonFromMonth(monthOfYear: Int): MediaSeason {
     monthOfYear.let {
@@ -164,3 +174,11 @@ fun Context.copyToClipBoard(str: String?) {
     makeToast(R.string.copied_to_clipboard)
 }
 
+
+
+inline fun shortcutAction(context: Context,action: (ShortcutManager) -> Unit): Unit {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+        val shortcutManager = context.getSystemService(ShortcutManager::class.java)
+        action(shortcutManager)
+    }
+}

@@ -92,6 +92,7 @@
         <activity android:name=".activity.NavViewPagerContainerActivity" />
         <activity android:name=".activity.ToolbarContainerActivity" />
         <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.NotificationActivity" />
 
         <service android:name=".radio.service.RadioService">
             <intent-filter>
