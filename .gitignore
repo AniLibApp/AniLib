@@ -14,3 +14,4 @@
 .cxx
 secret.properties
 /.github/workflows/anilib_debug_artifact.yml
+/app/build/

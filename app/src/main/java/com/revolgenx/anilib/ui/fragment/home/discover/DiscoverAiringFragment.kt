@@ -11,14 +11,11 @@ import com.google.android.material.tabs.TabLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.ui.fragment.airing.AiringFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
-import com.revolgenx.anilib.common.preference.getHomeOrderFromType
-import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.common.preference.userId
-import com.revolgenx.anilib.common.preference.userName
 import com.revolgenx.anilib.databinding.DiscoverAiringFragmentLayoutBinding
 import com.revolgenx.anilib.ui.presenter.home.discover.DiscoverAiringPresenter
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
@@ -45,6 +42,11 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     private val order: Int
         get() = getHomeOrderFromType(requireContext(), HomeOrderType.AIRING)
 
+    private val isSectionEnabled: Boolean
+        get() = isHomeOrderEnabled(requireContext(), HomeOrderType.AIRING)
+
+    private var sectionVisibleToUser = false
+
 
     private val onDaySelectListener = object : TabLayout.OnTabSelectedListener {
         override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -66,42 +68,59 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _airingBinding = DiscoverAiringFragmentLayoutBinding.inflate(inflater, container, false)
-        discoverAiringRecyclerView = airingBinding.discoverAiringRecyclerView
+        if (isSectionEnabled) {
 
-        orderedViewList.add(OrderedViewModel(
-            airingBinding.root, order,
-            getString(R.string.airing_schedules), R.drawable.ic_airing, showSetting = true
-        ) {
-            this@DiscoverAiringFragment.handleClick(it)
-        })
+            _airingBinding = DiscoverAiringFragmentLayoutBinding.inflate(inflater, container, false)
+            discoverAiringRecyclerView = airingBinding.discoverAiringRecyclerView
+
+            orderedViewList.add(OrderedViewModel(
+                airingBinding.root, order,
+                getString(R.string.airing_schedules), R.drawable.ic_airing, showSetting = true
+            ) {
+                this@DiscoverAiringFragment.handleClick(it)
+            })
+        }
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        discoverAiringRecyclerView!!.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        if (isSectionEnabled) {
+
+            discoverAiringRecyclerView!!.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isSectionEnabled) {
+            if (!sectionVisibleToUser) {
+                invalidateAdapter()
+            }
+            sectionVisibleToUser = true
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        if (isSectionEnabled) {
 
-        airingBinding.dslWeekTabLayout.addOnTabSelectedListener(onDaySelectListener)
-        airingBinding.dslWeekTabLayout.getTabAt(viewModel.selectedDay)?.select()
+            airingBinding.dslWeekTabLayout.addOnTabSelectedListener(onDaySelectListener)
+            airingBinding.dslWeekTabLayout.getTabAt(viewModel.selectedDay)?.select()
 
-        if (savedInstanceState == null) {
-            viewModel.updateField(requireContext())
-            if(requireContext().loggedIn()){
-                with(viewModel.field){
-                    userName = requireContext().userName()
-                    userId = requireContext().userId()
+            if (savedInstanceState == null) {
+                viewModel.updateField(requireContext())
+                if (requireContext().loggedIn()) {
+                    with(viewModel.field) {
+                        userName = requireContext().userName()
+                        userId = requireContext().userId()
+                    }
                 }
+                viewModel.createSource()
             }
-            viewModel.createSource()
         }
-        invalidateAdapter()
     }
 
 

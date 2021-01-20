@@ -10,6 +10,8 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.isHomeOrderEnabled
+import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.infrastructure.event.BrowseAllReviewsEvent
 import com.revolgenx.anilib.ui.presenter.review.ReviewPresenter
 import com.revolgenx.anilib.infrastructure.source.home.discover.AllReviewSource
@@ -25,6 +27,17 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
 
     private val source: AllReviewSource
         get() = viewModel.source ?: viewModel.createSource()
+
+
+    private var sectionVisibleToUser = false
+
+    override fun onResume() {
+        super.onResume()
+        if(!sectionVisibleToUser){
+            invalidateAdapter()
+        }
+        sectionVisibleToUser = true
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,12 +87,6 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
                 this.context,
                 if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
             )
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        invalidateAdapter()
     }
 
     /** call this method to load into recyclerview*/

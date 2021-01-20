@@ -12,12 +12,13 @@ import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.HomeOrderedAdapterItem
 import com.revolgenx.anilib.common.preference.getHomeOrderFromType
+import com.revolgenx.anilib.common.preference.isHomeOrderEnabled
 import com.revolgenx.anilib.common.preference.setHomeOrderFromType
 import com.revolgenx.anilib.databinding.HomeOrderAdapterLayoutBinding
 import com.revolgenx.anilib.databinding.HomeOrderDialogLayoutBinding
 import com.woxthebox.draglistview.DragItemAdapter
 
-class HomeOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>(){
+class HomeOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>() {
 
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
@@ -32,17 +33,26 @@ class HomeOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>(){
         return HomeOrderDialogLayoutBinding.inflate(provideLayoutInflater())
     }
 
-    private lateinit var adapterPage:HomeOrderRecyclerAdapter
+    private lateinit var adapterPage: HomeOrderRecyclerAdapter
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         super.onShowListener(alertDialog, savedInstanceState)
-        with(binding){
+        with(binding) {
             mDragListView.setCanDragHorizontally(false)
             mDragListView.setLayoutManager(LinearLayoutManager(requireContext()))
 
             val homeOrderTypes = HomeOrderType.values();
             val orderList = homeListOrder.mapIndexed { index, s ->
-                Pair(index.toLong(), HomeOrderedAdapterItem(s, getHomeOrderFromType(requireContext(), homeOrderTypes[index]), homeOrderTypes[index]))
+                val type = homeOrderTypes[index]
+                Pair(
+                    index.toLong(),
+                    HomeOrderedAdapterItem(
+                        s,
+                        getHomeOrderFromType(requireContext(), type),
+                        type,
+                        isHomeOrderEnabled(requireContext(), type)
+                    )
+                )
             }.sortedBy { it.second.order }.toMutableList()
 
             adapterPage = HomeOrderRecyclerAdapter(orderList);
@@ -52,7 +62,12 @@ class HomeOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>(){
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
         adapterPage.itemList.forEachIndexed { index, pair ->
-            setHomeOrderFromType(requireContext(), pair.second.orderType, index + 1)
+            setHomeOrderFromType(
+                requireContext(),
+                pair.second.orderType,
+                index + 1,
+                pair.second.isEnabled
+            )
         }
         dismiss()
     }
@@ -60,14 +75,18 @@ class HomeOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>(){
 
     internal class HomeOrderRecyclerAdapter(
         list: MutableList<Pair<Long, HomeOrderedAdapterItem>>
-    ) :DragItemAdapter<Pair<Long, HomeOrderedAdapterItem>, HomeOrderRecyclerAdapter.ViewHolder>(){
+    ) : DragItemAdapter<Pair<Long, HomeOrderedAdapterItem>, HomeOrderRecyclerAdapter.ViewHolder>() {
 
-        init{
+        init {
             itemList = list
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val binding = HomeOrderAdapterLayoutBinding.inflate(LayoutInflater.from(parent.context), parent,false)
+            val binding = HomeOrderAdapterLayoutBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
             binding.homeOrderAdapterItemLayout.corner = 20f
             return ViewHolder(binding)
         }
@@ -82,11 +101,16 @@ class HomeOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>(){
             return mItemList[position].first
         }
 
-        inner class ViewHolder(itemView: HomeOrderAdapterLayoutBinding) : DragItemAdapter.ViewHolder(itemView.root, R.id.homeOrderDragIcon, false) {
-            private var mText: TextView = itemView.homeOrderName
+        inner class ViewHolder(private val binding: HomeOrderAdapterLayoutBinding) :
+            DragItemAdapter.ViewHolder(binding.root, R.id.homeOrderDragIcon, false) {
 
             fun bind(item: Pair<Long, HomeOrderedAdapterItem>) {
-                mText.text = item.second.name
+                binding.homeOrderName.setOnCheckedChangeListener(null)
+                binding.homeOrderName.text = item.second.name
+                binding.homeOrderName.isChecked = item.second.isEnabled
+                binding.homeOrderName.setOnCheckedChangeListener { _, isChecked ->
+                    item.second.isEnabled = isChecked
+                }
             }
 
         }

@@ -9,15 +9,12 @@ import androidx.core.view.setMargins
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.ui.dialog.DiscoverMediaListFilterDialog
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaListEvent
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
-import com.revolgenx.anilib.common.preference.getDiscoverMediaListSort
-import com.revolgenx.anilib.common.preference.getHomeOrderFromType
-import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.ui.presenter.home.discover.MediaListPresenter
 import com.revolgenx.anilib.infrastructure.source.media_list.MediaListSource
 import com.revolgenx.anilib.type.MediaListStatus
@@ -44,12 +41,28 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
     private val order: Int
         get() = getHomeOrderFromType(requireContext(), HomeOrderType.WATCHING)
 
+
+    private val isSectionEnabled: Boolean
+        get() = isHomeOrderEnabled(requireContext(), HomeOrderType.WATCHING)
+
+    private var sectionVisibleToUser = false
+
+    override fun onResume() {
+        super.onResume()
+        if(requireContext().loggedIn() && isSectionEnabled) {
+            if (!sectionVisibleToUser) {
+                invalidateAdapter()
+            }
+            sectionVisibleToUser = true
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if (requireContext().loggedIn()) {
+        if (requireContext().loggedIn() && isSectionEnabled) {
             watchingRecyclerView = DynamicRecyclerView(requireContext()).also {
                 it.layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -76,7 +89,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (requireContext().loggedIn()) {
+        if (requireContext().loggedIn() && isSectionEnabled) {
             watchingRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
@@ -89,7 +102,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (requireContext().loggedIn()) {
+        if (requireContext().loggedIn() && isSectionEnabled) {
 
             if (savedInstanceState == null) {
                 viewModel.field.also { field ->
@@ -108,7 +121,6 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
                     }
                 }
             }
-            invalidateAdapter()
         }
         else{
             super.onActivityCreated(savedInstanceState)

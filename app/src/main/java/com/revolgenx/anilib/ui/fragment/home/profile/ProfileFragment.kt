@@ -45,7 +45,7 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
         const val USER_PROFILE_INFO_KEY = "USER_PROFILE_INFO_KEY"
     }
 
-    var showUserInfo:Boolean = false
+    var showUserInfo: Boolean = false
 
     private val viewModel by viewModel<UserProfileViewModel>()
     private var userProfileModel: UserProfileModel? = null
@@ -141,28 +141,28 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                 }
 
                 binding.profileFragmentToolbar.setOnMenuItemClickListener {
-                    when(it.itemId){
-                        R.id.setting_menu->{
+                    when (it.itemId) {
+                        R.id.setting_menu -> {
                             SettingEvent().postEvent
                             true
                         }
-                        R.id.discord_menu->{
+                        R.id.discord_menu -> {
                             requireContext().openLink(getString(R.string.discord_invite_link))
                             true
                         }
-                        R.id.translate_menu->{
+                        R.id.translate_menu -> {
                             requireContext().openLink(getString(R.string.translate_link))
                             true
                         }
-                        R.id.user_share_menu->{
+                        R.id.user_share_menu -> {
                             requireContext().openLink(userProfileModel?.siteUrl)
                             true
                         }
-                        R.id.sign_out_menu->{
+                        R.id.sign_out_menu -> {
                             AuthenticateEvent().postEvent
                             true
                         }
-                        else->false
+                        else -> false
                     }
                 }
                 true
@@ -179,11 +179,11 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
     override fun onResume() {
         super.onResume()
-        if(!visibleToUser){
-
+        if (!visibleToUser && showUserInfo) {
+            viewModel.getProfile()
         }
+        visibleToUser = true
     }
-
 
 
     private fun setCollapsingToolbarTheme() {
@@ -211,7 +211,7 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
                         viewModel.userField.userId = model.userId
 
-                        if(savedInstanceState == null){
+                        if (savedInstanceState == null) {
                             viewModel.getFollower()
                         }
 
@@ -260,10 +260,6 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
             }
         }
 
-
-        if (savedInstanceState == null) {
-            viewModel.getProfile()
-        }
 
         val userMeta = UserMeta(
             viewModel.userField.userId,

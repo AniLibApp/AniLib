@@ -12,6 +12,7 @@ import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.getHomeOrderFromType
+import com.revolgenx.anilib.common.preference.isHomeOrderEnabled
 import com.revolgenx.anilib.ui.presenter.home.MediaPresenter
 import com.revolgenx.anilib.infrastructure.source.discover.DiscoverMediaSource
 import com.revolgenx.anilib.type.MediaSort
@@ -37,42 +38,62 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
     private val order: Int
         get() = getHomeOrderFromType(requireContext(), HomeOrderType.POPULAR)
 
+
+    private val isSectionEnabled: Boolean
+        get() = isHomeOrderEnabled(requireContext(), HomeOrderType.POPULAR)
+
+
+    private var sectionVisibleToUser = false
+
+    override fun onResume() {
+        super.onResume()
+        if (isSectionEnabled) {
+            if (!sectionVisibleToUser) {
+                invalidateAdapter()
+            }
+            sectionVisibleToUser = true
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        if (isSectionEnabled) {
+            popularShowCaseLayout = DiscoverMediaShowcaseLayout(requireContext()).also { vi ->
+                vi.layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            }
 
-        popularShowCaseLayout = DiscoverMediaShowcaseLayout(requireContext()).also { vi ->
-            vi.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
+            orderedViewList.add(OrderedViewModel(
+                popularShowCaseLayout!!, order,
+                getString(R.string.popular), R.drawable.ic_popular, showSetting = true
+            ) {
+                handleClick(it)
+            })
         }
-
-        orderedViewList.add(OrderedViewModel(
-            popularShowCaseLayout!!, order,
-            getString(R.string.popular),R.drawable.ic_popular, showSetting = true
-        ) {
-            handleClick(it)
-        })
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        popularShowCaseLayout!!.showcaseRecyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        if (isSectionEnabled) {
+            popularShowCaseLayout!!.showcaseRecyclerView.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null)
-            viewModel.field = PopularMediaField.create(requireContext()).also {
-                it.sort = MediaSort.POPULARITY_DESC.ordinal
-            }
+        if (isSectionEnabled) {
+            if (savedInstanceState == null)
+                viewModel.field = PopularMediaField.create(requireContext()).also {
+                    it.sort = MediaSort.POPULARITY_DESC.ordinal
+                }
+        }
         super.onActivityCreated(savedInstanceState)
-        invalidateAdapter()
     }
 
 

@@ -15,6 +15,7 @@ import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
 import com.revolgenx.anilib.common.preference.getHomeOrderFromType
+import com.revolgenx.anilib.common.preference.isHomeOrderEnabled
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.ui.presenter.home.discover.MediaListPresenter
@@ -43,12 +44,30 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
     private val order: Int
         get() = getHomeOrderFromType(requireContext(), HomeOrderType.READING)
 
+    private val isSectionEnabled: Boolean
+        get() = isHomeOrderEnabled(requireContext(), HomeOrderType.READING)
+
+    private var sectionVisibleToUser = false
+
+    override fun onResume() {
+        super.onResume()
+        if (isSectionEnabled) {
+
+            if (requireContext().loggedIn()) {
+                if (!sectionVisibleToUser) {
+                    invalidateAdapter()
+                }
+                sectionVisibleToUser = true
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if (requireContext().loggedIn()) {
+        if (requireContext().loggedIn() && isSectionEnabled) {
             dRecyclerView = DynamicRecyclerView(requireContext()).also {
                 it.layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -62,8 +81,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
             orderedViewList.add(OrderedViewModel(
                 dRecyclerView!!, order,
                 getString(R.string.reading),
-                R.drawable.ic_manga
-                , showSetting = true
+                R.drawable.ic_manga, showSetting = true
             ) {
                 handleClick(it)
             })
@@ -75,7 +93,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (requireContext().loggedIn()) {
+        if (requireContext().loggedIn() && isSectionEnabled) {
             dRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
@@ -88,7 +106,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if(requireContext().loggedIn()) {
+        if (requireContext().loggedIn() && isSectionEnabled) {
             if (savedInstanceState == null) {
                 viewModel.field.also { field ->
                     field.userId = requireContext().userId()
@@ -105,8 +123,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
                     }
                 }
             }
-            invalidateAdapter()
-        }else{
+        } else {
             super.onActivityCreated(savedInstanceState)
         }
     }

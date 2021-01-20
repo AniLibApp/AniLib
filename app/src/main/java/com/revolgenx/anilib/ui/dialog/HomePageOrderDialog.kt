@@ -17,9 +17,10 @@ import com.revolgenx.anilib.data.model.home.HomePageOrderType
 import com.revolgenx.anilib.data.model.home.HomePageOrderedAdapterItem
 import com.revolgenx.anilib.databinding.HomeOrderAdapterLayoutBinding
 import com.revolgenx.anilib.databinding.HomeOrderDialogLayoutBinding
+import com.revolgenx.anilib.databinding.HomePageOrderAdapterDialogLayoutBinding
 import com.woxthebox.draglistview.DragItemAdapter
 
-class HomePageOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>(){
+class HomePageOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>() {
 
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
@@ -34,17 +35,24 @@ class HomePageOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>(){
         return HomeOrderDialogLayoutBinding.inflate(provideLayoutInflater())
     }
 
-    private lateinit var adapterPage:HomePageOrderRecyclerAdapter
+    private lateinit var adapterPage: HomePageOrderRecyclerAdapter
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         super.onShowListener(alertDialog, savedInstanceState)
-        with(binding){
+        with(binding) {
             mDragListView.setCanDragHorizontally(false)
             mDragListView.setLayoutManager(LinearLayoutManager(requireContext()))
 
             val homePageOrderTypes = HomePageOrderType.values();
             val orderList = homePageListOrder.mapIndexed { index, s ->
-                Pair(index.toLong(), HomePageOrderedAdapterItem(s, getHomePageOrderFromType(requireContext(), homePageOrderTypes[index]), homePageOrderTypes[index]))
+                Pair(
+                    index.toLong(),
+                    HomePageOrderedAdapterItem(
+                        s,
+                        getHomePageOrderFromType(requireContext(), homePageOrderTypes[index]),
+                        homePageOrderTypes[index]
+                    )
+                )
             }.sortedBy { it.second.order }.toMutableList()
 
             adapterPage = HomePageOrderRecyclerAdapter(orderList);
@@ -62,14 +70,18 @@ class HomePageOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>(){
 
     internal class HomePageOrderRecyclerAdapter(
         list: MutableList<Pair<Long, HomePageOrderedAdapterItem>>
-    ) : DragItemAdapter<Pair<Long, HomePageOrderedAdapterItem>, HomePageOrderRecyclerAdapter.ViewHolder>(){
+    ) : DragItemAdapter<Pair<Long, HomePageOrderedAdapterItem>, HomePageOrderRecyclerAdapter.ViewHolder>() {
 
-        init{
+        init {
             itemList = list
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val binding = HomeOrderAdapterLayoutBinding.inflate(LayoutInflater.from(parent.context), parent,false)
+            val binding = HomePageOrderAdapterDialogLayoutBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
             binding.homeOrderAdapterItemLayout.corner = 20f
             return ViewHolder(binding)
         }
@@ -84,7 +96,8 @@ class HomePageOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>(){
             return mItemList[position].first
         }
 
-        inner class ViewHolder(itemView: HomeOrderAdapterLayoutBinding) : DragItemAdapter.ViewHolder(itemView.root, R.id.homeOrderDragIcon, false) {
+        inner class ViewHolder(itemView: HomePageOrderAdapterDialogLayoutBinding) :
+            DragItemAdapter.ViewHolder(itemView.root, R.id.homeOrderDragIcon, false) {
             private var mText: TextView = itemView.homeOrderName
 
             fun bind(item: Pair<Long, HomePageOrderedAdapterItem>) {

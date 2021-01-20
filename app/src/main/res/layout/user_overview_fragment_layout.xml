@@ -10,6 +10,12 @@
         android:layout_margin="6dp"
         android:orientation="vertical">
 
+
+        <include
+            android:id="@+id/resource_status_layout"
+            layout="@layout/resource_status_container_layout" />
+
+
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +39,7 @@
                     android:id="@+id/user_about_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ads_rtlSupport="false"/>
+                    app:ads_rtlSupport="false" />
             </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
 
         </com.revolgenx.anilib.ui.view.MaxHeightFrameLayout>
@@ -42,8 +48,8 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_margin="@dimen/profile_overview_margin"
+            android:layout_marginTop="10dp"
             android:text="@string/overview"
             android:textSize="18sp"
             app:fontFamily="@font/cabin_bold" />

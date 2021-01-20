@@ -4,6 +4,7 @@ import android.content.Context
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.data.field.home.AiringMediaField
 import com.revolgenx.anilib.data.model.UserPrefModel
 import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
 import com.revolgenx.anilib.data.model.setting.MediaOptionModel
@@ -87,10 +88,15 @@ fun Context.logOut() {
     titlePref(this, "0")
     removeNotification(this)
     removeBasicUserDetail(this)
+    removeAiringField(this)
 }
 
 fun removeNotification(context: Context) {
     setNewNotification(context)
+}
+
+fun removeAiringField(context: Context) {
+    storeAiringField(context, AiringMediaField())
 }
 
 fun Context.logIn(accessToken: String) {
