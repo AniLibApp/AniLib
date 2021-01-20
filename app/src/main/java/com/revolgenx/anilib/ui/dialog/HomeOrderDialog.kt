@@ -65,7 +65,7 @@ class HomeOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>() {
             setHomeOrderFromType(
                 requireContext(),
                 pair.second.orderType,
-                index + 1,
+                index,
                 pair.second.isEnabled
             )
         }

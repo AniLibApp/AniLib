@@ -324,7 +324,7 @@ fun getDiscoverMediaListSort(context: Context, type: Int): Int? {
 
 fun getMediaListGridPresenter(): MediaListDisplayMode {
     return MediaListDisplayMode.values()[DynamicPreferences.getInstance()
-        .load(MEDIA_LIST_GRID_PRESENTER_KEY, 0)] //0 for compact gird 1 normal 2 card
+        .load(MEDIA_LIST_GRID_PRESENTER_KEY, MediaListDisplayMode.NORMAL.ordinal)]
 }
 
 fun setMediaListGridPresenter(which: Int) {

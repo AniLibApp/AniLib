@@ -10,6 +10,7 @@ import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
 import com.revolgenx.anilib.data.model.setting.MediaOptionModel
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.type.UserTitleLanguage
+import com.revolgenx.anilib.util.shortcutAction
 
 private const val userModelKey = "user_model_key"
 private const val loggedInKey = "logged_in_key"
@@ -89,6 +90,9 @@ fun Context.logOut() {
     removeNotification(this)
     removeBasicUserDetail(this)
     removeAiringField(this)
+    shortcutAction(this){
+        it.removeAllDynamicShortcuts()
+    }
 }
 
 fun removeNotification(context: Context) {
@@ -105,6 +109,10 @@ fun Context.logIn(accessToken: String) {
     val userId = JWT(accessToken).subject?.trim()?.toInt() ?: -1
     userId(userId)
     titlePref(this, "3")
+
+    shortcutAction(this){
+        it.removeAllDynamicShortcuts()
+    }
 }
 
 fun getLastNotification(context: Context): Int {

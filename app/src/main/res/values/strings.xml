@@ -479,6 +479,10 @@
     <string name="automatically_subscribe_me_to_activity_i_create">Automatically subscribe me to activity I create</string>
     <string name="automatically_subscribe_me_to_activity_i_reply_to">Automatically subscribe me to activity I reply to</string>
     <string name="copy_playing_radio">Copy playing radio title</string>
+    <string name="open_home_desc">Open Home</string>
+    <string name="open_manga_list">Open Manga List</string>
+    <string name="open_anime_list">Open Anime List</string>
+    <string name="open_radio">Open Radio</string>
 
 
 </resources>
