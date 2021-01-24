@@ -1,12 +1,12 @@
 package com.revolgenx.anilib.ui.bottomsheet
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -73,7 +73,8 @@ abstract class DynamicBottomSheetFragment<V : ViewBinding> : BottomSheetDialogFr
                 val dialogBehavior = dialog.behavior
                 dialogBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 dialogBehavior.peekHeight = -1
-                dialogBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                dialogBehavior.addBottomSheetCallback(object :
+                    BottomSheetBehavior.BottomSheetCallback() {
                     override fun onSlide(bottomSheet: View, dY: Float) {
                         // TODO: Make button layout stick to the bottom through translationY property.
                     }
@@ -109,6 +110,10 @@ abstract class DynamicBottomSheetFragment<V : ViewBinding> : BottomSheetDialogFr
                 onNegativeClicked?.invoke()
             }
         }
+    }
+
+    protected fun displayButtonPositive(bool: Boolean) {
+        rootBinding.bottomSheetPositiveTv.visibility = if (bool) View.VISIBLE else View.GONE
     }
 
 

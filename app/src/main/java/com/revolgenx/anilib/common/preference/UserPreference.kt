@@ -3,7 +3,10 @@ package com.revolgenx.anilib.common.preference
 import android.content.Context
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
+import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
+import com.pranavpandey.android.dynamic.support.theme.DynamicColorPalette
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.Constants
 import com.revolgenx.anilib.data.field.home.AiringMediaField
 import com.revolgenx.anilib.data.model.UserPrefModel
 import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
@@ -21,6 +24,7 @@ private const val userIdKey = "user_id_key"
 private const val canShowAdultKey = "can_show_adult_key"
 private const val lastNotificationKey = "last_notification_key"
 private const val sharedPrefSyncKey = "sharedPrefSyncKey"
+private const val updateProfileColorKey = "updateProfileColorKey"
 
 
 fun Context.loggedIn() = getBoolean(loggedInKey, false)
@@ -33,7 +37,7 @@ fun Context.userId() = getInt(userIdKey, -1)
 fun Context.userId(userId: Int) = putInt(userIdKey, userId)
 
 fun Context.titlePref() = getString(titleKey, "0")
-fun titlePref(context:Context, pref:String) = context.putString(titleKey, pref)
+fun titlePref(context: Context, pref: String) = context.putString(titleKey, pref)
 
 fun Context.imageQuality() = getString(imageQualityKey, "0")
 
@@ -46,6 +50,46 @@ private var userPrefModelPref: UserPrefModel? = null
 fun Context.saveBasicUserDetail(userPrefModel: UserPrefModel) {
     userPrefModelPref = userPrefModel
     this.putString(userModelKey, Gson().toJson(userPrefModel))
+
+    if (shouldUpdateProfileColor(this)) {
+        shouldUpdateProfileColor(this, false)
+        userPrefModel.mediaOptions?.profileColor?.let {
+            saveUserAccentColor(it)
+        }
+    }
+}
+
+fun saveUserAccentColor(it: String) {
+    val colors = DynamicColorPalette.MATERIAL_COLORS
+    val accentColorToSave = when (it) {
+        "blue" -> {
+            colors[5]
+        }
+        "purple" -> {
+            colors[2]
+        }
+        "pink" -> {
+            colors[1]
+        }
+        "orange" -> {
+            colors[14]
+        }
+        "red" -> {
+            colors[0]
+        }
+        "green" -> {
+            colors[9]
+        }
+        "gray" -> {
+            colors[17]
+        }
+        else -> {
+            colors[5]
+        }
+    }
+    DynamicPreferences.getInstance()
+        .save(Constants.PREF_SETTINGS_APP_THEME_COLOR_ACCENT, accentColorToSave)
+
 }
 
 fun getUserPrefModel(context: Context): UserPrefModel {
@@ -57,11 +101,12 @@ fun getUserPrefModel(context: Context): UserPrefModel {
                 }
     }
 
-    if(userPrefModelPref!!.mediaOptions == null){
-        userPrefModelPref!!.mediaOptions = MediaOptionModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
+    if (userPrefModelPref!!.mediaOptions == null) {
+        userPrefModelPref!!.mediaOptions =
+            MediaOptionModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
     }
 
-    if(userPrefModelPref!!.mediaListOption == null){
+    if (userPrefModelPref!!.mediaListOption == null) {
         userPrefModelPref!!.mediaListOption = MediaListOptionModel().also { mediaListOptionModel ->
             mediaListOptionModel.scoreFormat = ScoreFormat.POINT_100.ordinal
         }
@@ -90,7 +135,7 @@ fun Context.logOut() {
     removeNotification(this)
     removeBasicUserDetail(this)
     removeAiringField(this)
-    shortcutAction(this){
+    shortcutAction(this) {
         it.removeAllDynamicShortcuts()
     }
 }
@@ -100,7 +145,7 @@ fun removeNotification(context: Context) {
 }
 
 fun removeAiringField(context: Context) {
-    storeAiringField(context, AiringMediaField())
+    storeDiscoverAiringField(context, AiringMediaField())
 }
 
 fun Context.logIn(accessToken: String) {
@@ -109,11 +154,19 @@ fun Context.logIn(accessToken: String) {
     val userId = JWT(accessToken).subject?.trim()?.toInt() ?: -1
     userId(userId)
     titlePref(this, "3")
-
-    shortcutAction(this){
+    shortcutAction(this) {
         it.removeAllDynamicShortcuts()
     }
+    shouldUpdateProfileColor(this, true)
 }
+
+private fun shouldUpdateProfileColor(context: Context, update: Boolean) {
+    context.putBoolean(updateProfileColorKey, update)
+}
+
+private fun shouldUpdateProfileColor(context: Context) =
+    context.getBoolean(updateProfileColorKey, false)
+
 
 fun getLastNotification(context: Context): Int {
     return context.getInt(lastNotificationKey, -1)

@@ -219,15 +219,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         mainBottomNavView.setOnNavigationItemSelectedListener {
             mainBottomNavView.menu.forEachIndexed { index, item ->
                 if (it == item) {
-//                    val newIndex = if (loggedIn()) {
-//                        index
-//                    } else {
-//                        if (index != 0) {
-//                            index - 1
-//                        } else {
-//                            0
-//                        }
-//                    }
                     mainViewPager.setCurrentItem(index, true)
                 }
             }
@@ -240,15 +231,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 mainBottomNavView.menu.iterator().forEach {
                     it.isChecked = false
                 }
-//                val newPosition = if (loggedIn()) {
-//                    position
-//                } else {
-//                    if (position != 0) {
-//                        position + 1
-//                    } else {
-//                        0
-//                    }
-//                }
                 mainBottomNavView.menu.getItem(position).isChecked = true
             }
         })

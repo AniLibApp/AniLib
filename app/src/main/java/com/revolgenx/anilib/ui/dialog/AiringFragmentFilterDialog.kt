@@ -8,26 +8,22 @@ import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.getAiringField
+import com.revolgenx.anilib.common.preference.getDiscoverAiringField
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.data.meta.AiringFilterMeta
 import com.revolgenx.anilib.databinding.AiringFilterDialogLayoutBinding
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
-import okhttp3.internal.wait
 
 class AiringFragmentFilterDialog : BaseDialogFragment<AiringFilterDialogLayoutBinding>() {
     companion object {
-        const val AIRING_FILTER_DATA_KEY = "AIRING_FILTER_DATA_KEY"
-
-        fun newInstance(meta: AiringFilterMeta): AiringFragmentFilterDialog {
-            return AiringFragmentFilterDialog().also {
-                it.arguments = bundleOf(AIRING_FILTER_DATA_KEY to meta)
-            }
+        fun newInstance(): AiringFragmentFilterDialog {
+            return AiringFragmentFilterDialog()
         }
     }
 
     private val airingMeta by lazy {
-        arguments?.getParcelable(AIRING_FILTER_DATA_KEY) ?: getAiringField(requireContext()).let {
+        getAiringField(requireContext()).let {
             AiringFilterMeta(
                 it.notYetAired,
                 it.showFromWatching,
@@ -74,6 +70,7 @@ class AiringFragmentFilterDialog : BaseDialogFragment<AiringFilterDialogLayoutBi
         airingMeta.sort = binding.airingSortSpinner.selectedItemPosition
 
         onDoneListener?.invoke(airingMeta)
+
         super.onPositiveClicked(dialogInterface, which)
     }
 

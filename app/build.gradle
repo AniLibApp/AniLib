@@ -51,6 +51,8 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -274,10 +276,14 @@ dependencies {
     //update checker
     implementation "com.github.javiersantos:AppUpdater:$appupdater_version"
 
+    def calendarview_version = '1.0.1'
+    implementation "com.github.kizitonwose:CalendarView:$calendarview_version"
+
 
     def androidbuttonprogress_version = '1.1.0'
     implementation "com.github.abdularis:androidbuttonprogress:$androidbuttonprogress_version"
 
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
 
     def retrofit_ver = '2.9.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_ver"

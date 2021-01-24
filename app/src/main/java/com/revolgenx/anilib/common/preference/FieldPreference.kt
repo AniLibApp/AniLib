@@ -11,7 +11,7 @@ import com.revolgenx.anilib.data.model.home.HomePageOrderType
 import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.getSeasonFromMonth
-import org.threeten.bp.LocalDateTime
+import java.time.LocalDateTime
 
 
 const val SEASON_FORMAT_IN_KEY = "SEASON_FORMAT_IN_KEY"
@@ -42,6 +42,11 @@ const val NEWLY_ADDED_FORMAT_IN_KEY = "NEWLY_ADDED_FORMAT_IN_KEY"
 const val NEWLY_ADDED_YEAR_KEY = "NEWLY_ADDED_YEAR_KEY"
 const val NEWLY_ADDED_SEASON_KEY = "NEWLY_ADDED_SEASON_KEY"
 const val NEWLY_ADDED_STATUS_KEY = "NEWLY_ADDED_STATUS_KEY"
+
+const val DISCOVER_AIRING_NOT_AIRED_KEY = "DISCOVER_AIRING_NOT_AIRED_KEY"
+const val DISCOVER_AIRING_SORT_KEY = "DISCOVER_AIRING_SORT_KEY"
+const val DISCOVER_AIRING_PLANNING_KEY = "DISCOVER_AIRING_PLANNING_KEY"
+const val DISCOVER_AIRING_WATCHING_KEY = "DISCOVER_AIRING_WATCHING_KEY"
 
 const val AIRING_NOT_AIRED_KEY = "AIRING_NOT_AIRED_KEY"
 const val AIRING_SORT_KEY = "AIRING_SORT_KEY"
@@ -81,6 +86,15 @@ const val DISCOVER_READING_SORT_KEY = "DISCOVER_READING_SORT_KEY"
 const val DISCOVER_WATCHING_SORT_KEY = "DISCOVER_WATCHING_SORT_KEY"
 
 const val MEDIA_LIST_GRID_PRESENTER_KEY = "MEDIA_LIST_GRID_PRESENTER_KEY"
+
+const val SHOW_AIRING_WEEKLY_KEY = "SHOW_AIRING_WEEKLY_KEY"
+
+fun getDiscoverAiringField(context: Context) = AiringMediaField().apply {
+    notYetAired = context.getBoolean(DISCOVER_AIRING_NOT_AIRED_KEY, true)
+    sort = context.getInt(DISCOVER_AIRING_SORT_KEY, AiringSort.TIME.ordinal)
+    showFromPlanning = context.getBoolean(DISCOVER_AIRING_PLANNING_KEY, false)
+    showFromWatching = context.getBoolean(DISCOVER_AIRING_WATCHING_KEY, false)
+}
 
 
 fun getAiringField(context: Context) = AiringMediaField().apply {
@@ -141,6 +155,15 @@ fun getNewlyAddedField(context: Context) = NewlyAddedMediaField().apply {
     status = context.getInt(NEWLY_ADDED_STATUS_KEY, DEFAULT_STATUS).takeIf { it > -1 }
 }
 
+
+fun storeDiscoverAiringField(context: Context, field: AiringMediaField) {
+    with(field) {
+        context.putInt(DISCOVER_AIRING_SORT_KEY, sort ?: AiringSort.TIME.ordinal)
+        context.putBoolean(DISCOVER_AIRING_NOT_AIRED_KEY, notYetAired)
+        context.putBoolean(DISCOVER_AIRING_PLANNING_KEY, showFromPlanning)
+        context.putBoolean(DISCOVER_AIRING_WATCHING_KEY, showFromWatching)
+    }
+}
 
 fun storeAiringField(context: Context, field: AiringMediaField) {
     with(field) {
@@ -351,5 +374,14 @@ fun loadMediaListFilter(context: Context, type: Int): MediaListCollectionFilterF
 
     return field
 }
+
+fun showAiringWeekly(context: Context, isChecked: Boolean? = null): Boolean =
+    if (isChecked == null) context.getBoolean(SHOW_AIRING_WEEKLY_KEY, false) else {
+        context.putBoolean(
+            SHOW_AIRING_WEEKLY_KEY, isChecked
+        )
+        isChecked
+    }
+
 
 

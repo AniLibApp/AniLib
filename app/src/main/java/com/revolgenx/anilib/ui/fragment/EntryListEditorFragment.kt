@@ -8,15 +8,12 @@ import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.Observer
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
-import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.ThemeController
-import com.revolgenx.anilib.app.theme.textColorPrimary
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.data.meta.ListEditorMeta
@@ -66,13 +63,13 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
     private val calendarDrawable by lazy {
         ContextCompat.getDrawable(requireContext(), R.drawable.ic_calendar)!!.mutate().also {
-            it.setTint(textColorPrimary)
+            it.setTint(dynamicTextColorPrimary)
         }
     }
 
     private val crossDrawable by lazy {
         ContextCompat.getDrawable(requireContext(), R.drawable.ic_close)!!.mutate().also {
-            it.setTint(textColorPrimary)
+            it.setTint(dynamicTextColorPrimary)
         }
     }
 

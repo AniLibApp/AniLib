@@ -3,13 +3,12 @@ package com.revolgenx.anilib.ui.dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
-import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.getAiringField
+import com.revolgenx.anilib.common.preference.getDiscoverAiringField
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.common.preference.storeAiringField
+import com.revolgenx.anilib.common.preference.storeDiscoverAiringField
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.databinding.AiringFilterDialogLayoutBinding
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
@@ -17,7 +16,7 @@ import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 class DiscoverAiringFilterDialog : BaseDialogFragment<AiringFilterDialogLayoutBinding>() {
 
     private val airingField by lazy {
-        getAiringField(requireContext())
+        getDiscoverAiringField(requireContext())
     }
 
     override var positiveText: Int? = R.string.done
@@ -55,7 +54,7 @@ class DiscoverAiringFilterDialog : BaseDialogFragment<AiringFilterDialogLayoutBi
         airingField.showFromWatching = binding.showFromWatchListSwitch.isChecked
 
         airingField.sort = binding.airingSortSpinner.selectedItemPosition
-        storeAiringField(requireContext(), airingField)
+        storeDiscoverAiringField(requireContext(), airingField)
         super.onPositiveClicked(dialogInterface, which)
     }
 

@@ -15,6 +15,9 @@ import com.revolgenx.anilib.infrastructure.event.BrowseMediaListEvent
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
+import com.revolgenx.anilib.infrastructure.event.ChangeViewPagerPageEvent
+import com.revolgenx.anilib.infrastructure.event.ListContainerFragmentPage
+import com.revolgenx.anilib.infrastructure.event.MainActivityPage
 import com.revolgenx.anilib.ui.presenter.home.discover.MediaListPresenter
 import com.revolgenx.anilib.infrastructure.source.media_list.MediaListSource
 import com.revolgenx.anilib.type.MediaListStatus
@@ -44,18 +47,6 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
 
     private val isSectionEnabled: Boolean
         get() = isHomeOrderEnabled(requireContext(), HomeOrderType.WATCHING)
-
-    private var sectionVisibleToUser = false
-
-    override fun onResume() {
-        super.onResume()
-        if(requireContext().loggedIn() && isSectionEnabled) {
-            if (!sectionVisibleToUser) {
-                invalidateAdapter()
-            }
-            sectionVisibleToUser = true
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,6 +83,8 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
         if (requireContext().loggedIn() && isSectionEnabled) {
             watchingRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            invalidateAdapter()
         }
     }
 
@@ -131,13 +124,8 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
     private fun handleClick(which: Int) {
         when (which) {
             0 -> {
-                BrowseMediaListEvent(
-                    MediaListMeta(
-                        requireContext().userId(),
-                        null,
-                        MediaType.ANIME.ordinal
-                    )
-                ).postEvent
+                ChangeViewPagerPageEvent(MainActivityPage.LIST).postEvent
+                ChangeViewPagerPageEvent(ListContainerFragmentPage.ANIME).postEvent
             }
             1 -> {
                 showMediaListFilterDialog(
