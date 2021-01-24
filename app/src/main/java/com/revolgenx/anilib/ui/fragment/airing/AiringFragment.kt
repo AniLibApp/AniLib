@@ -147,9 +147,15 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
             }
 
             listener = { startDate, endDate ->
-                viewModel.startDateTime = startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MIN)
-                viewModel.endDateTime =
-                    endDate?.atTime(LocalTime.MAX)?.atZone(ZoneOffset.UTC)?.with(LocalTime.MAX)
+                if(viewModel.isDateTypeRange){
+                    viewModel.startDateTime = startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MIN)
+                    endDate?.atTime(LocalTime.MAX)!!.atZone(ZoneOffset.UTC).with(LocalTime.MAX).let {
+                        viewModel.endDateTime = it
+                    }
+                }else{
+                    viewModel.startDateTime = startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MIN)
+                    viewModel.endDateTime = startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MAX)
+                }
                 updateToolbarTitle()
                 createSource()
                 invalidateAdapter()
@@ -174,7 +180,8 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
         viewModel.updateDateRange(showAiringWeekly(requireContext()))
 
 
-        ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+        ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -194,14 +201,14 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
         updateToolbarTitle()
     }
 
-    private fun goToPrevious(){
+    private fun goToPrevious() {
         viewModel.previous()
         updateToolbarTitle()
         createSource()
         invalidateAdapter()
     }
 
-    private fun goToNext(){
+    private fun goToNext() {
         viewModel.next()
         updateToolbarTitle()
         createSource()
