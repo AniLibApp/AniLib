@@ -146,6 +146,7 @@ fun removeNotification(context: Context) {
 
 fun removeAiringField(context: Context) {
     storeDiscoverAiringField(context, AiringMediaField())
+    storeAiringField(context, AiringMediaField())
 }
 
 fun Context.logIn(accessToken: String) {
