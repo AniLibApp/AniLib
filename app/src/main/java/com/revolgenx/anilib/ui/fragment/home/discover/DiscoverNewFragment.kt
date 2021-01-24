@@ -42,18 +42,6 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
     private val isSectionEnabled: Boolean
         get() = isHomeOrderEnabled(requireContext(), HomeOrderType.NEWLY_ADDED)
 
-    private var sectionVisibleToUser = false
-
-    override fun onResume() {
-        super.onResume()
-        if (isSectionEnabled) {
-            if (!sectionVisibleToUser) {
-                invalidateAdapter()
-            }
-            sectionVisibleToUser = true
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -93,6 +81,8 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
                 viewModel.field = NewlyAddedMediaField.create(requireContext()).also {
                     it.sort = MediaSort.ID_DESC.ordinal
                 }
+
+            invalidateAdapter()
         }
         super.onActivityCreated(savedInstanceState)
     }

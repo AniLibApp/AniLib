@@ -43,18 +43,6 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
     private val isSectionEnabled: Boolean
         get() = isHomeOrderEnabled(requireContext(), HomeOrderType.TRENDING)
 
-    private var sectionVisibleToUser = false
-
-    override fun onResume() {
-        super.onResume()
-        if (isSectionEnabled) {
-
-            if (!sectionVisibleToUser) {
-                invalidateAdapter()
-            }
-            sectionVisibleToUser = true
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,6 +83,8 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
                     it.sort = MediaSort.TRENDING_DESC.ordinal
                 }
             }
+
+            invalidateAdapter()
         }
     }
 

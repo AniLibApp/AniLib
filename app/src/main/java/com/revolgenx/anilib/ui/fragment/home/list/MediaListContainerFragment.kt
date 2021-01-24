@@ -192,8 +192,13 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
         mediaListBinding.mediaListSearchEt.typeface =
             ResourcesCompat.getFont(requireContext(), R.font.cabin_regular)
         mediaListBinding.clearText.setOnClickListener {
-            mediaListBinding.mediaListSearchEt.setText("")
-            mediaListBinding.mediaListSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
+            val mediaSearchEt = mediaListBinding.mediaListSearchEt
+            if (mediaSearchEt.text.isNullOrEmpty()) {
+                showSearchET(false)
+            } else {
+                mediaSearchEt.setText("")
+                mediaSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
+            }
         }
         return mediaListBinding.root
     }

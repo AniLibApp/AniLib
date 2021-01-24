@@ -21,6 +21,13 @@
         android:id="@+id/airing_filter"
         android:icon="@drawable/ic_filter"
         android:title="@string/filter"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/weekly_filter"
+        android:checkable="true"
+        android:icon="@drawable/ic_airing"
+        android:title="@string/weekly"
+        app:showAsAction="never" />
 
 </menu>

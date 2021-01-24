@@ -29,16 +29,6 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
         get() = viewModel.source ?: viewModel.createSource()
 
 
-    private var sectionVisibleToUser = false
-
-    override fun onResume() {
-        super.onResume()
-        if(!sectionVisibleToUser){
-            invalidateAdapter()
-        }
-        sectionVisibleToUser = true
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,7 +53,6 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
 
         discoverRecyclerContainer.addView(discoverReviewRecyclerView)
 
-
         addView(
             discoverRecyclerContainer,
             getString(R.string.recent_reviews), icon = R.drawable.ic_review, showSetting = false
@@ -87,6 +76,11 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
                 this.context,
                 if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
             )
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        invalidateAdapter()
     }
 
     /** call this method to load into recyclerview*/

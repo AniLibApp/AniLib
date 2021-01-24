@@ -8,10 +8,9 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.core.view.setPadding
 import androidx.core.widget.ImageViewCompat
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
 import com.revolgenx.anilib.app.theme.contrastAccentWithBg
-import com.revolgenx.anilib.app.theme.textColorPrimary
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.util.dp
 
 typealias CheckListener = ((checked: Boolean) -> Unit)?
@@ -29,7 +28,7 @@ class DynamicToggleButton(context: Context, attributeSet: AttributeSet?, style: 
             field = value
             ImageViewCompat.setImageTintList(
                 this,
-                ColorStateList.valueOf(if (field) contrastAccentWithBg else textColorPrimary)
+                ColorStateList.valueOf(if (field) contrastAccentWithBg else dynamicTextColorPrimary)
             )
         }
 

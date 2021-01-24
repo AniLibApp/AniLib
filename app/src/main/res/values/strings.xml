@@ -483,6 +483,11 @@
     <string name="open_manga_list">Open Manga List</string>
     <string name="open_anime_list">Open Anime List</string>
     <string name="open_radio">Open Radio</string>
+    <string name="weekly">Weekly</string>
+    <string name="day_range_string">%1$s - %2$s</string>
+    <string name="date_range_from">from</string>
+    <string name="date_range_to">To</string>
+    <string name="select_days_within_a_week">Select range of days within a week</string>
 
 
 </resources>

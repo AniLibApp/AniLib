@@ -45,9 +45,6 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     private val isSectionEnabled: Boolean
         get() = isHomeOrderEnabled(requireContext(), HomeOrderType.AIRING)
 
-    private var sectionVisibleToUser = false
-
-
     private val onDaySelectListener = object : TabLayout.OnTabSelectedListener {
         override fun onTabSelected(tab: TabLayout.Tab?) {
             if (tab == null || tab.position == viewModel.selectedDay) {
@@ -93,15 +90,6 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (isSectionEnabled) {
-            if (!sectionVisibleToUser) {
-                invalidateAdapter()
-            }
-            sectionVisibleToUser = true
-        }
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -110,16 +98,20 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
             airingBinding.dslWeekTabLayout.addOnTabSelectedListener(onDaySelectListener)
             airingBinding.dslWeekTabLayout.getTabAt(viewModel.selectedDay)?.select()
 
+
+            if (requireContext().loggedIn()) {
+                with(viewModel.field) {
+                    userId = requireContext().userId()
+                }
+            }
+
             if (savedInstanceState == null) {
                 viewModel.updateField(requireContext())
-                if (requireContext().loggedIn()) {
-                    with(viewModel.field) {
-                        userName = requireContext().userName()
-                        userId = requireContext().userId()
-                    }
-                }
                 viewModel.createSource()
             }
+
+            invalidateAdapter()
+
         }
     }
 

@@ -18,6 +18,7 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
+
     <style name="ExpandedTitleAppearance" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@android:color/transparent</item>
         <item name="android:visibility">gone</item>

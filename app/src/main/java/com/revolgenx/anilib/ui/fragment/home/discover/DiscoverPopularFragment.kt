@@ -43,17 +43,6 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
         get() = isHomeOrderEnabled(requireContext(), HomeOrderType.POPULAR)
 
 
-    private var sectionVisibleToUser = false
-
-    override fun onResume() {
-        super.onResume()
-        if (isSectionEnabled) {
-            if (!sectionVisibleToUser) {
-                invalidateAdapter()
-            }
-            sectionVisibleToUser = true
-        }
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -92,6 +81,8 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
                 viewModel.field = PopularMediaField.create(requireContext()).also {
                     it.sort = MediaSort.POPULARITY_DESC.ordinal
                 }
+
+            invalidateAdapter()
         }
         super.onActivityCreated(savedInstanceState)
     }

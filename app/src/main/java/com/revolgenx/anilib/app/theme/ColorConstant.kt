@@ -5,8 +5,15 @@ import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 
 val dynamicTheme get() = DynamicTheme.getInstance().get()
 
-val contrastAccentWithBg by lazy {
-    DynamicColorUtils.getContrastColor(dynamicTheme.accentColor, dynamicTheme.backgroundColor)
-}
+val contrastAccentWithBg get() =
+    DynamicColorUtils.getContrastColor(dynamicAccentColor, dynamicTheme.backgroundColor)
 
-val textColorPrimary get() = dynamicTheme.textPrimaryColor
+val contrastPrimaryTextColorWithAccent
+    get() = DynamicColorUtils.getContrastColor(
+        dynamicTextColorPrimary, dynamicAccentColor
+    )
+
+val dynamicTextColorPrimary get() = dynamicTheme.textPrimaryColor
+val dynamicTextColorPrimaryInverse get() = dynamicTheme.textPrimaryColorInverse
+val dynamicPrimaryColor get() = dynamicTheme.primaryColor
+val dynamicAccentColor get() = dynamicTheme.accentColor

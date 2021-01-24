@@ -7,14 +7,11 @@ import android.widget.RelativeLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.setPadding
 import androidx.core.widget.doOnTextChanged
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicEditText
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.ThemeController
-import com.revolgenx.anilib.app.theme.textColorPrimary
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.util.dp
 
 //todo add min max filter
@@ -71,7 +68,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
             }
             this.setPadding(DynamicUnitUtils.convertDpToPixels(10f))
             setImageResource(R.drawable.ic_plus)
-            this.color = textColorPrimary
+            this.color = dynamicTextColorPrimary
         }
     }
     private val dynamicDecrementIv by lazy {
@@ -86,7 +83,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
             }
             this.setPadding(DynamicUnitUtils.convertDpToPixels(10f))
             setImageResource(R.drawable.ic_minus)
-            this.color = textColorPrimary
+            this.color = dynamicTextColorPrimary
         }
     }
 
