@@ -85,7 +85,6 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
         if (requireContext().loggedIn() && isSectionEnabled) {
             dRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            invalidateAdapter()
         }
     }
 
@@ -113,6 +112,8 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
                     }
                 }
             }
+
+            invalidateAdapter()
         } else {
             super.onActivityCreated(savedInstanceState)
         }

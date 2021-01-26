@@ -83,8 +83,6 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
         if (requireContext().loggedIn() && isSectionEnabled) {
             watchingRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-            invalidateAdapter()
         }
     }
 
@@ -96,7 +94,6 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (requireContext().loggedIn() && isSectionEnabled) {
-
             if (savedInstanceState == null) {
                 viewModel.field.also { field ->
                     field.userId = requireContext().userId()
@@ -105,6 +102,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
                     field.sort = getDiscoverMediaListSort(requireContext(), field.type!!)
                 }
             }
+
             super.onActivityCreated(savedInstanceState)
 
             if (savedInstanceState != null) {
@@ -114,6 +112,9 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
                     }
                 }
             }
+
+
+            invalidateAdapter()
         }
         else{
             super.onActivityCreated(savedInstanceState)
