@@ -11,6 +11,7 @@ class AiringMediaField : BaseSourceUserField<AiringScheduleQuery>() {
     var airingGreaterThan: Int? = null
     var airingLessThan: Int? = null
     var sort: Int? = null
+    var sorts: List<Int>? = null
 
     var showFromPlanning: Boolean = false
     var showFromWatching: Boolean = false
@@ -21,8 +22,11 @@ class AiringMediaField : BaseSourceUserField<AiringScheduleQuery>() {
 
     var mediaListIds: List<Int>? = null
 
-    val dataChanged get() = 
-        showFromPlanning != showFromPlanningOld || showFromWatching != showFromWatchingOld
+    var isWeeklyTypeDate: Boolean = false
+
+    val dataChanged
+        get() =
+            showFromPlanning != showFromPlanningOld || showFromWatching != showFromWatchingOld
 
     val mediaListStatus
         get() = mutableListOf<Int>().also {
@@ -38,7 +42,6 @@ class AiringMediaField : BaseSourceUserField<AiringScheduleQuery>() {
         return AiringScheduleQuery.builder()
             .page(page)
             .perPage(perPage)
-
             .apply {
                 airingGreaterThan?.let {
                     airingAtGreater(it)
@@ -50,14 +53,22 @@ class AiringMediaField : BaseSourceUserField<AiringScheduleQuery>() {
                     notYetAired(notYetAired)
                 }
 
-                if(showFromWatching || showFromPlanning){
+                if (showFromWatching || showFromPlanning) {
                     mediaListIds?.let {
                         mediaId_in(it)
                     }
                 }
 
-                sort?.let {
-                    sort(listOf(AiringSort.values()[it]))
+                if (isWeeklyTypeDate) {
+                    if (sort != null) {
+                        sort(listOf(AiringSort.TIME, AiringSort.values()[sort!!]))
+                    } else {
+                        sort(listOf(AiringSort.TIME))
+                    }
+                } else {
+                    sort?.let {
+                        sort(listOf(AiringSort.values()[it]))
+                    }
                 }
             }
             .build()

@@ -3,8 +3,9 @@ package com.revolgenx.anilib.infrastructure.service.airing
 import android.os.Handler
 import com.revolgenx.anilib.data.field.home.AiringMediaField
 import com.revolgenx.anilib.data.field.list.MediaListCollectionIdsField
-import com.revolgenx.anilib.data.model.AiringTime
-import com.revolgenx.anilib.data.model.AiringTimeModel
+import com.revolgenx.anilib.data.model.airing.AiringAtModel
+import com.revolgenx.anilib.data.model.airing.TimeUntilAiringModel
+import com.revolgenx.anilib.data.model.airing.AiringTimeModel
 import com.revolgenx.anilib.data.model.airing.AiringMediaModel
 import com.revolgenx.anilib.data.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
@@ -21,6 +22,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class AiringMediaServiceImpl(
     private val baseGraphRepository: BaseGraphRepository,
@@ -47,7 +51,7 @@ class AiringMediaServiceImpl(
                             field.isNewField = false
                             field.updateOldField()
                             field.mediaListIds = data
-                            getAiringMediaList(field,compositeDisposable, callback)
+                            getAiringMediaList(field, compositeDisposable, callback)
                         }
                         Status.ERROR -> {
                             callback.invoke(Resource.error(it.message ?: ERROR, null, it.exception))
@@ -57,13 +61,13 @@ class AiringMediaServiceImpl(
                         }
                     }
                 }
-            }else{
-                getAiringMediaList(field,compositeDisposable, callback)
+            } else {
+                getAiringMediaList(field, compositeDisposable, callback)
             }
             return
         }
 
-        getAiringMediaList(field,compositeDisposable, callback)
+        getAiringMediaList(field, compositeDisposable, callback)
 
     }
 
@@ -71,7 +75,7 @@ class AiringMediaServiceImpl(
         field: AiringMediaField,
         compositeDisposable: CompositeDisposable,
         callback: ((items: Resource<List<AiringMediaModel>>) -> Unit)
-    ){
+    ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Page()?.airingSchedules()
@@ -83,13 +87,22 @@ class AiringMediaServiceImpl(
                         AiringMediaModel().also { model ->
                             model.airingTimeModel = AiringTimeModel().also { airingTimeModel ->
                                 airingTimeModel.episode = it.episode()
-                                airingTimeModel.airingTime = AiringTime().also { ti ->
-                                    ti.time = it.timeUntilAiring().toLong()
-                                }
+                                airingTimeModel.timeUntilAiring =
+                                    TimeUntilAiringModel().also { ti ->
+                                        ti.time = it.timeUntilAiring().toLong()
+                                    }
+
+                                airingTimeModel.airingAt = AiringAtModel(
+                                    LocalDateTime.ofInstant(
+                                        Instant.ofEpochSecond(
+                                            it.airingAt().toLong()
+                                        ), ZoneOffset.UTC
+                                    )
+                                )
 
                                 CoroutineScope(Dispatchers.Main).launch {
                                     airingTimeModel.commonTimer =
-                                        CommonTimer(Handler(), airingTimeModel.airingTime!!)
+                                        CommonTimer(Handler(), airingTimeModel.timeUntilAiring!!)
                                 }
                             }
                             it.media()?.fragments()?.narrowMediaContent()?.mediaListEntry()?.let {
@@ -99,6 +112,7 @@ class AiringMediaServiceImpl(
                                 )
                             }
 
+
                             it.media()?.fragments()?.narrowMediaContent()?.getCommonMedia(model)
                         }
                     }
@@ -106,6 +120,7 @@ class AiringMediaServiceImpl(
             .subscribe({
                 callback.invoke(Resource.success(it ?: emptyList()))
             }, {
+                Timber.w(it)
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable.add(disposable)

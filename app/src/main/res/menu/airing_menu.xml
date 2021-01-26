@@ -5,12 +5,12 @@
         android:id="@+id/airing_previous"
         android:icon="@drawable/ic_angle_left"
         android:title="@string/previous"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/airing_next"
         android:icon="@drawable/ic_angle_right"
         android:title="@string/next"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/airing_custom"
         android:icon="@drawable/ic_calendar"
@@ -28,6 +28,12 @@
         android:checkable="true"
         android:icon="@drawable/ic_airing"
         android:title="@string/weekly"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/display_modes"
+        android:icon="@drawable/ic_eye"
+        android:title="@string/change_display_mode"
         app:showAsAction="never" />
 
 </menu>

@@ -1,12 +1,12 @@
 package com.revolgenx.anilib.util
 
 import android.os.Handler
-import com.revolgenx.anilib.data.model.AiringTime
+import com.revolgenx.anilib.data.model.airing.TimeUntilAiringModel
 
 
 typealias TimerCallback = (() -> Unit)?
 
-open class CommonTimer(var handler: Handler?, val airingTime: AiringTime) : Runnable {
+open class CommonTimer(var handler: Handler?, val timeUntilAiringModel: TimeUntilAiringModel) : Runnable {
 
     init {
         start()
@@ -23,9 +23,9 @@ open class CommonTimer(var handler: Handler?, val airingTime: AiringTime) : Runn
 
     override fun run() {
         if (handler == null) return
-        if (airingTime.time <= 0) return
+        if (timeUntilAiringModel.time <= 0) return
 
-        airingTime.time -= decreaseTimeBy
+        timeUntilAiringModel.time -= decreaseTimeBy
         timerCallback?.invoke()
         handler!!.postDelayed(this, commonRefreshTime)
     }
