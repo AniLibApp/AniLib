@@ -1,8 +1,8 @@
-package com.revolgenx.anilib.data.model
+package com.revolgenx.anilib.data.model.airing
 
 import java.util.concurrent.TimeUnit
 
-class AiringTime {
+class TimeUntilAiringModel {
     var time: Long = 0
         set(value) {
             field = value

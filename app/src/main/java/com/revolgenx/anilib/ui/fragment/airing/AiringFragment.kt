@@ -1,25 +1,32 @@
 package com.revolgenx.anilib.ui.fragment.airing
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.view.menu.MenuBuilder
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
+import com.otaliastudios.elements.extensions.HeaderSource
+import com.otaliastudios.elements.extensions.SimplePresenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.common.preference.*
-import com.revolgenx.anilib.common.preference.storeDiscoverAiringField
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.data.meta.AiringFilterMeta
+import com.revolgenx.anilib.constant.AiringListDisplayMode
 import com.revolgenx.anilib.data.model.airing.AiringMediaModel
 import com.revolgenx.anilib.databinding.AiringFragmentLayoutBinding
+import com.revolgenx.anilib.infrastructure.source.home.airing.AiringHeaderSource
 import com.revolgenx.anilib.ui.bottomsheet.airing.CalendarViewBottomSheetDialog
 import com.revolgenx.anilib.ui.dialog.AiringFragmentFilterDialog
 import com.revolgenx.anilib.ui.presenter.airing.AiringPresenter
+import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.viewmodel.airing.AiringViewModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -49,6 +56,40 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
     override fun onResume() {
         super.onResume()
         setHasOptionsMenu(true)
+    }
+
+
+    override fun reloadLayoutManager() {
+        var span =
+            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
+
+        when (getAiringDisplayMode()) {
+            AiringListDisplayMode.COMPACT -> {
+
+            }
+
+            AiringListDisplayMode.NORMAL-> {
+                span /= 2
+            }
+        }
+
+        layoutManager =
+            GridLayoutManager(
+                this.context,
+                span
+            ).also {
+                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (adapter?.getItemViewType(position) == 0) {
+                            1
+                        } else {
+                            span
+                        }
+                    }
+                }
+            }
+
+        super.reloadLayoutManager()
     }
 
     override fun onCreateView(
@@ -105,16 +146,13 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
             }
             R.id.airing_filter -> {
                 val airingDialog = AiringFragmentFilterDialog.newInstance()
-                airingDialog.onDoneListener = { meta ->
-                    viewModel.field.let {
-                        it.notYetAired = meta.notYetAired
-                        it.showFromWatching = meta.showFromWatching
-                        it.showFromPlanning = meta.showFromPlanning
-                        it.sort = meta.sort
+                airingDialog.onDoneListener = {
+                    if (context != null) {
+                        viewModel.updateField(requireContext())
+                        storeAiringField(requireContext(), viewModel.field)
+                        createSource()
+                        invalidateAdapter()
                     }
-                    storeAiringField(requireContext(), viewModel.field)
-                    createSource()
-                    invalidateAdapter()
                 }
                 airingDialog.show(
                     childFragmentManager,
@@ -129,6 +167,19 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
                 updateToolbarTitle()
                 createSource()
                 invalidateAdapter()
+                true
+            }
+
+            R.id.display_modes->{
+                makeArrayPopupMenu(
+                    requireView().findViewById(R.id.airing_previous),
+                    resources.getStringArray(R.array.airing_display_modes),
+                    selectedPosition = getAiringDisplayMode().ordinal
+                ) { _, _, index, _ ->
+                    setAiringDisplayMode(index)
+                    reloadLayoutManager()
+                    invalidateAdapter()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -147,14 +198,18 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
             }
 
             listener = { startDate, endDate ->
-                if(viewModel.isDateTypeRange){
-                    viewModel.startDateTime = startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MIN)
-                    endDate?.atTime(LocalTime.MAX)!!.atZone(ZoneOffset.UTC).with(LocalTime.MAX).let {
-                        viewModel.endDateTime = it
-                    }
-                }else{
-                    viewModel.startDateTime = startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MIN)
-                    viewModel.endDateTime = startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MAX)
+                if (viewModel.isDateTypeRange) {
+                    viewModel.startDateTime =
+                        startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MIN)
+                    endDate?.atTime(LocalTime.MAX)!!.atZone(ZoneOffset.UTC).with(LocalTime.MAX)
+                        .let {
+                            viewModel.endDateTime = it
+                        }
+                } else {
+                    viewModel.startDateTime =
+                        startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MIN)
+                    viewModel.endDateTime =
+                        startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MAX)
                 }
                 updateToolbarTitle()
                 createSource()
@@ -264,6 +319,24 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
             it.supportActionBar?.title = dayRangeString
             it.supportActionBar?.subtitle = dayDateRange
         }
+    }
+
+    override fun adapterBuilder(): Adapter.Builder {
+        val builder = super.adapterBuilder()
+
+        if (viewModel.isDateTypeRange) {
+            builder.addSource(AiringHeaderSource())
+            builder.addPresenter(
+                SimplePresenter<HeaderSource.Data<AiringMediaModel, String>>(
+                    requireContext(),
+                    R.layout.header_presenter_layout,
+                    HeaderSource.ELEMENT_TYPE
+                ) { v, header ->
+                    (v as TextView).text = header.header
+                })
+        }
+
+        return builder
     }
 
     override fun onDestroyView() {

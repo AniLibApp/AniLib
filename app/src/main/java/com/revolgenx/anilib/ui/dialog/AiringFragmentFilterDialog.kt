@@ -3,13 +3,12 @@ package com.revolgenx.anilib.ui.dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.getAiringField
-import com.revolgenx.anilib.common.preference.getDiscoverAiringField
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.common.preference.storeAiringField
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.data.meta.AiringFilterMeta
 import com.revolgenx.anilib.databinding.AiringFilterDialogLayoutBinding
@@ -22,35 +21,28 @@ class AiringFragmentFilterDialog : BaseDialogFragment<AiringFilterDialogLayoutBi
         }
     }
 
-    private val airingMeta by lazy {
-        getAiringField(requireContext()).let {
-            AiringFilterMeta(
-                it.notYetAired,
-                it.showFromWatching,
-                it.showFromPlanning,
-                it.sort
-            )
-        }
+    private val airingField by lazy {
+        getAiringField(requireContext())
     }
 
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
     override var titleRes: Int? = R.string.filter
 
-    var onDoneListener: ((meta: AiringFilterMeta) -> Unit)? = null
+    var onDoneListener: (() -> Unit)? = null
 
     override fun bindView(): AiringFilterDialogLayoutBinding {
         return AiringFilterDialogLayoutBinding.inflate(provideLayoutInflater())
     }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
-        binding.showAllAiringSwitch.isChecked = !airingMeta.notYetAired
+        binding.showAllAiringSwitch.isChecked = !airingField.notYetAired
 
         if (requireContext().loggedIn()) {
             binding.showFromWatchListSwitch.visibility = View.VISIBLE
             binding.showFromPlanningListSwitch.visibility = View.VISIBLE
-            binding.showFromPlanningListSwitch.isChecked = airingMeta.showFromPlanning
-            binding.showFromWatchListSwitch.isChecked = airingMeta.showFromWatching
+            binding.showFromPlanningListSwitch.isChecked = airingField.showFromPlanning
+            binding.showFromWatchListSwitch.isChecked = airingField.showFromWatching
         }
 
         binding.airingSortSpinner.adapter =
@@ -60,16 +52,17 @@ class AiringFragmentFilterDialog : BaseDialogFragment<AiringFilterDialogLayoutBi
                 )
             })
 
-        binding.airingSortSpinner.setSelection(airingMeta.sort!!)
+        binding.airingSortSpinner.setSelection(airingField.sort!!)
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
-        airingMeta.notYetAired = !binding.showAllAiringSwitch.isChecked
-        airingMeta.showFromPlanning = binding.showFromPlanningListSwitch.isChecked
-        airingMeta.showFromWatching = binding.showFromWatchListSwitch.isChecked
-        airingMeta.sort = binding.airingSortSpinner.selectedItemPosition
+        airingField.notYetAired = !binding.showAllAiringSwitch.isChecked
+        airingField.showFromPlanning = binding.showFromPlanningListSwitch.isChecked
+        airingField.showFromWatching = binding.showFromWatchListSwitch.isChecked
+        airingField.sort = binding.airingSortSpinner.selectedItemPosition
+        storeAiringField(requireContext(), airingField)
 
-        onDoneListener?.invoke(airingMeta)
+        onDoneListener?.invoke()
 
         super.onPositiveClicked(dialogInterface, which)
     }

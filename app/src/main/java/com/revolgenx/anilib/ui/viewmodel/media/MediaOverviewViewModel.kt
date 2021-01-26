@@ -35,7 +35,7 @@ class MediaOverviewViewModel(
         MediatorLiveData<Resource<MediaOverviewModel>>().apply {
             addSource(mediaBrowseService.mediaOverviewLiveData) { res ->
                 res.data?.airingTimeModel?.let {
-                    it.commonTimer = CommonTimer(handler, it.airingTime!!)
+                    it.commonTimer = CommonTimer(handler, it.timeUntilAiring!!)
                 }
                 this.value = res
             }

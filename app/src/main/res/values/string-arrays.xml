@@ -688,6 +688,11 @@
         <item>@string/minimal_list_mode</item>
     </string-array>
 
+    <string-array name="airing_display_modes">
+        <item>@string/compact_mode</item>
+        <item>@string/normal_mode</item>
+    </string-array>
+
     <string-array name="season_filter_entries">
         <item>@string/filter</item>
         <item>@string/genre</item>

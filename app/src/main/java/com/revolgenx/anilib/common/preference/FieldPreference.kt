@@ -3,6 +3,7 @@ package com.revolgenx.anilib.common.preference
 import android.content.Context
 import com.google.gson.Gson
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
+import com.revolgenx.anilib.constant.AiringListDisplayMode
 import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.data.field.home.*
@@ -86,6 +87,7 @@ const val DISCOVER_READING_SORT_KEY = "DISCOVER_READING_SORT_KEY"
 const val DISCOVER_WATCHING_SORT_KEY = "DISCOVER_WATCHING_SORT_KEY"
 
 const val MEDIA_LIST_GRID_PRESENTER_KEY = "MEDIA_LIST_GRID_PRESENTER_KEY"
+const val AIRING_DISPLAY_MODE_KEY = "AIRING_DISPLAY_MODE_KEY"
 
 const val SHOW_AIRING_WEEKLY_KEY = "SHOW_AIRING_WEEKLY_KEY"
 
@@ -102,6 +104,7 @@ fun getAiringField(context: Context) = AiringMediaField().apply {
     sort = context.getInt(AIRING_SORT_KEY, AiringSort.TIME.ordinal)
     showFromPlanning = context.getBoolean(AIRING_PLANNING_KEY, false)
     showFromWatching = context.getBoolean(AIRING_WATCHING_KEY, false)
+    isWeeklyTypeDate = showAiringWeekly(context)
 }
 
 
@@ -350,8 +353,17 @@ fun getMediaListGridPresenter(): MediaListDisplayMode {
         .load(MEDIA_LIST_GRID_PRESENTER_KEY, MediaListDisplayMode.NORMAL.ordinal)]
 }
 
+fun getAiringDisplayMode(): AiringListDisplayMode {
+    return AiringListDisplayMode.values()[DynamicPreferences.getInstance()
+        .load(AIRING_DISPLAY_MODE_KEY, AiringListDisplayMode.NORMAL.ordinal)]
+}
+
 fun setMediaListGridPresenter(which: Int) {
     return DynamicPreferences.getInstance().save(MEDIA_LIST_GRID_PRESENTER_KEY, which)
+}
+
+fun setAiringDisplayMode(which: Int) {
+    return DynamicPreferences.getInstance().save(AIRING_DISPLAY_MODE_KEY, which)
 }
 
 

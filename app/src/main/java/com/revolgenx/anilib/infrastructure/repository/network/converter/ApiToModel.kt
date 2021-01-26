@@ -2,6 +2,8 @@ package com.revolgenx.anilib.infrastructure.repository.network.converter
 
 import com.revolgenx.anilib.*
 import com.revolgenx.anilib.data.model.*
+import com.revolgenx.anilib.data.model.airing.AiringTimeModel
+import com.revolgenx.anilib.data.model.airing.TimeUntilAiringModel
 import com.revolgenx.anilib.data.model.entry.AdvancedScore
 import com.revolgenx.anilib.data.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
@@ -141,8 +143,8 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
         it.airingTimeModel = nextAiringEpisode()?.let {
             AiringTimeModel().also { model ->
                 model.episode = it.episode()
-                model.airingTime =
-                    AiringTime().also { ti -> ti.time = it.timeUntilAiring().toLong() }
+                model.timeUntilAiring =
+                    TimeUntilAiringModel().also { ti -> ti.time = it.timeUntilAiring().toLong() }
             }
         }
         it.relationship = relations()?.edges()?.pmap {

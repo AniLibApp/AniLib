@@ -2,6 +2,7 @@ package com.revolgenx.anilib.ui.viewmodel.airing
 
 import android.content.Context
 import com.revolgenx.anilib.common.preference.getAiringField
+import com.revolgenx.anilib.common.preference.showAiringWeekly
 import com.revolgenx.anilib.data.field.home.AiringMediaField
 import com.revolgenx.anilib.infrastructure.service.airing.AiringMediaService
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
@@ -83,8 +84,10 @@ class AiringViewModel(private val airingMediaService: AiringMediaService) :
     fun updateDateRange(rangeType: Boolean) {
         isDateTypeRange = rangeType
         if (isDateTypeRange) {
-            startDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(weekFields.dayOfWeek(), 1).with(LocalTime.MIN)
-            endDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(weekFields.dayOfWeek(), 7).with(LocalTime.MAX)
+            startDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(weekFields.dayOfWeek(), 1)
+                .with(LocalTime.MIN)
+            endDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(weekFields.dayOfWeek(), 7)
+                .with(LocalTime.MAX)
         } else {
             startDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(LocalTime.MIN)
             endDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(LocalTime.MAX)
@@ -103,6 +106,7 @@ class AiringViewModel(private val airingMediaService: AiringMediaService) :
             field.sort = it.sort
             field.showFromPlanning = it.showFromPlanning
             field.showFromWatching = it.showFromWatching
+            field.isWeeklyTypeDate = showAiringWeekly(context)
         }
     }
 }

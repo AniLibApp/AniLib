@@ -58,7 +58,7 @@ class CalendarViewBottomSheetDialog :
     override val negativeText: Int = R.string.cancel
 
     override val title: Int?
-        get() = if(selectionMode == SelectionMode.RANGE) R.string.select_days_within_a_week else R.string.select_date
+        get() = if (selectionMode == SelectionMode.RANGE) R.string.select_days_within_a_week else R.string.select_date
 
     private val fullDate = DateTimeFormatter.ofPattern("d MMM yyyy")
     private val dateRangeStartNoMonth = DateTimeFormatter.ofPattern("d")
@@ -127,7 +127,6 @@ class CalendarViewBottomSheetDialog :
             false
         )
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -207,7 +206,6 @@ class CalendarViewBottomSheetDialog :
             insetDp
         )
     }
-
 
 
     private fun CalendarViewBottomSheetLayoutBinding.setupSwitchViews() {
@@ -328,7 +326,6 @@ class CalendarViewBottomSheetDialog :
 
         setupMonthScrollListener()
     }
-
 
 
     private fun setupMonthScrollListener() {
@@ -456,6 +453,7 @@ class CalendarViewBottomSheetDialog :
                     container.binding.shape.background =
                         getSelectionShapeStartTransitionDrawable(it)
                 }, {
+                    if (context == null) return@animValues
                     container.binding.shape.fadeIn()
                     container.binding.day.setTextAppearance(
                         requireContext(),
@@ -566,7 +564,6 @@ class CalendarViewBottomSheetDialog :
     }
 
 
-
     private fun switchToMonthsView() {
         calendarViewActive = false
         with(binding) {
@@ -641,6 +638,7 @@ class CalendarViewBottomSheetDialog :
             monthsRecyclerView.visibility = View.GONE
         }
     }
+
     private fun setCurrentDateText(date: LocalDate?) {
         with(binding) {
             dateSelected.text = date?.let { fullDate.format(date) } ?: "Select date"
@@ -709,7 +707,10 @@ class CalendarViewBottomSheetDialog :
 
 
     /** Build and show [CalendarViewBottomSheetDialog] directly. */
-    fun show(ctx: Context, func: CalendarViewBottomSheetDialog.() -> Unit): CalendarViewBottomSheetDialog {
+    fun show(
+        ctx: Context,
+        func: CalendarViewBottomSheetDialog.() -> Unit
+    ): CalendarViewBottomSheetDialog {
         this.windowContext = ctx
         this.func()
         this.show()
