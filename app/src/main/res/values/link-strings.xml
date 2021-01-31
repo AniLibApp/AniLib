@@ -6,4 +6,5 @@
     <string name="playstore" translatable="false">https://play.google.com/store/apps/details?id=com.revolgenx.anilib</string>
     <string name="github_link" translatable="false">https://github.com/rev0lgenX/AniLib</string>
     <string name="discord_invite_link" translatable="false">https://discord.gg/Gd2TVQT</string>
+    <string name="translate_link" translatable="false">https://github.com/rev0lgenX/AniLib-Localization</string>
 </resources>

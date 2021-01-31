@@ -18,7 +18,7 @@
     <string name="settings">"Impostazioni"</string>
     <string name="account">"Account"</string>
     <string name="sign_in">"Accesso"</string>
-    <string name="dynamic_theme">"Tema Dinamico"</string>
+    <string name="theme">"Tema"</string>
     <string name="notification">"Notifiche"</string>
     <string name="notification_setting_sub">"Impostazione barra delle notifiche(Login richiesto)"</string>
     <string name="sign_out">"Esci"</string>
@@ -135,7 +135,7 @@
     <string name="none">"Nessuno"</string>
     <string name="repeating">"Ripeti"</string>
     <string name="spoiler_alert">"Allerta Spoiler"</string>
-    <string name="error">"Caricamento non Riuscito"</string>
+    <string name="failed_to_load">"Caricamento non Riuscito"</string>
     <string name="follower">"Follower"</string>
     <string name="following">"Segui"</string>
     <string name="blocked">"Blocca"</string>
@@ -212,7 +212,6 @@
     <string name="notification_setting">"Impostazioni Notifiche"</string>
     <string name="refresh_interval">"Intervallo Aggiornamento"</string>
     <string name="notifications">"Notifiche"</string>
-    <string name="check_which_notif_to_show">"Avvisami quando."</string>
     <string name="when_someone_follows_me">"Qualcuno mi segue"</string>
     <string name="receive_message_notif">"Ricevo un messaggio"</string>
     <string name="mention_replay_notif">"Sono @ menzionato in unattività o ricevo una risposta attività."</string>

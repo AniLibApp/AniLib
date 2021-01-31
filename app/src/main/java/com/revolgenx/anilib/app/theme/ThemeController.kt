@@ -94,9 +94,9 @@ object ThemeController {
     @StyleRes
     private fun getAppStyle(@ColorInt color: Int): Int {
         return if (DynamicColorUtils.isColorDark(color))
-            R.style.BaseTheme
+            R.style.AppTheme
         else
-            R.style.BaseTheme_Dark
+            R.style.AppTheme_Dark
     }
 
     /**

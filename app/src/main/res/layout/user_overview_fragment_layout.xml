@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="6dp"
+        android:orientation="vertical">
+
+
+        <include
+            android:id="@+id/resource_status_layout"
+            layout="@layout/resource_status_container_layout" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/profile_overview_margin"
+            android:text="@string/about"
+            android:textSize="18sp"
+            app:fontFamily="@font/cabin_bold" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            android:id="@+id/load_bio_card_vew"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp">
+
+            <com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/load_bio"
+                android:paddingStart="10dp"
+                android:textSize="16sp"
+                android:paddingEnd="10dp"/>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+        <com.revolgenx.anilib.ui.view.MaxHeightFrameLayout
+            android:id="@+id/about_container_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:nestedScrollingEnabled="true">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="true">
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/user_about_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ads_rtlSupport="false" />
+            </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
+
+        </com.revolgenx.anilib.ui.view.MaxHeightFrameLayout>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/profile_overview_margin"
+            android:layout_marginTop="10dp"
+            android:text="@string/overview"
+            android:textSize="18sp"
+            app:fontFamily="@font/cabin_bold" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            style="@style/Widget.DynamicApp.Card.Clickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:ads_cardElevation="1dp">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                        android:id="@+id/episodes_watched_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:ads_fillSpace="true"
+                        app:ads_subtitle="@string/episodes_watched"
+                        app:ads_title="0"
+                        app:subtitleTextSize="@dimen/profile_stats_subtitle_size"
+                        app:titleAlignCenter="true" />
+
+                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                        android:id="@+id/days_watched_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:ads_fillSpace="true"
+                        app:ads_subtitle="@string/days_watched"
+                        app:ads_title="0"
+                        app:subtitleTextSize="@dimen/profile_stats_subtitle_size"
+                        app:titleAlignCenter="true" />
+                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                        android:id="@+id/anime_mean_score_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:ads_fillSpace="true"
+                        app:ads_subtitle="@string/mean_score"
+                        app:ads_title="0"
+                        app:subtitleTextSize="@dimen/profile_stats_subtitle_size"
+                        app:titleAlignCenter="true" />
+                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            style="@style/Widget.DynamicApp.Card.Clickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:ads_cardElevation="1dp">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                        android:id="@+id/volume_read_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:ads_fillSpace="true"
+                        app:ads_subtitle="@string/volumes_read"
+                        app:ads_title="0"
+                        app:subtitleTextSize="@dimen/profile_stats_subtitle_size"
+                        app:titleAlignCenter="true" />
+
+                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                        android:id="@+id/chapters_read_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:ads_fillSpace="true"
+                        app:ads_subtitle="@string/chapters_read"
+                        app:ads_title="0"
+                        app:subtitleTextSize="@dimen/profile_stats_subtitle_size"
+                        app:titleAlignCenter="true" />
+                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                        android:id="@+id/manga_mean_score_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:ads_fillSpace="true"
+                        app:ads_subtitle="@string/mean_score"
+                        app:ads_title="0"
+                        app:subtitleTextSize="@dimen/profile_stats_subtitle_size"
+                        app:titleAlignCenter="true" />
+                </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/profile_overview_margin"
+            android:text="@string/genre"
+            android:textSize="18sp"
+            app:fontFamily="@font/cabin_bold" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            style="@style/Widget.DynamicApp.Card.Clickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:ads_cardElevation="1dp">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                android:id="@+id/tag_genre_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

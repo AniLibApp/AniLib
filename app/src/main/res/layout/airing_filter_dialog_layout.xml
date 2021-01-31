@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+        android:id="@+id/show_all_airing_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/include_already_aired" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+        android:id="@+id/show_from_watch_list_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:visibility="gone"
+        android:text="@string/show_only_from_your_watching_list" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+        android:id="@+id/show_from_planning_list_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:visibility="gone"
+        android:text="@string/show_only_from_your_planning_list" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+        android:id="@+id/airing_sort_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -19,6 +19,8 @@ object PatternConstant{
     const val MEDIA_INTENT_PATTERN = "https:\\/\\/(?:www.)?anilist.co\\/(anime|manga)\\/(\\d+)(?:\\/.+)?"
 }
 
-enum class  DisplayMode{
-    COMPACT, NORMAL, CARD
+
+object UserConstant{
+    const val USER_META_KEY = "USER_META_KEY"
+    const val USER_STATS_META_KEY = "USER_STATS_META_KEY"
 }

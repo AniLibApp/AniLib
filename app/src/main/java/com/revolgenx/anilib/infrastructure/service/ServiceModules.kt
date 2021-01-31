@@ -13,6 +13,8 @@ import com.revolgenx.anilib.infrastructure.service.recommendation.Recommendation
 import com.revolgenx.anilib.infrastructure.service.recommendation.RecommendationServiceImpl
 import com.revolgenx.anilib.infrastructure.service.review.ReviewService
 import com.revolgenx.anilib.infrastructure.service.review.ReviewServiceImpl
+import com.revolgenx.anilib.infrastructure.service.setting.SettingService
+import com.revolgenx.anilib.infrastructure.service.setting.SettingServiceImpl
 import com.revolgenx.anilib.infrastructure.service.staff.StaffService
 import com.revolgenx.anilib.infrastructure.service.staff.StaffServiceImpl
 import com.revolgenx.anilib.infrastructure.service.studio.StudioService
@@ -36,7 +38,8 @@ val serviceModule = module {
     factory<UserService> { UserServiceImpl(get()) }
     factory<UserStatsService> { UserStatsServiceImpl(get()) }
     factory<NotificationService> { NotificationServiceImpl(get()) }
-    factory<AiringMediaService> { AiringMediaServiceImpl(get()) }
+    factory<AiringMediaService> { AiringMediaServiceImpl(get(), get()) }
     factory<MediaService> { MediaServiceImpl(get()) }
     factory<ReviewService> { ReviewServiceImpl(get()) }
+    factory<SettingService> { SettingServiceImpl(get()) }
 }

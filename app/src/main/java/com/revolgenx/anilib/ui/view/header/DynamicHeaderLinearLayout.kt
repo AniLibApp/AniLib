@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.core.view.setPadding
 import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.util.dp
 
@@ -29,6 +30,8 @@ class DynamicHeaderLinearLayout(context: Context, attributeSet: AttributeSet?, d
                 LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             textSize = 11f
             this.setPadding(dp(5f))
+            colorType = Theme.ColorType.ACCENT
+            contrastWithColorType = Theme.ColorType.BACKGROUND
         }
         addView(headerTextView)
 

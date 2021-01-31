@@ -8,9 +8,9 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.field.TagField
 import com.revolgenx.anilib.data.field.TagState
+import com.revolgenx.anilib.databinding.TagHolderLayoutBinding
 import com.revolgenx.anilib.ui.view.TriStateCheckState
 import com.revolgenx.anilib.ui.view.TriStateMode
-import kotlinx.android.synthetic.main.tag_holder_layout.view.*
 
 class TagAdapter(private val tagMode: TriStateMode) : RecyclerView.Adapter<TagAdapter.TagHolder>() {
     private val textColor =
@@ -20,11 +20,7 @@ class TagAdapter(private val tagMode: TriStateMode) : RecyclerView.Adapter<TagAd
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagHolder {
         return TagHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.tag_holder_layout,
-                parent,
-                false
-            )
+            TagHolderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
@@ -49,9 +45,10 @@ class TagAdapter(private val tagMode: TriStateMode) : RecyclerView.Adapter<TagAd
         notifyDataSetChanged()
     }
 
-    inner class TagHolder(v: View) : RecyclerView.ViewHolder(v) {
+    inner class TagHolder(private val v: TagHolderLayoutBinding) :
+        RecyclerView.ViewHolder(v.root) {
         fun bind(item: TagField) {
-            itemView.apply {
+            v.apply {
                 tagCheckBox.triStateMode = tagMode
                 tagCheckBox.setStateChangeListener { state ->
                     item.tagState = TagState.values()[state.ordinal]

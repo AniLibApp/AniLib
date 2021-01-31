@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar_layout"
+        android:id="@+id/toolbar_activity_toolbar"/>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
         android:id="@+id/containerFrameLayout"

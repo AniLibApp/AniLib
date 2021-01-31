@@ -11,29 +11,23 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
-import com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout
 import com.revolgenx.anilib.R
-import kotlinx.android.synthetic.main.base_presenter_fragment_layout.view.*
+import com.revolgenx.anilib.databinding.BasePresenterFragmentLayoutBinding
 
 
 /**
  * BasePresenter class contains @property baseRecyclerView @property layoutManager
  *
  * */
-abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment() {
+abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment<BasePresenterFragmentLayoutBinding>() {
     abstract val basePresenter: Presenter<M>
     abstract val baseSource: Source<M>
 
-    var visibleToUser = false
 
     var adapter: Adapter? = null
 
-    override val layoutRes: Int = R.layout.base_presenter_fragment_layout
-
     protected open val loadingPresenter: Presenter<Unit>
-        get() = Presenter.forLoadingIndicator(
-            requireContext(), R.layout.loading_layout
-        )
+        get() = Presenter.forLoadingIndicator(requireContext(), R.layout.loading_layout)
 
     private val errorPresenter: Presenter<Unit> by lazy {
         Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
@@ -43,40 +37,34 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment() {
         Presenter.forEmptyIndicator(requireContext(), R.layout.empty_layout)
     }
 
-    lateinit var baseRecyclerView: RecyclerView
-    lateinit var baseSwipeRefreshLayout: DynamicSwipeRefreshLayout
+    val baseRecyclerView get() = binding.basePresenterRecyclerView
+    val baseSwipeRefreshLayout get() = binding.baseSwipeToRefresh
+
     lateinit var layoutManager: RecyclerView.LayoutManager
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val v = super.onCreateView(inflater, container, savedInstanceState)
-        baseRecyclerView = v.base_presenter_recycler_view
-        baseSwipeRefreshLayout = v.base_swipe_to_refresh
-        return v
+    open protected var gridMinSpan = 1
+    open protected var gridMaxSpan = 2
+
+    var span: Int = 0
+
+    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?): BasePresenterFragmentLayoutBinding {
+        return BasePresenterFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val span =
-            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
-        layoutManager =
-            GridLayoutManager(
-                this.context,
-                span
-            ).also {
-                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.getItemViewType(position) == 0) {
-                            1
-                        } else {
-                            span
-                        }
+        span = if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) gridMaxSpan else gridMinSpan
+        layoutManager = GridLayoutManager(this.context, span).also {
+            it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (adapter?.getItemViewType(position) == 0) {
+                        1
+                    } else {
+                        span
                     }
                 }
             }
+        }
 
     }
 
@@ -99,8 +87,7 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!visibleToUser)
-            invalidateAdapter()
+        if (!visibleToUser) invalidateAdapter()
         visibleToUser = true
     }
 
@@ -113,14 +100,11 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment() {
 
     /** call this method to load into recyclerview*/
     protected fun invalidateAdapter() {
-        adapter = Adapter.builder(this, 10)
-            .setPager(PageSizePager(10))
-            .addSource(baseSource)
-            .addPresenter(basePresenter)
-            .addPresenter(loadingPresenter)
-            .addPresenter(errorPresenter)
-            .addPresenter(emptyPresenter)
-            .into(baseRecyclerView)
+        adapter = adapterBuilder().into(baseRecyclerView)
+    }
+
+    protected open fun adapterBuilder(): Adapter.Builder {
+        return Adapter.builder(this, 10).setPager(PageSizePager(10)).addSource(baseSource).addPresenter(basePresenter).addPresenter(loadingPresenter).addPresenter(errorPresenter).addPresenter(emptyPresenter)
     }
 
 }

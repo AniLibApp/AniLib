@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.recyclerview.DynamicRecyclerViewNested android:id="@+id/recyclerViewFrame"
+<com.pranavpandey.android.dynamic.support.recyclerview.DynamicRecyclerViewNested xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recyclerViewFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:paddingStart="10dp"
-    android:paddingEnd="10dp"/>
+    android:paddingEnd="10dp" />
 
 

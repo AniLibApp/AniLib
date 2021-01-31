@@ -12,3 +12,5 @@ abstract class BaseEvent {
             EventBus.getDefault().postSticky(this)
         }
 }
+
+class AuthenticateEvent():BaseEvent()

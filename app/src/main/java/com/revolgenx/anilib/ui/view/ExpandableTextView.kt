@@ -20,7 +20,7 @@ class ExpandableTextView(context: Context, attributeSet: AttributeSet?, style: I
 
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
         color = DynamicTheme.getInstance().get().tintSurfaceColor
-        typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
+        typeface = ResourcesCompat.getFont(context, R.font.cabin_regular)
         movementMethod = LinkMovementMethod.getInstance()
     }
 

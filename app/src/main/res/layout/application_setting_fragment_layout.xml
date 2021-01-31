@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/themeItemView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_style"
+            app:ads_subtitle="@string/dynamically_apply_theme"
+            app:ads_title="@string/theme" />
+
+
+        <com.revolgenx.anilib.ui.view.preference.AniLibSpinnerPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:ads_description="@string/preferred_application_language"
+            app:ads_entries="@array/application_language_entries"
+            app:ads_icon="@drawable/ic_language"
+            app:ads_key="@string/application_language_key"
+            app:ads_title="@string/application_language"
+            app:ads_value="0"
+            app:ads_values="@array/application_language_values" />
+
+
+        <include layout="@layout/divider_layout" />
+
+
+        <com.revolgenx.anilib.ui.view.preference.AniLibSpinnerPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:ads_description="@string/preferred_image_quality_desc"
+            app:ads_entries="@array/image_entries"
+            app:ads_icon="@drawable/ic_image"
+            app:ads_key="image_quality_key"
+            app:ads_title="@string/cover_image_quality"
+            app:ads_value="0"
+            app:ads_values="@array/image_values" />
+
+        <com.revolgenx.anilib.ui.view.preference.AniLibSpinnerPreference
+            android:id="@+id/media_title_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:ads_description="@string/preferred_media_title"
+            app:ads_entries="@array/media_title_entries"
+            app:ads_icon="@drawable/ic_title"
+            app:ads_key="title_key"
+            app:ads_title="@string/media_title"
+            app:ads_value="0"
+            app:ads_values="@array/media_title_values" />
+
+        <include layout="@layout/divider_layout" />
+
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/start_up_page_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_navigation"
+            app:ads_subtitle="@string/start_nav_page_desc"
+            app:ads_title="@string/startup_page" />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/home_screen_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ads_ic_sort"
+            app:ads_subtitle="@string/home_screen_order_desc"
+            app:ads_title="@string/home_screen_order" />
+
+        <com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_description="@string/display_card_in_home_desc"
+            app:ads_icon="@drawable/ic_checkbox_intermediate"
+            app:ads_key="pref_display_card_in_home"
+            app:ads_title="@string/display_home_screen_cards" />
+
+        <include layout="@layout/divider_layout" />
+
+        <com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_description="@string/load_bio_desc"
+            app:ads_icon="@drawable/ads_ic_info"
+            app:ads_key="load_bio_by_default"
+            app:ads_checked="false"
+            app:ads_title="@string/load_user_bio" />
+
+
+    </LinearLayout>
+
+
+</androidx.core.widget.NestedScrollView>

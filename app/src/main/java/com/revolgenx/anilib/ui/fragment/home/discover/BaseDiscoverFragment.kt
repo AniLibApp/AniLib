@@ -5,31 +5,33 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
-import com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.ui.dialog.MediaFilterDialog
 import com.revolgenx.anilib.ui.dialog.DiscoverMediaListFilterDialog
-import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
-import com.revolgenx.anilib.ui.view.DynamicBackgroundView
+import com.revolgenx.anilib.databinding.DiscoverFragmentLayoutBinding
+import com.revolgenx.anilib.ui.bottomsheet.discover.MediaFilterBottomSheetFragment
+import com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
 import com.revolgenx.anilib.util.dp
-import kotlinx.android.synthetic.main.discover_fragment_layout.view.*
 
-abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
+abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutBinding>(),
+    BaseDiscoverHelper {
 
-    protected lateinit var discoverLayout: ViewGroup
+    protected val discoverLayout: ViewGroup get() = binding.discoverLinearLayout
     protected lateinit var garlandLayout: View
 
     protected val loadingPresenter: Presenter<Unit>
@@ -54,56 +56,66 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
         }
 
     companion object {
-        const val MEDIA_TRENDING_TAG = "MEDIA_TRENDING_TAG"
-        const val MEDIA_POPULAR_TAG = "MEDIA_POPULAR_TAG"
-        const val NEWLY_ADDED_TAG = "NEWLY_ADDED_TAG"
         const val MEDIA_LIST_WATCHING_TAG = "MEDIA_LIST_WATCHING_TAG"
         const val MEDIA_LIST_READING_TAG = "MEDIA_LIST_READING_TAG"
     }
 
     protected val orderedViewList = mutableListOf<OrderedViewModel>()
 
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): DiscoverFragmentLayoutBinding {
+        return DiscoverFragmentLayoutBinding.inflate(inflater, parent, false)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.discover_fragment_layout, container, false)
-        discoverLayout = v.discoverLinearLayout
+    ): View {
+        val v = super.onCreateView(inflater, container, savedInstanceState)
 
         orderedViewList.sortBy { it.order }
         orderedViewList.forEach {
-            addView(it.oView, it.title, it.showSetting, it.onClick)
+            addView(it.oView, it.title, it.showSetting, it.icon, onClick = it.onClick)
         }
         orderedViewList.clear()
         return v
     }
 
+
     override fun addView(
-        view: View,
+        discoverChildView: View,
         title: String,
         showSetting: Boolean,
+        @DrawableRes icon: Int?,
         onClick: ((which: Int) -> Unit)?
     ) {
-        val constraintLayout = ConstraintLayout(requireContext()).also {
+
+        val garlandLinearLayout = LinearLayout(requireContext()).also {
             it.id = R.id.garlandConstraintLayout
             it.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
+            it.orientation = LinearLayout.VERTICAL
+            it.clipChildren = false
         }
 
-        val garlandStickView = DynamicBackgroundView(requireContext()).also {
-            it.id = R.id.garlandStickView
-            it.layoutParams =
-                ConstraintLayout.LayoutParams(
-                    dp(4f),
-                    0
-                )
-            it.setPadding(0,dp(2f),0,dp(2f))
+
+        val topGarlandLayout = ConstraintLayout(requireContext()).also {
+            it.id = R.id.garlandConstraintLayout
+            it.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                dp(52f)
+            ).also { params->
+                params.topMargin = dp(6f)
+                params.bottomMargin = dp(6f)
+            }
         }
 
-        val garlandTextView = DynamicTextView(requireContext()).also {
+        val garlandTextView = DynamicDrawableTextView(requireContext()).also {
             it.id = R.id.garlandTitleTv
             it.layoutParams =
                 ConstraintLayout.LayoutParams(
@@ -111,27 +123,103 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
             it.textSize = 16f
-            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.berlinrounded_extra_bold)
-            it.setPadding(dp(10f))
+            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.cabin_semi_bold)
+            it.setDrawables(
+                icon,
+                R.drawable.ic_angle_right
+            )
+            it.compoundDrawablePadding = dp(6f)
             it.gravity = Gravity.CENTER_VERTICAL
         }
 
+
         val garlandSettingIv = DynamicImageView(requireContext()).also {
             it.id = R.id.garlandSettingIv
-            it.layoutParams = ViewGroup.LayoutParams(0, 0)
-            it.setImageResource(R.drawable.ic_button_setting)
-            it.colorType = Theme.ColorType.TINT_SURFACE
-            it.setPadding(dp(8f))
+            it.layoutParams = ViewGroup.LayoutParams(dp(48f), dp(48f))
+            it.setImageResource(R.drawable.ic_filter)
+            it.setPadding(dp(12f))
+            it.colorType = Theme.ColorType.TEXT_PRIMARY
             it.visibility = View.GONE
+            it.setBackgroundResource(R.drawable.ads_button_remote)
         }
 
-        val garlandContainer = DynamicFrameLayout(requireContext()).also {
-            it.id = R.id.gralandFrameContainer
-            it.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-        }
+        topGarlandLayout.addView(garlandTextView)
+        topGarlandLayout.addView(garlandSettingIv)
+
+
+        val topGarlandConstraintSet = ConstraintSet()
+        topGarlandConstraintSet.clone(topGarlandLayout)
+
+
+        topGarlandConstraintSet.connect(
+            garlandTextView.id,
+            ConstraintSet.START,
+            topGarlandLayout.id,
+            ConstraintSet.START,
+            dp(10f)
+        )
+
+        topGarlandConstraintSet.connect(
+            garlandTextView.id,
+            ConstraintSet.TOP,
+            topGarlandLayout.id,
+            ConstraintSet.TOP,
+            0
+        )
+        topGarlandConstraintSet.connect(
+            garlandTextView.id,
+            ConstraintSet.BOTTOM,
+            topGarlandLayout.id,
+            ConstraintSet.BOTTOM,
+            0
+        )
+
+        topGarlandConstraintSet.connect(
+            garlandTextView.id,
+            ConstraintSet.END,
+            garlandSettingIv.id,
+            ConstraintSet.START,
+            0
+        )
+
+        topGarlandConstraintSet.connect(
+            garlandSettingIv.id,
+            ConstraintSet.END,
+            topGarlandLayout.id,
+            ConstraintSet.END,
+            0
+        )
+        topGarlandConstraintSet.connect(
+            garlandSettingIv.id,
+            ConstraintSet.BOTTOM,
+            topGarlandLayout.id,
+            ConstraintSet.BOTTOM,
+            0
+        )
+        topGarlandConstraintSet.connect(
+            garlandSettingIv.id,
+            ConstraintSet.BOTTOM,
+            garlandTextView.id,
+            ConstraintSet.BOTTOM,
+            0
+        )
+        topGarlandConstraintSet.connect(
+            garlandSettingIv.id,
+            ConstraintSet.TOP,
+            garlandTextView.id,
+            ConstraintSet.TOP,
+            0
+        )
+
+
+        topGarlandConstraintSet.setHorizontalBias(garlandTextView.id, 0f)
+        topGarlandConstraintSet.applyTo(topGarlandLayout)
+
+
+        garlandLinearLayout.addView(topGarlandLayout)
+        garlandLinearLayout.addView(discoverChildView)
+
+
 
         garlandTextView.text = title
         if (showSetting) {
@@ -145,104 +233,14 @@ abstract class BaseDiscoverFragment : BaseFragment(), BaseDiscoverHelper {
             onClick?.invoke(0)
         }
 
-        constraintLayout.addView(garlandStickView)
-        constraintLayout.addView(garlandTextView)
-        constraintLayout.addView(garlandSettingIv)
-        constraintLayout.addView(garlandContainer)
-        garlandContainer.addView(view)
-
-        val constraintSet = ConstraintSet()
-        constraintSet.clone(constraintLayout)
-
-        constraintSet.constrainPercentHeight(garlandStickView.id, 1f)
-
-        constraintSet.connect(
-            garlandStickView.id,
-            ConstraintSet.START,
-            constraintLayout.id,
-            ConstraintSet.START,
-            dp(10f)
-        )
-
-        constraintSet.connect(
-            garlandStickView.id,
-            ConstraintSet.TOP,
-            garlandTextView.id,
-            ConstraintSet.TOP,
-            dp(2f)
-        )
-
-        constraintSet.connect(
-            garlandStickView.id,
-            ConstraintSet.BOTTOM,
-            garlandTextView.id,
-            ConstraintSet.BOTTOM,
-            dp(2f)
-        )
-
-        constraintSet.connect(
-            garlandTextView.id,
-            ConstraintSet.START,
-            garlandStickView.id,
-            ConstraintSet.END,
-            0
-        )
-
-        constraintSet.connect(
-            garlandTextView.id,
-            ConstraintSet.TOP,
-            constraintLayout.id,
-            ConstraintSet.TOP,
-            0
-        )
-
-        constraintSet.connect(
-            garlandSettingIv.id,
-            ConstraintSet.END,
-            constraintLayout.id,
-            ConstraintSet.END,
-            0
-        )
-        constraintSet.connect(
-            garlandSettingIv.id,
-            ConstraintSet.BOTTOM,
-            garlandTextView.id,
-            ConstraintSet.BOTTOM,
-            0
-        )
-        constraintSet.connect(
-            garlandSettingIv.id,
-            ConstraintSet.TOP,
-            garlandTextView.id,
-            ConstraintSet.TOP,
-            0
-        )
-
-        constraintSet.connect(
-            garlandContainer.id,
-            ConstraintSet.START,
-            constraintLayout.id,
-            ConstraintSet.START
-        )
-        constraintSet.connect(
-            garlandContainer.id,
-            ConstraintSet.TOP,
-            garlandTextView.id,
-            ConstraintSet.BOTTOM
-        )
-
-//        constraintSet.setMargin(garlandTextView.id, ConstraintSet.TOP, dp(10f))
-        constraintSet.setDimensionRatio(garlandSettingIv.id, "1:1")
-        constraintSet.applyTo(constraintLayout)
-
-        discoverLayout.addView(constraintLayout)
+        discoverLayout.addView(garlandLinearLayout)
     }
 
 
-    protected fun showMediaFilterDialog(type: Int, tag: String, callback: (() -> Unit)) {
-        MediaFilterDialog.newInstance(type).also {
-            it.onDoneListener = callback
-            it.show(childFragmentManager, tag)
+    protected fun showMediaFilterDialog(type: Int, callback: (() -> Unit)) {
+        MediaFilterBottomSheetFragment().show(requireContext()){
+            arguments = bundleOf(MediaFilterBottomSheetFragment.mediaFilterTypeKey to type)
+            onDoneListener = callback
         }
     }
 

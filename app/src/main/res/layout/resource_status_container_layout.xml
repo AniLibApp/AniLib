@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/resourceStatusContainer"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/resourceStatusContainer"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="wrap_content">
 
     <include
+        android:id="@+id/resource_progress_layout"
         layout="@layout/loading_layout"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <include
+        android:id="@+id/resource_error_layout"
         layout="@layout/error_layout"
         android:visibility="gone" />
 

@@ -6,10 +6,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
@@ -20,7 +17,6 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.ui.dialog.MediaListCollectionFilterDialog
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
 import com.revolgenx.anilib.infrastructure.event.MediaListCollectionFilterEvent
@@ -30,18 +26,17 @@ import com.revolgenx.anilib.ui.fragment.list.*
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.common.preference.setMediaListGridPresenter
+import com.revolgenx.anilib.databinding.MediaListActivityLayoutBinding
+import com.revolgenx.anilib.databinding.SmartTabLayoutBinding
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.ui.view.makePopupMenu
+import com.revolgenx.anilib.ui.bottomsheet.list.MediaListFilterBottomSheetFragment
+import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
-import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
-import kotlinx.android.synthetic.main.media_list_activity_layout.*
-import kotlinx.android.synthetic.main.smart_tab_layout.view.*
-import kotlinx.android.synthetic.main.toolbar_layout.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class MediaListActivity : BaseDynamicActivity() {
+class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() {
 
     companion object {
         fun openActivity(context: Context, mediaListMeta: MediaListMeta) {
@@ -53,8 +48,14 @@ class MediaListActivity : BaseDynamicActivity() {
         const val MEDIA_LIST_META_KEY = "MEDIA_LIST_INTENT_KEY"
     }
 
-    override val layoutRes: Int = R.layout.media_list_activity_layout
     private var menuItem: MenuItem? = null
+
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): MediaListActivityLayoutBinding {
+        return MediaListActivityLayoutBinding.inflate(inflater)
+    }
 
     private val mediaListFragment by lazy {
         listOf(
@@ -92,8 +93,10 @@ class MediaListActivity : BaseDynamicActivity() {
 
 
             override fun onPageSelected(position: Int) {
-                dynamicSmartTab.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
-                dynamicSmartTab.getTabAt(position).tabTextTv.visibility = View.VISIBLE
+                binding.mediaListSmartTab.baseDynamicSmartTab.getTabs()
+                    .forEach { it.findViewById<View>(R.id.tab_text_tv).visibility = View.GONE }
+                binding.mediaListSmartTab.baseDynamicSmartTab.getTabAt(position)
+                    .findViewById<View>(R.id.tab_text_tv).visibility = View.VISIBLE
             }
         }
     }
@@ -105,8 +108,7 @@ class MediaListActivity : BaseDynamicActivity() {
                 arrayOf(
                     intArrayOf(android.R.attr.state_selected),
                     intArrayOf(android.R.attr.state_enabled)
-                )
-                , intArrayOf(
+                ), intArrayOf(
                     DynamicTheme.getInstance().get().accentColor,
                     DynamicTheme.getInstance().get().tintPrimaryColor
                 )
@@ -129,12 +131,13 @@ class MediaListActivity : BaseDynamicActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        listRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
 
-        setSupportActionBar(dynamicToolbar)
+        setSupportActionBar(binding.mediaListToolbar.dynamicToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        dynamicSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
+        binding.mediaListSmartTab.baseDynamicSmartTab.setBackgroundColor(
+            DynamicTheme.getInstance().get().primaryColor
+        )
         statusBarColor = statusBarColor
 
         mediaListMeta = intent.getParcelableExtra(MEDIA_LIST_META_KEY) ?: return
@@ -151,43 +154,41 @@ class MediaListActivity : BaseDynamicActivity() {
         }
 
         val inflater = LayoutInflater.from(this)
-        dynamicSmartTab.setCustomTabView { container, position, adapter ->
-            val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
+        binding.mediaListSmartTab.baseDynamicSmartTab.setCustomTabView { container, position, _ ->
+            val binding = SmartTabLayoutBinding.inflate(inflater, container, false)
             when (position) {
                 0 -> {
-                    createTabView(view, R.drawable.ic_watching, R.string.watching)
+                    createTabView(binding, R.drawable.ic_watching, R.string.watching)
                 }
                 1 -> {
-                    createTabView(view, R.drawable.ic_planning, R.string.planning)
+                    createTabView(binding, R.drawable.ic_planning, R.string.planning)
                 }
                 2 -> {
-                    createTabView(view, R.drawable.ic_completed, R.string.completed)
+                    createTabView(binding, R.drawable.ic_completed, R.string.completed)
                 }
                 3 -> {
-                    createTabView(view, R.drawable.ic_dropped, R.string.dropped)
+                    createTabView(binding, R.drawable.ic_dropped, R.string.dropped)
                 }
                 4 -> {
-                    createTabView(view, R.drawable.ic_paused_filled, R.string.paused)
+                    createTabView(binding, R.drawable.ic_paused_filled, R.string.paused)
                 }
                 5 -> {
-                    createTabView(view, R.drawable.ic_rewatching, R.string.repeating)
-                }
-                else -> {
-                    null
+                    createTabView(binding, R.drawable.ic_rewatching, R.string.repeating)
                 }
             }
+            binding.root
         }
 
-        mediaListViewPager.addOnPageChangeListener(pageChangeListener)
-        mediaListViewPager.adapter = MediaListAdapter(mediaListFragment)
-        mediaListViewPager.offscreenPageLimit = 5
-        dynamicSmartTab.setViewPager(mediaListViewPager, null)
-        mediaListViewPager.setCurrentItem(0, false)
-        mediaListViewPager.post {
-            pageChangeListener.onPageSelected(mediaListViewPager.currentItem)
+        binding.mediaListViewPager.addOnPageChangeListener(pageChangeListener)
+        binding.mediaListViewPager.adapter = MediaListAdapter(mediaListFragment)
+        binding.mediaListViewPager.offscreenPageLimit = 5
+        binding.mediaListSmartTab.baseDynamicSmartTab.setViewPager(binding.mediaListViewPager, null)
+        binding.mediaListViewPager.setCurrentItem(0, false)
+        binding.mediaListViewPager.post {
+            pageChangeListener.onPageSelected(binding.mediaListViewPager.currentItem)
         }
 
-        (savedInstanceState?.getParcelable(MediaListCollectionFilterDialog.LIST_FILTER_PARCEL_KEY) as? MediaListCollectionFilterField)?.let { field ->
+        (savedInstanceState?.getParcelable(MediaListFilterBottomSheetFragment.LIST_FILTER_PARCEL_KEY) as? MediaListCollectionFilterField)?.let { field ->
             mediaListFilterField = field
             if (field.search.isNullOrEmpty().not()) {
                 menuItem?.expandActionView()
@@ -237,23 +238,21 @@ class MediaListActivity : BaseDynamicActivity() {
                 true
             }
             R.id.listFilterMenu -> {
-                MediaListCollectionFilterDialog.newInstance(mediaListFilterField)
-                    .show(supportFragmentManager, "media_filter_dialog")
+                MediaListFilterBottomSheetFragment().show(this, mediaListMeta.type) {
+                    arguments =
+                        bundleOf(MediaListFilterBottomSheetFragment.LIST_FILTER_PARCEL_KEY to mediaListFilterField)
+                }
                 true
             }
             R.id.listDisplayModeMenu -> {
-                val popupMenu = makePopupMenu(
-                    R.menu.display_mode_menu,
-                    findViewById(R.id.listSearchMenu)
-                ) { menuItem ->
-
-                    setMediaListGridPresenter(menuItem.order)
+                makeArrayPopupMenu(
+                    findViewById(R.id.listSearchMenu),
+                    resources.getStringArray(R.array.list_display_modes),
+                    selectedPosition = getMediaListGridPresenter().ordinal
+                ) { _, _, index, _ ->
+                    setMediaListGridPresenter(index)
                     DisplayModeChangedEvent(DisplayTypes.MEDIA_LIST).postEvent
-                    true
                 }
-
-                popupMenu.menu.getItem(getMediaListGridPresenter()).isChecked = true
-                popupMenu.show()
                 true
             }
             android.R.id.home -> {
@@ -265,13 +264,16 @@ class MediaListActivity : BaseDynamicActivity() {
     }
 
 
-    private fun createTabView(view: View, @DrawableRes src: Int, @StringRes str: Int): View {
+    private fun createTabView(
+        view: SmartTabLayoutBinding,
+        @DrawableRes src: Int,
+        @StringRes str: Int
+    ) {
         view.tabImageView.imageTintList = tabColorStateList
         view.tabImageView.setImageResource(src)
         view.tabTextTv.text = getString(str)
-        view.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
+        view.root.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
         view.tabTextTv.setTextColor(accentColor)
-        return view
     }
 
     inner class MediaListAdapter(private val fragmentList: List<BaseFragment>) :
@@ -291,7 +293,7 @@ class MediaListActivity : BaseDynamicActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MediaListCollectionFilterEvent) {
         event.meta.let {
-            mediaListFilterField.format = it.format
+            mediaListFilterField.formatsIn = it.formatsIn
             mediaListFilterField.status = it.status
             mediaListFilterField.genre = it.genres
             mediaListFilterField.listSort = it.mediaListSort
@@ -299,21 +301,17 @@ class MediaListActivity : BaseDynamicActivity() {
         filterMediaList()
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelable(
-            MediaListCollectionFilterDialog.LIST_FILTER_PARCEL_KEY,
+            MediaListFilterBottomSheetFragment.LIST_FILTER_PARCEL_KEY,
             mediaListFilterField
         )
         super.onSaveInstanceState(outState)
     }
 
     private fun filterMediaList() {
-        mediaListViewPager?.let {
+        binding.mediaListViewPager.let {
             getViewPagerFragment(it.currentItem)?.filter(mediaListFilterField)
         }
     }

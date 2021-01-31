@@ -21,7 +21,7 @@
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
         android:id="@+id/searchCharacterNameTv"
-        style="@style/titleFontStyle"
+        style="@style/TitleFontStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -31,7 +31,6 @@
         android:gravity="center"
         android:maxLines="1"
         android:textSize="12sp"
-        app:ads_colorType="tint_surface"
         app:ads_rtlSupport="false"
         app:layout_constraintLeft_toLeftOf="@id/searchCharacterImageView"
         app:layout_constraintRight_toRightOf="@id/searchCharacterImageView"

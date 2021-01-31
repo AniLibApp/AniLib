@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_info_container_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout
+            android:id="@+id/user_collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
+            app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_collapseMode="none">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/user_banner_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="146dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--                <FrameLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="?actionBarSize"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent">-->
+
+
+                <!--                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView-->
+                <!--                        android:id="@+id/user_profile_more_iv"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        app:ads_color="@color/translucent_dark"-->
+                <!--                        android:paddingEnd="8dp"-->
+                <!--                        android:paddingStart="8dp"-->
+                <!--                        app:ads_colorType="custom"-->
+                <!--                        android:layout_gravity="end|center_vertical"-->
+                <!--                        app:srcCompat="@drawable/ic_more_circle" />-->
+
+
+                <!--                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView-->
+                <!--                        android:id="@+id/user_profile_back_iv"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:visibility="gone"-->
+                <!--                        app:ads_colorType="tint_primary"-->
+                <!--                        android:paddingStart="8dp"-->
+                <!--                        android:paddingEnd="8dp"-->
+                <!--                        android:layout_gravity="start|center_vertical"-->
+                <!--                        app:srcCompat="@drawable/ads_ic_back" />-->
+                <!--                </FrameLayout>-->
+
+                <com.revolgenx.anilib.radio.ui.view.CircleSimpleDraweeView
+                    android:id="@+id/user_avatar_iv"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintBottom_toBottomOf="@id/user_banner_iv"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/user_banner_iv"
+                    app:showBorder="true" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/username_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textSize="18sp"
+                    app:fontFamily="@font/cabin_semi_bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/user_avatar_iv" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicButton
+                    android:id="@+id/user_follow_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/cabin_medium"
+                    android:text="@string/follow"
+                    android:visibility="gone"
+                    app:ads_colorType="tint_accent"
+                    app:ads_contrastWithColorType="accent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/username_tv" />
+
+                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    android:id="@+id/following_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/ads_button_remote"
+                    app:ads_fillSpace="true"
+                    app:ads_subtitle="@string/following"
+                    app:ads_title="0"
+                    app:layout_constraintEnd_toStartOf="@id/follower_header"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/user_follow_button"
+                    app:subtitleAlignCenter="true"
+                    app:subtitleTextSize="@dimen/profile_subtitle_size"
+                    app:titleAlignCenter="true"
+                    app:titleTextSize="@dimen/profile_title_size" />
+
+                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    android:id="@+id/follower_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/ads_button_remote"
+                    app:ads_fillSpace="true"
+                    app:ads_subtitle="@string/follower"
+                    app:ads_title="0"
+                    app:layout_constraintEnd_toStartOf="@id/anime_count_header"
+                    app:layout_constraintStart_toEndOf="@id/following_header"
+                    app:layout_constraintTop_toTopOf="@+id/following_header"
+                    app:subtitleAlignCenter="true"
+                    app:subtitleTextSize="@dimen/profile_subtitle_size"
+                    app:titleAlignCenter="true"
+                    app:titleTextSize="@dimen/profile_title_size" />
+
+
+                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    android:id="@+id/anime_count_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/ads_button_remote"
+                    app:ads_fillSpace="true"
+                    app:ads_subtitle="@string/anime"
+                    app:ads_title="0"
+                    app:layout_constraintEnd_toStartOf="@id/manga_count_header"
+                    app:layout_constraintStart_toEndOf="@+id/follower_header"
+                    app:layout_constraintTop_toTopOf="@+id/following_header"
+                    app:subtitleAlignCenter="true"
+                    app:subtitleTextSize="@dimen/profile_subtitle_size"
+                    app:titleAlignCenter="true"
+                    app:titleTextSize="@dimen/profile_title_size" />
+
+
+                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    android:id="@+id/manga_count_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/ads_button_remote"
+                    app:ads_fillSpace="true"
+                    app:ads_subtitle="@string/manga"
+                    app:ads_title="0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/anime_count_header"
+                    app:layout_constraintTop_toTopOf="@+id/following_header"
+                    app:subtitleAlignCenter="true"
+                    app:subtitleTextSize="@dimen/profile_subtitle_size"
+                    app:titleAlignCenter="true"
+                    app:titleTextSize="@dimen/profile_title_size" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/translucent_gray"
+                    app:layout_constraintTop_toBottomOf="@+id/following_header" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+                android:id="@+id/profile_fragment_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:layout_collapseMode="pin" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicTextTabLayout
+            android:id="@+id/user_tab_layout"
+            style="@style/DynamicTextTabLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_backgroundColorType="background"
+            app:ads_colorType="accent"
+            app:ads_contrastWithColorType="background"
+            app:ads_textColorType="tint_primary"
+            app:entries="@array/music_entries"
+            app:tabMode="scrollable" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/user_info_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+

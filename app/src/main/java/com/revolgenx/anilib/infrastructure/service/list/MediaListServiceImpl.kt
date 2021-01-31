@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.infrastructure.service.list
 
 import com.revolgenx.anilib.data.field.list.MediaListCollectionField
+import com.revolgenx.anilib.data.field.list.MediaListCollectionIdsField
 import com.revolgenx.anilib.data.field.list.MediaListField
 import com.revolgenx.anilib.data.model.CoverImageModel
 import com.revolgenx.anilib.data.model.TitleModel
@@ -74,6 +75,31 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.w(it)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+
+        compositeDisposable.add(disposable)
+    }
+
+    override fun getMediaListCollectionIds(
+        field: MediaListCollectionIdsField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<List<Int>>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map {
+                val mediaIds = mutableListOf<Int>()
+                it.data()?.MediaListCollection()?.lists()?.forEach {
+                    it.entries()
+                        ?.filter { if (field.canShowAdult) true else it.media()?.isAdult == false }
+                        ?.forEach { mediaIds.add(it.media()?.id()!!) }
+                }
+                mediaIds
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                resourceCallback.invoke(Resource.success(it))
+            }, {
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 

@@ -17,7 +17,7 @@
     <string name="settings">"सेटिंगस"</string>
     <string name="account">"एकाउंट"</string>
     <string name="sign_in">"साइन इन"</string>
-    <string name="dynamic_theme">"परिवर्तनशील थीम"</string>
+    <string name="theme">"थीम"</string>
     <string name="notification">"नोटिफिकेशन"</string>
     <string name="notification_setting_sub">"नोटिफिकेशन नियंत्रित करें (लॉगइन आवश्यक)"</string>
     <string name="sign_out">"साइन आउट"</string>
@@ -134,7 +134,7 @@
     <string name="none">"कोई भी नहीं"</string>
     <string name="repeating">"दोहराया गया"</string>
     <string name="spoiler_alert">"स्पॉइलर अलर्ट"</string>
-    <string name="error">"लोड करने में विफल"</string>
+    <string name="failed_to_load">"लोड करने में विफल"</string>
     <string name="follower">"फोल्लोवेर"</string>
     <string name="following">"फोल्लोवंग"</string>
     <string name="blocked">"अवरोधित"</string>
@@ -201,7 +201,6 @@
     <string name="privacy_policy">"गोपनीयता नीति"</string>
     <string name="privacy_policy_desc">"पूरी गोपनीयता नीति देखें"</string>
     <string name="whats_new">"नया क्या है"</string>
-    <string name="studio_version">"स्टूडियो संस्करण"</string>
     <string name="terms_and_condition">"नियम और शर्तें"</string>
     <string name="terms_and_condition_desc">"नियम और शर्तें देखें"</string>
     <string name="in_progress">"इस पर अभी काम चल रहा है"</string>
@@ -214,7 +213,6 @@
     <string name="notification_setting">"नोटिफिकेशन सेटिंग"</string>
     <string name="refresh_interval">"पुनश्चर्या अंतराल"</string>
     <string name="notifications">"नोटिफिकेशनस"</string>
-    <string name="check_which_notif_to_show">"मुझे कब सूचित करना है"</string>
     <string name="when_someone_follows_me">"जब कोई मुझे फौलो करें"</string>
     <string name="receive_message_notif">"जब मुझे कोई संदेश मिले"</string>
     <string name="mention_replay_notif">"जब मुझे किसी गतिविधि या गतिविधि उत्तर में @ का उल्लेख करते है"</string>

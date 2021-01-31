@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
 import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
@@ -13,25 +12,33 @@ import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.CommonMediaModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.databinding.MediaViewPresentLayoutBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
-import kotlinx.android.synthetic.main.media_view_present_layout.view.*
 
-class MediaViewPresenter(requireContext: Context):Presenter<CommonMediaModel>(requireContext) {
+class MediaViewPresenter(requireContext: Context):BasePresenter<MediaViewPresentLayoutBinding,CommonMediaModel>(requireContext) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(LayoutInflater.from(context).inflate(R.layout.media_view_present_layout, parent, false))
+
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): MediaViewPresentLayoutBinding {
+        return MediaViewPresentLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<CommonMediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-        holder.itemView.apply {
+        val binding = holder.getBinding() ?: return
+
+        binding.apply {
             mediaTitleTv.text = item.title!!.title(context)
             mediaCoverImageIv.setImageURI(item.coverImage?.image)
 
-            setOnClickListener {
+            root.setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(
                         item.mediaId,
@@ -44,7 +51,7 @@ class MediaViewPresenter(requireContext: Context):Presenter<CommonMediaModel>(re
                 ).postEvent
             }
 
-            setOnLongClickListener {
+            root.setOnLongClickListener {
                 if (context.loggedIn()) {
                     ListEditorEvent(
                         ListEditorMeta(

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include layout="@layout/toolbar_layout" />
+
+    <include layout="@layout/toolbar_layout"
+        android:id="@+id/studio_toolbar"/>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:id="@+id/studioFragmentContainerLayout"
@@ -58,7 +60,8 @@
                     app:ads_colorType="accent" />
             </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
 
-            <include layout="@layout/resource_status_container_layout" />
+            <include layout="@layout/resource_status_container_layout"
+                android:id="@+id/resource_status_layout"/>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

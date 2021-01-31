@@ -4,23 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.core.view.setMargins
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.ui.dialog.DiscoverMediaListFilterDialog
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaListEvent
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
-import com.revolgenx.anilib.common.preference.getDiscoverMediaListSort
-import com.revolgenx.anilib.common.preference.getHomeOrderFromType
-import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.common.preference.userId
-import com.revolgenx.anilib.ui.presenter.list.MediaListPresenter
+import com.revolgenx.anilib.infrastructure.event.ChangeViewPagerPageEvent
+import com.revolgenx.anilib.infrastructure.event.ListContainerFragmentPage
+import com.revolgenx.anilib.infrastructure.event.MainActivityPage
+import com.revolgenx.anilib.ui.presenter.home.discover.MediaListPresenter
 import com.revolgenx.anilib.infrastructure.source.media_list.MediaListSource
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverWatchingViewModel
+import com.revolgenx.anilib.util.dp
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverWatchingFragment : DiscoverAiringFragment() {
@@ -41,23 +44,30 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
     private val order: Int
         get() = getHomeOrderFromType(requireContext(), HomeOrderType.WATCHING)
 
+
+    private val isSectionEnabled: Boolean
+        get() = isHomeOrderEnabled(requireContext(), HomeOrderType.WATCHING)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        if (requireContext().loggedIn()) {
+    ): View {
+        if (requireContext().loggedIn() && isSectionEnabled) {
             watchingRecyclerView = DynamicRecyclerView(requireContext()).also {
-                it.layoutParams = ViewGroup.LayoutParams(
+                it.layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
-                )
+                ).also {
+                    it.setMargins(dp(10f))
+                }
                 it.isNestedScrollingEnabled = false
             }
 
             orderedViewList.add(OrderedViewModel(
                 watchingRecyclerView!!, order,
-                getString(R.string.watching)
+                getString(R.string.watching),
+                R.drawable.ic_media
                 , showSetting = true
             ) {
                 handleClick(it)
@@ -70,7 +80,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (requireContext().loggedIn()) {
+        if (requireContext().loggedIn() && isSectionEnabled) {
             watchingRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
@@ -83,8 +93,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (requireContext().loggedIn()) {
-
+        if (requireContext().loggedIn() && isSectionEnabled) {
             if (savedInstanceState == null) {
                 viewModel.field.also { field ->
                     field.userId = requireContext().userId()
@@ -93,6 +102,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
                     field.sort = getDiscoverMediaListSort(requireContext(), field.type!!)
                 }
             }
+
             super.onActivityCreated(savedInstanceState)
 
             if (savedInstanceState != null) {
@@ -102,6 +112,8 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
                     }
                 }
             }
+
+
             invalidateAdapter()
         }
         else{
@@ -113,13 +125,8 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
     private fun handleClick(which: Int) {
         when (which) {
             0 -> {
-                BrowseMediaListEvent(
-                    MediaListMeta(
-                        requireContext().userId(),
-                        null,
-                        MediaType.ANIME.ordinal
-                    )
-                ).postEvent
+                ChangeViewPagerPageEvent(MainActivityPage.LIST).postEvent
+                ChangeViewPagerPageEvent(ListContainerFragmentPage.ANIME).postEvent
             }
             1 -> {
                 showMediaListFilterDialog(

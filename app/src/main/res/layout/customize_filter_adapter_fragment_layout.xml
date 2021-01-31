@@ -23,15 +23,15 @@
             android:orientation="vertical">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                android:id="@+id/filterIv"
+                android:id="@+id/filter_iv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"
-                app:ads_colorType="tint_surface"
+                app:ads_colorType="text_primary"
                 android:padding="20dp"/>
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:id="@+id/filterName"
+                android:id="@+id/filter_name"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"

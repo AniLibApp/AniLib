@@ -1,26 +1,25 @@
 package com.revolgenx.anilib.activity
 
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
-import androidx.appcompat.widget.AppCompatDrawableManager
+import android.view.ViewGroup
+import androidx.annotation.*
 import androidx.core.app.ActivityCompat
 import androidx.core.app.SharedElementCallback
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
-import androidx.navigation.findNavController
-import androidx.navigation.plusAssign
+import androidx.core.view.forEachIndexed
+import androidx.core.view.iterator
+import androidx.viewpager.widget.ViewPager
 import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Adapter
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
@@ -29,23 +28,23 @@ import com.revolgenx.anilib.ui.dialog.*
 import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.data.field.TagChooserField
 import com.revolgenx.anilib.data.field.TagField
-import com.revolgenx.anilib.ui.fragment.settings.SettingFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
-import com.revolgenx.anilib.ui.fragment.home.DiscoverContainerFragmentDirections
-import com.revolgenx.anilib.ui.fragment.list.AnimeListContainerFragmentDirections
-import com.revolgenx.anilib.ui.fragment.list.MangaListContainerFragmentDirections
-import com.revolgenx.anilib.ui.fragment.navigator.KeepStateNavigator
 import com.revolgenx.anilib.ui.fragment.notification.NotificationFragment
-import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.meta.UserMeta
 import com.revolgenx.anilib.common.preference.*
-import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
+import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.data.model.home.HomePageOrderType
+import com.revolgenx.anilib.databinding.ActivityMainBinding
+import com.revolgenx.anilib.radio.ui.fragments.RadioFragment
+import com.revolgenx.anilib.ui.fragment.home.discover.DiscoverContainerFragment
+import com.revolgenx.anilib.ui.fragment.home.list.ListContainerFragment
+import com.revolgenx.anilib.ui.fragment.home.profile.ProfileFragment
+import com.revolgenx.anilib.ui.fragment.home.profile.UserLoginFragment
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
 import com.revolgenx.anilib.ui.viewmodel.MainActivityViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.nav_header_layout.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -56,8 +55,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-class MainActivity : BaseDynamicActivity(), CoroutineScope,
-    BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener {
+class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
+    BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener, EventBusListener {
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
@@ -77,18 +76,30 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             return Adapter.builder(this)
         }
 
-    private val mainNavController
-        get() = findNavController(R.id.mainNavHost)
+    private val discoverContainerFragment by lazy {
+        DiscoverContainerFragment()
+    }
 
+    private val listContainerFragment by lazy {
+        ListContainerFragment()
+    }
 
-    override val layoutRes: Int = R.layout.activity_main
+    private val radioFragment by lazy {
+        RadioFragment()
+    }
 
+    private val profileFragment by lazy {
+        ProfileFragment()
+    }
 
-    private fun mediaListMeta(mediaType: Int) = MediaListMeta(
-        context.userId(),
-        null,
-        mediaType
-    )
+    private val loginFragment by lazy {
+        UserLoginFragment()
+    }
+
+    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?): ActivityMainBinding {
+        return ActivityMainBinding.inflate(inflater)
+    }
+
 
     override fun onStart() {
         super.onStart()
@@ -112,46 +123,117 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
         }
 
         initListener()
-        updateNavView()
         updateRightNavView()
+        binding.updateView()
         silentFetchUserInfo()
-        setupNavigationComponent()
+
+        checkIsFromShortcut()
 
         if (savedInstanceState == null) {
             checkForUpdate()
         }
     }
 
-    @SuppressLint("RestrictedApi")
-    private fun setupNavigationComponent() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainNavHost)!!
-        mainNavController.navigatorProvider += KeepStateNavigator(
-            this,
-            navHostFragment.childFragmentManager,
-            R.id.mainNavHost
-        )
-        val graph = mainNavController.navInflater.inflate(R.navigation.main_activity_navigation)
 
-        val startupNavArgs = when (getStartNavigation(this)) {
-            DISCOVER_NAV_POS -> {
-                graph.startDestination = R.id.discoverViewPagerFragment
-                navView.setCheckedItem(R.id.navHomeId)
-                null
+    private fun checkIsFromShortcut(newIntent: Intent? = null){
+        val intent = newIntent ?: intent
+        if (intent.action == Intent.ACTION_VIEW) {
+            if (intent.hasExtra(LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY)) {
+                val currentShortcut = intent.getIntExtra(
+                    LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
+                    LauncherShortcuts.HOME.ordinal
+                )
+                when(LauncherShortcuts.values()[currentShortcut]){
+                    LauncherShortcuts.HOME -> {
+                        binding.mainBottomNavView.selectedItemId = R.id.home_navigation_menu
+                    }
+                    LauncherShortcuts.ANIME -> {
+                        binding.mainBottomNavView.selectedItemId = R.id.list_navigation_menu
+                        ChangeViewPagerPageEvent(ListContainerFragmentPage.ANIME).postSticky
+                    }
+                    LauncherShortcuts.MANGA -> {
+                        binding.mainBottomNavView.selectedItemId = R.id.list_navigation_menu
+                        ChangeViewPagerPageEvent(ListContainerFragmentPage.MANGA).postSticky
+                    }
+                    LauncherShortcuts.RADIO -> {
+                        binding.mainBottomNavView.selectedItemId = R.id.music_navigation_menu
+                    }
+                }
             }
-            ANIME_LIST_NAV_POS -> {
-                graph.startDestination = R.id.animeListContainerFragment
-                navView.setCheckedItem(R.id.navAnimeListId)
-                bundleOf("mediaListMeta" to mediaListMeta(MediaType.ANIME.ordinal))
-            }
-            MANGA_LIST_NAV_POS -> {
-                graph.startDestination = R.id.mangaListContainerFragment
-                navView.setCheckedItem(R.id.navMangaListId)
-                bundleOf("mediaListMeta" to mediaListMeta(MediaType.MANGA.ordinal))
-            }
-            else -> null
+        }
+    }
+
+    private fun ActivityMainBinding.updateView() {
+        val menuList = mutableListOf<HomeMenuItem>()
+
+        menuList.add(
+            HomeMenuItem(
+                R.id.home_navigation_menu,
+                R.string.home,
+                R.drawable.ic_home,
+                getHomePageOrderFromType(this@MainActivity, HomePageOrderType.HOME),
+                discoverContainerFragment
+            )
+        )
+        if (loggedIn()) {
+            menuList.add(
+                HomeMenuItem(
+                    R.id.list_navigation_menu,
+                    R.string.list,
+                    R.drawable.ic_media_list,
+                    getHomePageOrderFromType(this@MainActivity, HomePageOrderType.LIST),
+                    listContainerFragment
+                )
+            )
+        }
+        menuList.add(
+            HomeMenuItem(
+                R.id.music_navigation_menu,
+                R.string.radio,
+                R.drawable.ic_radio,
+                getHomePageOrderFromType(this@MainActivity, HomePageOrderType.RADIO),
+                radioFragment
+            )
+        )
+
+        menuList.add(
+            HomeMenuItem(
+                R.id.profile_navigation_menu,
+                R.string.profile,
+                R.drawable.ic_person,
+                HomePageOrderType.values().size,
+                if (loggedIn()) profileFragment else loginFragment
+            )
+        )
+
+        menuList.sortBy { it.order }
+        menuList.forEach {
+            mainBottomNavView.menu.add(Menu.NONE, it.id, Menu.NONE, it.text).setIcon(it.drawRes)
         }
 
-        mainNavController.setGraph(graph, startupNavArgs)
+        val pagerAdapter = makePagerAdapter(menuList.map { it.fragment })
+        mainViewPager.adapter = pagerAdapter
+        mainViewPager.offscreenPageLimit = pagerAdapter.count - 1
+
+
+        mainBottomNavView.setOnNavigationItemSelectedListener {
+            mainBottomNavView.menu.forEachIndexed { index, item ->
+                if (it == item) {
+                    mainViewPager.setCurrentItem(index, true)
+                }
+            }
+            false
+        }
+
+
+        mainViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                mainBottomNavView.menu.iterator().forEach {
+                    it.isChecked = false
+                }
+                mainBottomNavView.menu.getItem(position).isChecked = true
+            }
+        })
 
     }
 
@@ -172,194 +254,41 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
     private fun updateRightNavView() {
         val filter = BrowseFilterDataProvider.getBrowseFilterData(this) ?: return
-        mainBrowseFilterNavView.setFilter(filter, false)
+        binding.mainBrowseFilterNavView.setFilter(filter, false)
     }
 
     private fun silentFetchUserInfo() {
         if (loggedIn()) {
-            viewModel.getUserLiveData().observe(this, {
-                updateNavView()
-            })
+            viewModel.getUserLiveData()
         }
     }
 
-
-    @SuppressLint("RestrictedApi")
-    private fun updateNavView() {
-        if (navView == null) return
-
-        if (!loggedIn()) {
-            simpleNavView()
-        } else {
-            navView.menu.findItem(R.id.navFeedId).isVisible = false
-            navView.menu.findItem(R.id.navAuth).title = getString(R.string.sign_out)
-        }
-
-        if(isStudioFlavor()){
-            navView.menu.findItem(R.id.stageVersion).isVisible = false
-        }
-
-        navView.getHeaderView(0).let { headerView ->
-            val userAvatar = userAvatar()
-            val userBanner = userBannerImage()
-            val userName = userName()
-
-            headerView.headerIconCardView.corner = dp(16f).toFloat()
-            if (userAvatar.isNullOrEmpty()) {
-                headerView.navHeaderIcon.setImageDrawable(
-                    AppCompatDrawableManager.get().getDrawable(
-                        context,
-                        R.drawable.ic_main_with_background
-                    )
-                )
-
-            } else {
-                headerView.navHeaderIcon.setImageURI(userAvatar)
-            }
-
-            headerView.navHeaderIcon.setOnClickListener {
-                if (loggedIn()) {
-                    UserProfileActivity.openActivity(this, UserMeta(context.userId(), null, true))
-                } else {
-                    makeToast(R.string.please_log_in)
+    @Subscribe
+    fun goToPageEvent(event: ChangeViewPagerPageEvent) {
+        if (event.data is MainActivityPage) {
+            val homePageOrder = when (event.data) {
+                MainActivityPage.HOME -> {
+                    getHomePageOrderFromType(this, HomePageOrderType.HOME)
+                }
+                MainActivityPage.LIST -> {
+                    getHomePageOrderFromType(this, HomePageOrderType.LIST)
+                }
+                MainActivityPage.RADIO -> {
+                    getHomePageOrderFromType(this, HomePageOrderType.RADIO)
                 }
             }
 
-            headerView.navHeaderIcon.hierarchy.let {
-                it.roundingParams =
-                    it.roundingParams?.setBorderColor(
-                        DynamicTheme.getInstance().get().tintAccentColor
-                    )
-            }
-
-            DynamicTheme.getInstance().get().primaryColorDark
-
-            headerView.navHeaderTitle.text = userName
-            headerView.navHeaderTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
-
-            if (!userBanner.isNullOrEmpty()) {
-                headerView.navHeaderBackground.setImageURI(userBanner)
-            }
-
+            binding.mainViewPager.setCurrentItem(homePageOrder, false)
         }
     }
 
 
-    @SuppressLint("RestrictedApi")
-    private fun simpleNavView() {
-        navView.menu.findItem(R.id.navAuth).title =
-            getString(R.string.sign_in)
-        with(navView.menu) {
-            findItem(R.id.navFeedId).isVisible = false
-            findItem(R.id.navAnimeListId).isVisible = false
-            findItem(R.id.navMangaListId).isVisible = false
-        }
-    }
+    private fun getViewPagerFragment(pos: Int) =
+        supportFragmentManager.findFragmentByTag("android:switcher:${R.id.main_view_pager}:$pos")
 
 
     private fun initListener() {
-        navView.setNavigationItemSelectedListener {
-            val isClicked = when (it.itemId) {
-
-                R.id.navActivityId -> {
-                    makeToast(R.string.in_progress, icon = R.drawable.ic_planning)
-                    true
-                }
-                R.id.navSetting -> {
-                    ContainerActivity.openActivity(
-                        this,
-                        ParcelableFragment(SettingFragment::class.java, bundleOf())
-                    )
-                    true
-                }
-
-                R.id.stageVersion -> {
-                    BrowseSiteEvent().postEvent
-                    true
-                }
-
-                R.id.navHomeId -> {
-                    navigateToHome()
-                    true
-                }
-
-                R.id.navAnimeListId -> {
-                    navigateToAnimeList(
-                        mediaListMeta(MediaType.ANIME.ordinal)
-                    )
-                    true
-                }
-
-                R.id.navMangaListId -> {
-                    navigateToMangaList(
-                        mediaListMeta(MediaType.MANGA.ordinal)
-                    )
-                    true
-                }
-
-                R.id.navAuth -> {
-                    if (loggedIn()) {
-                        context.logOut()
-                        SessionEvent(false).postEvent
-                        startActivity(Intent(this.context, MainActivity::class.java).apply {
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        })
-                        finish()
-                    } else {
-                        AuthenticationDialog.newInstance()
-                            .show(supportFragmentManager, authDialogTag)
-                        val serviceConfiguration =
-                            AuthorizationServiceConfiguration(
-                                Uri.parse(BuildConfig.anilistAuthEndPoint) /* auth endpoint */,
-                                Uri.parse(BuildConfig.anilistTokenEndPoint) /* token endpoint */
-                            )
-
-                        val clientId = BuildConfig.anilistclientId
-                        val redirectUri = Uri.parse(BuildConfig.anilistRedirectUri)
-                        val builder = AuthorizationRequest.Builder(
-                            serviceConfiguration,
-                            clientId,
-                            ResponseTypeValues.CODE,
-                            redirectUri
-                        )
-                        val request = builder.build()
-                        val authorizationService = AuthorizationService(this)
-
-                        val postAuthorizationIntent = Intent(this, MainActivity::class.java)
-                            .also {
-                                it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                                it.putExtra(authIntent, authorizationExtra)
-                            }
-                        val pendingIntent = PendingIntent.getActivity(
-                            this,
-                            0,
-                            postAuthorizationIntent,
-                            0
-                        )
-                        launch(Dispatchers.IO) {
-                            authorizationService.performAuthorizationRequest(request, pendingIntent)
-                        }
-                    }
-                    true
-                }
-
-                R.id.checkUpdate -> {
-                    checkForUpdate(true)
-                    true
-                }
-                R.id.discordMenu -> {
-                    openLink(getString(R.string.discord_invite_link))
-                    true
-                }
-                else -> false
-
-
-            }
-            closeNavDrawer()
-            isClicked
-        }
-
-        mainBrowseFilterNavView.setNavigationCallbackListener(this)
+        binding.mainBrowseFilterNavView.setNavigationCallbackListener(this)
 
         /**problem with transition
          * {@link https://github.com/facebook/fresco/issues/1445}*/
@@ -385,6 +314,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
     override fun onNewIntent(intent: Intent?) {
         checkIntent(intent)
+        checkIsFromShortcut(intent)
         super.onNewIntent(intent)
     }
 
@@ -427,11 +357,11 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
     override fun onBackPressed() {
         when {
-            drawerLayout.isDrawerOpen(GravityCompat.START) -> {
-                drawerLayout.closeDrawer(GravityCompat.START)
+            binding.drawerLayout.isDrawerOpen(GravityCompat.START) -> {
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
             }
-            drawerLayout.isDrawerOpen(GravityCompat.END) -> {
-                drawerLayout.closeDrawer(GravityCompat.END)
+            binding.drawerLayout.isDrawerOpen(GravityCompat.END) -> {
+                binding.drawerLayout.closeDrawer(GravityCompat.END)
             }
             else -> {
                 if (pressedTwice) {
@@ -455,35 +385,71 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
 
     @Subscribe
+    fun signInEvent(event: AuthenticateEvent) {
+        if (loggedIn()) {
+            context.logOut()
+            SessionEvent(false).postEvent
+            startActivity(Intent(this.context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
+            finish()
+        } else {
+            AuthenticationDialog.newInstance()
+                .show(supportFragmentManager, authDialogTag)
+            val serviceConfiguration =
+                AuthorizationServiceConfiguration(
+                    Uri.parse(BuildConfig.anilistAuthEndPoint) /* auth endpoint */,
+                    Uri.parse(BuildConfig.anilistTokenEndPoint) /* token endpoint */
+                )
+
+            val clientId = BuildConfig.anilistclientId
+            val redirectUri = Uri.parse(BuildConfig.anilistRedirectUri)
+            val builder = AuthorizationRequest.Builder(
+                serviceConfiguration,
+                clientId,
+                ResponseTypeValues.CODE,
+                redirectUri
+            )
+            val request = builder.build()
+            val authorizationService = AuthorizationService(this)
+
+            val postAuthorizationIntent = Intent(this, MainActivity::class.java)
+                .also {
+                    it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    it.putExtra(authIntent, authorizationExtra)
+                }
+            val pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                postAuthorizationIntent,
+                0
+            )
+            launch(Dispatchers.IO) {
+                authorizationService.performAuthorizationRequest(request, pendingIntent)
+            }
+        }
+    }
+
+    @Subscribe
     fun onTagEvent(event: TagEvent) {
         when (event.tagType) {
             MediaTagFilterTypes.TAGS -> invalidateTagFilter(event.tagFields)
             MediaTagFilterTypes.GENRES -> invalidateGenreFilter(event.tagFields)
             MediaTagFilterTypes.STREAMING_ON -> invalidateStreamFilter(event.tagFields)
+            else -> {
+            }
         }
     }
 
     @Subscribe
-    fun onNotificationEvent(event:BrowseNotificationEvent){
-        ToolbarContainerActivity.openActivity(
-            this,
-            ParcelableFragment(
-                NotificationFragment::class.java,
-                bundleOf(
-                    UserMeta.userMetaKey to UserMeta(
-                        userId(),
-                        null,
-                        true
-                    )
-                )
-            )
-        )
+    fun onNotificationEvent(event: BrowseNotificationEvent) {
+        startActivity(Intent(this, NotificationActivity::class.java))
     }
 
 
     private fun invalidateStreamFilter(list: List<TagField>) {
         viewModel.streamTagFields = list.toMutableList()
-        mainBrowseFilterNavView.buildStreamAdapter(
+        binding.mainBrowseFilterNavView.buildStreamAdapter(
             tagAdapter,
             list
         )
@@ -491,7 +457,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
     private fun invalidateGenreFilter(list: List<TagField>) {
         viewModel.genreTagFields = list.toMutableList()
-        mainBrowseFilterNavView.buildGenreAdapter(
+        binding.mainBrowseFilterNavView.buildGenreAdapter(
             tagAdapter,
             list
         )
@@ -499,7 +465,7 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
 
     private fun invalidateTagFilter(list: List<TagField>) {
         viewModel.tagTagFields = list.toMutableList()
-        mainBrowseFilterNavView.buildTagAdapter(
+        binding.mainBrowseFilterNavView.buildTagAdapter(
             tagAdapter,
             list
         )
@@ -525,6 +491,8 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             MediaTagFilterTypes.STREAMING_ON -> {
                 viewModel.streamTagFields = tags.toMutableList()
             }
+            else -> {
+            }
         }
 
     }
@@ -540,85 +508,52 @@ class MainActivity : BaseDynamicActivity(), CoroutineScope,
             MediaTagFilterTypes.STREAMING_ON -> {
                 viewModel.streamTagFields.removeAll { it.tag == tag }
             }
+            else -> {
+            }
         }
     }
 
     override fun updateTags(tagType: MediaTagFilterTypes) {
         when (tagType) {
             MediaTagFilterTypes.TAGS -> {
-                mainBrowseFilterNavView.invalidateTagAdapter(tagAdapter)
+                binding.mainBrowseFilterNavView.invalidateTagAdapter(tagAdapter)
             }
             MediaTagFilterTypes.GENRES -> {
-                mainBrowseFilterNavView.invalidateGenreAdapter(tagAdapter)
+                binding.mainBrowseFilterNavView.invalidateGenreAdapter(tagAdapter)
             }
             MediaTagFilterTypes.STREAMING_ON -> {
-                mainBrowseFilterNavView.invalidateStreamAdapter(tagAdapter)
+                binding.mainBrowseFilterNavView.invalidateStreamAdapter(tagAdapter)
+            }
+            else -> {
             }
         }
     }
 
-    private fun navigateToAnimeList(meta: MediaListMeta) {
-        when (mainNavController.currentDestination?.id) {
-            R.id.discoverViewPagerFragment -> {
-                mainNavController.navigate(
-                    DiscoverContainerFragmentDirections.discoverToAnimeNav(
-                        meta
-                    )
-                )
-            }
-            R.id.mangaListContainerFragment -> {
-                mainNavController.navigate(MangaListContainerFragmentDirections.mangaToAnimeNav(meta))
-            }
-        }
-    }
-
-    private fun navigateToMangaList(meta: MediaListMeta) {
-        when (mainNavController.currentDestination?.id) {
-            R.id.discoverViewPagerFragment -> {
-                mainNavController.navigate(
-                    DiscoverContainerFragmentDirections.discoverToMangaNav(
-                        meta
-                    )
-                )
-            }
-            R.id.animeListContainerFragment -> {
-                mainNavController.navigate(AnimeListContainerFragmentDirections.animeToMangaNav(meta))
-            }
-        }
-    }
-
-    private fun navigateToHome() {
-        when (mainNavController.currentDestination?.id) {
-            R.id.animeListContainerFragment -> {
-                mainNavController.navigate(AnimeListContainerFragmentDirections.animeToDiscoverNav())
-            }
-            R.id.mangaListContainerFragment -> {
-                mainNavController.navigate(MangaListContainerFragmentDirections.mangaToDiscoverNav())
-            }
-        }
-    }
 
     override fun getQuery(): String {
         return ""
     }
 
     override fun applyFilter() {
-        mainBrowseFilterNavView.getFilter().let {
+        binding.mainBrowseFilterNavView.getFilter().let {
             BrowseFilterDataProvider.setBrowseFilterData(context, it)
             SearchActivity.openActivity(
                 this, it
             )
         }
 
-        if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
-            drawerLayout.closeDrawer(GravityCompat.END)
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
         }
     }
 
 
-    private fun closeNavDrawer() {
-        Handler().post {
-            drawerLayout?.closeDrawers()
-        }
-    }
+    internal data class HomeMenuItem(
+        @IdRes val id: Int,
+        @StringRes val text: Int,
+        @DrawableRes val drawRes: Int,
+        val order: Int,
+        val fragment: BaseFragment
+    )
+
 }

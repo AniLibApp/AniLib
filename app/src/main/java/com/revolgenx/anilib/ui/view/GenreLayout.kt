@@ -32,7 +32,7 @@ class GenreLayout(context: Context, attributeSet: AttributeSet?) :
                 }
                 tv.maxLines = 1
                 tv.ellipsize = TextUtils.TruncateAt.END
-                tv.typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
+                tv.typeface = ResourcesCompat.getFont(context, R.font.cabin_regular)
                 tv.textSize = 10f
                 tv.colorType = Theme.ColorType.ACCENT
                 addView(tv)

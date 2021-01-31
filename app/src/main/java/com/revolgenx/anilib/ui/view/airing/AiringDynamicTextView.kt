@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.model.AiringTimeModel
+import com.revolgenx.anilib.data.model.airing.AiringTimeModel
 import com.revolgenx.anilib.util.TimerCallback
 import com.revolgenx.anilib.util.naText
 
@@ -33,7 +33,7 @@ class AiringDynamicTextView : DynamicTextView, TimerCallback {
     }
 
     private fun updateView() {
-        val time = airingTime?.airingTime
+        val time = airingTime?.timeUntilAiring
         text = if (time != null)
             context.getString(R.string.airing_time_e_s_s).format(
                 airingTime?.episode?.toString().naText(),

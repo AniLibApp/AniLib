@@ -1,12 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.DynamicApp.Card.Margin.Clickable"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include
-        layout="@layout/text_stats_general_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/stats_title_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:paddingStart="10dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="10dp"
+            android:textSize="18sp"
+            app:fontFamily="@font/cabin_semi_bold"
+            app:layout_constraintEnd_toStartOf="@id/stats_media_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <FrameLayout
+            android:id="@+id/stats_media_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/ads_button_remote"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/stats_media_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="6dp"
+                android:gravity="center"
+                android:textSize="11sp"
+                app:drawableStartCompat="@drawable/ic_media" />
+        </FrameLayout>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/statsCountFrameLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/dynamicFrameLayout"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stats_title_tv">
+
+            <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                android:id="@+id/stats_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:ads_fillSpace="true"
+                app:ads_subtitle="@string/count"
+                app:ads_title="0"
+                app:titleTextSize="11sp" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/dynamicFrameLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/statsTimeWatchedFrameLayout"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/statsCountFrameLayout"
+            app:layout_constraintTop_toTopOf="@id/statsCountFrameLayout">
+
+            <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                android:id="@+id/stats_mean_score_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:ads_fillSpace="true"
+                app:ads_subtitle="@string/mean_score"
+                app:ads_title="0"
+                app:titleTextSize="11sp" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/statsTimeWatchedFrameLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dynamicFrameLayout"
+            app:layout_constraintTop_toTopOf="@id/dynamicFrameLayout">
+
+            <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                android:id="@+id/stats_time_watched"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:ads_fillSpace="true"
+                app:ads_subtitle="@string/time_watched"
+                app:ads_title="0"
+                app:titleTextSize="11sp" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

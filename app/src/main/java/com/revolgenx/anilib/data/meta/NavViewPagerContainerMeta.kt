@@ -1,12 +1,12 @@
 package com.revolgenx.anilib.data.meta
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class NavViewPagerContainerMeta<T : Parcelable>(
+data class NavViewPagerContainerMeta(
     var containerType: NavViewPagerContainerType,
-    var data: T
+    var data: Parcelable
 ) : Parcelable
 
 enum class NavViewPagerContainerType {

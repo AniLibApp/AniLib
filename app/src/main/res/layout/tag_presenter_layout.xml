@@ -22,7 +22,7 @@
         android:layout_width="14dp"
         android:layout_height="14dp"
         android:layout_gravity="center_vertical"
-        app:ads_colorType="tint_surface"
+        app:ads_colorType="text_primary"
         app:srcCompat="@drawable/ic_close" />
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

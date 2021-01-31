@@ -7,7 +7,12 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <include
+            android:id="@+id/notification_setting_progress_bar"
+            layout="@layout/horizontal_progress_bar_layout" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
 
@@ -27,93 +32,89 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:ads_fillSpace="true"
-            app:ads_subtitle="@string/check_which_notif_to_show"
-            app:ads_title="@string/notifications" />
+            app:ads_title="@string/activity_subscription"
+            app:titleTextSize="14sp" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/subscribe_activity_create"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/airing_notification_key"
-            app:ads_title="@string/episode_aired_notif" />
+            android:text="@string/automatically_subscribe_me_to_activity_i_create" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/subscribe_activity_reply"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/following_key"
-            app:ads_title="@string/when_someone_follows_me" />
+            android:text="@string/automatically_subscribe_me_to_activity_i_reply_to" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+
+        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/activity_message_key"
-            app:ads_title="@string/receive_message_notif" />
+            app:ads_fillSpace="true"
+            app:ads_title="@string/notifications"
+            app:titleTextSize="14sp" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/follows_me_cb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/activity_reply_mention_key"
-            app:ads_title="@string/mention_replay_notif" />
+            android:text="@string/when_someone_follows_me" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/receive_message_cb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/activity_like_key"
-            app:ads_title="@string/activity_like_notif" />
+            android:text="@string/receive_message_notif" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/mentioned_cb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/activity_reply_like_key"
-            app:ads_title="@string/likes_activity_reply_notif" />
+            android:text="@string/mention_replay_notif" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/like_activity_cb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/thread_comment_reply_key"
-            app:ads_title="@string/forum_reply_notif" />
+            android:text="@string/activity_like_notif" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/like_activity_reply_cb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/thread_comment_mention_key"
-            app:ads_title="@string/forum_mention_notif" />
+            android:text="@string/likes_activity_reply_notif" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/reply_forum_comment_cb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/thread_comment_like_key"
-            app:ads_title="@string/forum_coment_liked_notif" />
+            android:text="@string/forum_reply_notif" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/mention_forum_comment_cb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/thread_subscribed_reply_key"
-            app:ads_title="@string/reply_to_subscribed_forum_notif" />
+            android:text="@string/forum_mention_notif" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/like_forum_comment_cb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/thread_like_key"
-            app:ads_title="@string/forum_liked_notif" />
+            android:text="@string/forum_coment_liked_notif" />
 
-
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/reply_forum_subscribed_cb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_checked="true"
-            app:ads_key="@string/related_media_addition_key"
-            app:ads_title="@string/related_media_added_notif" />
+            android:text="@string/reply_to_subscribed_forum_notif" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/like_forum_thread_cb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/forum_liked_notif" />
+
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 

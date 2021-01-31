@@ -8,21 +8,21 @@ import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.activity.MediaListActivity
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
-import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.list.MediaListModel
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
-import com.revolgenx.anilib.ui.presenter.list.MediaListCollectionPresenter
+import com.revolgenx.anilib.constant.MediaListDisplayMode
+import com.revolgenx.anilib.ui.presenter.home.discover.MediaListCollectionPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListCollectionViewModel
-import org.greenrobot.eventbus.EventBus
+import com.revolgenx.anilib.util.EventBusListener
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
+abstract class MediaListFragment : BasePresenterFragment<MediaListModel>(), EventBusListener {
 
     override val basePresenter: Presenter<MediaListModel>
         get() = MediaListCollectionPresenter(requireContext(), mediaListMeta!!, viewModel)
@@ -43,8 +43,23 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
         var span =
             if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
 
-        if (getMediaListGridPresenter() == 1) {
-            span /= 2
+        when (getMediaListGridPresenter()) {
+            MediaListDisplayMode.COMPACT -> {
+
+            }
+
+            MediaListDisplayMode.NORMAL, MediaListDisplayMode.MINIMAL_LIST -> {
+                span /= 2
+            }
+
+            MediaListDisplayMode.CARD -> {
+
+            }
+
+            MediaListDisplayMode.CLASSIC, MediaListDisplayMode.MINIMAL -> {
+                span += 1
+            }
+
         }
 
         layoutManager =
@@ -91,7 +106,7 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
     }
 
     fun filter(mediaListFilterField: MediaListCollectionFilterField) {
-        viewModel.filter = mediaListFilterField
+        viewModel.updateFilter(mediaListFilterField)
         if (visibleToUser) {
             createSource()
             invalidateAdapter()
@@ -115,24 +130,24 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>() {
     }
 
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    fun onListEditorEvent(event: ListEditorResultEvent) {
-        if (event.listEditorResultMeta.status != mediaListStatus) return
-        event.listEditorResultMeta.let {
-            if (it.progress == null) {
-                viewModel.filteredList?.remove(viewModel.listMap[it.mediaId])
-                viewModel.listMap.remove(it.mediaId)
-                createSource()
-                invalidateAdapter()
-            } else {
-                viewModel.listMap[it.mediaId]?.apply {
-                    progress = it.progress
-                }
-                adapter?.notifyDataSetChanged()
-            }
-        }
-        EventBus.getDefault().removeStickyEvent(event)
-    }
+//    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+//    fun onListEditorEvent(event: ListEditorResultEvent) {
+//        if (event.listEditorResultMeta.status != mediaListStatus) return
+//        event.listEditorResultMeta.let {
+//            if (it.progress == null) {
+//                viewModel.filteredList?.remove(viewModel.listMap[it.mediaId])
+//                viewModel.listMap.remove(it.mediaId)
+//                createSource()
+//                invalidateAdapter()
+//            } else {
+//                viewModel.listMap[it.mediaId]?.apply {
+//                    progress = it.progress
+//                }
+//                adapter?.notifyDataSetChanged()
+//            }
+//        }
+//        EventBus.getDefault().removeStickyEvent(event)
+//    }
 
     override fun onStop() {
         super.onStop()

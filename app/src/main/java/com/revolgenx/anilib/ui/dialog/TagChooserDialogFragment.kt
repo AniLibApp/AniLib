@@ -12,13 +12,12 @@ import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.infrastructure.event.TagEvent
 import com.revolgenx.anilib.data.field.TagChooserField
 import com.revolgenx.anilib.data.field.TagField
+import com.revolgenx.anilib.databinding.TagChooserDialogFragmentLayoutBinding
 import com.revolgenx.anilib.ui.view.TriStateMode
-import kotlinx.android.synthetic.main.tag_chooser_dialog_fragment_layout.*
 
-class TagChooserDialogFragment : BaseDialogFragment() {
+class TagChooserDialogFragment : BaseDialogFragment<TagChooserDialogFragmentLayoutBinding>() {
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
-    override var viewRes: Int? = R.layout.tag_chooser_dialog_fragment_layout
 
     companion object {
         const val TAG_KEY = "tag_key"
@@ -38,6 +37,9 @@ class TagChooserDialogFragment : BaseDialogFragment() {
 
     private lateinit var tagAdapter: TagAdapter
 
+    override fun bindView(): TagChooserDialogFragmentLayoutBinding {
+        return TagChooserDialogFragmentLayoutBinding.inflate(provideLayoutInflater())
+    }
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,
         savedInstanceState: Bundle?
@@ -61,10 +63,6 @@ class TagChooserDialogFragment : BaseDialogFragment() {
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         with(alertDialog) {
-//            alertDialog.window.let { window ->
-//                window!!.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
-//                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-//            }
             getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
                 tagAdapter.deSelectAll()
             }
@@ -76,57 +74,12 @@ class TagChooserDialogFragment : BaseDialogFragment() {
             }
             tagAdapter = TagAdapter(tagMode)
             tagAdapter.submitList(tagChooserField.tags)
-            tagRecyclerView.adapter = tagAdapter
+            binding.tagRecyclerView.adapter = tagAdapter
         }
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
         TagEvent(tagChooserField.tagType, tagChooserField.tags).postEvent
     }
-/*
-    inner class TagAdapter : RecyclerView.Adapter<TagAdapter.TagHolder>() {
-        private val textColor =
-            DynamicTheme.getInstance().get().tintSurfaceColor
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagHolder {
-            return TagHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.tag_holder_layout,
-                    parent,
-                    false
-                )
-            )
-        }
-
-
-        override fun getItemCount(): Int {
-            return tagChooserField.tags.size
-        }
-
-        override fun onBindViewHolder(holder: TagHolder, position: Int) {
-            val item = tagChooserField.tags[position]
-            holder.bind(item)
-        }
-
-        fun deSelectAll() {
-            tagChooserField.tags.forEach {
-                it.isTagged = false
-            }
-            notifyDataSetChanged()
-        }
-
-        inner class TagHolder(v: View) : RecyclerView.ViewHolder(v) {
-            fun bind(item: TagField) {
-                itemView.apply {
-                    tagCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                        item.isTagged = isChecked
-                    }
-                    tagCheckBox.setTextColor(textColor)
-                    tagCheckBox.text = item.tag
-                    tagCheckBox.isChecked = item.isTagged
-                }
-            }
-        }
-    }*/
 
 }

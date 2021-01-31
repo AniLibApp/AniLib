@@ -30,7 +30,7 @@ class ToggleServiceImpl(graphRepository: BaseGraphRepository) :
                 studioId(favouriteField.studioId)
         }.build())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ response ->
+            .subscribe({ _ ->
                 toggleFavMutableLiveData.value = Resource.success(true)
             }, {
                 Timber.w(it)

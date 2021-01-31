@@ -16,7 +16,7 @@
             android:id="@+id/staffMediaContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingEnd="3dp"
+            android:paddingRight="3dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/staffCharacterContainer"
             app:layout_constraintTop_toTopOf="parent"
@@ -60,7 +60,7 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/staffMediaTitleTv"
-                style="@style/titleFontStyle"
+                style="@style/TitleFontStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -70,7 +70,6 @@
                 android:lines="2"
                 android:maxLines="2"
                 android:textSize="11sp"
-                app:ads_colorType="tint_surface"
                 app:layout_constraintLeft_toLeftOf="@id/staffMediaImageContainer"
                 app:layout_constraintRight_toRightOf="@id/staffMediaImageContainer"
                 app:layout_constraintTop_toBottomOf="@id/staffMediaImageContainer"
@@ -108,7 +107,7 @@
             android:id="@+id/staffCharacterContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingStart="3dp"
+            android:paddingLeft="3dp"
             app:layout_constraintLeft_toRightOf="@+id/staffMediaContainer"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -127,7 +126,7 @@
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 android:id="@+id/staffCharacterNameTv"
-                style="@style/titleFontStyle"
+                style="@style/TitleFontStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -137,7 +136,6 @@
                 android:lines="2"
                 android:maxLines="2"
                 android:textSize="11sp"
-                app:ads_colorType="tint_surface"
                 app:layout_constraintLeft_toLeftOf="@id/staffCharacterImageView"
                 app:layout_constraintRight_toRightOf="@id/staffCharacterImageView"
                 app:layout_constraintTop_toBottomOf="@+id/staffCharacterImageView"

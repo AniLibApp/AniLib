@@ -14,6 +14,6 @@ abstract class BaseField<T>() : KoinComponent {
         get() = canShowAdult(context)
 
     companion object {
-        const val PER_PAGE = 14
+        const val PER_PAGE = 20
     }
 }

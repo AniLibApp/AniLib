@@ -65,8 +65,7 @@
                 android:lines="2"
                 android:maxLines="2"
                 android:textSize="11sp"
-                style="@style/titleFontStyle"
-                app:ads_colorType="tint_surface"
+                style="@style/TitleFontStyle"
                 app:layout_constraintTop_toBottomOf="@+id/studioMediaImageContainer"
                 tools:ignore="SmallSp" />
 

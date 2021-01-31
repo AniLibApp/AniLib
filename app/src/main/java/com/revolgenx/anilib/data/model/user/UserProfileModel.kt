@@ -10,6 +10,8 @@ class UserProfileModel : UserPrefModel() {
     var isBlocked: Boolean? = null
     var totalAnime: Int? = null
     var totalManga: Int? = null
+    var episodesWatched: Int? = null
+    var volumeRead: Int? = null
     var chaptersRead: Int? = null
     var daysWatched: Double? = null
     var animeMeanScore: Double? = null

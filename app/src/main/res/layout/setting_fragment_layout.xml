@@ -9,179 +9,78 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/application_setting_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/application"
-            android:textSize="14sp"
-            app:fontFamily="@font/berlinrounded_bold" />
+            app:ads_icon="@drawable/ic_app_setting"
+            app:ads_title="@string/application"
+            app:ads_colorType="text_primary"
+            />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
 
-            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-                android:id="@+id/themeItemView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_colorType="tint_surface"
-                app:ads_icon="@drawable/ic_style"
-                app:ads_subtitle="@string/dynamically_apply_theme"
-                app:ads_title="@string/ads_dynamic_theme" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-            style="@style/Widget.DynamicApp.Card">
-
-            <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_description="@string/start_nav_page_desc"
-                app:ads_entries="@array/application_startup_page_entries"
-                app:ads_icon="@drawable/ic_navigation"
-                app:ads_key="@string/start_navigation_key"
-                app:ads_title="@string/startup_page"
-                app:ads_value="0"
-                app:ads_values="@array/application_startup_values" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-            style="@style/Widget.DynamicApp.Card">
-
-            <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_description="@string/preferred_application_language"
-                app:ads_entries="@array/application_language_entries"
-                app:ads_icon="@drawable/ic_language"
-                app:ads_key="@string/application_language_key"
-                app:ads_title="@string/application_language"
-                app:ads_value="0"
-                app:ads_values="@array/application_language_values" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/media_setting_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/media"
-            android:textSize="14sp"
-            app:fontFamily="@font/berlinrounded_bold" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
-
-            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-                android:id="@+id/notificationSetting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_colorType="tint_surface"
-                app:ads_icon="@drawable/ic_notifications"
-                app:ads_subtitle="@string/notification_setting_sub"
-                app:ads_title="@string/notification" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+            app:ads_icon="@drawable/ic_api_setting"
+            app:ads_title="@string/anilist_and_manga"
+            app:ads_colorType="text_primary"
+            android:layout_marginTop="6dp"
+            />
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
-
-            <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_description="@string/preferred_media_title"
-                app:ads_entries="@array/media_title_entries"
-                app:ads_icon="@drawable/ic_title"
-                app:ads_key="title_key"
-                app:ads_title="@string/media_title"
-                app:ads_value="0"
-                app:ads_values="@array/media_title_values" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
-
-            <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_description="@string/preferred_image_quality_desc"
-                app:ads_entries="@array/image_entries"
-                app:ads_icon="@drawable/ic_image"
-                app:ads_key="image_quality_key"
-                app:ads_title="@string/cover_image_quality"
-                app:ads_value="0"
-                app:ads_values="@array/image_values" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-            android:id="@+id/adultContentPrefCardView"
-            style="@style/Widget.DynamicApp.Card"
-            android:visibility="gone">
-
-            <com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_checked="true"
-                app:ads_description="@string/show_adult_content_desc"
-                app:ads_icon="@drawable/ic_dropped"
-                app:ads_key="can_show_adult_key"
-                app:ads_title="@string/show_adult_content" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
-
-            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-                android:id="@+id/customizeFilterItemView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_colorType="tint_surface"
-                app:ads_icon="@drawable/ic_tag"
-                app:ads_subtitle="@string/custom_filter_desc"
-                app:ads_title="@string/custom_filters" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/list_setting_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/other"
-            android:textSize="14sp"
-            app:fontFamily="@font/berlinrounded_bold" />
+            app:ads_icon="@drawable/ic_media_list"
+            app:ads_title="@string/list"
+            app:ads_colorType="text_primary"
+            android:layout_marginTop="6dp"
+            />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/notificationSetting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_notifications"
+            android:layout_marginTop="6dp"
+            app:ads_title="@string/notification" />
 
-            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-                android:id="@+id/aboutItemView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_colorType="tint_surface"
-                app:ads_icon="@drawable/ads_ic_info"
-                app:ads_title="@string/about" />
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/filter_Setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_filter"
+            android:layout_marginTop="6dp"
+            app:ads_title="@string/filter" />
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/aboutItemView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ads_ic_info"
+            android:layout_marginTop="6dp"
+            app:ads_title="@string/about" />
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/whatsNew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_new_releases"
+            android:layout_marginTop="6dp"
+            app:ads_title="@string/whats_new" />
 
-            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-                android:id="@+id/whatsNew"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_colorType="tint_surface"
-                app:ads_icon="@drawable/ic_new_releases"
-                app:ads_subtitle="@string/change_log"
-                app:ads_title="@string/whats_new" />
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>

@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:fontFamily="@font/open_sans_light"
+        android:fontFamily="@font/cabincondensed_regular"
         android:text="@string/something_went_wrong" />
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

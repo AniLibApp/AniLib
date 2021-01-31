@@ -20,7 +20,7 @@ class GifDrawable(private val context: Context, bitmap: Bitmap) :
         paint.color = Color.WHITE
         val textSize = sp(18f * if (bounds.width() > 300) 1 else bounds.width() / 300)
         paint.textSize = textSize
-        paint.typeface = ResourcesCompat.getFont(context, R.font.berlinrounded_extra_bold)
+        paint.typeface = ResourcesCompat.getFont(context, R.font.cabin_semi_bold)
         val txtWidth = paint.measureText(context.getString(R.string.gif)) + 20
         val txtHeight = paint.fontMetrics.bottom - paint.fontMetrics.top
 

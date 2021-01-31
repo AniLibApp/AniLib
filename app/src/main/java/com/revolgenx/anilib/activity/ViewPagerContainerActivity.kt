@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.forEachIndexed
 import androidx.core.view.iterator
@@ -24,11 +26,10 @@ import com.revolgenx.anilib.ui.fragment.staff.StaffMediaRoleFragment
 import com.revolgenx.anilib.ui.fragment.user.*
 import com.revolgenx.anilib.data.meta.ViewPagerContainerMeta
 import com.revolgenx.anilib.data.meta.ViewPagerContainerType
+import com.revolgenx.anilib.databinding.ViewpagerContainerActivityBinding
 import com.revolgenx.anilib.util.unRegisterForEvent
-import kotlinx.android.synthetic.main.toolbar_layout.*
-import kotlinx.android.synthetic.main.viewpager_container_activity.*
 
-class ViewPagerContainerActivity : BaseDynamicActivity() {
+class ViewPagerContainerActivity : BaseDynamicActivity<ViewpagerContainerActivityBinding>() {
 
     companion object {
         const val viewPagerContainerKey = "viewpager_activity_container_key"
@@ -43,9 +44,9 @@ class ViewPagerContainerActivity : BaseDynamicActivity() {
             })
         }
 
-        fun <T : Parcelable> openActivity(
+        fun openActivity(
             context: Context,
-            meta: ViewPagerContainerMeta<T>
+            meta: ViewPagerContainerMeta
         ) {
             context.startActivity(Intent(context, ViewPagerContainerActivity::class.java).also {
                 it.putExtra(viewPagerContainerMetaKey, meta)
@@ -53,15 +54,21 @@ class ViewPagerContainerActivity : BaseDynamicActivity() {
         }
     }
 
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): ViewpagerContainerActivityBinding {
+        return ViewpagerContainerActivityBinding.inflate(inflater)
+    }
+
     private lateinit var viewPagerParcelableFragments: ViewPagerParcelableFragments
-    private lateinit var viewPagerMeta: ViewPagerContainerMeta<Parcelable>
-    override val layoutRes: Int = R.layout.viewpager_container_activity
+    private lateinit var viewPagerMeta: ViewPagerContainerMeta
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewPagerContainerLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-        setSupportActionBar(dynamicToolbar)
+        binding.viewPagerContainerLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
+        setSupportActionBar(binding.viewPagerToolbar.dynamicToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         statusBarColor = statusBarColor
         themeBottomNavigation()
@@ -74,10 +81,10 @@ class ViewPagerContainerActivity : BaseDynamicActivity() {
         prepareViews(viewPagerMeta)
 
 
-        containerBottomNav.setOnNavigationItemSelectedListener {
-            containerBottomNav.menu.forEachIndexed { index, item ->
+        binding.containerBottomNav.setOnNavigationItemSelectedListener {
+            binding.containerBottomNav.menu.forEachIndexed { index, item ->
                 if (it == item) {
-                    containerViewPager.setCurrentItem(index, true)
+                    binding.containerViewPager.setCurrentItem(index, true)
                     return@setOnNavigationItemSelectedListener true
                 }
             }
@@ -85,28 +92,25 @@ class ViewPagerContainerActivity : BaseDynamicActivity() {
         }
 
 
-        containerViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+        binding.containerViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                containerBottomNav.menu.iterator().forEach {
+                binding.containerBottomNav.menu.iterator().forEach {
                     it.isChecked = false
                 }
-                containerBottomNav.menu.getItem(position).isChecked = true
+                binding.containerBottomNav.menu.getItem(position).isChecked = true
             }
         })
 
-        containerViewPager.offscreenPageLimit = viewPagerParcelableFragments.clzzes.size - 1
-        containerViewPager.adapter = ViewPagerContainerAdapter()
-//        containerViewPager.post {
-//            ActivityCompat.startPostponedEnterTransition(this)
-//        }
+        binding.containerViewPager.offscreenPageLimit = viewPagerParcelableFragments.clzzes.size - 1
+        binding.containerViewPager.adapter = ViewPagerContainerAdapter()
     }
 
 
-    private fun prepareViews(viewPagerMeta: ViewPagerContainerMeta<Parcelable>) {
+    private fun prepareViews(viewPagerMeta: ViewPagerContainerMeta) {
         when (viewPagerMeta.containerType) {
             ViewPagerContainerType.CHARACTER -> {
                 supportActionBar?.title = getString(R.string.character)
-                containerBottomNav.inflateMenu(R.menu.character_nav_menu)
+                binding.containerBottomNav.inflateMenu(R.menu.character_nav_menu)
                 viewPagerParcelableFragments = ViewPagerParcelableFragments(
                     listOf(
                         CharacterFragment::class.java.name,
@@ -129,7 +133,7 @@ class ViewPagerContainerActivity : BaseDynamicActivity() {
 
             ViewPagerContainerType.STAFF -> {
                 supportActionBar?.title = getString(R.string.staff)
-                containerBottomNav.inflateMenu(R.menu.staff_nav_menu)
+                binding.containerBottomNav.inflateMenu(R.menu.staff_nav_menu)
                 viewPagerParcelableFragments = ViewPagerParcelableFragments(
                     listOf(
                         StaffFragment::class.java.name,
@@ -152,7 +156,7 @@ class ViewPagerContainerActivity : BaseDynamicActivity() {
 
             ViewPagerContainerType.FAVOURITE -> {
                 supportActionBar?.title = getString(R.string.favourites)
-                containerBottomNav.inflateMenu(R.menu.favourite_nav_menu)
+                binding.containerBottomNav.inflateMenu(R.menu.favourite_nav_menu)
                 viewPagerParcelableFragments = ViewPagerParcelableFragments(
                     listOf(
                         AnimeFavouriteFragment::class.java.name,
@@ -184,8 +188,8 @@ class ViewPagerContainerActivity : BaseDynamicActivity() {
     }
 
     private fun themeBottomNavigation() {
-        containerBottomNav.color = DynamicTheme.getInstance().get().primaryColor
-        containerBottomNav.textColor = DynamicTheme.getInstance().get().accentColor
+        binding.containerBottomNav.color = DynamicTheme.getInstance().get().primaryColor
+        binding.containerBottomNav.textColor = DynamicTheme.getInstance().get().accentColor
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

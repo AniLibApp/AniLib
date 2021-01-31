@@ -3,7 +3,6 @@ package com.revolgenx.anilib.ui.dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.core.os.bundleOf
-import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
@@ -13,14 +12,14 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.data.meta.FollowerMeta
 import com.revolgenx.anilib.data.model.user.UserFollowersModel
+import com.revolgenx.anilib.databinding.FollowerDialogLayoutBinding
+import com.revolgenx.anilib.databinding.UserFollowrTitleLayoutBinding
 import com.revolgenx.anilib.ui.presenter.user.UserFollowerPresenter
 import com.revolgenx.anilib.ui.viewmodel.user.UserFollowerViewModel
-import kotlinx.android.synthetic.main.follower_dialog_layout.*
-import kotlinx.android.synthetic.main.user_followr_title_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class UserFollowerDialog : BaseDialogFragment() {
+class UserFollowerDialog : BaseDialogFragment<FollowerDialogLayoutBinding>() {
 
     companion object {
         fun newInstance(followerMeta: FollowerMeta) = UserFollowerDialog().also {
@@ -55,9 +54,9 @@ class UserFollowerDialog : BaseDialogFragment() {
         return viewModel.createSource()
     }
 
-    private var baseRecyclerView: RecyclerView? = null
-    override var viewRes: Int? = R.layout.follower_dialog_layout
-
+    override fun bindView(): FollowerDialogLayoutBinding {
+        return FollowerDialogLayoutBinding.inflate(provideLayoutInflater())
+    }
 
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,
@@ -67,16 +66,22 @@ class UserFollowerDialog : BaseDialogFragment() {
         val followerMeta = arguments?.getParcelable<FollowerMeta>(FOLLOWING_META_KEY)
             ?: return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
 
-        val titleView =
-            LayoutInflater.from(requireContext()).inflate(R.layout.user_followr_title_layout, null)
-        titleView.dialogTitle.text =
+        val userFollowerBinding =
+            UserFollowrTitleLayoutBinding.inflate(
+                LayoutInflater.from(requireContext()),
+                null,
+                false
+            )
+
+        userFollowerBinding.dialogTitle.text =
             if (followerMeta.isFollowing) getString(R.string.following) else getString(R.string.follower)
-        titleView.dialogDismissButton.setOnClickListener {
+        userFollowerBinding.dialogDismissButton.setOnClickListener {
             dismiss()
         }
         with(dialogBuilder) {
-            setCustomTitle(titleView)
+            setCustomTitle(userFollowerBinding.root)
         }
+
         return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
     }
 
@@ -84,25 +89,21 @@ class UserFollowerDialog : BaseDialogFragment() {
         val followerMeta = arguments?.getParcelable<FollowerMeta>(FOLLOWING_META_KEY)
             ?: return
 
-        with(alertDialog) {
-            viewModel.field.also {
-                it.userId = followerMeta.userId
-                it.isFollowing = followerMeta.isFollowing
+        viewModel.field.also {
+            it.userId = followerMeta.userId
+            it.isFollowing = followerMeta.isFollowing
+            binding.recyclerViewFrame.setOnRefreshListener {
+                createSource()
+                binding.recyclerViewFrame.swipeRefreshLayout.isRefreshing = false
+                createAdapter()
+                    .into(binding.recyclerViewFrame.recyclerView)
             }
-            with(recyclerViewFrame) {
-                baseRecyclerView = recyclerView
-                setOnRefreshListener {
-                    createSource()
-                    swipeRefreshLayout.isRefreshing = false
-                    invalidateAdapter()
-                }
-                invalidateAdapter()
-            }
-
+            createAdapter()
+                .into(binding.recyclerViewFrame.recyclerView)
         }
     }
 
-    private fun invalidateAdapter() {
+    private fun createAdapter() =
         Adapter.builder(this, 10)
             .setPager(PageSizePager(10))
             .addSource(baseSource)
@@ -110,7 +111,5 @@ class UserFollowerDialog : BaseDialogFragment() {
             .addPresenter(loadingPresenter)
             .addPresenter(errorPresenter)
             .addPresenter(emptyPresenter)
-            .into(baseRecyclerView!!)
-    }
 
 }

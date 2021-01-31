@@ -3,9 +3,10 @@ package com.revolgenx.anilib.ui.fragment.settings
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.AboutActivity
 import com.revolgenx.anilib.activity.ContainerActivity
@@ -14,15 +15,20 @@ import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.ui.dialog.ReleaseInfoDialog
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
+import com.revolgenx.anilib.databinding.SettingFragmentLayoutBinding
 import com.revolgenx.anilib.ui.fragment.notification.NotificationSettingFragment
 import com.revolgenx.anilib.ui.view.makeToast
-import kotlinx.android.synthetic.main.setting_fragment_layout.*
 
-class SettingFragment : BaseToolbarFragment() {
+class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
 
     override val title: Int = R.string.settings
 
-    override val contentRes: Int = R.layout.setting_fragment_layout
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): SettingFragmentLayoutBinding {
+        return SettingFragmentLayoutBinding.inflate(inflater, parent, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,27 +40,55 @@ class SettingFragment : BaseToolbarFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        themeItemView.setOnClickListener {
+
+        binding.applicationSettingIv.setOnClickListener {
             ContainerActivity.openActivity(
                 requireContext(),
                 ParcelableFragment(
-                    ThemeControllerFragment::class.java,
+                    ApplicationSettingFragment::class.java,
                     null
                 )
             )
         }
 
-        notificationSetting.setOnClickListener {
-            ToolbarContainerActivity.openActivity(
-                requireContext(),
-                ParcelableFragment(
-                    NotificationSettingFragment::class.java,
-                    null
+        if(requireContext().loggedIn()) {
+            binding.notificationSetting.setOnClickListener {
+                ToolbarContainerActivity.openActivity(
+                    requireContext(),
+                    ParcelableFragment(
+                        NotificationSettingFragment::class.java,
+                        null
+                    )
                 )
-            )
+            }
+
+            binding.mediaSettingIv.setOnClickListener {
+                ToolbarContainerActivity.openActivity(
+                    requireContext(),
+                    ParcelableFragment(
+                        MediaSettingFragment::class.java,
+                        null
+                    )
+                )
+            }
+
+            binding.listSettingIv.setOnClickListener {
+                ToolbarContainerActivity.openActivity(
+                    requireContext(),
+                    ParcelableFragment(
+                        MediaListSettingFragment::class.java,
+                        null
+                    )
+                )
+            }
+        }else{
+            binding.notificationSetting.visibility = View.GONE
+            binding.listSettingIv.visibility = View.GONE
+            binding.mediaSettingIv.visibility = View.GONE
         }
 
-        customizeFilterItemView.setOnClickListener {
+
+        binding.filterSetting.setOnClickListener {
             ToolbarContainerActivity.openActivity(
                 requireContext(),
                 ParcelableFragment(
@@ -64,30 +98,11 @@ class SettingFragment : BaseToolbarFragment() {
             )
         }
 
-        adultContentPrefCardView.visibility = if(isStudioFlavor()) View.VISIBLE else View.GONE
-
-        aboutItemView.setOnClickListener {
+        binding.aboutItemView.setOnClickListener {
             startActivity(Intent(requireContext(), AboutActivity::class.java))
         }
-        whatsNew.setOnClickListener {
+        binding.whatsNew.setOnClickListener {
             ReleaseInfoDialog().show(childFragmentManager, ReleaseInfoDialog.tag)
-        }
-    }
-
-    override fun setSharedPreferenceChangeListener(): Boolean = true
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        super.onSharedPreferenceChanged(sharedPreferences, key)
-        when (key) {
-            getString(R.string.start_navigation_key) -> {
-                if (!requireContext().loggedIn()) {
-                    val startNavigation = getStartNavigation(requireContext())
-                    if (startNavigation != DISCOVER_NAV_POS) {
-                        setStartNavigation(requireContext(), DISCOVER_NAV_POS)
-                        makeToast(R.string.please_log_in)
-                    }
-                }
-            }
         }
     }
 }

@@ -13,7 +13,7 @@
         android:layout_toStartOf="@id/dialogDismissButton"
         android:paddingTop="8dp"
         android:textSize="16sp"
-        app:fontFamily="@font/berlinrounded_extra_bold" />
+        app:fontFamily="@font/cabin_semi_bold" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
         android:id="@+id/dialogDismissButton"
@@ -22,7 +22,6 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:padding="4dp"
-        app:ads_colorType="tint_surface"
         app:srcCompat="@drawable/ic_close" />
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>

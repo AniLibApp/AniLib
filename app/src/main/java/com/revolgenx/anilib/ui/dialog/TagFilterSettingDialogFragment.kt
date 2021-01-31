@@ -17,18 +17,16 @@ import com.revolgenx.anilib.data.field.TagField
 import com.revolgenx.anilib.data.field.TagState
 import com.revolgenx.anilib.data.meta.TagFilterMetaType
 import com.revolgenx.anilib.data.meta.TagFilterSettingMeta
+import com.revolgenx.anilib.databinding.TagChooserDialogHeaderLayoutBinding
+import com.revolgenx.anilib.databinding.TagFilterSettingDialogFragmentLayoutBinding
+import com.revolgenx.anilib.databinding.TagFilterSettingHolderLayoutBinding
 import com.revolgenx.anilib.ui.viewmodel.setting.TagEditMode
 import com.revolgenx.anilib.ui.viewmodel.setting.TagFilterSettingDialogViewModel
-import kotlinx.android.synthetic.main.tag_chooser_dialog_header_layout.view.*
-import kotlinx.android.synthetic.main.tag_filter_setting_dialog_fragment_layout.*
-import kotlinx.android.synthetic.main.tag_filter_setting_holder_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TagFilterSettingDialogFragment : BaseDialogFragment() {
+class TagFilterSettingDialogFragment : BaseDialogFragment<TagFilterSettingDialogFragmentLayoutBinding>() {
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
-    override var viewRes: Int? = R.layout.tag_filter_setting_dialog_fragment_layout
-
 
     companion object {
         const val TAG_SETTING_FILTER_META_KEY = "TAG_SETTING_FILTER_META_KEY"
@@ -42,6 +40,10 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
 
     private val viewModel by viewModel<TagFilterSettingDialogViewModel>()
     private lateinit var adapter: TagAdapter
+
+    override fun bindView(): TagFilterSettingDialogFragmentLayoutBinding {
+        return TagFilterSettingDialogFragmentLayoutBinding.inflate(provideLayoutInflater())
+    }
 
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,
@@ -57,14 +59,11 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
             if (savedInstanceState == null) {
                 viewModel.updateField(context)
             }
-            val v = LayoutInflater.from(context).inflate(
-                R.layout.tag_chooser_dialog_header_layout,
-                null
-            )
 
-            v.setHeaderTitle()
-            v.setUpHeaderListener()
-            setCustomTitle(v)
+            val tagChooserBinding = TagChooserDialogHeaderLayoutBinding.inflate(LayoutInflater.from(context), null, false)
+            tagChooserBinding.setHeaderTitle()
+            tagChooserBinding.setUpHeaderListener()
+            setCustomTitle(tagChooserBinding.root)
             isAutoDismiss = false
         }
         return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
@@ -73,19 +72,19 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         super.onShowListener(alertDialog, savedInstanceState)
-        with(alertDialog) {
-            this.window.let { window ->
-                window!!.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
-                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-            }
 
-            getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
-                adapter.deSelectAll()
-            }
 
-            adapter = TagAdapter()
-            tagFilterSettingRecyclerView.adapter = adapter
+        alertDialog.window.let { window ->
+            window!!.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         }
+
+        alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
+            adapter.deSelectAll()
+        }
+
+        adapter = TagAdapter()
+        binding.tagFilterSettingRecyclerView.adapter = adapter
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
@@ -97,7 +96,7 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
     }
 
 
-    private fun View.setHeaderTitle() {
+    private fun TagChooserDialogHeaderLayoutBinding.setHeaderTitle() {
         tagTitleTv.text = when (viewModel.tagFilterType) {
             TagFilterMetaType.GENRE -> getString(R.string.genre)
             TagFilterMetaType.TAG -> getString(R.string.tags)
@@ -106,16 +105,18 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
     }
 
 
-    private fun View.setUpHeaderListener() {
+    private fun TagChooserDialogHeaderLayoutBinding.setUpHeaderListener() {
         when (viewModel.editMode) {
             TagEditMode.ADD -> addTagFromLayout.visibility = View.VISIBLE
             TagEditMode.DELETE, TagEditMode.RELOAD -> areYouSureLayout.visibility = View.VISIBLE
+            else -> {
+            }
         }
         setUpHeaderVisibility()
         initHeaderListener()
     }
 
-    private fun View.setUpHeaderVisibility() {
+    private fun TagChooserDialogHeaderLayoutBinding.setUpHeaderVisibility() {
         this.customTagAddIv.setOnClickListener {
             areYouSureLayout.visibility = View.GONE
             addTagFromLayout.visibility =
@@ -151,7 +152,7 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
 
     }
 
-    private fun View.initHeaderListener() {
+    private fun TagChooserDialogHeaderLayoutBinding.initHeaderListener() {
         addTagFromEtIv.setOnClickListener {
             tagAddEt.text.toString().takeIf { it.isNotEmpty() }?.let { newTag ->
                 viewModel.tagFields.add(TagField(newTag, TagState.EMPTY))
@@ -172,6 +173,8 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
                     adapter.notifyDataSetChanged()
                     areYouSureLayout.visibility = View.GONE
                 }
+                else -> {
+                }
             }
             viewModel.editMode = TagEditMode.DEFAULT
         }
@@ -185,11 +188,7 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagHolder {
             return TagHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.tag_filter_setting_holder_layout,
-                    parent,
-                    false
-                )
+                TagFilterSettingHolderLayoutBinding.inflate(LayoutInflater.from(context), parent, false)
             )
         }
 
@@ -207,11 +206,11 @@ class TagFilterSettingDialogFragment : BaseDialogFragment() {
             notifyDataSetChanged()
         }
 
-        inner class TagHolder(v: View) : RecyclerView.ViewHolder(v) {
+        inner class TagHolder(val v: TagFilterSettingHolderLayoutBinding) : RecyclerView.ViewHolder(v.root) {
             fun bind(item: TagField) {
-                itemView.apply {
+                v.apply {
                     this.tagChooserCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                        item.tagState = if(isChecked) TagState.TAGGED else TagState.EMPTY
+                        item.tagState = if (isChecked) TagState.TAGGED else TagState.EMPTY
                     }
                     tagChooserCheckBox.setTextColor(textColor)
                     tagChooserCheckBox.text = item.tag

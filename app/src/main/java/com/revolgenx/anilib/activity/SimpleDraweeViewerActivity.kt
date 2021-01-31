@@ -17,10 +17,10 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.data.meta.DraweeViewerMeta
 import com.revolgenx.anilib.common.preference.getApplicationLocale
+import com.revolgenx.anilib.databinding.SimpleDraweeViewerActivityBinding
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.thefuntasty.hauler.setOnDragDismissedListener
-import kotlinx.android.synthetic.main.simple_drawee_viewer_activity.*
 import java.util.*
 
 class SimpleDraweeViewerActivity : DynamicSystemActivity() {
@@ -56,15 +56,16 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.simple_drawee_viewer_activity)
-        setSupportActionBar(draweeViewerToolbar)
+        val binding = SimpleDraweeViewerActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.draweeViewerToolbar)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         draweeMeta = intent.getParcelableExtra(simpleDraweeMetaKey) ?: return
-        haulerView.setBackgroundColor(Color.BLACK)
-        bigImageViewer.setImageViewFactory(FrescoImageViewFactory())
-        bigImageViewer.setProgressIndicator(ProgressPieIndicator())
-        bigImageViewer.setImageSaveCallback(object : ImageSaveCallback {
+        binding.haulerView.setBackgroundColor(Color.BLACK)
+        binding.bigImageViewer.setImageViewFactory(FrescoImageViewFactory())
+        binding.bigImageViewer.setProgressIndicator(ProgressPieIndicator())
+        binding.bigImageViewer.setImageSaveCallback(object : ImageSaveCallback {
             override fun onFail(p0: Throwable?) {
                 makeToast(R.string.failed_to_save, icon = R.drawable.ic_error)
             }
@@ -74,10 +75,10 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
             }
         })
 
-        haulerView.setOnDragDismissedListener {
+        binding.haulerView.setOnDragDismissedListener {
             finishAfterTransition()
         }
-        bigImageViewer.showImage(draweeMeta!!.url?.toUri())
+        binding.bigImageViewer.showImage(draweeMeta!!.url?.toUri())
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -92,10 +93,6 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-//            R.id.downloadImageMenu -> {
-//                bigImageViewer.saveImageIntoGallery()
-//                true
-//            }
             R.id.imageShareMenu->{
                 openLink(draweeMeta?.url)
                 true

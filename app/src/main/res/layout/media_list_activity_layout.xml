@@ -8,10 +8,12 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/dynamicSmartTab"
+        android:layout_above="@+id/media_list_smart_tab"
         android:layout_alignParentTop="true">
 
-        <include layout="@layout/toolbar_layout"/>
+        <include
+            android:id="@+id/media_list_toolbar"
+            layout="@layout/toolbar_layout" />
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
@@ -29,7 +31,8 @@
     </com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout>
 
     <include
-         layout="@layout/custom_bottom_navigation_view"/>
+        android:id="@+id/media_list_smart_tab"
+        layout="@layout/custom_bottom_navigation_view" />
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
 

@@ -8,10 +8,10 @@ import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
+import com.revolgenx.anilib.databinding.ReviewsFilterDialogLayoutBinding
 import com.revolgenx.anilib.util.onItemSelected
-import kotlinx.android.synthetic.main.reviews_filter_dialog_layout.*
 
-class ReviewsFilterDialog : BaseDialogFragment() {
+class ReviewsFilterDialog : BaseDialogFragment<ReviewsFilterDialogLayoutBinding>() {
 
 
     companion object {
@@ -35,9 +35,12 @@ class ReviewsFilterDialog : BaseDialogFragment() {
     var positiveCallback: ((Int?) -> Unit)? = null
 
     override var titleRes: Int? = R.string.filter
-    override var viewRes: Int? = R.layout.reviews_filter_dialog_layout
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
+
+    override fun bindView(): ReviewsFilterDialogLayoutBinding {
+        return ReviewsFilterDialogLayoutBinding.inflate(provideLayoutInflater())
+    }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
         super.onPositiveClicked(dialogInterface, which)
@@ -47,12 +50,10 @@ class ReviewsFilterDialog : BaseDialogFragment() {
     }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
-        with(alertDialog){
-            reviewsFilterSpinner.adapter = makeSpinnerAdapter(reviewsFilterSpinnerItem)
-            reviewsFilterSpinner.setSelection(arguments?.getInt(reviews_filter_key) ?: 0)
-            reviewsFilterSpinner.onItemSelected {
-                arguments = bundleOf(reviews_filter_key to it)
-            }
+        binding.reviewsFilterSpinner.adapter = makeSpinnerAdapter(reviewsFilterSpinnerItem)
+        binding.reviewsFilterSpinner.setSelection(arguments?.getInt(reviews_filter_key) ?: 0)
+        binding.reviewsFilterSpinner.onItemSelected {
+            arguments = bundleOf(reviews_filter_key to it)
         }
     }
 

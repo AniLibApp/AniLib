@@ -3,12 +3,8 @@ package com.revolgenx.anilib.ui.fragment.review
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.view.inputmethod.InputMethodManager
-import androidx.lifecycle.observe
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.field.review.ReviewField
@@ -17,27 +13,23 @@ import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.meta.ReviewComposerMeta
 import com.revolgenx.anilib.data.model.review.ReviewModel
 import com.revolgenx.anilib.common.preference.userId
+import com.revolgenx.anilib.databinding.MarkwonHelperLayoutBinding
+import com.revolgenx.anilib.databinding.ReviewComposerFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.getClipBoardText
 import com.revolgenx.anilib.ui.view.util.attachHelperToView
 import com.revolgenx.anilib.ui.viewmodel.review.ReviewComposerViewModel
 import io.noties.markwon.editor.MarkwonEditorTextWatcher
-import kotlinx.android.synthetic.main.error_layout.*
-import kotlinx.android.synthetic.main.loading_layout.*
-import kotlinx.android.synthetic.main.markwon_helper_layout.*
-import kotlinx.android.synthetic.main.resource_status_container_layout.*
-import kotlinx.android.synthetic.main.review_composer_fragment_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ReviewComposerFragment : BaseToolbarFragment() {
+class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutBinding>() {
     companion object {
         const val reviewComposerMetaKey = "ReviewComposerMetaKey"
     }
 
     override val title: Int = R.string.review_composer
-    override val contentRes: Int = R.layout.review_composer_fragment_layout
 
     private val viewModel by viewModel<ReviewComposerViewModel>()
 
@@ -47,6 +39,13 @@ class ReviewComposerFragment : BaseToolbarFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.review_composer_menu, menu)
+    }
+
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): ReviewComposerFragmentLayoutBinding {
+        return ReviewComposerFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -101,10 +100,10 @@ class ReviewComposerFragment : BaseToolbarFragment() {
                         } else {
                             viewModel.field.model = ReviewModel()
                         }
-                        writeReviewEt.setSelection(writeReviewEt.length())
-                        writeReviewEt.requestFocus()
+                        binding.writeReviewEt.setSelection(binding.writeReviewEt.length())
+                        binding.writeReviewEt.requestFocus()
                         (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
-                            writeReviewEt,
+                            binding.writeReviewEt,
                             0
                         )
                     }
@@ -126,23 +125,26 @@ class ReviewComposerFragment : BaseToolbarFragment() {
     }
 
     private fun initEditText() {
-        attachHelperToView(markdownHelperLayout, writeReviewEt)
-        writeReviewEt.addTextChangedListener(
+        attachHelperToView(
+            MarkwonHelperLayoutBinding.bind(binding.markwonHelper.markdownHelperLayout),
+            binding.writeReviewEt
+        )
+        binding.writeReviewEt.addTextChangedListener(
             MarkwonEditorTextWatcher.withProcess(
                 MarkwonImpl.createMarkwonEditor(
                     requireContext()
                 )
             )
         )
-        summaryPasteIv.setOnClickListener {
-            reviewSummaryEt.append(requireContext().getClipBoardText())
+        binding.summaryPasteIv.setOnClickListener {
+            binding.reviewSummaryEt.append(requireContext().getClipBoardText())
         }
     }
 
     private fun updateTheme() {
-        reviewSummaryTextInputLayout.counterTextColor =
+        binding.reviewSummaryTextInputLayout.counterTextColor =
             ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
-        writeReviewTextInputLayout.counterTextColor =
+        binding.writeReviewTextInputLayout.counterTextColor =
             ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
     }
 
@@ -151,15 +153,15 @@ class ReviewComposerFragment : BaseToolbarFragment() {
         viewModel.field.model?.apply {
             updatePrivateToolbar()
             summary?.let {
-                reviewSummaryEt.setText(it)
+                binding.reviewSummaryEt.setText(it)
             }
 
-            body?.html?.let {
-                writeReviewEt.setText(it)
+            body.html?.let {
+                binding.writeReviewEt.setText(it)
             }
 
             score?.let {
-                reviewScorePlusMinusTv.setCounter(it.toDouble())
+                binding.reviewScorePlusMinusTv.setCounter(it.toDouble())
             }
         }
     }
@@ -173,15 +175,17 @@ class ReviewComposerFragment : BaseToolbarFragment() {
     }
 
     private fun showLoading(b: Boolean) {
-        resourceStatusContainer.visibility = if (b) View.VISIBLE else View.GONE
-        progressLayout.visibility = if (b) View.VISIBLE else View.GONE
-        errorLayout.visibility = View.GONE
+        binding.resourceStatusLayout.resourceStatusContainer.visibility =
+            if (b) View.VISIBLE else View.GONE
+        binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility =
+            if (b) View.VISIBLE else View.GONE
+        binding.resourceStatusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
     }
 
     private fun showError() {
-        resourceStatusContainer.visibility = View.VISIBLE
-        errorLayout.visibility = View.VISIBLE
-        progressLayout.visibility = View.GONE
+        binding.resourceStatusLayout.resourceStatusContainer.visibility = View.VISIBLE
+        binding.resourceStatusLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
+        binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
     }
 
     private fun saveReview() {
@@ -225,23 +229,23 @@ class ReviewComposerFragment : BaseToolbarFragment() {
 
     private fun updateModel(): Boolean {
 
-        val reviewLength = writeReviewEt.length()
+        val reviewLength = binding.writeReviewEt.length()
         if (reviewLength < 2201) {
-            writeReviewTextInputLayout.error = getString(R.string.check_character_length)
+            binding.writeReviewTextInputLayout.error = getString(R.string.check_character_length)
             return false
         }
 
-        val summaryLength = reviewSummaryEt.length()
+        val summaryLength = binding.reviewSummaryEt.length()
         if (summaryLength < 21 || summaryLength > 120) {
-            reviewSummaryTextInputLayout.error = getString(R.string.check_character_length)
+            binding.reviewSummaryTextInputLayout.error = getString(R.string.check_character_length)
             return false
         }
 
 
         viewModel.field.model?.apply {
-            summary = reviewSummaryEt.text.toString()
-            body.html = writeReviewEt.text.toString()
-            score = reviewScorePlusMinusTv.counterHolder.toInt()
+            summary = binding.reviewSummaryEt.text.toString()
+            body.html = binding.writeReviewEt.text.toString()
+            score = binding.reviewScorePlusMinusTv.counterHolder.toInt()
         }
         return true
     }

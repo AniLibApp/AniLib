@@ -9,6 +9,7 @@ open class CommonMediaModel() : BaseModel() {
             baseId = value
         }
     var title: TitleModel? = null
+    var description: String? = null
     var startDate: DateModel? = null
     var endDate: DateModel? = null
     var genres: List<String>? = null
@@ -25,5 +26,7 @@ open class CommonMediaModel() : BaseModel() {
     var isAdult = false
     var season: Int? = null
     var seasonYear: Int? = null
+    var popularity:Int? = null
+    var favourites:Int? = null
     var mediaEntryListModel: MediaEntryListModel? = null
 }

@@ -80,10 +80,4 @@
         * In-built login.\n
 
     </string>
-
-    <string name="studio_note" translatable="false">
-        ### Visit [AniLib](https://anilib.onrender.com/#/) for more info.
-    </string>
-
-
 </resources>

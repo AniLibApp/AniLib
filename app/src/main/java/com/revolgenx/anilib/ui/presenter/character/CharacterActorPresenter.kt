@@ -5,26 +5,25 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseStaffEvent
 import com.revolgenx.anilib.data.meta.StaffMeta
 import com.revolgenx.anilib.data.model.VoiceActorModel
-import kotlinx.android.synthetic.main.character_actor_presenter_layout.view.*
+import com.revolgenx.anilib.databinding.CharacterActorPresenterLayoutBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 
-class CharacterActorPresenter(context: Context) : Presenter<VoiceActorModel>(context) {
+class CharacterActorPresenter(context: Context) : BasePresenter<CharacterActorPresenterLayoutBinding, VoiceActorModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.character_actor_presenter_layout,
-                parent,
-                false
-            )
-        )
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): CharacterActorPresenterLayoutBinding {
+        return CharacterActorPresenterLayoutBinding.inflate(inflater, parent, false)
     }
+
 
     private val language by lazy {
         context.resources.getStringArray(R.array.staff_language)
@@ -33,14 +32,14 @@ class CharacterActorPresenter(context: Context) : Presenter<VoiceActorModel>(con
     override fun onBind(page: Page, holder: Holder, element: Element<VoiceActorModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-
-        holder.itemView.apply {
+        val binding = holder.getBinding()?:return
+        binding.apply {
             actorImageView.setImageURI(item.voiceActorImageModel?.image)
             actorNameTv.text = item.name
             item.language?.let {
                 actorLanguageTv.text = language[it]
             }
-            setOnClickListener {
+            root.setOnClickListener {
                 BrowseStaffEvent(
                     StaffMeta(
                         item.actorId ?: -1,

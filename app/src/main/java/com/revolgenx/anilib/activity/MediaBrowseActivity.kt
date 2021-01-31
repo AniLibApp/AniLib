@@ -5,10 +5,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
@@ -21,7 +18,6 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewpager.widget.ViewPager
 import com.facebook.drawee.view.SimpleDraweeView
@@ -40,22 +36,20 @@ import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.meta.ReviewComposerMeta
 import com.revolgenx.anilib.data.model.MediaBrowseModel
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.constant.PatternConstant
+import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
+import com.revolgenx.anilib.databinding.ActivityMediaBrowserBinding
+import com.revolgenx.anilib.databinding.SmartTabLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.ui.viewmodel.media.MediaBrowserViewModel
-import kotlinx.android.synthetic.main.activity_media_browser.*
-import kotlinx.android.synthetic.main.custom_bottom_navigation_view.*
-import kotlinx.android.synthetic.main.smart_tab_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.regex.Pattern
 import kotlin.math.abs
 
 //todo://handle review
-class MediaBrowseActivity : BaseDynamicActivity() {
+class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
     companion object {
         const val MEDIA_BROWSER_META = "media_browser_meta"
     }
@@ -74,10 +68,16 @@ class MediaBrowseActivity : BaseDynamicActivity() {
         object :
             ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                dynamicSmartTab.getTabs().forEach { it.tabTextTv.visibility = View.GONE }
-                dynamicSmartTab.getTabAt(position).tabTextTv.visibility = View.VISIBLE
-                if (position == 0) return
-                appbarLayout.setExpanded(false)
+                if (isBindingEmpty()) return
+
+                binding.apply {
+                    dynamicSmartTab.baseDynamicSmartTab.getTabs()
+                        .forEach { it.findViewById<View>(R.id.tab_text_tv).visibility = View.GONE }
+                    dynamicSmartTab.baseDynamicSmartTab.getTabAt(position)
+                        .findViewById<View>(R.id.tab_text_tv).visibility = View.VISIBLE
+                    if (position == 0) return
+                    appbarLayout.setExpanded(false)
+                }
             }
         }
     }
@@ -93,31 +93,30 @@ class MediaBrowseActivity : BaseDynamicActivity() {
 
     private val offSetChangeListener =
         AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (isBindingEmpty()) return@OnOffsetChangedListener
             if (verticalOffset == 0) {
                 state = EXPANDED
                 invalidateOptionsMenu()
-            } else if (abs(verticalOffset) >= (appBarLayout.totalScrollRange - mediaBrowserToolbar.height)) {
+            } else if (abs(verticalOffset) >= (appBarLayout.totalScrollRange - binding.mediaBrowserToolbar.height)) {
                 state = COLLAPSED
                 invalidateOptionsMenu()
             }
         }
 
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): ActivityMediaBrowserBinding {
+        return ActivityMediaBrowserBinding.inflate(inflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        browserRootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-        mediaAddButton.setCompoundDrawablesRelativeWithIntrinsicBounds(
-            null,
-            null,
-            ContextCompat.getDrawable(this, R.drawable.ic_arrow_down)?.also {
-                it.setTint(DynamicTheme.getInstance().get().tintSurfaceColor)
-            },
-            null
-        )
 
         if (intent == null) {
             return
         }
-        mediaBrowserMeta =  if (intent.action == Intent.ACTION_VIEW) {
+        mediaBrowserMeta = if (intent.action == Intent.ACTION_VIEW) {
             val data = intent.data ?: return
             val paths = data.pathSegments
             val type = if (paths[0].compareTo("anime", true) == 0) {
@@ -145,7 +144,7 @@ class MediaBrowseActivity : BaseDynamicActivity() {
                     browseMediaBrowseModel = it.data
 
                     browseMediaBrowseModel?.mediaListStatus?.let {
-                        mediaAddButton.text =
+                        binding.mediaAddButton.text =
                             resources.getStringArray(R.array.media_list_status)[it]
                     }
 
@@ -155,8 +154,10 @@ class MediaBrowseActivity : BaseDynamicActivity() {
                         mediaBrowserMeta.bannerImage =
                             it.data?.bannerImage ?: it.data?.coverImage?.largeImage
                         mediaBrowserMeta.title = it.data?.title?.romaji ?: ""
-                        updateView()
+                        binding.updateView()
                     }
+                }
+                else -> {
                 }
             }
         }
@@ -169,9 +170,9 @@ class MediaBrowseActivity : BaseDynamicActivity() {
             DynamicTheme.getInstance().get().accentColor,
             DynamicTheme.getInstance().get().tintPrimaryColor
         )
-        setSupportActionBar(mediaBrowserToolbar)
+        setSupportActionBar(binding.mediaBrowserToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        updateView()
+        binding.updateView()
 
         tabColorStateList = ColorStateList(
             arrayOf(
@@ -179,7 +180,9 @@ class MediaBrowseActivity : BaseDynamicActivity() {
                 intArrayOf(android.R.attr.state_enabled)
             ), colors
         )
-        dynamicSmartTab.setBackgroundColor(DynamicTheme.getInstance().get().primaryColor)
+        binding.dynamicSmartTab.baseDynamicSmartTab.setBackgroundColor(
+            DynamicTheme.getInstance().get().primaryColor
+        )
         statusBarColor = statusBarColor
         setToolbarTheme()
 
@@ -187,11 +190,11 @@ class MediaBrowseActivity : BaseDynamicActivity() {
         initListener()
 
         val inflater = LayoutInflater.from(this)
-        dynamicSmartTab.setCustomTabView { container, position, adapter ->
+        binding.dynamicSmartTab.baseDynamicSmartTab.setCustomTabView { container, position, _ ->
             val view = inflater.inflate(R.layout.smart_tab_layout, container, false)
             when (position) {
                 0 -> {
-                    createTabView(view, R.drawable.ic_overview, R.string.overview)
+                    createTabView(view, R.drawable.ic_fire, R.string.overview)
                 }
                 1 -> {
                     createTabView(view, R.drawable.ic_watch, R.string.watch)
@@ -236,96 +239,109 @@ class MediaBrowseActivity : BaseDynamicActivity() {
             }
         )
 
-        browseMediaViewPager.addOnPageChangeListener(pageChangeListener)
+        binding.browseMediaViewPager.addOnPageChangeListener(pageChangeListener)
 
 
         viewModel.isFavourite(mediaBrowserMeta.mediaId).observe(this, Observer {
             when (it.status) {
                 SUCCESS -> {
                     isFavourite = it.data!!
-                    mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                    binding.mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
                     invalidateOptionsMenu()
                 }
-                ERROR -> {
+                else -> {
 
                 }
             }
         })
 
-        viewModel.toggleFavMediaLiveData.observe(this, Observer {
+        viewModel.toggleFavMediaLiveData.observe(this, {
             toggling = when (it.status) {
                 SUCCESS -> {
                     isFavourite = !isFavourite
-                    mediaFavButton.showLoading(false)
                     viewModel.isFavourite(mediaBrowserMeta.mediaId).value =
                         Resource.success(isFavourite)
-                    mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                    binding.mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
                     invalidateOptionsMenu()
                     false
                 }
                 ERROR -> {
-                    mediaFavButton.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
                     false
                 }
                 LOADING -> {
-                    mediaFavButton.showLoading(true)
                     true
                 }
             }
         })
 
-
-        browseMediaViewPager.adapter = MediaBrowserAdapter(animeBrowserList)
-        browseMediaViewPager.offscreenPageLimit = 5
-        dynamicSmartTab.setViewPager(browseMediaViewPager) {
-            if (it == 0) return@setViewPager
-            appbarLayout.setExpanded(false)
+        viewModel.saveMediaListEntryLiveData.observe(this){
+            if(it.status == SUCCESS){
+                val data = it.data?:return@observe
+                browseMediaBrowseModel?.mediaListStatus = data.status
+                browseMediaBrowseModel?.mediaListStatus?.let {
+                    binding.mediaAddButton.text =
+                        resources.getStringArray(R.array.media_list_status)[it]
+                }
+            }
         }
-        browseMediaViewPager.setCurrentItem(0, false)
-        browseMediaViewPager.post {
-            pageChangeListener.onPageSelected(browseMediaViewPager.currentItem)
+
+
+        binding.browseMediaViewPager.adapter = MediaBrowserAdapter(animeBrowserList)
+        binding.browseMediaViewPager.offscreenPageLimit = 5
+        binding.dynamicSmartTab.baseDynamicSmartTab.setViewPager(binding.browseMediaViewPager) {
+            if (it == 0) return@setViewPager
+            binding.appbarLayout.setExpanded(false)
+        }
+        binding.browseMediaViewPager.setCurrentItem(0, false)
+        binding.browseMediaViewPager.post {
+            pageChangeListener.onPageSelected(binding.browseMediaViewPager.currentItem)
         }
 
     }
 
-    private fun updateView() {
+    private fun ActivityMediaBrowserBinding.updateView() {
         supportActionBar!!.title = mediaBrowserMeta.title
-        mediaBrowserCoverImage.setImageURI(mediaBrowserMeta.coverImage)
+        mediaTitleTv.text = mediaBrowserMeta.title
+        binding.mediaBrowserCoverImage.setImageURI(mediaBrowserMeta.coverImage)
         mediaBrowserBannerImage.setImageURI(mediaBrowserMeta.bannerImage)
     }
 
 
     private fun initListener() {
-        appbarLayout.addOnOffsetChangedListener(offSetChangeListener)
+        binding.appbarLayout.addOnOffsetChangedListener(offSetChangeListener)
 
-        mediaAddButton.setOnClickListener {
+        binding.mediaAddButton.setOnClickListener {
             openListEditor()
         }
 
-        mediaReviewButton.setOnClickListener {
+        binding.mediaAddMoreIv.onPopupMenuClickListener = { _, position ->
+            changeMediaListStatus(position)
+        }
+
+        binding.mediaReviewButton.setOnClickListener {
             openReviewWriter()
         }
 
-        mediaFavButton.setOnClickListener {
+        binding.mediaFavButton.setOnClickListener {
             toggleFav()
         }
 
-        mediaBrowserBannerImage.setOnClickListener {
+        binding.mediaBrowserBannerImage.setOnClickListener {
             SimpleDraweeViewerActivity.openActivity(
                 this,
                 DraweeViewerMeta(mediaBrowserMeta.bannerImage)
             )
         }
 
-        mediaBrowserCoverImage.setOnClickListener {
+        binding.mediaBrowserCoverImage.setOnClickListener {
             SimpleDraweeViewerActivity.openActivity(
                 this,
                 DraweeViewerMeta(mediaBrowserMeta.coverImageLarge)
             )
         }
 
-        mediaBrowserBannerImage.setOnLongClickListener {
+        binding.mediaTitleTv.setOnLongClickListener {
             copyToClipBoard(mediaBrowserMeta.title)
             true
         }
@@ -352,12 +368,14 @@ class MediaBrowseActivity : BaseDynamicActivity() {
     }
 
     private fun createTabView(view: View, @DrawableRes src: Int, @StringRes str: Int): View {
-        view.tabImageView.imageTintList = tabColorStateList
-        view.tabImageView.setImageResource(src)
-        view.tabTextTv.text = getString(str)
-        view.background = RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
-        view.tabTextTv.setTextColor(accentColor)
-        return view
+        val smartTab = SmartTabLayoutBinding.bind(view)
+        smartTab.tabImageView.imageTintList = tabColorStateList
+        smartTab.tabImageView.setImageResource(src)
+        smartTab.tabTextTv.text = getString(str)
+        smartTab.root.background =
+            RippleDrawable(ColorStateList.valueOf(tintAccentColor), null, null)
+        smartTab.tabTextTv.setTextColor(accentColor)
+        return smartTab.root
     }
 
     @SuppressLint("RestrictedApi")
@@ -370,7 +388,7 @@ class MediaBrowseActivity : BaseDynamicActivity() {
         }
         if (isFavourite) {
             val drawable =
-                ContextCompat.getDrawable(context, R.drawable.ic_favorite)
+                ContextCompat.getDrawable(context, R.drawable.ic_favourite)
             menu?.findItem(R.id.toggleFavMenu)?.icon = drawable
         }
         return true
@@ -408,6 +426,22 @@ class MediaBrowseActivity : BaseDynamicActivity() {
         setWindowStatusBarColor(statusBarColor);
     }
 
+    private fun changeMediaListStatus(position: Int) {
+        if (!::mediaBrowserMeta.isInitialized) return
+
+        if (!loggedIn()) {
+            makeToast(R.string.please_log_in, null, R.drawable.ic_person)
+            return
+        }
+
+
+        viewModel.saveMediaListEntry(EntryListEditorMediaModel().also {
+            it.mediaId = mediaBrowserMeta.mediaId
+            it.status = position
+        })
+
+    }
+
     private fun openListEditor() {
         if (!::mediaBrowserMeta.isInitialized) return
 
@@ -422,8 +456,8 @@ class MediaBrowseActivity : BaseDynamicActivity() {
 
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 this,
-                mediaBrowserCoverImage,
-                ViewCompat.getTransitionName(mediaBrowserCoverImage) ?: ""
+                binding.mediaBrowserCoverImage,
+                ViewCompat.getTransitionName(binding.mediaBrowserCoverImage) ?: ""
             )
 
             ContainerActivity.openActivity(
@@ -479,20 +513,18 @@ class MediaBrowseActivity : BaseDynamicActivity() {
         }
     }
 
-    override val layoutRes: Int = R.layout.activity_media_browser
-
 
     private fun setToolbarTheme() {
-        mediaBrowserCollapsingToolbar.setStatusBarScrimColor(
+        binding.mediaBrowserCollapsingToolbar.setStatusBarScrimColor(
             DynamicTheme.getInstance().get().primaryColorDark
         )
-        mediaBrowserCollapsingToolbar.setContentScrimColor(
+        binding.mediaBrowserCollapsingToolbar.setContentScrimColor(
             DynamicTheme.getInstance().get().primaryColor
         )
-        mediaBrowserCollapsingToolbar.setCollapsedTitleTextColor(
+        binding.mediaBrowserCollapsingToolbar.setCollapsedTitleTextColor(
             DynamicTheme.getInstance().get().tintPrimaryColor
         )
-        mediaBrowserCollapsingToolbar.setBackgroundColor(
+        binding.mediaBrowserCollapsingToolbar.setBackgroundColor(
             DynamicTheme.getInstance().get().backgroundColor
         )
     }

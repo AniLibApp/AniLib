@@ -9,6 +9,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
 import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.util.dp
 
@@ -38,7 +39,7 @@ class ImageHeaderLayout : DynamicLinearLayout {
                     params.gravity = Gravity.CENTER
                 }
             it.setImageResource(srcId)
-            it.color = DynamicTheme.getInstance().get().tintAccentColor
+            it.colorType = Theme.ColorType.TEXT_PRIMARY
         }
         val tv = DynamicTextView(context).also {
             it.layoutParams =

@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-        android:id="@+id/tabImageView"
+        android:id="@+id/tab_image_view"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center"
@@ -15,7 +15,7 @@
         app:ads_colorType="custom" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tabTextTv"
+        android:id="@+id/tab_text_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -24,7 +24,7 @@
         android:text="@string/overview"
         android:textSize="11sp"
         android:visibility="visible"
-        app:fontFamily="@font/berlinrounded_regular"
+        app:fontFamily="@font/cabincondensed_medium"
         android:maxLines="1"
         android:ellipsize="end"
         tools:ignore="SmallSp" />

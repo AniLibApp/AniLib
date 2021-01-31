@@ -3,18 +3,16 @@ package com.revolgenx.anilib.common.preference
 import android.content.Context
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
-import com.revolgenx.anilib.BuildConfig
-import com.revolgenx.anilib.R
 
 private const val crashReportKey = "crash_report_key"
 private const val versionKey = "versionKey"
 private const val updateVersionKey = "update_version_key"
 
 const val languagePrefKey = "application_language_key"
+const val showCaseLayoutKey = "pref_display_card_in_home"
 
-const val DISCOVER_NAV_POS = "0"
-const val ANIME_LIST_NAV_POS = "1"
-const val MANGA_LIST_NAV_POS = "2"
+private const val showAdsKey = "show_ads_key"
+private const val loadBioByDefault = "load_bio_by_default"
 
 
 fun isCrashReportEnabled(context: Context): Boolean {
@@ -44,11 +42,11 @@ fun setUpdateVersion(newVersion: String) {
     DynamicPreferences.getInstance().save(updateVersionKey, newVersion)
 }
 
-fun setStartNavigation(context: Context, navigation: String) {
-    DynamicPreferences.getInstance().save(context.getString(R.string.start_navigation_key), navigation)
+fun disableCardStyleInHomeScreen() = DynamicPreferences.getInstance().load(showCaseLayoutKey, false)
+
+fun disableAds() = DynamicPreferences.getInstance().load(showAdsKey, false)
+fun disableAds(disableAds: Boolean){
+    DynamicPreferences.getInstance().save(showAdsKey, disableAds)
 }
 
-fun getStartNavigation(context: Context) =
-    DynamicPreferences.getInstance().load(context.getString(R.string.start_navigation_key), DISCOVER_NAV_POS)
-
-fun isStudioFlavor() = BuildConfig.FLAVOR == "studio"
+fun loadBioByDefault() = DynamicPreferences.getInstance().load(loadBioByDefault, false)

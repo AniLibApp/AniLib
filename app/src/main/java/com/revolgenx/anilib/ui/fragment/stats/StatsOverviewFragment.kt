@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.observe
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
@@ -17,29 +16,24 @@ import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.themeIt
-import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.constant.UserConstant
 import com.revolgenx.anilib.data.meta.UserStatsMeta
 import com.revolgenx.anilib.data.model.user.stats.StatsCountryDistributionModel
 import com.revolgenx.anilib.data.model.user.stats.StatsFormatDistributionModel
 import com.revolgenx.anilib.data.model.user.stats.StatsOverviewModel
 import com.revolgenx.anilib.data.model.user.stats.StatsStatusDistributionModel
+import com.revolgenx.anilib.databinding.StatsDistributionRecyclerLayoutBinding
+import com.revolgenx.anilib.databinding.StatsOverviewFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.ui.viewmodel.stats.StatsOverviewViewModel
-import kotlinx.android.synthetic.main.error_layout.*
-import kotlinx.android.synthetic.main.loading_layout.*
-import kotlinx.android.synthetic.main.resource_status_container_layout.*
-import kotlinx.android.synthetic.main.stats_distribution_recycler_layout.view.*
-import kotlinx.android.synthetic.main.stats_overview_fragment_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 //todo: add piechart in distribution
-class StatsOverviewFragment : BaseFragment() {
-    companion object {
-        const val USER_STATS_PARCEL_KEY = "ANIME_STATS_PARCEL_KEY"
-    }
+class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBinding>() {
 
     private val viewModel by viewModel<StatsOverviewViewModel>()
     private lateinit var userStatsMeta: UserStatsMeta
@@ -53,41 +47,48 @@ class StatsOverviewFragment : BaseFragment() {
         requireContext().resources.getStringArray(R.array.media_list_status)
     }
 
-
-    override fun onCreateView(
+    override fun bindView(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.stats_overview_fragment_layout, container, false)
+        parent: ViewGroup?
+    ): StatsOverviewFragmentLayoutBinding {
+        return StatsOverviewFragmentLayoutBinding.inflate(inflater, parent, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(!visibleToUser){
+            viewModel.getOverview()
+        }
+        visibleToUser = true
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        userStatsMeta = arguments?.getParcelable(USER_STATS_PARCEL_KEY) ?: return
+        userStatsMeta = arguments?.getParcelable(UserConstant.USER_STATS_META_KEY) ?: return
 
-        updateTheme()
-        initListener()
+        binding.updateTheme()
+        binding.initListener()
 
 
+        val statusLayout = binding.resourceStatusLayout
         viewModel.statsLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 Status.SUCCESS -> {
-                    resourceStatusContainer.visibility = View.GONE
-                    progressLayout.visibility = View.VISIBLE
-                    errorLayout.visibility = View.GONE
-                    updateView(res.data!!)
+                    statusLayout.resourceStatusContainer.visibility = View.GONE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
+                    binding.updateView(res.data!!)
                 }
                 Status.ERROR -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    progressLayout.visibility = View.GONE
-                    errorLayout.visibility = View.VISIBLE
+                    statusLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
                 }
                 Status.LOADING -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    progressLayout.visibility = View.VISIBLE
-                    errorLayout.visibility = View.GONE
+                    statusLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                 }
             }
         }
@@ -97,11 +98,10 @@ class StatsOverviewFragment : BaseFragment() {
             viewModel.field.userName = userStatsMeta.userMeta.userName
             viewModel.field.userId = userStatsMeta.userMeta.userId
 
-            viewModel.getOverview()
         }
     }
 
-    private fun updateView(data: StatsOverviewModel) {
+    private fun StatsOverviewFragmentLayoutBinding.updateView(data: StatsOverviewModel) {
         overviewModel = data
         with(data) {
             count?.let {
@@ -136,7 +136,7 @@ class StatsOverviewFragment : BaseFragment() {
             }
 
             meanScore?.let {
-                statsMeanScoreTv.title = it.toString()
+                binding.statsMeanScoreTv.title = it.toString()
             }
 
             updateScoreChart()
@@ -146,7 +146,7 @@ class StatsOverviewFragment : BaseFragment() {
         }
     }
 
-    private fun updateWatchChart() {
+    private fun StatsOverviewFragmentLayoutBinding.updateWatchChart() {
         overviewModel?.watchYear?.let {
             val entries = it.map {
                 Entry(
@@ -193,7 +193,7 @@ class StatsOverviewFragment : BaseFragment() {
                         left.axisMinimum = 0f
                         left.labelCount = 4
                         left.typeface =
-                            ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
+                            ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         left.textSize = 10f
                         left.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                     }
@@ -209,7 +209,7 @@ class StatsOverviewFragment : BaseFragment() {
                         setDrawAxisLine(false)
                         position = XAxis.XAxisPosition.BOTTOM
                         gridLineWidth = 2f
-                        typeface = ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
+                        typeface = ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                     }
 
@@ -221,7 +221,7 @@ class StatsOverviewFragment : BaseFragment() {
         } ?: let { watchYearLinearLayout.visibility = View.GONE }
     }
 
-    private fun updateReleaseChart() {
+    private fun StatsOverviewFragmentLayoutBinding.updateReleaseChart() {
         overviewModel?.releaseYear?.let {
             val entries = it.map {
                 Entry(
@@ -268,7 +268,7 @@ class StatsOverviewFragment : BaseFragment() {
                         left.axisMinimum = 0f
                         left.labelCount = 4
                         left.typeface =
-                            ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
+                            ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         left.textSize = 10f
                         left.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                     }
@@ -283,7 +283,7 @@ class StatsOverviewFragment : BaseFragment() {
                         setDrawAxisLine(false)
                         position = XAxis.XAxisPosition.BOTTOM
                         gridLineWidth = 2f
-                        typeface = ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
+                        typeface = ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                     }
 
@@ -296,7 +296,7 @@ class StatsOverviewFragment : BaseFragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateDistribution() {
+    private fun StatsOverviewFragmentLayoutBinding.updateDistribution() {
         overviewModel?.formatDistribution?.let {
             Adapter.builder(viewLifecycleOwner).addSource(Source.fromList(it)).addPresenter(
                 Presenter.simple<StatsFormatDistributionModel>(
@@ -304,8 +304,9 @@ class StatsOverviewFragment : BaseFragment() {
                     R.layout.stats_distribution_recycler_layout,
                     0
                 ) { view, dist ->
-                    view.distributionTv.text = dist.format?.let { mediaFormat[it] }
-                    view.distributionMetaTv.text =
+                    val statsBind = StatsDistributionRecyclerLayoutBinding.bind(view)
+                    statsBind.distributionTv.text = dist.format?.let { mediaFormat[it] }
+                    statsBind.distributionMetaTv.text =
                         "Count: ${dist.count?.toString().naText()}" +
                                 "\nHour Watched: ${dist.hoursWatched?.toString().naText()}" +
                                 "\nMean Score: ${dist.meanScore?.toString().naText()}"
@@ -318,8 +319,10 @@ class StatsOverviewFragment : BaseFragment() {
                     R.layout.stats_distribution_recycler_layout,
                     0
                 ) { view, dist ->
-                    view.distributionTv.text = dist.status?.let { mediaListStatus[it] }
-                    view.distributionMetaTv.text =
+                    val statsBind = StatsDistributionRecyclerLayoutBinding.bind(view)
+
+                    statsBind.distributionTv.text = dist.status?.let { mediaListStatus[it] }
+                    statsBind.distributionMetaTv.text =
                         "Count: ${dist.count?.toString().naText()}" +
                                 "\nHour Watched: ${dist.hoursWatched?.toString().naText()}" +
                                 "\nMean Score: ${dist.meanScore?.toString().naText()}"
@@ -333,8 +336,10 @@ class StatsOverviewFragment : BaseFragment() {
                     R.layout.stats_distribution_recycler_layout,
                     0
                 ) { view, dist ->
-                    view.distributionTv.text = dist.country
-                    view.distributionMetaTv.text =
+                    val statsBind = StatsDistributionRecyclerLayoutBinding.bind(view)
+
+                    statsBind.distributionTv.text = dist.country
+                    statsBind.distributionMetaTv.text =
                         "Count: ${dist.count?.toString().naText()}" +
                                 "\nHour Watched: ${dist.hoursWatched?.toString().naText()}" +
                                 "\nMean Score: ${dist.meanScore?.toString().naText()}"
@@ -342,7 +347,7 @@ class StatsOverviewFragment : BaseFragment() {
         }
     }
 
-    private fun updateScoreChart() {
+    private fun StatsOverviewFragmentLayoutBinding.updateScoreChart() {
         if (overviewModel == null) return
 
         overviewModel?.scoresDistribution?.map { model ->
@@ -372,12 +377,12 @@ class StatsOverviewFragment : BaseFragment() {
                     axisLeft.isEnabled = false
                     xAxis.let { axis ->
                         axis.typeface =
-                            ResourcesCompat.getFont(requireContext(), R.font.open_sans_regular)
+                            ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         axis.position = XAxis.XAxisPosition.BOTTOM
                         axis.setDrawGridLines(false)
                         axis.setDrawAxisLine(false)
                         axis.typeface =
-                            ResourcesCompat.getFont(requireContext(), R.font.open_sans_light)
+                            ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
                         axis.textSize = 10f
                         axis.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                         axis.labelCount = 10
@@ -396,7 +401,7 @@ class StatsOverviewFragment : BaseFragment() {
     }
 
 
-    private fun initListener() {
+    private fun StatsOverviewFragmentLayoutBinding.initListener() {
         scoreToggleSwitch.onChangeListener = object : ToggleSwitch.OnChangeListener {
             override fun onToggleSwitchChanged(position: Int) {
                 viewModel.scoreTogglePos = position
@@ -417,7 +422,7 @@ class StatsOverviewFragment : BaseFragment() {
         }
     }
 
-    private fun updateTheme() {
+    private fun StatsOverviewFragmentLayoutBinding.updateTheme() {
         scoreToggleSwitch?.let {
             it.themeIt()
             it.setEntries(

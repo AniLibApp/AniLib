@@ -272,9 +272,9 @@
 
     <!--application startup page-->
     <string-array name="application_startup_page_entries">
-        <item>Discover</item>
-        <item>Anime List</item>
-        <item>Manga List</item>
+        <item>Home</item>
+        <item>List</item>
+        <item>Radio</item>
     </string-array>
 
     <string-array name="application_startup_values">
@@ -296,7 +296,6 @@
         <item>1</item>
         <item>2</item>
     </string-array>
-
 
     <string-array name="media_list_collection_sort">
         <item>@string/title</item>
@@ -328,6 +327,12 @@
         <item>@string/newly_added</item>
         <item>@string/watching</item>
         <item>@string/reading</item>
+    </string-array>
+
+    <string-array name="home_page_list_order">
+        <item>@string/home</item>
+        <item>@string/list</item>
+        <item>@string/radio</item>
     </string-array>
 
     <string-array name="media_list_sort">
@@ -440,7 +445,7 @@
     </string-array>
 
     <string-array name="media_list_status">
-        <item>@string/current</item>
+        <item>@string/watching</item>
         <item>@string/planning</item>
         <item>@string/completed</item>
         <item>@string/dropped</item>
@@ -594,9 +599,158 @@
         <item>@string/updated_at_desc</item>
     </string-array>
 
-    <string name="portuguese" translatable="false">Português</string>
-    <string name="hindi" translatable="false">हिंदी</string>
-    <string name="italian" translatable="false">Italiano</string>
-    <string name="spanish" translatable="false">Español</string>
-    <string name="arabic" translatable="false">عربى</string>
+    <string-array name="airing_sort">
+        <item>@string/id</item>
+        <item>@string/id_desc</item>
+        <item>@string/media_id</item>
+        <item>@string/media_id_desc</item>
+        <item>@string/time</item>
+        <item>@string/time_desc</item>
+        <item>@string/episodes</item>
+        <item>@string/episodes_desc</item>
+    </string-array>
+
+    <string-array name="anime_list_status">
+        <item>@string/watching</item>
+        <item>@string/planning</item>
+        <item>@string/completed</item>
+        <item>@string/dropped</item>
+        <item>@string/paused</item>
+        <item>@string/repeating</item>
+    </string-array>
+
+    <string-array name="manga_list_status">
+        <item>@string/reading</item>
+        <item>@string/planning</item>
+        <item>@string/completed</item>
+        <item>@string/dropped</item>
+        <item>@string/paused</item>
+        <item>@string/repeating</item>
+    </string-array>
+
+
+    <string-array name="discover_tab_menu">
+        <item>@string/discover</item>
+        <item>@string/season</item>
+        <item>@string/recommendations</item>
+    </string-array>
+
+
+    <string-array name="list_tab_menu">
+        <item>@string/anime_list</item>
+        <item>@string/manga_list</item>
+    </string-array>
+
+
+    <string-array name="profile_tab_menu">
+        <item>@string/overview</item>
+        <item>@string/favourites</item>
+        <item>@string/anime_stats</item>
+        <item>@string/manga_stats</item>
+    </string-array>
+
+    <string-array name="user_favourite_tab_menu">
+        <item>@string/anime</item>
+        <item>@string/manga</item>
+        <item>@string/character</item>
+        <item>@string/staff</item>
+        <item>@string/studio</item>
+    </string-array>
+
+    <string-array name="user_anime_stats_tab_menu">
+        <item>@string/overview</item>
+        <item>@string/genre</item>
+        <item>@string/tags</item>
+        <item>@string/voice_actors</item>
+        <item>@string/studio</item>
+        <item>@string/staff</item>
+    </string-array>
+
+    <string-array name="user_manga_stats_tab_menu">
+        <item>@string/overview</item>
+        <item>@string/genre</item>
+        <item>@string/tags</item>
+        <item>@string/staff</item>
+    </string-array>
+
+    <string-array name="list_option_menu">
+        <item>@string/change_display_mode</item>
+        <item>@string/filter</item>
+    </string-array>
+
+
+    <string-array name="list_display_modes">
+        <item>@string/compact_mode</item>
+        <item>@string/normal_mode</item>
+        <item>@string/card_mode</item>
+        <item>@string/card_classic_mode</item>
+        <item>@string/minimal_mode</item>
+        <item>@string/minimal_list_mode</item>
+    </string-array>
+
+    <string-array name="airing_display_modes">
+        <item>@string/compact_mode</item>
+        <item>@string/normal_mode</item>
+    </string-array>
+
+    <string-array name="season_filter_entries">
+        <item>@string/filter</item>
+        <item>@string/genre</item>
+        <item>@string/tags</item>
+    </string-array>
+
+    <string-array name="days_of_week">
+        <item>@string/sun</item>
+        <item>@string/mon</item>
+        <item>@string/tue</item>
+        <item>@string/wed</item>
+        <item>@string/thu</item>
+        <item>@string/fri</item>
+        <item>@string/sat</item>
+    </string-array>
+
+
+    <!--more actions-->
+    <string-array name="station_more_actions">
+        <item>@string/share</item>
+    </string-array>
+
+    <string-array name="favourite_station_more_actions">
+        <item>@string/remove_from_favourite</item>
+    </string-array>
+    <!--more action-->
+
+    <!--setting-->
+    <string-array name="title_language_list">
+        <item>@string/romaji</item>
+        <item>@string/english</item>
+        <item>@string/_native</item>
+    </string-array>
+
+    <string-array name="media_list_order_list">
+        <item>@string/score</item>
+        <item>@string/title</item>
+        <item>@string/last_updated</item>
+        <item>@string/last_added</item>
+    </string-array>
+
+    <string-array name="scoring_system_list">
+        <item>100 Point (55/100)</item>
+        <item>10 Point Decimal (5.5/10)</item>
+        <item>10 Point (5/10)</item>
+        <item>5 Star (3/5)</item>
+        <item>3 Point Smiley :)</item>
+    </string-array>
+    <!--setting-->
+
+    <string-array name="music_entries">
+        <item>@string/radio_station</item>
+    </string-array>
+
+    <string-array name="radio_controller_more_actions">
+        <item>@string/copy_playing_radio</item>
+        <item>@string/share</item>
+    </string-array>
+
+
 </resources>

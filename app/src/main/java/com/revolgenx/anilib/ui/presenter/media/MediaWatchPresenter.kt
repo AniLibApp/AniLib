@@ -3,43 +3,35 @@ package com.revolgenx.anilib.ui.presenter.media
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.model.MediaWatchModel
+import com.revolgenx.anilib.databinding.MediaWatchPresenterBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.util.openLink
-import kotlinx.android.synthetic.main.media_watch_presenter.view.*
 
-class MediaWatchPresenter(context: Context) : Presenter<MediaWatchModel>(context) {
+class MediaWatchPresenter(context: Context) : BasePresenter<MediaWatchPresenterBinding, MediaWatchModel>(context) {
 
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-    private val crunchyDrawable by lazy {
-        ContextCompat.getDrawable(context, R.drawable.ic_crunchyroll_logo)
-    }
-
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.media_watch_presenter,
-                parent,
-                false
-            )
-        )
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): MediaWatchPresenterBinding {
+        return MediaWatchPresenterBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<MediaWatchModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
 
-        holder.itemView.apply {
+        holder.getBinding()?.apply {
             watchThumbnail.setImageURI(item.thumbnail)
             watchTitleTv.text = item.title
             watchFromTv.text = item.site
-            setOnClickListener {
+            root.setOnClickListener {
                 context.openLink(item.url)
             }
         }
