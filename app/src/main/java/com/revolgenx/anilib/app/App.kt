@@ -9,7 +9,6 @@ import android.os.Build.VERSION_CODES.N_MR1
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
-import androidx.core.os.bundleOf
 import androidx.multidex.MultiDex
 import androidx.work.*
 import com.facebook.imagepipeline.core.ImagePipelineConfig
@@ -17,7 +16,7 @@ import com.facebook.imagepipeline.listener.RequestListener
 import com.facebook.imagepipeline.listener.RequestLoggingListener
 import com.github.piasy.biv.BigImageViewer
 import com.github.piasy.biv.loader.fresco.FrescoImageLoader
-import com.jakewharton.threetenabp.AndroidThreeTen
+import com.google.android.gms.ads.MobileAds
 import com.pranavpandey.android.dynamic.support.DynamicApplication
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.BuildConfig
@@ -67,7 +66,9 @@ open class App : DynamicApplication() {
             Timber.plant(AniLibDebugTree(this))
         }
 
-        AndroidThreeTen.init(this)
+        if(!disableAds()){
+            MobileAds.initialize(this)
+        }
 
         val requestListeners: MutableSet<RequestListener> = HashSet()
         requestListeners.add(RequestLoggingListener())

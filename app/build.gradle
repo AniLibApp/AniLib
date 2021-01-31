@@ -34,9 +34,11 @@ android {
             secretProps.load(new FileInputStream(rootProject.file("secret.properties")))
             buildConfigField "String", "anilistclientId", secretProps['anilist_client_id']
             buildConfigField "String", "anilistclientSecret", secretProps['anilist_client_secret']
+            buildConfigField "String", "adUnitId", secretProps['ad_unit_id']
         } else {
             buildConfigField "String", "anilistclientId", '"anilist_client_id"'
             buildConfigField "String", "anilistclientSecret", '"anilist_client_secret"'
+            buildConfigField "String", "adUnitId", '"ca-app-pub-3940256099942544/6300978111"'
         }
 
         buildConfigField "String", "anilistRedirectUri", anilistProperties['anilist_redirect_uri']
@@ -103,7 +105,6 @@ ext {
 
     dynamic_version = '3.2.0'
     elements_version = '0.5.0'
-    threetenabp_version = '1.2.2'
     eventbus_version = '3.2.0'
     okhttp_version = '4.9.0'
     apollo_version = '1.3.2'
@@ -177,8 +178,6 @@ dependencies {
     //element ver
     implementation "com.otaliastudios:elements:$elements_version"
 
-    //threetenabp
-    implementation "com.jakewharton.threetenabp:threetenabp:$threetenabp_version"
 
     //flexbox
     implementation "com.google.android:flexbox:$flex_box_version"
@@ -260,6 +259,9 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation "com.google.firebase:firebase-crashlytics-ktx"
+
+    //ads
+    implementation 'com.google.android.gms:play-services-ads:19.7.0'
 
     //draglistview
     implementation "com.github.woxthebox:draglistview:$draglist_version"

@@ -8,16 +8,14 @@ import com.revolgenx.anilib.infrastructure.service.airing.AiringMediaService
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
 import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.ui.viewmodel.SourceViewModel
-import java.time.LocalTime
-import java.time.ZoneOffset
-import java.time.ZonedDateTime
+import java.time.*
 
 class DiscoverAiringViewModel(private val airingMediaService: AiringMediaService) :
     SourceViewModel<AiringSource, AiringMediaField>() {
 
 
-    private val startDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(LocalTime.MIN)
-    private val endDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(LocalTime.MAX)
+    private val startDateTime = ZonedDateTime.now().with(LocalTime.MIN)
+    private val endDateTime = ZonedDateTime.now().with(LocalTime.MAX)
     var selectedDay = 0
 
 

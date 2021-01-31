@@ -21,9 +21,6 @@ class ReleaseInfoDialog : BaseDialogFragment<ReleaseInfoDialogLayoutBinding>() {
         super.onShowListener(alertDialog, savedInstanceState)
         MarkwonImpl.createInstance(requireContext())
             .setMarkdown(binding.releaseInfo, requireContext().getString(R.string.release_info))
-
-        MarkwonImpl.createHtmlInstance(requireContext())
-            .setMarkdown(binding.studioNoteTv, requireContext().getString(R.string.studio_note))
     }
 
 }

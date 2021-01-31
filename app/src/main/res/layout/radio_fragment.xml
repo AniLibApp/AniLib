@@ -13,13 +13,13 @@
 
         <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicTextTabLayout
             android:id="@+id/list_tab_layout"
-            android:layout_width="match_parent"
             style="@style/DynamicTextTabLayoutStyle"
+            android:layout_width="match_parent"
             app:ads_backgroundColorType="background"
             app:ads_colorType="accent"
             app:ads_contrastWithColorType="background"
             app:ads_textColorType="tint_primary"
-            app:entries="@array/music_entries"/>
+            app:entries="@array/music_entries" />
 
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
@@ -44,9 +44,11 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
+                    android:id="@+id/radio_fragment_container_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
 
                     <LinearLayout
                         android:id="@+id/recent_station_layout"

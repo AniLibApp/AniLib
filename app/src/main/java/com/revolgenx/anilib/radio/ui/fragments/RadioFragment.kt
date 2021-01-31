@@ -8,9 +8,14 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.otaliastudios.elements.Adapter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.disableAds
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.RadioFragmentBinding
 import com.revolgenx.anilib.radio.data.events.FavouriteEvent
@@ -67,12 +72,34 @@ class RadioFragment : BaseLayoutFragment<RadioFragmentBinding>(), EventBusListen
     }
 
     override fun bindView(inflater: LayoutInflater, parent: ViewGroup?): RadioFragmentBinding {
-        return RadioFragmentBinding.inflate(inflater, parent, false)
+        val v = RadioFragmentBinding.inflate(inflater, parent, false)
+
+        if (!disableAds()) {
+            val adView = AdView(requireContext())
+            adView.id = R.id.adView
+            adView.adSize = AdSize.SMART_BANNER
+            adView.adUnitId = if (BuildConfig.DEBUG) {
+                getString(R.string.ads_unit_id)
+            } else {
+                BuildConfig.adUnitId
+            }
+
+            v.radioFragmentContainerLayout.addView(adView, 0)
+
+        }
+
+        return v
     }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        if(!disableAds()){
+            with(binding.root.findViewById<AdView>(R.id.adView)) {
+                loadAd(AdRequest.Builder().build());
+            }
+        }
 
         binding.favouriteStationRecyclerView.layoutManager =
             GridLayoutManager(context, 2, RecyclerView.HORIZONTAL, false)

@@ -8,6 +8,7 @@ import com.revolgenx.anilib.infrastructure.service.airing.AiringMediaService
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
 import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.ui.viewmodel.SourceViewModel
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -21,12 +22,12 @@ class AiringViewModel(private val airingMediaService: AiringMediaService) :
 
     var isDateTypeRange: Boolean = false  //false days true weeks
 
-    var startDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(LocalTime.MIN)
+    var startDateTime = ZonedDateTime.now().with(LocalTime.MIN)
         set(value) {
             field = value
             this.field.airingGreaterThan = field.toEpochSecond().toInt()
         }
-    var endDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(LocalTime.MAX)
+    var endDateTime = ZonedDateTime.now().with(LocalTime.MAX)
         set(value) {
             field = value
             this.field.airingLessThan = field.toEpochSecond().toInt()
@@ -71,26 +72,16 @@ class AiringViewModel(private val airingMediaService: AiringMediaService) :
         compositeDisposable.clear()
     }
 
-    fun updateDate(zonedDateTime: ZonedDateTime) {
-        if (isDateTypeRange) {
-
-        } else {
-            startDateTime = zonedDateTime.with(LocalTime.MIN)
-            endDateTime = zonedDateTime.with(LocalTime.MAX)
-        }
-        compositeDisposable.clear()
-    }
-
     fun updateDateRange(rangeType: Boolean) {
         isDateTypeRange = rangeType
         if (isDateTypeRange) {
-            startDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(weekFields.dayOfWeek(), 1)
+            startDateTime = ZonedDateTime.now().with(weekFields.dayOfWeek(), 1)
                 .with(LocalTime.MIN)
-            endDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(weekFields.dayOfWeek(), 7)
+            endDateTime = ZonedDateTime.now().with(weekFields.dayOfWeek(), 7)
                 .with(LocalTime.MAX)
         } else {
-            startDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(LocalTime.MIN)
-            endDateTime = ZonedDateTime.now(ZoneOffset.UTC).with(LocalTime.MAX)
+            startDateTime = ZonedDateTime.now().with(LocalTime.MIN)
+            endDateTime = ZonedDateTime.now().with(LocalTime.MAX)
         }
         compositeDisposable.clear()
     }
