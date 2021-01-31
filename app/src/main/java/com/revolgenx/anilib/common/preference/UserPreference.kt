@@ -180,7 +180,7 @@ fun setNewNotification(context: Context, notifId: Int = -1) {
 
 fun canShowAdult(context: Context): Boolean {
     return if (userEnabledAdultContent(context)) {
-        context.getBoolean(canShowAdultKey, true)
+        context.getBoolean(canShowAdultKey, false)
     } else {
         false
     }

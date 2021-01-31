@@ -3,7 +3,6 @@ package com.revolgenx.anilib.common.preference
 import android.content.Context
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
-import com.revolgenx.anilib.R
 
 private const val crashReportKey = "crash_report_key"
 private const val versionKey = "versionKey"
@@ -12,9 +11,8 @@ private const val updateVersionKey = "update_version_key"
 const val languagePrefKey = "application_language_key"
 const val showCaseLayoutKey = "pref_display_card_in_home"
 
-const val HOME_PAGE_POS = "0"
-const val LIST_PAGE_POS = "1"
-const val RADIO_PAGE_POST = "2"
+private const val showAdsKey = "show_ads_key"
+private const val loadBioByDefault = "load_bio_by_default"
 
 
 fun isCrashReportEnabled(context: Context): Boolean {
@@ -46,3 +44,9 @@ fun setUpdateVersion(newVersion: String) {
 
 fun disableCardStyleInHomeScreen() = DynamicPreferences.getInstance().load(showCaseLayoutKey, false)
 
+fun disableAds() = DynamicPreferences.getInstance().load(showAdsKey, false)
+fun disableAds(disableAds: Boolean){
+    DynamicPreferences.getInstance().save(showAdsKey, disableAds)
+}
+
+fun loadBioByDefault() = DynamicPreferences.getInstance().load(loadBioByDefault, false)

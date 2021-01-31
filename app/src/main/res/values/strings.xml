@@ -488,6 +488,11 @@
     <string name="date_range_from">from</string>
     <string name="date_range_to">To</string>
     <string name="select_days_within_a_week">Select range of days within a week</string>
+    <string name="disable_ads">Disable Ads</string>
+    <string name="disable_ads_desc">Disable Ads in Radio Section. Leaving it enabled will support the app development.</string>
+    <string name="load_bio">Load Bio</string>
+    <string name="load_bio_desc">Load user bio when going to user screen.</string>
+    <string name="load_user_bio">Automatically load user Bio</string>
 
 
 </resources>

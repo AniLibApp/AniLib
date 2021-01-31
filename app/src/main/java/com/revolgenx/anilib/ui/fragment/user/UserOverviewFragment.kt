@@ -10,6 +10,7 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.loadBioByDefault
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.constant.UserConstant
 import com.revolgenx.anilib.data.meta.UserMeta
@@ -78,12 +79,31 @@ class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBindin
                                 }).into(tagGenreRecyclerView)
 
 
-                        data.about?.html?.let { about ->
-                            MarkwonImpl.createHtmlInstance(requireContext())
-                                .setMarkdown(userAboutTv, about)
+                        if (loadBioByDefault()) {
+                            loadBioCardVew.visibility = View.GONE
+                            data.about?.html?.let { about ->
+                                MarkwonImpl.createHtmlInstance(requireContext())
+                                    .setMarkdown(userAboutTv, about)
 
-                            if (userAboutTv.text.isEmpty()) {
-                                userAboutTv.setText(R.string.no_description)
+                                if (userAboutTv.text.isEmpty()) {
+                                    userAboutTv.setText(R.string.no_description)
+                                }
+                            }
+                        } else {
+                            aboutContainerLayout.visibility = View.GONE
+                            loadBioCardVew.setOnClickListener {
+                                aboutContainerLayout.visibility = View.VISIBLE
+
+                                data.about?.html?.let { about ->
+                                    MarkwonImpl.createHtmlInstance(requireContext())
+                                        .setMarkdown(userAboutTv, about)
+
+                                    if (userAboutTv.text.isEmpty()) {
+                                        userAboutTv.setText(R.string.no_description)
+                                    }
+                                }
+
+                                loadBioCardVew.visibility = View.GONE
                             }
                         }
                     }

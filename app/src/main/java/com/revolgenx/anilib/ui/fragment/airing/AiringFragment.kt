@@ -33,6 +33,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -200,16 +201,16 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
             listener = { startDate, endDate ->
                 if (viewModel.isDateTypeRange) {
                     viewModel.startDateTime =
-                        startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MIN)
-                    endDate?.atTime(LocalTime.MAX)!!.atZone(ZoneOffset.UTC).with(LocalTime.MAX)
+                        startDate.atStartOfDay(ZoneId.systemDefault()).with(LocalTime.MIN)
+                    endDate?.atTime(LocalTime.MAX)!!.with(LocalTime.MAX)
                         .let {
-                            viewModel.endDateTime = it
+                            viewModel.endDateTime = it.atZone(ZoneId.systemDefault())
                         }
                 } else {
                     viewModel.startDateTime =
-                        startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MIN)
+                        startDate.atStartOfDay(ZoneId.systemDefault()).with(LocalTime.MIN)
                     viewModel.endDateTime =
-                        startDate.atStartOfDay(ZoneOffset.UTC).with(LocalTime.MAX)
+                        startDate.atStartOfDay(ZoneId.systemDefault()).with(LocalTime.MAX)
                 }
                 updateToolbarTitle()
                 createSource()

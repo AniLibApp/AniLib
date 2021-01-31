@@ -26,9 +26,9 @@ import com.revolgenx.anilib.ui.presenter.RankingsPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.ui.viewmodel.media.MediaStatsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.threeten.bp.Instant
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.ZoneId
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>() {
     val viewModel by viewModel<MediaStatsViewModel>()

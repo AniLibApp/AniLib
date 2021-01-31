@@ -96,7 +96,7 @@ class AiringMediaServiceImpl(
                                     LocalDateTime.ofInstant(
                                         Instant.ofEpochSecond(
                                             it.airingAt().toLong()
-                                        ), ZoneOffset.UTC
+                                        ), ZoneOffset.systemDefault()
                                     )
                                 )
 

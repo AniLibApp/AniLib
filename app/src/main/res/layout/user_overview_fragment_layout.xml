@@ -24,7 +24,26 @@
             android:textSize="18sp"
             app:fontFamily="@font/cabin_bold" />
 
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            android:id="@+id/load_bio_card_vew"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp">
+
+            <com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/load_bio"
+                android:paddingStart="10dp"
+                android:textSize="16sp"
+                android:paddingEnd="10dp"/>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
         <com.revolgenx.anilib.ui.view.MaxHeightFrameLayout
+            android:id="@+id/about_container_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"

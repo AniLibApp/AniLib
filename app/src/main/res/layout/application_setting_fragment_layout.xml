@@ -92,6 +92,17 @@
             app:ads_key="pref_display_card_in_home"
             app:ads_title="@string/display_home_screen_cards" />
 
+        <include layout="@layout/divider_layout" />
+
+        <com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_description="@string/load_bio_desc"
+            app:ads_icon="@drawable/ads_ic_info"
+            app:ads_key="load_bio_by_default"
+            app:ads_checked="false"
+            app:ads_title="@string/load_user_bio" />
+
 
     </LinearLayout>
 

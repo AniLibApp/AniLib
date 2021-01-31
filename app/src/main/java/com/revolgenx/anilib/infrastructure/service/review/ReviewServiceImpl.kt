@@ -19,11 +19,10 @@ import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import org.threeten.bp.DateTimeUtils
-import org.threeten.bp.Instant
 import timber.log.Timber
 import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
+import java.util.*
 
 class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : ReviewService {
 
@@ -45,13 +44,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                     model.score = it.score()
                     model.private = it.private_()
                     model.createdAt = it.createdAt().let {
-                        SimpleDateFormat.getDateInstance().format(
-                            DateTimeUtils.toDate(
-                                Instant.ofEpochSecond(
-                                    it.toLong()
-                                )
-                            )
-                        )
+                        SimpleDateFormat.getDateInstance().format(Date(it * 1000L))
                     }
                     model.userPrefModel = it.user()?.let {
                         UserPrefModel().also { user ->
@@ -102,46 +95,40 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
         val disposable = graphRepository.request(field.toQueryOrMutation()).map {
             it.data()?.Page()?.reviews()
                 ?.filter { if (field.canShowAdult) true else it.media()?.isAdult == false }?.map {
-                ReviewModel().also { model ->
-                    model.reviewId = it.id()
-                    model.rating = it.rating()
-                    model.ratingAmount = it.ratingAmount()
-                    model.summary = it.summary()
-                    model.score = it.score()
-                    model.createdAt = it.createdAt().let {
-                        SimpleDateFormat.getDateInstance().format(
-                            DateTimeUtils.toDate(
-                                Instant.ofEpochSecond(
-                                    it.toLong()
-                                )
-                            )
-                        )
-                    }
-                    model.userPrefModel = it.user()?.let {
-                        UserPrefModel().also { user ->
-                            user.userId = it.id()
-                            user.userName = it.name()
-                            user.avatar = it.avatar()?.let {
-                                UserAvatarImageModel().also { img ->
-                                    img.large = it.large()
-                                    img.medium = it.medium()
+                    ReviewModel().also { model ->
+                        model.reviewId = it.id()
+                        model.rating = it.rating()
+                        model.ratingAmount = it.ratingAmount()
+                        model.summary = it.summary()
+                        model.score = it.score()
+                        model.createdAt = it.createdAt().let {
+                            SimpleDateFormat.getDateInstance().format(Date(it * 1000L))
+                        }
+                        model.userPrefModel = it.user()?.let {
+                            UserPrefModel().also { user ->
+                                user.userId = it.id()
+                                user.userName = it.name()
+                                user.avatar = it.avatar()?.let {
+                                    UserAvatarImageModel().also { img ->
+                                        img.large = it.large()
+                                        img.medium = it.medium()
+                                    }
                                 }
                             }
                         }
-                    }
-                    model.mediaModel = it.media()?.let {
-                        CommonMediaModel().also { media ->
-                            media.mediaId = it.id()
-                            media.title = it.title()?.fragments()?.mediaTitle()?.toModel()
-                            media.coverImage =
-                                it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
-                            media.bannerImage = it.bannerImage() ?: media.coverImage?.largeImage
-                            media.type = it.type()?.ordinal
-                            media.isAdult = it.isAdult ?: false
+                        model.mediaModel = it.media()?.let {
+                            CommonMediaModel().also { media ->
+                                media.mediaId = it.id()
+                                media.title = it.title()?.fragments()?.mediaTitle()?.toModel()
+                                media.coverImage =
+                                    it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
+                                media.bannerImage = it.bannerImage() ?: media.coverImage?.largeImage
+                                media.type = it.type()?.ordinal
+                                media.isAdult = it.isAdult ?: false
+                            }
                         }
                     }
                 }
-            }
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 callback.invoke(Resource.success(it))
