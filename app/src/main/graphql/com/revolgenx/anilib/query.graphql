@@ -1,10 +1,11 @@
-query MediaQuery($page: Int!
-    , $perPage: Int!
+query MediaQuery($page: Int
+    , $perPage: Int
     , $seasonYear: Int
     , $season: MediaSeason
     , $status: MediaStatus
     , $genre:String
     , $format: MediaFormat
+    , $format_in: [MediaFormat]
     , $genre_in:[String]
     , $tag_in:[String]
     , $sort: [MediaSort]
@@ -15,6 +16,7 @@ query MediaQuery($page: Int!
             , season: $season
             , genre: $genre
             , format: $format
+            , format_in: $format_in
             , status: $status
             , genre_in: $genre_in
             , tag_in: $tag_in
@@ -551,6 +553,30 @@ query MediaListQuery(
     }
 }
 
+query MediaListCollectionIdQuery(
+    $userId:Int,
+    $userName:String,
+    $type:MediaType,
+    $status_in:[MediaListStatus]
+){
+    MediaListCollection(
+        userId:$userId
+        , userName:$userName
+        , type:$type
+        , status_in:$status_in
+        , forceSingleCompletedList:true
+    ){
+        lists{
+            entries{
+                media{
+                    id
+                    isAdult
+                }
+            }
+        }
+    }
+}
+
 query MediaListCollectionQuery(
     $userId:Int,
     $userName:String,
@@ -615,21 +641,11 @@ query BasicUserQuery($id:Int){
     User(id:$id){
         id
         name
-        avatar{
-            medium
-            large
+        options{
+            ... userMediaOptions
         }
-        bannerImage
         mediaListOptions{
-            scoreFormat
-            animeList{
-                advancedScoring
-                advancedScoringEnabled
-            }
-            mangaList{
-                advancedScoring
-                advancedScoringEnabled
-            }
+            ... userMediaListOptions
         }
     }
 }
@@ -669,6 +685,7 @@ query UserProfileQuery($name:String, $id:Int){
                 count
                 minutesWatched
                 meanScore
+                episodesWatched
                 genres{
                     count
                     genre
@@ -679,7 +696,7 @@ query UserProfileQuery($name:String, $id:Int){
                 count
                 chaptersRead
                 meanScore
-
+                volumesRead
                 genres{
                     count
                     genre
@@ -1265,16 +1282,31 @@ query NotificationQuery($page:Int, $perPage:Int, $resetNotificationCount:Boolean
     }
 }
 
+
+
+query UserNotificationSettingQuery($id:Int, $name:String){
+    User(id:$id, name:$name){
+        options{
+            notificationOptions{
+                type
+                enabled
+            }
+        }
+    }
+}
+
 query  AiringScheduleQuery($page:Int
     , $perPage:Int
     , $notYetAired:Boolean
-    , $airingAtGreater:Int,
-    , $airingAtLesser:Int,
-    $sort: [AiringSort]){
+    , $airingAtGreater:Int
+    , $airingAtLesser:Int
+    , $mediaId_in:[Int]
+    , $sort: [AiringSort]){
     Page(page:$page, perPage:$perPage){
         airingSchedules(notYetAired:$notYetAired
             , airingAt_greater:$airingAtGreater
             , airingAt_lesser:$airingAtLesser
+            , mediaId_in:$mediaId_in
             , sort:$sort){
             id
             airingAt
@@ -1355,6 +1387,28 @@ query AllReviewQuery($page:Int, $perPage:Int, $sort:[ReviewSort]){
         }
     }
 }
+
+
+
+query UserMediaOptionsQuery($id:Int, $name:String){
+  User(id:$id, name:$name){
+    options{
+        ... userMediaOptions
+    }
+  }
+}
+
+
+query UserMediaListOptionsQuery($id:Int, $name:String){
+  User(id:$id, name:$name){
+    mediaListOptions{
+        ... userMediaListOptions
+    }
+  }
+}
+
+
+
 
 
 #mutation
@@ -1500,6 +1554,33 @@ mutation RateReviewMutation($reviewId:Int, $rating:ReviewRating){
 }
 
 
+
+mutation UserMediaSettingMutation($title:UserTitleLanguage
+  , $airingNotification:Boolean){
+  UpdateUser(titleLanguage:$title, airingNotifications:$airingNotification){
+    id
+  }
+}
+
+mutation UserMediaListSettingMutation($mediaListOptions:MediaListOptionsInput
+,$scoreFormat:ScoreFormat
+,$rowOrder:String){
+  UpdateUser(animeListOptions:$mediaListOptions
+    , scoreFormat:$scoreFormat
+    , rowOrder:$rowOrder){
+    id
+  }
+}
+
+mutation UserNotificationSettingMutation(
+    $notificationOptions:[NotificationOptionInput]){
+    UpdateUser(notificationOptions:$notificationOptions){
+        id
+    }
+}
+
+#Fragments
+
 fragment mediaListContent on MediaList{
     id
     mediaId
@@ -1529,6 +1610,7 @@ fragment narrowMediaContent on Media{
             ... mediaTitle
         }
     }
+    description(asHtml:true)
     isAdult
     format
     type
@@ -1541,6 +1623,8 @@ fragment narrowMediaContent on Media{
     chapters
     volumes
     duration
+    popularity
+    favourites
     startDate {
         ... on FuzzyDate{
             ... fuzzyDate
@@ -1692,7 +1776,21 @@ fragment notificationActivity on ActivityUnion{
 
 
 
+fragment userMediaOptions on UserOptions{
+    titleLanguage
+    displayAdultContent
+    airingNotifications
+    profileColor
+}
 
+fragment userMediaListOptions on MediaListOptions{
+    scoreFormat
+    rowOrder
+    animeList{
+        advancedScoringEnabled
+        advancedScoring
+    }
+}
 
 
 

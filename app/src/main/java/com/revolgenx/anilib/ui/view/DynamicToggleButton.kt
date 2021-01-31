@@ -8,8 +8,9 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.core.view.setPadding
 import androidx.core.widget.ImageViewCompat
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+import com.revolgenx.anilib.app.theme.contrastAccentWithBg
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.util.dp
 
 typealias CheckListener = ((checked: Boolean) -> Unit)?
@@ -17,12 +18,9 @@ typealias CheckListener = ((checked: Boolean) -> Unit)?
 class DynamicToggleButton(context: Context, attributeSet: AttributeSet?, style: Int) :
     DynamicImageView(context, attributeSet, style) {
 
-    private val accentColor by lazy { DynamicTheme.getInstance().get().accentColor }
-    private val primaryTint by lazy { DynamicTheme.getInstance().get().tintPrimaryColor }
-
     private var checkListener: CheckListener = null
     private val rippleDrawable by lazy {
-        RippleDrawable(ColorStateList.valueOf(accentColor), null, null)
+        RippleDrawable(ColorStateList.valueOf(contrastAccentWithBg), null, null)
     }
 
     var checked = false
@@ -30,7 +28,7 @@ class DynamicToggleButton(context: Context, attributeSet: AttributeSet?, style: 
             field = value
             ImageViewCompat.setImageTintList(
                 this,
-                ColorStateList.valueOf(if (field) accentColor else primaryTint)
+                ColorStateList.valueOf(if (field) contrastAccentWithBg else dynamicTextColorPrimary)
             )
         }
 

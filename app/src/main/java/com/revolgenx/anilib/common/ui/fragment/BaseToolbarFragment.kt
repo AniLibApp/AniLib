@@ -6,30 +6,26 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 import com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
-import com.revolgenx.anilib.R
-import kotlinx.android.synthetic.main.base_toolbar_fragment_layout.view.*
-import kotlinx.android.synthetic.main.toolbar_layout.view.*
+import com.revolgenx.anilib.databinding.BaseToolbarFragmentLayoutBinding
 
-abstract class BaseToolbarFragment : BaseFragment() {
-    var setHomeAsUp = true
+abstract class BaseToolbarFragment<T:ViewBinding> : BaseLayoutFragment<T>() {
     var subtitle: String? = null
 
     lateinit var toolbar:DynamicToolbar
     abstract val title: Int
-    abstract val contentRes: Int
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val v = inflater.inflate(R.layout.base_toolbar_fragment_layout, container, false)
-        toolbar = v.dynamicToolbar
-        val content = inflater.inflate(contentRes, container, false)
-        v.toolbarContainerLayout.addView(content)
-        return v
+        val b = BaseToolbarFragmentLayoutBinding.inflate(inflater, container, false)
+        toolbar = b.toolbarLayout.dynamicToolbar
+        val content =  super.onCreateView(inflater, container, savedInstanceState)
+        b.toolbarContainerLayout.addView(content)
+        return b.root
     }
 
     override fun onResume() {

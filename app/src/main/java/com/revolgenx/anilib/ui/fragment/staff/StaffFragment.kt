@@ -2,7 +2,6 @@ package com.revolgenx.anilib.ui.fragment.staff
 
 import android.os.Bundle
 import android.view.*
-import androidx.lifecycle.observe
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.data.field.staff.StaffField
@@ -11,18 +10,16 @@ import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.meta.StaffMeta
 import com.revolgenx.anilib.data.model.StaffModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.databinding.StaffFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
 import com.revolgenx.anilib.ui.viewmodel.staff.StaffViewModel
-import kotlinx.android.synthetic.main.error_layout.*
-import kotlinx.android.synthetic.main.loading_layout.*
-import kotlinx.android.synthetic.main.resource_status_container_layout.*
-import kotlinx.android.synthetic.main.staff_fragment_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class StaffFragment : BaseFragment() {
+class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
     companion object {
         const val STAFF_META_KEY = "staff_meta_key"
     }
@@ -63,13 +60,11 @@ class StaffFragment : BaseFragment() {
         }
     }
 
-
-    override fun onCreateView(
+    override fun bindView(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.staff_fragment_layout, container, false)
+        parent: ViewGroup?
+    ): StaffFragmentLayoutBinding {
+        return StaffFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
 
@@ -77,24 +72,25 @@ class StaffFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         arguments?.classLoader = StaffMeta::class.java.classLoader
         staffMeta = arguments?.getParcelable(STAFF_META_KEY) ?: return
-        staffIv.setImageURI(staffMeta.staffUrl)
+        binding.staffIv.setImageURI(staffMeta.staffUrl)
+        val statusLayout = binding.resourceStatusLayout
         viewModel.staffInfoLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 Status.SUCCESS -> {
-                    resourceStatusContainer.visibility = View.GONE
-                    progressLayout.visibility = View.VISIBLE
-                    errorLayout.visibility = View.GONE
-                    updateView(res.data!!)
+                    statusLayout.resourceStatusContainer.visibility = View.GONE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
+                    binding.updateView(res.data!!)
                 }
                 Status.ERROR -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    progressLayout.visibility = View.GONE
-                    errorLayout.visibility = View.VISIBLE
+                    statusLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
                 }
                 Status.LOADING -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    progressLayout.visibility = View.VISIBLE
-                    errorLayout.visibility = View.GONE
+                    statusLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                 }
             }
         }
@@ -102,12 +98,12 @@ class StaffFragment : BaseFragment() {
         viewModel.toggleStaffFavLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 Status.SUCCESS -> {
-                    staffFavIv.showLoading(false)
+                    binding.staffFavIv.showLoading(false)
                     if (res.data == true) {
                         staffModel?.isFavourite = staffModel?.isFavourite?.not() ?: false
-                        staffFavIv.setImageResource(
+                        binding.staffFavIv.setImageResource(
                             if (staffModel?.isFavourite == true) {
-                                R.drawable.ic_favorite
+                                R.drawable.ic_favourite
                             } else {
                                 R.drawable.ic_not_favourite
                             }
@@ -115,11 +111,11 @@ class StaffFragment : BaseFragment() {
                     }
                 }
                 Status.ERROR -> {
-                    staffFavIv.showLoading(false)
+                    binding.staffFavIv.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ads_ic_error)
                 }
                 Status.LOADING -> {
-                    staffFavIv.showLoading(true)
+                    binding.staffFavIv.showLoading(true)
                 }
             }
         }
@@ -131,7 +127,7 @@ class StaffFragment : BaseFragment() {
     }
 
     private fun initListener() {
-        staffFavLayout.setOnClickListener {
+        binding.staffFavLayout.setOnClickListener {
             if (requireContext().loggedIn()) {
                 viewModel.toggleCharacterFav(toggleFavouriteField)
             } else {
@@ -146,7 +142,7 @@ class StaffFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    private fun updateView(item: StaffModel) {
+    private fun StaffFragmentLayoutBinding.updateView(item: StaffModel) {
         staffModel = item
         staffNameTv.text = item.staffName?.full
         staffFavCountIv.text = item.favourites?.toLong()?.prettyNumberFormat()
@@ -175,7 +171,7 @@ class StaffFragment : BaseFragment() {
         }
 
         if (item.isFavourite) {
-            staffFavIv.setImageResource(R.drawable.ic_favorite)
+            staffFavIv.setImageResource(R.drawable.ic_favourite)
         }
 
         MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(staffDescriptionTv, item.description ?: "")

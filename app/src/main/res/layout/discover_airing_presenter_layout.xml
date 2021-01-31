@@ -3,19 +3,17 @@
 <com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.DynamicApp.Card.Margin.Clickable"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    style="@style/DiscoverCardViewStyle">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:id="@+id/airingMediaCoverFrameLayout"
-            android:layout_width="155dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:layout_constraintDimensionRatio="1:1.6"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -69,8 +67,7 @@
             android:maxLines="2"
             android:paddingTop="6dp"
             android:textSize="12sp"
-            app:ads_colorType="tint_surface"
-            app:fontFamily="@font/open_sans_semi_bold"
+            app:fontFamily="@font/cabin_semi_bold"
             app:layout_constraintBottom_toTopOf="@id/airingGenreLayout"
             app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
             app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout"
@@ -86,7 +83,6 @@
             app:layout_constraintBottom_toTopOf="@id/airingFormatTv"
             app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
             app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout" />
-
 
 
         <com.revolgenx.anilib.ui.view.IndicatorTextView
@@ -114,7 +110,7 @@
             android:text="@string/airing_time_e_s_s"
             android:textSize="11sp"
             app:ads_colorType="accent"
-            app:fontFamily="@font/open_sans_semi_bold"
+            app:fontFamily="@font/cabin_semi_bold"
             app:layout_constraintBottom_toBottomOf="@id/airingMediaCoverFrameLayout"
             app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
             app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout"

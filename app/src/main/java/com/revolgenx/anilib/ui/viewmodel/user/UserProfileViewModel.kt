@@ -31,9 +31,8 @@ class UserProfileViewModel(private val userService: UserService) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
-    val userField by lazy {
-        UserProfileField()
-    }
+    val userField = UserProfileField()
+
 
     fun getProfile() {
         userProfileLiveData.value = Resource.loading(userProfileLiveData.value?.data)

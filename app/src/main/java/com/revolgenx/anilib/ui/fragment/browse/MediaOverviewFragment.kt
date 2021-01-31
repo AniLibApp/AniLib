@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.net.toUri
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +30,7 @@ import com.revolgenx.anilib.infrastructure.event.BrowseGenreEvent
 import com.revolgenx.anilib.infrastructure.event.BrowseStudioEvent
 import com.revolgenx.anilib.infrastructure.event.BrowseTagEvent
 import com.revolgenx.anilib.data.field.media.MediaOverviewField
-import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.meta.StudioMeta
@@ -40,6 +39,7 @@ import com.revolgenx.anilib.data.model.MediaOverviewModel
 import com.revolgenx.anilib.data.model.MediaRelationshipModel
 import com.revolgenx.anilib.data.model.MediaStudioModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
+import com.revolgenx.anilib.databinding.MediaOverviewFragmentBinding
 import com.revolgenx.anilib.ui.presenter.BrowseRelationshipPresenter
 import com.revolgenx.anilib.ui.presenter.media.MediaExternalLinkPresenter
 import com.revolgenx.anilib.ui.presenter.media.MediaMetaPresenter
@@ -52,13 +52,9 @@ import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.ui.view.airing.AiringEpisodeView
 import com.revolgenx.anilib.ui.view.span.SpoilerSpan
 import com.revolgenx.anilib.ui.viewmodel.media.MediaOverviewViewModel
-import kotlinx.android.synthetic.main.error_layout.*
-import kotlinx.android.synthetic.main.loading_layout.*
-import kotlinx.android.synthetic.main.media_overview_fragment.*
-import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaOverviewFragment : BaseFragment() {
+class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>() {
 
     private var mediaBrowserMeta: MediaBrowserMeta? = null
     private val viewModel by viewModel<MediaOverviewViewModel>()
@@ -104,12 +100,11 @@ class MediaOverviewFragment : BaseFragment() {
     private var metaLinkAdapter: Adapter? = null
     private var metaContainerAdapter: Adapter? = null
 
-    override fun onCreateView(
+    override fun bindView(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.media_overview_fragment, container, false)
+        parent: ViewGroup?
+    ): MediaOverviewFragmentBinding {
+        return MediaOverviewFragmentBinding.inflate(inflater, parent, false)
     }
 
 
@@ -118,7 +113,7 @@ class MediaOverviewFragment : BaseFragment() {
 
         val span =
             if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
-        metaContainerRecyclerView.layoutManager =
+        binding.metaContainerRecyclerView.layoutManager =
             GridLayoutManager(
                 this.context,
                 span
@@ -134,7 +129,7 @@ class MediaOverviewFragment : BaseFragment() {
                 }
             }
 
-        metaLinkRecyclerView.layoutManager =
+        binding.metaLinkRecyclerView.layoutManager =
             GridLayoutManager(
                 this.context,
                 span
@@ -150,9 +145,9 @@ class MediaOverviewFragment : BaseFragment() {
                 }
             }
 
-        recommendationRecyclerView.layoutManager =
+        binding.recommendationRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        relationRecyclerView.layoutManager =
+        binding.relationRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
     }
 
@@ -165,22 +160,22 @@ class MediaOverviewFragment : BaseFragment() {
         viewModel.mediaOverviewLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 Status.SUCCESS -> {
-                    resourceStatusContainer.visibility = View.GONE
-                    progressLayout.visibility = View.VISIBLE
-                    errorLayout.visibility = View.GONE
-                    updateView(res.data!!)
+                    binding.resourceStatusLayout.resourceStatusContainer.visibility = View.GONE
+                    binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    binding.resourceStatusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
+                    binding.updateView(res.data!!)
                     invalidateRecommendationAdapter()
                 }
                 Status.ERROR -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    progressLayout.visibility = View.GONE
-                    errorLayout.visibility = View.VISIBLE
+                    binding.resourceStatusLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
+                    binding.resourceStatusLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
                     invalidateRecommendationAdapter()
                 }
                 Status.LOADING -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    progressLayout.visibility = View.VISIBLE
-                    errorLayout.visibility = View.GONE
+                    binding.resourceStatusLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    binding.resourceStatusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                 }
             }
         }
@@ -193,7 +188,7 @@ class MediaOverviewFragment : BaseFragment() {
 
     }
 
-    private fun updateView(overview: MediaOverviewModel) {
+    private fun MediaOverviewFragmentBinding.updateView(overview: MediaOverviewModel) {
         context ?: return
 
         overview.status?.let {
@@ -283,6 +278,7 @@ class MediaOverviewFragment : BaseFragment() {
                         params.marginStart = dp(2f)
                         params.bottomMargin = dp(20f)
                     }
+                    it.useCompatPadding = true
                 }.also {
                     it.addView(
                         AiringEpisodeView(
@@ -548,7 +544,7 @@ class MediaOverviewFragment : BaseFragment() {
         Adapter.builder(viewLifecycleOwner)
             .addSource(Source.fromList(list))
             .addPresenter(relationshipPresenter)
-            .into(relationRecyclerView)
+            .into(binding.relationRecyclerView)
     }
 
     private fun invalidateRecommendationAdapter() {
@@ -559,7 +555,7 @@ class MediaOverviewFragment : BaseFragment() {
             .addPresenter(loadingPresenter)
             .addPresenter(errorPresenter)
             .addPresenter(emptyPresenter)
-            .into(recommendationRecyclerView)
+            .into(binding.recommendationRecyclerView)
     }
 
 

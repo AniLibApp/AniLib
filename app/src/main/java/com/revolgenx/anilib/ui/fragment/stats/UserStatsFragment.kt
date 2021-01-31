@@ -6,6 +6,7 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.data.field.stats.UserStatsField
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
+import com.revolgenx.anilib.constant.UserConstant
 import com.revolgenx.anilib.data.meta.UserStatsMeta
 import com.revolgenx.anilib.data.model.user.stats.BaseStatsModel
 import com.revolgenx.anilib.ui.presenter.stats.UserStatsPresenter
@@ -28,12 +29,14 @@ abstract class UserStatsFragment : BasePresenterFragment<BaseStatsModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val userStatsMeta =
-            arguments?.getParcelable<UserStatsMeta>(StatsOverviewFragment.USER_STATS_PARCEL_KEY)
-        with(viewModel.field) {
-            userId = userStatsMeta?.userMeta?.userId
-            userName = userStatsMeta?.userMeta?.userName
-            type = userStatsMeta?.type
-            userStatsType = statsType
+            arguments?.getParcelable<UserStatsMeta>(UserConstant.USER_STATS_META_KEY)
+        if(userStatsMeta != null){
+            with(viewModel.field) {
+                userId = userStatsMeta.userMeta.userId
+                userName = userStatsMeta.userMeta.userName
+                type = userStatsMeta.type
+                userStatsType = statsType
+            }
         }
     }
 

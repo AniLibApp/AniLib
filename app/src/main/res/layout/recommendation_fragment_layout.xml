@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recommendation_linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/toolbar_size"
+        android:orientation="horizontal">
+
+        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+            android:id="@+id/recommendation_on_list_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:ads_key="RECOMMENDATION_ON_LIST_KEY"
+            app:ads_title="@string/on_list"
+            app:text_size="14sp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"/>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/FilterHeaderKeyTextStyle"
+            android:text="@string/sort"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"/>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+            android:id="@+id/recommendation_sort_spinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:entries="@array/recommendation_sort" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -46,7 +46,6 @@
                         android:layout_toStartOf="@id/characterFavLayout"
                         android:layout_toEndOf="@+id/characterIv"
                         android:textSize="16sp"
-                        app:ads_colorType="tint_surface"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
@@ -112,14 +111,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:fontFamily="@font/open_sans_light"
-                    app:ads_colorType="tint_surface" />
+                    android:layout_marginEnd="10dp" />
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
-        <include layout="@layout/resource_status_container_layout" />
+        <include layout="@layout/resource_status_container_layout"
+            android:id="@+id/resource_status_layout"/>
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>

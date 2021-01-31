@@ -8,23 +8,22 @@ import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.ThemeController
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.data.field.ToggleFavouriteField
-import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.ListEditorResultMeta
 import com.revolgenx.anilib.data.model.DateModel
 import com.revolgenx.anilib.common.preference.getUserPrefModel
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userScoreFormat
+import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.databinding.ListEditorFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
@@ -33,21 +32,17 @@ import com.revolgenx.anilib.util.COLLAPSED
 import com.revolgenx.anilib.util.EXPANDED
 import com.revolgenx.anilib.ui.viewmodel.entry.MediaEntryEditorViewModel
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
-import kotlinx.android.synthetic.main.error_layout.*
-import kotlinx.android.synthetic.main.list_editor_fragment_layout.*
-import kotlinx.android.synthetic.main.loading_layout.*
-import kotlinx.android.synthetic.main.resource_status_container_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
-class EntryListEditorFragment : BaseFragment() {
+class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBinding>() {
 
     companion object {
         const val LIST_EDITOR_META_KEY = "list_editor_meta_key"
-        private const val DatePickerDialogTag ="DatePickerDialogTag"
+        private const val DatePickerDialogTag = "DatePickerDialogTag"
     }
 
     private var state = COLLAPSED //collapsed
@@ -68,19 +63,16 @@ class EntryListEditorFragment : BaseFragment() {
 
     private val calendarDrawable by lazy {
         ContextCompat.getDrawable(requireContext(), R.drawable.ic_calendar)!!.mutate().also {
-            it.setTint(tintAccentColor)
+            it.setTint(dynamicTextColorPrimary)
         }
     }
 
     private val crossDrawable by lazy {
         ContextCompat.getDrawable(requireContext(), R.drawable.ic_close)!!.mutate().also {
-            it.setTint(tintAccentColor)
+            it.setTint(dynamicTextColorPrimary)
         }
     }
 
-    private val tintAccentColor by lazy {
-        DynamicTheme.getInstance().get().tintAccentColor
-    }
 
     private val calendar by lazy {
         Calendar.getInstance()
@@ -99,12 +91,11 @@ class EntryListEditorFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateView(
+    override fun bindView(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.list_editor_fragment_layout, container, false)
+        parent: ViewGroup?
+    ): ListEditorFragmentLayoutBinding {
+        return ListEditorFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onResume() {
@@ -127,8 +118,8 @@ class EntryListEditorFragment : BaseFragment() {
         }
 
         setToolbarTheme()
-        showViews()
-        initListener()
+        binding.showViews()
+        binding.initListener()
 
         viewModel.mediaLiveData.observe(viewLifecycleOwner) {
             when (it.status) {
@@ -137,48 +128,52 @@ class EntryListEditorFragment : BaseFragment() {
                         mediaMeta.coverImage = it.data?.coverImage?.large ?: ""
                         mediaMeta.bannerImage = it.data?.bannerImage ?: ""
                         mediaMeta.title = it.data?.title?.romaji ?: ""
-                        showMetaViews()
+                        binding.showMetaViews()
                     }
+                }
+                else -> {
                 }
             }
         }
 
         viewModel.getMediaInfo(mediaMeta.mediaId)
 
-        viewModel.queryMediaListEntryLiveData.observe(viewLifecycleOwner, Observer { resource ->
+        val statusLayout = binding.resourceStatusLayout
+
+        viewModel.queryMediaListEntryLiveData.observe(viewLifecycleOwner, { resource ->
             when (resource.status) {
                 SUCCESS -> {
-                    resourceStatusContainer.visibility = View.GONE
-                    listEditorContainer.visibility = View.VISIBLE
-                    progressLayout.visibility = View.VISIBLE
-                    errorLayout.visibility = View.GONE
+                    statusLayout.resourceStatusContainer.visibility = View.GONE
+                    binding.listEditorContainer.visibility = View.VISIBLE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                     if (apiModelEntry.hasData.not() && resource.data != null) {
                         apiModelEntry = resource.data
                         apiModelEntry.hasData = true
                     }
-                    updateView()
+                    binding.updateView()
                     invalidateOptionMenu()
                 }
                 ERROR -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    listEditorContainer.visibility = View.GONE
-                    progressLayout.visibility = View.GONE
-                    errorLayout.visibility = View.VISIBLE
+                    statusLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    binding.listEditorContainer.visibility = View.GONE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
                 }
                 LOADING -> {
-                    resourceStatusContainer.visibility = View.VISIBLE
-                    listEditorContainer.visibility = View.GONE
-                    progressLayout.visibility = View.VISIBLE
-                    errorLayout.visibility = View.GONE
+                    statusLayout.resourceStatusContainer.visibility = View.VISIBLE
+                    binding.listEditorContainer.visibility = View.GONE
+                    statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+                    statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                 }
             }
         })
 
-        viewModel.isFavouriteQuery(mediaMeta.mediaId).observe(viewLifecycleOwner, Observer {
+        viewModel.isFavouriteQuery(mediaMeta.mediaId).observe(viewLifecycleOwner, {
             when (it.status) {
                 SUCCESS -> {
                     isFavourite = it.data!!
-                    listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                    binding.listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
                     invalidateOptionMenu()
                 }
                 ERROR -> {
@@ -188,28 +183,28 @@ class EntryListEditorFragment : BaseFragment() {
             }
         })
 
-        viewModel.toggleFavMediaLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.toggleFavMediaLiveData.observe(viewLifecycleOwner, {
             toggling = when (it.status) {
                 SUCCESS -> {
                     isFavourite = !isFavourite
-                    listFavButton.showLoading(false)
-                    listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favorite else R.drawable.ic_not_favourite)
+                    binding.listFavButton.showLoading(false)
+                    binding.listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
                     invalidateOptionMenu()
                     false
                 }
                 ERROR -> {
-                    listFavButton.showLoading(false)
+                    binding.listFavButton.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
                     false
                 }
                 LOADING -> {
-                    listFavButton.showLoading(true)
+                    binding.listFavButton.showLoading(true)
                     true
                 }
             }
         })
 
-        viewModel.saveMediaListEntryLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.saveMediaListEntryLiveData.observe(viewLifecycleOwner, {
             saving = when (it.status) {
                 SUCCESS -> {
                     ListEditorResultEvent(
@@ -224,17 +219,17 @@ class EntryListEditorFragment : BaseFragment() {
                 }
                 ERROR -> {
                     makeToast(R.string.failed_to_save, icon = R.drawable.ic_error)
-                    listSaveButton.showLoading(false)
+                    binding.listSaveButton.showLoading(false)
                     false
                 }
                 LOADING -> {
-                    listSaveButton.showLoading(true)
+                    binding.listSaveButton.showLoading(true)
                     true
                 }
             }
         })
 
-        viewModel.deleteMediaListEntryLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.deleteMediaListEntryLiveData.observe(viewLifecycleOwner, {
             deleting = when (it.status) {
                 SUCCESS -> {
                     ListEditorResultEvent(
@@ -249,11 +244,11 @@ class EntryListEditorFragment : BaseFragment() {
                 }
                 ERROR -> {
                     makeToast(R.string.failed_to_delete, icon = R.drawable.ic_error)
-                    listDeleteButton.showLoading(false)
+                    binding.listDeleteButton.showLoading(false)
                     false
                 }
                 LOADING -> {
-                    listDeleteButton.showLoading(true)
+                    binding.listDeleteButton.showLoading(true)
                     true
                 }
             }
@@ -263,7 +258,7 @@ class EntryListEditorFragment : BaseFragment() {
             viewModel.queryMediaListEntry(mediaMeta.mediaId)
     }
 
-    private fun showViews() {
+    private fun ListEditorFragmentLayoutBinding.showViews() {
         if (!::mediaMeta.isInitialized) return
         showMetaViews()
         listDeleteButton.backgroundTintList =
@@ -277,11 +272,11 @@ class EntryListEditorFragment : BaseFragment() {
             listEditorVolumeProgressLayout.visibility = View.VISIBLE
         }
 
-        val lightSurfaceColor = ThemeController.lightSurfaceColor()
-        startDateDynamicEt.setBackgroundColor(lightSurfaceColor)
-        endDateDynamicEt.setBackgroundColor(lightSurfaceColor)
-        notesEt.setBackgroundColor(lightSurfaceColor)
-        statusContainerSpinner.setBackgroundColor(lightSurfaceColor)
+//        val lightSurfaceColor = ThemeController.lightSurfaceColor()
+//        startDateDynamicEt.setBackgroundColor(lightSurfaceColor)
+//        endDateDynamicEt.setBackgroundColor(lightSurfaceColor)
+//        notesEt.setBackgroundColor(lightSurfaceColor)
+//        statusContainerSpinner.setBackgroundColor(lightSurfaceColor)
 
         startDateDynamicEt.setCompoundDrawablesRelativeWithIntrinsicBounds(
             calendarDrawable,
@@ -354,19 +349,20 @@ class EntryListEditorFragment : BaseFragment() {
         )
     }
 
-    private fun showMetaViews() {
+    private fun ListEditorFragmentLayoutBinding.showMetaViews() {
         if (!::mediaMeta.isInitialized) return
         (activity as AppCompatActivity).also { act ->
             act.setSupportActionBar(listEditorToolbar)
             act.supportActionBar!!.title = mediaMeta.title
             act.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         }
+        mediaTitleTv.text = mediaMeta.title
         listEditorCoverImage.setImageURI(mediaMeta.coverImage)
         listEditorBannerImage.setImageURI(mediaMeta.bannerImage)
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initListener() {
+    private fun ListEditorFragmentLayoutBinding.initListener() {
         appbarLayout.addOnOffsetChangedListener(offSetChangeListener)
 
         listSaveButton.setOnClickListener {
@@ -381,7 +377,7 @@ class EntryListEditorFragment : BaseFragment() {
             toggleFav()
         }
 
-        startDateDynamicEt.setOnTouchListener { v, event ->
+        startDateDynamicEt.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= (startDateDynamicEt.right - startDateDynamicEt.compoundDrawablesRelative[2].bounds.width())) {
                     startDateDynamicEt.setText("")
@@ -395,7 +391,7 @@ class EntryListEditorFragment : BaseFragment() {
             }
         }
 
-        endDateDynamicEt.setOnTouchListener { v, event ->
+        endDateDynamicEt.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= (startDateDynamicEt.right - startDateDynamicEt.compoundDrawablesRelative[2].bounds.width())) {
                     endDateDynamicEt.setText("")
@@ -473,13 +469,13 @@ class EntryListEditorFragment : BaseFragment() {
         }
 
         listEditorScoreLayout.onScoreChangeListener {
-            apiModelEntry.score = it.toDouble()
+            apiModelEntry.score = it
         }
-        _privateToggleButton.setToggleListener {
+        privateToggleButton.setToggleListener {
             apiModelEntry.private = it
         }
 
-        _privateToggleButton.setOnLongClickListener {
+        privateToggleButton.setOnLongClickListener {
             makeToast(R.string.make_private)
             true
         }
@@ -501,12 +497,12 @@ class EntryListEditorFragment : BaseFragment() {
         }
     }
 
-    private fun updateView() {
+    private fun ListEditorFragmentLayoutBinding.updateView() {
         apiModelEntry.status?.let {
             statusSpinner.setSelection(it)
         }
         listEditorScoreLayout.mediaListScore = apiModelEntry.score ?: 0.0
-        _privateToggleButton.checked = apiModelEntry.private == true
+        privateToggleButton.checked = apiModelEntry.private == true
         listEditorEpisodeLayout.setCounter(apiModelEntry.progress?.toDouble())
         totalRewatchesLayout.setCounter(apiModelEntry.repeat?.toDouble())
         listEditorVolumeProgressLayout.setCounter(apiModelEntry.progressVolumes?.toDouble())
@@ -514,34 +510,27 @@ class EntryListEditorFragment : BaseFragment() {
 
         updateMediaProgressDate()
 
-        getUserPrefModel(requireContext()).mediaListOption?.let { option ->
-            if (option.scoreFormat == ScoreFormat.POINT_10_DECIMAL.ordinal || option.scoreFormat == ScoreFormat.POINT_100.ordinal) {
+        getUserPrefModel(requireContext()).mediaListOption?.let { optionSetting ->
+            if (optionSetting.scoreFormat == ScoreFormat.POINT_10_DECIMAL.ordinal || optionSetting.scoreFormat == ScoreFormat.POINT_100.ordinal) {
                 if (apiModelEntry.type == MediaType.ANIME.ordinal) {
-                    option.animeList?.let { animeListOption ->
+                    optionSetting.animeList?.let { animeListOption ->
                         if (animeListOption.advancedScoringEnabled) {
                             if (apiModelEntry.advancedScoring == null) {
-                                apiModelEntry.advancedScoring = option.animeList?.advancedScoring
+                                apiModelEntry.advancedScoring =
+                                    optionSetting.animeList?.advancedScoring
                             }
-                            if (apiModelEntry.advancedScoring != null) {
-                                advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
-                            } else {
-                                advancedScoreLayout.visibility = View.GONE
-                            }
+                            advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
                         } else {
                             advancedScoreLayout.visibility = View.GONE
                         }
                     }
                 } else {
-                    option.mangaList?.let { mangaListOptions ->
+                    optionSetting.animeList?.let { mangaListOptions ->
                         if (mangaListOptions.advancedScoringEnabled) {
                             if (apiModelEntry.advancedScoring == null) {
-                                apiModelEntry.advancedScoring = option.mangaList?.advancedScoring
+                                apiModelEntry.advancedScoring = mangaListOptions.advancedScoring
                             }
-                            if (apiModelEntry.advancedScoring != null) {
-                                advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
-                            } else {
-                                advancedScoreLayout.visibility = View.GONE
-                            }
+                            advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
                         } else {
                             advancedScoreLayout.visibility = View.GONE
                         }
@@ -556,11 +545,11 @@ class EntryListEditorFragment : BaseFragment() {
 
     private fun updateMediaProgressDate() {
         if (apiModelEntry.startDate?.year != null) {
-            startDateDynamicEt.setText(this.apiModelEntry.startDate!!.let { "${it.year}-${it.month}-${it.day}" })
+            binding.startDateDynamicEt.setText(this.apiModelEntry.startDate!!.let { "${it.year}-${it.month}-${it.day}" })
         }
 
         if (apiModelEntry.endDate?.year != null) {
-            endDateDynamicEt.setText(this.apiModelEntry.endDate!!.let { "${it.year}-${it.month}-${it.day}" })
+            binding.endDateDynamicEt.setText(this.apiModelEntry.endDate!!.let { "${it.year}-${it.month}-${it.day}" })
         }
     }
 
@@ -595,13 +584,13 @@ class EntryListEditorFragment : BaseFragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (state == EXPANDED) {
             if (!apiModelEntry.isUserList) {
-                listDeleteButton.visibility = View.GONE
+                binding.listDeleteButton.visibility = View.GONE
             } else {
-                listDeleteButton.visibility = View.VISIBLE
+                binding.listDeleteButton.visibility = View.VISIBLE
             }
 
             if (isFavourite) {
-                listFavButton.setImageResource(R.drawable.ic_favorite)
+                binding.listFavButton.setImageResource(R.drawable.ic_favourite)
             }
             return
         }
@@ -610,13 +599,13 @@ class EntryListEditorFragment : BaseFragment() {
 
         if (!apiModelEntry.isUserList) {
             menu.findItem(R.id.listDeleteMenu).isVisible = false
-            listDeleteButton.visibility = View.GONE
+            binding.listDeleteButton.visibility = View.GONE
         } else {
-            listDeleteButton.visibility = View.VISIBLE
+            binding.listDeleteButton.visibility = View.VISIBLE
         }
 
         if (isFavourite) {
-            val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite)
+            val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favourite)
             menu.findItem(R.id.listFavMenu).icon = drawable
         }
     }
@@ -648,24 +637,24 @@ class EntryListEditorFragment : BaseFragment() {
 
 
     private fun setToolbarTheme() {
-        listEditorCollapsingToolbar.setStatusBarScrimColor(
+        binding.listEditorCollapsingToolbar.setStatusBarScrimColor(
             DynamicTheme.getInstance().get().primaryColorDark
         )
-        listEditorCollapsingToolbar.setContentScrimColor(
+        binding.listEditorCollapsingToolbar.setContentScrimColor(
             DynamicTheme.getInstance().get().primaryColor
         )
-        listEditorCollapsingToolbar.setCollapsedTitleTextColor(
+        binding.listEditorCollapsingToolbar.setCollapsedTitleTextColor(
             DynamicTheme.getInstance().get().tintPrimaryColor
         )
-        listEditorCollapsingToolbar.setBackgroundColor(
+        binding.listEditorCollapsingToolbar.setBackgroundColor(
             DynamicTheme.getInstance().get().backgroundColor
         )
     }
 
-
-    override fun onDestroy() {
-        appbarLayout?.removeOnOffsetChangedListener(offSetChangeListener)
-        super.onDestroy()
+    override fun onDestroyView() {
+        binding.appbarLayout.removeOnOffsetChangedListener(offSetChangeListener)
+        super.onDestroyView()
     }
+
 }
 

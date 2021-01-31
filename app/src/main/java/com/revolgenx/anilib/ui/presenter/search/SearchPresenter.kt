@@ -3,11 +3,11 @@ package com.revolgenx.anilib.ui.presenter.search
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.otaliastudios.elements.*
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.SearchTypes
@@ -16,20 +16,18 @@ import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.data.model.BaseModel
 import com.revolgenx.anilib.data.model.search.*
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.databinding.*
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
-import kotlinx.android.synthetic.main.search_character_layout.view.*
-import kotlinx.android.synthetic.main.search_media_layout.view.*
-import kotlinx.android.synthetic.main.search_staff_layout.view.*
-import kotlinx.android.synthetic.main.search_studio_layout.view.*
 
 class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwner) :
-    Presenter<BaseModel>(context) {
+    BasePresenter<ViewBinding, BaseModel>(context) {
     override val elementTypes: Collection<Int>
         get() = SearchTypes.values().map { it.ordinal }
 
     private val statusColors by lazy {
-        context.resources.getStringArray(R.array.status_color)
+        context.resources.getStringArray(R.array.status_color).map { Color.parseColor(it) }
     }
 
 
@@ -41,62 +39,60 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
         context.resources.getStringArray(R.array.media_status)
     }
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        val v = when (elementType) {
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): ViewBinding {
+        return when (elementType) {
             SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.search_media_layout, parent, false)
+                SearchMediaLayoutBinding.inflate(getLayoutInflater(), parent, false)
             }
             SearchTypes.CHARACTER.ordinal -> {
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.search_character_layout, parent, false)
+                SearchCharacterLayoutBinding.inflate(getLayoutInflater(), parent, false)
             }
             SearchTypes.STAFF.ordinal -> {
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.search_staff_layout, parent, false)
+                SearchStaffLayoutBinding.inflate(getLayoutInflater(), parent, false)
             }
             SearchTypes.STUDIO.ordinal -> {
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.search_studio_layout, parent, false)
+                SearchStudioLayoutBinding.inflate(getLayoutInflater(), parent, false)
             }
             SearchTypes.USER.ordinal -> {
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.search_user_layout, parent, false)
+                SearchUserLayoutBinding.inflate(getLayoutInflater(), parent, false)
             }
             else -> {
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.search_media_layout, parent, false)
+                SearchMediaLayoutBinding.inflate(getLayoutInflater(), parent, false)
             }
         }
-
-        return Holder(v)
     }
+
 
     override fun onBind(page: Page, holder: Holder, element: Element<BaseModel>) {
         super.onBind(page, holder, element)
 
         val item = element.data ?: return
+        val binding = holder.getBinding() ?: return
         when (holder.elementType) {
             SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
-                holder.itemView.updateMedia(item as MediaSearchModel)
+                (binding as SearchMediaLayoutBinding).updateMedia(item as MediaSearchModel)
             }
             SearchTypes.CHARACTER.ordinal -> {
-                holder.itemView.updateCharacter(item as CharacterSearchModel)
+                (binding as SearchCharacterLayoutBinding).updateCharacter(item as CharacterSearchModel)
             }
             SearchTypes.STAFF.ordinal -> {
-                holder.itemView.updateStaff(item as StaffSearchModel)
+                (binding as SearchStaffLayoutBinding).updateStaff(item as StaffSearchModel)
             }
             SearchTypes.STUDIO.ordinal -> {
-                holder.itemView.updateStudio(item as StudioSearchModel)
+                (binding as SearchStudioLayoutBinding).updateStudio(item as StudioSearchModel)
             }
             SearchTypes.USER.ordinal -> {
-                holder.itemView.updateUser(item as UserSearchModel)
+                (binding as SearchUserLayoutBinding).updateUser(item as UserSearchModel)
             }
         }
     }
 
 
-    private fun View.updateMedia(item: MediaSearchModel) {
+    private fun SearchMediaLayoutBinding.updateMedia(item: MediaSearchModel) {
         searchMediaImageView.setImageURI(item.coverImage?.image(context))
         searchMediaTitleTv.text = item.title?.title(context)
         searchMediaRatingTv.text = item.averageScore?.toString().naText()
@@ -108,11 +104,11 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
         searchMediaFormatTv.status = item.mediaEntryListModel?.status
 
         searchMediaStatusTv.text = item.status?.let {
-            searchMediaStatusTv.color = Color.parseColor(statusColors[it])
+            searchMediaStatusTv.color = statusColors[it]
             mediaStatus[it]
         }
 
-        setOnClickListener {
+        root.setOnClickListener {
             BrowseMediaEvent(
                 MediaBrowserMeta(
                     item.mediaId,
@@ -125,7 +121,7 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
             ).postEvent
         }
 
-        setOnLongClickListener {
+        root.setOnLongClickListener {
             if (context.loggedIn()) {
                 ListEditorEvent(
                     ListEditorMeta(
@@ -144,10 +140,10 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
 
     }
 
-    private fun View.updateCharacter(item: CharacterSearchModel) {
+    private fun SearchCharacterLayoutBinding.updateCharacter(item: CharacterSearchModel) {
         searchCharacterImageView.setImageURI(item.characterImageModel?.image)
         searchCharacterNameTv.text = item.name?.full
-        setOnClickListener {
+        root.setOnClickListener {
             BrowseCharacterEvent(
                 CharacterMeta(
                     item.characterId,
@@ -158,15 +154,15 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
         }
     }
 
-    private fun View.updateStaff(item: StaffSearchModel) {
+    private fun SearchStaffLayoutBinding.updateStaff(item: StaffSearchModel) {
         searchStaffImageView.setImageURI(item.staffImage?.image)
         searchStaffNameTv.text = item.staffName?.full
-        setOnClickListener {
+        root.setOnClickListener {
             BrowseStaffEvent(StaffMeta(item.staffId ?: -1, item.staffImage?.image)).postEvent
         }
     }
 
-    private fun View.updateStudio(item: StudioSearchModel) {
+    private fun SearchStudioLayoutBinding.updateStudio(item: StudioSearchModel) {
         searchStudioHeader.text = item.studioName + " >>"
         searchStudioMedia.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
@@ -182,33 +178,83 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
     }
 
 
-    private fun View.updateUser(item: UserSearchModel) {
+    private fun SearchUserLayoutBinding.updateUser(item: UserSearchModel) {
         searchCharacterImageView.setImageURI(item.avatar?.image)
         searchCharacterNameTv.text = item.userName
-        setOnClickListener {
+        root.setOnClickListener {
             UserBrowseEvent(item.userId).postEvent
         }
     }
 
 
-    inner class BrowseStudioMediaPresenter : Presenter<MediaSearchModel>(context) {
+    inner class BrowseStudioMediaPresenter : BasePresenter<BrowseStudioMediaPresenterBinding,MediaSearchModel>(context) {
         override val elementTypes: Collection<Int>
             get() = listOf(0)
 
-        override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-            return Holder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.browse_studio_media_presenter,
-                    parent,
-                    false
-                )
-            )
+
+        override fun bindView(
+            inflater: LayoutInflater,
+            parent: ViewGroup?,
+            elementType: Int
+        ): BrowseStudioMediaPresenterBinding {
+            return BrowseStudioMediaPresenterBinding.inflate(inflater, parent, false)
         }
+
 
         override fun onBind(page: Page, holder: Holder, element: Element<MediaSearchModel>) {
             super.onBind(page, holder, element)
             val item = element.data ?: return
-            holder.itemView.updateMedia(item)
+
+            val binding: BrowseStudioMediaPresenterBinding = holder.getBinding() ?: return
+
+
+            binding.apply {
+
+                searchMediaImageView.setImageURI(item.coverImage?.image(context))
+                searchMediaTitleTv.text = item.title?.title(context)
+                searchMediaRatingTv.text = item.averageScore?.toString().naText()
+                searchMediaFormatTv.text =
+                    context.getString(R.string.media_format_year_s).format(item.format?.let {
+                        mediaFormats[it]
+                    }.naText(), item.seasonYear?.toString().naText())
+
+                searchMediaFormatTv.status = item.mediaEntryListModel?.status
+
+                searchMediaStatusTv.text = item.status?.let {
+                    searchMediaStatusTv.color = statusColors[it]
+                    mediaStatus[it]
+                }
+
+                root.setOnClickListener {
+                    BrowseMediaEvent(
+                        MediaBrowserMeta(
+                            item.mediaId,
+                            item.type!!,
+                            item.title!!.romaji!!,
+                            item.coverImage!!.image(context),
+                            item.coverImage!!.largeImage,
+                            item.bannerImage
+                        ), searchMediaImageView
+                    ).postEvent
+                }
+
+                root.setOnLongClickListener {
+                    if (context.loggedIn()) {
+                        ListEditorEvent(
+                            ListEditorMeta(
+                                item.mediaId,
+                                item.type!!,
+                                item.title!!.title(context)!!,
+                                item.coverImage!!.image(context),
+                                item.bannerImage
+                            ), searchMediaImageView
+                        ).postEvent
+                    } else {
+                        context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
+                    }
+                    true
+                }
+            }
         }
     }
 }

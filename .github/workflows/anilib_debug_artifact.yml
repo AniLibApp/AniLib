@@ -23,20 +23,23 @@ jobs:
       - name: Create gradle property file
         env:
           ANILIST_SECRET: ${{ secrets.ANILIST_SECRET }}
-        run:          
+        run:
           echo "$ANILIST_SECRET" | base64 -d > ./secret.properties
-        
+
       - name: Build app
-        run: ./gradlew build
-      
+        run: ./gradlew assembleDebug
+
       - name: Set CURRENT_SHA
-        run: echo "::set-env name=CURRENT_SHA::$(git rev-parse --short HEAD)"
-      
+        run: |
+          set -x
+          echo "CURRENT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+
       - name: Upload apk
         uses: actions/upload-artifact@v2.2.0
         with:
-            name: AniLib-${{env.CURRENT_SHA}}
-            path: app/build/outputs/apk/debug/*.apk
-            
-        
-        
+          name: AniLib-${{env.CURRENT_SHA}}
+          path: app/build/outputs/apk/debug/*.apk
+
+
+

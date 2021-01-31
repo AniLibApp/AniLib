@@ -9,4 +9,19 @@
     <dimen name="bottom_navigation_text_size">14sp</dimen>
 
     <dimen name="discover_text_separation">6dp</dimen>
+
+
+    <dimen name="toolbar_size">48dp</dimen>
+
+    <dimen name="discover_media_width">155dp</dimen>
+    <dimen name="discover_media_height">248dp</dimen>
+    <dimen name="discover_recycler_height">250dp</dimen>
+    <dimen name="profile_title_size">17sp</dimen>
+    <dimen name="profile_subtitle_size">13sp</dimen>
+    <dimen name="profile_stats_subtitle_size">11sp</dimen>
+    <dimen name="profile_overview_margin">6sp</dimen>
+    <dimen name="media_browser_button_height">50dp</dimen>
+
+    <dimen name="setting_margin_top">6dp</dimen>
+    <dimen name="list_editor_save_icon_size">42dp</dimen>
 </resources>

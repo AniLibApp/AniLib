@@ -85,7 +85,6 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:textSize="11sp"
-            app:ads_colorType="tint_surface"
             tools:ignore="SmallSp" />
 
 

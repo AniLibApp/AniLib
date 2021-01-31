@@ -36,10 +36,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:ads_checked="true"
-            app:ads_key="crash_report_key"
+            app:ads_description="@string/crash_report_desc"
             app:ads_icon="@drawable/ic_bug_report"
-            app:ads_title="@string/crash_reporting"
-            app:ads_description="@string/crash_report_desc"/>
+            app:ads_key="crash_report_key"
+            app:ads_title="@string/crash_reporting" />
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+
+        <com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_description="@string/disable_ads_desc"
+            app:ads_icon="@drawable/ic_baseline_ad_units"
+            app:ads_key="show_ads_key"
+            app:ads_title="@string/disable_ads" />
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ShortcutManager
+import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
@@ -23,14 +25,20 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.greenrobot.eventbus.EventBus
 import org.ocpsoft.prettytime.PrettyTime
-import org.threeten.bp.DateTimeUtils
-import org.threeten.bp.Instant
 import java.util.*
 
 
 const val COLLAPSED = 0
 const val EXPANDED = 1
 
+object LauncherShortcutKeys{
+    const val LAUNCHER_SHORTCUT_EXTRA_KEY = "LAUNCHER_SHORTCUT_EXTRA_KEY"
+
+}
+
+enum class LauncherShortcuts{
+    HOME, ANIME, MANGA, RADIO,NOTIFICATION
+}
 
 fun getSeasonFromMonth(monthOfYear: Int): MediaSeason {
     monthOfYear.let {
@@ -72,18 +80,20 @@ fun Long.prettyNumberFormat(): String { //Long.MIN_VALUE == -Long.MIN_VALUE so w
 }
 
 
-fun <T> T.registerForEvent() {
+fun <T:EventBusListener> T.registerForEvent() {
     val bus = EventBus.getDefault()
     if (!bus.isRegistered(this))
         bus.register(this)
 }
 
-fun <T> T.unRegisterForEvent() {
+fun <T:EventBusListener> T.unRegisterForEvent() {
     val bus = EventBus.getDefault()
     if (bus.isRegistered(this)) {
         bus.unregister(this)
     }
 }
+
+interface EventBusListener
 
 suspend fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = coroutineScope {
     map { async { f(it) } }.awaitAll()
@@ -142,7 +152,7 @@ fun Context.openLink(url: String?) {
 }
 
 fun Long.prettyTime(): String {
-    return PrettyTime().format(DateTimeUtils.toDate(Instant.ofEpochSecond(this)))
+    return PrettyTime().format(Date(this * 1000L ))
 }
 
 fun View.string(@StringRes id: Int) = context.getString(id)
@@ -162,3 +172,11 @@ fun Context.copyToClipBoard(str: String?) {
     makeToast(R.string.copied_to_clipboard)
 }
 
+
+
+inline fun shortcutAction(context: Context,action: (ShortcutManager) -> Unit): Unit {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+        val shortcutManager = context.getSystemService(ShortcutManager::class.java)
+        action(shortcutManager)
+    }
+}

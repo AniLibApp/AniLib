@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ads_color="@android:color/transparent"
+        app:ads_colorType="custom"
+        app:elevation="0dp">
+
+        <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicTextTabLayout
+            android:id="@+id/list_tab_layout"
+            style="@style/DynamicTextTabLayoutStyle"
+            android:layout_width="match_parent"
+            app:ads_backgroundColorType="background"
+            app:ads_colorType="accent"
+            app:ads_contrastWithColorType="background"
+            app:ads_textColorType="tint_primary"
+            app:entries="@array/music_entries" />
+
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintBottom_toTopOf="@+id/player_controller_container"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/radio_fragment_container_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:id="@+id/recent_station_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            style="@style/RadioHeaderTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/recently_played_stations" />
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                            android:id="@+id/recent_station_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/favourite_station_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            style="@style/RadioHeaderTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/favourite_radio_station" />
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                            android:id="@+id/favourite_station_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/all_radio_station_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            style="@style/RadioHeaderTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/all_radio_stations" />
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                            android:id="@+id/radio_station_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <FrameLayout
+                android:id="@+id/player_controller_container"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <com.revolgenx.anilib.radio.ui.view.KaoMojiStateView
+                android:id="@+id/kao_moji_state_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

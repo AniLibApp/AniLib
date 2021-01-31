@@ -16,11 +16,17 @@ open class MediaField : BaseSourceField<MediaQuery>() {
     var season: Int? = null
     var status: Int? = null
     var mediaIdsIn: List<Int>? = null
+
+    var formatsIn: MutableList<Int>? = null
+
     override fun toQueryOrMutation(): MediaQuery {
         return MediaQuery.builder()
-            .page(page)
-            .perPage(perPage)
             .apply {
+
+                if (page != null) {
+                    page(page!!)
+                    perPage(perPage)
+                }
                 if (genres?.isNullOrEmpty() == false) {
                     genre_in(genres)
                 }
@@ -38,6 +44,10 @@ open class MediaField : BaseSourceField<MediaQuery>() {
                 }
                 format?.let {
                     format(MediaFormat.values()[it])
+                }
+                formatsIn?.let {
+                    val formats = MediaFormat.values()
+                    format_in(it.map { formats[it] })
                 }
                 status?.let {
                     status(MediaStatus.values()[it])

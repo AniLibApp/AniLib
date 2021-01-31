@@ -8,7 +8,12 @@ import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
+import com.revolgenx.anilib.ui.sorting.MediaListSorting
+import com.revolgenx.anilib.ui.sorting.makeMediaListSortingComparator
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MediaListCollectionSource(
     field: MediaListCollectionField,
@@ -17,36 +22,77 @@ class MediaListCollectionSource(
     private val compositeDisposable: CompositeDisposable
 ) : BaseRecyclerSource<MediaListModel, MediaListCollectionField>(field) {
 
-
     private lateinit var firstPage: Page
+
     override fun areItemsTheSame(first: MediaListModel, second: MediaListModel): Boolean {
         return first.baseId == second.baseId
     }
 
-    fun filterPage(filterList: MutableList<MediaListModel>) {
-        if (::firstPage.isInitialized)
-            postResult(firstPage, filterList)
+    fun filterPage() {
+        if (::firstPage.isInitialized){
+            postFilteredResult(firstPage)
+        }
     }
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {
         super.onPageOpened(page, dependencies)
         if (page.isFirstPage()) {
             firstPage = page
+
             if (listMap.isEmpty()) {
                 mediaListService.getMediaListCollection(field, compositeDisposable) {
-                    postResult(page, it)
-
                     if (it.status == Status.SUCCESS) {
                         (it.data as List<MediaListModel>).forEach {
                             listMap[it.mediaId!!] = it
                         }
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val filteredList = getFilteredList()
+                            launch(Dispatchers.Main) {
+                                postResult(page, filteredList)
+                            }
+                        }
+                    }else{
+                        postResult(page, it)
                     }
                 }
-            } else {
-                postResult(page, Resource.success(listMap.toList()))
             }
         } else {
             postResult(page, emptyList<MediaListModel>())
         }
     }
+
+    private fun postFilteredResult(page:Page){
+        CoroutineScope(Dispatchers.IO).launch {
+            val filteredList = getFilteredList()
+            launch(Dispatchers.Main) {
+                postResult(page, filteredList)
+            }
+        }
+    }
+
+    private fun getFilteredList(): MutableList<MediaListModel> {
+        val filter = field.filter
+        return if (filter.formatsIn.isNullOrEmpty()) listMap.values else {
+            listMap.values.filter {  filter.formatsIn!!.contains(it.format) }
+        }.let {
+            if (field.filter.status == null) it else it.filter { it.status == filter.status }
+        }.let {
+            if (filter.genre == null) it else it.filter { it.genres?.contains(filter.genre!!) == true }
+        }.let {
+            if (filter.search.isNullOrEmpty()) it else {
+                it.filter {
+                    it.title?.userPreferred?.contains(
+                        filter.search!!, true
+                    ) == true
+                }
+            }
+        }.let {
+            if (filter.listSort == null) it else it.sortedWith(
+                makeMediaListSortingComparator(
+                    MediaListSorting.MediaListSortingType.values()[filter.listSort!!]
+                )
+            )
+        }.toMutableList()
+    }
+
 }

@@ -9,19 +9,13 @@ import com.revolgenx.anilib.infrastructure.source.MediaSource
 import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.ui.viewmodel.SourceViewModel
 
-class DiscoverNewViewModel(private val mediaService: MediaService) :
-    SourceViewModel<MediaSource, NewlyAddedMediaField>() {
-
-    var adapter: Adapter? = null
+class DiscoverNewViewModel(mediaService: MediaService) :
+    BaseDiscoverViewModel<NewlyAddedMediaField>(mediaService) {
 
     override var field: NewlyAddedMediaField = NewlyAddedMediaField().also {
         it.sort = MediaSort.ID_DESC.ordinal
     }
 
-    override fun createSource(): MediaSource {
-        source = MediaSource(mediaService, field, compositeDisposable)
-        return source!!
-    }
 
     fun updateField(context: Context) {
         getNewlyAddedField(context).let {
@@ -29,6 +23,7 @@ class DiscoverNewViewModel(private val mediaService: MediaService) :
             field.seasonYear = it.seasonYear
             field.season = it.season
             field.status = it.status
+            field.formatsIn = it.formatsIn
         }
     }
 }

@@ -3,6 +3,7 @@ package com.revolgenx.anilib.ui.presenter.recommendation
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -10,7 +11,6 @@ import androidx.lifecycle.Observer
 import com.apollographql.apollo.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
@@ -22,20 +22,21 @@ import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.UpdateRecommendationModel
 import com.revolgenx.anilib.data.model.recommendation.RecommendationModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.databinding.RecommendationPresenterLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.RecommendationRating
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
-import com.revolgenx.anilib.ui.viewmodel.home.RecommendationViewModel
-import kotlinx.android.synthetic.main.recommendation_presenter_layout.view.*
+import com.revolgenx.anilib.ui.viewmodel.home.recommendation.RecommendationViewModel
 
 class RecommendationPresenter(
     context: Context,
     private val lifecycleOwner: LifecycleOwner,
     private val viewModel: RecommendationViewModel
 ) :
-    Presenter<RecommendationModel>(context) {
+    BasePresenter<RecommendationPresenterLayoutBinding, RecommendationModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -56,14 +57,12 @@ class RecommendationPresenter(
     }
 
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            getLayoutInflater().inflate(
-                R.layout.recommendation_presenter_layout,
-                parent,
-                false
-            )
-        )
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): RecommendationPresenterLayoutBinding {
+        return RecommendationPresenterLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<RecommendationModel>) {
@@ -71,7 +70,7 @@ class RecommendationPresenter(
         val item = element.data ?: return
         viewModel.recommendedList[item.recommendationId!!] = item
 
-        holder.itemView.apply {
+        holder.getBinding()?.apply {
             item.recommendationFrom?.let { from ->
                 recommendedFromTitleTv.text = from.title?.title(context)
                 recommendedFromImageView.setImageURI(from.coverImage?.image(context))
@@ -197,6 +196,7 @@ class RecommendationPresenter(
                                         context.makeToast(R.string.operation_failed)
                                     }
                                 }
+                                else->{}
                             }
                         }
                     }
@@ -231,6 +231,7 @@ class RecommendationPresenter(
                                 Status.ERROR -> {
                                     context.makeToast(R.string.operation_failed)
                                 }
+                                else->{}
                             }
                         }
                     }
@@ -263,19 +264,19 @@ class RecommendationPresenter(
         }).observe(lifecycleOwner, observer)
     }
 
-    private fun View.updateRecommendationLikeView(item: RecommendationModel) {
-        recommendationLikeIv?.imageTintList = ColorStateList.valueOf(Color.WHITE)
-        recommendationDislikeIv?.imageTintList = ColorStateList.valueOf(Color.WHITE)
+    private fun RecommendationPresenterLayoutBinding.updateRecommendationLikeView(item: RecommendationModel) {
+        recommendationLikeIv.imageTintList = ColorStateList.valueOf(Color.WHITE)
+        recommendationDislikeIv.imageTintList = ColorStateList.valueOf(Color.WHITE)
         recommendationRatingTv.setTextColor(Color.WHITE)
-        recommendationRatingTv?.text = item.rating?.toString()
+        recommendationRatingTv.text = item.rating?.toString()
 
         when (item.userRating) {
             RecommendationRating.RATE_UP.ordinal -> {
-                recommendationLikeIv?.imageTintList =
+                recommendationLikeIv.imageTintList =
                     ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
             }
             RecommendationRating.RATE_DOWN.ordinal -> {
-                recommendationDislikeIv?.imageTintList =
+                recommendationDislikeIv.imageTintList =
                     ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
             }
         }

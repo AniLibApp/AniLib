@@ -92,7 +92,7 @@ object MarkwonImpl {
                 element.attr("alt", "markdown_spoiler")
         }
 
-        docs.select("video").forEachIndexed { index, element ->
+        docs.select("video").forEachIndexed { _, element ->
             val containsSpoiler = element.parents().hasClass("markdown_spoiler")
             element.appendText("video")
             if (containsSpoiler)
@@ -100,7 +100,7 @@ object MarkwonImpl {
         }
 
 
-        docs.select("img").forEachIndexed { index, element ->
+        docs.select("img").forEachIndexed { _, element ->
             val containsSpoiler = element.parents().hasClass("markdown_spoiler")
             if (containsSpoiler)
                 element.attr("alt", "markdown_spoiler")

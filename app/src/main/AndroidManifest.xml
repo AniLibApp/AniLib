@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".app.App"
@@ -67,7 +68,6 @@
         <activity android:name=".activity.ViewPagerContainerActivity" />
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.MediaListActivity" />
-        <activity android:name=".activity.BasePopupVideoActivity" />
         <activity android:name=".activity.UserProfileActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -80,11 +80,11 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.ExoVideoPlayerActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTop"
-            android:screenOrientation="fullSensor" />
+<!--        <activity-->
+<!--            android:name=".activity.ExoVideoPlayerActivity"-->
+<!--            android:configChanges="orientation|screenSize|keyboardHidden"-->
+<!--            android:launchMode="singleTop"-->
+<!--            android:screenOrientation="fullSensor" />-->
         <activity
             android:name=".activity.SimpleDraweeViewerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -92,11 +92,23 @@
         <activity android:name=".activity.NavViewPagerContainerActivity" />
         <activity android:name=".activity.ToolbarContainerActivity" />
         <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.NotificationActivity" />
+
+        <service android:name=".radio.service.RadioService">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
             tools:node="remove" />
+
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2546597730102301~6088602294"/>
     </application>
 
 </manifest>

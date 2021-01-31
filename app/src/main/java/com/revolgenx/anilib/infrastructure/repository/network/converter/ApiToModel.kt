@@ -1,13 +1,15 @@
 package com.revolgenx.anilib.infrastructure.repository.network.converter
 
-import com.revolgenx.anilib.BasicUserQuery
-import com.revolgenx.anilib.MediaOverViewQuery
-import com.revolgenx.anilib.MediaWatchQuery
+import com.revolgenx.anilib.*
 import com.revolgenx.anilib.data.model.*
+import com.revolgenx.anilib.data.model.airing.AiringTimeModel
+import com.revolgenx.anilib.data.model.airing.TimeUntilAiringModel
 import com.revolgenx.anilib.data.model.entry.AdvancedScore
 import com.revolgenx.anilib.data.model.entry.MediaEntryListModel
-import com.revolgenx.anilib.data.model.list.MediaListOptionModel
-import com.revolgenx.anilib.data.model.list.MediaListOptionTypeModel
+import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
+import com.revolgenx.anilib.data.model.setting.MediaListOptionTypeModel
+import com.revolgenx.anilib.data.model.setting.MediaOptionModel
+import com.revolgenx.anilib.data.model.setting.getRowOrder
 import com.revolgenx.anilib.fragment.*
 import com.revolgenx.anilib.util.pmap
 import kotlinx.coroutines.runBlocking
@@ -15,6 +17,9 @@ import kotlinx.coroutines.runBlocking
 fun <T : CommonMediaModel> NarrowMediaContent.getCommonMedia(model: T): T {
     model.mediaId = id()
     model.title = title()?.fragments()?.mediaTitle()?.toModel()
+    model.description = description() ?: ""
+    model.popularity = popularity()
+    model.favourites = favourites()
     model.format = format()?.ordinal
     model.type = type()?.ordinal
     model.episodes = episodes()?.toString()
@@ -30,7 +35,7 @@ fun <T : CommonMediaModel> NarrowMediaContent.getCommonMedia(model: T): T {
 
     model.startDate = startDate()?.fragments()?.fuzzyDate()?.toModel()
     model.endDate = endDate()?.fragments()?.fuzzyDate()?.toModel()
-    model.bannerImage = bannerImage() ?: model.coverImage!!.extraLarge
+    model.bannerImage = bannerImage() ?: model.coverImage!!.largeImage
 
     model.isAdult = isAdult ?: false
     model.mediaEntryListModel = mediaListEntry()?.let {
@@ -52,7 +57,7 @@ fun <T : CommonMediaModel> CommonMediaContent.getCommonMedia(model: T): T {
     model.averageScore = averageScore()
     model.season = season()?.ordinal
     model.seasonYear = seasonYear()
-    model.bannerImage = bannerImage() ?: model.coverImage!!.extraLarge
+    model.bannerImage = bannerImage() ?: model.coverImage!!.largeImage
 
     model.isAdult = isAdult ?: false
     model.mediaEntryListModel = mediaListEntry()?.let {
@@ -63,7 +68,6 @@ fun <T : CommonMediaModel> CommonMediaContent.getCommonMedia(model: T): T {
     }
     return model
 }
-
 
 
 fun BasicMediaContent.toBasicMediaContent() = CommonMediaModel().also { media ->
@@ -78,30 +82,8 @@ fun BasicMediaContent.toBasicMediaContent() = CommonMediaModel().also { media ->
 fun BasicUserQuery.User.toBasicUserModel() = UserPrefModel().also {
     it.userId = id()
     it.userName = name()
-    it.mediaListOption = mediaListOptions()?.let {
-        MediaListOptionModel().apply {
-            scoreFormat = it.scoreFormat()!!.ordinal
-            animeList = it.animeList()?.let {
-                MediaListOptionTypeModel().also { typeModel ->
-                    typeModel.advancedScoringEnabled = it.advancedScoringEnabled()!!
-                    typeModel.advancedScoring = it.advancedScoring()?.map { AdvancedScore(it, 0.0) }
-                }
-            }
-            mangaList = it.mangaList()?.let {
-                MediaListOptionTypeModel().also { typeModel ->
-                    typeModel.advancedScoringEnabled = it.advancedScoringEnabled()!!
-                    typeModel.advancedScoring = it.advancedScoring()?.map { AdvancedScore(it, 0.0) }
-                }
-            }
-        }
-    }
-    it.avatar = avatar()?.let {
-        UserAvatarImageModel().also { img ->
-            img.large = avatar()!!.large()
-            img.medium = avatar()!!.medium()
-        }
-    }
-    it.bannerImage = bannerImage() ?: ""
+    it.mediaListOption = mediaListOptions()?.fragments()?.userMediaListOptions()?.toModel()
+    it.mediaOptions = options()?.fragments()?.userMediaOptions()?.toModel()
 }
 
 
@@ -161,8 +143,8 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
         it.airingTimeModel = nextAiringEpisode()?.let {
             AiringTimeModel().also { model ->
                 model.episode = it.episode()
-                model.airingTime =
-                    AiringTime().also { ti -> ti.time = it.timeUntilAiring().toLong() }
+                model.timeUntilAiring =
+                    TimeUntilAiringModel().also { ti -> ti.time = it.timeUntilAiring().toLong() }
             }
         }
         it.relationship = relations()?.edges()?.pmap {
@@ -219,6 +201,24 @@ fun MediaWatchQuery.Media.toModel() = streamingEpisodes()?.map {
         model.thumbnail = it.thumbnail()
         model.title = it.title()
         model.url = it.url()
+    }
+}
+
+
+fun UserMediaOptions.toModel() = MediaOptionModel(
+    titleLanguage()!!.ordinal,
+    displayAdultContent()!!,
+    airingNotifications()!!,
+    profileColor())
+
+fun UserMediaListOptions.toModel() = MediaListOptionModel().also {
+    it.rowOrder = getRowOrder(rowOrder()!!)
+    it.scoreFormat = scoreFormat()!!.ordinal
+    it.animeList = animeList()?.let {
+        MediaListOptionTypeModel().also { optionModel->
+            optionModel.advancedScoringEnabled = it.advancedScoringEnabled()!!
+            optionModel.advancedScoring = it.advancedScoring()?.map { AdvancedScore(it, 0.0) }?.toMutableList()
+        }
     }
 }
 

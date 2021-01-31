@@ -48,7 +48,7 @@
             android:textSize="16sp"
             app:ads_colorType="custom"
             app:ads_rtlSupport="true"
-            app:fontFamily="@font/berlinrounded_extra_bold"
+            app:fontFamily="@font/cabin_semi_bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -83,7 +83,7 @@
                     android:layout_marginStart="6dp"
                     android:maxLines="1"
                     android:textSize="12sp"
-                    app:fontFamily="@font/open_sans_semi_bold_italics"
+                    app:fontFamily="@font/cabin_semi_bold_italics"
                     app:layout_constraintLeft_toRightOf="@id/reviewByIv"
                     app:layout_constraintRight_toLeftOf="@+id/createdAtTv"
                     app:layout_constraintTop_toTopOf="@id/reviewByIv" />
@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="10sp"
-                    app:fontFamily="@font/open_sans_light"
+                    app:fontFamily="@font/cabincondensed_regular"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/reviewByTv"
                     tools:ignore="SmallSp" />
@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:textSize="12sp"
-                    app:fontFamily="@font/open_sans_semi_bold_italics"
+                    app:fontFamily="@font/cabin_semi_bold_italics"
                     app:layout_constraintBottom_toBottomOf="@+id/reviewByIv"
                     app:layout_constraintLeft_toLeftOf="@id/reviewByTv"
                     app:layout_constraintRight_toRightOf="parent"

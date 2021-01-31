@@ -18,12 +18,13 @@ import com.revolgenx.anilib.ui.presenter.search.SearchPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.ui.viewmodel.search.SearchFragmentViewModel
+import com.revolgenx.anilib.util.EventBusListener
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchFragment : BasePresenterFragment<BaseModel>() {
+class SearchFragment : BasePresenterFragment<BaseModel>(), EventBusListener {
 
     private val viewModel by viewModel<SearchFragmentViewModel>()
 

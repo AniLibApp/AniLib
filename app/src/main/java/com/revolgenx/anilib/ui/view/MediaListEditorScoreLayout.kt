@@ -55,11 +55,11 @@ class MediaListEditorScoreLayout(context: Context, attributeSet: AttributeSet?, 
         addView(plusMinusScoreLayout)
 
         plusMinusScoreLayout.textChangeListener {
-            scoreChangeListener?.invoke(it.toString().toFloat())
+            scoreChangeListener?.invoke(it.toString().toDouble())
         }
 
         smileyScoreLayout.onSmileyScoreChange {
-            scoreChangeListener?.invoke(it.toFloat())
+            scoreChangeListener?.invoke(it.toDouble())
         }
 
         smileyScoreLayout.visibility = View.GONE
@@ -94,4 +94,4 @@ class MediaListEditorScoreLayout(context: Context, attributeSet: AttributeSet?, 
     }
 
 }
-typealias ScoreChangeListener = ((score: Float) -> Unit)?
+typealias ScoreChangeListener = ((score: Double) -> Unit)?

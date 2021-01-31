@@ -23,7 +23,7 @@ object Constants {
      * TODO: Default value for app theme night color.
      */
     @ColorInt
-    val APP_THEME_NIGHT_COLOR = Color.parseColor("#171E28")
+    val APP_THEME_NIGHT_COLOR = Color.parseColor("#252525")
 
     /**
      * TODO: Default value for app theme primary color.

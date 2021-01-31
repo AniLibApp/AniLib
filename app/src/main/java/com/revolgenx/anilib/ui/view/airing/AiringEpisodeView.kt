@@ -9,7 +9,7 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.model.AiringTimeModel
+import com.revolgenx.anilib.data.model.airing.AiringTimeModel
 import com.revolgenx.anilib.util.CommonTimer
 import com.revolgenx.anilib.util.TimerCallback
 import com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
@@ -84,7 +84,7 @@ class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet
     }
 
     private fun updateViews() {
-        commonTimer?.airingTime?.apply {
+        commonTimer?.timeUntilAiringModel?.apply {
             daysHeader.subtitle = day.toString()
             hourHeader.subtitle = hour.toString()
             minHeader.subtitle = min.toString()
@@ -100,6 +100,7 @@ class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet
                     params.weight = 1f
                     params.gravity = Gravity.CENTER
                 }
+            tv.textSize = 14f
             tv.gravity = View.TEXT_ALIGNMENT_CENTER
             tv.colorType = Theme.ColorType.TINT_ACCENT
         }

@@ -1,8 +1,8 @@
-<p align="center"><img src="https://github.com/rev0lgenX/AnilibAssets/raw/master/1_1_4_base/simple_banner.jpg" width="180px" ></p>
+<p align="center"><img src="https://github.com/rev0lgenX/AnilibAssets/raw/master/1_1_4_base/simple_banner.jpg" width="20%" ></p>
 
 ## 
 
-[![Build Check](https://github.com/rev0lgenX/AniLib/workflows/AniLib%20build%20check/badge.svg?branch=dev&event=push)](https://github.com/rev0lgenX/AniLib/actions) [![Release](https://img.shields.io/github/v/tag/rev0lgenX/AniLib?label=Release)](https://github.com/rev0lgenX/AniLib/releases/)  [![Discord](https://img.shields.io/discord/762249048748589066?color=%236E85D3&label=Discord&logo=Discord)](https://discord.gg/Gd2TVQT) [![Translate](https://img.shields.io/badge/translate-contribute-yellow)](https://github.com/rev0lgenX/AniLib-Localization)
+[![Build Check](https://github.com/rev0lgenX/AniLib/workflows/AniLib%20build%20check/badge.svg?branch=master&event=push)](https://github.com/rev0lgenX/AniLib/actions)   [![Discord](https://img.shields.io/discord/762249048748589066?color=%236E85D3&label=Discord&logo=Discord)](https://discord.gg/Gd2TVQT)
 
 ## About
 App for tracking anime/manga by the power of AniList.

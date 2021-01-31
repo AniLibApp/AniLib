@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.revolgenx.anilib.ui.view.CustomSmartTab xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/dynamicSmartTab"
+    android:id="@+id/base_dynamic_smart_tab"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
     android:layout_alignParentBottom="true"

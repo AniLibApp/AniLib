@@ -39,8 +39,8 @@ class TitleTextView(context: Context, attributeSet: AttributeSet?, defStyle: Int
                     LayoutParams.WRAP_CONTENT
                 )
                 if (isInEditMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                    it.typeface = resources.getFont(R.font.open_sans_regular)
-                else it.typeface = ResourcesCompat.getFont(context, R.font.open_sans_regular)
+                    it.typeface = resources.getFont(R.font.cabin_regular)
+                else it.typeface = ResourcesCompat.getFont(context, R.font.cabin_regular)
 
                 it.gravity = Gravity.CENTER
                 it.color = textColor
@@ -62,8 +62,8 @@ class TitleTextView(context: Context, attributeSet: AttributeSet?, defStyle: Int
                 }
                 it.color = textColor
                 if (isInEditMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                    it.typeface = resources.getFont(R.font.open_sans_light)
-                else it.typeface = ResourcesCompat.getFont(context, R.font.open_sans_light)
+                    it.typeface = resources.getFont(R.font.cabincondensed_regular)
+                else it.typeface = ResourcesCompat.getFont(context, R.font.cabincondensed_regular)
 
                 if (isInEditMode)
                     it.text = "text test description"

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/media_list_container"
+    style="@style/Widget.DynamicApp.Card.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/media_list_image_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/media_list_cover_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:transitionName="media_cover_transition"
+                app:roundAsCircle="false"
+                app:roundedCornerRadius="4dp"
+                app:actualImageScaleType="centerCrop"/>
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="5dp"
+                android:background="@drawable/oval_background"
+                android:orientation="horizontal"
+                android:paddingStart="5dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="2dp">
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                    android:id="@+id/media_list_rating_iv"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    app:ads_colorType="none"
+                    app:srcCompat="@drawable/ic_star" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/media_list_rating_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    app:ads_colorType="custom"
+                    tools:ignore="SmallSp" />
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/media_list_title_tv"
+            style="@style/TitleFontStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="6dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:maxLines="2"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="@id/media_list_image_container"
+            app:layout_constraintEnd_toStartOf="@+id/media_list_progress_increase"
+            app:layout_constraintTop_toBottomOf="@id/media_list_image_container"
+            tools:ignore="SmallSp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/media_list_format_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="6dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="10sp"
+            app:ads_colorType="accent"
+            app:layout_constraintStart_toStartOf="@id/media_list_image_container"
+            app:layout_constraintEnd_toStartOf="@+id/media_list_progress_increase"
+            app:layout_constraintTop_toBottomOf="@id/media_list_title_tv"
+            tools:ignore="SmallSp" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/media_list_progress_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:drawablePadding="4dp"
+            android:paddingBottom="6dp"
+            android:textSize="10sp"
+            app:drawableStartCompat="@drawable/ic_eye_16dp"
+            app:layout_constraintTop_toBottomOf="@+id/media_list_format_tv"
+            app:layout_constraintEnd_toStartOf="@+id/media_list_progress_increase"
+            app:layout_constraintStart_toStartOf="@id/media_list_image_container"
+            tools:ignore="SmallSp" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/media_list_progress_increase"
+            style="@style/Widget.DynamicApp.Image"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:background="?selectableItemBackground"
+            android:padding="4dp"
+            app:ads_colorType="text_primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/media_list_title_tv"
+            app:srcCompat="@drawable/ic_plus" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

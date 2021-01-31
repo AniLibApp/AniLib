@@ -1,70 +1,125 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.DynamicApp" />
-
-    <style name="BaseTheme" parent="AppTheme">
+    <style name="AppTheme" parent="Theme.DynamicApp">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="fontFamily">@font/open_sans_regular</item>
+        <item name="fontFamily">@font/cabin_regular</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColorPrimaryInverse">@color/white</item>
     </style>
 
-    <style name="BaseTheme.Dark" parent="Theme.DynamicApp.Light">
+    <style name="AppTheme.Dark" parent="Theme.DynamicApp.Light">
         <!-- Customize your theme here. -->
-
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="fontFamily">@font/open_sans_regular</item>
+        <item name="fontFamily">@font/cabin_regular</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorPrimaryInverse">@color/black</item>
     </style>
+
 
     <style name="ExpandedTitleAppearance" parent="Widget.AppCompat.TextView">
-        <item name="android:textSize">17sp</item>
-        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@android:color/transparent</item>
         <item name="android:visibility">gone</item>
-        <item name="android:shadowColor">@color/black</item>
-        <item name="android:shadowRadius">2</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowDx">1</item>
-        <item name="fontFamily">@font/open_sans_semi_bold</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">0.1sp</item>
     </style>
 
 
     <style name="CollapsedTitleAppearance" parent="TextAppearance.DynamicApp.Toolbar">
-        <item name="fontFamily">@font/berlinrounded_extra_bold</item>
+        <item name="fontFamily">@font/cabin_semi_bold</item>
     </style>
 
     <style name="DynamicToolbarTitleTheme" parent="TextAppearance.DynamicApp.Toolbar">
-        <item name="fontFamily">@font/berlinrounded_extra_bold</item>
-    </style>
-    <style name="DynamicToolbarSubTitleTheme" parent="TextAppearance.DynamicApp.Toolbar">
-        <item name="fontFamily">@font/berlinrounded_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/cabin_semi_bold</item>
     </style>
 
-    <style name="BottomNavigationTextAppearance" parent="TextAppearance">
-        <item name="fontFamily">@font/berlinrounded_regular</item>
-        <item name="android:textSize">@dimen/bottom_navigation_text_size</item>
+    <style name="DynamicToolbarSubTitleTheme" parent="TextAppearance.DynamicApp.Toolbar">
+        <item name="fontFamily">@font/cabin_regular</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 
     <style name="NavigationTextAppearance">
-        <item name="fontFamily">@font/berlinrounded_extra_bold</item>
-        <item name="android:fontFamily">@font/berlinrounded_extra_bold</item>
+        <item name="fontFamily">@font/cabin_semi_bold</item>
+        <item name="android:fontFamily">@font/cabin_semi_bold</item>
     </style>
 
 
-    <style name="titleFontStyle">
-        <item name="fontFamily">@font/open_sans_semi_bold</item>
+    <style name="TitleFontStyle">
+        <item name="fontFamily">@font/cabin_semi_bold</item>
     </style>
+
+
+    <style name="DynamicTextTabLayoutStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="tabMode">scrollable</item>
+        <item name="tabIndicatorHeight">1dp</item>
+    </style>
+
+    <style name="DynamicTextTabLayoutStyle.Background">
+        <item name="ads_backgroundColorType">background</item>
+    </style>
+
+    <style name="SubTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="TabOptionMenuStyle" parent="AppWidget.DynamicApp.Image.Action">
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+    </style>
+
+    <style name="FilterHeaderKeyTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">10dp</item>
+    </style>
+
+    <style name="FilterHeaderValueTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
+    <style name="DiscoverCardViewStyle" parent="Widget.DynamicApp.Content.Card.Clickable">
+        <item name="android:layout_width">@dimen/discover_media_width</item>
+        <item name="android:layout_height">@dimen/discover_media_height</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="RadioHeaderTextStyle">
+        <item name="fontFamily">@font/cabin_semi_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="DividerViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_marginLeft">6dp</item>
+        <item name="android:layout_marginRight">6dp</item>
+    </style>
+
+    <style name="PresenterHeaderStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/cabin_semi_bold</item>
+        <item name="android:padding">17dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 
 </resources>

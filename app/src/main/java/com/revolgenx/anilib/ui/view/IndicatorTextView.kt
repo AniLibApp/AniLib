@@ -85,11 +85,11 @@ class IndicatorTextView : DynamicLinearLayout {
             0
         )
 
-        var textColorType = 0
-        var indicatorTextSize = 0f
+        val textColorType: Int
+        val indicatorTextSize: Float
         try {
             textColorType =
-                a.getInt(R.styleable.IndicatorTextView_textColorType, Theme.ColorType.TINT_SURFACE)
+                a.getInt(R.styleable.IndicatorTextView_textColorType, Theme.ColorType.TEXT_PRIMARY)
             indicatorTextSize =
                 a.getInt(R.styleable.IndicatorTextView_textSize, 10).toFloat()
         } finally {

@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.pranavpandey.android.dynamic.support.widget.DynamicMaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.DynamicApp.Card.Margin.Clickable"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:id="@+id/media_presenter_card_view"
+    style="@style/DiscoverCardViewStyle"
+    app:strokeColor="@color/red"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
-            android:id="@+id/mediaCoverFrameLayout"
-            android:layout_width="155dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1:1.6"
+            android:id="@+id/media_cover_frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/mediaSimpleDrawee"
+                android:id="@+id/media_simple_drawee"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:actualImageScaleType="centerCrop"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,7 +54,7 @@
             android:id="@+id/mediaMetaBackground"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/mediaCoverFrameLayout"
+            app:layout_constraintBottom_toBottomOf="@id/media_cover_frame_layout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/mediaTitleTv" />
@@ -69,11 +70,9 @@
             android:maxLines="2"
             android:paddingTop="6dp"
             android:textSize="12sp"
-            app:ads_colorType="tint_surface"
-            app:fontFamily="@font/open_sans_semi_bold"
             app:layout_constraintBottom_toTopOf="@id/mediaGenreLayout"
-            app:layout_constraintLeft_toLeftOf="@id/mediaCoverFrameLayout"
-            app:layout_constraintRight_toRightOf="@id/mediaCoverFrameLayout"
+            app:layout_constraintLeft_toLeftOf="@id/media_cover_frame_layout"
+            app:layout_constraintRight_toRightOf="@id/media_cover_frame_layout"
             tools:ignore="SmallSp" />
 
 
@@ -84,8 +83,8 @@
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             app:layout_constraintBottom_toTopOf="@id/mediaFormatTv"
-            app:layout_constraintLeft_toLeftOf="@id/mediaCoverFrameLayout"
-            app:layout_constraintRight_toRightOf="@id/mediaCoverFrameLayout" />
+            app:layout_constraintLeft_toLeftOf="@id/media_cover_frame_layout"
+            app:layout_constraintRight_toRightOf="@id/media_cover_frame_layout" />
 
 
         <com.revolgenx.anilib.ui.view.IndicatorTextView
@@ -96,13 +95,13 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="@dimen/discover_text_separation"
             android:paddingBottom="4dp"
-            app:textColorType="tint_accent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@id/mediaCoverFrameLayout"
-            app:layout_constraintRight_toRightOf="@id/mediaCoverFrameLayout"
+            app:layout_constraintLeft_toLeftOf="@id/media_cover_frame_layout"
+            app:layout_constraintRight_toRightOf="@id/media_cover_frame_layout"
+            app:textColorType="tint_accent"
             app:textSize="10"
             tools:ignore="SmallSp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.pranavpandey.android.dynamic.support.widget.DynamicMaterialCardView>

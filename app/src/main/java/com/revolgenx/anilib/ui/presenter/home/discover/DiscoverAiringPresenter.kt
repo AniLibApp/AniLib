@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.ui.presenter.home.discover
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
 import com.otaliastudios.elements.Element
@@ -16,28 +17,30 @@ import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.airing.AiringMediaModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.databinding.DiscoverAiringPresenterLayoutBinding
+import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
-import kotlinx.android.synthetic.main.discover_airing_presenter_layout.view.*
 
-class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(context) {
+class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPresenterLayoutBinding,AiringMediaModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
-    override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
-        return Holder(
-            getLayoutInflater().inflate(
-                R.layout.discover_airing_presenter_layout,
-                parent,
-                false
-            ).also {
-                it.mediaMetaBackground.setBackgroundColor(
-                    ColorUtils.setAlphaComponent(
-                        DynamicTheme.getInstance().get().backgroundColor, 220
-                    )
-                )
-            }
+
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): DiscoverAiringPresenterLayoutBinding {
+        val binding =  DiscoverAiringPresenterLayoutBinding.inflate(inflater, parent, false)
+
+        binding.mediaMetaBackground.setBackgroundColor(
+            ColorUtils.setAlphaComponent(
+                DynamicTheme.getInstance().get().backgroundColor, 220
+            )
         )
+
+        return binding
     }
 
     private val mediaFormats by lazy {
@@ -48,7 +51,9 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
     override fun onBind(page: Page, holder: Holder, element: Element<AiringMediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-        holder.itemView.apply {
+        val binding = holder.getBinding()?:return
+
+        binding.apply {
             airingMediaSimpleDrawee.setImageURI(item.coverImage?.image(context))
             mediaRatingTv.text = item.averageScore?.toString().naText()
             airingMediaTitleTv.text = item.title?.title(context)
@@ -66,7 +71,7 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
                 }).postEvent
             }
 
-            setOnClickListener {
+            root.setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(
                         item.mediaId,
@@ -79,7 +84,7 @@ class DiscoverAiringPresenter(context: Context) : Presenter<AiringMediaModel>(co
                 ).postEvent
             }
 
-            setOnLongClickListener {
+            root.setOnLongClickListener {
                 if (context.loggedIn()) {
                     ListEditorEvent(
                         ListEditorMeta(

@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:textSize="16sp"
-        app:ads_colorType="tint_surface"
-        app:fontFamily="@font/berlinrounded_extra_bold"
+        app:fontFamily="@font/cabin_bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,7 +24,7 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:src="@drawable/ic_add"
-        app:ads_colorType="tint_surface"
+        app:ads_colorType="text_primary"
         android:background="?selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="@id/tagTitleTv"
         app:layout_constraintHorizontal_bias="1"
@@ -40,7 +39,7 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:src="@drawable/ic_delete"
-        app:ads_colorType="tint_surface"
+        app:ads_colorType="text_primary"
         android:background="?selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="@id/tagTitleTv"
         app:layout_constraintRight_toLeftOf="@+id/refreshTagIv"
@@ -53,7 +52,7 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:src="@drawable/ic_rewatching"
-        app:ads_colorType="tint_surface"
+        app:ads_colorType="text_primary"
         android:background="?selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="@id/tagTitleTv"
         app:layout_constraintRight_toRightOf="parent"
@@ -90,6 +89,7 @@
             android:text="@string/add"
             android:textAllCaps="false"
             app:ads_colorType="accent"
+            app:ads_contrastWithColorType="background"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
