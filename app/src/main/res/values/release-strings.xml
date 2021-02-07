@@ -3,6 +3,30 @@
     <string name="release_info" translatable="false">
         ## Whats new!!!. \n
 
+        ### -v1.1.8 \n
+        * Moved all screen to front. \n
+        * Added Watching and Planning Airing Schedule Filtering\n
+        * Weekly Airing Schedule in Home Screen.\n
+        * Added Weekly filtering with header inside Airing Schedule\n
+        * Added Filtering with multiple Formats.\n
+        * Persistent Filtering in List.\n
+        * Added Radio Section.\n
+        * Added card description in home screen (Can be disabled)\n
+        * Add sorting and disabling of different screen of home screen.\n
+        * Fixed bug with decimal format scoring.\n
+        * Some RTL ui issue fixed.\n
+        * AniList profile color sync after login.\n
+        * Notification setting synced with AniList. \n
+        * Added AniList List Setting. \n
+        * Added AniList Media Setting. \n
+        * Bug fixes and opt. \n
+        * etc.\n
+
+
+
+
+
+
         ### -v1.1.7 \n
         * Added cardview inside anime/manga list \n
         * Added user list status indicator in media. \n
