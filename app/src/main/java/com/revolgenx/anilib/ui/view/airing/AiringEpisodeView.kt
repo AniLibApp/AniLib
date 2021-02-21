@@ -13,6 +13,7 @@ import com.revolgenx.anilib.data.model.airing.AiringTimeModel
 import com.revolgenx.anilib.util.CommonTimer
 import com.revolgenx.anilib.util.TimerCallback
 import com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+import com.revolgenx.anilib.util.dp
 
 class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet?, attstyle: Int) :
     DynamicLinearLayout(context, attributeSet, attstyle), TimerCallback {
@@ -57,38 +58,38 @@ class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet
 
     private val daysHeader by lazy {
         makeDynamicHeaderLayout(context, attributeSet).also {
-            it.title = context.getString(R.string.day)
-            it.subtitle = 0.toString()
+            it.title = 0.toString()
+            it.subtitle = context.getString(R.string.day)
         }
     }
 
     private val hourHeader by lazy {
         makeDynamicHeaderLayout(context, attributeSet).also {
-            it.title = context.getString(R.string.hour)
-            it.subtitle = 0.toString()
+            it.title = 0.toString()
+            it.subtitle = context.getString(R.string.hour)
         }
     }
 
     private val minHeader by lazy {
         makeDynamicHeaderLayout(context, attributeSet).also {
-            it.title = context.getString(R.string.min)
-            it.subtitle = 0.toString()
+            it.title = 0.toString()
+            it.subtitle = context.getString(R.string.min)
         }
     }
 
     private val secHeader by lazy {
         makeDynamicHeaderLayout(context, attributeSet).also {
-            it.title = context.getString(R.string.sec)
-            it.subtitle = 0.toString()
+            it.title = 0.toString()
+            it.subtitle = context.getString(R.string.sec)
         }
     }
 
     private fun updateViews() {
         commonTimer?.timeUntilAiringModel?.apply {
-            daysHeader.subtitle = day.toString()
-            hourHeader.subtitle = hour.toString()
-            minHeader.subtitle = min.toString()
-            secHeader.subtitle = sec.toString()
+            daysHeader.title = day.toString()
+            hourHeader.title = hour.toString()
+            minHeader.title = min.toString()
+            secHeader.title = sec.toString()
         }
     }
 
@@ -97,12 +98,14 @@ class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet
         DynamicTextView(context, attributeSet).also { tv ->
             tv.layoutParams =
                 LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).also { params ->
-                    params.weight = 1f
                     params.gravity = Gravity.CENTER
+                    params.marginEnd = dp(6f)
                 }
             tv.textSize = 14f
+            tv.isAllCaps = true
             tv.gravity = View.TEXT_ALIGNMENT_CENTER
-            tv.colorType = Theme.ColorType.TINT_ACCENT
+            tv.colorType = Theme.ColorType.ACCENT
+            tv.contrastWithColorType = Theme.ColorType.BACKGROUND
         }
 
 
@@ -113,9 +116,12 @@ class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet
         ).also { header ->
             header.layoutParams =
                 LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).also { params ->
-                    params.weight = 1f
                     params.gravity = Gravity.CENTER
                 }
+            (header.titleView as DynamicTextView).isRtlSupport = false
+            header.titleView.textAlignment = TEXT_ALIGNMENT_CENTER
+            header.titleView.textSize = 12f
+            header.subtitleView.textSize = 12f
             header.isFillSpace = true
         }
 

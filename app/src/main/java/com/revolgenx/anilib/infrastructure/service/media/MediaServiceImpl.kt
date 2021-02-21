@@ -2,9 +2,11 @@ package com.revolgenx.anilib.infrastructure.service.media
 
 import com.revolgenx.anilib.data.field.media.MediaField
 import com.revolgenx.anilib.data.model.CommonMediaModel
+import com.revolgenx.anilib.data.model.MediaStaffModel
 import com.revolgenx.anilib.data.model.home.SelectableCommonMediaModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
+import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -42,7 +44,16 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Page()?.media()?.map {
-                    it.fragments().narrowMediaContent().getCommonMedia(SelectableCommonMediaModel())
+                    it.fragments().narrowMediaContent().getCommonMedia(SelectableCommonMediaModel()).also { model->
+                        model.studios = it.studios()?.edges()?.map { it.node()!!.fragments().studioInfo().toModel() }
+                        model.staff = it.staff()?.edges()?.map {
+                                it.node()!!.let { staff ->
+                                    MediaStaffModel().also {
+                                        it.name = staff.name()!!.full()
+                                    }
+                                }
+                            }
+                    }
                 }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicTextTabLayout
+    <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
         android:id="@+id/user_stats_tab_layout"
         style="@style/DynamicTextTabLayoutStyle.Background"
         app:tabTextAppearance="@style/SubTabTextAppearance" />

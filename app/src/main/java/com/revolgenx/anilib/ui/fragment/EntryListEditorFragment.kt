@@ -27,12 +27,13 @@ import com.revolgenx.anilib.databinding.ListEditorFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
+import com.revolgenx.anilib.ui.bottomsheet.airing.CalendarViewBottomSheetDialog
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.COLLAPSED
 import com.revolgenx.anilib.util.EXPANDED
 import com.revolgenx.anilib.ui.viewmodel.entry.MediaEntryEditorViewModel
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.time.LocalDate
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -408,42 +409,46 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
 
         startDateDynamicEt.setOnClickListener {
-            val datePickerDialog = DatePickerDialog.newInstance(
-                { _, year, month, dayOfMonth ->
+            CalendarViewBottomSheetDialog().show(requireContext()) {
+                selectionMode= CalendarViewBottomSheetDialog.SelectionMode.DATE
+                selectedDate = LocalDate.of(
+                apiModelEntry.startDate?.year ?: calendar.get(Calendar.YEAR),
+                apiModelEntry.startDate?.month ?: calendar.get(Calendar.MONTH) + 1,
+                apiModelEntry.startDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
+                )
+                listener = {startDate, _ ->
                     apiModelEntry.startDate =
                         (apiModelEntry.startDate ?: DateModel()).also {
-                            it.year = year
-                            it.month = month + 1
-                            it.day = dayOfMonth
+                            it.year = startDate.year
+                            it.month = startDate.month.value
+                            it.day = startDate.dayOfMonth
                         }
                     updateMediaProgressDate()
-                },
-                apiModelEntry.startDate?.year ?: calendar.get(Calendar.YEAR),
-                apiModelEntry.startDate?.month?.minus(1) ?: calendar.get(Calendar.MONTH),
-                apiModelEntry.startDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
-            )
+                }
+            }
 
-            datePickerDialog.accentColor = DynamicTheme.getInstance().get().accentColor
-            datePickerDialog.show(childFragmentManager, DatePickerDialogTag)
         }
 
         endDateDynamicEt.setOnClickListener {
-            val datePickerDialog = DatePickerDialog.newInstance(
-                { _, year, month, dayOfMonth ->
+
+            CalendarViewBottomSheetDialog().show(requireContext()) {
+                selectionMode= CalendarViewBottomSheetDialog.SelectionMode.DATE
+
+                selectedDate = LocalDate.of(
+                    apiModelEntry.endDate?.year ?: calendar.get(Calendar.YEAR),
+                    apiModelEntry.endDate?.month ?: calendar.get(Calendar.MONTH) + 1,
+                    apiModelEntry.endDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
+                )
+                listener = {startDate, _ ->
                     apiModelEntry.endDate =
                         (apiModelEntry.endDate ?: DateModel()).also {
-                            it.year = year
-                            it.month = month + 1
-                            it.day = dayOfMonth
+                            it.year = startDate.year
+                            it.month = startDate.month.value
+                            it.day = startDate.dayOfMonth
                         }
                     updateMediaProgressDate()
-                },
-                apiModelEntry.endDate?.year ?: calendar.get(Calendar.YEAR),
-                apiModelEntry.endDate?.month?.minus(1) ?: calendar.get(Calendar.MONTH),
-                apiModelEntry.endDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
-            )
-            datePickerDialog.accentColor = DynamicTheme.getInstance().get().accentColor
-            datePickerDialog.show(childFragmentManager, DatePickerDialogTag)
+                }
+            }
         }
 
         statusSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

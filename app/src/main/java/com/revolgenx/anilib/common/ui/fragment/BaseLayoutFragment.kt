@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment(){
+abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment() {
     protected open var titleRes: Int? = null
     protected open var setHomeAsUp = false
 

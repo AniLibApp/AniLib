@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.isHomeOrderEnabled
@@ -20,7 +21,7 @@ import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverReviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverReviewFragment : DiscoverNewFragment() {
-    private lateinit var discoverReviewRecyclerView: DynamicRecyclerView
+    private lateinit var discoverReviewRecyclerView: RecyclerView
     private val viewModel by viewModel<DiscoverReviewViewModel>()
     private val presenter
         get() = ReviewPresenter(requireContext())
@@ -42,7 +43,7 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
         }
-        discoverReviewRecyclerView = DynamicRecyclerView(requireContext()).also {
+        discoverReviewRecyclerView = RecyclerView(requireContext()).also {
             it.layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 dp(600f)

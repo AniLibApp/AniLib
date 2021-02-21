@@ -17,7 +17,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.presenter.home.discover.MediaListCollectionPresenter
 import com.revolgenx.anilib.ui.view.makeToast
-import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListCollectionViewModel
+import com.revolgenx.anilib.ui.viewmodel.list.MediaListCollectionViewModel
 import com.revolgenx.anilib.util.naText
 
 object MinimalHolderBinding {

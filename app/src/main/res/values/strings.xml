@@ -80,6 +80,8 @@
     <string name="romaji_title">Romaji</string>
     <string name="description">Description</string>
     <string name="episode_format_s">E: %1$s · %2$s</string>
+    <string name="episode_duration_s">%1$s Ep · %2$s min</string>
+    <string name="chapters_volumes_s">%1$s Chap · %2$s Vol</string>
     <string name="too_many_request">Too many request</string>
     <string name="recommendations">Recommendation</string>
     <string name="chapter_format_s">C: %1$s · %2$s</string>
@@ -493,6 +495,12 @@
     <string name="load_bio">Load Bio</string>
     <string name="load_bio_desc">Load user bio when going to user screen.</string>
     <string name="load_user_bio">Automatically load user Bio</string>
+    <string name="failed_to_load_list_count">Failed to load list count.</string>
 
+    <string name="status_with_count_format">%1$s (%2$d)</string>
+    <string name="add_to_list">Add to list</string>
+    <string name="episode_airing_date">E: %1$s · %2$s</string>
+    <string name="load_legacy_media_browser_desc">Load simple header with banner image, cover image and media title when browsing media.</string>
+    <string name="load_legacy_media_browser">Load Legacy Media Browser Header</string>
 
 </resources>

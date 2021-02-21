@@ -6,6 +6,7 @@ import com.revolgenx.anilib.data.model.airing.AiringTimeModel
 import com.revolgenx.anilib.data.model.airing.TimeUntilAiringModel
 import com.revolgenx.anilib.data.model.entry.AdvancedScore
 import com.revolgenx.anilib.data.model.entry.MediaEntryListModel
+import com.revolgenx.anilib.data.model.list.MediaListCountModel
 import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
 import com.revolgenx.anilib.data.model.setting.MediaListOptionTypeModel
 import com.revolgenx.anilib.data.model.setting.MediaOptionModel
@@ -183,14 +184,8 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
                 trailer.thumbnail = it.thumbnail()
             }
         }
-        it.studios = studios()?.edges()?.pmap {
-            MediaStudioModel().also { studio ->
-                it.node()?.let { node ->
-                    studio.studioName = node.name()
-                    studio.isAnimationStudio = node.isAnimationStudio
-                    studio.studioId = node.id()
-                }
-            }
+        it.studios = studios()!!.edges()!!.map {
+            it.node()!!.fragments().studioInfo().toModel()
         }
     }
 }
@@ -209,15 +204,17 @@ fun UserMediaOptions.toModel() = MediaOptionModel(
     titleLanguage()!!.ordinal,
     displayAdultContent()!!,
     airingNotifications()!!,
-    profileColor())
+    profileColor()
+)
 
 fun UserMediaListOptions.toModel() = MediaListOptionModel().also {
     it.rowOrder = getRowOrder(rowOrder()!!)
     it.scoreFormat = scoreFormat()!!.ordinal
     it.animeList = animeList()?.let {
-        MediaListOptionTypeModel().also { optionModel->
+        MediaListOptionTypeModel().also { optionModel ->
             optionModel.advancedScoringEnabled = it.advancedScoringEnabled()!!
-            optionModel.advancedScoring = it.advancedScoring()?.map { AdvancedScore(it, 0.0) }?.toMutableList()
+            optionModel.advancedScoring =
+                it.advancedScoring()?.map { AdvancedScore(it, 0.0) }?.toMutableList()
         }
     }
 }
@@ -227,3 +224,11 @@ fun MediaTitle.toModel() = TitleModel(english(), romaji(), native_(), userPrefer
 fun MediaCoverImage.toModel() = CoverImageModel(medium(), large(), extraLarge())
 
 fun FuzzyDate.toModel() = DateModel(year(), month(), day())
+
+fun UserListCount.toModel() = MediaListCountModel(count(), status()!!.ordinal)
+
+fun StudioInfo.toModel() = MediaStudioModel().also { studio ->
+    studio.studioName = name()
+    studio.isAnimationStudio = isAnimationStudio
+    studio.studioId = id()
+}

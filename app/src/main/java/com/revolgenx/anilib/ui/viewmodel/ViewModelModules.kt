@@ -13,7 +13,7 @@ import com.revolgenx.anilib.ui.viewmodel.home.season.SeasonViewModel
 import com.revolgenx.anilib.ui.viewmodel.home.discover.*
 import com.revolgenx.anilib.ui.viewmodel.home.list.MediaListContainerViewModel
 import com.revolgenx.anilib.ui.viewmodel.media.*
-import com.revolgenx.anilib.ui.viewmodel.media_list.*
+import com.revolgenx.anilib.ui.viewmodel.list.*
 import com.revolgenx.anilib.ui.viewmodel.notification.NotificationSettingViewModel
 import com.revolgenx.anilib.ui.viewmodel.notification.NotificationViewModel
 import com.revolgenx.anilib.ui.viewmodel.review.AllReviewViewModel
@@ -100,6 +100,8 @@ val viewModelModules = module {
         )
     }
 
+    viewModel { ListContainerViewModel(get(),get()) }
+
     //userprofile
     viewModel { UserProfileViewModel(get()) }
     viewModel { UserFollowerViewModel(get()) }
@@ -128,6 +130,7 @@ val viewModelModules = module {
     viewModel { DiscoverReviewViewModel(get()) }
     viewModel { DiscoverWatchingViewModel(get(), get()) }
     viewModel { DiscoverReadingViewModel(get(), get()) }
+    viewModel { ShowCaseViewModel(get()) }
 
     //review
     viewModel { ReviewComposerViewModel(get()) }

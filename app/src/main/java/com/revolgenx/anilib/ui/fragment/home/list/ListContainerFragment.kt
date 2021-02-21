@@ -3,32 +3,52 @@ package com.revolgenx.anilib.ui.fragment.home.list
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.pranavpandey.android.dynamic.support.popup.DynamicArrayPopup
-import com.pranavpandey.android.dynamic.support.popup.DynamicPopup
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
+import com.revolgenx.anilib.common.preference.recentAnimeListStatus
+import com.revolgenx.anilib.common.preference.recentMangaListStatus
 import com.revolgenx.anilib.common.preference.setMediaListGridPresenter
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.data.model.list.MediaListCountTypeModel
 import com.revolgenx.anilib.databinding.ListContainerFragmentBinding
 import com.revolgenx.anilib.infrastructure.event.*
+import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.bottomsheet.list.MediaListFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
+import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.ui.viewmodel.list.ListContainerViewModel
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>(), EventBusListener {
 
     private lateinit var adapter: FragmentPagerAdapter
 
     private var currentItem: Int? = null
+
+    private val currentListPage get() = binding.listViewPager.currentItem
+
+    private val animeListStatus by lazy {
+        requireContext().resources.getStringArray(R.array.anime_list_status)
+    }
+
+    private val animeListStatusWithCount = mutableMapOf<Int, String>()
+    private val mangaListStatusWithCount = mutableMapOf<Int, String>()
+
+    private val mangaListStatus by lazy {
+        requireContext().resources.getStringArray(R.array.manga_list_status)
+    }
+
+    private val viewModel by viewModel<ListContainerViewModel>()
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -48,7 +68,7 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
     private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
-            binding.setCurrentStatusFab()
+            binding.updateFabText()
         }
     }
 
@@ -64,7 +84,15 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
 
     @Subscribe()
     fun onEvent(event: MediaListCollectionFilterEvent) {
-        binding.getCurrentListFragment().filterList(event.meta)
+        ListEvent.ListFilterChangedEvent(currentListPage, event.meta).postEvent
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!visibleToUser) {
+            visibleToUser = true
+            viewModel.getListStatusCount()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -78,7 +106,6 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
 
             listViewPager.adapter = adapter
 
-
             initListener()
 
             currentItem?.let {
@@ -86,18 +113,68 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
                 currentItem = null
             }
 
-            listViewPager.post {
-                setCurrentStatusFab()
-                binding.listExtendedFab.isAllowExtended = true
-                binding.listExtendedFab.isExtended = true
-            }
+            prepareListStatusString(null)
+            updateFabText()
+            listExtendedFab.isAllowExtended = true
+            listExtendedFab.isExtended = true
 
+
+
+            viewModel.listCountLiveData.observe(viewLifecycleOwner) {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        val data = it.data!!
+                        prepareListStatusString(data)
+                        updateFabText()
+                    }
+                    Status.ERROR -> {
+                        makeToast(R.string.failed_to_load_list_count)
+                    }
+                    Status.LOADING -> {
+                    }
+                }
+            }
         }
     }
 
-    private fun ListContainerFragmentBinding.setCurrentStatusFab() {
-        binding.listExtendedFab.text =
-            listContainerFragments[listViewPager.currentItem].getStatusName()
+    private fun ListContainerFragmentBinding.initFabListener() {
+        listExtendedFab.setOnLongClickListener {
+            MediaListFilterBottomSheetFragment().show(requireContext(), currentListPage) {
+            }
+            true
+        }
+
+        listExtendedFab.setOnClickListener {
+            makeArrayPopupMenu(
+                it,
+                getCurrentListStatus(),
+                selectedPosition = getRecentListStatus()
+            ) { _, _, position, _ ->
+                updateCurrentListStatus(position)
+                updateFabText()
+                sendListStatusChangedEvent(position)
+            }
+        }
+    }
+
+    private fun sendListStatusChangedEvent(position: Int) {
+        ListEvent.ListStatusChangedEvent(currentListPage, position).postEvent
+    }
+
+    private fun getCurrentListStatus(): Array<String> {
+        return if (currentListPage == 0) {
+            animeListStatusWithCount.values.toTypedArray()
+        } else {
+            mangaListStatusWithCount.values.toTypedArray()
+        }
+    }
+
+    private fun updateCurrentListStatus(currentStatus: Int) {
+        if (currentListPage == 0) {
+            recentAnimeListStatus(requireContext(), currentStatus)
+        } else {
+            recentMangaListStatus(requireContext(), currentStatus)
+        }
     }
 
     private fun ListContainerFragmentBinding.initListener() {
@@ -105,27 +182,10 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         listTabLayout.setupWithViewPager(listViewPager)
 
         listSearchIv.setOnClickListener {
-            getCurrentListFragment().showSearchET()
+            ListEvent.ListSearchEvent(currentListPage).postEvent
         }
 
-        listExtendedFab.setOnClickListener {
-            DynamicArrayPopup(
-                it,
-                getCurrentListFragment().getStatus()
-            ) { _, _, position, _ ->
-                getCurrentListFragment().setCurrentStatus(position)
-                setCurrentStatusFab()
-            }.let { popup ->
-                popup.viewType = DynamicPopup.Type.LIST
-                popup.build().show()
-            }
-        }
-
-        listExtendedFab.setOnLongClickListener {
-            MediaListFilterBottomSheetFragment().show(requireContext(), listViewPager.currentItem) {
-            }
-            true
-        }
+        initFabListener();
 
         listNotificationIv.setOnClickListener {
             BrowseNotificationEvent().postEvent
@@ -146,7 +206,7 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
                 1 -> {
                     MediaListFilterBottomSheetFragment().show(
                         requireContext(),
-                        listViewPager.currentItem
+                        currentListPage
                     ) {
                     }
                 }
@@ -156,9 +216,53 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
 
     }
 
-    private fun ListContainerFragmentBinding.getCurrentListFragment(): MediaListContainerFragment {
-        return listContainerFragments[listViewPager.currentItem]
+    private fun getViewPagerFragment(pos: Int) =
+        childFragmentManager.findFragmentByTag("android:switcher:${R.id.list_view_pager}:$pos") as? MediaListContainerFragment
+
+
+    private fun ListContainerFragmentBinding.updateFabText() {
+        val status = if (currentListPage == 0) {
+            val recentStatus = recentAnimeListStatus(requireContext())
+            animeListStatusWithCount[recentStatus]
+        } else {
+            val recentStatus = recentMangaListStatus(requireContext())
+            mangaListStatusWithCount[recentStatus]
+        }
+        listExtendedFab.text = status
     }
+
+    private fun prepareListStatusString(listStatusCountModel: List<MediaListCountTypeModel>?) {
+
+        val statusWithCountFormat = getString(R.string.status_with_count_format)
+
+        animeListStatus.forEachIndexed { i, post ->
+            animeListStatusWithCount[i] =
+                statusWithCountFormat.format(post, 0)
+        }
+        mangaListStatus.forEachIndexed { i, post ->
+            mangaListStatusWithCount[i] =
+                statusWithCountFormat.format(post, 0)
+        }
+
+        val animeListStatusCountModel =
+            listStatusCountModel?.firstOrNull { it.type == MediaType.ANIME.ordinal }
+
+        val mangaListStatusCountModel =
+            listStatusCountModel?.firstOrNull { it.type == MediaType.MANGA.ordinal }
+
+        animeListStatusCountModel?.mediaListCountModels?.forEach {
+            animeListStatusWithCount[it.status] = statusWithCountFormat.format(animeListStatus[it.status], it.count)
+        }
+
+        mangaListStatusCountModel?.mediaListCountModels?.forEach {
+            mangaListStatusWithCount[it.status] = statusWithCountFormat.format(mangaListStatus[it.status], it.count)
+        }
+    }
+
+    private fun getRecentListStatus() =
+        if (currentListPage == 0) recentAnimeListStatus(requireContext()) else recentMangaListStatus(
+            requireContext()
+        )
 
     @Subscribe(sticky = true)
     fun getToListPage(event: ChangeViewPagerPageEvent) {

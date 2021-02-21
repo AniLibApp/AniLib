@@ -6,6 +6,10 @@ import com.revolgenx.anilib.common.preference.getTrendingField
 import com.revolgenx.anilib.common.preference.storeTrendingField
 
 class TrendingMediaField : MediaField() {
+
+    override var includeStaff: Boolean = true
+    override var includeStudio: Boolean = true
+
     companion object {
         fun create(context: Context) = getTrendingField(context)
     }

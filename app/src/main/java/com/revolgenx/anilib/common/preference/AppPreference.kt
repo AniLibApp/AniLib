@@ -14,6 +14,8 @@ const val showCaseLayoutKey = "pref_display_card_in_home"
 private const val showAdsKey = "show_ads_key"
 private const val loadBioByDefault = "load_bio_by_default"
 
+private const val loadLegacyMediaBrowseHeader = "load_legacy_media_browse_header"
+
 
 fun isCrashReportEnabled(context: Context): Boolean {
     return context.getBoolean(crashReportKey, true)
@@ -50,3 +52,5 @@ fun disableAds(disableAds: Boolean){
 }
 
 fun loadBioByDefault() = DynamicPreferences.getInstance().load(loadBioByDefault, false)
+
+fun loadLegacyMediaBrowseTheme() = DynamicPreferences.getInstance().load(loadLegacyMediaBrowseHeader, false)

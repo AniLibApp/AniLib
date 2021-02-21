@@ -3,7 +3,7 @@ package com.revolgenx.anilib.ui.viewmodel.home.list
 import com.revolgenx.anilib.data.field.list.MediaListCollectionField
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.ui.viewmodel.BaseViewModel
-import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListCollectionViewModel
+import com.revolgenx.anilib.ui.viewmodel.list.MediaListCollectionViewModel
 
 class MediaListContainerViewModel(val listStatusViewModel: Map<Int, MediaListCollectionViewModel>) :
     BaseViewModel() {

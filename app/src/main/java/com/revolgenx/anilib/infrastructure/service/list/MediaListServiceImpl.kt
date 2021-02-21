@@ -2,15 +2,19 @@ package com.revolgenx.anilib.infrastructure.service.list
 
 import com.revolgenx.anilib.data.field.list.MediaListCollectionField
 import com.revolgenx.anilib.data.field.list.MediaListCollectionIdsField
+import com.revolgenx.anilib.data.field.list.MediaListCountField
 import com.revolgenx.anilib.data.field.list.MediaListField
 import com.revolgenx.anilib.data.model.CoverImageModel
 import com.revolgenx.anilib.data.model.TitleModel
+import com.revolgenx.anilib.data.model.list.MediaListCountModel
+import com.revolgenx.anilib.data.model.list.MediaListCountTypeModel
 import com.revolgenx.anilib.data.model.list.MediaListModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.type.MediaType
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -138,6 +142,52 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
+        compositeDisposable.add(disposable)
+    }
+
+
+    override fun getMediaListCount(
+        field: MediaListCountField,
+        compositeDisposable: CompositeDisposable,
+        callback: (Resource<List<MediaListCountTypeModel>>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map {
+
+                val mediaListCountTypeModels = mutableListOf<MediaListCountTypeModel>()
+                it.data()?.User()?.statistics()?.let {
+                    it.anime()?.let {
+                        val listCountModels = mutableListOf<MediaListCountModel>()
+                        it.statuses()?.forEach {
+                            listCountModels.add(it.fragments().userListCount().toModel())
+                        }
+                        mediaListCountTypeModels.add(
+                            MediaListCountTypeModel(
+                                MediaType.ANIME.ordinal,
+                                listCountModels
+                            )
+                        )
+                    }
+                    it.manga()?.let {
+                        val listCountModels = mutableListOf<MediaListCountModel>()
+                        it.statuses()?.forEach {
+                            listCountModels.add(it.fragments().userListCount().toModel())
+                        }
+                        mediaListCountTypeModels.add(
+                            MediaListCountTypeModel(
+                                MediaType.MANGA.ordinal,
+                                listCountModels
+                            )
+                        )
+                    }
+                    mediaListCountTypeModels
+                }
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(it))
+            }, {
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
         compositeDisposable.add(disposable)
     }
 }

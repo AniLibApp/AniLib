@@ -278,8 +278,8 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                         data?.studios()?.nodes()?.map { map ->
                             map.fragments().studioContent().let {
                                 StudioFavouriteModel().also { model ->
-                                    model.studioId = it.id()
-                                    model.studioName = it.name()
+                                    model.studioId = it.fragments().studioInfo().id()
+                                    model.studioName = it.fragments().studioInfo().name()
                                     model.studioMedia =
                                         it.media()?.nodes()
                                             ?.filter {if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }

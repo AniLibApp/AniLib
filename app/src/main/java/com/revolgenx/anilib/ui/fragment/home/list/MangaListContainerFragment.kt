@@ -1,9 +1,15 @@
 package com.revolgenx.anilib.ui.fragment.home.list
 
-import com.revolgenx.anilib.R
+import android.os.Bundle
+import com.revolgenx.anilib.common.preference.recentAnimeListStatus
+import com.revolgenx.anilib.common.preference.recentMangaListStatus
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.data.meta.MediaListMeta
+import com.revolgenx.anilib.infrastructure.event.ListEvent
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.util.unRegisterForEvent
+import org.greenrobot.eventbus.Subscribe
 
 class MangaListContainerFragment : MediaListContainerFragment() {
 
@@ -13,15 +19,47 @@ class MangaListContainerFragment : MediaListContainerFragment() {
         MediaType.MANGA.ordinal
     )
 
-    private val mangaListStatus by lazy {
-        requireContext().resources.getStringArray(R.array.manga_list_status)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if(savedInstanceState == null){
+            val listStatus = recentMangaListStatus(requireContext())
+            setCurrentStatus(listStatus)
+        }
     }
 
-    override fun getStatusName(): String {
-        return mangaListStatus[getCurrentStatus()]
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
     }
 
-    override fun getStatus(): Array<out String>{
-        return mangaListStatus
+    override fun onStop() {
+        super.onStop()
+        unRegisterForEvent()
     }
+
+    @Subscribe
+    fun onListEvent(event: ListEvent) {
+        when (event) {
+            is ListEvent.ListStatusChangedEvent -> {
+                if (isMangaType(event.listType)) {
+                    setCurrentStatus(event.status)
+                }
+            }
+
+            is ListEvent.ListFilterChangedEvent -> {
+                if (isMangaType(event.listType)) {
+                    filterList(event.meta)
+                }
+            }
+
+            is ListEvent.ListSearchEvent -> {
+                if(isMangaType(event.listType)) {
+                    showSearchET()
+                }
+            }
+        }
+    }
+
+    private fun isMangaType(listType: Int) = listType == MediaType.MANGA.ordinal
+
 }

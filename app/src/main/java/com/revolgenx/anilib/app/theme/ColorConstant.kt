@@ -8,12 +8,17 @@ val dynamicTheme get() = DynamicTheme.getInstance().get()
 val contrastAccentWithBg get() =
     DynamicColorUtils.getContrastColor(dynamicAccentColor, dynamicTheme.backgroundColor)
 
+val contrastAccentWithPrimary get() =
+    DynamicColorUtils.getContrastColor(dynamicAccentColor, dynamicTheme.primaryColor)
+
 val contrastPrimaryTextColorWithAccent
     get() = DynamicColorUtils.getContrastColor(
         dynamicTextColorPrimary, dynamicAccentColor
     )
 
+val dynamicBackgroundColor get() = dynamicTheme.backgroundColor
 val dynamicTextColorPrimary get() = dynamicTheme.textPrimaryColor
 val dynamicTextColorPrimaryInverse get() = dynamicTheme.textPrimaryColorInverse
 val dynamicPrimaryColor get() = dynamicTheme.primaryColor
 val dynamicAccentColor get() = dynamicTheme.accentColor
+val dynamicTintPrimaryColor get() = dynamicTheme.tintPrimaryColor

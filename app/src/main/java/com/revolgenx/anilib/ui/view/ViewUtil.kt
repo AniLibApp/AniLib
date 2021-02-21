@@ -1,26 +1,38 @@
 package com.revolgenx.anilib.ui.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
+import android.provider.Settings
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.popup.DynamicArrayPopup
 import com.pranavpandey.android.dynamic.support.popup.DynamicPopup
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.toasts.internal.ToastCompat
+import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
+import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.BaseDynamicActivity
 import com.revolgenx.anilib.databinding.DynamicToastViewLayoutBinding
 
 private val tintSurface by lazy {
@@ -113,3 +125,48 @@ fun makeSpinnerAdapter(context: Context, items: List<DynamicSpinnerItem>) =
         R.id.ads_spinner_item_icon,
         R.id.ads_spinner_item_text, items
     )
+
+
+fun DynamicSystemActivity.makeStatusBarTransparent() {
+    window.apply {
+        clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        this@makeStatusBarTransparent.statusBarColor = DynamicColorUtils.setAlpha(this@makeStatusBarTransparent.statusBarColor, 0)
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.P)
+fun Activity.makeFullScreenActivity() {
+    is29 {
+        isGestureNavigationEnabled(contentResolver){
+            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+            window.attributes.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        }
+    }
+}
+
+fun RecyclerView.makeFullScreenRecyclerView(contentResolver: ContentResolver){
+    is29 {
+        isGestureNavigationEnabled(contentResolver){
+            setOnApplyWindowInsetsListener { v, insets ->
+                val bottomPadding = insets.systemWindowInsetBottom
+                setPadding(0, 0, 0, bottomPadding)
+                insets.consumeSystemWindowInsets()
+            }
+        }
+    }
+}
+
+inline fun is29(func:()->Unit){
+    if(DynamicSdkUtils.is29()){
+        func()
+    }
+}
+
+inline fun isGestureNavigationEnabled(contentResolver: ContentResolver, func:()->Unit){
+    if(Settings.Secure.getInt(contentResolver, "navigation_mode", 0) == 2){
+        func()
+    }
+}

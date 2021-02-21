@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.util
 
+import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
+
 val colorsMap by lazy {
     mapOf(
         "amazon" to "#ff9b00",
@@ -42,3 +44,5 @@ val colorsMap by lazy {
         "youtube" to "#e50914"
     )
 }
+
+fun isEnoughWhite(color:Int) = DynamicColorUtils.getColorDarkness(color) <= 0.2

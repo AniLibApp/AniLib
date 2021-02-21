@@ -35,12 +35,15 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
         return DiscoverContainerFragmentBinding.inflate(inflater, parent, false)
     }
 
+
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         binding.initListener()
 
         binding.discoverNotificationIv.visibility = if(requireContext().loggedIn()) View.VISIBLE else View.GONE
+
 
         adapter = makePagerAdapter(
             discoverFragments,
@@ -51,6 +54,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
         binding.discoverMainTabLayout.setupWithViewPager(binding.discoverContainerViewPager)
 
     }
+
 
     private fun DiscoverContainerFragmentBinding.initListener(){
         discoverSearchIv.setOnClickListener {

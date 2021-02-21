@@ -30,7 +30,7 @@ import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.presenter.Constant.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
-import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListViewModel
+import com.revolgenx.anilib.ui.viewmodel.list.MediaListViewModel
 
 class MediaListPresenter(
     context: Context,

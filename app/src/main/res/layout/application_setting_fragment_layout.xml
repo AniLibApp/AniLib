@@ -92,6 +92,14 @@
             app:ads_key="pref_display_card_in_home"
             app:ads_title="@string/display_home_screen_cards" />
 
+        <com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_description="@string/load_legacy_media_browser_desc"
+            app:ads_icon="@drawable/ic_legacy_theme"
+            app:ads_key="load_legacy_media_browse_header"
+            app:ads_title="@string/load_legacy_media_browser" />
+
         <include layout="@layout/divider_layout" />
 
         <com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference

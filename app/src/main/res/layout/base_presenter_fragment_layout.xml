@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     app:ads_colorType="accent_dark">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/base_presenter_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout>
 

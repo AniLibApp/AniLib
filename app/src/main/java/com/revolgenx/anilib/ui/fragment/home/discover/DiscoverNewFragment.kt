@@ -19,6 +19,7 @@ import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.ui.bottomsheet.discover.MediaFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.showcase.DiscoverMediaShowcaseLayout
 import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverNewViewModel
+import com.revolgenx.anilib.ui.viewmodel.home.discover.ShowCaseViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverNewFragment : DiscoverPopularFragment() {
@@ -26,10 +27,11 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
     private var discoverNewShowCaseLayout: DiscoverMediaShowcaseLayout? = null
 
     private val viewModel by viewModel<DiscoverNewViewModel>()
+    private val showCaseViewModel by viewModel<ShowCaseViewModel>()
 
     private val presenter
         get() = MediaPresenter(requireContext()) { mod ->
-            discoverNewShowCaseLayout?.bindShowCaseMedia(mod)
+            discoverNewShowCaseLayout?.bindShowCaseMedia(mod, viewLifecycleOwner, showCaseViewModel)
         }
 
     private val source: DiscoverMediaSource

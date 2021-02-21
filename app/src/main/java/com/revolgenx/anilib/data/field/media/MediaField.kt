@@ -18,6 +18,8 @@ open class MediaField : BaseSourceField<MediaQuery>() {
     var mediaIdsIn: List<Int>? = null
 
     var formatsIn: MutableList<Int>? = null
+    open var includeStaff = false
+    open var includeStudio = false
 
     override fun toQueryOrMutation(): MediaQuery {
         return MediaQuery.builder()
@@ -58,6 +60,9 @@ open class MediaField : BaseSourceField<MediaQuery>() {
                 if (!canShowAdult) {
                     isAdult(false)
                 }
+
+                includeStaff(includeStaff)
+                includeStudio(includeStudio)
             }
             .build()
     }

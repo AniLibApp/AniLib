@@ -57,13 +57,13 @@
                     android:textSize="18sp"
                     app:ads_rtlSupport="false"
                     app:fontFamily="@font/cabin_bold"
-                    app:layout_constraintBottom_toTopOf="@id/media_add_stroke_layout"
+                    app:layout_constraintBottom_toTopOf="@id/media_add_layout"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/listEditorCoverImage" />
 
                 <com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout
-                    android:id="@+id/media_add_stroke_layout"
+                    android:id="@+id/media_add_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"

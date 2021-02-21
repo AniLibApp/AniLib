@@ -17,7 +17,7 @@ import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.databinding.*
 import com.revolgenx.anilib.ui.presenter.Constant.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.ui.presenter.list.binding.*
-import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListCollectionViewModel
+import com.revolgenx.anilib.ui.viewmodel.list.MediaListCollectionViewModel
 
 class MediaListCollectionPresenter(
     context: Context,
