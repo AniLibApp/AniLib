@@ -8,6 +8,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.style.ClickableSpan
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
@@ -129,21 +131,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                 }
             }
 
-        binding.metaLinkRecyclerView.layoutManager =
-            GridLayoutManager(
-                this.context,
-                span
-            ).also {
-                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (metaLinkAdapter?.getItemViewType(position) == 0) {
-                            1
-                        } else {
-                            span
-                        }
-                    }
-                }
-            }
+        binding.metaLinkRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
 
         binding.recommendationRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
@@ -274,8 +262,6 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     ).also { params ->
-                        params.marginEnd = dp(2f)
-                        params.marginStart = dp(2f)
                         params.bottomMargin = dp(20f)
                     }
                     it.useCompatPadding = true
@@ -285,11 +271,10 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                             requireContext()
                         ).also { ae ->
                         ae.layoutParams = FrameLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT
                         ).also { params ->
-                            params.marginStart = dp(30f)
-                            params.marginEnd = dp(10f)
+                            params.gravity = Gravity.CENTER
                         }
                         ae.setTimer(atModel)
                     })

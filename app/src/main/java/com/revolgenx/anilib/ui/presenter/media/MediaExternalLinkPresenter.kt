@@ -6,14 +6,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
+import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.model.MediaExternalLinkModel
 import com.revolgenx.anilib.databinding.ExternalLinkPresenterBinding
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.util.colorsMap
+import com.revolgenx.anilib.util.copyToClipBoard
+import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.openLink
 
-class MediaExternalLinkPresenter(context: Context) : BasePresenter<ExternalLinkPresenterBinding, MediaExternalLinkModel>(context) {
+class MediaExternalLinkPresenter(context: Context) :
+    BasePresenter<ExternalLinkPresenterBinding, MediaExternalLinkModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -22,7 +26,7 @@ class MediaExternalLinkPresenter(context: Context) : BasePresenter<ExternalLinkP
         parent: ViewGroup?,
         elementType: Int
     ): ExternalLinkPresenterBinding {
-        return ExternalLinkPresenterBinding.inflate(inflater, parent,false)
+        return ExternalLinkPresenterBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<MediaExternalLinkModel>) {
@@ -30,14 +34,12 @@ class MediaExternalLinkPresenter(context: Context) : BasePresenter<ExternalLinkP
         val item = element.data ?: return
         holder.getBinding()?.apply {
             mediaExternalLinkTv.text = item.site
-
             item.site?.toLowerCase()?.let { st ->
                 val drawable = when (st) {
                     "twitter" ->
                         R.drawable.ic_twitter
                     "funimation" ->
                         R.drawable.ic_funimation
-
                     "crunchyroll" ->
                         R.drawable.ic_crunchyroll_logo
                     "animelab" ->
@@ -47,7 +49,7 @@ class MediaExternalLinkPresenter(context: Context) : BasePresenter<ExternalLinkP
                     "youtube" ->
                         R.drawable.ic_youtube
                     else ->
-                        R.drawable.ic_link
+                        0
 
                 }
 
@@ -57,13 +59,24 @@ class MediaExternalLinkPresenter(context: Context) : BasePresenter<ExternalLinkP
                     0,
                     0
                 )
-            }
+                externalLinkWrapper.setOnClickListener {
+                    context.openLink(item.url)
+                }
 
-            mediaExternalLinkTv.setOnClickListener {
-                context.openLink(item.url)
-            }
-            colorsMap[item.site?.toLowerCase()]?.let {
-                mediaExternalLinkTv.color = Color.parseColor(it)
+                externalLinkWrapper.setOnLongClickListener {
+                    context.copyToClipBoard(item.url)
+                    true
+                }
+
+                st.toLowerCase().let {
+                    colorsMap[it]?.let {
+                        val linkColor = Color.parseColor(it)
+                        externalLinkWrapper.color = linkColor
+                    }?:let {
+                        externalLinkWrapper.color = Color.BLACK
+                    }
+                }
+
             }
         }
     }

@@ -10,7 +10,9 @@ query MediaQuery($page: Int
     , $tag_in:[String]
     , $sort: [MediaSort]
     , $idIn: [Int]
-    , $isAdult:Boolean) {
+    , $isAdult:Boolean
+    , $includeStudio:Boolean = false
+    , $includeStaff:Boolean = false) {
     Page(page: $page, perPage: $perPage) {
         media(seasonYear: $seasonYear
             , season: $season
@@ -25,6 +27,28 @@ query MediaQuery($page: Int
             , isAdult:$isAdult) {
             ... on Media{
                 ... narrowMediaContent
+
+                studios @include(if:$includeStudio){
+                    edges{
+                        node{
+                            ... on Studio{
+                                ... studioInfo
+                            }
+                        }
+                    }
+                }
+                staff(sort:[ROLE_DESC])  @include(if:$includeStaff){
+                    edges{
+                        role
+                        node{
+                            id
+                            name{
+                                full
+                            }
+
+                        }
+                    }
+                }
             }
         }
     }
@@ -201,7 +225,24 @@ query BrowseSimpleMediaQuery($mediaId:Int){
         mediaListEntry{
             status
         }
+
+        popularity
+        favourites
         bannerImage
+        format
+        episodes
+        chapters
+        type
+        season
+        seasonYear
+        duration
+        volumes
+
+        nextAiringEpisode{
+            id
+            airingAt
+            episode
+        }
     }
 }
 
@@ -281,9 +322,9 @@ query MediaOverViewQuery($mediaId:Int){
         studios{
             edges{
                 node{
-                    id
-                    name
-                    isAnimationStudio
+                    ... on Studio{
+                        ... studioInfo
+                    }
                 }
             }
         }
@@ -793,6 +834,26 @@ query UserFavouriteQuery($page:Int, $perPage:Int, $id:Int, $name:String,
                     ... on Studio{
                         ... studioContent
                     }
+                }
+            }
+        }
+    }
+}
+
+query UserListCountQuery(
+    $userId:Int
+){
+    User(id:$userId)
+    {
+        statistics{
+            anime{
+                statuses{
+                    ... userListCount
+                }
+            }
+            manga{
+                statuses{
+                    ... userListCount
                 }
             }
         }
@@ -1645,6 +1706,7 @@ fragment narrowMediaContent on Media{
         status
         progress
     }
+
 }
 
 
@@ -1692,11 +1754,14 @@ fragment commonMediaContent on Media{
     }
 }
 
-
-fragment studioContent on Studio{
+fragment studioInfo on Studio{
     id
     name
     isAnimationStudio
+}
+
+fragment studioContent on Studio{
+    ... studioInfo
     media(page:1, perPage:8, sort:[POPULARITY_DESC]){
         nodes{
             ... commonMediaContent
@@ -1790,6 +1855,13 @@ fragment userMediaListOptions on MediaListOptions{
         advancedScoringEnabled
         advancedScoring
     }
+}
+
+
+
+fragment userListCount on UserStatusStatistic {
+    count
+    status
 }
 
 

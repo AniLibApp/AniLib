@@ -12,5 +12,4 @@ class MediaOverviewModel : CommonMediaModel() {
     var externalLink: List<MediaExternalLinkModel>? = null /*empty */
     var tags: List<MediaTagsModel>? = null
     var trailer: MediaTrailerModel? = null       /*can be null*/
-    var studios: List<MediaStudioModel>? = null        /*empty in manga*/
 }

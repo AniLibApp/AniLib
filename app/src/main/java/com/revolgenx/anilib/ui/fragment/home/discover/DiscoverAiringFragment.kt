@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
@@ -32,7 +33,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     private val source: AiringSource
         get() = viewModel.source ?: viewModel.createSource()
 
-    private var discoverAiringRecyclerView: DynamicRecyclerView? = null
+    private var discoverAiringRecyclerView: RecyclerView? = null
     private val viewModel by viewModel<DiscoverAiringViewModel>()
 
 

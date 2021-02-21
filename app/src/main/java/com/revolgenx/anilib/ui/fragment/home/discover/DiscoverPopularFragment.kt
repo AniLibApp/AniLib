@@ -19,6 +19,7 @@ import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.ui.bottomsheet.discover.MediaFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.showcase.DiscoverMediaShowcaseLayout
 import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverPopularViewModel
+import com.revolgenx.anilib.ui.viewmodel.home.discover.ShowCaseViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverPopularFragment : DiscoverTrendingFragment() {
@@ -27,17 +28,17 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
 
     private val presenter
         get() = MediaPresenter(requireContext()) { mod ->
-            popularShowCaseLayout?.bindShowCaseMedia(mod)
+            popularShowCaseLayout?.bindShowCaseMedia(mod, viewLifecycleOwner, showCaseViewModel)
         }
 
     private val source: DiscoverMediaSource
         get() = viewModel.source ?: viewModel.createSource()
 
     private val viewModel by viewModel<DiscoverPopularViewModel>()
+    private val showCaseViewModel by viewModel<ShowCaseViewModel>()
 
     private val order: Int
         get() = getHomeOrderFromType(requireContext(), HomeOrderType.POPULAR)
-
 
     private val isSectionEnabled: Boolean
         get() = isHomeOrderEnabled(requireContext(), HomeOrderType.POPULAR)

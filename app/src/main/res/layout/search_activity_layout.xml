@@ -8,14 +8,18 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/advanceSearchCoordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:outlineProvider="none"
-            app:elevation="0dp">
+            app:elevation="0dp"
+            app:ads_color="@android:color/transparent"
+            app:ads_backgroundAware="disable"
+            app:ads_contrastWithColorType="none"
+            app:ads_windowInsets="false"
+            android:fitsSystemWindows="false">
 
             <com.paulrybitskyi.persistentsearchview.PersistentSearchView
                 android:id="@+id/persistentSearchView"
@@ -27,9 +31,11 @@
                 app:isVoiceInputButtonEnabled="false"
                 app:queryInputHint="@string/search"
                 app:shouldDimBehind="false"
-                app:layout_scrollFlags="enterAlways|scroll"/>
+                app:layout_scrollFlags="enterAlways|scroll"
+                app:cardElevation="0dp"
+                android:fitsSystemWindows="true" />
 
-        </com.google.android.material.appbar.AppBarLayout>
+        </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:id="@+id/browseFragmentContainer"
@@ -46,7 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:fitsSystemWindows="true"
         android:theme="@style/Widget.DynamicApp.NavigationView.ThemeOverlay" />
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicDrawerLayout>

@@ -5,6 +5,8 @@ import com.github.mikephil.charting.data.Entry
 import com.revolgenx.anilib.BrowseSimpleMediaQuery
 import com.revolgenx.anilib.data.field.media.*
 import com.revolgenx.anilib.data.model.*
+import com.revolgenx.anilib.data.model.airing.AiringAtModel
+import com.revolgenx.anilib.data.model.airing.AiringTimeModel
 import com.revolgenx.anilib.data.model.user.stats.*
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toMediaOverviewModel
@@ -16,6 +18,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
     MediaBrowseService(graphRepository) {
@@ -38,6 +43,29 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                         model.coverImage = it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
                         model.mediaListStatus = it.mediaListEntry()?.status()?.ordinal
                         model.bannerImage = it.bannerImage() ?: model.coverImage?.largeImage
+                        model.popularity = it.popularity()
+                        model.favourites = it.favourites()
+                        model.episodes = it.episodes()?.toString()
+                        model.duration = it.duration()?.toString()
+                        model.chapters = it.chapters()?.toString()
+                        model.volumes = it.volumes()?.toString()
+                        model.type = it.type()?.ordinal
+                        model.format = it.format()?.ordinal
+                        model.season = it.season()?.ordinal
+                        model.seasonYear = it.seasonYear()
+
+                        it.nextAiringEpisode()?.let {
+                            model.airingTimeModel = AiringTimeModel().also {timeModel->
+                                timeModel.airingAt = AiringAtModel(
+                                    LocalDateTime.ofInstant(
+                                        Instant.ofEpochSecond(
+                                            it.airingAt().toLong()
+                                        ), ZoneOffset.systemDefault()
+                                    )
+                                )
+                                timeModel.episode = it.episode()
+                            }
+                        }
                     }
                 }
             }.observeOn(AndroidSchedulers.mainThread())

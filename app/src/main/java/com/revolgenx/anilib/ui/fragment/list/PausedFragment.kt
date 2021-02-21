@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.ui.fragment.list
 
 import com.revolgenx.anilib.type.MediaListStatus
-import com.revolgenx.anilib.ui.viewmodel.media_list.PausedViewModel
+import com.revolgenx.anilib.ui.viewmodel.list.PausedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PausedFragment  : MediaListFragment() {

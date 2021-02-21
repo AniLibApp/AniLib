@@ -76,8 +76,8 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                         data.Page()?.studios()?.map { map ->
                             map.fragments().studioContent().let {
                                 StudioSearchModel().also { model ->
-                                    model.studioId = it.id()
-                                    model.studioName = it.name()
+                                    model.studioId = it.fragments().studioInfo().id()
+                                    model.studioName = it.fragments().studioInfo().name()
                                     model.studioMedia =
                                         it.media()?.nodes()
                                             ?.filter {

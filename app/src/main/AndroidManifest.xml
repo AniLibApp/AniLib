@@ -30,7 +30,9 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTask" />
 
-        <activity android:name=".activity.MediaBrowseActivity">
+        <activity android:name=".activity.MediaBrowseActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -52,7 +54,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.ContainerActivity" />
+        <activity android:name=".activity.ContainerActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity android:name="net.openid.appauth.RedirectUriReceiverActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -65,10 +69,18 @@
                     android:scheme="callback" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ViewPagerContainerActivity" />
-        <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.MediaListActivity" />
-        <activity android:name=".activity.UserProfileActivity" >
+        <activity android:name=".activity.ViewPagerContainerActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity android:name=".activity.SearchActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity android:name=".activity.MediaListActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity android:name=".activity.UserProfileActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -89,10 +101,15 @@
             android:name=".activity.SimpleDraweeViewerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop" />
-        <activity android:name=".activity.NavViewPagerContainerActivity" />
-        <activity android:name=".activity.ToolbarContainerActivity" />
-        <activity android:name=".activity.AboutActivity" />
-        <activity android:name=".activity.NotificationActivity" />
+        <activity android:name=".activity.NavViewPagerContainerActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity android:name=".activity.ToolbarContainerActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".activity.AboutActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activity.NotificationActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <service android:name=".radio.service.RadioService">
             <intent-filter>

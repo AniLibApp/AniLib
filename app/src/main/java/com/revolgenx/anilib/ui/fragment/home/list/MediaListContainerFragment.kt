@@ -13,6 +13,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
+import com.pranavpandey.android.dynamic.support.popup.DynamicArrayPopup
+import com.pranavpandey.android.dynamic.support.popup.DynamicPopup
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.common.preference.loadMediaListFilter
@@ -23,6 +25,7 @@ import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.data.meta.MediaListFilterMeta
 import com.revolgenx.anilib.data.model.list.MediaListModel
+import com.revolgenx.anilib.databinding.BasePresenterFragmentLayoutBinding
 import com.revolgenx.anilib.databinding.MediaListContainerFragmentBinding
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
@@ -34,9 +37,7 @@ import com.revolgenx.anilib.util.unRegisterForEvent
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel>(),
-    MediaListCallbackInterface, EventBusListener {
-
+abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel>(), EventBusListener {
 
     override val basePresenter: Presenter<MediaListModel>
         get() = MediaListCollectionPresenter(
@@ -49,10 +50,11 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
 
     private val viewModel by viewModel<MediaListContainerViewModel>()
     private var _mediaListBinding: MediaListContainerFragmentBinding? = null
-    private val mediaListBinding get() = _mediaListBinding!!
+    protected val mediaListBinding get() = _mediaListBinding!!
 
     override var gridMaxSpan: Int = 4
     override var gridMinSpan: Int = 2
+
 
     private val mediaListMeta: MediaListMeta by lazy {
         mediaListMetaArgs()
@@ -69,11 +71,7 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
 
     protected abstract fun mediaListMetaArgs(): MediaListMeta
 
-    protected fun getCurrentStatus(): Int {
-        return viewModel.currentListStatus
-    }
-
-    override fun setCurrentStatus(status: Int) {
+    fun setCurrentStatus(status: Int) {
         viewModel.mediaListViewModel.field.filter.search = null
         showSearchET(false)
         viewModel.currentListStatus = status
@@ -227,7 +225,6 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
             true
         }
 
-
         if (savedInstanceState == null) {
             with(viewModel.mediaListField) {
                 userId = mediaListMeta.userId
@@ -256,7 +253,7 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
         super.onDestroyView()
     }
 
-    override fun filterList(mediaListFilterMeta: MediaListFilterMeta) {
+    fun filterList(mediaListFilterMeta: MediaListFilterMeta) {
         val mediaListFilterField = MediaListCollectionFilterField(
             formatsIn = mediaListFilterMeta.formatsIn,
             status = mediaListFilterMeta.status,
@@ -273,12 +270,13 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
             invalidateAdapter()
         }
     }
+
 }
 
-interface MediaListCallbackInterface {
-    fun getStatusName(): String
-    fun getStatus(): Array<out String>
-    fun setCurrentStatus(status: Int)
-    fun filterList(mediaListFilterMeta: MediaListFilterMeta)
-}
+//interface MediaListCallbackInterface {
+//    fun getStatusName(): String
+//    fun getStatus(): Array<out String>
+//    fun setCurrentStatus(status: Int)
+//    fun filterList(mediaListFilterMeta: MediaListFilterMeta)
+//}
 

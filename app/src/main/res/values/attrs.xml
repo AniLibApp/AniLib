@@ -13,13 +13,6 @@
     <item name="garlandConstraintLayout" type="id" />
     <item name="garlandLinearLayout" type="id" />
     <item name="gralandFrameContainer" type="id" />
-    <item name="showCaseCardView" type="id" />
-    <item name="showCaseImageView" type="id" />
-    <item name="showCaseTitleView" type="id" />
-    <item name="showCaseDescriptionView" type="id" />
-    <item name="showCaseFavouriteTv" type="id" />
-    <item name="showCasePopularTv" type="id" />
-    <item name="showCaseConstraintLayout" type="id" />
     <item name="kaoMojiTv" type="id" />
     <item name="home_navigation_menu" type="id" />
     <item name="list_navigation_menu" type="id" />
@@ -111,7 +104,7 @@
         <attr name="entries" />
     </declare-styleable>
 
-    <declare-styleable name="DynamicTextTabLayout">
+    <declare-styleable name="AniLibTextTabLayout">
         <attr name="entries" />
     </declare-styleable>
 

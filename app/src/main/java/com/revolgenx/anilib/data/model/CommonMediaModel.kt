@@ -29,4 +29,6 @@ open class CommonMediaModel() : BaseModel() {
     var popularity:Int? = null
     var favourites:Int? = null
     var mediaEntryListModel: MediaEntryListModel? = null
+    var studios: List<MediaStudioModel>? = null        /*empty in manga*/
+    var staff:List<MediaStaffModel>? = null
 }

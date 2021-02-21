@@ -41,6 +41,7 @@ class ContainerActivity : BaseDynamicActivity<ContainerActivityBinding>() {
 
         if (savedInstanceState == null) {
             val transaction = supportFragmentManager.beginTransaction()
+            @Suppress("UNCHECKED_CAST")
             transaction.replace(R.id.fragmentContainer, (parcel.clzz as Class<BaseFragment>).newInstance().apply {
                 this.arguments = parcel.bundle
             }).commitNow()

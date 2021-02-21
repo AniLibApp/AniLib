@@ -37,6 +37,8 @@
     <color name="rated_color">#F7BF63</color>
     <color name="tag_color">#12000000</color>
     <color name="window_background_light">#F1F1F1</color>
+    <color name="discover_card_translucent_dark">#80000000</color>
+    <color name="discover_card_translucent">#00000000</color>
 
     <string-array name="bar_color">
         <item>#ff8a65</item>

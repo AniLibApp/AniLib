@@ -254,7 +254,6 @@ class CalendarViewBottomSheetDialog :
         }
         monthsRecyclerView.adapter = monthAdapter
 
-        val scrollable = calendarMode != CalendarMode.MONTH
         monthLayoutManger = GridLayoutManager(requireContext(), 2)
         monthsRecyclerView.layoutManager = monthLayoutManger
 

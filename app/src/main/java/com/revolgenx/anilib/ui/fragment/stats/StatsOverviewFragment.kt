@@ -437,7 +437,7 @@ class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBind
         }
 
 
-        releaseYearToggleSwitch?.let {
+        releaseYearToggleSwitch.let {
             it.themeIt()
             it.setEntries(
                 if (userStatsMeta.type == MediaType.ANIME.ordinal)

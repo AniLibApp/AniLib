@@ -25,6 +25,8 @@ private const val canShowAdultKey = "can_show_adult_key"
 private const val lastNotificationKey = "last_notification_key"
 private const val sharedPrefSyncKey = "sharedPrefSyncKey"
 private const val updateProfileColorKey = "updateProfileColorKey"
+private const val recentAnimeListStatusKey = "recentAnimeListStatusKey"
+private const val recentMangaListStatusKey = "recentMangaListStatusKey"
 
 
 fun Context.loggedIn() = getBoolean(loggedInKey, false)
@@ -222,6 +224,21 @@ fun storeMediaListOptions(context: Context, model: MediaListOptionModel?) {
 fun getStoredMediaListOptions(context: Context): MediaListOptionModel {
     return getUserPrefModel(context).mediaListOption!!
 }
+
+
+fun recentAnimeListStatus(context: Context, value: Int) {
+    context.putInt(recentAnimeListStatusKey, value)
+}
+
+fun recentMangaListStatus(context: Context, value: Int) {
+    context.putInt(recentMangaListStatusKey, value)
+}
+
+fun recentAnimeListStatus(context: Context) =
+    context.getInt(recentAnimeListStatusKey, 0)
+
+
+fun recentMangaListStatus(context: Context) = context.getInt(recentMangaListStatusKey, 0)
 
 
 

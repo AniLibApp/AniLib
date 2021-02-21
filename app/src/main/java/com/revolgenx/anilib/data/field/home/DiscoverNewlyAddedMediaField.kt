@@ -10,6 +10,9 @@ class NewlyAddedMediaField : MediaField() {
         fun create(context: Context) = getNewlyAddedField(context)
     }
 
+    override var includeStaff: Boolean = true
+    override var includeStudio: Boolean = true
+
     fun saveNewlyAddedField(context: Context) {
         storeNewlyAddedField(context, this)
     }

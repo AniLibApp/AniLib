@@ -24,6 +24,7 @@ import com.revolgenx.anilib.ui.fragment.studio.StudioFragment
 import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.ui.fragment.settings.SettingFragment
+import com.revolgenx.anilib.ui.view.makeStatusBarTransparent
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.registerForEvent
@@ -70,7 +71,7 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
         setContentView(binding.root)
         rootLayout = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
         rootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-        statusBarColor = statusBarColor
+        makeStatusBarTransparent()
     }
 
 
@@ -99,11 +100,14 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
                 })
             }
             is ListEditorEvent -> {
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this,
-                    event.sharedElement,
-                    ViewCompat.getTransitionName(event.sharedElement) ?: ""
-                )
+                var options:ActivityOptionsCompat? = null
+                if(event.sharedElement != null){
+                    options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this,
+                        event.sharedElement!!,
+                        ViewCompat.getTransitionName(event.sharedElement!!) ?: ""
+                    )
+                }
                 ContainerActivity.openActivity(
                     this,
                     ParcelableFragment(

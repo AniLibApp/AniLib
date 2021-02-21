@@ -10,6 +10,9 @@ class PopularMediaField: MediaField() {
         fun create(context: Context) = getPopularField(context)
     }
 
+    override var includeStaff: Boolean = true
+    override var includeStudio: Boolean = true
+
     fun savePopularField(context: Context) {
         storePopularField(context, this)
     }

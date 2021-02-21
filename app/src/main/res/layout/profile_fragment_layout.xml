@@ -4,18 +4,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/user_info_container_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp">
+        android:fitsSystemWindows="true"
+        app:ads_backgroundAware="disable"
+        app:ads_colorType="primary"
+        app:ads_contrastWithColorType="none"
+        app:ads_windowInsets="false"
+        app:elevation="1dp">
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout
             android:id="@+id/user_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:ads_windowInsets="false"
             app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
             app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
@@ -23,6 +31,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
                 app:layout_collapseMode="none">
 
                 <com.facebook.drawee.view.SimpleDraweeView
@@ -184,11 +193,11 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
                 android:id="@+id/profile_fragment_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
+                android:fitsSystemWindows="false"
                 app:layout_collapseMode="pin" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
@@ -201,7 +210,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-        <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicTextTabLayout
+        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
             android:id="@+id/user_tab_layout"
             style="@style/DynamicTextTabLayoutStyle"
             android:layout_width="match_parent"

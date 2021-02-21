@@ -18,6 +18,7 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.ui.dialog.DiscoverMediaListFilterDialog
@@ -93,14 +94,13 @@ abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutB
         onClick: ((which: Int) -> Unit)?
     ) {
 
-        val garlandLinearLayout = LinearLayout(requireContext()).also {
-            it.id = R.id.garlandConstraintLayout
+        val garlandLinearLayout = DynamicLinearLayout(requireContext()).also {
+            it.id = R.id.garlandLinearLayout
             it.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             it.orientation = LinearLayout.VERTICAL
-            it.clipChildren = false
         }
 
 
@@ -123,7 +123,7 @@ abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutB
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
             it.textSize = 16f
-            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.cabin_semi_bold)
+            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)
             it.setDrawables(
                 icon,
                 R.drawable.ic_angle_right
@@ -218,7 +218,6 @@ abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutB
 
         garlandLinearLayout.addView(topGarlandLayout)
         garlandLinearLayout.addView(discoverChildView)
-
 
 
         garlandTextView.text = title

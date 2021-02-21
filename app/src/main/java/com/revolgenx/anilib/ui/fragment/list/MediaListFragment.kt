@@ -17,7 +17,7 @@ import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.ui.presenter.home.discover.MediaListCollectionPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
-import com.revolgenx.anilib.ui.viewmodel.media_list.MediaListCollectionViewModel
+import com.revolgenx.anilib.ui.viewmodel.list.MediaListCollectionViewModel
 import com.revolgenx.anilib.util.EventBusListener
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

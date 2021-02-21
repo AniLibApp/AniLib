@@ -1,9 +1,14 @@
 package com.revolgenx.anilib.ui.fragment.home.list
 
-import com.revolgenx.anilib.R
+import android.os.Bundle
+import com.revolgenx.anilib.common.preference.recentAnimeListStatus
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.data.meta.MediaListMeta
+import com.revolgenx.anilib.infrastructure.event.ListEvent
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.util.unRegisterForEvent
+import org.greenrobot.eventbus.Subscribe
 
 class AnimeListContainerFragment : MediaListContainerFragment(){
 
@@ -13,17 +18,45 @@ class AnimeListContainerFragment : MediaListContainerFragment(){
         MediaType.ANIME.ordinal
     )
 
-
-    private val animeListStatus by lazy {
-        requireContext().resources.getStringArray(R.array.anime_list_status)
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
     }
 
-    override fun getStatusName(): String {
-        return animeListStatus[getCurrentStatus()]
+    override fun onStop() {
+        super.onStop()
+        unRegisterForEvent()
     }
 
-    override fun getStatus(): Array<out String> {
-        return animeListStatus
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        if(savedInstanceState == null){
+            val listStatus = recentAnimeListStatus(requireContext())
+            setCurrentStatus(listStatus)
+        }
     }
 
+    @Subscribe
+    fun onListEvent(event:ListEvent){
+        when(event){
+            is ListEvent.ListStatusChangedEvent -> {
+                if(isAnimeType(event.listType)) {
+                    setCurrentStatus(event.status)
+                }
+            }
+            is ListEvent.ListFilterChangedEvent -> {
+                if(isAnimeType(event.listType)){
+                    filterList(event.meta)
+                }
+            }
+            is ListEvent.ListSearchEvent -> {
+                if(isAnimeType(event.listType)) {
+                    showSearchET()
+                }
+            }
+        }
+    }
+
+    private fun isAnimeType(listType: Int) = listType == MediaType.ANIME.ordinal
 }

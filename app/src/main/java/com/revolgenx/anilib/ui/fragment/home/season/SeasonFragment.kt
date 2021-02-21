@@ -65,7 +65,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
     ): View {
         seasonBinding = SeasonFragmentBinding.inflate(inflater, container, false)
         val v = super.onCreateView(inflater, container, savedInstanceState)
-        seasonBinding.seasonRootLayout.addView(v)
+        seasonBinding.seasonFrameLayout.addView(v)
         return seasonBinding.root
     }
 
@@ -153,12 +153,14 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
     private fun updateToolbarTitle() {
         seasonBinding.apply {
             viewModel.field.let { field ->
+                var toolbarTitle = ""
                 field.season?.let { season ->
-                    seasonNameTv.text = seasons[season]
+                    toolbarTitle += seasons[season]
                 }
                 field.seasonYear?.let {
-                    seasonYearTv.text = it.toString()
+                    toolbarTitle += " $it"
                 }
+                seasonNameTv.text = toolbarTitle
             }
         }
     }

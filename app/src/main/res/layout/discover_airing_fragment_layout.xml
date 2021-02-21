@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clipChildren="false"
     android:orientation="vertical">
 
     <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicDslWeekTabLayout
@@ -15,11 +14,12 @@
         app:tabMode="fixed"
         app:tabTextAppearance="@style/SubTabTextAppearance" />
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/discover_airing_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/discover_recycler_height"
-        android:nestedScrollingEnabled="false" />
+        android:nestedScrollingEnabled="false"
+        android:clipToPadding="false"/>
 
 
 </LinearLayout>

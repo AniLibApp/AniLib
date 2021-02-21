@@ -67,7 +67,6 @@
             android:maxLines="2"
             android:paddingTop="6dp"
             android:textSize="12sp"
-            app:fontFamily="@font/cabin_semi_bold"
             app:layout_constraintBottom_toTopOf="@id/airingGenreLayout"
             app:layout_constraintLeft_toLeftOf="@id/airingMediaCoverFrameLayout"
             app:layout_constraintRight_toRightOf="@id/airingMediaCoverFrameLayout"

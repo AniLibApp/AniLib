@@ -48,7 +48,7 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() {
         val v = super.onCreateView(inflater, container, savedInstanceState)
         _recommendationBinding =
             RecommendationFragmentLayoutBinding.inflate(inflater, container, false)
-        recommendationBinding.recommendationLinearLayout.addView(v)
+        recommendationBinding.recommendationContainerLayout.addView(v)
         return recommendationBinding.root
     }
 

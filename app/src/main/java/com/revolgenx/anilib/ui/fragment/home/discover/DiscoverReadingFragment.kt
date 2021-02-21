@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.view.setMargins
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.ui.dialog.DiscoverMediaListFilterDialog
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaListEvent
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
@@ -30,7 +29,7 @@ import com.revolgenx.anilib.util.dp
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverReadingFragment : DiscoverWatchingFragment() {
-    private var dRecyclerView: DynamicRecyclerView? = null
+    private var dRecyclerView: RecyclerView? = null
 
     private val presenter
         get() = MediaListPresenter(
@@ -57,7 +56,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
         savedInstanceState: Bundle?
     ): View {
         if (requireContext().loggedIn() && isSectionEnabled) {
-            dRecyclerView = DynamicRecyclerView(requireContext()).also {
+            dRecyclerView = RecyclerView(requireContext()).also {
                 it.layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT

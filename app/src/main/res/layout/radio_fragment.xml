@@ -7,19 +7,22 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ads_color="@android:color/transparent"
-        app:ads_colorType="custom"
+        app:ads_colorType="primary"
+        app:ads_backgroundAware="disable"
         app:elevation="0dp">
 
-        <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicTextTabLayout
+        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
             android:id="@+id/list_tab_layout"
             style="@style/DynamicTextTabLayoutStyle"
             android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
             app:ads_backgroundColorType="background"
             app:ads_colorType="accent"
             app:ads_contrastWithColorType="background"
             app:ads_textColorType="tint_primary"
-            app:entries="@array/music_entries" />
+            app:entries="@array/music_entries"
+            app:tabTextAppearance="@style/RadioTabLayoutTextStyle"
+            app:layout_scrollFlags="noScroll"/>
 
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>

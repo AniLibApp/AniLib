@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/show_case_card_view_height"
+    android:layout_marginBottom="16dp">
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/showCaseImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <FrameLayout
+        android:id="@+id/frameBlurLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/show_case_gradient_drawable"
+        android:visibility="gone"/>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.70" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/mediaTitleTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="4dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/cabincondensed_bold"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:ads_colorType="custom"
+        app:layout_constraintBottom_toTopOf="@+id/studioOrWriterTv"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/studioOrWriterTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:textSize="15sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/white"
+        app:ads_colorType="custom"
+        android:includeFontPadding="false"
+        android:fontFamily="@font/cabincondensed_regular"
+        app:layout_constraintBottom_toTopOf="@+id/mediaDescriptionTv"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/mediaDescriptionTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:ads_colorType="custom"
+        app:fontFamily="@font/cabincondensed_medium"
+        app:layout_constraintBottom_toTopOf="@+id/mediaPopularityTv"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="SmallSp" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/mediaPopularIv"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        app:ads_color="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/discoverListStatusLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_popular" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/mediaPopularityTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:ads_colorType="custom"
+        app:fontFamily="@font/cabincondensed_medium"
+        app:layout_constraintBottom_toBottomOf="@+id/mediaPopularIv"
+        app:layout_constraintStart_toEndOf="@+id/mediaPopularIv"
+        app:layout_constraintTop_toTopOf="@+id/mediaPopularIv"
+        tools:ignore="SmallSp" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/mediaFavIv"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginStart="16dp"
+        app:ads_color="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/mediaPopularityTv"
+        app:layout_constraintStart_toEndOf="@+id/mediaPopularityTv"
+        app:layout_constraintTop_toTopOf="@+id/mediaPopularityTv"
+        app:srcCompat="@drawable/ic_favourite" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/mediaFavTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:ads_colorType="custom"
+        app:fontFamily="@font/cabincondensed_regular"
+        app:layout_constraintBottom_toBottomOf="@id/mediaFavIv"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/mediaFavIv"
+        app:layout_constraintTop_toTopOf="@id/mediaFavIv"
+        tools:ignore="SmallSp" />
+
+    <LinearLayout
+        android:id="@+id/discoverListStatusLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/showcase_list_status_background"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/mediaListStatusTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:fontFamily="@font/cabin_regular"
+            app:ads_colorType="custom"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
+            android:id="@+id/showCaseListStatusMoreIv"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            app:ads_color="@color/white"
+            app:tint="@color/white"
+            app:entries="@array/media_list_status"
+            app:srcCompat="@drawable/ads_ic_more_horizontal" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
