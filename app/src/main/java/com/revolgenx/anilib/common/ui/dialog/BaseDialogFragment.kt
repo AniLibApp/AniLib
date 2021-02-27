@@ -1,12 +1,18 @@
 package com.revolgenx.anilib.common.ui.dialog
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.preference.PreferenceFragmentCompat
 import androidx.viewbinding.ViewBinding
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
@@ -28,6 +34,13 @@ abstract class BaseDialogFragment<V : ViewBinding> : DynamicDialogFragment() {
 
     protected open var isAutoDismissEnabled = false
     protected open var dismissOnTouchOutside = true
+
+    protected var positiveButton: Button? = null
+    protected var titleTextView:TextView? = null
+
+    companion object{
+        const val DialogFragmentTag = "DialogFragmentTag"
+    }
 
     private var _binding: V? = null
     val binding get() = _binding!!
@@ -93,7 +106,7 @@ abstract class BaseDialogFragment<V : ViewBinding> : DynamicDialogFragment() {
     }
 
 
-    protected fun provideLayoutInflater() = LayoutInflater.from(requireContext())
+    protected val provideLayoutInflater: LayoutInflater get()= LayoutInflater.from(requireContext())
 
 
     override fun onCustomiseDialog(
@@ -103,9 +116,12 @@ abstract class BaseDialogFragment<V : ViewBinding> : DynamicDialogFragment() {
         with(alertDialog) {
             setOnShowListener {
                 this.setCanceledOnTouchOutside(dismissOnTouchOutside)
-                findViewById<TextView>(com.pranavpandey.android.dynamic.support.R.id.alertTitle)?.typeface =
-                    ResourcesCompat.getFont(requireContext(), R.font.cabin_semi_bold)
+                findViewById<TextView>(com.pranavpandey.android.dynamic.support.R.id.alertTitle)?.let {
+                    titleTextView = it
+                    it.typeface = ResourcesCompat.getFont(requireContext(), R.font.cabin_semi_bold)
+                }
                 getButton(AlertDialog.BUTTON_POSITIVE)?.let {
+                    positiveButton = it
                     (it as DynamicButton).isAllCaps = false
                 }
 
@@ -126,4 +142,18 @@ abstract class BaseDialogFragment<V : ViewBinding> : DynamicDialogFragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
+
+    /** Show the bottom sheet. */
+    fun show(ctx:Context) {
+            when (ctx) {
+                is FragmentActivity -> show(ctx.supportFragmentManager, DialogFragmentTag)
+                is AppCompatActivity -> show(ctx.supportFragmentManager, DialogFragmentTag)
+                is Fragment -> show(ctx.childFragmentManager, DialogFragmentTag)
+                is PreferenceFragmentCompat -> show(ctx.childFragmentManager, DialogFragmentTag)
+                else -> throw IllegalStateException("Context has no window attached.")
+            }
+    }
+
 }

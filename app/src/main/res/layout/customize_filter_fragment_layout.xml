@@ -29,6 +29,16 @@
             app:ads_subtitle="@string/add_remove_genre"
             app:ads_title="@string/genre" />
 
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/add_remove_streaming_on_iv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_watch"
+            app:ads_subtitle="@string/add_remove_genre"
+            app:ads_title="@string/genre" />
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

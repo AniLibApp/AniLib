@@ -300,14 +300,18 @@ class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
     }
 
     override fun onBackPressed() {
-        if (binding.rootDrawerLayout.isDrawerOpen(GravityCompat.END)) {
-            binding.rootDrawerLayout.closeDrawer(GravityCompat.END)
-        } else
-            super.onBackPressed()
+        when {
+            binding.rootDrawerLayout.isDrawerOpen(GravityCompat.END) -> {
+                binding.rootDrawerLayout.closeDrawer(GravityCompat.END)
+            }
+            binding.persistentSearchView.isExpanded -> {
+                binding.persistentSearchView.collapse()
+            }
+            else -> {
+                super.onBackPressed()
+            }
+        }
     }
-
-
-
 
 
     override fun openTagChooserDialog(tags: List<TagField>, tagType: MediaTagFilterTypes) {

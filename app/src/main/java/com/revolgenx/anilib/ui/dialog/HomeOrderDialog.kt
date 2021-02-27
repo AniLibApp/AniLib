@@ -30,7 +30,7 @@ class HomeOrderDialog : BaseDialogFragment<HomeOrderDialogLayoutBinding>() {
     }
 
     override fun bindView(): HomeOrderDialogLayoutBinding {
-        return HomeOrderDialogLayoutBinding.inflate(provideLayoutInflater())
+        return HomeOrderDialogLayoutBinding.inflate(provideLayoutInflater)
     }
 
     private lateinit var adapterPage: HomeOrderRecyclerAdapter

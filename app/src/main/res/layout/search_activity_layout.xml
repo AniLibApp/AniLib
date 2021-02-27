@@ -14,7 +14,6 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
             app:ads_color="@android:color/transparent"
             app:ads_backgroundAware="disable"
             app:ads_contrastWithColorType="none"

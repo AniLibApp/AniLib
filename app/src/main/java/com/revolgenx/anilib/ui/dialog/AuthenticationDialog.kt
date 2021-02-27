@@ -11,6 +11,6 @@ class AuthenticationDialog : BaseDialogFragment<AuthDialogLayoutBinding>() {
     }
 
     override fun bindView(): AuthDialogLayoutBinding {
-        return AuthDialogLayoutBinding.inflate(provideLayoutInflater())
+        return AuthDialogLayoutBinding.inflate(provideLayoutInflater)
     }
 }

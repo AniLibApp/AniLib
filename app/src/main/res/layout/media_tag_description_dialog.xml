@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp">
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35"/>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/titleTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tag_info"
+        android:textSize="15sp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        app:fontFamily="@font/cabin_semi_bold"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/tag_name_header_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/titleTv"
+        app:fontFamily="@font/cabin_medium"
+        android:text="@string/name"
+        android:textSize="14sp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        />
+
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/tag_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tag_name_header_tv"
+        app:layout_constraintBottom_toBottomOf="@+id/tag_name_header_tv"
+        android:textSize="14sp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/tag_category_header_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/tag_name_header_tv"
+        app:fontFamily="@font/cabin_medium"
+        android:text="@string/category"
+        android:textSize="14sp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        />
+
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/tag_category_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tag_category_header_tv"
+        app:layout_constraintBottom_toBottomOf="@+id/tag_category_header_tv"
+        android:textSize="14sp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/tag_rank_header_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/tag_category_header_tv"
+        app:fontFamily="@font/cabin_medium"
+        android:text="@string/rank"
+        android:textSize="14sp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        />
+
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/tag_rank_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tag_rank_header_tv"
+        app:layout_constraintBottom_toBottomOf="@+id/tag_rank_header_tv"
+        android:textSize="14sp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/tag_description_header_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/tag_rank_header_tv"
+        app:fontFamily="@font/cabin_medium"
+        android:text="@string/description"
+        android:textSize="14sp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        />
+
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/tag_description_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tag_description_header_tv"
+        android:textSize="14sp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

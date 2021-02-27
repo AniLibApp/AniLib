@@ -2,9 +2,7 @@ package com.revolgenx.anilib.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
@@ -25,7 +23,6 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewpager.widget.ViewPager
 import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.tabs.TabLayout
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
@@ -45,7 +42,6 @@ import com.revolgenx.anilib.data.model.MediaBrowseModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.databinding.ActivityMediaBrowserBinding
-import com.revolgenx.anilib.databinding.SmartTabLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
@@ -55,7 +51,6 @@ import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.ui.viewmodel.media.MediaBrowserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
-import kotlin.math.round
 
 //todo://handle review
 class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
@@ -76,6 +71,9 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
     }
     private val formats by lazy {
         resources.getStringArray(R.array.media_format)
+    }
+    private val sources by lazy {
+        resources.getStringArray(R.array.media_source)
     }
 
 
@@ -314,11 +312,11 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
     }
 
     private fun ActivityMediaBrowserBinding.updateTheme() {
-        if(loadLegacyMediaBrowseTheme()){
+        if (loadLegacyMediaBrowseTheme()) {
             mediaBrowseContentLayout.visibility = View.GONE
             legacyMediaBrowseContentLayout.visibility = View.VISIBLE
             setToolbarTheme()
-        }else{
+        } else {
             mediaBrowseContentLayout.visibility = View.VISIBLE
             legacyMediaBrowseContentLayout.visibility = View.GONE
             collapsingContentBlur.background = DynamicBackgroundGradientDrawable(
@@ -332,13 +330,13 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
     private fun ActivityMediaBrowserBinding.updateView() {
         supportActionBar!!.title = mediaBrowserMeta.title
 
-        if(loadLegacyMediaBrowseTheme()){
+        if (loadLegacyMediaBrowseTheme()) {
 
             legacyMediaTitleTv.text = mediaBrowserMeta.title
             legacyMediaBrowserCoverImage.setImageURI(mediaBrowserMeta.coverImage)
             legacyMediaBrowserBannerImage.setImageURI(mediaBrowserMeta.bannerImage)
 
-        }else{
+        } else {
 
             mediaTitleTv.text = mediaBrowserMeta.title
             mediaBrowserCoverImage.setImageURI(mediaBrowserMeta.coverImage)
@@ -355,18 +353,6 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
                             ?: "?", model.seasonYear ?: "?")
                 } else {
                     seasonYearTv.visibility = View.GONE
-                }
-                mediaFormatTv.text = model.format?.let { formats[it] } ?: "?"
-                mediaEpisodeDurationTv.text = if (model.type == MediaType.ANIME.ordinal) {
-                    getString(R.string.episode_duration_s).format(
-                        model.episodes.naText(),
-                        model.duration.naText()
-                    )
-                } else {
-                    getString(R.string.chapters_volumes_s).format(
-                        model.chapters.naText(),
-                        model.volumes.naText()
-                    )
                 }
 
                 model.airingTimeModel?.let {
@@ -417,7 +403,7 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
             insets.consumeSystemWindowInsets()
         }
 
-        if(loadLegacyMediaBrowseTheme()){
+        if (loadLegacyMediaBrowseTheme()) {
             legacyMediaAddContainerLayout.setOnClickListener {
                 openListEditor()
             }
@@ -452,7 +438,7 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
                 copyToClipBoard(mediaBrowserMeta.title)
                 true
             }
-        }else{
+        } else {
             mediaAddContainerLayout.setOnClickListener {
                 openListEditor()
             }
@@ -493,23 +479,29 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
 
         /**problem with transition
          * {@link https://github.com/facebook/fresco/issues/1445}*/
-        ActivityCompat.setExitSharedElementCallback(this@MediaBrowseActivity, object : SharedElementCallback() {
-            override fun onSharedElementEnd(
-                sharedElementNames: List<String?>?,
-                sharedElements: List<View>,
-                sharedElementSnapshots: List<View?>?
-            ) {
-                super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots)
-                if (sharedElements.isEmpty()) {
-                    return
-                }
-                for (view in sharedElements) {
-                    if (view is SimpleDraweeView) {
-                        view.drawable.setVisible(true, true)
+        ActivityCompat.setExitSharedElementCallback(
+            this@MediaBrowseActivity,
+            object : SharedElementCallback() {
+                override fun onSharedElementEnd(
+                    sharedElementNames: List<String?>?,
+                    sharedElements: List<View>,
+                    sharedElementSnapshots: List<View?>?
+                ) {
+                    super.onSharedElementEnd(
+                        sharedElementNames,
+                        sharedElements,
+                        sharedElementSnapshots
+                    )
+                    if (sharedElements.isEmpty()) {
+                        return
+                    }
+                    for (view in sharedElements) {
+                        if (view is SimpleDraweeView) {
+                            view.drawable.setVisible(true, true)
+                        }
                     }
                 }
-            }
-        })
+            })
     }
 
     @SuppressLint("RestrictedApi")
@@ -655,7 +647,7 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
         binding.mediaBrowserCollapsingToolbar.setBackgroundColor(
             DynamicTheme.getInstance().get().backgroundColor
         )
-        if(loadLegacyMediaBrowseTheme()){
+        if (loadLegacyMediaBrowseTheme()) {
             binding.mediaBrowserToolbar.colorType = Theme.ColorType.PRIMARY
             binding.mediaBrowserToolbar.textColorType = Theme.ColorType.TINT_PRIMARY
         }

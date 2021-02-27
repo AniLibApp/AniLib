@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         android:theme="@style/Widget.DynamicApp.NavigationView.ThemeOverlay" />
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicDrawerLayout>

@@ -7,10 +7,9 @@ import androidx.core.content.ContextCompat
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.pranavpandey.android.dynamic.utils.DynamicDrawableUtils
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 
 class DynamicDrawableTextView : DynamicTextView {
-
-    private val dynamicTheme get() = DynamicTheme.getInstance().get()
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0)
@@ -21,13 +20,16 @@ class DynamicDrawableTextView : DynamicTextView {
     ) {
     }
 
-    fun setDrawables(@DrawableRes startRes: Int?, @DrawableRes endRes: Int?, color: Int? = null) {
+    fun setDrawables(@DrawableRes startRes: Int?, @DrawableRes endRes: Int?,@DrawableRes topRes:Int? = null, @DrawableRes bottomRes:Int? = null, color: Int? = null) {
+
+        val textPrimary = dynamicTextColorPrimary
+
         val startDrawable = startRes?.let {
             ContextCompat.getDrawable(context, startRes)
                 .also {
                     DynamicDrawableUtils.colorizeDrawable(
                         it,
-                        color ?: dynamicTheme.textPrimaryColor
+                        color ?: textPrimary
                     )
                 }
         }
@@ -37,12 +39,33 @@ class DynamicDrawableTextView : DynamicTextView {
                 .also {
                     DynamicDrawableUtils.colorizeDrawable(
                         it,
-                        color ?: dynamicTheme.textPrimaryColor
+                        color ?: textPrimary
                     )
                 }
         }
 
-        this.setCompoundDrawablesRelativeWithIntrinsicBounds(startDrawable, null, endDrawable, null)
+        val topDrawable = topRes?.let {
+            ContextCompat.getDrawable(context, topRes)
+                .also {
+                    DynamicDrawableUtils.colorizeDrawable(
+                        it,
+                        color ?: textPrimary
+                    )
+                }
+        }
+
+        val bottomDrawable = bottomRes?.let {
+            ContextCompat.getDrawable(context, bottomRes)
+                .also {
+                    DynamicDrawableUtils.colorizeDrawable(
+                        it,
+                        color ?: textPrimary
+                    )
+                }
+        }
+
+
+        this.setCompoundDrawablesRelativeWithIntrinsicBounds(startDrawable, topDrawable, endDrawable, bottomDrawable)
     }
 
 }

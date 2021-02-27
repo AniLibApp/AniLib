@@ -28,19 +28,13 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.constant.*
-import com.revolgenx.anilib.infrastructure.event.BrowseGenreEvent
 import com.revolgenx.anilib.infrastructure.event.BrowseStudioEvent
-import com.revolgenx.anilib.infrastructure.event.BrowseTagEvent
 import com.revolgenx.anilib.data.field.media.MediaOverviewField
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.meta.StudioMeta
-import com.revolgenx.anilib.data.model.MediaMetaCollection
-import com.revolgenx.anilib.data.model.MediaOverviewModel
-import com.revolgenx.anilib.data.model.MediaRelationshipModel
-import com.revolgenx.anilib.data.model.MediaStudioModel
-import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
+import com.revolgenx.anilib.data.model.*
 import com.revolgenx.anilib.databinding.MediaOverviewFragmentBinding
 import com.revolgenx.anilib.ui.presenter.BrowseRelationshipPresenter
 import com.revolgenx.anilib.ui.presenter.media.MediaExternalLinkPresenter
@@ -49,10 +43,13 @@ import com.revolgenx.anilib.ui.presenter.media.MediaRecommendationPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.infrastructure.source.MediaOverviewRecommendationSource
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.adapter.MediaGenreChipAdapter
+import com.revolgenx.anilib.ui.adapter.MediaTagChipAdapter
+import com.revolgenx.anilib.ui.dialog.MediaTagDescriptionDialog
+import com.revolgenx.anilib.ui.presenter.media.MediaOverviewCharacterPresenter
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.ui.view.airing.AiringEpisodeView
-import com.revolgenx.anilib.ui.view.span.SpoilerSpan
 import com.revolgenx.anilib.ui.viewmodel.media.MediaOverviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -65,6 +62,12 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
         get() = viewModel.source ?: createRecommendationSource()
     private val relationshipPresenter by lazy {
         BrowseRelationshipPresenter(requireContext())
+    }
+
+    private val genreChipAdapter = MediaGenreChipAdapter()
+    private val tagsChipAdapter = MediaTagChipAdapter(::onTagInfoClicked)
+    private val characterPresenter by lazy {
+        MediaOverviewCharacterPresenter(requireContext())
     }
 
     private val recommendationPresenter by lazy {
@@ -145,25 +148,35 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
         mediaBrowserMeta =
             arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
         viewModel.field.mediaId = mediaBrowserMeta!!.mediaId
+
+        binding.initView()
+
+
         viewModel.mediaOverviewLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
                 Status.SUCCESS -> {
                     binding.resourceStatusLayout.resourceStatusContainer.visibility = View.GONE
-                    binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
-                    binding.resourceStatusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
+                    binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility =
+                        View.VISIBLE
+                    binding.resourceStatusLayout.resourceErrorLayout.errorLayout.visibility =
+                        View.GONE
                     binding.updateView(res.data!!)
                     invalidateRecommendationAdapter()
                 }
                 Status.ERROR -> {
                     binding.resourceStatusLayout.resourceStatusContainer.visibility = View.VISIBLE
-                    binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
-                    binding.resourceStatusLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
+                    binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility =
+                        View.GONE
+                    binding.resourceStatusLayout.resourceErrorLayout.errorLayout.visibility =
+                        View.VISIBLE
                     invalidateRecommendationAdapter()
                 }
                 Status.LOADING -> {
                     binding.resourceStatusLayout.resourceStatusContainer.visibility = View.VISIBLE
-                    binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
-                    binding.resourceStatusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
+                    binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility =
+                        View.VISIBLE
+                    binding.resourceStatusLayout.resourceErrorLayout.errorLayout.visibility =
+                        View.GONE
                 }
             }
         }
@@ -174,6 +187,23 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             })
         }
 
+    }
+
+    private fun MediaOverviewFragmentBinding.initView() {
+        genreRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
+        mediaTagsRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
+        mediaCharacterRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        genreRecyclerView.adapter = genreChipAdapter
+        mediaTagsRecyclerView.adapter = tagsChipAdapter
+    }
+
+    private fun bindGenre(genres: List<String>?) {
+        genreChipAdapter.submitList(genres)
+    }
+
+    private fun bindTags(tags: List<MediaTagsModel>?) {
+        tagsChipAdapter.submitList(tags)
     }
 
     private fun MediaOverviewFragmentBinding.updateView(overview: MediaOverviewModel) {
@@ -196,8 +226,12 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             englishTitle.visibility = View.GONE
         }
 
-        MarkwonImpl.createHtmlInstance(requireContext())
-            .setMarkdown(mediaDescriptionTv, overview.description ?: "")
+        if (overview.description.isNullOrBlank()) {
+            mediaDescriptionTv.setText(R.string.no_description)
+        } else {
+            MarkwonImpl.createHtmlInstance(requireContext())
+                .setMarkdown(mediaDescriptionTv, overview.description!!)
+        }
 
         mediaFormatTv.subtitle = overview.format?.let {
             requireContext().resources.getStringArray(
@@ -220,6 +254,18 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             mediaDurationTv.title = getString(R.string.volumes)
             mediaDurationTv.subtitle = overview.volumes.naText()
         }
+
+        if (overview.characters.isNullOrEmpty()) {
+            characterHeaderTv.visibility = View.GONE
+            mediaCharacterRecyclerView.visibility = View.GONE
+        } else {
+            Adapter.builder(viewLifecycleOwner)
+                .addSource(Source.fromList(overview.characters!!))
+                .addPresenter(characterPresenter)
+                .addPresenter(emptyPresenter)
+                .into(mediaCharacterRecyclerView)
+        }
+
 
         when (overview.trailer?.site) {
             YOUTUBE -> {
@@ -245,7 +291,8 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                 }
             }
             else -> {
-                let { trailerLayout.visibility = View.GONE }
+                trailerLayout.visibility = View.GONE
+                trailerHeaderTv.visibility = View.GONE
             }
         }
 
@@ -270,18 +317,23 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                         AiringEpisodeView(
                             requireContext()
                         ).also { ae ->
-                        ae.layoutParams = FrameLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT
-                        ).also { params ->
-                            params.gravity = Gravity.CENTER
-                        }
-                        ae.setTimer(atModel)
-                    })
+                            ae.layoutParams = FrameLayout.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            ).also { params ->
+                                params.gravity = Gravity.CENTER
+                            }
+                            ae.setTimer(atModel)
+                        })
                 })
         }
 
-        invalidateRelationshipAdapter(overview.relationship ?: emptyList())
+        if (overview.relationship.isNullOrEmpty()) {
+            relationRecyclerView.visibility = View.GONE
+            relationShipHeaderTv.visibility = View.GONE
+        } else {
+            invalidateRelationshipAdapter(overview.relationship!!)
+        }
 
 
         if (mediaMetaList.isEmpty()) {
@@ -289,6 +341,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                 addToMediaCollection(getString(R.string.romaji_title), it)
             }
 
+            addSynonymsToMetaCollection(overview.synonyms)
             addStudioToMetaCollection(overview.studios?.filter { it.isAnimationStudio })
             addProducerToMetaCollection(overview.studios?.filter { !it.isAnimationStudio })
 
@@ -317,22 +370,16 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                 addToMediaCollection(getString(R.string.favourites), "$it")
             }
 
-            addGenreToMetaCollection(overview)
-            addTagToMetaCollection(overview)
+            bindGenre(overview.genres)
 
+            if (overview.tags.isNullOrEmpty()) {
+                mediaTagsHeaderTv.visibility = View.GONE
+                mediaTagsRecyclerView.visibility = View.GONE
+            } else {
+                bindTags(overview.tags)
+            }
         }
 
-
-        overview.externalLink?.let {
-            metaLinkAdapter = Adapter.builder(viewLifecycleOwner)
-                .addSource(Source.fromList(it))
-                .addPresenter(
-                    MediaExternalLinkPresenter(
-                        requireContext()
-                    )
-                )
-                .into(metaLinkRecyclerView)
-        }
 
         metaContainerAdapter = Adapter.builder(viewLifecycleOwner)
             .addSource(Source.fromList(mediaMetaList))
@@ -342,6 +389,24 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                 )
             )
             .into(metaContainerRecyclerView)
+
+
+        if (overview.externalLink.isNullOrEmpty()) {
+            linkHeaderTv.visibility = View.GONE
+            metaLinkRecyclerView.visibility = View.GONE
+        } else {
+            overview.externalLink?.let {
+                metaLinkAdapter = Adapter.builder(viewLifecycleOwner)
+                    .addSource(Source.fromList(it))
+                    .addPresenter(
+                        MediaExternalLinkPresenter(
+                            requireContext()
+                        )
+                    )
+                    .into(metaLinkRecyclerView)
+            }
+        }
+
 
     }
 
@@ -354,103 +419,13 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
     }
 
 
-    private fun addGenreToMetaCollection(overview: MediaOverviewModel) {
-        if (overview.genres?.isNotEmpty() == true) {
-            val spannableStringBuilder = SpannableStringBuilder()
-            val lastIndex = overview.genres!!.size - 1
-            overview.genres?.forEachIndexed { index, genre ->
-                val current = spannableStringBuilder.length
-                spannableStringBuilder.append(genre.trim())
-                spannableStringBuilder.setSpan(
-                    object : ClickableSpan() {
-                        override fun onClick(widget: View) {
-                            BrowseGenreEvent(MediaSearchFilterModel().also {
-                                it.genre = listOf(genre.trim())
-                            }).postEvent
-                        }
-
-                        override fun updateDrawState(ds: TextPaint) {
-                            super.updateDrawState(ds)
-                            ds.isUnderlineText = true
-                        }
-                    },
-                    current,
-                    spannableStringBuilder.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                if (index < lastIndex)
-                    spannableStringBuilder.append(", ")
-            }
-
+    private fun addSynonymsToMetaCollection(synonyms: List<String>?) {
+        synonyms?.takeIf { it.isNotEmpty() }?.joinToString("\n")?.let { jSynonyms ->
             mediaMetaList.add(MediaMetaCollection().also { col ->
-                col.header = getString(R.string.genre)
-                col.subTitleSpannable = spannableStringBuilder
+                col.header = getString(R.string.synonyms)
+                col.subTitle = jSynonyms
             })
         }
-    }
-
-    private fun addTagToMetaCollection(overview: MediaOverviewModel) {
-        if (overview.tags?.isNotEmpty() == true) {
-            val spannableStringBuilder = SpannableStringBuilder()
-            val spoilerSpans = mutableListOf<SpoilerSpan>()
-            val lastIndex = overview.tags!!.size - 1
-            overview.tags?.forEachIndexed { index, tag ->
-                val current = spannableStringBuilder.length
-                spannableStringBuilder.append(tag.name?.trim())
-                val clickableSpan = if (tag.isSpoilerTag) {
-                    object : SpoilerSpan() {
-                        init {
-                            spoilerSpans.add(this)
-                        }
-
-                        override fun onClick(widget: View) {
-                            if (shown){
-                                BrowseTagEvent(MediaSearchFilterModel().also {
-                                    it.tags = listOf(tag.name!!.trim())
-                                }).postEvent
-                            }
-                            else {
-                                spoilerSpans.forEach { it.shown = true }
-                                widget.invalidate()
-                            }
-                        }
-
-                        override fun updateDrawState(ds: TextPaint) {
-                            super.updateDrawState(ds)
-                            ds.isUnderlineText = true
-                        }
-                    }
-                } else {
-                    object : ClickableSpan() {
-                        override fun onClick(widget: View) {
-                            BrowseTagEvent(MediaSearchFilterModel().also {
-                                it.tags = listOf(tag.name!!.trim())
-                            }).postEvent
-                        }
-
-                        override fun updateDrawState(ds: TextPaint) {
-                            super.updateDrawState(ds)
-                            ds.isUnderlineText = true
-                        }
-                    }
-                }
-
-                spannableStringBuilder.setSpan(
-                    clickableSpan,
-                    current,
-                    spannableStringBuilder.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                if (index < lastIndex)
-                    spannableStringBuilder.append(", ")
-            }
-
-            mediaMetaList.add(MediaMetaCollection().also { col ->
-                col.header = getString(R.string.tags)
-                col.subTitleSpannable = spannableStringBuilder
-            })
-        }
-
     }
 
     private fun addStudioToMetaCollection(studios: List<MediaStudioModel>?) {
@@ -485,6 +460,10 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             col.header = getString(R.string.studios)
             col.subTitleSpannable = spannableStringBuilder
         })
+    }
+
+    private fun onTagInfoClicked(model: MediaTagsModel) {
+        MediaTagDescriptionDialog.newInstance(model).show(requireContext())
     }
 
 
@@ -529,6 +508,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
         Adapter.builder(viewLifecycleOwner)
             .addSource(Source.fromList(list))
             .addPresenter(relationshipPresenter)
+            .addResourceLoader()
             .into(binding.relationRecyclerView)
     }
 
@@ -537,10 +517,15 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             .setPager(PageSizePager(PAGE_SIZE))
             .addSource(recommendationSource)
             .addPresenter(recommendationPresenter)
-            .addPresenter(loadingPresenter)
-            .addPresenter(errorPresenter)
-            .addPresenter(emptyPresenter)
+            .addResourceLoader()
             .into(binding.recommendationRecyclerView)
+    }
+
+    private fun Adapter.Builder.addResourceLoader(): Adapter.Builder {
+        addPresenter(loadingPresenter)
+        addPresenter(errorPresenter)
+        addPresenter(emptyPresenter)
+        return this
     }
 
 

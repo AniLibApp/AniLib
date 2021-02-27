@@ -55,7 +55,7 @@ class UserFollowerDialog : BaseDialogFragment<FollowerDialogLayoutBinding>() {
     }
 
     override fun bindView(): FollowerDialogLayoutBinding {
-        return FollowerDialogLayoutBinding.inflate(provideLayoutInflater())
+        return FollowerDialogLayoutBinding.inflate(provideLayoutInflater)
     }
 
     override fun onCustomiseBuilder(

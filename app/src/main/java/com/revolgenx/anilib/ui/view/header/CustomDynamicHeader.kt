@@ -23,7 +23,7 @@ class CustomDynamicHeader(context: Context, attributeSet: AttributeSet?, defAttS
         try{
             val titleAlignCenter = a.getBoolean(R.styleable.CustomDynamicHeader_titleAlignCenter, false)
             val subtitleAlignCenter = a.getBoolean(R.styleable.CustomDynamicHeader_subtitleAlignCenter, false)
-            val titleTextSize = a.getDimension(R.styleable.CustomDynamicHeader_titleTextSize, sp(13f))
+            val titleTextSize = a.getDimension(R.styleable.CustomDynamicHeader_titleTextSize, sp(14f))
             val subtitleTextSize = a.getDimension(R.styleable.CustomDynamicHeader_subtitleTextSize, sp(13f))
             val copySubtitle = a.getBoolean(R.styleable.CustomDynamicHeader_copySubtitleOnLongClick, false)
 
@@ -55,7 +55,7 @@ class CustomDynamicHeader(context: Context, attributeSet: AttributeSet?, defAttS
           a.recycle()
         }
 
-        titleView.typeface = ResourcesCompat.getFont(context, R.font.cabin_semi_bold)
+        titleView.typeface = ResourcesCompat.getFont(context, R.font.cabin_regular)
         subtitleView.typeface = ResourcesCompat.getFont(context, R.font.cabin_regular)
 
         subtitleView.setTextColor(DynamicTheme.getInstance().get().textPrimaryColor)

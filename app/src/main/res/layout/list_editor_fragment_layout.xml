@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:id="@+id/appbarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="false">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/listEditorCollapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:ads_windowInsets="false"
             app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
@@ -21,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:fitsSystemWindows="true"
                 app:layout_collapseMode="pin">
 
                 <com.facebook.drawee.view.SimpleDraweeView
@@ -79,8 +83,7 @@
                         android:layout_height="@dimen/list_editor_save_icon_size"
                         android:orientation="horizontal"
                         android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        >
+                        android:paddingEnd="16dp">
 
                         <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
                             android:id="@+id/listSaveButton"
@@ -124,6 +127,7 @@
                 android:id="@+id/listEditorToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
+                android:fitsSystemWindows="true"
                 app:contentInsetEnd="0dp"
                 app:contentInsetStart="0dp"
                 app:layout_collapseMode="pin" />
@@ -355,4 +359,4 @@
         </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
     </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
 
-</com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

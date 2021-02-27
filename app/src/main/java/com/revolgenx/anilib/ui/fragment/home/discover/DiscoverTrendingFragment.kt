@@ -80,7 +80,7 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (isSectionEnabled) {
-            if (savedInstanceState != null) {
+            if (savedInstanceState == null) {
                 viewModel.field = TrendingMediaField.create(requireContext()).also {
                     it.sort = MediaSort.TRENDING_DESC.ordinal
                 }

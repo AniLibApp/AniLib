@@ -17,6 +17,7 @@ val contrastPrimaryTextColorWithAccent
     )
 
 val dynamicBackgroundColor get() = dynamicTheme.backgroundColor
+val dynamicSurfaceColor get() = dynamicTheme.surfaceColor
 val dynamicTextColorPrimary get() = dynamicTheme.textPrimaryColor
 val dynamicTextColorPrimaryInverse get() = dynamicTheme.textPrimaryColorInverse
 val dynamicPrimaryColor get() = dynamicTheme.primaryColor

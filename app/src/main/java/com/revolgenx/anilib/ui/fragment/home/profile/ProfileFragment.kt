@@ -7,11 +7,9 @@ import android.view.*
 import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.activity.MediaListActivity
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
-import com.revolgenx.anilib.common.preference.userName
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.constant.UserConstant
@@ -24,11 +22,9 @@ import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.dialog.MessageDialog
 import com.revolgenx.anilib.ui.dialog.UserFollowerDialog
-import com.revolgenx.anilib.ui.fragment.stats.StatsOverviewFragment
 import com.revolgenx.anilib.ui.fragment.stats.UserStatsContainerFragment
 import com.revolgenx.anilib.ui.fragment.user.UserFavouriteContainerFragment
 import com.revolgenx.anilib.ui.fragment.user.UserOverviewFragment
-import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.user.UserProfileViewModel
 import com.revolgenx.anilib.util.getOrDefault

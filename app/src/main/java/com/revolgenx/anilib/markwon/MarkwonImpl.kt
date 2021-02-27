@@ -161,7 +161,6 @@ object MarkwonImpl {
 //                .replace("<br>", "<span></span>\n\n<span></span>")
             it.images = images
             it.videos = videos
-            Timber.d(it.html)
         }
     }
 

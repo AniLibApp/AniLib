@@ -38,7 +38,7 @@ class TagChooserDialogFragment : BaseDialogFragment<TagChooserDialogFragmentLayo
     private lateinit var tagAdapter: TagAdapter
 
     override fun bindView(): TagChooserDialogFragmentLayoutBinding {
-        return TagChooserDialogFragmentLayoutBinding.inflate(provideLayoutInflater())
+        return TagChooserDialogFragmentLayoutBinding.inflate(provideLayoutInflater)
     }
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,

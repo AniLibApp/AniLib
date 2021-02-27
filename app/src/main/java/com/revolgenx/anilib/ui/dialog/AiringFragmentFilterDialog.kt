@@ -32,7 +32,7 @@ class AiringFragmentFilterDialog : BaseDialogFragment<AiringFilterDialogLayoutBi
     var onDoneListener: (() -> Unit)? = null
 
     override fun bindView(): AiringFilterDialogLayoutBinding {
-        return AiringFilterDialogLayoutBinding.inflate(provideLayoutInflater())
+        return AiringFilterDialogLayoutBinding.inflate(provideLayoutInflater)
     }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {

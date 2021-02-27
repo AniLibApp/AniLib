@@ -42,7 +42,7 @@ class BrowseRelationshipPresenter(context: Context) : BasePresenter<BrowserRelat
                     , item.seasonYear?.toString().naText()
                 )
 
-            mediaFormatStatusTv.text = context.getString(R.string.format_status_s).format(
+            mediaFormatStatusTv.text = context.getString(R.string.str_dot_str).format(
                 item.format?.let { context.resources.getStringArray(R.array.media_format)[it] }.naText(),
                 item.status?.let { context.resources.getStringArray(R.array.media_status)[it] }.naText()
             )
