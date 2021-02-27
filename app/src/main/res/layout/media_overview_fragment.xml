@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -49,7 +49,8 @@
                         app:ads_title="@string/format"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/mediaSourceTv"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:subtitleAlignCenter="true" />
 
                     <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/mediaSourceTv"
@@ -59,7 +60,8 @@
                         app:ads_title="@string/source"
                         app:layout_constraintLeft_toRightOf="@id/mediaFormatTv"
                         app:layout_constraintRight_toLeftOf="@id/mediaEpisodeTv"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:subtitleAlignCenter="true" />
 
                     <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/mediaEpisodeTv"
@@ -69,7 +71,8 @@
                         app:ads_title="@string/episodes"
                         app:layout_constraintLeft_toRightOf="@id/mediaSourceTv"
                         app:layout_constraintRight_toLeftOf="@id/mediaDurationTv"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:subtitleAlignCenter="true" />
 
                     <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/mediaDurationTv"
@@ -80,30 +83,10 @@
                         app:ads_title="@string/duration"
                         app:layout_constraintLeft_toRightOf="@id/mediaEpisodeTv"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:subtitleAlignCenter="true" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="18sp"
-                    android:layout_marginBottom="4dp">
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                        android:id="@+id/startEndDateTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical"
-                        android:text="@string/start_s_end_s"
-                        android:textSize="10sp"
-                        tools:ignore="SmallSp" />
-
-
-                </RelativeLayout>
 
 
                 <View
@@ -141,36 +124,99 @@
 
                 </LinearLayout>
 
-                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ads_fillSpace="true"
-                    app:ads_title="@string/description" />
+                    android:layout_marginEnd="18dp">
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ads_fillSpace="true"
+                        app:ads_title="@string/description"
+                        app:layout_constraintEnd_toStartOf="@+id/startEndDateTv"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/startEndDateTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="SmallSp" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <com.revolgenx.anilib.ui.view.DynamicExpandableTextView
                     android:id="@+id/mediaDescriptionTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="4dp"
+                    android:drawablePadding="6dp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/cabin_regular"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
-                    android:textSize="14sp"
-                    app:copySubtitleOnLongClick="true" />
+                    android:textSize="14sp" />
 
 
-            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/genre_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp" />
+
+            </LinearLayout>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/character_header_tv"
+            style="@style/MediaBrowseTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/character" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/media_character_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/trailer_header_tv"
+            style="@style/MediaBrowseTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/trailer" />
 
         <FrameLayout
             android:id="@+id/trailerLayout"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:background="?selectableItemBackground">
 
             <com.facebook.drawee.view.SimpleDraweeView
@@ -188,34 +234,28 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/ads_ic_play"
+                app:srcCompat="@drawable/ic_youtube"
                 app:tint="@color/white" />
 
         </FrameLayout>
 
-        <LinearLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/relation_ship_header_tv"
+            style="@style/MediaBrowseTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/relations" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/relationRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:orientation="vertical">
+            android:nestedScrollingEnabled="false" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/relations"
-                android:textSize="18sp"
-                app:fontFamily="@font/cabin_semi_bold" />
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-                android:id="@+id/relationRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false" />
-
-        </LinearLayout>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             android:layout_width="match_parent"
@@ -228,73 +268,75 @@
                 android:orientation="vertical">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    style="@style/MediaBrowseTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/info"
-                    android:textSize="18sp"
-                    app:fontFamily="@font/cabin_semi_bold" />
+                    android:text="@string/info" />
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/metaContainerRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp" />
+                    android:layout_marginBottom="5dp"
+                    android:nestedScrollingEnabled="false" />
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
 
-        <LinearLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/media_tags_header_tv"
+            style="@style/MediaBrowseTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/tags" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mediaTagsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:orientation="vertical">
+            android:nestedScrollingEnabled="false" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/recommendations"
-                android:textSize="18sp"
-                app:fontFamily="@font/cabin_semi_bold" />
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-                android:id="@+id/recommendationRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/MediaBrowseTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="20dp">
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/recommendations" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/links"
-                android:textSize="18sp"
-                app:fontFamily="@font/cabin_semi_bold" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommendationRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:nestedScrollingEnabled="false" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-                android:id="@+id/metaLinkRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
-        </LinearLayout>
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/link_header_tv"
+            style="@style/MediaBrowseTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/links" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/metaLinkRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:nestedScrollingEnabled="false" />
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 

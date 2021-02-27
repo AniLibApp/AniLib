@@ -17,98 +17,100 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-
-        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/MediaBrowseTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_fillSpace="true"
-            app:ads_title="@string/rankings" />
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/rankings" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/rankingRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-            style="@style/Widget.DynamicApp.Card.Margin.Clickable"
+        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginBottom="20dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/MediaBrowseTitleStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/recent_act_per_day" />
 
-                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:ads_fillSpace="true"
-                    app:ads_title="@string/recent_act_per_day" />
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/activityPerDayLineChart"
+                android:layout_width="match_parent"
+                android:layout_height="220dp" />
 
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/activityPerDayLineChart"
+        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/MediaBrowseTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/status_distribution" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/status_distribution_recycler_View"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"/>
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="4dp"
+                app:cardUseCompatPadding="true">
+
+                <com.github.mikephil.charting.charts.HorizontalBarChart
+                    android:id="@+id/status_distribution_bar_chart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
-            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-            style="@style/Widget.DynamicApp.Card.Margin.Clickable"
+        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
             android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:layout_marginBottom="20dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/MediaBrowseTitleStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/score_distribution" />
 
-                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:ads_fillSpace="true"
-                    app:ads_title="@string/status_distribution" />
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/statusDistributionPieChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-            style="@style/Widget.DynamicApp.Card.Margin.Clickable"
-            android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:layout_marginBottom="20dp">
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/scoreDistributionBarChart"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_height="280dp" />
 
-                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:ads_fillSpace="true"
-                    app:ads_title="@string/score_distribution" />
+        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/scoreDistributionBarChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 

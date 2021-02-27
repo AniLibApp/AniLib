@@ -144,5 +144,9 @@
         <item name="android:textSize">11sp</item>
     </style>
 
+    <style name="MediaBrowseTitleStyle">
+        <item name="fontFamily">@font/cabin_semi_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
 </resources>

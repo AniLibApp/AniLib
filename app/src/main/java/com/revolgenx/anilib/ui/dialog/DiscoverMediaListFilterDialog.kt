@@ -25,7 +25,7 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment<MediaListFilterDialogLa
     }
 
     override fun bindView(): MediaListFilterDialogLayoutBinding {
-        return MediaListFilterDialogLayoutBinding.inflate(provideLayoutInflater())
+        return MediaListFilterDialogLayoutBinding.inflate(provideLayoutInflater)
     }
 
     companion object {

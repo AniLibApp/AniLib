@@ -31,4 +31,6 @@ open class CommonMediaModel() : BaseModel() {
     var mediaEntryListModel: MediaEntryListModel? = null
     var studios: List<MediaStudioModel>? = null        /*empty in manga*/
     var staff:List<MediaStaffModel>? = null
+    var source: Int? = null
+    var synonyms: List<String>? = null
 }

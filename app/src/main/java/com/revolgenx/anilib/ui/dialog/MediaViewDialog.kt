@@ -56,7 +56,7 @@ class MediaViewDialog : BaseDialogFragment<MediaViewDialogLayoutBinding>() {
     private val viewModel by viewModel<MediaViewDialogViewModel>()
 
     override fun bindView(): MediaViewDialogLayoutBinding {
-        return MediaViewDialogLayoutBinding.inflate(provideLayoutInflater())
+        return MediaViewDialogLayoutBinding.inflate(provideLayoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

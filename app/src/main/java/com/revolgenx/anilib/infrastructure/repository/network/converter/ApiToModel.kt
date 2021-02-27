@@ -141,6 +141,7 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
         it.description = description()
         it.source = source()?.ordinal
         it.hashTag = hashtag()
+        it.synonyms = synonyms()
         it.airingTimeModel = nextAiringEpisode()?.let {
             AiringTimeModel().also { model ->
                 model.episode = it.episode()
@@ -172,10 +173,7 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
             }
         }
         it.tags = tags()?.pmap {
-            MediaTagsModel().also { tag ->
-                tag.name = it.name()
-                tag.isSpoilerTag = it.isMediaSpoiler ?: false
-            }
+            MediaTagsModel(it.name(), it.description(), it.category(), it.isMediaSpoiler == true, it.rank(), it.isAdult)
         }
         it.trailer = trailer()?.let {
             MediaTrailerModel().also { trailer ->
@@ -184,8 +182,24 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
                 trailer.thumbnail = it.thumbnail()
             }
         }
-        it.studios = studios()!!.edges()!!.map {
+        it.studios = studios()!!.edges()!!.pmap {
             it.node()!!.fragments().studioInfo().toModel()
+        }
+
+        it.characters = characters()!!.edges()!!.pmap {
+            MediaCharacterModel().also { model->
+                model.role = it.role()?.ordinal
+                it.node()!!.let {
+                    model.characterId = it.id()
+                    model.name = it.name()?.full()
+                    model.characterImageModel = it.image()?.let {
+                        CharacterImageModel().apply {
+                            large = it.large()
+                            medium = it.medium()
+                        }
+                    }
+                }
+            }
         }
     }
 }

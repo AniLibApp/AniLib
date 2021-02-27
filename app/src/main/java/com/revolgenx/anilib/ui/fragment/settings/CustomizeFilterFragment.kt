@@ -47,5 +47,15 @@ class CustomizeFilterFragment : BaseLayoutFragment<CustomizeFilterFragmentLayout
                 TagFilterSettingDialogFragment::class.java.simpleName
             )
         }
+        binding.addRemoveStreamingOnIv.setOnClickListener {
+            TagFilterSettingDialogFragment.newInstance(
+                TagFilterSettingMeta(
+                    TagFilterMetaType.STREAMING_ON
+                )
+            ).show(
+                childFragmentManager,
+                TagFilterSettingDialogFragment::class.java.simpleName
+            )
+        }
     }
 }

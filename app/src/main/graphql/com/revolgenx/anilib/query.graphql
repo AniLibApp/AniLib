@@ -229,15 +229,9 @@ query BrowseSimpleMediaQuery($mediaId:Int){
         popularity
         favourites
         bannerImage
-        format
-        episodes
-        chapters
-        type
         season
         seasonYear
-        duration
-        volumes
-
+        type
         nextAiringEpisode{
             id
             airingAt
@@ -279,6 +273,7 @@ query MediaOverViewQuery($mediaId:Int){
         volumes
         source
         hashtag
+        synonyms
         relations{
             edges{
                 relationType(version:2)
@@ -306,7 +301,11 @@ query MediaOverViewQuery($mediaId:Int){
         }
         tags{
             name
+            description
+            category
             isMediaSpoiler
+            rank
+            isAdult
         }
         startDate {
             ... fuzzyDate
@@ -324,6 +323,21 @@ query MediaOverViewQuery($mediaId:Int){
                 node{
                     ... on Studio{
                         ... studioInfo
+                    }
+                }
+            }
+        }
+        characters(sort:[ROLE, ID]){
+            edges{
+                role
+                node{
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        large
+                        medium
                     }
                 }
             }

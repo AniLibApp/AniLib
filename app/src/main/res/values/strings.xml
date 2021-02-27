@@ -86,7 +86,7 @@
     <string name="recommendations">Recommendation</string>
     <string name="chapter_format_s">C: %1$s · %2$s</string>
     <string name="source_seasonyear_s">%1$s · %2$s</string>
-    <string name="format_status_s">%1$s · %2$s</string>
+    <string name="str_dot_str">%1$s · %2$s</string>
     <string name="relations">Relations</string>
     <string name="genre">Genre</string>
     <string name="tags">Tags</string>
@@ -180,7 +180,7 @@
     <string name="new_notification">New notification available</string>
     <string name="airing_schedules">Airing Schedules</string>
     <string name="airing_time_e_s_s">E: %1$s · %2$dd %3$dh %4$dm %5$ds </string>
-    <string name="format_episode_s">%1$s · E: %2$s</string>
+    <string name="format_episode_s">%1$sE: %2$s</string>
     <string name="select_date">Select Date</string>
     <string name="airing">Airing</string>
     <string name="trending">Trending</string>
@@ -502,5 +502,16 @@
     <string name="episode_airing_date">E: %1$s · %2$s</string>
     <string name="load_legacy_media_browser_desc">Load simple header with banner image, cover image and media title when browsing media.</string>
     <string name="load_legacy_media_browser">Load Legacy Media Browser Header</string>
+    <string name="more">more</string>
+    <string name="less">less</string>
+    <string name="synonyms">Synonyms</string>
+    <string name="show_spoiler">Show Spoilers</string>
+    <string name="hide_spoiler">Hide Spoilers</string>
+    <string name="category">Category</string>
+    <string name="rank">Rank</string>
+    <string name="tag_info">Tag Info</string>
+    <string name="tag_name_percent">%1$s · %2$d%%</string>
+    <string name="status_distribution_string">%1$s Users %2$s</string>
+    <string name="trailer">Trailer</string>
 
 </resources>

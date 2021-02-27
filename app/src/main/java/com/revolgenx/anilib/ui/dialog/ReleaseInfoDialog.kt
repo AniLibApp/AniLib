@@ -15,7 +15,7 @@ class ReleaseInfoDialog : BaseDialogFragment<ReleaseInfoDialogLayoutBinding>() {
     override var positiveText: Int? = R.string.close
 
     override fun bindView(): ReleaseInfoDialogLayoutBinding {
-        return ReleaseInfoDialogLayoutBinding.inflate(provideLayoutInflater())
+        return ReleaseInfoDialogLayoutBinding.inflate(provideLayoutInflater)
     }
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         super.onShowListener(alertDialog, savedInstanceState)

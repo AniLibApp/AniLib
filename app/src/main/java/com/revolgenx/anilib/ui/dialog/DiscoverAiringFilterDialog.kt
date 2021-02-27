@@ -25,7 +25,7 @@ class DiscoverAiringFilterDialog : BaseDialogFragment<AiringFilterDialogLayoutBi
 
 
     override fun bindView(): AiringFilterDialogLayoutBinding {
-        return AiringFilterDialogLayoutBinding.inflate(provideLayoutInflater())
+        return AiringFilterDialogLayoutBinding.inflate(provideLayoutInflater)
     }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {

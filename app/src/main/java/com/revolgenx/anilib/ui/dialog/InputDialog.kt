@@ -44,7 +44,7 @@ class InputDialog : BaseDialogFragment<InputDialogLayoutBinding>() {
     override var negativeText: Int? = R.string.cancel
 
     override fun bindView(): InputDialogLayoutBinding {
-        return InputDialogLayoutBinding.inflate(provideLayoutInflater())
+        return InputDialogLayoutBinding.inflate(provideLayoutInflater)
     }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {

@@ -89,13 +89,15 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
                             android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="8dp"
                             android:ellipsize="end"
                             android:maxLines="2"
-                            app:fontFamily="@font/cabin_bold"
                             android:paddingTop="8dp"
                             android:textSize="20sp"
                             app:ads_rtlSupport="false"
+                            app:fontFamily="@font/cabin_bold"
                             app:layout_constraintBottom_toTopOf="@+id/season_year_tv"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image"
@@ -108,60 +110,27 @@
                             android:id="@+id/season_year_tv"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:ellipsize="end"
-                            app:fontFamily="@font/cabin_medium"
-                            android:maxLines="1"
-                            android:textSize="14sp"
-                            app:layout_constraintBottom_toTopOf="@+id/media_format_tv"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="@+id/linearLayout"
-                            app:layout_constraintTop_toBottomOf="@+id/media_title_tv" />
-
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                            android:id="@+id/media_format_tv"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="4dp"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textSize="14sp"
-                            app:fontFamily="@font/cabincondensed_medium"
-                            app:layout_constraintBottom_toTopOf="@+id/media_episode_duration_tv"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image"
-                            app:layout_constraintTop_toBottomOf="@+id/season_year_tv" />
-
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                            android:id="@+id/media_episode_duration_tv"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:ellipsize="end"
-                            app:fontFamily="@font/cabincondensed_medium"
-                            android:maxLines="1"
-                            android:textSize="12sp"
+                            app:fontFamily="@font/cabin_medium"
                             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="@+id/season_year_tv"
-                            app:layout_constraintTop_toBottomOf="@+id/media_format_tv" />
+                            app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image" />
 
                         <LinearLayout
                             android:id="@+id/linearLayout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="4dp"
                             android:layout_marginBottom="16dp"
                             android:orientation="horizontal"
                             app:layout_constraintBottom_toTopOf="@+id/media_airing_at_tv"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image"
-                            app:layout_constraintTop_toBottomOf="@+id/media_episode_duration_tv">
+                            app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image">
 
 
                             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -217,17 +186,16 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginBottom="16dp"
                             android:ellipsize="end"
-                            app:fontFamily="@font/cabin_semi_bold"
                             android:maxLines="1"
                             android:textAllCaps="true"
                             android:textSize="15sp"
                             app:ads_colorType="accent"
+                            app:fontFamily="@font/cabin_semi_bold"
                             app:layout_constraintBottom_toTopOf="@+id/media_add_layout"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image"
-                            app:layout_constraintTop_toBottomOf="@+id/media_format_tv"
-                            app:layout_constraintVertical_bias="0.76" />
+                            app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image" />
 
 
                         <com.revolgenx.anilib.ui.view.widgets.misc.MediaBrowseAddLayout

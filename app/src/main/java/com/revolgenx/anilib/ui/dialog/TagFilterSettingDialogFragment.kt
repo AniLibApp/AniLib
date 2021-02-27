@@ -42,7 +42,7 @@ class TagFilterSettingDialogFragment : BaseDialogFragment<TagFilterSettingDialog
     private lateinit var adapter: TagAdapter
 
     override fun bindView(): TagFilterSettingDialogFragmentLayoutBinding {
-        return TagFilterSettingDialogFragmentLayoutBinding.inflate(provideLayoutInflater())
+        return TagFilterSettingDialogFragmentLayoutBinding.inflate(provideLayoutInflater)
     }
 
     override fun onCustomiseBuilder(

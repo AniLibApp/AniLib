@@ -12,6 +12,7 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
@@ -24,7 +25,9 @@ import com.revolgenx.anilib.data.model.user.stats.MediaStatsModel
 import com.revolgenx.anilib.databinding.MediaStatsFragmentLayoutBinding
 import com.revolgenx.anilib.ui.presenter.RankingsPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
+import com.revolgenx.anilib.ui.presenter.stats.MediaStatusDistributionPresenter
 import com.revolgenx.anilib.ui.viewmodel.media.MediaStatsViewModel
+import com.revolgenx.anilib.util.prettyNumberFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
 import java.time.LocalDateTime
@@ -40,12 +43,13 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
         }
     }
 
-    private val mediaListStatus by lazy {
-        requireContext().resources.getStringArray(R.array.media_list_status)
-    }
 
     private val rankingsPresenter by lazy {
         RankingsPresenter(requireContext(), mediaBrowserMeta!!.type)
+    }
+
+    private val statusDistributionPresenter by lazy {
+        MediaStatusDistributionPresenter(requireContext())
     }
 
     private var rankingAdapter:Adapter? = null
@@ -58,7 +62,7 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
         requireContext().resources.getStringArray(R.array.bar_color).map { Color.parseColor(it) }
     }
 
-    private val pieColors by lazy {
+    private val mediaListStatusColors by lazy {
         requireContext().resources.getStringArray(R.array.media_list_status_color).map { Color.parseColor(it) }
     }
     companion object {
@@ -92,6 +96,8 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
                 }
             }
         }
+
+        binding.statusDistributionRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -150,6 +156,13 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
                 .into(rankingRecyclerView)
         }
 
+        data.statusDistribution?.let {
+            Adapter.builder(viewLifecycleOwner)
+                .addSource(Source.fromList(it))
+                .addPresenter(statusDistributionPresenter)
+                .into(statusDistributionRecyclerView)
+        }
+
         data.trendsEntry?.let { entries ->
             LineDataSet(entries, "").apply {
                 mode = LineDataSet.Mode.HORIZONTAL_BEZIER
@@ -163,7 +176,7 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
                 setDrawFilled(true)
                 valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
-                        return value.toInt().toString()
+                        return value.toInt().prettyNumberFormat()
                     }
                 }
             }.let { set ->
@@ -211,50 +224,33 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
         }
 
 
-        val statusList = data.statusDistribution?.map { it.status!! } ?: emptyList()
+        val statusTotalAmount = data.statusDistribution?.sumOf { it.amount!! }?.toFloat() ?: 1f
+        val statusPercentageAmount = data.statusDistribution?.map { it.amount!!.div(statusTotalAmount).times(100f)}
+        val statusColors = data.statusDistribution?.map { mediaListStatusColors[it.status!!] }
 
-        mediaListStatus.mapIndexed { index, s ->
-            if (statusList.contains(index)) {
-                PieEntry(data.statusDistribution?.get(index)?.amount?.toFloat() ?: 0f, s)
-            } else {
-                PieEntry(0f, s)
-            }
-        }.let {
-            val dataSet = PieDataSet(it, getString(R.string.status_distribution)).also {
-                it.colors = pieColors
-            }
-            dataSet.sliceSpace = 3f
+        val barEntry = listOf(BarEntry(0f, statusPercentageAmount?.toFloatArray()))
 
-            val color = DynamicTheme.getInstance().get().backgroundColor
-            statusDistributionPieChart.setHoleColor(color)
-            statusDistributionPieChart.setTransparentCircleColor(color)
-            statusDistributionPieChart.setTransparentCircleAlpha(110)
-            statusDistributionPieChart.holeRadius = 58f;
-            statusDistributionPieChart.transparentCircleRadius = 61f;
-            statusDistributionPieChart.rotationAngle = 0f
-            statusDistributionPieChart.setDrawEntryLabels(false)
-            statusDistributionPieChart.legend?.let { l ->
-                l.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
-                l.verticalAlignment = Legend.LegendVerticalAlignment.TOP;
-                l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT;
-                l.orientation = Legend.LegendOrientation.VERTICAL;
-                l.setDrawInside(false)
-                l.xEntrySpace = 7f
-                l.yEntrySpace = 0f
-                l.yOffset = 0f
-            }
+        val barDataSet = BarDataSet(barEntry, "").also {
+            it.colors = statusColors
+            it.setDrawValues(false)
+            it.setDrawIcons(false)
+        }
 
-            statusDistributionPieChart.setExtraOffsets(-40f, 0f, 0f, 0f)
-            statusDistributionPieChart.setEntryLabelTypeface(
-                ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.cabincondensed_regular
-                )
-            )
-            statusDistributionPieChart.description = null
-            statusDistributionPieChart.setEntryLabelTextSize(12f)
-            statusDistributionPieChart.data = PieData(dataSet)
-            statusDistributionPieChart.invalidate()
+        statusDistributionBarChart.let {
+            it.axisLeft.axisMinimum = 0f
+            it.axisLeft.axisMaximum = 100f
+            it.legend.isEnabled = false
+            it.setTouchEnabled(false)
+            it.setDrawBarShadow(true)
+            it.axisRight.isEnabled = false
+            it.axisLeft.isEnabled = false
+            it.xAxis.isEnabled = false
+            it.description = null
+            it.setViewPortOffsets(0f,0f,0f,0f)
+            it.minOffset = 0f
+            it.setExtraOffsets(0f,0f,0f,0f)
+            it.data = BarData(barDataSet)
+            it.invalidate()
         }
 
         val scores = data.scoreDistribution?.map { it.score!! } ?: emptyList()
@@ -279,7 +275,7 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
                 }
             }
             scoreDistributionBarChart.apply {
-                legend.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
+                legend.isEnabled = false
                 axisRight.isEnabled = false
                 axisLeft.isEnabled = false
                 xAxis.let { axis ->

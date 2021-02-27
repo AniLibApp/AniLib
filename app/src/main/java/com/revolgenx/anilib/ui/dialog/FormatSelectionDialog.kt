@@ -39,7 +39,7 @@ class FormatSelectionDialog : BaseDialogFragment<FormatSelectionDialogBinding>()
     }
 
     override fun bindView(): FormatSelectionDialogBinding {
-        return FormatSelectionDialogBinding.inflate(provideLayoutInflater())
+        return FormatSelectionDialogBinding.inflate(provideLayoutInflater)
     }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {

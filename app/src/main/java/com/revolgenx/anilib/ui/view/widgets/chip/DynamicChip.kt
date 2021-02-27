@@ -31,6 +31,7 @@ class DynamicChip : Chip {
         chipStrokeColor = chipStColor
         isCloseIconVisible = true
         closeIconTint = chipStColor
+        chipIconTint = chipStColor
         setTextColor(tintAccent)
     }
 

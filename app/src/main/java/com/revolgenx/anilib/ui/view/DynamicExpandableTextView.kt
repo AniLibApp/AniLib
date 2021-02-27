@@ -8,20 +8,30 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+import com.pranavpandey.android.dynamic.utils.DynamicDrawableUtils
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 
-class ExpandableTextView(context: Context, attributeSet: AttributeSet?, style: Int) :
+class DynamicExpandableTextView(context: Context, attributeSet: AttributeSet?, style: Int) :
     DynamicTextView(context, attributeSet, style), View.OnClickListener {
 
     var myMaxLines = Integer.MAX_VALUE
-        private set
+
+    private var expansionListener:((Boolean)->Unit)? = null
 
     constructor(context: Context) : this(context, null)
-
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
-        color = DynamicTheme.getInstance().get().tintSurfaceColor
-        typeface = ResourcesCompat.getFont(context, R.font.cabin_regular)
-        movementMethod = LinkMovementMethod.getInstance()
+        setOnClickListener(this)
+    }
+
+
+    private val moreIcon by lazy {
+        DynamicDrawableUtils.colorizeDrawable(
+            ContextCompat.getDrawable(
+                context,
+                R.drawable.ads_ic_more_horizontal
+            ), dynamicTextColorPrimary
+        )
     }
 
     override fun onTextChanged(
@@ -30,22 +40,22 @@ class ExpandableTextView(context: Context, attributeSet: AttributeSet?, style: I
         lengthBefore: Int,
         lengthAfter: Int
     ) {
-        /* If text longer than MAX_LINES set DrawableBottom - I'm using '...' ic_launcher */
         post {
-            if (lineCount > MAX_LINES)
+            if (lineCount > MAX_LINES){
                 setCompoundDrawablesWithIntrinsicBounds(
                     null,
                     null,
                     null,
-                    ContextCompat.getDrawable(context, R.drawable.ads_ic_more_horizontal)?.apply {
-                        this.setTint(DynamicTheme.getInstance().get().tintSurfaceColor)
-                    })
-            else
+                    moreIcon
+                )
+            }
+            else{
                 setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-
-            maxLines = MAX_LINES
+                maxLines = MAX_LINES
+            }
         }
     }
+
 
     override fun setMaxLines(maxLines: Int) {
         myMaxLines = maxLines
@@ -54,30 +64,28 @@ class ExpandableTextView(context: Context, attributeSet: AttributeSet?, style: I
 
     override fun onClick(v: View) {
         /* Toggle between expanded collapsed states */
-        maxLines = if (myMaxLines == Integer.MAX_VALUE)
+        toggle()
+    }
+
+    fun toggle() {
+        maxLines = if (isExpanded())
             MAX_LINES
         else
             Integer.MAX_VALUE
+
+        expansionListener?.invoke(isExpanded())
     }
 
-    fun toggle(): Boolean {
-        return if (myMaxLines == Integer.MAX_VALUE) {
-            maxLines = MAX_LINES
-            false
-        } else {
-            maxLines = Integer.MAX_VALUE
-            true
-        }
+    fun isExpanded(): Boolean {
+        return myMaxLines == Integer.MAX_VALUE
     }
 
-
-    fun removeOnClick() {
-        setOnClickListener(null)
+    fun needsExpansion(): Boolean {
+        return lineCount > MAX_LINES
     }
 
-    fun addOnClick() {
-        if (!hasOnClickListeners())
-            setOnClickListener(this)
+    fun expansionListener(listener: (Boolean) -> Unit) {
+        expansionListener = listener
     }
 
     companion object {

@@ -39,7 +39,7 @@ class ReviewsFilterDialog : BaseDialogFragment<ReviewsFilterDialogLayoutBinding>
     override var negativeText: Int? = R.string.cancel
 
     override fun bindView(): ReviewsFilterDialogLayoutBinding {
-        return ReviewsFilterDialogLayoutBinding.inflate(provideLayoutInflater())
+        return ReviewsFilterDialogLayoutBinding.inflate(provideLayoutInflater)
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
