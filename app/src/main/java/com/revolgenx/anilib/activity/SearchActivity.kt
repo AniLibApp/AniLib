@@ -12,6 +12,7 @@ import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
 import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Adapter
 import com.paulrybitskyi.persistentsearchview.adapters.model.SuggestionItem
@@ -206,6 +207,11 @@ class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
 
 
     private fun setUpListener() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.advanceSearchCoordinatorLayout){ _, insets->
+            (binding.browseFilterNavView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
+                insets.systemWindowInsetTop
+            insets
+        }
         with(binding.persistentSearchView) {
             setOnLeftBtnClickListener {
                 if (isExpanded) {

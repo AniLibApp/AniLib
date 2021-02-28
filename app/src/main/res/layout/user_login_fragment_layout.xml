@@ -1,79 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
 
-    <LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ads_colorType="primary"
+        app:ads_backgroundAware="disable"
+        app:elevation="0dp">
+
+        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
+            android:id="@+id/list_tab_layout"
+            style="@style/DynamicTextTabLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:ads_backgroundColorType="background"
+            app:ads_colorType="accent"
+            app:ads_contrastWithColorType="background"
+            app:ads_textColorType="tint_primary"
+            app:entries="@array/login_entries"
+            app:tabTextAppearance="@style/RadioTabLayoutTextStyle"
+            app:layout_scrollFlags="noScroll"/>
+
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/options_tv"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/app_name"
-            android:textSize="16sp"
-            app:fontFamily="@font/cabin_semi_bold"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
 
-        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-            android:id="@+id/setting_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/ads_button_remote"
-            app:ads_colorType="text_primary"
-            app:ads_icon="@drawable/ic_settings"
-            app:ads_title="@string/settings" />
+            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+                android:id="@+id/setting_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ads_button_remote"
+                app:ads_colorType="text_primary"
+                app:ads_icon="@drawable/ic_settings"
+                app:ads_title="@string/settings" />
 
-        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-            android:id="@+id/update_check_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/ads_button_remote"
-            app:ads_colorType="text_primary"
-            app:ads_icon="@drawable/ic_update"
-            app:ads_title="@string/check_for_update" />
+            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+                android:id="@+id/update_check_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ads_button_remote"
+                app:ads_colorType="text_primary"
+                app:ads_icon="@drawable/ic_update"
+                app:ads_title="@string/check_for_update" />
 
-        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-            android:id="@+id/discord_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/ads_button_remote"
-            app:ads_colorType="text_primary"
-            app:ads_icon="@drawable/ic_discord"
-            app:ads_title="@string/discord" />
+            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+                android:id="@+id/discord_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ads_button_remote"
+                app:ads_colorType="text_primary"
+                app:ads_icon="@drawable/ic_discord"
+                app:ads_title="@string/discord" />
 
-        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-            android:id="@+id/translate_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/ads_button_remote"
-            app:ads_colorType="text_primary"
-            app:ads_icon="@drawable/ads_ic_translate"
-            app:ads_title="@string/translate" />
+            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+                android:id="@+id/translate_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ads_button_remote"
+                app:ads_colorType="text_primary"
+                app:ads_icon="@drawable/ads_ic_translate"
+                app:ads_title="@string/translate" />
 
-        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-            android:id="@+id/sign_in_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/ads_button_remote"
-            app:ads_colorType="text_primary"
-            app:ads_icon="@drawable/ic_person"
-            app:ads_title="@string/sign_in" />
+            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+                android:id="@+id/sign_in_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ads_button_remote"
+                app:ads_colorType="text_primary"
+                app:ads_icon="@drawable/ic_person"
+                app:ads_title="@string/sign_in" />
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

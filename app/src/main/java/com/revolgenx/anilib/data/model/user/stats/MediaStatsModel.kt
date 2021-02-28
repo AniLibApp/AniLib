@@ -8,5 +8,11 @@ class MediaStatsModel {
     var trends: List<MediaStatsTrendsModel>? = null
     var statusDistribution: List<MediaStatsStatusDistributionModel>? = null
     var scoreDistribution: List<MediaStatsScoreDistributionModel>? = null
-    var trendsEntry: List<Entry>? = null
+    var trendsEntries: List<Entry>? = null
+    var airingTrends: List<AiringTrendsModel>? = null
+    var airingWatchersProgressionEntries: List<Entry>? = null
+    var airingScoreProgressionEntries: List<Entry>? = null
 }
+
+
+

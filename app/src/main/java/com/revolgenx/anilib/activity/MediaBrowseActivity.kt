@@ -358,7 +358,7 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
                 model.airingTimeModel?.let {
                     mediaAiringAtTv.text = getString(R.string.episode_airing_date).format(
                         it.episode,
-                        it.airingAt!!.airingDate
+                        it.airingAt!!.airingDateTime
                     )
                 }
             }

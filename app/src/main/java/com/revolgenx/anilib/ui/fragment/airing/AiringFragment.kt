@@ -69,7 +69,7 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
 
             }
 
-            AiringListDisplayMode.NORMAL-> {
+            AiringListDisplayMode.NORMAL, AiringListDisplayMode.MINIMAL_LIST-> {
                 span /= 2
             }
         }

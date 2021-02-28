@@ -13,6 +13,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
@@ -85,7 +86,6 @@ class MediaRecommendationPresenter(
         mediaEpisodeFormatTv.status = item.mediaEntryListModel?.status
         mediaSeasonYearTv.text = item.seasonYear?.toString().naText()
         mediaRecommendationRating.text = data.rating?.toString()
-        mediaRecommendationRating.setTextColor(Color.WHITE)
 
         item.status?.let {
             statusDivider.setBackgroundColor(statusColors[it])
@@ -223,19 +223,19 @@ class MediaRecommendationPresenter(
 
 
     private fun OverviewRecommendationPresnterLayoutBinding.updateRecommendationLikeView(item: MediaRecommendationModel) {
-        mediaRecommendationLikeIv.imageTintList = ColorStateList.valueOf(Color.WHITE)
-        mediaRecommendationDislikeIv.imageTintList = ColorStateList.valueOf(Color.WHITE)
-        mediaRecommendationRating.setTextColor(Color.WHITE)
+        mediaRecommendationLikeIv.colorType = Theme.ColorType.TEXT_PRIMARY
+        mediaRecommendationDislikeIv.colorType = Theme.ColorType.TEXT_PRIMARY
         mediaRecommendationRating.text = item.rating?.toString()
 
         when (item.userRating) {
             RecommendationRating.RATE_UP.ordinal -> {
-                mediaRecommendationLikeIv.imageTintList =
-                    ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
+                mediaRecommendationLikeIv.colorType = Theme.ColorType.ACCENT
+                mediaRecommendationLikeIv.contrastWithColorType = Theme.ColorType.BACKGROUND
             }
             RecommendationRating.RATE_DOWN.ordinal -> {
-                mediaRecommendationDislikeIv.imageTintList =
-                    ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
+                mediaRecommendationDislikeIv.colorType = Theme.ColorType.ACCENT
+                mediaRecommendationDislikeIv.contrastWithColorType = Theme.ColorType.BACKGROUND
+
             }
         }
     }

@@ -28,7 +28,8 @@ class NotificationActivity : BaseDynamicActivity<NotificationActivityLayoutBindi
         }
     }
 
-    override fun onNavigateUp(): Boolean {
+
+    override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
     }

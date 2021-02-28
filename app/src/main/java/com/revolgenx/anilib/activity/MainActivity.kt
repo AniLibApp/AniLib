@@ -13,9 +13,8 @@ import androidx.annotation.*
 import androidx.core.app.ActivityCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.os.bundleOf
-import androidx.core.view.GravityCompat
-import androidx.core.view.forEachIndexed
-import androidx.core.view.iterator
+import androidx.core.view.*
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager.widget.ViewPager
 import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Adapter
@@ -290,6 +289,12 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     private fun initListener() {
         binding.mainBrowseFilterNavView.setNavigationCallbackListener(this)
 
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainBrowseFilterNavView){ _, insets->
+            (binding.mainBrowseFilterNavView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
+                insets.systemWindowInsetTop
+            insets.consumeSystemWindowInsets()
+        }
+        
         /**problem with transition
          * {@link https://github.com/facebook/fresco/issues/1445}*/
         ActivityCompat.setExitSharedElementCallback(this, object : SharedElementCallback() {

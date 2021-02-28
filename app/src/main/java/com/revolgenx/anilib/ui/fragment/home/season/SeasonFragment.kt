@@ -2,9 +2,13 @@ package com.revolgenx.anilib.ui.fragment.home.season
 
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.core.os.bundleOf
+import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
+import com.otaliastudios.elements.extensions.HeaderSource
+import com.otaliastudios.elements.extensions.SimplePresenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.ui.dialog.TagChooserDialogFragment
@@ -19,8 +23,11 @@ import com.revolgenx.anilib.data.model.CommonMediaModel
 import com.revolgenx.anilib.common.preference.getUserGenre
 import com.revolgenx.anilib.common.preference.getUserTag
 import com.revolgenx.anilib.databinding.SeasonFragmentBinding
+import com.revolgenx.anilib.infrastructure.source.home.discover.MediaFormatHeaderSource
 import com.revolgenx.anilib.ui.bottomsheet.discover.MediaFilterBottomSheetFragment
+import com.revolgenx.anilib.ui.dialog.ShowSeasonHeaderDialog
 import com.revolgenx.anilib.ui.presenter.season.SeasonPresenter
+import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.ui.viewmodel.home.season.SeasonViewModel
@@ -125,6 +132,17 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
                             MediaTagFilterTypes.SEASON_TAG
                         )
                     }
+                    3->{
+                        ShowSeasonHeaderDialog().also {
+                            it.onDoneListener = onDone@{isChecked, isChanged->
+                                if (context == null) return@onDone
+                                if(isChanged){
+                                    viewModel.isHeaderEnabled(isChecked)
+                                    renewAdapter()
+                                }
+                            }
+                        }.show(requireContext())
+                    }
                 }
             }
         }
@@ -200,6 +218,26 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
         createSource()
         invalidateAdapter()
     }
+
+
+    override fun adapterBuilder(): Adapter.Builder {
+        val builder = super.adapterBuilder()
+
+        if (viewModel.isHeaderEnabled()) {
+            builder.addSource(MediaFormatHeaderSource(requireContext()))
+            builder.addPresenter(
+                SimplePresenter<HeaderSource.Data<CommonMediaModel, String>>(
+                    requireContext(),
+                    R.layout.header_presenter_layout,
+                    HeaderSource.ELEMENT_TYPE
+                ) { v, header ->
+                    (v as TextView).text = header.header
+                })
+        }
+
+        return builder
+    }
+
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onListEditorEvent(event: ListEditorResultEvent) {

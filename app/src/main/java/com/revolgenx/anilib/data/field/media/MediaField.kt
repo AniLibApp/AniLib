@@ -23,48 +23,50 @@ open class MediaField : BaseSourceField<MediaQuery>() {
 
     override fun toQueryOrMutation(): MediaQuery {
         return MediaQuery.builder()
-            .apply {
-
-                if (page != null) {
-                    page(page!!)
-                    perPage(perPage)
-                }
-                if (genres?.isNullOrEmpty() == false) {
-                    genre_in(genres)
-                }
-                if (tags?.isNullOrEmpty() == false) {
-                    tag_in(tags)
-                }
-                sort?.let {
-                    sort(listOf(MediaSort.values()[it]))
-                }
-                seasonYear?.let {
-                    seasonYear(it)
-                }
-                season?.let {
-                    season(MediaSeason.values()[it])
-                }
-                format?.let {
-                    format(MediaFormat.values()[it])
-                }
-                formatsIn?.let {
-                    val formats = MediaFormat.values()
-                    format_in(it.map { formats[it] })
-                }
-                status?.let {
-                    status(MediaStatus.values()[it])
-                }
-                mediaIdsIn?.let {
-                    idIn(it)
-                }
-                if (!canShowAdult) {
-                    isAdult(false)
-                }
-
-                includeStaff(includeStaff)
-                includeStudio(includeStudio)
-            }
+            .builder()
             .build()
+    }
+
+    protected open fun MediaQuery.Builder.builder(): MediaQuery.Builder {
+        if (page != null) {
+            page(page!!)
+            perPage(perPage)
+        }
+        if (genres?.isNullOrEmpty() == false) {
+            genre_in(genres)
+        }
+        if (tags?.isNullOrEmpty() == false) {
+            tag_in(tags)
+        }
+        sort?.let {
+            sort(listOf(MediaSort.values()[it]))
+        }
+        seasonYear?.let {
+            seasonYear(it)
+        }
+        season?.let {
+            season(MediaSeason.values()[it])
+        }
+        format?.let {
+            format(MediaFormat.values()[it])
+        }
+        formatsIn?.let {
+            val formats = MediaFormat.values()
+            format_in(it.map { formats[it] })
+        }
+        status?.let {
+            status(MediaStatus.values()[it])
+        }
+        mediaIdsIn?.let {
+            idIn(it)
+        }
+        if (!canShowAdult) {
+            isAdult(false)
+        }
+
+        includeStaff(includeStaff)
+        includeStudio(includeStudio)
+        return this
     }
 
 }
