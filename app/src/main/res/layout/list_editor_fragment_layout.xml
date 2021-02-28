@@ -9,9 +9,10 @@
         android:id="@+id/appbarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="false">
+        android:fitsSystemWindows="true"
+        app:ads_windowInsets="false">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout
             android:id="@+id/listEditorCollapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -127,13 +128,13 @@
                 android:id="@+id/listEditorToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:fitsSystemWindows="true"
+                android:fitsSystemWindows="false"
                 app:contentInsetEnd="0dp"
                 app:contentInsetStart="0dp"
                 app:layout_collapseMode="pin" />
 
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView

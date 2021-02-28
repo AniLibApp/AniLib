@@ -19,9 +19,12 @@ class AiringDynamicTextView : DynamicTextView, TimerCallback {
 
     }
 
+    private var showEpisode = true
+
     private var airingTime: AiringTimeModel? = null
 
-    fun setAiringText(airingTime: AiringTimeModel?) {
+    fun setAiringText(airingTime: AiringTimeModel?, showEpisode: Boolean = true) {
+        this.showEpisode = showEpisode
         this.airingTime?.commonTimer?.timerCallback = null
         this.airingTime = airingTime
         airingTime?.commonTimer?.timerCallback = this
@@ -34,22 +37,42 @@ class AiringDynamicTextView : DynamicTextView, TimerCallback {
 
     private fun updateView() {
         val time = airingTime?.timeUntilAiring
-        text = if (time != null)
-            context.getString(R.string.airing_time_e_s_s).format(
-                airingTime?.episode?.toString().naText(),
-                time.day,
-                time.hour,
-                time.min,
-                time.sec
-            )
-        else
-            context.getString(R.string.airing_time_e_s_s).format(
-                airingTime?.episode?.toString().naText(),
-                0,
-                0,
-                0,
-                0
-            )
+        text = if (time != null) {
+            if (showEpisode) {
+                context.getString(R.string.airing_time_e_s_s).format(
+                    airingTime?.episode?.toString().naText(),
+                    time.day,
+                    time.hour,
+                    time.min,
+                    time.sec
+                )
+            } else {
+                context.getString(R.string.airing_time_eta_s_s).format(
+                    time.day,
+                    time.hour,
+                    time.min,
+                    time.sec
+                )
+            }
+        } else {
+            if (showEpisode) {
+                context.getString(R.string.airing_time_e_s_s).format(
+                    airingTime?.episode?.toString().naText(),
+                    0,
+                    0,
+                    0,
+                    0
+                )
+            }else{
+                context.getString(R.string.airing_time_eta_s_s).format(
+                    0,
+                    0,
+                    0,
+                    0
+                )
+            }
+
+        }
     }
 
 }

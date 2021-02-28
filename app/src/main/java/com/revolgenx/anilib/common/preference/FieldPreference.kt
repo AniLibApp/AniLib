@@ -23,6 +23,7 @@ const val SEASON_STATUS_KEY = "SEASON_STATUS_KEY"
 const val SEASON_GENRES_KEY = "SEASON_GENRES_KEY"
 const val SEASON_TAGS_KEY = "SEASON_TAGS_KEY"
 const val SEASON_SORT_KEY = "SEASON_sort_KEY"
+const val SEASON_HEADER_KEY = "SEASON_HEADER_KEY"
 
 //trending
 
@@ -120,6 +121,7 @@ fun getSeasonField(context: Context) = SeasonField().apply {
     sort = context.getInt(SEASON_SORT_KEY, DEFAULT_SORT).takeIf { it > -1 }
     tags = context.sharedPreference().getStringSet(SEASON_TAGS_KEY, emptySet())!!.toList()
     genres = context.sharedPreference().getStringSet(SEASON_GENRES_KEY, emptySet())!!.toList()
+    showHeader = context.getBoolean(SEASON_HEADER_KEY, true)
 }
 
 fun getTrendingField(context: Context) = TrendingMediaField().apply {
@@ -355,7 +357,7 @@ fun getMediaListGridPresenter(): MediaListDisplayMode {
 
 fun getAiringDisplayMode(): AiringListDisplayMode {
     return AiringListDisplayMode.values()[DynamicPreferences.getInstance()
-        .load(AIRING_DISPLAY_MODE_KEY, AiringListDisplayMode.NORMAL.ordinal)]
+        .load(AIRING_DISPLAY_MODE_KEY, AiringListDisplayMode.COMPACT.ordinal)]
 }
 
 fun setMediaListGridPresenter(which: Int) {
@@ -388,9 +390,18 @@ fun loadMediaListFilter(context: Context, type: Int): MediaListCollectionFilterF
 }
 
 fun showAiringWeekly(context: Context, isChecked: Boolean? = null): Boolean =
-    if (isChecked == null) context.getBoolean(SHOW_AIRING_WEEKLY_KEY, false) else {
+    if (isChecked == null) context.getBoolean(SHOW_AIRING_WEEKLY_KEY, true) else {
         context.putBoolean(
             SHOW_AIRING_WEEKLY_KEY, isChecked
+        )
+        isChecked
+    }
+
+
+fun showSeasonHeader(context: Context, isChecked: Boolean? = null): Boolean =
+    if (isChecked == null) context.getBoolean(SEASON_HEADER_KEY, false) else {
+        context.putBoolean(
+            SEASON_HEADER_KEY, isChecked
         )
         isChecked
     }

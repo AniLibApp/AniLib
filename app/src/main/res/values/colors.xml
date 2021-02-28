@@ -13,6 +13,7 @@
     <color name="black">#191919</color>
     <color name="red">#FF5252</color>
     <color name="transparent_dark">#12000000</color>
+    <color name="airing_blur_color">#73FFFFFF</color>
 
     <!--media status-->
     <string-array name="status_color">

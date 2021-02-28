@@ -40,7 +40,8 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                     MediaBrowseModel().also { model ->
                         model.mediaId = it.id()
                         model.title = it.title()?.fragments()?.mediaTitle()?.toModel()
-                        model.coverImage = it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
+                        model.coverImage =
+                            it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
                         model.mediaListStatus = it.mediaListEntry()?.status()?.ordinal
                         model.bannerImage = it.bannerImage() ?: model.coverImage?.largeImage
                         model.popularity = it.popularity()
@@ -49,7 +50,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                         model.seasonYear = it.seasonYear()
                         model.type = it.type()?.ordinal
                         it.nextAiringEpisode()?.let {
-                            model.airingTimeModel = AiringTimeModel().also {timeModel->
+                            model.airingTimeModel = AiringTimeModel().also { timeModel ->
                                 timeModel.airingAt = AiringAtModel(
                                     LocalDateTime.ofInstant(
                                         Instant.ofEpochSecond(
@@ -272,7 +273,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                 }
                             }
 
-                            model.trendsEntry = model.trends?.sortedBy { it.date }?.pmap {
+                            model.trendsEntries = model.trends?.sortedBy { it.date }?.pmap {
                                 Entry(it.date!!.toFloat(), it.trending?.toFloat() ?: 0f)
                             }
 
@@ -292,6 +293,27 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                     }
                                 }
 
+                            model.airingTrends =
+                                media.airingTrends()?.nodes()?.filter { it.episode() != null }
+                                    ?.pmap { trends ->
+                                        AiringTrendsModel(
+                                            trends.episode()!!.toFloat(),
+                                            trends.averageScore()?.toFloat() ?: 0f,
+                                            trends.inProgress()?.toFloat() ?: 0f
+                                        )
+                                    }?.sortedBy { it.episode }
+
+                            model.airingTrends?.let {trends->
+                                val airingWatchersProgressionEntries = mutableListOf<Entry>()
+                                val airingScoreProgressionEntries = mutableListOf<Entry>()
+                                trends.forEach {
+                                    airingWatchersProgressionEntries.add(Entry(it.episode, it.inProgress))
+                                    airingScoreProgressionEntries.add(Entry(it.episode, it.averageScore))
+                                }
+
+                                model.airingWatchersProgressionEntries = airingWatchersProgressionEntries
+                                model.airingScoreProgressionEntries = airingScoreProgressionEntries
+                            }
                         }
                     }
                 }

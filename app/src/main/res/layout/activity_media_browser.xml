@@ -189,10 +189,9 @@
                             android:layout_marginBottom="16dp"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:textAllCaps="true"
                             android:textSize="15sp"
                             app:ads_colorType="accent"
-                            app:fontFamily="@font/cabin_semi_bold"
+                            app:fontFamily="@font/cabincondensed_medium"
                             app:layout_constraintBottom_toTopOf="@+id/media_add_layout"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image" />

@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
@@ -18,6 +18,8 @@ import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowseActivity
+import com.revolgenx.anilib.app.theme.contrastAccentWithBg
+import com.revolgenx.anilib.app.theme.dynamicTintSurfaceColor
 import com.revolgenx.anilib.data.field.media.MediaStatsField
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
@@ -52,7 +54,7 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
         MediaStatusDistributionPresenter(requireContext())
     }
 
-    private var rankingAdapter:Adapter? = null
+    private var rankingAdapter: Adapter? = null
 
     private val listOfScores by lazy {
         listOf(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
@@ -63,8 +65,10 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
     }
 
     private val mediaListStatusColors by lazy {
-        requireContext().resources.getStringArray(R.array.media_list_status_color).map { Color.parseColor(it) }
+        requireContext().resources.getStringArray(R.array.media_list_status_color)
+            .map { Color.parseColor(it) }
     }
+
     companion object {
         const val visibleToUserKey = "visibleToUserKey"
 
@@ -82,7 +86,7 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
         super.onViewCreated(view, savedInstanceState)
         val span =
             if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
-        binding.rankingRecyclerView.layoutManager =  GridLayoutManager(
+        binding.rankingRecyclerView.layoutManager = GridLayoutManager(
             this.context,
             span
         ).also {
@@ -97,7 +101,8 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
             }
         }
 
-        binding.statusDistributionRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
+        binding.statusDistributionRecyclerView.layoutManager =
+            FlexboxLayoutManager(requireContext())
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -163,17 +168,9 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
                 .into(statusDistributionRecyclerView)
         }
 
-        data.trendsEntry?.let { entries ->
+        data.trendsEntries?.let { entries ->
             LineDataSet(entries, "").apply {
-                mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-                lineWidth = 2f
-                valueTextColor = DynamicTheme.getInstance().get().tintSurfaceColor
-                color = DynamicTheme.getInstance().get().tintAccentColor
-                fillColor = DynamicTheme.getInstance().get().tintAccentColor
-                fillAlpha = 255
-                setDrawCircleHole(false)
-                setDrawCircles(false)
-                setDrawFilled(true)
+                styleIt()
                 valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
                         return value.toInt().prettyNumberFormat()
@@ -181,42 +178,15 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
                 }
             }.let { set ->
                 activityPerDayLineChart.let { perDay ->
-                    perDay.setTouchEnabled(false)
-                    perDay.axisRight.isEnabled = false
-                    perDay.setGridBackgroundColor(DynamicTheme.getInstance().get().tintAccentColor)
-                    perDay.axisLeft.let { left ->
-                        left.setDrawLabels(true); // no axis labels
-                        left.setDrawAxisLine(false); // no axis line
-                        left.setDrawGridLines(true); // no grid lines
-                        left.setDrawZeroLine(false)
-                        left.isGranularityEnabled = false
-                        left.axisMinimum = 0f
-                        left.labelCount = 4
-                        left.typeface =
-                            ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
-                        left.textSize = 10f
-                        left.textColor = DynamicTheme.getInstance().get().tintSurfaceColor
-                    }
-
-                    perDay.xAxis.apply {
-                        setDrawGridLines(false)
-                        setDrawAxisLine(false)
-                        valueFormatter = object : ValueFormatter() {
-                            override fun getFormattedValue(value: Float): String {
-                                return LocalDateTime.ofInstant(
-                                    Instant.ofEpochSecond(value.toLong()),
-                                    ZoneId.systemDefault()
-                                ).dayOfMonth.toString()
-                            }
+                    perDay.styleIt()
+                    perDay.xAxis.valueFormatter = object : ValueFormatter() {
+                        override fun getFormattedValue(value: Float): String {
+                            return LocalDateTime.ofInstant(
+                                Instant.ofEpochSecond(value.toLong()),
+                                ZoneId.systemDefault()
+                            ).dayOfMonth.toString()
                         }
-                        position = XAxis.XAxisPosition.BOTTOM
-                        gridLineWidth = 2f
-                        typeface = ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
-                        textColor = DynamicTheme.getInstance().get().tintSurfaceColor
                     }
-
-                    perDay.description = null
-
                     perDay.data = LineData(set)
                     perDay.invalidate()
                 }
@@ -224,8 +194,62 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
         }
 
 
+        if (data.airingScoreProgressionEntries.isNullOrEmpty()) {
+            View.GONE.let {
+                airingScoreProgressionHeader.visibility = it
+                airingScoreProgressionLineChart.visibility = it
+            }
+        } else {
+            val set = LineDataSet(data.airingScoreProgressionEntries!!, "").apply {
+                styleIt()
+                valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return value.toInt().prettyNumberFormat()
+                    }
+                }
+            }
+            airingScoreProgressionLineChart.let { chart ->
+                chart.styleIt()
+                chart.xAxis.valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return value.toInt().toString()
+                    }
+                }
+                chart.data = LineData(set)
+                chart.invalidate()
+            }
+        }
+
+        if (data.airingWatchersProgressionEntries.isNullOrEmpty()) {
+            View.GONE.let {
+                airingWatcherProgressionHeader.visibility = it
+                airingWatcherProgressionLineChart.visibility = it
+            }
+        } else {
+            val set = LineDataSet(data.airingWatchersProgressionEntries, "").apply {
+                styleIt()
+                valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return value.toInt().prettyNumberFormat()
+                    }
+                }
+            }
+            airingWatcherProgressionLineChart.let { chart ->
+                chart.styleIt()
+                chart.xAxis.valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return value.toInt().toString()
+                    }
+                }
+                chart.data = LineData(set)
+                chart.invalidate()
+            }
+        }
+
+
         val statusTotalAmount = data.statusDistribution?.sumOf { it.amount!! }?.toFloat() ?: 1f
-        val statusPercentageAmount = data.statusDistribution?.map { it.amount!!.div(statusTotalAmount).times(100f)}
+        val statusPercentageAmount =
+            data.statusDistribution?.map { it.amount!!.div(statusTotalAmount).times(100f) }
         val statusColors = data.statusDistribution?.map { mediaListStatusColors[it.status!!] }
 
         val barEntry = listOf(BarEntry(0f, statusPercentageAmount?.toFloatArray()))
@@ -246,12 +270,13 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
             it.axisLeft.isEnabled = false
             it.xAxis.isEnabled = false
             it.description = null
-            it.setViewPortOffsets(0f,0f,0f,0f)
+            it.setViewPortOffsets(0f, 0f, 0f, 0f)
             it.minOffset = 0f
-            it.setExtraOffsets(0f,0f,0f,0f)
+            it.setExtraOffsets(0f, 0f, 0f, 0f)
             it.data = BarData(barDataSet)
             it.invalidate()
         }
+
 
         val scores = data.scoreDistribution?.map { it.score!! } ?: emptyList()
 
@@ -302,5 +327,43 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
             }
 
         }
+    }
+
+    private fun LineChart.styleIt() {
+        axisRight.isEnabled = false
+        setGridBackgroundColor(contrastAccentWithBg)
+        axisLeft.let { left ->
+            left.setDrawLabels(true); // no axis labels
+            left.setDrawAxisLine(false); // no axis line
+            left.setDrawGridLines(true); // no grid lines
+            left.setDrawZeroLine(false)
+            left.isGranularityEnabled = false
+            left.typeface =
+                ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
+            left.textSize = 10f
+            left.textColor = dynamicTintSurfaceColor
+        }
+
+        xAxis.apply {
+            setDrawGridLines(false)
+            setDrawAxisLine(false)
+            position = XAxis.XAxisPosition.BOTTOM
+            gridLineWidth = 2f
+            typeface = ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_regular)
+            textColor = dynamicTintSurfaceColor
+        }
+        description = null
+    }
+
+    private fun LineDataSet.styleIt() {
+        mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+        lineWidth = 2f
+        valueTextColor = dynamicTintSurfaceColor
+        color = contrastAccentWithBg
+        fillColor = contrastAccentWithBg
+        fillAlpha = 255
+        setDrawCircleHole(false)
+        setDrawCircles(false)
+        setDrawFilled(true)
     }
 }

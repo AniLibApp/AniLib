@@ -23,14 +23,13 @@
             android:id="@+id/main_bottom_nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:labelVisibilityMode="unlabeled"
-            app:ads_textColorType="accent"
             app:ads_colorType="background"
             app:ads_contrastWithColorType="background"
-            />
+            app:ads_textColorType="accent"
+            app:labelVisibilityMode="unlabeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -41,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:fitsSystemWindows="false"
         android:theme="@style/Widget.DynamicApp.NavigationView.ThemeOverlay" />
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicDrawerLayout>
+

@@ -1,12 +1,14 @@
 package com.revolgenx.anilib.data.field.home
 
 import android.content.Context
+import com.revolgenx.anilib.MediaQuery
 import com.revolgenx.anilib.data.field.TagField
 import com.revolgenx.anilib.data.field.media.MediaField
 import com.revolgenx.anilib.common.preference.getSeasonField
 import com.revolgenx.anilib.common.preference.storeSeasonField
 import com.revolgenx.anilib.common.preference.storeSeasonGenre
 import com.revolgenx.anilib.common.preference.storeSeasonTag
+import com.revolgenx.anilib.type.MediaSort
 
 
 class SeasonField : MediaField() {
@@ -16,6 +18,8 @@ class SeasonField : MediaField() {
 
     var tagTagFields = mutableMapOf<String, TagField>()
     var genreTagFields = mutableMapOf<String, TagField>()
+
+    var showHeader:Boolean = true
 
     fun saveSeasonField(context: Context) {
         storeSeasonField(context, this)
@@ -59,7 +63,29 @@ class SeasonField : MediaField() {
             this.formatsIn = it.formatsIn
             this.sort = it.sort
             this.status = it.status
+            this.showHeader = it.showHeader
         }
     }
+
+
+    override fun toQueryOrMutation(): MediaQuery {
+        return MediaQuery.builder()
+            .builder()
+            .apply {
+                if (showHeader) {
+                    if (sort != null) {
+                        sort(listOf(MediaSort.FORMAT, MediaSort.values()[sort!!]))
+                    } else {
+                        sort(listOf(MediaSort.FORMAT))
+                    }
+                } else {
+                    sort?.let {
+                        sort(listOf(MediaSort.values()[it]))
+                    }
+                }
+            }
+            .build()
+    }
+
 
 }

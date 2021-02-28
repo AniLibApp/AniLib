@@ -18,7 +18,7 @@ import com.revolgenx.anilib.util.dp
 class IndicatorTextView : DynamicLinearLayout {
 
     private var indicator: View
-    private var textView: DynamicTextView
+    var textView: DynamicTextView
 
     var text: String = ""
         set(value) {

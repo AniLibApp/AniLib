@@ -5,5 +5,5 @@ enum class MediaListDisplayMode {
 }
 
 enum class AiringListDisplayMode{
-    COMPACT, NORMAL
+    COMPACT, NORMAL, MINIMAL_LIST
 }

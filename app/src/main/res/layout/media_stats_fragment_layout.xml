@@ -21,9 +21,7 @@
             style="@style/MediaBrowseTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="@dimen/stats_header_margin"
             android:text="@string/rankings" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
@@ -31,85 +29,90 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/MediaBrowseTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_margin="@dimen/stats_header_margin"
+            android:text="@string/recent_act_per_day" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                style="@style/MediaBrowseTitleStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/recent_act_per_day" />
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/activityPerDayLineChart"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:padding="@dimen/stats_chart_padding" />
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/activityPerDayLineChart"
-                android:layout_width="match_parent"
-                android:layout_height="220dp" />
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/airing_score_progression_header"
+            style="@style/MediaBrowseTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_margin="@dimen/stats_header_margin"
+            android:text="@string/airing_score_progression" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                style="@style/MediaBrowseTitleStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/status_distribution" />
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/airing_score_progression_line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:padding="@dimen/stats_chart_padding" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/status_distribution_recycler_View"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"/>
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginTop="4dp"
-                app:cardUseCompatPadding="true">
-
-                <com.github.mikephil.charting.charts.HorizontalBarChart
-                    android:id="@+id/status_distribution_bar_chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/airing_watcher_progression_header"
+            style="@style/MediaBrowseTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_margin="@dimen/stats_header_margin"
+            android:text="@string/airing_watchers_progression" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                style="@style/MediaBrowseTitleStyle"
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/airing_watcher_progression_line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:padding="@dimen/stats_chart_padding" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/MediaBrowseTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/stats_header_margin"
+            android:text="@string/status_distribution" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/status_distribution_recycler_View"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="@dimen/stats_chart_padding" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="4dp"
+            android:padding="@dimen/stats_chart_padding"
+            app:cardUseCompatPadding="true">
+
+            <com.github.mikephil.charting.charts.HorizontalBarChart
+                android:id="@+id/status_distribution_bar_chart"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/score_distribution" />
+                android:layout_height="match_parent" />
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/scoreDistributionBarChart"
-                android:layout_width="match_parent"
-                android:layout_height="280dp" />
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/MediaBrowseTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/stats_header_margin"
+            android:text="@string/score_distribution" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/scoreDistributionBarChart"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:padding="@dimen/stats_chart_padding"
+            android:layout_marginBottom="10dp"/>
 
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
