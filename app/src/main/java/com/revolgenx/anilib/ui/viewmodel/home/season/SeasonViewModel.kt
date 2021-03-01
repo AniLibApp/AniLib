@@ -37,11 +37,11 @@ class SeasonViewModel(private val service: MediaService) :
 
     fun isHeaderEnabled(checked:Boolean){
         compositeDisposable.clear()
-        field.showHeader = checked
+        field.showFormatHeader = checked
     }
 
     fun isHeaderEnabled(): Boolean {
-        return field.showHeader
+        return field.showFormatHeader
     }
 
 }
