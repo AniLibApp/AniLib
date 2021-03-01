@@ -38,7 +38,6 @@ object AppUpdater {
                 override fun onSuccess(update: Update?, isUpdateAvailable: Boolean?) {
                     loadingDialog?.dismiss()
                     if (update != null) {
-                        Timber.d(update.latestVersion)
                         if (update.latestVersion > getUpdateVersion(context) || (isUpdateAvailable == true && manualCheck)) {
                             setUpdateVersion(update.latestVersion)
                             with(MessageDialog.Companion.Builder()) {

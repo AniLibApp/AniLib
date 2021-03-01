@@ -19,7 +19,7 @@ class SeasonField : MediaField() {
     var tagTagFields = mutableMapOf<String, TagField>()
     var genreTagFields = mutableMapOf<String, TagField>()
 
-    var showHeader:Boolean = true
+    var showFormatHeader:Boolean = true
 
     fun saveSeasonField(context: Context) {
         storeSeasonField(context, this)
@@ -63,7 +63,7 @@ class SeasonField : MediaField() {
             this.formatsIn = it.formatsIn
             this.sort = it.sort
             this.status = it.status
-            this.showHeader = it.showHeader
+            this.showFormatHeader = it.showFormatHeader
         }
     }
 
@@ -72,7 +72,7 @@ class SeasonField : MediaField() {
         return MediaQuery.builder()
             .builder()
             .apply {
-                if (showHeader) {
+                if (showFormatHeader) {
                     if (sort != null) {
                         sort(listOf(MediaSort.FORMAT, MediaSort.values()[sort!!]))
                     } else {

@@ -121,7 +121,7 @@ fun getSeasonField(context: Context) = SeasonField().apply {
     sort = context.getInt(SEASON_SORT_KEY, DEFAULT_SORT).takeIf { it > -1 }
     tags = context.sharedPreference().getStringSet(SEASON_TAGS_KEY, emptySet())!!.toList()
     genres = context.sharedPreference().getStringSet(SEASON_GENRES_KEY, emptySet())!!.toList()
-    showHeader = context.getBoolean(SEASON_HEADER_KEY, true)
+    showFormatHeader = context.getBoolean(SEASON_HEADER_KEY, false)
 }
 
 fun getTrendingField(context: Context) = TrendingMediaField().apply {
