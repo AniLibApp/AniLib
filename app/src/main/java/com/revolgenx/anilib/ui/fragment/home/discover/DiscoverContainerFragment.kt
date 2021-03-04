@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
@@ -63,6 +64,17 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
         discoverNotificationIv.setOnClickListener {
             BrowseNotificationEvent().postEvent
         }
+        binding.discoverContainerViewPager.addOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+                when(position){
+                    1,2->{
+                        discoverContainerAppBar.setExpanded(true,true)
+                    }
+                }
+            }
+        })
     }
 
 }

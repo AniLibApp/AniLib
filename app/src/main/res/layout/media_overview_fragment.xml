@@ -50,7 +50,8 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/mediaSourceTv"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:subtitleAlignCenter="true" />
+                        app:subtitleAlignCenter="true"
+                        app:titleAlignCenter="true"/>
 
                     <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/mediaSourceTv"
@@ -61,7 +62,8 @@
                         app:layout_constraintLeft_toRightOf="@id/mediaFormatTv"
                         app:layout_constraintRight_toLeftOf="@id/mediaEpisodeTv"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:subtitleAlignCenter="true" />
+                        app:subtitleAlignCenter="true"
+                        app:titleAlignCenter="true"/>
 
                     <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/mediaEpisodeTv"
@@ -72,7 +74,8 @@
                         app:layout_constraintLeft_toRightOf="@id/mediaSourceTv"
                         app:layout_constraintRight_toLeftOf="@id/mediaDurationTv"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:subtitleAlignCenter="true" />
+                        app:subtitleAlignCenter="true"
+                        app:titleAlignCenter="true" />
 
                     <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/mediaDurationTv"
@@ -84,7 +87,8 @@
                         app:layout_constraintLeft_toRightOf="@id/mediaEpisodeTv"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:subtitleAlignCenter="true" />
+                        app:subtitleAlignCenter="true"
+                        app:titleAlignCenter="true" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
