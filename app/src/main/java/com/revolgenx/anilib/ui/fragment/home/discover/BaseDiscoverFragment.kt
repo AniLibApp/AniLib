@@ -123,7 +123,7 @@ abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutB
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
             it.textSize = 16f
-            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)
+            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.cabincondensed_medium)
             it.setDrawables(
                 icon,
                 R.drawable.ic_angle_right
