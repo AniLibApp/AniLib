@@ -20,7 +20,8 @@
             app:ads_windowInsets="false"
             android:fitsSystemWindows="false">
 
-            <com.paulrybitskyi.persistentsearchview.PersistentSearchView
+
+            <com.revolgenx.anilib.ui.view.search.DynamicPersistentSearchView
                 android:id="@+id/persistentSearchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

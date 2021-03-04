@@ -2,28 +2,47 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ads_colorType="primary"
+        android:fitsSystemWindows="false"
         app:ads_backgroundAware="disable"
+        app:ads_windowInsets="false"
+        app:ads_colorType="primary"
         app:elevation="0dp">
 
-        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
-            android:id="@+id/list_tab_layout"
-            style="@style/DynamicTextTabLayoutStyle"
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            app:ads_backgroundColorType="background"
-            app:ads_colorType="accent"
-            app:ads_contrastWithColorType="background"
-            app:ads_textColorType="tint_primary"
-            app:entries="@array/music_entries"
-            app:tabTextAppearance="@style/RadioTabLayoutTextStyle"
-            app:layout_scrollFlags="noScroll"/>
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:ads_colorType="primary"
+            app:ads_backgroundAware="disable"
+            app:layout_scrollFlags="scroll|enterAlways">
 
+            <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="false"
+                app:ads_colorType="background">
+
+
+                <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
+                    android:id="@+id/list_tab_layout"
+                    style="@style/DynamicTextTabLayoutStyle"
+                    android:layout_width="match_parent"
+                    app:ads_backgroundColorType="background"
+                    app:ads_colorType="accent"
+                    app:ads_contrastWithColorType="background"
+                    app:ads_textColorType="tint_primary"
+                    app:entries="@array/music_entries"
+                    app:layout_scrollFlags="noScroll"
+                    app:tabTextAppearance="@style/RadioTabLayoutTextStyle" />
+            </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 

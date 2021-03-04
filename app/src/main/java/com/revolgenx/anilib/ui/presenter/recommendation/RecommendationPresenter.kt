@@ -12,6 +12,7 @@ import com.apollographql.apollo.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
@@ -265,19 +266,16 @@ class RecommendationPresenter(
     }
 
     private fun RecommendationPresenterLayoutBinding.updateRecommendationLikeView(item: RecommendationModel) {
-        recommendationLikeIv.imageTintList = ColorStateList.valueOf(Color.WHITE)
-        recommendationDislikeIv.imageTintList = ColorStateList.valueOf(Color.WHITE)
-        recommendationRatingTv.setTextColor(Color.WHITE)
+        recommendationLikeIv.colorType = Theme.ColorType.TEXT_PRIMARY
+        recommendationDislikeIv.colorType = Theme.ColorType.TEXT_PRIMARY
         recommendationRatingTv.text = item.rating?.toString()
 
         when (item.userRating) {
             RecommendationRating.RATE_UP.ordinal -> {
-                recommendationLikeIv.imageTintList =
-                    ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
+                recommendationLikeIv.colorType = Theme.ColorType.ACCENT
             }
             RecommendationRating.RATE_DOWN.ordinal -> {
-                recommendationDislikeIv.imageTintList =
-                    ColorStateList.valueOf(DynamicTheme.getInstance().get().accentColor)
+                recommendationDislikeIv.colorType =Theme.ColorType.ACCENT
             }
         }
     }

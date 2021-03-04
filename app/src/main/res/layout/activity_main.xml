@@ -22,7 +22,7 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicBottomNavigationView
             android:id="@+id/main_bottom_nav_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/toolbar_size"
             app:ads_colorType="background"
             app:ads_contrastWithColorType="background"
             app:ads_textColorType="accent"

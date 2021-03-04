@@ -128,9 +128,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
         checkIsFromShortcut()
 
-        if (savedInstanceState == null) {
-            checkForUpdate()
-        }
     }
 
 
@@ -235,11 +232,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         })
 
     }
-
-    private fun checkForUpdate(manualCheck: Boolean = false) {
-        AppUpdater.startAppUpdater(this, supportFragmentManager, manualCheck)
-    }
-
 
     private fun updateSharedPreference() {
         if (!isSharedPreferenceSynced(context)) {

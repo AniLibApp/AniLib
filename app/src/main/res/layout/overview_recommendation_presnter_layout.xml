@@ -97,7 +97,6 @@
             android:id="@+id/mediaRecommendationLikeIv"
             android:layout_width="24dp"
             android:layout_height="match_parent"
-            android:background="?selectableItemBackground"
             android:padding="6dp"
             android:src="@drawable/ic_thumb_up"
             app:ads_colorType="text_primary"
@@ -108,7 +107,6 @@
             android:id="@+id/mediaRecommendationDislikeIv"
             android:layout_width="24dp"
             android:layout_height="match_parent"
-            android:background="?selectableItemBackground"
             android:padding="6dp"
             android:src="@drawable/ic_thumb_down"
             app:ads_colorType="text_primary"/>

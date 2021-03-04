@@ -109,7 +109,7 @@ object ThemeController {
             .setAccentColor(AppController.instance.colorAccentApp)
             .setBackgroundColor(backgroundColor)
             .setSurfaceColor(Theme.AUTO).autoGenerateColors()
-            .setCornerRadiusDp(6f);
+            .setCornerRadiusDp(8f);
     }
 
     /**
@@ -122,7 +122,7 @@ object ThemeController {
             .setAccentColor(AppController.instance.colorAccentApp)
             .setBackgroundColor(backgroundColor)
             .setSurfaceColor(Theme.AUTO).autoGenerateColors()
-            .setCornerRadiusDp(6f)
+            .setCornerRadiusDp(8f)
     }
 
 
