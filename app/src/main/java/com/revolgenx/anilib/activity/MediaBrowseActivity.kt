@@ -177,11 +177,6 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
                 SUCCESS -> {
                     browseMediaBrowseModel = it.data
 
-                    browseMediaBrowseModel?.mediaListStatus?.let {
-                        binding.mediaAddButton.text =
-                            resources.getStringArray(R.array.media_list_status)[it]
-                    }
-
                     if (mediaBrowserMeta.coverImage == null || mediaBrowserMeta.bannerImage == null) {
                         mediaBrowserMeta.coverImage = it.data?.coverImage?.large ?: ""
                         mediaBrowserMeta.coverImageLarge = it.data?.coverImage?.largeImage
@@ -203,11 +198,11 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
 
         setSupportActionBar(binding.mediaBrowserToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        binding.updateView()
 
         binding.initListener()
         binding.initTabLayout()
         binding.updateTheme()
+        binding.updateView()
 
         val animeBrowserList = listOf(
             MediaOverviewFragment().apply {
@@ -275,9 +270,12 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
             if (it.status == SUCCESS) {
                 val data = it.data ?: return@observe
                 browseMediaBrowseModel?.mediaListStatus = data.status
-                browseMediaBrowseModel?.mediaListStatus?.let {
-                    binding.mediaAddButton.text =
-                        resources.getStringArray(R.array.media_list_status)[it]
+                browseMediaBrowseModel?.mediaListStatus?.let {status->
+                    if(loadLegacyMediaBrowseTheme()){
+                        binding.updateLegacyListStatusView(status)
+                    }else{
+                        binding.updateListStatusView(status)
+                    }
                 }
             }
         }
@@ -311,10 +309,24 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
 
     }
 
+    private fun ActivityMediaBrowserBinding.updateListStatusView(status: Int) {
+        mediaAddButton.text =
+            resources.getStringArray(R.array.media_list_status)[status]
+    }
+    private fun ActivityMediaBrowserBinding.updateLegacyListStatusView(it: Int) {
+        legacyMediaAddButton.text =
+            resources.getStringArray(R.array.media_list_status)[it]
+    }
+
+
     private fun ActivityMediaBrowserBinding.updateTheme() {
         if (loadLegacyMediaBrowseTheme()) {
             mediaBrowseContentLayout.visibility = View.GONE
             legacyMediaBrowseContentLayout.visibility = View.VISIBLE
+            legacyBlurLayout.background = DynamicBackgroundGradientDrawable(
+                orientation = GradientDrawable.Orientation.BOTTOM_TOP,
+                alpha = 200
+            )
             setToolbarTheme()
         } else {
             mediaBrowseContentLayout.visibility = View.VISIBLE
@@ -336,8 +348,10 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
             legacyMediaBrowserCoverImage.setImageURI(mediaBrowserMeta.coverImage)
             legacyMediaBrowserBannerImage.setImageURI(mediaBrowserMeta.bannerImage)
 
+            browseMediaBrowseModel?.mediaListStatus?.let {
+                updateLegacyListStatusView(it)
+            }
         } else {
-
             mediaTitleTv.text = mediaBrowserMeta.title
             mediaBrowserCoverImage.setImageURI(mediaBrowserMeta.coverImage)
             mediaBrowserBannerImage.setImageURI(mediaBrowserMeta.bannerImage)
@@ -355,6 +369,10 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
                     seasonYearTv.visibility = View.GONE
                 }
 
+                model.mediaListStatus?.let {
+                    binding.updateListStatusView(it)
+                }
+
                 model.airingTimeModel?.let {
                     mediaAiringAtTv.text = getString(R.string.episode_airing_date).format(
                         it.episode,
@@ -366,6 +384,7 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
         }
 
     }
+
 
 
     private fun ActivityMediaBrowserBinding.initTabLayout() {

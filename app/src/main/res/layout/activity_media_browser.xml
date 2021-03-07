@@ -1,443 +1,448 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/browserRootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    app:layout_constraintBottom_toTopOf="@+id/browse_media_tab_layout"
+    app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+        android:id="@+id/appbarLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        app:layout_constraintBottom_toTopOf="@+id/browse_media_tab_layout"
-        app:layout_constraintTop_toTopOf="parent">
+        app:ads_backgroundAware="disable"
+        app:ads_colorType="background"
+        app:ads_contrastWithColorType="none"
+        app:ads_windowInsets="false"
+        app:expanded="true">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
-            android:id="@+id/appbarLayout"
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout
+            android:id="@+id/media_browser_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            app:ads_backgroundAware="disable"
-            app:ads_colorType="background"
-            app:ads_contrastWithColorType="none"
             app:ads_windowInsets="false"
-            app:expanded="true">
+            app:contentScrim="@android:color/transparent"
+            app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="@android:color/transparent">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout
-                android:id="@+id/media_browser_collapsing_toolbar"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/media_browse_content_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
-                app:ads_windowInsets="false"
-                app:contentScrim="@android:color/transparent"
-                app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:statusBarScrim="@android:color/transparent">
+                android:fitsSystemWindows="true">
 
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/mediaBrowserBannerImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="360dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <FrameLayout
+                    android:id="@+id/collapsing_content_blur"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/mediaBrowserBannerImage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/media_browse_content_layout"
+                    android:id="@+id/collapsing_bar_content_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fitsSystemWindows="true">
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/mediaBrowserBannerImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="360dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <FrameLayout
-                        android:id="@+id/collapsing_content_blur"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/mediaBrowserBannerImage"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/collapsing_bar_content_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.facebook.drawee.view.SimpleDraweeView
-                            android:id="@+id/media_browser_cover_image"
-                            android:layout_width="126dp"
-                            android:layout_height="190dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:transitionName="media_cover_transition"
-                            app:layout_constraintBottom_toTopOf="@+id/media_add_layout"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="1.0"
-                            app:roundAsCircle="false"
-                            app:roundedCornerRadius="4dp" />
-
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                            android:id="@+id/media_title_tv"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="8dp"
-                            android:ellipsize="end"
-                            android:maxLines="2"
-                            android:paddingTop="8dp"
-                            android:textSize="20sp"
-                            app:ads_rtlSupport="false"
-                            app:fontFamily="@font/cabin_bold"
-                            app:layout_constraintBottom_toTopOf="@+id/season_year_tv"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image"
-                            app:layout_constraintTop_toTopOf="@+id/media_browser_cover_image"
-                            app:layout_constraintVertical_bias="1.0"
-                            app:layout_constraintVertical_chainStyle="packed" />
-
-
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                            android:id="@+id/season_year_tv"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginBottom="4dp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textSize="14sp"
-                            app:fontFamily="@font/cabin_medium"
-                            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image" />
-
-                        <LinearLayout
-                            android:id="@+id/linearLayout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toTopOf="@+id/media_airing_at_tv"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image">
-
-
-                            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                                android:id="@+id/mediaPopularIv"
-                                android:layout_width="12dp"
-                                android:layout_height="12dp"
-                                android:layout_gravity="center_vertical"
-                                app:ads_colorType="text_primary"
-                                app:srcCompat="@drawable/ic_popular" />
-
-
-                            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                                android:id="@+id/mediaPopularityTv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginStart="2dp"
-                                android:drawablePadding="4dp"
-                                android:includeFontPadding="false"
-                                android:maxLines="1"
-                                android:textSize="12sp"
-                                app:fontFamily="@font/cabincondensed_medium"
-                                tools:ignore="SmallSp" />
-
-
-                            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                                android:id="@+id/mediaFavIv"
-                                android:layout_width="12dp"
-                                android:layout_height="12dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginStart="8dp"
-                                app:ads_colorType="text_primary"
-                                app:srcCompat="@drawable/ic_favourite" />
-
-
-                            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                                android:id="@+id/mediaFavTv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginStart="2dp"
-                                android:drawablePadding="4dp"
-                                android:includeFontPadding="false"
-                                android:maxLines="1"
-                                android:textSize="12sp"
-                                app:fontFamily="@font/cabincondensed_medium"
-                                tools:ignore="SmallSp" />
-
-                        </LinearLayout>
-
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                            android:id="@+id/media_airing_at_tv"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textSize="15sp"
-                            app:ads_colorType="accent"
-                            app:fontFamily="@font/cabincondensed_medium"
-                            app:layout_constraintBottom_toTopOf="@+id/media_add_layout"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image" />
-
-
-                        <com.revolgenx.anilib.ui.view.widgets.misc.MediaBrowseAddLayout
-                            android:id="@+id/media_add_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="8dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_chainStyle="packed"
-                            app:layout_constraintStart_toStartOf="parent">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/media_add_container_layout"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:orientation="horizontal"
-                                android:paddingStart="16dp"
-                                android:paddingEnd="16dp">
-
-                                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                                    android:id="@+id/media_add_button"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center_vertical"
-                                    android:text="@string/add"
-                                    android:textSize="14sp"
-                                    app:fontFamily="@font/cabin_semi_bold"
-                                    app:layout_constraintEnd_toStartOf="@+id/media_add_more_iv"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    tools:layout_editor_absoluteY="0dp" />
-
-                                <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
-                                    android:id="@+id/media_add_more_iv"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginEnd="16dp"
-                                    app:ads_colorType="text_primary"
-                                    app:entries="@array/media_list_status"
-                                    app:layout_constraintEnd_toStartOf="@+id/media_add_divider"
-                                    app:srcCompat="@drawable/ads_ic_more_horizontal"
-                                    tools:layout_editor_absoluteY="0dp" />
-
-                                <View
-                                    android:id="@+id/media_add_divider"
-                                    android:layout_width="0.5dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginEnd="16dp"
-                                    android:background="@color/translucent_gray"
-                                    app:layout_constraintEnd_toStartOf="@id/media_review_button"
-                                    tools:layout_editor_absoluteY="4dp" />
-
-                                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                                    android:id="@+id/media_review_button"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="8dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:src="@drawable/ic_review"
-                                    app:layout_constraintEnd_toStartOf="@id/media_fav_button" />
-
-
-                                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                                    android:id="@+id/media_fav_button"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:src="@drawable/ic_not_favourite"
-                                    app:layout_constraintEnd_toEndOf="parent" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </com.revolgenx.anilib.ui.view.widgets.misc.MediaBrowseAddLayout>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/legacy_media_browse_content_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_collapseMode="none"
-                    android:layout_marginBottom="10dp">
-
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/legacyMediaBrowserBannerImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/legacy_media_browser_cover_image"
-                        android:layout_width="120dp"
-                        android:layout_height="175dp"
+                        android:id="@+id/media_browser_cover_image"
+                        android:layout_width="126dp"
+                        android:layout_height="190dp"
                         android:layout_marginStart="16dp"
+                        android:layout_marginBottom="16dp"
                         android:transitionName="media_cover_transition"
-                        app:layout_constraintBottom_toBottomOf="@id/legacyMediaBrowserBannerImage"
+                        app:layout_constraintBottom_toTopOf="@+id/media_add_layout"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/legacyMediaBrowserBannerImage"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0"
                         app:roundAsCircle="false"
                         app:roundedCornerRadius="4dp" />
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                        android:id="@+id/legacy_media_title_tv"
+                        android:id="@+id/media_title_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:paddingTop="8dp"
+                        android:textSize="20sp"
+                        app:ads_rtlSupport="false"
+                        app:fontFamily="@font/cabin_bold"
+                        app:layout_constraintBottom_toTopOf="@+id/season_year_tv"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image"
+                        app:layout_constraintTop_toTopOf="@+id/media_browser_cover_image"
+                        app:layout_constraintVertical_bias="1.0"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/season_year_tv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginBottom="4dp"
                         android:ellipsize="end"
-                        android:maxLines="2"
-                        android:shadowColor="@color/black"
-                        android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="2"
-                        android:textSize="20sp"
-                        app:ads_rtlSupport="false"
-                        app:fontFamily="@font/cabin_bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/legacyMediaBrowserBannerImage"
+                        android:maxLines="1"
+                        android:textSize="14sp"
+                        app:fontFamily="@font/cabin_medium"
+                        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/legacy_media_browser_cover_image"
-                        app:layout_constraintTop_toTopOf="@+id/legacy_media_browser_cover_image" />
+                        app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image" />
 
-
-                    <com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout
-                        android:id="@+id/media_add_stroke_layout"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/legacy_media_browser_cover_image"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toTopOf="@+id/media_airing_at_tv"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image">
+
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:id="@+id/mediaPopularIv"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="center_vertical"
+                            app:ads_colorType="text_primary"
+                            app:srcCompat="@drawable/ic_popular" />
+
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            android:id="@+id/mediaPopularityTv"
+                            tools:ignore="SmallSp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="2dp"
+                            android:drawablePadding="4dp"
+                            android:includeFontPadding="false"
+                            android:maxLines="1"
+                            android:textSize="12sp"
+                            app:fontFamily="@font/cabincondensed_medium" />
+
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:id="@+id/mediaFavIv"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="8dp"
+                            app:ads_colorType="text_primary"
+                            app:srcCompat="@drawable/ic_favourite" />
+
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            android:id="@+id/mediaFavTv"
+                            tools:ignore="SmallSp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="2dp"
+                            android:drawablePadding="4dp"
+                            android:includeFontPadding="false"
+                            android:maxLines="1"
+                            android:textSize="12sp"
+                            app:fontFamily="@font/cabincondensed_medium" />
+
+                    </LinearLayout>
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/media_airing_at_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textSize="15sp"
+                        app:ads_colorType="accent"
+                        app:fontFamily="@font/cabincondensed_medium"
+                        app:layout_constraintBottom_toTopOf="@+id/media_add_layout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/media_browser_cover_image" />
+
+
+                    <com.revolgenx.anilib.ui.view.widgets.misc.MediaBrowseAddLayout
+                        android:id="@+id/media_add_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_chainStyle="packed"
-                        app:layout_constraintStart_toEndOf="@+id/legacy_media_browser_cover_image"
-                        app:layout_constraintTop_toBottomOf="@+id/legacyMediaBrowserBannerImage">
+                        app:layout_constraintStart_toStartOf="parent">
 
-                        <LinearLayout
-                            android:id="@+id/legacy_media_add_container_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="42dp"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/media_add_container_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
                             android:orientation="horizontal"
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp">
 
                             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                                android:id="@+id/legacy_media_add_button"
+                                android:id="@+id/media_add_button"
+                                tools:layout_editor_absoluteY="0dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/ads_button_remote"
                                 android:gravity="center_vertical"
                                 android:text="@string/add"
                                 android:textSize="14sp"
-                                app:fontFamily="@font/cabin_semi_bold" />
+                                app:fontFamily="@font/cabin_semi_bold"
+                                app:layout_constraintEnd_toStartOf="@+id/media_add_more_iv"
+                                app:layout_constraintStart_toStartOf="parent" />
 
                             <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
-                                android:id="@+id/legacy_media_add_more_iv"
+                                android:id="@+id/media_add_more_iv"
+                                tools:layout_editor_absoluteY="0dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginEnd="8dp"
-                                android:background="@drawable/ads_button_remote"
+                                android:layout_marginEnd="16dp"
                                 app:ads_colorType="text_primary"
                                 app:entries="@array/media_list_status"
+                                app:layout_constraintEnd_toStartOf="@+id/media_add_divider"
                                 app:srcCompat="@drawable/ads_ic_more_horizontal" />
 
                             <View
+                                android:id="@+id/media_add_divider"
+                                tools:layout_editor_absoluteY="4dp"
                                 android:layout_width="0.5dp"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="6dp"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginEnd="6dp"
-                                android:layout_marginBottom="4dp"
-                                android:background="@color/translucent_gray" />
+                                android:layout_marginEnd="16dp"
+                                android:background="@color/translucent_gray"
+                                app:layout_constraintEnd_toStartOf="@id/media_review_button" />
 
                             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                                android:id="@+id/legacy_media_review_button"
+                                android:id="@+id/media_review_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginEnd="8dp"
-                                android:background="@drawable/ads_button_remote"
                                 android:src="@drawable/ic_review"
-                                app:ads_colorType="text_primary" />
+                                app:layout_constraintEnd_toStartOf="@id/media_fav_button" />
 
 
                             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                                android:id="@+id/legacy_media_fav_button"
+                                android:id="@+id/media_fav_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/ads_button_remote"
                                 android:src="@drawable/ic_not_favourite"
-                                app:ads_colorType="text_primary" />
+                                app:layout_constraintEnd_toEndOf="parent" />
 
-                        </LinearLayout>
-                    </com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout>
-
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.revolgenx.anilib.ui.view.widgets.misc.MediaBrowseAddLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
-                    android:id="@+id/media_browser_toolbar"
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/legacy_media_browse_content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:layout_collapseMode="none">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/legacyMediaBrowserBannerImage"
                     android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    app:ads_colorType="background"
-                    app:ads_textColorType="text_primary"
-                    app:contentInsetEnd="0dp"
-                    app:contentInsetLeft="0dp"
-                    app:contentInsetRight="0dp"
-                    app:contentInsetStart="0dp"
-                    app:contentInsetStartWithNavigation="0dp"
-                    app:layout_collapseMode="pin" />
+                    android:layout_height="200dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
-
-        </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+                <FrameLayout
+                    android:id="@+id/legacy_blur_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="@id/legacyMediaBrowserBannerImage"
+                    app:layout_constraintTop_toTopOf="@id/legacyMediaBrowserBannerImage" />
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager
-            android:id="@+id/browseMediaViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/legacy_media_browser_cover_image"
+                    android:layout_width="120dp"
+                    android:layout_height="175dp"
+                    android:layout_marginStart="16dp"
+                    android:transitionName="media_cover_transition"
+                    app:layout_constraintBottom_toBottomOf="@id/legacyMediaBrowserBannerImage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/legacyMediaBrowserBannerImage"
+                    app:roundAsCircle="false"
+                    app:roundedCornerRadius="4dp" />
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/legacy_media_title_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textSize="20sp"
+                    app:ads_rtlSupport="false"
+                    app:fontFamily="@font/cabin_bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/legacyMediaBrowserBannerImage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/legacy_media_browser_cover_image"
+                    app:layout_constraintTop_toTopOf="@+id/legacy_media_browser_cover_image" />
+
+
+                <com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout
+                    android:id="@+id/media_add_stroke_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/legacy_media_browser_cover_image"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/legacy_media_browser_cover_image"
+                    app:layout_constraintTop_toBottomOf="@+id/legacyMediaBrowserBannerImage">
+
+                    <LinearLayout
+                        android:id="@+id/legacy_media_add_container_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="42dp"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            android:id="@+id/legacy_media_add_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/ads_button_remote"
+                            android:gravity="center_vertical"
+                            android:text="@string/add"
+                            android:textSize="14sp"
+                            app:fontFamily="@font/cabincondensed_semi_bold" />
+
+                        <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
+                            android:id="@+id/legacy_media_add_more_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/ads_button_remote"
+                            app:ads_colorType="text_primary"
+                            app:entries="@array/media_list_status"
+                            app:srcCompat="@drawable/ads_ic_more_horizontal" />
+
+                        <View
+                            android:layout_width="0.5dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginBottom="4dp"
+                            android:background="@color/translucent_gray" />
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:id="@+id/legacy_media_review_button"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/ads_button_remote"
+                            android:padding="2dp"
+                            android:src="@drawable/ic_review"
+                            app:ads_colorType="text_primary" />
+
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:id="@+id/legacy_media_fav_button"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/ads_button_remote"
+                            android:padding="2dp"
+                            android:src="@drawable/ic_not_favourite"
+                            app:ads_colorType="text_primary" />
+
+                    </LinearLayout>
+                </com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+                android:id="@+id/media_browser_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:ads_colorType="background"
+                app:ads_textColorType="text_primary"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:layout_collapseMode="pin" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager
+        android:id="@+id/browseMediaViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
     <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicIconTabLayout
         android:id="@+id/browse_media_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:layout_gravity="bottom"
         app:ads_backgroundAware="disable"
         app:ads_textColorType="accent"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:tabMode="scrollable"
         app:tabTextAppearance="@style/MediaBrowseTabTextAppearance" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+

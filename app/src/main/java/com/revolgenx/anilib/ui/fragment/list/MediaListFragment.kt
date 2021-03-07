@@ -129,26 +129,6 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>(), Even
         }
     }
 
-
-//    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-//    fun onListEditorEvent(event: ListEditorResultEvent) {
-//        if (event.listEditorResultMeta.status != mediaListStatus) return
-//        event.listEditorResultMeta.let {
-//            if (it.progress == null) {
-//                viewModel.filteredList?.remove(viewModel.listMap[it.mediaId])
-//                viewModel.listMap.remove(it.mediaId)
-//                createSource()
-//                invalidateAdapter()
-//            } else {
-//                viewModel.listMap[it.mediaId]?.apply {
-//                    progress = it.progress
-//                }
-//                adapter?.notifyDataSetChanged()
-//            }
-//        }
-//        EventBus.getDefault().removeStickyEvent(event)
-//    }
-
     override fun onStop() {
         super.onStop()
         unRegisterForEvent()

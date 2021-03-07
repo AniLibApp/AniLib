@@ -72,6 +72,7 @@ class MediaListCollectionSource(
 
     private fun getFilteredList(): MutableList<MediaListModel> {
         val filter = field.filter
+
         return if (filter.formatsIn.isNullOrEmpty()) listMap.values else {
             listMap.values.filter {  filter.formatsIn!!.contains(it.format) }
         }.let {
@@ -80,10 +81,11 @@ class MediaListCollectionSource(
             if (filter.genre == null) it else it.filter { it.genres?.contains(filter.genre!!) == true }
         }.let {
             if (filter.search.isNullOrEmpty()) it else {
-                it.filter {
-                    it.title?.userPreferred?.contains(
-                        filter.search!!, true
-                    ) == true
+                it.filter { model->
+                    model.title!!.romaji?.contains(filter.search!!, true) == true ||
+                            model.title!!.english?.contains(filter.search!!, true) == true ||
+                            model.title!!.native?.contains(filter.search!!, true)  == true||
+                            model.synonyms?.any {  it.contains(filter.search!!, true)} == true
                 }
             }
         }.let {

@@ -57,9 +57,9 @@
                         android:paddingStart="6dp"
                         android:paddingEnd="6dp"
                         app:ads_colorType="text_primary"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
                         app:layout_constraintEnd_toStartOf="@id/list_notification_iv"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/list_tab_layout"
                         app:srcCompat="@drawable/ic_search" />
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -69,9 +69,9 @@
                         android:paddingStart="6dp"
                         android:paddingEnd="6dp"
                         app:ads_colorType="text_primary"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
                         app:layout_constraintEnd_toStartOf="@id/list_more_iv"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/list_tab_layout"
                         app:srcCompat="@drawable/ic_notification" />
 
                     <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
@@ -79,10 +79,50 @@
                         style="@style/TabOptionMenuStyle"
                         app:ads_colorType="text_primary"
                         app:entries="@array/list_option_menu"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/list_tab_layout"
                         app:srcCompat="@drawable/ads_ic_more" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/media_list_search_layout"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@+id/list_tab_layout"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constrainedWidth="true"
+                        >
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                            android:id="@+id/media_list_search_et"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:focusable="true"
+                            android:hint="@string/search"
+                            android:imeOptions="actionSearch"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toStartOf="@id/clear_text"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constrainedWidth="true"/>
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:id="@+id/clear_text"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:padding="12dp"
+                            app:ads_colorType="text_primary"
+                            app:srcCompat="@drawable/ads_ic_close"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

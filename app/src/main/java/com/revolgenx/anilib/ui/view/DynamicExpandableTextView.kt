@@ -1,12 +1,9 @@
 package com.revolgenx.anilib.ui.view
 
 import android.content.Context
-import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.pranavpandey.android.dynamic.utils.DynamicDrawableUtils
 import com.revolgenx.anilib.R

@@ -18,9 +18,9 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_colorType="primary"
-            app:ads_backgroundAware="disable"
             android:fitsSystemWindows="true"
+            app:ads_backgroundAware="disable"
+            app:ads_colorType="primary"
             app:layout_scrollFlags="scroll|enterAlways">
 
 
@@ -88,6 +88,114 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+        android:id="@+id/season_filter_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        app:ads_backgroundAware="disable"
+        app:ads_colorType="background"
+        app:ads_contrastWithColorType="none"
+        app:ads_windowInsets="false"
+        app:elevation="0dp"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_size">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/season_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:paddingStart="10dp"
+                android:textSize="15sp"
+                app:fontFamily="@font/roboto_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                android:id="@+id/season_previous_iv"
+                style="@style/TabOptionMenuStyle"
+                app:ads_colorType="text_primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/season_next_iv"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_angle_left" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                android:id="@+id/season_next_iv"
+                style="@style/TabOptionMenuStyle"
+                app:ads_colorType="text_primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/season_filter_iv"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_angle_right" />
+
+            <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
+                android:id="@+id/season_filter_iv"
+                style="@style/TabOptionMenuStyle"
+                app:ads_colorType="text_primary"
+                app:entries="@array/season_filter_entries"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_filter" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+        android:id="@+id/recommendation_filter_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        app:ads_backgroundAware="disable"
+        app:ads_colorType="background"
+        app:ads_contrastWithColorType="none"
+        app:ads_windowInsets="false"
+        app:elevation="0dp"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/toolbar_size"
+            android:orientation="horizontal">
+
+            <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+                android:id="@+id/recommendation_on_list_check_box"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                app:ads_key="RECOMMENDATION_ON_LIST_KEY"
+                app:ads_title="@string/on_list"
+                app:text_size="14sp" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/FilterHeaderKeyTextStyle"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="@string/sort" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                android:id="@+id/recommendation_sort_spinner"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:entries="@array/recommendation_sort" />
+
+        </LinearLayout>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
