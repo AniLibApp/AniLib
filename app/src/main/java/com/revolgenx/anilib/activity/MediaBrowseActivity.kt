@@ -317,8 +317,8 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
             mediaBrowseContentLayout.visibility = View.GONE
             legacyMediaBrowseContentLayout.visibility = View.VISIBLE
             legacyBlurLayout.background = DynamicBackgroundGradientDrawable(
-                orientation = GradientDrawable.Orientation.BOTTOM_TOP,
-                alpha = 200
+                orientation = GradientDrawable.Orientation.LEFT_RIGHT,
+                alpha = 180
             )
             setToolbarTheme()
         } else {

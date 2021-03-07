@@ -2,9 +2,9 @@
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
     app:layout_constraintBottom_toTopOf="@+id/browse_media_tab_layout"
     app:layout_constraintTop_toTopOf="parent">
@@ -140,7 +140,6 @@
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                             android:id="@+id/mediaPopularityTv"
-                            tools:ignore="SmallSp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -149,7 +148,8 @@
                             android:includeFontPadding="false"
                             android:maxLines="1"
                             android:textSize="12sp"
-                            app:fontFamily="@font/cabincondensed_medium" />
+                            app:fontFamily="@font/cabincondensed_medium"
+                            tools:ignore="SmallSp" />
 
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -164,7 +164,6 @@
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                             android:id="@+id/mediaFavTv"
-                            tools:ignore="SmallSp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -173,7 +172,8 @@
                             android:includeFontPadding="false"
                             android:maxLines="1"
                             android:textSize="12sp"
-                            app:fontFamily="@font/cabincondensed_medium" />
+                            app:fontFamily="@font/cabincondensed_medium"
+                            tools:ignore="SmallSp" />
 
                     </LinearLayout>
 
@@ -215,7 +215,6 @@
 
                             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                                 android:id="@+id/media_add_button"
-                                tools:layout_editor_absoluteY="0dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:gravity="center_vertical"
@@ -223,27 +222,28 @@
                                 android:textSize="14sp"
                                 app:fontFamily="@font/cabin_semi_bold"
                                 app:layout_constraintEnd_toStartOf="@+id/media_add_more_iv"
-                                app:layout_constraintStart_toStartOf="parent" />
+                                app:layout_constraintStart_toStartOf="parent"
+                                tools:layout_editor_absoluteY="0dp" />
 
                             <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
                                 android:id="@+id/media_add_more_iv"
-                                tools:layout_editor_absoluteY="0dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="16dp"
                                 app:ads_colorType="text_primary"
                                 app:entries="@array/media_list_status"
                                 app:layout_constraintEnd_toStartOf="@+id/media_add_divider"
-                                app:srcCompat="@drawable/ads_ic_more_horizontal" />
+                                app:srcCompat="@drawable/ads_ic_more_horizontal"
+                                tools:layout_editor_absoluteY="0dp" />
 
                             <View
                                 android:id="@+id/media_add_divider"
-                                tools:layout_editor_absoluteY="4dp"
                                 android:layout_width="0.5dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="16dp"
                                 android:background="@color/translucent_gray"
-                                app:layout_constraintEnd_toStartOf="@id/media_review_button" />
+                                app:layout_constraintEnd_toStartOf="@id/media_review_button"
+                                tools:layout_editor_absoluteY="4dp" />
 
                             <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                                 android:id="@+id/media_review_button"
@@ -317,9 +317,13 @@
                     android:layout_marginBottom="4dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:textSize="20sp"
+                    android:shadowColor="@color/text_shadow"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"
+                    android:textSize="18sp"
                     app:ads_rtlSupport="false"
-                    app:fontFamily="@font/cabin_bold"
+                    app:fontFamily="@font/cabin_regular"
                     app:layout_constraintBottom_toBottomOf="@+id/legacyMediaBrowserBannerImage"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/legacy_media_browser_cover_image"
