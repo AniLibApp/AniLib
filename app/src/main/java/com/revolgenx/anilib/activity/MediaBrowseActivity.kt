@@ -69,13 +69,6 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
     private val seasons by lazy {
         resources.getStringArray(R.array.media_season)
     }
-    private val formats by lazy {
-        resources.getStringArray(R.array.media_format)
-    }
-    private val sources by lazy {
-        resources.getStringArray(R.array.media_source)
-    }
-
 
     private val viewModel by viewModel<MediaBrowserViewModel>()
     private val pageChangeListener by lazy {

@@ -34,6 +34,7 @@ import com.revolgenx.anilib.util.unRegisterForEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.math.abs
 
 class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>(), EventBusListener {
 
@@ -49,6 +50,8 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
 
     private val animeListStatusWithCount = mutableMapOf<Int, String>()
     private val mangaListStatusWithCount = mutableMapOf<Int, String>()
+
+    private var scrollState:Int = ViewPager.SCROLL_STATE_IDLE
 
     private val mangaListStatus by lazy {
         requireContext().resources.getStringArray(R.array.manga_list_status)
@@ -76,6 +79,11 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
             super.onPageSelected(position)
             binding.showSearchET(false)
             binding.updateFabText()
+        }
+
+        override fun onPageScrollStateChanged(state: Int) {
+            super.onPageScrollStateChanged(state)
+            scrollState = state
         }
     }
 
@@ -222,9 +230,17 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
 
 
         mediaListSearchEt.doOnTextChanged { text, _, _, _ ->
-            getViewPagerFragment(listViewPager.currentItem) {
-                searchQuery(text?.toString()?:"")
+            if(scrollState == ViewPager.SCROLL_STATE_DRAGGING || scrollState == ViewPager.SCROLL_STATE_SETTLING ){
+                getViewPagerFragment(abs(listViewPager.currentItem -1) ) {
+                    searchQuery(text?.toString() ?: "")
+                }
+
+            }else{
+                getViewPagerFragment(listViewPager.currentItem) {
+                    searchQuery(text?.toString() ?: "")
+                }
             }
+
         }
 
         clearText.setOnClickListener {
@@ -254,11 +270,14 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
             val searchLayoutIsVisible = mediaListSearchLayout.isVisible
             mediaListSearchLayout.visibility =
                 if (searchLayoutIsVisible) {
-                    mediaListSearchEt.setText("")
-                    mediaListSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
+                    if (!mediaListSearchEt.text.isNullOrBlank()) {
+                        mediaListSearchEt.setText("")
+                    }
                     View.GONE
                 } else {
-                    mediaListSearchEt.setText("")
+                    if (!mediaListSearchEt.text.isNullOrBlank()) {
+                        mediaListSearchEt.setText("")
+                    }
                     mediaListSearchEt.requestFocus()
                     (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
                         mediaListSearchEt,
@@ -269,27 +288,29 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         } else {
             if (b == true) {
                 mediaListSearchLayout.visibility = View.VISIBLE
-                mediaListSearchEt.setText("")
+                if (!mediaListSearchEt.text.isNullOrBlank()) {
+                    mediaListSearchEt.setText("")
+                }
                 mediaListSearchEt.requestFocus()
                 (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
                     mediaListSearchEt,
                     0
                 )
             } else {
-                mediaListSearchEt.setText("")
-                mediaListSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
+                if (!mediaListSearchEt.text.isNullOrBlank()) {
+                    mediaListSearchEt.setText("")
+                }
                 mediaListSearchLayout.visibility = View.GONE
                 return
             }
         }
     }
 
-    private fun getViewPagerFragment(pos: Int, func:MediaListContainerFragment.()->Unit) =
+    private fun getViewPagerFragment(pos: Int, func: MediaListContainerFragment.() -> Unit) =
         (childFragmentManager.findFragmentByTag("android:switcher:${R.id.list_view_pager}:$pos") as? MediaListContainerFragment)?.func()
 
 
-
-    private fun ListContainerFragmentBinding.updateTheme(){
+    private fun ListContainerFragmentBinding.updateTheme() {
         listExtendedFab.isAllowExtended = true
         listExtendedFab.isExtended = true
         mediaListSearchEt.typeface =
