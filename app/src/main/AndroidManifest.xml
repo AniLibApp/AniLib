@@ -28,7 +28,9 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan"
+            />
 
         <activity android:name=".activity.MediaBrowseActivity"
             android:windowSoftInputMode="adjustPan"

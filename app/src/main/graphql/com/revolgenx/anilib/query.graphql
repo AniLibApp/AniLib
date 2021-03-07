@@ -675,7 +675,7 @@ query MediaListCollectionQuery(
                 media{
                     id
                     title{
-                        userPreferred
+                        ... mediaTitle
                     }
                     coverImage{
                         large
@@ -686,6 +686,7 @@ query MediaListCollectionQuery(
                     endDate{
                         ... fuzzyDate
                     }
+                    synonyms
                     format
                     status
                     genres

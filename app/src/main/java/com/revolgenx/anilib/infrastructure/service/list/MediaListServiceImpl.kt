@@ -51,9 +51,7 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                                     model.mediaId = media.id()
                                     model.episodes = media.episodes()?.toString()
                                     model.chapters = media.chapters()?.toString()
-                                    model.title = media.title()?.userPreferred()?.let {
-                                        TitleModel().apply { userPreferred = it }
-                                    }
+                                    model.title = media.title()?.fragments()?.mediaTitle()?.toModel()
                                     model.coverImage = media.coverImage()?.large()?.let {
                                         CoverImageModel().apply { large = it }
                                     }
@@ -67,6 +65,7 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                                     model.genres = media.genres()
                                     model.format = media.format()?.ordinal
                                     model.status = media.status()?.ordinal
+                                    model.synonyms = media.synonyms()
                                 }
                             }
                         }?.let { mediaList ->

@@ -12,6 +12,7 @@
 
 
     <dimen name="toolbar_size">48dp</dimen>
+    <dimen name="bottom_scroll_behavior_margin">96dp</dimen>
 
     <dimen name="discover_media_width">155dp</dimen>
     <dimen name="discover_media_height">248dp</dimen>

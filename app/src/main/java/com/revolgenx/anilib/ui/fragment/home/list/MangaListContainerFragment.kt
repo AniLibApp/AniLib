@@ -52,11 +52,6 @@ class MangaListContainerFragment : MediaListContainerFragment() {
                 }
             }
 
-            is ListEvent.ListSearchEvent -> {
-                if(isMangaType(event.listType)) {
-                    showSearchET()
-                }
-            }
         }
     }
 

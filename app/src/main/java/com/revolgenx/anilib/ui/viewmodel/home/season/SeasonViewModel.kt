@@ -9,8 +9,7 @@ import com.revolgenx.anilib.ui.viewmodel.SourceViewModel
 class SeasonViewModel(private val service: MediaService) :
     SourceViewModel<MediaSource, SeasonField>() {
 
-    override var field: SeasonField =
-        SeasonField()
+    override var field: SeasonField = SeasonField()
 
     override fun createSource(): MediaSource {
         source = MediaSource(
@@ -26,12 +25,12 @@ class SeasonViewModel(private val service: MediaService) :
     }
 
     fun nextSeason(context: Context) {
-        compositeDisposable.clear()
+        dispose()
         field.nextSeason(context)
     }
 
     fun previousSeason(context: Context) {
-        compositeDisposable.clear()
+        dispose()
         field.previousSeason(context)
     }
 
@@ -42,6 +41,10 @@ class SeasonViewModel(private val service: MediaService) :
 
     fun isHeaderEnabled(): Boolean {
         return field.showFormatHeader
+    }
+
+    fun dispose(){
+        compositeDisposable.clear()
     }
 
 }

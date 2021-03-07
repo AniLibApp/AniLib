@@ -1,8 +1,15 @@
 package com.revolgenx.anilib.ui.fragment.home.list
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.revolgenx.anilib.R
@@ -16,7 +23,6 @@ import com.revolgenx.anilib.data.model.list.MediaListCountTypeModel
 import com.revolgenx.anilib.databinding.ListContainerFragmentBinding
 import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.infrastructure.repository.util.Status
-import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.bottomsheet.list.MediaListFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
@@ -68,6 +74,7 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
     private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
+            binding.showSearchET(false)
             binding.updateFabText()
         }
     }
@@ -115,10 +122,7 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
 
             prepareListStatusString(null)
             updateFabText()
-            listExtendedFab.isAllowExtended = true
-            listExtendedFab.isExtended = true
-
-
+            updateTheme()
 
             viewModel.listCountLiveData.observe(viewLifecycleOwner) {
                 when (it.status) {
@@ -170,11 +174,14 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
     }
 
     private fun updateCurrentListStatus(currentStatus: Int) {
+        binding.showSearchET(false)
+
         if (currentListPage == 0) {
             recentAnimeListStatus(requireContext(), currentStatus)
         } else {
             recentMangaListStatus(requireContext(), currentStatus)
         }
+
     }
 
     private fun ListContainerFragmentBinding.initListener() {
@@ -182,7 +189,7 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         listTabLayout.setupWithViewPager(listViewPager)
 
         listSearchIv.setOnClickListener {
-            ListEvent.ListSearchEvent(currentListPage).postEvent
+            showSearchET()
         }
 
         initFabListener();
@@ -214,11 +221,81 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         }
 
 
+        mediaListSearchEt.doOnTextChanged { text, _, _, _ ->
+            getViewPagerFragment(listViewPager.currentItem) {
+                searchQuery(text?.toString()?:"")
+            }
+        }
+
+        clearText.setOnClickListener {
+            val mediaSearchEt = mediaListSearchEt
+            if (mediaSearchEt.text.isNullOrEmpty()) {
+                showSearchET(false)
+            } else {
+                mediaSearchEt.setText("")
+                mediaSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
+            }
+        }
+
+        mediaListSearchEt.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId != EditorInfo.IME_ACTION_SEARCH) return@setOnEditorActionListener false
+
+            getViewPagerFragment(listViewPager.currentItem) {
+                searchQuery(mediaListSearchEt.text?.toString() ?: "")
+            }
+            true
+        }
+
     }
 
-    private fun getViewPagerFragment(pos: Int) =
-        childFragmentManager.findFragmentByTag("android:switcher:${R.id.list_view_pager}:$pos") as? MediaListContainerFragment
 
+    private fun ListContainerFragmentBinding.showSearchET(b: Boolean? = null) {
+        if (b == null) {
+            val searchLayoutIsVisible = mediaListSearchLayout.isVisible
+            mediaListSearchLayout.visibility =
+                if (searchLayoutIsVisible) {
+                    mediaListSearchEt.setText("")
+                    mediaListSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
+                    View.GONE
+                } else {
+                    mediaListSearchEt.setText("")
+                    mediaListSearchEt.requestFocus()
+                    (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
+                        mediaListSearchEt,
+                        0
+                    )
+                    View.VISIBLE
+                }
+        } else {
+            if (b == true) {
+                mediaListSearchLayout.visibility = View.VISIBLE
+                mediaListSearchEt.setText("")
+                mediaListSearchEt.requestFocus()
+                (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
+                    mediaListSearchEt,
+                    0
+                )
+            } else {
+                mediaListSearchEt.setText("")
+                mediaListSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
+                mediaListSearchLayout.visibility = View.GONE
+                return
+            }
+        }
+    }
+
+    private fun getViewPagerFragment(pos: Int, func:MediaListContainerFragment.()->Unit) =
+        (childFragmentManager.findFragmentByTag("android:switcher:${R.id.list_view_pager}:$pos") as? MediaListContainerFragment)?.func()
+
+
+
+    private fun ListContainerFragmentBinding.updateTheme(){
+        listExtendedFab.isAllowExtended = true
+        listExtendedFab.isExtended = true
+        mediaListSearchEt.typeface =
+            ResourcesCompat.getFont(requireContext(), R.font.cabin_regular)
+
+    }
 
     private fun ListContainerFragmentBinding.updateFabText() {
         val status = if (currentListPage == 0) {
@@ -230,6 +307,7 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         }
         listExtendedFab.text = status
     }
+
 
     private fun prepareListStatusString(listStatusCountModel: List<MediaListCountTypeModel>?) {
 
@@ -251,11 +329,13 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
             listStatusCountModel?.firstOrNull { it.type == MediaType.MANGA.ordinal }
 
         animeListStatusCountModel?.mediaListCountModels?.forEach {
-            animeListStatusWithCount[it.status] = statusWithCountFormat.format(animeListStatus[it.status], it.count)
+            animeListStatusWithCount[it.status] =
+                statusWithCountFormat.format(animeListStatus[it.status], it.count)
         }
 
         mangaListStatusCountModel?.mediaListCountModels?.forEach {
-            mangaListStatusWithCount[it.status] = statusWithCountFormat.format(mangaListStatus[it.status], it.count)
+            mangaListStatusWithCount[it.status] =
+                statusWithCountFormat.format(mangaListStatus[it.status], it.count)
         }
     }
 

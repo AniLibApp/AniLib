@@ -1,21 +1,10 @@
 package com.revolgenx.anilib.ui.fragment.home.list
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.pranavpandey.android.dynamic.support.popup.DynamicArrayPopup
-import com.pranavpandey.android.dynamic.support.popup.DynamicPopup
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.common.preference.loadMediaListFilter
 import com.revolgenx.anilib.common.preference.storeMediaListFilterField
@@ -25,8 +14,6 @@ import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.data.meta.MediaListFilterMeta
 import com.revolgenx.anilib.data.model.list.MediaListModel
-import com.revolgenx.anilib.databinding.BasePresenterFragmentLayoutBinding
-import com.revolgenx.anilib.databinding.MediaListContainerFragmentBinding
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
 import com.revolgenx.anilib.ui.presenter.home.discover.MediaListCollectionPresenter
@@ -49,8 +36,6 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
         get() = viewModel.mediaListViewModel.source ?: createSource()
 
     private val viewModel by viewModel<MediaListContainerViewModel>()
-    private var _mediaListBinding: MediaListContainerFragmentBinding? = null
-    protected val mediaListBinding get() = _mediaListBinding!!
 
     override var gridMaxSpan: Int = 4
     override var gridMinSpan: Int = 2
@@ -73,47 +58,10 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
 
     fun setCurrentStatus(status: Int) {
         viewModel.mediaListViewModel.field.filter.search = null
-        showSearchET(false)
         viewModel.currentListStatus = status
         invalidateAdapter()
     }
 
-    fun showSearchET(b: Boolean? = null) {
-        mediaListBinding.mediaListSearchEt.let {
-            if (b == null) {
-                val searchLayoutIsVisible = mediaListBinding.mediaListSearchLayout.isVisible
-                mediaListBinding.mediaListSearchLayout.visibility =
-                    if (searchLayoutIsVisible) {
-                        mediaListBinding.mediaListSearchEt.setText("")
-                        mediaListBinding.mediaListSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
-                        View.GONE
-                    } else {
-                        mediaListBinding.mediaListSearchEt.setText("")
-                        mediaListBinding.mediaListSearchEt.requestFocus()
-                        (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
-                            mediaListBinding.mediaListSearchEt,
-                            0
-                        )
-                        View.VISIBLE
-                    }
-            } else {
-                if (b == true) {
-                    mediaListBinding.mediaListSearchLayout.visibility = View.VISIBLE
-                    mediaListBinding.mediaListSearchEt.setText("")
-                    mediaListBinding.mediaListSearchEt.requestFocus()
-                    (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
-                        mediaListBinding.mediaListSearchEt,
-                        0
-                    )
-                } else {
-                    mediaListBinding.mediaListSearchEt.setText("")
-                    mediaListBinding.mediaListSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
-                    mediaListBinding.mediaListSearchLayout.visibility = View.GONE
-                    return
-                }
-            }
-        }
-    }
 
     override fun reloadLayoutManager() {
         var span =
@@ -179,28 +127,6 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val v = super.onCreateView(inflater, container, savedInstanceState)
-        _mediaListBinding = MediaListContainerFragmentBinding.inflate(inflater, container, false)
-        mediaListBinding.mediaListLinearLayout.addView(v)
-        mediaListBinding.mediaListSearchEt.typeface =
-            ResourcesCompat.getFont(requireContext(), R.font.cabin_regular)
-        mediaListBinding.clearText.setOnClickListener {
-            val mediaSearchEt = mediaListBinding.mediaListSearchEt
-            if (mediaSearchEt.text.isNullOrEmpty()) {
-                showSearchET(false)
-            } else {
-                mediaSearchEt.setText("")
-                mediaSearchEt.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
-            }
-        }
-        return mediaListBinding.root
-    }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 
@@ -215,15 +141,6 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
             invalidateAdapter()
         }
 
-        mediaListBinding.mediaListSearchEt.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId != EditorInfo.IME_ACTION_SEARCH) return@setOnEditorActionListener false
-
-            viewModel.mediaListViewModel.field.filter.search =
-                mediaListBinding.mediaListSearchEt.text?.toString() ?: ""
-            createSource()
-            invalidateAdapter()
-            true
-        }
 
         if (savedInstanceState == null) {
             with(viewModel.mediaListField) {
@@ -248,9 +165,11 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
 
     }
 
-    override fun onDestroyView() {
-        _mediaListBinding = null
-        super.onDestroyView()
+
+    fun searchQuery(query:String){
+        viewModel.mediaListViewModel.field.filter.search = query
+        createSource()
+        invalidateAdapter()
     }
 
     fun filterList(mediaListFilterMeta: MediaListFilterMeta) {
@@ -272,11 +191,4 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
     }
 
 }
-
-//interface MediaListCallbackInterface {
-//    fun getStatusName(): String
-//    fun getStatus(): Array<out String>
-//    fun setCurrentStatus(status: Int)
-//    fun filterList(mediaListFilterMeta: MediaListFilterMeta)
-//}
 

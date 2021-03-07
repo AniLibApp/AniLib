@@ -50,11 +50,6 @@ class AnimeListContainerFragment : MediaListContainerFragment(){
                     filterList(event.meta)
                 }
             }
-            is ListEvent.ListSearchEvent -> {
-                if(isAnimeType(event.listType)) {
-                    showSearchET()
-                }
-            }
         }
     }
 
