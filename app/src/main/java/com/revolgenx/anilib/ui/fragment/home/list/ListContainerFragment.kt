@@ -102,13 +102,13 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         ListEvent.ListFilterChangedEvent(currentListPage, event.meta).postEvent
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (!visibleToUser) {
-            visibleToUser = true
-            viewModel.getListStatusCount()
-        }
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        if (!visibleToUser) {
+//            visibleToUser = true
+//            viewModel.getListStatusCount()
+//        }
+//    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -330,34 +330,41 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
     }
 
 
+    // uncomment it if api endpoint is fixed
     private fun prepareListStatusString(listStatusCountModel: List<MediaListCountTypeModel>?) {
-
-        val statusWithCountFormat = getString(R.string.status_with_count_format)
-
         animeListStatus.forEachIndexed { i, post ->
             animeListStatusWithCount[i] =
-                statusWithCountFormat.format(post, 0)
+                post
         }
         mangaListStatus.forEachIndexed { i, post ->
-            mangaListStatusWithCount[i] =
-                statusWithCountFormat.format(post, 0)
+            mangaListStatusWithCount[i] = post
         }
+//        val statusWithCountFormat = getString(R.string.status_with_count_format)
 
-        val animeListStatusCountModel =
-            listStatusCountModel?.firstOrNull { it.type == MediaType.ANIME.ordinal }
+//        animeListStatus.forEachIndexed { i, post ->
+//            animeListStatusWithCount[i] =
+//                statusWithCountFormat.format(post, 0)
+//        }
+//        mangaListStatus.forEachIndexed { i, post ->
+//            mangaListStatusWithCount[i] =
+//                statusWithCountFormat.format(post, 0)
+//        }
 
-        val mangaListStatusCountModel =
-            listStatusCountModel?.firstOrNull { it.type == MediaType.MANGA.ordinal }
-
-        animeListStatusCountModel?.mediaListCountModels?.forEach {
-            animeListStatusWithCount[it.status] =
-                statusWithCountFormat.format(animeListStatus[it.status], it.count)
-        }
-
-        mangaListStatusCountModel?.mediaListCountModels?.forEach {
-            mangaListStatusWithCount[it.status] =
-                statusWithCountFormat.format(mangaListStatus[it.status], it.count)
-        }
+//        val animeListStatusCountModel =
+//            listStatusCountModel?.firstOrNull { it.type == MediaType.ANIME.ordinal }
+//
+//        val mangaListStatusCountModel =
+//            listStatusCountModel?.firstOrNull { it.type == MediaType.MANGA.ordinal }
+//
+//        animeListStatusCountModel?.mediaListCountModels?.forEach {
+//            animeListStatusWithCount[it.status] =
+//                statusWithCountFormat.format(animeListStatus[it.status], it.count)
+//        }
+//
+//        mangaListStatusCountModel?.mediaListCountModels?.forEach {
+//            mangaListStatusWithCount[it.status] =
+//                statusWithCountFormat.format(mangaListStatus[it.status], it.count)
+//        }
     }
 
     private fun getRecentListStatus() =
