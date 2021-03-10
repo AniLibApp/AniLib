@@ -3,6 +3,14 @@
     <string name="release_info" translatable="false">
         ## Whats new!!!. \n
 
+        ### -v1.1.9 \n
+        * Full Screen Navigation. \n
+        * Home description changes. \n
+        * Anime/Manga Stats changes. \n
+        * Added Tag Description, Synonyms \n
+        * UI changes \n
+        * etc \n
+
         ### -v1.1.8 \n
         * Moved all screen to front. \n
         * Added Watching and Planning Airing Schedule Filtering\n

@@ -464,6 +464,7 @@
     <string name="include_already_aired">Include Already Aired</string>
     <string name="add_remove_tags">Add/Remove Tags</string>
     <string name="add_remove_genre">Add/Remove Genre</string>
+    <string name="add_remove_streaming_on">Add/Remove Streaming On</string>
     <string name="anilist_and_manga"><![CDATA[Anime & Manga]]></string>
     <string name="title_language">Title Language</string>
     <string name="airing_anime_notifications">Airing Anime Notifications</string>
