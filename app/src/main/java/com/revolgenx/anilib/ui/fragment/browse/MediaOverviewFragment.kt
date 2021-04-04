@@ -27,6 +27,9 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaBrowseActivity
+import com.revolgenx.anilib.common.preference.enableAutoMlTranslation
+import com.revolgenx.anilib.common.preference.enableMlTranslation
+import com.revolgenx.anilib.common.preference.inUseMlLanguageModel
 import com.revolgenx.anilib.constant.*
 import com.revolgenx.anilib.infrastructure.event.BrowseStudioEvent
 import com.revolgenx.anilib.data.field.media.MediaOverviewField
@@ -50,8 +53,10 @@ import com.revolgenx.anilib.ui.presenter.media.MediaOverviewCharacterPresenter
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.ui.view.airing.AiringEpisodeView
+import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.media.MediaOverviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>() {
 
@@ -104,6 +109,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
 
     private var metaLinkAdapter: Adapter? = null
     private var metaContainerAdapter: Adapter? = null
+
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -226,12 +232,8 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             englishTitle.visibility = View.GONE
         }
 
-        if (overview.description.isNullOrBlank()) {
-            mediaDescriptionTv.setText(R.string.no_description)
-        } else {
-            MarkwonImpl.createHtmlInstance(requireContext())
-                .setMarkdown(mediaDescriptionTv, overview.description!!)
-        }
+
+        setDescription(overview.description)
 
         mediaFormatTv.subtitle = overview.format?.let {
             requireContext().resources.getStringArray(
@@ -408,6 +410,74 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
         }
 
 
+    }
+
+    private fun MediaOverviewFragmentBinding.setDescription(description: String?) {
+
+        if (description.isNullOrBlank()) {
+            translateSwitch.visibility = View.GONE
+            showTranslatedByGoogle(false)
+            mediaDescriptionTv.setText(R.string.no_description)
+            return
+        }
+
+        val enableMlTranslation = enableMlTranslation(requireContext())
+        val isInUseModel = inUseMlLanguageModel(requireContext())
+
+        if (enableMlTranslation) {
+            if (isInUseModel.isEmpty()) {
+                translateSwitch.visibility = View.GONE
+                showTranslatedByGoogle(false)
+                setMarkdownDescription(description)
+            } else {
+                translateSwitch.visibility = View.VISIBLE
+                translateSwitch.setOnCheckedChangeListener(null)
+                val enableAutoTranslate = enableAutoMlTranslation(requireContext())
+                translateSwitch.isChecked = enableAutoTranslate
+
+                if (enableAutoTranslate) {
+                    translateDescription(description)
+                } else {
+                    showTranslatedByGoogle(false)
+                    setMarkdownDescription(description)
+                }
+
+                translateSwitch.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        translateDescription(description)
+                    } else {
+                        showTranslatedByGoogle(isChecked)
+                        setMarkdownDescription(description)
+                    }
+                }
+            }
+        } else {
+            translateSwitch.visibility = View.GONE
+            showTranslatedByGoogle(false)
+            setMarkdownDescription(description)
+        }
+    }
+
+    private fun MediaOverviewFragmentBinding.setMarkdownDescription(
+        description: String
+    ) {
+        MarkwonImpl.createHtmlInstance(requireContext())
+            .setMarkdown(mediaDescriptionTv, description)
+    }
+
+    private fun translateDescription(description: String) {
+        binding.mediaDescriptionTv.text = getString(R.string.translating)
+        viewModel.translationStore.translate(requireContext(), description)
+            .observe(viewLifecycleOwner) {
+                if (it != null) {
+                    binding.mediaDescriptionTv.text = it
+                    showTranslatedByGoogle(true)
+                }
+            }
+    }
+
+    private fun showTranslatedByGoogle(b: Boolean) {
+        binding.translatedByGoogleSign.visibility = if (b) View.VISIBLE else View.GONE
     }
 
 

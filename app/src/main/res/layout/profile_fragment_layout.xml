@@ -42,37 +42,8 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <!--                <FrameLayout-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="?actionBarSize"-->
-                <!--                    app:layout_constraintTop_toTopOf="parent">-->
 
-
-                <!--                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView-->
-                <!--                        android:id="@+id/user_profile_more_iv"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="match_parent"-->
-                <!--                        app:ads_color="@color/translucent_dark"-->
-                <!--                        android:paddingEnd="8dp"-->
-                <!--                        android:paddingStart="8dp"-->
-                <!--                        app:ads_colorType="custom"-->
-                <!--                        android:layout_gravity="end|center_vertical"-->
-                <!--                        app:srcCompat="@drawable/ic_more_circle" />-->
-
-
-                <!--                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView-->
-                <!--                        android:id="@+id/user_profile_back_iv"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="match_parent"-->
-                <!--                        android:visibility="gone"-->
-                <!--                        app:ads_colorType="tint_primary"-->
-                <!--                        android:paddingStart="8dp"-->
-                <!--                        android:paddingEnd="8dp"-->
-                <!--                        android:layout_gravity="start|center_vertical"-->
-                <!--                        app:srcCompat="@drawable/ads_ic_back" />-->
-                <!--                </FrameLayout>-->
-
-                <com.revolgenx.anilib.radio.ui.view.CircleSimpleDraweeView
+                <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/user_avatar_iv"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -80,7 +51,8 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/user_banner_iv"
-                    app:showBorder="true" />
+                    app:roundAsCircle="true"
+                    app:roundingBorderWidth="1dp" />
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                     android:id="@+id/username_tv"

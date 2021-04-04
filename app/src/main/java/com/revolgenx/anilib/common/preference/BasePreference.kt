@@ -16,7 +16,7 @@ fun Context.putString(key: String, value: String? = "") =
 fun Context.getString(key: String, def: String = "") = sharedPreference().getString(key, def)
 
 fun Context.putInt(key: String, value: Int = -1) =
-    sharedPreference().edit().putInt(key, value).apply()
+        sharedPreference().edit().putInt(key, value).apply()
 
 fun Context.getInt(key: String, def: Int) = sharedPreference().getInt(key, def)
 

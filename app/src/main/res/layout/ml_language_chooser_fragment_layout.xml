@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicProgressBar
+        android:id="@+id/ml_loading_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminate="true"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ml_languages_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

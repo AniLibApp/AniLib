@@ -63,6 +63,15 @@
             app:ads_title="@string/filter" />
 
         <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/translation_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ads_ic_translate"
+            android:layout_marginTop="6dp"
+            app:ads_title="@string/translation_setting" />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
             android:id="@+id/aboutItemView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

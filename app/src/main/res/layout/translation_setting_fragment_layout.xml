@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <com.revolgenx.anilib.ui.view.preference.AniLibSpinnerPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:ads_description="@string/preferred_application_language"
+            app:ads_entries="@array/application_language_entries"
+            app:ads_icon="@drawable/ic_language"
+            app:ads_key="@string/application_language_key"
+            app:ads_title="@string/application_language"
+            app:ads_value="0"
+            app:ads_values="@array/application_language_values" />
+
+        <include layout="@layout/divider_layout" />
+
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/translate_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ads_button_remote"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ads_ic_translate"
+            app:ads_title="@string/translate"
+            app:ads_subtitle="@string/translate_desc"/>
+
+        <include layout="@layout/divider_layout" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+            android:id="@+id/enable_misc_translate_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/enabled_misc_translation"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+            android:id="@+id/enable_auto_translation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/enable_auto_translation"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/misc_translate_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/g_translate"
+            app:ads_subtitle="@string/misc_translation_desc"
+            app:ads_title="@string/misc_translation" />
+
+
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
