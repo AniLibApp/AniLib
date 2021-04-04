@@ -521,4 +521,21 @@
     <string name="show_headers">Show Headers</string>
     <string name="show_headers_desc">Show media format headers.</string>
 
+    <string name="widget_airing_at_format">E: %1$d · T: %2$s · ETA: %3$dh %4$dm %5$ds</string>
+    <string name="translation_setting">Translation</string>
+    <string name="misc_translation">Misc. Translation</string>
+    <string name="misc_translation_desc">Google Translate (Used to translate Media Description, Character Description, etc.)</string>
+    <string name="available_languages">Available Languages</string>
+    <string name="translate_desc">Want to help translate this app?</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="user_as_default">Set this as default?</string>
+    <string name="download_the_language_model">Download the language model first to use it.</string>
+    <string name="remove_from_default">Remove from default?</string>
+    <string name="download_this_model">Download this model?</string>
+    <string name="enabled_misc_translation">Enable Misc. Translation</string>
+    <string name="enable_auto_translation">Enable Auto Translation</string>
+    <string name="failed_to_download_language_model">Failed to download language model.</string>
+    <string name="failed_to_translate">Failed to translate.</string>
+    <string name="select_a_language_model">Select a language model first.</string>
+    <string name="translating">Translating…</string>
 </resources>

@@ -10,6 +10,7 @@ import com.revolgenx.anilib.data.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.data.model.MediaOverviewModel
 import com.revolgenx.anilib.data.model.MediaRecommendationModel
 import com.revolgenx.anilib.data.model.UpdateRecommendationModel
+import com.revolgenx.anilib.data.store.TranslationStore
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.media.MediaBrowseService
 import com.revolgenx.anilib.infrastructure.service.recommendation.RecommendationService
@@ -30,6 +31,7 @@ class MediaOverviewViewModel(
         mutableMapOf<Int, MediaRecommendationModel>()
     }
 
+    val translationStore = TranslationStore()
 
     val mediaOverviewLiveData by lazy {
         MediatorLiveData<Resource<MediaOverviewModel>>().apply {

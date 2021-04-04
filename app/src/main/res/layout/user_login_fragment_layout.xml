@@ -72,16 +72,6 @@
                 app:ads_title="@string/discord" />
 
             <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-                android:id="@+id/translate_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/ads_button_remote"
-                app:ads_colorType="text_primary"
-                app:ads_icon="@drawable/ads_ic_translate"
-                app:ads_title="@string/translate" />
-
-            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
                 android:id="@+id/sign_in_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

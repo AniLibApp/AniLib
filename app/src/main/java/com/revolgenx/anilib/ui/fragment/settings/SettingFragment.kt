@@ -98,6 +98,16 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
             )
         }
 
+        binding.translationSetting.setOnClickListener {
+            ToolbarContainerActivity.openActivity(
+                requireContext(),
+                ParcelableFragment(
+                    TranslationSettingFragment::class.java,
+                    null
+                )
+            )
+        }
+
         binding.aboutItemView.setOnClickListener {
             startActivity(Intent(requireContext(), AboutActivity::class.java))
         }

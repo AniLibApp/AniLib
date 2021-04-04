@@ -119,11 +119,32 @@
             </intent-filter>
         </service>
 
+
+
+        <!--Widget-->
+
+        <receiver android:name=".appwidget.widget.AiringScheduleWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/airing_schedule_widget_config"
+                />
+
+        </receiver>
+
+
+        <service android:name=".appwidget.service.AiringScheduleRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
+        <!--Widget-->
+
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
             tools:node="remove" />
-
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Build
 import android.provider.Settings
@@ -18,9 +19,12 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.preference.PreferenceFragmentCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
@@ -34,6 +38,9 @@ import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.BaseDynamicActivity
 import com.revolgenx.anilib.databinding.DynamicToastViewLayoutBinding
+import com.revolgenx.anilib.ui.bottomsheet.DynamicBottomSheetFragment
+import com.revolgenx.anilib.ui.dialog.MessageDialog
+import com.revolgenx.anilib.util.AppUpdater
 
 private val tintSurface by lazy {
     DynamicTheme.getInstance().get().tintSurfaceColor
@@ -168,5 +175,31 @@ inline fun is29(func:()->Unit){
 inline fun isGestureNavigationEnabled(contentResolver: ContentResolver, func:()->Unit){
     if(Settings.Secure.getInt(contentResolver, "navigation_mode", 0) == 2){
         func()
+    }
+}
+
+
+fun makeConfirmationDialog(ctx:Context, titleRes:Int=R.string.confirmation , messageRes:Int = R.string.are_you_sure, positiveRes:Int = R.string.yes, negativeRes:Int = R.string.no, onConfirmListener:()->Unit){
+    MessageDialog.Companion.Builder().let {it->
+        it.titleRes = titleRes
+        it.messageRes = messageRes
+        it.positiveTextRes = positiveRes
+        it.negativeTextRes = negativeRes
+        it.build().let {
+            it.onButtonClickedListener = { _, which ->
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    onConfirmListener.invoke()
+                }
+            }
+            when (ctx) {
+                is FragmentActivity -> it.show(ctx.supportFragmentManager,
+                    "ConfirmationDialogTag"
+                )
+                is AppCompatActivity -> it.show(ctx.supportFragmentManager,
+                    "ConfirmationDialogTag"
+                )
+                is Fragment -> it.show(ctx.childFragmentManager, "ConfirmationDialogTag")
+            }
+        }
     }
 }

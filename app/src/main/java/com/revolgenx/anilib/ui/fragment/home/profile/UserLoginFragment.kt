@@ -37,9 +37,6 @@ class UserLoginFragment:BaseLayoutFragment<UserLoginFragmentLayoutBinding>(){
                 requireContext().openLink(getString(R.string.discord_invite_link))
             }
 
-            translateLayout.setOnClickListener {
-                requireContext().openLink(getString(R.string.translate_link))
-            }
 
             signInLayout.setOnClickListener {
                 AuthenticateEvent().postEvent

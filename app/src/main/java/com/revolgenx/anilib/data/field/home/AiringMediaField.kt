@@ -6,7 +6,7 @@ import com.revolgenx.anilib.data.field.BaseSourceUserField
 import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.type.MediaListStatus
 
-class AiringMediaField : BaseSourceUserField<AiringScheduleQuery>() {
+open class AiringMediaField : BaseSourceUserField<AiringScheduleQuery>() {
     var notYetAired = true
     var airingGreaterThan: Int? = null
     var airingLessThan: Int? = null

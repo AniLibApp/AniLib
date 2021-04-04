@@ -15,6 +15,9 @@ private const val showAdsKey = "show_ads_key"
 private const val loadBioByDefault = "load_bio_by_default"
 
 private const val loadLegacyMediaBrowseHeader = "load_legacy_media_browse_header"
+private const val mlLanguageToUseKey = "ml_Language_To_Use_Key"
+private const val enableMlLanguageToUseKey = "enable_ml_Language_To_Use_Key"
+private const val enableAutoMlLanguageToUseKey = "enable_auto_ml_Language_To_Use_Key"
 
 
 fun isCrashReportEnabled(context: Context): Boolean {
@@ -54,3 +57,29 @@ fun disableAds(disableAds: Boolean){
 fun loadBioByDefault() = DynamicPreferences.getInstance().load(loadBioByDefault, false)
 
 fun loadLegacyMediaBrowseTheme() = DynamicPreferences.getInstance().load(loadLegacyMediaBrowseHeader, false)
+
+fun inUseMlLanguageModel(context: Context, code:String? = null): String {
+    return if(code != null){
+        context.putString(mlLanguageToUseKey, code)
+        code
+    }else{
+        context.getString(mlLanguageToUseKey)!!
+    }
+}
+fun enableMlTranslation(context: Context, enable:Boolean? = null): Boolean {
+    return if(enable != null){
+        context.putBoolean(enableMlLanguageToUseKey, enable)
+        enable
+    }else{
+        context.getBoolean(enableMlLanguageToUseKey)
+    }
+}
+
+fun enableAutoMlTranslation(context: Context, enable:Boolean? = null): Boolean {
+    return if(enable != null){
+        context.putBoolean(enableAutoMlLanguageToUseKey, enable)
+        enable
+    }else{
+        context.getBoolean(enableAutoMlLanguageToUseKey)
+    }
+}

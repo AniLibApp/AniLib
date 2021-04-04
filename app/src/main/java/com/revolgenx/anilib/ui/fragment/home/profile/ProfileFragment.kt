@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaListActivity
+import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
@@ -203,6 +204,11 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
                         if (savedInstanceState == null) {
                             viewModel.getFollower()
+                        }
+
+                        userAvatarIv.hierarchy.roundingParams?.let { roundingParams ->
+                            roundingParams.borderColor = dynamicAccentColor
+                            userAvatarIv.hierarchy.roundingParams = roundingParams
                         }
 
                         userAvatarIv.setImageURI(model.avatar?.image)

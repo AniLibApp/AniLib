@@ -28,4 +28,5 @@
     <dimen name="list_editor_save_icon_size">42dp</dimen>
     <dimen name="stats_chart_padding">10dp</dimen>
     <dimen name="stats_header_margin">16dp</dimen>
+    <dimen name="airing_widget_padding">6dp</dimen>
 </resources>

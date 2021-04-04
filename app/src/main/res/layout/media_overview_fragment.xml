@@ -51,7 +51,7 @@
                         app:layout_constraintRight_toLeftOf="@id/mediaSourceTv"
                         app:layout_constraintTop_toTopOf="parent"
                         app:subtitleAlignCenter="true"
-                        app:titleAlignCenter="true"/>
+                        app:titleAlignCenter="true" />
 
                     <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/mediaSourceTv"
@@ -63,7 +63,7 @@
                         app:layout_constraintRight_toLeftOf="@id/mediaEpisodeTv"
                         app:layout_constraintTop_toTopOf="parent"
                         app:subtitleAlignCenter="true"
-                        app:titleAlignCenter="true"/>
+                        app:titleAlignCenter="true" />
 
                     <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
                         android:id="@+id/mediaEpisodeTv"
@@ -135,27 +135,31 @@
                     android:layout_marginEnd="18dp">
 
                     <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                        android:id="@+id/description_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:ads_fillSpace="true"
                         app:ads_title="@string/description"
-                        app:layout_constraintEnd_toStartOf="@+id/startEndDateTv"
+                        app:layout_constraintEnd_toStartOf="@+id/translate_switch"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                        android:id="@+id/startEndDateTv"
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                        android:id="@+id/translate_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:scaleX="0.8"
+                        android:scaleY="0.8"
+                        android:text="@string/translate"
+                        android:textSize="11sp"
+                        android:visibility="gone"
                         app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1"
                         tools:ignore="SmallSp" />
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -173,11 +177,50 @@
                     android:textSize="14sp" />
 
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                        android:id="@+id/translated_by_google_sign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="12dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/translate_by_google"
+                        android:visibility="gone"
+                        app:ads_colorType="text_primary"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/startEndDateTv"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/startEndDateTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:textSize="10sp"
+                        android:maxLines="2"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="SmallSp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/genre_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
                     android:nestedScrollingEnabled="false"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp" />

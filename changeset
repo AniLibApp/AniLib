@@ -1,32 +1,10 @@
-season layout fragment
-RecommendationFragmentLayoutBinding
-medialistcollebin
 
-//to remove file
-nav_menu (remove)
-Mainactivity
-media_list_status array
-display_mode_menu remove
-seasonmenu remove
-bottomnavmenu
-recommendationfilterdialog(remvoe)
-RecommendationFilterEvent
-discover_fragment_menu remove
-
-HomeOrderDialog remove
-ic_discover remove
-display_mode_menu remove
-
-navheaderlayout remove
-CustomizeFilterFragment remove
-
-check userfavourite, season, mediaview, mediacharacter, search
-
-remove format
-remove mediafilterdialog
-
-
-list preference saved
+v-1.1.9
+* Full Screen Navigation. \n
+* Home description changes. \n
+* Anime/Manga Stats changes. \n
+* Added Tag Description, Synonyms \n
+* UI changes \n
 
 v-1.1.8
 front ui redesign for easy access.
