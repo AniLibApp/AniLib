@@ -5,4 +5,4 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ParcelableFragment(var clzz: Class<*>, var bundle: Bundle?) : Parcelable
+data class ParcelableFragment(var clzz: Class<*>, var bundle: Bundle? = null) : Parcelable

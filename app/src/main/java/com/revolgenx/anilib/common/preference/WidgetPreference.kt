@@ -2,24 +2,64 @@ package com.revolgenx.anilib.common.preference
 
 import android.content.Context
 
-object WidgetPreference {
 
-    private const val WIDGET_ID_PREF = "WIDGET_PREF_ID"
+object AiringWidgetPreference {
 
-    fun storeNewWidget(context: Context, widgetId: Int) {
-        context.putInt(prepareWidgetKey(widgetId), widgetId)
+    private const val AIRING_WIDGET_PAGE_PREF_KEY = "AIRING_WIDGET_PAGE_PREF_KEY"
+
+    fun storePage(context:Context, widgetId: Int, page:Int){
+        val widgetKey = prepareWidgetKey(widgetId, AIRING_WIDGET_PAGE_PREF_KEY)
+        context.putInt(widgetKey, page)
     }
 
-    fun isWidgetPresent(context: Context, widgetId: Int): Boolean {
-        return context.getInt(prepareWidgetKey(widgetId), -1) == widgetId
+    fun getPage(context: Context, widgetId: Int): Int {
+        val widgetKey = prepareWidgetKey(widgetId, AIRING_WIDGET_PAGE_PREF_KEY)
+        return context.getInt(widgetKey, 1)
     }
 
-    fun removeWidget(context: Context, widgetId: Int){
-        context.sharedPreference().edit().remove(prepareWidgetKey(widgetId)).apply()
+    fun isAiringWeekly(context: Context, weekly:Boolean? = null): Boolean {
+        return if(weekly == null){
+            context.getBoolean(WIDGET_IS_AIRING_WEEKLY_KEY, false)
+        }else{
+            context.putBoolean(WIDGET_IS_AIRING_WEEKLY_KEY, weekly)
+            weekly
+        }
     }
 
-    private fun prepareWidgetKey(widgetId: Int): String {
-        return WIDGET_ID_PREF + "_$widgetId"
+
+    fun isAlreadyAired(context: Context, isAired:Boolean? = null): Boolean {
+        return if(isAired == null){
+            context.getBoolean(WIDGET_AIRING_NOT_AIRED_KEY, false)
+        }else{
+            context.putBoolean(WIDGET_AIRING_NOT_AIRED_KEY, isAired)
+            isAired
+        }
     }
 
+
+    fun isAiringPlanningOnly(context: Context, planning:Boolean? = null): Boolean {
+        return if(planning == null){
+            context.getBoolean(WIDGET_AIRING_PLANNING_KEY, false)
+        }else{
+            context.putBoolean(WIDGET_AIRING_PLANNING_KEY, planning)
+            planning
+        }
+    }
+
+
+    fun isAiringWatchingOnly(context: Context, watching:Boolean? = null): Boolean {
+        return if(watching == null){
+            context.getBoolean(WIDGET_AIRING_WATCHING_KEY, false)
+        }else{
+            context.putBoolean(WIDGET_AIRING_WATCHING_KEY, watching)
+            watching
+        }
+    }
+
+
+
+}
+const val WIDGET_ID_PREF = "WIDGET_PREF_ID"
+private fun prepareWidgetKey(widgetId: Int, extra:String): String {
+    return WIDGET_ID_PREF + "_$widgetId" + "_$extra"
 }

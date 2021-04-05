@@ -521,7 +521,8 @@
     <string name="show_headers">Show Headers</string>
     <string name="show_headers_desc">Show media format headers.</string>
 
-    <string name="widget_airing_at_format">E: %1$d · T: %2$s · ETA: %3$dh %4$dm %5$ds</string>
+    <string name="widget_airing_at_format">E: %1$d · ETA: %2$dh %3$dm</string>
+    <string name="widget_airing_at_weekly_format">E: %1$d · ETA: %2$dd %3$dh %4$dm</string>
     <string name="translation_setting">Translation</string>
     <string name="misc_translation">Misc. Translation</string>
     <string name="misc_translation_desc">Google Translate (Used to translate Media Description, Character Description, etc.)</string>
@@ -538,4 +539,6 @@
     <string name="failed_to_translate">Failed to translate.</string>
     <string name="select_a_language_model">Select a language model first.</string>
     <string name="translating">Translating…</string>
+    <string name="airing_widget_config">Airing Widget Config</string>
+    <string name="widget">Widget</string>
 </resources>

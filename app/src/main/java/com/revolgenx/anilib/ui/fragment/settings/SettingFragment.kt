@@ -11,6 +11,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.AboutActivity
 import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.activity.ToolbarContainerActivity
+import com.revolgenx.anilib.appwidget.ui.fragment.AiringWidgetConfigFragment
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.ui.dialog.ReleaseInfoDialog
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
@@ -51,7 +52,7 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
             )
         }
 
-        if(requireContext().loggedIn()) {
+        if (requireContext().loggedIn()) {
             binding.notificationSetting.setOnClickListener {
                 ToolbarContainerActivity.openActivity(
                     requireContext(),
@@ -76,12 +77,11 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
                 ToolbarContainerActivity.openActivity(
                     requireContext(),
                     ParcelableFragment(
-                        MediaListSettingFragment::class.java,
-                        null
+                        MediaListSettingFragment::class.java
                     )
                 )
             }
-        }else{
+        } else {
             binding.notificationSetting.visibility = View.GONE
             binding.listSettingIv.visibility = View.GONE
             binding.mediaSettingIv.visibility = View.GONE
@@ -92,8 +92,16 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
             ToolbarContainerActivity.openActivity(
                 requireContext(),
                 ParcelableFragment(
-                    CustomizeFilterFragment::class.java,
-                    null
+                    CustomizeFilterFragment::class.java
+                )
+            )
+        }
+
+        binding.widgetSetting.setOnClickListener {
+            ToolbarContainerActivity.openActivity(
+                requireContext(),
+                ParcelableFragment(
+                    AiringWidgetConfigFragment::class.java
                 )
             )
         }
@@ -102,8 +110,7 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
             ToolbarContainerActivity.openActivity(
                 requireContext(),
                 ParcelableFragment(
-                    TranslationSettingFragment::class.java,
-                    null
+                    TranslationSettingFragment::class.java
                 )
             )
         }

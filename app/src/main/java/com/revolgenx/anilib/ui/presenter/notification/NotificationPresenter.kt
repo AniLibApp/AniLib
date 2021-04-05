@@ -184,7 +184,7 @@ class NotificationPresenter(context: Context) : BasePresenter<NotificationPresen
                             BrowseMediaEvent(
                                 MediaBrowserMeta(
                                     it.commonMediaModel?.mediaId,
-                                    it.commonMediaModel?.type!!,
+                                    it.commonMediaModel?.type,
                                     it.commonMediaModel?.title!!.romaji!!,
                                     it.commonMediaModel?.coverImage!!.image(context),
                                     it.commonMediaModel?.coverImage!!.largeImage,

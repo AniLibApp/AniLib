@@ -177,6 +177,7 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
                             it.data?.bannerImage ?: it.data?.coverImage?.largeImage
                         mediaBrowserMeta.title = it.data?.title?.romaji ?: ""
                     }
+                    mediaBrowserMeta.type = it.data?.type
                     binding.updateView()
                 }
                 else -> {

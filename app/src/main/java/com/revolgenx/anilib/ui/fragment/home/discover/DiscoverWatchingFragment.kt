@@ -8,11 +8,9 @@ import android.widget.LinearLayout
 import androidx.core.view.setMargins
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.ui.dialog.DiscoverMediaListFilterDialog
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaListEvent
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
@@ -142,6 +140,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
 
 
     private fun renewAdapter() {
+        if(context == null) return
         viewModel.updateField(requireContext())
         viewModel.createSource()
         invalidateAdapter()

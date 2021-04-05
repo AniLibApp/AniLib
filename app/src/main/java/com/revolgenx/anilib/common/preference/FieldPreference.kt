@@ -98,6 +98,7 @@ const val WIDGET_AIRING_NOT_AIRED_KEY = "WIDGET_AIRING_NOT_AIRED_KEY"
 const val WIDGET_AIRING_SORT_KEY = "WIDGET_AIRING_SORT_KEY"
 const val WIDGET_AIRING_PLANNING_KEY = "WIDGET_AIRING_PLANNING_KEY"
 const val WIDGET_AIRING_WATCHING_KEY = "WIDGET_AIRING_WATCHING_KEY"
+const val WIDGET_IS_AIRING_WEEKLY_KEY = "WIDGET_IS_AIRING_WEEKLY_KEY"
 
 
 fun getDiscoverAiringField(context: Context) = AiringMediaField().apply {
@@ -421,8 +422,10 @@ fun getAiringScheduleFieldForWidget(context: Context, field:AiringMediaField? = 
         sort = context.getInt(WIDGET_AIRING_SORT_KEY, AiringSort.TIME.ordinal)
         showFromPlanning = context.getBoolean(WIDGET_AIRING_PLANNING_KEY, false)
         showFromWatching = context.getBoolean(WIDGET_AIRING_WATCHING_KEY, false)
+        isWeeklyTypeDate = context.getBoolean(WIDGET_IS_AIRING_WEEKLY_KEY, false)
     }
 }
+
 
 fun storeAiringScheduleFieldForWidget(context: Context, field: AiringMediaField) {
     with(field) {
@@ -430,5 +433,7 @@ fun storeAiringScheduleFieldForWidget(context: Context, field: AiringMediaField)
         context.putBoolean(WIDGET_AIRING_NOT_AIRED_KEY, notYetAired)
         context.putBoolean(WIDGET_AIRING_PLANNING_KEY, showFromPlanning)
         context.putBoolean(WIDGET_AIRING_WATCHING_KEY, showFromWatching)
+        context.putBoolean(WIDGET_IS_AIRING_WEEKLY_KEY, isWeeklyTypeDate)
     }
 }
+

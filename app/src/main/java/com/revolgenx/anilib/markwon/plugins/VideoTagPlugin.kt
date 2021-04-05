@@ -15,10 +15,7 @@ import io.noties.markwon.RenderProps
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.html.tag.SimpleTagHandler
-import io.noties.markwon.image.AsyncDrawableSpan
-import io.noties.markwon.image.DrawableUtils
-import io.noties.markwon.image.ImageProps
-import io.noties.markwon.image.ImageSize
+import io.noties.markwon.image.*
 import org.commonmark.node.Image
 import java.util.*
 
@@ -48,10 +45,10 @@ class VideoTagPlugin(private val context: Context) : CustomPlugin() {
                     )
 
 
-                    val videoSpan = configuration.spansFactory().get(Image::class.java)?.getSpans(
+                    val videoSpan = (configuration.spansFactory().get(Image::class.java)?.getSpans(
                         configuration,
                         renderProps
-                    ) as AsyncDrawableSpan
+                    )  ?: ImageSpanFactory().getSpans(configuration, renderProps)) as AsyncDrawableSpan
 
                     videoSpan.drawable.result = (if (!containsSpoiler) LayerDrawable(
                         arrayOf(playBitmapDrawable, null)
