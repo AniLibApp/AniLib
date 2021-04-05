@@ -285,7 +285,7 @@ class RadioService : MediaBrowserServiceCompat(),
 
     private fun makeDefaultNotificationWithIcon() {
         if (hasNotificationBitmapCache.get()) return
-        val iconUrl = currentRadioStation.value!!.logo ?: return
+        val iconUrl = currentRadioStation.value?.logo ?: return
         val notificationBuilder = getDefaultNotificationBuilder() ?: return
 
         stationIconScope.launch {

@@ -252,7 +252,7 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
             data.statusDistribution?.map { it.amount!!.div(statusTotalAmount).times(100f) }
         val statusColors = data.statusDistribution?.map { mediaListStatusColors[it.status!!] }
 
-        val barEntry = listOf(BarEntry(0f, statusPercentageAmount?.toFloatArray()))
+        val barEntry = listOf(BarEntry(0f, statusPercentageAmount?.toFloatArray() ?: floatArrayOf(0f)))
 
         val barDataSet = BarDataSet(barEntry, "").also {
             it.colors = statusColors

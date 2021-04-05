@@ -161,7 +161,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     }
 
     override fun onDestroyView() {
-        airingBinding.dslWeekTabLayout.removeOnTabSelectedListener(onDaySelectListener)
+        _airingBinding?.dslWeekTabLayout?.removeOnTabSelectedListener(onDaySelectListener)
         _airingBinding = null
         super.onDestroyView()
     }

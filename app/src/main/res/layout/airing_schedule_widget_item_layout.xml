@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/wg_airing_container"
     android:layout_height="wrap_content"
     android:layout_margin="10dp">
 
@@ -11,7 +12,9 @@
         android:layout_height="56dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:contentDescription="@null" />
+
 
     <TextView
         android:id="@+id/wg_media_name_tv"
@@ -33,12 +36,26 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/wg_media_name_tv"
         android:layout_toEndOf="@id/wg_airing_media_iv"
+        android:layout_toStartOf="@id/wg_airing_at_time_tv"
         android:maxLines="1"
         android:gravity="center_vertical"
         android:layout_marginStart="14dp"
-        android:layout_marginEnd="14dp"
+        android:textColor="@color/white"
+        android:textSize="15sp"/>
+
+
+    <TextView
+        android:id="@+id/wg_airing_at_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wg_media_name_tv"
+        android:maxLines="1"
+        android:gravity="center_vertical"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_alignBottom="@+id/wg_airing_at_tv"
         android:layout_alignParentEnd="true"
         android:textColor="@color/white"
-        android:textSize="16sp"/>
+        android:textSize="12sp"/>
 
 </RelativeLayout>

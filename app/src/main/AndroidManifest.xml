@@ -123,7 +123,7 @@
 
         <!--Widget-->
 
-        <receiver android:name=".appwidget.widget.AiringScheduleWidget">
+        <receiver android:name="com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>

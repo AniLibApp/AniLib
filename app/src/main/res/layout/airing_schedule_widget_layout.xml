@@ -54,16 +54,28 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/wg_airing_header"
         android:indeterminate="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
-    <ListView
-        android:id="@+id/airing_widget_list_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/wg_airing_paging_layout"
-        android:layout_below="@id/wg_loading_bar"
-        android:divider="@null"
-        android:padding="6dp" />
+        android:layout_below="@id/wg_loading_bar">
+
+        <ListView
+            android:id="@+id/airing_widget_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:padding="6dp" />
+
+        <ImageView
+            android:id="@+id/wg_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_sad_anilib" />
+    </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/wg_airing_paging_layout"

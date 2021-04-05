@@ -17,67 +17,73 @@
             android:id="@+id/application_setting_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_icon="@drawable/ic_app_setting"
-            app:ads_title="@string/application"
             app:ads_colorType="text_primary"
-            />
+            app:ads_icon="@drawable/ic_app_setting"
+            app:ads_title="@string/application" />
 
 
         <com.pranavpandey.android.dynamic.support.view.DynamicItemView
             android:id="@+id/media_setting_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_icon="@drawable/ic_api_setting"
-            app:ads_title="@string/anilist_and_manga"
-            app:ads_colorType="text_primary"
             android:layout_marginTop="6dp"
-            />
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_api_setting"
+            app:ads_title="@string/anilist_and_manga" />
 
 
         <com.pranavpandey.android.dynamic.support.view.DynamicItemView
             android:id="@+id/list_setting_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_icon="@drawable/ic_media_list"
-            app:ads_title="@string/list"
-            app:ads_colorType="text_primary"
             android:layout_marginTop="6dp"
-            />
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_media_list"
+            app:ads_title="@string/list" />
 
         <com.pranavpandey.android.dynamic.support.view.DynamicItemView
             android:id="@+id/notificationSetting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             app:ads_colorType="text_primary"
             app:ads_icon="@drawable/ic_notifications"
-            android:layout_marginTop="6dp"
             app:ads_title="@string/notification" />
 
         <com.pranavpandey.android.dynamic.support.view.DynamicItemView
             android:id="@+id/filter_Setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             app:ads_colorType="text_primary"
             app:ads_icon="@drawable/ic_filter"
-            android:layout_marginTop="6dp"
             app:ads_title="@string/filter" />
+
+        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+            android:id="@+id/widget_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ads_ic_widgets"
+            app:ads_title="@string/widget" />
 
         <com.pranavpandey.android.dynamic.support.view.DynamicItemView
             android:id="@+id/translation_setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             app:ads_colorType="text_primary"
             app:ads_icon="@drawable/ads_ic_translate"
-            android:layout_marginTop="6dp"
             app:ads_title="@string/translation_setting" />
 
         <com.pranavpandey.android.dynamic.support.view.DynamicItemView
             android:id="@+id/aboutItemView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             app:ads_colorType="text_primary"
             app:ads_icon="@drawable/ads_ic_info"
-            android:layout_marginTop="6dp"
             app:ads_title="@string/about" />
 
 
@@ -85,9 +91,9 @@
             android:id="@+id/whatsNew"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             app:ads_colorType="text_primary"
             app:ads_icon="@drawable/ic_new_releases"
-            android:layout_marginTop="6dp"
             app:ads_title="@string/whats_new" />
 
 

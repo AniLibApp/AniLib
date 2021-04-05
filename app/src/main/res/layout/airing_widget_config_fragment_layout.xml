@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+            android:id="@+id/wg_include_already_aired"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/include_already_aired"
+            android:paddingStart="@dimen/widget_padding_horizontal"
+            android:paddingEnd="@dimen/widget_padding_horizontal"/>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+            android:id="@+id/wg_is_airing_weekly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/weekly"
+            android:paddingStart="@dimen/widget_padding_horizontal"
+            android:paddingEnd="@dimen/widget_padding_horizontal" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+            android:id="@+id/wg_show_from_watching"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/show_only_from_your_watching_list"
+            android:paddingStart="@dimen/widget_padding_horizontal"
+            android:paddingEnd="@dimen/widget_padding_horizontal" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+            android:id="@+id/wg_show_from_planning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/show_only_from_your_planning_list"
+            android:paddingStart="@dimen/widget_padding_horizontal"
+            android:paddingEnd="@dimen/widget_padding_horizontal" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+            android:id="@+id/wg_airing_sort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
