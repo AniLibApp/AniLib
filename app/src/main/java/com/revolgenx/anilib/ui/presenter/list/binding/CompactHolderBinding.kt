@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.View
 import com.apollographql.apollo.exception.ApolloHttpException
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.listEditOrBrowse
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
@@ -130,20 +131,31 @@ object CompactHolderBinding {
             }
 
 
+
             root.setOnClickListener {
                 if (isLoggedInUser) {
-                    ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.drawer_layout)
-                } else {
-                    ListBindingHelper.openMediaBrowse(context, item, mediaListCoverImageView)
+                    if (listEditOrBrowse(context)) {
+                        ListBindingHelper.openMediaListEditor(
+                            context,
+                            item,
+                            mediaListCoverImageView,
+                            isLoggedInUser,
+                            R.id.drawer_layout
+                        )
+                        return@setOnClickListener;
+                    }
                 }
+                ListBindingHelper.openMediaBrowse(context, item, mediaListCoverImageView)
             }
 
             root.setOnLongClickListener {
                 if (isLoggedInUser) {
-                    ListBindingHelper.openMediaBrowse(context, item, mediaListCoverImageView)
-                } else {
-                    ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.drawer_layout)
+                    if (listEditOrBrowse(context)) {
+                        ListBindingHelper.openMediaBrowse(context, item, mediaListCoverImageView)
+                        return@setOnLongClickListener true
+                    }
                 }
+                ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.drawer_layout)
                 true
             }
         }

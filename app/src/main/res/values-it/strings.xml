@@ -408,4 +408,21 @@
     <string name="preferred_application_language">"Seleziona lingua preferita dellapplicazione"</string>
     <string name="show_adult_content">"Mostra Contenuti per Adulti"</string>
     <string name="show_adult_content_desc">"Consenti la visualizzazione di contenuti per adulti"</string>
+    <string name="theme_app_day_night_desc">Questo funziona solo quando il motivo automatico viene applicato.</string>
+    <string name="theme_app_night_summary">Stile dell\\\'app di note.</string>
+    <string name="theme_app_night">Motivo notturno</string>
+    <string name="theme_app_day_summary">Stile dell\\\'app durante il giorno.</string>
+    <string name="theme_app_summary">Stile dell\\\'app.</string>
+    <string name="theme_app">Motivo app</string>
+    <string name="theme_app_day">Motivo diurno</string>
+    <string name="theme_color_primary">Colore primario</string>
+    <string name="theme_color_primary_summary">Colore utilizzato dagli elementi primari.</string>
+    <string name="theme_background_aware_desc">Alcuni colori cambieranno automaticamente rispetto allo sfondo per ottenere migliore visibilità.</string>
+    <string name="theme_color_accent_summary">Colore utilizzato dagli elementi secondari.</string>
+    <string name="theme_color_accent">Colore rifiniture</string>
+    <string name="theme_navigation_bar_desc">Il motivo della barra di navigazione non sarà visibile in alcuni luoghi per avere risultati migliori.</string>
+    <string name="theme_navigation_bar_summary">Mostra barra di navigazione a seconda del motivo dell\\\'app.</string>
+    <string name="theme_navigation_bar">Motivo barra di navigazione</string>
+    <string name="theme_navigation_bar_summary_unchecked">Mostra la barra di navigazione predefinita.</string>
+    <string name="theme_app_desc">Scegli automatico per usare motivi diurno e notturno.</string>
 </resources>
