@@ -27,6 +27,7 @@ private const val sharedPrefSyncKey = "sharedPrefSyncKey"
 private const val updateProfileColorKey = "updateProfileColorKey"
 private const val recentAnimeListStatusKey = "recentAnimeListStatusKey"
 private const val recentMangaListStatusKey = "recentMangaListStatusKey"
+private const val listEditOrBrowseKey = "list_edit_or_browse_key"
 
 
 fun Context.loggedIn() = getBoolean(loggedInKey, false)
@@ -240,5 +241,4 @@ fun recentAnimeListStatus(context: Context) =
 
 fun recentMangaListStatus(context: Context) = context.getInt(recentMangaListStatusKey, 0)
 
-
-
+fun listEditOrBrowse(context: Context) = context.getBoolean(listEditOrBrowseKey, true)

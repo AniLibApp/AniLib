@@ -2,4 +2,5 @@
 <resources>
     <string name="application_language_key" translatable="false">application_language_key</string>
     <string name="ads_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="list_edit_or_browse_key" translatable="false">list_edit_or_browse_key</string>
 </resources>

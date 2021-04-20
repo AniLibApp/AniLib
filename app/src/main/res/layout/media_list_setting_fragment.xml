@@ -43,11 +43,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
+            android:id="@+id/list_browse_or_edit_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_title="@string/enable_to_open_list_editor_instead_of_browsing_info"
+            app:ads_summary="@string/saving_not_required"
+            app:ads_checked="true"
+            app:ads_key="@string/list_edit_or_browse_key"/>
+
         <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
             android:id="@+id/advance_score_switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:textSize="12sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:text="@string/advanced_scores" />
 
 

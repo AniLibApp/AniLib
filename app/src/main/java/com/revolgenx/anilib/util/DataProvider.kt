@@ -19,7 +19,7 @@ class DataProvider(private val context: Context) {
 
     fun addToSearchHistory(query: String) {
         searchHistories.remove(query)
-        searchHistories.add(query)
+        searchHistories.add(0, query)
         updateSearchHistories()
         dataChangeListener?.invoke()
     }
