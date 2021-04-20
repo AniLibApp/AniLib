@@ -17,7 +17,6 @@
     <string name="settings">"Impostazioni"</string>
     <string name="account">"Account"</string>
     <string name="sign_in">"Accesso"</string>
-    <string name="dynamic_theme">"Tema Dinamico"</string>
     <string name="notification">"Notifiche"</string>
     <string name="notification_setting_sub">"Impostazione barra delle notifiche(Login richiesto)"</string>
     <string name="sign_out">"Esci"</string>
@@ -212,7 +211,6 @@
     <string name="privacy_policy">"Informativa sulla Privacy."</string>
     <string name="privacy_policy_desc">"Vedi informativa sulla provacy completa."</string>
     <string name="whats_new">"Cosa c'è di nuovo?"</string>
-    <string name="studio_version">"Versione Studio"</string>
     <string name="terms_and_condition">"Condizioni e Termini"</string>
     <string name="terms_and_condition_desc">"Vedi Condizioni e Termini"</string>
     <string name="in_progress">"Lavori in Corso."</string>
@@ -225,7 +223,6 @@
     <string name="notification_setting">"Impostazioni Notifiche"</string>
     <string name="refresh_interval">"Intervallo Aggiornamento"</string>
     <string name="notifications">"Notifiche"</string>
-    <string name="check_which_notif_to_show">"Avvisami quando."</string>
     <string name="when_someone_follows_me">"Qualcuno mi segue"</string>
     <string name="receive_message_notif">"Ricevo un messaggio"</string>
     <string name="mention_replay_notif">"Sono @ menzionato in unattività o ricevo una risposta attività."</string>
