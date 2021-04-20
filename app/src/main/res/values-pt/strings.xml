@@ -17,7 +17,6 @@
     <string name="settings">"Configurações"</string>
     <string name="account">"Conta"</string>
     <string name="sign_in">"Fazer login"</string>
-    <string name="dynamic_theme">"Tema dinâmico"</string>
     <string name="notification">"Notificação"</string>
     <string name="notification_setting_sub">"Controle o que vê na notificação. (Login necessário)"</string>
     <string name="sign_out">"Desconectar"</string>
@@ -201,7 +200,6 @@
     <string name="privacy_policy">"Política de Privacidade"</string>
     <string name="privacy_policy_desc">"Ver política de privacidade completa."</string>
     <string name="whats_new">"O que há de novo"</string>
-    <string name="studio_version">"Versão Studio"</string>
     <string name="terms_and_condition">"Termos e Condições"</string>
     <string name="terms_and_condition_desc">"Ver Termos e Condições"</string>
     <string name="in_progress">"Trabalhando nisso."</string>
@@ -214,7 +212,6 @@
     <string name="notification_setting">"Configuração de Notificação"</string>
     <string name="refresh_interval">"Intervalo de atualização"</string>
     <string name="notifications">"Notificações"</string>
-    <string name="check_which_notif_to_show">"Notifique-me quando."</string>
     <string name="when_someone_follows_me">"Quando alguém me segue"</string>
     <string name="receive_message_notif">"Quando eu recebo uma mensagem"</string>
     <string name="mention_replay_notif">"Quando sou @ mencionado em uma atividade ou resposta de atividade"</string>
