@@ -15,7 +15,6 @@
     <string name="settings">"Paramètre"</string>
     <string name="account">"Compte"</string>
     <string name="sign_in">"Connexion"</string>
-    <string name="dynamic_theme">"Thème dynamique"</string>
     <string name="notification">"Notification"</string>
     <string name="notification_setting_sub">"Contrôle ce que tu vois dans la notification. (Connexion requise)"</string>
     <string name="sign_out">"Déconnexion"</string>
