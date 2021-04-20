@@ -17,7 +17,6 @@
     <string name="settings">"Настройки"</string>
     <string name="account">"Аккаунт"</string>
     <string name="sign_in">"Войти"</string>
-    <string name="dynamic_theme">"Динамическа тема"</string>
     <string name="notification">"Уведомление"</string>
     <string name="notification_setting_sub">"Управляйте уведомлениями. (Требуется авторизация)"</string>
     <string name="sign_out">"Выход"</string>
@@ -199,7 +198,6 @@
     <string name="privacy_policy">"Политика конфиденциальности."</string>
     <string name="privacy_policy_desc">"Ознакомиться с политикой конфиденциальности."</string>
     <string name="whats_new">"Что нового"</string>
-    <string name="studio_version">"Студийная версия"</string>
     <string name="terms_and_condition">"Правила и условия"</string>
     <string name="terms_and_condition_desc">"Ознакомиться с правилами и условиями"</string>
     <string name="in_progress">"Мы над этим работаем."</string>
@@ -212,7 +210,6 @@
     <string name="notification_setting">"Настройки уведомлений"</string>
     <string name="refresh_interval">"Период обновления"</string>
     <string name="notifications">"Уведомления"</string>
-    <string name="check_which_notif_to_show">"Уведомлять меня, когда"</string>
     <string name="when_someone_follows_me">"Когда кто-то подписывается на меня"</string>
     <string name="receive_message_notif">"Когда я получаю сообщение"</string>
     <string name="mention_replay_notif">"Когда меня упоминают @ в действии или ответе не действие"</string>
