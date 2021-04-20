@@ -17,7 +17,6 @@
     <string name="settings">"Ajustes"</string>
     <string name="account">"Cuenta"</string>
     <string name="sign_in">"Registrate"</string>
-    <string name="dynamic_theme">"Tema Dinamico"</string>
     <string name="notification">"Notificaciones"</string>
     <string name="notification_setting_sub">"Control lo que vez en notificaciones (Ingreso requerido)"</string>
     <string name="sign_out">"Cerrar Sesion"</string>
@@ -205,7 +204,6 @@
     <string name="privacy_policy">"Politica de Privacidad"</string>
     <string name="privacy_policy_desc">"Ver politica de privacidad completa"</string>
     <string name="whats_new">"Que hay de nuevo"</string>
-    <string name="studio_version">"Version de Estudio"</string>
     <string name="terms_and_condition">"Terminos y Condiciones"</string>
     <string name="terms_and_condition_desc">"Ver Terminos y Condiciones"</string>
     <string name="in_progress">"En progreso"</string>
@@ -219,7 +217,6 @@ Envia errores automaticament."</string>
     <string name="notification_setting">"Ajustes de Notificaciones"</string>
     <string name="refresh_interval">"Frequencia de Sincronizacion"</string>
     <string name="notifications">"Notificaciones"</string>
-    <string name="check_which_notif_to_show">"Notificame cuando"</string>
     <string name="when_someone_follows_me">"Cuando alguien me empieza a seguir"</string>
     <string name="receive_message_notif">"Cuando recivo un mensaje"</string>
     <string name="mention_replay_notif">"Cuando se me @ menciona en una actividad o respuesta a una actividad "</string>
