@@ -17,7 +17,6 @@
     <string name="settings">"सेटिंगस"</string>
     <string name="account">"एकाउंट"</string>
     <string name="sign_in">"साइन इन"</string>
-    <string name="theme">"थीम"</string>
     <string name="notification">"नोटिफिकेशन"</string>
     <string name="notification_setting_sub">"नोटिफिकेशन नियंत्रित करें (लॉगइन आवश्यक)"</string>
     <string name="sign_out">"साइन आउट"</string>
@@ -83,7 +82,7 @@
     <string name="recommendations">"सिफारिशें"</string>
     <string name="chapter_format_s">"C: %1$s · %2$s"</string>
     <string name="source_seasonyear_s">"%1$s · %2$s"</string>
-    <string name="str_dot_str">"%1$s · %2$s"</string>
+    <string name="format_status_s">"%1$s · %2$s"</string>
     <string name="relations">"संबंधी"</string>
     <string name="genre">"शैली"</string>
     <string name="tags">"टैग्स"</string>
@@ -134,7 +133,7 @@
     <string name="none">"कोई भी नहीं"</string>
     <string name="repeating">"दोहराया गया"</string>
     <string name="spoiler_alert">"स्पॉइलर अलर्ट"</string>
-    <string name="failed_to_load">"लोड करने में विफल"</string>
+    <string name="error">"लोड करने में विफल"</string>
     <string name="follower">"फोल्लोवेर"</string>
     <string name="following">"फोल्लोवंग"</string>
     <string name="blocked">"अवरोधित"</string>
