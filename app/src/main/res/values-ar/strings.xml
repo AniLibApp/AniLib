@@ -17,7 +17,7 @@
     <string name="settings">"الاعدادات"</string>
     <string name="account">"الحساب"</string>
     <string name="sign_in">"تسجيل الدخول"</string>
-    <string name="theme">"موضوع"</string>
+    <string name="dynamic_theme">"مظهر التطبيق"</string>
     <string name="notification">"الاشعارات"</string>
     <string name="notification_setting_sub">"التحكم بما تراه في الاشعارات. (مطلوب تسجيل الدخول)"</string>
     <string name="sign_out">"تسجيل الخروج"</string>
@@ -83,7 +83,7 @@
     <string name="recommendations">"التوصيات"</string>
     <string name="chapter_format_s">"ف: %1$s · %2$s"</string>
     <string name="source_seasonyear_s">"%1$s · %2$s"</string>
-    <string name="str_dot_str">"%1$s · %2$s"</string>
+    <string name="format_status_s">"%1$s · %2$s"</string>
     <string name="relations">"ذات صلة"</string>
     <string name="genre">"التصنيف"</string>
     <string name="tags">"العلامات"</string>
@@ -134,7 +134,7 @@
     <string name="none">"لا شيء"</string>
     <string name="repeating">"التكرار"</string>
     <string name="spoiler_alert">"تنبيه بوجود سبويلر/حرق"</string>
-    <string name="failed_to_load">"فشل التحميل"</string>
+    <string name="error">"فشل التحميل"</string>
     <string name="follower">"متابِع"</string>
     <string name="following">"متابَع"</string>
     <string name="blocked">"حظر"</string>
@@ -199,8 +199,9 @@
     <string name="privacy_policy">"سياسة الخصوصية."</string>
     <string name="privacy_policy_desc">"أعرض سياسة الخصوصية بالكامل."</string>
     <string name="whats_new">"ما الجديد"</string>
-    <string name="terms_and_condition_desc">"أعرض الأحكام والشروط"</string>
+    <string name="studio_version">"اصدار الأستوديو"</string>
     <string name="terms_and_condition">"الأحكام والشروط"</string>
+    <string name="terms_and_condition_desc">"أعرض الأحكام والشروط"</string>
     <string name="in_progress">"يعمل عليه."</string>
 
     <!-- crash report -->
@@ -211,6 +212,7 @@
     <string name="notification_setting">"اعدادات الاشعارات"</string>
     <string name="refresh_interval">"مدة التحديث"</string>
     <string name="notifications">"الاشعارات"</string>
+    <string name="check_which_notif_to_show">"أبلغني عندما."</string>
     <string name="when_someone_follows_me">"عندما يتابعني شخص ما"</string>
     <string name="receive_message_notif">"عندما أتلقى رسالة"</string>
     <string name="mention_replay_notif">"عندما يتم ذكر اسمي في نشاط أو رد"</string>
@@ -396,4 +398,7 @@
     <string name="preferred_application_language">"أختر لغة التطبيق"</string>
     <string name="show_adult_content">"العرض دون حجب المحتوى الجنسي"</string>
     <string name="show_adult_content_desc">"بتفعيل هذا لن يكون المحتوى الجنسي مخفيًا لديك."</string>
+    <string name="theme">"سمة"</string>
+    <string name="failed_to_load">"فشل في التحميل"</string>
+    <string name="time">"زمن"</string>
 </resources>
