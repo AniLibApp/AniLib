@@ -49,6 +49,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                         model.season = it.season()?.ordinal
                         model.seasonYear = it.seasonYear()
                         model.type = it.type()?.ordinal
+                        model.siteUrl = it.siteUrl()
                         it.nextAiringEpisode()?.let {
                             model.airingTimeModel = AiringTimeModel().also { timeModel ->
                                 timeModel.airingAt = AiringAtModel(

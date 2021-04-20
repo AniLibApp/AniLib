@@ -7,11 +7,13 @@
     android:padding="10dp">
 
 
-    <com.revolgenx.anilib.radio.ui.view.CircleSimpleDraweeView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/character_iv"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        app:roundAsCircle="true"
+        />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
         android:id="@+id/character_name_tv"

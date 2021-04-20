@@ -20,4 +20,16 @@
         android:title="@string/toggle_fav"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/media_share_menu"
+        android:icon="@drawable/ads_ic_share"
+        android:title="@string/share"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/media_copy_menu"
+        android:icon="@drawable/ads_ic_copy"
+        android:title="@string/copy_link"
+        app:showAsAction="ifRoom" />
+
 </menu>

@@ -52,9 +52,8 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                                     model.episodes = media.episodes()?.toString()
                                     model.chapters = media.chapters()?.toString()
                                     model.title = media.title()?.fragments()?.mediaTitle()?.toModel()
-                                    model.coverImage = media.coverImage()?.large()?.let {
-                                        CoverImageModel().apply { large = it }
-                                    }
+                                    model.coverImage = media.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
+                                    model.bannerImage = media.bannerImage() ?: model.coverImage?.extraLarge
                                     model.startDate =
                                         media.startDate()?.fragments()?.fuzzyDate()?.toModel()
                                     model.endDate =

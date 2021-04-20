@@ -240,6 +240,7 @@ query BrowseSimpleMediaQuery($mediaId:Int){
         bannerImage
         season
         seasonYear
+        siteUrl
         type
         nextAiringEpisode{
             id
@@ -678,7 +679,7 @@ query MediaListCollectionQuery(
                         ... mediaTitle
                     }
                     coverImage{
-                        large
+                        ... mediaCoverImage
                     }
                     startDate {
                         ... fuzzyDate
@@ -686,6 +687,7 @@ query MediaListCollectionQuery(
                     endDate{
                         ... fuzzyDate
                     }
+                    bannerImage
                     synonyms
                     format
                     status
@@ -1685,6 +1687,9 @@ fragment mediaListContent on MediaList{
         year
         month
         day
+    }
+    media{
+        type
     }
 }
 

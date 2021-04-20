@@ -109,4 +109,8 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment<BasePresent
         return Adapter.builder(this, 10).setPager(PageSizePager(10)).addSource(baseSource).addPresenter(basePresenter).addPresenter(loadingPresenter).addPresenter(errorPresenter).addPresenter(emptyPresenter)
     }
 
+    protected fun notifyDataSetChanged(){
+        adapter?.notifyDataSetChanged()
+    }
+
 }

@@ -47,6 +47,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+            android:id="@+id/wg_click_open_list_editor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/enable_to_open_list_editor_instead_of_browsing_info"
+            android:paddingStart="@dimen/widget_padding_horizontal"
+            android:paddingEnd="@dimen/widget_padding_horizontal" />
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

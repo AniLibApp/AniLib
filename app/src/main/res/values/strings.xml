@@ -541,4 +541,6 @@
     <string name="translating">Translating…</string>
     <string name="airing_widget_config">Airing Widget Config</string>
     <string name="widget">Widget</string>
+    <string name="enable_to_open_list_editor_instead_of_browsing_info">Enable to open list editor instead of browsing info</string>
+    <string name="copy_link">Copy Link</string>
 </resources>

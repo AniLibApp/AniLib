@@ -96,61 +96,20 @@ object MinimalHolderBinding {
                 mediaListProgressIncrease.visibility = View.GONE
             }
 
-            this.root.setOnClickListener {
+
+            root.setOnClickListener {
                 if (isLoggedInUser) {
-                    if (context.loggedIn()) {
-                        ListEditorEvent(
-                            ListEditorMeta(
-                                item.mediaId,
-                                item.type!!,
-                                item.title!!.userPreferred,
-                                item.coverImage!!.image(context),
-                                item.bannerImage
-                            ), mediaListCoverImageView
-                        ).postEvent
-                    } else {
-                        context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
-                    }
+                    ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.drawer_layout)
                 } else {
-                    BrowseMediaEvent(
-                        MediaBrowserMeta(
-                            item.mediaId,
-                            item.type!!,
-                            item.title!!.userPreferred,
-                            item.coverImage!!.image(context),
-                            item.coverImage!!.largeImage,
-                            item.bannerImage
-                        ), mediaListCoverImageView
-                    ).postEvent
+                    ListBindingHelper.openMediaBrowse(context, item, mediaListCoverImageView)
                 }
             }
 
-            this.root.setOnLongClickListener {
+            root.setOnLongClickListener {
                 if (isLoggedInUser) {
-                    BrowseMediaEvent(
-                        MediaBrowserMeta(
-                            item.mediaId,
-                            item.type!!,
-                            item.title!!.userPreferred,
-                            item.coverImage!!.image(context),
-                            item.coverImage!!.largeImage,
-                            item.bannerImage
-                        ), mediaListCoverImageView
-                    ).postEvent
+                    ListBindingHelper.openMediaBrowse(context, item, mediaListCoverImageView)
                 } else {
-                    if (context.loggedIn()) {
-                        ListEditorEvent(
-                            ListEditorMeta(
-                                item.mediaId,
-                                item.type!!,
-                                item.title!!.userPreferred,
-                                item.coverImage!!.image(context),
-                                item.bannerImage
-                            ), mediaListCoverImageView
-                        ).postEvent
-                    } else {
-                        context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
-                    }
+                    ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.drawer_layout)
                 }
                 true
             }

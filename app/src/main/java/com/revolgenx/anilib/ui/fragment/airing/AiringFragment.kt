@@ -69,7 +69,7 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
 
             }
 
-            AiringListDisplayMode.NORMAL, AiringListDisplayMode.MINIMAL_LIST-> {
+            AiringListDisplayMode.NORMAL, AiringListDisplayMode.MINIMAL_LIST -> {
                 span /= 2
             }
         }
@@ -171,7 +171,7 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
                 true
             }
 
-            R.id.display_modes->{
+            R.id.display_modes -> {
                 makeArrayPopupMenu(
                     requireView().findViewById(R.id.airing_previous),
                     resources.getStringArray(R.array.airing_display_modes),
@@ -274,8 +274,12 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onListEditorEvent(event: ListEditorResultEvent) {
-        event.listEditorResultMeta.let {
-            viewModel.updateMediaProgress(it.mediaId, it.progress)
+        viewModel.field.isNewField = true
+
+        if(!event.listEditorResultMeta.deleted){
+            event.listEditorResultMeta.let {
+                viewModel.updateMediaProgress(it.mediaId, it.progress)
+            }
         }
         adapter?.notifyDataSetChanged()
         EventBus.getDefault().removeStickyEvent(event)

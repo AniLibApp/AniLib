@@ -197,7 +197,7 @@ dependencies {
     //timber
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    //app auth (check for official version later)
+    //app auth
     implementation 'com.github.openid:AppAuth-Android:0.8.1'
 
     //jwt token

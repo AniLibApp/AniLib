@@ -33,4 +33,5 @@ open class CommonMediaModel() : BaseModel() {
     var staff:List<MediaStaffModel>? = null
     var source: Int? = null
     var synonyms: List<String>? = null
+    var siteUrl:String? = null
 }

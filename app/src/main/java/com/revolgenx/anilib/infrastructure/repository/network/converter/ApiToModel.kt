@@ -112,7 +112,7 @@ fun MediaListContent.toListEditorMediaModel() = EntryListEditorMediaModel().also
             date.year = it.year()
         }
     }
-
+    it.type = media()!!.type()?.ordinal
 }
 
 

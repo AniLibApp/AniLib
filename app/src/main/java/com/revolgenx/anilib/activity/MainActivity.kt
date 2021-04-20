@@ -12,9 +12,7 @@ import android.view.ViewGroup
 import androidx.annotation.*
 import androidx.core.app.ActivityCompat
 import androidx.core.app.SharedElementCallback
-import androidx.core.os.bundleOf
 import androidx.core.view.*
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager.widget.ViewPager
 import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Adapter
@@ -27,15 +25,13 @@ import com.revolgenx.anilib.ui.dialog.*
 import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.data.field.TagChooserField
 import com.revolgenx.anilib.data.field.TagField
-import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
-import com.revolgenx.anilib.ui.fragment.notification.NotificationFragment
-import com.revolgenx.anilib.data.meta.UserMeta
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.data.model.home.HomePageOrderType
 import com.revolgenx.anilib.databinding.ActivityMainBinding
 import com.revolgenx.anilib.radio.ui.fragments.RadioFragment
+import com.revolgenx.anilib.ui.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.ui.fragment.home.discover.DiscoverContainerFragment
 import com.revolgenx.anilib.ui.fragment.home.list.ListContainerFragment
 import com.revolgenx.anilib.ui.fragment.home.profile.ProfileFragment
@@ -281,6 +277,23 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     private fun initListener() {
         binding.mainBrowseFilterNavView.setNavigationCallbackListener(this)
 
+        binding.drawerLayout.setOnApplyWindowInsetsListener{view, insets->
+            var consumed = false
+
+            (view as ViewGroup).forEach { child ->
+                // Dispatch the insets to the child
+                val childResult = child.dispatchApplyWindowInsets(insets)
+                // If the child consumed the insets, record it
+                if (childResult.isConsumed) {
+                    consumed = true
+                }
+            }
+
+            // If any of the children consumed the insets, return
+            // an appropriate value
+            if (consumed) insets.consumeSystemWindowInsets() else insets
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.mainBrowseFilterNavView){ _, insets->
             (binding.mainBrowseFilterNavView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
                 insets.systemWindowInsetTop
@@ -361,6 +374,12 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 binding.drawerLayout.closeDrawer(GravityCompat.END)
             }
             else -> {
+                val fragment = supportFragmentManager.findFragmentByTag(EntryListEditorFragment::class.java.simpleName)
+                if(fragment != null){
+                    supportFragmentManager.beginTransaction().remove(fragment).commit()
+                    return
+                }
+
                 if (pressedTwice) {
                     finish()
                 } else {
