@@ -1,18 +1,22 @@
 package com.revolgenx.anilib.ui.fragment
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.data.field.ToggleFavouriteField
@@ -43,7 +47,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
     companion object {
         const val LIST_EDITOR_META_KEY = "list_editor_meta_key"
-        private const val DatePickerDialogTag = "DatePickerDialogTag"
+        const val LIST_EDITOR_RESULT_META_KEY = "LIST_EDITOR_RESULT_META_KEY"
     }
 
     private var state = COLLAPSED //collapsed
@@ -96,7 +100,9 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
         inflater: LayoutInflater,
         parent: ViewGroup?
     ): ListEditorFragmentLayoutBinding {
-        return ListEditorFragmentLayoutBinding.inflate(inflater, parent, false)
+        return ListEditorFragmentLayoutBinding.inflate(inflater, parent, false).also {
+            it.root.setBackgroundColor(dynamicBackgroundColor)
+        }
     }
 
     override fun onResume() {
@@ -125,10 +131,13 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
         viewModel.mediaLiveData.observe(viewLifecycleOwner) {
             when (it.status) {
                 SUCCESS -> {
+                    if (it.data == null) return@observe
+                    mediaMeta.type = it.data.type
+                    apiModelEntry.type = mediaMeta.type
                     if (mediaMeta.coverImage == null || mediaMeta.bannerImage == null) {
-                        mediaMeta.coverImage = it.data?.coverImage?.large ?: ""
-                        mediaMeta.bannerImage = it.data?.bannerImage ?: ""
-                        mediaMeta.title = it.data?.title?.romaji ?: ""
+                        mediaMeta.coverImage = it.data.coverImage?.large ?: ""
+                        mediaMeta.bannerImage = it.data.bannerImage ?: ""
+                        mediaMeta.title = it.data.title?.romaji ?: ""
                         binding.showMetaViews()
                     }
                 }
@@ -208,14 +217,15 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
         viewModel.saveMediaListEntryLiveData.observe(viewLifecycleOwner, {
             saving = when (it.status) {
                 SUCCESS -> {
+                    val meta = ListEditorResultMeta(
+                        apiModelEntry.mediaId,
+                        apiModelEntry.progress,
+                        apiModelEntry.status
+                    )
                     ListEditorResultEvent(
-                        ListEditorResultMeta(
-                            apiModelEntry.mediaId,
-                            apiModelEntry.progress,
-                            apiModelEntry.status
-                        )
+                        meta
                     ).postSticky
-                    finishActivity()
+                    closeListEditor()
                     false
                 }
                 ERROR -> {
@@ -240,7 +250,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                             deleted = true
                         )
                     ).postSticky
-                    finishActivity()
+                    closeListEditor()
                     false
                 }
                 ERROR -> {
@@ -259,6 +269,16 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             viewModel.queryMediaListEntry(mediaMeta.mediaId)
     }
 
+    private fun closeListEditor() {
+        if(mediaMeta.closeActivity){
+            finishActivity()
+        }else{
+            if(activity != null){
+                requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
+            }
+        }
+    }
+
     private fun ListEditorFragmentLayoutBinding.showViews() {
         if (!::mediaMeta.isInitialized) return
         showMetaViews()
@@ -273,11 +293,6 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             listEditorVolumeProgressLayout.visibility = View.VISIBLE
         }
 
-//        val lightSurfaceColor = ThemeController.lightSurfaceColor()
-//        startDateDynamicEt.setBackgroundColor(lightSurfaceColor)
-//        endDateDynamicEt.setBackgroundColor(lightSurfaceColor)
-//        notesEt.setBackgroundColor(lightSurfaceColor)
-//        statusContainerSpinner.setBackgroundColor(lightSurfaceColor)
 
         startDateDynamicEt.setCompoundDrawablesRelativeWithIntrinsicBounds(
             calendarDrawable,
@@ -410,13 +425,13 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
         startDateDynamicEt.setOnClickListener {
             CalendarViewBottomSheetDialog().show(requireContext()) {
-                selectionMode= CalendarViewBottomSheetDialog.SelectionMode.DATE
+                selectionMode = CalendarViewBottomSheetDialog.SelectionMode.DATE
                 selectedDate = LocalDate.of(
-                apiModelEntry.startDate?.year ?: calendar.get(Calendar.YEAR),
-                apiModelEntry.startDate?.month ?: calendar.get(Calendar.MONTH) + 1,
-                apiModelEntry.startDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
+                    apiModelEntry.startDate?.year ?: calendar.get(Calendar.YEAR),
+                    apiModelEntry.startDate?.month ?: calendar.get(Calendar.MONTH) + 1,
+                    apiModelEntry.startDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
                 )
-                listener = {startDate, _ ->
+                listener = { startDate, _ ->
                     apiModelEntry.startDate =
                         (apiModelEntry.startDate ?: DateModel()).also {
                             it.year = startDate.year
@@ -432,14 +447,14 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
         endDateDynamicEt.setOnClickListener {
 
             CalendarViewBottomSheetDialog().show(requireContext()) {
-                selectionMode= CalendarViewBottomSheetDialog.SelectionMode.DATE
+                selectionMode = CalendarViewBottomSheetDialog.SelectionMode.DATE
 
                 selectedDate = LocalDate.of(
                     apiModelEntry.endDate?.year ?: calendar.get(Calendar.YEAR),
                     apiModelEntry.endDate?.month ?: calendar.get(Calendar.MONTH) + 1,
                     apiModelEntry.endDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
                 )
-                listener = {startDate, _ ->
+                listener = { startDate, _ ->
                     apiModelEntry.endDate =
                         (apiModelEntry.endDate ?: DateModel()).also {
                             it.year = startDate.year
@@ -633,7 +648,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                 true
             }
             android.R.id.home -> {
-                finishActivity()
+                closeListEditor()
                 true
             }
             else -> super.onOptionsItemSelected(item)

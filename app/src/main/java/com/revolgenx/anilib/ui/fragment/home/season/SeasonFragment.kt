@@ -25,6 +25,7 @@ import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.ui.viewmodel.home.season.SeasonViewModel
 import com.revolgenx.anilib.util.EventBusListener
+import okhttp3.internal.notify
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -144,7 +145,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
         event.listEditorResultMeta.let {
             viewModel.updateMediaProgress(it.mediaId, it.progress)
         }
-        adapter?.notifyDataSetChanged()
+        notifyDataSetChanged()
         EventBus.getDefault().removeStickyEvent(event)
     }
 

@@ -42,6 +42,7 @@ import com.revolgenx.anilib.data.model.MediaBrowseModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.databinding.ActivityMediaBrowserBinding
+import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
@@ -49,10 +50,12 @@ import com.revolgenx.anilib.ui.view.drawable.DynamicBackgroundGradientDrawable
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.ui.viewmodel.media.MediaBrowserViewModel
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
-//todo://handle review
 class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
     companion object {
         const val MEDIA_BROWSER_META = "media_browser_meta"
@@ -139,6 +142,7 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         if (intent == null) {
             return
@@ -265,11 +269,7 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
                 val data = it.data ?: return@observe
                 browseMediaBrowseModel?.mediaListStatus = data.status
                 browseMediaBrowseModel?.mediaListStatus?.let {status->
-                    if(loadLegacyMediaBrowseTheme()){
-                        binding.updateLegacyListStatusView(status)
-                    }else{
-                        binding.updateListStatusView(status)
-                    }
+                    updateMediaStatusView(status)
                 }
             }
         }
@@ -301,6 +301,19 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
             pageChangeListener.onPageSelected(binding.browseMediaViewPager.currentItem)
         }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
+
+    private fun updateMediaStatusView(status: Int) {
+        if (loadLegacyMediaBrowseTheme()) {
+            binding.updateLegacyListStatusView(status)
+        } else {
+            binding.updateListStatusView(status)
+        }
     }
 
     private fun ActivityMediaBrowserBinding.updateListStatusView(status: Int) {
@@ -526,9 +539,9 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
             menu.setOptionalIconsVisible(true)
         }
         if (isFavourite) {
-            val drawable =
-                ContextCompat.getDrawable(context, R.drawable.ic_favourite)
-            menu?.findItem(R.id.toggleFavMenu)?.icon = drawable
+            menu?.findItem(R.id.toggleFavMenu)?.let {
+                it.icon = ContextCompat.getDrawable(context, R.drawable.ic_favourite)
+            }
         }
         return true
     }
@@ -553,6 +566,16 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
                     makeToast(R.string.please_wait, icon = R.drawable.ic_hour_glass)
 
                 toggleFav()
+                true
+            }
+
+            R.id.media_share_menu -> {
+                openLink(browseMediaBrowseModel?.siteUrl)
+                true
+            }
+
+            R.id.media_copy_menu->{
+                copyToClipBoard(browseMediaBrowseModel?.siteUrl)
                 true
             }
             else -> false
@@ -684,9 +707,26 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
 
     override fun finishAfterTransition() {
         finish()
-//        this.overridePendingTransition(0,android.R.anim.slide_out_right);
     }
 
+
+    @Subscribe(sticky =  true, threadMode = ThreadMode.MAIN)
+    fun onEvent(event:ListEditorResultEvent){
+        if(event.listEditorResultMeta.deleted){
+            binding.mediaAddButton.setText(R.string.add)
+            binding.legacyMediaAddButton.setText(R.string.add)
+        }else{
+            event.listEditorResultMeta.status?.let {
+                updateMediaStatusView(it)
+            }
+        }
+        EventBus.getDefault().removeStickyEvent(event)
+    }
+
+    override fun onStop() {
+        unRegisterForEvent()
+        super.onStop()
+    }
 
     override fun onDestroy() {
         circularProgressDrawable?.stop()

@@ -7,11 +7,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
+import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.appwidget.service.AiringScheduleRemoteViewsService
 import com.revolgenx.anilib.common.preference.AiringWidgetPreference
+import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
+import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.ui.fragment.EntryListEditorFragment
+import com.revolgenx.anilib.ui.fragment.airing.AiringFragment
 import java.time.LocalTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -51,7 +57,7 @@ class AiringScheduleWidget : AppWidgetProvider() {
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id)
             serviceIntent.data = Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME))
 
-            val clickPendingIntent = getPendingIntent(context, WIDGET_MEDIA_ITEM_ACTION, id)
+            val clickPendingIntent = getBroadcastPendingIntent(context, WIDGET_MEDIA_ITEM_ACTION, id)
             remoteViews.setPendingIntentTemplate(R.id.airing_widget_list_view, clickPendingIntent)
 
             remoteViews.setRemoteAdapter(R.id.airing_widget_list_view, serviceIntent)
@@ -100,17 +106,22 @@ class AiringScheduleWidget : AppWidgetProvider() {
     ) {
         remoteViews.setOnClickPendingIntent(
             R.id.airing_schedule_refresh_button,
-            getPendingIntent(context, REFRESH_ACTION, widgetId)
+            getBroadcastPendingIntent(context, REFRESH_ACTION, widgetId)
         )
 
         remoteViews.setOnClickPendingIntent(
             R.id.wg_airing_next_page,
-            getPendingIntent(context, NEXT_PAGE_ACTION, widgetId)
+            getBroadcastPendingIntent(context, NEXT_PAGE_ACTION, widgetId)
         )
 
         remoteViews.setOnClickPendingIntent(
             R.id.wg_airing_prev_page,
-            getPendingIntent(context, PREVIOUS_PAGE_ACTION, widgetId)
+            getBroadcastPendingIntent(context, PREVIOUS_PAGE_ACTION, widgetId)
+        )
+
+        remoteViews.setOnClickPendingIntent(
+            R.id.airing_schedule_open_button,
+            openAiringSchedulePendingIntent(context)
         )
 
     }
@@ -125,14 +136,15 @@ class AiringScheduleWidget : AppWidgetProvider() {
                 AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID
             )
+            val appWidgetManager = context.appWidgetManager()
             when (intent.action) {
                 REFRESH_ACTION -> {
                     val currentDate = getTodayDate(context)
                     val remoteViews =
                         RemoteViews(context.packageName, R.layout.airing_schedule_widget_layout)
                     remoteViews.setTextViewText(R.id.airing_widget_header, currentDate)
-                    context.appWidgetManager().partiallyUpdateAppWidget(widgetId, remoteViews)
-                    context.appWidgetManager().notifyAppWidgetViewDataChanged(
+                    appWidgetManager.partiallyUpdateAppWidget(widgetId, remoteViews)
+                    appWidgetManager.notifyAppWidgetViewDataChanged(
                         widgetId,
                         R.id.airing_widget_list_view
                     )
@@ -143,19 +155,51 @@ class AiringScheduleWidget : AppWidgetProvider() {
                 PREVIOUS_PAGE_ACTION -> {
                     goToPage(context, widgetId, false)
                 }
-                WIDGET_MEDIA_ITEM_ACTION->{
+                WIDGET_MEDIA_ITEM_ACTION -> {
                     val mediaId = intent.getIntExtra(WIDGET_MEDIA_ITEM, -1)
-                    context.startActivity(Intent(context, MediaBrowseActivity::class.java).apply {
-                        this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        this.putExtra(MediaBrowseActivity.MEDIA_BROWSER_META, MediaBrowserMeta(
-                            mediaId,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                        ))
-                    })
+
+                    if (AiringWidgetPreference.clickOpenListEditor(context)) {
+
+                        context.startActivity(Intent(context, ContainerActivity::class.java).apply {
+                            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            this.putExtra(
+                                ContainerActivity.fragmentContainerKey,
+                                ParcelableFragment(
+                                    EntryListEditorFragment::class.java,
+                                    bundleOf(
+                                        EntryListEditorFragment.LIST_EDITOR_META_KEY to ListEditorMeta(
+                                            mediaId,
+                                            null,
+                                            null,
+                                            null,
+                                            null
+                                        )
+                                    )
+                                )
+                            )
+                        })
+
+                    } else {
+
+                        context.startActivity(
+                            Intent(
+                                context,
+                                MediaBrowseActivity::class.java
+                            ).apply {
+                                this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                this.putExtra(
+                                    MediaBrowseActivity.MEDIA_BROWSER_META, MediaBrowserMeta(
+                                        mediaId,
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                    )
+                                )
+                            })
+                    }
+
                 }
             }
         }
@@ -188,7 +232,7 @@ class AiringScheduleWidget : AppWidgetProvider() {
     private fun Context.appWidgetManager() = AppWidgetManager.getInstance(this)
 
 
-    private fun getPendingIntent(
+    private fun getBroadcastPendingIntent(
         context: Context,
         action: String,
         appWidgetId: Int
@@ -197,6 +241,19 @@ class AiringScheduleWidget : AppWidgetProvider() {
             it.action = action
             it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
+        }, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    private fun openAiringSchedulePendingIntent(context: Context): PendingIntent {
+        return PendingIntent.getActivity(context, 0, Intent(context, ContainerActivity::class.java).apply {
+            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            this.putExtra(
+                ContainerActivity.fragmentContainerKey,
+                ParcelableFragment(
+                    AiringFragment::class.java,
+                    bundleOf()
+                )
+            )
         }, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 

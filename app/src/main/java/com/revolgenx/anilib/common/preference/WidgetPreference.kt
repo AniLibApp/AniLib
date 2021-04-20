@@ -57,6 +57,15 @@ object AiringWidgetPreference {
     }
 
 
+    fun clickOpenListEditor(context: Context, opensListEditor:Boolean? = null): Boolean {
+        return if(opensListEditor == null){
+            context.getBoolean(WIDGET_AIRING_CLICK_OPEN_LIST_EDITOR, false)
+        }else{
+            context.putBoolean(WIDGET_AIRING_CLICK_OPEN_LIST_EDITOR, opensListEditor)
+            opensListEditor
+        }
+    }
+
 
 }
 const val WIDGET_ID_PREF = "WIDGET_PREF_ID"

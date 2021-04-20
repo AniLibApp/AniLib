@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.ui.fragment.home.list
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,19 +13,24 @@ import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
+import com.revolgenx.anilib.data.meta.ListEditorResultMeta
 import com.revolgenx.anilib.data.meta.MediaListFilterMeta
 import com.revolgenx.anilib.data.model.list.MediaListModel
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
+import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.ui.presenter.home.discover.MediaListCollectionPresenter
 import com.revolgenx.anilib.ui.viewmodel.home.list.MediaListContainerViewModel
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel>(), EventBusListener {
+abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel>(),
+    EventBusListener {
 
     override val basePresenter: Presenter<MediaListModel>
         get() = MediaListCollectionPresenter(
@@ -120,6 +126,14 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
         }
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ListEditorResultEvent) {
+        viewModel.mediaListViewModel.updateMediaListCollection(event.listEditorResultMeta)
+        notifyDataSetChanged()
+        EventBus.getDefault().removeStickyEvent(event)
+    }
+
+
     private fun changePresenterLayout() {
         reloadLayoutManager()
         if (visibleToUser) {
@@ -166,7 +180,7 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
     }
 
 
-    fun searchQuery(query:String){
+    fun searchQuery(query: String) {
         viewModel.mediaListViewModel.field.filter.search = query
         createSource()
         invalidateAdapter()

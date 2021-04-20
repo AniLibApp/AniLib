@@ -3,7 +3,6 @@ package com.revolgenx.anilib.appwidget.service
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
@@ -23,11 +22,15 @@ import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.data.field.home.AiringMediaField
 import com.revolgenx.anilib.data.model.airing.AiringMediaModel
+import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.airing.AiringMediaService
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import timber.log.Timber
@@ -46,8 +49,8 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
 
 
     class AiringScheduleWidgetFactory(
-        private val context: Context, private val intent: Intent
-    ) : RemoteViewsFactory, KoinComponent {
+        private val context: Context, intent: Intent
+    ) : RemoteViewsFactory, KoinComponent{
 
         private val appWidgetId = intent.getIntExtra(
             AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -79,6 +82,13 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
                 field.userId = context.userId()
             }
             updateField()
+        }
+
+        @Subscribe(sticky =  true, threadMode = ThreadMode.MAIN)
+        fun onEVent(event: ListEditorResultEvent){
+            field.isNewField = true
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.airing_widget_list_view)
+            EventBus.getDefault().removeStickyEvent(event)
         }
 
         private fun updateField() {
@@ -219,9 +229,6 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
             appWidgetManager.partiallyUpdateAppWidget(appWidgetId, widgetRemoteView)
         }
 
-        override fun onDestroy() {
-            compositeDisposable.clear()
-        }
-
+        override fun onDestroy() {}
     }
 }

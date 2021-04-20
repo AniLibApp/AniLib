@@ -143,22 +143,20 @@ class SeasonPresenter(context: Context) :
                     }
                 )
 
-                item.mediaEntryListModel?.let {
-                    it.progress?.let {
-                        bookmarkIv.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                context,
-                                R.drawable.ic_bookmark_filled
-                            )
+                item.mediaEntryListModel?.status?.let {
+                    bookmarkIv.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.ic_bookmark_filled
                         )
-                    } ?: let {
-                        bookmarkIv.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                context,
-                                R.drawable.ic_bookmark
-                            )
+                    )
+                }?:let {
+                    bookmarkIv.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.ic_bookmark
                         )
-                    }
+                    )
                 }
             } else {
                 entryProgressTv.visibility = View.GONE

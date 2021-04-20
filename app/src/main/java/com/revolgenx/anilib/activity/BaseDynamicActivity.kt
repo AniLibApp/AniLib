@@ -100,23 +100,37 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
                 })
             }
             is ListEditorEvent -> {
-                var options:ActivityOptionsCompat? = null
-                if(event.sharedElement != null){
-                    options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+
+                if (event.openInWithSupportFragment) {
+                    val meta = event.meta
+                    supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out)
+                        .setReorderingAllowed(true)
+                        .add(event.containerId, EntryListEditorFragment().also {
+                            it.arguments =
+                                bundleOf(EntryListEditorFragment.LIST_EDITOR_META_KEY to meta)
+                        }, EntryListEditorFragment::class.java.simpleName).commit()
+                } else {
+
+                    var options: ActivityOptionsCompat? = null
+                    if (event.sharedElement != null) {
+                        options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            this,
+                            event.sharedElement,
+                            ViewCompat.getTransitionName(event.sharedElement) ?: ""
+                        )
+                    }
+                    ContainerActivity.openActivity(
                         this,
-                        event.sharedElement!!,
-                        ViewCompat.getTransitionName(event.sharedElement!!) ?: ""
+                        ParcelableFragment(
+                            EntryListEditorFragment::class.java,
+                            bundleOf(
+                                EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
+                            )
+                        ), options
                     )
                 }
-                ContainerActivity.openActivity(
-                    this,
-                    ParcelableFragment(
-                        EntryListEditorFragment::class.java,
-                        bundleOf(
-                            EntryListEditorFragment.LIST_EDITOR_META_KEY to event.meta
-                        )
-                    ), options
-                )
+
             }
             is BrowseGenreEvent -> {
                 SearchActivity.openActivity(

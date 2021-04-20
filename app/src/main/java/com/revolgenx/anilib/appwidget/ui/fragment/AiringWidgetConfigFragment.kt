@@ -3,14 +3,11 @@ package com.revolgenx.anilib.appwidget.ui.fragment
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.RemoteViews
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.appwidget.service.AiringScheduleRemoteViewsService
 import com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
@@ -59,6 +56,7 @@ class AiringWidgetConfigFragment : BaseLayoutFragment<AiringWidgetConfigFragment
             wgIsAiringWeekly.isChecked = field.isWeeklyTypeDate
             wgShowFromPlanning.isChecked = field.showFromPlanning
             wgShowFromWatching.isChecked = field.showFromWatching
+            wgClickOpenListEditor.isChecked = AiringWidgetPreference.clickOpenListEditor(requireContext())
 
 
             wgAiringSort.adapter =
@@ -149,6 +147,7 @@ class AiringWidgetConfigFragment : BaseLayoutFragment<AiringWidgetConfigFragment
                 )
 
                 storeAiringScheduleFieldForWidget(requireContext(), field)
+                AiringWidgetPreference.clickOpenListEditor(requireContext(), binding.wgClickOpenListEditor.isChecked)
                 makeToast(R.string.saved_successfully)
                 true
             }
