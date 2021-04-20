@@ -17,7 +17,6 @@
     <string name="settings">"الاعدادات"</string>
     <string name="account">"الحساب"</string>
     <string name="sign_in">"تسجيل الدخول"</string>
-    <string name="dynamic_theme">"مظهر التطبيق"</string>
     <string name="notification">"الاشعارات"</string>
     <string name="notification_setting_sub">"التحكم بما تراه في الاشعارات. (مطلوب تسجيل الدخول)"</string>
     <string name="sign_out">"تسجيل الخروج"</string>
@@ -199,7 +198,6 @@
     <string name="privacy_policy">"سياسة الخصوصية."</string>
     <string name="privacy_policy_desc">"أعرض سياسة الخصوصية بالكامل."</string>
     <string name="whats_new">"ما الجديد"</string>
-    <string name="studio_version">"اصدار الأستوديو"</string>
     <string name="terms_and_condition">"الأحكام والشروط"</string>
     <string name="terms_and_condition_desc">"أعرض الأحكام والشروط"</string>
     <string name="in_progress">"يعمل عليه."</string>
@@ -212,7 +210,6 @@
     <string name="notification_setting">"اعدادات الاشعارات"</string>
     <string name="refresh_interval">"مدة التحديث"</string>
     <string name="notifications">"الاشعارات"</string>
-    <string name="check_which_notif_to_show">"أبلغني عندما."</string>
     <string name="when_someone_follows_me">"عندما يتابعني شخص ما"</string>
     <string name="receive_message_notif">"عندما أتلقى رسالة"</string>
     <string name="mention_replay_notif">"عندما يتم ذكر اسمي في نشاط أو رد"</string>
