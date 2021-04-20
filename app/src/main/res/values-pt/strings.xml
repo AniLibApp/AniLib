@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_subtitle">"Pelo poder do AniList"</string>
-    <string name="app_description">"Seu lugar favorito para gerenciar, monitorar, navegar pelos seus Animes e Mangás e muito mais."</string>
+    <string name="app_description">"Seu lugar favorito para gerenciar, acompanhar, navegar pelos seus Animes e Mangás e muito mais."</string>
     <string name="anilib_site">"Site do AniLib"</string>
     <string name="visit_site_desc">"Visite o AniLib para saber mais"</string>
     <string name="discover">"Descobrir"</string>
@@ -17,8 +17,8 @@
     <string name="settings">"Configurações"</string>
     <string name="account">"Conta"</string>
     <string name="sign_in">"Fazer login"</string>
-    <string name="theme">"Tema"</string>
-    <string name="notification">"Notificações"</string>
+    <string name="dynamic_theme">"Tema dinâmico"</string>
+    <string name="notification">"Notificação"</string>
     <string name="notification_setting_sub">"Controle o que vê na notificação. (Login necessário)"</string>
     <string name="sign_out">"Desconectar"</string>
     <string name="feed">"Feed"</string>
@@ -31,7 +31,7 @@
     <string name="user_detail_fetch_failed">"Falha ao obter detalhes do usuário."</string>
     <string name="save">"Salvar"</string>
     <string name="status">"Status"</string>
-    <string name="score">"Pontuação"</string>
+    <string name="score">"Nota"</string>
     <string name="invalid_input_type">"Tipo de entrada inválido."</string>
 
     <!-- media list status -->
@@ -51,15 +51,15 @@
     <string name="failed_to_save">"Falha ao salvar."</string>
     <string name="failed_to_toggle">"Falha ao alterar."</string>
     <string name="failed_to_delete">"Falha ao remover."</string>
-    <string name="please_wait">"Por favor espere."</string>
+    <string name="please_wait">"Por favor aguarde."</string>
     <string name="volume_progress">"Progresso de Volume"</string>
     <string name="manga_progress">"Progresso de Mangá"</string>
     <string name="make_private">"Tornar privado"</string>
-    <string name="overview">"Detalhes"</string>
+    <string name="overview">"Visão geral"</string>
     <string name="character">"Personagem"</string>
     <string name="stats">"Estatísticas"</string>
     <string name="staff">"Staff"</string>
-    <string name="review">"Análise"</string>
+    <string name="review">"Resenha"</string>
     <string name="watch">"Assistir"</string>
     <string name="open_list_editor">"Abrir editor de lista"</string>
     <string name="delete">"Excluir"</string>
@@ -73,7 +73,7 @@
     <string name="min_s">"%1$s min"</string>
     <string name="chapters">"Capítulos"</string>
     <string name="volumes">"Volume"</string>
-    <string name="start_s_end_s">"Início: %1$s   ·   Fim: %2$s"</string>
+    <string name="start_s_end_s">"Início: %1$s   ·   Fim: %2$s"</string>
     <string name="japanese_title">"Japonês"</string>
     <string name="english_title">"Inglês"</string>
     <string name="romaji_title">"Romaji"</string>
@@ -83,14 +83,14 @@
     <string name="recommendations">"Recomendações"</string>
     <string name="chapter_format_s">"C: %1$s · %2$s"</string>
     <string name="source_seasonyear_s">"%1$s · %2$s"</string>
-    <string name="str_dot_str">"%1$s · %2$s"</string>
+    <string name="format_status_s">"%1$s · %2$s"</string>
     <string name="relations">"Relações"</string>
     <string name="genre">"Gênero"</string>
     <string name="tags">"Tags"</string>
     <string name="studios">"Estúdios"</string>
     <string name="producers">"Produtores"</string>
     <string name="hashtag">"Hashtag"</string>
-    <string name="average_score">"Pontuação Média"</string>
+    <string name="average_score">"Nota Mediana"</string>
     <string name="popularity">"Popularidade"</string>
     <string name="favourites">"Favoritos"</string>
     <string name="day">"Dias"</string>
@@ -102,7 +102,7 @@
     <string name="recent_act_per_day">"Atividade Recente Por Dia"</string>
     <string name="rankings">"Rankings"</string>
     <string name="status_distribution">"Distribuição de Status"</string>
-    <string name="score_distribution">"Distribuição de Pontuação"</string>
+    <string name="score_distribution">"Distribuição de Nota"</string>
     <string name="native_name">"Nome Nativo"</string>
     <string name="alternative_name">"Nome Alternativo"</string>
     <string name="about">"Sobre"</string>
@@ -110,7 +110,7 @@
     <string name="invalid">"Inválido"</string>
     <string name="media">"Mídia"</string>
     <string name="voice_role">"Papéis de Voz"</string>
-    <string name="staff_role">"Funções da Staff"</string>
+    <string name="staff_role">"Funções de Staff"</string>
     <string name="media_format_year_s">"%1$s · %2$s"</string>
     <string name="language">"Idioma"</string>
     <string name="studio">"Estúdio"</string>
@@ -131,10 +131,10 @@
     <string name="s_slash_s_brackets">"%1$s/%2$s (%3$s)"</string>
     <string name="anime_list">"Lista de Anime"</string>
     <string name="manga_list">"Lista de Mangá"</string>
-    <string name="none">"Nada"</string>
+    <string name="none">"Nenhum"</string>
     <string name="repeating">"Repetindo"</string>
     <string name="spoiler_alert">"Alerta de Spoiler"</string>
-    <string name="failed_to_load">"Falha ao Carregar"</string>
+    <string name="error">"Falha ao carregar"</string>
     <string name="follower">"Seguidor"</string>
     <string name="following">"Seguindo"</string>
     <string name="blocked">"Bloqueado"</string>
@@ -143,9 +143,9 @@
     <string name="s_following">"%1$sSeguindo"</string>
     <string name="s_followers">"%1$sSeguidores"</string>
     <string name="total_anime">"Total de Animes"</string>
-    <string name="days_watched">"Dias Assistidos"</string>
-    <string name="mean_score">"Pontuação Média"</string>
-    <string name="total_manga">"Total de Mangás"</string>
+    <string name="days_watched">"Dias Assistindo"</string>
+    <string name="mean_score">"Nota Média"</string>
+    <string name="total_manga">"Total de Mangá"</string>
     <string name="chapters_read">"Capítulos Lidos"</string>
     <string name="saved_to_gallary">"Salvo na Galeria"</string>
     <string name="anime">"Anime"</string>
@@ -155,15 +155,15 @@
     <string name="voice_actors">"Atores de Voz"</string>
     <string name="episodes_watched">"Episódios Assistidos"</string>
     <string name="days_planned">"Dias Planejados"</string>
-    <string name="standard_deviation">"Desvio Padrão"</string>
+    <string name="standard_deviation">"Deviação Padrão"</string>
     <string name="volumes_read">"Volumes Lidos"</string>
     <string name="format_distribution">"Distribuição de Formato"</string>
     <string name="country_distribution">"Distribuição de País"</string>
     <string name="release_year">"Ano de Lançamento"</string>
     <string name="watch_year">"Ano Assistido"</string>
     <string name="read_year">"Ano Lido"</string>
-    <string name="count">"Contagem"</string>
-    <string name="time_watched">"Tempo Assistido"</string>
+    <string name="count">"Quant."</string>
+    <string name="time_watched">"Tempo Assistindo"</string>
     <string name="s_day_s_hour">"%1$d d %2$d h"</string>
     <string name="links">"Links"</string>
     <string name="info">"Informações"</string>
@@ -172,8 +172,7 @@
     <string name="stop_following_s">"Parar de seguir %1$s?"</string>
     <string name="yes">"Sim"</string>
     <string name="no">"Não"</string>
-    <string name="follow">"Seguir
-"</string>
+    <string name="follow">"Seguir"</string>
     <string name="episode_airing_notif">"%1$s %2$s %3$s %4$s %5$s"</string>
     <string name="thread_notif_s">"%1$s %2$s %3$s"</string>
     <string name="s_space_s">"%1$s %2$s"</string>
@@ -186,34 +185,36 @@
     <string name="trending">"Tendência"</string>
     <string name="popular">"Popular"</string>
     <string name="newly_added">"Recém-adicionado"</string>
-    <string name="review_composer">"Autor da Análise"</string>
-    <string name="write_review">"Escrever Análise (Mín:2200)"</string>
+    <string name="review_composer">"Autor da resenha"</string>
+    <string name="write_review">"Escrever resenha (Mín:2200)"</string>
     <string name="summary">"Sumário"</string>
-    <string name="review_summary">"Sumário da Análise (Mín:20, Máx:120)"</string>
-    <string name="save_review">"Salvar Análise"</string>
-    <string name="check_character_length">"Verifique a Quantidade de Caractere"</string>
-    <string name="review_score_format">"Pontuação: %1$s/100"</string>
-    <string name="review_by">"Análise por %1$s"</string>
+    <string name="review_summary">"Resumo da resenha (Mín:20, Máx:120)"</string>
+    <string name="save_review">"Salvar resenha"</string>
+    <string name="check_character_length">"Verifique a Quantidade de Caracteres"</string>
+    <string name="review_score_format">"Nota: %1$s/100"</string>
+    <string name="review_by">"Resenha por %1$s"</string>
     <string name="s_out_of_s_liked_this_review">"%1$s de %2$s curtiram esta análise"</string>
-    <string name="review_of_s_by_s">"Análise de %1$s por $2$s"</string>
-    <string name="recent_reviews">"Análises Recentes"</string>
-    <string name="reviews">"Análises"</string>
+    <string name="review_of_s_by_s">"Resenha de %1$s por %2$s"</string>
+    <string name="recent_reviews">"Resenhas Recentes"</string>
+    <string name="reviews">"Resenhas"</string>
     <string name="press_again_to_exit">"Toque novamente para sair"</string>
     <string name="privacy_policy">"Política de Privacidade"</string>
     <string name="privacy_policy_desc">"Ver política de privacidade completa."</string>
     <string name="whats_new">"O que há de novo"</string>
+    <string name="studio_version">"Versão Studio"</string>
     <string name="terms_and_condition">"Termos e Condições"</string>
     <string name="terms_and_condition_desc">"Ver Termos e Condições"</string>
     <string name="in_progress">"Trabalhando nisso."</string>
 
     <!-- crash report -->
     <string name="crash_reporting">"Relatório de Erro"</string>
-    <string name="crash_report_desc">"Ajude a melhorar os recursos do AniLib. Envia relatórios de erros automaticamente"</string>
+    <string name="crash_report_desc">"Ajuda a melhorar os recursos do AniLib. Envia relatórios de erros automaticamente"</string>
 
     <!-- notification -->
     <string name="notification_setting">"Configuração de Notificação"</string>
     <string name="refresh_interval">"Intervalo de atualização"</string>
     <string name="notifications">"Notificações"</string>
+    <string name="check_which_notif_to_show">"Notifique-me quando."</string>
     <string name="when_someone_follows_me">"Quando alguém me segue"</string>
     <string name="receive_message_notif">"Quando eu recebo uma mensagem"</string>
     <string name="mention_replay_notif">"Quando sou @ mencionado em uma atividade ou resposta de atividade"</string>
@@ -231,7 +232,7 @@
     <string name="preferred_media_title">"Selecione o título de mídia preferido"</string>
     <string name="cover_image_quality">"Qualidade da Imagem da Capa"</string>
     <string name="preferred_image_quality_desc">"Selecione sua qualidade de imagem preferida"</string>
-    <string name="advanced_scores">"Pontuações Avançadas"</string>
+    <string name="advanced_scores">"Notas Avançadas"</string>
     <string name="copied_to_clipboard">"Copiado para o clipboard"</string>
     <string name="change_log">"Registro de alterações"</string>
     <string name="are_you_sure">"Tem certeza?"</string>
@@ -257,7 +258,7 @@
     <string name="medium">"Média"</string>
     <string name="title">"Título"</string>
     <string name="title_desc">"Título Decrescente"</string>
-    <string name="score_desc">"Pontuação Decrescente"</string>
+    <string name="score_desc">"Nota Decrescente"</string>
     <string name="progress">"Progresso"</string>
     <string name="progress_desc">"Progresso Decrescente"</string>
     <string name="last_updated">"Último atualizado"</string>
@@ -269,7 +270,7 @@
     <string name="completed_date_desc">"Data de Conclusão Decrescente"</string>
     <string name="release_date">"Data de Lançamento"</string>
     <string name="release_date_desc">"Data de Lançamento Decrescente"</string>
-    <string name="average_score_desc">"Pontuação Média Decrescente"</string>
+    <string name="average_score_desc">"Nota Média Decrescente"</string>
     <string name="popularity_desc">"Popularidade Decrescente"</string>
 
     <!-- media_format -->
@@ -324,7 +325,7 @@
     <string name="cancelled">"Cancelado"</string>
     <string name="not_yet_released">"Ainda não lançado"</string>
     <string name="releasing">"Em exibição"</string>
-    <string name="finished">"Concluído"</string>
+    <string name="finished">"Finalizado"</string>
 
     <!-- media_season -->
     <string name="all">"Tudo"</string>
@@ -369,7 +370,7 @@
 
     <!-- toggle -->
     <string name="titles_watched">"Títulos Assistidos"</string>
-    <string name="hour_watched">"Horas Assistidas"</string>
+    <string name="hour_watched">"Horas Assistindo"</string>
     <string name="titles_read">"Títulos Lidos"</string>
     <string name="rating">"Avaliação"</string>
     <string name="rating_desc">"Avaliação Decrescente"</string>
@@ -399,4 +400,72 @@
     <string name="preferred_application_language">"Selecione o idioma preferido do aplicativo"</string>
     <string name="show_adult_content">"Mostrar conteúdo adulto"</string>
     <string name="show_adult_content_desc">"Ativá-lo mostrará conteúdo de mídia adulto."</string>
+    <string name="theme">"Tema"</string>
+    <string name="failed_to_load">"Falha ao carregar"</string>
+
+    <!-- airing sort -->
+    <string name="media_id">"Id de mídia"</string>
+    <string name="media_id_desc">"Id de mídia"</string>
+    <string name="time">"Tempo"</string>
+    <string name="time_desc">"Tempo Decrescente"</string>
+    <string name="home">"Início"</string>
+    <string name="list">"Lista"</string>
+    <string name="profile">"Perfil"</string>
+    <string name="sun">"Dom"</string>
+    <string name="mon">"Seg"</string>
+    <string name="tue">"Ter"</string>
+    <string name="wed">"Qua"</string>
+    <string name="thu">"Qui"</string>
+    <string name="fri">"Sex"</string>
+    <string name="sat">"Sáb"</string>
+    <string name="card_classic_mode">"Modo Clássico"</string>
+    <string name="minimal_mode">"Modo Redondo Mínimo"</string>
+    <string name="minimal_list_mode">"Modo Lista Mínimo"</string>
+    <string name="radio">"Rádio"</string>
+    <string name="notification_channel">"Em reprodução"</string>
+    <string name="notification_channel_description">"Mostra qual rádio está tocando no momento"</string>
+    <string name="play">"Reproduzir"</string>
+    <string name="pause">"Pausar"</string>
+    <string name="buffering">"Buferizando …"</string>
+    <string name="loading">"Carregando …"</string>
+    <string name="notification_content_text">"%1$s%2$s"</string>
+    <string name="radio_station">"Estação de Rádio"</string>
+    <string name="network_error">"Erro de Rede"</string>
+    <string name="all_radio_stations">"Todas as Estações de Rádio"</string>
+    <string name="stopped">"Parado"</string>
+    <string name="favourite_radio_station">"Estações Favoritas"</string>
+    <string name="recently_played_stations">"Estações Tocadas Recentemente"</string>
+    <string name="remove_from_favourite">"Remover dos Favoritos"</string>
+    <string name="no_description">"Sem descrição"</string>
+    <string name="translate">"Traduzir"</string>
+    <string name="include_already_aired">"Incluir Já Exibido"</string>
+    <string name="add_remove_tags">"Adicionar/Remover Tags"</string>
+    <string name="add_remove_genre">"Adicionar/Remover Gêneros"</string>
+    <string name="anilist_and_manga"><![CDATA[Anime e Mangá]]></string>
+    <string name="title_language">"Idioma do Título"</string>
+    <string name="airing_anime_notifications">"Notificações de Exibição de Animes"</string>
+    <string name="scoring_system">"Sistema de Pontuação"</string>
+    <string name="default_list_order">"Ordem de Lista Padrão"</string>
+    <string name="saved_successfully">"Salvo com sucesso"</string>
+    <string name="error_occured_while_saving">"Ocorreu um erro ao salvar"</string>
+    <string name="home_screen_order">"Ordem da tela inicial"</string>
+    <string name="home_screen_order_desc">"Mude a ordem da tela inicial. (Alterações serão aplicadas ao reiniciar o app)"</string>
+    <string name="display_card_in_home_desc">"Não mostre nenhum cartão na tela inicial para descrições"</string>
+    <string name="display_home_screen_cards">"Remover cartões de descrição na tela inicial"</string>
+    <string name="automatically_subscribe_me_to_activity_i_create">"Inscrever-me automaticamente em atividades que eu criei"</string>
+    <string name="automatically_subscribe_me_to_activity_i_reply_to">"Inscrever-me automaticamente em atividades que eu respondi"</string>
+    <string name="copy_playing_radio">"Copiar título de rádio em reprodução"</string>
+    <string name="open_home_desc">"Abrir Início"</string>
+    <string name="open_manga_list">"Abrir Lista de Mangás"</string>
+    <string name="open_anime_list">"Abrir Lista de Animes"</string>
+    <string name="open_radio">"Abrir Rádio"</string>
+    <string name="weekly">"Semanalmente"</string>
+    <string name="day_range_string">"%1$s - %2$s"</string>
+    <string name="date_range_from">"de"</string>
+    <string name="date_range_to">"Para"</string>
+    <string name="disable_ads">"Desativar anúncios"</string>
+    <string name="disable_ads_desc">"Desativa os anúncios na seção de rádio. Deixar ativado dará suporte ao desenvolvimento do app."</string>
+    <string name="load_bio">"Carregar bio"</string>
+    <string name="load_bio_desc">"Carrega a bio do usuário ao acessar a tela do usuário"</string>
+    <string name="load_user_bio">"Carregar Bio de usuário automaticamente"</string>
 </resources>
