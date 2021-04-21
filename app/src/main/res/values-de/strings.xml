@@ -512,4 +512,21 @@
     <string name="translating">"Übersetzt..."</string>
     <string name="widget">"Widget"</string>
     <string name="copy_link">"Link kopieren"</string>
+    <string name="theme_app_summary">Stil der App.</string>
+    <string name="theme_app">App-Thema</string>
+    <string name="theme_app_day">Tagesthema</string>
+    <string name="theme_app_day_summary">Stil der App am Tag.</string>
+    <string name="theme_app_day_night_desc">Dies wird nur funktionieren, wenn das automatische Thema ausgewählt ist.</string>
+    <string name="theme_app_night_summary">Stil der App zur Nacht.</string>
+    <string name="theme_app_night">Nachtthema</string>
+    <string name="theme_color_primary">Primärfarbe</string>
+    <string name="theme_color_primary_summary">In primären Elementen genutzte Farbe.</string>
+    <string name="theme_background_aware_desc">Passen Sie die Farben entsprechend dem Hintergrund an, um gute Sichtbarkeit zu garantieren.</string>
+    <string name="theme_color_accent_summary">In sekundären Elementen genutzte Farbe</string>
+    <string name="theme_color_accent">Akzentfarbe</string>
+    <string name="theme_navigation_bar_desc">Thema der Navigationsleiste wird an manchen Stellen nicht sichtbar sein, um gute Sichtbarkeit zu garantieren.</string>
+    <string name="theme_navigation_bar_summary">Navigationsleiste entsprechend des App-Themas anzeigen.</string>
+    <string name="theme_navigation_bar">Thema der Navigationsleiste</string>
+    <string name="theme_navigation_bar_summary_unchecked">Standard Navigationsleiste anzeigen.</string>
+    <string name="theme_app_desc">Wähle auto, um das Tages- und das Nachtthema zu benutzen.</string>
 </resources>
