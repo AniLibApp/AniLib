@@ -82,7 +82,6 @@
     <string name="recommendations">"التوصيات"</string>
     <string name="chapter_format_s">"ف: %1$s · %2$s"</string>
     <string name="source_seasonyear_s">"%1$s · %2$s"</string>
-    <string name="format_status_s">"%1$s · %2$s"</string>
     <string name="relations">"ذات صلة"</string>
     <string name="genre">"التصنيف"</string>
     <string name="tags">"العلامات"</string>
