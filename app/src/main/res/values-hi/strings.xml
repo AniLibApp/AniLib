@@ -82,7 +82,6 @@
     <string name="recommendations">"सिफारिशें"</string>
     <string name="chapter_format_s">"C: %1$s · %2$s"</string>
     <string name="source_seasonyear_s">"%1$s · %2$s"</string>
-    <string name="format_status_s">"%1$s · %2$s"</string>
     <string name="relations">"संबंधी"</string>
     <string name="genre">"शैली"</string>
     <string name="tags">"टैग्स"</string>
@@ -397,21 +396,4 @@
     <string name="preferred_application_language">"पसंदीदा भाषा चयन करें"</string>
     <string name="show_adult_content">"एडल्ट कंटेंट दिखाई दे"</string>
     <string name="show_adult_content_desc">"इसे सक्रिय करने पर एडल्ट कंटेंट सामग्री दिखाई देगा"</string>
-    <string name="theme_app_day_night_desc">ये \\\"ऑटो\\\" थीम शुरू करने के बाद ही काम करेगा।</string>
-    <string name="theme_app_night">रात का रंग-रूप</string>
-    <string name="theme_app_night_summary">रात को ऐप का स्टाइल।</string>
-    <string name="theme_app_day_summary">दिन में आप का स्टाइल।</string>
-    <string name="theme_app_day">दिन के रंग-रूप</string>
-    <string name="theme_app">ऐप का रंग-रूप</string>
-    <string name="theme_app_summary">ऐप का स्टाइल।</string>
-    <string name="theme_color_primary">िस्टम का रंग</string>
-    <string name="theme_color_primary_summary">मुख्य वस्तुओं द्वारा उपयोग में लिया जाने वाला रंग।</string>
-    <string name="theme_background_aware_desc">आसानी से देखने के लिए बैकग्राउंड के अनुसार रंग बदलें।</string>
-    <string name="theme_color_accent_summary">माध्यमिक वस्तुओं द्वारा उपयोग में लिया जाने वाला रंग।</string>
-    <string name="theme_color_accent">माध्यमिक रंग</string>
-    <string name="theme_navigation_bar_desc">देखने में आसानी के लिए नैविजेशन बार का रंग कई जगह नहीं दिखाया जाएगा।</string>
-    <string name="theme_navigation_bar_summary">नविगेशन बार का रंग ऐप के रंग-रूप के अनुसार बदलें।</string>
-    <string name="theme_navigation_bar">नाविगेशन बार का रंग-रूप</string>
-    <string name="theme_navigation_bar_summary_unchecked">डिफ़ॉल्ट नेविगेशन बार दिखाएं।</string>
-    <string name="theme_app_desc">दिन और रात के रंग-रूप उपयोग लेने के लिए \\\"ऑटो\\\" चुनें।</string>
 </resources>
