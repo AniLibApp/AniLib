@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="site_url" translatable="false">https://anilib.onrender.com/#/</string>
-    <string name="privacy_policy_url" translatable="false">https://anilib.onrender.com/#/privacypolicy</string>
-    <string name="terms_and_condition_url" translatable="false">https://anilib.onrender.com/#/termsandcondition</string>
+    <string name="site_url" translatable="false">https://anilib.onrender.com/</string>
+    <string name="privacy_policy_url" translatable="false">https://anilib.onrender.com/privacypolicy</string>
+    <string name="terms_and_condition_url" translatable="false">https://anilib.onrender.com/termsandcondition</string>
     <string name="playstore" translatable="false">https://play.google.com/store/apps/details?id=com.revolgenx.anilib</string>
     <string name="github_link" translatable="false">https://github.com/rev0lgenX/AniLib</string>
     <string name="discord_invite_link" translatable="false">https://discord.gg/Gd2TVQT</string>

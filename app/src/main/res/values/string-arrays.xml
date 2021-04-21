@@ -261,6 +261,7 @@
         <item>@string/portuguese</item>
         <item>@string/russian</item>
         <item>@string/french</item>
+        <item>@string/german</item>
     </string-array>
 
     <string-array name="application_language_values">
@@ -272,6 +273,7 @@
         <item>pt</item>
         <item>ru</item>
         <item>fr</item>
+        <item>de</item>
     </string-array>
 
     <!--application startup page-->
