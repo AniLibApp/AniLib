@@ -80,7 +80,6 @@
     <string name="recommendations">"Empfehlungen"</string>
     <string name="chapter_format_s">"K: %1$s · %2$s"</string>
     <string name="source_seasonyear_s">"%1$s · %2$s"</string>
-    <string name="format_status_s">"%1$s · %2$s"</string>
     <string name="relations">"Verbindungen"</string>
     <string name="genre">"Genre"</string>
     <string name="tags">"Tags"</string>
