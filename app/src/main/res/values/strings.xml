@@ -369,7 +369,8 @@
     <string name="spanish" translatable="false">Español</string>
     <string name="arabic" translatable="false">عربى</string>
     <string name="russian" translatable="false">русский</string>
-    <string name="french" translatable="false">français</string>
+    <string name="french" translatable="false">Français</string>
+    <string name="german" translatable="false">Deutsche</string>
 
 
     <string name="anilist" translatable="false">AniList</string>
