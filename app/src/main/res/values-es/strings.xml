@@ -82,7 +82,6 @@
     <string name="recommendations">"Recomendaciones"</string>
     <string name="chapter_format_s">"C: %1$s · %2$s"</string>
     <string name="source_seasonyear_s">"%1$s · %2$s"</string>
-    <string name="format_status_s">"%1$s · %2$s"</string>
     <string name="relations">"Relaciones"</string>
     <string name="genre">"Genero"</string>
     <string name="tags">"Etiquetas"</string>
@@ -404,21 +403,4 @@ Envia errores automaticament."</string>
     <string name="preferred_application_language">"Seleccion su idioma preferido para la aplicacion"</string>
     <string name="show_adult_content">"Muestra Contenido Adulto"</string>
     <string name="show_adult_content_desc">"Esto mostrara contenido adulto"</string>
-    <string name="theme_app_day_night_desc">Esto funcionará únicamente cuando se aplique el tema auto.</string>
-    <string name="theme_app_night_summary">Estilo de la aplicación durante la noche.</string>
-    <string name="theme_app_night">Tema nocturno</string>
-    <string name="theme_app_day_summary">Estilo de la aplicación durante el día.</string>
-    <string name="theme_app">Tema de la aplicación</string>
-    <string name="theme_app_day">Tema diurno</string>
-    <string name="theme_app_summary">Estilo de la aplicación.</string>
-    <string name="theme_color_primary">Color principal</string>
-    <string name="theme_color_primary_summary">Color utilizado por los elementos principales.</string>
-    <string name="theme_background_aware_desc">Ajuste los colores dependiendo del fondo para mejorar la visibilidad.</string>
-    <string name="theme_color_accent_summary">Color usado por los elementos secundarios.</string>
-    <string name="theme_color_accent">Color de énfasis</string>
-    <string name="theme_navigation_bar_desc">El tema de la barra de navegación no será visible en algunos lugares para una mejor experiencia visual.</string>
-    <string name="theme_navigation_bar_summary">Muestra la barra de navegación de color según el tema de la aplicación.</string>
-    <string name="theme_navigation_bar">Tema de la barra de navegación</string>
-    <string name="theme_navigation_bar_summary_unchecked">Mostrar la barra de navegación predeterminada.</string>
-    <string name="theme_app_desc">Selecciona auto para usar los temas diurno y nocturno.</string>
 </resources>
