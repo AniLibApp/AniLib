@@ -65,7 +65,7 @@ class ReviewPresenter(context: Context) : BasePresenter<ReviewPresenterLayoutBin
             reviewLikeTv.text = item.rating?.toString().naText()
 
             root.setOnClickListener {
-                BrowseReviewEvent(item.reviewId).postEvent
+                BrowseReviewEvent(item.reviewId, R.id.drawer_layout).postEvent
             }
         }
     }

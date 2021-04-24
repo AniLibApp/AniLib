@@ -99,7 +99,8 @@
     <string name="rankings">"Rangliste"</string>
     <string name="native_name">"Originalname"</string>
     <string name="alternative_name">"Alternativer Name"</string>
-    <string name="about">"Über AniLib"</string>
+    <string name="about">"Über"</string>
+    <string name="about_anilib">"Über AniLib"</string>
     <string name="share">"Teilen"</string>
     <string name="invalid">"Ungültig"</string>
     <string name="media">"Medien"</string>

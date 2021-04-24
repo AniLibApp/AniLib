@@ -1,72 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_width="match_parent"
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
-
 
         <include
             android:id="@+id/media_list_setting_progress_bar"
             layout="@layout/horizontal_progress_bar_layout" />
 
+
         <com.pranavpandey.android.dynamic.support.view.DynamicHeader
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_width="match_parent"
             app:ads_fillSpace="true"
             app:ads_title="@string/scoring_system" />
 
 
         <com.revolgenx.anilib.ui.view.widgets.spinner.AniLibSpinnerLayout
             android:id="@+id/scoring_system_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
 
 
         <com.pranavpandey.android.dynamic.support.view.DynamicHeader
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:layout_width="match_parent"
             app:ads_fillSpace="true"
             app:ads_title="@string/default_list_order" />
 
 
         <com.revolgenx.anilib.ui.view.widgets.spinner.AniLibSpinnerLayout
             android:id="@+id/list_order_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
 
         <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
             android:id="@+id/list_browse_or_edit_switch"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_title="@string/enable_to_open_list_editor_instead_of_browsing_info"
-            app:ads_summary="@string/saving_not_required"
+            android:layout_width="match_parent"
             app:ads_checked="true"
-            app:ads_key="@string/list_edit_or_browse_key"/>
+            app:ads_key="@string/list_edit_or_browse_key"
+            app:ads_summary="@string/saving_not_required"
+            app:ads_title="@string/enable_to_open_list_editor_instead_of_browsing_info" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
             android:id="@+id/advance_score_switch"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:text="@string/advanced_scores" />
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:text="@string/advanced_scores"
+            android:textSize="12sp" />
 
 
         <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
-            android:id="@+id/advance_score_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:background="@drawable/ads_button_remote"
+            android:id="@+id/advance_score_header"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             app:ads_icon="@drawable/ic_add_circle"
             app:ads_title="@string/advanced_scoring_list"
             app:titleTextSize="14sp" />
@@ -74,8 +76,8 @@
 
         <com.revolgenx.anilib.ui.view.tags.MediaListAdvanceScoreChipRecyclerView
             android:id="@+id/advance_score_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
 
 
     </LinearLayout>

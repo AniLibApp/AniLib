@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
             android:id="@+id/add_remove_tag_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
             app:ads_subtitle="@string/add_remove_tags"
             app:ads_title="@string/tags" />
 
-        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
             android:id="@+id/add_remove_genre_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             app:ads_subtitle="@string/add_remove_genre"
             app:ads_title="@string/genre" />
 
-        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
             android:id="@+id/add_remove_streaming_on_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

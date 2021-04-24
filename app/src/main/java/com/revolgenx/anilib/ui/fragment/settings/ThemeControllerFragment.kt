@@ -17,7 +17,7 @@ class ThemeControllerFragment : BaseToolbarFragment<ThemeControllerFragmentBindi
     private var mAppThemeDay: DynamicColorPreference? = null
     private var mAppThemeNight: DynamicColorPreference? = null
 
-    override val title: Int = R.string.theme
+    override var titleRes: Int? = R.string.theme
 
     override fun bindView(
         inflater: LayoutInflater,

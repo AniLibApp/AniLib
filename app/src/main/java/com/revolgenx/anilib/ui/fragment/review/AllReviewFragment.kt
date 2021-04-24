@@ -1,27 +1,27 @@
 package com.revolgenx.anilib.ui.fragment.review
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
+import android.view.*
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.ui.dialog.ReviewsFilterDialog
-import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
+import com.revolgenx.anilib.common.ui.fragment.BasePresenterToolbarFragment
 import com.revolgenx.anilib.data.model.review.ReviewModel
 import com.revolgenx.anilib.ui.presenter.review.ReviewPresenter
 import com.revolgenx.anilib.ui.viewmodel.review.AllReviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AllReviewFragment : BasePresenterFragment<ReviewModel>() {
+class AllReviewFragment : BasePresenterToolbarFragment<ReviewModel>() {
     override val basePresenter: Presenter<ReviewModel>
         get() = ReviewPresenter(requireContext())
     override val baseSource: Source<ReviewModel>
         get() = viewModel.source ?: viewModel.createSource()
 
     private val viewModel by viewModel<AllReviewViewModel>()
+
+    override val setHomeAsUp: Boolean = true
+    override val titleRes: Int = R.string.reviews
 
 
     override val loadingPresenter: Presenter<Unit>
@@ -35,12 +35,6 @@ class AllReviewFragment : BasePresenterFragment<ReviewModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as AppCompatActivity).supportActionBar?.let {
-            it.title = getString(R.string.reviews)
-            it.setHomeAsUpIndicator(R.drawable.ic_close)
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setDisplayShowHomeEnabled(true)
-        }
 
         if (savedInstanceState != null) {
             childFragmentManager.findFragmentByTag(ReviewsFilterDialog::class.java.simpleName)
@@ -67,10 +61,6 @@ class AllReviewFragment : BasePresenterFragment<ReviewModel>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> {
-                finishActivity()
-                true
-            }
             R.id.reviewsFilterMenu -> {
                 ReviewsFilterDialog.newInstance(viewModel.field.reviewSort).also {
                     it.positiveCallback = {
@@ -89,4 +79,5 @@ class AllReviewFragment : BasePresenterFragment<ReviewModel>() {
             }
         }
     }
+
 }

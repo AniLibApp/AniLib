@@ -7,13 +7,8 @@ import com.apollographql.apollo.exception.ApolloHttpException
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.listEditOrBrowse
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
-import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.data.model.list.MediaListModel
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.MediaListCollectionCardPresenterLayoutBinding
 import com.revolgenx.anilib.ui.presenter.home.discover.MediaListCollectionPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status
@@ -54,13 +49,15 @@ object CardHolderBinding {
                         3 -> R.drawable.ic_score_smile
                         else -> R.drawable.ic_role
                     }
-                    mediaListRatingIv.setImageResource(drawable)
+                    mediaListRatingTv.setImageResource(drawable)
+                    mediaListRatingTv.scoreTextVisibility = View.GONE
+
                 }
                 ScoreFormat.POINT_10_DECIMAL.ordinal -> {
-                    mediaListRatingTv.text = item.score?.toString().naText()
+                    mediaListRatingTv.setText(item.score)
                 }
                 else -> {
-                    mediaListRatingTv.text = item.score?.toInt()?.toString().naText()
+                    mediaListRatingTv.text = item.score?.toInt()
                 }
             }
 

@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.DialogInterface
-import android.graphics.Color
 import android.os.Build
 import android.provider.Settings
 import android.view.Gravity
@@ -24,7 +23,6 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.preference.PreferenceFragmentCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
@@ -36,11 +34,8 @@ import com.pranavpandey.android.dynamic.toasts.internal.ToastCompat
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.BaseDynamicActivity
 import com.revolgenx.anilib.databinding.DynamicToastViewLayoutBinding
-import com.revolgenx.anilib.ui.bottomsheet.DynamicBottomSheetFragment
 import com.revolgenx.anilib.ui.dialog.MessageDialog
-import com.revolgenx.anilib.util.AppUpdater
 
 private val tintSurface by lazy {
     DynamicTheme.getInstance().get().tintSurfaceColor

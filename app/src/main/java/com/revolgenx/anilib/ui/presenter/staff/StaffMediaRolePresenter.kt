@@ -43,7 +43,7 @@ class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePr
 
         binding.apply {
             staffMediaRoleImageView.setImageURI(item.coverImage?.image(context))
-            staffMediaRoleRatingTv.text = item.averageScore?.toString().naText()
+            staffMediaRoleRatingTv.text = item.averageScore
             staffMediaRoleTitleTv.text = item.title?.title(context)
             staffMediaRoleTv.text = item.staffRole
             staffMediaRoleFormatYearTv.text =

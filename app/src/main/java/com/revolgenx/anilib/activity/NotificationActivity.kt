@@ -20,8 +20,6 @@ class NotificationActivity : BaseDynamicActivity<NotificationActivityLayoutBindi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setSupportActionBar(binding.toolbarActivityToolbar.dynamicToolbar)
-
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.notification_activity_container, NotificationFragment()).commit()

@@ -45,7 +45,7 @@ class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresente
         holder.getBinding()?.apply {
             studioMediaImageView.setImageURI(item.coverImage?.image(context))
             studioMediaTitleTv.text = item.title?.title(context)
-            studioMediaRatingTv.text = item.averageScore?.toString().naText()
+            studioMediaRatingTv.text = item.averageScore
             studioMediaFormatYearTv.text = context.getString(R.string.media_format_year_s).format(
                 item.format?.let { mediaFormats[it] }.naText(), item.seasonYear?.toString().naText()
             )

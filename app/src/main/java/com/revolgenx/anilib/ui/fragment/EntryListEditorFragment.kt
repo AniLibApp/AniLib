@@ -89,7 +89,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             if (verticalOffset == 0) {
                 state = EXPANDED
                 (activity as AppCompatActivity).invalidateOptionsMenu()
-            } else if (abs(verticalOffset) >= appBarLayout.totalScrollRange) {
+            } else if (abs(verticalOffset) >= (appBarLayout.totalScrollRange - binding.listEditorToolbar.height)) {
                 state = COLLAPSED
                 (activity as AppCompatActivity).invalidateOptionsMenu()
             }

@@ -6,12 +6,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.data.meta.TagFilterMetaType
 import com.revolgenx.anilib.data.meta.TagFilterSettingMeta
 import com.revolgenx.anilib.databinding.CustomizeFilterFragmentLayoutBinding
 import com.revolgenx.anilib.ui.dialog.TagFilterSettingDialogFragment
 
-class CustomizeFilterFragment : BaseLayoutFragment<CustomizeFilterFragmentLayoutBinding>() {
+class CustomizeFilterFragment : BaseToolbarFragment<CustomizeFilterFragmentLayoutBinding>() {
     override var titleRes: Int? = R.string.custom_filters
     override var setHomeAsUp: Boolean = true
 

@@ -9,6 +9,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
+import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.BrowseReviewEvent
 import com.revolgenx.anilib.infrastructure.event.UserBrowseEvent
 import com.revolgenx.anilib.data.model.MediaReviewModel

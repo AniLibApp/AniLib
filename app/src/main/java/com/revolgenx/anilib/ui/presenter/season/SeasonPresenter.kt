@@ -85,7 +85,7 @@ class SeasonPresenter(context: Context) :
                 }).postEvent
             }
 
-            mediaRatingTv.text = item.averageScore?.toString().naText()
+            mediaRatingTv.text = item.averageScore
 
             mediaFormatTv.text = item.format?.let {
                 mediaFormats[it]

@@ -6,6 +6,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.data.field.notification.UserNotificationMutateField
 import com.revolgenx.anilib.databinding.NotificationSettingFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
@@ -14,7 +15,7 @@ import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.notification.NotificationSettingViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NotificationSettingFragment : BaseLayoutFragment<NotificationSettingFragmentLayoutBinding>() {
+class NotificationSettingFragment : BaseToolbarFragment<NotificationSettingFragmentLayoutBinding>() {
     override var titleRes: Int? = R.string.notification_setting
     override var setHomeAsUp: Boolean = true
 
@@ -67,7 +68,7 @@ class NotificationSettingFragment : BaseLayoutFragment<NotificationSettingFragme
         return if (item.itemId == R.id.save_menu) {
             saveNotificationSetting()
             true
-        } else false
+        } else super.onOptionsItemSelected(item)
     }
 
 

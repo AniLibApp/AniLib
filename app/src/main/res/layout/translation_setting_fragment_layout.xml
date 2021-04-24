@@ -25,7 +25,7 @@
         <include layout="@layout/divider_layout" />
 
 
-        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
             android:id="@+id/translate_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +45,8 @@
             android:layout_height="wrap_content"
             android:text="@string/enabled_misc_translation"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:textSize="14sp"/>
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
@@ -55,9 +56,10 @@
             android:text="@string/enable_auto_translation"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:textSize="14sp"
             />
 
-        <com.pranavpandey.android.dynamic.support.view.DynamicItemView
+        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
             android:id="@+id/misc_translate_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

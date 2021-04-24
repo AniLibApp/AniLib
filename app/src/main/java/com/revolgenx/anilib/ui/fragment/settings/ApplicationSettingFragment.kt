@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.ui.fragment.settings
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,15 +9,15 @@ import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.databinding.ApplicationSettingFragmentLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.SettingEvent
+import com.revolgenx.anilib.infrastructure.event.SettingEventTypes
 import com.revolgenx.anilib.ui.dialog.HomeOrderDialog
 import com.revolgenx.anilib.ui.dialog.HomePageOrderDialog
-import com.revolgenx.anilib.ui.view.makeToast
 
 class ApplicationSettingFragment : BaseToolbarFragment<ApplicationSettingFragmentLayoutBinding>() {
 
     override var setHomeAsUp: Boolean = true
-    override val title: Int = R.string.application
-
+    override val titleRes: Int = R.string.application
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -30,13 +29,7 @@ class ApplicationSettingFragment : BaseToolbarFragment<ApplicationSettingFragmen
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.themeItemView.setOnClickListener {
-            ContainerActivity.openActivity(
-                requireContext(),
-                ParcelableFragment(
-                    ThemeControllerFragment::class.java,
-                    null
-                )
-            )
+            SettingEvent(SettingEventTypes.THEME).postEvent
         }
 
         if (requireContext().loggedIn()) {

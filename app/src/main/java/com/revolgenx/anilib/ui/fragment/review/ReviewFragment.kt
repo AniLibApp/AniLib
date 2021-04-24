@@ -25,7 +25,7 @@ import com.revolgenx.anilib.ui.viewmodel.review.ReviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
-    override val title: Int = R.string.review
+    override var titleRes: Int? = R.string.review
 
     companion object {
         const val reviewMetaKey = "review_meta_key"

@@ -66,13 +66,14 @@ object NormalHolderBinding {
                         3 -> R.drawable.ic_score_smile
                         else -> R.drawable.ic_role
                     }
-                    mediaListRatingIv.setImageResource(drawable)
+                    mediaListRatingTv.setImageResource(drawable)
+                    mediaListRatingTv.scoreTextVisibility = View.GONE
                 }
                 ScoreFormat.POINT_10_DECIMAL.ordinal -> {
-                    mediaListRatingTv.text = item.score?.toString().naText()
+                    mediaListRatingTv.setText(item.score)
                 }
                 else -> {
-                    mediaListRatingTv.text = item.score?.toInt()?.toString().naText()
+                    mediaListRatingTv.text = item.score?.toInt()
                 }
             }
 

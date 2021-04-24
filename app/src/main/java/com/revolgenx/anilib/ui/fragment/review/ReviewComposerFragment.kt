@@ -29,7 +29,7 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
         const val reviewComposerMetaKey = "ReviewComposerMetaKey"
     }
 
-    override val title: Int = R.string.review_composer
+    override var titleRes: Int? = R.string.review_composer
 
     private val viewModel by viewModel<ReviewComposerViewModel>()
 

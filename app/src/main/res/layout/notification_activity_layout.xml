@@ -4,9 +4,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/toolbar_layout"
-        android:id="@+id/toolbar_activity_toolbar"/>
-
     <FrameLayout
         android:id="@+id/notification_activity_container"
         android:layout_width="match_parent"

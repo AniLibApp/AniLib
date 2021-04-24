@@ -10,19 +10,6 @@
         />
 
     <item
-        android:id="@+id/discord_menu"
-        android:title="@string/discord"
-        app:showAsAction="never"
-        />
-
-    <item
-        android:id="@+id/translate_menu"
-        android:title="@string/translate"
-        app:showAsAction="never"
-        />
-
-
-    <item
         android:id="@+id/user_share_menu"
         android:title="@string/share"
         app:showAsAction="never"/>
