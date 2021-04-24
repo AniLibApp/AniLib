@@ -131,7 +131,6 @@ ext {
     jwt_token_version = '1.2.0'
 
     timber_version = '4.7.1'
-    appupdater_version = '2.7'
 }
 
 dependencies {
@@ -271,9 +270,6 @@ dependencies {
 
     //shimmer layout
     implementation "com.facebook.shimmer:shimmer:$shimmer_version"
-
-    //update checker
-    implementation "com.github.javiersantos:AppUpdater:$appupdater_version"
 
     def calendarview_version = '1.0.1'
     implementation "com.github.kizitonwose:CalendarView:$calendarview_version"

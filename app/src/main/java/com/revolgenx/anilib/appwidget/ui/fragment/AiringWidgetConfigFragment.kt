@@ -11,6 +11,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.data.field.home.AiringMediaField
 import com.revolgenx.anilib.databinding.AiringWidgetConfigFragmentLayoutBinding
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
@@ -21,7 +22,7 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.WeekFields
 import java.util.*
 
-class AiringWidgetConfigFragment : BaseLayoutFragment<AiringWidgetConfigFragmentLayoutBinding>() {
+class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmentLayoutBinding>() {
 
     private val field by lazy {
         getAiringScheduleFieldForWidget(requireContext())
@@ -29,7 +30,8 @@ class AiringWidgetConfigFragment : BaseLayoutFragment<AiringWidgetConfigFragment
 
     override var setHomeAsUp: Boolean = true
     override var titleRes: Int? = R.string.airing_widget_config
-
+    override val noScrollToolBar: Boolean = true
+    
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?

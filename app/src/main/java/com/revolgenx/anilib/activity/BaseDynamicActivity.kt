@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.FragmentTransaction
 import androidx.viewbinding.ViewBinding
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
@@ -18,12 +19,11 @@ import com.revolgenx.anilib.ui.dialog.MediaViewDialog
 import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.ui.fragment.EntryListEditorFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
-import com.revolgenx.anilib.ui.fragment.review.AllReviewFragment
 import com.revolgenx.anilib.ui.fragment.review.ReviewFragment
 import com.revolgenx.anilib.ui.fragment.studio.StudioFragment
 import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.common.preference.getApplicationLocale
-import com.revolgenx.anilib.ui.fragment.settings.SettingFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.ui.view.makeStatusBarTransparent
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.openLink
@@ -103,13 +103,9 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
 
                 if (event.openInWithSupportFragment) {
                     val meta = event.meta
-                    supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out)
-                        .setReorderingAllowed(true)
-                        .add(event.containerId, EntryListEditorFragment().also {
-                            it.arguments =
-                                bundleOf(EntryListEditorFragment.LIST_EDITOR_META_KEY to meta)
-                        }, EntryListEditorFragment::class.java.simpleName).commit()
+                    addFragmentToContainer(EntryListEditorFragment().also {
+                        it.arguments = bundleOf(EntryListEditorFragment.LIST_EDITOR_META_KEY to meta)
+                    }, true, event.containerId)
                 } else {
 
                     var options: ActivityOptionsCompat? = null
@@ -213,27 +209,28 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
             }
 
             is BrowseReviewEvent -> {
-                ContainerActivity.openActivity(
-                    this,
-                    ParcelableFragment(
-                        ReviewFragment::class.java,
-                        bundleOf(
+                if (event.containerId != null) {
+                    addFragmentToContainer(ReviewFragment().also {
+                        it.arguments = bundleOf(
                             ReviewFragment.reviewMetaKey to ReviewMeta(
                                 event.reviewId
                             )
                         )
+                    }, true, event.containerId)
+                } else {
+                    ContainerActivity.openActivity(
+                        this,
+                        ParcelableFragment(
+                            ReviewFragment::class.java,
+                            bundleOf(
+                                ReviewFragment.reviewMetaKey to ReviewMeta(
+                                    event.reviewId
+                                )
+                            )
+                        )
                     )
-                )
-            }
+                }
 
-            is BrowseAllReviewsEvent -> {
-                ToolbarContainerActivity.openActivity(
-                    this,
-                    ParcelableFragment(
-                        AllReviewFragment::class.java,
-                        null
-                    )
-                )
             }
 
             is BrowseSiteEvent -> {
@@ -251,13 +248,38 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
                 MediaViewDialog.newInstance(event.mediaIdsIn)
                     .show(supportFragmentManager, MediaViewDialog::class.java.simpleName)
             }
-            is SettingEvent -> {
-                ContainerActivity.openActivity(
-                    this,
-                    ParcelableFragment(SettingFragment::class.java, bundleOf())
-                )
-            }
+
         }
     }
+
+
+    private fun addFragmentToContainer(
+        baseFragment: BaseFragment,
+        slideAnimation: Boolean = false,
+        containerId: Int
+    ) {
+        getTransactionWithAnimation(slideAnimation)
+            .add(containerId, baseFragment)
+            .addToBackStack(null).commit()
+    }
+
+
+    protected fun getTransactionWithAnimation(slideAnimation: Boolean): FragmentTransaction {
+        return supportFragmentManager.beginTransaction().apply {
+            if (slideAnimation) {
+                setCustomAnimations(
+                    R.anim.slide_in_up,
+                    R.anim.slide_out_down,
+                    R.anim.slide_in_up,
+                    R.anim.slide_out_down
+                )
+            } else {
+                setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+            }
+
+        }
+            .setReorderingAllowed(true)
+    }
+
 
 }

@@ -55,7 +55,7 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
 
         binding.apply {
             airingMediaSimpleDrawee.setImageURI(item.coverImage?.image(context))
-            mediaRatingTv.text = item.averageScore?.toString().naText()
+            mediaRatingTv.text = item.averageScore
             airingMediaTitleTv.text = item.title?.title(context)
             airingFormatTv.text = context.getString(R.string.format_episode_s).format(
                 item.format?.let { mediaFormats[it] }.naText(),

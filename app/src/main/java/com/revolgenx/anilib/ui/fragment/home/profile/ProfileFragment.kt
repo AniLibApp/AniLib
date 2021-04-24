@@ -86,8 +86,6 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                 }
 
                 menu.findItem(R.id.setting_menu).isVisible = false
-                menu.findItem(R.id.discord_menu).isVisible = false
-                menu.findItem(R.id.translate_menu).isVisible = false
                 menu.findItem(R.id.sign_out_menu).isVisible = false
 
                 setOnMenuItemClickListener {
@@ -134,15 +132,7 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                 binding.profileFragmentToolbar.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.setting_menu -> {
-                            SettingEvent().postEvent
-                            true
-                        }
-                        R.id.discord_menu -> {
-                            requireContext().openLink(getString(R.string.discord_invite_link))
-                            true
-                        }
-                        R.id.translate_menu -> {
-                            requireContext().openLink(getString(R.string.translate_link))
+                            SettingEvent(SettingEventTypes.SETTING).postEvent
                             true
                         }
                         R.id.user_share_menu -> {

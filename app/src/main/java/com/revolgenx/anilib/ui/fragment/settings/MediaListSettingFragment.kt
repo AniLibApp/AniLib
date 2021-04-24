@@ -3,10 +3,12 @@ package com.revolgenx.anilib.ui.fragment.settings
 import android.os.Bundle
 import android.text.InputType
 import android.view.*
+import androidx.appcompat.widget.Toolbar
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.data.field.setting.MediaListSettingMutateField
 import com.revolgenx.anilib.data.model.entry.AdvancedScore
 import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
@@ -20,11 +22,11 @@ import com.revolgenx.anilib.ui.viewmodel.setting.SettingViewModel
 import com.revolgenx.anilib.util.onItemSelected
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaListSettingFragment : BaseLayoutFragment<MediaListSettingFragmentBinding>() {
-
+class MediaListSettingFragment : BaseToolbarFragment<MediaListSettingFragmentBinding>() {
 
     override var setHomeAsUp: Boolean = true
     override var titleRes: Int? = R.string.list
+    override val noScrollToolBar: Boolean = true
 
     private val viewModel by viewModel<SettingViewModel>()
 
@@ -191,7 +193,7 @@ class MediaListSettingFragment : BaseLayoutFragment<MediaListSettingFragmentBind
     }
 
     private fun MediaListSettingFragmentBinding.showLoading(b: Boolean) {
-        mediaListSettingProgressBar.root.visibility = if (b) View.VISIBLE else View.GONE
+        mediaListSettingProgressBar.root.visibility = if (b) View.VISIBLE else View.INVISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

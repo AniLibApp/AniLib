@@ -2,15 +2,23 @@ package com.revolgenx.anilib.common.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
+import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 
 abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment() {
-    protected open var titleRes: Int? = null
-    protected open var setHomeAsUp = false
 
+    @StringRes
+    protected open val titleRes: Int? = null
+    @StringRes
+    protected open val subTitleRes: Int? = null
+
+    protected open val setHomeAsUp = false
 
     private var _binding: T? = null
     protected val binding: T get() = _binding!!
@@ -19,6 +27,9 @@ abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment() {
 
     abstract fun bindView(inflater: LayoutInflater, parent: ViewGroup? = null): T
 
+    protected open fun getBaseToolbar(): Toolbar? {
+        return null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,20 +37,47 @@ abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = bindView(inflater, container)
+        binding.root.setBackgroundColor(dynamicBackgroundColor)
         return binding.root
     }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as AppCompatActivity).supportActionBar?.let {
-            titleRes?.let { title ->
-                it.setTitle(title)
+
+        with(activity as AppCompatActivity){
+            getBaseToolbar()?.let {
+                setSupportActionBar(it)
             }
-            if (setHomeAsUp) {
-                it.setDisplayShowHomeEnabled(true)
-                it.setDisplayHomeAsUpEnabled(true)
+
+            supportActionBar?.let {actionBar->
+                subtitle?.let {sub->
+                    actionBar.subtitle = sub
+                }
+
+                titleRes?.let { title ->
+                    actionBar.setTitle(title)
+                }
+                subTitleRes?.let {subtitle->
+                    actionBar.setSubtitle(subtitle)
+                }
+
+                if (setHomeAsUp) {
+                    actionBar.setDisplayShowHomeEnabled(true)
+                    actionBar.setDisplayHomeAsUpEnabled(true)
+                }
             }
+        }
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                requireActivity().supportFragmentManager.popBackStack()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

@@ -20,6 +20,7 @@ import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFra
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.appwidget.ui.fragment.AiringWidgetConfigFragment
 import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.ui.dialog.*
 import com.revolgenx.anilib.infrastructure.event.*
@@ -31,11 +32,14 @@ import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.data.model.home.HomePageOrderType
 import com.revolgenx.anilib.databinding.ActivityMainBinding
 import com.revolgenx.anilib.radio.ui.fragments.RadioFragment
-import com.revolgenx.anilib.ui.fragment.EntryListEditorFragment
+import com.revolgenx.anilib.ui.fragment.about.AboutFragment
 import com.revolgenx.anilib.ui.fragment.home.discover.DiscoverContainerFragment
 import com.revolgenx.anilib.ui.fragment.home.list.ListContainerFragment
 import com.revolgenx.anilib.ui.fragment.home.profile.ProfileFragment
 import com.revolgenx.anilib.ui.fragment.home.profile.UserLoginFragment
+import com.revolgenx.anilib.ui.fragment.notification.NotificationSettingFragment
+import com.revolgenx.anilib.ui.fragment.review.AllReviewFragment
+import com.revolgenx.anilib.ui.fragment.settings.*
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
@@ -127,7 +131,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
 
-    private fun checkIsFromShortcut(newIntent: Intent? = null){
+    private fun checkIsFromShortcut(newIntent: Intent? = null) {
         val intent = newIntent ?: intent
         if (intent.action == Intent.ACTION_VIEW) {
             if (intent.hasExtra(LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY)) {
@@ -135,7 +139,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
                     LauncherShortcuts.HOME.ordinal
                 )
-                when(LauncherShortcuts.values()[currentShortcut]){
+                when (LauncherShortcuts.values()[currentShortcut]) {
                     LauncherShortcuts.HOME -> {
                         binding.mainBottomNavView.selectedItemId = R.id.home_navigation_menu
                     }
@@ -277,7 +281,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     private fun initListener() {
         binding.mainBrowseFilterNavView.setNavigationCallbackListener(this)
 
-        binding.drawerLayout.setOnApplyWindowInsetsListener{view, insets->
+        binding.drawerLayout.setOnApplyWindowInsetsListener { view, insets ->
             var consumed = false
 
             (view as ViewGroup).forEach { child ->
@@ -294,12 +298,12 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             if (consumed) insets.consumeSystemWindowInsets() else insets
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.mainBrowseFilterNavView){ _, insets->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainBrowseFilterNavView) { _, insets ->
             (binding.mainBrowseFilterNavView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
                 insets.systemWindowInsetTop
             insets.consumeSystemWindowInsets()
         }
-        
+
         /**problem with transition
          * {@link https://github.com/facebook/fresco/issues/1445}*/
         ActivityCompat.setExitSharedElementCallback(this, object : SharedElementCallback() {
@@ -374,9 +378,8 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 binding.drawerLayout.closeDrawer(GravityCompat.END)
             }
             else -> {
-                val fragment = supportFragmentManager.findFragmentByTag(EntryListEditorFragment::class.java.simpleName)
-                if(fragment != null){
-                    supportFragmentManager.beginTransaction().remove(fragment).commit()
+                if ((supportFragmentManager.backStackEntryCount >= 1)) {
+                    super.onBackPressed()
                     return
                 }
 
@@ -460,6 +463,58 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     @Subscribe
     fun onNotificationEvent(event: BrowseNotificationEvent) {
         startActivity(Intent(this, NotificationActivity::class.java))
+    }
+
+
+    @Subscribe
+    fun onBaseSettingEvent(event: SettingEvent) {
+        when (event.settingEventType) {
+            SettingEventTypes.ABOUT -> {
+                addFragmentToMain(AboutFragment())
+            }
+            SettingEventTypes.APPLICATION -> {
+                addFragmentToMain(ApplicationSettingFragment())
+            }
+            SettingEventTypes.SETTING -> {
+                addFragmentToMain(SettingFragment())
+            }
+            SettingEventTypes.MEDIA_LIST -> {
+                addFragmentToMain(MediaListSettingFragment())
+            }
+            SettingEventTypes.MEDIA_SETTING->{
+                addFragmentToMain(MediaSettingFragment())
+            }
+            SettingEventTypes.THEME -> {
+                addFragmentToMain(ThemeControllerFragment())
+            }
+            SettingEventTypes.CUSTOMIZE_FILTER -> {
+                addFragmentToMain(CustomizeFilterFragment())
+            }
+            SettingEventTypes.AIRING_WIDGET -> {
+                addFragmentToMain(AiringWidgetConfigFragment())
+            }
+            SettingEventTypes.TRANSLATION -> {
+                addFragmentToMain(TranslationSettingFragment())
+            }
+            SettingEventTypes.NOTIFICATION -> {
+                addFragmentToMain(NotificationSettingFragment())
+            }
+        }
+    }
+
+    @Subscribe
+    fun onCommonEvent(event: CommonEvent) {
+        when (event) {
+            is BrowseAllReviewsEvent -> {
+                addFragmentToMain(AllReviewFragment(), true)
+            }
+        }
+    }
+
+    private fun addFragmentToMain(baseFragment: BaseFragment, slideAnimation: Boolean = false) {
+        getTransactionWithAnimation(slideAnimation)
+            .add(R.id.drawer_layout, baseFragment)
+            .addToBackStack(null).commit()
     }
 
 

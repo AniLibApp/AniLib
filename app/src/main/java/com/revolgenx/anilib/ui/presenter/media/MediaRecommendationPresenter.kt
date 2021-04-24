@@ -67,7 +67,7 @@ class MediaRecommendationPresenter(
         mediaRecommendationTitleTv.text = item.title?.title(context)
         recommendationCoverImage.setImageURI(item.coverImage?.image(context))
 
-        mediaRatingTv.text = item.averageScore?.toString().naText()
+        mediaRatingTv.text = item.averageScore
 
         if (item.type == MediaType.ANIME.ordinal) {
             mediaEpisodeFormatTv.text = context.getString(R.string.episode_format_s).format(

@@ -8,7 +8,7 @@ import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.UserLoginFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.AuthenticateEvent
 import com.revolgenx.anilib.infrastructure.event.SettingEvent
-import com.revolgenx.anilib.util.AppUpdater
+import com.revolgenx.anilib.infrastructure.event.SettingEventTypes
 import com.revolgenx.anilib.util.openLink
 
 class UserLoginFragment:BaseLayoutFragment<UserLoginFragmentLayoutBinding>(){
@@ -26,21 +26,21 @@ class UserLoginFragment:BaseLayoutFragment<UserLoginFragmentLayoutBinding>(){
 
         binding.apply {
             settingLayout.setOnClickListener {
-                SettingEvent().postEvent
+                SettingEvent(SettingEventTypes.SETTING).postEvent
             }
 
-            updateCheckLayout.setOnClickListener {
-                AppUpdater.startAppUpdater(requireContext(), childFragmentManager, true)
+            signInLayout.setOnClickListener {
+                AuthenticateEvent().postEvent
             }
 
             discordLayout.setOnClickListener {
                 requireContext().openLink(getString(R.string.discord_invite_link))
             }
 
-
-            signInLayout.setOnClickListener {
-                AuthenticateEvent().postEvent
+            aboutItemView.setOnClickListener {
+                SettingEvent(SettingEventTypes.ABOUT).postEvent
             }
+
         }
     }
 }

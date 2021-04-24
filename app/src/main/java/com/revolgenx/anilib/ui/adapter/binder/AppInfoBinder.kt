@@ -41,7 +41,7 @@ class AppInfoBinder(binderAdapter: AppInfoAdapter) : DynamicRecyclerViewBinder<A
             dynamicInfoView.linksView.layoutManager =
                 DynamicLayoutUtils.getGridLayoutManager(
                     dynamicInfoView.context,
-                    DynamicLayoutUtils.getGridCount(dynamicInfoView.context)
+                    2
                 )
 
             dynamicInfoView.setOnClickListener {

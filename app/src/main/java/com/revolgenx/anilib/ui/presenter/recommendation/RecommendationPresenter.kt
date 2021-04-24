@@ -75,7 +75,7 @@ class RecommendationPresenter(
             item.recommendationFrom?.let { from ->
                 recommendedFromTitleTv.text = from.title?.title(context)
                 recommendedFromImageView.setImageURI(from.coverImage?.image(context))
-                recommendedFromRatingTv.text = from.averageScore?.toString().naText()
+                recommendedFromRatingTv.text = from.averageScore
                 recommendedFromStatusTv.text = from.status?.let {
                     recommendedFromStatusTv.color = Color.parseColor(statusColors[it])
                     mediaStatus[it]
@@ -121,7 +121,7 @@ class RecommendationPresenter(
             item.recommended?.let { rec ->
                 recommendedTitleTv.text = rec.title?.title(context)
                 recommendedImageView.setImageURI(rec.coverImage?.image(context))
-                recommendedMediaRatingTv.text = rec.averageScore?.toString().naText()
+                recommendedMediaRatingTv.text = rec.averageScore
                 recommendedStatusTv.text = rec.status?.let {
                     recommendedStatusTv.color = Color.parseColor(statusColors[it])
                     mediaStatus[it]

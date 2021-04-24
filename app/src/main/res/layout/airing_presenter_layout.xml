@@ -31,22 +31,13 @@
                 android:scaleType="centerCrop"
                 android:transitionName="media_cover_transition" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+
+            <com.revolgenx.anilib.ui.view.score.MediaScoreBadge
                 android:id="@+id/mediaRatingTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
-                android:layout_margin="5dp"
-                android:background="@drawable/oval_background"
-                android:paddingStart="5dp"
-                android:paddingTop="3dp"
-                android:paddingEnd="5dp"
-                android:paddingBottom="3dp"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                app:ads_colorType="custom"
-                app:drawableStartCompat="@drawable/ic_star"
-                tools:ignore="SmallSp" />
+                android:layout_margin="5dp" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 

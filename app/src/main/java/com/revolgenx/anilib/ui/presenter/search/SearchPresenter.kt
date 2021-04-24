@@ -95,7 +95,7 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
     private fun SearchMediaLayoutBinding.updateMedia(item: MediaSearchModel) {
         searchMediaImageView.setImageURI(item.coverImage?.image(context))
         searchMediaTitleTv.text = item.title?.title(context)
-        searchMediaRatingTv.text = item.averageScore?.toString().naText()
+        searchMediaRatingTv.text = item.averageScore
         searchMediaFormatTv.text =
             context.getString(R.string.media_format_year_s).format(item.format?.let {
                 mediaFormats[it]
@@ -212,7 +212,7 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
 
                 searchMediaImageView.setImageURI(item.coverImage?.image(context))
                 searchMediaTitleTv.text = item.title?.title(context)
-                searchMediaRatingTv.text = item.averageScore?.toString().naText()
+                searchMediaRatingTv.text = item.averageScore
                 searchMediaFormatTv.text =
                     context.getString(R.string.media_format_year_s).format(item.format?.let {
                         mediaFormats[it]

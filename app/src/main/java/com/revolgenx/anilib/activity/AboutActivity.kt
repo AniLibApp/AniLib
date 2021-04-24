@@ -37,7 +37,7 @@ class AboutActivity : DynamicActivity() {
             finish()
         }
         if (savedInstanceState == null) {
-            switchFragment(AboutFragment.newInstance(0), false)
+            switchFragment(AboutFragment(), false)
         }
     }
 

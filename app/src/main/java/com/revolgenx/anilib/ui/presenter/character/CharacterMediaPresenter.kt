@@ -58,7 +58,7 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
                 mediaStatus[it]
             }.naText()
 
-            characterMediaRatingTv.text = item.averageScore?.toString().naText()
+            characterMediaRatingTv.text = item.averageScore
             root.setOnClickListener {
                 BrowseMediaEvent(
                     MediaBrowserMeta(

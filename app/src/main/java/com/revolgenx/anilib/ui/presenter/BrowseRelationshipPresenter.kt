@@ -35,7 +35,7 @@ class BrowseRelationshipPresenter(context: Context) : BasePresenter<BrowserRelat
         holder.getBinding()?.apply {
             relationshipTitleTv.text = item.title!!.title(context)
             relationshipCoverImage.setImageURI(item.coverImage?.largeImage)
-            relationshipMediaRatingTv.text = item.averageScore?.toString().naText()
+            relationshipMediaRatingTv.text = item.averageScore
             mediaSourceSeasonYearTv.text =
                 context.getString(R.string.source_seasonyear_s).format(
                     item.relationshipType?.let { context.resources.getStringArray(R.array.media_relation)[it] }.naText()

@@ -6,18 +6,21 @@
         <item>@string/anilib_site</item>
         <item>@string/source</item>
         <item>@string/apache_2</item>
+        <item>@string/discord</item>
     </string-array>
 
     <string-array name="info_app_subtitles">
         <item>@string/visit_site_desc</item>
         <item>@string/github_desc</item>
         <item>@string/license_desc</item>
+        <item>@null</item>
     </string-array>
 
     <string-array name="info_app_urls">
         <item>@string/site_url</item>
         <item>@string/github_link</item>
         <item>@string/apache_url</item>
+        <item>@string/discord_invite_link</item>
     </string-array>
 
     <!--endregion-->
@@ -30,6 +33,9 @@
         <item>Satoru</item>
         <item>ricardoric_03</item>
         <item>Sakugaky</item>
+        <item>Natalie</item>
+        <item>André Niebuhr (Epr0m)</item>
+        <item>natsuthelight</item>
     </string-array>
 
     <string-array name="info_translators_languages">
@@ -39,6 +45,9 @@
         <item>@string/portuguese</item>
         <item>@string/spanish</item>
         <item>@string/arabic</item>
+        <item>@string/russian</item>
+        <item>@string/german</item>
+        <item>@string/french</item>
     </string-array>
 
     <string-array name="info_translators_flags">
@@ -48,6 +57,9 @@
         <item>@drawable/ic_flag_pt</item>
         <item>@drawable/ads_ic_flag_es</item>
         <item>@drawable/ic_flag_ar</item>
+        <item>@drawable/ic_flag_ru</item>
+        <item>@drawable/ic_flag_de</item>
+        <item>@drawable/ic_flag_fr</item>
     </string-array>
 
     <string-array name="info_translators_urls">
@@ -57,6 +69,9 @@
         <item>@null</item>
         <item>@null</item>
         <item>@null</item>
+        <item>@null</item>
+        <item>https://anilist.co/user/Epr0m/</item>
+        <item>@null</item>
     </string-array>
     <!--end region-->
 
@@ -64,6 +79,7 @@
         <item>@drawable/ic_anilib_inline</item>
         <item>@drawable/ads_ic_social_github</item>
         <item>@drawable/ads_ic_license</item>
+        <item>@drawable/ic_discord</item>
     </integer-array>
 
 

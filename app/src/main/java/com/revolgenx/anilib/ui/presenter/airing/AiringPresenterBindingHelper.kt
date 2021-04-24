@@ -53,7 +53,7 @@ object AiringPresenterBindingHelper {
             }).postEvent
         }
 
-        mediaRatingTv.text = item.averageScore?.toString().naText()
+        mediaRatingTv.text = item.averageScore
 
         mediaFormatTv.text = item.format?.let {
             misc[0][it]
@@ -157,7 +157,7 @@ object AiringPresenterBindingHelper {
                     .format(item.chapters.naText(), item.volumes.naText())
         }
 
-        mediaRatingTv.text = item.averageScore?.toString().naText()
+        mediaRatingTv.text = item.averageScore
 
         mediaFormatTv.text = item.format?.let {
             misc[0][it]

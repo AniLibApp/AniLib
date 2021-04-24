@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.ui.fragment.home.list
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,8 +12,8 @@ import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
-import com.revolgenx.anilib.data.meta.ListEditorResultMeta
 import com.revolgenx.anilib.data.meta.MediaListFilterMeta
+import com.revolgenx.anilib.data.meta.type.MediaListStatus
 import com.revolgenx.anilib.data.model.list.MediaListModel
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
@@ -62,9 +61,9 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
 
     protected abstract fun mediaListMetaArgs(): MediaListMeta
 
-    fun setCurrentStatus(status: Int) {
+    fun setCurrentStatus(statusIndex: Int) {
         viewModel.mediaListViewModel.field.filter.search = null
-        viewModel.currentListStatus = status
+        viewModel.currentListStatus = MediaListStatus.values()[statusIndex].status
         invalidateAdapter()
     }
 

@@ -9,12 +9,13 @@ import com.revolgenx.anilib.common.preference.enableAutoMlTranslation
 import com.revolgenx.anilib.common.preference.enableMlTranslation
 import com.revolgenx.anilib.common.preference.inUseMlLanguageModel
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.databinding.TranslationSettingFragmentLayoutBinding
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 
-class TranslationSettingFragment:BaseLayoutFragment<TranslationSettingFragmentLayoutBinding>() {
+class TranslationSettingFragment:BaseToolbarFragment<TranslationSettingFragmentLayoutBinding>() {
 
     override var titleRes: Int? = R.string.translation_setting
     override var setHomeAsUp: Boolean = true

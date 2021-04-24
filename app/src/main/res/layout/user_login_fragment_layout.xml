@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,8 +7,8 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ads_colorType="primary"
         app:ads_backgroundAware="disable"
+        app:ads_colorType="primary"
         app:elevation="0dp">
 
         <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
@@ -23,8 +21,8 @@
             app:ads_contrastWithColorType="background"
             app:ads_textColorType="tint_primary"
             app:entries="@array/login_entries"
-            app:tabTextAppearance="@style/RadioTabLayoutTextStyle"
-            app:layout_scrollFlags="noScroll"/>
+            app:layout_scrollFlags="noScroll"
+            app:tabTextAppearance="@style/RadioTabLayoutTextStyle" />
 
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
@@ -40,26 +38,57 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-
-            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-                android:id="@+id/setting_layout"
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/ads_button_remote"
-                app:ads_colorType="text_primary"
-                app:ads_icon="@drawable/ic_settings"
-                app:ads_title="@string/settings" />
+                style="@style/Widget.DynamicApp.Card.Clickable">
 
-            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-                android:id="@+id/update_check_layout"
+                <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                    android:id="@+id/sign_in_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ads_button_remote"
+                    app:ads_colorType="text_primary"
+                    app:ads_icon="@drawable/ic_person"
+                    app:ads_title="@string/sign_in"
+                    />
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/ads_button_remote"
-                app:ads_colorType="text_primary"
-                app:ads_icon="@drawable/ic_update"
-                app:ads_title="@string/check_for_update" />
+                android:layout_marginTop="10dp"
+                style="@style/Widget.DynamicApp.Card.Clickable">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                        android:id="@+id/setting_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ads_button_remote"
+                        app:ads_colorType="text_primary"
+                        app:ads_icon="@drawable/ic_settings"
+                        app:ads_title="@string/settings" />
+
+                    <include layout="@layout/divider_layout" />
+
+                    <com.revolgenx.anilib.ui.view.widgets.AniLibItemView                        android:id="@+id/aboutItemView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:ads_colorType="text_primary"
+                        app:ads_icon="@drawable/ads_ic_info"
+                        app:ads_title="@string/about_anilib" />
+
+                </LinearLayout>
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
 
             <com.pranavpandey.android.dynamic.support.view.DynamicItemView
                 android:id="@+id/discord_layout"
@@ -69,17 +98,8 @@
                 android:background="@drawable/ads_button_remote"
                 app:ads_colorType="text_primary"
                 app:ads_icon="@drawable/ic_discord"
-                app:ads_title="@string/discord" />
-
-            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-                android:id="@+id/sign_in_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/ads_button_remote"
-                app:ads_colorType="text_primary"
-                app:ads_icon="@drawable/ic_person"
-                app:ads_title="@string/sign_in" />
+                app:ads_title="@string/discord"
+                android:visibility="gone"/>
 
 
         </LinearLayout>

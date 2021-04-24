@@ -292,14 +292,14 @@
 
     <!--image-->
     <string-array name="image_entries">
-        <item>@string/medium</item>
         <item>@string/low</item>
+        <item>@string/medium</item>
         <item>@string/high</item>
     </string-array>
 
     <string-array name="image_values">
-        <item>0</item>
         <item>1</item>
+        <item>0</item>
         <item>2</item>
     </string-array>
 
@@ -620,8 +620,8 @@
         <item>@string/watching</item>
         <item>@string/planning</item>
         <item>@string/completed</item>
-        <item>@string/dropped</item>
         <item>@string/paused</item>
+        <item>@string/dropped</item>
         <item>@string/repeating</item>
     </string-array>
 
@@ -629,8 +629,8 @@
         <item>@string/reading</item>
         <item>@string/planning</item>
         <item>@string/completed</item>
-        <item>@string/dropped</item>
         <item>@string/paused</item>
+        <item>@string/dropped</item>
         <item>@string/repeating</item>
     </string-array>
 
@@ -749,6 +749,12 @@
         <item>5 Star (3/5)</item>
         <item>3 Point Smiley :)</item>
     </string-array>
+
+    <string-array name="about_tab_titles">
+        <item>@string/info</item>
+        <item>@string/licenses</item>
+        <item>@string/translators</item>
+    </string-array>
     <!--setting-->
 
     <string-array name="music_entries">
@@ -764,4 +770,6 @@
     </string-array>
 
 
+    <string name="licenses">Licenses</string>
+    <string name="translators">Translators</string>
 </resources>

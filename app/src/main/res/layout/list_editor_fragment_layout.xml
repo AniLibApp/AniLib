@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        app:ads_windowInsets="false">
+        app:ads_windowInsets="false"
+        >
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout
             android:id="@+id/listEditorCollapsingToolbar"
@@ -19,7 +20,7 @@
             android:fitsSystemWindows="true"
             app:ads_windowInsets="false"
             app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -138,7 +139,6 @@
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
-        style="@style/Widget.DynamicApp.Scroller.Padding.Vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">

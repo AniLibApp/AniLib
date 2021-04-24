@@ -8,6 +8,7 @@ import com.revolgenx.anilib.common.preference.canShowAdult
 import com.revolgenx.anilib.common.preference.userEnabledAdultContent
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.data.field.setting.MediaSettingMutateField
 import com.revolgenx.anilib.data.model.setting.MediaOptionModel
 import com.revolgenx.anilib.databinding.MediaSettingFragmentBinding
@@ -17,10 +18,11 @@ import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.setting.SettingViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaSettingFragment : BaseLayoutFragment<MediaSettingFragmentBinding>() {
+class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() {
 
     override var setHomeAsUp: Boolean = true
     override var titleRes: Int? = R.string.anilist_and_manga
+    override val noScrollToolBar: Boolean = true
 
     private val viewModel by viewModel<SettingViewModel>()
 
@@ -74,7 +76,7 @@ class MediaSettingFragment : BaseLayoutFragment<MediaSettingFragmentBinding>() {
     }
 
     private fun MediaSettingFragmentBinding.showLoading(b: Boolean) {
-        mediaSettingProgressBar.visibility = if (b) View.VISIBLE else View.GONE
+        mediaSettingProgressBar.visibility = if (b) View.VISIBLE else View.INVISIBLE
     }
 
     private fun MediaSettingFragmentBinding.updateView(data: MediaOptionModel) {

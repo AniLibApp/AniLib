@@ -109,6 +109,7 @@
     <string name="native_name">Native Name</string>
     <string name="alternative_name">Alternative Name</string>
     <string name="about">About</string>
+    <string name="about_anilib">About AniLib</string>
     <string name="share">Share</string>
     <string name="invalid">Invalid</string>
     <string name="media">Media</string>
@@ -370,7 +371,7 @@
     <string name="arabic" translatable="false">عربى</string>
     <string name="russian" translatable="false">русский</string>
     <string name="french" translatable="false">Français</string>
-    <string name="german" translatable="false">Deutsche</string>
+    <string name="german" translatable="false">Deutsch</string>
 
 
     <string name="anilist" translatable="false">AniList</string>
@@ -565,5 +566,6 @@
     <string name="theme_navigation_bar">Navigation bar theme</string>
     <string name="theme_navigation_bar_summary_unchecked">Show default navigation bar.</string>
     <string name="theme_app_desc">Select auto to use the day and night themes.</string>
-    <string name="saving_not_required">Saving is not required.</string>
+    <string name="saving_not_required">(Saving is not required.)</string>
+    <string name="contributors_desc">Huge thanks for their great support.</string>
 </resources>

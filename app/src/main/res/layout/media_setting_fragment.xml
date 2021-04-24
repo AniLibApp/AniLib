@@ -21,7 +21,6 @@
         <com.pranavpandey.android.dynamic.support.view.DynamicHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             app:ads_fillSpace="true"
             app:ads_title="@string/title_language" />
 

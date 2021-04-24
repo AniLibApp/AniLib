@@ -59,7 +59,7 @@ class StaffMediaCharacterPresenter(context: Context) :
 
             staffMediaImageView.setImageURI(item.coverImage?.image(context))
             staffMediaTitleTv.text = item.title?.title(context)
-            staffMediaRatingTv.text = item.averageScore?.toString().naText()
+            staffMediaRatingTv.text = item.averageScore
             staffMediaStatusTv.text = item.status?.let {
                 staffMediaStatusTv.color = Color.parseColor(statusColors[it])
                 mediaStatus[it]

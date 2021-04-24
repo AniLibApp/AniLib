@@ -6,15 +6,19 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
 import com.revolgenx.anilib.databinding.BaseToolbarFragmentLayoutBinding
 
 abstract class BaseToolbarFragment<T:ViewBinding> : BaseLayoutFragment<T>() {
-    var subtitle: String? = null
+    private lateinit var toolbar:DynamicToolbar
+    override var setHomeAsUp: Boolean = true
 
-    lateinit var toolbar:DynamicToolbar
-    abstract val title: Int
+    open val shouldFinishActivity = false
+
+    open val noScrollToolBar = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,9 +27,18 @@ abstract class BaseToolbarFragment<T:ViewBinding> : BaseLayoutFragment<T>() {
     ): View {
         val b = BaseToolbarFragmentLayoutBinding.inflate(inflater, container, false)
         toolbar = b.toolbarLayout.dynamicToolbar
+
+        if(noScrollToolBar){
+            (toolbar.layoutParams as AppBarLayout.LayoutParams).scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
+        }
+
         val content =  super.onCreateView(inflater, container, savedInstanceState)
         b.toolbarContainerLayout.addView(content)
         return b.root
+    }
+
+    override fun getBaseToolbar(): Toolbar? {
+        return toolbar
     }
 
     override fun onResume() {
@@ -34,19 +47,15 @@ abstract class BaseToolbarFragment<T:ViewBinding> : BaseLayoutFragment<T>() {
         setHasOptionsMenu(true)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).also {
-            it.setSupportActionBar(toolbar)
-            it.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            it.supportActionBar!!.title = getString(title)
-        }
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finishActivity()
+                if(shouldFinishActivity){
+                    finishActivity()
+                }else{
+                    super.onOptionsItemSelected(item)
+                }
                 true
             }
             else -> false

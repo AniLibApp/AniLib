@@ -31,38 +31,15 @@
                 app:actualImageScaleType="centerCrop"/>
 
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            <com.revolgenx.anilib.ui.view.score.MediaScoreBadge
+                android:id="@+id/mediaListRatingTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
                 android:layout_margin="5dp"
-                android:background="@drawable/oval_background"
-                android:orientation="horizontal"
-                android:paddingStart="5dp"
-                android:paddingTop="3dp"
-                android:paddingEnd="5dp"
-                android:paddingBottom="2dp">
+                app:isListScore="true"/>
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                    android:id="@+id/media_list_rating_iv"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_gravity="center_vertical"
-                    app:ads_colorType="none"
-                    app:srcCompat="@drawable/ic_star" />
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                    android:id="@+id/media_list_rating_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="2dp"
-                    android:textColor="@color/white"
-                    android:textSize="10sp"
-                    app:ads_colorType="custom"
-                    tools:ignore="SmallSp" />
-
-            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
