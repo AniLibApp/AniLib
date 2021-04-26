@@ -38,14 +38,6 @@ class AppController {
             Constants.PREF_SETTINGS_APP_THEME_COLOR_ACCENT_DEFAULT)
 
     /**
-     * true` to apply the navigation bar theme.
-     */
-    val isThemeNavigationBar: Boolean
-        get() = DynamicPreferences.getInstance().load(
-            Constants.PREF_SETTINGS_NAVIGATION_BAR_THEME,
-            Constants.PREF_SETTINGS_NAVIGATION_BAR_THEME_DEFAULT)
-
-    /**
      * true` to apply the app shortcuts theme.
      */
     val isThemeAppShortcuts: Boolean

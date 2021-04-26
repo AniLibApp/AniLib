@@ -1,15 +1,19 @@
 package com.revolgenx.anilib.ui.bottomsheet.list
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.getApplicationLocale
+import com.revolgenx.anilib.common.preference.languagePrefKey
 import com.revolgenx.anilib.common.preference.loadMediaListFilter
 import com.revolgenx.anilib.data.meta.MediaListFilterMeta
 import com.revolgenx.anilib.databinding.MediaListFilterBottomSheetLayoutBinding
@@ -136,8 +140,18 @@ class MediaListFilterBottomSheetFragment :
             requireContext().resources.getStringArray(R.array.media_list_collection_sort)
         val mediaListSortItems = mutableListOf<DynamicSpinnerItem>().apply {
             add(DynamicSpinnerItem(null, getString(R.string.none)))
-            addAll(mediaListSort.map {
-                DynamicSpinnerItem(null, it)
+            val canShowSpinnerIcon = getApplicationLocale() == "de"
+
+            addAll(mediaListSort.mapIndexed { index, s ->
+                var icon: Drawable? = null
+                if(canShowSpinnerIcon) {
+                    icon = if (index % 2 == 0) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
+                    } else {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
+                    }
+                }
+                DynamicSpinnerItem(icon, s)
             })
         }
 

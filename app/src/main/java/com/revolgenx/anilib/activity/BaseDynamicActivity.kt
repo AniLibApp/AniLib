@@ -59,9 +59,6 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
         setWindowStatusBarColor(statusBarColor);
     }
 
-    override fun setNavigationBarTheme(): Boolean {
-        return AppController.instance.isThemeNavigationBar
-    }
 
     lateinit var rootLayout: View
 

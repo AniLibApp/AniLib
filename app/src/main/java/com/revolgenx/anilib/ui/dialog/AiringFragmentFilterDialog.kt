@@ -1,12 +1,15 @@
 package com.revolgenx.anilib.ui.dialog
 
 import android.content.DialogInterface
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.getAiringField
+import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.storeAiringField
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
@@ -45,11 +48,19 @@ class AiringFragmentFilterDialog : BaseDialogFragment<AiringFilterDialogLayoutBi
             binding.showFromWatchListSwitch.isChecked = airingField.showFromWatching
         }
 
+        val canShowSpinnerIcon = getApplicationLocale() == "de"
+
         binding.airingSortSpinner.adapter =
-            makeSpinnerAdapter(requireContext(), resources.getStringArray(R.array.airing_sort).map {
-                DynamicSpinnerItem(
-                    null, it
-                )
+            makeSpinnerAdapter(requireContext(), resources.getStringArray(R.array.airing_sort).mapIndexed { index, s ->
+                var icon: Drawable? = null
+                if(canShowSpinnerIcon) {
+                    icon = if (index % 2 == 0) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
+                    } else {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
+                    }
+                }
+                DynamicSpinnerItem(icon, s)
             })
 
         binding.airingSortSpinner.setSelection(airingField.sort!!)

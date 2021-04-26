@@ -273,8 +273,6 @@ open class App : DynamicApplication() {
             Constants.PREF_SETTINGS_APP_THEME_COLOR_PRIMARY,
             Constants.PREF_SETTINGS_APP_THEME_COLOR_ACCENT ->
                 DynamicTheme.getInstance().onDynamicChanged(false, true)
-            Constants.PREF_SETTINGS_NAVIGATION_BAR_THEME ->
-                DynamicTheme.getInstance().onNavigationBarThemeChanged()
             languagePrefKey -> {
                 DynamicTheme.getInstance()
                     .onDynamicConfigurationChanged(true, false, false, false, false)
