@@ -342,36 +342,36 @@
     </string-array>
 
     <string-array name="media_list_sort">
-        <item>Media Id</item>
-        <item>Media Id Desc</item>
-        <item>Score</item>
-        <item>Score Desc</item>
-        <item>Status</item>
-        <item>Status Desc</item>
-        <item>Progress</item>
-        <item>Progress Desc</item>
-        <item>Progress Volume</item>
-        <item>Progress Volume Desc</item>
-        <item>Repeat</item>
-        <item>Repeat Desc</item>
-        <item>Priority</item>
-        <item>Priority Desc</item>
-        <item>Started On</item>
-        <item>Started On Desc</item>
-        <item>Finished On</item>
-        <item>Finished On Desc</item>
-        <item>Added</item>
-        <item>Added Desc</item>
-        <item>Updated</item>
-        <item>Updated Desc</item>
-        <item>Title Romaji</item>
-        <item>Title Romaji Desc</item>
-        <item>Title English</item>
-        <item>Title English Desc</item>
-        <item>Title Native</item>
-        <item>Title Native Desc</item>
-        <item>Popularity</item>
-        <item>Popularity Desc</item>
+        <item>@string/media_id</item>
+        <item>@string/media_id_desc</item>
+        <item>@string/score</item>
+        <item>@string/score_desc</item>
+        <item>@string/status</item>
+        <item>@string/status_desc</item>
+        <item>@string/progress</item>
+        <item>@string/progress_desc</item>
+        <item>@string/progress_volume</item>
+        <item>@string/progress_volume_desc</item>
+        <item>@string/repeat</item>
+        <item>@string/repeat_desc</item>
+        <item>@string/priority</item>
+        <item>@string/priority_desc</item>
+        <item>@string/started_on</item>
+        <item>@string/started_on_desc</item>
+        <item>@string/finished_on</item>
+        <item>@string/finished_on_desc</item>
+        <item>@string/added</item>
+        <item>@string/added_desc</item>
+        <item>@string/updated</item>
+        <item>@string/updated_desc</item>
+        <item>@string/title_romaji</item>
+        <item>@string/title_romaji_desc</item>
+        <item>@string/title_english</item>
+        <item>@string/title_english_desc</item>
+        <item>@string/title_native</item>
+        <item>@string/title_native_desc</item>
+        <item>@string/popularity</item>
+        <item>@string/popularity_desc</item>
     </string-array>
 
     <string-array name="media_format">
@@ -769,7 +769,4 @@
         <item>@string/share</item>
     </string-array>
 
-
-    <string name="licenses">Licenses</string>
-    <string name="translators">Translators</string>
 </resources>

@@ -36,10 +36,6 @@ class SplashActivity : DynamicSplashActivity() {
         ThemeController.setLocalTheme()
     }
 
-    override fun setNavigationBarTheme(): Boolean {
-        // TODO: Return true to apply the navigation bar theme.
-        return AppController.instance.isThemeNavigationBar
-    }
 
     override fun setNavigationBarThemeInLandscape(): Boolean {
         return true

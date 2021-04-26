@@ -561,11 +561,27 @@
     <string name="theme_background_aware_desc">Adjust colors according to the background to provide best visibility.</string>
     <string name="theme_color_accent_summary">Color used by the secondary elements.</string>
     <string name="theme_color_accent">Accent color</string>
-    <string name="theme_navigation_bar_desc">Navigation bar theme will not be visible at some places to provide best visual experience.</string>
-    <string name="theme_navigation_bar_summary">Show navigation bar according to the app theme.</string>
-    <string name="theme_navigation_bar">Navigation bar theme</string>
-    <string name="theme_navigation_bar_summary_unchecked">Show default navigation bar.</string>
     <string name="theme_app_desc">Select auto to use the day and night themes.</string>
     <string name="saving_not_required">(Saving is not required.)</string>
     <string name="contributors_desc">Huge thanks for their great support.</string>
+    <string name="licenses">Licenses</string>
+    <string name="translators">Translators</string>
+    <string name="progress_volume">Progress Volume</string>
+    <string name="progress_volume_desc">Progress Volume Desc</string>
+    <string name="repeat">Repeat</string>
+    <string name="repeat_desc">Repeat Desc</string>
+    <string name="priority">Priority</string>
+    <string name="priority_desc">Priority Desc</string>
+    <string name="started_on">Started On</string>
+    <string name="started_on_desc">Started On Desc</string>
+    <string name="finished_on">Finished On</string>
+    <string name="finished_on_desc">Finished On Desc</string>
+    <string name="added">Added</string>
+    <string name="added_desc">Added Desc</string>
+    <string name="updated">Updated</string>
+    <string name="updated_desc">Updated Desc</string>
+    <string name="do_you_really_want_to_delete_the_entry_s">Do you really want to delete the entry %s?</string>
+
+    <!--do not translate this unless you want to change format to dd//MM/yyyy or yyyy/MM/dd-->
+    <string name="date_format_pattern">MM/dd/yyyy</string>
 </resources>

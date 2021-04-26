@@ -3,9 +3,11 @@ package com.revolgenx.anilib.appwidget.ui.fragment
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.RemoteViews
+import androidx.core.content.ContextCompat
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget
@@ -61,14 +63,22 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
             wgClickOpenListEditor.isChecked = AiringWidgetPreference.clickOpenListEditor(requireContext())
 
 
+            val canShowSpinnerIcon = getApplicationLocale() == "de"
             wgAiringSort.adapter =
                 makeSpinnerAdapter(
                     requireContext(),
-                    resources.getStringArray(R.array.airing_sort).map {
-                        DynamicSpinnerItem(
-                            null, it
-                        )
-                    })
+                    resources.getStringArray(R.array.airing_sort).mapIndexed { index, s ->
+                        var icon: Drawable? = null
+                        if(canShowSpinnerIcon) {
+                            icon = if (index % 2 == 0) {
+                                ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
+                            } else {
+                                ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
+                            }
+                        }
+                        DynamicSpinnerItem(icon, s)
+                    }
+                )
             wgAiringSort.setSelection(field.sort!!)
         }
     }
@@ -121,14 +131,15 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
                     val endDateTime = if (isWeeklyAiring)
                         ZonedDateTime.now().with(weekFields.dayOfWeek(), 7)
                             .with(LocalTime.MAX) else ZonedDateTime.now().with(LocalTime.MAX)
+                    val dateFormatPattern = requireContext().getString(R.string.date_format_pattern)
 
                     val currentDate = if (isWeeklyAiring) {
                         requireContext().getString(R.string.day_range_string).format(
                             startDateTime.format(
                                 DateTimeFormatter.ofPattern(
-                                    "MM/dd/yyyy"
+                                    dateFormatPattern
                                 )
-                            ), endDateTime.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+                            ), endDateTime.format(DateTimeFormatter.ofPattern(dateFormatPattern))
                         )
                     } else {
                         startDateTime.format(DateTimeFormatter.ofPattern("EE, dd MMM, yyyy"))

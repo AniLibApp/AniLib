@@ -27,9 +27,6 @@ class AboutActivity : DynamicActivity() {
         setWindowStatusBarColor(statusBarColor);
     }
 
-    override fun setNavigationBarTheme(): Boolean {
-        return AppController.instance.isThemeNavigationBar
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

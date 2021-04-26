@@ -1,10 +1,12 @@
 package com.revolgenx.anilib.ui.bottomsheet.discover
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -13,10 +15,7 @@ import com.jaygoo.widget.RangeSeekBar
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.getNewlyAddedField
-import com.revolgenx.anilib.common.preference.getPopularField
-import com.revolgenx.anilib.common.preference.getSeasonField
-import com.revolgenx.anilib.common.preference.getTrendingField
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.data.field.home.NewlyAddedMediaField
 import com.revolgenx.anilib.data.field.home.PopularMediaField
 import com.revolgenx.anilib.data.field.home.SeasonField
@@ -94,11 +93,31 @@ class MediaFilterBottomSheetFragment : DynamicBottomSheetFragment<MediaFilterBot
         get() =
             requireContext().resources.getStringArray(R.array.advance_search_sort)
 
+    private val canShowSpinnerIcon by lazy{ getApplicationLocale() == "de"}
+
     private val listSortItems
         get() =
-            mediaSortList.map {
+            mediaSortList.mapIndexed { index, s ->
+                var icon: Drawable? = null
+
+                if(canShowSpinnerIcon) {
+
+                    if (index in 1..34) {
+                        icon = if (index % 2 == 0) {
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
+                        } else {
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
+                        }
+                    } else if (index > 35) {
+                        icon = if (index % 2 != 0) {
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
+                        } else {
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
+                        }
+                    }
+                }
                 DynamicSpinnerItem(
-                    null, it
+                    icon, s
                 )
             }
 

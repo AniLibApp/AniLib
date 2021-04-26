@@ -69,11 +69,6 @@ object Constants {
     const val PREF_SETTINGS_APP_THEME_COLOR_ACCENT = "pref_settings_app_theme_color_accent"
 
     /**
-     * Shared preferences key for navigation bar theme.
-     */
-    const val PREF_SETTINGS_NAVIGATION_BAR_THEME = "pref_settings_navigation_bar_theme"
-
-    /**
      * Shared preferences key for app shortcuts theme.
      */
     const val PREF_SETTINGS_APP_SHORTCUTS_THEME = "pref_settings_app_shortcuts_theme"

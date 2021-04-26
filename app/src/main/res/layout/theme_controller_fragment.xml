@@ -73,17 +73,6 @@
             app:ads_summary="@string/theme_color_accent_summary"
             app:ads_title="@string/theme_color_accent" />
 
-        <com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference
-            android:id="@+id/pref_navigation_bar_theme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:ads_description="@string/theme_navigation_bar_desc"
-            app:ads_icon="@drawable/ads_ic_paint"
-            app:ads_key="pref_settings_navigation_bar_theme"
-            app:ads_summary="@string/theme_navigation_bar_summary"
-            app:ads_title="@string/theme_navigation_bar"
-            app:ads_unchecked="@string/theme_navigation_bar_summary_unchecked" />
-
     </LinearLayout>
 
 

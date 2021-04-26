@@ -419,9 +419,5 @@
     <string name="theme_background_aware_desc">Alcuni colori cambieranno automaticamente rispetto allo sfondo per ottenere migliore visibilità.</string>
     <string name="theme_color_accent_summary">Colore utilizzato dagli elementi secondari.</string>
     <string name="theme_color_accent">Colore rifiniture</string>
-    <string name="theme_navigation_bar_desc">Il motivo della barra di navigazione non sarà visibile in alcuni luoghi per avere risultati migliori.</string>
-    <string name="theme_navigation_bar_summary">Mostra barra di navigazione a seconda del motivo dell\\\'app.</string>
-    <string name="theme_navigation_bar">Motivo barra di navigazione</string>
-    <string name="theme_navigation_bar_summary_unchecked">Mostra la barra di navigazione predefinita.</string>
     <string name="theme_app_desc">Scegli automatico per usare motivi diurno e notturno.</string>
 </resources>

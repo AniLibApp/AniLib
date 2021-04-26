@@ -1,11 +1,14 @@
 package com.revolgenx.anilib.ui.dialog
 
 import android.content.DialogInterface
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.common.preference.getDiscoverMediaListSort
 import com.revolgenx.anilib.common.preference.setDiscoverMediaListSort
@@ -45,8 +48,17 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment<MediaListFilterDialogLa
             val type = arguments?.getInt(MEDIA_LIST_FILTER_TYPE)!!
             val mediaListSortItems = mutableListOf<DynamicSpinnerItem>().apply {
                 add(DynamicSpinnerItem(null, getString(R.string.none)))
-                addAll(mediaListSortStrings.map {
-                    DynamicSpinnerItem(null, it)
+                val canShowSpinnerIcon = getApplicationLocale() == "de"
+                addAll(mediaListSortStrings.mapIndexed { index, s ->
+                    var icon: Drawable? = null
+                    if(canShowSpinnerIcon) {
+                        icon = if (index % 2 == 0) {
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
+                        } else {
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
+                        }
+                    }
+                    DynamicSpinnerItem(icon, s)
                 })
             }
             mediaListSortSpinner.adapter = makeSpinnerAdapter(requireContext(), mediaListSortItems)

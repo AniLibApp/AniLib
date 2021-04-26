@@ -30,10 +30,6 @@ class ThemeControllerFragment : BaseToolbarFragment<ThemeControllerFragmentBindi
         super.onViewCreated(view, savedInstanceState)
         mAppThemeDay = view.findViewById(R.id.pref_app_theme_day)
         mAppThemeNight = view.findViewById(R.id.pref_app_theme_night)
-
-        if (!DynamicWindowUtils.isNavigationBarThemeSupported(requireContext())) {
-            view.findViewById<View>(R.id.pref_navigation_bar_theme).visibility = View.GONE
-        }
     }
 
     override fun onResume() {

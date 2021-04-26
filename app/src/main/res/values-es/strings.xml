@@ -415,9 +415,5 @@ Envia errores automaticament."</string>
     <string name="theme_background_aware_desc">Ajuste los colores dependiendo del fondo para mejorar la visibilidad.</string>
     <string name="theme_color_accent_summary">Color usado por los elementos secundarios.</string>
     <string name="theme_color_accent">Color de énfasis</string>
-    <string name="theme_navigation_bar_desc">El tema de la barra de navegación no será visible en algunos lugares para una mejor experiencia visual.</string>
-    <string name="theme_navigation_bar_summary">Muestra la barra de navegación de color según el tema de la aplicación.</string>
-    <string name="theme_navigation_bar">Tema de la barra de navegación</string>
-    <string name="theme_navigation_bar_summary_unchecked">Mostrar la barra de navegación predeterminada.</string>
     <string name="theme_app_desc">Selecciona auto para usar los temas diurno y nocturno.</string>
 </resources>

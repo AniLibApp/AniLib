@@ -80,13 +80,14 @@ class AiringScheduleWidget : AppWidgetProvider() {
             ZonedDateTime.now().with(weekFields.dayOfWeek(), 7)
                 .with(LocalTime.MAX) else ZonedDateTime.now().with(LocalTime.MAX)
 
+        val dateFormatPattern = context.getString(R.string.date_format_pattern)
         return if (isWeeklyAiring) {
             context.getString(R.string.day_range_string).format(
                 startDateTime.format(
                     DateTimeFormatter.ofPattern(
-                        "MM/dd/yyyy"
+                        dateFormatPattern
                     )
-                ), endDateTime.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+                ), endDateTime.format(DateTimeFormatter.ofPattern(dateFormatPattern))
             )
         } else {
             startDateTime.format(DateTimeFormatter.ofPattern("EE, dd MMM, yyyy"))

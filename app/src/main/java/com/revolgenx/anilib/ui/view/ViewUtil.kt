@@ -174,10 +174,11 @@ inline fun isGestureNavigationEnabled(contentResolver: ContentResolver, func:()-
 }
 
 
-fun makeConfirmationDialog(ctx:Context, titleRes:Int=R.string.confirmation , messageRes:Int = R.string.are_you_sure, positiveRes:Int = R.string.yes, negativeRes:Int = R.string.no, onConfirmListener:()->Unit){
+fun makeConfirmationDialog(ctx:Context, titleRes:Int=R.string.confirmation , messageRes:Int = R.string.are_you_sure, message:String? = null, positiveRes:Int = R.string.yes, negativeRes:Int = R.string.no, onConfirmListener:()->Unit){
     MessageDialog.Companion.Builder().let {it->
         it.titleRes = titleRes
         it.messageRes = messageRes
+        it.message = message
         it.positiveTextRes = positiveRes
         it.negativeTextRes = negativeRes
         it.build().let {

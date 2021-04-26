@@ -308,16 +308,17 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
                     )
                 )
             }
+            val dateFormatPattern = requireContext().getString(R.string.date_format_pattern)
 
             val dayDateRange = if (isSingleDateType) {
-                startDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+                startDate.format(DateTimeFormatter.ofPattern(dateFormatPattern))
             } else {
                 getString(R.string.day_range_string).format(
                     startDate.format(
                         DateTimeFormatter.ofPattern(
-                            "MM/dd/yyyy"
+                            dateFormatPattern
                         )
-                    ), endDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+                    ), endDate.format(DateTimeFormatter.ofPattern(dateFormatPattern))
                 )
             }
 

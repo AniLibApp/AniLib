@@ -2,10 +2,12 @@ package com.revolgenx.anilib.ui.view.navigation
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -19,13 +21,10 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.app.theme.ThemeController
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.data.field.TagField
 import com.revolgenx.anilib.data.field.TagState
 import com.revolgenx.anilib.data.model.search.filter.*
-import com.revolgenx.anilib.common.preference.canShowAdult
-import com.revolgenx.anilib.common.preference.getUserGenre
-import com.revolgenx.anilib.common.preference.getUserStream
-import com.revolgenx.anilib.common.preference.getUserTag
 import com.revolgenx.anilib.databinding.BrowseFilterNavigationViewBinding
 import com.revolgenx.anilib.ui.presenter.TagPresenter
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
@@ -234,10 +233,29 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
                     null, it
                 )
             }
+
+        val canShowSpinnerIcon = getApplicationLocale() == "de"
+
         val searchSortItems: List<DynamicSpinnerItem> =
-            context.resources.getStringArray(R.array.advance_search_sort).map {
+            context.resources.getStringArray(R.array.advance_search_sort).mapIndexed { index, s ->
+                var icon: Drawable? = null
+                if(canShowSpinnerIcon) {
+                    if (index in 1..34) {
+                        icon = if (index % 2 == 0) {
+                            ContextCompat.getDrawable(context, R.drawable.ic_desc)
+                        } else {
+                            ContextCompat.getDrawable(context, R.drawable.ic_asc)
+                        }
+                    } else if (index > 35) {
+                        icon = if (index % 2 != 0) {
+                            ContextCompat.getDrawable(context, R.drawable.ic_desc)
+                        } else {
+                            ContextCompat.getDrawable(context, R.drawable.ic_asc)
+                        }
+                    }
+                }
                 DynamicSpinnerItem(
-                    null, it
+                    icon, s
                 )
             }
 

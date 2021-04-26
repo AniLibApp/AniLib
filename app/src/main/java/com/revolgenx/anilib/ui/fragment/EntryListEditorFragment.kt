@@ -32,6 +32,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.bottomsheet.airing.CalendarViewBottomSheetDialog
+import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.COLLAPSED
 import com.revolgenx.anilib.util.EXPANDED
@@ -590,8 +591,10 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
     private fun deleteList() {
         if (deleting || !apiModelEntry.hasData) return
-        apiModelEntry.listId.takeIf { it != -1 }?.let {
-            viewModel.deleteMediaListEntry(it)
+        apiModelEntry.listId.takeIf { it != -1 }?.let {listId->
+            makeConfirmationDialog(requireContext(), message = getString(R.string.do_you_really_want_to_delete_the_entry_s, mediaMeta.title ?: "") ){
+                viewModel.deleteMediaListEntry(listId)
+            }
         }
     }
 
