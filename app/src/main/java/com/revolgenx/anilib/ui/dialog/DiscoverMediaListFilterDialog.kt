@@ -1,19 +1,17 @@
 package com.revolgenx.anilib.ui.dialog
 
 import android.content.DialogInterface
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.common.preference.getDiscoverMediaListSort
 import com.revolgenx.anilib.common.preference.setDiscoverMediaListSort
+import com.revolgenx.anilib.data.meta.type.ALMediaListSort
 import com.revolgenx.anilib.databinding.MediaListFilterDialogLayoutBinding
-import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
+import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
+import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 
 class DiscoverMediaListFilterDialog : BaseDialogFragment<MediaListFilterDialogLayoutBinding>() {
     override var positiveText: Int? = R.string.done
@@ -23,8 +21,8 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment<MediaListFilterDialogLa
 
     var onDoneListener: (() -> Unit)? = null
 
-    private val mediaListSortStrings by lazy {
-        requireContext().resources.getStringArray(R.array.media_list_sort)
+    private val alMediaListSorts by lazy {
+        requireContext().resources.getStringArray(R.array.al_media_list_sort)
     }
 
     override fun bindView(): MediaListFilterDialogLayoutBinding {
@@ -43,43 +41,45 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment<MediaListFilterDialogLa
         }
     }
 
-    override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
+    override fun builder(dialogBuilder: DynamicDialog.Builder, savedInstanceState: Bundle?) {
         with(binding) {
             val type = arguments?.getInt(MEDIA_LIST_FILTER_TYPE)!!
-            val mediaListSortItems = mutableListOf<DynamicSpinnerItem>().apply {
-                add(DynamicSpinnerItem(null, getString(R.string.none)))
-                val canShowSpinnerIcon = getApplicationLocale() == "de"
-                addAll(mediaListSortStrings.mapIndexed { index, s ->
-                    var icon: Drawable? = null
-                    if(canShowSpinnerIcon) {
-                        icon = if (index % 2 == 0) {
-                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
-                        } else {
-                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
-                        }
-                    }
-                    DynamicSpinnerItem(icon, s)
-                })
-            }
-            mediaListSortSpinner.adapter = makeSpinnerAdapter(requireContext(), mediaListSortItems)
-            savedInstanceState?.let {
-                mediaListSortSpinner.setSelection(it.getInt(MEDIA_LIST_SORT_KEY))
-            } ?: let {
-                getDiscoverMediaListSort(requireContext(), type)?.let {
-                    mediaListSortSpinner.setSelection(it + 1)
+            val savedMediaSort = savedInstanceState?.getInt(MEDIA_LIST_SORT_KEY) ?: getDiscoverMediaListSort(requireContext(), type)
+
+            var savedSortOrder: SortOrder = SortOrder.NONE
+            val alMediaListSortEnums = ALMediaListSort.values()
+            var savedSortIndex = -1
+
+            savedMediaSort?.takeIf { it > -1 }?.let { savedSort ->
+                savedSortOrder = if (savedSort % 2 == 0) {
+                    savedSortIndex =
+                        alMediaListSortEnums.first { it.sort == savedSort }.ordinal
+                    SortOrder.ASC
+                } else {
+                    savedSortIndex =
+                        alMediaListSortEnums.first { it.sort == savedSort - 1 }.ordinal
+                    SortOrder.DESC
                 }
             }
+
+            val alMediaListSortModels = alMediaListSorts.mapIndexed { index, sort ->
+                AniLibSortingModel(
+                    alMediaListSortEnums[index],
+                    sort,
+                    if (savedSortIndex == index) savedSortOrder else SortOrder.NONE
+                )
+            }
+
+            mediaListSort.setSortItems(alMediaListSortModels)
         }
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
         if (dialogInterface is DynamicDialog) {
-            val mediaListSort =
-                (binding.mediaListSortSpinner.selectedItemPosition - 1).takeIf { it >= 0 }
             setDiscoverMediaListSort(
                 requireContext(),
                 arguments?.getInt(MEDIA_LIST_FILTER_TYPE)!!,
-                mediaListSort
+                getActiveListSort()
             )
             onDoneListener?.invoke()
         }
@@ -89,7 +89,19 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment<MediaListFilterDialogLa
         super.onSaveInstanceState(outState)
         outState.putInt(
             MEDIA_LIST_SORT_KEY,
-            binding.mediaListSortSpinner.selectedItemPosition
+            getActiveListSort() ?: -1
         )
     }
+
+
+    private fun getActiveListSort(): Int? {
+        return binding.mediaListSort.getActiveSortItem()?.let {
+            var activeSort = (it.data as ALMediaListSort).sort
+            if (it.order == SortOrder.DESC) {
+                activeSort += 1
+            }
+            activeSort
+        }
+    }
+
 }

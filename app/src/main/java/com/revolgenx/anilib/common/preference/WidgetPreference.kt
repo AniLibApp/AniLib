@@ -66,6 +66,16 @@ object AiringWidgetPreference {
         }
     }
 
+    fun showEta(context: Context, showEta:Boolean? = null): Boolean {
+        return if(showEta == null){
+            context.getBoolean(WIDGET_AIRING_SHOW_ETA_KEY, true)
+        }else{
+            context.putBoolean(WIDGET_AIRING_SHOW_ETA_KEY, showEta)
+            showEta
+        }
+    }
+
+
 
 }
 const val WIDGET_ID_PREF = "WIDGET_PREF_ID"

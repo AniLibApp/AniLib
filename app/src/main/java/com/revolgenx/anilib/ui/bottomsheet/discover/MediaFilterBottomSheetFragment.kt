@@ -21,16 +21,22 @@ import com.revolgenx.anilib.data.field.home.PopularMediaField
 import com.revolgenx.anilib.data.field.home.SeasonField
 import com.revolgenx.anilib.data.field.home.TrendingMediaField
 import com.revolgenx.anilib.data.field.media.MediaField
+import com.revolgenx.anilib.data.meta.type.AlMediaSort
 import com.revolgenx.anilib.databinding.MediaFilterBottomSheetLayoutBinding
 import com.revolgenx.anilib.ui.adapter.MediaFilterFormatAdapter
 import com.revolgenx.anilib.ui.bottomsheet.DynamicBottomSheetFragment
 import com.revolgenx.anilib.ui.dialog.FormatSelectionDialog
+import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingDialog
+import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
+import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
+import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.onItemSelected
 import java.util.*
 import kotlin.math.round
 
-class MediaFilterBottomSheetFragment : DynamicBottomSheetFragment<MediaFilterBottomSheetLayoutBinding>() {
+class MediaFilterBottomSheetFragment :
+    DynamicBottomSheetFragment<MediaFilterBottomSheetLayoutBinding>() {
 
     var onDoneListener: (() -> Unit)? = null
 
@@ -50,7 +56,10 @@ class MediaFilterBottomSheetFragment : DynamicBottomSheetFragment<MediaFilterBot
     private var formatDialog: DialogFragment? = null
 
 
-    fun show(ctx: Context, func: MediaFilterBottomSheetFragment.() -> Unit): MediaFilterBottomSheetFragment {
+    fun show(
+        ctx: Context,
+        func: MediaFilterBottomSheetFragment.() -> Unit
+    ): MediaFilterBottomSheetFragment {
         this.windowContext = ctx
         this.func()
         this.show()
@@ -89,37 +98,9 @@ class MediaFilterBottomSheetFragment : DynamicBottomSheetFragment<MediaFilterBot
                 )
             }
 
-    private val mediaSortList
-        get() =
-            requireContext().resources.getStringArray(R.array.advance_search_sort)
-
-    private val canShowSpinnerIcon by lazy{ getApplicationLocale() == "de"}
-
-    private val listSortItems
-        get() =
-            mediaSortList.mapIndexed { index, s ->
-                var icon: Drawable? = null
-
-                if(canShowSpinnerIcon) {
-
-                    if (index in 1..34) {
-                        icon = if (index % 2 == 0) {
-                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
-                        } else {
-                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
-                        }
-                    } else if (index > 35) {
-                        icon = if (index % 2 != 0) {
-                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
-                        } else {
-                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
-                        }
-                    }
-                }
-                DynamicSpinnerItem(
-                    icon, s
-                )
-            }
+    private val alMediaSortList by lazy {
+        requireContext().resources.getStringArray(R.array.al_media_sort)
+    }
 
     private val seasons
         get() =
@@ -195,14 +176,55 @@ class MediaFilterBottomSheetFragment : DynamicBottomSheetFragment<MediaFilterBot
             seasonSpinner.adapter = makeSpinnerAdapter(requireContext(), seasons)
 
             if (field is SeasonField) {
-                seasonSortSpinner.adapter = makeSpinnerAdapter(requireContext(), listSortItems)
-                field.sort?.let {
-                    seasonSortSpinner.setSelection(it + 1)
+                val alMediaSorts = AlMediaSort.values()
+                var sortOrder = SortOrder.NONE
+                val currentSort = field.sort?.let {
+                    if (it < 34) {
+                        if (it % 2 == 0) {
+                            sortOrder = SortOrder.ASC
+                            it
+                        } else {
+                            sortOrder = SortOrder.DESC
+                            it -1
+                        }
+                    } else if (it > 34) {
+                        if (it % 2 == 0) {
+                            sortOrder = SortOrder.DESC
+                            it - 1
+                        } else {
+                            sortOrder = SortOrder.ASC
+                            it
+                        }
+                    }else{
+                        null
+                    }
                 }
 
-                seasonSortSpinner.onItemSelected {
-                    field.sort = it.minus(1).takeIf { it >= 0 }
+                var currentSortIndex = -1
+                if(currentSort != null){
+                    currentSortIndex = alMediaSorts.first { it.sort == currentSort }.ordinal
                 }
+
+                seasonSortLayout.setSortItems(alMediaSortList.mapIndexed { index, s ->
+                    AniLibSortingModel(alMediaSorts[index], s, if(currentSortIndex == index) sortOrder else SortOrder.NONE)
+                })
+
+                seasonSortLayout.onSortItemSelected = {
+                    field.sort = it?.let {
+                        when (it.order) {
+                            SortOrder.ASC -> {
+                                (it.data as AlMediaSort).sort
+                            }
+                            SortOrder.DESC -> {
+                                (it.data as AlMediaSort).sort + 1
+                            }
+                            else -> {
+                                null
+                            }
+                        }
+                    }
+                }
+
             } else {
                 seasonSortHeaderLayout.visibility = View.GONE
             }

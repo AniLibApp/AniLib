@@ -61,7 +61,7 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.privateReview -> {
-                item.setIcon(if (item.isChecked) R.drawable.ic_eye else R.drawable.ic_dropped)
+                item.setIcon(if (item.isChecked) R.drawable.ic_eye else R.drawable.ic_private)
                 item.isChecked = !item.isChecked
                 viewModel.field.model?.private = item.isChecked
                 true
@@ -169,7 +169,7 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
 
     private fun updatePrivateToolbar() {
         viewModel.field.model?.apply {
-            privateReviewMenu?.setIcon(if (private == true) R.drawable.ic_dropped else R.drawable.ic_eye)
+            privateReviewMenu?.setIcon(if (private == true) R.drawable.ic_private else R.drawable.ic_eye)
             privateReviewMenu?.isChecked = private ?: false
         }
     }

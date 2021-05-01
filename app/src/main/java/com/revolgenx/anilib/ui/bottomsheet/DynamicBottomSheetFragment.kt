@@ -76,9 +76,7 @@ abstract class DynamicBottomSheetFragment<V : ViewBinding> : BottomSheetDialogFr
                 dialogBehavior.addBottomSheetCallback(object :
                     BottomSheetBehavior.BottomSheetCallback() {
                     override fun onSlide(bottomSheet: View, dY: Float) {
-                        // TODO: Make button layout stick to the bottom through translationY property.
                     }
-
                     override fun onStateChanged(bottomSheet: View, newState: Int) {
                         if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                             dismiss()
@@ -133,8 +131,8 @@ abstract class DynamicBottomSheetFragment<V : ViewBinding> : BottomSheetDialogFr
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
         _rootBinding = null
+        super.onDestroyView()
     }
 }

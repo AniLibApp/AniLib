@@ -10,6 +10,8 @@ import androidx.annotation.DrawableRes
 import androidx.core.view.setPadding
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+import com.pranavpandey.android.dynamic.support.widget.WidgetDefaults
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
@@ -55,8 +57,9 @@ class MediaScoreBadge : LinearLayout {
                 params.gravity = Gravity.CENTER
                 params.marginEnd = dp(2f)
             }
-            it.setImageResource(R.drawable.ic_star)
+            it.contrastWithColor = WidgetDefaults.ADS_COLOR_UNKNOWN
             it.color = Color.WHITE
+            it.setImageResource(R.drawable.ic_star)
         }
 
         scoreTv = DynamicTextView(context, attributeSet, defStyle).also {
@@ -66,6 +69,7 @@ class MediaScoreBadge : LinearLayout {
                 }
             it.includeFontPadding = false
             it.setSingleLine()
+            it.contrastWithColor = WidgetDefaults.ADS_COLOR_UNKNOWN
             it.color = Color.WHITE
             it.gravity = Gravity.CENTER_VERTICAL
             it.textSize = 10f

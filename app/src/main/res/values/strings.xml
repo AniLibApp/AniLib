@@ -529,6 +529,7 @@
 
     <string name="widget_airing_at_format">E: %1$d · ETA: %2$dh %3$dm</string>
     <string name="widget_airing_at_weekly_format">E: %1$d · ETA: %2$dd %3$dh %4$dm</string>
+    <string name="widget_airing_episode">E: %1$d · %2$s</string>
     <string name="translation_setting">Translation</string>
     <string name="misc_translation">Misc. Translation</string>
     <string name="misc_translation_desc">Google Translate (Used to translate Media Description, Character Description, etc.)</string>
@@ -584,4 +585,5 @@
 
     <!--do not translate this unless you want to change format to dd//MM/yyyy or yyyy/MM/dd-->
     <string name="date_format_pattern">MM/dd/yyyy</string>
+    <string name="show_eta">Show ETA</string>
 </resources>

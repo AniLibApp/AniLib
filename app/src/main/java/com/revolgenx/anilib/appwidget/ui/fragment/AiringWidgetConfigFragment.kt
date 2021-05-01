@@ -3,20 +3,18 @@ package com.revolgenx.anilib.appwidget.ui.fragment
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.RemoteViews
-import androidx.core.content.ContextCompat
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget
 import com.revolgenx.anilib.common.preference.*
-import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.data.field.home.AiringMediaField
+import com.revolgenx.anilib.data.meta.type.ALAiringSort
 import com.revolgenx.anilib.databinding.AiringWidgetConfigFragmentLayoutBinding
-import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
+import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
+import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.ui.view.makeToast
 import java.time.LocalTime
 import java.time.ZonedDateTime
@@ -61,25 +59,33 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
             wgShowFromPlanning.isChecked = field.showFromPlanning
             wgShowFromWatching.isChecked = field.showFromWatching
             wgClickOpenListEditor.isChecked = AiringWidgetPreference.clickOpenListEditor(requireContext())
+            wgShowEta.isChecked = AiringWidgetPreference.showEta(requireContext())
+
+            val saveSortIndex:Int
+            val savedSortOrder: SortOrder
+            val alAiringSortEnums = ALAiringSort.values()
 
 
-            val canShowSpinnerIcon = getApplicationLocale() == "de"
-            wgAiringSort.adapter =
-                makeSpinnerAdapter(
-                    requireContext(),
-                    resources.getStringArray(R.array.airing_sort).mapIndexed { index, s ->
-                        var icon: Drawable? = null
-                        if(canShowSpinnerIcon) {
-                            icon = if (index % 2 == 0) {
-                                ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
-                            } else {
-                                ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
-                            }
-                        }
-                        DynamicSpinnerItem(icon, s)
-                    }
+            val savedAiringSort = field.sort!!
+
+            savedSortOrder = if (savedAiringSort % 2 == 0) {
+                saveSortIndex = alAiringSortEnums.first { it.sort == savedAiringSort }.ordinal
+                SortOrder.ASC
+            } else {
+                saveSortIndex = alAiringSortEnums.first { it.sort == savedAiringSort - 1 }.ordinal
+                SortOrder.DESC
+            }
+
+            resources.getStringArray(R.array.al_airing_sort).mapIndexed { index, s ->
+                AniLibSortingModel(
+                    alAiringSortEnums[index],
+                    s,
+                    if (index == saveSortIndex) savedSortOrder else SortOrder.NONE,
+                    allowNone = false
                 )
-            wgAiringSort.setSelection(field.sort!!)
+            }.let {
+                binding.wgAiringSort.setSortItems(it)
+            }
         }
     }
 
@@ -98,14 +104,30 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
         isWeeklyTypeDate = binding.wgIsAiringWeekly.isChecked
         showFromPlanning = binding.wgShowFromPlanning.isChecked
         showFromWatching = binding.wgShowFromWatching.isChecked
-        sort = binding.wgAiringSort.selectedItemPosition
+        sort = getActiveAiringSort()
     }
+
+
+    private fun getActiveAiringSort(): Int {
+        return binding.wgAiringSort.getActiveSortItem()!!.let {
+            if (it.order == SortOrder.DESC) {
+                (it.data as ALAiringSort).sort + 1
+            } else {
+                (it.data as ALAiringSort).sort
+            }
+        }
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.save_menu -> {
                 val oldIsWeekly = field.isWeeklyTypeDate
                 field.updateField()
+                storeAiringScheduleFieldForWidget(requireContext(), field)
+                AiringWidgetPreference.clickOpenListEditor(requireContext(), binding.wgClickOpenListEditor.isChecked)
+                AiringWidgetPreference.showEta(requireContext(), binding.wgShowEta.isChecked)
+
 
                 val isWeeklyAiring = field.isWeeklyTypeDate
                 val appWidgetManager = AppWidgetManager.getInstance(requireContext())
@@ -121,6 +143,8 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
                         requireContext().packageName,
                         R.layout.airing_schedule_widget_layout
                     )
+
+
 
                 if (oldIsWeekly != isWeeklyAiring) {
                     val weekFields = WeekFields.of(Locale.getDefault())
@@ -159,8 +183,6 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
                     R.id.airing_widget_list_view
                 )
 
-                storeAiringScheduleFieldForWidget(requireContext(), field)
-                AiringWidgetPreference.clickOpenListEditor(requireContext(), binding.wgClickOpenListEditor.isChecked)
                 makeToast(R.string.saved_successfully)
                 true
             }

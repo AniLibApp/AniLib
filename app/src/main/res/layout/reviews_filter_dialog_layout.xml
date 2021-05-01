@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp">
+    android:layout_height="wrap_content">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-        android:id="@+id/reviewsFilterSpinner"
+    <com.revolgenx.anilib.ui.view.sort.AlSortLayout
+        android:id="@+id/review_sort"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"/>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>

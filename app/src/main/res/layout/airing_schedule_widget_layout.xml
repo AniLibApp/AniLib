@@ -104,7 +104,6 @@
             android:includeFontPadding="false"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:text="1"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
