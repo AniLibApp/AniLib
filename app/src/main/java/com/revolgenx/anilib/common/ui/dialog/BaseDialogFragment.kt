@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -101,9 +101,17 @@ abstract class BaseDialogFragment<V : ViewBinding> : DynamicDialogFragment() {
             }
 
             isAutoDismiss = isAutoDismissEnabled
+
+            builder(dialogBuilder, savedInstanceState)
         }
         return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
     }
+
+
+    //use for further building
+    protected open fun builder(
+        dialogBuilder: DynamicDialog.Builder,
+        savedInstanceState: Bundle?){}
 
 
     protected val provideLayoutInflater: LayoutInflater get()= LayoutInflater.from(requireContext())
@@ -152,6 +160,8 @@ abstract class BaseDialogFragment<V : ViewBinding> : DynamicDialogFragment() {
                 is AppCompatActivity -> show(ctx.supportFragmentManager, DialogFragmentTag)
                 is Fragment -> show(ctx.childFragmentManager, DialogFragmentTag)
                 is PreferenceFragmentCompat -> show(ctx.childFragmentManager, DialogFragmentTag)
+                is ContextThemeWrapper -> show(ctx.baseContext)
+                is android.view.ContextThemeWrapper -> show(ctx.baseContext)
                 else -> throw IllegalStateException("Context has no window attached.")
             }
     }

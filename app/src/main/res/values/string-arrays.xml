@@ -517,6 +517,77 @@
         <item>@string/favourites_desc</item>
     </string-array>
 
+
+    <string-array name="al_media_sort">
+        <item>@string/id</item>
+        <item>@string/title_romaji</item>
+        <item>@string/title_english</item>
+        <item>@string/title_native</item>
+        <item>@string/type</item>
+        <item>@string/format</item>
+        <item>@string/start_date</item>
+        <item>@string/end_date</item>
+        <item>@string/score</item>
+        <item>@string/popularity</item>
+        <item>@string/trending</item>
+        <item>@string/episodes</item>
+        <item>@string/duration</item>
+        <item>@string/status</item>
+        <item>@string/chapters</item>
+        <item>@string/volumes</item>
+        <item>@string/updated_at</item>
+        <item>@string/favourites</item>
+    </string-array>
+
+    <string-array name="al_media_list_sort">
+        <item>@string/media_id</item>
+        <item>@string/score</item>
+        <item>@string/status</item>
+        <item>@string/progress</item>
+        <item>@string/progress_volume</item>
+        <item>@string/repeat</item>
+        <item>@string/priority</item>
+        <item>@string/started_on</item>
+        <item>@string/finished_on</item>
+        <item>@string/added</item>
+        <item>@string/updated</item>
+        <item>@string/title_romaji</item>
+        <item>@string/title_english</item>
+        <item>@string/title_native</item>
+        <item>@string/popularity</item>
+    </string-array>
+
+
+    <string-array name="al_media_list_collection_sort">
+        <item>@string/title</item>
+        <item>@string/score</item>
+        <item>@string/progress</item>
+        <item>@string/last_updated</item>
+        <item>@string/last_added</item>
+        <item>@string/start_date</item>
+        <item>@string/completed_date</item>
+        <item>@string/release_date</item>
+        <item>@string/average_score</item>
+        <item>@string/popularity</item>
+    </string-array>
+
+
+    <string-array name="al_review_sort">
+        <item>@string/id</item>
+        <item>@string/score</item>
+        <item>@string/rating</item>
+        <item>@string/created_at</item>
+        <item>@string/updated_at</item>
+    </string-array>
+
+
+    <string-array name="al_airing_sort">
+        <item>@string/id</item>
+        <item>@string/media_id</item>
+        <item>@string/time</item>
+        <item>@string/episodes</item>
+    </string-array>
+
     <string-array name="advance_search_format">
         <item>@string/none</item>
         <item>@string/tv</item>

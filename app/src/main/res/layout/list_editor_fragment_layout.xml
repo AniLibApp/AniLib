@@ -109,7 +109,7 @@
                             android:layout_width="@dimen/list_editor_save_icon_size"
                             android:layout_height="@dimen/list_editor_save_icon_size"
                             android:padding="10dp"
-                            app:srcCompat="@drawable/ic_dropped" />
+                            app:srcCompat="@drawable/ic_private" />
 
 
                         <com.revolgenx.anilib.ui.view.DynamicLoadingImageView

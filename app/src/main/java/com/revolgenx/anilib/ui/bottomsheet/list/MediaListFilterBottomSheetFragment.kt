@@ -1,27 +1,26 @@
 package com.revolgenx.anilib.ui.bottomsheet.list
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.getApplicationLocale
-import com.revolgenx.anilib.common.preference.languagePrefKey
 import com.revolgenx.anilib.common.preference.loadMediaListFilter
 import com.revolgenx.anilib.data.meta.MediaListFilterMeta
+import com.revolgenx.anilib.data.meta.type.ALMediaListCollectionSort
 import com.revolgenx.anilib.databinding.MediaListFilterBottomSheetLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.MediaListCollectionFilterEvent
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.adapter.MediaFilterFormatAdapter
 import com.revolgenx.anilib.ui.bottomsheet.DynamicBottomSheetFragment
 import com.revolgenx.anilib.ui.dialog.FormatSelectionDialog
+import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
+import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 
 class MediaListFilterBottomSheetFragment :
@@ -76,7 +75,7 @@ class MediaListFilterBottomSheetFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): MediaListFilterBottomSheetLayoutBinding {
-        return MediaListFilterBottomSheetLayoutBinding.inflate(inflater, container, false)
+        return MediaListFilterBottomSheetLayoutBinding.inflate(layoutInflater(), container, false)
     }
 
 
@@ -95,7 +94,7 @@ class MediaListFilterBottomSheetFragment :
                     (spin.selectedItemPosition - 1).takeIf { it >= 0 }
                         ?.let { (spin.selectedItem as DynamicSpinnerItem).text.toString() }
                 },
-                mediaListSort = (binding.listSortSpinner.selectedItemPosition - 1).takeIf { it >= 0 }
+                mediaListSort = getActiveListSort()
             ).let {
                 MediaListCollectionFilterEvent(it).postEvent
             }
@@ -114,9 +113,19 @@ class MediaListFilterBottomSheetFragment :
                 (spin.selectedItemPosition - 1).takeIf { it >= 0 }
                     ?.let { (spin.selectedItem as DynamicSpinnerItem).text.toString() }
             }
-            field.listSort = (binding.listSortSpinner.selectedItemPosition - 1).takeIf { it >= 0 }
+            field.listSort = getActiveListSort()
         }
         super.onSaveInstanceState(outState)
+    }
+
+    private fun getActiveListSort(): Int? {
+        return binding.listSortLayout.getActiveSortItem()?.let {
+            var activeSort = (it.data as ALMediaListCollectionSort).sort
+            if (it.order == SortOrder.DESC) {
+                activeSort += 1
+            }
+            activeSort
+        }
     }
 
 
@@ -136,26 +145,6 @@ class MediaListFilterBottomSheetFragment :
             })
         }
 
-        val mediaListSort =
-            requireContext().resources.getStringArray(R.array.media_list_collection_sort)
-        val mediaListSortItems = mutableListOf<DynamicSpinnerItem>().apply {
-            add(DynamicSpinnerItem(null, getString(R.string.none)))
-            val canShowSpinnerIcon = getApplicationLocale() == "de"
-
-            addAll(mediaListSort.mapIndexed { index, s ->
-                var icon: Drawable? = null
-                if(canShowSpinnerIcon) {
-                    icon = if (index % 2 == 0) {
-                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
-                    } else {
-                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
-                    }
-                }
-                DynamicSpinnerItem(icon, s)
-            })
-        }
-
-
         formatAddHeader.setOnClickListener {
             formatDialog = FormatSelectionDialog.newInstance(field.formatsIn!!).also {
                 it.onDoneListener = {
@@ -168,8 +157,6 @@ class MediaListFilterBottomSheetFragment :
 
         listStatusSpinner.adapter = makeSpinnerAdapter(requireContext(), listStatusItems)
         listGenreSpinner.adapter = makeSpinnerAdapter(requireContext(), listGenreItems)
-        listSortSpinner.adapter = makeSpinnerAdapter(requireContext(), mediaListSortItems)
-
 
 
         if (mediaType != MediaType.ANIME.ordinal) {
@@ -183,7 +170,32 @@ class MediaListFilterBottomSheetFragment :
 
         field.status?.let { listStatusSpinner.setSelection(it + 1) }
         field.genre?.let { listGenreSpinner.setSelection(genre.indexOf(it) + 1) }
-        field.listSort?.let { listSortSpinner.setSelection(it + 1) }
+
+
+        var savedSortOrder: SortOrder = SortOrder.NONE
+        val alMediaListSort = requireContext().resources.getStringArray(R.array.al_media_list_collection_sort)
+        val alMediaListSortEnums = ALMediaListCollectionSort.values()
+        var savedSortIndex = -1
+
+        field.listSort?.takeIf { it > -1 }?.let { saveSort ->
+            savedSortOrder = if (saveSort % 2 == 0) {
+                savedSortIndex = alMediaListSortEnums.first { it.sort == saveSort }.ordinal
+                SortOrder.ASC
+            } else {
+                savedSortIndex = alMediaListSortEnums.first { it.sort == saveSort - 1 }.ordinal
+                SortOrder.DESC
+            }
+        }
+
+        val alMediaListSortModels = alMediaListSort.mapIndexed { index, sort ->
+            AniLibSortingModel(
+                alMediaListSortEnums[index],
+                sort,
+                if (savedSortIndex == index) savedSortOrder else SortOrder.NONE
+            )
+        }
+
+        binding.listSortLayout.setSortItems(alMediaListSortModels)
     }
 
     override fun onStop() {

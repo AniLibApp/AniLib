@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="10dp">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
         android:id="@+id/show_all_airing_switch"
@@ -33,9 +35,13 @@
         android:text="@string/show_only_from_your_planning_list" />
 
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-        android:id="@+id/airing_sort_spinner"
+    <com.revolgenx.anilib.ui.view.sort.AlSortLayout
+        android:id="@+id/al_airing_sort"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"/>
+
 
 </LinearLayout>

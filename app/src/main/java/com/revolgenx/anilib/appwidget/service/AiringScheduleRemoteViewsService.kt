@@ -50,7 +50,7 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
 
     class AiringScheduleWidgetFactory(
         private val context: Context, intent: Intent
-    ) : RemoteViewsFactory, KoinComponent{
+    ) : RemoteViewsFactory, KoinComponent {
 
         private val appWidgetId = intent.getIntExtra(
             AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -84,10 +84,13 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
             updateField()
         }
 
-        @Subscribe(sticky =  true, threadMode = ThreadMode.MAIN)
-        fun onEVent(event: ListEditorResultEvent){
+        @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+        fun onEVent(event: ListEditorResultEvent) {
             field.isNewField = true
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.airing_widget_list_view)
+            appWidgetManager.notifyAppWidgetViewDataChanged(
+                appWidgetId,
+                R.id.airing_widget_list_view
+            )
             EventBus.getDefault().removeStickyEvent(event)
         }
 
@@ -134,6 +137,8 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
             val airingEpisode = airingTimeModel.episode
             val timeUntilAiring = airingTimeModel.timeUntilAiring!!
             val coverImage = item.coverImage?.sImage
+            val title = item.title!!.title(context)
+            val showEta = AiringWidgetPreference.showEta(context)
 
             val remoteViews =
                 RemoteViews(context.packageName, R.layout.airing_schedule_widget_item_layout)
@@ -144,34 +149,40 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
 
             remoteViews.setTextViewText(
                 R.id.wg_media_name_tv,
-                items[position].title!!.title(context)
+                if(showEta) title else context.getString(R.string.widget_airing_episode, airingEpisode, title)
             )
+            if (showEta) {
+                remoteViews.setViewVisibility(R.id.wg_airing_at_tv, View.VISIBLE)
+                remoteViews.setTextViewText(
+                    R.id.wg_airing_at_tv,
+                    if (field.isWeeklyTypeDate) {
+                        context.getString(
+                            R.string.widget_airing_at_weekly_format,
+                            airingEpisode,
+                            timeUntilAiring.day,
+                            timeUntilAiring.hour,
+                            timeUntilAiring.min
+                        )
+                    } else {
+                        context.getString(
+                            R.string.widget_airing_at_format,
+                            airingEpisode,
+                            timeUntilAiring.hour,
+                            timeUntilAiring.min
+                        )
+                    }
+                )
+            } else {
+                remoteViews.setViewVisibility(R.id.wg_airing_at_tv, View.GONE)
 
-            remoteViews.setTextViewText(
-                R.id.wg_airing_at_tv,
-                if (field.isWeeklyTypeDate) {
-                    context.getString(
-                        R.string.widget_airing_at_weekly_format,
-                        airingEpisode,
-                        timeUntilAiring.day,
-                        timeUntilAiring.hour,
-                        timeUntilAiring.min
-                    )
-                } else {
-                    context.getString(
-                        R.string.widget_airing_at_format,
-                        airingEpisode,
-                        timeUntilAiring.hour,
-                        timeUntilAiring.min
-                    )
-                }
-            )
+            }
+
 
             remoteViews.setTextViewText(
                 R.id.wg_airing_at_time_tv,
                 if (field.isWeeklyTypeDate) {
                     "$airingAtDay, $airingAtTime"
-                }else{
+                } else {
                     airingAtTime
                 }
             )

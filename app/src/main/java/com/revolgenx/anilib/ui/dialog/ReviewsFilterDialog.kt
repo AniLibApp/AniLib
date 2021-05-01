@@ -1,18 +1,17 @@
 package com.revolgenx.anilib.ui.dialog
 
 import android.content.DialogInterface
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
+import com.revolgenx.anilib.data.meta.type.ALReviewSort
 import com.revolgenx.anilib.databinding.ReviewsFilterDialogLayoutBinding
-import com.revolgenx.anilib.util.onItemSelected
+import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
+import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 
 class ReviewsFilterDialog : BaseDialogFragment<ReviewsFilterDialogLayoutBinding>() {
 
@@ -27,19 +26,8 @@ class ReviewsFilterDialog : BaseDialogFragment<ReviewsFilterDialogLayoutBinding>
         private const val reviews_filter_key = "reviews_filter_key"
     }
 
-    private val canShowSpinnerIcon by lazy { getApplicationLocale() == "de" }
-    private val reviewsFilterSpinnerItem by lazy {
-        requireContext().resources.getStringArray(R.array.review_sort).mapIndexed { index, s ->
-            var icon: Drawable? = null
-            if(canShowSpinnerIcon) {
-                icon = if (index % 2 == 0) {
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_asc)
-                } else {
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_desc)
-                }
-            }
-            DynamicSpinnerItem(icon, s)
-        }
+    private val reviewsFilterSortItems by lazy {
+        requireContext().resources.getStringArray(R.array.al_review_sort)
     }
 
     var positiveCallback: ((Int?) -> Unit)? = null
@@ -60,10 +48,45 @@ class ReviewsFilterDialog : BaseDialogFragment<ReviewsFilterDialogLayoutBinding>
     }
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
-        binding.reviewsFilterSpinner.adapter = makeSpinnerAdapter(reviewsFilterSpinnerItem)
-        binding.reviewsFilterSpinner.setSelection(arguments?.getInt(reviews_filter_key) ?: 0)
-        binding.reviewsFilterSpinner.onItemSelected {
-            arguments = bundleOf(reviews_filter_key to it)
+        var reviewSortOrder = SortOrder.NONE
+        var savedReviewSortIndex = -1
+        val reviewSortEnums = ALReviewSort.values()
+
+        (arguments?.getInt(reviews_filter_key) ?: 0).let {savedSort->
+            reviewSortOrder = if(savedSort % 2 == 0){
+                savedReviewSortIndex = reviewSortEnums.first { it.sort == savedSort}.ordinal
+                SortOrder.ASC
+            }else{
+                savedReviewSortIndex = reviewSortEnums.first { it.sort == savedSort - 1}.ordinal
+                SortOrder.DESC
+            }
+        }
+
+        val reviewSortModels = reviewsFilterSortItems.mapIndexed { index, s ->
+            AniLibSortingModel(
+                reviewSortEnums[index],
+                s,
+                if(savedReviewSortIndex == index) reviewSortOrder else SortOrder.NONE,
+                allowNone = false
+            )
+        }
+
+        binding.reviewSort.setSortItems(reviewSortModels)
+        binding.reviewSort.onSortItemSelected = {
+            val selectedSort = it?.let {
+                when (it.order) {
+                    SortOrder.ASC -> {
+                        (it.data as ALReviewSort).sort
+                    }
+                    SortOrder.DESC -> {
+                        (it.data as ALReviewSort).sort + 1
+                    }
+                    else -> {
+                        0
+                    }
+                }
+            }
+            arguments = bundleOf(reviews_filter_key to selectedSort)
         }
     }
 

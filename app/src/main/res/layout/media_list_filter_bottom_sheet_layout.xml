@@ -71,13 +71,14 @@
 
             <com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
-
-                <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                    android:id="@+id/listSortSpinner"
+                <com.revolgenx.anilib.ui.view.sort.AlSortLayout
+                    android:id="@+id/list_sort_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    />
             </com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout>
         </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 

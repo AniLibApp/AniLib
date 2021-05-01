@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,51 +15,77 @@
             android:id="@+id/wg_include_already_aired"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/include_already_aired"
             android:paddingStart="@dimen/widget_padding_horizontal"
             android:paddingEnd="@dimen/widget_padding_horizontal"
-            android:textSize="14sp"/>
+            android:text="@string/include_already_aired"
+            android:textSize="14sp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
             android:id="@+id/wg_is_airing_weekly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/weekly"
             android:paddingStart="@dimen/widget_padding_horizontal"
             android:paddingEnd="@dimen/widget_padding_horizontal"
+            android:text="@string/weekly"
             android:textSize="14sp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
             android:id="@+id/wg_show_from_watching"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/show_only_from_your_watching_list"
             android:paddingStart="@dimen/widget_padding_horizontal"
             android:paddingEnd="@dimen/widget_padding_horizontal"
+            android:text="@string/show_only_from_your_watching_list"
             android:textSize="14sp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
             android:id="@+id/wg_show_from_planning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/show_only_from_your_planning_list"
             android:paddingStart="@dimen/widget_padding_horizontal"
             android:paddingEnd="@dimen/widget_padding_horizontal"
-            android:textSize="14sp"/>
+            android:text="@string/show_only_from_your_planning_list"
+            android:textSize="14sp" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-            android:id="@+id/wg_airing_sort"
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+            android:id="@+id/wg_show_eta"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/widget_padding_horizontal"
+            android:paddingEnd="@dimen/widget_padding_horizontal"
+            android:text="@string/show_eta"
+            android:textSize="14sp" />
+
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
             android:id="@+id/wg_click_open_list_editor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/enable_to_open_list_editor_instead_of_browsing_info"
             android:paddingStart="@dimen/widget_padding_horizontal"
             android:paddingEnd="@dimen/widget_padding_horizontal"
-            android:textSize="14sp"/>
+            android:text="@string/enable_to_open_list_editor_instead_of_browsing_info"
+            android:textSize="14sp" />
+
+
+        <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:headerName="@string/sort"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp">
+
+            <com.revolgenx.anilib.ui.view.sort.AlSortLayout
+                android:id="@+id/wg_airing_sort"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"/>
+
+        </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
 
     </LinearLayout>
 

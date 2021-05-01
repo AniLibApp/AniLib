@@ -84,7 +84,7 @@ class RadioFragment : BaseLayoutFragment<RadioFragmentBinding>(), EventBusListen
                 BuildConfig.adUnitId
             }
 
-            v.radioFragmentContainerLayout.addView(adView, 0)
+            v.radioFragmentScrollContainer.addView(adView, 0)
 
         }
 

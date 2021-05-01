@@ -14,22 +14,20 @@
         android:paddingEnd="10dp">
 
 
-        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+        <com.revolgenx.anilib.ui.view.widgets.chip.DynamicChip
             android:id="@+id/format_add_header"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ads_button_remote"
-            app:ads_icon="@drawable/ic_add_circle"
-            app:ads_title="@string/format"
-            app:titleTextSize="14sp" />
+            android:text="@string/format"
+            app:closeIcon="@drawable/ic_add"
+            android:padding="6dp"
+            />
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/formatChipRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
-
 
         <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
             android:layout_width="match_parent"
@@ -77,17 +75,20 @@
 
             <com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                >
 
-
-                <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                    android:id="@+id/seasonSortSpinner"
+                <com.revolgenx.anilib.ui.view.sort.AlSortLayout
+                    android:id="@+id/season_sort_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    />
 
             </com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout>
 
         </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
+
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
             android:id="@+id/enableYearCheckBox"

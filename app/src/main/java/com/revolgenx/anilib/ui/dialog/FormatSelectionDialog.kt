@@ -42,8 +42,7 @@ class FormatSelectionDialog : BaseDialogFragment<FormatSelectionDialogBinding>()
         return FormatSelectionDialogBinding.inflate(provideLayoutInflater)
     }
 
-    override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
-        super.onShowListener(alertDialog, savedInstanceState)
+    override fun builder(dialogBuilder: DynamicDialog.Builder, savedInstanceState: Bundle?) {
 
         val data = arguments?.getIntArray(FORMAT_SELECTION_DATA_KEY) ?: return
 
@@ -73,6 +72,7 @@ class FormatSelectionDialog : BaseDialogFragment<FormatSelectionDialogBinding>()
             .build()
 
     }
+
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
         super.onPositiveClicked(dialogInterface, which)
