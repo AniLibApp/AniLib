@@ -68,7 +68,9 @@
                 app:ads_fillSpace="true"
                 app:ads_subtitle="@string/count"
                 app:ads_title="0"
-                app:titleTextSize="11sp" />
+                app:titleTextSize="11sp"
+                app:titleAlignCenter="true"
+                app:subtitleAlignCenter="true"/>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
@@ -91,7 +93,9 @@
                 app:ads_fillSpace="true"
                 app:ads_subtitle="@string/mean_score"
                 app:ads_title="0"
-                app:titleTextSize="11sp" />
+                app:titleTextSize="11sp"
+                app:titleAlignCenter="true"
+                app:subtitleAlignCenter="true" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
@@ -115,7 +119,9 @@
                 app:ads_fillSpace="true"
                 app:ads_subtitle="@string/time_watched"
                 app:ads_title="0"
-                app:titleTextSize="11sp" />
+                app:titleTextSize="11sp"
+                app:titleAlignCenter="true"
+                app:subtitleAlignCenter="true" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 

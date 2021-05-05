@@ -8,10 +8,10 @@ import com.revolgenx.anilib.util.dp
 fun ToggleSwitch.themeIt(){
     val dynamicTheme = DynamicTheme.getInstance().get()
     uncheckedBackgroundColor = ThemeController.lightSurfaceColor()
-    checkedBackgroundColor = dynamicTheme.accentColor
+    checkedBackgroundColor = contrastAccentWithBg
     borderRadius = dp(10f).toFloat()
     toggleElevation = dp(1f).toFloat()
-    checkedTextColor = DynamicColorUtils.getContrastColor(dynamicTheme.tintAccentColor, dynamicTheme.backgroundColor)
+    checkedTextColor = DynamicColorUtils.getContrastColor(dynamicTextColorPrimaryInverse, contrastAccentWithBg)
     uncheckedTextColor = dynamicTheme.textPrimaryColor
     reDraw()
 }

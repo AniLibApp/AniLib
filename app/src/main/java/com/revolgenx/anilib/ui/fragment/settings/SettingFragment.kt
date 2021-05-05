@@ -71,9 +71,6 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
             }
         }
 
-        binding.whatsNew.setOnClickListener {
-            ReleaseInfoDialog().show(childFragmentManager, ReleaseInfoDialog.tag)
-        }
     }
 
 }

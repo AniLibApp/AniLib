@@ -160,6 +160,14 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
             makeArrayPopupMenu(
                 it,
                 getCurrentListStatus(),
+                icons = intArrayOf(
+                    R.drawable.ic_watching,
+                    R.drawable.ic_completed,
+                    R.drawable.ic_paused_filled,
+                    R.drawable.ic_dropped,
+                    R.drawable.ic_planning,
+                    R.drawable.ic_rewatching
+                ),
                 selectedPosition = getRecentListStatus()
             ) { _, _, position, _ ->
                 updateCurrentListStatus(position)

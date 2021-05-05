@@ -81,6 +81,7 @@ class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBindin
 
                         if (loadBioByDefault()) {
                             loadBioCardVew.visibility = View.GONE
+                            aboutContainerLayout.visibility = View.VISIBLE
                             data.about?.html?.let { about ->
                                 MarkwonImpl.createHtmlInstance(requireContext())
                                     .setMarkdown(userAboutTv, about)
@@ -91,6 +92,7 @@ class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBindin
                             }
                         } else {
                             aboutContainerLayout.visibility = View.GONE
+                            loadBioCardVew.visibility = View.VISIBLE
                             loadBioCardVew.setOnClickListener {
                                 aboutContainerLayout.visibility = View.VISIBLE
 

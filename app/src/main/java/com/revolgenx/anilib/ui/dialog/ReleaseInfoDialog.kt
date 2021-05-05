@@ -17,8 +17,8 @@ class ReleaseInfoDialog : BaseDialogFragment<ReleaseInfoDialogLayoutBinding>() {
     override fun bindView(): ReleaseInfoDialogLayoutBinding {
         return ReleaseInfoDialogLayoutBinding.inflate(provideLayoutInflater)
     }
-    override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
-        super.onShowListener(alertDialog, savedInstanceState)
+
+    override fun builder(dialogBuilder: DynamicDialog.Builder, savedInstanceState: Bundle?) {
         MarkwonImpl.createInstance(requireContext())
             .setMarkdown(binding.releaseInfo, requireContext().getString(R.string.release_info))
     }
