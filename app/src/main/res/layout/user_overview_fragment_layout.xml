@@ -16,52 +16,57 @@
             layout="@layout/resource_status_container_layout" />
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/profile_overview_margin"
-            android:text="@string/about"
-            android:textSize="18sp"
-            app:fontFamily="@font/cabin_bold" />
-
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             android:id="@+id/load_bio_card_vew"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp">
+            android:layout_marginBottom="2dp"
+            android:visibility="gone"
+            app:cardUseCompatPadding="true">
 
             <com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/load_bio"
                 android:paddingStart="10dp"
-                android:textSize="16sp"
-                android:paddingEnd="10dp"/>
+                android:paddingEnd="10dp"
+                android:text="@string/load_bio"
+                android:textSize="14sp" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
-        <com.revolgenx.anilib.ui.view.MaxHeightFrameLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             android:id="@+id/about_container_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:nestedScrollingEnabled="true">
+            app:cardUseCompatPadding="true"
+            android:visibility="gone"
+            >
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
+            <com.revolgenx.anilib.ui.view.MaxHeightFrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="true">
+                android:nestedScrollingEnabled="true"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                    android:id="@+id/user_about_tv"
+                <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ads_rtlSupport="false" />
-            </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
+                    android:nestedScrollingEnabled="true">
 
-        </com.revolgenx.anilib.ui.view.MaxHeightFrameLayout>
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/user_about_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:ads_rtlSupport="false" />
+                </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
+
+            </com.revolgenx.anilib.ui.view.MaxHeightFrameLayout>
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView

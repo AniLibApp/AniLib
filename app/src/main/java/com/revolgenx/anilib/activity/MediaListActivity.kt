@@ -62,9 +62,6 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
             WatchingFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
-            PlanningFragment().apply {
-                arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
-            },
             CompletedFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
@@ -72,6 +69,9 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
             DroppedFragment().apply {
+                arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
+            },
+            PlanningFragment().apply {
                 arguments = bundleOf(MEDIA_LIST_META_KEY to mediaListMeta)
             },
             RepeatingFragment().apply {
@@ -161,16 +161,17 @@ class MediaListActivity : BaseDynamicActivity<MediaListActivityLayoutBinding>() 
                     createTabView(binding, R.drawable.ic_watching, R.string.watching)
                 }
                 1 -> {
-                    createTabView(binding, R.drawable.ic_planning, R.string.planning)
-                }
-                2 -> {
                     createTabView(binding, R.drawable.ic_completed, R.string.completed)
                 }
-                3 -> {
+                2 -> {
                     createTabView(binding, R.drawable.ic_paused_filled, R.string.paused)
                 }
-                4 -> {
+                3 -> {
                     createTabView(binding, R.drawable.ic_dropped, R.string.dropped)
+
+                }
+                4 -> {
+                    createTabView(binding, R.drawable.ic_planning, R.string.planning)
                 }
                 5 -> {
                     createTabView(binding, R.drawable.ic_rewatching, R.string.repeating)

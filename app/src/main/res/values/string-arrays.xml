@@ -689,19 +689,19 @@
 
     <string-array name="anime_list_status">
         <item>@string/watching</item>
-        <item>@string/planning</item>
         <item>@string/completed</item>
         <item>@string/paused</item>
         <item>@string/dropped</item>
+        <item>@string/planning</item>
         <item>@string/repeating</item>
     </string-array>
 
     <string-array name="manga_list_status">
         <item>@string/reading</item>
-        <item>@string/planning</item>
         <item>@string/completed</item>
         <item>@string/paused</item>
         <item>@string/dropped</item>
+        <item>@string/planning</item>
         <item>@string/repeating</item>
     </string-array>
 

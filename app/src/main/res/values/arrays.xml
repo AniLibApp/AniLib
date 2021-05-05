@@ -4,7 +4,7 @@
     <!--region appinfo-->
     <string-array name="info_app_links">
         <item>@string/anilib_site</item>
-        <item>@string/source</item>
+        <item>@string/github</item>
         <item>@string/apache_2</item>
         <item>@string/discord</item>
     </string-array>
@@ -115,4 +115,5 @@
         <item>@drawable/ads_ic_share</item>
     </array>
 
+    <string name="github">Github</string>
 </resources>

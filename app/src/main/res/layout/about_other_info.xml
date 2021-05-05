@@ -55,4 +55,17 @@
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
+    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+
+        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+            android:id="@+id/whatsNew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:ads_colorType="text_primary"
+            app:ads_icon="@drawable/ic_new_releases"
+            app:ads_title="@string/whats_new" />
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

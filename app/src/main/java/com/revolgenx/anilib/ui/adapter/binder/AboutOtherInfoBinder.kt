@@ -8,6 +8,8 @@ import com.pranavpandey.android.dynamic.support.recyclerview.binder.DynamicRecyc
 import com.pranavpandey.android.dynamic.support.view.DynamicHeader
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.adapter.AppInfoAdapter
+import com.revolgenx.anilib.ui.dialog.ReleaseInfoDialog
+import com.revolgenx.anilib.ui.view.widgets.AniLibItemView
 import com.revolgenx.anilib.util.openLink
 
 class AboutOtherInfoBinder(binderAdapter: AppInfoAdapter) :
@@ -37,6 +39,7 @@ class AboutOtherInfoBinder(binderAdapter: AppInfoAdapter) :
 
         private val privacyPolicy: DynamicHeader = view.findViewById(R.id.privacyPolicy)
         private val termsAndCondition: DynamicHeader = view.findViewById(R.id.termsAndCondition)
+        private val whatsNew: AniLibItemView = view.findViewById(R.id.whatsNew)
 
         init {
             privacyPolicy.setOnClickListener {
@@ -47,6 +50,10 @@ class AboutOtherInfoBinder(binderAdapter: AppInfoAdapter) :
                 it.context.openLink(it.context.getString(R.string.terms_and_condition_url))
             }
 
+
+            whatsNew.setOnClickListener {
+                ReleaseInfoDialog().show(view.context)
+            }
 
         }
     }
