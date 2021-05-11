@@ -28,20 +28,20 @@
             android:id="@+id/airing_schedule_open_button"
             android:layout_width="42dp"
             android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/airing_schedule_refresh_button"
             android:contentDescription="@null"
             android:padding="2dp"
-            android:src="@drawable/ic_open_window"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/airing_schedule_refresh_button"/>
+            android:src="@drawable/ic_open_window" />
 
         <ImageView
             android:id="@+id/airing_schedule_refresh_button"
             android:layout_width="42dp"
             android:layout_height="24dp"
-            android:contentDescription="@null"
             android:layout_alignParentEnd="true"
-            android:padding="2dp"
             android:layout_centerVertical="true"
+            android:contentDescription="@null"
+            android:padding="2dp"
             android:src="@drawable/ic_rewatching" />
 
     </RelativeLayout>
@@ -69,12 +69,29 @@
             android:divider="@null"
             android:padding="6dp" />
 
-        <ImageView
+        <LinearLayout
             android:id="@+id/wg_empty_view"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_sad_anilib" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_sad_anilib" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/its_empty"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+
     </FrameLayout>
 
     <RelativeLayout
