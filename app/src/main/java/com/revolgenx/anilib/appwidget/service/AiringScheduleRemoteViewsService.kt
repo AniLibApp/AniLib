@@ -128,6 +128,7 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
         }
 
         override fun getViewAt(position: Int): RemoteViews? {
+            if(position >= items.size) return null
 
             val item = items[position]
 
