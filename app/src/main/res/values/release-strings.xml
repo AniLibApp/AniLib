@@ -3,6 +3,16 @@
     <string name="release_info" translatable="false">
         ## Whats new!!!. \n
 
+        ### -v1.1.10 \n
+        * Airing Schedule App Widget. \n
+        * Use translation model from setting to translate the description of media. Line break and other styling will be gone if available. \n
+        * Fix manga volume progress not updating \n
+        * Ui changes and other bug fixes \n
+        * Russian and German translation available. Huge thanks to the translator for the support \n
+        * German - André Niebuhr (Epr0m) [AniList](https://anilist.co/user/Epr0m/) \n
+        * Russian - Natalie \n
+
+
         ### -v1.1.9 \n
         * Full Screen Navigation. \n
         * Home description changes. \n
