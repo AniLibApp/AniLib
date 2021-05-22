@@ -13,7 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
+import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
@@ -308,9 +308,9 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             null
         )
 
-        val spinnerItems = mutableListOf<DynamicSpinnerItem>()
+        val spinnerItems = mutableListOf<DynamicMenu>()
         spinnerItems.add(
-            DynamicSpinnerItem(
+            DynamicMenu(
                 ContextCompat.getDrawable(
                     requireContext(),
                     R.drawable.ic_watching
@@ -318,7 +318,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             )
         )
         spinnerItems.add(
-            DynamicSpinnerItem(
+            DynamicMenu(
                 ContextCompat.getDrawable(
                     requireContext(),
                     R.drawable.ic_planning
@@ -326,7 +326,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             )
         )
         spinnerItems.add(
-            DynamicSpinnerItem(
+            DynamicMenu(
                 ContextCompat.getDrawable(
                     requireContext(),
                     R.drawable.ic_completed
@@ -334,7 +334,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             )
         )
         spinnerItems.add(
-            DynamicSpinnerItem(
+            DynamicMenu(
                 ContextCompat.getDrawable(
                     requireContext(),
                     R.drawable.ic_dropped
@@ -342,7 +342,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             )
         )
         spinnerItems.add(
-            DynamicSpinnerItem(
+            DynamicMenu(
                 ContextCompat.getDrawable(
                     requireContext(),
                     R.drawable.ic_paused_filled
@@ -350,7 +350,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             )
         )
         spinnerItems.add(
-            DynamicSpinnerItem(
+            DynamicMenu(
                 ContextCompat.getDrawable(
                     requireContext(),
                     R.drawable.ic_rewatching

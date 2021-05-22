@@ -21,13 +21,14 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
-import com.pranavpandey.android.dynamic.support.popup.DynamicArrayPopup
+import com.pranavpandey.android.dynamic.support.model.DynamicMenu
+import com.pranavpandey.android.dynamic.support.popup.DynamicMenuPopup
 import com.pranavpandey.android.dynamic.support.popup.DynamicPopup
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.toasts.internal.ToastCompat
@@ -107,11 +108,11 @@ fun makeArrayPopupMenu(
     selectedPosition: Int = -1,
     viewType: Int = DynamicPopup.Type.LIST,
     onItemClickListener: AdapterView.OnItemClickListener
-): DynamicArrayPopup {
-    return DynamicArrayPopup(
+): DynamicMenuPopup {
+    return DynamicMenuPopup(
         anchor,
-        entries,
         icons,
+        entries,
         onItemClickListener
     ).also { popup ->
         popup.selectedPosition = selectedPosition
@@ -120,9 +121,7 @@ fun makeArrayPopupMenu(
     }
 }
 
-
-
-fun makeSpinnerAdapter(context: Context, items: List<DynamicSpinnerItem>) =
+fun makeSpinnerAdapter(context: Context, items: List<DynamicMenu>) =
     DynamicSpinnerImageAdapter(
         context,
         R.layout.ads_layout_spinner_item,
@@ -131,53 +130,30 @@ fun makeSpinnerAdapter(context: Context, items: List<DynamicSpinnerItem>) =
     )
 
 
-fun DynamicSystemActivity.makeStatusBarTransparent() {
-    window.apply {
-        clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        this@makeStatusBarTransparent.statusBarColor = DynamicColorUtils.setAlpha(this@makeStatusBarTransparent.statusBarColor, 0)
-    }
-}
 
-@RequiresApi(Build.VERSION_CODES.P)
-fun Activity.makeFullScreenActivity() {
-    is29 {
-        isGestureNavigationEnabled(contentResolver){
-            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-            window.attributes.layoutInDisplayCutoutMode =
-                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
-        }
-    }
-}
-
-fun RecyclerView.makeFullScreenRecyclerView(contentResolver: ContentResolver){
-    is29 {
-        isGestureNavigationEnabled(contentResolver){
-            setOnApplyWindowInsetsListener { v, insets ->
-                val bottomPadding = insets.systemWindowInsetBottom
-                setPadding(0, 0, 0, bottomPadding)
-                insets.consumeSystemWindowInsets()
-            }
-        }
-    }
-}
-
-inline fun is29(func:()->Unit){
-    if(DynamicSdkUtils.is29()){
+inline fun is29(func: () -> Unit) {
+    if (DynamicSdkUtils.is29()) {
         func()
     }
 }
 
-inline fun isGestureNavigationEnabled(contentResolver: ContentResolver, func:()->Unit){
-    if(Settings.Secure.getInt(contentResolver, "navigation_mode", 0) == 2){
+inline fun isGestureNavigationEnabled(contentResolver: ContentResolver, func: () -> Unit) {
+    if (Settings.Secure.getInt(contentResolver, "navigation_mode", 0) == 2) {
         func()
     }
 }
 
 
-fun makeConfirmationDialog(ctx:Context, titleRes:Int=R.string.confirmation , messageRes:Int = R.string.are_you_sure, message:String? = null, positiveRes:Int = R.string.yes, negativeRes:Int = R.string.no, onConfirmListener:()->Unit){
-    MessageDialog.Companion.Builder().let {it->
+fun makeConfirmationDialog(
+    ctx: Context,
+    titleRes: Int = R.string.confirmation,
+    messageRes: Int = R.string.are_you_sure,
+    message: String? = null,
+    positiveRes: Int = R.string.yes,
+    negativeRes: Int = R.string.no,
+    onConfirmListener: () -> Unit
+) {
+    MessageDialog.Companion.Builder().let { it ->
         it.titleRes = titleRes
         it.messageRes = messageRes
         it.message = message
@@ -190,10 +166,12 @@ fun makeConfirmationDialog(ctx:Context, titleRes:Int=R.string.confirmation , mes
                 }
             }
             when (ctx) {
-                is FragmentActivity -> it.show(ctx.supportFragmentManager,
+                is FragmentActivity -> it.show(
+                    ctx.supportFragmentManager,
                     "ConfirmationDialogTag"
                 )
-                is AppCompatActivity -> it.show(ctx.supportFragmentManager,
+                is AppCompatActivity -> it.show(
+                    ctx.supportFragmentManager,
                     "ConfirmationDialogTag"
                 )
                 is Fragment -> it.show(ctx.childFragmentManager, "ConfirmationDialogTag")

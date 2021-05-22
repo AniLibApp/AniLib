@@ -22,16 +22,21 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicBottomNavigationView
             android:id="@+id/main_bottom_nav_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_size"
+            android:layout_height="50dp"
             app:ads_colorType="background"
             app:ads_contrastWithColorType="background"
             app:ads_textColorType="accent"
             app:labelVisibilityMode="unlabeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/main_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
     <com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView

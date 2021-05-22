@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
+import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.data.meta.type.ALReviewSort
@@ -90,7 +90,7 @@ class ReviewsFilterDialog : BaseDialogFragment<ReviewsFilterDialogLayoutBinding>
         }
     }
 
-    private fun makeSpinnerAdapter(items: List<DynamicSpinnerItem>) =
+    private fun makeSpinnerAdapter(items: List<DynamicMenu>) =
         DynamicSpinnerImageAdapter(
             requireContext(),
             R.layout.ads_layout_spinner_item,

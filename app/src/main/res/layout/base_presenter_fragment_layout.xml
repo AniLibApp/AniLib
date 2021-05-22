@@ -10,7 +10,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/base_presenter_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        />
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout>
 

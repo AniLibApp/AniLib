@@ -1,11 +1,20 @@
 package com.revolgenx.anilib.ui.view.widgets.tablayout
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
+import com.pranavpandey.android.dynamic.support.Defaults
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.support.utils.DynamicMenuUtils
+import com.pranavpandey.android.dynamic.support.utils.DynamicResourceUtils
 import com.pranavpandey.android.dynamic.support.widget.DynamicTabLayout
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.contrastAccentWithBg
+import com.revolgenx.anilib.app.theme.dynamicAccentColor
+import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import java.util.*
 
 class DynamicDslWeekTabLayout : DynamicTabLayout {
@@ -30,13 +39,28 @@ class DynamicDslWeekTabLayout : DynamicTabLayout {
             addTab(this.newTab().setText(it))
         }
 
+    }
 
-        val selectedColor = DynamicColorUtils.getContrastColor(
-            dynamicTheme.accentColor,
-            dynamicTheme.backgroundColor
-        )
 
-        setTabTextColors(dynamicTheme.textPrimaryColor, selectedColor)
+
+    override fun setTextColor() {
+        if (textColor != Theme.Color.UNKNOWN) {
+            setTabTextColors(
+                DynamicColorUtils.adjustAlpha(
+                    dynamicTextColorPrimary,
+                    Defaults.ADS_ALPHA_UNCHECKED
+                ), contrastAccentWithBg
+            )
+            tabRippleColor = DynamicResourceUtils.getColorStateList(
+                Color.TRANSPARENT, DynamicColorUtils.adjustAlpha(
+                    contrastAccentWithBg, Defaults.ADS_ALPHA_PRESSED
+                ), false
+            )
+            DynamicMenuUtils.setViewItemsTint(
+                this,
+                contrastAccentWithBg, dynamicBackgroundColor, false
+            )
+        }
     }
 
 }

@@ -2,23 +2,18 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:id="@+id/appbarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:ads_windowInsets="false"
         >
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout
             android:id="@+id/listEditorCollapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:ads_windowInsets="false"
             app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -26,7 +21,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:fitsSystemWindows="true"
                 app:layout_collapseMode="pin">
 
                 <com.facebook.drawee.view.SimpleDraweeView
@@ -129,7 +123,6 @@
                 android:id="@+id/listEditorToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:fitsSystemWindows="false"
                 app:contentInsetEnd="0dp"
                 app:contentInsetStart="0dp"
                 app:layout_collapseMode="pin" />

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="base_list_adapter_height">160dp</dimen>
     <dimen name="mini_card_dimen">240dp</dimen>
     <dimen name="mini_image_dimen">160dp</dimen>
@@ -30,4 +30,7 @@
     <dimen name="stats_header_margin">16dp</dimen>
     <dimen name="airing_widget_padding">6dp</dimen>
     <dimen name="widget_padding_horizontal">10dp</dimen>
+
+<!--    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/toolbar_size</dimen>-->
+
 </resources>

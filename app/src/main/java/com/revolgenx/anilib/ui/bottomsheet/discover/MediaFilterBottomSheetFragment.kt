@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
+import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.*
@@ -93,7 +93,7 @@ class MediaFilterBottomSheetFragment :
     private val listStatusItems
         get() =
             requireContext().resources.getStringArray(R.array.advance_search_status).map {
-                DynamicSpinnerItem(
+                DynamicMenu(
                     null, it
                 )
             }
@@ -106,7 +106,7 @@ class MediaFilterBottomSheetFragment :
         get() =
             requireContext().resources.getStringArray(if (mediaFilterType == MediaFilterType.SEASON.ordinal) R.array.media_season else R.array.advance_search_season)
                 .map {
-                    DynamicSpinnerItem(
+                    DynamicMenu(
                         null, it
                     )
                 }
