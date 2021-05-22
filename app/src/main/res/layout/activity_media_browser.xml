@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/browserRootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fitsSystemWindows="true"
         app:layout_constraintBottom_toTopOf="@+id/browse_media_tab_layout"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -17,19 +17,15 @@
             android:id="@+id/appbarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
             app:ads_backgroundAware="disable"
             app:ads_colorType="background"
             app:ads_contrastWithColorType="none"
-            app:ads_windowInsets="false"
             app:expanded="true">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout
                 android:id="@+id/media_browser_collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
-                app:ads_windowInsets="false"
                 app:contentScrim="@android:color/transparent"
                 app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -39,8 +35,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/media_browse_content_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fitsSystemWindows="true">
+                    android:layout_height="wrap_content">
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/mediaBrowserBannerImage"
@@ -324,7 +319,7 @@
                         android:shadowColor="@color/text_shadow"
                         android:shadowDx="1"
                         android:shadowDy="1"
-                        android:shadowRadius="2"
+                        android:shadowRadius="1"
                         android:textSize="18sp"
                         app:ads_rtlSupport="false"
                         app:fontFamily="@font/cabin_regular"
@@ -417,8 +412,6 @@
                     android:id="@+id/media_browser_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
-                    app:ads_colorType="background"
-                    app:ads_textColorType="text_primary"
                     app:contentInsetEnd="0dp"
                     app:contentInsetLeft="0dp"
                     app:contentInsetRight="0dp"

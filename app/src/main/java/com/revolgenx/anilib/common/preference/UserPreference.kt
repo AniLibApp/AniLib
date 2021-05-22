@@ -4,7 +4,7 @@ import android.content.Context
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
-import com.pranavpandey.android.dynamic.support.theme.DynamicColorPalette
+import com.pranavpandey.android.dynamic.theme.DynamicPalette
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.Constants
 import com.revolgenx.anilib.data.field.home.AiringMediaField
@@ -63,7 +63,7 @@ fun Context.saveBasicUserDetail(userPrefModel: UserPrefModel) {
 }
 
 fun saveUserAccentColor(it: String) {
-    val colors = DynamicColorPalette.MATERIAL_COLORS
+    val colors = DynamicPalette.MATERIAL_COLORS
     val accentColorToSave = when (it) {
         "blue" -> {
             colors[5]

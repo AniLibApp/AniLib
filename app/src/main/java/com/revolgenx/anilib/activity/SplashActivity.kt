@@ -1,13 +1,16 @@
 package com.revolgenx.anilib.activity
 
 import android.content.Intent
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatImageView
-import com.pranavpandey.android.dynamic.support.splash.DynamicSplashActivity
+import com.pranavpandey.android.dynamic.support.splash.activity.DynamicSplashActivity
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.AppController
 import com.revolgenx.anilib.app.theme.ThemeController
+import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.common.preference.getApplicationLocale
 import java.util.*
 
@@ -25,18 +28,6 @@ class SplashActivity : DynamicSplashActivity() {
         return Locale(getApplicationLocale())
     }
 
-    @StyleRes
-    override fun getThemeRes(): Int {
-        // Return activity theme to be applied.
-        return ThemeController.appStyle
-    }
-
-    override fun onCustomiseTheme() {
-        // Customise activity theme after applying the base style.
-        ThemeController.setLocalTheme()
-    }
-
-
     override fun setNavigationBarThemeInLandscape(): Boolean {
         return true
     }
@@ -47,6 +38,11 @@ class SplashActivity : DynamicSplashActivity() {
 
     override fun getMinSplashTime(): Long {
         return 550
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+        statusBarColor = backgroundColor
     }
 
     override fun onViewCreated(view: View) {

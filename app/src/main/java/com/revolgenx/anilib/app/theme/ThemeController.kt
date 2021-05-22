@@ -4,6 +4,7 @@ package com.revolgenx.anilib.app.theme
 import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
+import com.pranavpandey.android.dynamic.support.model.DynamicAppTheme
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
@@ -12,6 +13,8 @@ import com.revolgenx.anilib.R
 /**
  * Helper class to perform theme related operations.
  */
+
+
 object ThemeController {
 
     /**
@@ -60,21 +63,12 @@ object ThemeController {
      * The app theme splash style according to the current settings.
      */
     val appStyle: Int
-        @StyleRes get() = if (appThemeColor == Theme.AUTO) {
-            getAppStyle(
-                if (DynamicTheme.getInstance().isNight)
-                    appThemeNightColor
-                else
-                    appThemeDayColor
-            )
-        } else {
-            getAppStyle(appThemeColor)
-        }
+        @StyleRes get() = getAppStyle(backgroundColor)
 
     /**
      * The background color according to the current settings.
      */
-    private val backgroundColor: Int
+    val backgroundColor: Int
         @ColorInt get() = if (appThemeColor == Theme.AUTO) {
             if (DynamicTheme.getInstance().isNight)
                 appThemeNightColor
@@ -85,6 +79,34 @@ object ThemeController {
         }
 
     /**
+     * The app theme primary color.
+     */
+    val colorPrimaryApp: Int
+        @ColorInt get() = DynamicPreferences.getInstance().load(
+            Constants.PREF_SETTINGS_APP_THEME_COLOR_PRIMARY,
+            Constants.PREF_SETTINGS_APP_THEME_COLOR_PRIMARY_DEFAULT
+        )
+
+    /**
+     * The app theme accent color.
+     */
+    val colorAccentApp: Int
+        @ColorInt get() = DynamicPreferences.getInstance().load(
+            Constants.PREF_SETTINGS_APP_THEME_COLOR_ACCENT,
+            Constants.PREF_SETTINGS_APP_THEME_COLOR_ACCENT_DEFAULT
+        )
+
+    /**
+     * The background color according to the current settings.
+     */
+    val dynamicAppTheme: DynamicAppTheme
+        get() = DynamicAppTheme()
+            .setPrimaryColor(AppController.instance.colorPrimaryApp)
+            .setAccentColor(AppController.instance.colorAccentApp)
+            .setBackgroundColor(backgroundColor)
+            .setCornerRadiusDp(8f);
+
+    /**
      * Returns the app theme style according to the supplied color.
      *
      * @param color The color used for the background.
@@ -92,39 +114,12 @@ object ThemeController {
      * @return The app theme style according to the supplied color.
      */
     @StyleRes
-    private fun getAppStyle(@ColorInt color: Int): Int {
+    fun getAppStyle(@ColorInt color: Int): Int {
         return if (DynamicColorUtils.isColorDark(color))
             R.style.AppTheme
         else
             R.style.AppTheme_Dark
     }
-
-    /**
-     * Set the application theme according to the current settings.
-     */
-    fun setApplicationTheme() {
-        DynamicTheme.getInstance().application
-            .setPrimaryColor(AppController.instance.colorPrimaryApp)
-            .setPrimaryColorDark(Theme.AUTO)
-            .setAccentColor(AppController.instance.colorAccentApp)
-            .setBackgroundColor(backgroundColor)
-            .setSurfaceColor(Theme.AUTO).autoGenerateColors()
-            .setCornerRadiusDp(8f);
-    }
-
-    /**
-     * Set the local theme according to the current settings.
-     */
-    fun setLocalTheme() {
-        DynamicTheme.getInstance().get()
-            .setPrimaryColor(AppController.instance.colorPrimaryApp)
-            .setPrimaryColorDark(Theme.AUTO)
-            .setAccentColor(AppController.instance.colorAccentApp)
-            .setBackgroundColor(backgroundColor)
-            .setSurfaceColor(Theme.AUTO).autoGenerateColors()
-            .setCornerRadiusDp(8f)
-    }
-
 
     fun lightSurfaceColor(): Int {
         val surfaceColor = DynamicTheme.getInstance().get().surfaceColor
@@ -135,4 +130,3 @@ object ThemeController {
         }
     }
 }
-

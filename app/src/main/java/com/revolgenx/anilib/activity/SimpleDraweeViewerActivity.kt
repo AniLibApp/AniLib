@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import androidx.annotation.NonNull
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.net.toUri
 import com.github.piasy.biv.BigImageViewer
@@ -23,6 +25,7 @@ import com.revolgenx.anilib.util.openLink
 import com.thefuntasty.hauler.setOnDragDismissedListener
 import java.util.*
 
+
 class SimpleDraweeViewerActivity : DynamicSystemActivity() {
 
     companion object {
@@ -39,13 +42,6 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
         const val simpleDraweeMetaKey = "simple_drawee_meta_key"
     }
 
-    override fun getThemeRes(): Int {
-        return ThemeController.appStyle
-    }
-
-    override fun onCustomiseTheme() {
-        ThemeController.setLocalTheme()
-    }
 
     override fun getLocale(): Locale? {
         return Locale(getApplicationLocale())
@@ -53,11 +49,18 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
 
     private var draweeMeta:DraweeViewerMeta? = null
 
+    override fun getContentView(): View {
+        return binding.root
+    }
+
+    private var _binding: SimpleDraweeViewerActivityBinding?  =null
+    private val binding: SimpleDraweeViewerActivityBinding
+        get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        _binding = SimpleDraweeViewerActivityBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        val binding = SimpleDraweeViewerActivityBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        contentView = binding.root
         setSupportActionBar(binding.draweeViewerToolbar)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -103,6 +106,7 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
     }
 
     override fun onDestroy() {
+        _binding = null
         BigImageViewer.imageLoader().cancelAll()
         super.onDestroy()
     }

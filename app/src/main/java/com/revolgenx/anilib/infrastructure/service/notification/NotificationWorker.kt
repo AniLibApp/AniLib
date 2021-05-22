@@ -22,6 +22,7 @@ import com.facebook.imagepipeline.image.CloseableStaticBitmap
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.activity.ToolbarContainerActivity
 import com.revolgenx.anilib.activity.UserProfileActivity
@@ -271,9 +272,9 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
 
     private fun createNotificationPendingIntent() {
-        val intent = Intent(context, ToolbarContainerActivity::class.java).also {
+        val intent = Intent(context, ContainerActivity::class.java).also {
             it.putExtra(
-                ToolbarContainerActivity.toolbarFragmentContainerKey, ParcelableFragment(
+                ContainerActivity.fragmentContainerKey, ParcelableFragment(
                     NotificationFragment::class.java,
                     bundleOf(
                         UserMeta.userMetaKey to UserMeta(

@@ -7,15 +7,12 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
-import androidx.core.view.setPadding
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-import com.pranavpandey.android.dynamic.support.widget.WidgetDefaults
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
-import java.lang.Exception
 
 class MediaScoreBadge : LinearLayout {
 
@@ -57,7 +54,7 @@ class MediaScoreBadge : LinearLayout {
                 params.gravity = Gravity.CENTER
                 params.marginEnd = dp(2f)
             }
-            it.contrastWithColor = WidgetDefaults.ADS_COLOR_UNKNOWN
+            it.contrastWithColor = Theme.Color.UNKNOWN
             it.color = Color.WHITE
             it.setImageResource(R.drawable.ic_star)
         }
@@ -69,7 +66,7 @@ class MediaScoreBadge : LinearLayout {
                 }
             it.includeFontPadding = false
             it.setSingleLine()
-            it.contrastWithColor = WidgetDefaults.ADS_COLOR_UNKNOWN
+            it.contrastWithColor = Theme.Color.UNKNOWN
             it.color = Color.WHITE
             it.gravity = Gravity.CENTER_VERTICAL
             it.textSize = 10f
@@ -118,7 +115,7 @@ class MediaScoreBadge : LinearLayout {
             }.naText()
         }
 
-    fun setText(score:Double?){
+    fun setText(score: Double?){
         if (!isListScore) {
             val drawable = when {
                 score == null -> {
@@ -140,7 +137,7 @@ class MediaScoreBadge : LinearLayout {
     }
 
 
-    fun setImageResource(@DrawableRes imageRes:Int){
+    fun setImageResource(@DrawableRes imageRes: Int){
         scoreImage.setImageResource(imageRes)
     }
 

@@ -4,15 +4,14 @@ package com.revolgenx.anilib.ui.view.widgets.action
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import com.pranavpandey.android.dynamic.support.popup.DynamicArrayPopup
-import com.pranavpandey.android.dynamic.support.popup.DynamicPopup
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 
 
 class DynamicPopUpMenu : DynamicImageView {
 
-    private var entries: Array<CharSequence>
+    private var entries: Array<String>
     private var icons: IntArray? = null
 
     var onPopupMenuClickListener: ((parent:View, position: Int) -> Unit)? = null
@@ -28,7 +27,7 @@ class DynamicPopUpMenu : DynamicImageView {
         val a = context.obtainStyledAttributes(attributeSet, R.styleable.DynamicPopUpMenu)
 
         try {
-            entries = a.getTextArray(R.styleable.DynamicPopUpMenu_entries)
+            entries = a.getTextArray(R.styleable.DynamicPopUpMenu_entries).map{it.toString()}.toTypedArray()
             val resourceId = a.getResourceId(R.styleable.DynamicPopUpMenu_icons, -1)
             if (resourceId != -1) {
                 val obtainTypedArray = resources.obtainTypedArray(resourceId)
@@ -54,12 +53,8 @@ class DynamicPopUpMenu : DynamicImageView {
     }
 
     private fun showPopup(anchor: View) {
-        val popup = DynamicArrayPopup(anchor, entries, icons) { parent, _, position, _ ->
+        makeArrayPopupMenu(anchor, entries, icons){parent, _, position, _ ->
             onPopupMenuClickListener?.invoke(parent, position)
         }
-        popup.viewType = DynamicPopup.Type.LIST
-        popup.build().show()
     }
-
-
 }

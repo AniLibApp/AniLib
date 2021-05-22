@@ -15,6 +15,7 @@ import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
+import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
@@ -27,6 +28,8 @@ import com.google.android.material.tabs.TabLayout
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
+import com.revolgenx.anilib.app.theme.dynamicTintPrimaryColor
 import com.revolgenx.anilib.common.preference.loadLegacyMediaBrowseTheme
 import com.revolgenx.anilib.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.ui.fragment.EntryListEditorFragment
@@ -138,6 +141,12 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
         parent: ViewGroup?
     ): ActivityMediaBrowserBinding {
         return ActivityMediaBrowserBinding.inflate(inflater)
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        statusBarColor =  dynamicBackgroundColor
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -327,6 +336,7 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
 
 
     private fun ActivityMediaBrowserBinding.updateTheme() {
+
         if (loadLegacyMediaBrowseTheme()) {
             mediaBrowseContentLayout.visibility = View.GONE
             legacyMediaBrowseContentLayout.visibility = View.VISIBLE
@@ -334,8 +344,11 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
                 orientation = GradientDrawable.Orientation.LEFT_RIGHT,
                 alpha = 180
             )
-            setToolbarTheme()
         } else {
+            binding.mediaBrowserCollapsingToolbar.setCollapsedTitleTextColor(
+                DynamicTheme.getInstance().get().textPrimaryColor
+            )
+
             mediaBrowseContentLayout.visibility = View.VISIBLE
             legacyMediaBrowseContentLayout.visibility = View.GONE
             collapsingContentBlur.background = DynamicBackgroundGradientDrawable(
@@ -344,6 +357,8 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
             )
             mediaAddLayout.updateChildTheme()
         }
+        setToolbarTheme()
+
     }
 
     private fun ActivityMediaBrowserBinding.updateView() {
@@ -408,26 +423,29 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
         @DrawableRes tabIcon: Int
     ) {
         val newTab =
-            browseMediaTabLayout.newTab().setText(tabText).setIcon(tabIcon).setText(tabText)
-                .setIcon(tabIcon)
-        val iconView = newTab.view.getChildAt(0)
-        val layoutParams = iconView?.layoutParams as? LinearLayout.LayoutParams
-        layoutParams?.bottomMargin = 0
-        iconView.layoutParams = layoutParams
+            browseMediaTabLayout.newTab().setText(tabText).setIcon(tabIcon)
+        val iconView = newTab.view.getChildAt(0)!!
+
+        val lp = iconView.layoutParams as ViewGroup.MarginLayoutParams
+        lp.bottomMargin = 0;
+        iconView.layoutParams = lp;
+        iconView.requestLayout();
+
+//        val iconView1 = newTab.view.getChildAt(1)
+//        val layoutParams = iconView.layoutParams as LinearLayout.LayoutParams
+//        val layoutParams1 = iconView1.layoutParams as LinearLayout.LayoutParams
+//        layoutParams.bottomMargin = 0
+//        layoutParams1.topMargin = 0
+//        layoutParams1.bottomMargin = 5
+//        iconView.layoutParams = layoutParams
+//        iconView1.setPadding(5)
+//        iconView1.layoutParams = layoutParams1
         browseMediaTabLayout.addTab(newTab)
     }
 
     private fun ActivityMediaBrowserBinding.initListener() {
 
         appbarLayout.addOnOffsetChangedListener(offSetChangeListener)
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.appbarLayout) { _, insets ->
-            // Instead of
-            // toolbar.setPadding(0, insets.systemWindowInsetTop, 0, 0)
-            (binding.mediaBrowserToolbar.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
-                insets.systemWindowInsetTop
-            insets.consumeSystemWindowInsets()
-        }
 
         if (loadLegacyMediaBrowseTheme()) {
             legacyMediaAddContainerLayout.setOnClickListener {
@@ -671,21 +689,32 @@ class MediaBrowseActivity : BaseDynamicActivity<ActivityMediaBrowserBinding>() {
 
 
     private fun setToolbarTheme() {
-        binding.mediaBrowserCollapsingToolbar.setStatusBarScrimColor(
-            DynamicTheme.getInstance().get().primaryColorDark
-        )
-        binding.mediaBrowserCollapsingToolbar.setContentScrimColor(
-            DynamicTheme.getInstance().get().primaryColor
-        )
-        binding.mediaBrowserCollapsingToolbar.setCollapsedTitleTextColor(
-            DynamicTheme.getInstance().get().tintPrimaryColor
-        )
-        binding.mediaBrowserCollapsingToolbar.setBackgroundColor(
-            DynamicTheme.getInstance().get().backgroundColor
-        )
         if (loadLegacyMediaBrowseTheme()) {
+            binding.mediaBrowserCollapsingToolbar.setCollapsedTitleTextColor(
+                DynamicTheme.getInstance().get().tintPrimaryColor
+            )
+            binding.mediaBrowserCollapsingToolbar.setBackgroundColor(
+                DynamicTheme.getInstance().get().backgroundColor
+            )
+            binding.mediaBrowserCollapsingToolbar.setStatusBarScrimColor(
+                DynamicTheme.getInstance().get().primaryColorDark
+            )
+            binding.mediaBrowserCollapsingToolbar.setContentScrimColor(
+                DynamicTheme.getInstance().get().primaryColor
+            )
+
             binding.mediaBrowserToolbar.colorType = Theme.ColorType.PRIMARY
             binding.mediaBrowserToolbar.textColorType = Theme.ColorType.TINT_PRIMARY
+        }else{
+            binding.mediaBrowserCollapsingToolbar.setCollapsedTitleTextColor(
+                DynamicTheme.getInstance().get().textPrimaryColor
+            )
+            binding.mediaBrowserCollapsingToolbar.setBackgroundColor(
+                DynamicTheme.getInstance().get().backgroundColor
+            )
+
+            binding.mediaBrowserToolbar.colorType = Theme.ColorType.BACKGROUND
+            binding.mediaBrowserToolbar.textColorType = Theme.ColorType.TEXT_PRIMARY
         }
     }
 

@@ -14,7 +14,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
+import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicNavigationView
 import com.revolgenx.anilib.R
@@ -228,43 +228,43 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         hentaiSwitchContainerLayout.visibility =
             if (canShowAdult(context)) View.VISIBLE else View.GONE
 
-        val searchTypeItems: List<DynamicSpinnerItem> =
+        val searchTypeItems: List<DynamicMenu> =
             context.resources.getStringArray(R.array.advance_search_type).map {
-                DynamicSpinnerItem(
+                DynamicMenu(
                     null, it
                 )
             }
-        val searchSeasonItems: List<DynamicSpinnerItem> =
+        val searchSeasonItems: List<DynamicMenu> =
             context.resources.getStringArray(R.array.advance_search_season).map {
-                DynamicSpinnerItem(
+                DynamicMenu(
                     null, it
                 )
             }
 
 
-        val searchFormatItems: List<DynamicSpinnerItem> =
+        val searchFormatItems: List<DynamicMenu> =
             context.resources.getStringArray(R.array.advance_search_format).map {
-                DynamicSpinnerItem(
+                DynamicMenu(
                     null, it
                 )
             }
 
-        val searchStatusItems: List<DynamicSpinnerItem> =
+        val searchStatusItems: List<DynamicMenu> =
             context.resources.getStringArray(R.array.advance_search_status).map {
-                DynamicSpinnerItem(
+                DynamicMenu(
                     null, it
                 )
             }
 
-        val searchSourceItems: List<DynamicSpinnerItem> =
+        val searchSourceItems: List<DynamicMenu> =
             context.resources.getStringArray(R.array.advance_search_source).map {
-                DynamicSpinnerItem(
+                DynamicMenu(
                     null, it
                 )
             }
-        val searchCountryItems: List<DynamicSpinnerItem> =
+        val searchCountryItems: List<DynamicMenu> =
             context.resources.getStringArray(R.array.advance_search_country).map {
-                DynamicSpinnerItem(
+                DynamicMenu(
                     null, it
                 )
             }

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
+import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
 import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
@@ -116,9 +116,9 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        val spinnerItems = mutableListOf<DynamicSpinnerItem>()
+        val spinnerItems = mutableListOf<DynamicMenu>()
         requireContext().resources.getStringArray(R.array.staff_language).forEach {
-            spinnerItems.add(DynamicSpinnerItem(null, it))
+            spinnerItems.add(DynamicMenu(null, it))
         }
 
         languageSpinner.adapter = DynamicSpinnerImageAdapter(

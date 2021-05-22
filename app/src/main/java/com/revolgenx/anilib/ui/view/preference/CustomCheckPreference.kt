@@ -6,7 +6,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.pranavpandey.android.dynamic.support.setting.DynamicCheckPreference
+import com.pranavpandey.android.dynamic.support.setting.base.DynamicCheckPreference
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.util.sp
 

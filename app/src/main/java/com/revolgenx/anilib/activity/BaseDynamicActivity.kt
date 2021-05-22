@@ -5,26 +5,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import androidx.annotation.ColorInt
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentTransaction
 import androidx.viewbinding.ViewBinding
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.AppController
-import com.revolgenx.anilib.app.theme.ThemeController
-import com.revolgenx.anilib.ui.dialog.MediaViewDialog
-import com.revolgenx.anilib.infrastructure.event.*
-import com.revolgenx.anilib.ui.fragment.EntryListEditorFragment
-import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
-import com.revolgenx.anilib.ui.fragment.review.ReviewFragment
-import com.revolgenx.anilib.ui.fragment.studio.StudioFragment
-import com.revolgenx.anilib.data.meta.*
+import com.revolgenx.anilib.app.theme.dynamicPrimaryColor
 import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
-import com.revolgenx.anilib.ui.view.makeStatusBarTransparent
+import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
+import com.revolgenx.anilib.data.meta.*
+import com.revolgenx.anilib.infrastructure.event.*
+import com.revolgenx.anilib.ui.dialog.MediaViewDialog
+import com.revolgenx.anilib.ui.fragment.EntryListEditorFragment
+import com.revolgenx.anilib.ui.fragment.review.ReviewFragment
+import com.revolgenx.anilib.ui.fragment.studio.StudioFragment
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.registerForEvent
@@ -46,29 +47,25 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
         return Locale(getApplicationLocale())
     }
 
-    override fun getThemeRes(): Int {
-        return ThemeController.appStyle
-    }
-
-    override fun onCustomiseTheme() {
-        ThemeController.setLocalTheme()
-    }
-
-    override fun setStatusBarColor(color: Int) {
-        super.setStatusBarColor(color)
-        setWindowStatusBarColor(statusBarColor);
-    }
-
-
     lateinit var rootLayout: View
 
+
+    override fun getContentView(): View {
+        return binding.root
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         _binding = bindView(layoutInflater)
-        setContentView(binding.root)
+        super.onCreate(savedInstanceState)
+        contentView = binding.root
         rootLayout = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
         rootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-        makeStatusBarTransparent()
+        statusBarColor =  dynamicPrimaryColor
+    }
+
+    override fun setStatusBarColor(@ColorInt color: Int) {
+        super.setStatusBarColor(color)
+        setWindowStatusBarColor(statusBarColor)
     }
 
 
@@ -101,7 +98,8 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
                 if (event.openInWithSupportFragment) {
                     val meta = event.meta
                     addFragmentToContainer(EntryListEditorFragment().also {
-                        it.arguments = bundleOf(EntryListEditorFragment.LIST_EDITOR_META_KEY to meta)
+                        it.arguments =
+                            bundleOf(EntryListEditorFragment.LIST_EDITOR_META_KEY to meta)
                     }, true, event.containerId)
                 } else {
 

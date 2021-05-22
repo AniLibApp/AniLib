@@ -134,7 +134,7 @@ object CardHolderBinding {
                             item,
                             mediaListCoverImageView,
                             isLoggedInUser,
-                            R.id.drawer_layout
+                            R.id.main_fragment_container
                         )
                         return@setOnClickListener;
                     }
@@ -149,7 +149,7 @@ object CardHolderBinding {
                         return@setOnLongClickListener true
                     }
                 }
-                ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.drawer_layout)
+                ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.main_fragment_container)
                 true
             }
         }

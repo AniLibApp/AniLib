@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.pranavpandey.android.dynamic.support.model.DynamicInfo
 import com.pranavpandey.android.dynamic.support.recyclerview.DynamicRecyclerViewFrame
 import com.pranavpandey.android.dynamic.support.recyclerview.adapter.DynamicSimpleBinderAdapter
-import com.pranavpandey.android.dynamic.support.recyclerview.binder.DynamicInfoBigBinder
 import com.pranavpandey.android.dynamic.support.recyclerview.binder.DynamicRecyclerViewBinder
+import com.pranavpandey.android.dynamic.support.recyclerview.binder.factory.InfoBigBinder
 import com.pranavpandey.android.dynamic.support.utils.DynamicLayoutUtils
 import com.pranavpandey.android.dynamic.support.utils.DynamicResourceUtils
 import com.revolgenx.anilib.R
@@ -478,7 +478,7 @@ class LicenseView : DynamicRecyclerViewFrame {
 
         override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
             (getDataBinder(getItemViewType(position))
-                    as DynamicInfoBigBinder).data = getItem(position)
+                    as InfoBigBinder).data = getItem(position)
 
             super.onBindViewHolder(viewHolder, position)
         }
@@ -498,7 +498,7 @@ class LicenseView : DynamicRecyclerViewFrame {
             return dataSet!![position]
         }
 
-        inner class LicenseBinder(binderAdapter: LicensesAdapter) : DynamicInfoBigBinder(binderAdapter) {
+        inner class LicenseBinder(binderAdapter: LicensesAdapter) : InfoBigBinder(binderAdapter) {
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
                 return ViewHolder(
