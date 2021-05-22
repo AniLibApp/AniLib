@@ -15,7 +15,9 @@ import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
@@ -672,6 +674,11 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
         binding.listEditorCollapsingToolbar.setBackgroundColor(
             DynamicTheme.getInstance().get().backgroundColor
         )
+
+        if(activity is MainActivity){
+            binding.listEditorToolbar.colorType = Theme.ColorType.BACKGROUND
+            binding.listEditorToolbar.textColorType = Theme.ColorType.TEXT_PRIMARY
+        }
     }
 
     override fun onDestroyView() {

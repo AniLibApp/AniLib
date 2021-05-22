@@ -3,6 +3,7 @@ package com.revolgenx.anilib.ui.fragment.settings
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.ToolbarContainerActivity
 import com.revolgenx.anilib.common.preference.enableAutoMlTranslation
@@ -19,6 +20,7 @@ class TranslationSettingFragment:BaseToolbarFragment<TranslationSettingFragmentL
 
     override var titleRes: Int? = R.string.translation_setting
     override var setHomeAsUp: Boolean = true
+    override val toolbarColorType: Int = Theme.ColorType.BACKGROUND
 
     override fun bindView(
         inflater: LayoutInflater,

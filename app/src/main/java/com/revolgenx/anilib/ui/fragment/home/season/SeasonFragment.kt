@@ -18,8 +18,10 @@ import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.data.model.CommonMediaModel
 import com.revolgenx.anilib.common.preference.getUserGenre
 import com.revolgenx.anilib.common.preference.getUserTag
+import com.revolgenx.anilib.data.field.TagChooserField
 import com.revolgenx.anilib.infrastructure.event.SeasonEvent
 import com.revolgenx.anilib.infrastructure.source.home.discover.MediaFormatHeaderSource
+import com.revolgenx.anilib.ui.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.ui.presenter.season.SeasonPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
@@ -111,6 +113,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
     }
 
 
+
     @Subscribe
     fun onTagEvent(event: TagEvent) {
         when (event.tagType) {
@@ -163,8 +166,30 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
                 viewModel.isHeaderEnabled(event.showHeader)
                 renewAdapter()
             }
+            SeasonEvent.SeasonTagEvent -> {
+                openTagChooserDialog(
+                    viewModel.field.tagTagFields.values.toList(),
+                    MediaTagFilterTypes.SEASON_TAG
+                )
+            }
+            SeasonEvent.SeasonGenreEvent -> {
+                openTagChooserDialog(
+                    viewModel.field.genreTagFields.values.toList(),
+                    MediaTagFilterTypes.SEASON_GENRE
+                )
+            }
         }
     }
+
+    private fun openTagChooserDialog(tags: List<TagField>, tagType: MediaTagFilterTypes) {
+        TagChooserDialogFragment.newInstance(
+            TagChooserField(
+                tagType,
+                tags
+            )
+        ).show(childFragmentManager, TagChooserDialogFragment::class.java.simpleName)
+    }
+
 
     override fun onStop() {
         super.onStop()

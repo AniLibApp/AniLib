@@ -12,6 +12,7 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.databinding.BasePresenterToolbarFragmentLayoutBinding
 
@@ -21,6 +22,8 @@ abstract class BasePresenterToolbarFragment<M:Any>:BaseLayoutFragment<BasePresen
 
 
     var adapter: Adapter? = null
+
+    open val toolbarColorType:Int? = null
 
     protected open val loadingPresenter: Presenter<Unit>
         get() = Presenter.forLoadingIndicator(requireContext(), R.layout.loading_layout)
@@ -48,7 +51,14 @@ abstract class BasePresenterToolbarFragment<M:Any>:BaseLayoutFragment<BasePresen
     }
 
     override fun getBaseToolbar(): Toolbar {
-        return binding.toolbarLayout.dynamicToolbar
+        val t =  binding.toolbarLayout.dynamicToolbar
+        toolbarColorType?.let {
+            t.colorType = it
+            if(it == Theme.ColorType.BACKGROUND){
+                t.textColorType = Theme.ColorType.TEXT_PRIMARY
+            }
+        }
+        return t
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

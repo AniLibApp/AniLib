@@ -3,6 +3,7 @@ package com.revolgenx.anilib.ui.view.widgets.tablayout
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import androidx.core.view.setMargins
 import com.pranavpandey.android.dynamic.support.Defaults
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.utils.DynamicMenuUtils
@@ -18,8 +19,6 @@ import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import java.util.*
 
 class DynamicDslWeekTabLayout : DynamicTabLayout {
-
-    private val dynamicTheme get() = DynamicTheme.getInstance().get()
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet) {
@@ -37,6 +36,10 @@ class DynamicDslWeekTabLayout : DynamicTabLayout {
 
         weekFromToday.forEach {
             addTab(this.newTab().setText(it))
+            val t = getChildAt(0)
+            val lp = (t.layoutParams as MarginLayoutParams)
+            lp.setMargins(0)
+            t.layoutParams = lp
         }
 
     }

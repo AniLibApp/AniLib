@@ -2,6 +2,7 @@ package com.revolgenx.anilib.ui.fragment.notification
 
 import android.os.Bundle
 import android.view.*
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
@@ -18,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class NotificationSettingFragment : BaseToolbarFragment<NotificationSettingFragmentLayoutBinding>() {
     override var titleRes: Int? = R.string.notification_setting
     override var setHomeAsUp: Boolean = true
-
+    override val toolbarColorType: Int? = Theme.ColorType.BACKGROUND
 
     private val viewModel by viewModel<NotificationSettingViewModel>()
 

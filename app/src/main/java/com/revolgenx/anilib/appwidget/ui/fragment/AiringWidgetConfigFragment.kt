@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.RemoteViews
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget
 import com.revolgenx.anilib.common.preference.*
@@ -31,7 +32,8 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
     override var setHomeAsUp: Boolean = true
     override var titleRes: Int? = R.string.airing_widget_config
     override val noScrollToolBar: Boolean = true
-    
+    override val toolbarColorType: Int = Theme.ColorType.BACKGROUND
+
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?

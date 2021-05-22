@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.databinding.BaseToolbarFragmentLayoutBinding
 
 abstract class BaseToolbarFragment<T:ViewBinding> : BaseLayoutFragment<T>() {
@@ -20,6 +21,8 @@ abstract class BaseToolbarFragment<T:ViewBinding> : BaseLayoutFragment<T>() {
 
     open val noScrollToolBar = false
 
+    open val toolbarColorType:Int? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,6 +30,12 @@ abstract class BaseToolbarFragment<T:ViewBinding> : BaseLayoutFragment<T>() {
     ): View {
         val b = BaseToolbarFragmentLayoutBinding.inflate(inflater, container, false)
         toolbar = b.toolbarLayout.dynamicToolbar
+        toolbarColorType?.let {
+            toolbar.colorType = it
+            if(it == Theme.ColorType.BACKGROUND){
+                toolbar.textColorType = Theme.ColorType.TEXT_PRIMARY
+            }
+        }
 
         if(noScrollToolBar){
             (toolbar.layoutParams as AppBarLayout.LayoutParams).scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL

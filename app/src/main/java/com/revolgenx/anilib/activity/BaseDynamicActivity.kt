@@ -60,7 +60,7 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
         contentView = binding.root
         rootLayout = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
         rootLayout.setBackgroundColor(DynamicTheme.getInstance().get().backgroundColor)
-        statusBarColor =  dynamicPrimaryColor
+        statusBarColor = dynamicPrimaryColor
     }
 
     override fun setStatusBarColor(@ColorInt color: Int) {
@@ -204,28 +204,17 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
             }
 
             is BrowseReviewEvent -> {
-                if (event.containerId != null) {
-                    addFragmentToContainer(ReviewFragment().also {
-                        it.arguments = bundleOf(
+                ContainerActivity.openActivity(
+                    this,
+                    ParcelableFragment(
+                        ReviewFragment::class.java,
+                        bundleOf(
                             ReviewFragment.reviewMetaKey to ReviewMeta(
                                 event.reviewId
                             )
                         )
-                    }, true, event.containerId)
-                } else {
-                    ContainerActivity.openActivity(
-                        this,
-                        ParcelableFragment(
-                            ReviewFragment::class.java,
-                            bundleOf(
-                                ReviewFragment.reviewMetaKey to ReviewMeta(
-                                    event.reviewId
-                                )
-                            )
-                        )
                     )
-                }
-
+                )
             }
 
             is BrowseSiteEvent -> {

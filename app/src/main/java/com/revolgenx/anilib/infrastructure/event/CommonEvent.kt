@@ -11,5 +11,5 @@ enum class SettingEventTypes{
 }
 
 class BrowseAllReviewsEvent:CommonEvent()
-data class BrowseReviewEvent(val reviewId: Int?,@IdRes val containerId:Int? = null) : CommonEvent()
+data class BrowseReviewEvent(val reviewId: Int?) : CommonEvent()
 

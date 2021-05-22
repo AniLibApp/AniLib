@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.ui.dialog.ReviewsFilterDialog
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterToolbarFragment
@@ -22,7 +23,7 @@ class AllReviewFragment : BasePresenterToolbarFragment<ReviewModel>() {
 
     override val setHomeAsUp: Boolean = true
     override val titleRes: Int = R.string.reviews
-
+    override val toolbarColorType: Int = Theme.ColorType.BACKGROUND
 
     override val loadingPresenter: Presenter<Unit>
         get() = Presenter.forLoadingIndicator(
