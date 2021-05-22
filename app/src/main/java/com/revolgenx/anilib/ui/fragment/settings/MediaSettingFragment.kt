@@ -3,6 +3,7 @@ package com.revolgenx.anilib.ui.fragment.settings
 import android.os.Bundle
 import android.view.*
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.canShowAdult
 import com.revolgenx.anilib.common.preference.userEnabledAdultContent
@@ -23,6 +24,7 @@ class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() 
     override var setHomeAsUp: Boolean = true
     override var titleRes: Int? = R.string.anilist_and_manga
     override val noScrollToolBar: Boolean = true
+    override val toolbarColorType: Int = Theme.ColorType.BACKGROUND
 
     private val viewModel by viewModel<SettingViewModel>()
 

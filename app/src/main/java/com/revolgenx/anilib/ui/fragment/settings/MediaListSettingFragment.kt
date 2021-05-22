@@ -5,6 +5,7 @@ import android.text.InputType
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
@@ -27,6 +28,7 @@ class MediaListSettingFragment : BaseToolbarFragment<MediaListSettingFragmentBin
     override var setHomeAsUp: Boolean = true
     override var titleRes: Int? = R.string.list
     override val noScrollToolBar: Boolean = true
+    override val toolbarColorType: Int = Theme.ColorType.BACKGROUND
 
     private val viewModel by viewModel<SettingViewModel>()
 

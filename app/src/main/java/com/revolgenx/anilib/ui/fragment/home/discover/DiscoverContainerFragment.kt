@@ -81,12 +81,6 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
 
         if (savedInstanceState == null) {
             seasonViewModel.field = SeasonField.create(requireContext())
-            getUserTag(requireContext()).forEach {
-                seasonViewModel.field.tagTagFields[it] = TagField(it, TagState.EMPTY)
-            }
-            getUserGenre(requireContext()).forEach {
-                seasonViewModel.field.genreTagFields[it] = TagField(it, TagState.EMPTY)
-            }
 
             with(recommendationViewModel.field) {
                 sort = getRecommendationSort(requireContext())
@@ -126,16 +120,10 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
                     }
                 }
                 1 -> {
-                    openTagChooserDialog(
-                        seasonViewModel.field.genreTagFields.values.toList(),
-                        MediaTagFilterTypes.SEASON_GENRE
-                    )
+                    SeasonEvent.SeasonGenreEvent.postEvent
                 }
                 2 -> {
-                    openTagChooserDialog(
-                        seasonViewModel.field.tagTagFields.values.toList(),
-                        MediaTagFilterTypes.SEASON_TAG
-                    )
+                    SeasonEvent.SeasonTagEvent.postEvent
                 }
                 3 -> {
                     ShowSeasonHeaderDialog().also {
@@ -173,14 +161,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
         }
     }
 
-    private fun openTagChooserDialog(tags: List<TagField>, tagType: MediaTagFilterTypes) {
-        TagChooserDialogFragment.newInstance(
-            TagChooserField(
-                tagType,
-                tags
-            )
-        ).show(childFragmentManager, TagChooserDialogFragment::class.java.simpleName)
-    }
+
 
     private fun DiscoverContainerFragmentBinding.initListener() {
         discoverSearchIv.setOnClickListener {
