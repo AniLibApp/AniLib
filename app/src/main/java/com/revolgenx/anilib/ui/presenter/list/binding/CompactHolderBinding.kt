@@ -137,7 +137,7 @@ object CompactHolderBinding {
                             item,
                             mediaListCoverImageView,
                             isLoggedInUser,
-                            R.id.drawer_layout
+                            R.id.main_fragment_container
                         )
                         return@setOnClickListener;
                     }
@@ -152,7 +152,7 @@ object CompactHolderBinding {
                         return@setOnLongClickListener true
                     }
                 }
-                ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.drawer_layout)
+                ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.main_fragment_container)
                 true
             }
         }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MediaListActivity
 import com.revolgenx.anilib.app.theme.dynamicAccentColor
@@ -168,18 +169,23 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
 
     private fun setCollapsingToolbarTheme() {
-        binding.userCollapsingToolbar.setStatusBarScrimColor(
-            DynamicTheme.getInstance().get().primaryColorDark
-        )
-        binding.userCollapsingToolbar.setContentScrimColor(
-            DynamicTheme.getInstance().get().primaryColor
-        )
         binding.userCollapsingToolbar.setCollapsedTitleTextColor(
-            DynamicTheme.getInstance().get().tintPrimaryColor
+            DynamicTheme.getInstance().get().textPrimaryColor
         )
         binding.userCollapsingToolbar.setBackgroundColor(
             DynamicTheme.getInstance().get().backgroundColor
         )
+
+        binding.userCollapsingToolbar.setStatusBarScrimColor(
+            DynamicTheme.getInstance().get().backgroundColor
+        )
+        binding.userCollapsingToolbar.setContentScrimColor(
+            DynamicTheme.getInstance().get().backgroundColor
+        )
+
+        binding.profileFragmentToolbar.colorType = Theme.ColorType.BACKGROUND
+        binding.profileFragmentToolbar.textColorType = Theme.ColorType.TEXT_PRIMARY
+
     }
 
 

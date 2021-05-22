@@ -54,6 +54,7 @@ class DynamicShimmerView : ShimmerFrameLayout {
         recyclerView = RecyclerView(context).also {
             it.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
             it.isNestedScrollingEnabled = false
+            it.clipToPadding = false
         }
         val mAdapter = DynamicShimmerAdapter(adapterLayoutRes, totalShimmers)
         recyclerView.layoutManager =

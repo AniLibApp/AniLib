@@ -13,7 +13,6 @@ import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.databinding.BasePresenterFragmentLayoutBinding
-import com.revolgenx.anilib.ui.view.makeFullScreenRecyclerView
 
 
 /**
@@ -54,7 +53,6 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment<BasePresent
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.basePresenterRecyclerView.makeFullScreenRecyclerView(requireActivity().contentResolver)
         span = if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) gridMaxSpan else gridMinSpan
         layoutManager = GridLayoutManager(this.context, span).also {
             it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {

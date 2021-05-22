@@ -11,9 +11,9 @@
         app:ads_colorType="primary"
         app:elevation="0dp">
 
-        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
+        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
             android:id="@+id/list_tab_layout"
-            style="@style/DynamicTextTabLayoutStyle"
+            style="@style/HomeContainerTabLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             app:ads_backgroundColorType="background"

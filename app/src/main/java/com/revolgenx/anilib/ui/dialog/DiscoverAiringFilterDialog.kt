@@ -1,14 +1,10 @@
 package com.revolgenx.anilib.ui.dialog
 
 import android.content.DialogInterface
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.common.preference.getDiscoverAiringField
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.storeDiscoverAiringField

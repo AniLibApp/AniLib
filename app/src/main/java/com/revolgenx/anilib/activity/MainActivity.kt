@@ -5,10 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.annotation.*
 import androidx.core.app.ActivityCompat
 import androidx.core.app.SharedElementCallback
@@ -20,6 +17,7 @@ import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFra
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.appwidget.ui.fragment.AiringWidgetConfigFragment
 import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.ui.dialog.*
@@ -127,7 +125,11 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         silentFetchUserInfo()
 
         checkIsFromShortcut()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        statusBarColor =  dynamicBackgroundColor
     }
 
 
@@ -280,29 +282,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private fun initListener() {
         binding.mainBrowseFilterNavView.setNavigationCallbackListener(this)
-
-        binding.drawerLayout.setOnApplyWindowInsetsListener { view, insets ->
-            var consumed = false
-
-            (view as ViewGroup).forEach { child ->
-                // Dispatch the insets to the child
-                val childResult = child.dispatchApplyWindowInsets(insets)
-                // If the child consumed the insets, record it
-                if (childResult.isConsumed) {
-                    consumed = true
-                }
-            }
-
-            // If any of the children consumed the insets, return
-            // an appropriate value
-            if (consumed) insets.consumeSystemWindowInsets() else insets
-        }
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.mainBrowseFilterNavView) { _, insets ->
-            (binding.mainBrowseFilterNavView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
-                insets.systemWindowInsetTop
-            insets.consumeSystemWindowInsets()
-        }
 
         /**problem with transition
          * {@link https://github.com/facebook/fresco/issues/1445}*/
@@ -513,7 +492,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private fun addFragmentToMain(baseFragment: BaseFragment, slideAnimation: Boolean = false) {
         getTransactionWithAnimation(slideAnimation)
-            .add(R.id.drawer_layout, baseFragment)
+            .add(R.id.main_fragment_container, baseFragment)
             .addToBackStack(null).commit()
     }
 

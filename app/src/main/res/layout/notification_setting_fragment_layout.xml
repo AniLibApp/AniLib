@@ -16,7 +16,7 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
 
-            <com.pranavpandey.android.dynamic.support.setting.DynamicSpinnerPreference
+            <com.pranavpandey.android.dynamic.support.setting.base.DynamicSpinnerPreference
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ads_description="@string/notification_interval_desc"

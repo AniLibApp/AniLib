@@ -4,17 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/user_info_container_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         app:ads_backgroundAware="disable"
         app:ads_colorType="primary"
         app:ads_contrastWithColorType="none"
-        app:ads_windowInsets="false"
         app:elevation="1dp">
 
 
@@ -22,16 +19,14 @@
             android:id="@+id/user_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:ads_windowInsets="false"
             app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
             app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
                 app:layout_collapseMode="none">
 
                 <com.facebook.drawee.view.SimpleDraweeView
@@ -169,8 +164,8 @@
                 android:id="@+id/profile_fragment_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:fitsSystemWindows="false"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin"
+                app:ads_colorType="background"/>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>

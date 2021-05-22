@@ -155,7 +155,7 @@ object NormalHolderBinding {
                             item,
                             mediaListCoverImageView,
                             isLoggedInUser,
-                            R.id.drawer_layout
+                            R.id.main_fragment_container
                         )
                         return@setOnClickListener;
                     }
@@ -170,7 +170,7 @@ object NormalHolderBinding {
                         return@setOnLongClickListener true
                     }
                 }
-                ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.drawer_layout)
+                ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.main_fragment_container)
                 true
             }
         }
