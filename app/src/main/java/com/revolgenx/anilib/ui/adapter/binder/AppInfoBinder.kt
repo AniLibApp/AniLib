@@ -38,7 +38,7 @@ class AppInfoBinder(binderAdapter: AppInfoAdapter) : DynamicRecyclerViewBinder<A
         private val dynamicInfoView: DynamicInfoView = view.findViewById(R.id.info_app)
 
         init {
-            dynamicInfoView.linksView.layoutManager =
+            dynamicInfoView.linksView?.layoutManager =
                 DynamicLayoutUtils.getGridLayoutManager(
                     dynamicInfoView.context,
                     2
@@ -47,7 +47,7 @@ class AppInfoBinder(binderAdapter: AppInfoAdapter) : DynamicRecyclerViewBinder<A
             dynamicInfoView.setOnClickListener {
                 view.context.openLink(view.context.getString(R.string.site_url))
             }
-            (dynamicInfoView.linksView.adapter as? DynamicItemsAdapter)?.dataSet?.forEach { it.colorType = Theme.ColorType.TINT_SURFACE }
+            (dynamicInfoView.linksView?.adapter as? DynamicItemsAdapter)?.data?.forEach { it.colorType = Theme.ColorType.TINT_SURFACE }
 
         }
     }

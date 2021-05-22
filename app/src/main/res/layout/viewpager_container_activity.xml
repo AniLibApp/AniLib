@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/containerBottomNav">
@@ -27,11 +27,11 @@
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicBottomNavigationView
         android:id="@+id/containerBottomNav"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>

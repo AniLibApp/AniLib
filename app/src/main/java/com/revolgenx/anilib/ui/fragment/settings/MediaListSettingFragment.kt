@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.*
 import androidx.appcompat.widget.Toolbar
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
+import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
@@ -48,12 +48,12 @@ class MediaListSettingFragment : BaseToolbarFragment<MediaListSettingFragmentBin
 
         val scoringSystemList =
             requireContext().resources.getStringArray(R.array.scoring_system_list).map {
-                DynamicSpinnerItem(null, it)
+                DynamicMenu(null, it)
             }
 
         val defaultSpinnerOrder =
             requireContext().resources.getStringArray(R.array.media_list_order_list).map {
-                DynamicSpinnerItem(null, it)
+                DynamicMenu(null, it)
             }
 
         val scoringAdapter = makeSpinnerAdapter(requireContext(), scoringSystemList)

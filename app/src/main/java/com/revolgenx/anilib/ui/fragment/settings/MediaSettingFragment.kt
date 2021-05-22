@@ -2,7 +2,7 @@ package com.revolgenx.anilib.ui.fragment.settings
 
 import android.os.Bundle
 import android.view.*
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
+import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.canShowAdult
 import com.revolgenx.anilib.common.preference.userEnabledAdultContent
@@ -28,7 +28,7 @@ class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() 
 
     private val titleList by lazy {
         requireContext().resources.getStringArray(R.array.title_language_list).map {
-            DynamicSpinnerItem(null, it)
+            DynamicMenu(null, it)
         }
     }
 

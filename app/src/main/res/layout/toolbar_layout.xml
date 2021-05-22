@@ -3,16 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fitsSystemWindows="false"
     app:ads_backgroundAware="disable"
-    app:ads_contrastWithColorType="none"
-    app:ads_windowInsets="false">
+    app:ads_contrastWithColorType="none">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
         android:id="@+id/dynamicToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
         app:contentInsetStartWithNavigation="0dp"

@@ -37,6 +37,8 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
     private var deleteReviewMenu: MenuItem? = null
     private var saveReviewMenu: MenuItem? = null
 
+    override val shouldFinishActivity: Boolean = true
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.review_composer_menu, menu)
     }

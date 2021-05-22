@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import com.pranavpandey.android.dynamic.support.setting.DynamicColorPreference
-import com.pranavpandey.android.dynamic.utils.DynamicWindowUtils
+import com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment

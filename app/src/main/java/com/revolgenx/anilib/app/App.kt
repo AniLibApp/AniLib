@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.pm.ShortcutInfo
 import android.graphics.drawable.Icon
 import android.os.Build.VERSION_CODES.N_MR1
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
@@ -19,6 +20,8 @@ import com.github.piasy.biv.loader.fresco.FrescoImageLoader
 import com.google.android.gms.ads.MobileAds
 import com.pranavpandey.android.dynamic.support.DynamicApplication
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.theme.AppTheme
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.app.theme.AppController
@@ -41,11 +44,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.NotificationActivity
-import com.revolgenx.anilib.activity.ToolbarContainerActivity
 import com.revolgenx.anilib.common.preference.*
-import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
-import com.revolgenx.anilib.data.meta.UserMeta
-import com.revolgenx.anilib.ui.fragment.notification.NotificationFragment
 import com.revolgenx.anilib.util.LauncherShortcutKeys
 import com.revolgenx.anilib.util.LauncherShortcuts
 import com.revolgenx.anilib.util.shortcutAction
@@ -54,8 +53,8 @@ import com.revolgenx.anilib.util.shortcutAction
 open class App : DynamicApplication() {
 
     override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
         AppController.initializeInstance(this)
+        super.attachBaseContext(base)
         MultiDex.install(this)
     }
 
@@ -223,6 +222,8 @@ open class App : DynamicApplication() {
     }
 
 
+
+
     protected open fun getKoinModules() = listOf(
         viewModelModules,
         repositoryModules,
@@ -233,27 +234,63 @@ open class App : DynamicApplication() {
         radioSourceModule
     )
 
+
+    override fun getLocale(): Locale? {
+        return Locale(getApplicationLocale())
+    }
+
+    override fun onCustomiseTheme() {
+        setDelayedTheme()
+    }
+
+
     @StyleRes
     override fun getThemeRes(): Int {
         // Return application theme to be applied.
         return ThemeController.appStyle
     }
 
-
-    override fun onCustomiseTheme() {
-        ThemeController.setApplicationTheme()
+    override fun getDynamicTheme(): AppTheme<*>? {
+        return ThemeController.dynamicAppTheme
     }
 
 
-    override fun getLocale(): Locale? {
-        return Locale(getApplicationLocale())
+    @ColorInt
+    override fun getDefaultColor(@Theme.ColorType colorType: Int): Int {
+        return when (colorType) {
+            Theme.ColorType.BACKGROUND -> {
+                return ThemeController.backgroundColor
+            }
+            Theme.ColorType.PRIMARY -> {
+                return ThemeController.colorPrimaryApp
+            }
+            Theme.ColorType.ACCENT -> {
+                ThemeController.colorAccentApp
+            }
+            else -> super.getDefaultColor(colorType)
+        }
     }
 
     override fun onDynamicChanged(context: Boolean, recreate: Boolean) {
         super.onDynamicChanged(context, recreate)
+
         if (context) {
             AppController.instance.context = this
         }
+
+        if (recreate) {
+            setDelayedTheme()
+        }
+    }
+
+    /**
+     * Method to do some delayed work.
+     */
+    private fun setDelayedTheme() {
+//        DynamicTheme.getInstance().mainThreadHandler.postDelayed({
+//            // Add dynamic app shortcuts after the delay.
+//            setShortcuts()
+//        }, DynamicTheme.DELAY_THEME_CHANGE)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {

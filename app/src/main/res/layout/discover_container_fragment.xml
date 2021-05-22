@@ -3,80 +3,68 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:id="@+id/discover_container_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="false"
         app:ads_colorType="primary"
-        app:ads_windowInsets="false"
         app:elevation="0dp">
+
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
             app:ads_backgroundAware="disable"
-            app:ads_colorType="primary"
+            app:ads_colorType="background"
+            app:ads_contrastWithColorType="none"
             app:layout_scrollFlags="scroll|enterAlways">
 
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="false"
-                app:ads_backgroundAware="disable"
-                app:ads_colorType="background"
-                app:ads_contrastWithColorType="none">
+                android:layout_height="wrap_content">
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
+                    android:id="@+id/discover_main_tab_layout"
+                    style="@style/HomeContainerTabLayoutStyle"
+                    android:layout_width="0dp"
+                    app:ads_backgroundColorType="background"
+                    app:ads_colorType="accent"
+                    app:ads_contrastWithColorType="background"
+                    app:ads_textColorType="tint_primary"
+                    app:layout_constraintEnd_toStartOf="@id/discover_search_iv"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tabTextAppearance="@style/DiscoverTabLayoutTextStyle" />
 
+                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                    android:id="@+id/discover_search_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    app:ads_colorType="text_primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/discover_notification_iv"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_search" />
 
-                    <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
-                        android:id="@+id/discover_main_tab_layout"
-                        style="@style/DynamicTextTabLayoutStyle"
-                        android:layout_width="0dp"
-                        app:ads_backgroundColorType="background"
-                        app:ads_colorType="accent"
-                        app:ads_contrastWithColorType="background"
-                        app:ads_textColorType="tint_primary"
-                        app:layout_constraintEnd_toStartOf="@id/discover_search_iv"
-                        app:layout_constraintHorizontal_bias="0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tabTextAppearance="@style/DiscoverTabLayoutTextStyle" />
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                        android:id="@+id/discover_search_iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:paddingStart="6dp"
-                        android:paddingEnd="6dp"
-                        app:ads_colorType="text_primary"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/discover_notification_iv"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_search" />
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                        android:id="@+id/discover_notification_iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:paddingStart="6dp"
-                        android:paddingEnd="6dp"
-                        app:ads_colorType="text_primary"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_notification" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                    android:id="@+id/discover_notification_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    app:ads_colorType="text_primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_notification" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
 
@@ -98,7 +86,6 @@
         app:ads_backgroundAware="disable"
         app:ads_colorType="background"
         app:ads_contrastWithColorType="none"
-        app:ads_windowInsets="false"
         app:elevation="0dp"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior">
 
@@ -161,7 +148,6 @@
         app:ads_backgroundAware="disable"
         app:ads_colorType="background"
         app:ads_contrastWithColorType="none"
-        app:ads_windowInsets="false"
         app:elevation="0dp"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior">
 

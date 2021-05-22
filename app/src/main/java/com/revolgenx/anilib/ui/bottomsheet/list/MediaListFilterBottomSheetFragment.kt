@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.pranavpandey.android.dynamic.support.model.DynamicSpinnerItem
+import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.loadMediaListFilter
 import com.revolgenx.anilib.data.meta.MediaListFilterMeta
@@ -92,7 +92,7 @@ class MediaListFilterBottomSheetFragment :
                 status = (binding.listStatusSpinner.selectedItemPosition - 1).takeIf { it >= 0 },
                 genres = binding.listGenreSpinner.let { spin ->
                     (spin.selectedItemPosition - 1).takeIf { it >= 0 }
-                        ?.let { (spin.selectedItem as DynamicSpinnerItem).text.toString() }
+                        ?.let { (spin.selectedItem as DynamicMenu).title.toString() }
                 },
                 mediaListSort = getActiveListSort()
             ).let {
@@ -111,7 +111,7 @@ class MediaListFilterBottomSheetFragment :
             field.status = (binding.listStatusSpinner.selectedItemPosition - 1).takeIf { it >= 0 }
             field.genre = binding.listGenreSpinner.let { spin ->
                 (spin.selectedItemPosition - 1).takeIf { it >= 0 }
-                    ?.let { (spin.selectedItem as DynamicSpinnerItem).text.toString() }
+                    ?.let { (spin.selectedItem as DynamicMenu).title.toString() }
             }
             field.listSort = getActiveListSort()
         }
@@ -132,16 +132,16 @@ class MediaListFilterBottomSheetFragment :
     private fun MediaListFilterBottomSheetLayoutBinding.updateView(savedInstanceState: Bundle?) {
         val listStatusItems =
             requireContext().resources.getStringArray(R.array.advance_search_status).map {
-                DynamicSpinnerItem(
+                DynamicMenu(
                     null, it
                 )
             }
 
         val genre = requireContext().resources.getStringArray(R.array.media_genre)
-        val listGenreItems = mutableListOf<DynamicSpinnerItem>().apply {
-            add(DynamicSpinnerItem(null, getString(R.string.none)))
+        val listGenreItems = mutableListOf<DynamicMenu>().apply {
+            add(DynamicMenu(null, getString(R.string.none)))
             addAll(genre.map {
-                DynamicSpinnerItem(null, it)
+                DynamicMenu(null, it)
             })
         }
 

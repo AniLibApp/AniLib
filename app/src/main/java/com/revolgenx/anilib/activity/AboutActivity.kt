@@ -14,14 +14,6 @@ class AboutActivity : DynamicActivity() {
         return Locale(getApplicationLocale())
     }
 
-    override fun getThemeRes(): Int {
-        return ThemeController.appStyle
-    }
-
-    override fun onCustomiseTheme() {
-        ThemeController.setLocalTheme()
-    }
-
     override fun setStatusBarColor(color: Int) {
         super.setStatusBarColor(color)
         setWindowStatusBarColor(statusBarColor);

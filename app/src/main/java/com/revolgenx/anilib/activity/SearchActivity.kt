@@ -207,11 +207,6 @@ class SearchActivity : BaseDynamicActivity<SearchActivityLayoutBinding>(),
 
 
     private fun setUpListener() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.advanceSearchCoordinatorLayout){ _, insets->
-            (binding.browseFilterNavView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
-                insets.systemWindowInsetTop
-            insets
-        }
         with(binding.persistentSearchView) {
             setOnLeftBtnClickListener {
                 if (isExpanded) {
