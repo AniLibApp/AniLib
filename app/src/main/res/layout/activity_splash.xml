@@ -44,7 +44,6 @@
             app:fontFamily="@font/cabin_bold" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            style="@style/TextAppearance.DynamicApp.Subtitle1.Splash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

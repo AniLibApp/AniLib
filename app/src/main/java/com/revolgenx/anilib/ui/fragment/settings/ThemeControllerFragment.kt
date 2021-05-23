@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
@@ -16,7 +17,7 @@ class ThemeControllerFragment : BaseToolbarFragment<ThemeControllerFragmentBindi
     private var mAppThemeNight: DynamicColorPreference? = null
 
     override var titleRes: Int? = R.string.theme
-
+    override val toolbarColorType: Int = Theme.ColorType.BACKGROUND
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?
