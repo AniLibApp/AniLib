@@ -26,6 +26,8 @@
             android:layout_height="wrap_content"
             app:tabGravity="start"
             app:tabMode="scrollable"
+            app:ads_colorType="background"
+            app:ads_textColorType="text_primary"
             />
 
     </com.google.android.material.appbar.AppBarLayout>

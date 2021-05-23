@@ -662,22 +662,34 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
 
     private fun setToolbarTheme() {
-        binding.listEditorCollapsingToolbar.setStatusBarScrimColor(
-            DynamicTheme.getInstance().get().primaryColorDark
-        )
-        binding.listEditorCollapsingToolbar.setContentScrimColor(
-            DynamicTheme.getInstance().get().primaryColor
-        )
-        binding.listEditorCollapsingToolbar.setCollapsedTitleTextColor(
-            DynamicTheme.getInstance().get().tintPrimaryColor
-        )
-        binding.listEditorCollapsingToolbar.setBackgroundColor(
-            DynamicTheme.getInstance().get().backgroundColor
-        )
-
         if(activity is MainActivity){
+            binding.listEditorCollapsingToolbar.setCollapsedTitleTextColor(
+                DynamicTheme.getInstance().get().textPrimaryColor
+            )
+            binding.listEditorCollapsingToolbar.setBackgroundColor(
+                DynamicTheme.getInstance().get().backgroundColor
+            )
+            binding.listEditorCollapsingToolbar.setStatusBarScrimColor(
+                DynamicTheme.getInstance().get().backgroundColor
+            )
+            binding.listEditorCollapsingToolbar.setContentScrimColor(
+                DynamicTheme.getInstance().get().backgroundColor
+            )
             binding.listEditorToolbar.colorType = Theme.ColorType.BACKGROUND
             binding.listEditorToolbar.textColorType = Theme.ColorType.TEXT_PRIMARY
+        }else{
+            binding.listEditorCollapsingToolbar.setStatusBarScrimColor(
+                DynamicTheme.getInstance().get().primaryColorDark
+            )
+            binding.listEditorCollapsingToolbar.setContentScrimColor(
+                DynamicTheme.getInstance().get().primaryColor
+            )
+            binding.listEditorCollapsingToolbar.setCollapsedTitleTextColor(
+                DynamicTheme.getInstance().get().tintPrimaryColor
+            )
+            binding.listEditorCollapsingToolbar.setBackgroundColor(
+                DynamicTheme.getInstance().get().backgroundColor
+            )
         }
     }
 

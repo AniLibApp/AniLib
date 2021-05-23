@@ -11,14 +11,18 @@
         android:orientation="vertical"
         android:padding="6dp">
 
-        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+        <FrameLayout
             android:id="@+id/format_add_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ads_button_remote"
-            app:ads_icon="@drawable/ic_add_circle"
-            app:ads_title="@string/format"
-            app:titleTextSize="14sp" />
+            android:layout_height="wrap_content">
+
+            <com.revolgenx.anilib.ui.view.widgets.chip.DynamicChip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:text="@string/format"
+                app:closeIcon="@drawable/ic_add" />
+        </FrameLayout>
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView

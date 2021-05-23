@@ -3,7 +3,7 @@ package com.revolgenx.anilib.ui.view
 import android.content.Context
 import android.util.AttributeSet
 import com.github.ybq.android.spinkit.SpinKitView
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 
 class CustomSpinKit : SpinKitView {
     constructor(context: Context) : this(context, null)
@@ -13,6 +13,6 @@ class CustomSpinKit : SpinKitView {
         attributeSet,
         def
     ) {
-        this.setColor(DynamicTheme.getInstance().get().tintPrimaryColor)
+        this.setColor(dynamicTextColorPrimary)
     }
 }
