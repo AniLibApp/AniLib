@@ -11,8 +11,15 @@ import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
 import com.revolgenx.anilib.data.model.setting.MediaListOptionTypeModel
 import com.revolgenx.anilib.data.model.setting.MediaOptionModel
 import com.revolgenx.anilib.data.model.setting.getRowOrder
+import com.revolgenx.anilib.data.model.user.FollowUserModel
 import com.revolgenx.anilib.fragment.*
+import com.revolgenx.anilib.social.data.model.ActivityUserModel
+import com.revolgenx.anilib.social.data.model.ListActivityModel
+import com.revolgenx.anilib.social.data.model.TextActivityModel
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.util.pmap
+import com.revolgenx.anilib.util.prettyTime
 import kotlinx.coroutines.runBlocking
 
 fun <T : CommonMediaModel> NarrowMediaContent.getCommonMedia(model: T): T {
@@ -173,7 +180,14 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
             }
         }
         it.tags = tags()?.pmap {
-            MediaTagsModel(it.name(), it.description(), it.category(), it.isMediaSpoiler == true, it.rank(), it.isAdult)
+            MediaTagsModel(
+                it.name(),
+                it.description(),
+                it.category(),
+                it.isMediaSpoiler == true,
+                it.rank(),
+                it.isAdult
+            )
         }
         it.trailer = trailer()?.let {
             MediaTrailerModel().also { trailer ->
@@ -187,7 +201,7 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
         }
 
         it.characters = characters()!!.edges()!!.pmap {
-            MediaCharacterModel().also { model->
+            MediaCharacterModel().also { model ->
                 model.role = it.role()?.ordinal
                 it.node()!!.let {
                     model.characterId = it.id()
@@ -245,4 +259,70 @@ fun StudioInfo.toModel() = MediaStudioModel().also { studio ->
     studio.studioName = name()
     studio.isAnimationStudio = isAnimationStudio
     studio.studioId = id()
+}
+
+
+fun ActivityUnionQuery.AsTextActivity.toModel() = TextActivityModel().also { model ->
+    model.id = id()
+    model.text = anilify(text() ?: "")
+    model.textSpanned = AlMarkwonFactory.getMarkwon().toMarkdown(model.text)
+    model.likeCount = likeCount()
+    model.replyCount = replyCount()
+    model.isSubscribed = isSubscribed ?: false
+    model.type = type()!!
+    model.user = user()?.fragments()?.activityUser()?.toModel()
+    model.likes = likes()?.map {
+        it.fragments().followUser().toModel()
+    }
+    model.siteUrl = siteUrl()
+    model.createdAt = createdAt().toLong().prettyTime()
+}
+
+fun ActivityUnionQuery.AsListActivity.toModel() = ListActivityModel().also { model ->
+    model.id = id()
+    model.media = media()?.let {
+        CommonMediaModel().also { cModel ->
+            cModel.mediaId = it.id()
+            cModel.title = it.title()?.fragments()?.mediaTitle()?.toModel()
+            cModel.type = it.type()?.ordinal
+        }
+    }
+    model.status = status()!!
+    model.progress = progress() ?:""
+    model.likeCount = likeCount()
+    model.replyCount = replyCount()
+    model.isSubscribed = isSubscribed ?: false
+    model.type = type()!!
+    model.user = user()?.fragments()?.activityUser()?.toModel()
+    model.likes = likes()?.map {
+        it.fragments().followUser().toModel()
+    }
+    model.siteUrl = siteUrl()
+    model.createdAt = createdAt().toLong().prettyTime()
+}
+
+fun FollowUser.toModel() =   FollowUserModel().also { fModel->
+    fModel.userId = id()
+    fModel.userName = name()
+    fModel.avatar =  avatar()?.let {
+        UserAvatarImageModel().also { uModel ->
+            uModel.large = it.large()
+            uModel.medium = it.medium()
+        }
+    }
+    fModel.isBlocked = isBlocked ?: false
+    fModel.isFollowing = isFollowing ?: false
+    fModel.isFollower = isFollower ?: false
+}
+
+fun ActivityUser.toModel() = ActivityUserModel().also { model ->
+    model.userId = id()
+    model.userName = name()
+    model.avatar =
+        avatar()?.let {
+            UserAvatarImageModel().also { uModel ->
+                uModel.large = it.large()
+                uModel.medium = it.medium()
+            }
+        }
 }

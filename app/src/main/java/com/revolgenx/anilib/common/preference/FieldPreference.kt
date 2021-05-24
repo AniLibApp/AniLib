@@ -83,6 +83,7 @@ const val READING_ORDER_ENABLED_KEY = "READING_ORDER_ENABLED_KEY"
 const val HOME_PAGE_ORDER_KEY = "HOME_PAGE_ORDER_KEY"
 const val LIST_PAGE_ORDER_KEY = "LIST_PAGE_ORDER_KEY"
 const val RADIO_PAGE_ORDER_KEY = "RADIO_PAGE_ORDER_KEY"
+const val ACTIVITY_PAGE_ORDER_KEY = "ACTIVITY_PAGE_ORDER_KEY"
 
 const val DISCOVER_READING_SORT_KEY = "DISCOVER_READING_SORT_KEY"
 const val DISCOVER_WATCHING_SORT_KEY = "DISCOVER_WATCHING_SORT_KEY"
@@ -325,6 +326,7 @@ fun setHomePageOrderFromType(context: Context, type: HomePageOrderType, order: I
         HomePageOrderType.HOME -> context.putInt(HOME_PAGE_ORDER_KEY, order)
         HomePageOrderType.LIST -> context.putInt(LIST_PAGE_ORDER_KEY, order)
         HomePageOrderType.RADIO -> context.putInt(RADIO_PAGE_ORDER_KEY, order)
+        HomePageOrderType.ACTIVITY -> context.putInt(ACTIVITY_PAGE_ORDER_KEY, order)
     }
 }
 
@@ -333,6 +335,7 @@ fun getHomePageOrderFromType(context: Context, type: HomePageOrderType): Int {
         HomePageOrderType.HOME -> context.getInt(HOME_PAGE_ORDER_KEY, 0)
         HomePageOrderType.LIST -> context.getInt(LIST_PAGE_ORDER_KEY, 1)
         HomePageOrderType.RADIO -> context.getInt(RADIO_PAGE_ORDER_KEY, 2)
+        HomePageOrderType.ACTIVITY -> context.getInt(ACTIVITY_PAGE_ORDER_KEY, 3)
     }
 }
 

@@ -10,5 +10,5 @@ data class HomePageOrderedAdapterItem(val name: String, var order: Int, var orde
 
 
 enum class HomePageOrderType {
-    HOME, LIST, RADIO
+    HOME, LIST, RADIO, ACTIVITY
 }
