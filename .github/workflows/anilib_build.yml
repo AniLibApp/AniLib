@@ -8,6 +8,8 @@ jobs:
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
