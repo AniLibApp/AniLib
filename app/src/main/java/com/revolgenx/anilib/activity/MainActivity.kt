@@ -30,6 +30,7 @@ import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.data.model.home.HomePageOrderType
 import com.revolgenx.anilib.databinding.ActivityMainBinding
 import com.revolgenx.anilib.radio.ui.fragments.RadioFragment
+import com.revolgenx.anilib.social.ui.fragments.ActivityUnionFragment
 import com.revolgenx.anilib.ui.fragment.about.AboutFragment
 import com.revolgenx.anilib.ui.fragment.home.discover.DiscoverContainerFragment
 import com.revolgenx.anilib.ui.fragment.home.list.ListContainerFragment
@@ -79,6 +80,10 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private val listContainerFragment by lazy {
         ListContainerFragment()
+    }
+
+    private val activityUnionFragment by lazy {
+        ActivityUnionFragment()
     }
 
     private val radioFragment by lazy {
@@ -181,6 +186,15 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     R.drawable.ic_media_list,
                     getHomePageOrderFromType(this@MainActivity, HomePageOrderType.LIST),
                     listContainerFragment
+                )
+            )
+            menuList.add(
+                HomeMenuItem(
+                    R.id.list_navigation_menu,
+                    R.string.list,
+                    R.drawable.ic_media_list,
+                    getHomePageOrderFromType(this@MainActivity, HomePageOrderType.ACTIVITY),
+                    activityUnionFragment
                 )
             )
         }

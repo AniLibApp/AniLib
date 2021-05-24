@@ -1896,7 +1896,83 @@ fragment userListCount on UserStatusStatistic {
 
 
 
+#activities
+query ActivityUnionQuery(
+    $page:Int,
+    $perPage:Int,
+    $type:ActivityType,
+    $isFollowing:Boolean){
+    Page(page:$page,
+        perPage:$perPage){
+        activities(type:$type,isFollowing:$isFollowing, sort:[ID_DESC]){
+            __typename
+            ... on TextActivity{
+                id
+                text
+                replyCount
+                likeCount
+                siteUrl
+                isSubscribed
+                createdAt
+                type
+                likes{
+                    ... followUser
+                }
+                user{
+                    ... activityUser
+                }
+            }
+            ... on ListActivity{
+                id
+                status
+                progress
+                replyCount
+                likeCount
+                isSubscribed
+                createdAt
+                siteUrl
+                type
+                media{
+                    id
+                    title{
+                        ... mediaTitle
+                    }
+                    type
+                }
+                likes{
+                    ... followUser
+                }
+                user{
+                    ... activityUser
+                }
+            }
+        }
+    }
 
+}
+
+fragment activityUser on User{
+    id
+    name
+    avatar{
+        large
+        medium
+    }
+    donatorBadge
+    donatorTier
+}
+
+fragment followUser on User{
+    id
+    name
+    avatar{
+        large
+        medium
+    }
+    isFollowing
+    isFollower
+    isBlocked
+}
 
 
 

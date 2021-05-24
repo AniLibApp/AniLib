@@ -45,6 +45,9 @@ import java.util.concurrent.TimeUnit
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.NotificationActivity
 import com.revolgenx.anilib.common.preference.*
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.social.infrastructure.service.activityServiceModules
+import com.revolgenx.anilib.social.ui.viewmodel.activityViewModelModules
 import com.revolgenx.anilib.util.LauncherShortcutKeys
 import com.revolgenx.anilib.util.LauncherShortcuts
 import com.revolgenx.anilib.util.shortcutAction
@@ -75,6 +78,7 @@ open class App : DynamicApplication() {
             .setRequestListeners(requestListeners)
             .build()
         BigImageViewer.initialize(FrescoImageLoader.with(this, config))
+        AlMarkwonFactory.init(this)
         startKoin {
             androidContext(this@App)
             modules(getKoinModules())
@@ -231,7 +235,9 @@ open class App : DynamicApplication() {
         serviceModule,
         radioRoomModules,
         radioApiModules,
-        radioSourceModule
+        radioSourceModule,
+        activityServiceModules,
+        activityViewModelModules
     )
 
 
