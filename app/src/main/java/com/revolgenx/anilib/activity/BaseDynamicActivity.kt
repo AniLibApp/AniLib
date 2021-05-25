@@ -164,7 +164,7 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
             }
 
             is UserBrowseEvent -> {
-                UserProfileActivity.openActivity(this, UserMeta(event.userId, null))
+                UserProfileActivity.openActivity(this, UserMeta(event.userId, event.userName))
             }
 
             is BrowseCharacterEvent -> {

@@ -8,7 +8,7 @@ object AlMarkwonFactory {
     private var mContext: Context? = null
     fun init(context: Context) {
         this.mContext = context
-        this.alMarkwonCallbackImpl = AlMarkwonCallbackImpl()
+        this.alMarkwonCallbackImpl = AlMarkwonCallbackImpl(context)
     }
 
     fun getMarkwon() = AlMarkwon.getMarkwon(mContext!!, alMarkwonCallbackImpl!!)
