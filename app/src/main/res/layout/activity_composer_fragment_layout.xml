@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:paddingTop="10dp">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/composer_container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/activity_guideline_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed"
+        >
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+            android:id="@+id/activity_composer_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/write_a_status"
+            android:paddingBottom="60dp"
+            android:textSize="14sp"/>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/activity_guideline_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/please_read_the_site_guidelines_before_posting"
+        app:layout_constraintBottom_toTopOf="@+id/markdown_helper_layout"
+        app:layout_constraintTop_toBottomOf="@+id/composer_container_layout" />
+
+    <com.revolgenx.anilib.social.ui.view.markdown.MarkdownHelperLayout
+        android:id="@+id/markdown_helper_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

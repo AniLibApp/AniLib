@@ -22,7 +22,7 @@ class MediaSource(
         super.onPageOpened(page, dependencies)
         field.page = pageNo
         mediaService.getMedia(field, compositeDisposable) {
-            it.data?.forEach { resources[it.baseId!!] = it }
+            it.data?.forEach { resources[it.id!!] = it }
             postResult(page, it)
         }
     }

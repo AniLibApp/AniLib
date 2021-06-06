@@ -5,12 +5,12 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.field.review.ReviewField
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
-import com.revolgenx.anilib.data.meta.ReviewComposerMeta
 import com.revolgenx.anilib.data.model.review.ReviewModel
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.databinding.MarkwonHelperLayoutBinding
@@ -26,22 +26,26 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutBinding>() {
     companion object {
-        const val reviewComposerMetaKey = "ReviewComposerMetaKey"
+        private const val REVIEW_MEDIA_ID_KEY = "REVIEW_MEDIA_ID_KEY"
+
+        fun newInstance(mediaId: Int) = ReviewComposerFragment().also {
+            it.arguments = bundleOf(REVIEW_MEDIA_ID_KEY to mediaId)
+        }
     }
 
     override var titleRes: Int? = R.string.review_composer
 
     private val viewModel by viewModel<ReviewComposerViewModel>()
 
+    private val reviewMediaId get() = arguments?.getInt(REVIEW_MEDIA_ID_KEY)
+
+    override var setHomeAsUp: Boolean = true
+    override val menuRes: Int = R.menu.review_composer_menu
+
     private var privateReviewMenu: MenuItem? = null
     private var deleteReviewMenu: MenuItem? = null
     private var saveReviewMenu: MenuItem? = null
 
-    override val shouldFinishActivity: Boolean = true
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.review_composer_menu, menu)
-    }
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -50,8 +54,8 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
         return ReviewComposerFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
+    override fun onToolbarInflated() {
+        val menu = getBaseToolbar().menu
         privateReviewMenu = menu.findItem(R.id.privateReview)
         deleteReviewMenu = menu.findItem(R.id.deleteReview)
         saveReviewMenu = menu.findItem(R.id.saveReview)
@@ -60,7 +64,7 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
         updatePrivateToolbar()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.privateReview -> {
                 item.setIcon(if (item.isChecked) R.drawable.ic_eye else R.drawable.ic_private)
@@ -82,11 +86,7 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        arguments?.classLoader = ReviewComposerMeta::class.java.classLoader
-        val reviewMeta =
-            arguments?.getParcelable<ReviewComposerMeta>(reviewComposerMetaKey) ?: return
-
-        viewModel.field.mediaId = reviewMeta.mediaId
+        viewModel.field.mediaId = reviewMediaId ?: return
         viewModel.field.userId = requireContext().userId()
 
         viewModel.reviewLiveData.observe(viewLifecycleOwner) { res ->

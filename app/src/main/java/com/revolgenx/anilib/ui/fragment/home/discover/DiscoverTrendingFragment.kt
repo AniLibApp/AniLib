@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.BrowseTrendingEvent
 import com.revolgenx.anilib.data.field.home.TrendingMediaField
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.getHomeOrderFromType
 import com.revolgenx.anilib.common.preference.isHomeOrderEnabled
+import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
 import com.revolgenx.anilib.ui.presenter.home.MediaPresenter
 import com.revolgenx.anilib.infrastructure.source.discover.DiscoverMediaSource
 import com.revolgenx.anilib.type.MediaSort
@@ -93,7 +93,7 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
 
     private fun handleClick(which: Int) {
         if (which == 0) {
-            BrowseTrendingEvent(MediaSearchFilterModel().also {
+            OpenSearchEvent(MediaSearchFilterModel().also {
                 it.sort = MediaSort.TRENDING_DESC.ordinal
             }).postEvent
         } else if (which == 1) {

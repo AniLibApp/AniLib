@@ -153,7 +153,7 @@ class MediaListSettingFragment : BaseToolbarFragment<MediaListSettingFragmentBin
         }
 
         advanceScoreHeader.setOnClickListener {
-            val inputDialog = InputDialog.newInstance(null, InputType.TYPE_CLASS_TEXT, null, false)
+            val inputDialog = InputDialog.newInstance(null, InputType.TYPE_CLASS_TEXT, null, showPasteButton = false)
             inputDialog.onInputDoneListener = {
                 advanceScoreRecyclerView.addTag(AdvancedScore(it, 0.0))
             }

@@ -4,14 +4,22 @@ import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.UserFollowersQuery
 import com.revolgenx.anilib.UserFollowingQuery
 import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.data.field.friend.UserFriendField
 import com.revolgenx.anilib.data.field.user.UserFavouriteField
 import com.revolgenx.anilib.data.field.user.UserFollowerField
 import com.revolgenx.anilib.data.field.user.UserProfileField
 import com.revolgenx.anilib.data.field.user.UserToggleFollowField
 import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.model.*
+import com.revolgenx.anilib.data.model.character.CharacterImageModel
 import com.revolgenx.anilib.data.model.character.CharacterNameModel
+import com.revolgenx.anilib.data.model.staff.StaffImageModel
+import com.revolgenx.anilib.data.model.staff.StaffNameModel
 import com.revolgenx.anilib.data.model.user.*
+import com.revolgenx.anilib.data.model.user.container.CharacterFavouriteModel
+import com.revolgenx.anilib.data.model.user.container.MediaFavouriteModel
+import com.revolgenx.anilib.data.model.user.container.StaffFavouriteModel
+import com.revolgenx.anilib.data.model.user.container.StudioFavouriteModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
@@ -34,19 +42,19 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
             baseGraphRepository.request(userProfileField.toQueryOrMutation()).map { response ->
                 response.data()?.User()?.let {
                     UserProfileModel().also { model ->
-                        model.baseId = it.id()
-                        model.userId = it.id()
-                        model.userName = it.name()
+                        model.id = it.id()
+                        model.id = it.id()
+                        model.name = it.name()
                         model.avatar = it.avatar()?.let { ava ->
-                            UserAvatarImageModel().also { img ->
+                            AvatarModel().also { img ->
                                 img.large = ava.large()
                                 img.medium = ava.medium()
                             }
                         }
                         model.bannerImage = it.bannerImage() ?: model.avatar?.image
-                        model.isBlocked = it.isBlocked
-                        model.isFollower = it.isFollower
-                        model.isFollowing = it.isFollowing
+                        model.isBlocked = it.isBlocked ?: false
+                        model.isFollower = it.isFollower ?: false
+                        model.isFollowing = it.isFollowing ?: false
                         model.about = MarkwonImpl.createMarkwonCompatible(it.about() ?: "")
                         model.siteUrl = it.siteUrl()
                         it.statistics()?.let { stats ->
@@ -158,20 +166,20 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                 if (data is UserFollowersQuery.Data)
                     (data as? UserFollowersQuery.Data)?.Page()?.followers()?.map {
                         UserFollowersModel().also { model ->
-                            model.userId = it.id()
-                            model.userName = it.name()
+                            model.id = it.id()
+                            model.name = it.name()
                             model.avatar = it.avatar()?.let {
-                                UserAvatarImageModel().also { img -> img.medium = it.medium() }
+                                AvatarModel().also { img -> img.medium = it.medium() }
                             }
                         }
                     }
                 else
                     (data as? UserFollowingQuery.Data)?.Page()?.following()?.map {
                         UserFollowersModel().also { model ->
-                            model.userId = it.id()
-                            model.userName = it.name()
+                            model.id = it.id()
+                            model.name = it.name()
                             model.avatar = it.avatar()?.let {
-                                UserAvatarImageModel().also { img -> img.medium = it.medium() }
+                                AvatarModel().also { img -> img.medium = it.medium() }
                             }
                         }
                     }
@@ -220,29 +228,39 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                 when (type) {
                     SearchTypes.ANIME -> {
                         data?.anime()?.nodes()
-                            ?.filter { if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
+                            ?.filter {
+                                if (field.canShowAdult) true else it.fragments()
+                                    .commonMediaContent().isAdult == false
+                            }
                             ?.map { map ->
-                                map.fragments().commonMediaContent().getCommonMedia(MediaFavouriteModel())
+                                map.fragments().commonMediaContent().getCommonMedia(
+                                    MediaFavouriteModel()
+                                )
                             }
                     }
                     SearchTypes.MANGA -> {
                         data?.manga()?.nodes()
-                            ?.filter {if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
+                            ?.filter {
+                                if (field.canShowAdult) true else it.fragments()
+                                    .commonMediaContent().isAdult == false
+                            }
                             ?.map { map ->
-                                map.fragments().commonMediaContent().getCommonMedia(MediaFavouriteModel())
+                                map.fragments().commonMediaContent().getCommonMedia(
+                                    MediaFavouriteModel()
+                                )
                             }
                     }
                     SearchTypes.CHARACTER -> {
                         data?.characters()?.nodes()?.map { map ->
                             map.fragments().narrowCharacterContent().let {
                                 CharacterFavouriteModel().also { model ->
-                                    model.characterId = it.id()
+                                    model.id = it.id()
                                     model.name = it.name()?.let {
                                         CharacterNameModel().also { name ->
                                             name.full = it.full()
                                         }
                                     }
-                                    model.characterImageModel = it.image()?.let {
+                                    model.image = it.image()?.let {
                                         CharacterImageModel().also { img ->
                                             img.large = it.large()
                                             img.medium = it.medium()
@@ -257,13 +275,13 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                         data?.staff()?.nodes()?.map { map ->
                             map.fragments().narrowStaffContent().let {
                                 StaffFavouriteModel().also { model ->
-                                    model.staffId = it.id()
-                                    model.staffName = it.name()?.let {
+                                    model.id = it.id()
+                                    model.name = it.name()?.let {
                                         StaffNameModel().also { name ->
                                             name.full = it.full()
                                         }
                                     }
-                                    model.staffImage = it.image()?.let {
+                                    model.image = it.image()?.let {
                                         StaffImageModel().also { img ->
                                             img.medium = it.medium()
                                             img.large = it.large()
@@ -282,9 +300,14 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                                     model.studioName = it.fragments().studioInfo().name()
                                     model.studioMedia =
                                         it.media()?.nodes()
-                                            ?.filter {if(field.canShowAdult) true else it.fragments().commonMediaContent().isAdult == false }
+                                            ?.filter {
+                                                if (field.canShowAdult) true else it.fragments()
+                                                    .commonMediaContent().isAdult == false
+                                            }
                                             ?.map {
-                                                it.fragments().commonMediaContent().getCommonMedia(MediaFavouriteModel())
+                                                it.fragments().commonMediaContent().getCommonMedia(
+                                                    MediaFavouriteModel()
+                                                )
                                             }
                                 }
                             }
@@ -313,8 +336,8 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
         val disposable = baseGraphRepository.request(field.toQueryOrMutation()).map {
             it.data()?.ToggleFollow()?.let {
                 UserProfileModel().also { model ->
-                    model.userId = it.id()
-                    model.isFollowing = it.isFollowing
+                    model.id = it.id()
+                    model.isFollowing = it.isFollowing ?:false
                 }
             }
         }.observeOn(AndroidSchedulers.mainThread())
@@ -326,6 +349,51 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
             }, {
                 Timber.e(it)
                 callback?.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+
+        compositeDisposable.add(disposable)
+    }
+
+
+    override fun getUserFriend(
+        field: UserFriendField,
+        compositeDisposable: CompositeDisposable,
+        callback: ((Resource<List<UserModel>>) -> Unit)
+    ) {
+        val disposable = baseGraphRepository.request(field.toQueryOrMutation())
+            .map { response ->
+                val data = response.data()
+                if (data is UserFollowersQuery.Data)
+                    (data as? UserFollowersQuery.Data)?.Page()?.followers()?.map {
+                        UserModel().also { model ->
+                            model.id = it.id()
+                            model.name = it.name()
+                            model.avatar = it.avatar()?.let {
+                                AvatarModel().also { img -> img.medium = it.medium() }
+                            }
+                            model.isFollower = it.isFollower ?: false
+                            model.isFollowing = it.isFollowing ?: false
+                        }
+                    }
+                else
+                    (data as? UserFollowingQuery.Data)?.Page()?.following()?.map {
+                        UserModel().also { model ->
+                            model.id = it.id()
+                            model.name = it.name()
+                            model.avatar = it.avatar()?.let {
+                                AvatarModel().also { img -> img.medium = it.medium() }
+                            }
+
+                            model.isFollower = it.isFollower ?: false
+                            model.isFollowing = it.isFollowing ?: false
+                        }
+                    }
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(it))
+            }, {
+                Timber.e(it)
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
         compositeDisposable.add(disposable)

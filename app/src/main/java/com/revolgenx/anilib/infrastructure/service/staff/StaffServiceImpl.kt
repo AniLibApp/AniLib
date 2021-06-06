@@ -6,7 +6,9 @@ import com.revolgenx.anilib.data.field.staff.StaffField
 import com.revolgenx.anilib.data.field.staff.StaffMediaCharacterField
 import com.revolgenx.anilib.data.field.staff.StaffMediaRoleField
 import com.revolgenx.anilib.data.model.*
+import com.revolgenx.anilib.data.model.character.CharacterImageModel
 import com.revolgenx.anilib.data.model.character.CharacterNameModel
+import com.revolgenx.anilib.data.model.staff.*
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
@@ -31,15 +33,15 @@ class StaffServiceImpl(
             .map {
                 it.data()?.Staff()?.let {
                     StaffModel().also { model ->
-                        model.staffId = it.id()
-                        model.staffName = it.name()?.let {
+                        model.id = it.id()
+                        model.name = it.name()?.let {
                             StaffNameModel().also { nModel ->
                                 nModel.full = it.full()
                                 nModel.native = it.native_()
                                 nModel.alternative = it.alternative()
                             }
                         }
-                        model.staffImage = it.image()?.let {
+                        model.image = it.image()?.let {
                             StaffImageModel().also { i ->
                                 i.medium = it.medium()
                                 i.large = it.large()

@@ -7,7 +7,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.UserLoginFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.AuthenticateEvent
-import com.revolgenx.anilib.infrastructure.event.SettingEvent
+import com.revolgenx.anilib.infrastructure.event.OpenSettingEvent
 import com.revolgenx.anilib.infrastructure.event.SettingEventTypes
 import com.revolgenx.anilib.util.openLink
 
@@ -26,7 +26,7 @@ class UserLoginFragment:BaseLayoutFragment<UserLoginFragmentLayoutBinding>(){
 
         binding.apply {
             settingLayout.setOnClickListener {
-                SettingEvent(SettingEventTypes.SETTING).postEvent
+                OpenSettingEvent(SettingEventTypes.SETTING).postEvent
             }
 
             signInLayout.setOnClickListener {
@@ -38,7 +38,7 @@ class UserLoginFragment:BaseLayoutFragment<UserLoginFragmentLayoutBinding>(){
             }
 
             aboutItemView.setOnClickListener {
-                SettingEvent(SettingEventTypes.ABOUT).postEvent
+                OpenSettingEvent(SettingEventTypes.ABOUT).postEvent
             }
 
         }

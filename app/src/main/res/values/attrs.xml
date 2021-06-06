@@ -16,6 +16,7 @@
     <item name="kaoMojiTv" type="id" />
     <item name="home_navigation_menu" type="id" />
     <item name="list_navigation_menu" type="id" />
+    <item name="activity_navigation_menu" type="id" />
     <item name="music_navigation_menu" type="id" />
     <item name="profile_navigation_menu" type="id" />
     <item name="adView" type="id" />

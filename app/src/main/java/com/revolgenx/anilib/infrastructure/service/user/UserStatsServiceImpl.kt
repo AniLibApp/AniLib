@@ -28,8 +28,8 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                     it.data()?.User()?.statistics()?.anime()
                         ?.let { anime ->
                             StatsOverviewModel().also { model ->
-                                model.userId = field.userId
-                                model.userName = field.userName
+                                model.id = field.userId
+                                model.name = field.userName
                                 model.count = anime.count()
                                 model.meanScore = anime.meanScore()
                                 model.standardDeviation = anime.standardDeviation()
@@ -97,8 +97,8 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                     it.data()?.User()?.statistics()?.manga()
                         ?.let { manga ->
                             StatsOverviewModel().also { model ->
-                                model.userId = field.userId
-                                model.userName = field.userName
+                                model.id = field.userId
+                                model.name = field.userName
                                 model.count = manga.count()
                                 model.meanScore = manga.meanScore()
                                 model.standardDeviation = manga.standardDeviation()
@@ -226,7 +226,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
     private fun getStatsGenreModel(genres: @Nullable MutableList<UserStatsQuery.Genre>): List<StatsGenreModel> {
         return genres.mapIndexed { index, genre ->
             StatsGenreModel().also { model ->
-                model.baseId = index
+                model.id = index
                 model.genre = genre.genre()
                 model.count = genre.count()
                 model.minutesWatched = genre.minutesWatched()
@@ -239,7 +239,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
     private fun getStatsGenreModel1(genres: @Nullable MutableList<UserStatsQuery.Genre1>): List<StatsGenreModel> {
         return genres.mapIndexed { index, genre ->
             StatsGenreModel().also { model ->
-                model.baseId = index
+                model.id = index
                 model.genre = genre.genre()
                 model.count = genre.count()
                 model.chaptersRead = genre.chaptersRead()
@@ -252,7 +252,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
     private fun getStatsTagModel(tags: @Nullable MutableList<UserStatsQuery.Tag>): List<StatsTagModel> {
         return tags.mapIndexed { _, tag ->
             StatsTagModel().also { model ->
-                model.baseId = tag.tag()?.id()
+                model.id = tag.tag()?.id()
                 model.tag = tag.tag()?.name()
                 model.count = tag.count()
                 model.meanScore = tag.meanScore()
@@ -265,7 +265,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
     private fun getStatsTagModel1(tags: @Nullable MutableList<UserStatsQuery.Tag2>): List<StatsTagModel> {
         return tags.mapIndexed { _, tag ->
             StatsTagModel().also { model ->
-                model.baseId = tag.tag()?.id()
+                model.id = tag.tag()?.id()
                 model.tag = tag.tag()?.name()
                 model.count = tag.count()
                 model.meanScore = tag.meanScore()
@@ -309,7 +309,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
     private fun getStatsStudioModel(studios: @Nullable MutableList<UserStatsQuery.Studio>): List<StatsStudioModel> {
         return studios.mapIndexed { _, studio ->
             StatsStudioModel().also { model ->
-                model.baseId = studio.studio()?.id()
+                model.id = studio.studio()?.id()
                 model.studio = studio.studio()?.name()
                 model.count = studio.count()
                 model.meanScore = studio.meanScore()

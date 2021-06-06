@@ -61,7 +61,7 @@ class MediaListAdvanceScoreChipRecyclerView : DynamicRecyclerView {
             val chipTag = chipTagList[position]
             holder.binding.chipTagView.text = chipTag.scoreType
             holder.binding.chipTagView.setOnClickListener {
-                val inputDialog = InputDialog.newInstance(null, InputType.TYPE_CLASS_TEXT, chipTag.scoreType, false)
+                val inputDialog = InputDialog.newInstance(null, InputType.TYPE_CLASS_TEXT, chipTag.scoreType, showPasteButton = false)
                 inputDialog.onInputDoneListener = {
                     chipTagList[position].scoreType = it
                     notifyDataSetChanged()

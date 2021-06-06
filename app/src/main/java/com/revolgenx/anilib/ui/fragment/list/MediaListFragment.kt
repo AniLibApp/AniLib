@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.revolgenx.anilib.activity.MediaListActivity
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
@@ -32,7 +31,7 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>(), Even
     abstract val viewModel: MediaListCollectionViewModel
     abstract val mediaListStatus: Int
 
-    protected var mediaListMeta: MediaListMeta? = null
+    protected abstract val mediaListMeta: MediaListMeta?
 
 
     override fun createSource(): Source<MediaListModel> {
@@ -87,15 +86,15 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>(), Even
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        arguments?.classLoader = MediaListMeta::class.java.classLoader
-        mediaListMeta = arguments?.getParcelable(MediaListActivity.MEDIA_LIST_META_KEY) ?: return
-        viewModel.field.also { field ->
-            field.userId = mediaListMeta?.userId
-            field.userName = mediaListMeta?.userName
-            field.mediaListStatus = mediaListStatus
-            field.type = mediaListMeta?.type
-        }
         super.onActivityCreated(savedInstanceState)
+
+        val meta = mediaListMeta ?: return
+        viewModel.field.also { field ->
+            field.userId = meta.userId
+            field.userName = meta.userName
+            field.mediaListStatus = mediaListStatus
+            field.type = meta.type
+        }
 
         baseSwipeRefreshLayout.setOnRefreshListener {
             viewModel.renewSource()
@@ -105,12 +104,15 @@ abstract class MediaListFragment : BasePresenterFragment<MediaListModel>(), Even
         }
     }
 
-    fun filter(mediaListFilterField: MediaListCollectionFilterField) {
-        viewModel.updateFilter(mediaListFilterField)
+    fun filter() {
         if (visibleToUser) {
             createSource()
             invalidateAdapter()
         }
+    }
+
+    fun saveCurrentFilter(mediaListFilterField: MediaListCollectionFilterField){
+        viewModel.updateFilter(mediaListFilterField)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

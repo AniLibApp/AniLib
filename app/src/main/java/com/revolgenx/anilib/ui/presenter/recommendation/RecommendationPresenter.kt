@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.ui.presenter.recommendation
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -11,19 +10,18 @@ import androidx.lifecycle.Observer
 import com.apollographql.apollo.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
 import com.revolgenx.anilib.data.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
-import com.revolgenx.anilib.data.model.UpdateRecommendationModel
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.data.model.recommendation.UpdateRecommendationModel
 import com.revolgenx.anilib.data.model.recommendation.RecommendationModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.RecommendationPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.RecommendationRating
@@ -88,28 +86,28 @@ class RecommendationPresenter(
                 recommendedFromFormatYearTv.status = from.mediaEntryListModel?.status
 
                 recommendedFromImageConstraintLayout.setOnClickListener {
-                    BrowseMediaEvent(
-                        MediaBrowserMeta(
+                    OpenMediaInfoEvent(
+                        MediaInfoMeta(
                             from.mediaId,
                             from.type!!,
                             from.title!!.romaji!!,
                             from.coverImage!!.image(context),
                             from.coverImage!!.largeImage,
                             from.bannerImage
-                        ), recommendedFromImageView
+                        )
                     ).postEvent
                 }
 
                 recommendedFromImageConstraintLayout.setOnLongClickListener {
                     if (context.loggedIn()) {
-                        ListEditorEvent(
+                        OpenMediaListEditorEvent(
                             ListEditorMeta(
                                 from.mediaId,
                                 from.type!!,
                                 from.title!!.title(context)!!,
                                 from.coverImage!!.image(context),
                                 from.bannerImage
-                            ), recommendedFromImageView
+                            )
                         ).postEvent
                     } else {
                         context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
@@ -133,28 +131,28 @@ class RecommendationPresenter(
                     )
                 recommendedFormatYearTv.status = rec.mediaEntryListModel?.status
                 recommendedImageConstraintLayout.setOnClickListener {
-                    BrowseMediaEvent(
-                        MediaBrowserMeta(
+                    OpenMediaInfoEvent(
+                        MediaInfoMeta(
                             rec.mediaId,
                             rec.type!!,
                             rec.title!!.romaji!!,
                             rec.coverImage!!.image(context),
                             rec.coverImage!!.largeImage,
                             rec.bannerImage
-                        ), recommendedImageView
+                        )
                     ).postEvent
                 }
 
                 recommendedImageConstraintLayout.setOnLongClickListener {
                     if (context.loggedIn()) {
-                        ListEditorEvent(
+                        OpenMediaListEditorEvent(
                             ListEditorMeta(
                                 rec.mediaId,
                                 rec.type!!,
                                 rec.title!!.title(context)!!,
                                 rec.coverImage!!.image(context),
                                 rec.bannerImage
-                            ), recommendedImageView
+                            )
                         ).postEvent
                     } else {
                         context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

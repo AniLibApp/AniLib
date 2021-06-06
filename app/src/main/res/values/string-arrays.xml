@@ -836,6 +836,24 @@
         <item>@string/activity</item>
     </string-array>
 
+    <string-array name="activity_type_entries">
+        <item>@string/all</item>
+        <item>@string/text_status</item>
+        <item>@string/list_progress</item>
+    </string-array>
+
+    <string-array name="activity_following_entries">
+        <item>@string/following</item>
+        <item>@string/global</item>
+    </string-array>
+
+    <string-array name="activity_more_entries">
+        <item>@string/open_in_anilist</item>
+        <item>@string/copy_link</item>
+        <item>@string/edit</item>
+        <item>@string/delete</item>
+    </string-array>
+
 
     <string-array name="login_entries">
         <item>@string/app_name</item>
@@ -844,6 +862,16 @@
     <string-array name="radio_controller_more_actions">
         <item>@string/copy_playing_radio</item>
         <item>@string/share</item>
+    </string-array>
+
+    <string-array name="user_friend_tab_entries">
+        <item>@string/following</item>
+        <item>@string/follower</item>
+    </string-array>
+
+    <string-array name="activity_composer_tab_entries">
+        <item>@string/status</item>
+        <item>@string/preview</item>
     </string-array>
 
 </resources>

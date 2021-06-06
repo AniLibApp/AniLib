@@ -4,8 +4,13 @@ import com.apollographql.apollo.api.Query
 import com.revolgenx.anilib.*
 import com.revolgenx.anilib.data.field.search.SearchField
 import com.revolgenx.anilib.data.model.*
+import com.revolgenx.anilib.data.model.character.CharacterImageModel
 import com.revolgenx.anilib.data.model.character.CharacterNameModel
 import com.revolgenx.anilib.data.model.search.*
+import com.revolgenx.anilib.data.model.staff.StaffImageModel
+import com.revolgenx.anilib.data.model.staff.StaffNameModel
+import com.revolgenx.anilib.data.model.user.AvatarModel
+import com.revolgenx.anilib.data.model.user.UserModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
@@ -34,13 +39,13 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                         data.Page()?.characters()?.map { map ->
                             map.fragments().narrowCharacterContent().let {
                                 CharacterSearchModel().also { model ->
-                                    model.characterId = it.id()
+                                    model.id = it.id()
                                     model.name = it.name()?.let {
                                         CharacterNameModel().also { name ->
                                             name.full = it.full()
                                         }
                                     }
-                                    model.characterImageModel = it.image()?.let {
+                                    model.image = it.image()?.let {
                                         CharacterImageModel().also { img ->
                                             img.large = it.large()
                                             img.medium = it.medium()
@@ -55,13 +60,13 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                         data.Page()?.staff()?.map { map ->
                             map.fragments().narrowStaffContent().let {
                                 StaffSearchModel().also { model ->
-                                    model.staffId = it.id()
-                                    model.staffName = it.name()?.let {
+                                    model.id = it.id()
+                                    model.name = it.name()?.let {
                                         StaffNameModel().also { name ->
                                             name.full = it.full()
                                         }
                                     }
-                                    model.staffImage = it.image()?.let {
+                                    model.image = it.image()?.let {
                                         StaffImageModel().also { img ->
                                             img.medium = it.medium()
                                             img.large = it.large()
@@ -93,11 +98,11 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                     }
                     is UserSearchQuery.Data -> {
                         data.Page()?.users()?.map {
-                            UserSearchModel().apply {
-                                userId = it.id()
-                                userName = it.name()
+                            UserModel().apply {
+                                id = it.id()
+                                name = it.name()
                                 avatar = it.avatar()?.let {
-                                    UserAvatarImageModel().also { img->
+                                    AvatarModel().also { img->
                                         img.large = it.large()
                                         img.medium = it.medium()
                                     }

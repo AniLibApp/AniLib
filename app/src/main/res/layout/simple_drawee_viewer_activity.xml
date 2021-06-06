@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-
     <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,14 +21,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:transitionName="big_image_viewer"
-                app:failureImage="@drawable/ic_error_anilib"/>
+                app:failureImage="@drawable/ic_error_anilib" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
                 android:id="@+id/draweeViewerToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:background="@android:color/transparent"
-                app:ads_colorType="none" />
+                app:ads_colorType="none"
+                app:ads_textColor="@color/white" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 

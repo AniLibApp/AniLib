@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.studio.StudioMediaModel
 import com.revolgenx.anilib.databinding.StudioMediaPresenterBinding
+import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.util.naText
 
 class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresenterBinding, StudioMediaModel>(context) {
@@ -54,15 +54,15 @@ class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresente
                 mediaStatus[it]
             }.naText()
             root.setOnClickListener {
-                BrowseMediaEvent(
-                    MediaBrowserMeta(
+                OpenMediaInfoEvent(
+                    MediaInfoMeta(
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
-                    ), studioMediaImageView
+                    )
                 ).postEvent
             }
         }

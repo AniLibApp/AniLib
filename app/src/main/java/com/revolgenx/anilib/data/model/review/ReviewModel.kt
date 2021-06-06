@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.data.model.review
 
 import com.revolgenx.anilib.data.model.BaseModel
-import com.revolgenx.anilib.data.model.UserPrefModel
+import com.revolgenx.anilib.data.model.user.UserPrefModel
 import com.revolgenx.anilib.data.model.CommonMediaModel
 import com.revolgenx.anilib.data.model.markwon.MarkdownModel
 

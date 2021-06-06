@@ -1,16 +1,14 @@
 package com.revolgenx.anilib.ui.fragment.studio
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.field.ToggleFavouriteField
+import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.data.meta.StudioMeta
 import com.revolgenx.anilib.data.model.studio.StudioMediaModel
 import com.revolgenx.anilib.data.model.studio.StudioModel
 import com.revolgenx.anilib.common.preference.loggedIn
@@ -26,29 +24,36 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
 
     companion object {
-        const val STUDIO_META_KEY = "studio_meta_key"
+        private const val STUDIO_ID_KEY = "STUDIO_ID_KEY"
+        fun newInstance(studioId: Int) = StudioFragment().also {
+            it.arguments = bundleOf(STUDIO_ID_KEY to studioId)
+        }
     }
+
+    private val studioId get() = arguments?.getInt(STUDIO_ID_KEY)
 
     override val basePresenter: Presenter<StudioMediaModel>
         get() = StudioMediaPresenter(
             requireContext()
         )
+
     override val baseSource: Source<StudioMediaModel>
         get() = viewModel.source ?: createSource()
 
-    private lateinit var studioMeta: StudioMeta
-
     private var studioModel: StudioModel? = null
 
-    private val toggleFavouriteField: ToggleFavouriteField by lazy {
-        ToggleFavouriteField().also {
-            it.studioId = studioMeta.studioId
-        }
-    }
-
-    private lateinit var studioBinding:StudioFragmentLayoutBinding
+    private lateinit var studioBinding: StudioFragmentLayoutBinding
 
     private val viewModel by viewModel<StudioViewModel>()
+
+
+    override val setHomeAsUp: Boolean = true
+    override val menuRes: Int = R.menu.studio_fragment_menu
+    override val titleRes: Int = R.string.studio
+
+    override var gridMaxSpan: Int = 6
+    override var gridMinSpan: Int = 3
+
 
     override fun createSource(): Source<StudioMediaModel> {
         return viewModel.createSource()
@@ -62,49 +67,22 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
         val v = super.onCreateView(inflater, container, savedInstanceState)
 
         studioBinding = StudioFragmentLayoutBinding.inflate(inflater, container, false)
+        studioBinding.root.setBackgroundColor(dynamicBackgroundColor)
         studioBinding.studioFragmentContainerLayout.addView(v)
-
         return studioBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        (activity as? AppCompatActivity)?.let {
-            it.setSupportActionBar(studioBinding.studioToolbar.dynamicToolbar)
-            it.supportActionBar!!.title = getString(R.string.studio)
-            it.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        }
 
-        val span =
-            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 3
-        layoutManager = GridLayoutManager(
-            this.context,
-            span
-        ).also {
-            it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return if (adapter?.getItemViewType(position) == 0) {
-                        1
-                    } else {
-                        span
-                    }
-                }
-            }
-        }
+    override fun getBaseToolbar(): Toolbar {
+        return studioBinding.studioToolbar.dynamicToolbar
     }
 
-    override fun onResume() {
-        super.onResume()
-        invalidateOptionMenu()
-        setHasOptionsMenu(true)
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        arguments?.classLoader = StudioMeta::class.java.classLoader
-        studioMeta = arguments?.getParcelable(STUDIO_META_KEY) ?: return
         super.onActivityCreated(savedInstanceState)
-        viewModel.field.studioId = studioMeta.studioId
-        viewModel.studioField.studioId = studioMeta.studioId
+        viewModel.field.studioId = studioId ?: return
+        viewModel.studioField.studioId = studioId
+        viewModel.toggleFavouriteField.studioId = studioId
 
         val statusLayout = studioBinding.resourceStatusLayout
         viewModel.studioInfoLiveData.observe(viewLifecycleOwner) { res ->
@@ -160,11 +138,7 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.studio_fragment_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.studio_share_menu -> {
                 studioModel?.siteUrl?.let {
@@ -184,7 +158,7 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
     private fun initListener() {
         studioBinding.studioFavIv.setOnClickListener {
             if (requireContext().loggedIn()) {
-                viewModel.toggleStudioFav(toggleFavouriteField)
+                viewModel.toggleStudioFav(viewModel.toggleFavouriteField)
             } else {
                 makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }

@@ -7,9 +7,9 @@ import androidx.lifecycle.Observer
 import com.revolgenx.anilib.data.field.media.MediaOverviewField
 import com.revolgenx.anilib.data.field.media.MediaRecommendationField
 import com.revolgenx.anilib.data.field.recommendation.UpdateRecommendationField
-import com.revolgenx.anilib.data.model.MediaOverviewModel
-import com.revolgenx.anilib.data.model.MediaRecommendationModel
-import com.revolgenx.anilib.data.model.UpdateRecommendationModel
+import com.revolgenx.anilib.data.model.media_info.MediaOverviewModel
+import com.revolgenx.anilib.data.model.media_info.MediaRecommendationModel
+import com.revolgenx.anilib.data.model.recommendation.UpdateRecommendationModel
 import com.revolgenx.anilib.data.store.TranslationStore
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.media.MediaBrowseService

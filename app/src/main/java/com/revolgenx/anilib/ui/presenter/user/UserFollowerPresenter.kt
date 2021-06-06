@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.UserBrowseEvent
 import com.revolgenx.anilib.data.model.user.UserFollowersModel
 import com.revolgenx.anilib.databinding.UserFollowerPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 
 class UserFollowerPresenter(requireContext: Context) :
@@ -30,9 +29,9 @@ class UserFollowerPresenter(requireContext: Context) :
 
         binding.apply {
             userFollowerSimpleDrawee.setImageURI(item.avatar?.medium)
-            userFollowerTv.text = item.userName
+            userFollowerTv.text = item.name
             root.setOnClickListener {
-                UserBrowseEvent(item.userId).postEvent
+                OpenUserProfileEvent(item.id).postEvent
             }
         }
     }

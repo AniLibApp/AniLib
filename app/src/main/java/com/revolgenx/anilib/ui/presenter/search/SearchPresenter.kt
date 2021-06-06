@@ -16,6 +16,7 @@ import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.data.model.BaseModel
 import com.revolgenx.anilib.data.model.search.*
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.data.model.user.UserModel
 import com.revolgenx.anilib.databinding.*
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
@@ -86,7 +87,7 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
                 (binding as SearchStudioLayoutBinding).updateStudio(item as StudioSearchModel)
             }
             SearchTypes.USER.ordinal -> {
-                (binding as SearchUserLayoutBinding).updateUser(item as UserSearchModel)
+                (binding as SearchUserLayoutBinding).updateUser(item as UserModel)
             }
         }
     }
@@ -109,28 +110,28 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
         }
 
         root.setOnClickListener {
-            BrowseMediaEvent(
-                MediaBrowserMeta(
+            OpenMediaInfoEvent(
+                MediaInfoMeta(
                     item.mediaId,
                     item.type!!,
                     item.title!!.romaji!!,
                     item.coverImage!!.image(context),
                     item.coverImage!!.largeImage,
                     item.bannerImage
-                ), searchMediaImageView
+                )
             ).postEvent
         }
 
         root.setOnLongClickListener {
             if (context.loggedIn()) {
-                ListEditorEvent(
+                OpenMediaListEditorEvent(
                     ListEditorMeta(
                         item.mediaId,
                         item.type!!,
                         item.title!!.title(context)!!,
                         item.coverImage!!.image(context),
                         item.bannerImage
-                    ), searchMediaImageView
+                    )
                 ).postEvent
             } else {
                 context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
@@ -141,24 +142,23 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
     }
 
     private fun SearchCharacterLayoutBinding.updateCharacter(item: CharacterSearchModel) {
-        searchCharacterImageView.setImageURI(item.characterImageModel?.image)
+        searchCharacterImageView.setImageURI(item.image?.image)
         searchCharacterNameTv.text = item.name?.full
         root.setOnClickListener {
-            BrowseCharacterEvent(
-                CharacterMeta(
-                    item.characterId,
-                    item.characterImageModel?.image
-                ),
-                searchCharacterImageView
+            val id = item.id ?:return@setOnClickListener
+            OpenCharacterEvent(
+                id
             ).postEvent
         }
     }
 
     private fun SearchStaffLayoutBinding.updateStaff(item: StaffSearchModel) {
-        searchStaffImageView.setImageURI(item.staffImage?.image)
-        searchStaffNameTv.text = item.staffName?.full
+        searchStaffImageView.setImageURI(item.image?.image)
+        searchStaffNameTv.text = item.name?.full
         root.setOnClickListener {
-            BrowseStaffEvent(StaffMeta(item.staffId ?: -1, item.staffImage?.image)).postEvent
+            OpenStaffEvent(
+                item.id!!,
+            ).postEvent
         }
     }
 
@@ -168,7 +168,7 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
         searchStudioHeader.setOnClickListener {
-            BrowseStudioEvent(StudioMeta(item.studioId)).postEvent
+            OpenStudioEvent(item.studioId!!).postEvent
         }
 
         Adapter.builder(lifecycleOwner)
@@ -178,11 +178,11 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
     }
 
 
-    private fun SearchUserLayoutBinding.updateUser(item: UserSearchModel) {
+    private fun SearchUserLayoutBinding.updateUser(item: UserModel) {
         searchCharacterImageView.setImageURI(item.avatar?.image)
-        searchCharacterNameTv.text = item.userName
+        searchCharacterNameTv.text = item.name
         root.setOnClickListener {
-            UserBrowseEvent(item.userId).postEvent
+            OpenUserProfileEvent(item.id).postEvent
         }
     }
 
@@ -226,28 +226,28 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
                 }
 
                 root.setOnClickListener {
-                    BrowseMediaEvent(
-                        MediaBrowserMeta(
+                    OpenMediaInfoEvent(
+                        MediaInfoMeta(
                             item.mediaId,
                             item.type!!,
                             item.title!!.romaji!!,
                             item.coverImage!!.image(context),
                             item.coverImage!!.largeImage,
                             item.bannerImage
-                        ), searchMediaImageView
+                        )
                     ).postEvent
                 }
 
                 root.setOnLongClickListener {
                     if (context.loggedIn()) {
-                        ListEditorEvent(
+                        OpenMediaListEditorEvent(
                             ListEditorMeta(
                                 item.mediaId,
                                 item.type!!,
                                 item.title!!.title(context)!!,
                                 item.coverImage!!.image(context),
                                 item.bannerImage
-                            ), searchMediaImageView
+                            )
                         ).postEvent
                     } else {
                         context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

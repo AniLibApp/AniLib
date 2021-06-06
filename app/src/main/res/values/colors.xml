@@ -17,7 +17,7 @@
     <color name="airing_blur_color">#73FFFFFF</color>
     <color name="text_shadow">#7F000000</color>
 
-
+    <color name="persistent_bottom_sheet_bg_color">#59000000</color>
     <!--media status-->
     <string-array name="status_color">
         <item>#02A4F8</item>    <!--//finished-->

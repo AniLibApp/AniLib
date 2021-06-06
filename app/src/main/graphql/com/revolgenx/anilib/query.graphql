@@ -803,6 +803,8 @@ query UserFollowersQuery($id:Int!, $page:Int, $perPage:Int){
             avatar{
                 medium
             }
+            isFollower
+            isFollowing
         }
     }
 }
@@ -815,6 +817,8 @@ query UserFollowingQuery($id:Int!, $page:Int, $perPage:Int){
             avatar{
                 medium
             }
+            isFollower
+            isFollowing
         }
     }
 }
@@ -1901,10 +1905,11 @@ query ActivityUnionQuery(
     $page:Int,
     $perPage:Int,
     $type:ActivityType,
+    $type_in:[ActivityType]
     $isFollowing:Boolean){
     Page(page:$page,
         perPage:$perPage){
-        activities(type:$type,isFollowing:$isFollowing, sort:[ID_DESC]){
+        activities(type:$type,type_in:$type_in,isFollowing:$isFollowing, sort:[ID_DESC]){
             __typename
             ... on TextActivity{
                 id
@@ -1915,8 +1920,10 @@ query ActivityUnionQuery(
                 isSubscribed
                 createdAt
                 type
+                userId
+                isLiked
                 likes{
-                    ... followUser
+                    ... likeUsers
                 }
                 user{
                     ... activityUser
@@ -1932,15 +1939,21 @@ query ActivityUnionQuery(
                 createdAt
                 siteUrl
                 type
+                userId
+                isLiked
                 media{
                     id
                     title{
                         ... mediaTitle
                     }
+                    coverImage{
+                        ... mediaCoverImage
+                    }
+                    bannerImage
                     type
                 }
                 likes{
-                    ... followUser
+                    ... likeUsers
                 }
                 user{
                     ... activityUser
@@ -1949,6 +1962,115 @@ query ActivityUnionQuery(
         }
     }
 
+}
+
+query ActivityInfoQuery($id:Int){
+    Activity(id:$id){
+        ... on TextActivity{
+            id
+            text
+            replyCount
+            likeCount
+            siteUrl
+            isSubscribed
+            createdAt
+            type
+            userId
+            isLiked
+            likes{
+                ... likeUsers
+            }
+            replies{
+                ... replyUsers
+            }
+            user{
+                ... activityUser
+            }
+        }
+        ... on ListActivity{
+            id
+            status
+            progress
+            replyCount
+            likeCount
+            isSubscribed
+            createdAt
+            siteUrl
+            type
+            userId
+            isLiked
+            media{
+                id
+                title{
+                    ... mediaTitle
+                }
+                coverImage{
+                    ... mediaCoverImage
+                }
+                bannerImage
+                type
+            }
+            likes{
+                ... likeUsers
+            }
+            replies{
+                ... replyUsers
+            }
+            user{
+                ... activityUser
+            }
+        }
+    }
+}
+
+
+#mutation
+mutation DeleteActivityMutation($id:Int){
+    DeleteActivity(id:$id){
+        deleted
+    }
+}
+
+mutation ToggleLikeV2($id:Int, $type:LikeableType){
+    ToggleLikeV2(id:$id, type:$type){
+        ... on TextActivity{
+            id
+            isLiked
+            likeCount
+        }
+
+        ... on ListActivity{
+            id
+            isLiked
+            likeCount
+        }
+
+        ... on MessageActivity{
+            id
+            isLiked
+            likeCount
+        }
+
+        ... on ActivityReply{
+            id
+            isLiked
+            likeCount
+        }
+    }
+}
+
+fragment replyUsers on ActivityReply{
+    id
+    isLiked
+    likeCount
+    likes{
+        ... likeUsers
+    }
+    text
+    user{
+        ... activityUser
+    }
+    createdAt
 }
 
 fragment activityUser on User{
@@ -1962,7 +2084,7 @@ fragment activityUser on User{
     donatorTier
 }
 
-fragment followUser on User{
+fragment likeUsers on User{
     id
     name
     avatar{

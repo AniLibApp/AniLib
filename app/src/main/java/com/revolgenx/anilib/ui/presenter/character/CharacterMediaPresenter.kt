@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
 import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.character.CharacterMediaModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.CharacterMediaPresenterBinding
+import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
@@ -60,28 +60,28 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
 
             characterMediaRatingTv.text = item.averageScore
             root.setOnClickListener {
-                BrowseMediaEvent(
-                    MediaBrowserMeta(
+                OpenMediaInfoEvent(
+                    MediaInfoMeta(
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
-                    ), characterMediaImageView
+                    )
                 ).postEvent
             }
 
             root.setOnLongClickListener {
                 if (context.loggedIn()) {
-                    ListEditorEvent(
+                    OpenMediaListEditorEvent(
                         ListEditorMeta(
                             item.mediaId,
                             item.type!!,
                             item.title!!.title(context)!!,
                             item.coverImage!!.image(context),
                             item.bannerImage
-                        ), characterMediaImageView
+                        )
                     ).postEvent
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

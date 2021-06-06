@@ -9,9 +9,9 @@ import com.revolgenx.anilib.data.field.review.AllReviewField
 import com.revolgenx.anilib.data.field.review.RateReviewField
 import com.revolgenx.anilib.data.field.review.ReviewField
 import com.revolgenx.anilib.markwon.MarkwonImpl
-import com.revolgenx.anilib.data.model.UserPrefModel
+import com.revolgenx.anilib.data.model.user.UserPrefModel
 import com.revolgenx.anilib.data.model.CommonMediaModel
-import com.revolgenx.anilib.data.model.UserAvatarImageModel
+import com.revolgenx.anilib.data.model.user.AvatarModel
 import com.revolgenx.anilib.data.model.review.ReviewModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
@@ -48,10 +48,10 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                     }
                     model.userPrefModel = it.user()?.let {
                         UserPrefModel().also { user ->
-                            user.userId = it.id()
-                            user.userName = it.name()
+                            user.id = it.id()
+                            user.name = it.name()
                             user.avatar = it.avatar()?.let {
-                                UserAvatarImageModel().also { img ->
+                                AvatarModel().also { img ->
                                     img.large = it.large()
                                     img.medium = it.medium()
                                 }
@@ -106,10 +106,10 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                         }
                         model.userPrefModel = it.user()?.let {
                             UserPrefModel().also { user ->
-                                user.userId = it.id()
-                                user.userName = it.name()
+                                user.id = it.id()
+                                user.name = it.name()
                                 user.avatar = it.avatar()?.let {
-                                    UserAvatarImageModel().also { img ->
+                                    AvatarModel().also { img ->
                                         img.large = it.large()
                                         img.medium = it.medium()
                                     }

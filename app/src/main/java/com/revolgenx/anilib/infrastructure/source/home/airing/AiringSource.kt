@@ -15,7 +15,7 @@ class AiringSource(
 ) :
     BaseRecyclerSource<AiringMediaModel, AiringMediaField>(mediaField) {
     override fun areItemsTheSame(first: AiringMediaModel, second: AiringMediaModel): Boolean {
-        return first.baseId == second.baseId
+        return first.id == second.id
     }
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {

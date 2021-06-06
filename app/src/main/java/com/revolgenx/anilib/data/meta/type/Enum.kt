@@ -78,3 +78,8 @@ enum class ALAiringSort(val sort:Int){
     EPISODE(6),
 }
 
+enum class AlActivityType(val type:Int){
+    ALL(-1),
+    TEXT(0),
+    LIST(4)
+}

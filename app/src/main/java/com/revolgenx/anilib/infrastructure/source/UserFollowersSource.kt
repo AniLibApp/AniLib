@@ -15,7 +15,7 @@ class UserFollowersSource(
 ) :
     BaseRecyclerSource<UserFollowersModel, UserFollowerField>(field) {
     override fun areItemsTheSame(first: UserFollowersModel, second: UserFollowersModel): Boolean {
-        return first.userId == second.userId
+        return first.id == second.id
     }
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {

@@ -36,14 +36,11 @@ import com.revolgenx.anilib.util.onItemSelected
 import java.util.*
 import kotlin.math.ceil
 
-class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, style: Int) :
-    DynamicNavigationView(context, attributeSet, style) {
+class BrowseFilterNavigationView : DynamicNavigationView {
 
     private var mListener: AdvanceBrowseNavigationCallbackListener? = null
     private val rView get() = rViewBinding.root
-    private val rViewBinding by lazy {
-        BrowseFilterNavigationViewBinding.inflate(LayoutInflater.from(context), null, false)
-    }
+    private lateinit var rViewBinding:BrowseFilterNavigationViewBinding
 
 
     private val rippleDrawable: RippleDrawable
@@ -150,9 +147,9 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         }
     }
 
-    //region ctor
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
+        rViewBinding = BrowseFilterNavigationViewBinding.inflate(LayoutInflater.from(context), null, false)
         addView(rView)
         rViewBinding.browseSearchInputLayout.apply {
             this.setEndIconTintList(
@@ -171,7 +168,14 @@ class BrowseFilterNavigationView(context: Context, attributeSet: AttributeSet?, 
         rViewBinding.updateListener()
     }
 
-    //endregion ctor
+    constructor(context: Context, attributeSet: AttributeSet?, defStyle: Int) : super(
+        context,
+        attributeSet,
+        defStyle
+    ) {
+    }
+
+
     fun buildStreamAdapter(builder: Adapter.Builder, list: List<TagField>) {
         list.forEach {
             streamingTagMap!![it.tag]?.tagState = it.tagState

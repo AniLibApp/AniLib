@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -17,12 +18,11 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.app.theme.contrastAccentWithBg
 import com.revolgenx.anilib.app.theme.dynamicTintSurfaceColor
 import com.revolgenx.anilib.data.field.media.MediaStatsField
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.user.stats.MediaStatsModel
 import com.revolgenx.anilib.databinding.MediaStatsFragmentLayoutBinding
 import com.revolgenx.anilib.ui.presenter.RankingsPresenter
@@ -37,7 +37,7 @@ import java.time.ZoneId
 
 class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>() {
     val viewModel by viewModel<MediaStatsViewModel>()
-    private var mediaBrowserMeta: MediaBrowserMeta? = null
+    private var mediaBrowserMeta: MediaInfoMeta? = null
 
     private val field by lazy {
         MediaStatsField().also { f ->
@@ -71,8 +71,10 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
 
     companion object {
         const val visibleToUserKey = "visibleToUserKey"
-
-
+        private const val MEDIA_INFO_META_KEY = "MEDIA_INFO_META_KEY"
+        fun newInstance(meta:MediaInfoMeta) = MediaStatsFragment().also {
+            it.arguments = bundleOf(MEDIA_INFO_META_KEY to meta)
+        }
     }
 
     override fun bindView(
@@ -106,9 +108,9 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        mediaBrowserMeta =
-            arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
         super.onActivityCreated(savedInstanceState)
+        mediaBrowserMeta =
+            arguments?.getParcelable(MEDIA_INFO_META_KEY) ?: return
 
         visibleToUser = savedInstanceState?.getBoolean(visibleToUserKey) ?: false
 

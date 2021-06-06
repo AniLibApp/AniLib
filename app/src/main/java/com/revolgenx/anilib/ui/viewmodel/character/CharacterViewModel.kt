@@ -8,13 +8,17 @@ import com.revolgenx.anilib.data.model.character.CharacterModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.ToggleService
 import com.revolgenx.anilib.infrastructure.service.character.CharacterService
+import com.revolgenx.anilib.ui.viewmodel.BaseViewModel
 import io.reactivex.disposables.CompositeDisposable
 
 class CharacterViewModel(
     private val characterService: CharacterService,
     private val toggleService: ToggleService
 ) :
-    ViewModel() {
+    BaseViewModel() {
+
+    val field = CharacterField()
+    val toggleField = ToggleFavouriteField()
 
     val characterInfoLiveData by lazy {
         MediatorLiveData<Resource<CharacterModel>>().also {
@@ -32,10 +36,6 @@ class CharacterViewModel(
         }
     }
 
-    private val compositeDisposable by lazy {
-        CompositeDisposable()
-    }
-
     fun getCharacterInfo(field: CharacterField) {
         characterInfoLiveData.value = Resource.loading(null)
         characterService.getCharacterInfo(field, compositeDisposable)
@@ -46,8 +46,4 @@ class CharacterViewModel(
         toggleService.toggleFavourite(field, compositeDisposable)
     }
 
-    override fun onCleared() {
-        compositeDisposable.clear()
-        super.onCleared()
-    }
 }

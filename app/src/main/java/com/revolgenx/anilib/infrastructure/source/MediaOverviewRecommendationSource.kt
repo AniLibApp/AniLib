@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
 import com.revolgenx.anilib.data.field.media.MediaRecommendationField
-import com.revolgenx.anilib.data.model.MediaRecommendationModel
+import com.revolgenx.anilib.data.model.media_info.MediaRecommendationModel
 import com.revolgenx.anilib.infrastructure.service.recommendation.RecommendationService
 import io.reactivex.disposables.CompositeDisposable
 

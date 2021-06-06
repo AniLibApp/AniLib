@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/markdown_helper_icon_size"
+    android:orientation="horizontal">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_paste_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_paste" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_bold_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_bold" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_italics_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_italics" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_strike_through_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_strike_through" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_spoiler_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_private" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_link_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_link" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_image_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_image" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_youtube_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_youtube" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_video_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_video" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_ordered_list_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_ordered_list" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_unordered_list_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_list" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_header_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_heading" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_center_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_center" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_quote_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_quote" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/markdown_code_iv"
+        android:layout_width="@dimen/markdown_helper_icon_size"
+        android:layout_height="@dimen/markdown_helper_icon_size"
+        android:padding="@dimen/markdown_helper_icon_padding"
+        app:ads_colorType="text_primary"
+        app:srcCompat="@drawable/ic_code" />
+
+
+</LinearLayout>

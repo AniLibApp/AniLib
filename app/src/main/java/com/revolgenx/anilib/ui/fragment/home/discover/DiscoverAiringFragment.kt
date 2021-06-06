@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.common.preference.*
-import com.revolgenx.anilib.ui.fragment.airing.AiringFragment
-import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.OrderedViewModel
 import com.revolgenx.anilib.databinding.DiscoverAiringFragmentLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenAiringScheduleEvent
 import com.revolgenx.anilib.ui.presenter.home.discover.DiscoverAiringPresenter
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
 import com.revolgenx.anilib.ui.dialog.DiscoverAiringFilterDialog
@@ -124,13 +121,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     private fun handleClick(which: Int) {
         when (which) {
             0 -> {
-                ContainerActivity.openActivity(
-                    requireContext(),
-                    ParcelableFragment(
-                        AiringFragment::class.java,
-                        bundleOf()
-                    )
-                )
+                OpenAiringScheduleEvent().postEvent
             }
             1 -> {
                 val airingDialog = DiscoverAiringFilterDialog()

@@ -8,7 +8,10 @@ import com.revolgenx.anilib.data.field.recommendation.AddRecommendationField
 import com.revolgenx.anilib.data.field.recommendation.RecommendationField
 import com.revolgenx.anilib.data.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.data.model.*
+import com.revolgenx.anilib.data.model.media_info.MediaRecommendationModel
 import com.revolgenx.anilib.data.model.recommendation.RecommendationModel
+import com.revolgenx.anilib.data.model.recommendation.SaveRecommendationModel
+import com.revolgenx.anilib.data.model.recommendation.UpdateRecommendationModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
