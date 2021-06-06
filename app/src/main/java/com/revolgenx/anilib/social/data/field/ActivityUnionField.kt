@@ -2,25 +2,29 @@ package com.revolgenx.anilib.social.data.field
 
 import com.revolgenx.anilib.ActivityUnionQuery
 import com.revolgenx.anilib.data.field.BaseSourceField
+import com.revolgenx.anilib.data.meta.type.AlActivityType
 import com.revolgenx.anilib.type.ActivityType
 
-class ActivityUnionField:BaseSourceField<ActivityUnionQuery>() {
+class ActivityUnionField : BaseSourceField<ActivityUnionQuery>() {
 
-    var isFollowing:Boolean? = null
-    var type:Int? = ActivityType.TEXT.ordinal
+    var isFollowing: Boolean = false
+    var type: AlActivityType = AlActivityType.ALL
 
     override fun toQueryOrMutation(): ActivityUnionQuery {
         return ActivityUnionQuery.builder()
             .page(page)
             .perPage(perPage)
             .apply {
-                isFollowing?.let {
-                    isFollowing(it)
+                if (isFollowing) {
+                    isFollowing(true)
                 }
-                type?.let {
-                    type(ActivityType.values()[it])
+                when (type) {
+                    AlActivityType.TEXT -> type(ActivityType.TEXT)
+                    AlActivityType.LIST -> type(ActivityType.MEDIA_LIST)
+                    else -> type_in(listOf(ActivityType.MEDIA_LIST, ActivityType.TEXT))
                 }
             }
             .build()
     }
+
 }

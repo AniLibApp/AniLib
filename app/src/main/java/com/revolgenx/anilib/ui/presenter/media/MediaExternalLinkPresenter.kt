@@ -6,14 +6,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.model.MediaExternalLinkModel
+import com.revolgenx.anilib.data.model.media_info.MediaExternalLinkModel
 import com.revolgenx.anilib.databinding.ExternalLinkPresenterBinding
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.util.colorsMap
 import com.revolgenx.anilib.util.copyToClipBoard
-import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.openLink
 
 class MediaExternalLinkPresenter(context: Context) :

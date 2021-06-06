@@ -4,11 +4,11 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MediaListActivity
 import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
@@ -23,7 +23,6 @@ import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.dialog.MessageDialog
-import com.revolgenx.anilib.ui.dialog.UserFollowerDialog
 import com.revolgenx.anilib.ui.fragment.stats.UserStatsContainerFragment
 import com.revolgenx.anilib.ui.fragment.user.UserFavouriteContainerFragment
 import com.revolgenx.anilib.ui.fragment.user.UserOverviewFragment
@@ -46,6 +45,11 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
     private val viewModel by viewModel<UserProfileViewModel>()
     private var userProfileModel: UserProfileModel? = null
 
+    override val setHomeAsUp: Boolean get() = userMeta != null
+    override val menuRes: Int = R.menu.user_profile_menu
+
+    private val userMeta get() = arguments?.getParcelable<UserMeta?>(USER_PROFILE_INFO_KEY)
+
     private val userProfileFragments by lazy {
         listOf(
             UserOverviewFragment(),
@@ -67,57 +71,59 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
         setCollapsingToolbarTheme()
     }
 
+    override fun onToolbarInflated() {
+        val menu = getBaseToolbar().menu
+        if (userMeta != null) {
+            menu.findItem(R.id.setting_menu).isVisible = false
+            menu.findItem(R.id.sign_out_menu).isVisible = false
+        }
+    }
+
+    override fun onToolbarMenuSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.setting_menu -> {
+                OpenSettingEvent(SettingEventTypes.SETTING).postEvent
+                true
+            }
+            R.id.sign_out_menu -> {
+                AuthenticateEvent().postEvent
+                true
+            }
+            R.id.user_share_menu -> {
+                requireContext().openLink(userProfileModel?.siteUrl)
+                true
+            }
+            else -> {
+                super.onToolbarMenuSelected(item)
+            }
+        }
+    }
+
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val userMeta: UserMeta? = arguments?.getParcelable(USER_PROFILE_INFO_KEY)
-
-
         showUserInfo = if (userMeta != null) {
-            binding.profileFragmentToolbar.inflateMenu(R.menu.user_profile_menu)
-
+            val meta = userMeta!!
             with(viewModel.userField) {
-                userId = userMeta.userId
-                userName = userMeta.userName
-            }
-            with(binding.profileFragmentToolbar) {
-                setNavigationIcon(R.drawable.ads_ic_back)
-                setNavigationOnClickListener {
-                    finishActivity()
-                }
-
-                menu.findItem(R.id.setting_menu).isVisible = false
-                menu.findItem(R.id.sign_out_menu).isVisible = false
-
-                setOnMenuItemClickListener {
-                    if (it.itemId == R.id.user_share_menu) {
-                        requireContext().openLink(userProfileModel?.siteUrl)
-                        true
-                    } else {
-                        false
-                    }
-                }
+                userId = meta.userId
+                userName = meta.userName
             }
 
             binding.animeCountHeader.setOnClickListener {
-                MediaListActivity.openActivity(
-                    requireContext(),
-                    MediaListMeta(userMeta.userId, userMeta.userName, MediaType.ANIME.ordinal)
-                )
+                OpenUserMediaListEvent(
+                    MediaListMeta(meta.userId, meta.userName, MediaType.ANIME.ordinal)
+                ).postEvent
             }
 
             binding.mangaCountHeader.setOnClickListener {
-                MediaListActivity.openActivity(
-                    requireContext(),
-                    MediaListMeta(userMeta.userId, userMeta.userName, MediaType.MANGA.ordinal)
-                )
+                OpenUserMediaListEvent(
+                    MediaListMeta(meta.userId, meta.userName, MediaType.MANGA.ordinal)
+                ).postEvent
             }
-
             true
         } else {
             if (requireContext().loggedIn()) {
-                binding.profileFragmentToolbar.inflateMenu(R.menu.user_profile_menu)
-
                 viewModel.userField.userId = requireContext().userId()
 
                 binding.animeCountHeader.setOnClickListener {
@@ -128,24 +134,6 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                 binding.mangaCountHeader.setOnClickListener {
                     ChangeViewPagerPageEvent(MainActivityPage.LIST).postEvent
                     ChangeViewPagerPageEvent(ListContainerFragmentPage.MANGA).postEvent
-                }
-
-                binding.profileFragmentToolbar.setOnMenuItemClickListener {
-                    when (it.itemId) {
-                        R.id.setting_menu -> {
-                            SettingEvent(SettingEventTypes.SETTING).postEvent
-                            true
-                        }
-                        R.id.user_share_menu -> {
-                            requireContext().openLink(userProfileModel?.siteUrl)
-                            true
-                        }
-                        R.id.sign_out_menu -> {
-                            AuthenticateEvent().postEvent
-                            true
-                        }
-                        else -> false
-                    }
                 }
                 true
             } else {
@@ -165,6 +153,11 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
             viewModel.getProfile()
         }
         visibleToUser = true
+    }
+
+
+    override fun getBaseToolbar(): Toolbar {
+        return binding.profileFragmentToolbar
     }
 
 
@@ -196,7 +189,7 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                     it.data?.let { model ->
                         userProfileModel = model
 
-                        viewModel.userField.userId = model.userId
+                        viewModel.userField.userId = model.id
 
                         if (savedInstanceState == null) {
                             viewModel.getFollower()
@@ -209,9 +202,9 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
                         userAvatarIv.setImageURI(model.avatar?.image)
                         userBannerIv.setImageURI(model.bannerImage ?: model.avatar?.image)
-                        usernameTv.text = model.userName
+                        usernameTv.text = model.name
 
-                        binding.profileFragmentToolbar.title = userProfileModel?.userName.naText()
+                        binding.profileFragmentToolbar.title = userProfileModel?.name.naText()
 
 
                         animeCountHeader.title =
@@ -219,7 +212,7 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                         mangaCountHeader.title =
                             model.totalManga.getOrDefault().prettyNumberFormat()
 
-                        if (requireContext().userId() != model.userId) {
+                        if (requireContext().userId() != model.id) {
                             userFollowButton.visibility = View.VISIBLE
                         }
 
@@ -290,18 +283,22 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
 
         followerHeader.setOnClickListener {
-            UserFollowerDialog.newInstance(FollowerMeta(viewModel.userField.userId))
-                .show(childFragmentManager, "follower_dialog")
+//            UserFollowerDialog.newInstance(FollowerMeta(viewModel.userField.userId))
+//                .show(childFragmentManager, "follower_dialog")
+//
+            OpenUserFriendEvent(viewModel.userField.userId, true).postEvent
         }
 
         followingHeader.setOnClickListener {
-            UserFollowerDialog.newInstance(
-                FollowerMeta(
-                    viewModel.userField.userId,
-                    true
-                )
-            )
-                .show(childFragmentManager, "following_dialog")
+//            UserFollowerDialog.newInstance(
+//                FollowerMeta(
+//                    viewModel.userField.userId,
+//                    true
+//                )
+//            )
+//                .show(childFragmentManager, "following_dialog")
+            OpenUserFriendEvent(viewModel.userField.userId).postEvent
+
         }
 
         userFollowButton.setOnClickListener {
@@ -316,7 +313,7 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                 with(MessageDialog.Companion.Builder()) {
                     titleRes = R.string.unfollow
                     message = getString(R.string.stop_following_s).format(
-                        userProfileModel?.userName ?: ""
+                        userProfileModel?.name ?: ""
                     )
                     positiveTextRes = R.string.yes
                     negativeTextRes = R.string.no

@@ -19,6 +19,8 @@ import com.revolgenx.anilib.infrastructure.service.staff.StaffService
 import com.revolgenx.anilib.infrastructure.service.staff.StaffServiceImpl
 import com.revolgenx.anilib.infrastructure.service.studio.StudioService
 import com.revolgenx.anilib.infrastructure.service.studio.StudioServiceImpl
+import com.revolgenx.anilib.infrastructure.service.toggle.ToggleLikeV2Service
+import com.revolgenx.anilib.infrastructure.service.toggle.ToggleLikeV2ServiceImpl
 import com.revolgenx.anilib.infrastructure.service.user.UserService
 import com.revolgenx.anilib.infrastructure.service.user.UserServiceImpl
 import com.revolgenx.anilib.infrastructure.service.user.UserStatsService
@@ -42,4 +44,5 @@ val serviceModule = module {
     factory<MediaService> { MediaServiceImpl(get()) }
     factory<ReviewService> { ReviewServiceImpl(get()) }
     factory<SettingService> { SettingServiceImpl(get()) }
+    factory<ToggleLikeV2Service> { ToggleLikeV2ServiceImpl(get()) }
 }

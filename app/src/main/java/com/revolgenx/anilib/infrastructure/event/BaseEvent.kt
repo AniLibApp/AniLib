@@ -14,3 +14,4 @@ abstract class BaseEvent {
 }
 
 class AuthenticateEvent():BaseEvent()
+abstract class CommonEvent:BaseEvent()

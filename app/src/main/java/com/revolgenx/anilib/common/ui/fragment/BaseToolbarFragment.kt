@@ -13,15 +13,12 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.databinding.BaseToolbarFragmentLayoutBinding
 
-abstract class BaseToolbarFragment<T:ViewBinding> : BaseLayoutFragment<T>() {
-    private lateinit var toolbar:DynamicToolbar
+abstract class BaseToolbarFragment<T : ViewBinding> : BaseLayoutFragment<T>() {
+    private lateinit var toolbar: DynamicToolbar
     override var setHomeAsUp: Boolean = true
 
-    open val shouldFinishActivity = false
-
     open val noScrollToolBar = false
-
-    open val toolbarColorType:Int? = null
+    open val toolbarColorType: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,44 +27,19 @@ abstract class BaseToolbarFragment<T:ViewBinding> : BaseLayoutFragment<T>() {
     ): View {
         val b = BaseToolbarFragmentLayoutBinding.inflate(inflater, container, false)
         toolbar = b.toolbarLayout.dynamicToolbar
-        toolbarColorType?.let {
-            toolbar.colorType = it
-            if(it == Theme.ColorType.BACKGROUND){
-                toolbar.textColorType = Theme.ColorType.TEXT_PRIMARY
-            }
+
+        if (noScrollToolBar) {
+            (toolbar.layoutParams as AppBarLayout.LayoutParams).scrollFlags =
+                AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
         }
 
-        if(noScrollToolBar){
-            (toolbar.layoutParams as AppBarLayout.LayoutParams).scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
-        }
-
-        val content =  super.onCreateView(inflater, container, savedInstanceState)
+        val content = super.onCreateView(inflater, container, savedInstanceState)
         b.toolbarContainerLayout.addView(content)
         return b.root
     }
 
-    override fun getBaseToolbar(): Toolbar? {
+    override fun getBaseToolbar(): Toolbar {
         return toolbar
     }
 
-    override fun onResume() {
-        super.onResume()
-        invalidateOptionMenu()
-        setHasOptionsMenu(true)
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                if(shouldFinishActivity){
-                    finishActivity()
-                }else{
-                    super.onOptionsItemSelected(item)
-                }
-                true
-            }
-            else -> false
-        }
-    }
 }

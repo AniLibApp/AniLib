@@ -20,15 +20,15 @@
             app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
             app:titleTextAppearance="@style/DynamicToolbarTitleTheme" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTabLayout
+        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
             android:id="@+id/about_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:ads_backgroundColorType="background"
+            app:ads_colorType="accent"
+            app:ads_contrastWithColorType="background"
             app:tabGravity="start"
-            app:tabMode="scrollable"
-            app:ads_colorType="background"
-            app:ads_textColorType="text_primary"
-            />
+            app:tabMode="scrollable" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,5 +36,5 @@
         android:id="@+id/about_fragment_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

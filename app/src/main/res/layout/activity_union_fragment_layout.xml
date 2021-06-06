@@ -20,16 +20,47 @@
             app:layout_scrollFlags="scroll|enterAlways">
 
 
-            <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
-                style="@style/HomeContainerTabLayoutStyle"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                app:ads_backgroundColorType="background"
-                app:ads_colorType="accent"
-                app:ads_contrastWithColorType="background"
-                app:ads_textColorType="tint_primary"
-                app:entries="@array/activity_entries"
-                app:layout_scrollFlags="noScroll"
-                app:tabTextAppearance="@style/ActivityUnionTabLayoutTextStyle" />
+                android:layout_height="wrap_content">
+
+                <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
+                    android:id="@+id/activity_union_tab_layout"
+                    style="@style/HomeContainerTabLayoutStyle"
+                    android:layout_width="0dp"
+                    app:ads_backgroundColorType="background"
+                    app:ads_colorType="accent"
+                    app:ads_contrastWithColorType="background"
+                    app:ads_textColorType="text_primary"
+                    app:entries="@array/activity_entries"
+                    app:layout_constraintEnd_toStartOf="@id/activity_type_popup_menu"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_scrollFlags="noScroll"
+                    app:tabTextAppearance="@style/ActivityUnionTabLayoutTextStyle" />
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                    android:id="@+id/activity_type_popup_menu"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:padding="2dp"
+                    app:ads_colorType="text_primary"
+                    app:layout_constraintBottom_toBottomOf="@id/activity_union_tab_layout"
+                    app:layout_constraintEnd_toStartOf="@+id/activity_global_spinner"
+                    app:layout_constraintTop_toTopOf="@id/activity_union_tab_layout"
+                    app:srcCompat="@drawable/ic_activity_filter" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                    android:id="@+id/activity_global_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/activity_union_tab_layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/activity_union_tab_layout" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
 
@@ -39,6 +70,17 @@
         android:id="@+id/activity_union_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicFloatingActionButton
+        android:id="@+id/activity_create_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/ads_fab_margin"
+        app:ads_colorType="background"
+        android:src="@drawable/ic_create_pencil"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

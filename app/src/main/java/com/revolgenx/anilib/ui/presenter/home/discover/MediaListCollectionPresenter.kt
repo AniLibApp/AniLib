@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.ui.presenter.home.discover
 
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
 import androidx.viewbinding.ViewBinding
@@ -13,18 +12,12 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.list.MediaListModel
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userName
 import com.revolgenx.anilib.constant.MediaListDisplayMode
-import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
 import com.revolgenx.anilib.databinding.*
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
 import com.revolgenx.anilib.ui.presenter.Constant.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.ui.presenter.list.binding.*
-import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.list.MediaListCollectionViewModel
 
 class MediaListCollectionPresenter(

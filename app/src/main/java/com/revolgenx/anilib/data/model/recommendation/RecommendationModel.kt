@@ -6,7 +6,7 @@ import com.revolgenx.anilib.data.model.CommonMediaModel
 open class RecommendationModel : BaseModel() {
     var recommendationId: Int? = null
         set(value) {
-            baseId = value
+            id = value
             field = value
         }
 

@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
 import com.revolgenx.anilib.data.field.staff.StaffMediaRoleField
-import com.revolgenx.anilib.data.model.StaffMediaRoleModel
+import com.revolgenx.anilib.data.model.staff.StaffMediaRoleModel
 import com.revolgenx.anilib.infrastructure.service.staff.StaffService
 import io.reactivex.disposables.CompositeDisposable
 

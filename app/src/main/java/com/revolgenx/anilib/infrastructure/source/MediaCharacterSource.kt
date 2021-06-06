@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
 import com.revolgenx.anilib.data.field.media.MediaCharacterField
-import com.revolgenx.anilib.data.model.MediaCharacterModel
+import com.revolgenx.anilib.data.model.media_info.MediaCharacterModel
 import com.revolgenx.anilib.infrastructure.service.media.MediaBrowseService
 import com.revolgenx.anilib.type.MediaType
 import io.reactivex.disposables.CompositeDisposable
@@ -17,7 +17,7 @@ class MediaCharacterSource(
     BaseRecyclerSource<MediaCharacterModel, MediaCharacterField>(field) {
 
     override fun areItemsTheSame(first: MediaCharacterModel, second: MediaCharacterModel): Boolean {
-        return first.characterId == second.characterId
+        return first.id == second.id
     }
 
     override fun getElementType(data: MediaCharacterModel): Int {

@@ -10,15 +10,13 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.BrowseGenreEvent
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
 import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.CommonMediaModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.SeasonPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
@@ -80,7 +78,7 @@ class SeasonPresenter(context: Context) :
             mediaGenreLayout.addGenre(
                 item.genres?.take(5)
             ) { genre ->
-                BrowseGenreEvent(MediaSearchFilterModel().also {
+                OpenSearchEvent(MediaSearchFilterModel().also {
                     it.genre = listOf(genre.trim())
                 }).postEvent
             }
@@ -99,28 +97,28 @@ class SeasonPresenter(context: Context) :
             })
 
             mediaCardView.setOnClickListener {
-                BrowseMediaEvent(
-                    MediaBrowserMeta(
+                OpenMediaInfoEvent(
+                    MediaInfoMeta(
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
-                    ), coverImageIv
+                    )
                 ).postEvent
             }
 
             bookmarkIv.setOnClickListener {
                 if (isLoggedIn) {
-                    ListEditorEvent(
+                    OpenMediaListEditorEvent(
                         ListEditorMeta(
                             item.mediaId,
                             item.type!!,
                             item.title!!.title(context)!!,
                             item.coverImage!!.image(context),
                             item.bannerImage
-                        ), coverImageIv
+                        )
                     ).postEvent
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

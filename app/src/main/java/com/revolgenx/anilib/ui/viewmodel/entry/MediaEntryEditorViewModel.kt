@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
-import com.revolgenx.anilib.data.model.MediaBrowseModel
+import com.revolgenx.anilib.data.model.media_info.MediaBrowseModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.ToggleService
 import com.revolgenx.anilib.infrastructure.service.media.MediaBrowseService

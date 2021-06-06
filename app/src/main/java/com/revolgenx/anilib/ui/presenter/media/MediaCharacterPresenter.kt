@@ -7,16 +7,15 @@ import androidx.viewbinding.ViewBinding
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.BrowseCharacterEvent
-import com.revolgenx.anilib.infrastructure.event.BrowseStaffEvent
-import com.revolgenx.anilib.data.meta.CharacterMeta
-import com.revolgenx.anilib.data.meta.StaffMeta
-import com.revolgenx.anilib.data.model.MediaCharacterModel
+import com.revolgenx.anilib.data.model.media_info.MediaCharacterModel
 import com.revolgenx.anilib.databinding.AnimeCharacterPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.MangaCharacterPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenCharacterEvent
+import com.revolgenx.anilib.infrastructure.event.OpenStaffEvent
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 
-class MediaCharacterPresenter(context: Context) : BasePresenter<ViewBinding, MediaCharacterModel>(context) {
+class MediaCharacterPresenter(context: Context) :
+    BasePresenter<ViewBinding, MediaCharacterModel>(context) {
 
     override val elementTypes: Collection<Int>
         get() = listOf(0, 1)
@@ -29,11 +28,16 @@ class MediaCharacterPresenter(context: Context) : BasePresenter<ViewBinding, Med
     }
 
 
-    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?, elementType: Int): ViewBinding {
-        return when(elementType){
-            1->{
-                MangaCharacterPresenterLayoutBinding.inflate(inflater, parent,false)
-            }else->{
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        elementType: Int
+    ): ViewBinding {
+        return when (elementType) {
+            1 -> {
+                MangaCharacterPresenterLayoutBinding.inflate(inflater, parent, false)
+            }
+            else -> {
                 AnimeCharacterPresenterLayoutBinding.inflate(inflater, parent, false)
             }
         }
@@ -46,16 +50,12 @@ class MediaCharacterPresenter(context: Context) : BasePresenter<ViewBinding, Med
         when (holder.elementType) {
             0 -> {
                 (binding as AnimeCharacterPresenterLayoutBinding).apply {
-                    characterImageView.setImageURI(item.characterImageModel?.image)
-                    characterNameTv.text = item.name
+                    characterImageView.setImageURI(item.image?.image)
+                    characterNameTv.text = item.name?.full
                     characterRoleTv.text = item.role?.let { characterRoles[it] }
                     characterLayoutContainer.setOnClickListener {
-                        BrowseCharacterEvent(
-                            CharacterMeta(
-                                item.characterId ?: -1,
-                                item.characterImageModel?.image
-                            ),
-                            characterImageView
+                        OpenCharacterEvent(
+                            item.id!!
                         ).postEvent
                     }
 
@@ -67,11 +67,8 @@ class MediaCharacterPresenter(context: Context) : BasePresenter<ViewBinding, Med
                             actorModel.language?.let { staffLanguages[it] }
 
                         voiceActorLayoutContainer.setOnClickListener {
-                            BrowseStaffEvent(
-                                StaffMeta(
-                                    actorModel.actorId ?: -1,
-                                    actorModel.voiceActorImageModel?.image
-                                )
+                            OpenStaffEvent(
+                                actorModel.actorId!!,
                             ).postEvent
                         }
                     }
@@ -80,16 +77,12 @@ class MediaCharacterPresenter(context: Context) : BasePresenter<ViewBinding, Med
             }
             1 -> {
                 (binding as MangaCharacterPresenterLayoutBinding).apply {
-                    mangaCharacterImageView.setImageURI(item.characterImageModel?.image)
-                    mangaCharacterNameTv.text = item.name
+                    mangaCharacterImageView.setImageURI(item.image?.image)
+                    mangaCharacterNameTv.text = item.name?.full
                     mangaCharacterRoleTv.text = item.role?.let { characterRoles[it] }
                     mangaCharacterContainer.setOnClickListener {
-                        BrowseCharacterEvent(
-                            CharacterMeta(
-                                item.characterId ?: -1,
-                                item.characterImageModel?.image
-                            ),
-                            mangaCharacterImageView
+                        OpenCharacterEvent(
+                            item.id!!
                         ).postEvent
                     }
                 }

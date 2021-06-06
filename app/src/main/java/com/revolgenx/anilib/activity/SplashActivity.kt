@@ -42,11 +42,14 @@ class SplashActivity : DynamicSplashActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-        statusBarColor = backgroundColor
     }
 
     override fun onViewCreated(view: View) {
         mSplash = view.findViewById(R.id.splash_image)
+    }
+
+    override fun getStatusBarColor(): Int {
+        return dynamicBackgroundColor
     }
 
     override fun onPreSplash() {

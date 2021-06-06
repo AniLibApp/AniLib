@@ -8,5 +8,5 @@ class ListActivityModel : ActivityUnionModel() {
     var media: CommonMediaModel? = null
 
     val getProgressStatus:String
-        get() = status + progress
+        get() = "${status.capitalize()} $progress of ${media!!.title!!.userPreferred}"
 }

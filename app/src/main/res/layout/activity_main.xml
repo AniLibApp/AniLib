@@ -38,14 +38,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-
-    <com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
-        android:id="@+id/mainBrowseFilterNavView"
-        style="@style/Widget.DynamicApp.NavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:theme="@style/Widget.DynamicApp.NavigationView.ThemeOverlay" />
-
 </com.pranavpandey.android.dynamic.support.widget.DynamicDrawerLayout>
 

@@ -33,6 +33,9 @@ class StudioViewModel(
     }
     var studioField: StudioField = StudioField()
     override var field: StudioMediaField = StudioMediaField()
+
+    val toggleFavouriteField = ToggleFavouriteField()
+
     override fun createSource(): StudioMediaSource {
         source = StudioMediaSource(field, studioService, compositeDisposable)
         return source!!

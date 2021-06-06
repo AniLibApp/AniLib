@@ -17,6 +17,7 @@ import com.github.piasy.biv.view.ImageSaveCallback
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.ThemeController
+import com.revolgenx.anilib.app.theme.dynamicPrimaryColor
 import com.revolgenx.anilib.data.meta.DraweeViewerMeta
 import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.databinding.SimpleDraweeViewerActivityBinding
@@ -53,6 +54,11 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
         return binding.root
     }
 
+    override fun setStatusBarColor(color: Int) {
+        super.setStatusBarColor(color)
+        setWindowStatusBarColor(statusBarColor)
+    }
+
     private var _binding: SimpleDraweeViewerActivityBinding?  =null
     private val binding: SimpleDraweeViewerActivityBinding
         get() = _binding!!
@@ -61,23 +67,16 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
         _binding = SimpleDraweeViewerActivityBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         contentView = binding.root
+        statusBarColor = Color.BLACK
+
         setSupportActionBar(binding.draweeViewerToolbar)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.title = ""
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         draweeMeta = intent.getParcelableExtra(simpleDraweeMetaKey) ?: return
         binding.haulerView.setBackgroundColor(Color.BLACK)
         binding.bigImageViewer.setImageViewFactory(FrescoImageViewFactory())
         binding.bigImageViewer.setProgressIndicator(ProgressPieIndicator())
-        binding.bigImageViewer.setImageSaveCallback(object : ImageSaveCallback {
-            override fun onFail(p0: Throwable?) {
-                makeToast(R.string.failed_to_save, icon = R.drawable.ic_error)
-            }
-
-            override fun onSuccess(p0: String?) {
-                makeToast(R.string.saved_to_gallary)
-            }
-        })
-
         binding.haulerView.setOnDragDismissedListener {
             finishAfterTransition()
         }

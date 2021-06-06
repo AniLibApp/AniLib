@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
-import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.databinding.ApplicationSettingFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.SettingEvent
+import com.revolgenx.anilib.infrastructure.event.OpenSettingEvent
 import com.revolgenx.anilib.infrastructure.event.SettingEventTypes
 import com.revolgenx.anilib.ui.dialog.HomeOrderDialog
 import com.revolgenx.anilib.ui.dialog.HomePageOrderDialog
@@ -32,7 +30,7 @@ class ApplicationSettingFragment : BaseToolbarFragment<ApplicationSettingFragmen
         super.onActivityCreated(savedInstanceState)
 
         binding.themeItemView.setOnClickListener {
-            SettingEvent(SettingEventTypes.THEME).postEvent
+            OpenSettingEvent(SettingEventTypes.THEME).postEvent
         }
 
         if (requireContext().loggedIn()) {

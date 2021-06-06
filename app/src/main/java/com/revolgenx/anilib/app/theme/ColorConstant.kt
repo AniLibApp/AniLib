@@ -23,5 +23,6 @@ val dynamicTintSurfaceColor get() = dynamicTheme.tintSurfaceColor
 val dynamicTextColorPrimary get() = dynamicTheme.textPrimaryColor
 val dynamicTextColorPrimaryInverse get() = dynamicTheme.textPrimaryColorInverse
 val dynamicPrimaryColor get() = dynamicTheme.primaryColor
+val dynamicPrimaryColorDark get() = dynamicTheme.primaryColorDark
 val dynamicAccentColor get() = dynamicTheme.accentColor
 val dynamicTintPrimaryColor get() = dynamicTheme.tintPrimaryColor

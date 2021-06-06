@@ -6,6 +6,7 @@ import com.revolgenx.anilib.data.field.character.CharacterField
 import com.revolgenx.anilib.data.field.character.CharacterMediaField
 import com.revolgenx.anilib.data.field.character.CharacterVoiceActorField
 import com.revolgenx.anilib.data.model.*
+import com.revolgenx.anilib.data.model.character.CharacterImageModel
 import com.revolgenx.anilib.data.model.character.CharacterMediaModel
 import com.revolgenx.anilib.data.model.character.CharacterModel
 import com.revolgenx.anilib.data.model.character.CharacterNameModel
@@ -32,7 +33,7 @@ class CharacterServiceImpl(
             .map {
                 it.data()?.Character()?.let {
                     CharacterModel().also { model ->
-                        model.characterId = it.id()
+                        model.id = it.id()
                         model.isFavourite = it.isFavourite
                         model.description = it.description()
                         model.siteUrl = it.siteUrl()
@@ -44,7 +45,7 @@ class CharacterServiceImpl(
                                 name.alternative = it.alternative()
                             }
                         }
-                        model.characterImageModel = it.image()?.let { image ->
+                        model.image = it.image()?.let { image ->
                             CharacterImageModel().also { imgModel ->
                                 imgModel.large = image.large()
                                 imgModel.medium = image.medium()

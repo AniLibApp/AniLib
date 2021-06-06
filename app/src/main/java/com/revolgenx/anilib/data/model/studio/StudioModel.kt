@@ -6,7 +6,7 @@ open class StudioModel : BaseModel() {
     var studioId: Int? = null
         set(value) {
             field = value
-            baseId = value
+            id = value
         }
     var studioName: String? = null
     var favourites: Int? = null

@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.infrastructure.event.BrowseStaffEvent
-import com.revolgenx.anilib.data.meta.StaffMeta
-import com.revolgenx.anilib.data.model.MediaStaffModel
+import com.revolgenx.anilib.data.model.media_info.MediaStaffModel
 import com.revolgenx.anilib.databinding.MediaStaffPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenStaffEvent
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 
 class MediaStaffPresenter(context: Context) : BasePresenter<MediaStaffPresenterLayoutBinding, MediaStaffModel>(context) {
@@ -27,11 +26,14 @@ class MediaStaffPresenter(context: Context) : BasePresenter<MediaStaffPresenterL
         super.onBind(page, holder, element)
         val item = element.data ?: return
         holder.getBinding()?.apply {
-            staffNameTv.text = item.name
+            staffNameTv.text = item.name?.full
             staffRoleTv.text = item.role
-            staffImageView.setImageURI(item.staffImage?.image)
+            staffImageView.setImageURI(item.image?.image)
             root.setOnClickListener {
-                BrowseStaffEvent(StaffMeta(item.staffId ?: -1, item.staffImage?.image)).postEvent
+                OpenStaffEvent(
+                    item.id!!,
+                ).postEvent
+
             }
         }
     }

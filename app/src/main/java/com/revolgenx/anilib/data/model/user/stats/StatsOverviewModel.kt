@@ -1,8 +1,8 @@
 package com.revolgenx.anilib.data.model.user.stats
 
-import com.revolgenx.anilib.data.model.BaseUserModel
+import com.revolgenx.anilib.data.model.user.UserModel
 
-class StatsOverviewModel : BaseUserModel() {
+class StatsOverviewModel : UserModel() {
     var type: Int? = null
 
     var count: Int? = null

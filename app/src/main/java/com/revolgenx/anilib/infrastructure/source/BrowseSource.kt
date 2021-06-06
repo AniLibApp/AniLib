@@ -14,7 +14,7 @@ class BrowseSource(
     private val compositeDisposable: CompositeDisposable
 ) : BaseRecyclerSource<BaseModel, SearchField>(field) {
     override fun areItemsTheSame(first: BaseModel, second: BaseModel): Boolean {
-        return first.baseId == second.baseId
+        return first.id == second.id
     }
 
     override fun getElementType(data: BaseModel): Int {

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootDrawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/advanceSearchCoordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ads_colorType="background"
+            app:ads_backgroundAware="disable"
+            app:ads_contrastWithColorType="none"
+            >
+            <com.revolgenx.anilib.ui.view.search.DynamicPersistentSearchView
+                android:id="@+id/persistentSearchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dimColor="@android:color/transparent"
+                app:isClearInputButtonEnabled="true"
+                app:isDismissableOnTouchOutside="true"
+                app:isVoiceInputButtonEnabled="false"
+                app:queryInputHint="@string/search"
+                app:shouldDimBehind="false"
+                app:layout_scrollFlags="enterAlways|scroll"
+                app:cardElevation="0dp"/>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/browseFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
+        android:id="@+id/browseFilterNavView"
+        style="@style/Widget.DynamicApp.NavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:theme="@style/Widget.DynamicApp.NavigationView.ThemeOverlay" />
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicDrawerLayout>

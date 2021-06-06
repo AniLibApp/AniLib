@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.LinearLayout
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
@@ -16,10 +17,9 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
 import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
-import com.revolgenx.anilib.data.model.MediaCharacterModel
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.data.model.media_info.MediaCharacterModel
 import com.revolgenx.anilib.ui.presenter.media.MediaCharacterPresenter
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.dp
@@ -40,10 +40,19 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
             return viewModel.source ?: createSource()
         }
 
-    private var mediaBrowserMeta: MediaBrowserMeta? = null
+    private val mediaBrowserMeta: MediaInfoMeta? get() = arguments?.getParcelable<MediaInfoMeta?>(MEDIA_INFO_META_KEY)
     private val viewModel by viewModel<MediaCharacterViewModel>()
 
     private lateinit var languageSpinner: DynamicSpinner
+
+
+
+    companion object{
+        private const val MEDIA_INFO_META_KEY = "MEDIA_INFO_META_KEY"
+        fun newInstance(meta:MediaInfoMeta) = MediaCharacterFragment().also {
+            it.arguments = bundleOf(MEDIA_INFO_META_KEY to meta)
+        }
+    }
 
     override fun createSource(): Source<MediaCharacterModel> {
         return viewModel.createSource()
@@ -85,8 +94,7 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mediaBrowserMeta =
-            arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
+        mediaBrowserMeta ?: return
         val span: Int = when (mediaBrowserMeta!!.type) {
             MediaType.ANIME.ordinal -> {
                 if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
@@ -116,6 +124,7 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         val spinnerItems = mutableListOf<DynamicMenu>()
         requireContext().resources.getStringArray(R.array.staff_language).forEach {
             spinnerItems.add(DynamicMenu(null, it))
@@ -154,7 +163,6 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
                 }
             }
         }
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onDestroy() {

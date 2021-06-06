@@ -26,20 +26,20 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
         super.onActivityCreated(savedInstanceState)
 
         binding.applicationSettingIv.setOnClickListener {
-            SettingEvent(SettingEventTypes.APPLICATION).postEvent
+            OpenSettingEvent(SettingEventTypes.APPLICATION).postEvent
         }
 
         if (requireContext().loggedIn()) {
             binding.notificationSetting.setOnClickListener {
-                SettingEvent(SettingEventTypes.NOTIFICATION).postEvent
+                OpenSettingEvent(SettingEventTypes.NOTIFICATION).postEvent
             }
 
             binding.mediaSettingIv.setOnClickListener {
-                SettingEvent(SettingEventTypes.MEDIA_SETTING).postEvent
+                OpenSettingEvent(SettingEventTypes.MEDIA_SETTING).postEvent
             }
 
             binding.listSettingIv.setOnClickListener {
-                SettingEvent(SettingEventTypes.MEDIA_LIST).postEvent
+                OpenSettingEvent(SettingEventTypes.MEDIA_LIST).postEvent
             }
         } else {
             binding.notificationSetting.visibility = View.GONE
@@ -49,21 +49,21 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
 
 
         binding.filterSetting.setOnClickListener {
-            SettingEvent(SettingEventTypes.CUSTOMIZE_FILTER).postEvent
+            OpenSettingEvent(SettingEventTypes.CUSTOMIZE_FILTER).postEvent
         }
 
         binding.widgetSetting.setOnClickListener {
-            SettingEvent(SettingEventTypes.AIRING_WIDGET).postEvent
+            OpenSettingEvent(SettingEventTypes.AIRING_WIDGET).postEvent
         }
 
         binding.translationSetting.setOnClickListener {
-            SettingEvent(SettingEventTypes.TRANSLATION).postEvent
+            OpenSettingEvent(SettingEventTypes.TRANSLATION).postEvent
         }
 
         if(requireContext().loggedIn()){
             binding.aboutItemView.visibility = View.VISIBLE
             binding.aboutItemView.setOnClickListener {
-                SettingEvent(SettingEventTypes.ABOUT).postEvent
+                OpenSettingEvent(SettingEventTypes.ABOUT).postEvent
             }
         }
 

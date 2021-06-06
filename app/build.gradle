@@ -121,7 +121,6 @@ ext {
     spin_kit_version = '1.4.0'
     draglist_version = '1.7.2'
     mpandroid_version = 'v3.1.0'
-    smarttab_version = '2.0.0@aar'
 
     preetytime_version = '4.0.4.Final'
 
@@ -191,6 +190,7 @@ dependencies {
     implementation "com.facebook.fresco:animated-webp:$fresco_version"
     implementation "com.facebook.fresco:webpsupport:$fresco_version"
     implementation "com.facebook.fresco:animated-base:$fresco_version"
+    implementation "com.facebook.fresco:imagepipeline-okhttp3:2.4.0"
 
 
     //timber
@@ -201,9 +201,6 @@ dependencies {
 
     //jwt token
     implementation "com.auth0.android:jwtdecode:$jwt_token_version"
-
-    //smarttab
-    implementation "com.ogaclejapan.smarttablayout:library:$smarttab_version"
 
     //mp chart
     implementation "com.github.PhilJay:MPAndroidChart:$mpandroid_version"
@@ -300,6 +297,11 @@ dependencies {
 
     //ml-kit
     implementation 'com.google.mlkit:translate:16.1.1'
+
+    def sheets_version = "2.2.3"
+    //sheets
+    implementation "com.maxkeppeler.sheets:core:$sheets_version"
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

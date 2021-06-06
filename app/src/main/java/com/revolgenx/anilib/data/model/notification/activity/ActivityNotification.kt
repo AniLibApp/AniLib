@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.data.model.notification.activity
 
-import com.revolgenx.anilib.data.model.UserPrefModel
+import com.revolgenx.anilib.data.model.user.UserPrefModel
 import com.revolgenx.anilib.data.model.activity.ListActivityModel
 import com.revolgenx.anilib.data.model.activity.MessageActivityModel
 import com.revolgenx.anilib.data.model.activity.TextActivityModel

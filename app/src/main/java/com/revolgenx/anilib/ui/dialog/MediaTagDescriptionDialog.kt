@@ -6,7 +6,7 @@ import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
-import com.revolgenx.anilib.data.model.MediaTagsModel
+import com.revolgenx.anilib.data.model.media_info.MediaTagsModel
 import com.revolgenx.anilib.databinding.MediaTagDescriptionDialogBinding
 import com.revolgenx.anilib.ui.viewmodel.media.MediaTagDescriptionViewModel
 import com.revolgenx.anilib.util.naText

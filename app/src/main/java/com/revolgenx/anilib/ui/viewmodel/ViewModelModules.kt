@@ -5,9 +5,11 @@ import com.revolgenx.anilib.ui.viewmodel.home.discover.DiscoverAiringViewModel
 import com.revolgenx.anilib.ui.viewmodel.airing.AiringViewModel
 import com.revolgenx.anilib.ui.viewmodel.browse.BrowseActivityViewModel
 import com.revolgenx.anilib.ui.viewmodel.character.CharacterActorViewModel
+import com.revolgenx.anilib.ui.viewmodel.character.CharacterContainerViewModel
 import com.revolgenx.anilib.ui.viewmodel.character.CharacterMediaViewModel
 import com.revolgenx.anilib.ui.viewmodel.character.CharacterViewModel
 import com.revolgenx.anilib.ui.viewmodel.entry.MediaEntryEditorViewModel
+import com.revolgenx.anilib.ui.viewmodel.friend.UserFriendFragmentViewModel
 import com.revolgenx.anilib.ui.viewmodel.home.recommendation.RecommendationViewModel
 import com.revolgenx.anilib.ui.viewmodel.home.season.SeasonViewModel
 import com.revolgenx.anilib.ui.viewmodel.home.discover.*
@@ -22,6 +24,7 @@ import com.revolgenx.anilib.ui.viewmodel.review.ReviewViewModel
 import com.revolgenx.anilib.ui.viewmodel.search.SearchFragmentViewModel
 import com.revolgenx.anilib.ui.viewmodel.setting.SettingViewModel
 import com.revolgenx.anilib.ui.viewmodel.setting.TagFilterSettingDialogViewModel
+import com.revolgenx.anilib.ui.viewmodel.staff.StaffContainerViewModel
 import com.revolgenx.anilib.ui.viewmodel.staff.StaffMediaCharacterViewModel
 import com.revolgenx.anilib.ui.viewmodel.staff.StaffMediaRoleViewModel
 import com.revolgenx.anilib.ui.viewmodel.staff.StaffViewModel
@@ -36,7 +39,7 @@ val viewModelModules = module {
     viewModel { SeasonViewModel(get()) }
     viewModel { MediaEntryEditorViewModel(get(), get(), get()) }
     viewModel { MainActivityViewModel(get(), get()) }
-    viewModel { MediaBrowserViewModel(get(), get(), get()) }
+    viewModel { MediaInfoViewModel(get(), get(), get()) }
 
     //overview
     viewModel { MediaOverviewViewModel(get(), get()) }
@@ -48,9 +51,11 @@ val viewModelModules = module {
     viewModel { MediaTagDescriptionViewModel() }
 
     //character|staff|studio
+    viewModel { CharacterContainerViewModel() }
     viewModel { CharacterViewModel(get(), get()) }
     viewModel { CharacterMediaViewModel(get()) }
     viewModel { CharacterActorViewModel(get()) }
+    viewModel { StaffContainerViewModel() }
     viewModel { StaffViewModel(get(), get()) }
     viewModel { StaffMediaCharacterViewModel(get()) }
     viewModel { StaffMediaRoleViewModel(get()) }
@@ -64,6 +69,7 @@ val viewModelModules = module {
     viewModel { RecommendationViewModel(get()) }
 
     //medialist
+    viewModel { UserMediaListContainerViewModel() }
     viewModel { WatchingViewModel(get(), get()) }
     viewModel { PlanningViewModel(get(), get()) }
     viewModel { CompletedViewModel(get(), get()) }
@@ -139,9 +145,12 @@ val viewModelModules = module {
     viewModel { AllReviewViewModel(get()) }
 
     //dialog
-    viewModel { MediaViewDialogViewModel(get()) }
+    viewModel { MediaListingViewModel(get()) }
 
     //setting
     viewModel { TagFilterSettingDialogViewModel() }
     viewModel { SettingViewModel(get()) }
+
+    //friend
+    viewModel { UserFriendFragmentViewModel(get()) }
 }

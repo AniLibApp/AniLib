@@ -7,8 +7,10 @@ import com.revolgenx.anilib.constant.AiringListDisplayMode
 import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.data.field.home.*
+import com.revolgenx.anilib.data.meta.type.AlActivityType
 import com.revolgenx.anilib.data.model.home.HomeOrderType
 import com.revolgenx.anilib.data.model.home.HomePageOrderType
+import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.getSeasonFromMonth
@@ -102,6 +104,10 @@ const val WIDGET_AIRING_WATCHING_KEY = "WIDGET_AIRING_WATCHING_KEY"
 const val WIDGET_IS_AIRING_WEEKLY_KEY = "WIDGET_IS_AIRING_WEEKLY_KEY"
 const val WIDGET_AIRING_CLICK_OPEN_LIST_EDITOR = "WIDGET_AIRING_CLICK_OPEN_LIST_EDITOR_KEY"
 const val WIDGET_AIRING_SHOW_ETA_KEY = "WIDGET_AIRING_SHOW_ETA_KEY"
+
+//activity union
+const val ACTIVITY_UNION_TYPE_KEY = "ACTIVITY_UNION_TYPE_KEY"
+const val ACTIVITY_IS_FOLLOWING_KEY = "ACTIVITY_IS_FOLLOWING_KEY"
 
 
 fun getDiscoverAiringField(context: Context) = AiringMediaField().apply {
@@ -442,3 +448,17 @@ fun storeAiringScheduleFieldForWidget(context: Context, field: AiringMediaField)
     }
 }
 
+fun getActivityUnionField(context: Context, field:ActivityUnionField? = null): ActivityUnionField {
+    return (field ?: ActivityUnionField()).apply {
+        type = context.getInt(ACTIVITY_UNION_TYPE_KEY, AlActivityType.ALL.ordinal).let { AlActivityType.values()[it] }
+        isFollowing = context.getBoolean(ACTIVITY_IS_FOLLOWING_KEY, false)
+    }
+}
+
+
+fun storeActivityUnionField(context: Context, field:ActivityUnionField){
+    with(field){
+        context.putInt(ACTIVITY_UNION_TYPE_KEY, type.ordinal)
+        context.putBoolean(ACTIVITY_IS_FOLLOWING_KEY, isFollowing)
+    }
+}

@@ -5,5 +5,6 @@ import androidx.core.text.toSpanned
 
 class TextActivityModel : ActivityUnionModel() {
     var text: String = ""
+    var anilifiedText:String = ""
     var textSpanned:Spanned = "".toSpanned()
 }

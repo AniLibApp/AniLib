@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.BasicUserQuery
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.field.TagField
-import com.revolgenx.anilib.data.model.UserPrefModel
+import com.revolgenx.anilib.data.model.user.UserPrefModel
 import com.revolgenx.anilib.common.preference.saveBasicUserDetail
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository

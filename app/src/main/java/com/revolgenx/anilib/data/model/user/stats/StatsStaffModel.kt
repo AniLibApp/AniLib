@@ -5,7 +5,7 @@ class StatsStaffModel : BaseStatsModel() {
     var staffId: Int? = null
         set(value) {
             field = value
-            baseId = value
+            id = value
         }
     var name: String? = null
     var image:String? = null

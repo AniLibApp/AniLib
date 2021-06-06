@@ -5,7 +5,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.extensions.MainSource
 import com.revolgenx.anilib.data.field.media.MediaWatchField
-import com.revolgenx.anilib.data.model.MediaWatchModel
+import com.revolgenx.anilib.data.model.media_info.MediaWatchModel
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.media.MediaBrowseService
 import io.reactivex.disposables.CompositeDisposable
