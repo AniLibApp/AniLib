@@ -143,7 +143,10 @@ fun Context.hideKeyboard(view: View) {
 fun Context.openLink(url: String?) {
     try {
         if (url != null)
-            startActivity(Intent(Intent.ACTION_VIEW, url.trim().toUri()))
+            startActivity(Intent(Intent.ACTION_VIEW, url.trim().toUri()).also {
+                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                it.addCategory(Intent.CATEGORY_LAUNCHER)
+            })
     } catch (e: Exception) {
         Timber.d(e)
         makeToast(R.string.no_app_found_to_open)

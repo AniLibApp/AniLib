@@ -11,8 +11,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
-class ToggleServiceImpl(graphRepository: BaseGraphRepository) :
-    ToggleService(graphRepository) {
+class ToggleFavouriteServiceImpl(graphRepository: BaseGraphRepository) :
+    ToggleFavouriteService(graphRepository) {
     override fun toggleFavourite(
         favouriteField: ToggleFavouriteField,
         compositeDisposable: CompositeDisposable?

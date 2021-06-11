@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.data.meta.type
 
-enum class MediaListStatus(val status:Int) {
+enum class MediaListStatus(val status: Int) {
     CURRENT(0),
     COMPLETED(2),
     PAUSED(4),
@@ -10,7 +10,24 @@ enum class MediaListStatus(val status:Int) {
     UNKNOWN(6);
 }
 
-enum class AlMediaSort(val sort:Int){
+
+enum class MediaListStatusEditor(val status: Int) {
+    CURRENT(0),
+    PLANNING(1),
+    COMPLETED(2),
+    REPEATING(5),
+    PAUSED(4),
+    DROPPED(3),
+    UNKNOWN(6);
+
+    companion object {
+        fun from(status: Int): MediaListStatusEditor {
+            return values().first { it.status == status }
+        }
+    }
+}
+
+enum class AlMediaSort(val sort: Int) {
     ID(0),
     TITLE_ROMAJI(2),
     TITLE_ENGLISH(4),
@@ -32,7 +49,7 @@ enum class AlMediaSort(val sort:Int){
 }
 
 
-enum class ALMediaListSort(val sort:Int){
+enum class ALMediaListSort(val sort: Int) {
     MEDIA_ID(0),
     SCORE(2),
     STATUS(4),
@@ -50,7 +67,7 @@ enum class ALMediaListSort(val sort:Int){
     MEDIA_POPULARITY(28),
 }
 
-enum class ALMediaListCollectionSort(val sort:Int){
+enum class ALMediaListCollectionSort(val sort: Int) {
     TITLE(0),
     SCORE(2),
     PROGRESS(4),
@@ -63,7 +80,7 @@ enum class ALMediaListCollectionSort(val sort:Int){
     POPULARITY(18),
 }
 
-enum class ALReviewSort(val sort:Int){
+enum class ALReviewSort(val sort: Int) {
     ID(0),
     SCORE(2),
     RATING(4),
@@ -71,14 +88,14 @@ enum class ALReviewSort(val sort:Int){
     UPDATED_AT(8),
 }
 
-enum class ALAiringSort(val sort:Int){
+enum class ALAiringSort(val sort: Int) {
     ID(0),
     MEDIA_ID(2),
     TIME(4),
     EPISODE(6),
 }
 
-enum class AlActivityType(val type:Int){
+enum class AlActivityType(val type: Int) {
     ALL(-1),
     TEXT(0),
     LIST(4)

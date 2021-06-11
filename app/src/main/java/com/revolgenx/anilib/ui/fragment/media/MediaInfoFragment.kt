@@ -29,6 +29,7 @@ import com.revolgenx.anilib.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.data.meta.DraweeViewerMeta
 import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.data.meta.type.MediaListStatusEditor
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.data.model.media_info.MediaBrowseModel
 import com.revolgenx.anilib.databinding.MediaInfoFragmentLayoutBinding
@@ -40,7 +41,9 @@ import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.fragment.browse.*
 import com.revolgenx.anilib.ui.view.drawable.DynamicBackgroundGradientDrawable
+import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
 import com.revolgenx.anilib.ui.viewmodel.media.MediaInfoViewModel
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.util.EventBusListener
@@ -319,13 +322,24 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
     }
 
     private fun MediaInfoFragmentLayoutBinding.updateListStatusView(status: Int) {
+        val mediaListStatus =
+            if (browseMediaBrowseModel?.type == MediaType.MANGA.ordinal) resources.getStringArray(R.array.media_list_manga_status) else resources.getStringArray(
+                R.array.media_list_status
+            )
+        val fromStatus = MediaListStatusEditor.from(status).ordinal
         mediaAddButton.text =
-            resources.getStringArray(R.array.media_list_status)[status]
+            mediaListStatus[fromStatus]
     }
 
-    private fun MediaInfoFragmentLayoutBinding.updateLegacyListStatusView(it: Int) {
+    private fun MediaInfoFragmentLayoutBinding.updateLegacyListStatusView(status: Int) {
+        val mediaListStatus =
+            if (browseMediaBrowseModel?.type == MediaType.MANGA.ordinal) resources.getStringArray(R.array.media_list_manga_status) else resources.getStringArray(
+                R.array.media_list_status
+            )
+        val fromStatus = MediaListStatusEditor.from(status).ordinal
+
         legacyMediaAddButton.text =
-            resources.getStringArray(R.array.media_list_status)[it]
+            mediaListStatus[fromStatus]
     }
 
 
@@ -436,8 +450,17 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
                 openListEditor()
             }
 
-            legacyMediaAddMoreIv.onPopupMenuClickListener = { _, position ->
-                changeMediaListStatus(position)
+            legacyMediaAddMoreIv.setOnClickListener {
+
+                val meta = mediaInfoMeta ?: return@setOnClickListener
+                val mediaListStatus =
+                    if (meta.type == MediaType.MANGA.ordinal) R.array.media_list_manga_status else R.array.media_list_status
+                makeArrayPopupMenu(
+                    it,
+                    resources.getStringArray(mediaListStatus)
+                ) { _, _, position, _ ->
+                    changeMediaListStatus(MediaListStatusEditor.values()[position].status)
+                }
             }
 
             legacyMediaReviewButton.setOnClickListener {
@@ -471,8 +494,16 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
                 openListEditor()
             }
 
-            mediaAddMoreIv.onPopupMenuClickListener = { _, position ->
-                changeMediaListStatus(position)
+            mediaAddMoreIv.setOnClickListener {
+                val meta = mediaInfoMeta ?: return@setOnClickListener
+                val mediaListStatus =
+                    if (meta.type == MediaType.MANGA.ordinal) R.array.media_list_manga_status else R.array.media_list_status
+                makeArrayPopupMenu(
+                    it,
+                    resources.getStringArray(mediaListStatus)
+                ) { _, _, position, _ ->
+                    changeMediaListStatus(MediaListStatusEditor.values()[position].status)
+                }
             }
 
             mediaReviewButton.setOnClickListener {

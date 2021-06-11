@@ -27,6 +27,7 @@ import com.revolgenx.anilib.common.preference.getUserPrefModel
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userScoreFormat
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.data.meta.type.MediaListStatusEditor
 import com.revolgenx.anilib.databinding.ListEditorFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
@@ -317,7 +318,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                 ContextCompat.getDrawable(
                     requireContext(),
                     R.drawable.ic_watching
-                ), getString(R.string.watching)
+                ), if(mediaListMeta.type == MediaType.MANGA.ordinal) getString(R.string.reading) else getString(R.string.watching)
             )
         )
         spinnerItems.add(
@@ -340,8 +341,8 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             DynamicMenu(
                 ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.ic_dropped
-                ), getString(R.string.dropped)
+                    R.drawable.ic_rewatching
+                ), if(mediaListMeta.type == MediaType.MANGA.ordinal) getString(R.string.rereading) else getString(R.string.rewatching)
             )
         )
         spinnerItems.add(
@@ -356,10 +357,12 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             DynamicMenu(
                 ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.ic_rewatching
-                ), getString(R.string.rewatching)
+                    R.drawable.ic_dropped
+                ), getString(R.string.dropped)
             )
         )
+
+
 
         statusSpinner.adapter = DynamicSpinnerImageAdapter(
             requireContext(),
@@ -481,7 +484,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                 position: Int,
                 id: Long
             ) {
-                apiModelEntry.status = position
+                apiModelEntry.status = MediaListStatusEditor.values()[position].status
             }
         }
 
@@ -524,7 +527,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
     private fun ListEditorFragmentLayoutBinding.updateView() {
         apiModelEntry.status?.let {
-            statusSpinner.setSelection(it)
+            statusSpinner.setSelection(MediaListStatusEditor.from(it).ordinal)
         }
         listEditorScoreLayout.mediaListScore = apiModelEntry.score ?: 0.0
         privateToggleButton.checked = apiModelEntry.private == true

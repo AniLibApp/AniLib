@@ -21,7 +21,7 @@ class ActivityUnionField : BaseSourceField<ActivityUnionQuery>() {
                 when (type) {
                     AlActivityType.TEXT -> type(ActivityType.TEXT)
                     AlActivityType.LIST -> type(ActivityType.MEDIA_LIST)
-                    else -> type_in(listOf(ActivityType.MEDIA_LIST, ActivityType.TEXT))
+                    else -> type_in(listOf(ActivityType.MEDIA_LIST, ActivityType.TEXT, ActivityType.ANIME_LIST, ActivityType.MANGA_LIST))
                 }
             }
             .build()

@@ -224,13 +224,12 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     tools:layout_editor_absoluteY="0dp" />
 
-                                <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
+                                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                                     android:id="@+id/media_add_more_iv"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_marginEnd="16dp"
                                     app:ads_colorType="text_primary"
-                                    app:entries="@array/media_list_status"
                                     app:layout_constraintEnd_toStartOf="@+id/media_add_divider"
                                     app:srcCompat="@drawable/ads_ic_more_horizontal"
                                     tools:layout_editor_absoluteY="0dp" />
@@ -358,7 +357,7 @@
                                 android:textSize="14sp"
                                 app:fontFamily="@font/cabincondensed_semi_bold" />
 
-                            <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
+                            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
                                 android:id="@+id/legacy_media_add_more_iv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -367,7 +366,6 @@
                                 android:layout_marginEnd="8dp"
                                 android:background="@drawable/ads_button_remote"
                                 app:ads_colorType="text_primary"
-                                app:entries="@array/media_list_status"
                                 app:srcCompat="@drawable/ads_ic_more_horizontal" />
 
                             <View

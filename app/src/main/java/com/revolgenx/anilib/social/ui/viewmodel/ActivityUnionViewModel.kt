@@ -6,9 +6,10 @@ import com.revolgenx.anilib.common.preference.storeActivityUnionField
 import com.revolgenx.anilib.data.model.toggle.LikeableUnionModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
-import com.revolgenx.anilib.infrastructure.service.toggle.ToggleLikeV2Service
+import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 import com.revolgenx.anilib.social.data.field.ActivityDeleteField
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
+import com.revolgenx.anilib.social.data.field.ToggleActivitySubscriptionField
 import com.revolgenx.anilib.social.data.field.ToggleLikeV2Field
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.infrastructure.service.ActivityUnionService
@@ -19,7 +20,7 @@ import com.revolgenx.anilib.ui.viewmodel.SourceViewModel
 class ActivityUnionViewModel(
     private val context: Context,
     private val activityUnionService: ActivityUnionService,
-    private val toggleLikeV2Service: ToggleLikeV2Service
+    private val toggleService: ToggleService
 ) :
     SourceViewModel<ActivityUnionSource, ActivityUnionField>() {
     override var field: ActivityUnionField = getActivityUnionField(context)
@@ -40,16 +41,38 @@ class ActivityUnionViewModel(
         item: ActivityUnionModel,
         callback: (Resource<LikeableUnionModel>) -> Unit
     ) {
-        toggleLikeV2Service.toggleLike(ToggleLikeV2Field().also {
+        toggleService.toggleLikeV2(ToggleLikeV2Field().also {
             it.id = item.id
             it.type = LikeableType.ACTIVITY
         }, compositeDisposable) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    val data = it.data ?: return@toggleLike
+                    val data = it.data ?: return@toggleLikeV2
                     item.likeCount = data.likeCount
                     item.isLiked = data.isLiked
-                }else->{}
+                    item.onDataChanged?.invoke()
+                }
+                else -> {
+                }
+            }
+            callback.invoke(it)
+        }
+    }
+
+    fun toggleActivitySubscription(
+        item: ActivityUnionModel,
+        callback: (Resource<ActivityUnionModel>) -> Unit
+    ) {
+        toggleService.toggleActivitySubscription(ToggleActivitySubscriptionField().also {
+            it.activityId = item.id
+            it.isSubscribed = !item.isSubscribed
+        }, compositeDisposable) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    val data = it.data ?: return@toggleActivitySubscription
+                    item.isSubscribed = data.isSubscribed
+                    item.onDataChanged?.invoke()
+                }
             }
             callback.invoke(it)
         }

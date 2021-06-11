@@ -607,4 +607,9 @@
     <string name="add_youtube_video">Add Youtube Video</string>
     <string name="edit">Edit</string>
     <string name="deleted_successfully_please_refresh">Deleted successfully, please refresh.</string>
+
+
+    <string name="plan_to_read">Plan to read</string>
+    <string name="rereading">Rereading</string>
+    <string name="plan_to_watch">Plan to watch</string>
 </resources>
