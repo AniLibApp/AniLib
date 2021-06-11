@@ -2059,6 +2059,23 @@ mutation ToggleLikeV2($id:Int, $type:LikeableType){
     }
 }
 
+mutation ToggleActivitySubscriptionMutation($activityId:Int, $subscribe:Boolean){
+    ToggleActivitySubscription(activityId:$activityId, subscribe:$subscribe){
+        ... on TextActivity{
+            id
+            isSubscribed
+        }
+        ... on MessageActivity{
+            id
+            isSubscribed
+        }
+        ... on ListActivity{
+            id
+            isSubscribed
+        }
+    }
+}
+
 fragment replyUsers on ActivityReply{
     id
     isLiked

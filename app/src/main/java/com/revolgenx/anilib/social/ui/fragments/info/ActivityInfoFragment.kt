@@ -26,6 +26,7 @@ import com.revolgenx.anilib.social.ui.presenter.ActivityLikeUserPresenter
 import com.revolgenx.anilib.social.ui.presenter.ActivityReplyPresenter
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
+import com.revolgenx.anilib.ui.view.makeToast
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -124,7 +125,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
     }
 
     private fun showErrorLayout(show: Boolean) {
-        binding.errorContainerLayout.visibility = if (show) View.VISIBLE else{
+        binding.errorContainerLayout.visibility = if (show) View.VISIBLE else {
             binding.errorLayout.errorMsg.text = ""
             View.GONE
         }
@@ -141,8 +142,54 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
     }
 
     private fun ActivityInfoFragmentLayoutBinding.initListener() {
-        binding.activityInfoSwipeToRefresh.setOnRefreshListener {
+        activityInfoSwipeToRefresh.setOnRefreshListener {
             viewModel.getActivityInfo()
+        }
+
+        listActivityLikeContainer.setOnClickListener {
+            viewModel.getActivityUnionModel()?.let {
+                activityUnionViewModel.toggleActivityLike(it) { re ->
+                    updateItems(it)
+                    when (re.status) {
+                        SUCCESS -> {
+                            val item = re.data ?: return@toggleActivityLike
+                            activityUnionViewModel.activeActivityUnionModel?.let {
+                                it.isLiked = item.isLiked
+                                it.likeCount = item.likeCount
+                                it.onDataChanged?.invoke()
+                            }
+                        }
+                        ERROR -> {
+                            makeToast(R.string.failed_to_toggle)
+                        }
+                    }
+                }
+            }
+        }
+
+
+        activitySubscribeIv.setOnClickListener {
+            updateSubscription()
+        }
+    }
+
+    private fun ActivityInfoFragmentLayoutBinding.updateSubscription(){
+        viewModel.getActivityUnionModel()?.let {
+            activityUnionViewModel.toggleActivitySubscription(it){re->
+                updateItems(it)
+                when(re.status){
+                    SUCCESS->{
+                        val item = re.data?: return@toggleActivitySubscription
+                        activityUnionViewModel.activeActivityUnionModel?.let {
+                            it.isSubscribed = item.isSubscribed
+                            it.onDataChanged?.invoke()
+                        }
+                    }
+                    ERROR->{
+                        makeToast(R.string.failed_to_toggle)
+                    }
+                }
+            }
         }
     }
 
@@ -161,7 +208,8 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
 
         binding.apply {
             repliesCountTv.text = getString(R.string.replies_count).format(item.replyCount)
-            activityLikeCountTv.text = item.likeCount.toString()
+
+            updateItems(item)
 
             if (likeUserRecyclerView.layoutManager == null) {
                 likeUserRecyclerView.layoutManager = likeUserLayoutManager
@@ -183,6 +231,20 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
 
         }
 
+    }
+
+    private fun ActivityInfoFragmentLayoutBinding.updateItems(item: ActivityUnionModel) {
+        activityLikeCountTv.text = item.likeCount.toString()
+        listActivityLikeIv.setImageResource(if(item.isLiked) R.drawable.ic_activity_like_filled else R.drawable.ic_activity_like_outline)
+
+        when(item){
+            is TextActivityModel->{
+                activitySubscribeIv.setImageResource(if(item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
+            }
+            is ListActivityModel->{
+                listActivitySubscribeIv.setImageResource(if(item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
+            }
+        }
     }
 
     private fun ActivityInfoFragmentLayoutBinding.bindTextActivity(item: TextActivityModel) {

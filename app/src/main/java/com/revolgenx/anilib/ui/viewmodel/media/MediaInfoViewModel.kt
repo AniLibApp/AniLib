@@ -8,14 +8,14 @@ import com.revolgenx.anilib.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.data.model.media_info.MediaBrowseModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.service.ToggleService
+import com.revolgenx.anilib.infrastructure.service.ToggleFavouriteService
 import com.revolgenx.anilib.infrastructure.service.media.MediaBrowseService
 import com.revolgenx.anilib.infrastructure.service.media.MediaListEntryService
 import io.reactivex.disposables.CompositeDisposable
 
 class MediaInfoViewModel(
     private val mediaBrowseService: MediaBrowseService,
-    private val toggleService: ToggleService,
+    private val toggleService: ToggleFavouriteService,
     private val mediaListEntryService: MediaListEntryService
 ) : ViewModel() {
     private val compositeDisposable by lazy {

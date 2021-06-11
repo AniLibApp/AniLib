@@ -17,4 +17,6 @@ abstract class ActivityUnionModel {
     var type: ActivityType = ActivityType.`$UNKNOWN`
     var userId:Int? = null
     var isLiked:Boolean = false
+
+    var onDataChanged:(() -> Unit)? = null
 }

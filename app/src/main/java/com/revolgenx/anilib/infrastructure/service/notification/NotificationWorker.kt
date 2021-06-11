@@ -111,7 +111,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             notificationBuilder.setContentIntent(it)
         }
         notificationBuilder.setSmallIcon(
-            R.drawable.ic_notifications
+            R.drawable.ic_notification_filled
         )
         notificationBuilder.setAutoCancel(true)
         notificationImage?.let {

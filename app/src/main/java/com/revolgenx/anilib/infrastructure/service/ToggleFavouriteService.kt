@@ -6,7 +6,7 @@ import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepositor
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class ToggleService(val graphRepository: BaseGraphRepository) {
+abstract class ToggleFavouriteService(val graphRepository: BaseGraphRepository) {
     val toggleFavMutableLiveData = MutableLiveData<Resource<Boolean>>()
     val isFavouriteLiveData = MutableLiveData<Resource<Boolean>>()
     abstract fun toggleFavourite(favouriteField: ToggleFavouriteField, compositeDisposable: CompositeDisposable? = null): MutableLiveData<Resource<Boolean>>

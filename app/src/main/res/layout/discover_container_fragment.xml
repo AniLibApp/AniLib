@@ -63,7 +63,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_notification" />
+                    app:srcCompat="@drawable/ic_notification_outline" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 

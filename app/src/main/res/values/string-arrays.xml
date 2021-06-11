@@ -452,11 +452,20 @@
 
     <string-array name="media_list_status">
         <item>@string/watching</item>
-        <item>@string/planning</item>
+        <item>@string/plan_to_watch</item>
         <item>@string/completed</item>
-        <item>@string/dropped</item>
+        <item>@string/rewatching</item>
         <item>@string/paused</item>
-        <item>@string/repeating</item>
+        <item>@string/dropped</item>
+    </string-array>
+
+    <string-array name="media_list_manga_status">
+        <item>@string/reading</item>
+        <item>@string/plan_to_read</item>
+        <item>@string/completed</item>
+        <item>@string/rereading</item>
+        <item>@string/paused</item>
+        <item>@string/dropped</item>
     </string-array>
 
     <string-array name="advance_search_type">

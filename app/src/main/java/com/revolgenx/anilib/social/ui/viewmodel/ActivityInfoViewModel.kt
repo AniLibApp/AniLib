@@ -12,6 +12,10 @@ class ActivityInfoViewModel(private val service: ActivityUnionService) : BaseVie
     val field: ActivityInfoField = ActivityInfoField()
     val activityInfoLiveData = MutableLiveData<Resource<ActivityUnionModel>>()
 
+    fun getActivityUnionModel(): ActivityUnionModel? {
+        return activityInfoLiveData.value?.data
+    }
+
     fun setActivityInfo(model: ActivityUnionModel) {
         activityInfoLiveData.value = Resource.success(model)
     }
