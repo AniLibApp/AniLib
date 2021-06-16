@@ -33,6 +33,6 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/activity_composer_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

@@ -338,6 +338,7 @@
     <string-array name="home_page_list_order">
         <item>@string/home</item>
         <item>@string/list</item>
+        <item>@string/activity</item>
         <item>@string/radio</item>
     </string-array>
 
@@ -883,4 +884,14 @@
         <item>@string/preview</item>
     </string-array>
 
+    <string-array name="reply_composer_tab_entries">
+        <item>@string/reply</item>
+        <item>@string/preview</item>
+    </string-array>
+
+
+    <string-array name="reply_edit_entries">
+        <item>@string/edit</item>
+        <item>@string/delete</item>
+    </string-array>
 </resources>

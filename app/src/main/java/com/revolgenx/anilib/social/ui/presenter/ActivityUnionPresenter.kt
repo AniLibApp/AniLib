@@ -13,7 +13,7 @@ import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.CommonMediaModel
 import com.revolgenx.anilib.databinding.ListActivityPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.TextActivityPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenActivityComposer
+import com.revolgenx.anilib.infrastructure.event.OpenActivityTextComposer
 import com.revolgenx.anilib.infrastructure.event.OpenActivityInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
@@ -21,7 +21,9 @@ import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.data.model.ListActivityModel
 import com.revolgenx.anilib.social.data.model.TextActivityModel
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityTextComposerViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
@@ -32,7 +34,9 @@ import com.revolgenx.anilib.util.openLink
 
 class ActivityUnionPresenter(
     context: Context,
-    private val viewModel: ActivityUnionViewModel
+    private val viewModel: ActivityUnionViewModel,
+    private val activityInfoViewModel: ActivityInfoViewModel,
+    private val textComposerViewModel: ActivityTextComposerViewModel
 ) :
     BasePresenter<ViewBinding, ActivityUnionModel>(context) {
 
@@ -139,14 +143,14 @@ class ActivityUnionPresenter(
         }
 
         activityReplyContainer.setOnClickListener {
-            viewModel.activeActivityUnionModel = item
+            activityInfoViewModel.activeModel = item
             OpenActivityInfoEvent(item.id!!).postEvent
         }
 
         if(BuildConfig.DEBUG){
             activityMorePopup.setOnLongClickListener {
-                viewModel.activeActivityUnionModel = item
-                OpenActivityComposer().postEvent
+                textComposerViewModel.activeModel = item
+                OpenActivityTextComposer().postEvent
                 true
             }
         }
@@ -164,8 +168,8 @@ class ActivityUnionPresenter(
                         context.copyToClipBoard(item.siteUrl)
                     }
                     2 -> {
-                        viewModel.activeActivityUnionModel = item
-                        OpenActivityComposer().postEvent
+                        textComposerViewModel.activeModel = item
+                        OpenActivityTextComposer().postEvent
                     }
                     3 -> {
                         makeConfirmationDialog(context) {
@@ -187,7 +191,7 @@ class ActivityUnionPresenter(
 
 
         root.setOnClickListener {
-            viewModel.activeActivityUnionModel = item
+            activityInfoViewModel.activeModel = item
             OpenActivityInfoEvent(item.id!!).postEvent
         }
 
@@ -275,7 +279,7 @@ class ActivityUnionPresenter(
         }
 
         root.setOnClickListener {
-            viewModel.activeActivityUnionModel = item
+            activityInfoViewModel.activeModel = item
             OpenActivityInfoEvent(item.id!!).postEvent
         }
     }

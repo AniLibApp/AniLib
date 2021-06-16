@@ -13,10 +13,12 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.data.meta.type.AlActivityType
 import com.revolgenx.anilib.databinding.ActivityUnionFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenActivityComposer
+import com.revolgenx.anilib.infrastructure.event.OpenActivityTextComposer
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.ui.presenter.ActivityUnionPresenter
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityTextComposerViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
@@ -26,13 +28,19 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
     override val basePresenter: Presenter<ActivityUnionModel>
-        get() = ActivityUnionPresenter(requireContext(), viewModel)
+        get() = ActivityUnionPresenter(requireContext()
+            , viewModel
+            , activityInfoViewModel
+            , textComposerViewModel)
     override val baseSource: Source<ActivityUnionModel>
         get() = viewModel.source ?: createSource()
 
     override var selfAddLayoutManager: Boolean = false
 
-    private val viewModel: ActivityUnionViewModel by sharedViewModel()
+    private val viewModel by sharedViewModel<ActivityUnionViewModel>()
+    private val textComposerViewModel by sharedViewModel<ActivityTextComposerViewModel>()
+    private val activityInfoViewModel by sharedViewModel<ActivityInfoViewModel>()
+
 
     private var _uBinding: ActivityUnionFragmentLayoutBinding? = null
     private val uBinding get() = _uBinding!!
@@ -112,7 +120,7 @@ class ActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
         }
 
         uBinding.activityCreateFab.setOnClickListener {
-            OpenActivityComposer().postEvent
+            OpenActivityTextComposer().postEvent
         }
     }
 

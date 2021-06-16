@@ -6,9 +6,7 @@ import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepositor
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.social.data.field.ActivityDeleteField
-import com.revolgenx.anilib.social.data.field.ActivityInfoField
-import com.revolgenx.anilib.social.data.field.ActivityUnionField
+import com.revolgenx.anilib.social.data.field.*
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -99,4 +97,38 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
         compositeDisposable.add(disposable)
     }
 
+
+    override fun saveTextActivity(
+        field: SaveTextActivityField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<Int>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map { it.data()?.SaveTextActivity()?.id() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                resourceCallback.invoke(Resource.success(it))
+            }, {
+                Timber.e(it)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+        compositeDisposable.add(disposable)
+    }
+
+    override fun saveActivityReply(
+        field: SaveActivityReplyField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<Int>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map { it.data()?.SaveActivityReply()?.id() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                resourceCallback.invoke(Resource.success(it))
+            }, {
+                Timber.e(it)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+        compositeDisposable.add(disposable)
+    }
 }

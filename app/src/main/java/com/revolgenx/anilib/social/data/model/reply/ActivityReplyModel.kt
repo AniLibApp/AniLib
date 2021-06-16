@@ -6,6 +6,8 @@ import com.revolgenx.anilib.data.model.user.UserModel
 
 
 class ActivityReplyModel : BaseModel() {
+    var activityId:Int? = null
+    var userId:Int? = null
     var isLiked: Boolean = false
     var likeCount: Int = 0
     var likes: List<UserModel>? = null

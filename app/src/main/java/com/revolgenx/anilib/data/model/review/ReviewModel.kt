@@ -8,7 +8,7 @@ import com.revolgenx.anilib.data.model.markwon.MarkdownModel
 open class ReviewModel : BaseModel() {
     var reviewId: Int? = null
     var summary: String? = null
-    var body: MarkdownModel = MarkdownModel()
+    var body: String = ""
     var userRating: Int? = null
     var rating: Int? = null
     var ratingAmount: Int? = null

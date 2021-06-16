@@ -145,7 +145,6 @@ fun Context.openLink(url: String?) {
         if (url != null)
             startActivity(Intent(Intent.ACTION_VIEW, url.trim().toUri()).also {
                 it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                it.addCategory(Intent.CATEGORY_LAUNCHER)
             })
     } catch (e: Exception) {
         Timber.d(e)

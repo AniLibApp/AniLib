@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.ActivityInfoFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
+import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.data.model.ListActivityModel
@@ -25,12 +25,19 @@ import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.ui.presenter.ActivityLikeUserPresenter
 import com.revolgenx.anilib.social.ui.presenter.ActivityReplyPresenter
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityReplyComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityTextComposerViewModel
+import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
+import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.util.*
+import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBinding>() {
+class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBinding>(), EventBusListener {
 
     companion object {
         private const val ACTIVITY_ID_KEY = "ACTIVITY_ID_KEY"
@@ -52,13 +59,26 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         )
 
     //replies
-    private val repliesPresenter get() = ActivityReplyPresenter(requireContext())
+    private val repliesPresenter get() = ActivityReplyPresenter(requireContext(),activityReplyViewModel,  activityReplyComposerViewModel)
     private val repliesLayoutManager get() = LinearLayoutManager(requireContext())
 
     private val activityId get() = arguments?.getInt(ACTIVITY_ID_KEY)
 
-    private val viewModel by viewModel<ActivityInfoViewModel>()
+    private val viewModel by sharedViewModel<ActivityInfoViewModel>()
     private val activityUnionViewModel by sharedViewModel<ActivityUnionViewModel>()
+    private val activityReplyComposerViewModel by sharedViewModel<ActivityReplyComposerViewModel>()
+    private val textComposerViewModel by sharedViewModel<ActivityTextComposerViewModel>()
+
+    private val activityReplyViewModel by viewModel<ActivityReplyViewModel>()
+
+    private val activityMenuEntries by lazy {
+        requireContext().resources.getStringArray(R.array.activity_more_entries)
+    }
+
+    private val userId by lazy {
+        requireContext().userId()
+    }
+
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -74,7 +94,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.activity_reply_menu -> {
-
+                OpenActivityReplyComposer().postEvent
                 true
             }
             else -> {
@@ -83,12 +103,22 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unRegisterForEvent()
+    }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         viewModel.field.activityId =
-            activityId ?: activityUnionViewModel.activeActivityUnionModel?.id ?: return
+            activityId ?: viewModel.activeModel?.id ?: return
 
         binding.initListener()
 
@@ -116,7 +146,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         }
 
         if (savedInstanceState == null) {
-            activityUnionViewModel.activeActivityUnionModel?.let {
+            viewModel.activeModel?.let {
                 viewModel.setActivityInfo(it)
             }
 
@@ -153,7 +183,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
                     when (re.status) {
                         SUCCESS -> {
                             val item = re.data ?: return@toggleActivityLike
-                            activityUnionViewModel.activeActivityUnionModel?.let {
+                            viewModel.activeModel?.let {
                                 it.isLiked = item.isLiked
                                 it.likeCount = item.likeCount
                                 it.onDataChanged?.invoke()
@@ -171,16 +201,24 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         activitySubscribeIv.setOnClickListener {
             updateSubscription()
         }
+
+        listActivitySubscribeIv.setOnClickListener {
+            updateSubscription()
+        }
+
+        listActivityMorePopup.setOnClickListener {
+
+        }
     }
 
     private fun ActivityInfoFragmentLayoutBinding.updateSubscription(){
         viewModel.getActivityUnionModel()?.let {
-            activityUnionViewModel.toggleActivitySubscription(it){re->
+            activityUnionViewModel.toggleActivitySubscription(it){ re->
                 updateItems(it)
                 when(re.status){
                     SUCCESS->{
                         val item = re.data?: return@toggleActivitySubscription
-                        activityUnionViewModel.activeActivityUnionModel?.let {
+                        viewModel.activeModel?.let {
                             it.isSubscribed = item.isSubscribed
                             it.onDataChanged?.invoke()
                         }
@@ -251,8 +289,44 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         userAvatarIv.setImageURI(item.user?.avatar?.image)
         userNameTv.text = item.user?.name
         activityCreatedAtTv.text = item.createdAt
-        if (textActivityTv.text.isBlank()) {
+
+        if (textActivityTv.text.isBlank() || viewModel.activeModel == null || (viewModel.activeModel as? TextActivityModel?)?.text != item.text) {
             AlMarkwonFactory.getMarkwon().setParsedMarkdown(textActivityTv, item.textSpanned)
+        }
+
+        activityMorePopup.setOnClickListener {
+            val filteredMenu =
+                activityMenuEntries.filterIndexed { index, s -> if (item.userId == userId) true else index < 2 }
+                    .toTypedArray()
+            makeArrayPopupMenu(it, filteredMenu) { _, _, position, _ ->
+                when (position) {
+                    0 -> {
+                        requireContext().openLink(item.siteUrl)
+                    }
+                    1 -> {
+                        requireContext().copyToClipBoard(item.siteUrl)
+                    }
+                    2 -> {
+                        textComposerViewModel.activeModel = item
+                        OpenActivityTextComposer().postEvent
+                    }
+                    3 -> {
+                        makeConfirmationDialog(requireContext()) {
+                            requireContext().makeToast(R.string.please_wait)
+                            activityUnionViewModel.deleteActivity(item.id ?: -1) { id, success ->
+                                if (id == item.id) {
+                                    if (success) {
+                                        requireActivity().makeToast(R.string.deleted_successfully_please_refresh)
+                                    } else {
+                                        requireActivity().makeToast(R.string.failed_to_delete)
+                                    }
+                                    popBackStack()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -284,6 +358,37 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         listUserNameTv.setOnClickListener {
             openUserProfile(item.user?.id)
         }
+
+        listActivityMorePopup.setOnClickListener {
+            val filteredMenu =
+                activityMenuEntries.filterIndexed { index, s -> if (item.userId == userId) index != 2 else index < 2 }
+                    .toTypedArray()
+            makeArrayPopupMenu(it, filteredMenu) { _, _, position, _ ->
+                when (position) {
+                    0 -> {
+                        requireContext().openLink(item.siteUrl)
+                    }
+                    1 -> {
+                        requireContext().copyToClipBoard(item.siteUrl)
+                    }
+                    3 -> {
+                        makeConfirmationDialog(requireContext()) {
+                            requireContext().makeToast(R.string.please_wait)
+                            activityUnionViewModel.deleteActivity(item.id ?: -1) { id, success ->
+                                if (id == item.id) {
+                                    if (success) {
+                                        requireActivity().makeToast(R.string.deleted_successfully_please_refresh)
+                                    } else {
+                                        requireActivity().makeToast(R.string.failed_to_delete)
+                                    }
+                                    popBackStack()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun openUserProfile(userId: Int?) {
@@ -291,7 +396,15 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
     }
 
     override fun onDestroyView() {
-        activityUnionViewModel.activeActivityUnionModel = null
+        viewModel.activeModel = null
         super.onDestroyView()
+    }
+
+    //Events
+    @Subscribe
+    fun onEvent(event:OnActivityInfoUpdateEvent){
+        if(event.activityId == activityId){
+            viewModel.getActivityInfo()
+        }
     }
 }

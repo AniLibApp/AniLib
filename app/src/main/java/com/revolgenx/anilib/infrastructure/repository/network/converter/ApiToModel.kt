@@ -388,6 +388,8 @@ fun LikeUsers.toModel() = UserModel().also { fModel ->
 
 fun ReplyUsers.toModel() = ActivityReplyModel().also { model ->
     model.id = id()
+    model.activityId = activityId()
+    model.userId = userId()
     model.isLiked = isLiked ?: false
     model.likeCount = likeCount()
     model.text = text()?:""

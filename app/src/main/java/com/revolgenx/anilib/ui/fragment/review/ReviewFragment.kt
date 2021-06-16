@@ -9,7 +9,6 @@ import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.field.review.RateReviewField
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
-import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.review.ReviewModel
 import com.revolgenx.anilib.common.preference.loggedIn
@@ -18,6 +17,8 @@ import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.type.ReviewRating
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.review.ReviewViewModel
@@ -106,8 +107,8 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
             binding.createdAtTv.text = createdAt
             binding.reviewByScoreTv.text =
                 getString(R.string.review_score_format).format(score?.toString())
-            MarkwonImpl.createHtmlInstance(requireContext())
-                .setMarkdown(binding.reviewTv, body.html ?: "")
+
+            AlMarkwonFactory.getMarkwon().setMarkdown(binding.reviewTv, anilify(body))
             binding.reviewLikesInfo.text =
                 getString(R.string.s_out_of_s_liked_this_review).format(rating, ratingAmount)
 

@@ -737,7 +737,7 @@ query UserProfileQuery($name:String, $id:Int){
     User(name:$name, id:$id){
         id
         name
-        about(asHtml:true)
+        about
         avatar{
             medium
             large
@@ -1417,7 +1417,7 @@ query ReviewQuery($reviewId:Int, $mediaId:Int, $userId:Int){
         userId
         mediaId
         summary
-        body(asHtml:true)
+        body
         rating
         ratingAmount
         score
@@ -2076,8 +2076,22 @@ mutation ToggleActivitySubscriptionMutation($activityId:Int, $subscribe:Boolean)
     }
 }
 
+mutation SaveTextActivityMutation($id:Int, $text:String){
+    SaveTextActivity(id:$id, text:$text){
+        id
+    }
+}
+
+mutation SaveActivityReplyMutation($id:Int, $text:String){
+    SaveActivityReply(id:$id, text:$text){
+        id
+    }
+}
+
 fragment replyUsers on ActivityReply{
     id
+    activityId
+    userId
     isLiked
     likeCount
     likes{

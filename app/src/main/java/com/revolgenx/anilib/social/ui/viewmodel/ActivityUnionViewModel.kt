@@ -25,7 +25,6 @@ class ActivityUnionViewModel(
     SourceViewModel<ActivityUnionSource, ActivityUnionField>() {
     override var field: ActivityUnionField = getActivityUnionField(context)
 
-    var activeActivityUnionModel: ActivityUnionModel? = null
 
     override fun createSource(): ActivityUnionSource {
         source = ActivityUnionSource(field, activityUnionService, compositeDisposable)
