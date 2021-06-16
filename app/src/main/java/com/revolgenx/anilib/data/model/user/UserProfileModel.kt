@@ -1,9 +1,7 @@
 package com.revolgenx.anilib.data.model.user
 
-import com.revolgenx.anilib.data.model.markwon.MarkdownModel
-
 class UserProfileModel : UserPrefModel() {
-    var about: MarkdownModel? = null
+    var about: String = ""
     var totalAnime: Int? = null
     var totalManga: Int? = null
     var episodesWatched: Int? = null

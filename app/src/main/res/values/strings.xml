@@ -593,9 +593,10 @@
     <string name="social">Social</string>
     <string name="open_in_anilist">Open in AniList</string>
     <string name="friend">Friend</string>
-    <string name="activity_composer">Activity Composer</string>
+    <string name="composer">Composer</string>
     <string name="publish">Publish</string>
-    <string name="write_a_status">Write a status</string>
+    <string name="write_a_status">Write a status…</string>
+    <string name="write_a_reply">Write a reply…</string>
     <string name="please_read_the_site_guidelines_before_posting">Please read the site guidelines before posting</string>
     <string name="preview">Preview</string>
     <string name="spoiler">Spoiler</string>
@@ -612,4 +613,9 @@
     <string name="plan_to_read">Plan to read</string>
     <string name="rereading">Rereading</string>
     <string name="plan_to_watch">Plan to watch</string>
+    <string name="field_is_empty">Field is empty</string>
+    <string name="posted_successfully">Posted successfully</string>
+    <string name="posting">Posting</string>
+    <string name="replying">Replying</string>
+    <string name="replied_successfully">Replied successfully</string>
 </resources>

@@ -24,6 +24,8 @@ import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepositor
 import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -55,7 +57,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                         model.isBlocked = it.isBlocked ?: false
                         model.isFollower = it.isFollower ?: false
                         model.isFollowing = it.isFollowing ?: false
-                        model.about = MarkwonImpl.createMarkwonCompatible(it.about() ?: "")
+                        model.about = it.about() ?: ""
                         model.siteUrl = it.siteUrl()
                         it.statistics()?.let { stats ->
                             stats.anime()?.let { a ->
@@ -96,7 +98,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                         getTotalFollowing(userProfileField, compositeDisposable)
                     }
                 }, {
-                    Timber.w(it)
+                    Timber.e(it)
                     userProfileLiveData.value = Resource.error(it.message ?: ERROR, null, it)
                 })
 

@@ -40,7 +40,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                     model.ratingAmount = it.ratingAmount()
                     model.userRating = it.userRating()?.ordinal
                     model.summary = it.summary()
-                    model.body = MarkwonImpl.createMarkwonCompatible(it.body() ?: "")
+                    model.body = it.body() ?: ""
                     model.score = it.score()
                     model.private = it.private_()
                     model.createdAt = it.createdAt().let {

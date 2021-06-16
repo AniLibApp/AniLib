@@ -19,6 +19,8 @@ import com.revolgenx.anilib.databinding.UserActivityGenrePresenterBinding
 import com.revolgenx.anilib.databinding.UserOverviewFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.markwon.MarkwonImpl
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.ui.viewmodel.user.UserProfileViewModel
 import com.revolgenx.anilib.util.getOrDefault
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -82,29 +84,21 @@ class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBindin
                         if (loadBioByDefault()) {
                             loadBioCardVew.visibility = View.GONE
                             aboutContainerLayout.visibility = View.VISIBLE
-                            data.about?.html?.let { about ->
-                                MarkwonImpl.createHtmlInstance(requireContext())
-                                    .setMarkdown(userAboutTv, about)
-
-                                if (userAboutTv.text.isEmpty()) {
-                                    userAboutTv.setText(R.string.no_description)
-                                }
+                            if(data.about.isBlank()){
+                                userAboutTv.setText(R.string.no_description)
+                            }else{
+                                AlMarkwonFactory.getMarkwon().setMarkdown(userAboutTv, anilify(data.about))
                             }
                         } else {
                             aboutContainerLayout.visibility = View.GONE
                             loadBioCardVew.visibility = View.VISIBLE
                             loadBioCardVew.setOnClickListener {
                                 aboutContainerLayout.visibility = View.VISIBLE
-
-                                data.about?.html?.let { about ->
-                                    MarkwonImpl.createHtmlInstance(requireContext())
-                                        .setMarkdown(userAboutTv, about)
-
-                                    if (userAboutTv.text.isEmpty()) {
-                                        userAboutTv.setText(R.string.no_description)
-                                    }
+                                if(data.about.isBlank()){
+                                    userAboutTv.setText(R.string.no_description)
+                                }else{
+                                    AlMarkwonFactory.getMarkwon().setMarkdown(userAboutTv, anilify(data.about))
                                 }
-
                                 loadBioCardVew.visibility = View.GONE
                             }
                         }

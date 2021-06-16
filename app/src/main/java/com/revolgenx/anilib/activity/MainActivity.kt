@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.*
 import androidx.annotation.*
 import androidx.core.os.bundleOf
@@ -54,9 +55,9 @@ import kotlin.coroutines.CoroutineContext
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.social.ui.bottomsheet.SpoilerBottomSheet
 import com.revolgenx.anilib.social.ui.bottomsheet.SpoilerBottomSheetFragment
-import com.revolgenx.anilib.social.ui.fragments.composer.ActivityComposerContainerFragment
+import com.revolgenx.anilib.social.ui.fragments.composer.activity_reply.ActivityReplyComposerContainerFragment
+import com.revolgenx.anilib.social.ui.fragments.composer.activity_text.ActivityTextComposerContainerFragment
 import com.revolgenx.anilib.social.ui.fragments.info.ActivityInfoFragment
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.fragment.ActivityEventListener
@@ -437,7 +438,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     finish()
                 } else {
                     makeToast(R.string.press_again_to_exit, icon = R.drawable.ic_exit)
-                    Handler().postDelayed({
+                    Handler(Looper.myLooper()!!).postDelayed({
                         pressedTwice = false
                     }, 1000)
                 }
@@ -579,8 +580,12 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 addFragmentToMain(ReviewComposerFragment.newInstance(event.mediaId))
             }
 
-            is OpenActivityComposer ->{
-                addFragmentToMain(ActivityComposerContainerFragment())
+            is OpenActivityTextComposer ->{
+                addFragmentToMain(ActivityTextComposerContainerFragment())
+            }
+
+            is OpenActivityReplyComposer ->{
+                addFragmentToMain(ActivityReplyComposerContainerFragment())
             }
 
             is OpenActivityInfoEvent->{

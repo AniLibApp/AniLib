@@ -158,9 +158,7 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
                 binding.reviewSummaryEt.setText(it)
             }
 
-            body.html?.let {
-                binding.writeReviewEt.setText(it)
-            }
+            binding.writeReviewEt.setText(body)
 
             score?.let {
                 binding.reviewScorePlusMinusTv.setCounter(it.toDouble())
@@ -246,7 +244,7 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
 
         viewModel.field.model?.apply {
             summary = binding.reviewSummaryEt.text.toString()
-            body.html = binding.writeReviewEt.text.toString()
+            body = binding.writeReviewEt.text.toString()
             score = binding.reviewScorePlusMinusTv.counterHolder.toInt()
         }
         return true

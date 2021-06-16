@@ -1,11 +1,11 @@
 package com.revolgenx.anilib.social.data.model
 
+import com.revolgenx.anilib.data.model.BaseModel
 import com.revolgenx.anilib.data.model.user.UserModel
 import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel
 import com.revolgenx.anilib.type.ActivityType
 
-abstract class ActivityUnionModel {
-    var id: Int? = null
+abstract class ActivityUnionModel:BaseModel() {
     var replyCount: Int = 0
     var likeCount: Int = 0
     var isSubscribed: Boolean = false

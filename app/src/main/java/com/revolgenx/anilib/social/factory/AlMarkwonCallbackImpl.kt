@@ -15,7 +15,6 @@ class AlMarkwonCallbackImpl(private val context: Context) : AlMarkwonCallback {
 
     override fun onYoutubeClick(link: String) {
         val uLink = "https://www.youtube.com/watch?v=$link"
-        context.makeToast(msg = uLink)
         context.openLink(uLink)
     }
 
