@@ -3,6 +3,7 @@ package com.revolgenx.anilib.social.infrastructure.service
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.*
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
+import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel
 import io.reactivex.disposables.CompositeDisposable
 
 interface ActivityUnionService {
@@ -33,6 +34,12 @@ interface ActivityUnionService {
     fun saveActivityReply(
         field:SaveActivityReplyField,
         compositeDisposable: CompositeDisposable,
-        resourceCallback: (Resource<Int>) -> Unit
+        resourceCallback: (Resource<ActivityReplyModel>) -> Unit
+    )
+
+    fun deleteActivityReply(
+        field:DeleteActivityReplyField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<Boolean>) -> Unit
     )
 }

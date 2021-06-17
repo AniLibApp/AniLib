@@ -585,7 +585,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             }
 
             is OpenActivityReplyComposer ->{
-                addFragmentToMain(ActivityReplyComposerContainerFragment())
+                addFragmentToMain(ActivityReplyComposerContainerFragment.newInstance(event.activityId))
             }
 
             is OpenActivityInfoEvent->{

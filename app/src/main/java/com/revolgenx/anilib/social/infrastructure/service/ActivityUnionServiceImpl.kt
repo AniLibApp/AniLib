@@ -8,6 +8,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.*
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
+import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -118,14 +119,38 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
     override fun saveActivityReply(
         field: SaveActivityReplyField,
         compositeDisposable: CompositeDisposable,
-        resourceCallback: (Resource<Int>) -> Unit
+        resourceCallback: (Resource<ActivityReplyModel>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
-            .map { it.data()?.SaveActivityReply()?.id() }
+            .map {
+                it.data()?.SaveActivityReply()?.let {
+                    ActivityReplyModel().also { model ->
+                        model.id = it.id()
+                        model.activityId = it.activityId()
+                    }
+                }
+            }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
+                Timber.e(it)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+        compositeDisposable.add(disposable)
+    }
+
+    override fun deleteActivityReply(
+        field: DeleteActivityReplyField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<Boolean>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map { it.data()?.DeleteActivityReply()?.deleted() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                resourceCallback.invoke(Resource.success(it))
+            },{
                 Timber.e(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })

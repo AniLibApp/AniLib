@@ -37,7 +37,8 @@ import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBinding>(), EventBusListener {
+class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBinding>(),
+    EventBusListener {
 
     companion object {
         private const val ACTIVITY_ID_KEY = "ACTIVITY_ID_KEY"
@@ -59,7 +60,12 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         )
 
     //replies
-    private val repliesPresenter get() = ActivityReplyPresenter(requireContext(),activityReplyViewModel,  activityReplyComposerViewModel)
+    private val repliesPresenter
+        get() = ActivityReplyPresenter(
+            requireContext(),
+            activityReplyViewModel,
+            activityReplyComposerViewModel
+        )
     private val repliesLayoutManager get() = LinearLayoutManager(requireContext())
 
     private val activityId get() = arguments?.getInt(ACTIVITY_ID_KEY)
@@ -94,7 +100,9 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.activity_reply_menu -> {
-                OpenActivityReplyComposer().postEvent
+                viewModel.field.activityId?.let {
+                    OpenActivityReplyComposer(it).postEvent
+                }
                 true
             }
             else -> {
@@ -136,9 +144,6 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
                     binding.errorLayout.errorMsg.text = it.message
                 }
                 LOADING -> {
-                    it.data?.let {
-                        updateViews(it)
-                    }
                     showLoading(true)
                     showErrorLayout(false)
                 }
@@ -148,6 +153,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         if (savedInstanceState == null) {
             viewModel.activeModel?.let {
                 viewModel.setActivityInfo(it)
+                updateViews(it)
             }
 
             viewModel.getActivityInfo()
@@ -211,19 +217,19 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         }
     }
 
-    private fun ActivityInfoFragmentLayoutBinding.updateSubscription(){
+    private fun ActivityInfoFragmentLayoutBinding.updateSubscription() {
         viewModel.getActivityUnionModel()?.let {
-            activityUnionViewModel.toggleActivitySubscription(it){ re->
+            activityUnionViewModel.toggleActivitySubscription(it) { re ->
                 updateItems(it)
-                when(re.status){
-                    SUCCESS->{
-                        val item = re.data?: return@toggleActivitySubscription
+                when (re.status) {
+                    SUCCESS -> {
+                        val item = re.data ?: return@toggleActivitySubscription
                         viewModel.activeModel?.let {
                             it.isSubscribed = item.isSubscribed
                             it.onDataChanged?.invoke()
                         }
                     }
-                    ERROR->{
+                    ERROR -> {
                         makeToast(R.string.failed_to_toggle)
                     }
                 }
@@ -273,14 +279,14 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
 
     private fun ActivityInfoFragmentLayoutBinding.updateItems(item: ActivityUnionModel) {
         activityLikeCountTv.text = item.likeCount.toString()
-        listActivityLikeIv.setImageResource(if(item.isLiked) R.drawable.ic_activity_like_filled else R.drawable.ic_activity_like_outline)
+        listActivityLikeIv.setImageResource(if (item.isLiked) R.drawable.ic_activity_like_filled else R.drawable.ic_activity_like_outline)
 
-        when(item){
-            is TextActivityModel->{
-                activitySubscribeIv.setImageResource(if(item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
+        when (item) {
+            is TextActivityModel -> {
+                activitySubscribeIv.setImageResource(if (item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
             }
-            is ListActivityModel->{
-                listActivitySubscribeIv.setImageResource(if(item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
+            is ListActivityModel -> {
+                listActivitySubscribeIv.setImageResource(if (item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
             }
         }
     }
@@ -402,8 +408,8 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
 
     //Events
     @Subscribe
-    fun onEvent(event:OnActivityInfoUpdateEvent){
-        if(event.activityId == activityId){
+    fun onEvent(event: OnActivityInfoUpdateEvent) {
+        if (event.activityId == activityId) {
             viewModel.getActivityInfo()
         }
     }

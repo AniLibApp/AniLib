@@ -10,5 +10,5 @@ val activityViewModelModules = module {
     viewModel { ActivityInfoViewModel(get()) }
     viewModel { ActivityTextComposerViewModel(get()) }
     viewModel { ActivityReplyComposerViewModel(get()) }
-    viewModel { ActivityReplyViewModel(get()) }
+    viewModel { ActivityReplyViewModel(get(), get()) }
 }

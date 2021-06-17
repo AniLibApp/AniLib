@@ -14,7 +14,7 @@ import com.revolgenx.anilib.databinding.ActivityComposerContainerFragmentLayoutB
 import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityComposerViewModel
 import com.revolgenx.anilib.ui.view.makeToast
 
-abstract class ActivityComposerContainerFragment<VM:ActivityComposerViewModel<*,*>> :
+abstract class ActivityComposerContainerFragment<VM:ActivityComposerViewModel<*,*,*>> :
     BaseLayoutFragment<ActivityComposerContainerFragmentLayoutBinding>() {
 
     override val setHomeAsUp: Boolean = true

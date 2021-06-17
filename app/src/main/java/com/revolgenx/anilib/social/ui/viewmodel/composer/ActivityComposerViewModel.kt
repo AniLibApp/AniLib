@@ -5,7 +5,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.SaveActivityField
 import com.revolgenx.anilib.ui.viewmodel.BaseViewModel
 
-abstract class ActivityComposerViewModel<M : BaseModel, F : SaveActivityField<*>> :
+abstract class ActivityComposerViewModel<CM, M : BaseModel, F : SaveActivityField<*>> :
     BaseViewModel() {
     var text: String = ""
     var activeModel: M? = null
@@ -15,7 +15,7 @@ abstract class ActivityComposerViewModel<M : BaseModel, F : SaveActivityField<*>
         field.text = ""
     }
 
-    fun saveActivity(callback: (Resource<Int>) -> Unit) {
+    fun saveActivity(callback: (Resource<CM>) -> Unit) {
         resetField()
         activeModel?.let {
             field.id = it.id
@@ -24,5 +24,5 @@ abstract class ActivityComposerViewModel<M : BaseModel, F : SaveActivityField<*>
         save(callback)
     }
 
-    protected abstract fun save(callback: (Resource<Int>) -> Unit)
+    protected abstract fun save(callback: (Resource<CM>) -> Unit)
 }
