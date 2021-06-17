@@ -618,4 +618,5 @@
     <string name="posting">Posting</string>
     <string name="replying">Replying</string>
     <string name="replied_successfully">Replied successfully</string>
+    <string name="reply_not_attached_to_activity">Reply not attached to activity</string>
 </resources>

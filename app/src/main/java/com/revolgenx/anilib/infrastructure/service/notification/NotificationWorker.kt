@@ -28,6 +28,7 @@ import com.revolgenx.anilib.data.model.notification.NotificationModel
 import com.revolgenx.anilib.data.model.notification.activity.*
 import com.revolgenx.anilib.data.model.notification.thread.*
 import com.revolgenx.anilib.common.preference.*
+import com.revolgenx.anilib.data.model.notification.FollowingNotificationModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.util.LauncherShortcutKeys
@@ -212,8 +213,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                     notificationImage = it.commonMediaModel?.coverImage?.image(context)
                     String.format(
                         Locale.getDefault(),
-                        context.getString(R.string.episode_airing_notif)
-                        ,
+                        context.getString(R.string.episode_airing_notif),
                         it.contexts!![0],
                         it.episode,
                         it.contexts!![1],
@@ -225,10 +225,10 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
             NotificationUnionType.FOLLOWING -> {
 //                createUserPendingIntent(item as ActivityNotification)
-                createActivityNotif(item as ActivityNotification)
+                createFollowingNotification(item as FollowingNotificationModel)
             }
             NotificationUnionType.RELATED_MEDIA_ADDITION -> {
-                if(!getNotificationPreference(context.getString(R.string.related_media_added_notif))) return ""
+                if (!getNotificationPreference(context.getString(R.string.related_media_added_notif))) return ""
 
                 (item as RelatedMediaNotificationModel)
                 notificationImage = item.commonMediaModel?.coverImage?.image
@@ -262,6 +262,12 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                 PendingIntent.FLAG_ONE_SHOT
             )
         }
+    }
+
+    private fun createFollowingNotification(item: FollowingNotificationModel): String {
+        notificationImage = item.userModel?.avatar?.image
+        return context.getString(R.string.s_space_s)
+            .format(item.userModel?.name, item.context)
     }
 
 
@@ -331,7 +337,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
         super.onStopped()
     }
 
-    private fun getNotificationPreference(key: String):Boolean {
+    private fun getNotificationPreference(key: String): Boolean {
         return context.getBoolean(key, true)
     }
 }

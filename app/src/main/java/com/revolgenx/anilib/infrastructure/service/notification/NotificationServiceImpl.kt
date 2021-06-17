@@ -239,12 +239,12 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                         }
                     }
                     "ActivityReplySubscribedNotification" -> {
-                        (it as NotificationQuery.AsActivityReplyNotification).let {
+                        (it as NotificationQuery.AsActivityReplySubscribedNotification).let {
 
                             ActivityReplySubscribedNotification().apply {
                                 id = it.id()
                                 type = it.type()?.ordinal
-                                notificationUnionType = NotificationUnionType.ACTIVITY_REPLY
+                                notificationUnionType = NotificationUnionType.ACTIVITY_REPLY_SUBSCRIBED
                                 activityId = it.activityId()
                                 context = it.context()
                                 userPrefModel =

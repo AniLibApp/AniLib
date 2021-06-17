@@ -9,6 +9,7 @@ import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.databinding.ActivityReplyPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OnActivityInfoUpdateEvent
 import com.revolgenx.anilib.infrastructure.event.OpenActivityReplyComposer
 import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Status
@@ -53,8 +54,19 @@ class ActivityReplyPresenter(
             if (userId == item.userId) {
                 replyEditIv.visibility = View.VISIBLE
                 replyEditIv.onPopupMenuClickListener = { _, position ->
-                    activityReplyComposerViewModel.activeModel = item
-                    OpenActivityReplyComposer().postEvent
+                    when(position){
+                        0->{
+                            activityReplyComposerViewModel.activeModel = item
+                            OpenActivityReplyComposer(item.activityId!!).postEvent
+                        }
+                        1->{
+                            activityReplyViewModel.deleteActivityReply(item.id!!){
+                                if(it.status == Status.SUCCESS){
+                                    OnActivityInfoUpdateEvent(item.activityId!!).postEvent
+                                }
+                            }
+                        }
+                    }
                 }
             } else {
                 replyEditIv.visibility = View.GONE
