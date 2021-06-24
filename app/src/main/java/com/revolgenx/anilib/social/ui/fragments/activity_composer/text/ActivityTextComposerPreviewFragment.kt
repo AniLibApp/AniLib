@@ -1,7 +1,7 @@
-package com.revolgenx.anilib.social.ui.fragments.composer.activity_text
+package com.revolgenx.anilib.social.ui.fragments.activity_composer.text
 
-import com.revolgenx.anilib.social.ui.fragments.composer.ActivityComposerPreviewFragment
-import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityTextComposerViewModel
+import com.revolgenx.anilib.social.ui.fragments.activity_composer.ActivityComposerPreviewFragment
+import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityTextComposerViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ActivityTextComposerPreviewFragment:ActivityComposerPreviewFragment() {

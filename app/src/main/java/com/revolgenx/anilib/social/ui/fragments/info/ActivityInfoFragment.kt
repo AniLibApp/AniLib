@@ -20,6 +20,7 @@ import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.data.model.ListActivityModel
+import com.revolgenx.anilib.social.data.model.MessageActivityModel
 import com.revolgenx.anilib.social.data.model.TextActivityModel
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.ui.presenter.ActivityLikeUserPresenter
@@ -27,8 +28,8 @@ import com.revolgenx.anilib.social.ui.presenter.ActivityReplyPresenter
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
-import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityReplyComposerViewModel
-import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityTextComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityReplyComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityTextComposerViewModel
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.ui.view.makeToast
@@ -71,7 +72,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
     private val activityId get() = arguments?.getInt(ACTIVITY_ID_KEY)
 
     private val viewModel by sharedViewModel<ActivityInfoViewModel>()
-    private val activityUnionViewModel by sharedViewModel<ActivityUnionViewModel>()
+    private val activityUnionViewModel by viewModel<ActivityUnionViewModel>()
     private val activityReplyComposerViewModel by sharedViewModel<ActivityReplyComposerViewModel>()
     private val textComposerViewModel by sharedViewModel<ActivityTextComposerViewModel>()
 
@@ -239,7 +240,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
 
     private fun updateViews(item: ActivityUnionModel) {
         when (item) {
-            is TextActivityModel -> {
+            is TextActivityModel, is MessageActivityModel -> {
                 binding.textActivityContainerLayout.visibility = View.VISIBLE
                 binding.bindTextActivity(item)
 
@@ -282,7 +283,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         listActivityLikeIv.setImageResource(if (item.isLiked) R.drawable.ic_activity_like_filled else R.drawable.ic_activity_like_outline)
 
         when (item) {
-            is TextActivityModel -> {
+            is TextActivityModel, is MessageActivityModel -> {
                 activitySubscribeIv.setImageResource(if (item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
             }
             is ListActivityModel -> {
@@ -291,13 +292,24 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         }
     }
 
-    private fun ActivityInfoFragmentLayoutBinding.bindTextActivity(item: TextActivityModel) {
+    private fun ActivityInfoFragmentLayoutBinding.bindTextActivity(item: ActivityUnionModel) {
         userAvatarIv.setImageURI(item.user?.avatar?.image)
         userNameTv.text = item.user?.name
         activityCreatedAtTv.text = item.createdAt
 
-        if (textActivityTv.text.isBlank() || viewModel.activeModel == null || (viewModel.activeModel as? TextActivityModel?)?.text != item.text) {
-            AlMarkwonFactory.getMarkwon().setParsedMarkdown(textActivityTv, item.textSpanned)
+        when (item) {
+            is TextActivityModel -> {
+                if (textActivityTv.text.isBlank() || viewModel.activeModel == null || (viewModel.activeModel as? TextActivityModel?)?.text != item.text) {
+                    AlMarkwonFactory.getMarkwon()
+                        .setParsedMarkdown(textActivityTv, item.textSpanned)
+                }
+            }
+            is MessageActivityModel -> {
+                if (textActivityTv.text.isBlank() || viewModel.activeModel == null || (viewModel.activeModel as? MessageActivityModel?)?.message != item.message) {
+                    AlMarkwonFactory.getMarkwon()
+                        .setParsedMarkdown(textActivityTv, item.messageSpanned)
+                }
+            }
         }
 
         activityMorePopup.setOnClickListener {

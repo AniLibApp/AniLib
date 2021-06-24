@@ -12,18 +12,18 @@ import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.CommonMediaModel
 import com.revolgenx.anilib.databinding.ListActivityPresenterLayoutBinding
+import com.revolgenx.anilib.databinding.MessageActivityPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.TextActivityPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenActivityTextComposer
-import com.revolgenx.anilib.infrastructure.event.OpenActivityInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
+import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.data.model.ListActivityModel
+import com.revolgenx.anilib.social.data.model.MessageActivityModel
 import com.revolgenx.anilib.social.data.model.TextActivityModel
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
-import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityTextComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityMessageComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityTextComposerViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
@@ -36,7 +36,8 @@ class ActivityUnionPresenter(
     context: Context,
     private val viewModel: ActivityUnionViewModel,
     private val activityInfoViewModel: ActivityInfoViewModel,
-    private val textComposerViewModel: ActivityTextComposerViewModel
+    private val textComposerViewModel: ActivityTextComposerViewModel,
+    private val messageComposerViewModel: ActivityMessageComposerViewModel
 ) :
     BasePresenter<ViewBinding, ActivityUnionModel>(context) {
 
@@ -49,7 +50,8 @@ class ActivityUnionPresenter(
             ActivityType.TEXT.ordinal,
             ActivityType.MEDIA_LIST.ordinal,
             ActivityType.ANIME_LIST.ordinal,
-            ActivityType.MANGA_LIST.ordinal
+            ActivityType.MANGA_LIST.ordinal,
+            ActivityType.MESSAGE.ordinal
         )
 
     private val activityMenuEntries by lazy {
@@ -71,6 +73,9 @@ class ActivityUnionPresenter(
             ActivityType.MANGA_LIST.ordinal -> {
                 ListActivityPresenterLayoutBinding.inflate(inflater, parent, false)
             }
+            ActivityType.MESSAGE.ordinal -> {
+                MessageActivityPresenterLayoutBinding.inflate(inflater, parent, false)
+            }
             else -> {
                 TextActivityPresenterLayoutBinding.inflate(inflater, parent, false)
             }
@@ -85,17 +90,26 @@ class ActivityUnionPresenter(
         val type = element.type
 
 
-        if (type == ActivityType.TEXT.ordinal) {
-            (holder.getBinding() as TextActivityPresenterLayoutBinding).bind(item as TextActivityModel)
-        } else {
-            (holder.getBinding() as ListActivityPresenterLayoutBinding).bind(item as ListActivityModel)
+        when (type) {
+            ActivityType.TEXT.ordinal -> {
+                (holder.getBinding() as TextActivityPresenterLayoutBinding).bind(item as TextActivityModel)
+            }
+            ActivityType.MESSAGE.ordinal -> {
+                (holder.getBinding() as MessageActivityPresenterLayoutBinding).bind(item as MessageActivityModel)
+            }
+            else -> {
+                (holder.getBinding() as ListActivityPresenterLayoutBinding).bind(item as ListActivityModel)
+            }
         }
 
 
         holder[ACTIVITY_UNION_HOLDER_ITEM_KEY] = item
         item.onDataChanged = {
-            when(val binding = holder.getBinding()) {
+            when (val binding = holder.getBinding()) {
                 is TextActivityPresenterLayoutBinding -> {
+                    binding.updateItems(item)
+                }
+                is MessageActivityPresenterLayoutBinding->{
                     binding.updateItems(item)
                 }
                 is ListActivityPresenterLayoutBinding -> {
@@ -123,10 +137,10 @@ class ActivityUnionPresenter(
         activityCreatedAtTv.text = item.createdAt
 
         userAvatarIv.setOnClickListener {
-            openUser(item.user!!.id)
+            openUser(item.userId)
         }
         userNameTv.setOnClickListener {
-            openUser(item.user!!.id)
+            openUser(item.userId)
         }
 
         activityLikeContainer.setOnClickListener {
@@ -137,7 +151,7 @@ class ActivityUnionPresenter(
 
 
         activitySubscribeIv.setOnClickListener {
-            viewModel.toggleActivitySubscription(item){
+            viewModel.toggleActivitySubscription(item) {
                 updateItems(item)
             }
         }
@@ -147,7 +161,7 @@ class ActivityUnionPresenter(
             OpenActivityInfoEvent(item.id!!).postEvent
         }
 
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             activityMorePopup.setOnLongClickListener {
                 textComposerViewModel.activeModel = item
                 OpenActivityTextComposer().postEvent
@@ -197,17 +211,110 @@ class ActivityUnionPresenter(
 
     }
 
+    private fun MessageActivityPresenterLayoutBinding.bind(item: MessageActivityModel) {
+        AlMarkwonFactory.getMarkwon().setParsedMarkdown(textActivityTv, item.messageSpanned)
+
+        userNameTv.text = item.messenger!!.name
+        activityReplyCountTv.text = item.replyCount.toString()
+
+        updateItems(item)
+
+        userAvatarIv.setImageURI(item.messenger!!.avatar?.large)
+        activityCreatedAtTv.text = item.createdAt
+
+        userAvatarIv.setOnClickListener {
+            openUser(item.messengerId)
+        }
+        userNameTv.setOnClickListener {
+            openUser(item.messengerId)
+        }
+
+        activityLikeContainer.setOnClickListener {
+            viewModel.toggleActivityLike(item) {
+                updateItems(item)
+            }
+        }
+
+
+        activitySubscribeIv.setOnClickListener {
+            viewModel.toggleActivitySubscription(item) {
+                updateItems(item)
+            }
+        }
+
+        activityReplyContainer.setOnClickListener {
+            activityInfoViewModel.activeModel = item
+            OpenActivityInfoEvent(item.id!!).postEvent
+        }
+
+        if (BuildConfig.DEBUG) {
+            activityMorePopup.setOnLongClickListener {
+                messageComposerViewModel.activeModel = item
+                OpenActivityMessageComposer(viewModel.field.userId!!).postEvent
+                true
+            }
+        }
+
+        activityMorePopup.setOnClickListener {
+            val filteredMenu =
+                activityMenuEntries.filterIndexed { index, s -> if (item.userId == userId) true else index < 2 }
+                    .toTypedArray()
+            makeArrayPopupMenu(it, filteredMenu) { _, _, position, _ ->
+                when (position) {
+                    0 -> {
+                        context.openLink(item.siteUrl)
+                    }
+                    1 -> {
+                        context.copyToClipBoard(item.siteUrl)
+                    }
+                    2 -> {
+                        messageComposerViewModel.activeModel = item
+                        OpenActivityMessageComposer(viewModel.field.userId!!).postEvent
+                    }
+                    3 -> {
+                        makeConfirmationDialog(context) {
+                            context.makeToast(R.string.please_wait)
+                            viewModel.deleteActivity(item.id ?: -1) { id, success ->
+                                if (id == item.id) {
+                                    if (success) {
+                                        context.makeToast(R.string.deleted_successfully_please_refresh)
+                                    } else {
+                                        context.makeToast(R.string.failed_to_delete)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        root.setOnClickListener {
+            activityInfoViewModel.activeModel = item
+            OpenActivityInfoEvent(item.id!!).postEvent
+        }
+
+    }
+
     private fun TextActivityPresenterLayoutBinding.updateItems(item: ActivityUnionModel) {
         activityLikeCountTv.text = item.likeCount.toString()
         activityReplyCountTv.text = item.replyCount.toString()
-        activitySubscribeIv.setImageResource(if(item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
+        activitySubscribeIv.setImageResource(if (item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
         activityLikeIv.setImageResource(if (item.isLiked) R.drawable.ic_activity_like_filled else R.drawable.ic_activity_like_outline)
     }
 
-    private fun ListActivityPresenterLayoutBinding.updateItems(item:ActivityUnionModel){
+    private fun MessageActivityPresenterLayoutBinding.updateItems(item: ActivityUnionModel) {
         activityLikeCountTv.text = item.likeCount.toString()
         activityReplyCountTv.text = item.replyCount.toString()
-        activitySubscribeIv.setImageResource(if(item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
+        activitySubscribeIv.setImageResource(if (item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
+        activityLikeIv.setImageResource(if (item.isLiked) R.drawable.ic_activity_like_filled else R.drawable.ic_activity_like_outline)
+    }
+
+    private fun ListActivityPresenterLayoutBinding.updateItems(item: ActivityUnionModel) {
+        activityLikeCountTv.text = item.likeCount.toString()
+        activityReplyCountTv.text = item.replyCount.toString()
+        activitySubscribeIv.setImageResource(if (item.isSubscribed) R.drawable.ic_notification_filled else R.drawable.ic_notification_outline)
         activityLikeIv.setImageResource(if (item.isLiked) R.drawable.ic_activity_like_filled else R.drawable.ic_activity_like_outline)
     }
 
@@ -231,16 +338,16 @@ class ActivityUnionPresenter(
         }
 
         activitySubscribeIv.setOnClickListener {
-            viewModel.toggleActivitySubscription(item){
+            viewModel.toggleActivitySubscription(item) {
                 updateItems(item)
             }
         }
 
         userAvatarIv.setOnClickListener {
-            openUser(item.user!!.id)
+            openUser(item.userId)
         }
         userNameTv.setOnClickListener {
-            openUser(item.user!!.id)
+            openUser(item.userId)
         }
         mediaCoverIv.setOnClickListener {
             openMedia(item.media!!)

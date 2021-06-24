@@ -20,6 +20,7 @@ import com.revolgenx.anilib.data.model.user.UserModel
 import com.revolgenx.anilib.data.model.user.UserPrefModel
 import com.revolgenx.anilib.fragment.*
 import com.revolgenx.anilib.social.data.model.ListActivityModel
+import com.revolgenx.anilib.social.data.model.MessageActivityModel
 import com.revolgenx.anilib.social.data.model.TextActivityModel
 import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
@@ -318,6 +319,27 @@ fun ActivityUnionQuery.AsListActivity.toModel() = ListActivityModel().also { mod
     model.isLiked = isLiked?:false
 }
 
+fun ActivityUnionQuery.AsMessageActivity.toModel() = MessageActivityModel().also { model->
+    model.id = id()
+    model.message = message()?: ""
+    model.messageAnilified = anilify(model.message)
+    model.messageSpanned =  AlMarkwonFactory.getMarkwon().toMarkdown(model.messageAnilified)
+    model.recipientId = recipientId()
+    model.messengerId = messengerId()
+    model.messenger = messenger()?.fragments()?.messengerUser()?.toModel()
+    model.isPrivate = isPrivate ?: false
+    model.likes = likes()?.map {
+        it.fragments().likeUsers().toModel()
+    }
+    model.likeCount = likeCount()
+    model.replyCount = replyCount()
+    model.isSubscribed = isSubscribed ?: false
+    model.type = type()!!
+    model.siteUrl = siteUrl()
+    model.createdAt = createdAt().toLong().prettyTime()
+    model.isLiked = isLiked?:false
+}
+
 fun ActivityInfoQuery.AsTextActivity.toModel() = TextActivityModel().also { model ->
     model.id = id()
     model.text = text()?: ""
@@ -370,6 +392,31 @@ fun ActivityInfoQuery.AsListActivity.toModel() = ListActivityModel().also { mode
     model.isLiked = isLiked?:false
 }
 
+fun ActivityInfoQuery.AsMessageActivity.toModel() = MessageActivityModel().also { model->
+    model.id = id()
+    model.message = message()?: ""
+    model.messageAnilified = anilify(model.message)
+    model.messageSpanned =  AlMarkwonFactory.getMarkwon().toMarkdown(model.messageAnilified)
+    model.recipientId = recipientId()
+    model.messengerId = messengerId()
+    model.messenger = messenger()?.fragments()?.messengerUser()?.toModel()
+    model.isPrivate = isPrivate ?: false
+
+    model.likes = likes()?.map {
+        it.fragments().likeUsers().toModel()
+    }
+    model.replies = replies()?.map {
+        it.fragments().replyUsers().toModel()
+    }
+    model.likeCount = likeCount()
+    model.replyCount = replyCount()
+    model.isSubscribed = isSubscribed ?: false
+    model.type = type()!!
+    model.siteUrl = siteUrl()
+    model.createdAt = createdAt().toLong().prettyTime()
+    model.isLiked = isLiked?:false
+}
+
 
 fun LikeUsers.toModel() = UserModel().also { fModel ->
     fModel.id = id()
@@ -412,6 +459,18 @@ fun ReplyUsers.toModel() = ActivityReplyModel().also { model ->
 
 
 fun ActivityUser.toModel() = UserModel().also { model ->
+    model.id = id()
+    model.name = name()
+    model.avatar =
+        avatar()?.let {
+            AvatarModel().also { uModel ->
+                uModel.large = it.large()
+                uModel.medium = it.medium()
+            }
+        }
+}
+
+fun MessengerUser.toModel() = UserModel().also { model ->
     model.id = id()
     model.name = name()
     model.avatar =

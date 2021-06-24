@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.social.ui.fragments.composer.activity_reply
+package com.revolgenx.anilib.social.ui.fragments.activity_composer.reply
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
@@ -6,9 +6,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.infrastructure.event.OnActivityInfoUpdateEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Status
-import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel
-import com.revolgenx.anilib.social.ui.fragments.composer.ActivityComposerContainerFragment
-import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityReplyComposerViewModel
+import com.revolgenx.anilib.social.ui.fragments.activity_composer.ActivityComposerContainerFragment
+import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityReplyComposerViewModel
 import com.revolgenx.anilib.ui.view.makeToast
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

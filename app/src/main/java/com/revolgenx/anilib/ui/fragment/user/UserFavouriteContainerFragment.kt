@@ -3,6 +3,7 @@ package com.revolgenx.anilib.ui.fragment.user
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
@@ -14,6 +15,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserFavouriteContainerFragment :
     BaseLayoutFragment<UserFavouriteContainerFragmentLayoutBinding>() {
+
+
+    companion object{
+        fun newInstance(userMeta: UserMeta) = UserFavouriteContainerFragment().also {
+            it.arguments = bundleOf(UserConstant.USER_META_KEY to userMeta)
+        }
+    }
 
     private val userFavouriteFragments by lazy {
         listOf(
@@ -27,6 +35,9 @@ class UserFavouriteContainerFragment :
 
     private val userProfileViewModel: UserProfileViewModel by viewModel()
 
+    private val userMeta get()= arguments?.getParcelable<UserMeta?>(UserConstant.USER_META_KEY)
+
+
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?
@@ -38,11 +49,11 @@ class UserFavouriteContainerFragment :
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val userMeta: UserMeta = arguments?.getParcelable(UserConstant.USER_META_KEY) ?: return
+        val user = userMeta?: return
 
         with(userProfileViewModel.userField) {
-            userName = userMeta.userName
-            userId = userMeta.userId
+            userName = user.userName
+            userId = user.userId
         }
 
         userFavouriteFragments.forEach {

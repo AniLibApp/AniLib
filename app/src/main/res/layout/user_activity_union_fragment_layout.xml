@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/user_activity_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+            android:id="@+id/user_activity_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"/>
+    </LinearLayout>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicFloatingActionButton
+        android:id="@+id/user_activity_create_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/ads_fab_margin"
+        android:src="@drawable/ic_create_pencil" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

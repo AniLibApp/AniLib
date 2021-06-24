@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.social.ui.fragments.composer
+package com.revolgenx.anilib.social.ui.fragments.activity_composer
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

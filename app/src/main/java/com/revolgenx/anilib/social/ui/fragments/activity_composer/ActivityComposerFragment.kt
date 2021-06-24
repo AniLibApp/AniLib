@@ -1,18 +1,13 @@
-package com.revolgenx.anilib.social.ui.fragments.composer
+package com.revolgenx.anilib.social.ui.fragments.activity_composer
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.StringRes
 import androidx.core.widget.doOnTextChanged
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.ActivityComposerFragmentLayoutBinding
-import com.revolgenx.anilib.social.data.model.TextActivityModel
-import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
-import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityComposerViewModel
 import com.revolgenx.anilib.util.openLink
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 abstract class ActivityComposerFragment : BaseLayoutFragment<ActivityComposerFragmentLayoutBinding>() {
 

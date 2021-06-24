@@ -17,8 +17,8 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
     ActivityUnionService {
 
     companion object {
-        private const val list_activity = "ListActivity"
-        private const val text_activity = "TextActivity"
+        private const val LIST_ACTIVITY = "ListActivity"
+        private const val MESSAGE_ACTIVITY = "MessageActivity"
     }
 
     override fun getActivityUnion(
@@ -29,11 +29,13 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data()?.Page()?.activities()
-                    ?.filter { it.__typename() == list_activity || it.__typename() == text_activity }
                     ?.map {
                         when (it.__typename()) {
-                            "ListActivity" -> {
+                            LIST_ACTIVITY -> {
                                 (it as ActivityUnionQuery.AsListActivity).toModel()
+                            }
+                            MESSAGE_ACTIVITY->{
+                                (it as ActivityUnionQuery.AsMessageActivity).toModel()
                             }
                             else -> {
                                 (it as ActivityUnionQuery.AsTextActivity).toModel()
@@ -61,8 +63,11 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
             .map {
                 it.data()?.Activity()?.let {
                     when (it.__typename()) {
-                        "ListActivity" -> {
+                        LIST_ACTIVITY -> {
                             (it as ActivityInfoQuery.AsListActivity).toModel()
+                        }
+                        MESSAGE_ACTIVITY->{
+                            (it as ActivityInfoQuery.AsMessageActivity).toModel()
                         }
                         else -> {
                             (it as ActivityInfoQuery.AsTextActivity).toModel()
@@ -106,6 +111,23 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { it.data()?.SaveTextActivity()?.id() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                resourceCallback.invoke(Resource.success(it))
+            }, {
+                Timber.e(it)
+                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+        compositeDisposable.add(disposable)
+    }
+
+    override fun saveMessageActivity(
+        field: SaveMessageActivityField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<Int>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map { it.data()?.SaveMessageActivity()?.id() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))

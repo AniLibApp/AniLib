@@ -16,7 +16,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
-import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityReplyComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityReplyComposerViewModel
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 

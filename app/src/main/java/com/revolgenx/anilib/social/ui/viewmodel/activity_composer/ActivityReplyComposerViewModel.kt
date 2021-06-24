@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.social.ui.viewmodel.composer
+package com.revolgenx.anilib.social.ui.viewmodel.activity_composer
 
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.SaveActivityReplyField

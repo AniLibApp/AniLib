@@ -35,6 +35,7 @@ data class OpenUserMediaListEvent(val meta: MediaListMeta) : BaseEvent()
 class OpenAlSiteEvent() : CommonEvent()
 data class OpenMediaListingEvent(val mediaIdsIn: List<Int>) : BaseEvent()
 class OpenActivityTextComposer() : BaseEvent()
+data class OpenActivityMessageComposer(val recipientId:Int) : BaseEvent()
 data class OpenActivityReplyComposer(val activityId: Int) : BaseEvent()
 data class OpenSpoilerContentEvent(val spanned: Spanned) : BaseEvent()
 

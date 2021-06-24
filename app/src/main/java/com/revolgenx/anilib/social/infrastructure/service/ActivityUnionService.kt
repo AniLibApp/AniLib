@@ -31,6 +31,12 @@ interface ActivityUnionService {
         resourceCallback: (Resource<Int>) -> Unit
     )
 
+    fun saveMessageActivity(
+        field:SaveMessageActivityField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<Int>) -> Unit
+    )
+
     fun saveActivityReply(
         field:SaveActivityReplyField,
         compositeDisposable: CompositeDisposable,
