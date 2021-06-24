@@ -731,6 +731,7 @@
 
     <string-array name="profile_tab_menu">
         <item>@string/overview</item>
+        <item>@string/activity</item>
         <item>@string/favourites</item>
         <item>@string/anime_stats</item>
         <item>@string/manga_stats</item>
@@ -852,6 +853,13 @@
         <item>@string/list_progress</item>
     </string-array>
 
+    <string-array name="user_activity_type_entries">
+        <item>@string/all</item>
+        <item>@string/text_status</item>
+        <item>@string/list_progress</item>
+        <item>@string/message</item>
+    </string-array>
+
     <string-array name="activity_following_entries">
         <item>@string/following</item>
         <item>@string/global</item>
@@ -881,6 +889,11 @@
 
     <string-array name="activity_composer_tab_entries">
         <item>@string/status</item>
+        <item>@string/preview</item>
+    </string-array>
+
+    <string-array name="message_composer_tab_entries">
+        <item>@string/message</item>
         <item>@string/preview</item>
     </string-array>
 

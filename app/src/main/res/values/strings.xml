@@ -619,4 +619,10 @@
     <string name="replying">Replying</string>
     <string name="replied_successfully">Replied successfully</string>
     <string name="reply_not_attached_to_activity">Reply not attached to activity</string>
+    <string name="write_a_message">Write a message…</string>
+    <string name="message">Message</string>
+    <string name="sent_successfully">Sent Successfully</string>
+    <string name="sending">Sending</string>
+    <string name="send">Send</string>
+
 </resources>

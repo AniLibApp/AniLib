@@ -56,8 +56,9 @@ import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.social.ui.bottomsheet.SpoilerBottomSheetFragment
-import com.revolgenx.anilib.social.ui.fragments.composer.activity_reply.ActivityReplyComposerContainerFragment
-import com.revolgenx.anilib.social.ui.fragments.composer.activity_text.ActivityTextComposerContainerFragment
+import com.revolgenx.anilib.social.ui.fragments.activity_composer.message.ActivityMessageComposerContainerFragment
+import com.revolgenx.anilib.social.ui.fragments.activity_composer.reply.ActivityReplyComposerContainerFragment
+import com.revolgenx.anilib.social.ui.fragments.activity_composer.text.ActivityTextComposerContainerFragment
 import com.revolgenx.anilib.social.ui.fragments.info.ActivityInfoFragment
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.fragment.ActivityEventListener
@@ -504,14 +505,10 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     fun onBaseEvent(event: BaseEvent) {
         when (event) {
             is OpenUserProfileEvent -> {
-                addFragmentToMain(ProfileFragment().also {
-                    it.arguments = bundleOf(
-                        ProfileFragment.USER_PROFILE_INFO_KEY to UserMeta(
-                            event.userId,
-                            event.username
-                        )
-                    )
-                })
+                addFragmentToMain(ProfileFragment.newInstance(UserMeta(
+                    event.userId,
+                    event.username
+                )))
             }
 
             is OpenSpoilerContentEvent ->{
@@ -582,6 +579,10 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
             is OpenActivityTextComposer ->{
                 addFragmentToMain(ActivityTextComposerContainerFragment())
+            }
+
+            is OpenActivityMessageComposer ->{
+                addFragmentToMain(ActivityMessageComposerContainerFragment.newInstance(event.recipientId))
             }
 
             is OpenActivityReplyComposer ->{

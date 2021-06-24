@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.social.ui.fragments.composer
+package com.revolgenx.anilib.social.ui.fragments.activity_composer
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
-import com.revolgenx.anilib.data.model.BaseModel
 import com.revolgenx.anilib.databinding.ActivityComposerContainerFragmentLayoutBinding
-import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityComposerViewModel
 import com.revolgenx.anilib.ui.view.makeToast
 
 abstract class ActivityComposerContainerFragment<VM:ActivityComposerViewModel<*,*,*>> :

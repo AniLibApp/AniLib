@@ -1,8 +1,8 @@
-package com.revolgenx.anilib.social.ui.fragments.composer.activity_reply
+package com.revolgenx.anilib.social.ui.fragments.activity_composer.reply
 
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.social.ui.fragments.composer.ActivityComposerFragment
-import com.revolgenx.anilib.social.ui.viewmodel.composer.ActivityReplyComposerViewModel
+import com.revolgenx.anilib.social.ui.fragments.activity_composer.ActivityComposerFragment
+import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityReplyComposerViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ActivityReplyComposerFragment : ActivityComposerFragment() {

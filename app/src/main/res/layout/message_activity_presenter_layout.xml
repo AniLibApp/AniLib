@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.DynamicApp.Card.Clickable"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/user_avatar_iv"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:roundedCornerRadius="3dp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/user_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="14sp"
+            app:ads_colorType="accent"
+            app:ads_contrastWithColorType="background"
+            app:layout_constraintBottom_toBottomOf="@id/user_avatar_iv"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/user_avatar_iv"
+            app:layout_constraintTop_toTopOf="@id/user_avatar_iv" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/activity_more_popup"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="10dp"
+            android:padding="4dp"
+            app:ads_colorType="text_primary"
+            app:entries="@array/activity_more_entries"
+            app:layout_constraintBottom_toBottomOf="@id/user_name_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/user_name_tv"
+            app:srcCompat="@drawable/ads_ic_more_horizontal" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/activity_subscribe_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="5dp"
+            app:ads_colorType="text_primary"
+            app:layout_constraintBottom_toBottomOf="@id/user_name_tv"
+            app:layout_constraintEnd_toStartOf="@id/activity_more_popup"
+            app:layout_constraintTop_toTopOf="@id/user_name_tv"
+            app:srcCompat="@drawable/ads_ic_notification" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/text_activity_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:paddingBottom="10dp"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@+id/user_avatar_iv" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/activity_created_at_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="10sp"
+            app:fontFamily="@font/cabincondensed_regular"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/activity_reply_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_activity_tv"
+            app:layout_constraintVertical_bias="0.8"
+            tools:ignore="SmallSp" />
+
+
+        <LinearLayout
+            android:id="@+id/activity_reply_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/activity_like_container"
+            app:layout_constraintTop_toBottomOf="@+id/text_activity_tv">
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                android:id="@+id/activity_reply_iv"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="2dp"
+                android:padding="2dp"
+                app:ads_colorType="text_primary"
+                app:srcCompat="@drawable/ic_activity_comment" />
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/activity_reply_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:includeFontPadding="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_like_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_activity_tv">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                android:id="@+id/activity_like_iv"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:padding="2dp"
+                app:ads_colorType="text_primary"
+                app:srcCompat="@drawable/ic_activity_like_outline" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/activity_like_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:includeFontPadding="false" />
+
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

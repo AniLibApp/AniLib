@@ -98,5 +98,6 @@ enum class ALAiringSort(val sort: Int) {
 enum class AlActivityType(val type: Int) {
     ALL(-1),
     TEXT(0),
-    LIST(4)
+    LIST(4),
+    MESSAGE(3)
 }

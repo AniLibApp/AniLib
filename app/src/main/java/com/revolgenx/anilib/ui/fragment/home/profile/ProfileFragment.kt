@@ -24,6 +24,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.dialog.MessageDialog
 import com.revolgenx.anilib.ui.fragment.stats.UserStatsContainerFragment
+import com.revolgenx.anilib.ui.fragment.user.UserActivityUnionFragment
 import com.revolgenx.anilib.ui.fragment.user.UserFavouriteContainerFragment
 import com.revolgenx.anilib.ui.fragment.user.UserOverviewFragment
 import com.revolgenx.anilib.ui.view.makeToast
@@ -38,6 +39,9 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
     companion object {
         const val USER_PROFILE_INFO_KEY = "USER_PROFILE_INFO_KEY"
+        fun newInstance(userMeta: UserMeta) = ProfileFragment().also {
+            it.arguments = bundleOf(USER_PROFILE_INFO_KEY to userMeta)
+        }
     }
 
     var showUserInfo: Boolean = false
@@ -50,12 +54,19 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
     private val userMeta get() = arguments?.getParcelable<UserMeta?>(USER_PROFILE_INFO_KEY)
 
+    private val _userMeta get() = userMeta ?:  UserMeta(
+        viewModel.userField.userId,
+        viewModel.userField.userName,
+        false
+    )
+
     private val userProfileFragments by lazy {
         listOf(
-            UserOverviewFragment(),
-            UserFavouriteContainerFragment(),
-            UserStatsContainerFragment(), //anime
-            UserStatsContainerFragment(), //manga
+            UserOverviewFragment.newInstance(_userMeta),
+            UserActivityUnionFragment.newInstance(_userMeta),
+            UserFavouriteContainerFragment.newInstance(_userMeta),
+            UserStatsContainerFragment.newInstance(UserStatsMeta(_userMeta, MediaType.ANIME.ordinal)), //anime
+            UserStatsContainerFragment.newInstance(UserStatsMeta(_userMeta, MediaType.MANGA.ordinal)), //manga
         )
     }
 
@@ -246,31 +257,13 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
         }
 
 
-        val userMeta = UserMeta(
-            viewModel.userField.userId,
-            viewModel.userField.userName,
-            false
-        )
-
-
-        userProfileFragments[0].arguments = bundleOf(UserConstant.USER_META_KEY to userMeta)
-        userProfileFragments[1].arguments = bundleOf(UserConstant.USER_META_KEY to userMeta)
-        userProfileFragments[2].arguments = bundleOf(
-            UserConstant.USER_STATS_META_KEY
-                    to UserStatsMeta(userMeta, MediaType.ANIME.ordinal)
-        )
-        userProfileFragments[3].arguments = bundleOf(
-            UserConstant.USER_STATS_META_KEY
-                    to UserStatsMeta(userMeta, MediaType.MANGA.ordinal)
-        )
-
         val adapter = makePagerAdapter(
             userProfileFragments,
             requireContext().resources.getStringArray(R.array.profile_tab_menu)
         )
 
         userInfoViewPager.adapter = adapter
-        userInfoViewPager.offscreenPageLimit = 3
+        userInfoViewPager.offscreenPageLimit = 4
         userTabLayout.setupWithViewPager(userInfoViewPager)
 
     }
@@ -283,20 +276,10 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
 
         followerHeader.setOnClickListener {
-//            UserFollowerDialog.newInstance(FollowerMeta(viewModel.userField.userId))
-//                .show(childFragmentManager, "follower_dialog")
-//
             OpenUserFriendEvent(viewModel.userField.userId, true).postEvent
         }
 
         followingHeader.setOnClickListener {
-//            UserFollowerDialog.newInstance(
-//                FollowerMeta(
-//                    viewModel.userField.userId,
-//                    true
-//                )
-//            )
-//                .show(childFragmentManager, "following_dialog")
             OpenUserFriendEvent(viewModel.userField.userId).postEvent
 
         }
@@ -304,12 +287,12 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
         userFollowButton.setOnClickListener {
             if (userProfileModel == null) return@setOnClickListener
 
-            if (userProfileModel!!.isBlocked == true) {
+            if (userProfileModel!!.isBlocked) {
                 requireContext().openLink(userProfileModel!!.siteUrl)
                 return@setOnClickListener
             }
 
-            if (userProfileModel!!.isFollowing == true) {
+            if (userProfileModel!!.isFollowing) {
                 with(MessageDialog.Companion.Builder()) {
                     titleRes = R.string.unfollow
                     message = getString(R.string.stop_following_s).format(

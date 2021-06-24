@@ -10,6 +10,7 @@ import com.revolgenx.anilib.social.data.field.ToggleActivitySubscriptionField
 import com.revolgenx.anilib.social.data.field.ToggleLikeV2Field
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.data.model.ListActivityModel
+import com.revolgenx.anilib.social.data.model.MessageActivityModel
 import com.revolgenx.anilib.social.data.model.TextActivityModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -93,6 +94,12 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
                         }
                         is ToggleActivitySubscriptionMutation.AsListActivity -> {
                             ListActivityModel().also { model ->
+                                model.id = it.id()
+                                model.isSubscribed = it.isSubscribed ?: false
+                            }
+                        }
+                        is ToggleActivitySubscriptionMutation.AsMessageActivity->{
+                            MessageActivityModel().also { model ->
                                 model.id = it.id()
                                 model.isSubscribed = it.isSubscribed ?: false
                             }
