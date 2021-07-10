@@ -16,6 +16,7 @@ import com.revolgenx.anilib.data.model.setting.MediaOptionModel
 import com.revolgenx.anilib.data.model.setting.getRowOrder
 import com.revolgenx.anilib.data.model.studio.MediaStudioModel
 import com.revolgenx.anilib.data.model.user.AvatarModel
+import com.revolgenx.anilib.data.model.user.UserMediaListModel
 import com.revolgenx.anilib.data.model.user.UserModel
 import com.revolgenx.anilib.data.model.user.UserPrefModel
 import com.revolgenx.anilib.fragment.*
@@ -213,7 +214,7 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
                 it.node()!!.let {
                     model.id = it.id()
                     model.name = it.name()?.let {
-                        CharacterNameModel().also { model->
+                        CharacterNameModel().also { model ->
                             model.full = it.full()
                         }
                     }
@@ -275,7 +276,7 @@ fun StudioInfo.toModel() = MediaStudioModel().also { studio ->
 
 fun ActivityUnionQuery.AsTextActivity.toModel() = TextActivityModel().also { model ->
     model.id = id()
-    model.text = text()?: ""
+    model.text = text() ?: ""
     model.anilifiedText = anilify(model.text)
     model.textSpanned = AlMarkwonFactory.getMarkwon().toMarkdown(model.anilifiedText)
     model.likeCount = likeCount()
@@ -289,7 +290,7 @@ fun ActivityUnionQuery.AsTextActivity.toModel() = TextActivityModel().also { mod
     model.siteUrl = siteUrl()
     model.createdAt = createdAt().toLong().prettyTime()
     model.userId = userId()
-    model.isLiked = isLiked?:false
+    model.isLiked = isLiked ?: false
 }
 
 fun ActivityUnionQuery.AsListActivity.toModel() = ListActivityModel().also { model ->
@@ -316,14 +317,14 @@ fun ActivityUnionQuery.AsListActivity.toModel() = ListActivityModel().also { mod
     model.siteUrl = siteUrl()
     model.createdAt = createdAt().toLong().prettyTime()
     model.userId = userId()
-    model.isLiked = isLiked?:false
+    model.isLiked = isLiked ?: false
 }
 
-fun ActivityUnionQuery.AsMessageActivity.toModel() = MessageActivityModel().also { model->
+fun ActivityUnionQuery.AsMessageActivity.toModel() = MessageActivityModel().also { model ->
     model.id = id()
-    model.message = message()?: ""
+    model.message = message() ?: ""
     model.messageAnilified = anilify(model.message)
-    model.messageSpanned =  AlMarkwonFactory.getMarkwon().toMarkdown(model.messageAnilified)
+    model.messageSpanned = AlMarkwonFactory.getMarkwon().toMarkdown(model.messageAnilified)
     model.recipientId = recipientId()
     model.messengerId = messengerId()
     model.messenger = messenger()?.fragments()?.messengerUser()?.toModel()
@@ -337,12 +338,12 @@ fun ActivityUnionQuery.AsMessageActivity.toModel() = MessageActivityModel().also
     model.type = type()!!
     model.siteUrl = siteUrl()
     model.createdAt = createdAt().toLong().prettyTime()
-    model.isLiked = isLiked?:false
+    model.isLiked = isLiked ?: false
 }
 
 fun ActivityInfoQuery.AsTextActivity.toModel() = TextActivityModel().also { model ->
     model.id = id()
-    model.text = text()?: ""
+    model.text = text() ?: ""
     model.anilifiedText = anilify(model.text)
     model.textSpanned = AlMarkwonFactory.getMarkwon().toMarkdown(model.anilifiedText)
     model.likeCount = likeCount()
@@ -359,7 +360,7 @@ fun ActivityInfoQuery.AsTextActivity.toModel() = TextActivityModel().also { mode
     model.siteUrl = siteUrl()
     model.createdAt = createdAt().toLong().prettyTime()
     model.userId = userId()
-    model.isLiked = isLiked?:false
+    model.isLiked = isLiked ?: false
 }
 
 fun ActivityInfoQuery.AsListActivity.toModel() = ListActivityModel().also { model ->
@@ -389,14 +390,14 @@ fun ActivityInfoQuery.AsListActivity.toModel() = ListActivityModel().also { mode
     model.siteUrl = siteUrl()
     model.createdAt = createdAt().toLong().prettyTime()
     model.userId = userId()
-    model.isLiked = isLiked?:false
+    model.isLiked = isLiked ?: false
 }
 
-fun ActivityInfoQuery.AsMessageActivity.toModel() = MessageActivityModel().also { model->
+fun ActivityInfoQuery.AsMessageActivity.toModel() = MessageActivityModel().also { model ->
     model.id = id()
-    model.message = message()?: ""
+    model.message = message() ?: ""
     model.messageAnilified = anilify(model.message)
-    model.messageSpanned =  AlMarkwonFactory.getMarkwon().toMarkdown(model.messageAnilified)
+    model.messageSpanned = AlMarkwonFactory.getMarkwon().toMarkdown(model.messageAnilified)
     model.recipientId = recipientId()
     model.messengerId = messengerId()
     model.messenger = messenger()?.fragments()?.messengerUser()?.toModel()
@@ -414,7 +415,7 @@ fun ActivityInfoQuery.AsMessageActivity.toModel() = MessageActivityModel().also 
     model.type = type()!!
     model.siteUrl = siteUrl()
     model.createdAt = createdAt().toLong().prettyTime()
-    model.isLiked = isLiked?:false
+    model.isLiked = isLiked ?: false
 }
 
 
@@ -439,7 +440,7 @@ fun ReplyUsers.toModel() = ActivityReplyModel().also { model ->
     model.userId = userId()
     model.isLiked = isLiked ?: false
     model.likeCount = likeCount()
-    model.text = text()?:""
+    model.text = text() ?: ""
     model.anilifiedText = anilify(model.text)
     model.textSpanned = AlMarkwonFactory.getMarkwon().toMarkdown(model.anilifiedText)
     model.user = user()?.fragments()?.activityUser()?.let {
@@ -480,4 +481,29 @@ fun MessengerUser.toModel() = UserModel().also { model ->
                 uModel.medium = it.medium()
             }
         }
+}
+
+
+fun MediaSocialFollowingQuery.MediaList.toModel() = MediaSocialFollowingModel().also { model ->
+    model.id = id()
+    model.score = score()
+    model.type = media()?.type()?.ordinal
+    model.status = status()?.ordinal
+    model.user = user()?.let {
+        UserMediaListModel().also { u ->
+            u.id = it.id()
+            u.name = it.name()
+            u.avatar = it.avatar()?.let { ava ->
+                AvatarModel().also { avatarModel ->
+                    avatarModel.medium = ava.medium()
+                    avatarModel.large = ava.large()
+                }
+            }
+            u.mediaListOptions = it.mediaListOptions()?.let { opt ->
+                MediaListOptionModel().also { lModel ->
+                    lModel.scoreFormat = opt.scoreFormat()?.ordinal
+                }
+            }
+        }
+    }
 }

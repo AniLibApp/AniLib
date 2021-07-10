@@ -137,7 +137,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                             charac.role = it.role()?.ordinal
                             it.node()?.let { node ->
                                 charac.name = node.name()?.let {
-                                    CharacterNameModel().also { model->
+                                    CharacterNameModel().also { model ->
                                         model.full = it.full()
                                     }
                                 }
@@ -192,7 +192,7 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                             s.node()?.let { staff ->
                                 model.id = staff.id()
                                 model.name = staff.name()?.let {
-                                    StaffNameModel().also { model->
+                                    StaffNameModel().also { model ->
                                         model.full = it.full()
                                     }
                                 }
@@ -319,15 +319,26 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                         )
                                     }?.sortedBy { it.episode }
 
-                            model.airingTrends?.let {trends->
+                            model.airingTrends?.let { trends ->
                                 val airingWatchersProgressionEntries = mutableListOf<Entry>()
                                 val airingScoreProgressionEntries = mutableListOf<Entry>()
                                 trends.forEach {
-                                    airingWatchersProgressionEntries.add(Entry(it.episode, it.inProgress))
-                                    airingScoreProgressionEntries.add(Entry(it.episode, it.averageScore))
+                                    airingWatchersProgressionEntries.add(
+                                        Entry(
+                                            it.episode,
+                                            it.inProgress
+                                        )
+                                    )
+                                    airingScoreProgressionEntries.add(
+                                        Entry(
+                                            it.episode,
+                                            it.averageScore
+                                        )
+                                    )
                                 }
 
-                                model.airingWatchersProgressionEntries = airingWatchersProgressionEntries
+                                model.airingWatchersProgressionEntries =
+                                    airingWatchersProgressionEntries
                                 model.airingScoreProgressionEntries = airingScoreProgressionEntries
                             }
                         }
@@ -343,6 +354,27 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
             })
         compositeDisposable?.add(disposable)
         return mediaStatsLiveData
+    }
+
+    override fun getMediaSocialFollowing(
+        field: MediaSocialFollowingField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<List<MediaSocialFollowingModel>>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map {
+                it.data()?.Page()?.mediaList()?.map {
+                    it.toModel()
+                }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                resourceCallback.invoke(Resource.success(it ?: emptyList()))
+            }, {
+                Timber.w(it)
+                mediaStatsLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+            })
+        compositeDisposable.add(disposable)
     }
 
 }

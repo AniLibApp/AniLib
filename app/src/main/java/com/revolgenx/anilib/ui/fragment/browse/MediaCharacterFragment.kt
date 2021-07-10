@@ -40,16 +40,15 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
             return viewModel.source ?: createSource()
         }
 
-    private val mediaBrowserMeta: MediaInfoMeta? get() = arguments?.getParcelable<MediaInfoMeta?>(MEDIA_INFO_META_KEY)
+    private val mediaBrowserMeta get() = arguments?.getParcelable<MediaInfoMeta?>(MEDIA_INFO_META_KEY)
     private val viewModel by viewModel<MediaCharacterViewModel>()
 
     private lateinit var languageSpinner: DynamicSpinner
 
 
-
-    companion object{
+    companion object {
         private const val MEDIA_INFO_META_KEY = "MEDIA_INFO_META_KEY"
-        fun newInstance(meta:MediaInfoMeta) = MediaCharacterFragment().also {
+        fun newInstance(meta: MediaInfoMeta) = MediaCharacterFragment().also {
             it.arguments = bundleOf(MEDIA_INFO_META_KEY to meta)
         }
     }
@@ -65,32 +64,34 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
     ): View {
         val v = super.onCreateView(inflater, container, savedInstanceState)
 
-        languageSpinner = DynamicSpinner(requireContext()).also {
-            it.layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-        }
-
-        val languageContainer = DynamicCardView(requireContext()).also {
-            it.layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            ).also { params ->
-                params.setMargins(dp(6f), dp(10f), dp(6f), dp(10f))
+        if (mediaBrowserMeta?.type != MediaType.MANGA.ordinal) {
+            languageSpinner = DynamicSpinner(requireContext()).also {
+                it.layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
             }
-            it.addView(languageSpinner)
-        }
 
-        return DynamicLinearLayout(requireContext()).also {
-            it.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            it.orientation = LinearLayout.VERTICAL
-            it.addView(languageContainer)
-            it.addView(v)
+            val languageContainer = DynamicCardView(requireContext()).also {
+                it.layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).also { params ->
+                    params.setMargins(dp(6f), dp(10f), dp(6f), dp(10f))
+                }
+                it.addView(languageSpinner)
+            }
+            return DynamicLinearLayout(requireContext()).also {
+                it.layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                it.orientation = LinearLayout.VERTICAL
+                it.addView(languageContainer)
+                it.addView(v)
+            }
         }
+        return v
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -130,46 +131,49 @@ class MediaCharacterFragment : BasePresenterFragment<MediaCharacterModel>() {
             spinnerItems.add(DynamicMenu(null, it))
         }
 
-        languageSpinner.adapter = DynamicSpinnerImageAdapter(
-            requireContext(),
-            R.layout.ads_layout_spinner_item,
-            R.id.ads_spinner_item_icon,
-            R.id.ads_spinner_item_text, spinnerItems
-        )
-
         viewModel.field.also {
             it.mediaId = mediaBrowserMeta!!.mediaId
             it.type = mediaBrowserMeta!!.type
         }
 
-        viewModel.field.language?.let {
-            languageSpinner.setSelection(it)
-        }
+        if (mediaBrowserMeta?.type != MediaType.MANGA.ordinal) {
+            languageSpinner.adapter = DynamicSpinnerImageAdapter(
+                requireContext(),
+                R.layout.ads_layout_spinner_item,
+                R.id.ads_spinner_item_icon,
+                R.id.ads_spinner_item_text, spinnerItems
+            )
 
-        languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+            viewModel.field.language?.let {
+                languageSpinner.setSelection(it)
             }
 
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if ((viewModel.field.language != position) && visibleToUser) {
-                    viewModel.field.language = position
-                    createSource()
-                    invalidateAdapter()
+            languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if ((viewModel.field.language != position) && visibleToUser) {
+                        viewModel.field.language = position
+                        createSource()
+                        invalidateAdapter()
+                    }
                 }
             }
         }
+
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         if (::languageSpinner.isInitialized) {
             languageSpinner.onItemSelectedListener = null
         }
-        super.onDestroy()
+        super.onDestroyView()
     }
 
 }

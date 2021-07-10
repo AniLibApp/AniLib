@@ -761,6 +761,11 @@
         <item>@string/staff</item>
     </string-array>
 
+    <string-array name="media_social_tab_menu">
+        <item>@string/recent_activity</item>
+        <item>@string/following</item>
+    </string-array>
+
     <string-array name="list_option_menu">
         <item>@string/change_display_mode</item>
         <item>@string/filter</item>
