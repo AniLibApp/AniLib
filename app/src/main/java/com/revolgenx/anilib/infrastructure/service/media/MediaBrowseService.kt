@@ -66,5 +66,9 @@ abstract class MediaBrowseService(protected val graphRepository: BaseGraphReposi
         compositeDisposable: CompositeDisposable? = null
     ): MutableStatsType
 
-
+    abstract fun getMediaSocialFollowing(
+        field: MediaSocialFollowingField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<List<MediaSocialFollowingModel>>) -> Unit
+    )
 }

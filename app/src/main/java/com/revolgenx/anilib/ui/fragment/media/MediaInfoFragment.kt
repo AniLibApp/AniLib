@@ -29,6 +29,7 @@ import com.revolgenx.anilib.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.data.meta.DraweeViewerMeta
 import com.revolgenx.anilib.data.meta.ListEditorMeta
 import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.data.meta.type.MediaListStatus
 import com.revolgenx.anilib.data.meta.type.MediaListStatusEditor
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.data.model.media_info.MediaBrowseModel
@@ -43,7 +44,6 @@ import com.revolgenx.anilib.ui.fragment.browse.*
 import com.revolgenx.anilib.ui.view.drawable.DynamicBackgroundGradientDrawable
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeToast
-import com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
 import com.revolgenx.anilib.ui.viewmodel.media.MediaInfoViewModel
 import com.revolgenx.anilib.util.*
 import com.revolgenx.anilib.util.EventBusListener
@@ -155,27 +155,6 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-//        mediaBrowserMeta = if (intent.action == Intent.ACTION_VIEW) {
-//            val data = intent.data ?: return
-//            val paths = data.pathSegments
-//            val type = if (paths[0].compareTo("anime", true) == 0) {
-//                MediaType.ANIME.ordinal
-//            } else {
-//                MediaType.MANGA.ordinal
-//            }
-//            val mediaId = paths[1].toIntOrNull() ?: return
-//
-//            MediaBrowserMeta(
-//                mediaId = mediaId,
-//                type,
-//                null,
-//                null,
-//                null,
-//                null
-//            )
-//        } else {
-//            intent.getParcelableExtra(MEDIA_BROWSER_META) ?: return
-//        }
 
         val mediaInfo = mediaInfoMeta ?: return
 
@@ -210,7 +189,7 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         binding.updateTheme()
         binding.updateView()
 
-        val animeBrowserList = listOf(
+        val mediaInfoList = mutableListOf(
             MediaOverviewFragment.newInstance(mediaInfo),
             MediaWatchFragment.newInstance(mediaInfo),
             MediaCharacterFragment.newInstance(mediaInfo),
@@ -218,6 +197,10 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
             MediaReviewFragment.newInstance(mediaInfo),
             MediaStatsFragment.newInstance(mediaInfo)
         )
+
+        if(requireContext().loggedIn()){
+            mediaInfoList.add(MediaSocialContainerFragment.newInstance(mediaInfo))
+        }
 
         binding.browseMediaViewPager.addOnPageChangeListener(pageChangeListener)
         binding.browseMediaViewPager.addOnPageChangeListener(
@@ -271,7 +254,7 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         }
 
 
-        binding.browseMediaViewPager.adapter = makePagerAdapter(animeBrowserList)
+        binding.browseMediaViewPager.adapter = makePagerAdapter(mediaInfoList)
         binding.browseMediaViewPager.offscreenPageLimit = 5
         binding.browseMediaTabLayout.addOnTabSelectedListener(object :
             TabLayout.OnTabSelectedListener {
@@ -323,20 +306,20 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
 
     private fun MediaInfoFragmentLayoutBinding.updateListStatusView(status: Int) {
         val mediaListStatus =
-            if (browseMediaBrowseModel?.type == MediaType.MANGA.ordinal) resources.getStringArray(R.array.media_list_manga_status) else resources.getStringArray(
-                R.array.media_list_status
+            if (browseMediaBrowseModel?.type == MediaType.MANGA.ordinal) resources.getStringArray(R.array.manga_list_status) else resources.getStringArray(
+                R.array.anime_list_status
             )
-        val fromStatus = MediaListStatusEditor.from(status).ordinal
+        val fromStatus = MediaListStatus.from(status).ordinal
         mediaAddButton.text =
             mediaListStatus[fromStatus]
     }
 
     private fun MediaInfoFragmentLayoutBinding.updateLegacyListStatusView(status: Int) {
         val mediaListStatus =
-            if (browseMediaBrowseModel?.type == MediaType.MANGA.ordinal) resources.getStringArray(R.array.media_list_manga_status) else resources.getStringArray(
-                R.array.media_list_status
+            if (browseMediaBrowseModel?.type == MediaType.MANGA.ordinal) resources.getStringArray(R.array.manga_list_status) else resources.getStringArray(
+                R.array.anime_list_status
             )
-        val fromStatus = MediaListStatusEditor.from(status).ordinal
+        val fromStatus = MediaListStatus.from(status).ordinal
 
         legacyMediaAddButton.text =
             mediaListStatus[fromStatus]
@@ -371,7 +354,7 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
 
     private fun MediaInfoFragmentLayoutBinding.updateView() {
         val mediaInfo = mediaInfoMeta ?: return
-        getBaseToolbar()!!.title = mediaInfo.title
+        getBaseToolbar().title = mediaInfo.title
 
         if (loadLegacyMediaBrowseTheme()) {
 
@@ -424,6 +407,10 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         createTabLayout(R.string.staff, R.drawable.ic_staff)
         createTabLayout(R.string.review, R.drawable.ic_review)
         createTabLayout(R.string.stats, R.drawable.ic_chart)
+
+        if(requireContext().loggedIn()){
+            createTabLayout(R.string.social, R.drawable.ic_activity_union)
+        }
     }
 
     private fun MediaInfoFragmentLayoutBinding.createTabLayout(
@@ -539,7 +526,7 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
 
     @SuppressLint("RestrictedApi")
     override fun onToolbarInflated() {
-        getBaseToolbar()!!.menu.let { menu ->
+        getBaseToolbar().menu.let { menu ->
             if (menu is MenuBuilder) {
                 menu.setOptionalIconsVisible(true)
             }

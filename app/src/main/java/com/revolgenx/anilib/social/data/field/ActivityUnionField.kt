@@ -10,7 +10,7 @@ open class ActivityUnionField : BaseSourceUserField<ActivityUnionQuery>() {
 
     var isFollowing: Boolean = false
     var type: AlActivityType = AlActivityType.ALL
-
+    var mediaId:Int? = null
     override fun toQueryOrMutation(): ActivityUnionQuery {
         return ActivityUnionQuery.builder()
             .page(page)
@@ -18,6 +18,9 @@ open class ActivityUnionField : BaseSourceUserField<ActivityUnionQuery>() {
             .apply {
                 userId?.let {
                     userId(it)
+                }
+                mediaId?.let {
+                    mediaId(it)
                 }
                 if (isFollowing) {
                     isFollowing(true)

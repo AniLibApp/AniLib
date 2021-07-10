@@ -8,6 +8,13 @@ enum class MediaListStatus(val status: Int) {
     PLANNING(1),
     REPEATING(5),
     UNKNOWN(6);
+
+
+    companion object {
+        fun from(status: Int): MediaListStatus {
+            return values().first { it.status == status }
+        }
+    }
 }
 
 

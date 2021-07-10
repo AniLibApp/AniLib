@@ -624,5 +624,6 @@
     <string name="sent_successfully">Sent Successfully</string>
     <string name="sending">Sending</string>
     <string name="send">Send</string>
+    <string name="recent_activity">Recent Activity</string>
 
 </resources>

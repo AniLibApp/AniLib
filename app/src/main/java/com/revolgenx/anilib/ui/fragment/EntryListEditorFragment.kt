@@ -326,7 +326,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                 ContextCompat.getDrawable(
                     requireContext(),
                     R.drawable.ic_planning
-                ), getString(R.string.planning)
+                ), if(mediaListMeta.type == MediaType.MANGA.ordinal) getString(R.string.plan_to_read) else getString(R.string.plan_to_watch)
             )
         )
         spinnerItems.add(
