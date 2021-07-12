@@ -9,6 +9,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.meta.type.MediaListStatus
 import com.revolgenx.anilib.data.model.media_info.MediaSocialFollowingModel
 import com.revolgenx.anilib.databinding.MediaSocialFollowingPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.presenter.BasePresenter
@@ -50,16 +51,24 @@ class MediaSocialFollowingPresenter(context: Context) :
                 animeListStatus[MediaListStatus.from(item.status!!).ordinal]
             }
 
+            var userScore = item.score?.toInt()?.toString()
             val scoreFormat = when (ScoreFormat.values()[item.user?.mediaListOptions?.scoreFormat ?: 0]) {
                 ScoreFormat.POINT_100 -> "100"
-                ScoreFormat.POINT_10_DECIMAL -> "10.0"
+                ScoreFormat.POINT_10_DECIMAL -> {
+                    userScore = item.score?.toString()
+                    "10.0"
+                }
                 ScoreFormat.POINT_10 -> "10"
                 ScoreFormat.POINT_5 -> "5"
                 ScoreFormat.POINT_3 -> "3"
                 else -> "?"
             }
 
-            userListScoreTv.text = "${item.score}/$scoreFormat"
+            userListScoreTv.text = "$userScore/$scoreFormat"
+
+            root.setOnClickListener {
+                OpenUserProfileEvent(item.user?.id).postEvent
+            }
         }
     }
 

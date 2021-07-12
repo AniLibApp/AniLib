@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="60dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,9 +13,10 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/user_avatar_iv"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:padding="4dp"
+            app:roundedCornerRadius="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +28,9 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:maxLines="1"
-            android:textSize="14sp"
+            android:textSize="12sp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/user_list_status_tv"
             app:layout_constraintHorizontal_bias="0.5"
@@ -40,6 +43,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:maxLines="1"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/user_list_score_tv"
             app:layout_constraintHorizontal_bias="0.5"
@@ -52,6 +56,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:maxLines="1"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
