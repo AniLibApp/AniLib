@@ -15,7 +15,7 @@ import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.databinding.MediaViewDialogLayoutBinding
 import com.revolgenx.anilib.ui.presenter.media.MediaViewPresenter
 import com.revolgenx.anilib.infrastructure.source.MediaSource
-import com.revolgenx.anilib.ui.viewmodel.media.MediaViewDialogViewModel
+import com.revolgenx.anilib.ui.viewmodel.media.MediaListingViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaViewDialog : BaseDialogFragment<MediaViewDialogLayoutBinding>() {
@@ -53,7 +53,7 @@ class MediaViewDialog : BaseDialogFragment<MediaViewDialogLayoutBinding>() {
         }
     }
 
-    private val viewModel by viewModel<MediaViewDialogViewModel>()
+    private val viewModel by viewModel<MediaListingViewModel>()
 
     override fun bindView(): MediaViewDialogLayoutBinding {
         return MediaViewDialogLayoutBinding.inflate(provideLayoutInflater)

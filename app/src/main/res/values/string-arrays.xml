@@ -338,6 +338,7 @@
     <string-array name="home_page_list_order">
         <item>@string/home</item>
         <item>@string/list</item>
+        <item>@string/activity</item>
         <item>@string/radio</item>
     </string-array>
 
@@ -452,11 +453,20 @@
 
     <string-array name="media_list_status">
         <item>@string/watching</item>
-        <item>@string/planning</item>
+        <item>@string/plan_to_watch</item>
         <item>@string/completed</item>
-        <item>@string/dropped</item>
+        <item>@string/rewatching</item>
         <item>@string/paused</item>
-        <item>@string/repeating</item>
+        <item>@string/dropped</item>
+    </string-array>
+
+    <string-array name="media_list_manga_status">
+        <item>@string/reading</item>
+        <item>@string/plan_to_read</item>
+        <item>@string/completed</item>
+        <item>@string/rereading</item>
+        <item>@string/paused</item>
+        <item>@string/dropped</item>
     </string-array>
 
     <string-array name="advance_search_type">
@@ -721,6 +731,7 @@
 
     <string-array name="profile_tab_menu">
         <item>@string/overview</item>
+        <item>@string/activity</item>
         <item>@string/favourites</item>
         <item>@string/anime_stats</item>
         <item>@string/manga_stats</item>
@@ -748,6 +759,11 @@
         <item>@string/genre</item>
         <item>@string/tags</item>
         <item>@string/staff</item>
+    </string-array>
+
+    <string-array name="media_social_tab_menu">
+        <item>@string/recent_activity</item>
+        <item>@string/following</item>
     </string-array>
 
     <string-array name="list_option_menu">
@@ -831,6 +847,37 @@
     <string-array name="music_entries">
         <item>@string/radio_station</item>
     </string-array>
+
+    <string-array name="activity_entries">
+        <item>@string/activity</item>
+    </string-array>
+
+    <string-array name="activity_type_entries">
+        <item>@string/all</item>
+        <item>@string/text_status</item>
+        <item>@string/list_progress</item>
+    </string-array>
+
+    <string-array name="user_activity_type_entries">
+        <item>@string/all</item>
+        <item>@string/text_status</item>
+        <item>@string/list_progress</item>
+        <item>@string/message</item>
+    </string-array>
+
+    <string-array name="activity_following_entries">
+        <item>@string/following</item>
+        <item>@string/global</item>
+    </string-array>
+
+    <string-array name="activity_more_entries">
+        <item>@string/open_in_anilist</item>
+        <item>@string/copy_link</item>
+        <item>@string/edit</item>
+        <item>@string/delete</item>
+    </string-array>
+
+
     <string-array name="login_entries">
         <item>@string/app_name</item>
     </string-array>
@@ -840,4 +887,29 @@
         <item>@string/share</item>
     </string-array>
 
+    <string-array name="user_friend_tab_entries">
+        <item>@string/following</item>
+        <item>@string/follower</item>
+    </string-array>
+
+    <string-array name="activity_composer_tab_entries">
+        <item>@string/status</item>
+        <item>@string/preview</item>
+    </string-array>
+
+    <string-array name="message_composer_tab_entries">
+        <item>@string/message</item>
+        <item>@string/preview</item>
+    </string-array>
+
+    <string-array name="reply_composer_tab_entries">
+        <item>@string/reply</item>
+        <item>@string/preview</item>
+    </string-array>
+
+
+    <string-array name="reply_edit_entries">
+        <item>@string/edit</item>
+        <item>@string/delete</item>
+    </string-array>
 </resources>

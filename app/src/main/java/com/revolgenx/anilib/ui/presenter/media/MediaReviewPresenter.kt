@@ -9,11 +9,10 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
-import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.BrowseReviewEvent
-import com.revolgenx.anilib.infrastructure.event.UserBrowseEvent
-import com.revolgenx.anilib.data.model.MediaReviewModel
+import com.revolgenx.anilib.data.model.media_info.MediaReviewModel
 import com.revolgenx.anilib.databinding.MediaReviewPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenReviewEvent
+import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 
 class MediaReviewPresenter(context: Context) : BasePresenter<MediaReviewPresenterLayoutBinding, MediaReviewModel>(context) {
@@ -53,11 +52,11 @@ class MediaReviewPresenter(context: Context) : BasePresenter<MediaReviewPresente
             )
 
             reviewUserIv.setOnClickListener {
-                UserBrowseEvent(item.userPrefModel?.userId ?: -1).postEvent
+                OpenUserProfileEvent(item.userPrefModel?.id ?: -1).postEvent
             }
 
             reviewContainer.setOnClickListener{
-                BrowseReviewEvent(item.reviewId).postEvent
+                OpenReviewEvent(item.reviewId!!).postEvent
             }
         }
     }

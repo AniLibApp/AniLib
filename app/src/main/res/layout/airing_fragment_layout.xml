@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar_layout"
-        android:id="@+id/airing_toolbar"/>
+    <include
+        android:id="@+id/airing_toolbar"
+        layout="@layout/toolbar_layout" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
         android:id="@+id/airingContainerFrameLayout"

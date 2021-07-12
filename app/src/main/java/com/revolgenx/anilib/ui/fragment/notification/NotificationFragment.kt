@@ -24,5 +24,4 @@ class NotificationFragment : BasePresenterToolbarFragment<NotificationModel>() {
     override fun createSource(): Source<NotificationModel> {
         return viewModel.createSource()
     }
-
 }

@@ -9,13 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.getHomePageOrderFromType
-import com.revolgenx.anilib.common.preference.setHomeOrderFromType
 import com.revolgenx.anilib.common.preference.setHomePageOrderFromType
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
-import com.revolgenx.anilib.data.model.home.HomeOrderedAdapterItem
 import com.revolgenx.anilib.data.model.home.HomePageOrderType
 import com.revolgenx.anilib.data.model.home.HomePageOrderedAdapterItem
-import com.revolgenx.anilib.databinding.HomeOrderAdapterLayoutBinding
 import com.revolgenx.anilib.databinding.HomeOrderDialogLayoutBinding
 import com.revolgenx.anilib.databinding.HomePageOrderAdapterDialogLayoutBinding
 import com.woxthebox.draglistview.DragItemAdapter

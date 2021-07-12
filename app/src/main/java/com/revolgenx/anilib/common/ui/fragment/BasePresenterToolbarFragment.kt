@@ -12,18 +12,19 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
-import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.databinding.BasePresenterToolbarFragmentLayoutBinding
 
-abstract class BasePresenterToolbarFragment<M:Any>:BaseLayoutFragment<BasePresenterToolbarFragmentLayoutBinding>() {
+abstract class BasePresenterToolbarFragment<M : Any> :
+    BaseLayoutFragment<BasePresenterToolbarFragmentLayoutBinding>() {
     abstract val basePresenter: Presenter<M>
     abstract val baseSource: Source<M>
 
 
     var adapter: Adapter? = null
 
-    open val toolbarColorType:Int? = null
+    open val toolbarColorType: Int? = null
+    override val setHomeAsUp: Boolean = true
 
     protected open val loadingPresenter: Presenter<Unit>
         get() = Presenter.forLoadingIndicator(requireContext(), R.layout.loading_layout)
@@ -46,24 +47,21 @@ abstract class BasePresenterToolbarFragment<M:Any>:BaseLayoutFragment<BasePresen
 
     var span: Int = 0
 
-    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?): BasePresenterToolbarFragmentLayoutBinding {
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): BasePresenterToolbarFragmentLayoutBinding {
         return BasePresenterToolbarFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun getBaseToolbar(): Toolbar {
-        val t =  binding.toolbarLayout.dynamicToolbar
-        toolbarColorType?.let {
-            t.colorType = it
-            if(it == Theme.ColorType.BACKGROUND){
-                t.textColorType = Theme.ColorType.TEXT_PRIMARY
-            }
-        }
-        return t
+        return binding.toolbarLayout.dynamicToolbar
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        span = if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) gridMaxSpan else gridMinSpan
+        span =
+            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) gridMaxSpan else gridMinSpan
         layoutManager = GridLayoutManager(this.context, span).also {
             it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
@@ -114,10 +112,12 @@ abstract class BasePresenterToolbarFragment<M:Any>:BaseLayoutFragment<BasePresen
     }
 
     protected open fun adapterBuilder(): Adapter.Builder {
-        return Adapter.builder(this, 10).setPager(PageSizePager(10)).addSource(baseSource).addPresenter(basePresenter).addPresenter(loadingPresenter).addPresenter(errorPresenter).addPresenter(emptyPresenter)
+        return Adapter.builder(this, 10).setPager(PageSizePager(10)).addSource(baseSource)
+            .addPresenter(basePresenter).addPresenter(loadingPresenter).addPresenter(errorPresenter)
+            .addPresenter(emptyPresenter)
     }
 
-    protected fun notifyDataSetChanged(){
+    protected fun notifyDataSetChanged() {
         adapter?.notifyDataSetChanged()
     }
 }

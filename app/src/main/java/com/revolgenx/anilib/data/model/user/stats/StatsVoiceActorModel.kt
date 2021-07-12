@@ -4,7 +4,7 @@ class StatsVoiceActorModel : BaseStatsModel() {
     var voiceActorId: Int? = null
         set(value) {
             field = value
-            baseId = value
+            id = value
         }
     var name: String? = null
     var image: String? = null

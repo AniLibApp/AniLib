@@ -9,6 +9,5 @@ data class ListEditorMeta(
     var type: Int?,
     var title: String?,
     var coverImage: String?,
-    var bannerImage: String?,
-    val closeActivity:Boolean = true
+    var bannerImage: String?
 ) : Parcelable

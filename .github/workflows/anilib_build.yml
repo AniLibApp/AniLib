@@ -8,6 +8,9 @@ jobs:
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1

@@ -5,31 +5,27 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.*
 import androidx.annotation.*
-import androidx.core.app.ActivityCompat
-import androidx.core.app.SharedElementCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.*
 import androidx.viewpager.widget.ViewPager
-import com.facebook.drawee.view.SimpleDraweeView
-import com.otaliastudios.elements.Adapter
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
-import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.appwidget.ui.fragment.AiringWidgetConfigFragment
-import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.ui.dialog.*
 import com.revolgenx.anilib.infrastructure.event.*
-import com.revolgenx.anilib.data.field.TagChooserField
-import com.revolgenx.anilib.data.field.TagField
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
+import com.revolgenx.anilib.data.meta.UserMeta
 import com.revolgenx.anilib.data.model.home.HomePageOrderType
 import com.revolgenx.anilib.databinding.ActivityMainBinding
 import com.revolgenx.anilib.radio.ui.fragments.RadioFragment
+import com.revolgenx.anilib.social.ui.fragments.ActivityUnionFragment
 import com.revolgenx.anilib.ui.fragment.about.AboutFragment
 import com.revolgenx.anilib.ui.fragment.home.discover.DiscoverContainerFragment
 import com.revolgenx.anilib.ui.fragment.home.list.ListContainerFragment
@@ -40,20 +36,47 @@ import com.revolgenx.anilib.ui.fragment.review.AllReviewFragment
 import com.revolgenx.anilib.ui.fragment.settings.*
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
-import com.revolgenx.anilib.ui.view.navigation.BrowseFilterNavigationView
 import com.revolgenx.anilib.ui.viewmodel.MainActivityViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import net.openid.appauth.*
+import net.openid.appauth.AuthorizationResponse
+import net.openid.appauth.AuthorizationService
+import net.openid.appauth.ClientAuthentication
+import net.openid.appauth.ClientSecretBasic
+import net.openid.appauth.AuthorizationServiceConfiguration
+import net.openid.appauth.ResponseTypeValues
+import net.openid.appauth.AuthorizationRequest
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
+import com.revolgenx.anilib.BuildConfig
+import com.revolgenx.anilib.data.meta.ListEditorMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.social.ui.bottomsheet.SpoilerBottomSheetFragment
+import com.revolgenx.anilib.social.ui.fragments.activity_composer.message.ActivityMessageComposerContainerFragment
+import com.revolgenx.anilib.social.ui.fragments.activity_composer.reply.ActivityReplyComposerContainerFragment
+import com.revolgenx.anilib.social.ui.fragments.activity_composer.text.ActivityTextComposerContainerFragment
+import com.revolgenx.anilib.social.ui.fragments.info.ActivityInfoFragment
+import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.fragment.ActivityEventListener
+import com.revolgenx.anilib.ui.fragment.EntryListEditorFragment
+import com.revolgenx.anilib.ui.fragment.airing.AiringFragment
+import com.revolgenx.anilib.ui.fragment.character.CharacterContainerFragment
+import com.revolgenx.anilib.ui.fragment.friend.UserFriendContainerFragment
+import com.revolgenx.anilib.ui.fragment.list.UserMediaListContainerFragment
+import com.revolgenx.anilib.ui.fragment.media.MediaInfoFragment
+import com.revolgenx.anilib.ui.fragment.media.MediaListingFragment
+import com.revolgenx.anilib.ui.fragment.notification.NotificationFragment
+import com.revolgenx.anilib.ui.fragment.review.ReviewComposerFragment
+import com.revolgenx.anilib.ui.fragment.review.ReviewFragment
+import com.revolgenx.anilib.ui.fragment.search.SearchFragment
+import com.revolgenx.anilib.ui.fragment.staff.StaffContainerFragment
+import com.revolgenx.anilib.ui.fragment.studio.StudioFragment
 
-class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
-    BrowseFilterNavigationView.AdvanceBrowseNavigationCallbackListener, EventBusListener {
+class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope, EventBusListener {
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
@@ -64,14 +87,15 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         private const val authIntent: String = "auth_intent_key"
         private const val authDialogTag = "auth_dialog_tag"
         private const val authorizationExtra = "com.revolgenx.anilib.HANDLE_AUTHORIZATION_RESPONSE"
+
+        const val OPEN_AIRING_ACTION_KEY = "OPEN_AIRING_ACTION_KEY"
+        const val ENTRY_LIST_ACTION_KEY = "ENTRY_LIST_ACTION_KEY"
+        const val ENTRY_LIST_DATA_KEY = "ENTRY_LIST_DATA_KEY"
+        const val MEDIA_INFO_DATA_KEY = "MEDIA_INFO_DATA_KEY"
+        const val MEDIA_INFO_ACTION_KEY = "MEDIA_INFO_ACTION_KEY"
     }
 
     private var pressedTwice = false
-
-    private val tagAdapter: Adapter.Builder
-        get() {
-            return Adapter.builder(this)
-        }
 
     private val discoverContainerFragment by lazy {
         DiscoverContainerFragment()
@@ -79,6 +103,10 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private val listContainerFragment by lazy {
         ListContainerFragment()
+    }
+
+    private val activityUnionFragment by lazy {
+        ActivityUnionFragment()
     }
 
     private val radioFragment by lazy {
@@ -112,29 +140,26 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     override fun onCreate(savedInstanceState: Bundle?) {
         //update before layout inflate
         updateSharedPreference()
-
         super.onCreate(savedInstanceState)
+        checkReleaseInfo()
+        binding.updateView()
+        silentFetchUserInfo()
+        checkIntent(intent)
+    }
 
+    private fun checkReleaseInfo() {
         if (getVersion(this) != DynamicPackageUtils.getAppVersion(this)) {
             ReleaseInfoDialog().show(supportFragmentManager, ReleaseInfoDialog.tag)
         }
-
-        initListener()
-        updateRightNavView()
-        binding.updateView()
-        silentFetchUserInfo()
-
-        checkIsFromShortcut()
     }
 
     override fun onResume() {
         super.onResume()
-        statusBarColor =  dynamicBackgroundColor
+        statusBarColor = dynamicBackgroundColor
     }
 
-
-    private fun checkIsFromShortcut(newIntent: Intent? = null) {
-        val intent = newIntent ?: intent
+    private fun checkIsFromShortcut(newIntent: Intent?) {
+        val intent = newIntent ?: return
         if (intent.action == Intent.ACTION_VIEW) {
             if (intent.hasExtra(LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY)) {
                 val currentShortcut = intent.getIntExtra(
@@ -155,6 +180,9 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     }
                     LauncherShortcuts.RADIO -> {
                         binding.mainBottomNavView.selectedItemId = R.id.music_navigation_menu
+                    }
+                    LauncherShortcuts.NOTIFICATION -> {
+                        openNotificationCenter()
                     }
                 }
             }
@@ -181,6 +209,15 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     R.drawable.ic_media_list,
                     getHomePageOrderFromType(this@MainActivity, HomePageOrderType.LIST),
                     listContainerFragment
+                )
+            )
+            menuList.add(
+                HomeMenuItem(
+                    R.id.activity_navigation_menu,
+                    R.string.social,
+                    R.drawable.ic_activity_union,
+                    getHomePageOrderFromType(this@MainActivity, HomePageOrderType.ACTIVITY),
+                    activityUnionFragment
                 )
             )
         }
@@ -245,11 +282,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
 
-    private fun updateRightNavView() {
-        val filter = BrowseFilterDataProvider.getBrowseFilterData(this) ?: return
-        binding.mainBrowseFilterNavView.setFilter(filter, false)
-    }
-
     private fun silentFetchUserInfo() {
         if (loggedIn()) {
             viewModel.getUserLiveData()
@@ -275,39 +307,8 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         }
     }
 
-
-    private fun getViewPagerFragment(pos: Int) =
-        supportFragmentManager.findFragmentByTag("android:switcher:${R.id.main_view_pager}:$pos")
-
-
-    private fun initListener() {
-        binding.mainBrowseFilterNavView.setNavigationCallbackListener(this)
-
-        /**problem with transition
-         * {@link https://github.com/facebook/fresco/issues/1445}*/
-        ActivityCompat.setExitSharedElementCallback(this, object : SharedElementCallback() {
-            override fun onSharedElementEnd(
-                sharedElementNames: List<String?>?,
-                sharedElements: List<View>,
-                sharedElementSnapshots: List<View?>?
-            ) {
-                super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots)
-                if (sharedElements.isEmpty()) {
-                    return
-                }
-                for (view in sharedElements) {
-                    if (view is SimpleDraweeView) {
-                        view.drawable.setVisible(true, true)
-                    }
-                }
-            }
-        })
-
-    }
-
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         checkIntent(intent)
-        checkIsFromShortcut(intent)
         super.onNewIntent(intent)
     }
 
@@ -316,7 +317,71 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         if (intent != null) {
             if (intent.hasExtra(authIntent)) {
                 handleAuthorizationResponse(intent)
+                intent.removeExtra(authIntent)
             }
+
+            checkIsFromShortcut(intent)
+
+            when (intent.action) {
+                Intent.ACTION_VIEW -> {
+                    val data = intent.data ?: return
+                    val paths = data.pathSegments
+
+                    when (paths[0]) {
+                        "user" -> {
+                            val userId = paths[1].toIntOrNull()
+                            val username = paths[1].toString()
+                            OpenUserProfileEvent(userId, username).postEvent
+                        }
+                        "anime", "manga" -> {
+                            val type = if (paths[0].compareTo("anime") == 0) {
+                                MediaType.ANIME.ordinal
+                            } else {
+                                MediaType.MANGA.ordinal
+                            }
+                            val mediaId = paths[1].toIntOrNull() ?: return
+
+                            openMediaInfoCenter(
+                                MediaInfoMeta(
+                                    mediaId = mediaId,
+                                    type,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                )
+                            )
+                        }
+                        "character" -> {
+                            val characterId = paths[1].toIntOrNull() ?: return
+                            openCharacterCenter(characterId)
+                        }
+                        "staff" -> {
+                            val staffId = paths[1].toIntOrNull() ?: return
+                            openStaffCenter(staffId)
+                        }
+                        "activity"->{
+                            val activityId = paths[1].toIntOrNull() ?: return
+                            openActivityInfoCenter(activityId)
+                        }
+                    }
+                }
+                OPEN_AIRING_ACTION_KEY -> {
+                    openAiringScheduleCenter()
+                }
+                MEDIA_INFO_ACTION_KEY -> {
+                    val meta =
+                        intent.getParcelableExtra<MediaInfoMeta?>(MEDIA_INFO_DATA_KEY) ?: return
+                    openMediaInfoCenter(meta)
+                }
+                ENTRY_LIST_ACTION_KEY -> {
+                    val meta =
+                        intent.getParcelableExtra<ListEditorMeta?>(ENTRY_LIST_DATA_KEY) ?: return
+                    openMediaListEditorCenter(meta)
+                }
+            }
+
+            intent.action = ""
         }
     }
 
@@ -358,7 +423,15 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             }
             else -> {
                 if ((supportFragmentManager.backStackEntryCount >= 1)) {
-                    super.onBackPressed()
+
+                    val topFragment = supportFragmentManager.fragments.lastOrNull()
+                    if ((topFragment is ActivityEventListener)) {
+                        if (!topFragment.onBackPressed()) {
+                            super.onBackPressed()
+                        }
+                    } else {
+                        super.onBackPressed()
+                    }
                     return
                 }
 
@@ -366,7 +439,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     finish()
                 } else {
                     makeToast(R.string.press_again_to_exit, icon = R.drawable.ic_exit)
-                    Handler().postDelayed({
+                    Handler(Looper.myLooper()!!).postDelayed({
                         pressedTwice = false
                     }, 1000)
                 }
@@ -429,172 +502,176 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
     @Subscribe
-    fun onTagEvent(event: TagEvent) {
-        when (event.tagType) {
-            MediaTagFilterTypes.TAGS -> invalidateTagFilter(event.tagFields)
-            MediaTagFilterTypes.GENRES -> invalidateGenreFilter(event.tagFields)
-            MediaTagFilterTypes.STREAMING_ON -> invalidateStreamFilter(event.tagFields)
-            else -> {
-            }
-        }
-    }
-
-    @Subscribe
-    fun onNotificationEvent(event: BrowseNotificationEvent) {
-        startActivity(Intent(this, NotificationActivity::class.java))
-    }
-
-
-    @Subscribe
-    fun onBaseSettingEvent(event: SettingEvent) {
-        when (event.settingEventType) {
-            SettingEventTypes.ABOUT -> {
-                addFragmentToMain(AboutFragment())
-            }
-            SettingEventTypes.APPLICATION -> {
-                addFragmentToMain(ApplicationSettingFragment())
-            }
-            SettingEventTypes.SETTING -> {
-                addFragmentToMain(SettingFragment())
-            }
-            SettingEventTypes.MEDIA_LIST -> {
-                addFragmentToMain(MediaListSettingFragment())
-            }
-            SettingEventTypes.MEDIA_SETTING->{
-                addFragmentToMain(MediaSettingFragment())
-            }
-            SettingEventTypes.THEME -> {
-                addFragmentToMain(ThemeControllerFragment())
-            }
-            SettingEventTypes.CUSTOMIZE_FILTER -> {
-                addFragmentToMain(CustomizeFilterFragment())
-            }
-            SettingEventTypes.AIRING_WIDGET -> {
-                addFragmentToMain(AiringWidgetConfigFragment())
-            }
-            SettingEventTypes.TRANSLATION -> {
-                addFragmentToMain(TranslationSettingFragment())
-            }
-            SettingEventTypes.NOTIFICATION -> {
-                addFragmentToMain(NotificationSettingFragment())
-            }
-        }
-    }
-
-    @Subscribe
-    fun onCommonEvent(event: CommonEvent) {
+    fun onBaseEvent(event: BaseEvent) {
         when (event) {
-            is BrowseAllReviewsEvent -> {
-                addFragmentToMain(AllReviewFragment(), true)
+            is OpenUserProfileEvent -> {
+                addFragmentToMain(ProfileFragment.newInstance(UserMeta(
+                    event.userId,
+                    event.username
+                )))
+            }
+
+            is OpenSpoilerContentEvent ->{
+                addFragmentToMain(SpoilerBottomSheetFragment.newInstance(event.spanned))
+            }
+
+            is OpenUserFriendEvent -> {
+                event.userId ?: return
+                addFragmentToMain(
+                    UserFriendContainerFragment.newInstance(
+                        event.userId,
+                        event.isFollower
+                    )
+                )
+            }
+
+            is OpenMediaListEditorEvent -> {
+                openMediaListEditorCenter(event.meta)
+            }
+
+            is OpenMediaInfoEvent -> {
+                openMediaInfoCenter(event.meta)
+            }
+
+            is OpenMediaListingEvent -> {
+                addFragmentToMain(MediaListingFragment.newInstance(event.mediaIdsIn))
+            }
+
+            is OpenUserMediaListEvent -> {
+                addFragmentToMain(UserMediaListContainerFragment.newInstance(event.meta))
+            }
+
+            is OpenSearchEvent -> {
+                addFragmentToMain(SearchFragment.newInstance(event.data))
+            }
+
+            is OpenReviewEvent -> {
+                addFragmentToMain(ReviewFragment.newInstance(event.reviewId))
+            }
+
+            is OpenAllReviewEvent -> {
+                addFragmentToMain(AllReviewFragment())
+            }
+
+            is OpenNotificationCenterEvent -> {
+                openNotificationCenter()
+            }
+
+            is OpenCharacterEvent -> {
+                openCharacterCenter(event.characterId)
+            }
+
+            is OpenStaffEvent -> {
+                openStaffCenter(event.staffId)
+            }
+
+            is OpenStudioEvent->{
+                openStudioCenter(event)
+            }
+
+            is OpenAiringScheduleEvent -> {
+                openAiringScheduleCenter()
+            }
+
+            is OpenReviewComposerEvent -> {
+                addFragmentToMain(ReviewComposerFragment.newInstance(event.mediaId))
+            }
+
+            is OpenActivityTextComposer ->{
+                addFragmentToMain(ActivityTextComposerContainerFragment())
+            }
+
+            is OpenActivityMessageComposer ->{
+                addFragmentToMain(ActivityMessageComposerContainerFragment.newInstance(event.recipientId))
+            }
+
+            is OpenActivityReplyComposer ->{
+                addFragmentToMain(ActivityReplyComposerContainerFragment.newInstance(event.activityId))
+            }
+
+            is OpenActivityInfoEvent->{
+                openActivityInfoCenter(event.activityId)
+            }
+
+            is OpenSettingEvent -> {
+                when (event.settingEventType) {
+                    SettingEventTypes.ABOUT -> {
+                        addFragmentToMain(AboutFragment())
+                    }
+                    SettingEventTypes.APPLICATION -> {
+                        addFragmentToMain(ApplicationSettingFragment())
+                    }
+                    SettingEventTypes.SETTING -> {
+                        addFragmentToMain(SettingFragment())
+                    }
+                    SettingEventTypes.MEDIA_LIST -> {
+                        addFragmentToMain(MediaListSettingFragment())
+                    }
+                    SettingEventTypes.MEDIA_SETTING -> {
+                        addFragmentToMain(MediaSettingFragment())
+                    }
+                    SettingEventTypes.THEME -> {
+                        addFragmentToMain(ThemeControllerFragment())
+                    }
+                    SettingEventTypes.CUSTOMIZE_FILTER -> {
+                        addFragmentToMain(CustomizeFilterFragment())
+                    }
+                    SettingEventTypes.AIRING_WIDGET -> {
+                        addFragmentToMain(AiringWidgetConfigFragment())
+                    }
+                    SettingEventTypes.TRANSLATION -> {
+                        addFragmentToMain(TranslationSettingFragment())
+                    }
+                    SettingEventTypes.NOTIFICATION -> {
+                        addFragmentToMain(NotificationSettingFragment())
+                    }
+                    SettingEventTypes.LANGUAGE_CHOOSER -> {
+                        addFragmentToMain(MlLanguageChooserFragment())
+                    }
+                }
             }
         }
     }
 
-    private fun addFragmentToMain(baseFragment: BaseFragment, slideAnimation: Boolean = false) {
-        getTransactionWithAnimation(slideAnimation)
+    private fun openActivityInfoCenter(activityId: Int) {
+        addFragmentToMain(ActivityInfoFragment.newInstance(activityId))
+    }
+
+    private fun openStudioCenter(event: OpenStudioEvent) {
+        addFragmentToMain(StudioFragment.newInstance(event.studioId))
+    }
+
+    private fun openAiringScheduleCenter() {
+        addFragmentToMain(AiringFragment())
+    }
+
+    private fun openStaffCenter(staffId: Int) {
+        addFragmentToMain(StaffContainerFragment.newInstance(staffId))
+    }
+
+    private fun openCharacterCenter(characterId: Int) {
+        addFragmentToMain(CharacterContainerFragment.newInstance(characterId))
+    }
+
+    private fun openMediaListEditorCenter(meta: ListEditorMeta) {
+        addFragmentToMain(EntryListEditorFragment.newInstance(meta))
+    }
+
+    private fun openMediaInfoCenter(meta: MediaInfoMeta) {
+        addFragmentToMain(MediaInfoFragment.newInstance(meta))
+    }
+
+    private fun openNotificationCenter() {
+        addFragmentToMain(NotificationFragment())
+    }
+
+    private fun addFragmentToMain(
+        baseFragment: BaseFragment,
+        transactionAnimation: FragmentAnimationType = FragmentAnimationType.FADE
+    ) {
+        getTransactionWithAnimation(transactionAnimation)
             .add(R.id.main_fragment_container, baseFragment)
             .addToBackStack(null).commit()
-    }
-
-
-    private fun invalidateStreamFilter(list: List<TagField>) {
-        viewModel.streamTagFields = list.toMutableList()
-        binding.mainBrowseFilterNavView.buildStreamAdapter(
-            tagAdapter,
-            list
-        )
-    }
-
-    private fun invalidateGenreFilter(list: List<TagField>) {
-        viewModel.genreTagFields = list.toMutableList()
-        binding.mainBrowseFilterNavView.buildGenreAdapter(
-            tagAdapter,
-            list
-        )
-    }
-
-    private fun invalidateTagFilter(list: List<TagField>) {
-        viewModel.tagTagFields = list.toMutableList()
-        binding.mainBrowseFilterNavView.buildTagAdapter(
-            tagAdapter,
-            list
-        )
-    }
-
-    override fun openTagChooserDialog(tags: List<TagField>, tagType: MediaTagFilterTypes) {
-        TagChooserDialogFragment.newInstance(
-            TagChooserField(
-                tagType,
-                tags
-            )
-        ).show(supportFragmentManager, TagChooserDialogFragment::class.java.simpleName)
-    }
-
-    override fun onTagAdd(tags: List<TagField>, tagType: MediaTagFilterTypes) {
-        when (tagType) {
-            MediaTagFilterTypes.TAGS -> {
-                viewModel.tagTagFields = tags.toMutableList()
-            }
-            MediaTagFilterTypes.GENRES -> {
-                viewModel.genreTagFields = tags.toMutableList()
-            }
-            MediaTagFilterTypes.STREAMING_ON -> {
-                viewModel.streamTagFields = tags.toMutableList()
-            }
-            else -> {
-            }
-        }
-
-    }
-
-    override fun onTagRemoved(tag: String, tagType: MediaTagFilterTypes) {
-        when (tagType) {
-            MediaTagFilterTypes.TAGS -> {
-                viewModel.tagTagFields.removeAll { it.tag == tag }
-            }
-            MediaTagFilterTypes.GENRES -> {
-                viewModel.genreTagFields.removeAll { it.tag == tag }
-            }
-            MediaTagFilterTypes.STREAMING_ON -> {
-                viewModel.streamTagFields.removeAll { it.tag == tag }
-            }
-            else -> {
-            }
-        }
-    }
-
-    override fun updateTags(tagType: MediaTagFilterTypes) {
-        when (tagType) {
-            MediaTagFilterTypes.TAGS -> {
-                binding.mainBrowseFilterNavView.invalidateTagAdapter(tagAdapter)
-            }
-            MediaTagFilterTypes.GENRES -> {
-                binding.mainBrowseFilterNavView.invalidateGenreAdapter(tagAdapter)
-            }
-            MediaTagFilterTypes.STREAMING_ON -> {
-                binding.mainBrowseFilterNavView.invalidateStreamAdapter(tagAdapter)
-            }
-            else -> {
-            }
-        }
-    }
-
-
-    override fun getQuery(): String {
-        return ""
-    }
-
-    override fun applyFilter() {
-        binding.mainBrowseFilterNavView.getFilter().let {
-            BrowseFilterDataProvider.setBrowseFilterData(context, it)
-            SearchActivity.openActivity(
-                this, it
-            )
-        }
-
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.END)
-        }
     }
 
 

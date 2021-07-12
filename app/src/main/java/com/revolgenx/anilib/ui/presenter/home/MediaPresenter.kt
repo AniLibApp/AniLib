@@ -9,16 +9,16 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.BrowseGenreEvent
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
 import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.disableCardStyleInHomeScreen
 import com.revolgenx.anilib.data.model.home.SelectableCommonMediaModel
 import com.revolgenx.anilib.databinding.MediaPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
+import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
 import com.revolgenx.anilib.ui.presenter.Constant
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
@@ -77,7 +77,7 @@ class MediaPresenter(
             mediaFormatTv.status = item.mediaEntryListModel?.status
 
             mediaGenreLayout.addGenre(item.genres?.take(3)) { genre ->
-                BrowseGenreEvent(MediaSearchFilterModel().also {
+                OpenSearchEvent(MediaSearchFilterModel().also {
                     it.genre = listOf(genre.trim())
                 }).postEvent
             }
@@ -100,15 +100,15 @@ class MediaPresenter(
 
             holder.itemView.setOnClickListener {
                 if (item.isSelected || disableCardInHomeScreen) {
-                    BrowseMediaEvent(
-                        MediaBrowserMeta(
+                    OpenMediaInfoEvent(
+                        MediaInfoMeta(
                             item.mediaId,
                             item.type!!,
                             item.title!!.romaji!!,
                             item.coverImage!!.image(context),
                             item.coverImage!!.largeImage,
                             item.bannerImage
-                        ), mediaSimpleDrawee
+                        )
                     ).postEvent
                 } else {
                     item.isSelected = true
@@ -119,14 +119,14 @@ class MediaPresenter(
 
             holder.itemView.setOnLongClickListener {
                 if (context.loggedIn()) {
-                    ListEditorEvent(
+                    OpenMediaListEditorEvent(
                         ListEditorMeta(
                             item.mediaId,
                             item.type!!,
                             item.title!!.title(context)!!,
                             item.coverImage!!.image(context),
                             item.bannerImage
-                        ), mediaSimpleDrawee
+                        )
                     ).postEvent
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.revolgenx.anilib.data.field.recommendation.RecommendationField
 import com.revolgenx.anilib.data.field.recommendation.UpdateRecommendationField
-import com.revolgenx.anilib.data.model.UpdateRecommendationModel
+import com.revolgenx.anilib.data.model.recommendation.UpdateRecommendationModel
 import com.revolgenx.anilib.data.model.recommendation.RecommendationModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.recommendation.RecommendationService

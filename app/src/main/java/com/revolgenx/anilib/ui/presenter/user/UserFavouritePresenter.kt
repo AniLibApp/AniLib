@@ -14,14 +14,13 @@ import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.data.model.BaseModel
-import com.revolgenx.anilib.data.model.user.CharacterFavouriteModel
-import com.revolgenx.anilib.data.model.user.MediaFavouriteModel
-import com.revolgenx.anilib.data.model.user.StaffFavouriteModel
-import com.revolgenx.anilib.data.model.user.StudioFavouriteModel
+import com.revolgenx.anilib.data.model.user.container.CharacterFavouriteModel
+import com.revolgenx.anilib.data.model.user.container.MediaFavouriteModel
+import com.revolgenx.anilib.data.model.user.container.StaffFavouriteModel
+import com.revolgenx.anilib.data.model.user.container.StudioFavouriteModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.*
 import com.revolgenx.anilib.ui.presenter.BasePresenter
-import com.revolgenx.anilib.ui.presenter.Constant.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 
@@ -112,28 +111,28 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
         }
 
         root.setOnClickListener {
-            BrowseMediaEvent(
-                MediaBrowserMeta(
+            OpenMediaInfoEvent(
+                MediaInfoMeta(
                     data.mediaId,
                     data.type!!,
                     data.title!!.romaji!!,
                     data.coverImage!!.image(context),
                     data.coverImage!!.largeImage,
                     data.bannerImage
-                ), searchMediaImageView
+                )
             ).postEvent
         }
 
         root.setOnLongClickListener {
             if (context.loggedIn()) {
-                ListEditorEvent(
+                OpenMediaListEditorEvent(
                     ListEditorMeta(
                         data.mediaId,
                         data.type!!,
                         data.title!!.title(context)!!,
                         data.coverImage!!.image(context),
                         data.bannerImage
-                    ), searchMediaImageView
+                    )
                 ).postEvent
             } else {
                 context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
@@ -145,25 +144,24 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
 
     private fun SearchCharacterLayoutBinding.updateCharacter(item: BaseModel) {
         val data = item as CharacterFavouriteModel
-        searchCharacterImageView.setImageURI(data.characterImageModel?.image)
+        searchCharacterImageView.setImageURI(data.image?.image)
         searchCharacterNameTv.text = data.name?.full
         root.setOnClickListener {
-            BrowseCharacterEvent(
-                CharacterMeta(
-                    item.characterId,
-                    item.characterImageModel?.image
-                ),
-                searchCharacterImageView
+            val id = item.id ?: return@setOnClickListener
+            OpenCharacterEvent(
+                id
             ).postEvent
         }
     }
 
     private fun SearchStaffLayoutBinding.updateStaff(item: BaseModel) {
         val data = item as StaffFavouriteModel
-        searchStaffImageView.setImageURI(data.staffImage?.image)
-        searchStaffNameTv.text = data.staffName?.full
+        searchStaffImageView.setImageURI(data.image?.image)
+        searchStaffNameTv.text = data.name?.full
         root.setOnClickListener {
-            BrowseStaffEvent(StaffMeta(item.staffId ?: -1, item.staffImage?.image)).postEvent
+            OpenStaffEvent(
+                item.id!!,
+            ).postEvent
         }
     }
 
@@ -174,7 +172,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
         searchStudioHeader.setOnClickListener {
-            BrowseStudioEvent(StudioMeta(data.studioId)).postEvent
+            OpenStudioEvent(data.studioId!!).postEvent
         }
 
         Adapter.builder(lifecycleOwner)
@@ -220,28 +218,28 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
                 }
 
                 root.setOnClickListener {
-                    BrowseMediaEvent(
-                        MediaBrowserMeta(
+                    OpenMediaInfoEvent(
+                        MediaInfoMeta(
                             item.mediaId,
                             item.type!!,
                             item.title!!.romaji!!,
                             item.coverImage!!.image(context),
                             item.coverImage!!.largeImage,
                             item.bannerImage
-                        ), searchMediaImageView
+                        )
                     ).postEvent
                 }
 
                 root.setOnLongClickListener {
                     if (context.loggedIn()) {
-                        ListEditorEvent(
+                        OpenMediaListEditorEvent(
                             ListEditorMeta(
                                 item.mediaId,
                                 item.type!!,
                                 item.title!!.title(context)!!,
                                 item.coverImage!!.image(context),
                                 item.bannerImage
-                            ), searchMediaImageView
+                            )
                         ).postEvent
                     } else {
                         context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

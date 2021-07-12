@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.ui.presenter.media
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -11,20 +10,18 @@ import androidx.lifecycle.Observer
 import com.apollographql.apollo.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
 import com.revolgenx.anilib.data.field.recommendation.UpdateRecommendationField
 import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
-import com.revolgenx.anilib.data.model.MediaRecommendationModel
-import com.revolgenx.anilib.data.model.UpdateRecommendationModel
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.data.model.media_info.MediaRecommendationModel
+import com.revolgenx.anilib.data.model.recommendation.UpdateRecommendationModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.OverviewRecommendationPresnterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
@@ -97,28 +94,28 @@ class MediaRecommendationPresenter(
         mediaRecommendationDislikeIv.setOnClickListener(null)
 
         root.setOnClickListener {
-            BrowseMediaEvent(
-                MediaBrowserMeta(
+            OpenMediaInfoEvent(
+                MediaInfoMeta(
                     item.mediaId!!,
                     item.type!!,
                     item.title!!.romaji!!,
                     item.coverImage!!.image(context),
                     item.coverImage!!.largeImage,
                     item.bannerImage
-                ), recommendationCoverImage
+                )
             ).postEvent
         }
 
         root.setOnLongClickListener {
             if (context.loggedIn()) {
-                ListEditorEvent(
+                OpenMediaListEditorEvent(
                     ListEditorMeta(
                         item.mediaId,
                         item.type!!,
                         item.title!!.title(context)!!,
                         item.coverImage!!.image(context),
                         item.bannerImage
-                    ), recommendationCoverImage
+                    )
                 ).postEvent
             } else {
                 context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

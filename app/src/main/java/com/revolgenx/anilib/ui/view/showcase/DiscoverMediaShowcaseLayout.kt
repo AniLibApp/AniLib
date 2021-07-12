@@ -13,13 +13,13 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.disableCardStyleInHomeScreen
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.data.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.data.model.home.SelectableCommonMediaModel
 import com.revolgenx.anilib.databinding.DiscoverShowCaseLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
+import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
@@ -90,7 +90,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
                 media.studios?.filter { it.isAnimationStudio }
                     ?.joinToString(", ") { it.studioName!! }
             } else {
-                media.staff?.joinToString(", ") { it.name!! }
+                media.staff?.joinToString(", ") { it.name?.full ?: "" }
             }
             studioOrWriterTv.text = studioOrWriter?.takeIf { !it.isEmpty() } ?: ""
             mediaDescriptionTv.text =
@@ -106,15 +106,15 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
             }
 
             root.setOnClickListener {
-                BrowseMediaEvent(
-                    MediaBrowserMeta(
+                OpenMediaInfoEvent(
+                    MediaInfoMeta(
                         media.mediaId,
                         media.type!!,
                         media.title!!.romaji!!,
                         media.coverImage!!.image(context),
                         media.coverImage!!.largeImage,
                         media.bannerImage
-                    ), null
+                    )
                 ).postEvent
             }
 
@@ -129,18 +129,18 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
         }
     }
 
-    private fun openListEditor(){
-        if(mediaModel == null) return
+    private fun openListEditor() {
+        if (mediaModel == null) return
 
         if (context.loggedIn()) {
-            ListEditorEvent(
+            OpenMediaListEditorEvent(
                 ListEditorMeta(
                     mediaModel!!.mediaId,
                     mediaModel!!.type!!,
                     mediaModel!!.title!!.title(context)!!,
                     mediaModel!!.coverImage!!.image(context),
                     mediaModel!!.bannerImage
-                ), null
+                )
             ).postEvent
         } else {
             context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

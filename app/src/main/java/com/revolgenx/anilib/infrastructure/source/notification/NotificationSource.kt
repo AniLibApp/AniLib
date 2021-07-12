@@ -14,7 +14,7 @@ class NotificationSource(
     private val compositeDisposable: CompositeDisposable
 ) : BaseRecyclerSource<NotificationModel, NotificationField>(field) {
     override fun areItemsTheSame(first: NotificationModel, second: NotificationModel): Boolean {
-        return first.baseId == second.baseId
+        return first.id == second.id
     }
 
 

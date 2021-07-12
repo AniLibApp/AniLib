@@ -5,8 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".app.App"
@@ -28,17 +27,25 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan"
-            />
-
-        <activity android:name=".activity.MediaBrowseActivity"
-            android:windowSoftInputMode="adjustPan"
-            >
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="anilist.co"
+                    android:pathPrefix="/user/"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="anilist.co"
                     android:pathPrefix="/anime/"
@@ -46,6 +53,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -54,11 +62,43 @@
                     android:pathPrefix="/manga/"
                     android:scheme="https" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="anilist.co"
+                    android:pathPrefix="/character/"
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="anilist.co"
+                    android:pathPrefix="/staff/"
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="anilist.co"
+                    android:pathPrefix="/activity/"
+                    android:scheme="https" />
+            </intent-filter>
+
         </activity>
 
-        <activity android:name=".activity.ContainerActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
         <activity android:name="net.openid.appauth.RedirectUriReceiverActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -71,47 +111,17 @@
                     android:scheme="callback" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ViewPagerContainerActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity android:name=".activity.SearchActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity android:name=".activity.MediaListActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity android:name=".activity.UserProfileActivity"
-            android:windowSoftInputMode="adjustPan"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="anilist.co"
-                    android:pathPrefix="/user/"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-<!--        <activity-->
-<!--            android:name=".activity.ExoVideoPlayerActivity"-->
-<!--            android:configChanges="orientation|screenSize|keyboardHidden"-->
-<!--            android:launchMode="singleTop"-->
-<!--            android:screenOrientation="fullSensor" />-->
         <activity
             android:name=".activity.SimpleDraweeViewerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop" />
-        <activity android:name=".activity.NavViewPagerContainerActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity android:name=".activity.ToolbarContainerActivity"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".activity.AboutActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activity.NotificationActivity"
-            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activity.MarkwonPlaygroundActivity" />
+
+        <!--        <activity-->
+        <!--            android:name=".activity.ExoVideoPlayerActivity"-->
+        <!--            android:configChanges="orientation|screenSize|keyboardHidden"-->
+        <!--            android:launchMode="singleTop"-->
+        <!--            android:screenOrientation="fullSensor" />-->
 
         <service android:name=".radio.service.RadioService">
             <intent-filter>
@@ -120,24 +130,23 @@
         </service>
 
 
-
         <!--Widget-->
 
         <receiver android:name="com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/airing_schedule_widget_config"
-                />
+                android:resource="@xml/airing_schedule_widget_config" />
 
         </receiver>
 
 
-        <service android:name=".appwidget.service.AiringScheduleRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        <service
+            android:name=".appwidget.service.AiringScheduleRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <!--Widget-->
 
@@ -148,7 +157,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2546597730102301~6088602294"/>
+            android:value="ca-app-pub-2546597730102301~6088602294" />
     </application>
 
 </manifest>

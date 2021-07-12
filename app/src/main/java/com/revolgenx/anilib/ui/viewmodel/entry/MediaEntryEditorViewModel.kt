@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
-import com.revolgenx.anilib.data.model.MediaBrowseModel
+import com.revolgenx.anilib.data.model.media_info.MediaBrowseModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.service.ToggleService
+import com.revolgenx.anilib.infrastructure.service.ToggleFavouriteService
 import com.revolgenx.anilib.infrastructure.service.media.MediaBrowseService
 import com.revolgenx.anilib.infrastructure.service.media.MediaListEntryService
 import io.reactivex.disposables.CompositeDisposable
@@ -16,7 +16,7 @@ import io.reactivex.disposables.CompositeDisposable
 class MediaEntryEditorViewModel(
     private val mediaListEntryService: MediaListEntryService,
     private val mediaBrowseService: MediaBrowseService,
-    private val toggleService: ToggleService
+    private val toggleService: ToggleFavouriteService
 ) : ViewModel() {
     val queryMediaListEntryLiveData by lazy {
         MediatorLiveData<Resource<EntryListEditorMediaModel>>().apply {

@@ -19,7 +19,7 @@
             app:ads_backgroundColorType="background"
             app:ads_colorType="accent"
             app:ads_contrastWithColorType="background"
-            app:ads_textColorType="tint_primary"
+            app:ads_textColorType="text_primary"
             app:entries="@array/login_entries"
             app:layout_scrollFlags="noScroll"
             app:tabTextAppearance="@style/RadioTabLayoutTextStyle" />

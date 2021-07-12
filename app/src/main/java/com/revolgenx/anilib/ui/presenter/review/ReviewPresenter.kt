@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.BrowseReviewEvent
-import com.revolgenx.anilib.infrastructure.event.UserBrowseEvent
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.review.ReviewModel
 import com.revolgenx.anilib.databinding.ReviewPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.infrastructure.event.OpenReviewEvent
+import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.util.naText
 
@@ -34,7 +34,7 @@ class ReviewPresenter(context: Context) : BasePresenter<ReviewPresenterLayoutBin
             item.userPrefModel?.let { user ->
                 reviewByTv.text = context.getString(R.string.review_of_s_by_s).format(
                     item.mediaModel?.title?.title(context),
-                    user.userName
+                    user.name
                 )
                 reviewByScoreTv.text =
                     context.getString(R.string.review_score_format).format(item.score)
@@ -42,7 +42,7 @@ class ReviewPresenter(context: Context) : BasePresenter<ReviewPresenterLayoutBin
                 reviewByAvatar.setImageURI(user.avatar?.image)
 
                 reviewByAvatar.setOnClickListener {
-                    UserBrowseEvent(user.userId).postEvent
+                    OpenUserProfileEvent(user.id).postEvent
                 }
             }
 
@@ -50,22 +50,22 @@ class ReviewPresenter(context: Context) : BasePresenter<ReviewPresenterLayoutBin
                 reviewMediaBannerImage.setImageURI(media.bannerImage)
                 reviewSummaryTv.text = item.summary
                 reviewByTv.setOnClickListener {
-                    BrowseMediaEvent(
-                        MediaBrowserMeta(
+                    OpenMediaInfoEvent(
+                        MediaInfoMeta(
                             media.mediaId,
                             media.type!!,
                             media.title!!.romaji!!,
                             media.coverImage!!.image(context),
                             media.coverImage!!.largeImage,
                             media.bannerImage
-                        ), null
+                        )
                     ).postEvent
                 }
             }
             reviewLikeTv.text = item.rating?.toString().naText()
 
             root.setOnClickListener {
-                BrowseReviewEvent(item.reviewId).postEvent
+                OpenReviewEvent(item.reviewId!!).postEvent
             }
         }
     }

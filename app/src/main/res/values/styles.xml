@@ -79,6 +79,12 @@
 
     </style>
 
+    <style name="ActivityUnionTabLayoutTextStyle" parent="HomeTabLayoutTextStyle">
+
+    </style>
+
+
+
     <style name="DynamicTextTabLayoutStyle.Background">
         <item name="ads_backgroundColorType">background</item>
     </style>

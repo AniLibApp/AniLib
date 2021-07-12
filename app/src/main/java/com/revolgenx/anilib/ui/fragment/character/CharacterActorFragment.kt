@@ -1,13 +1,10 @@
 package com.revolgenx.anilib.ui.fragment.character
 
-import android.content.res.Configuration
 import android.os.Bundle
-import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.core.os.bundleOf
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.data.meta.CharacterMeta
 import com.revolgenx.anilib.data.model.VoiceActorModel
 import com.revolgenx.anilib.ui.presenter.character.CharacterActorPresenter
 import com.revolgenx.anilib.ui.viewmodel.character.CharacterActorViewModel
@@ -25,41 +22,25 @@ class CharacterActorFragment : BasePresenterFragment<VoiceActorModel>() {
         get() = viewModel.source ?: createSource()
     private val viewModel by viewModel<CharacterActorViewModel>()
 
-    private lateinit var characterMeta: CharacterMeta
-    private val field by lazy {
-    }
+    private val characterId: Int? get() = arguments?.getInt(CHARACTER_ID_KEY)
 
+    override var gridMaxSpan: Int = 6
+    override var gridMinSpan: Int = 3
+
+    companion object {
+        private const val CHARACTER_ID_KEY = "CHARACTER_ID_KEY"
+        fun newInstance(characterId: Int) = CharacterActorFragment().also {
+            it.arguments = bundleOf(CHARACTER_ID_KEY to characterId)
+        }
+    }
 
     override fun createSource(): Source<VoiceActorModel> {
         return viewModel.createSource()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val span =
-            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 3
-        layoutManager =
-            GridLayoutManager(
-                this.context,
-                span
-            ).also {
-                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.getItemViewType(position) == 0) {
-                            1
-                        } else {
-                            span
-                        }
-                    }
-                }
-            }
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        arguments?.classLoader = CharacterMeta::class.java.classLoader
-        characterMeta =
-            arguments?.getParcelable(CharacterFragment.CHARACTER_META_KEY) ?: return
-        viewModel.field.characterId = characterMeta.characterId
         super.onActivityCreated(savedInstanceState)
+        viewModel.field.characterId = characterId ?: return
     }
 
 

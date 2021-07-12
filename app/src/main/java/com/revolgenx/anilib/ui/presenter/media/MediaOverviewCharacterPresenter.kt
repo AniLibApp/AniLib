@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.meta.CharacterMeta
-import com.revolgenx.anilib.data.model.MediaCharacterModel
+import com.revolgenx.anilib.data.model.media_info.MediaCharacterModel
 import com.revolgenx.anilib.databinding.MediaOverviewCharacterPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.BrowseCharacterEvent
+import com.revolgenx.anilib.infrastructure.event.OpenCharacterEvent
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 
 class MediaOverviewCharacterPresenter(context: Context) :
@@ -34,17 +33,13 @@ class MediaOverviewCharacterPresenter(context: Context) :
         super.onBind(page, holder, element)
         val item = element.data ?: return
         holder.getBinding()?.apply {
-            characterIv.setImageURI(item.characterImageModel?.image)
-            characterNameTv.text = item.name
+            characterIv.setImageURI(item.image?.image)
+            characterNameTv.text = item.name?.full
             characterRoleTv.text = characterRoles[item.role!!]
 
             root.setOnClickListener {
-                BrowseCharacterEvent(
-                    CharacterMeta(
-                        item.characterId ?: -1,
-                        item.characterImageModel?.image
-                    ),
-                    characterIv
+                OpenCharacterEvent(
+                        item.id!!
                 ).postEvent
             }
         }

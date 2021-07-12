@@ -1,15 +1,14 @@
 package com.revolgenx.anilib.ui.fragment
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
+import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
@@ -17,7 +16,6 @@ import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
@@ -29,6 +27,7 @@ import com.revolgenx.anilib.common.preference.getUserPrefModel
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userScoreFormat
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.data.meta.type.MediaListStatusEditor
 import com.revolgenx.anilib.databinding.ListEditorFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
@@ -36,8 +35,6 @@ import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.bottomsheet.airing.CalendarViewBottomSheetDialog
 import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.ui.view.makeToast
-import com.revolgenx.anilib.util.COLLAPSED
-import com.revolgenx.anilib.util.EXPANDED
 import com.revolgenx.anilib.ui.viewmodel.entry.MediaEntryEditorViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDate
@@ -50,11 +47,17 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
     companion object {
         const val LIST_EDITOR_META_KEY = "list_editor_meta_key"
-        const val LIST_EDITOR_RESULT_META_KEY = "LIST_EDITOR_RESULT_META_KEY"
+
+        const val COLLAPSED = 0
+        const val EXPANDED = 1
+
+        fun newInstance(meta:ListEditorMeta) = EntryListEditorFragment().also {
+            it.arguments = bundleOf(LIST_EDITOR_META_KEY to meta)
+        }
     }
 
     private var state = COLLAPSED //collapsed
-    private lateinit var mediaMeta: ListEditorMeta
+    private val mediaMeta: ListEditorMeta? get() = arguments?.getParcelable(LIST_EDITOR_META_KEY)
     private val viewModel by viewModel<MediaEntryEditorViewModel>()
 
     private var saving = false
@@ -68,6 +71,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             viewModel.apiModelEntry = value
         }
 
+    override val setHomeAsUp: Boolean = true
 
     private val calendarDrawable by lazy {
         ContextCompat.getDrawable(requireContext(), R.drawable.ic_calendar)!!.mutate().also {
@@ -90,11 +94,15 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
     private val offSetChangeListener by lazy {
         AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (verticalOffset == 0) {
-                state = EXPANDED
-                (activity as AppCompatActivity).invalidateOptionsMenu()
+                if(state != EXPANDED){
+                    state = EXPANDED
+                    updateToolbar()
+                }
             } else if (abs(verticalOffset) >= (appBarLayout.totalScrollRange - binding.listEditorToolbar.height)) {
-                state = COLLAPSED
-                (activity as AppCompatActivity).invalidateOptionsMenu()
+                if(state != COLLAPSED) {
+                    state = COLLAPSED
+                    updateToolbar()
+                }
             }
         }
     }
@@ -118,12 +126,11 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
         super.onActivityCreated(savedInstanceState)
 
         //bug or smth wont parcelize without class loader
-        arguments?.classLoader = ListEditorMeta::class.java.classLoader
-        mediaMeta = arguments?.getParcelable(LIST_EDITOR_META_KEY) ?: return
+        val mediaListMeta = mediaMeta ?: return
 
         apiModelEntry.also {
-            it.mediaId = mediaMeta.mediaId
-            it.type = mediaMeta.type
+            it.mediaId = mediaListMeta.mediaId
+            it.type = mediaListMeta.type
             it.userId = requireContext().userId()
         }
 
@@ -135,12 +142,12 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             when (it.status) {
                 SUCCESS -> {
                     if (it.data == null) return@observe
-                    mediaMeta.type = it.data.type
-                    apiModelEntry.type = mediaMeta.type
-                    if (mediaMeta.coverImage == null || mediaMeta.bannerImage == null) {
-                        mediaMeta.coverImage = it.data.coverImage?.large ?: ""
-                        mediaMeta.bannerImage = it.data.bannerImage ?: ""
-                        mediaMeta.title = it.data.title?.romaji ?: ""
+                    mediaListMeta.type = it.data.type
+                    apiModelEntry.type = mediaListMeta.type
+                    if (mediaListMeta.coverImage == null || mediaListMeta.bannerImage == null) {
+                        mediaListMeta.coverImage = it.data.coverImage?.large ?: ""
+                        mediaListMeta.bannerImage = it.data.bannerImage ?: ""
+                        mediaListMeta.title = it.data.title?.romaji ?: ""
                         binding.showMetaViews()
                     }
                 }
@@ -149,7 +156,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             }
         }
 
-        viewModel.getMediaInfo(mediaMeta.mediaId)
+        viewModel.getMediaInfo(mediaListMeta.mediaId)
 
         val statusLayout = binding.resourceStatusLayout
 
@@ -165,7 +172,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                         apiModelEntry.hasData = true
                     }
                     binding.updateView()
-                    invalidateOptionMenu()
+                    updateToolbar()
                 }
                 ERROR -> {
                     statusLayout.resourceStatusContainer.visibility = View.VISIBLE
@@ -182,12 +189,12 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             }
         })
 
-        viewModel.isFavouriteQuery(mediaMeta.mediaId).observe(viewLifecycleOwner, {
+        viewModel.isFavouriteQuery(mediaListMeta.mediaId).observe(viewLifecycleOwner, {
             when (it.status) {
                 SUCCESS -> {
                     isFavourite = it.data!!
                     binding.listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
-                    invalidateOptionMenu()
+                    updateToolbar()
                 }
                 ERROR -> {
                 }
@@ -202,7 +209,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                     isFavourite = !isFavourite
                     binding.listFavButton.showLoading(false)
                     binding.listFavButton.setImageResource(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
-                    invalidateOptionMenu()
+                    updateToolbar()
                     false
                 }
                 ERROR -> {
@@ -252,7 +259,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                             status = apiModelEntry.status,
                             deleted = true
                         )
-                    ).postSticky
+                    ).postEvent
                     closeListEditor()
                     false
                 }
@@ -269,28 +276,23 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
         })
 
         if (savedInstanceState == null)
-            viewModel.queryMediaListEntry(mediaMeta.mediaId)
+            viewModel.queryMediaListEntry(mediaListMeta.mediaId)
     }
 
     private fun closeListEditor() {
-        if(mediaMeta.closeActivity){
-            finishActivity()
-        }else{
-            if(activity != null){
-                requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
-            }
-        }
+        if (activity != null)
+            requireActivity().supportFragmentManager.popBackStack()
     }
 
     private fun ListEditorFragmentLayoutBinding.showViews() {
-        if (!::mediaMeta.isInitialized) return
+        val mediaListMeta = mediaMeta?: return
         showMetaViews()
         listDeleteButton.backgroundTintList =
             ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red))
 
         listEditorScoreLayout.scoreFormatType = requireContext().userScoreFormat()
 
-        if (mediaMeta.type == MediaType.MANGA.ordinal) {
+        if (mediaListMeta.type == MediaType.MANGA.ordinal) {
             progressHeader.title = getString(R.string.manga_progress)
             volumeProgressHeader.visibility = View.VISIBLE
             listEditorVolumeProgressLayout.visibility = View.VISIBLE
@@ -316,7 +318,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                 ContextCompat.getDrawable(
                     requireContext(),
                     R.drawable.ic_watching
-                ), getString(R.string.watching)
+                ), if(mediaListMeta.type == MediaType.MANGA.ordinal) getString(R.string.reading) else getString(R.string.watching)
             )
         )
         spinnerItems.add(
@@ -324,7 +326,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                 ContextCompat.getDrawable(
                     requireContext(),
                     R.drawable.ic_planning
-                ), getString(R.string.planning)
+                ), if(mediaListMeta.type == MediaType.MANGA.ordinal) getString(R.string.plan_to_read) else getString(R.string.plan_to_watch)
             )
         )
         spinnerItems.add(
@@ -339,8 +341,8 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             DynamicMenu(
                 ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.ic_dropped
-                ), getString(R.string.dropped)
+                    R.drawable.ic_rewatching
+                ), if(mediaListMeta.type == MediaType.MANGA.ordinal) getString(R.string.rereading) else getString(R.string.rewatching)
             )
         )
         spinnerItems.add(
@@ -355,10 +357,12 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             DynamicMenu(
                 ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.ic_rewatching
-                ), getString(R.string.rewatching)
+                    R.drawable.ic_dropped
+                ), getString(R.string.dropped)
             )
         )
+
+
 
         statusSpinner.adapter = DynamicSpinnerImageAdapter(
             requireContext(),
@@ -369,15 +373,16 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
     }
 
     private fun ListEditorFragmentLayoutBinding.showMetaViews() {
-        if (!::mediaMeta.isInitialized) return
-        (activity as AppCompatActivity).also { act ->
-            act.setSupportActionBar(listEditorToolbar)
-            act.supportActionBar!!.title = mediaMeta.title
-            act.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        }
-        mediaTitleTv.text = mediaMeta.title
-        listEditorCoverImage.setImageURI(mediaMeta.coverImage)
-        listEditorBannerImage.setImageURI(mediaMeta.bannerImage)
+        val mediaListMeta = mediaMeta?:return
+        getBaseToolbar().title = mediaListMeta.title
+
+        mediaTitleTv.text = mediaListMeta.title
+        listEditorCoverImage.setImageURI(mediaListMeta.coverImage)
+        listEditorBannerImage.setImageURI(mediaListMeta.bannerImage)
+    }
+
+    override fun getBaseToolbar(): Toolbar {
+        return binding.listEditorToolbar
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -479,7 +484,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
                 position: Int,
                 id: Long
             ) {
-                apiModelEntry.status = position
+                apiModelEntry.status = MediaListStatusEditor.values()[position].status
             }
         }
 
@@ -522,7 +527,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
     private fun ListEditorFragmentLayoutBinding.updateView() {
         apiModelEntry.status?.let {
-            statusSpinner.setSelection(it)
+            statusSpinner.setSelection(MediaListStatusEditor.from(it).ordinal)
         }
         listEditorScoreLayout.mediaListScore = apiModelEntry.score ?: 0.0
         privateToggleButton.checked = apiModelEntry.private == true
@@ -579,22 +584,29 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
     private fun toggleFav() {
         if (toggling) return
+        val mediaListMeta = mediaMeta?: return
         viewModel.toggleMediaFavourite(ToggleFavouriteField().also {
-            when (mediaMeta.type) {
+            when (mediaListMeta.type) {
                 MediaType.ANIME.ordinal -> {
-                    it.animeId = mediaMeta.mediaId
+                    it.animeId = mediaListMeta.mediaId
                 }
                 MediaType.MANGA.ordinal -> {
-                    it.mangaId = mediaMeta.mediaId
+                    it.mangaId = mediaListMeta.mediaId
                 }
             }
         })
     }
 
     private fun deleteList() {
-        if (deleting || !apiModelEntry.hasData) return
-        apiModelEntry.listId.takeIf { it != -1 }?.let {listId->
-            makeConfirmationDialog(requireContext(), message = getString(R.string.do_you_really_want_to_delete_the_entry_s, mediaMeta.title ?: "") ){
+        if (deleting || !apiModelEntry.hasData || mediaMeta == null) return
+        apiModelEntry.listId.takeIf { it != -1 }?.let { listId ->
+            makeConfirmationDialog(
+                requireContext(),
+                message = getString(
+                    R.string.do_you_really_want_to_delete_the_entry_s,
+                    mediaMeta!!.title ?: ""
+                )
+            ) {
                 viewModel.deleteMediaListEntry(listId)
             }
         }
@@ -606,7 +618,8 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun updateToolbar() {
+        super.updateToolbar()
         if (state == EXPANDED) {
             if (!apiModelEntry.isUserList) {
                 binding.listDeleteButton.visibility = View.GONE
@@ -620,8 +633,8 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
             return
         }
 
-        inflater.inflate(R.menu.list_editor_menu, menu)
-
+        getBaseToolbar().inflateMenu(R.menu.list_editor_menu)
+        val menu = getBaseToolbar().menu
         if (!apiModelEntry.isUserList) {
             menu.findItem(R.id.listDeleteMenu).isVisible = false
             binding.listDeleteButton.visibility = View.GONE
@@ -635,7 +648,7 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.listSaveMenu -> {
                 makeToast(R.string.please_wait, icon = R.drawable.ic_hour_glass)
@@ -662,35 +675,20 @@ class EntryListEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBindi
 
 
     private fun setToolbarTheme() {
-        if(activity is MainActivity){
-            binding.listEditorCollapsingToolbar.setCollapsedTitleTextColor(
-                DynamicTheme.getInstance().get().textPrimaryColor
-            )
-            binding.listEditorCollapsingToolbar.setBackgroundColor(
-                DynamicTheme.getInstance().get().backgroundColor
-            )
-            binding.listEditorCollapsingToolbar.setStatusBarScrimColor(
-                DynamicTheme.getInstance().get().backgroundColor
-            )
-            binding.listEditorCollapsingToolbar.setContentScrimColor(
-                DynamicTheme.getInstance().get().backgroundColor
-            )
-            binding.listEditorToolbar.colorType = Theme.ColorType.BACKGROUND
-            binding.listEditorToolbar.textColorType = Theme.ColorType.TEXT_PRIMARY
-        }else{
-            binding.listEditorCollapsingToolbar.setStatusBarScrimColor(
-                DynamicTheme.getInstance().get().primaryColorDark
-            )
-            binding.listEditorCollapsingToolbar.setContentScrimColor(
-                DynamicTheme.getInstance().get().primaryColor
-            )
-            binding.listEditorCollapsingToolbar.setCollapsedTitleTextColor(
-                DynamicTheme.getInstance().get().tintPrimaryColor
-            )
-            binding.listEditorCollapsingToolbar.setBackgroundColor(
-                DynamicTheme.getInstance().get().backgroundColor
-            )
-        }
+        binding.listEditorCollapsingToolbar.setCollapsedTitleTextColor(
+            DynamicTheme.getInstance().get().textPrimaryColor
+        )
+        binding.listEditorCollapsingToolbar.setBackgroundColor(
+            DynamicTheme.getInstance().get().backgroundColor
+        )
+        binding.listEditorCollapsingToolbar.setStatusBarScrimColor(
+            DynamicTheme.getInstance().get().backgroundColor
+        )
+        binding.listEditorCollapsingToolbar.setContentScrimColor(
+            DynamicTheme.getInstance().get().backgroundColor
+        )
+        binding.listEditorToolbar.colorType = Theme.ColorType.BACKGROUND
+        binding.listEditorToolbar.textColorType = Theme.ColorType.TEXT_PRIMARY
     }
 
     override fun onDestroyView() {

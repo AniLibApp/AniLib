@@ -143,13 +143,12 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
     }
 
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onListEditorEvent(event: ListEditorResultEvent) {
         event.listEditorResultMeta.let {
             viewModel.updateMediaProgress(it.mediaId, it.progress)
         }
         notifyDataSetChanged()
-        EventBus.getDefault().removeStickyEvent(event)
     }
 
     @Subscribe()

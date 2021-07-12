@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,6 @@ import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.extensions.HeaderSource
 import com.otaliastudios.elements.extensions.SimplePresenter
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.ContainerActivity
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
@@ -53,6 +53,11 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
 
     private var _airingBinding: AiringFragmentLayoutBinding? = null
     private val airingBinding: AiringFragmentLayoutBinding get() = _airingBinding!!
+
+
+    override var selfAddLayoutManager: Boolean = false
+    override val setHomeAsUp: Boolean = true
+    override val menuRes: Int = R.menu.airing_menu
 
     override fun onResume() {
         super.onResume()
@@ -104,28 +109,25 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
             container,
             false
         )
-        with(activity as ContainerActivity) {
-            setSupportActionBar(airingBinding.airingToolbar.dynamicToolbar)
-            this.supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close)
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
-        }
         airingBinding.airingContainerFrameLayout.addView(view)
         return airingBinding.root
     }
 
 
+    override fun getBaseToolbar(): Toolbar {
+        return airingBinding.airingToolbar.dynamicToolbar
+    }
+
     @SuppressLint("RestrictedApi")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.airing_menu, menu)
+    override fun onToolbarInflated() {
+        val menu = getBaseToolbar().menu
         if (menu is MenuBuilder) {
             menu.setOptionalIconsVisible(true)
         }
-
         menu.findItem(R.id.weekly_filter).isChecked = showAiringWeekly(requireContext())
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 finishActivity()
@@ -183,7 +185,7 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
                 }
                 true
             }
-            else -> super.onOptionsItemSelected(item)
+            else -> false
         }
     }
 
@@ -272,59 +274,56 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
     }
 
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onListEditorEvent(event: ListEditorResultEvent) {
         viewModel.field.isNewField = true
 
-        if(!event.listEditorResultMeta.deleted){
+        if (!event.listEditorResultMeta.deleted) {
             event.listEditorResultMeta.let {
                 viewModel.updateMediaProgress(it.mediaId, it.progress)
             }
         }
         adapter?.notifyDataSetChanged()
-        EventBus.getDefault().removeStickyEvent(event)
     }
 
     private fun updateToolbarTitle() {
-        (activity as? ContainerActivity)?.let {
-            val startDate = viewModel.startDateTime
-            val endDate = viewModel.endDateTime
-            val isSingleDateType = !viewModel.isDateTypeRange
-            val dayRangeString = if (isSingleDateType) {
+        val startDate = viewModel.startDateTime
+        val endDate = viewModel.endDateTime
+        val isSingleDateType = !viewModel.isDateTypeRange
+        val dayRangeString = if (isSingleDateType) {
+            startDate.dayOfWeek.getDisplayName(
+                TextStyle.FULL,
+                Locale.getDefault()
+            )
+        } else {
+            getString(R.string.day_range_string).format(
                 startDate.dayOfWeek.getDisplayName(
-                    TextStyle.FULL,
+                    TextStyle.SHORT,
+                    Locale.getDefault()
+                ),
+
+                endDate.dayOfWeek.getDisplayName(
+                    TextStyle.SHORT,
                     Locale.getDefault()
                 )
-            } else {
-                getString(R.string.day_range_string).format(
-                    startDate.dayOfWeek.getDisplayName(
-                        TextStyle.SHORT,
-                        Locale.getDefault()
-                    ),
-
-                    endDate.dayOfWeek.getDisplayName(
-                        TextStyle.SHORT,
-                        Locale.getDefault()
-                    )
-                )
-            }
-            val dateFormatPattern = requireContext().getString(R.string.date_format_pattern)
-
-            val dayDateRange = if (isSingleDateType) {
-                startDate.format(DateTimeFormatter.ofPattern(dateFormatPattern))
-            } else {
-                getString(R.string.day_range_string).format(
-                    startDate.format(
-                        DateTimeFormatter.ofPattern(
-                            dateFormatPattern
-                        )
-                    ), endDate.format(DateTimeFormatter.ofPattern(dateFormatPattern))
-                )
-            }
-
-            it.supportActionBar?.title = dayRangeString
-            it.supportActionBar?.subtitle = dayDateRange
+            )
         }
+        val dateFormatPattern = requireContext().getString(R.string.date_format_pattern)
+
+        val dayDateRange = if (isSingleDateType) {
+            startDate.format(DateTimeFormatter.ofPattern(dateFormatPattern))
+        } else {
+            getString(R.string.day_range_string).format(
+                startDate.format(
+                    DateTimeFormatter.ofPattern(
+                        dateFormatPattern
+                    )
+                ), endDate.format(DateTimeFormatter.ofPattern(dateFormatPattern))
+            )
+        }
+
+        getBaseToolbar().title = dayRangeString
+        getBaseToolbar().subtitle = dayDateRange
     }
 
     override fun adapterBuilder(): Adapter.Builder {

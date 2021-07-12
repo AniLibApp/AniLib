@@ -1,19 +1,22 @@
 package com.revolgenx.anilib.data.model
 
 import com.revolgenx.anilib.data.model.entry.MediaEntryListModel
+import com.revolgenx.anilib.data.model.media_info.MediaCoverImageModel
+import com.revolgenx.anilib.data.model.media_info.MediaStaffModel
+import com.revolgenx.anilib.data.model.studio.MediaStudioModel
 
 open class CommonMediaModel() : BaseModel() {
     var mediaId: Int? = null
         set(value) {
             field = value
-            baseId = value
+            id = value
         }
     var title: TitleModel? = null
     var description: String? = null
     var startDate: DateModel? = null
     var endDate: DateModel? = null
     var genres: List<String>? = null
-    var coverImage: CoverImageModel? = null
+    var coverImage: MediaCoverImageModel? = null
     var episodes: String? = null
     var chapters: String? = null
     var volumes: String? = null     /*can be null*/

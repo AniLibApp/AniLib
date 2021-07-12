@@ -4,8 +4,6 @@ import com.revolgenx.anilib.data.field.list.MediaListCollectionField
 import com.revolgenx.anilib.data.field.list.MediaListCollectionIdsField
 import com.revolgenx.anilib.data.field.list.MediaListCountField
 import com.revolgenx.anilib.data.field.list.MediaListField
-import com.revolgenx.anilib.data.model.CoverImageModel
-import com.revolgenx.anilib.data.model.TitleModel
 import com.revolgenx.anilib.data.model.list.MediaListCountModel
 import com.revolgenx.anilib.data.model.list.MediaListCountTypeModel
 import com.revolgenx.anilib.data.model.list.MediaListModel

@@ -9,7 +9,6 @@ class TitleModel {
     var native: String? = null
     var userPreferred: String? = null
 
-    constructor()
     constructor(
         english: String?,
         romaji: String?,

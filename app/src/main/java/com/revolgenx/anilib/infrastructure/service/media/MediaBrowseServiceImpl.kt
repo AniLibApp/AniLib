@@ -7,6 +7,13 @@ import com.revolgenx.anilib.data.field.media.*
 import com.revolgenx.anilib.data.model.*
 import com.revolgenx.anilib.data.model.airing.AiringAtModel
 import com.revolgenx.anilib.data.model.airing.AiringTimeModel
+import com.revolgenx.anilib.data.model.character.CharacterImageModel
+import com.revolgenx.anilib.data.model.character.CharacterNameModel
+import com.revolgenx.anilib.data.model.media_info.*
+import com.revolgenx.anilib.data.model.staff.StaffImageModel
+import com.revolgenx.anilib.data.model.staff.StaffNameModel
+import com.revolgenx.anilib.data.model.user.AvatarModel
+import com.revolgenx.anilib.data.model.user.UserPrefModel
 import com.revolgenx.anilib.data.model.user.stats.*
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toMediaOverviewModel
@@ -126,11 +133,15 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                 runBlocking {
                     response.data()?.Media()?.characters()?.edges()?.pmap {
                         MediaCharacterModel().also { charac ->
-                            charac.characterId = it.node()?.id()
+                            charac.id = it.node()?.id()
                             charac.role = it.role()?.ordinal
                             it.node()?.let { node ->
-                                charac.name = node.name()?.full()
-                                charac.characterImageModel = node.image()?.let {
+                                charac.name = node.name()?.let {
+                                    CharacterNameModel().also { model ->
+                                        model.full = it.full()
+                                    }
+                                }
+                                charac.image = node.image()?.let {
                                     CharacterImageModel().apply {
                                         large = it.large()
                                         medium = it.medium()
@@ -179,9 +190,13 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                         MediaStaffModel().also { model ->
                             model.role = s.role()
                             s.node()?.let { staff ->
-                                model.staffId = staff.id()
-                                model.name = staff.name()?.full()
-                                model.staffImage = staff.image()?.let {
+                                model.id = staff.id()
+                                model.name = staff.name()?.let {
+                                    StaffNameModel().also { model ->
+                                        model.full = it.full()
+                                    }
+                                }
+                                model.image = staff.image()?.let {
                                     StaffImageModel().also { imgModel ->
                                         imgModel.large = it.large()
                                         imgModel.medium = it.medium()
@@ -221,8 +236,8 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                 model.userRating = node.userRating()?.ordinal
                                 model.userPrefModel = node.user()?.let {
                                     UserPrefModel().also { model ->
-                                        model.userId = it.id()
-                                        model.avatar = UserAvatarImageModel().also { imageModel ->
+                                        model.id = it.id()
+                                        model.avatar = AvatarModel().also { imageModel ->
                                             imageModel.medium = it.avatar()?.medium()
                                             imageModel.large = it.avatar()?.large()
                                         }
@@ -304,15 +319,26 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
                                         )
                                     }?.sortedBy { it.episode }
 
-                            model.airingTrends?.let {trends->
+                            model.airingTrends?.let { trends ->
                                 val airingWatchersProgressionEntries = mutableListOf<Entry>()
                                 val airingScoreProgressionEntries = mutableListOf<Entry>()
                                 trends.forEach {
-                                    airingWatchersProgressionEntries.add(Entry(it.episode, it.inProgress))
-                                    airingScoreProgressionEntries.add(Entry(it.episode, it.averageScore))
+                                    airingWatchersProgressionEntries.add(
+                                        Entry(
+                                            it.episode,
+                                            it.inProgress
+                                        )
+                                    )
+                                    airingScoreProgressionEntries.add(
+                                        Entry(
+                                            it.episode,
+                                            it.averageScore
+                                        )
+                                    )
                                 }
 
-                                model.airingWatchersProgressionEntries = airingWatchersProgressionEntries
+                                model.airingWatchersProgressionEntries =
+                                    airingWatchersProgressionEntries
                                 model.airingScoreProgressionEntries = airingScoreProgressionEntries
                             }
                         }
@@ -328,6 +354,27 @@ class MediaBrowseServiceImpl(graphRepository: BaseGraphRepository) :
             })
         compositeDisposable?.add(disposable)
         return mediaStatsLiveData
+    }
+
+    override fun getMediaSocialFollowing(
+        field: MediaSocialFollowingField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<List<MediaSocialFollowingModel>>) -> Unit
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map {
+                it.data()?.Page()?.mediaList()?.map {
+                    it.toModel()
+                }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                resourceCallback.invoke(Resource.success(it ?: emptyList()))
+            }, {
+                Timber.w(it)
+                mediaStatsLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+            })
+        compositeDisposable.add(disposable)
     }
 
 }
