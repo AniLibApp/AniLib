@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.ToolbarContainerActivity
 import com.revolgenx.anilib.common.preference.enableAutoMlTranslation
 import com.revolgenx.anilib.common.preference.enableMlTranslation
 import com.revolgenx.anilib.common.preference.inUseMlLanguageModel
-import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
-import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
 import com.revolgenx.anilib.databinding.TranslationSettingFragmentLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenSettingEvent
+import com.revolgenx.anilib.infrastructure.event.SettingEventTypes
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 
@@ -32,13 +31,7 @@ class TranslationSettingFragment:BaseToolbarFragment<TranslationSettingFragmentL
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.miscTranslateOption.setOnClickListener {
-            ToolbarContainerActivity.openActivity(
-                requireContext(),
-                ParcelableFragment(
-                    MlLanguageChooserFragment::class.java,
-                    null
-                )
-            )
+            OpenSettingEvent(SettingEventTypes.LANGUAGE_CHOOSER).postEvent
         }
 
         binding.translateLayout.setOnClickListener {

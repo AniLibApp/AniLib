@@ -14,6 +14,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.enableAutoMlTranslation
 import com.revolgenx.anilib.common.preference.inUseMlLanguageModel
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.data.model.setting.MlLanguageModel
 import com.revolgenx.anilib.databinding.MlLanguageChooserFragmentLayoutBinding
 import com.revolgenx.anilib.ui.presenter.MlLanguagePresenter
@@ -21,7 +22,7 @@ import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.ui.view.makeToast
 import java.util.*
 
-class MlLanguageChooserFragment : BaseLayoutFragment<MlLanguageChooserFragmentLayoutBinding>() {
+class MlLanguageChooserFragment : BaseToolbarFragment<MlLanguageChooserFragmentLayoutBinding>() {
 
     override var titleRes: Int? = R.string.available_languages
     override var setHomeAsUp: Boolean = true
@@ -148,8 +149,8 @@ class MlLanguageChooserFragment : BaseLayoutFragment<MlLanguageChooserFragmentLa
                     mlTranslateLanguageModels[it.language]!!.downloaded = true
                 }
                 val inUseMlLanguageModel = inUseMlLanguageModel(requireContext())
-                if (inUseMlLanguageModel.isNullOrBlank().not()) {
-                    mlTranslateLanguageModels[inUseMlLanguageModel!!]!!.isInUse = true
+                if (inUseMlLanguageModel.isBlank().not()) {
+                    mlTranslateLanguageModels[inUseMlLanguageModel]!!.isInUse = true
                 }
                 binding.mlLanguagesRecyclerView.adapter = adapter
                 showLoading(false)

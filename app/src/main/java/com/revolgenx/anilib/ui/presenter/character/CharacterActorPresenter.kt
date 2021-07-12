@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.BrowseStaffEvent
-import com.revolgenx.anilib.data.meta.StaffMeta
 import com.revolgenx.anilib.data.model.VoiceActorModel
 import com.revolgenx.anilib.databinding.CharacterActorPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenStaffEvent
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 
 class CharacterActorPresenter(context: Context) : BasePresenter<CharacterActorPresenterLayoutBinding, VoiceActorModel>(context) {
@@ -40,11 +39,8 @@ class CharacterActorPresenter(context: Context) : BasePresenter<CharacterActorPr
                 actorLanguageTv.text = language[it]
             }
             root.setOnClickListener {
-                BrowseStaffEvent(
-                    StaffMeta(
-                        item.actorId ?: -1,
-                        item.voiceActorImageModel?.image
-                    )
+                OpenStaffEvent(
+                    item.actorId!!,
                 ).postEvent
             }
         }

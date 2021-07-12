@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.viewbinding.ViewBinding
-import com.facebook.drawee.view.DraweeView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
@@ -13,14 +12,11 @@ import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.*
-import com.revolgenx.anilib.data.meta.StaffMeta
-import com.revolgenx.anilib.data.meta.StudioMeta
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.data.model.user.stats.*
 import com.revolgenx.anilib.databinding.ImageStatsPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.TextStatsPresenterLayoutBinding
 import com.revolgenx.anilib.ui.presenter.Constant.PRESENTER_BINDING_KEY
-import com.revolgenx.anilib.ui.view.header.HorizontalHeaderLayout
 
 class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) {
     override val elementTypes: Collection<Int>
@@ -81,7 +77,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                     item.genre?.let { genre ->
                         statsTitleTv.text = genre
                         root.setOnClickListener { _ ->
-                            BrowseGenreEvent(MediaSearchFilterModel().also {
+                            OpenSearchEvent(MediaSearchFilterModel().also {
                                 it.genre = listOf(genre.trim())
                             }).postEvent
                         }
@@ -91,11 +87,11 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                     item.tag?.let { tag ->
                         statsTitleTv.text = tag
                         statsMediaLayout.setOnClickListener {
-                            MediaViewDialogEvent(item.mediaIds ?: emptyList()).postEvent;
+                            OpenMediaListingEvent(item.mediaIds ?: emptyList()).postEvent;
                             return@setOnClickListener;
                         }
                         root.setOnClickListener { _ ->
-                            BrowseTagEvent(MediaSearchFilterModel().also {
+                            OpenSearchEvent(MediaSearchFilterModel().also {
                                 it.tags = listOf(tag.trim())
                             }).postEvent
                         }
@@ -105,7 +101,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                     item.studio?.let {
                         statsTitleTv.text = it
                         root.setOnClickListener {
-                            BrowseStudioEvent(StudioMeta(item.baseId)).postEvent
+                            OpenStudioEvent(item.id!!).postEvent
                         }
                     }
                 }
@@ -113,13 +109,10 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                     item.name?.let {
                         statsTitleTv.text = it
                     }
-                    item.baseId?.let {
+                    item.id?.let {
                         root.setOnClickListener { _ ->
-                            BrowseStaffEvent(
-                                StaffMeta(
-                                    it,
-                                    item.image
-                                )
+                            OpenStaffEvent(
+                                it,
                             ).postEvent
                         }
                     }
@@ -130,13 +123,10 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                         statsTitleTv.text = it
                     }
 
-                    item.baseId?.let {
+                    item.id?.let {
                         root.setOnClickListener { _ ->
-                            BrowseStaffEvent(
-                                StaffMeta(
-                                    it,
-                                    item.image
-                                )
+                            OpenStaffEvent(
+                                it!!,
                             ).postEvent
                         }
                     }
@@ -146,7 +136,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
 
             statsMediaTv.text = (item.mediaIds?.size ?: 0).toString()
             statsMediaLayout.setOnClickListener {
-                MediaViewDialogEvent(item.mediaIds ?: emptyList()).postEvent;
+                OpenMediaListingEvent(item.mediaIds ?: emptyList()).postEvent;
                 return@setOnClickListener;
             }
 

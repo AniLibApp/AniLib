@@ -19,7 +19,8 @@ import com.revolgenx.anilib.databinding.BasePresenterFragmentLayoutBinding
  * BasePresenter class contains @property baseRecyclerView @property layoutManager
  *
  * */
-abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment<BasePresenterFragmentLayoutBinding>() {
+abstract class BasePresenterFragment<M : Any>() :
+    BaseLayoutFragment<BasePresenterFragmentLayoutBinding>() {
     abstract val basePresenter: Presenter<M>
     abstract val baseSource: Source<M>
 
@@ -44,27 +45,35 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment<BasePresent
 
     open protected var gridMinSpan = 1
     open protected var gridMaxSpan = 2
+    open protected var selfAddLayoutManager = true
 
-    var span: Int = 0
+    var span: Int = 1
 
-    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?): BasePresenterFragmentLayoutBinding {
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): BasePresenterFragmentLayoutBinding {
         return BasePresenterFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        span = if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) gridMaxSpan else gridMinSpan
-        layoutManager = GridLayoutManager(this.context, span).also {
-            it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return if (adapter?.getItemViewType(position) == 0) {
-                        1
-                    } else {
-                        span
+        if (selfAddLayoutManager) {
+            span =
+                if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) gridMaxSpan else gridMinSpan
+            layoutManager = GridLayoutManager(this.context, span).also {
+                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (adapter?.getItemViewType(position) == 0) {
+                            1
+                        } else {
+                            span
+                        }
                     }
                 }
             }
         }
+
 
     }
 
@@ -104,10 +113,12 @@ abstract class BasePresenterFragment<M : Any>() : BaseLayoutFragment<BasePresent
     }
 
     protected open fun adapterBuilder(): Adapter.Builder {
-        return Adapter.builder(this, 10).setPager(PageSizePager(10)).addSource(baseSource).addPresenter(basePresenter).addPresenter(loadingPresenter).addPresenter(errorPresenter).addPresenter(emptyPresenter)
+        return Adapter.builder(this, 10).setPager(PageSizePager(10)).addSource(baseSource)
+            .addPresenter(basePresenter).addPresenter(loadingPresenter).addPresenter(errorPresenter)
+            .addPresenter(emptyPresenter)
     }
 
-    protected fun notifyDataSetChanged(){
+    protected fun notifyDataSetChanged() {
         adapter?.notifyDataSetChanged()
     }
 

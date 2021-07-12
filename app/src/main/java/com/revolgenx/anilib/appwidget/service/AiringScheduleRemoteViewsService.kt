@@ -84,14 +84,13 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
             updateField()
         }
 
-        @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-        fun onEVent(event: ListEditorResultEvent) {
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun onEvent(event: ListEditorResultEvent) {
             field.isNewField = true
             appWidgetManager.notifyAppWidgetViewDataChanged(
                 appWidgetId,
                 R.id.airing_widget_list_view
             )
-            EventBus.getDefault().removeStickyEvent(event)
         }
 
         private fun updateField() {

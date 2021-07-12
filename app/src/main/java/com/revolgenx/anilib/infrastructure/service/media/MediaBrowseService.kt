@@ -3,7 +3,7 @@ package com.revolgenx.anilib.infrastructure.service.media
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.data.field.media.*
-import com.revolgenx.anilib.data.model.*
+import com.revolgenx.anilib.data.model.media_info.*
 import com.revolgenx.anilib.data.model.user.stats.MediaStatsModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
@@ -66,5 +66,9 @@ abstract class MediaBrowseService(protected val graphRepository: BaseGraphReposi
         compositeDisposable: CompositeDisposable? = null
     ): MutableStatsType
 
-
+    abstract fun getMediaSocialFollowing(
+        field: MediaSocialFollowingField,
+        compositeDisposable: CompositeDisposable,
+        resourceCallback: (Resource<List<MediaSocialFollowingModel>>) -> Unit
+    )
 }

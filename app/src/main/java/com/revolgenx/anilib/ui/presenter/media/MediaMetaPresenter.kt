@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.data.model.MediaMetaCollection
+import com.revolgenx.anilib.data.model.media_info.MediaMetaCollection
 import com.revolgenx.anilib.databinding.MediaMetaPresenterLayoutBinding
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 

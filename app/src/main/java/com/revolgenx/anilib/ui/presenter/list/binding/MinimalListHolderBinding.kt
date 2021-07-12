@@ -98,25 +98,22 @@ object MinimalListHolderBinding {
                     if (listEditOrBrowse(context)) {
                         ListBindingHelper.openMediaListEditor(
                             context,
-                            item,
-                            mediaListCoverImageView,
-                            isLoggedInUser,
-                            R.id.main_fragment_container
+                            item
                         )
                         return@setOnClickListener;
                     }
                 }
-                ListBindingHelper.openMediaBrowse(context, item, mediaListCoverImageView)
+                ListBindingHelper.openMediaBrowse(context, item)
             }
 
             root.setOnLongClickListener {
                 if (isLoggedInUser) {
                     if (listEditOrBrowse(context)) {
-                        ListBindingHelper.openMediaBrowse(context, item, mediaListCoverImageView)
+                        ListBindingHelper.openMediaBrowse(context, item)
                         return@setOnLongClickListener true
                     }
                 }
-                ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.main_fragment_container)
+                ListBindingHelper.openMediaListEditor(context, item)
                 true
             }
         }

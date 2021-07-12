@@ -4,21 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.UserBrowseEvent
 import com.revolgenx.anilib.data.field.review.RateReviewField
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
-import com.revolgenx.anilib.markwon.MarkwonImpl
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
-import com.revolgenx.anilib.data.meta.ReviewMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.review.ReviewModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.ReviewFragmentLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.type.ReviewRating
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.review.ReviewViewModel
@@ -28,12 +28,16 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
     override var titleRes: Int? = R.string.review
 
     companion object {
-        const val reviewMetaKey = "review_meta_key"
+        private const val REVIEW_ID_KEY = "REVIEW_ID_KEY"
+        fun newInstance(reviewId: Int) = ReviewFragment().also {
+            it.arguments = bundleOf(REVIEW_ID_KEY to reviewId)
+        }
     }
 
 
-    private lateinit var reviewMeta: ReviewMeta
     private val viewModel by viewModel<ReviewViewModel>()
+
+    private val reviewId: Int? get() = arguments?.getInt(REVIEW_ID_KEY)
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -44,11 +48,8 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
-        arguments?.classLoader = ReviewMeta::class.java.classLoader
-        reviewMeta = arguments?.getParcelable(reviewMetaKey) ?: return
 
-        viewModel.field.reviewId = reviewMeta.reviewId
+        viewModel.field.reviewId = reviewId ?: return
 
         viewModel.reviewLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
@@ -74,7 +75,7 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
     private fun initListener() {
         if (viewModel.field.model == null) return
         binding.reviewByIv.setOnClickListener {
-            UserBrowseEvent(viewModel.field.model?.userPrefModel?.userId).postEvent
+            OpenUserProfileEvent(viewModel.field.model?.userPrefModel?.id).postEvent
         }
     }
 
@@ -89,23 +90,25 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
             binding.reviewMediaTitleTv.text = mediaModel!!.title!!.title(requireContext())
             binding.reviewMediaTitleTv.setOnClickListener {
                 model.mediaModel?.let { item ->
-                    BrowseMediaEvent(
-                        MediaBrowserMeta(
+                    OpenMediaInfoEvent(
+                        MediaInfoMeta(
                             item.mediaId,
                             item.type!!,
                             item.title!!.romaji!!,
                             item.coverImage!!.image(requireContext()),
                             item.coverImage!!.largeImage,
                             item.bannerImage
-                        ), null
+                        )
                     ).postEvent
                 }
             }
             binding.reviewByIv.setImageURI(userPrefModel?.avatar?.image)
-            binding.reviewByTv.text = getString(R.string.review_by).format(userPrefModel?.userName)
+            binding.reviewByTv.text = getString(R.string.review_by).format(userPrefModel?.name)
             binding.createdAtTv.text = createdAt
-            binding.reviewByScoreTv.text = getString(R.string.review_score_format).format(score?.toString())
-            MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(binding.reviewTv, body.html ?: "")
+            binding.reviewByScoreTv.text =
+                getString(R.string.review_score_format).format(score?.toString())
+
+            AlMarkwonFactory.getMarkwon().setMarkdown(binding.reviewTv, anilify(body))
             binding.reviewLikesInfo.text =
                 getString(R.string.s_out_of_s_liked_this_review).format(rating, ratingAmount)
 
@@ -118,7 +121,7 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
         binding.reviewLikeIv.setOnClickListener {
             if (requireContext().loggedIn()) {
                 viewModel.rateReview(RateReviewField().also {
-                    it.reviewId = reviewMeta.reviewId
+                    it.reviewId = reviewId
                     when (viewModel.field.model?.userRating) {
                         ReviewRating.UP_VOTE.ordinal -> {
                             it.reviewRating = ReviewRating.NO_VOTE.ordinal
@@ -138,7 +141,7 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
         binding.reviewDisLikeIv.setOnClickListener {
             if (requireContext().loggedIn()) {
                 viewModel.rateReview(RateReviewField().also {
-                    it.reviewId = reviewMeta.reviewId
+                    it.reviewId = reviewId
                     when (viewModel.field.model?.userRating) {
                         ReviewRating.DOWN_VOTE.ordinal -> {
                             it.reviewRating = ReviewRating.NO_VOTE.ordinal
@@ -200,14 +203,16 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
     }
 
     private fun showLoading(b: Boolean) {
-        binding.resourceStatusContainer.resourceStatusContainer.visibility = if (b) View.VISIBLE else View.GONE
-        binding.resourceStatusContainer.resourceProgressLayout.progressLayout.visibility = if (b) View.VISIBLE else View.GONE
+        binding.resourceStatusContainer.resourceStatusContainer.visibility =
+            if (b) View.VISIBLE else View.GONE
+        binding.resourceStatusContainer.resourceProgressLayout.progressLayout.visibility =
+            if (b) View.VISIBLE else View.GONE
         binding.resourceStatusContainer.resourceErrorLayout.errorLayout.visibility = View.GONE
     }
 
     private fun showError() {
         binding.resourceStatusContainer.resourceStatusContainer.visibility = View.VISIBLE
         binding.resourceStatusContainer.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
-        binding.resourceStatusContainer.resourceProgressLayout.progressLayout.visibility =View.GONE
+        binding.resourceStatusContainer.resourceProgressLayout.progressLayout.visibility = View.GONE
     }
 }

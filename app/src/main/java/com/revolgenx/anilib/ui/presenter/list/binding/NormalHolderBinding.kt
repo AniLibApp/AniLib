@@ -7,11 +7,11 @@ import com.apollographql.apollo.exception.ApolloHttpException
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.listEditOrBrowse
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
-import com.revolgenx.anilib.infrastructure.event.BrowseGenreEvent
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.data.model.list.MediaListModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.databinding.MediaListCollectionNormalPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
 import com.revolgenx.anilib.ui.presenter.home.discover.MediaListCollectionPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
@@ -78,7 +78,7 @@ object NormalHolderBinding {
             }
 
             mediaListGenreLayout.addGenre(item.genres?.take(3)) { genre ->
-                BrowseGenreEvent(MediaSearchFilterModel().also {
+                OpenSearchEvent(MediaSearchFilterModel().also {
                     it.genre = listOf(genre.trim())
                 }).postEvent
             }
@@ -152,25 +152,22 @@ object NormalHolderBinding {
                     if (listEditOrBrowse(context)) {
                         ListBindingHelper.openMediaListEditor(
                             context,
-                            item,
-                            mediaListCoverImageView,
-                            isLoggedInUser,
-                            R.id.main_fragment_container
+                            item
                         )
                         return@setOnClickListener;
                     }
                 }
-                ListBindingHelper.openMediaBrowse(context, item, mediaListCoverImageView)
+                ListBindingHelper.openMediaBrowse(context, item)
             }
 
             root.setOnLongClickListener {
                 if (isLoggedInUser) {
                     if (listEditOrBrowse(context)) {
-                        ListBindingHelper.openMediaBrowse(context, item, mediaListCoverImageView)
+                        ListBindingHelper.openMediaBrowse(context, item)
                         return@setOnLongClickListener true
                     }
                 }
-                ListBindingHelper.openMediaListEditor(context, item, mediaListCoverImageView, isLoggedInUser, R.id.main_fragment_container)
+                ListBindingHelper.openMediaListEditor(context, item)
                 true
             }
         }

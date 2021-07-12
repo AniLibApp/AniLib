@@ -15,7 +15,7 @@ class RecommendationSource(
 ) :
     BaseRecyclerSource<RecommendationModel, RecommendationField>(field) {
     override fun areItemsTheSame(first: RecommendationModel, second: RecommendationModel): Boolean {
-        return first.baseId == second.baseId
+        return first.id == second.id
     }
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {

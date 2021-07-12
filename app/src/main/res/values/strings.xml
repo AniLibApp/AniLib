@@ -86,7 +86,7 @@
     <string name="recommendations">Recommendation</string>
     <string name="chapter_format_s">C: %1$s · %2$s</string>
     <string name="source_seasonyear_s">%1$s · %2$s</string>
-    <string name="str_dot_str">%1$s · %2$s</string>
+    <string name="str_dot_str" translatable="false">%1$s · %2$s</string>
     <string name="relations">Relations</string>
     <string name="genre">Genre</string>
     <string name="tags">Tags</string>
@@ -586,4 +586,44 @@
     <!--do not translate this unless you want to change format to dd//MM/yyyy or yyyy/MM/dd-->
     <string name="date_format_pattern">MM/dd/yyyy</string>
     <string name="show_eta">Show ETA</string>
+
+    <string name="text_status">Text Status</string>
+    <string name="list_progress">List Progress</string>
+    <string name="global">Global</string>
+    <string name="social">Social</string>
+    <string name="open_in_anilist">Open in AniList</string>
+    <string name="friend">Friend</string>
+    <string name="composer">Composer</string>
+    <string name="publish">Publish</string>
+    <string name="write_a_status">Write a status…</string>
+    <string name="write_a_reply">Write a reply…</string>
+    <string name="please_read_the_site_guidelines_before_posting">Please read the site guidelines before posting</string>
+    <string name="preview">Preview</string>
+    <string name="spoiler">Spoiler</string>
+    <string name="replies_count">Replies · %1$d</string>
+    <string name="reply">Reply</string>
+    <string name="add_url">Add Url</string>
+    <string name="please_input_a_url">Please input a URL</string>
+    <string name="add_image">Add Image</string>
+    <string name="add_youtube_video">Add Youtube Video</string>
+    <string name="edit">Edit</string>
+    <string name="deleted_successfully_please_refresh">Deleted successfully, please refresh.</string>
+
+
+    <string name="plan_to_read">Plan to read</string>
+    <string name="rereading">Rereading</string>
+    <string name="plan_to_watch">Plan to watch</string>
+    <string name="field_is_empty">Field is empty</string>
+    <string name="posted_successfully">Posted successfully</string>
+    <string name="posting">Posting</string>
+    <string name="replying">Replying</string>
+    <string name="replied_successfully">Replied successfully</string>
+    <string name="reply_not_attached_to_activity">Reply not attached to activity</string>
+    <string name="write_a_message">Write a message…</string>
+    <string name="message">Message</string>
+    <string name="sent_successfully">Sent Successfully</string>
+    <string name="sending">Sending</string>
+    <string name="send">Send</string>
+    <string name="recent_activity">Recent Activity</string>
+
 </resources>

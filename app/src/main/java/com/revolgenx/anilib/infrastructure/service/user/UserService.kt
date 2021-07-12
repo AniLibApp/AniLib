@@ -1,11 +1,13 @@
 package com.revolgenx.anilib.infrastructure.service.user
 
 import androidx.lifecycle.MutableLiveData
+import com.revolgenx.anilib.data.field.friend.UserFriendField
 import com.revolgenx.anilib.data.field.user.UserFavouriteField
 import com.revolgenx.anilib.data.field.user.UserFollowerField
 import com.revolgenx.anilib.data.field.user.UserProfileField
 import com.revolgenx.anilib.data.field.user.UserToggleFollowField
 import com.revolgenx.anilib.data.model.BaseModel
+import com.revolgenx.anilib.data.model.user.UserModel
 import com.revolgenx.anilib.data.model.user.UserFollowerCountModel
 import com.revolgenx.anilib.data.model.user.UserFollowersModel
 import com.revolgenx.anilib.data.model.user.UserProfileModel
@@ -46,6 +48,12 @@ interface UserService {
         field: UserToggleFollowField,
         compositeDisposable: CompositeDisposable,
         callback: ((Resource<UserProfileModel>) -> Unit)?
+    )
+
+    fun getUserFriend(
+        field: UserFriendField,
+        compositeDisposable: CompositeDisposable,
+        callback: ((Resource<List<UserModel>>) -> Unit)
     )
 
 }

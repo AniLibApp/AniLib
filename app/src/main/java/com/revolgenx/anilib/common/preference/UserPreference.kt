@@ -8,7 +8,7 @@ import com.pranavpandey.android.dynamic.theme.DynamicPalette
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.Constants
 import com.revolgenx.anilib.data.field.home.AiringMediaField
-import com.revolgenx.anilib.data.model.UserPrefModel
+import com.revolgenx.anilib.data.model.user.UserPrefModel
 import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
 import com.revolgenx.anilib.data.model.setting.MediaOptionModel
 import com.revolgenx.anilib.type.ScoreFormat
@@ -44,7 +44,7 @@ fun titlePref(context: Context, pref: String) = context.putString(titleKey, pref
 
 fun Context.imageQuality() = getString(imageQualityKey, "0")
 
-fun Context.userName() = getUserPrefModel(this).userName
+fun Context.userName() = getUserPrefModel(this).name
 fun Context.userScoreFormat() =
     getUserPrefModel(this).mediaListOption!!.scoreFormat!!
 
@@ -100,7 +100,7 @@ fun getUserPrefModel(context: Context): UserPrefModel {
         userPrefModelPref =
             Gson().fromJson(context.getString(userModelKey, ""), UserPrefModel::class.java)
                 ?: UserPrefModel().also { model ->
-                    model.userName = context.getString(R.string.app_name)
+                    model.name = context.getString(R.string.app_name)
                 }
     }
 
@@ -121,7 +121,7 @@ fun getUserPrefModel(context: Context): UserPrefModel {
 
 fun removeBasicUserDetail(context: Context) {
     userPrefModelPref = UserPrefModel().also {
-        it.userName = context.getString(R.string.app_name)
+        it.name = context.getString(R.string.app_name)
         it.mediaListOption = MediaListOptionModel().also { option ->
             option.scoreFormat = ScoreFormat.`$UNKNOWN`.ordinal
         }

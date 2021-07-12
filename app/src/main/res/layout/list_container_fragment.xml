@@ -30,7 +30,7 @@
                     app:ads_backgroundColorType="background"
                     app:ads_colorType="accent"
                     app:ads_contrastWithColorType="background"
-                    app:ads_textColorType="tint_primary"
+                    app:ads_textColorType="text_primary"
                     app:layout_constraintEnd_toStartOf="@id/list_search_iv"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +59,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
                     app:layout_constraintEnd_toStartOf="@id/list_more_iv"
                     app:layout_constraintTop_toTopOf="@id/list_tab_layout"
-                    app:srcCompat="@drawable/ic_notification" />
+                    app:srcCompat="@drawable/ic_notification_outline" />
 
                 <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
                     android:id="@+id/list_more_iv"

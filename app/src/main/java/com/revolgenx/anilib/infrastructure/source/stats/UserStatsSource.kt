@@ -17,7 +17,7 @@ class UserStatsSource(
         first: BaseStatsModel,
         second: BaseStatsModel
     ): Boolean {
-        return first.baseId == second.baseId
+        return first.id == second.id
     }
 
     override fun getElementType(data: BaseStatsModel): Int {

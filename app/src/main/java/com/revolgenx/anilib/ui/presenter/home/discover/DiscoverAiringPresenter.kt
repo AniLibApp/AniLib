@@ -6,18 +6,17 @@ import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.BrowseGenreEvent
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
 import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.airing.AiringMediaModel
 import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.DiscoverAiringPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
+import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
@@ -66,34 +65,34 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
 
             airingTimeTv.setAiringText(item.airingTimeModel)
             airingGenreLayout.addGenre(item.genres?.take(3)) { genre ->
-                BrowseGenreEvent(MediaSearchFilterModel().also {
+                OpenSearchEvent(MediaSearchFilterModel().also {
                     it.genre = listOf(genre.trim())
                 }).postEvent
             }
 
             root.setOnClickListener {
-                BrowseMediaEvent(
-                    MediaBrowserMeta(
+                OpenMediaInfoEvent(
+                    MediaInfoMeta(
                         item.mediaId,
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
-                    ), airingMediaSimpleDrawee
+                    )
                 ).postEvent
             }
 
             root.setOnLongClickListener {
                 if (context.loggedIn()) {
-                    ListEditorEvent(
+                    OpenMediaListEditorEvent(
                         ListEditorMeta(
                             item.mediaId,
                             item.type!!,
                             item.title!!.title(context)!!,
                             item.coverImage!!.image(context),
                             item.bannerImage
-                        ), airingMediaSimpleDrawee
+                        )
                     ).postEvent
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

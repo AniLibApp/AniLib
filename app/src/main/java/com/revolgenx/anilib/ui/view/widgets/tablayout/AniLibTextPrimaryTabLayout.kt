@@ -4,13 +4,11 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import com.pranavpandey.android.dynamic.support.Defaults
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.utils.DynamicMenuUtils
 import com.pranavpandey.android.dynamic.support.utils.DynamicResourceUtils
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.app.theme.contrastAccentWithBg
-import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 

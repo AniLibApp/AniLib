@@ -14,29 +14,39 @@ import com.revolgenx.anilib.databinding.UserStatsContainerFragmentLayoutBinding
 import com.revolgenx.anilib.type.MediaType
 
 class UserStatsContainerFragment : BaseLayoutFragment<UserStatsContainerFragmentLayoutBinding>() {
+    companion object {
+        fun newInstance(userStatsMeta: UserStatsMeta) = UserStatsContainerFragment().also {
+            it.arguments = bundleOf(UserConstant.USER_STATS_META_KEY to userStatsMeta)
+        }
+    }
 
+
+    private val userStatsMeta get()= arguments?.getParcelable<UserStatsMeta?>(UserConstant.USER_STATS_META_KEY)
 
     private val userAnimeStatsFragments by lazy {
         listOf(
-                StatsOverviewFragment(),
-                StatsGenreFragment(),
-                StatsTagFragment(),
-                StatsVoiceActorFragment(),
-                StatsStudioFragment(),
-                StatsStaffFragment()
+            StatsOverviewFragment(),
+            StatsGenreFragment(),
+            StatsTagFragment(),
+            StatsVoiceActorFragment(),
+            StatsStudioFragment(),
+            StatsStaffFragment()
         )
     }
 
     private val userMangaStatsFragments by lazy {
         listOf(
-                StatsOverviewFragment(),
-                StatsGenreFragment(),
-                StatsTagFragment(),
-                StatsStaffFragment()
+            StatsOverviewFragment(),
+            StatsGenreFragment(),
+            StatsTagFragment(),
+            StatsStaffFragment()
         )
     }
 
-    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?): UserStatsContainerFragmentLayoutBinding {
+    override fun bindView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): UserStatsContainerFragmentLayoutBinding {
         return UserStatsContainerFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
@@ -44,33 +54,38 @@ class UserStatsContainerFragment : BaseLayoutFragment<UserStatsContainerFragment
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val userStatsMeta: UserStatsMeta = arguments?.getParcelable(UserConstant.USER_STATS_META_KEY)
-                ?: return
+        val userStats = userStatsMeta ?: return
 
         val adapter: FragmentPagerAdapter
 
-        when (userStatsMeta.type) {
+        when (userStats.type) {
             MediaType.ANIME.ordinal -> {
                 userAnimeStatsFragments.forEach {
                     it.arguments = bundleOf(
-                        UserConstant.USER_STATS_META_KEY to userStatsMeta
+                        UserConstant.USER_STATS_META_KEY to userStats
                     )
                 }
 
-                adapter = makePagerAdapter(userAnimeStatsFragments, resources.getStringArray(R.array.user_anime_stats_tab_menu))
+                adapter = makePagerAdapter(
+                    userAnimeStatsFragments,
+                    resources.getStringArray(R.array.user_anime_stats_tab_menu)
+                )
             }
-            else ->{
+            else -> {
                 userMangaStatsFragments.forEach {
                     it.arguments = bundleOf(
-                        UserConstant.USER_STATS_META_KEY to userStatsMeta
+                        UserConstant.USER_STATS_META_KEY to userStats
                     )
                 }
-                adapter = makePagerAdapter(userMangaStatsFragments, resources.getStringArray(R.array.user_manga_stats_tab_menu))
+                adapter = makePagerAdapter(
+                    userMangaStatsFragments,
+                    resources.getStringArray(R.array.user_manga_stats_tab_menu)
+                )
             }
         }
 
         binding.userStatsContainerViewPager.adapter = adapter
-        binding.userStatsContainerViewPager.offscreenPageLimit = adapter.count -1
+        binding.userStatsContainerViewPager.offscreenPageLimit = adapter.count - 1
         binding.userStatsTabLayout.setupWithViewPager(binding.userStatsContainerViewPager)
     }
 }

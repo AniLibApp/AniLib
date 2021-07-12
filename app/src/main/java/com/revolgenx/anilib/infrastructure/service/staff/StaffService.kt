@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.data.field.staff.StaffField
 import com.revolgenx.anilib.data.field.staff.StaffMediaCharacterField
 import com.revolgenx.anilib.data.field.staff.StaffMediaRoleField
-import com.revolgenx.anilib.data.model.StaffMediaCharacterModel
-import com.revolgenx.anilib.data.model.StaffMediaRoleModel
-import com.revolgenx.anilib.data.model.StaffModel
+import com.revolgenx.anilib.data.model.staff.StaffMediaCharacterModel
+import com.revolgenx.anilib.data.model.staff.StaffMediaRoleModel
+import com.revolgenx.anilib.data.model.staff.StaffModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import io.reactivex.disposables.CompositeDisposable
 

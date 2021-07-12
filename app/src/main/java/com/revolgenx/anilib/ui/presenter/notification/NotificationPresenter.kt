@@ -2,21 +2,19 @@ package com.revolgenx.anilib.ui.presenter.notification
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.otaliastudios.elements.Presenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.NotificationUnionType
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.UserBrowseEvent
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.notification.FollowingNotificationModel
 import com.revolgenx.anilib.data.model.notification.NotificationModel
 import com.revolgenx.anilib.data.model.notification.activity.*
 import com.revolgenx.anilib.data.model.notification.thread.*
 import com.revolgenx.anilib.databinding.NotificationPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
 import com.revolgenx.anilib.ui.presenter.BasePresenter
 import com.revolgenx.anilib.util.openLink
 import java.util.*
@@ -141,15 +139,15 @@ class NotificationPresenter(context: Context) : BasePresenter<NotificationPresen
                         )
 
                         root.setOnClickListener { _ ->
-                            BrowseMediaEvent(
-                                MediaBrowserMeta(
+                            OpenMediaInfoEvent(
+                                MediaInfoMeta(
                                     it.commonMediaModel?.mediaId,
                                     it.commonMediaModel?.type!!,
                                     it.commonMediaModel?.title!!.romaji!!,
                                     it.commonMediaModel?.coverImage!!.image(context),
                                     it.commonMediaModel?.coverImage!!.largeImage,
                                     it.commonMediaModel?.bannerImage
-                                ), notificationMediaDrawee
+                                )
                             ).postEvent
                         }
                     }
@@ -160,11 +158,11 @@ class NotificationPresenter(context: Context) : BasePresenter<NotificationPresen
 
                     notificationMediaDrawee.setImageURI(item.userModel?.avatar?.image)
                     notificationTitleTv.text = context.getString(R.string.s_space_s)
-                        .format(item.userModel?.userName, item.context)
+                        .format(item.userModel?.name, item.context)
                     notificationCreatedTv.text = item.createdAt
 
                     root.setOnClickListener {
-                        UserBrowseEvent(item.userModel?.userId).postEvent
+                        OpenUserProfileEvent(item.userModel?.id).postEvent
                     }
                 }
                 NotificationUnionType.RELATED_MEDIA_ADDITION -> {
@@ -181,15 +179,15 @@ class NotificationPresenter(context: Context) : BasePresenter<NotificationPresen
                             )
 
                         root.setOnClickListener { _ ->
-                            BrowseMediaEvent(
-                                MediaBrowserMeta(
+                            OpenMediaInfoEvent(
+                                MediaInfoMeta(
                                     it.commonMediaModel?.mediaId,
                                     it.commonMediaModel?.type,
                                     it.commonMediaModel?.title!!.romaji!!,
                                     it.commonMediaModel?.coverImage!!.image(context),
                                     it.commonMediaModel?.coverImage!!.largeImage,
                                     it.commonMediaModel?.bannerImage
-                                ), notificationMediaDrawee
+                                )
                             ).postEvent
 
                         }
@@ -224,14 +222,14 @@ class NotificationPresenter(context: Context) : BasePresenter<NotificationPresen
     private fun NotificationPresenterLayoutBinding.createActivityNotif(item: ActivityNotification) {
         notificationMediaDrawee.setImageURI(item.userPrefModel?.avatar?.image)
         notificationTitleTv.text = context.getString(R.string.s_space_s)
-            .format(item.userPrefModel?.userName, item.context)
+            .format(item.userPrefModel?.name, item.context)
         notificationCreatedTv.text = item.createdAt
     }
 
     private fun NotificationPresenterLayoutBinding.createThreadNotif(item: ThreadNotification) {
         notificationMediaDrawee.setImageURI(item.userPrefModel?.avatar?.image)
         notificationTitleTv.text = context.getString(R.string.thread_notif_s)
-            .format(item.userPrefModel?.userName, item.context, item.threadModel?.title)
+            .format(item.userPrefModel?.name, item.context, item.threadModel?.title)
         notificationCreatedTv.text = item.createdAt
     }
 }

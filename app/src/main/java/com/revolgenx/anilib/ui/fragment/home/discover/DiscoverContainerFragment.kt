@@ -13,19 +13,11 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
-import com.revolgenx.anilib.constant.MediaTagFilterTypes
-import com.revolgenx.anilib.data.field.TagChooserField
-import com.revolgenx.anilib.data.field.TagField
-import com.revolgenx.anilib.data.field.TagState
 import com.revolgenx.anilib.data.field.home.SeasonField
 import com.revolgenx.anilib.databinding.DiscoverContainerFragmentBinding
-import com.revolgenx.anilib.infrastructure.event.BrowseEvent
-import com.revolgenx.anilib.infrastructure.event.BrowseNotificationEvent
-import com.revolgenx.anilib.infrastructure.event.RecommendationEvent
-import com.revolgenx.anilib.infrastructure.event.SeasonEvent
+import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.ui.bottomsheet.discover.MediaFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.dialog.ShowSeasonHeaderDialog
-import com.revolgenx.anilib.ui.dialog.TagChooserDialogFragment
 import com.revolgenx.anilib.ui.fragment.home.recommendation.RecommendationFragment
 import com.revolgenx.anilib.ui.fragment.home.season.SeasonFragment
 import com.revolgenx.anilib.ui.viewmodel.home.recommendation.RecommendationViewModel
@@ -165,10 +157,10 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
 
     private fun DiscoverContainerFragmentBinding.initListener() {
         discoverSearchIv.setOnClickListener {
-            BrowseEvent().postEvent
+            OpenSearchEvent().postEvent
         }
         discoverNotificationIv.setOnClickListener {
-            BrowseNotificationEvent().postEvent
+            OpenNotificationCenterEvent().postEvent
         }
         discoverContainerViewPager.addOnPageChangeListener(object :
             ViewPager.SimpleOnPageChangeListener() {

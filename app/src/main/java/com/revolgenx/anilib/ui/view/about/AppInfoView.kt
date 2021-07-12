@@ -22,7 +22,7 @@ class AppInfoView : DynamicRecyclerViewFrame {
         setAdapter()
     }
 
-    override fun getRecyclerViewLayoutManager(): RecyclerView.LayoutManager? {
+    override fun getRecyclerViewLayoutManager(): RecyclerView.LayoutManager {
         return DynamicLayoutUtils.getLinearLayoutManager(context, LinearLayoutManager.VERTICAL)
     }
 

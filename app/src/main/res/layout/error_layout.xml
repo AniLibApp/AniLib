@@ -19,4 +19,10 @@
         android:fontFamily="@font/cabincondensed_regular"
         android:text="@string/something_went_wrong" />
 
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/error_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

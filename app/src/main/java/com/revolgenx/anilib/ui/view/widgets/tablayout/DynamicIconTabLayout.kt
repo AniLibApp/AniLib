@@ -9,7 +9,9 @@ import com.pranavpandey.android.dynamic.support.utils.DynamicResourceUtils
 import com.pranavpandey.android.dynamic.support.widget.DynamicTabLayout
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.pranavpandey.android.dynamic.utils.DynamicViewUtils
+import com.revolgenx.anilib.app.theme.contrastAccentWithBg
 import com.revolgenx.anilib.app.theme.contrastAccentWithPrimary
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.app.theme.dynamicTintPrimaryColor
 
 class DynamicIconTabLayout: DynamicTabLayout {
@@ -22,11 +24,11 @@ class DynamicIconTabLayout: DynamicTabLayout {
     override fun setTextColor() {
         tabRippleColor = DynamicResourceUtils.getColorStateList(
             Color.TRANSPARENT, DynamicColorUtils.adjustAlpha(
-                contrastAccentWithPrimary, Defaults.ADS_ALPHA_PRESSED
+                contrastAccentWithBg, Defaults.ADS_ALPHA_PRESSED
             ), false
         )
-        setTabTextColors(dynamicTintPrimaryColor, contrastAccentWithPrimary);
-        tabIconTint = createColorStateList(dynamicTintPrimaryColor, contrastAccentWithPrimary)
+        setTabTextColors(dynamicTextColorPrimary, contrastAccentWithBg);
+        tabIconTint = createColorStateList(dynamicTextColorPrimary, contrastAccentWithBg)
     }
 
     private fun createColorStateList(defaultColor: Int, selectedColor: Int): ColorStateList {

@@ -4,7 +4,6 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.data.field.list.MediaListCollectionField
 import com.revolgenx.anilib.data.model.list.MediaListModel
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
@@ -25,7 +24,7 @@ class MediaListCollectionSource(
     private lateinit var firstPage: Page
 
     override fun areItemsTheSame(first: MediaListModel, second: MediaListModel): Boolean {
-        return first.baseId == second.baseId
+        return first.id == second.id
     }
 
     fun filterPage() {

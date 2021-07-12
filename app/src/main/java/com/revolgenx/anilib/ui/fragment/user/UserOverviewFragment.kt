@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
@@ -18,7 +19,8 @@ import com.revolgenx.anilib.databinding.ResourceStatusContainerLayoutBinding
 import com.revolgenx.anilib.databinding.UserActivityGenrePresenterBinding
 import com.revolgenx.anilib.databinding.UserOverviewFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
-import com.revolgenx.anilib.markwon.MarkwonImpl
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.ui.viewmodel.user.UserProfileViewModel
 import com.revolgenx.anilib.util.getOrDefault
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,6 +28,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBinding>() {
 
     private val userProfileViewModel by viewModel<UserProfileViewModel>()
+
+    companion object{
+        fun newInstance(userMeta: UserMeta) = UserOverviewFragment().also {
+            it.arguments = bundleOf(UserConstant.USER_META_KEY to userMeta)
+        }
+    }
+
+    private val userMeta get()= arguments?.getParcelable<UserMeta?>(UserConstant.USER_META_KEY)
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -45,8 +55,7 @@ class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBindin
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val userMeta: UserMeta = arguments?.getParcelable(UserConstant.USER_META_KEY) ?: return
-
+        val user = userMeta?: return
         userProfileViewModel.userProfileLiveData.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -82,29 +91,21 @@ class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBindin
                         if (loadBioByDefault()) {
                             loadBioCardVew.visibility = View.GONE
                             aboutContainerLayout.visibility = View.VISIBLE
-                            data.about?.html?.let { about ->
-                                MarkwonImpl.createHtmlInstance(requireContext())
-                                    .setMarkdown(userAboutTv, about)
-
-                                if (userAboutTv.text.isEmpty()) {
-                                    userAboutTv.setText(R.string.no_description)
-                                }
+                            if(data.about.isBlank()){
+                                userAboutTv.setText(R.string.no_description)
+                            }else{
+                                AlMarkwonFactory.getMarkwon().setMarkdown(userAboutTv, anilify(data.about))
                             }
                         } else {
                             aboutContainerLayout.visibility = View.GONE
                             loadBioCardVew.visibility = View.VISIBLE
                             loadBioCardVew.setOnClickListener {
                                 aboutContainerLayout.visibility = View.VISIBLE
-
-                                data.about?.html?.let { about ->
-                                    MarkwonImpl.createHtmlInstance(requireContext())
-                                        .setMarkdown(userAboutTv, about)
-
-                                    if (userAboutTv.text.isEmpty()) {
-                                        userAboutTv.setText(R.string.no_description)
-                                    }
+                                if(data.about.isBlank()){
+                                    userAboutTv.setText(R.string.no_description)
+                                }else{
+                                    AlMarkwonFactory.getMarkwon().setMarkdown(userAboutTv, anilify(data.about))
                                 }
-
                                 loadBioCardVew.visibility = View.GONE
                             }
                         }
@@ -122,8 +123,8 @@ class UserOverviewFragment : BaseLayoutFragment<UserOverviewFragmentLayoutBindin
 
         if (savedInstanceState == null) {
             with(userProfileViewModel.userField) {
-                userId = userMeta.userId
-                userName = userMeta.userName
+                userId = user.userId
+                userName = user.userName
             }
         }
     }

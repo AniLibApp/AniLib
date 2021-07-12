@@ -115,5 +115,5 @@
         <item>@drawable/ads_ic_share</item>
     </array>
 
-    <string name="github">Github</string>
+    <string name="github" translatable="false">Github</string>
 </resources>

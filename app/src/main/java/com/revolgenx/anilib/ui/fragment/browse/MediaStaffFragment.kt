@@ -3,14 +3,14 @@ package com.revolgenx.anilib.ui.fragment.browse
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.data.field.media.MediaStaffField
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
-import com.revolgenx.anilib.data.model.MediaStaffModel
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.data.model.media_info.MediaStaffModel
 import com.revolgenx.anilib.ui.presenter.media.MediaStaffPresenter
 import com.revolgenx.anilib.ui.viewmodel.media.MediaStaffViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,10 +30,17 @@ class MediaStaffFragment : BasePresenterFragment<MediaStaffModel>() {
         }
 
     private val viewModel by viewModel<MediaStaffViewModel>()
-    private var mediaBrowserMeta: MediaBrowserMeta? = null
+    private var mediaBrowserMeta: MediaInfoMeta? = null
     private val field by lazy {
         MediaStaffField().also {
             it.mediaId = mediaBrowserMeta?.mediaId ?: -1
+        }
+    }
+
+    companion object{
+        private const val MEDIA_INFO_META_KEY = "MEDIA_INFO_META_KEY"
+        fun newInstance(meta:MediaInfoMeta) = MediaStaffFragment().also {
+            it.arguments = bundleOf(MEDIA_INFO_META_KEY to meta)
         }
     }
 
@@ -62,9 +69,9 @@ class MediaStaffFragment : BasePresenterFragment<MediaStaffModel>() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        mediaBrowserMeta =
-            arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
         super.onActivityCreated(savedInstanceState)
+        mediaBrowserMeta =
+            arguments?.getParcelable(MEDIA_INFO_META_KEY) ?: return
     }
 
 

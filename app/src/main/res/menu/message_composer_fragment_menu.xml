@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/private_message_menu"
+        android:title="@string/private_"
+        android:icon="@drawable/ic_eye"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/message_composer_publish_menu"
+        android:icon="@drawable/ic_send"
+        android:title="@string/send"
+        app:showAsAction="always" />
+</menu>

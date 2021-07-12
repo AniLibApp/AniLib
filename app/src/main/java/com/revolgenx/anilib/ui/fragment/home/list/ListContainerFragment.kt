@@ -211,7 +211,7 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         initFabListener();
 
         listNotificationIv.setOnClickListener {
-            BrowseNotificationEvent().postEvent
+            OpenNotificationCenterEvent().postEvent
         }
 
         listMoreIv.onPopupMenuClickListener = { _, position ->

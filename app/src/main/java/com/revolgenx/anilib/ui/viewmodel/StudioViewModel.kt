@@ -6,13 +6,13 @@ import com.revolgenx.anilib.data.field.studio.StudioField
 import com.revolgenx.anilib.data.field.studio.StudioMediaField
 import com.revolgenx.anilib.data.model.studio.StudioModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.service.ToggleService
+import com.revolgenx.anilib.infrastructure.service.ToggleFavouriteService
 import com.revolgenx.anilib.infrastructure.service.studio.StudioService
 import com.revolgenx.anilib.infrastructure.source.StudioMediaSource
 
 class StudioViewModel(
     private val studioService: StudioService,
-    private val toggleService: ToggleService
+    private val toggleService: ToggleFavouriteService
 ) :
     SourceViewModel<StudioMediaSource, StudioMediaField>() {
 
@@ -33,6 +33,9 @@ class StudioViewModel(
     }
     var studioField: StudioField = StudioField()
     override var field: StudioMediaField = StudioMediaField()
+
+    val toggleFavouriteField = ToggleFavouriteField()
+
     override fun createSource(): StudioMediaSource {
         source = StudioMediaSource(field, studioService, compositeDisposable)
         return source!!

@@ -4,15 +4,30 @@ import com.revolgenx.anilib.*
 import com.revolgenx.anilib.data.model.*
 import com.revolgenx.anilib.data.model.airing.AiringTimeModel
 import com.revolgenx.anilib.data.model.airing.TimeUntilAiringModel
+import com.revolgenx.anilib.data.model.character.CharacterImageModel
+import com.revolgenx.anilib.data.model.character.CharacterNameModel
 import com.revolgenx.anilib.data.model.entry.AdvancedScore
 import com.revolgenx.anilib.data.model.entry.MediaEntryListModel
 import com.revolgenx.anilib.data.model.list.MediaListCountModel
+import com.revolgenx.anilib.data.model.media_info.*
 import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
 import com.revolgenx.anilib.data.model.setting.MediaListOptionTypeModel
 import com.revolgenx.anilib.data.model.setting.MediaOptionModel
 import com.revolgenx.anilib.data.model.setting.getRowOrder
+import com.revolgenx.anilib.data.model.studio.MediaStudioModel
+import com.revolgenx.anilib.data.model.user.AvatarModel
+import com.revolgenx.anilib.data.model.user.UserMediaListModel
+import com.revolgenx.anilib.data.model.user.UserModel
+import com.revolgenx.anilib.data.model.user.UserPrefModel
 import com.revolgenx.anilib.fragment.*
+import com.revolgenx.anilib.social.data.model.ListActivityModel
+import com.revolgenx.anilib.social.data.model.MessageActivityModel
+import com.revolgenx.anilib.social.data.model.TextActivityModel
+import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.util.pmap
+import com.revolgenx.anilib.util.prettyTime
 import kotlinx.coroutines.runBlocking
 
 fun <T : CommonMediaModel> NarrowMediaContent.getCommonMedia(model: T): T {
@@ -81,8 +96,8 @@ fun BasicMediaContent.toBasicMediaContent() = CommonMediaModel().also { media ->
 }
 
 fun BasicUserQuery.User.toBasicUserModel() = UserPrefModel().also {
-    it.userId = id()
-    it.userName = name()
+    it.id = id()
+    it.name = name()
     it.mediaListOption = mediaListOptions()?.fragments()?.userMediaListOptions()?.toModel()
     it.mediaOptions = options()?.fragments()?.userMediaOptions()?.toModel()
 }
@@ -173,7 +188,14 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
             }
         }
         it.tags = tags()?.pmap {
-            MediaTagsModel(it.name(), it.description(), it.category(), it.isMediaSpoiler == true, it.rank(), it.isAdult)
+            MediaTagsModel(
+                it.name(),
+                it.description(),
+                it.category(),
+                it.isMediaSpoiler == true,
+                it.rank(),
+                it.isAdult
+            )
         }
         it.trailer = trailer()?.let {
             MediaTrailerModel().also { trailer ->
@@ -187,12 +209,16 @@ fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also 
         }
 
         it.characters = characters()!!.edges()!!.pmap {
-            MediaCharacterModel().also { model->
+            MediaCharacterModel().also { model ->
                 model.role = it.role()?.ordinal
                 it.node()!!.let {
-                    model.characterId = it.id()
-                    model.name = it.name()?.full()
-                    model.characterImageModel = it.image()?.let {
+                    model.id = it.id()
+                    model.name = it.name()?.let {
+                        CharacterNameModel().also { model ->
+                            model.full = it.full()
+                        }
+                    }
+                    model.image = it.image()?.let {
                         CharacterImageModel().apply {
                             large = it.large()
                             medium = it.medium()
@@ -235,7 +261,7 @@ fun UserMediaListOptions.toModel() = MediaListOptionModel().also {
 
 fun MediaTitle.toModel() = TitleModel(english(), romaji(), native_(), userPreferred())
 
-fun MediaCoverImage.toModel() = CoverImageModel(medium(), large(), extraLarge())
+fun MediaCoverImage.toModel() = MediaCoverImageModel(medium(), large(), extraLarge())
 
 fun FuzzyDate.toModel() = DateModel(year(), month(), day())
 
@@ -245,4 +271,239 @@ fun StudioInfo.toModel() = MediaStudioModel().also { studio ->
     studio.studioName = name()
     studio.isAnimationStudio = isAnimationStudio
     studio.studioId = id()
+}
+
+
+fun ActivityUnionQuery.AsTextActivity.toModel() = TextActivityModel().also { model ->
+    model.id = id()
+    model.text = text() ?: ""
+    model.anilifiedText = anilify(model.text)
+    model.textSpanned = AlMarkwonFactory.getMarkwon().toMarkdown(model.anilifiedText)
+    model.likeCount = likeCount()
+    model.replyCount = replyCount()
+    model.isSubscribed = isSubscribed ?: false
+    model.type = type()!!
+    model.user = user()?.fragments()?.activityUser()?.toModel()
+    model.likes = likes()?.map {
+        it.fragments().likeUsers().toModel()
+    }
+    model.siteUrl = siteUrl()
+    model.createdAt = createdAt().toLong().prettyTime()
+    model.userId = userId()
+    model.isLiked = isLiked ?: false
+}
+
+fun ActivityUnionQuery.AsListActivity.toModel() = ListActivityModel().also { model ->
+    model.id = id()
+    model.media = media()?.let {
+        CommonMediaModel().also { cModel ->
+            cModel.mediaId = it.id()
+            cModel.title = it.title()?.fragments()?.mediaTitle()?.toModel()
+            cModel.type = it.type()?.ordinal
+            cModel.coverImage = it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
+            cModel.bannerImage = it.bannerImage()
+        }
+    }
+    model.status = status()!!
+    model.progress = progress() ?: ""
+    model.likeCount = likeCount()
+    model.replyCount = replyCount()
+    model.isSubscribed = isSubscribed ?: false
+    model.type = type()!!
+    model.user = user()?.fragments()?.activityUser()?.toModel()
+    model.likes = likes()?.map {
+        it.fragments().likeUsers().toModel()
+    }
+    model.siteUrl = siteUrl()
+    model.createdAt = createdAt().toLong().prettyTime()
+    model.userId = userId()
+    model.isLiked = isLiked ?: false
+}
+
+fun ActivityUnionQuery.AsMessageActivity.toModel() = MessageActivityModel().also { model ->
+    model.id = id()
+    model.message = message() ?: ""
+    model.messageAnilified = anilify(model.message)
+    model.messageSpanned = AlMarkwonFactory.getMarkwon().toMarkdown(model.messageAnilified)
+    model.recipientId = recipientId()
+    model.messengerId = messengerId()
+    model.messenger = messenger()?.fragments()?.messengerUser()?.toModel()
+    model.isPrivate = isPrivate ?: false
+    model.likes = likes()?.map {
+        it.fragments().likeUsers().toModel()
+    }
+    model.likeCount = likeCount()
+    model.replyCount = replyCount()
+    model.isSubscribed = isSubscribed ?: false
+    model.type = type()!!
+    model.siteUrl = siteUrl()
+    model.createdAt = createdAt().toLong().prettyTime()
+    model.isLiked = isLiked ?: false
+}
+
+fun ActivityInfoQuery.AsTextActivity.toModel() = TextActivityModel().also { model ->
+    model.id = id()
+    model.text = text() ?: ""
+    model.anilifiedText = anilify(model.text)
+    model.textSpanned = AlMarkwonFactory.getMarkwon().toMarkdown(model.anilifiedText)
+    model.likeCount = likeCount()
+    model.replyCount = replyCount()
+    model.isSubscribed = isSubscribed ?: false
+    model.type = type()!!
+    model.user = user()?.fragments()?.activityUser()?.toModel()
+    model.likes = likes()?.map {
+        it.fragments().likeUsers().toModel()
+    }
+    model.replies = replies()?.map {
+        it.fragments().replyUsers().toModel()
+    }
+    model.siteUrl = siteUrl()
+    model.createdAt = createdAt().toLong().prettyTime()
+    model.userId = userId()
+    model.isLiked = isLiked ?: false
+}
+
+fun ActivityInfoQuery.AsListActivity.toModel() = ListActivityModel().also { model ->
+    model.id = id()
+    model.media = media()?.let {
+        CommonMediaModel().also { cModel ->
+            cModel.mediaId = it.id()
+            cModel.title = it.title()?.fragments()?.mediaTitle()?.toModel()
+            cModel.type = it.type()?.ordinal
+            cModel.coverImage = it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
+            cModel.bannerImage = it.bannerImage()
+        }
+    }
+    model.status = status()!!
+    model.progress = progress() ?: ""
+    model.likeCount = likeCount()
+    model.replyCount = replyCount()
+    model.isSubscribed = isSubscribed ?: false
+    model.type = type()!!
+    model.user = user()?.fragments()?.activityUser()?.toModel()
+    model.likes = likes()?.map {
+        it.fragments().likeUsers().toModel()
+    }
+    model.replies = replies()?.map {
+        it.fragments().replyUsers().toModel()
+    }
+    model.siteUrl = siteUrl()
+    model.createdAt = createdAt().toLong().prettyTime()
+    model.userId = userId()
+    model.isLiked = isLiked ?: false
+}
+
+fun ActivityInfoQuery.AsMessageActivity.toModel() = MessageActivityModel().also { model ->
+    model.id = id()
+    model.message = message() ?: ""
+    model.messageAnilified = anilify(model.message)
+    model.messageSpanned = AlMarkwonFactory.getMarkwon().toMarkdown(model.messageAnilified)
+    model.recipientId = recipientId()
+    model.messengerId = messengerId()
+    model.messenger = messenger()?.fragments()?.messengerUser()?.toModel()
+    model.isPrivate = isPrivate ?: false
+
+    model.likes = likes()?.map {
+        it.fragments().likeUsers().toModel()
+    }
+    model.replies = replies()?.map {
+        it.fragments().replyUsers().toModel()
+    }
+    model.likeCount = likeCount()
+    model.replyCount = replyCount()
+    model.isSubscribed = isSubscribed ?: false
+    model.type = type()!!
+    model.siteUrl = siteUrl()
+    model.createdAt = createdAt().toLong().prettyTime()
+    model.isLiked = isLiked ?: false
+}
+
+
+fun LikeUsers.toModel() = UserModel().also { fModel ->
+    fModel.id = id()
+    fModel.name = name()
+    fModel.avatar = avatar()?.let {
+        AvatarModel().also { uModel ->
+            uModel.large = it.large()
+            uModel.medium = it.medium()
+        }
+    }
+    fModel.isBlocked = isBlocked ?: false
+    fModel.isFollowing = isFollowing ?: false
+    fModel.isFollower = isFollower ?: false
+}
+
+
+fun ReplyUsers.toModel() = ActivityReplyModel().also { model ->
+    model.id = id()
+    model.activityId = activityId()
+    model.userId = userId()
+    model.isLiked = isLiked ?: false
+    model.likeCount = likeCount()
+    model.text = text() ?: ""
+    model.anilifiedText = anilify(model.text)
+    model.textSpanned = AlMarkwonFactory.getMarkwon().toMarkdown(model.anilifiedText)
+    model.user = user()?.fragments()?.activityUser()?.let {
+        UserModel().also { fModel ->
+            fModel.id = it.id()
+            fModel.name = it.name()
+            fModel.avatar = it.avatar()?.let {
+                AvatarModel().also { uModel ->
+                    uModel.large = it.large()
+                    uModel.medium = it.medium()
+                }
+            }
+        }
+    }
+    model.createdAt = createdAt().toLong().prettyTime()
+}
+
+
+fun ActivityUser.toModel() = UserModel().also { model ->
+    model.id = id()
+    model.name = name()
+    model.avatar =
+        avatar()?.let {
+            AvatarModel().also { uModel ->
+                uModel.large = it.large()
+                uModel.medium = it.medium()
+            }
+        }
+}
+
+fun MessengerUser.toModel() = UserModel().also { model ->
+    model.id = id()
+    model.name = name()
+    model.avatar =
+        avatar()?.let {
+            AvatarModel().also { uModel ->
+                uModel.large = it.large()
+                uModel.medium = it.medium()
+            }
+        }
+}
+
+
+fun MediaSocialFollowingQuery.MediaList.toModel() = MediaSocialFollowingModel().also { model ->
+    model.id = id()
+    model.score = score()
+    model.type = media()?.type()?.ordinal
+    model.status = status()?.ordinal
+    model.user = user()?.let {
+        UserMediaListModel().also { u ->
+            u.id = it.id()
+            u.name = it.name()
+            u.avatar = it.avatar()?.let { ava ->
+                AvatarModel().also { avatarModel ->
+                    avatarModel.medium = ava.medium()
+                    avatarModel.large = ava.large()
+                }
+            }
+            u.mediaListOptions = it.mediaListOptions()?.let { opt ->
+                MediaListOptionModel().also { lModel ->
+                    lModel.scoreFormat = opt.scoreFormat()?.ordinal
+                }
+            }
+        }
+    }
 }

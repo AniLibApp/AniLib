@@ -35,7 +35,7 @@ fun attachHelperToView(binding: MarkwonHelperLayoutBinding, editText: EditText) 
 
 }
 
-private fun EditText.addMarkdown(markdown: String, selection: Int) {
-    append(markdown)
-    setSelection(length() - selection)
-}
+    private fun EditText.addMarkdown(markdown: String, selection: Int) {
+        append(markdown)
+        setSelection(length() - selection)
+    }

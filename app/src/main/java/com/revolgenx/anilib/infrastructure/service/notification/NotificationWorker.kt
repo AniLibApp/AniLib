@@ -10,7 +10,6 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
-import androidx.core.os.bundleOf
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.facebook.common.references.CloseableReference
@@ -22,22 +21,18 @@ import com.facebook.imagepipeline.image.CloseableStaticBitmap
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.ContainerActivity
-import com.revolgenx.anilib.activity.MediaBrowseActivity
-import com.revolgenx.anilib.activity.ToolbarContainerActivity
-import com.revolgenx.anilib.activity.UserProfileActivity
+import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.constant.NotificationUnionType
 import com.revolgenx.anilib.data.field.notification.NotificationField
-import com.revolgenx.anilib.common.ui.fragment.ParcelableFragment
-import com.revolgenx.anilib.ui.fragment.notification.NotificationFragment
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
-import com.revolgenx.anilib.data.meta.UserMeta
 import com.revolgenx.anilib.data.model.notification.NotificationModel
 import com.revolgenx.anilib.data.model.notification.activity.*
 import com.revolgenx.anilib.data.model.notification.thread.*
 import com.revolgenx.anilib.common.preference.*
+import com.revolgenx.anilib.data.model.notification.FollowingNotificationModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.util.LauncherShortcutKeys
+import com.revolgenx.anilib.util.LauncherShortcuts
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
@@ -117,7 +112,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             notificationBuilder.setContentIntent(it)
         }
         notificationBuilder.setSmallIcon(
-            R.drawable.ic_notifications
+            R.drawable.ic_notification_filled
         )
         notificationBuilder.setAutoCancel(true)
         notificationImage?.let {
@@ -218,8 +213,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                     notificationImage = it.commonMediaModel?.coverImage?.image(context)
                     String.format(
                         Locale.getDefault(),
-                        context.getString(R.string.episode_airing_notif)
-                        ,
+                        context.getString(R.string.episode_airing_notif),
                         it.contexts!![0],
                         it.episode,
                         it.contexts!![1],
@@ -231,10 +225,10 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
             NotificationUnionType.FOLLOWING -> {
 //                createUserPendingIntent(item as ActivityNotification)
-                createActivityNotif(item as ActivityNotification)
+                createFollowingNotification(item as FollowingNotificationModel)
             }
             NotificationUnionType.RELATED_MEDIA_ADDITION -> {
-                if(!getNotificationPreference(context.getString(R.string.related_media_added_notif))) return ""
+                if (!getNotificationPreference(context.getString(R.string.related_media_added_notif))) return ""
 
                 (item as RelatedMediaNotificationModel)
                 notificationImage = item.commonMediaModel?.coverImage?.image
@@ -250,13 +244,13 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
     private fun createThreadNotif(item: ThreadNotification): String {
         notificationImage = item.userPrefModel?.avatar?.image
         return context.getString(R.string.thread_notif_s)
-            .format(item.userPrefModel?.userName, item.context, item.threadModel?.title)
+            .format(item.userPrefModel?.name, item.context, item.threadModel?.title)
     }
 
     private fun createActivityNotif(item: ActivityNotification): String {
         notificationImage = item.userPrefModel?.avatar?.image
         return context.getString(R.string.s_space_s)
-            .format(item.userPrefModel?.userName, item.context)
+            .format(item.userPrefModel?.name, item.context)
     }
 
     private fun createThreadPendingLink(thread: ThreadNotification) {
@@ -270,21 +264,20 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
         }
     }
 
+    private fun createFollowingNotification(item: FollowingNotificationModel): String {
+        notificationImage = item.userModel?.avatar?.image
+        return context.getString(R.string.s_space_s)
+            .format(item.userModel?.name, item.context)
+    }
+
 
     private fun createNotificationPendingIntent() {
-        val intent = Intent(context, ContainerActivity::class.java).also {
+        val intent = Intent(context, MainActivity::class.java).also {
             it.putExtra(
-                ContainerActivity.fragmentContainerKey, ParcelableFragment(
-                    NotificationFragment::class.java,
-                    bundleOf(
-                        UserMeta.userMetaKey to UserMeta(
-                            context.userId(),
-                            null,
-                            true
-                        )
-                    )
-                )
+                LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
+                LauncherShortcuts.NOTIFICATION.ordinal
             )
+            it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
         pendingIntent =
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -313,36 +306,6 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
         }
     }
 
-    private fun createMediaPendingIntent(item: AiringNotificationModel) {
-        val intent = Intent(context, MediaBrowseActivity::class.java).apply {
-            item.commonMediaModel?.let { data ->
-                this.putExtra(
-                    MediaBrowseActivity.MEDIA_BROWSER_META, MediaBrowserMeta(
-                        data.mediaId,
-                        data.type!!,
-                        data.title!!.romaji!!,
-                        data.coverImage!!.image(context),
-                        data.coverImage!!.largeImage,
-                        data.bannerImage
-                    )
-                )
-            }
-        }
-        pendingIntent =
-            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-
-    private fun createUserPendingIntent(item: ActivityNotification) {
-        val intent = Intent(context, UserProfileActivity::class.java).also {
-            it.putExtra(
-                UserProfileActivity.USER_ACTIVITY_META_KEY,
-                UserMeta(item.userPrefModel?.userId, null)
-            )
-        }
-        pendingIntent =
-            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-
     private fun createChannel() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
             return
@@ -361,11 +324,11 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             setNewNotification(item)
             return false
         }
-        return getLastNotification(context) != item?.baseId
+        return getLastNotification(context) != item?.id
     }
 
     private fun setNewNotification(item: NotificationModel?) {
-        setNewNotification(context, item?.baseId ?: -1)
+        setNewNotification(context, item?.id ?: -1)
     }
 
 
@@ -374,7 +337,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
         super.onStopped()
     }
 
-    private fun getNotificationPreference(key: String):Boolean {
+    private fun getNotificationPreference(key: String): Boolean {
         return context.getBoolean(key, true)
     }
 }

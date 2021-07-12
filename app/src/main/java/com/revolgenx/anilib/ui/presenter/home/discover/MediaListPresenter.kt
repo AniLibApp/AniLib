@@ -11,11 +11,8 @@ import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
-import com.revolgenx.anilib.infrastructure.event.BrowseGenreEvent
-import com.revolgenx.anilib.infrastructure.event.BrowseMediaEvent
-import com.revolgenx.anilib.infrastructure.event.ListEditorEvent
 import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.data.model.list.MediaListModel
@@ -24,6 +21,7 @@ import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userName
 import com.revolgenx.anilib.databinding.MediaListPresenterBinding
+import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
@@ -90,7 +88,7 @@ class MediaListPresenter(
             mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
 
             mediaListGenreLayout.addGenre(item.genres?.take(3)) { genre ->
-                BrowseGenreEvent(MediaSearchFilterModel().also {
+                OpenSearchEvent(MediaSearchFilterModel().also {
                     it.genre = listOf(genre.trim())
                 }).postEvent
             }
@@ -170,29 +168,29 @@ class MediaListPresenter(
             }
 
             mediaListContainer.setOnLongClickListener {
-                BrowseMediaEvent(
-                    MediaBrowserMeta(
+                OpenMediaInfoEvent(
+                    MediaInfoMeta(
                         item.mediaId,
                         item.type!!,
                         item.title!!.userPreferred,
                         item.coverImage!!.image(context),
                         item.coverImage!!.largeImage,
                         item.bannerImage
-                    ), mediaListCoverImageView
+                    )
                 ).postEvent
                 true
             }
 
             mediaListContainer.setOnClickListener {
                 if (context.loggedIn()) {
-                    ListEditorEvent(
+                    OpenMediaListEditorEvent(
                         ListEditorMeta(
                             item.mediaId,
                             item.type!!,
                             item.title!!.userPreferred,
                             item.coverImage!!.image(context),
                             item.bannerImage
-                        ), mediaListCoverImageView
+                        )
                     ).postEvent
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

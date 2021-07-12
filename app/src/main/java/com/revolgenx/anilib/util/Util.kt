@@ -25,11 +25,9 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.greenrobot.eventbus.EventBus
 import org.ocpsoft.prettytime.PrettyTime
+import timber.log.Timber
 import java.util.*
 
-
-const val COLLAPSED = 0
-const val EXPANDED = 1
 
 object LauncherShortcutKeys{
     const val LAUNCHER_SHORTCUT_EXTRA_KEY = "LAUNCHER_SHORTCUT_EXTRA_KEY"
@@ -37,7 +35,7 @@ object LauncherShortcutKeys{
 }
 
 enum class LauncherShortcuts{
-    HOME, ANIME, MANGA, RADIO,NOTIFICATION
+    HOME, ANIME, MANGA, RADIO, NOTIFICATION
 }
 
 fun getSeasonFromMonth(monthOfYear: Int): MediaSeason {
@@ -145,8 +143,11 @@ fun Context.hideKeyboard(view: View) {
 fun Context.openLink(url: String?) {
     try {
         if (url != null)
-            startActivity(Intent(Intent.ACTION_VIEW, url.trim().toUri()))
+            startActivity(Intent(Intent.ACTION_VIEW, url.trim().toUri()).also {
+                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            })
     } catch (e: Exception) {
+        Timber.d(e)
         makeToast(R.string.no_app_found_to_open)
     }
 }

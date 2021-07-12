@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             app:ads_colorType="text_primary"
-            app:ads_icon="@drawable/ic_notifications"
+            app:ads_icon="@drawable/ic_notification_filled"
             app:ads_title="@string/notification" />
 
         <com.revolgenx.anilib.ui.view.widgets.AniLibItemView

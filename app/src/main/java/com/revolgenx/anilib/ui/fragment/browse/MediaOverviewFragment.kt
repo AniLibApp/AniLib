@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.net.toUri
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,20 +27,22 @@ import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MediaBrowseActivity
 import com.revolgenx.anilib.common.preference.enableAutoMlTranslation
 import com.revolgenx.anilib.common.preference.enableMlTranslation
 import com.revolgenx.anilib.common.preference.inUseMlLanguageModel
 import com.revolgenx.anilib.constant.*
-import com.revolgenx.anilib.infrastructure.event.BrowseStudioEvent
 import com.revolgenx.anilib.data.field.media.MediaOverviewField
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
-import com.revolgenx.anilib.data.meta.MediaBrowserMeta
-import com.revolgenx.anilib.data.meta.StudioMeta
-import com.revolgenx.anilib.data.model.*
+import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.data.model.media_info.MediaMetaCollection
+import com.revolgenx.anilib.data.model.media_info.MediaOverviewModel
+import com.revolgenx.anilib.data.model.media_info.MediaRelationshipModel
+import com.revolgenx.anilib.data.model.media_info.MediaTagsModel
+import com.revolgenx.anilib.data.model.studio.MediaStudioModel
 import com.revolgenx.anilib.databinding.MediaOverviewFragmentBinding
-import com.revolgenx.anilib.ui.presenter.BrowseRelationshipPresenter
+import com.revolgenx.anilib.infrastructure.event.OpenStudioEvent
+import com.revolgenx.anilib.ui.presenter.MediaInfoRelationshipPresenter
 import com.revolgenx.anilib.ui.presenter.media.MediaExternalLinkPresenter
 import com.revolgenx.anilib.ui.presenter.media.MediaMetaPresenter
 import com.revolgenx.anilib.ui.presenter.media.MediaRecommendationPresenter
@@ -53,20 +56,19 @@ import com.revolgenx.anilib.ui.presenter.media.MediaOverviewCharacterPresenter
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.ui.view.airing.AiringEpisodeView
-import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.media.MediaOverviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>() {
 
-    private var mediaBrowserMeta: MediaBrowserMeta? = null
+    private val mediaBrowserMeta: MediaInfoMeta? get() = arguments?.getParcelable(MEDIA_INFO_META_KEY)
+
     private val viewModel by viewModel<MediaOverviewViewModel>()
 
     private val recommendationSource: MediaOverviewRecommendationSource
         get() = viewModel.source ?: createRecommendationSource()
     private val relationshipPresenter by lazy {
-        BrowseRelationshipPresenter(requireContext())
+        MediaInfoRelationshipPresenter(requireContext())
     }
 
     private val genreChipAdapter = MediaGenreChipAdapter()
@@ -109,6 +111,12 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
 
     private var metaLinkAdapter: Adapter? = null
     private var metaContainerAdapter: Adapter? = null
+    companion object{
+        private const val MEDIA_INFO_META_KEY = "MEDIA_INFO_META_KEY"
+        fun newInstance(meta:MediaInfoMeta) = MediaOverviewFragment().also {
+            it.arguments = bundleOf(MEDIA_INFO_META_KEY to meta)
+        }
+    }
 
 
     override fun bindView(
@@ -151,8 +159,8 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        mediaBrowserMeta =
-            arguments?.getParcelable(MediaBrowseActivity.MEDIA_BROWSER_META) ?: return
+        mediaBrowserMeta?: return
+
         viewModel.field.mediaId = mediaBrowserMeta!!.mediaId
 
         binding.initView()
@@ -510,7 +518,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             spannableStringBuilder.setSpan(
                 object : ClickableSpan() {
                     override fun onClick(widget: View) {
-                        BrowseStudioEvent(StudioMeta(it.studioId)).postEvent
+                        OpenStudioEvent(it.studioId!!).postEvent
                     }
 
                     override fun updateDrawState(ds: TextPaint) {
@@ -548,7 +556,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             spannableStringBuilder.setSpan(
                 object : ClickableSpan() {
                     override fun onClick(widget: View) {
-                        BrowseStudioEvent(StudioMeta(it.studioId)).postEvent
+                        OpenStudioEvent(it.studioId!!).postEvent
                     }
 
                     override fun updateDrawState(ds: TextPaint) {

@@ -1,21 +1,17 @@
 package com.revolgenx.anilib.ui.viewmodel.staff
 
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.data.field.staff.StaffField
-import com.revolgenx.anilib.data.model.StaffModel
+import com.revolgenx.anilib.data.model.staff.StaffModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.service.ToggleService
+import com.revolgenx.anilib.infrastructure.service.ToggleFavouriteService
 import com.revolgenx.anilib.infrastructure.service.staff.StaffService
-import io.reactivex.disposables.CompositeDisposable
+import com.revolgenx.anilib.ui.viewmodel.BaseViewModel
 
 class StaffViewModel(
-    private val staffService: StaffService, private val toggleService: ToggleService
-) : ViewModel() {
-    private val compositeDisposable by lazy {
-        CompositeDisposable()
-    }
+    private val staffService: StaffService, private val toggleService: ToggleFavouriteService
+) : BaseViewModel() {
 
     val staffInfoLiveData by lazy {
         MediatorLiveData<Resource<StaffModel>>().also {
@@ -33,6 +29,10 @@ class StaffViewModel(
         }
     }
 
+
+    val staffField = StaffField()
+    val staffToggleField = ToggleFavouriteField()
+
     fun getStaffInfo(field: StaffField) {
         staffInfoLiveData.value = Resource.loading(null)
         staffService.getStaffInfo(field, compositeDisposable)
@@ -43,8 +43,6 @@ class StaffViewModel(
         toggleService.toggleFavourite(field, compositeDisposable)
     }
 
-    override fun onCleared() {
-        compositeDisposable.clear()
-        super.onCleared()
-    }
+
+
 }

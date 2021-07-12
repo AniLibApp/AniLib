@@ -2,13 +2,10 @@ package com.revolgenx.anilib.ui.fragment.staff
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.field.ToggleFavouriteField
-import com.revolgenx.anilib.data.field.staff.StaffField
-import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.markwon.MarkwonImpl
-import com.revolgenx.anilib.data.meta.StaffMeta
-import com.revolgenx.anilib.data.model.StaffModel
+import com.revolgenx.anilib.data.model.staff.StaffModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.StaffFragmentLayoutBinding
@@ -21,26 +18,18 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
     companion object {
-        const val STAFF_META_KEY = "staff_meta_key"
+        private const val STAFF_ID_KEY = "STAFF_ID_KEY"
+        fun newInstance(staffId: Int) = StaffFragment().also {
+            it.arguments = bundleOf(STAFF_ID_KEY to staffId)
+        }
     }
+
+    private val staffId get() = arguments?.getInt(STAFF_ID_KEY)
+
 
     private val viewModel by viewModel<StaffViewModel>()
 
-
     private var staffModel: StaffModel? = null
-    private lateinit var staffMeta: StaffMeta
-    private val staffField by lazy {
-        StaffField().also {
-            it.staffId = staffMeta.staffId
-        }
-    }
-
-    private val toggleFavouriteField by lazy {
-        ToggleFavouriteField().also {
-            it.staffId = staffMeta.staffId
-        }
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.staff_fragment_menu, menu)
@@ -70,9 +59,8 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        arguments?.classLoader = StaffMeta::class.java.classLoader
-        staffMeta = arguments?.getParcelable(STAFF_META_KEY) ?: return
-        binding.staffIv.setImageURI(staffMeta.staffUrl)
+        viewModel.staffField.staffId = staffId ?: return
+        viewModel.staffToggleField.staffId = staffId
         val statusLayout = binding.resourceStatusLayout
         viewModel.staffInfoLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {
@@ -122,42 +110,34 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
         initListener()
 
         if (savedInstanceState == null) {
-            viewModel.getStaffInfo(staffField)
+            viewModel.getStaffInfo(viewModel.staffField)
         }
     }
 
     private fun initListener() {
         binding.staffFavLayout.setOnClickListener {
             if (requireContext().loggedIn()) {
-                viewModel.toggleCharacterFav(toggleFavouriteField)
+                viewModel.toggleCharacterFav(viewModel.staffToggleField)
             } else {
                 makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        invalidateOptionMenu()
-        setHasOptionsMenu(true)
-    }
-
     private fun StaffFragmentLayoutBinding.updateView(item: StaffModel) {
         staffModel = item
-        staffNameTv.text = item.staffName?.full
+        updateToolbar()
+        staffNameTv.text = item.name?.full
         staffFavCountIv.text = item.favourites?.toLong()?.prettyNumberFormat()
+        staffIv.setImageURI(staffModel?.image?.image)
 
-        if (staffMeta.staffUrl == null) {
-            staffIv.setImageURI(staffModel?.staffImage?.image)
-        }
-
-        item.staffName?.native?.let {
+        item.name?.native?.let {
             nativeNameTv.subtitle = it
         } ?: let {
             nativeNameTv.visibility = View.GONE
         }
 
-        item.staffName?.alternative?.let {
+        item.name?.alternative?.let {
             alternativeNameTv.subtitle = it.joinToString()
         } ?: let {
             alternativeNameTv.visibility = View.GONE
@@ -174,6 +154,15 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
             staffFavIv.setImageResource(R.drawable.ic_favourite)
         }
 
-        MarkwonImpl.createHtmlInstance(requireContext()).setMarkdown(staffDescriptionTv, item.description ?: "")
+        MarkwonImpl.createHtmlInstance(requireContext())
+            .setMarkdown(staffDescriptionTv, item.description ?: "")
+    }
+
+    override fun updateToolbar() {
+        val model = staffModel ?: return
+        (parentFragment as? StaffContainerFragment)?.let {
+            it.updateToolbarTitle(model.name!!.full!!)
+            it.updateShareableLink(model.siteUrl)
+        }
     }
 }

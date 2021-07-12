@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
 import com.revolgenx.anilib.data.field.media.MediaStaffField
-import com.revolgenx.anilib.data.model.MediaStaffModel
+import com.revolgenx.anilib.data.model.media_info.MediaStaffModel
 import com.revolgenx.anilib.infrastructure.service.media.MediaBrowseService
 import io.reactivex.disposables.CompositeDisposable
 
@@ -16,7 +16,7 @@ class MediaStaffSource(
     BaseRecyclerSource<MediaStaffModel, MediaStaffField>(field) {
 
     override fun areItemsTheSame(first: MediaStaffModel, second: MediaStaffModel): Boolean {
-        return first.staffId == second.staffId
+        return first.id == second.id
     }
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {

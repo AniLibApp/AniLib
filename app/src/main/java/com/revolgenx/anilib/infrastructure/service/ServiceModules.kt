@@ -19,6 +19,8 @@ import com.revolgenx.anilib.infrastructure.service.staff.StaffService
 import com.revolgenx.anilib.infrastructure.service.staff.StaffServiceImpl
 import com.revolgenx.anilib.infrastructure.service.studio.StudioService
 import com.revolgenx.anilib.infrastructure.service.studio.StudioServiceImpl
+import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
+import com.revolgenx.anilib.infrastructure.service.toggle.ToggleServiceImpl
 import com.revolgenx.anilib.infrastructure.service.user.UserService
 import com.revolgenx.anilib.infrastructure.service.user.UserServiceImpl
 import com.revolgenx.anilib.infrastructure.service.user.UserStatsService
@@ -26,7 +28,7 @@ import com.revolgenx.anilib.infrastructure.service.user.UserStatsServiceImpl
 import org.koin.dsl.module
 
 val serviceModule = module {
-    factory<ToggleService> { ToggleServiceImpl(get()) }
+    factory<ToggleFavouriteService> { ToggleFavouriteServiceImpl(get()) }
     factory<MediaListEntryService> { MediaListEntryServiceImpl(get(), get()) }
     factory<RecommendationService> { RecommendationServiceImpl(get()) }
     factory<MediaBrowseService> { MediaBrowseServiceImpl(get()) }
@@ -42,4 +44,5 @@ val serviceModule = module {
     factory<MediaService> { MediaServiceImpl(get()) }
     factory<ReviewService> { ReviewServiceImpl(get()) }
     factory<SettingService> { SettingServiceImpl(get()) }
+    factory<ToggleService> { ToggleServiceImpl(get()) }
 }

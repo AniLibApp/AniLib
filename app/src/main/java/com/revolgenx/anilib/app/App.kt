@@ -12,7 +12,8 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import androidx.multidex.MultiDex
 import androidx.work.*
-import com.facebook.imagepipeline.core.ImagePipelineConfig
+import com.facebook.common.logging.FLog
+import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory
 import com.facebook.imagepipeline.listener.RequestListener
 import com.facebook.imagepipeline.listener.RequestLoggingListener
 import com.github.piasy.biv.BigImageViewer
@@ -43,11 +44,14 @@ import timber.log.Timber
 import java.util.*
 import java.util.concurrent.TimeUnit
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.NotificationActivity
 import com.revolgenx.anilib.common.preference.*
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.social.infrastructure.service.activityServiceModules
+import com.revolgenx.anilib.social.ui.viewmodel.activityViewModelModules
 import com.revolgenx.anilib.util.LauncherShortcutKeys
 import com.revolgenx.anilib.util.LauncherShortcuts
 import com.revolgenx.anilib.util.shortcutAction
+import okhttp3.OkHttpClient
 
 
 open class App : DynamicApplication() {
@@ -59,8 +63,14 @@ open class App : DynamicApplication() {
     }
 
     override fun onInitialize() {
+        val requestListeners: MutableSet<RequestListener> = HashSet()
+
         if (BuildConfig.DEBUG) {
             Timber.plant(LoggerTree())
+
+            requestListeners.add(RequestLoggingListener())
+            FLog.setMinimumLoggingLevel(FLog.VERBOSE);
+
         } else {
             Timber.plant(AniLibDebugTree(this))
         }
@@ -69,12 +79,11 @@ open class App : DynamicApplication() {
             MobileAds.initialize(this)
         }
 
-        val requestListeners: MutableSet<RequestListener> = HashSet()
-        requestListeners.add(RequestLoggingListener())
-        val config = ImagePipelineConfig.newBuilder(context) // other setters
+        val config = OkHttpImagePipelineConfigFactory.newBuilder(context, OkHttpClient()) // other setters
             .setRequestListeners(requestListeners)
             .build()
         BigImageViewer.initialize(FrescoImageLoader.with(this, config))
+        AlMarkwonFactory.init(this)
         startKoin {
             androidContext(this@App)
             modules(getKoinModules())
@@ -195,8 +204,12 @@ open class App : DynamicApplication() {
                     getString(R.string.notification),
                     getString(R.string.notification),
                     R.drawable.ic_shortcut_notifications,
-                    Intent(Intent.ACTION_VIEW, null, this, NotificationActivity::class.java).also {
+                    Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
                         it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        it.putExtra(
+                            LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
+                            LauncherShortcuts.NOTIFICATION.ordinal
+                        )
                     })
 
                 anilibShortcuts.add(notificationShortcut)
@@ -231,7 +244,9 @@ open class App : DynamicApplication() {
         serviceModule,
         radioRoomModules,
         radioApiModules,
-        radioSourceModule
+        radioSourceModule,
+        activityServiceModules,
+        activityViewModelModules
     )
 
 

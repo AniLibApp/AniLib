@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.DynamicApp.Card.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:id="@+id/media_cover_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1.6"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/media_cover_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:transitionName="media_cover_transition"
+                app:roundAsCircle="false"
+                app:roundedCornerRadius="4dp" />
+
+            <com.revolgenx.anilib.ui.view.score.MediaScoreBadge
+                android:id="@+id/media_rating_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="5dp" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/media_title_tv"
+            style="@style/TitleFontStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="6dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:maxLines="2"
+            android:textSize="11sp"
+            app:layout_constraintLeft_toLeftOf="@+id/media_cover_layout"
+            app:layout_constraintRight_toRightOf="@+id/media_cover_layout"
+            app:layout_constraintTop_toBottomOf="@+id/media_cover_layout"
+            tools:ignore="SmallSp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/media_status_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="6dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="10sp"
+            app:ads_colorType="accent"
+            app:layout_constraintLeft_toLeftOf="@+id/media_cover_layout"
+            app:layout_constraintRight_toRightOf="@+id/media_cover_layout"
+            app:layout_constraintTop_toBottomOf="@+id/media_title_tv"
+            tools:ignore="SmallSp" />
+
+
+        <com.revolgenx.anilib.ui.view.IndicatorTextView
+            android:id="@+id/media_format_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/media_cover_layout"
+            app:layout_constraintRight_toRightOf="@+id/media_cover_layout"
+            app:layout_constraintTop_toBottomOf="@+id/media_status_tv"
+            app:textColorType="accent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>

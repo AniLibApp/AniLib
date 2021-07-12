@@ -9,11 +9,8 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.isHomeOrderEnabled
-import com.revolgenx.anilib.data.model.home.HomeOrderType
-import com.revolgenx.anilib.infrastructure.event.BrowseAllReviewsEvent
+import com.revolgenx.anilib.infrastructure.event.OpenAllReviewEvent
 import com.revolgenx.anilib.ui.presenter.review.ReviewPresenter
 import com.revolgenx.anilib.infrastructure.source.home.discover.AllReviewSource
 import com.revolgenx.anilib.util.dp
@@ -66,7 +63,7 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
 
     private fun handleClick(which: Int) {
         if (which == 0) {
-            BrowseAllReviewsEvent().postEvent
+            OpenAllReviewEvent().postEvent
         }
     }
 
