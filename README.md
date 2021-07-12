@@ -1,13 +1,15 @@
-<p align="center"><img src="https://github.com/rev0lgenX/AnilibAssets/raw/master/1_1_4_base/simple_banner.jpg" width="20%" ></p>
+<img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/ftr-social/.github/assets/anilib_icon.png" width="100px"/>
 
-## 
+# AniLib (AniList Client for Android)
+AniList is an unofficial App for [AniList](https://anilist.co/). Track, share and discover your favorite anime and manga in one place by using the power of [AniList](https://anilist.co/).
 
 [![Build Check](https://github.com/rev0lgenX/AniLib/workflows/AniLib%20build%20check/badge.svg?branch=dev&event=push)](https://github.com/rev0lgenX/AniLib/actions)   [![Discord](https://img.shields.io/discord/762249048748589066?color=%236E85D3&label=Discord&logo=Discord)](https://discord.gg/Gd2TVQT)
 
-## About
-App for tracking anime/manga by the power of AniList.
+## Download
+<a href='https://play.google.com/store/apps/details?id=com.revolgenx.anilib&hl=en&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'  target="_blank"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200px"/></a>
 
-![Display](https://github.com/rev0lgenX/AnilibAssets/raw/master/1_1_4_base/combined.jpg)
+## Screenshots
+<img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/ftr-social/.github/assets/discover.png" width="30%"> <img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/ftr-social/.github/assets/list.png" width="30%">    <img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/ftr-social/.github/assets/activity.png" width="30%">
 
 ## Development
 <details><summary>Api Keys</summary>
