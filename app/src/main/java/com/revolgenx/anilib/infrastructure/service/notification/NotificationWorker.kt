@@ -272,7 +272,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
 
     private fun createNotificationPendingIntent() {
-        val intent = Intent(context, MainActivity::class.java).also {
+        val intent = Intent(Intent.ACTION_VIEW, null, context, MainActivity::class.java).also {
             it.putExtra(
                 LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
                 LauncherShortcuts.NOTIFICATION.ordinal

@@ -536,15 +536,9 @@
     <string name="theme_app_day_night_desc">"Um dieses Thema zu bearbeiten, muss das Standard-Theme auf Auto stehen."</string>
     <string name="theme_app_night_summary">"Theme der App in der Nacht"</string>
     <string name="theme_app_night">"Nacht-Theme"</string>
-    <string name="theme_color_primary">"Primärfarbe"</string>
-    <string name="theme_color_primary_summary">"In primären Elementen genutzte Farbe"</string>
     <string name="theme_background_aware_desc">"Passen Sie die Farben entsprechend dem Hintergrund an, um eine gute Lesbarkeit zu garantieren."</string>
     <string name="theme_color_accent_summary">"In sekundären Elementen genutzte Farbe"</string>
     <string name="theme_color_accent">"Akzentfarbe"</string>
-    <string name="theme_navigation_bar_desc">"Färbt die Android Navigationsleiste in der eingestellten Primärfarbe ein"</string>
-    <string name="theme_navigation_bar_summary">"Navigationsleiste entsprechend des App-Theme anzeigen"</string>
-    <string name="theme_navigation_bar">"Navigationsleiste färben"</string>
-    <string name="theme_navigation_bar_summary_unchecked">"Standard Navigationsleiste anzeigen."</string>
     <string name="theme_app_desc">"Um dieses Thema zu bearbeiten, muss das Standard-Theme auf Auto stehen."</string>
     <string name="saving_not_required">"Speichern ist nicht notwendig."</string>
 

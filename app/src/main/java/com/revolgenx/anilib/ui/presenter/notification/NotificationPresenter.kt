@@ -13,6 +13,7 @@ import com.revolgenx.anilib.data.model.notification.NotificationModel
 import com.revolgenx.anilib.data.model.notification.activity.*
 import com.revolgenx.anilib.data.model.notification.thread.*
 import com.revolgenx.anilib.databinding.NotificationPresenterLayoutBinding
+import com.revolgenx.anilib.infrastructure.event.OpenActivityInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
 import com.revolgenx.anilib.ui.presenter.BasePresenter
@@ -205,18 +206,7 @@ class NotificationPresenter(context: Context) : BasePresenter<NotificationPresen
     }
 
     private fun openActivityLink(activity: ActivityNotification) {
-        var siteUrl: String? = null
-        activity.textActivityModel?.let {
-            siteUrl = it.siteUrl
-        }
-        activity.listActivityModel?.let {
-            siteUrl = it.siteUrl
-        }
-
-        activity.messageActivityModel?.let {
-            siteUrl = it.siteUrl
-        }
-        context.openLink(siteUrl)
+        OpenActivityInfoEvent(activity.activityId ?: -1).postEvent
     }
 
     private fun NotificationPresenterLayoutBinding.createActivityNotif(item: ActivityNotification) {

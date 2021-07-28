@@ -276,9 +276,6 @@ open class App : DynamicApplication() {
             Theme.ColorType.BACKGROUND -> {
                 return ThemeController.backgroundColor
             }
-            Theme.ColorType.PRIMARY -> {
-                return ThemeController.colorPrimaryApp
-            }
             Theme.ColorType.ACCENT -> {
                 ThemeController.colorAccentApp
             }
@@ -322,7 +319,6 @@ open class App : DynamicApplication() {
                     DynamicTheme.getInstance().onDynamicChanged(false, true)
                 }
             Constants.PREF_SETTINGS_APP_THEME_COLOR,
-            Constants.PREF_SETTINGS_APP_THEME_COLOR_PRIMARY,
             Constants.PREF_SETTINGS_APP_THEME_COLOR_ACCENT ->
                 DynamicTheme.getInstance().onDynamicChanged(false, true)
             languagePrefKey -> {

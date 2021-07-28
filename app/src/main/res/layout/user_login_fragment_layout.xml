@@ -39,27 +39,88 @@
             android:padding="16dp">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+                style="@style/Widget.DynamicApp.Card.Clickable"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.DynamicApp.Card.Clickable">
+                android:layout_height="wrap_content">
 
-                <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
-                    android:id="@+id/sign_in_layout"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ads_button_remote"
-                    app:ads_colorType="text_primary"
-                    app:ads_icon="@drawable/ic_person"
-                    app:ads_title="@string/sign_in"
-                    />
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="10dp">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_push_pin"
+                            app:ads_colorType="text_primary"
+                            app:ads_contrastWithColorType="none" />
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="center_vertical"
+                            android:text="Important to know"
+                            android:textSize="14sp"
+                            app:fontFamily="@font/cabincondensed_bold" />
+                    </LinearLayout>
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="10dp"
+                        android:text="AniLib is a 3rd party client app for AniList. You will be redirect to anilist.co to login/register. Please make sure the URL is anilist.co before entering your credentials."
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                            android:id="@+id/sign_in_layout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/ads_button_remote"
+                            app:ads_colorType="text_primary"
+                            app:ads_icon="@drawable/ic_person"
+                            app:ads_title="@string/sign_in" />
+
+                        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                            android:id="@+id/register_layout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/ads_button_remote"
+                            app:ads_colorType="text_primary"
+                            app:ads_icon="@drawable/ic_register"
+                            app:ads_title="@string/register" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+                style="@style/Widget.DynamicApp.Card.Clickable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                style="@style/Widget.DynamicApp.Card.Clickable">
+                android:layout_marginTop="10dp">
 
 
                 <LinearLayout
@@ -78,7 +139,8 @@
 
                     <include layout="@layout/divider_layout" />
 
-                    <com.revolgenx.anilib.ui.view.widgets.AniLibItemView                        android:id="@+id/aboutItemView"
+                    <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                        android:id="@+id/aboutItemView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:ads_colorType="text_primary"
@@ -88,18 +150,6 @@
                 </LinearLayout>
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-
-            <com.pranavpandey.android.dynamic.support.view.DynamicItemView
-                android:id="@+id/discord_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/ads_button_remote"
-                app:ads_colorType="text_primary"
-                app:ads_icon="@drawable/ic_discord"
-                app:ads_title="@string/discord"
-                android:visibility="gone"/>
 
 
         </LinearLayout>

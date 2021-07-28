@@ -60,7 +60,6 @@ class StaffContainerFragment:BaseLayoutFragment<StaffContainerFragmentLayoutBind
             binding.staffBottomNav.menu.forEachIndexed { index, item ->
                 if (it == item) {
                     binding.staffViewPager.setCurrentItem(index, true)
-                    true
                 }
             }
             false
