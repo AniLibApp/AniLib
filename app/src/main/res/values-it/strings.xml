@@ -414,8 +414,6 @@
     <string name="theme_app_summary">Stile dell\\\'app.</string>
     <string name="theme_app">Motivo app</string>
     <string name="theme_app_day">Motivo diurno</string>
-    <string name="theme_color_primary">Colore primario</string>
-    <string name="theme_color_primary_summary">Colore utilizzato dagli elementi primari.</string>
     <string name="theme_background_aware_desc">Alcuni colori cambieranno automaticamente rispetto allo sfondo per ottenere migliore visibilità.</string>
     <string name="theme_color_accent_summary">Colore utilizzato dagli elementi secondari.</string>
     <string name="theme_color_accent">Colore rifiniture</string>

@@ -423,7 +423,7 @@ class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBind
     }
 
     private fun StatsOverviewFragmentLayoutBinding.updateTheme() {
-        scoreToggleSwitch?.let {
+        scoreToggleSwitch.let {
             it.themeIt()
             it.setEntries(
                 if (userStatsMeta.type == MediaType.ANIME.ordinal)
@@ -451,7 +451,7 @@ class StatsOverviewFragment : BaseLayoutFragment<StatsOverviewFragmentLayoutBind
         }
 
 
-        watchYearToggleSwitch?.let {
+        watchYearToggleSwitch.let {
             it.themeIt()
             it.setEntries(
                 if (userStatsMeta.type == MediaType.ANIME.ordinal)

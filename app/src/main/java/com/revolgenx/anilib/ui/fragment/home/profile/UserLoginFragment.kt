@@ -32,9 +32,8 @@ class UserLoginFragment:BaseLayoutFragment<UserLoginFragmentLayoutBinding>(){
             signInLayout.setOnClickListener {
                 AuthenticateEvent().postEvent
             }
-
-            discordLayout.setOnClickListener {
-                requireContext().openLink(getString(R.string.discord_invite_link))
+            registerLayout.setOnClickListener {
+                requireContext().openLink(requireContext().getString(R.string.sign_up_url))
             }
 
             aboutItemView.setOnClickListener {

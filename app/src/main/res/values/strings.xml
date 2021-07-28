@@ -557,8 +557,6 @@
     <string name="theme_app_day_night_desc">This will only work when the auto theme is applied.</string>
     <string name="theme_app_night_summary">Style of the app at night.</string>
     <string name="theme_app_night">Night theme</string>
-    <string name="theme_color_primary">Primary color</string>
-    <string name="theme_color_primary_summary">Color used by the primary elements.</string>
     <string name="theme_background_aware_desc">Adjust colors according to the background to provide best visibility.</string>
     <string name="theme_color_accent_summary">Color used by the secondary elements.</string>
     <string name="theme_color_accent">Accent color</string>
@@ -625,5 +623,6 @@
     <string name="sending">Sending</string>
     <string name="send">Send</string>
     <string name="recent_activity">Recent Activity</string>
+    <string name="register">Register</string>
 
 </resources>

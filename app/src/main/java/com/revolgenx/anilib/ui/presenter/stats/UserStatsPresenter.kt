@@ -126,7 +126,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatsModel>(context) 
                     item.id?.let {
                         root.setOnClickListener { _ ->
                             OpenStaffEvent(
-                                it!!,
+                                it,
                             ).postEvent
                         }
                     }

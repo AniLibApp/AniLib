@@ -33,6 +33,8 @@
     <dimen name="list_activity_cover_margin_end">8dp</dimen>
     <dimen name="markdown_helper_icon_size">42dp</dimen>
     <dimen name="markdown_helper_icon_padding">10dp</dimen>
+    <dimen name="setting_cardview_margin_top">8dp</dimen>
+    <dimen name="setting_padding_dimen">12dp</dimen>
 
     <!--    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/toolbar_size</dimen>-->
 

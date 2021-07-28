@@ -403,8 +403,6 @@
     <string name="theme_app_day">दिन के रंग-रूप</string>
     <string name="theme_app">ऐप का रंग-रूप</string>
     <string name="theme_app_summary">ऐप का स्टाइल।</string>
-    <string name="theme_color_primary">िस्टम का रंग</string>
-    <string name="theme_color_primary_summary">मुख्य वस्तुओं द्वारा उपयोग में लिया जाने वाला रंग।</string>
     <string name="theme_background_aware_desc">आसानी से देखने के लिए बैकग्राउंड के अनुसार रंग बदलें।</string>
     <string name="theme_color_accent_summary">माध्यमिक वस्तुओं द्वारा उपयोग में लिया जाने वाला रंग।</string>
     <string name="theme_color_accent">माध्यमिक रंग</string>

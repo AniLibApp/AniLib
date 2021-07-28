@@ -1,79 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.DynamicApp.Scroller.Padding.Vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/setting_padding_dimen"
         android:orientation="vertical">
 
-        <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_description="@string/theme_app_desc"
-            app:ads_icon="@drawable/ads_ic_style"
-            app:ads_key="pref_settings_app_theme_color"
-            app:ads_popup="true"
-            app:ads_popupColors="@array/pref_app_theme_colors"
-            app:ads_shape="square"
-            app:ads_summary="@string/theme_app_summary"
-            app:ads_title="@string/theme_app" />
+            app:cardUseCompatPadding="true">
 
-        <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
-            android:id="@+id/pref_app_theme_day"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:ads_color="@color/ads_window_background_light"
-            app:ads_description="@string/theme_app_day_night_desc"
-            app:ads_icon="@drawable/ads_ic_paint_bucket"
-            app:ads_key="pref_settings_app_theme_day_color"
-            app:ads_popup="true"
-            app:ads_popupColors="@array/pref_app_theme_day_colors"
-            app:ads_shape="square"
-            app:ads_summary="@string/theme_app_day_summary"
-            app:ads_title="@string/theme_app_day" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
-            android:id="@+id/pref_app_theme_night"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:ads_color="@color/ads_window_background"
-            app:ads_description="@string/theme_app_day_night_desc"
-            app:ads_icon="@drawable/ads_ic_paint_bucket"
-            app:ads_key="pref_settings_app_theme_night_color"
-            app:ads_popup="true"
-            app:ads_popupColors="@array/pref_app_theme_night_colors"
-            app:ads_shape="square"
-            app:ads_summary="@string/theme_app_night_summary"
-            app:ads_title="@string/theme_app_night" />
+                <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ads_description="@string/theme_app_desc"
+                    app:ads_icon="@drawable/ads_ic_style"
+                    app:ads_key="pref_settings_app_theme_color"
+                    app:ads_popup="true"
+                    app:ads_popupColors="@array/pref_app_theme_colors"
+                    app:ads_shape="square"
+                    app:ads_summary="@string/theme_app_summary"
+                    app:ads_title="@string/theme_app" />
 
-        <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:ads_alphaEnabled="true"
-            app:ads_color="@color/colorPrimary"
-            app:ads_description="@string/theme_background_aware_desc"
-            app:ads_icon="@drawable/ads_ic_palette"
-            app:ads_key="pref_settings_app_theme_color_primary"
-            app:ads_popup="true"
-            app:ads_summary="@string/theme_color_primary_summary"
-            app:ads_title="@string/theme_color_primary" />
+                <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
+                    android:id="@+id/pref_app_theme_day"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ads_color="@color/ads_window_background_light"
+                    app:ads_description="@string/theme_app_day_night_desc"
+                    app:ads_icon="@drawable/ads_ic_paint_bucket"
+                    app:ads_key="pref_settings_app_theme_day_color"
+                    app:ads_popup="true"
+                    app:ads_popupColors="@array/pref_app_theme_day_colors"
+                    app:ads_shape="square"
+                    app:ads_summary="@string/theme_app_day_summary"
+                    app:ads_title="@string/theme_app_day" />
 
-        <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
+                <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
+                    android:id="@+id/pref_app_theme_night"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ads_color="@color/ads_window_background"
+                    app:ads_description="@string/theme_app_day_night_desc"
+                    app:ads_icon="@drawable/ads_ic_paint_bucket"
+                    app:ads_key="pref_settings_app_theme_night_color"
+                    app:ads_popup="true"
+                    app:ads_popupColors="@array/pref_app_theme_night_colors"
+                    app:ads_shape="square"
+                    app:ads_summary="@string/theme_app_night_summary"
+                    app:ads_title="@string/theme_app_night" />
+
+            </LinearLayout>
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_alphaEnabled="true"
-            app:ads_color="@color/colorAccent"
-            app:ads_description="@string/theme_background_aware_desc"
-            app:ads_icon="@drawable/ads_ic_palette"
-            app:ads_key="pref_settings_app_theme_color_accent"
-            app:ads_popup="true"
-            app:ads_summary="@string/theme_color_accent_summary"
-            app:ads_title="@string/theme_color_accent" />
+            android:layout_marginTop="@dimen/setting_cardview_margin_top"
+            app:cardUseCompatPadding="true">
+
+            <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_alphaEnabled="true"
+                app:ads_color="@color/colorAccent"
+                app:ads_description="@string/theme_background_aware_desc"
+                app:ads_icon="@drawable/ads_ic_palette"
+                app:ads_key="pref_settings_app_theme_color_accent"
+                app:ads_popup="true"
+                app:ads_summary="@string/theme_color_accent_summary"
+                app:ads_title="@string/theme_color_accent" />
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
 
     </LinearLayout>
 
-
-</com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
+</androidx.core.widget.NestedScrollView>

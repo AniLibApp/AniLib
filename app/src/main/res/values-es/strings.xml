@@ -410,8 +410,6 @@ Envia errores automaticament."</string>
     <string name="theme_app">Tema de la aplicación</string>
     <string name="theme_app_day">Tema diurno</string>
     <string name="theme_app_summary">Estilo de la aplicación.</string>
-    <string name="theme_color_primary">Color principal</string>
-    <string name="theme_color_primary_summary">Color utilizado por los elementos principales.</string>
     <string name="theme_background_aware_desc">Ajuste los colores dependiendo del fondo para mejorar la visibilidad.</string>
     <string name="theme_color_accent_summary">Color usado por los elementos secundarios.</string>
     <string name="theme_color_accent">Color de énfasis</string>

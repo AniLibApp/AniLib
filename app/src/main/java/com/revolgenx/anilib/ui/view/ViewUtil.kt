@@ -35,6 +35,7 @@ import com.pranavpandey.android.dynamic.toasts.internal.ToastCompat
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.databinding.DynamicToastViewLayoutBinding
 import com.revolgenx.anilib.ui.dialog.MessageDialog
 
@@ -73,7 +74,7 @@ fun makeDynamicToastView(
     drawable?.let {
         toastBinding.toastIconIv.visibility = View.VISIBLE
         toastBinding.toastIconIv.setImageResource(drawable)
-        toastBinding.toastIconIv.setColorFilter(tintSurface)
+        toastBinding.toastIconIv.setColorFilter(dynamicTextColorPrimary)
     }
     toastBinding.toastIconTv.text = msg
 

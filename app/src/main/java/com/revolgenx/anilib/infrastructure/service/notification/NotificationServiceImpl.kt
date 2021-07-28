@@ -104,13 +104,6 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                             user.bannerImage = it.bannerImage()
                                         }
                                     }
-                                messageActivityModel = it.message()?.let {
-                                    MessageActivityModel().also { msg ->
-                                        msg.id = it.id()
-                                        msg.message = it.message()
-                                        msg.siteUrl = it.siteUrl()
-                                    }
-                                }
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
                                 activityId = it.activityId()
                                 context = it.context()

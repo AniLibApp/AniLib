@@ -44,12 +44,24 @@
                     android:id="@+id/activity_type_popup_menu"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:padding="2dp"
+                    android:layout_marginEnd="8dp"
+                    android:padding="3dp"
                     app:ads_colorType="text_primary"
                     app:layout_constraintBottom_toBottomOf="@id/activity_union_tab_layout"
-                    app:layout_constraintEnd_toStartOf="@+id/activity_global_spinner"
+                    app:layout_constraintEnd_toStartOf="@+id/a_divider"
                     app:layout_constraintTop_toTopOf="@id/activity_union_tab_layout"
                     app:srcCompat="@drawable/ic_activity_filter" />
+
+                <com.revolgenx.anilib.ui.view.widgets.AniLibDividerView
+                    android:id="@+id/a_divider"
+                    android:layout_width="0.1dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="6dp"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp"
+                    app:layout_constraintBottom_toBottomOf="@id/activity_type_popup_menu"
+                    app:layout_constraintEnd_toStartOf="@+id/activity_global_spinner"
+                    app:layout_constraintTop_toTopOf="@+id/activity_type_popup_menu" />
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
                     android:id="@+id/activity_global_spinner"
@@ -79,8 +91,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/ads_fab_margin"
-        app:ads_colorType="background"
         android:src="@drawable/ic_create_pencil"
+        app:ads_colorType="background"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

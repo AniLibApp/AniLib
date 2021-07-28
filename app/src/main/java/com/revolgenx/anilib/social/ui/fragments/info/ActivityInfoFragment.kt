@@ -312,6 +312,13 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
             }
         }
 
+        userAvatarIv.setOnClickListener {
+            openUserProfile(item.user?.id)
+        }
+        userNameTv.setOnClickListener {
+            openUserProfile(item.user?.id)
+        }
+
         activityMorePopup.setOnClickListener {
             val filteredMenu =
                 activityMenuEntries.filterIndexed { index, s -> if (item.userId == userId) true else index < 2 }
