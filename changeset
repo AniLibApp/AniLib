@@ -1,19 +1,3 @@
-remove UserService getUserFollower
-remove follower dialog
-refactor user intent
-
-//handle click from widget
-
-//to refactor
-review composer
-media browse -> media info
-character fragment
-staff fragment
-user fragment
-notification fragment
-search
-BrowseActivityViewModel
-
 v-1.1.11
 * Heavy change on entire app. Turned to single activity multi-fragment.
 * Added activity section in home screen, user screen and media browse screen.
