@@ -624,5 +624,6 @@
     <string name="send">Send</string>
     <string name="recent_activity">Recent Activity</string>
     <string name="register">Register</string>
+    <string name="no_watching_feature_desc">Note: This app is for tracking and managing your anime/manga list. It does not provide any feature to show any anime nor display any manga.</string>
 
 </resources>
