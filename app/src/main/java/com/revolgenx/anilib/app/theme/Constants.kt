@@ -61,7 +61,7 @@ object Constants {
     /**
      * Shared preferences key for app theme primary color.
      */
-    const val PREF_SETTINGS_APP_THEME_COLOR_PRIMARY = "pref_settings_app_theme_color_primary"
+    const val PREF_SETTINGS_APP_THEME_COLOR_PRIMARY = "pref_settings_app_theme_color_primary_deprecated"
 
     /**
      * Shared preferences key for app theme accent color.
