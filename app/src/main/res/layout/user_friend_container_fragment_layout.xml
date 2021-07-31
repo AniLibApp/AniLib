@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             app:ads_colorType="background"
             app:ads_contrastWithColorType="none"
+            app:ads_textColorType="text_primary"
             app:layout_scrollFlags="enterAlways|scroll"
             app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
             app:titleTextAppearance="@style/DynamicToolbarTitleTheme"  />
