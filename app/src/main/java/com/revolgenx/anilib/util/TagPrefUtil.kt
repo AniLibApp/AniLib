@@ -4,10 +4,7 @@ import android.content.Context
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.field.TagField
 import com.revolgenx.anilib.data.field.TagState
-import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.*
-import com.revolgenx.anilib.util.BrowseFilterDataProvider.getBrowseFilterData
-import com.revolgenx.anilib.util.BrowseFilterDataProvider.setBrowseFilterData
 
 object TagPrefUtil {
     fun saveTagPref(context: Context, tags: List<String>) {
@@ -22,6 +19,15 @@ object TagPrefUtil {
         setUserStream(context, streams)
     }
 
+
+    fun saveExcludedTags(context: Context, tags:List<String>){
+        setUserExcludedTags(context, tags)
+    }
+
+    fun saveExcludedGenre(context: Context, tags:List<String>){
+        setUserExcludedGenre(context, tags)
+    }
+
     fun reloadTagPref(context: Context): List<TagField> {
         val tags = context.resources.getStringArray(R.array.media_tags).toList()
 
@@ -32,9 +38,13 @@ object TagPrefUtil {
         return tags.map { TagField(it, TagState.EMPTY) }
     }
 
+
     fun getUserPrefTags(context: Context): List<String> = getUserTag(context)
     fun getUserPrefGenres(context: Context) = getUserGenre(context)
     fun getUserPrefStreamingOn(context: Context) = getUserStream(context)
+
+    fun getExcludedPrefTags(context: Context): List<String> = getExcludedTags(context)
+    fun getExcludedPrefGenre(context: Context) = getExcludedGenre(context)
 
 
     fun reloadGenrePref(context: Context): List<TagField> {
@@ -55,14 +65,6 @@ object TagPrefUtil {
     }
 
     fun invalidateAll(context: Context) {
-        getBrowseFilterData(context).takeIf { it is MediaSearchFilterModel }?.let {
-            (it as MediaSearchFilterModel).let { f ->
-                f.tags = emptyList()
-                f.genre = emptyList()
-                f.streamingOn = emptyList()
-            }
-            setBrowseFilterData(context, it)
-        }
         storeSeasonTag(context, null)
         storeSeasonGenre(context, null)
     }

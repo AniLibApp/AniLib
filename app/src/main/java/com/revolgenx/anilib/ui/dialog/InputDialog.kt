@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.revolgenx.anilib.R
@@ -90,6 +91,10 @@ class InputDialog : BaseDialogFragment<InputDialogLayoutBinding>() {
         binding.textInputEt.let {
             onInputDoneListener?.invoke(it.text.toString().trim())
         }
+    }
+
+    fun show(manager: FragmentManager) {
+        super.show(manager, "InputTextDialog")
     }
 
 }

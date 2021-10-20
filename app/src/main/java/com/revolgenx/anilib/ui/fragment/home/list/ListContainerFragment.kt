@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.ui.fragment.home.list
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +13,10 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.common.preference.recentAnimeListStatus
 import com.revolgenx.anilib.common.preference.recentMangaListStatus
@@ -23,16 +27,18 @@ import com.revolgenx.anilib.data.model.list.MediaListCountTypeModel
 import com.revolgenx.anilib.databinding.ListContainerFragmentBinding
 import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.infrastructure.repository.util.Status
-import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.bottomsheet.list.MediaListFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.ui.view.setBoundsFor
 import com.revolgenx.anilib.ui.viewmodel.list.ListContainerViewModel
+import com.revolgenx.anilib.ui.viewmodel.notification.NotificationStoreViewModel
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
@@ -51,13 +57,14 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
     private val animeListStatusWithCount = mutableMapOf<Int, String>()
     private val mangaListStatusWithCount = mutableMapOf<Int, String>()
 
-    private var scrollState:Int = ViewPager.SCROLL_STATE_IDLE
+    private var scrollState: Int = ViewPager.SCROLL_STATE_IDLE
 
     private val mangaListStatus by lazy {
         requireContext().resources.getStringArray(R.array.manga_list_status)
     }
 
     private val viewModel by viewModel<ListContainerViewModel>()
+    private val notificationStoreVM by sharedViewModel<NotificationStoreViewModel>()
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -210,7 +217,11 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
 
         initFabListener();
 
+
+        initNotificationBadge()
+
         listNotificationIv.setOnClickListener {
+            notificationStoreVM.setUnreadNotificationCount(0)
             OpenNotificationCenterEvent().postEvent
         }
 
@@ -238,12 +249,12 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
 
 
         mediaListSearchEt.doOnTextChanged { text, _, _, _ ->
-            if(scrollState == ViewPager.SCROLL_STATE_DRAGGING || scrollState == ViewPager.SCROLL_STATE_SETTLING ){
-                getViewPagerFragment(abs(listViewPager.currentItem -1) ) {
+            if (scrollState == ViewPager.SCROLL_STATE_DRAGGING || scrollState == ViewPager.SCROLL_STATE_SETTLING) {
+                getViewPagerFragment(abs(listViewPager.currentItem - 1)) {
                     searchQuery(text?.toString() ?: "")
                 }
 
-            }else{
+            } else {
                 getViewPagerFragment(listViewPager.currentItem) {
                     searchQuery(text?.toString() ?: "")
                 }
@@ -270,6 +281,33 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
             true
         }
 
+    }
+
+    @SuppressLint("UnsafeExperimentalUsageError")
+    private fun initNotificationBadge() {
+        binding.listNotificationIv.post {
+            val badgeDrawable = BadgeDrawable.create(requireContext())
+
+            badgeDrawable.badgeGravity = BadgeDrawable.TOP_END
+            badgeDrawable.backgroundColor = dynamicAccentColor
+            badgeDrawable.verticalOffset = 4
+            badgeDrawable.horizontalOffset = 4
+            badgeDrawable.setBoundsFor(binding.listNotificationIv, binding.listNotifLayout)
+            notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner, {
+                if (it > 0) {
+                    BadgeUtils.attachBadgeDrawable(
+                        badgeDrawable,
+                        binding.listNotificationIv,
+                        binding.listNotifLayout
+                    )
+                } else {
+                    BadgeUtils.detachBadgeDrawable(
+                        badgeDrawable,
+                        binding.listNotificationIv
+                    )
+                }
+            })
+        }
     }
 
 

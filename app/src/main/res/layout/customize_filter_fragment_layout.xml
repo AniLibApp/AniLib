@@ -7,37 +7,63 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/setting_padding_dimen">
+        android:layout_margin="@dimen/setting_padding_dimen"
+        android:orientation="vertical">
 
-        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
-            android:id="@+id/add_remove_tag_iv"
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_colorType="text_primary"
-            app:ads_icon="@drawable/ic_tag"
-            app:ads_subtitle="@string/add_remove_tags"
-            app:ads_title="@string/tags" />
+            app:cardUseCompatPadding="true">
 
-        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
-            android:id="@+id/add_remove_genre_iv"
+
+            <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                android:id="@+id/add_remove_tag_iv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_colorType="text_primary"
+                app:ads_icon="@drawable/ic_tag"
+                app:ads_subtitle="@string/edit_filter_tags"
+                app:ads_title="@string/tags" />
+
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:ads_colorType="text_primary"
-            app:ads_icon="@drawable/ic_genre"
-            app:ads_subtitle="@string/add_remove_genre"
-            app:ads_title="@string/genre" />
+            app:cardUseCompatPadding="true">
 
-        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
-            android:id="@+id/add_remove_streaming_on_iv"
+
+            <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                android:id="@+id/add_remove_genre_iv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_colorType="text_primary"
+                app:ads_icon="@drawable/ic_genre"
+                app:ads_subtitle="@string/edit_filter_genre"
+                app:ads_title="@string/genre" />
+
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:ads_colorType="text_primary"
-            app:ads_icon="@drawable/ic_watch"
-            app:ads_subtitle="@string/add_remove_streaming_on"
-            app:ads_title="@string/streaming_on" />
+            app:cardUseCompatPadding="true">
+
+
+            <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                android:id="@+id/add_remove_streaming_on_iv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_colorType="text_primary"
+                app:ads_icon="@drawable/ic_watch"
+                app:ads_subtitle="@string/add_remove_streaming_on"
+                app:ads_title="@string/streaming_on" />
+        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+
 
     </LinearLayout>
 

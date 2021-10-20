@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.*
 import androidx.annotation.*
-import androidx.core.os.bundleOf
 import androidx.core.view.*
 import androidx.viewpager.widget.ViewPager
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
@@ -73,8 +72,10 @@ import com.revolgenx.anilib.ui.fragment.notification.NotificationFragment
 import com.revolgenx.anilib.ui.fragment.review.ReviewComposerFragment
 import com.revolgenx.anilib.ui.fragment.review.ReviewFragment
 import com.revolgenx.anilib.ui.fragment.search.SearchFragment
+import com.revolgenx.anilib.ui.fragment.settings.filter.EditTagFilterFragment
 import com.revolgenx.anilib.ui.fragment.staff.StaffContainerFragment
 import com.revolgenx.anilib.ui.fragment.studio.StudioFragment
+import com.revolgenx.anilib.ui.viewmodel.notification.NotificationStoreViewModel
 
 class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope, EventBusListener {
     private val job = Job()
@@ -82,6 +83,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         get() = job + Dispatchers.Main
 
     private val viewModel by viewModel<MainActivityViewModel>()
+    private val notificationStoreVM by viewModel<NotificationStoreViewModel>()
 
     companion object {
         private const val authIntent: String = "auth_intent_key"
@@ -284,7 +286,9 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private fun silentFetchUserInfo() {
         if (loggedIn()) {
-            viewModel.getUserLiveData()
+            viewModel.getUserLiveData().observe(this, {
+                notificationStoreVM.setUnreadNotificationCount(it.unreadNotificationCount ?: 0)
+            })
         }
     }
 
@@ -360,7 +364,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                             val staffId = paths[1].toIntOrNull() ?: return
                             openStaffCenter(staffId)
                         }
-                        "activity"->{
+                        "activity" -> {
                             val activityId = paths[1].toIntOrNull() ?: return
                             openActivityInfoCenter(activityId)
                         }
@@ -505,13 +509,17 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     fun onBaseEvent(event: BaseEvent) {
         when (event) {
             is OpenUserProfileEvent -> {
-                addFragmentToMain(ProfileFragment.newInstance(UserMeta(
-                    event.userId,
-                    event.username
-                )))
+                addFragmentToMain(
+                    ProfileFragment.newInstance(
+                        UserMeta(
+                            event.userId,
+                            event.username
+                        )
+                    )
+                )
             }
 
-            is OpenSpoilerContentEvent ->{
+            is OpenSpoilerContentEvent -> {
                 addFragmentToMain(SpoilerBottomSheetFragment.newInstance(event.spanned))
             }
 
@@ -565,7 +573,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 openStaffCenter(event.staffId)
             }
 
-            is OpenStudioEvent->{
+            is OpenStudioEvent -> {
                 openStudioCenter(event)
             }
 
@@ -577,19 +585,19 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 addFragmentToMain(ReviewComposerFragment.newInstance(event.mediaId))
             }
 
-            is OpenActivityTextComposer ->{
+            is OpenActivityTextComposer -> {
                 addFragmentToMain(ActivityTextComposerContainerFragment())
             }
 
-            is OpenActivityMessageComposer ->{
+            is OpenActivityMessageComposer -> {
                 addFragmentToMain(ActivityMessageComposerContainerFragment.newInstance(event.recipientId))
             }
 
-            is OpenActivityReplyComposer ->{
+            is OpenActivityReplyComposer -> {
                 addFragmentToMain(ActivityReplyComposerContainerFragment.newInstance(event.activityId))
             }
 
-            is OpenActivityInfoEvent->{
+            is OpenActivityInfoEvent -> {
                 openActivityInfoCenter(event.activityId)
             }
 
@@ -615,6 +623,9 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     }
                     SettingEventTypes.CUSTOMIZE_FILTER -> {
                         addFragmentToMain(CustomizeFilterFragment())
+                    }
+                    SettingEventTypes.ADD_REMOVE_TAG_FILTER -> {
+                        addFragmentToMain(EditTagFilterFragment.newInstance((event.data as TagSettingEventMeta).meta))
                     }
                     SettingEventTypes.AIRING_WIDGET -> {
                         addFragmentToMain(AiringWidgetConfigFragment())

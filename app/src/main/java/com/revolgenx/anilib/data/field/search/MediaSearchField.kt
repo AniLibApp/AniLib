@@ -27,7 +27,7 @@ class MediaSearchField : SearchField() {
     var tags: List<String>? = null
     var tagsNotIn: List<String>? = null
     var genreNotIn: List<String>? = null
-    var hentaiOnly = false
+    var hentaiOnly: Boolean? = null
 
     override fun toQueryOrMutation(): Any {
         return MediaSearchQuery.builder()
@@ -113,8 +113,10 @@ class MediaSearchField : SearchField() {
                         isAdult(canShowAdult)
                     }
 
-                    if (hentaiOnly && canShowAdult) {
+                    if (hentaiOnly == true && canShowAdult) {
                         isAdult(hentaiOnly)
+                    } else if (hentaiOnly == false) {
+                        isAdult(false)
                     }
 
                 } else {

@@ -45,21 +45,28 @@
                     android:paddingEnd="6dp"
                     app:ads_colorType="text_primary"
                     app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
-                    app:layout_constraintEnd_toStartOf="@id/list_notification_iv"
+                    app:layout_constraintEnd_toStartOf="@id/list_notif_layout"
                     app:layout_constraintTop_toTopOf="@id/list_tab_layout"
                     app:srcCompat="@drawable/ic_search" />
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                    android:id="@+id/list_notification_iv"
+                <FrameLayout
+                    android:id="@+id/list_notif_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp"
-                    app:ads_colorType="text_primary"
                     app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
                     app:layout_constraintEnd_toStartOf="@id/list_more_iv"
-                    app:layout_constraintTop_toTopOf="@id/list_tab_layout"
-                    app:srcCompat="@drawable/ic_notification_outline" />
+                    app:layout_constraintTop_toTopOf="@id/list_tab_layout">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                        android:id="@+id/list_notification_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:ads_colorType="text_primary"
+                        app:srcCompat="@drawable/ic_notification_outline" />
+                </FrameLayout>
 
                 <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
                     android:id="@+id/list_more_iv"

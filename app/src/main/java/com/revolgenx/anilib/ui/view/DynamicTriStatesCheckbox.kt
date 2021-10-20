@@ -60,6 +60,7 @@ class DynamicTriStatesCheckbox : DynamicCheckBox {
             updateButtonView()
             mListener?.invoke(checkedState)
         }
+        updateButtonView()
     }
 
     private fun updateButtonView() {
@@ -76,7 +77,7 @@ class DynamicTriStatesCheckbox : DynamicCheckBox {
         mListener = listener
     }
 
-    override fun onSaveInstanceState(): Parcelable? {
+    override fun onSaveInstanceState(): Parcelable {
         return SavedState(super.onSaveInstanceState()).apply {
             this.toSaveCheckState = checkedState
         }
@@ -86,6 +87,14 @@ class DynamicTriStatesCheckbox : DynamicCheckBox {
         super.onRestoreInstanceState(state)
         if(state is SavedState){
             checkedState = state.toSaveCheckState
+        }
+    }
+
+    fun toggleTriState(){
+        checkedState = when(checkedState){
+            TriStateCheckState.TICK -> TriStateCheckState.CROSS
+            TriStateCheckState.CROSS -> TriStateCheckState.EMPTY
+            TriStateCheckState.EMPTY -> TriStateCheckState.TICK
         }
     }
 

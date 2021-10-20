@@ -737,6 +737,7 @@ query BasicUserQuery($id:Int){
     User(id:$id){
         id
         name
+        unreadNotificationCount
         options{
             ... userMediaOptions
         }

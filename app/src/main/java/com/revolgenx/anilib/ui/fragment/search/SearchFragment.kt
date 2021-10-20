@@ -157,15 +157,9 @@ class SearchFragment : BasePresenterFragment<BaseModel>(),
 
 
     private fun setUpViews() {
-        viewModel.tagTagFields.takeIf { it.isNotEmpty() }?.let {
-            invalidateTagFilter(it)
-        }
-        viewModel.genreTagFields.takeIf { it.isNotEmpty() }?.let {
-            invalidateGenreFilter(it)
-        }
-        viewModel.streamTagFields.takeIf { it.isNotEmpty() }?.let {
-            invalidateStreamFilter(it)
-        }
+        buildTagAdapter(viewModel.tagTagFields)
+        buildGenreAdapter(viewModel.genreTagFields)
+        invalidateStreamFilter(viewModel.streamTagFields)
     }
 
     private fun setUpPersistentSearchView() {
@@ -281,6 +275,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(),
 
     private fun invalidateGenreFilter(list: List<TagField>) {
         viewModel.genreTagFields = list.toMutableList()
+        buildGenreAdapter(list)
+    }
+
+    private fun buildGenreAdapter(list: List<TagField>) {
         sBinding.browseFilterNavView.buildGenreAdapter(
             tagAdapter,
             list
@@ -289,6 +287,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(),
 
     private fun invalidateTagFilter(list: List<TagField>) {
         viewModel.tagTagFields = list.toMutableList()
+        buildTagAdapter(list)
+    }
+
+    private fun buildTagAdapter(list: List<TagField>) {
         sBinding.browseFilterNavView.buildTagAdapter(
             tagAdapter,
             list

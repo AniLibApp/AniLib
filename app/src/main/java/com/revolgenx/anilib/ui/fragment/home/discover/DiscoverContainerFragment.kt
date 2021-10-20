@@ -1,15 +1,22 @@
 package com.revolgenx.anilib.ui.fragment.home.discover
 
+import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicAccentColor
+import com.revolgenx.anilib.app.theme.dynamicPrimaryColor
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
@@ -20,9 +27,12 @@ import com.revolgenx.anilib.ui.bottomsheet.discover.MediaFilterBottomSheetFragme
 import com.revolgenx.anilib.ui.dialog.ShowSeasonHeaderDialog
 import com.revolgenx.anilib.ui.fragment.home.recommendation.RecommendationFragment
 import com.revolgenx.anilib.ui.fragment.home.season.SeasonFragment
+import com.revolgenx.anilib.ui.view.setBoundsFor
 import com.revolgenx.anilib.ui.viewmodel.home.recommendation.RecommendationViewModel
 import com.revolgenx.anilib.ui.viewmodel.home.season.SeasonViewModel
+import com.revolgenx.anilib.ui.viewmodel.notification.NotificationStoreViewModel
 import com.revolgenx.anilib.util.onItemSelected
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBinding>() {
@@ -39,6 +49,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
 
     private val seasonViewModel by viewModel<SeasonViewModel>()
     private val recommendationViewModel by viewModel<RecommendationViewModel>()
+    private val notificationStoreVM by sharedViewModel<NotificationStoreViewModel>()
 
     private val seasons by lazy {
         requireContext().resources.getStringArray(R.array.media_season)
@@ -52,6 +63,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
     }
 
 
+    @SuppressLint("UnsafeExperimentalUsageError")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -62,6 +74,30 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
         binding.discoverNotificationIv.visibility =
             if (requireContext().loggedIn()) View.VISIBLE else View.GONE
 
+        binding.discoverNotificationIv.post {
+            val badgeDrawable = BadgeDrawable.create(requireContext())
+
+            badgeDrawable.badgeGravity = BadgeDrawable.TOP_END
+            badgeDrawable.backgroundColor = dynamicAccentColor
+            badgeDrawable.verticalOffset = 4
+            badgeDrawable.horizontalOffset = 4
+            badgeDrawable.setBoundsFor(binding.discoverNotificationIv, binding.discoverNotifLayout)
+
+            notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner, {
+                if (it > 0) {
+                    BadgeUtils.attachBadgeDrawable(
+                        badgeDrawable,
+                        binding.discoverNotificationIv,
+                        binding.discoverNotifLayout
+                    )
+                } else {
+                    BadgeUtils.detachBadgeDrawable(
+                        badgeDrawable,
+                        binding.discoverNotificationIv
+                    )
+                }
+            })
+        }
 
         adapter = makePagerAdapter(
             discoverFragments,
@@ -154,12 +190,12 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
     }
 
 
-
     private fun DiscoverContainerFragmentBinding.initListener() {
         discoverSearchIv.setOnClickListener {
             OpenSearchEvent().postEvent
         }
         discoverNotificationIv.setOnClickListener {
+            notificationStoreVM.setUnreadNotificationCount(0)
             OpenNotificationCenterEvent().postEvent
         }
         discoverContainerViewPager.addOnPageChangeListener(object :

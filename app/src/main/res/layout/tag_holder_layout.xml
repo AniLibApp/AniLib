@@ -18,4 +18,5 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         app:ads_colorType="text_primary"/>
+
 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>

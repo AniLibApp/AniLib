@@ -8,5 +8,5 @@ class ListActivityModel : ActivityUnionModel() {
     var media: CommonMediaModel? = null
 
     val getProgressStatus:String
-        get() = "${status.capitalize()} $progress of ${media!!.title!!.userPreferred}"
+        get() = "${status.capitalize()}${if(progress.isNullOrBlank()) " " else " $progress of "}${media!!.title!!.userPreferred}"
 }
