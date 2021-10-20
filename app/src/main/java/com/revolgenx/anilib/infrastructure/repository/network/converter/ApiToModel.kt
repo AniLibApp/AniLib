@@ -98,6 +98,7 @@ fun BasicMediaContent.toBasicMediaContent() = CommonMediaModel().also { media ->
 fun BasicUserQuery.User.toBasicUserModel() = UserPrefModel().also {
     it.id = id()
     it.name = name()
+    it.unreadNotificationCount = unreadNotificationCount()
     it.mediaListOption = mediaListOptions()?.fragments()?.userMediaListOptions()?.toModel()
     it.mediaOptions = options()?.fragments()?.userMediaOptions()?.toModel()
 }

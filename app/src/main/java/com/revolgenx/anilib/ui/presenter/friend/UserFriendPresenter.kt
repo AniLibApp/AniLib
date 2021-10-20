@@ -2,6 +2,7 @@ package com.revolgenx.anilib.ui.presenter.friend
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
@@ -30,7 +31,7 @@ class UserFriendPresenter(context: Context) :
         holder.getBinding()?.apply {
             userAvatarIv.setImageURI(item.avatar?.image)
             userNameTv.text = item.name
-
+            userMutualChip.visibility = if(item.isMutual) View.VISIBLE else View.GONE
             root.setOnClickListener {
                 OpenUserProfileEvent(item.id).postEvent
             }

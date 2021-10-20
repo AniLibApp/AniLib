@@ -6,10 +6,11 @@ import com.google.gson.reflect.TypeToken
 
 
 const val SEARCH_HISTORY_KEY = "search_history_key"
-const val BROWSE_FILTER_KEY = "browse_filter_key"
 const val TAG_LIST_KEY = "tag_list_key"
 const val GENRE_LIST_KEY = "genre_list_key"
 const val STREAM_LIST_KEY = "stream_list_key"
+const val EXCLUDED_TAG_KEY = "EXCLUDED_TAG_KEY"
+const val EXCLUDED_GENRE_KEY = "EXCLUDED_GENRE_KEY"
 
 fun Context.saveSearchHistories(searches: String) {
     putString(SEARCH_HISTORY_KEY, if (searches.isEmpty()) null else searches)
@@ -17,9 +18,6 @@ fun Context.saveSearchHistories(searches: String) {
 
 fun Context.getAllSearchHistories() =
     sharedPreference().getString(SEARCH_HISTORY_KEY, null)?.split(",")?.toList() ?: emptyList()
-
-fun Context.getBrowseFilterPreference() = getString(BROWSE_FILTER_KEY)
-fun Context.setBrowseFilterPreference(filter: String) = putString(BROWSE_FILTER_KEY, filter)
 
 
 fun getUserGenre(context: Context): List<String> {
@@ -41,6 +39,7 @@ fun setUserStream(context: Context, streams: List<String>) {
     }
 }
 
+
 fun getUserStream(context: Context): List<String> {
     val typeToken = object : TypeToken<List<String>>() {}.type;
     return context.sharedPreference().getString(STREAM_LIST_KEY, "")!!.let {
@@ -59,6 +58,36 @@ fun getUserTag(context: Context): List<String> {
 fun setUserTag(context: Context, genre: List<String>) {
     Gson().toJson(genre).let {
         context.putString(TAG_LIST_KEY, it)
+    }
+}
+
+
+fun setUserExcludedTags(context: Context, tags: List<String>) {
+    Gson().toJson(tags).let {
+        context.putString(EXCLUDED_TAG_KEY, it)
+    }
+}
+
+fun setUserExcludedGenre(context: Context, genre: List<String>) {
+    Gson().toJson(genre).let {
+        context.putString(EXCLUDED_GENRE_KEY, it)
+    }
+}
+
+
+fun getExcludedTags(context: Context): List<String> {
+    val typeToken = object : TypeToken<List<String>>() {}.type;
+    return context.sharedPreference().getString(EXCLUDED_TAG_KEY, "")!!.let {
+        Gson().fromJson(it, typeToken) ?: emptyList()
+    }
+}
+
+
+
+fun getExcludedGenre(context: Context): List<String> {
+    val typeToken = object : TypeToken<List<String>>() {}.type;
+    return context.sharedPreference().getString(EXCLUDED_GENRE_KEY, "")!!.let {
+        Gson().fromJson(it, typeToken) ?: emptyList()
     }
 }
 

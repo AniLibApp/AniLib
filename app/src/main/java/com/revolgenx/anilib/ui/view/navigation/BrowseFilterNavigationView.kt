@@ -30,6 +30,7 @@ import com.revolgenx.anilib.databinding.BrowseFilterNavigationViewBinding
 import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.ui.presenter.TagPresenter
+import com.revolgenx.anilib.ui.view.TriStateCheckState
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.util.hideKeyboard
 import com.revolgenx.anilib.util.onItemSelected
@@ -40,7 +41,7 @@ class BrowseFilterNavigationView : DynamicNavigationView {
 
     private var mListener: AdvanceBrowseNavigationCallbackListener? = null
     private val rView get() = rViewBinding.root
-    private lateinit var rViewBinding:BrowseFilterNavigationViewBinding
+    private lateinit var rViewBinding: BrowseFilterNavigationViewBinding
 
 
     private val rippleDrawable: RippleDrawable
@@ -84,21 +85,34 @@ class BrowseFilterNavigationView : DynamicNavigationView {
     }
 
 
-    private val streamingOnList
-        get() =
-            getUserStream(context)
+    private val streamingOnList by lazy {
+        getUserStream(context)
+    }
 
-    private val tagList
-        get() = getUserTag(context)
+    private val tagList by lazy {
+        getUserTag(context)
+    }
 
-    private val genreList
-        get() =
-            getUserGenre(context)
+    private val excludedTagList by lazy {
+        getExcludedTags(context)
+    }
+
+    private val genreList by lazy {
+        getUserGenre(context)
+    }
+
+    private val excludedGenreList by lazy {
+        getExcludedGenre(context)
+    }
+
 
     private var genreTagMap: MutableMap<String, TagField>? = null
         get() {
             field = field ?: mutableMapOf<String, TagField>().also { map ->
-                genreList.forEach { map[it] = TagField(it, TagState.EMPTY) }
+                genreList.forEach {
+                    val tagState = if(excludedGenreList.contains(it)) TagState.UNTAGGED else TagState.EMPTY
+                    map[it] = TagField(it, tagState)
+                }
             }
             return field
         }
@@ -106,7 +120,10 @@ class BrowseFilterNavigationView : DynamicNavigationView {
     private var tagTagMap: MutableMap<String, TagField>? = null
         get() {
             field = field ?: mutableMapOf<String, TagField>().also { map ->
-                tagList.forEach { map[it] = TagField(it, TagState.EMPTY) }
+                tagList.forEach {
+                    val tagState = if(excludedTagList.contains(it)) TagState.UNTAGGED else TagState.EMPTY
+                    map[it] = TagField(it, tagState)
+                }
             }
             return field
         }
@@ -149,7 +166,8 @@ class BrowseFilterNavigationView : DynamicNavigationView {
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
-        rViewBinding = BrowseFilterNavigationViewBinding.inflate(LayoutInflater.from(context), null, false)
+        rViewBinding =
+            BrowseFilterNavigationViewBinding.inflate(LayoutInflater.from(context), null, false)
         addView(rView)
         rViewBinding.browseSearchInputLayout.apply {
             this.setEndIconTintList(
@@ -299,6 +317,7 @@ class BrowseFilterNavigationView : DynamicNavigationView {
         tagRecyclerView.layoutManager = FlexboxLayoutManager(context)
         tagGenreRecyclerView.layoutManager = FlexboxLayoutManager(context)
         streamingOnRecyclerView.layoutManager = FlexboxLayoutManager(context)
+
     }
 
     private fun BrowseFilterNavigationViewBinding.updateTheme() {
@@ -335,8 +354,9 @@ class BrowseFilterNavigationView : DynamicNavigationView {
 
     private fun BrowseFilterNavigationViewBinding.updateListener() {
         hentaiSwitchContainerLayout.setOnClickListener {
-            hentaiOnlySwtich.isChecked = !hentaiOnlySwtich.isChecked
+            hentaiOnlySwtich.toggleTriState()
         }
+
         yearSwitchContainerLayout.setOnClickListener {
             enableYearCheckBox.isChecked = !enableYearCheckBox.isChecked
         }
@@ -406,7 +426,7 @@ class BrowseFilterNavigationView : DynamicNavigationView {
                     sort = rViewBinding.alBrowseSort.getActiveSortItem()?.let {
                         if (it.order == SortOrder.DESC) {
                             (it.data as AlMediaSort).sort + 1
-                        }else{
+                        } else {
                             (it.data as AlMediaSort).sort
                         }
                     }
@@ -438,7 +458,11 @@ class BrowseFilterNavigationView : DynamicNavigationView {
                     tagsToExclude = tagTagMap!!.values.filter { it.tagState == TagState.UNTAGGED }
                         .map { it.tag }
 
-                    hentaiOnly = rViewBinding.hentaiOnlySwtich.isChecked
+                    hentaiOnly = when(rViewBinding.hentaiOnlySwtich.checkedState){
+                        TriStateCheckState.TICK -> true
+                        TriStateCheckState.CROSS -> false
+                        TriStateCheckState.EMPTY -> null
+                    }
                 }
             }
             SearchTypes.CHARACTER.ordinal -> {
@@ -516,7 +540,7 @@ class BrowseFilterNavigationView : DynamicNavigationView {
                                 currentSortEnum,
                                 alMediaSortList[currentSortEnum.ordinal],
                                 sortOrder
-                            ).let { model->
+                            ).let { model ->
                                 rViewBinding.alBrowseSort.setActiveSortItem(model)
                             }
                         }
@@ -568,7 +592,11 @@ class BrowseFilterNavigationView : DynamicNavigationView {
                         mListener?.onTagAdd(it, MediaTagFilterTypes.GENRES)
                     }
 
-                    rViewBinding.hentaiOnlySwtich.isChecked = it.hentaiOnly
+                    rViewBinding.hentaiOnlySwtich.checkedState = when(it.hentaiOnly){
+                        true -> TriStateCheckState.TICK
+                        false -> TriStateCheckState.CROSS
+                        null -> TriStateCheckState.EMPTY
+                    }
 
                     mListener?.updateTags(MediaTagFilterTypes.TAGS)
                     mListener?.updateTags(MediaTagFilterTypes.GENRES)

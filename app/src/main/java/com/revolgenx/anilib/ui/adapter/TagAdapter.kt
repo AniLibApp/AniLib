@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.data.field.TagField
 import com.revolgenx.anilib.data.field.TagState
 import com.revolgenx.anilib.databinding.TagHolderLayoutBinding
@@ -13,9 +14,6 @@ import com.revolgenx.anilib.ui.view.TriStateCheckState
 import com.revolgenx.anilib.ui.view.TriStateMode
 
 class TagAdapter(private val tagMode: TriStateMode) : RecyclerView.Adapter<TagAdapter.TagHolder>() {
-    private val textColor =
-        DynamicTheme.getInstance().get().tintSurfaceColor
-
     private var tags: List<TagField> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagHolder {
@@ -53,7 +51,7 @@ class TagAdapter(private val tagMode: TriStateMode) : RecyclerView.Adapter<TagAd
                 tagCheckBox.setStateChangeListener { state ->
                     item.tagState = TagState.values()[state.ordinal]
                 }
-                tagCheckBox.setTextColor(textColor)
+                tagCheckBox.setTextColor(dynamicTextColorPrimary)
                 tagCheckBox.text = item.tag
                 tagCheckBox.checkedState = TriStateCheckState.values()[item.tagState.ordinal]
             }

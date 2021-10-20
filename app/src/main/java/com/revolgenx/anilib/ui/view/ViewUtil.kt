@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Rect
 import android.os.Build
 import android.provider.Settings
 import android.view.Gravity
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -25,6 +27,7 @@ import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.badge.BadgeDrawable
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
@@ -179,4 +182,12 @@ fun makeConfirmationDialog(
             }
         }
     }
+}
+
+
+fun BadgeDrawable.setBoundsFor(anchor: View, parent: FrameLayout){
+    val rect = Rect()
+    parent.getDrawingRect(rect)
+    this.bounds = rect
+    this.updateBadgeCoordinates(anchor, parent)
 }

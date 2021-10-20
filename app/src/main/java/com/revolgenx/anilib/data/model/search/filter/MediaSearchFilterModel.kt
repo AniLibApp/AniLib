@@ -23,7 +23,7 @@ class MediaSearchFilterModel : SearchFilterModel {
     var tags: List<String>? = null
     var genreToExclude:List<String>? = null
     var tagsToExclude: List<String>? = null
-    var hentaiOnly:Boolean   = false
+    var hentaiOnly:Boolean?   = null
 
 
     constructor() : super()
@@ -44,7 +44,7 @@ class MediaSearchFilterModel : SearchFilterModel {
         tagsToExclude = parcel.createStringArrayList()
         genreToExclude = parcel.createStringArrayList()
         type = parcel.readInt()
-        hentaiOnly = parcel.readInt() == 1
+        hentaiOnly = (parcel.readValue(Boolean::class.java.classLoader) as? Boolean)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -64,7 +64,7 @@ class MediaSearchFilterModel : SearchFilterModel {
         parcel.writeStringList(tagsToExclude)
         parcel.writeStringList(genreToExclude)
         parcel.writeInt(type)
-        parcel.writeInt(if (hentaiOnly) 1 else 0 )
+        parcel.writeValue(hentaiOnly)
     }
 
     override fun describeContents(): Int {

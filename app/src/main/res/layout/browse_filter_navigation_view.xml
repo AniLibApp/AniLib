@@ -104,28 +104,31 @@
                     android:id="@+id/hentaiSwitchContainerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:orientation="horizontal"
-                    android:visibility="gone"
-                    android:padding="6dp">
+                    android:padding="6dp"
+                    android:visibility="gone">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
                         android:layout_toStartOf="@id/enableYearCheckBox"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:text="@string/hentai_only"
                         android:textSize="12sp"
-                        tools:ignore="SmallSp"
-                        android:layout_weight="2"
-                        android:layout_gravity="center_vertical"/>
+                        tools:ignore="SmallSp" />
 
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+                    <com.revolgenx.anilib.ui.view.DynamicTriStatesCheckbox
                         android:id="@+id/hentaiOnlySwtich"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_gravity="end"
-                        android:checked="false"/>
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        app:ads_colorType="text_primary" />
+
 
                 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
@@ -147,19 +150,19 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
                             android:layout_toStartOf="@id/enableYearCheckBox"
+                            android:layout_weight="2"
                             android:text="@string/year"
                             android:textSize="12sp"
-                            tools:ignore="SmallSp"
-                            android:layout_weight="2"
-                            android:layout_gravity="center_vertical"/>
+                            tools:ignore="SmallSp" />
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
                             android:id="@+id/enableYearCheckBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_gravity="end"/>
+                            android:layout_gravity="end"
+                            android:layout_weight="1" />
 
                     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
@@ -199,7 +202,7 @@
                         <com.revolgenx.anilib.ui.view.sort.AlSortLayout
                             android:id="@+id/al_browse_sort"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 

@@ -49,21 +49,29 @@
                     android:paddingEnd="6dp"
                     app:ads_colorType="text_primary"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/discover_notification_iv"
+                    app:layout_constraintEnd_toStartOf="@id/discover_notif_layout"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_search" />
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                    android:id="@+id/discover_notification_iv"
+                <FrameLayout
+                    android:id="@+id/discover_notif_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp"
-                    app:ads_colorType="text_primary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_notification_outline" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                        android:id="@+id/discover_notification_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:ads_colorType="text_primary"
+                        app:srcCompat="@drawable/ic_notification_outline" />
+                </FrameLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 

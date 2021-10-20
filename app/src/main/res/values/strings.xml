@@ -625,5 +625,15 @@
     <string name="recent_activity">Recent Activity</string>
     <string name="register">Register</string>
     <string name="no_watching_feature_desc">Note: This app is for tracking and managing your anime/manga list. It does not provide any feature to show any anime nor display any manga.</string>
+    <string name="reload">Reload</string>
+    <string name="reset_to_default">Reset to default?</string>
+    <string name="edit_genre">Edit Genre</string>
+    <string name="edit_tags">Edit Tags</string>
+    <string name="edit_streaming_on">Edit Streaming On</string>
+    <string name="exclude">Exclude</string>
+    <string name="edit_filter_tags">Add, edit, delete or exclude tags. Excluded tags will be auto added when searching for media</string>
+    <string name="edit_filter_genre">Add, edit, delete or exclude genre. Excluded genre will be auto added when searching for media</string>
+    <string name="do_not_exclude">Don\'t exclude</string>
+    <string name="mutual">Mutual</string>
 
 </resources>

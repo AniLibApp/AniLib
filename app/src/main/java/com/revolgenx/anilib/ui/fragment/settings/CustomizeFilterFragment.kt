@@ -11,7 +11,9 @@ import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.data.meta.TagFilterMetaType
 import com.revolgenx.anilib.data.meta.TagFilterSettingMeta
 import com.revolgenx.anilib.databinding.CustomizeFilterFragmentLayoutBinding
-import com.revolgenx.anilib.ui.dialog.TagFilterSettingDialogFragment
+import com.revolgenx.anilib.infrastructure.event.OpenSettingEvent
+import com.revolgenx.anilib.infrastructure.event.SettingEventTypes
+import com.revolgenx.anilib.infrastructure.event.TagSettingEventMeta
 
 class CustomizeFilterFragment : BaseToolbarFragment<CustomizeFilterFragmentLayoutBinding>() {
     override var titleRes: Int? = R.string.custom_filters
@@ -30,35 +32,61 @@ class CustomizeFilterFragment : BaseToolbarFragment<CustomizeFilterFragmentLayou
         super.onActivityCreated(savedInstanceState)
 
         binding.addRemoveTagIv.setOnClickListener {
-            TagFilterSettingDialogFragment.newInstance(
-                TagFilterSettingMeta(
-                    TagFilterMetaType.TAG
+//            TagFilterSettingDialogFragment.newInstance(
+//                TagFilterSettingMeta(
+//                    TagFilterMetaType.TAG
+//                )
+//            ).show(
+//                childFragmentManager,
+//                TagFilterSettingDialogFragment::class.java.simpleName
+//            )
+
+            OpenSettingEvent(
+                SettingEventTypes.ADD_REMOVE_TAG_FILTER, TagSettingEventMeta(
+                    TagFilterSettingMeta(
+                        TagFilterMetaType.TAG
+                    )
                 )
-            ).show(
-                childFragmentManager,
-                TagFilterSettingDialogFragment::class.java.simpleName
-            )
+            ).postEvent
+
         }
 
         binding.addRemoveGenreIv.setOnClickListener {
-            TagFilterSettingDialogFragment.newInstance(
-                TagFilterSettingMeta(
-                    TagFilterMetaType.GENRE
+
+            OpenSettingEvent(
+                SettingEventTypes.ADD_REMOVE_TAG_FILTER, TagSettingEventMeta(
+                    TagFilterSettingMeta(
+                        TagFilterMetaType.GENRE
+                    )
                 )
-            ).show(
-                childFragmentManager,
-                TagFilterSettingDialogFragment::class.java.simpleName
-            )
+            ).postEvent
+
+//            TagFilterSettingDialogFragment.newInstance(
+//                TagFilterSettingMeta(
+//                    TagFilterMetaType.GENRE
+//                )
+//            ).show(
+//                childFragmentManager,
+//                TagFilterSettingDialogFragment::class.java.simpleName
+//            )
         }
         binding.addRemoveStreamingOnIv.setOnClickListener {
-            TagFilterSettingDialogFragment.newInstance(
-                TagFilterSettingMeta(
-                    TagFilterMetaType.STREAMING_ON
+            OpenSettingEvent(
+                SettingEventTypes.ADD_REMOVE_TAG_FILTER, TagSettingEventMeta(
+                    TagFilterSettingMeta(
+                        TagFilterMetaType.STREAMING_ON
+                    )
                 )
-            ).show(
-                childFragmentManager,
-                TagFilterSettingDialogFragment::class.java.simpleName
-            )
+            ).postEvent
+//
+//            TagFilterSettingDialogFragment.newInstance(
+//                TagFilterSettingMeta(
+//                    TagFilterMetaType.STREAMING_ON
+//                )
+//            ).show(
+//                childFragmentManager,
+//                TagFilterSettingDialogFragment::class.java.simpleName
+//            )
         }
     }
 }

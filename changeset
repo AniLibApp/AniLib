@@ -1,3 +1,5 @@
+remove TagFilterSettingDialogFragment, TagFilterSettingHolderLayoutBinding, TagFilterSettingDialogViewModel
+
 v-1.1.11
 * Heavy change on entire app. Turned to single activity multi-fragment.
 * Added activity section in home screen, user screen and media browse screen.
