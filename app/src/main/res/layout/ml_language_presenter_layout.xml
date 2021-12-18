@@ -22,7 +22,7 @@
         android:layout_height="40dp"
         android:padding="6dp"
         android:src="@drawable/ads_ic_check"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/download_delete_ml_model"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +33,7 @@
         android:layout_height="40dp"
         android:padding="6dp"
         android:src="@drawable/ads_ic_download"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

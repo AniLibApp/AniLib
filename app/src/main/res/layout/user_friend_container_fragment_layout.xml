@@ -8,16 +8,16 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ads_colorType="background"
-        app:ads_contrastWithColorType="none">
+        app:adt_colorType="background"
+        app:adt_contrastWithColorType="none">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
             android:id="@+id/dynamic_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_colorType="background"
-            app:ads_contrastWithColorType="none"
-            app:ads_textColorType="text_primary"
+            app:adt_colorType="background"
+            app:adt_contrastWithColorType="none"
+            app:adt_textColorType="text_primary"
             app:layout_scrollFlags="enterAlways|scroll"
             app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
             app:titleTextAppearance="@style/DynamicToolbarTitleTheme"  />
@@ -27,9 +27,9 @@
             style="@style/DynamicTextTabLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_backgroundColorType="background"
-            app:ads_colorType="accent"
-            app:ads_textColorType="text_primary"
+            app:adt_backgroundColorType="background"
+            app:adt_colorType="accent"
+            app:adt_textColorType="text_primary"
             app:tabGravity="fill"
             app:tabMode="fixed" />
 

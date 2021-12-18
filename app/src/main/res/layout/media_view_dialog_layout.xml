@@ -12,7 +12,7 @@
         android:gravity="center"
         android:text="@string/media"
         android:textSize="16sp"
-        app:ads_rtlSupport="false"
+        app:adt_rtlSupport="false"
         android:layout_margin="6dp"/>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:ads_colorType="accent"
+        app:adt_colorType="accent"
         android:text="@string/done"/>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

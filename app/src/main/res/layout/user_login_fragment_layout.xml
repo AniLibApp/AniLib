@@ -7,8 +7,8 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ads_backgroundAware="disable"
-        app:ads_colorType="primary"
+        app:adt_backgroundAware="disable"
+        app:adt_colorType="primary"
         app:elevation="0dp">
 
         <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
@@ -16,10 +16,10 @@
             style="@style/HomeContainerTabLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            app:ads_backgroundColorType="background"
-            app:ads_colorType="accent"
-            app:ads_contrastWithColorType="background"
-            app:ads_textColorType="text_primary"
+            app:adt_backgroundColorType="background"
+            app:adt_colorType="accent"
+            app:adt_contrastWithColorType="background"
+            app:adt_textColorType="text_primary"
             app:entries="@array/login_entries"
             app:layout_scrollFlags="noScroll"
             app:tabTextAppearance="@style/RadioTabLayoutTextStyle" />
@@ -38,7 +38,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
                 style="@style/Widget.DynamicApp.Card.Clickable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -61,8 +61,8 @@
                             android:layout_height="14dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_push_pin"
-                            app:ads_colorType="text_primary"
-                            app:ads_contrastWithColorType="none" />
+                            app:adt_colorType="text_primary"
+                            app:adt_contrastWithColorType="none" />
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                             android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                             android:layout_weight="1"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ads_button_remote"
-                            app:ads_colorType="text_primary"
+                            app:adt_colorType="text_primary"
                             app:ads_icon="@drawable/ic_person"
                             app:ads_title="@string/sign_in" />
 
@@ -107,16 +107,16 @@
                             android:layout_weight="1"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ads_button_remote"
-                            app:ads_colorType="text_primary"
+                            app:adt_colorType="text_primary"
                             app:ads_icon="@drawable/ic_register"
                             app:ads_title="@string/register" />
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
                 style="@style/Widget.DynamicApp.Card.Clickable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ads_button_remote"
-                        app:ads_colorType="text_primary"
+                        app:adt_colorType="text_primary"
                         app:ads_icon="@drawable/ic_settings"
                         app:ads_title="@string/settings" />
 
@@ -143,13 +143,13 @@
                         android:id="@+id/aboutItemView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:ads_colorType="text_primary"
+                        app:adt_colorType="text_primary"
                         app:ads_icon="@drawable/ads_ic_info"
                         app:ads_title="@string/about_anilib" />
 
                 </LinearLayout>
 
-            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
         </LinearLayout>

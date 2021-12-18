@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:paddingBottom="3dp"
-        app:ads_colorType="tint_accent"
+        app:adt_colorType="tint_accent"
         android:textSize="12sp" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView

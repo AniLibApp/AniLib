@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="1"
-        app:ads_colorType="custom" />
+        app:adt_colorType="custom" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tab_text_tv"

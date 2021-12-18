@@ -16,10 +16,7 @@ import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.annotation.DrawableRes
-import androidx.annotation.MenuRes
-import androidx.annotation.RequiresApi
-import androidx.annotation.StringRes
+import androidx.annotation.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.PopupMenu
@@ -132,6 +129,10 @@ fun makeSpinnerAdapter(context: Context, items: List<DynamicMenu>) =
         R.id.ads_spinner_item_icon,
         R.id.ads_spinner_item_text, items
     )
+
+
+fun makeSpinnerAdapter(context: Context, @ArrayRes itemsRes:Int)=
+    makeSpinnerAdapter(context, context.resources.getStringArray(itemsRes).map{DynamicMenu(null, it)})
 
 
 

@@ -10,7 +10,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_paste" />
 
 
@@ -19,7 +19,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_bold" />
 
 
@@ -28,7 +28,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_italics" />
 
 
@@ -37,7 +37,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_strike_through" />
 
 
@@ -46,7 +46,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_private" />
 
 
@@ -55,7 +55,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_link" />
 
 
@@ -64,7 +64,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_image" />
 
 
@@ -73,7 +73,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_youtube" />
 
 
@@ -82,7 +82,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_video" />
 
 
@@ -91,7 +91,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_ordered_list" />
 
 
@@ -100,7 +100,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_list" />
 
 
@@ -109,7 +109,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_heading" />
 
 
@@ -118,7 +118,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_center" />
 
 
@@ -127,7 +127,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_quote" />
 
 
@@ -136,7 +136,7 @@
         android:layout_width="@dimen/markdown_helper_icon_size"
         android:layout_height="@dimen/markdown_helper_icon_size"
         android:padding="@dimen/markdown_helper_icon_padding"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:srcCompat="@drawable/ic_code" />
 
 

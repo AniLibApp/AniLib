@@ -9,5 +9,5 @@ open class UserModel : BaseModel() {
     var isFollowing = false
     var isFollower = false
     var isBlocked = false
-    val isMutual get() = isFollower == isFollowing
+    val isMutual get() = isFollower && isFollowing
 }

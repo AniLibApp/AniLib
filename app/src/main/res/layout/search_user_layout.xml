@@ -31,7 +31,7 @@
         android:gravity="center"
         android:maxLines="1"
         android:textSize="12sp"
-        app:ads_rtlSupport="false"
+        app:adt_rtlSupport="false"
         app:layout_constraintLeft_toLeftOf="@id/searchCharacterImageView"
         app:layout_constraintRight_toRightOf="@id/searchCharacterImageView"
         app:layout_constraintTop_toBottomOf="@id/searchCharacterImageView"

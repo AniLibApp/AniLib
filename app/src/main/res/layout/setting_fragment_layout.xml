@@ -12,12 +12,20 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+            android:id="@+id/theme_setting_iv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:adt_colorType="text_primary"
+            app:ads_icon="@drawable/ic_style"
+            app:ads_title="@string/theme" />
 
         <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
             android:id="@+id/application_setting_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
+            android:layout_marginTop="6dp"
             app:ads_icon="@drawable/ic_app_setting"
             app:ads_title="@string/application" />
 
@@ -27,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:ads_icon="@drawable/ic_api_setting"
             app:ads_title="@string/anilist_and_manga" />
 
@@ -37,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:ads_icon="@drawable/ic_media_list"
             app:ads_title="@string/list" />
 
@@ -46,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:ads_icon="@drawable/ic_notification_filled"
             app:ads_title="@string/notification" />
 
@@ -55,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:ads_icon="@drawable/ic_filter"
             app:ads_title="@string/filter" />
 
@@ -64,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:ads_icon="@drawable/ads_ic_widgets"
             app:ads_title="@string/widget" />
 
@@ -73,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:ads_icon="@drawable/ads_ic_translate"
             app:ads_title="@string/translation_setting" />
 
@@ -82,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:ads_icon="@drawable/ads_ic_info"
             app:ads_title="@string/about_anilib"
             android:visibility="gone"/>

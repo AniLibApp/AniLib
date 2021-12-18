@@ -13,9 +13,9 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_color="@android:color/transparent"
-            app:ads_backgroundAware="disable"
-            app:ads_contrastWithColorType="none">
+            app:adt_color="@android:color/transparent"
+            app:adt_backgroundAware="disable"
+            app:adt_contrastWithColorType="none">
 
 
             <com.revolgenx.anilib.ui.view.search.DynamicPersistentSearchView
@@ -29,7 +29,8 @@
                 app:queryInputHint="@string/search"
                 app:shouldDimBehind="false"
                 app:layout_scrollFlags="enterAlways|scroll"
-                app:cardElevation="0dp"/>
+                app:cardElevation="0dp"
+                />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 

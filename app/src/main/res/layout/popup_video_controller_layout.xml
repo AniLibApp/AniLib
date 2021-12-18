@@ -8,15 +8,15 @@
         android:id="@id/exo_pause"
         style="@style/ExoMediaButton.Pause"
         android:layout_centerInParent="true"
-        app:ads_color="@color/white"
-        app:ads_colorType="custom"/>
+        app:adt_color="@color/white"
+        app:adt_colorType="custom"/>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageButton
         android:id="@id/exo_play"
         style="@style/ExoMediaButton.Play"
         android:layout_centerInParent="true"
-        app:ads_color="@color/white"
-        app:ads_colorType="custom" />
+        app:adt_color="@color/white"
+        app:adt_colorType="custom" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
         android:id="@+id/exoPopupExitIv"
@@ -26,8 +26,8 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="6dp"
         style="@style/ExoMediaButton"
-        app:ads_colorType="custom"
-        app:ads_color="@color/white"
+        app:adt_colorType="custom"
+        app:adt_color="@color/white"
         app:srcCompat="@drawable/ic_close"/>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -38,8 +38,8 @@
         android:layout_toStartOf="@id/exoPopupExitIv"
         android:layout_margin="6dp"
         style="@style/ExoMediaButton"
-        app:ads_colorType="custom"
-        app:ads_color="@color/white"
+        app:adt_colorType="custom"
+        app:adt_color="@color/white"
         app:srcCompat="@drawable/exo_icon_fullscreen_enter"/>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -49,8 +49,8 @@
         style="@style/ExoMediaButton"
         android:layout_alignParentTop="true"
         android:layout_margin="6dp"
-        app:ads_colorType="custom"
-        app:ads_color="@color/white"
+        app:adt_colorType="custom"
+        app:adt_color="@color/white"
         android:layout_toStartOf="@id/exoFullScreenButton"
         app:srcCompat="@drawable/ic_popup_size"/>
 
@@ -61,8 +61,8 @@
         style="@style/ExoMediaButton"
         android:layout_alignParentTop="true"
         android:layout_margin="6dp"
-        app:ads_colorType="custom"
-        app:ads_color="@color/white"
+        app:adt_colorType="custom"
+        app:adt_color="@color/white"
         android:layout_toStartOf="@id/exoScreenSize"
         app:srcCompat="@drawable/ads_ic_share"/>
 
@@ -86,8 +86,8 @@
             android:paddingRight="4dp"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:ads_color="#ffffff"
-            app:ads_colorType="custom" />
+            app:adt_color="#ffffff"
+            app:adt_colorType="custom" />
 
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@id/exo_progress"
@@ -106,8 +106,8 @@
             android:paddingRight="4dp"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:ads_color="#ffffff"
-            app:ads_colorType="custom"
+            app:adt_color="#ffffff"
+            app:adt_colorType="custom"
             />
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

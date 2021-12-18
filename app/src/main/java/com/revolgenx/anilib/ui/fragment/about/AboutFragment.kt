@@ -19,7 +19,7 @@ class AboutFragment : BaseLayoutFragment<AboutFragmentLayoutBinding>() {
     override var setHomeAsUp: Boolean = true
 
     override fun getSubtitle(): CharSequence? {
-        return DynamicPackageUtils.getAppVersion(requireContext())
+        return DynamicPackageUtils.getVersionName(requireContext())
     }
 
     override fun getBaseToolbar(): Toolbar {

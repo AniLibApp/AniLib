@@ -635,5 +635,22 @@
     <string name="edit_filter_genre">Add, edit, delete or exclude genre. Excluded genre will be auto added when searching for media</string>
     <string name="do_not_exclude">Don\'t exclude</string>
     <string name="mutual">Mutual</string>
+    <string name="show_reason">Show reason…</string>
+    <string name="theme_app_dark">Dark theme</string>
+    <string name="theme_app_light">Light theme</string>
 
+    <string name="auto">Auto</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="_default">Default</string>
+    <string name="custom">Custom</string>
+    <string name="background_color">Background color</string>
+    <string name="background_color_desc">Select background color.</string>
+    <string name="surface_color_desc">Select surface color.</string>
+    <string name="surface_color">Surface color</string>
+    <string name="card_corner_radius">Card corner radius</string>
+    <string name="theme_mode">Theme Mode</string>
+    <string name="customize">Customize</string>
+    <string name="card_elevation">Card elevation</string>
+    <string name="change_theme_to_custom">Change dark/light theme to Custom.</string>
 </resources>

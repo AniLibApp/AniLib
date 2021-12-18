@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:alpha="0.2"
-            app:ads_colorType="tint_surface"
+            app:adt_colorType="tint_surface"
             app:layout_constraintBottom_toBottomOf="@+id/baseRecShimmerLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:alpha="0.2"
-            app:ads_colorType="tint_surface"
+            app:adt_colorType="tint_surface"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/baseRecShimmerLayout" />
 
@@ -48,12 +48,12 @@
             android:orientation="horizontal"
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
-            app:ads_colorType="tint_surface"
+            app:adt_colorType="tint_surface"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dummyTextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+<com.revolgenx.anilib.ui.view.widgets.AlCardView
     style="@style/Widget.DynamicApp.Card">
 
     <include layout="@layout/ads_layout_info_big" />
 
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

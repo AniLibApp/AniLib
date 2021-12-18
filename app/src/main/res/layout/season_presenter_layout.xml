@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mediaCardView"
@@ -69,7 +69,7 @@
                 android:layout_alignParentEnd="true"
                 android:background="?selectableItemBackground"
                 android:padding="10dp"
-                app:ads_colorType="text_primary"
+                app:adt_colorType="text_primary"
                 app:srcCompat="@drawable/ic_bookmark" />
 
             <com.revolgenx.anilib.ui.view.GenreLayout
@@ -143,9 +143,10 @@
                 android:text="@string/s_slash_s"
                 android:textSize="11sp"
                 android:visibility="gone"
+                android:gravity="center_vertical"
                 app:drawableStartCompat="@drawable/ic_eye_16dp"
                 tools:ignore="SmallSp" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

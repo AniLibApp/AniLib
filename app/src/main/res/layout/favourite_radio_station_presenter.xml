@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/favourite_station_card_view"
     style="@style/Widget.DynamicApp.Card.Margin.Clickable"
     android:layout_width="160dp"
     android:layout_height="60dp"
-    app:ads_elevationOnSameBackground="true">
+    app:adt_elevationOnSameBackground="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:fontFamily="@font/cabin_medium"
             app:layout_constraintStart_toEndOf="@id/radio_station_iv"
             app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +45,7 @@
             android:id="@+id/favourite_more_iv"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:entries="@array/favourite_station_more_actions"
             app:icons="@array/favourite_station_more_action_icons"
             app:srcCompat="@drawable/ads_ic_more"
@@ -55,4 +55,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

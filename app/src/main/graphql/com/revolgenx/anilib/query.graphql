@@ -1399,6 +1399,43 @@ query NotificationQuery($page:Int, $perPage:Int, $resetNotificationCount:Boolean
 
                 }
             }
+
+            ... on MediaDataChangeNotification{
+                id
+                type
+                mediaId
+                context
+                reason
+                createdAt
+                media{
+                    ... on Media{
+                        ... basicMediaContent
+                    }
+                }
+            }
+            ... on MediaMergeNotification{
+                id
+                type
+                mediaId
+                context
+                createdAt
+                deletedMediaTitles
+                reason
+                media{
+                    ... on Media{
+                        ... basicMediaContent
+                    }
+                }
+            }
+
+            ... on MediaDeletionNotification{
+                id
+                type
+                context
+                createdAt
+                reason
+                deletedMediaTitle
+            }
         }
     }
 }

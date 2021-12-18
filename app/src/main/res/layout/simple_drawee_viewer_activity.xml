@@ -28,8 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:background="@android:color/transparent"
-                app:ads_colorType="none"
-                app:ads_textColor="@color/white" />
+                app:adt_colorType="none"
+                app:adt_textColor="@color/white" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 

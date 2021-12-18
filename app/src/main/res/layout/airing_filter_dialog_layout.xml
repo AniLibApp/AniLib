@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         android:text="@string/include_already_aired" />
 
 

@@ -13,17 +13,17 @@
             android:id="@+id/activity_composer_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_colorType="background"
-            app:ads_textColorType="text_primary" />
+            app:adt_colorType="background"
+            app:adt_textColorType="text_primary" />
 
         <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
             android:id="@+id/activity_composer_tab_layout"
             style="@style/DynamicTextTabLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_backgroundColorType="background"
-            app:ads_colorType="accent"
-            app:ads_textColorType="text_primary"
+            app:adt_backgroundColorType="background"
+            app:adt_colorType="accent"
+            app:adt_textColorType="text_primary"
             app:tabGravity="fill"
             app:tabMode="fixed" />
 

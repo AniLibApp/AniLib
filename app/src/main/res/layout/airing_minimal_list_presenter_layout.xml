@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.DynamicApp.Card.Margin.Clickable"
@@ -50,7 +50,7 @@
             android:maxLines="1"
             android:padding="2dp"
             android:textSize="14sp"
-            app:ads_rtlSupport="false"
+            app:adt_rtlSupport="false"
             app:fontFamily="@font/cabincondensed_medium"
             app:layout_constraintBottom_toTopOf="@id/media_airing_at_tv"
             app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,7 @@
             android:includeFontPadding="false"
             android:maxLines="1"
             android:textSize="22sp"
-            app:ads_rtlSupport="false"
+            app:adt_rtlSupport="false"
             app:fontFamily="@font/cabincondensed_bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -111,4 +111,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.model.staff.StaffModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.StaffFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
@@ -154,7 +154,7 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
             staffFavIv.setImageResource(R.drawable.ic_favourite)
         }
 
-        MarkwonImpl.createHtmlInstance(requireContext())
+        AlMarkwonFactory.getMarkwon(requireContext())
             .setMarkdown(staffDescriptionTv, item.description ?: "")
     }
 

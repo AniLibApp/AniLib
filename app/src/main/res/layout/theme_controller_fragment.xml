@@ -8,81 +8,217 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/setting_padding_dimen"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/setting_padding_dimen">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/theme_mode"
+            android:textSize="@dimen/theme_title_text_size"
+            app:fontFamily="@font/rubik_regular" />
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             app:cardUseCompatPadding="true">
 
-            <LinearLayout
+            <com.revolgenx.anilib.ui.view.preference.AlSpinnerPreference
+                android:id="@+id/theme_mode_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                app:ads_icon="@null"
+                app:ads_key="pref_settings_theme_mode" />
 
-                <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:ads_description="@string/theme_app_desc"
-                    app:ads_icon="@drawable/ads_ic_style"
-                    app:ads_key="pref_settings_app_theme_color"
-                    app:ads_popup="true"
-                    app:ads_popupColors="@array/pref_app_theme_colors"
-                    app:ads_shape="square"
-                    app:ads_summary="@string/theme_app_summary"
-                    app:ads_title="@string/theme_app" />
-
-                <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
-                    android:id="@+id/pref_app_theme_day"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:ads_color="@color/ads_window_background_light"
-                    app:ads_description="@string/theme_app_day_night_desc"
-                    app:ads_icon="@drawable/ads_ic_paint_bucket"
-                    app:ads_key="pref_settings_app_theme_day_color"
-                    app:ads_popup="true"
-                    app:ads_popupColors="@array/pref_app_theme_day_colors"
-                    app:ads_shape="square"
-                    app:ads_summary="@string/theme_app_day_summary"
-                    app:ads_title="@string/theme_app_day" />
-
-                <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
-                    android:id="@+id/pref_app_theme_night"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:ads_color="@color/ads_window_background"
-                    app:ads_description="@string/theme_app_day_night_desc"
-                    app:ads_icon="@drawable/ads_ic_paint_bucket"
-                    app:ads_key="pref_settings_app_theme_night_color"
-                    app:ads_popup="true"
-                    app:ads_popupColors="@array/pref_app_theme_night_colors"
-                    app:ads_shape="square"
-                    app:ads_summary="@string/theme_app_night_summary"
-                    app:ads_title="@string/theme_app_night" />
-
-            </LinearLayout>
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/setting_cardview_margin_top"
+            android:layout_marginTop="@dimen/theme_title_margin_top"
+            android:text="@string/theme_app_light"
+            android:textSize="@dimen/theme_title_text_size"
+            app:fontFamily="@font/rubik_regular" />
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:cardUseCompatPadding="true">
+
+            <com.revolgenx.anilib.ui.view.preference.AlSpinnerPreference
+                android:id="@+id/light_theme_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_key="pref_settings_light_theme" />
+
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/theme_title_margin_top"
+            android:text="@string/theme_app_dark"
+            android:textSize="@dimen/theme_title_text_size"
+            app:fontFamily="@font/rubik_regular" />
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:cardUseCompatPadding="true">
+
+            <com.revolgenx.anilib.ui.view.preference.AlSpinnerPreference
+                android:id="@+id/dark_theme_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_key="pref_settings_dark_theme" />
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="@dimen/ads_margin_tiny"
+            android:text="@string/customize"
+            android:textSize="18sp"
+            app:fontFamily="@font/rubik_medium" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/theme_title_margin_top"
+            android:text="@string/background_color"
+            android:textSize="@dimen/theme_title_text_size"
+            app:fontFamily="@font/rubik_regular" />
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:cardUseCompatPadding="true">
+
+
+            <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
+                android:id="@+id/background_color_pref"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:adt_color="@color/window_background_light"
+                app:ads_description="@string/background_color_desc"
+                app:ads_icon="@drawable/ads_ic_paint_bucket"
+                app:ads_popup="true"
+                app:ads_popupColors="@array/pref_background_colors"
+                app:ads_shape="circle" />
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/theme_title_margin_top"
+            android:text="@string/surface_color"
+            android:textSize="@dimen/theme_title_text_size"
+            app:fontFamily="@font/rubik_regular" />
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:cardUseCompatPadding="true">
+
+
+            <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
+                android:id="@+id/surface_color_pref"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_description="@string/surface_color_desc"
+                app:ads_icon="@drawable/ads_ic_paint_bucket"
+                app:ads_popup="true"
+                app:ads_popupColors="@array/pref_surface_colors"
+                app:ads_shape="circle" />
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/theme_title_margin_top"
+            android:text="@string/theme_color_accent"
+            android:textSize="@dimen/theme_title_text_size"
+            app:fontFamily="@font/rubik_regular" />
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             app:cardUseCompatPadding="true">
 
             <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
+                android:id="@+id/accent_color_pref"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ads_alphaEnabled="true"
-                app:ads_color="@color/colorAccent"
+                app:adt_color="@color/colorAccent"
                 app:ads_description="@string/theme_background_aware_desc"
                 app:ads_icon="@drawable/ads_ic_palette"
-                app:ads_key="pref_settings_app_theme_color_accent"
                 app:ads_popup="true"
-                app:ads_summary="@string/theme_color_accent_summary"
-                app:ads_title="@string/theme_color_accent" />
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+                app:ads_summary="@string/theme_color_accent_summary" />
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="@dimen/ads_margin_tiny"
+            android:text="@string/other"
+            android:textSize="18sp"
+            app:fontFamily="@font/rubik_medium" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/theme_title_margin_top"
+            android:text="@string/card_corner_radius"
+            android:textSize="@dimen/theme_title_text_size"
+            app:fontFamily="@font/rubik_regular" />
+
+        <com.pranavpandey.android.dynamic.support.setting.base.DynamicSeekBarPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:ads_key="pref_settings_corner_radius"
+            app:ads_max="16"
+            app:ads_progress="8"
+            app:ads_controls="false"
+            />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/theme_title_margin_top"
+            android:text="@string/card_elevation"
+            android:textSize="@dimen/theme_title_text_size"
+            app:fontFamily="@font/rubik_regular" />
+
+        <com.pranavpandey.android.dynamic.support.setting.base.DynamicSeekBarPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:ads_key="pref_settings_card_elevation"
+            app:ads_max="2"
+            app:ads_progress="1"
+            app:ads_controls="false"
+            />
 
     </LinearLayout>
 

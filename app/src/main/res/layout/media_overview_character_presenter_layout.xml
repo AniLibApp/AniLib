@@ -32,6 +32,6 @@
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:maxLines="1"
-        app:ads_colorType="accent" />
+        app:adt_colorType="accent" />
 
 </LinearLayout>

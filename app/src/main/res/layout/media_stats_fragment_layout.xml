@@ -86,7 +86,7 @@
             android:layout_marginTop="10dp"
             android:padding="@dimen/stats_chart_padding" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_marginTop="4dp"
@@ -97,7 +97,7 @@
                 android:id="@+id/status_distribution_bar_chart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView

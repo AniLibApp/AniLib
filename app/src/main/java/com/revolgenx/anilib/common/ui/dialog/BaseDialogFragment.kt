@@ -126,7 +126,7 @@ abstract class BaseDialogFragment<V : ViewBinding> : DynamicDialogFragment() {
                 this.setCanceledOnTouchOutside(dismissOnTouchOutside)
                 findViewById<TextView>(com.pranavpandey.android.dynamic.support.R.id.alertTitle)?.let {
                     titleTextView = it
-                    it.typeface = ResourcesCompat.getFont(requireContext(), R.font.cabin_semi_bold)
+                    it.typeface = ResourcesCompat.getFont(requireContext(), R.font.rubik_medium)
                 }
                 getButton(AlertDialog.BUTTON_POSITIVE)?.let {
                     positiveButton = it

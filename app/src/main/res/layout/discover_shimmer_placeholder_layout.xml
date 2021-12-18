@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DiscoverCardViewStyle">
 
@@ -14,7 +14,7 @@
             android:layout_width="155dp"
             android:layout_height="0dp"
             android:alpha="0.2"
-            app:ads_colorType="tint_surface"
+            app:adt_colorType="tint_surface"
             app:layout_constraintDimensionRatio="1:1.6"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -25,11 +25,11 @@
             android:layout_width="0dp"
             android:layout_height="46dp"
             android:alpha="0.2"
-            app:ads_colorType="tint_surface"
+            app:adt_colorType="tint_surface"
             app:layout_constraintBottom_toBottomOf="@id/mediaCoverFrameLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

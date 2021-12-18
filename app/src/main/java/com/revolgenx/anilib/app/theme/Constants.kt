@@ -2,118 +2,46 @@ package com.revolgenx.anilib.app.theme
 
 import android.graphics.Color
 import androidx.annotation.ColorInt
+import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 
 object Constants {
-    /**
-     * Default value for app theme color.
-     *
-     * `Auto` to use day and night themes.
-     */
+
     @ColorInt
-    const val APP_THEME_COLOR = Theme.AUTO
-
-    /**
-     * TODO: Default value for app theme day color.
-     */
+    val DEFAULT_BACKGROUND_COLOR_LIGHT = Color.parseColor("#f0f0f0")
     @ColorInt
-    val APP_THEME_DAY_COLOR = Color.parseColor("#f0f0f0")
+    val DEFAULT_BACKGROUND_COLOR_DARK = Color.parseColor("#000000")
 
-    /**
-     * TODO: Default value for app theme night color.
-     */
     @ColorInt
-    val APP_THEME_NIGHT_COLOR = Color.parseColor("#252525")
-
-    /**
-     * TODO: Default value for app theme primary color.
-     */
+    val DEFAULT_SURFACE_COLOR_LIGHT = Color.parseColor("#E6E6E6")
     @ColorInt
-    val APP_THEME_COLOR_PRIMARY = Color.parseColor("#fafafa")
+    val DEFAULT_SURFACE_COLOR_DARK = Color.parseColor("#242424")
 
-    /**
-     * TODO: Default value for app theme accent color.
-     */
     @ColorInt
-    val APP_THEME_COLOR_ACCENT = Color.parseColor("#02A4F8")
-
-
-    /**
-     * Shared preferences key for first launch of the app.
-     */
-    const val PREF_FIRST_LAUNCH = "pref_first_launch"
-
-    /**
-     * Shared preferences key for app theme color.
-     */
-    const val PREF_SETTINGS_APP_THEME_COLOR = "pref_settings_app_theme_color"
-
-    /**
-     * Shared preferences key for app theme day color.
-     */
-    const val PREF_SETTINGS_APP_THEME_DAY_COLOR = "pref_settings_app_theme_day_color"
-
-    /**
-     * Shared preferences key for app theme night color.
-     */
-    const val PREF_SETTINGS_APP_THEME_NIGHT_COLOR = "pref_settings_app_theme_night_color"
-
-    /**
-     * Shared preferences key for app theme primary color.
-     */
-    const val PREF_SETTINGS_APP_THEME_COLOR_PRIMARY = "pref_settings_app_theme_color_primary_deprecated"
-
-    /**
-     * Shared preferences key for app theme accent color.
-     */
-    const val PREF_SETTINGS_APP_THEME_COLOR_ACCENT = "pref_settings_app_theme_color_accent"
-
-    /**
-     * Shared preferences key for app shortcuts theme.
-     */
-    const val PREF_SETTINGS_APP_SHORTCUTS_THEME = "pref_settings_app_shortcuts_theme"
-
-    /**
-     * Shared preferences default value for first launch of the app.
-     */
-    const val PREF_FIRST_LAUNCH_DEFAULT = true
-
-    /**
-     * Shared preferences default value for app theme color.
-     */
-    const val PREF_SETTINGS_APP_THEME_COLOR_DEFAULT = APP_THEME_COLOR
-
-    /**
-     * Shared preferences default value for app theme day color.
-     */
+    val DEFAULT_ACCENT_COLOR_LIGHT = Color.parseColor("#02A4F8")
     @ColorInt
-    val PREF_SETTINGS_APP_THEME_DAY_COLOR_DEFAULT = APP_THEME_DAY_COLOR
+    val DEFAULT_ACCENT_COLOR_DARK = Color.parseColor("#02A4F8")
 
-    /**
-     * Shared preferences default value for app theme night color.
-     */
-    @ColorInt
-    val PREF_SETTINGS_APP_THEME_NIGHT_COLOR_DEFAULT = APP_THEME_NIGHT_COLOR
+    const val DEFAULT_CORNER_RADIUS = 8
+    const val DEFAULT_CARD_ELEVATION = 1
+    const val DEFAULT_THEME_MODE = "0" //1 light 2 dark
+    const val DEFAULT_LIGHT_THEME_MODE = "0" //DEFAULT
+    const val DEFAULT_DARK_THEME_MODE = "0" //DEFAULT
 
-    /**
-     * Shared preferences default value for app theme primary color.
-     */
-    @ColorInt
-    val PREF_SETTINGS_APP_THEME_COLOR_PRIMARY_DEFAULT = APP_THEME_COLOR_PRIMARY
+    const val PREF_SETTINGS_THEME_MODE = "pref_settings_theme_mode"
+    const val PREF_SETTINGS_LIGHT_THEME_MODE = "pref_settings_light_theme"
+    const val PREF_SETTINGS_DARK_THEME_MODE = "pref_settings_dark_theme"
 
-    /**
-     * Shared preferences default value for app theme accent color.
-     */
-    @ColorInt
-    val PREF_SETTINGS_APP_THEME_COLOR_ACCENT_DEFAULT = APP_THEME_COLOR_ACCENT
+    const val PREF_SETTINGS_BACKGROUND_COLOR_LIGHT = "pref_settings_background_color_light"
+    const val PREF_SETTINGS_BACKGROUND_COLOR_DARK = "pref_settings_background_color_dark"
 
-    /**
-     * Shared preferences default value for navigation bar theme.
-     */
-    const val PREF_SETTINGS_NAVIGATION_BAR_THEME_DEFAULT = false
+    const val PREF_SETTINGS_SURFACE_COLOR_LIGHT = "pref_settings_surface_color_light"
+    const val PREF_SETTINGS_SURFACE_COLOR_DARK = "pref_settings_surface_color_dark"
 
-    /**
-     * Shared preferences default value for app shortcuts theme.
-     */
-    const val PREF_SETTINGS_APP_SHORTCUTS_THEME_DEFAULT = true
+    const val PREF_SETTINGS_ACCENT_COLOR_LIGHT = "pref_settings_accent_color_light"
+    const val PREF_SETTINGS_ACCENT_COLOR_DARK = "pref_settings_accent_color_dark"
+
+    const val PREF_SETTINGS_CORNER_RADIUS = "pref_settings_corner_radius"
+    const val PREF_SETTINGS_CARD_ELEVATION = "pref_settings_card_elevation"
+
 }

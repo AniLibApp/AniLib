@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/ads_button_remote"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:ads_icon="@drawable/ads_ic_translate"
             app:ads_subtitle="@string/translate_desc"
             app:ads_title="@string/translate" />
@@ -62,7 +62,7 @@
             android:id="@+id/misc_translate_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:ads_icon="@drawable/g_translate"
             app:ads_subtitle="@string/misc_translation_desc"
             app:ads_title="@string/misc_translation" />

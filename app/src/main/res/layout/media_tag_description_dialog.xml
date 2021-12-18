@@ -18,11 +18,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/tag_info"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
-        app:fontFamily="@font/cabin_semi_bold"
+        app:fontFamily="@font/rubik_medium"
         app:layout_constraintTop_toTopOf="parent"
         />
 

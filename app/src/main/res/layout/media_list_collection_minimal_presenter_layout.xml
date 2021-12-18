@@ -43,6 +43,7 @@
         android:maxLines="1"
         android:paddingBottom="6dp"
         android:textSize="10sp"
+        android:gravity="center_vertical"
         app:drawableStartCompat="@drawable/ic_eye_16dp"
         app:layout_constraintEnd_toStartOf="@+id/media_list_progress_increase"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +57,7 @@
         android:layout_height="26dp"
         android:background="?selectableItemBackground"
         android:padding="4dp"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/media_list_title_tv"
         app:srcCompat="@drawable/ic_plus" />

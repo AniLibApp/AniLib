@@ -5,7 +5,7 @@
     android:id="@+id/base_swipe_to_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:ads_colorType="accent_dark">
+    app:adt_colorType="accent_dark">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/base_presenter_recycler_view"

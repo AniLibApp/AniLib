@@ -9,16 +9,14 @@
         android:layout_height="wrap_content"
         app:swipeViewId="@+id/item_layout">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:id="@+id/homeOrderAdapterItemLayout"
             style="@style/Widget.DynamicApp.Card.Margin.Clickable"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:padding="6dp"
-            app:ads_cardCornerRadius="20dp"
-            app:ads_cardElevation="6dp">
+            android:padding="6dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -43,7 +41,7 @@
                     android:layout_height="46dp"
                     android:layout_gravity="end"
                     android:padding="8dp"
-                    app:ads_colorType="text_primary"
+                    app:adt_colorType="text_primary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -51,7 +49,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
     </com.woxthebox.draglistview.swipe.ListSwipeItem>
 

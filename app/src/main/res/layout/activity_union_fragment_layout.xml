@@ -8,15 +8,15 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ads_backgroundAware="disable"
-        app:ads_colorType="primary"
+        app:adt_backgroundAware="disable"
+        app:adt_colorType="primary"
         app:elevation="0dp">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_backgroundAware="disable"
-            app:ads_colorType="background"
+            app:adt_backgroundAware="disable"
+            app:adt_colorType="background"
             app:layout_scrollFlags="scroll|enterAlways">
 
 
@@ -28,10 +28,10 @@
                     android:id="@+id/activity_union_tab_layout"
                     style="@style/HomeContainerTabLayoutStyle"
                     android:layout_width="0dp"
-                    app:ads_backgroundColorType="background"
-                    app:ads_colorType="accent"
-                    app:ads_contrastWithColorType="background"
-                    app:ads_textColorType="text_primary"
+                    app:adt_backgroundColorType="background"
+                    app:adt_colorType="accent"
+                    app:adt_contrastWithColorType="background"
+                    app:adt_textColorType="text_primary"
                     app:entries="@array/activity_entries"
                     app:layout_constraintEnd_toStartOf="@id/activity_type_popup_menu"
                     app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
                     android:layout_height="24dp"
                     android:layout_marginEnd="8dp"
                     android:padding="3dp"
-                    app:ads_colorType="text_primary"
+                    app:adt_colorType="text_primary"
                     app:layout_constraintBottom_toBottomOf="@id/activity_union_tab_layout"
                     app:layout_constraintEnd_toStartOf="@+id/a_divider"
                     app:layout_constraintTop_toTopOf="@id/activity_union_tab_layout"
@@ -92,7 +92,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/ads_fab_margin"
         android:src="@drawable/ic_create_pencil"
-        app:ads_colorType="background"
+        app:adt_colorType="background"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

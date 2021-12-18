@@ -1,4 +1,8 @@
-remove TagFilterSettingDialogFragment, TagFilterSettingHolderLayoutBinding, TagFilterSettingDialogViewModel
+notification badge
+types of activity list
+exclude tags and genre
+search filter update
+
 
 v-1.1.11
 * Heavy change on entire app. Turned to single activity multi-fragment.

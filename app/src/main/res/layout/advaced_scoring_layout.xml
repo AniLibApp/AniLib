@@ -13,7 +13,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="10dp"
         android:layout_weight="1"
-        app:ads_colorType="text_primary" />
+        app:adt_colorType="text_primary" />
 
 
     <com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout

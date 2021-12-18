@@ -15,7 +15,7 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             style="@style/Widget.DynamicApp.Card.Margin.Clickable"
             android:layout_width="match_parent"
             android:layout_height="40dp">
@@ -46,7 +46,7 @@
                     android:layout_marginEnd="4dp"
                     android:layout_toStartOf="@id/studioFavIv"
                     android:textSize="11sp"
-                    app:ads_colorType="accent"
+                    app:adt_colorType="accent"
                     tools:ignore="SmallSp" />
 
                 <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
@@ -57,13 +57,13 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:src="@drawable/ic_not_favourite"
-                    app:ads_colorType="accent" />
+                    app:adt_colorType="accent" />
             </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
 
             <include layout="@layout/resource_status_container_layout"
                 android:id="@+id/resource_status_layout"/>
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

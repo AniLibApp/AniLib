@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/ads_margin_splash"
-    app:ads_backgroundAware="disable"
-    app:ads_colorType="background">
+    app:adt_backgroundAware="disable"
+    app:adt_colorType="background">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
         android:id="@+id/splash_image"
@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center"
         android:layout_margin="@dimen/ads_margin_splash_small"
-        app:ads_colorType="none"
+        app:adt_colorType="none"
         app:srcCompat="@drawable/ic_launcher_foreground" />
 
     <LinearLayout
@@ -40,7 +40,7 @@
             android:gravity="center"
             android:text="@string/app_name"
             android:textSize="@dimen/ads_font_size_headline6_splash"
-            app:ads_rtlSupport="false"
+            app:adt_rtlSupport="false"
             app:fontFamily="@font/cabin_bold" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/app_subtitle"
-            app:ads_rtlSupport="false"
+            app:adt_rtlSupport="false"
             app:fontFamily="@font/cabin_semi_bold" />
 
     </LinearLayout>

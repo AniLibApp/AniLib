@@ -55,7 +55,7 @@
                     android:gravity="center_horizontal"
                     android:padding="10dp"
                     android:textSize="18sp"
-                    app:ads_rtlSupport="false"
+                    app:adt_rtlSupport="false"
                     app:fontFamily="@font/cabin_bold"
                     app:layout_constraintBottom_toTopOf="@id/media_add_layout"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -87,7 +87,7 @@
                             android:layout_height="@dimen/list_editor_save_icon_size"
                             android:padding="10dp"
                             android:src="@drawable/ic_save"
-                            app:ads_colorType="text_primary" />
+                            app:adt_colorType="text_primary" />
 
 
                         <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
@@ -96,7 +96,7 @@
                             android:layout_height="@dimen/list_editor_save_icon_size"
                             android:padding="10dp"
                             android:src="@drawable/ic_not_favourite"
-                            app:ads_colorType="text_primary" />
+                            app:adt_colorType="text_primary" />
 
                         <com.revolgenx.anilib.ui.view.DynamicToggleButton
                             android:id="@+id/privateToggleButton"
@@ -112,7 +112,7 @@
                             android:layout_height="@dimen/list_editor_save_icon_size"
                             android:padding="10dp"
                             android:src="@drawable/ic_delete"
-                            app:ads_colorType="text_primary" />
+                            app:adt_colorType="text_primary" />
 
                     </LinearLayout>
                 </com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout>
@@ -170,7 +170,7 @@
                         android:id="@+id/statusSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:ads_colorType="primary" />
+                        app:adt_colorType="primary" />
 
                 </com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout>
 

@@ -206,7 +206,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(),
             setCardBackgroundColor(dynamicBackgroundColor)
             ResourcesCompat.getFont(
                 requireContext(),
-                R.font.cabin_regular
+                R.font.rubik_regular
             )!!.let {
                 setQueryTextTypeface(it)
                 setSuggestionTextTypeface(it)

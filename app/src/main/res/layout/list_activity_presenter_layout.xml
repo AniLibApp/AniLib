@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.DynamicApp.Card.Clickable"
@@ -28,9 +28,9 @@
             android:layout_marginTop="8dp"
             android:maxLines="1"
             android:textSize="13sp"
-            app:ads_colorType="accent"
+            app:adt_colorType="accent"
             app:layout_constraintEnd_toStartOf="@+id/activity_subscribe_iv"
-            app:ads_contrastWithColorType="background"
+            app:adt_contrastWithColorType="background"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/media_cover_iv"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +43,7 @@
             android:layout_height="24dp"
             android:layout_marginEnd="10dp"
             android:padding="5dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:layout_constraintBottom_toBottomOf="@id/user_name_tv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/user_name_tv"
@@ -55,7 +55,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:padding="5dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:layout_constraintBottom_toBottomOf="@id/user_name_tv"
             app:layout_constraintEnd_toStartOf="@id/activity_more_popup"
             app:layout_constraintTop_toTopOf="@id/user_name_tv"
@@ -123,7 +123,7 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="2dp"
                 android:padding="2dp"
-                app:ads_colorType="text_primary"
+                app:adt_colorType="text_primary"
                 app:srcCompat="@drawable/ic_activity_comment" />
 
 
@@ -152,7 +152,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:padding="2dp"
-                app:ads_colorType="text_primary"
+                app:adt_colorType="text_primary"
                 app:srcCompat="@drawable/ic_activity_like_outline" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -166,4 +166,4 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

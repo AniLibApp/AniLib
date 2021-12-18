@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView
         android:id="@+id/browse_navigation_search_card_view"
         style="@style/Widget.DynamicApp.Card.Margin.Clickable"
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
         </com.pranavpandey.android.dynamic.support.widget.DynamicTextInputLayout>
 
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
         android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="6dp"
                         android:paddingEnd="6dp"
-                        app:ads_colorType="text_primary" />
+                        app:adt_colorType="text_primary" />
 
 
                 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
@@ -277,7 +277,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:padding="10dp"
-                            app:ads_colorType="accent"
+                            app:adt_colorType="accent"
                             app:srcCompat="@drawable/ic_add" />
 
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
@@ -353,7 +353,7 @@
                             android:layout_height="40dp"
                             android:layout_alignParentEnd="true"
                             android:padding="10dp"
-                            app:ads_colorType="accent"
+                            app:adt_colorType="accent"
                             app:srcCompat="@drawable/ic_add" />
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
                 </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
@@ -385,7 +385,7 @@
                             android:layout_height="40dp"
                             android:layout_alignParentEnd="true"
                             android:padding="10dp"
-                            app:ads_colorType="accent"
+                            app:adt_colorType="accent"
                             app:srcCompat="@drawable/ic_add" />
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
                 </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
@@ -396,13 +396,13 @@
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView
         android:id="@+id/applyFilterCardView"
         style="@style/Widget.DynamicApp.Card.Margin.Clickable"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        app:ads_cardElevation="1dp">
+        app:cardElevation="1dp">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="wrap_content"
@@ -410,7 +410,7 @@
             android:layout_gravity="center"
             android:text="@string/apply_filter"
             android:textSize="14sp"
-            app:ads_colorType="accent" />
+            app:adt_colorType="accent" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>

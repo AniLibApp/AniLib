@@ -40,9 +40,6 @@ class MediaFilterBottomSheetFragment :
 
     var onDoneListener: (() -> Unit)? = null
 
-    override val title: Int
-        get() = R.string.filter
-
     override val positiveText: Int
         get() = R.string.done
 

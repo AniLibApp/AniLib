@@ -11,6 +11,10 @@ import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.notification.FollowingNotificationModel
 import com.revolgenx.anilib.data.model.notification.NotificationModel
 import com.revolgenx.anilib.data.model.notification.activity.*
+import com.revolgenx.anilib.data.model.notification.media.MediaDataChangeNotificationModel
+import com.revolgenx.anilib.data.model.notification.media.MediaDeletionNotificationModel
+import com.revolgenx.anilib.data.model.notification.media.MediaMergeNotificationModel
+import com.revolgenx.anilib.data.model.notification.media.RelatedMediaNotificationModel
 import com.revolgenx.anilib.data.model.notification.thread.*
 import com.revolgenx.anilib.databinding.NotificationPresenterLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OpenActivityInfoEvent
@@ -21,7 +25,8 @@ import com.revolgenx.anilib.util.openLink
 import java.util.*
 
 
-class NotificationPresenter(context: Context) : BasePresenter<NotificationPresenterLayoutBinding, NotificationModel>(context) {
+class NotificationPresenter(context: Context) :
+    BasePresenter<NotificationPresenterLayoutBinding, NotificationModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -38,6 +43,8 @@ class NotificationPresenter(context: Context) : BasePresenter<NotificationPresen
         val item = element.data ?: return
 
         holder.getBinding()?.apply {
+            notificationReasonTv.text = ""
+            notificationReasonTv.setOnClickListener(null)
             when (item.notificationUnionType) {
                 NotificationUnionType.ACTIVITY_MESSAGE -> {
                     val activity = item as ActivityMessageNotification
@@ -54,7 +61,6 @@ class NotificationPresenter(context: Context) : BasePresenter<NotificationPresen
                     }
                 }
                 NotificationUnionType.ACTIVITY_MENTION -> {
-
                     val activity = item as ActivityMentionNotification
                     createActivityNotif(activity)
                     root.setOnClickListener {
@@ -130,8 +136,7 @@ class NotificationPresenter(context: Context) : BasePresenter<NotificationPresen
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text = String.format(
                             Locale.getDefault(),
-                            context.getString(R.string.episode_airing_notif)
-                            ,
+                            context.getString(R.string.episode_airing_notif),
                             it.contexts!![0],
                             it.episode,
                             it.contexts!![1],
@@ -191,6 +196,81 @@ class NotificationPresenter(context: Context) : BasePresenter<NotificationPresen
                                 )
                             ).postEvent
 
+                        }
+                    }
+                }
+                NotificationUnionType.MEDIA_DATA_CHANGE -> {
+                    (item as MediaDataChangeNotificationModel).let {
+                        root.setOnClickListener { _ ->
+                            OpenMediaInfoEvent(
+                                MediaInfoMeta(
+                                    it.media?.mediaId,
+                                    it.media?.type,
+                                    it.media?.title!!.romaji!!,
+                                    it.media?.coverImage!!.image(context),
+                                    it.media?.coverImage!!.largeImage,
+                                    it.media?.bannerImage
+                                )
+                            ).postEvent
+                        }
+
+                        notificationMediaDrawee.setImageURI(
+                            it.media?.coverImage?.image(
+                                context
+                            )
+                        )
+
+                        notificationCreatedTv.text = it.createdAt
+                        notificationTitleTv.text =
+                            context.getString(R.string.s_space_s).format(
+                                it.media?.title?.title(context), it.context
+                            )
+                        notificationReasonTv.setText(R.string.show_reason)
+                        notificationReasonTv.setOnClickListener { _ ->
+                            notificationReasonTv.text = it.reason
+                        }
+                    }
+                }
+                NotificationUnionType.MEDIA_MERGE -> {
+                    (item as MediaMergeNotificationModel).let {
+                        root.setOnClickListener { _ ->
+                            OpenMediaInfoEvent(
+                                MediaInfoMeta(
+                                    it.media?.mediaId,
+                                    it.media?.type,
+                                    it.media?.title!!.romaji!!,
+                                    it.media?.coverImage!!.image(context),
+                                    it.media?.coverImage!!.largeImage,
+                                    it.media?.bannerImage
+                                )
+                            ).postEvent
+                        }
+
+                        notificationMediaDrawee.setImageURI(
+                            it.media?.coverImage?.image(
+                                context
+                            )
+                        )
+                        notificationCreatedTv.text = it.createdAt
+                        notificationTitleTv.text =
+                            context.getString(R.string.s_space_s).format(
+                                it.media?.title?.title(context), it.context
+                            )
+                        notificationReasonTv.setText(R.string.show_reason)
+                        notificationReasonTv.setOnClickListener { _ ->
+                            notificationReasonTv.text = it.reason
+                        }
+                    }
+                }
+                NotificationUnionType.MEDIA_DELETION -> {
+                    (item as MediaDeletionNotificationModel).let {
+                        notificationMediaDrawee.setActualImageResource(R.drawable.ic_delete)
+                        notificationTitleTv.text = context.getString(R.string.s_space_s)
+                            .format(it.deletedMediaTitle, it.context)
+                        notificationCreatedTv.text = it.createdAt
+                        notificationReasonTv.setText(R.string.show_reason)
+                        notificationReasonTv.setOnClickListener { _ ->
+                            notificationReasonTv.text = it.reason
                         }
                     }
                 }

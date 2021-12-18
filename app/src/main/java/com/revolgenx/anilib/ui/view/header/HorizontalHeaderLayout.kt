@@ -32,7 +32,7 @@ class HorizontalHeaderLayout : DynamicLinearLayout {
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT
                 )
-                it.typeface = ResourcesCompat.getFont(context, R.font.cabin_medium)
+                it.typeface = ResourcesCompat.getFont(context, R.font.rubik_medium)
                 it.textSize = 11f
                 it.setPadding(dp(8f))
                 addView(it)
@@ -44,7 +44,7 @@ class HorizontalHeaderLayout : DynamicLinearLayout {
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT
                 )
-                it.typeface = ResourcesCompat.getFont(context, R.font.cabin_medium)
+                it.typeface = ResourcesCompat.getFont(context, R.font.rubik_medium)
                 it.colorType = Theme.ColorType.ACCENT
                 it.textSize = 11f
                 it.setPadding(dp(8f))

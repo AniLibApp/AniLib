@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@android:color/transparent"
-        app:ads_colorType="none" />
+        app:adt_colorType="none" />
 
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout
@@ -79,7 +79,7 @@
             android:clickable="true"
             android:focusable="true"
             android:scaleType="fitCenter"
-            app:ads_colorType="accent"
+            app:adt_colorType="accent"
             app:borderWidth="2dp"
             app:elevation="0dp"
             app:fabCustomSize="60dp"
@@ -94,8 +94,8 @@
             android:layout_width="@dimen/video_player_big_button_dimen"
             android:layout_height="@dimen/video_player_big_button_dimen"
             android:layout_marginStart="5dp"
-            app:ads_color="@color/white"
-            app:ads_colorType="custom"
+            app:adt_color="@color/white"
+            app:adt_colorType="custom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/pausePlayFb"
@@ -108,8 +108,8 @@
             android:layout_width="@dimen/video_player_big_button_dimen"
             android:layout_height="@dimen/video_player_big_button_dimen"
             android:layout_marginStart="5dp"
-            app:ads_color="@color/white"
-            app:ads_colorType="custom"
+            app:adt_color="@color/white"
+            app:adt_colorType="custom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/pausePlayFb"
             app:layout_constraintRight_toLeftOf="@id/exoRotationIv"
@@ -122,8 +122,8 @@
             android:layout_height="@dimen/video_player_big_button_dimen"
             android:layout_marginStart="5dp"
             android:padding="4dp"
-            app:ads_color="@color/white"
-            app:ads_colorType="custom"
+            app:adt_color="@color/white"
+            app:adt_colorType="custom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/exoSkipPostIv"
             app:layout_constraintRight_toRightOf="parent"

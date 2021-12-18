@@ -7,6 +7,7 @@ import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.pranavpandey.android.dynamic.theme.DynamicPalette
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.Constants
+import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.data.field.home.AiringMediaField
 import com.revolgenx.anilib.data.model.user.UserPrefModel
 import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
@@ -56,9 +57,9 @@ fun Context.saveBasicUserDetail(userPrefModel: UserPrefModel) {
 
     if (shouldUpdateProfileColor(this)) {
         shouldUpdateProfileColor(this, false)
-        userPrefModel.mediaOptions?.profileColor?.let {
-            saveUserAccentColor(it)
-        }
+//        userPrefModel.mediaOptions?.profileColor?.let {
+//            saveUserAccentColor(it)
+//        }
     }
 }
 
@@ -90,9 +91,7 @@ fun saveUserAccentColor(it: String) {
             colors[5]
         }
     }
-    DynamicPreferences.getInstance()
-        .save(Constants.PREF_SETTINGS_APP_THEME_COLOR_ACCENT, accentColorToSave)
-
+    ThemeController.accentColor = accentColorToSave
 }
 
 fun getUserPrefModel(context: Context): UserPrefModel {

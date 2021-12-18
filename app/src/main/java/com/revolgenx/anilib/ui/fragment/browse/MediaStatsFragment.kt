@@ -307,7 +307,7 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
                 axisLeft.isEnabled = false
                 xAxis.let { axis ->
                     axis.typeface =
-                        ResourcesCompat.getFont(requireContext(), R.font.cabin_regular)
+                        ResourcesCompat.getFont(requireContext(), R.font.rubik_regular)
                     axis.position = XAxis.XAxisPosition.BOTTOM
                     axis.setDrawGridLines(false)
                     axis.setDrawAxisLine(false)

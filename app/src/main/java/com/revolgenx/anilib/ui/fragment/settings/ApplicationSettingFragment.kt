@@ -29,10 +29,6 @@ class ApplicationSettingFragment : BaseToolbarFragment<ApplicationSettingFragmen
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding.themeItemView.setOnClickListener {
-            OpenSettingEvent(SettingEventTypes.THEME).postEvent
-        }
-
         if (requireContext().loggedIn()) {
             binding.mediaTitlePreference.isEnabled = false
         }

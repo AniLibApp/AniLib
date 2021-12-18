@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView style="@style/Widget.DynamicApp.Card">
 
         <com.pranavpandey.android.dynamic.support.view.DynamicHeader
             android:id="@+id/privacyPolicy"
@@ -15,9 +15,9 @@
             app:ads_subtitle="@string/privacy_policy_desc"
             app:ads_title="@string/privacy_policy" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView style="@style/Widget.DynamicApp.Card">
 
         <com.pranavpandey.android.dynamic.support.view.DynamicHeader
             android:id="@+id/termsAndCondition"
@@ -27,10 +27,10 @@
             app:ads_subtitle="@string/terms_and_condition_desc"
             app:ads_title="@string/terms_and_condition" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView style="@style/Widget.DynamicApp.Card">
 
         <com.pranavpandey.android.dynamic.support.setting.base.DynamicCheckPreference
             android:layout_width="match_parent"
@@ -41,9 +41,9 @@
             app:ads_key="crash_report_key"
             app:ads_title="@string/crash_reporting" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView style="@style/Widget.DynamicApp.Card">
 
         <com.pranavpandey.android.dynamic.support.setting.base.DynamicCheckPreference
             android:layout_width="match_parent"
@@ -53,18 +53,18 @@
             app:ads_key="show_ads_key"
             app:ads_title="@string/disable_ads" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView style="@style/Widget.DynamicApp.Card">
 
         <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
             android:id="@+id/whatsNew"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:ads_icon="@drawable/ic_new_releases"
             app:ads_title="@string/whats_new" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
