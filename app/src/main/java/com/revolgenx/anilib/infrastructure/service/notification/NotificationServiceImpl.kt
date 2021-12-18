@@ -17,6 +17,10 @@ import com.revolgenx.anilib.data.model.notification.EmptyNotificationModel
 import com.revolgenx.anilib.data.model.notification.FollowingNotificationModel
 import com.revolgenx.anilib.data.model.notification.NotificationModel
 import com.revolgenx.anilib.data.model.notification.activity.*
+import com.revolgenx.anilib.data.model.notification.media.MediaDataChangeNotificationModel
+import com.revolgenx.anilib.data.model.notification.media.MediaDeletionNotificationModel
+import com.revolgenx.anilib.data.model.notification.media.MediaMergeNotificationModel
+import com.revolgenx.anilib.data.model.notification.media.RelatedMediaNotificationModel
 import com.revolgenx.anilib.data.model.notification.thread.*
 import com.revolgenx.anilib.data.model.thread.ThreadCommentModel
 import com.revolgenx.anilib.data.model.thread.ThreadModel
@@ -237,7 +241,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             ActivityReplySubscribedNotification().apply {
                                 id = it.id()
                                 type = it.type()?.ordinal
-                                notificationUnionType = NotificationUnionType.ACTIVITY_REPLY_SUBSCRIBED
+                                notificationUnionType =
+                                    NotificationUnionType.ACTIVITY_REPLY_SUBSCRIBED
                                 activityId = it.activityId()
                                 context = it.context()
                                 userPrefModel =
@@ -618,6 +623,50 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                 context = it.context()
                                 commonMediaModel = it.media()?.fragments()?.basicMediaContent()
                                     ?.toBasicMediaContent()
+                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                            }
+                        }
+                    }
+                    "MediaDataChangeNotification" -> {
+                        (it as NotificationQuery.AsMediaDataChangeNotification).let {
+                            MediaDataChangeNotificationModel().apply {
+                                id = it.id()
+                                type = it.type()?.ordinal
+                                notificationUnionType = NotificationUnionType.MEDIA_DATA_CHANGE
+                                context = it.context()
+                                media = it.media()?.fragments()?.basicMediaContent()
+                                    ?.toBasicMediaContent()
+                                reason = it.reason()
+                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                            }
+                        }
+                    }
+
+                    "MediaMergeNotification" -> {
+                        (it as NotificationQuery.AsMediaMergeNotification).let {
+                            MediaMergeNotificationModel().apply {
+                                id = it.id()
+                                type = it.type()?.ordinal
+                                notificationUnionType = NotificationUnionType.MEDIA_MERGE
+                                context = it.context()
+                                media = it.media()?.fragments()?.basicMediaContent()
+                                    ?.toBasicMediaContent()
+                                reason = it.reason()
+                                deletedMediaTitles = it.deletedMediaTitles()
+                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                            }
+                        }
+                    }
+
+                    "MediaDeletionNotification" -> {
+                        (it as NotificationQuery.AsMediaDeletionNotification).let {
+                            MediaDeletionNotificationModel().apply {
+                                id = it.id()
+                                type = it.type()?.ordinal
+                                notificationUnionType = NotificationUnionType.MEDIA_DELETION
+                                context = it.context()
+                                reason = it.reason()
+                                deletedMediaTitle = it.deletedMediaTitle()
                                 createdAt = it.createdAt()?.toLong()?.prettyTime()
                             }
                         }

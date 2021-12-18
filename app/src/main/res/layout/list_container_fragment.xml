@@ -13,9 +13,9 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_backgroundAware="disable"
-            app:ads_colorType="background"
-            app:ads_contrastWithColorType="none"
+            app:adt_backgroundAware="disable"
+            app:adt_colorType="background"
+            app:adt_contrastWithColorType="none"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,10 +27,10 @@
                     android:id="@+id/list_tab_layout"
                     style="@style/HomeContainerTabLayoutStyle"
                     android:layout_width="0dp"
-                    app:ads_backgroundColorType="background"
-                    app:ads_colorType="accent"
-                    app:ads_contrastWithColorType="background"
-                    app:ads_textColorType="text_primary"
+                    app:adt_backgroundColorType="background"
+                    app:adt_colorType="accent"
+                    app:adt_contrastWithColorType="background"
+                    app:adt_textColorType="text_primary"
                     app:layout_constraintEnd_toStartOf="@id/list_search_iv"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
                     android:layout_height="0dp"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp"
-                    app:ads_colorType="text_primary"
+                    app:adt_colorType="text_primary"
                     app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
                     app:layout_constraintEnd_toStartOf="@id/list_notif_layout"
                     app:layout_constraintTop_toTopOf="@id/list_tab_layout"
@@ -64,14 +64,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        app:ads_colorType="text_primary"
+                        app:adt_colorType="text_primary"
                         app:srcCompat="@drawable/ic_notification_outline" />
                 </FrameLayout>
 
                 <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
                     android:id="@+id/list_more_iv"
                     style="@style/TabOptionMenuStyle"
-                    app:ads_colorType="text_primary"
+                    app:adt_colorType="text_primary"
                     app:entries="@array/list_option_menu"
                     app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +109,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:padding="12dp"
-                        app:ads_colorType="text_primary"
+                        app:adt_colorType="text_primary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -137,7 +137,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/ads_fab_margin"
-        app:ads_colorType="background"
+        app:adt_colorType="background"
         app:icon="@drawable/ic_filter"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior" />
 

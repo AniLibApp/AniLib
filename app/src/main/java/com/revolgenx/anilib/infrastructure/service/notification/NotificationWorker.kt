@@ -29,6 +29,10 @@ import com.revolgenx.anilib.data.model.notification.activity.*
 import com.revolgenx.anilib.data.model.notification.thread.*
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.data.model.notification.FollowingNotificationModel
+import com.revolgenx.anilib.data.model.notification.media.MediaDataChangeNotificationModel
+import com.revolgenx.anilib.data.model.notification.media.MediaDeletionNotificationModel
+import com.revolgenx.anilib.data.model.notification.media.MediaMergeNotificationModel
+import com.revolgenx.anilib.data.model.notification.media.RelatedMediaNotificationModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.util.LauncherShortcutKeys
@@ -66,7 +70,6 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
     }
 
     private var pendingIntent: PendingIntent? = null
-    private var notificationText: String? = null
     private var notificationImage: String? = null
 
     override fun doWork(): Result {
@@ -150,66 +153,19 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
     private fun getNotificationString(item: NotificationModel): String {
         return when (item.notificationUnionType) {
-            NotificationUnionType.ACTIVITY_MESSAGE -> {
-                val activity = item as ActivityMessageNotification
-                //createActivityPendingLink(activity)
-                createActivityNotif(activity)
-            }
-            NotificationUnionType.ACTIVITY_REPLY -> {
-                val activity = item as ActivityReplyNotification
-                //createActivityPendingLink(activity)
-                createActivityNotif(activity)
-            }
-            NotificationUnionType.ACTIVITY_MENTION -> {
-                val activity = item as ActivityMentionNotification
-                //createActivityPendingLink(activity)
-                createActivityNotif(activity)
-            }
-            NotificationUnionType.ACTIVITY_LIKE -> {
-                val activity = item as ActivityLikeNotification
-                //createActivityPendingLink(activity)
-                createActivityNotif(activity)
-            }
-            NotificationUnionType.ACTIVITY_REPLY_LIKE -> {
-                val activity = item as ActivityReplyLikeNotification
-                //createActivityPendingLink(activity)
-                createActivityNotif(activity)
-            }
-            NotificationUnionType.ACTIVITY_REPLY_SUBSCRIBED -> {
-                val activity = item as ActivityReplySubscribedNotification
-                //createActivityPendingLink(activity)
-                createActivityNotif(activity)
-            }
-
-            NotificationUnionType.THREAD_COMMENT_MENTION -> {
-                val thread = item as ThreadCommentMentionNotification
-                //createThreadPendingLink(thread)
-                createThreadNotif(thread)
-            }
-            NotificationUnionType.THREAD_SUBSCRIBED -> {
-                //todo://check for notification not added in here
-                val thread = item as ThreadCommentSubscribedNotification
-                //createThreadPendingLink(thread)
-                createThreadNotif(thread)
-            }
-            NotificationUnionType.THREAD_COMMENT_REPLY -> {
-                val thread = item as ThreadCommentReplyNotification
-                //createThreadPendingLink(thread)
-                createThreadNotif(thread)
-            }
-            NotificationUnionType.THREAD_LIKE -> {
-                val thread = item as ThreadLikeNotification
-                //createThreadPendingLink(thread)
-                createThreadNotif(thread)
-            }
-            NotificationUnionType.THREAD_COMMENT_LIKE -> {
-                val thread = item as ThreadCommentLikeNotification
-                //createThreadPendingLink(thread)
-                createThreadNotif(thread)
-            }
+            NotificationUnionType.ACTIVITY_MESSAGE -> createActivityNotif(item as ActivityMessageNotification)
+            NotificationUnionType.ACTIVITY_REPLY -> createActivityNotif(item as ActivityReplyNotification)
+            NotificationUnionType.ACTIVITY_MENTION -> createActivityNotif(item as ActivityMentionNotification)
+            NotificationUnionType.ACTIVITY_LIKE -> createActivityNotif(item as ActivityLikeNotification)
+            NotificationUnionType.ACTIVITY_REPLY_LIKE -> createActivityNotif(item as ActivityReplyLikeNotification)
+            NotificationUnionType.ACTIVITY_REPLY_SUBSCRIBED -> createActivityNotif(item as ActivityReplySubscribedNotification)
+            NotificationUnionType.THREAD_COMMENT_MENTION -> createThreadNotif(item as ThreadCommentMentionNotification)
+            NotificationUnionType.THREAD_SUBSCRIBED -> createThreadNotif(item as ThreadCommentSubscribedNotification)
+            NotificationUnionType.THREAD_COMMENT_REPLY -> createThreadNotif(item as ThreadCommentReplyNotification)
+            NotificationUnionType.THREAD_LIKE -> createThreadNotif(item as ThreadLikeNotification)
+            NotificationUnionType.THREAD_COMMENT_LIKE -> createThreadNotif(item as ThreadCommentLikeNotification)
             NotificationUnionType.AIRING -> {
                 (item as AiringNotificationModel).let {
-                    //                    createMediaPendingIntent(it)
                     notificationImage = it.commonMediaModel?.coverImage?.image(context)
                     String.format(
                         Locale.getDefault(),
@@ -223,10 +179,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                 }
             }
 
-            NotificationUnionType.FOLLOWING -> {
-//                createUserPendingIntent(item as ActivityNotification)
-                createFollowingNotification(item as FollowingNotificationModel)
-            }
+            NotificationUnionType.FOLLOWING -> createFollowingNotification(item as FollowingNotificationModel)
             NotificationUnionType.RELATED_MEDIA_ADDITION -> {
                 if (!getNotificationPreference(context.getString(R.string.related_media_added_notif))) return ""
 
@@ -236,6 +189,9 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                     .format(item.commonMediaModel?.title?.title(context), item.context)
             }
 
+            NotificationUnionType.MEDIA_DATA_CHANGE -> createMediaDataChangeNotification(item as MediaDataChangeNotificationModel)
+            NotificationUnionType.MEDIA_MERGE -> createMediaMergeNotification(item as MediaMergeNotificationModel)
+            NotificationUnionType.MEDIA_DELETION -> createMediaDeleteNotification(item as MediaDeletionNotificationModel)
             else -> ""
         }
 
@@ -253,16 +209,6 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             .format(item.userPrefModel?.name, item.context)
     }
 
-    private fun createThreadPendingLink(thread: ThreadNotification) {
-        thread.threadModel?.siteUrl?.let {
-            pendingIntent = PendingIntent.getActivity(
-                context,
-                0,
-                Intent(Intent.ACTION_VIEW, it.trim().toUri()),
-                PendingIntent.FLAG_ONE_SHOT
-            )
-        }
-    }
 
     private fun createFollowingNotification(item: FollowingNotificationModel): String {
         notificationImage = item.userModel?.avatar?.image
@@ -270,6 +216,23 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             .format(item.userModel?.name, item.context)
     }
 
+    private fun createMediaDataChangeNotification(item: MediaDataChangeNotificationModel): String {
+        notificationImage = item.media?.coverImage?.image
+        return context.getString(R.string.s_space_s)
+            .format(item.media?.title?.title(context), item.context)
+    }
+
+
+    private fun createMediaMergeNotification(item: MediaMergeNotificationModel): String {
+        notificationImage = item.media?.coverImage?.image
+        return context.getString(R.string.s_space_s)
+            .format(item.media?.title?.title(context), item.context)
+    }
+
+    private fun createMediaDeleteNotification(item: MediaDeletionNotificationModel): String {
+        return context.getString(R.string.s_space_s)
+            .format(item.deletedMediaTitle, item.context)
+    }
 
     private fun createNotificationPendingIntent() {
         val intent = Intent(Intent.ACTION_VIEW, null, context, MainActivity::class.java).also {
@@ -281,29 +244,6 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
         }
         pendingIntent =
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-
-    private fun createActivityPendingLink(activity: ActivityNotification) {
-        var siteUrl: String? = null
-        activity.textActivityModel?.let {
-            siteUrl = it.siteUrl
-        }
-        activity.listActivityModel?.let {
-            siteUrl = it.siteUrl
-        }
-
-        activity.messageActivityModel?.let {
-            siteUrl = it.siteUrl
-        }
-
-        siteUrl?.let {
-            pendingIntent = PendingIntent.getActivity(
-                context,
-                0,
-                Intent(Intent.ACTION_VIEW, it.trim().toUri()),
-                PendingIntent.FLAG_ONE_SHOT
-            )
-        }
     }
 
     private fun createChannel() {

@@ -3,7 +3,7 @@ package com.revolgenx.anilib.ui.view.widgets
 import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
-import com.pranavpandey.android.dynamic.support.view.DynamicItemView
+import com.pranavpandey.android.dynamic.support.view.base.DynamicItemView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.util.sp
 
@@ -22,9 +22,9 @@ class AniLibItemView : DynamicItemView {
             0
         )
         try {
-            titleView.isAllCaps = a.getBoolean(R.styleable.AniLibItemView_titleTextAllCaps, false);
+            titleView?.isAllCaps = a.getBoolean(R.styleable.AniLibItemView_titleTextAllCaps, false);
             val titleTextSize = a.getDimension(R.styleable.AniLibItemView_titleTextSize, sp(14f))
-            titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize)
+            titleView?.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize)
         } catch (ex: Exception) {
         } finally {
             a.recycle()

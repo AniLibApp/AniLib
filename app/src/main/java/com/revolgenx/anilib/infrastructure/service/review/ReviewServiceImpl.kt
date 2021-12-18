@@ -8,7 +8,6 @@ import com.revolgenx.anilib.SaveReviewMutation
 import com.revolgenx.anilib.data.field.review.AllReviewField
 import com.revolgenx.anilib.data.field.review.RateReviewField
 import com.revolgenx.anilib.data.field.review.ReviewField
-import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.model.user.UserPrefModel
 import com.revolgenx.anilib.data.model.CommonMediaModel
 import com.revolgenx.anilib.data.model.user.AvatarModel

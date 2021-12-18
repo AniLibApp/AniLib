@@ -34,13 +34,13 @@ fun getApplicationLocale(): String {
 
 fun getVersion(context: Context): String {
     val version = context.getString(versionKey) ?: ""
-    context.putString(versionKey, DynamicPackageUtils.getAppVersion(context))
+    context.putString(versionKey, DynamicPackageUtils.getVersionName(context))
     return version
 }
 
 fun getUpdateVersion(context: Context): String {
     return DynamicPreferences.getInstance()
-        .load(updateVersionKey, DynamicPackageUtils.getAppVersion(context))!!
+        .load(updateVersionKey, DynamicPackageUtils.getVersionName(context))!!
 }
 
 fun setUpdateVersion(newVersion: String) {

@@ -13,9 +13,9 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_colorType="background"
-            app:ads_backgroundAware="disable"
-            app:ads_contrastWithColorType="none"
+            app:adt_colorType="background"
+            app:adt_backgroundAware="disable"
+            app:adt_contrastWithColorType="none"
             >
             <com.revolgenx.anilib.ui.view.search.DynamicPersistentSearchView
                 android:id="@+id/persistentSearchView"

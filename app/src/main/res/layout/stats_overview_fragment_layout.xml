@@ -15,13 +15,12 @@
         <include layout="@layout/resource_status_container_layout"
             android:id="@+id/resource_status_layout"/>
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:ads_cardElevation="1dp"
-            app:ads_elevationOnSameBackground="true">
+            app:adt_elevationOnSameBackground="true">
 
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
@@ -90,15 +89,14 @@
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:ads_cardElevation="1dp"
-            app:ads_elevationOnSameBackground="true">
+            app:adt_elevationOnSameBackground="true">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
                 android:layout_width="match_parent"
@@ -167,7 +165,7 @@
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
@@ -186,7 +184,7 @@
             android:textSize="11sp"
             tools:ignore="SmallSp" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             style="@style/Widget.DynamicApp.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -197,7 +195,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp" />
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -209,13 +207,12 @@
             android:textSize="16sp"
             app:fontFamily="@font/cabin_semi_bold" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:ads_cardElevation="1dp"
-            app:ads_elevationOnSameBackground="true">
+            app:adt_elevationOnSameBackground="true">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                 android:id="@+id/formatDistributionRecyclerView"
@@ -225,7 +222,7 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -237,13 +234,12 @@
             android:textSize="16sp"
             app:fontFamily="@font/cabin_semi_bold" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:ads_cardElevation="1dp"
-            app:ads_elevationOnSameBackground="true">
+            app:adt_elevationOnSameBackground="true">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                 android:id="@+id/statusDistributionRecyclerView"
@@ -253,7 +249,7 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -265,13 +261,12 @@
             android:textSize="16sp"
             app:fontFamily="@font/cabin_semi_bold" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:ads_cardElevation="1dp"
-            app:ads_elevationOnSameBackground="true">
+            app:adt_elevationOnSameBackground="true">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                 android:id="@+id/countrysDistributionRecyclerView"
@@ -281,7 +276,7 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
@@ -307,7 +302,7 @@
                 android:textSize="11sp"
                 tools:ignore="SmallSp" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
                 style="@style/Widget.DynamicApp.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -318,7 +313,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="240dp" />
 
-            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
@@ -347,7 +342,7 @@
                 android:textSize="11sp"
                 tools:ignore="SmallSp" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
                 style="@style/Widget.DynamicApp.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -358,7 +353,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="240dp" />
 
-            </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 

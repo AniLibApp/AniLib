@@ -50,14 +50,14 @@
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:ads_colorType="custom"
-            app:ads_rtlSupport="true"
+            app:adt_colorType="custom"
+            app:adt_rtlSupport="true"
             app:fontFamily="@font/cabin_semi_bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             style="@style/Widget.DynamicApp.Card.Margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="16dp"
                     android:padding="12dp"
-                    app:ads_color="@color/white"
+                    app:adt_color="@color/white"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/reviewDisLikeIv"
@@ -151,7 +151,7 @@
                     android:layout_height="40dp"
                     android:padding="12dp"
                     android:src="@drawable/ic_thumb_down"
-                    app:ads_color="@color/white"
+                    app:adt_color="@color/white"
                     app:layout_constraintBottom_toBottomOf="@id/reviewLikeIv"
                     app:layout_constraintLeft_toRightOf="@id/reviewLikeIv"
                     app:layout_constraintRight_toRightOf="parent"
@@ -171,7 +171,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,8 +39,8 @@ class TitleTextView(context: Context, attributeSet: AttributeSet?, defStyle: Int
                     LayoutParams.WRAP_CONTENT
                 )
                 if (isInEditMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                    it.typeface = resources.getFont(R.font.cabin_regular)
-                else it.typeface = ResourcesCompat.getFont(context, R.font.cabin_regular)
+                    it.typeface = resources.getFont(R.font.rubik_regular)
+                else it.typeface = ResourcesCompat.getFont(context, R.font.rubik_regular)
 
                 it.gravity = Gravity.CENTER
                 it.color = textColor

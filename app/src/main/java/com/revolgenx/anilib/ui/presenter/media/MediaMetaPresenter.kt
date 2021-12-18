@@ -29,7 +29,7 @@ class MediaMetaPresenter(context: Context) : BasePresenter<MediaMetaPresenterLay
         val binding:MediaMetaPresenterLayoutBinding = holder.getBinding() ?: return
         holder.itemView.apply {
             binding.header.title = item.header
-            binding.header.subtitleView.movementMethod = LinkMovementMethod.getInstance()
+            binding.header.subtitleView?.movementMethod = LinkMovementMethod.getInstance()
             binding.header.subtitle = item.subTitle ?: item.subTitleSpannable
         }
     }

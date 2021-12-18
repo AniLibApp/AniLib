@@ -26,8 +26,6 @@ import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 class MediaListFilterBottomSheetFragment :
     DynamicBottomSheetFragment<MediaListFilterBottomSheetLayoutBinding>() {
 
-    override val title: Int
-        get() = R.string.filter
 
     override val positiveText: Int
         get() = R.string.done

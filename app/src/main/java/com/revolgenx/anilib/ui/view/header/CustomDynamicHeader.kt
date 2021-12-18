@@ -3,8 +3,6 @@ package com.revolgenx.anilib.ui.view.header
 import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.Gravity
-import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.view.DynamicHeader
@@ -29,20 +27,20 @@ class CustomDynamicHeader(context: Context, attributeSet: AttributeSet?, defAttS
 
             if(titleAlignCenter){
                 (titleView as DynamicTextView).isRtlSupport = false
-                titleView.textAlignment = TEXT_ALIGNMENT_CENTER
+                titleView?.textAlignment = TEXT_ALIGNMENT_CENTER
             }
 
             if(subtitleAlignCenter){
                 (subtitleView as DynamicTextView).isRtlSupport = false
-                subtitleView.textAlignment = TEXT_ALIGNMENT_CENTER
+                subtitleView?.textAlignment = TEXT_ALIGNMENT_CENTER
             }
 
-            titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize)
-            subtitleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, subtitleTextSize)
+            titleView?.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize)
+            subtitleView?.setTextSize(TypedValue.COMPLEX_UNIT_PX, subtitleTextSize)
 
             if(copySubtitle){
-                subtitleView.setOnLongClickListener {
-                    subtitleView.text.trim().takeIf { it.isNotEmpty() }?.let {
+                subtitleView?.setOnLongClickListener {
+                    subtitleView?.text?.trim()?.takeIf { it.isNotEmpty() }?.let {
                         context.copyToClipBoard(it.toString())
                         true
                     } ?: false
@@ -55,9 +53,9 @@ class CustomDynamicHeader(context: Context, attributeSet: AttributeSet?, defAttS
           a.recycle()
         }
 
-        titleView.typeface = ResourcesCompat.getFont(context, R.font.cabin_regular)
-        subtitleView.typeface = ResourcesCompat.getFont(context, R.font.cabin_regular)
+        titleView?.typeface = ResourcesCompat.getFont(context, R.font.rubik_regular)
+        subtitleView?.typeface = ResourcesCompat.getFont(context, R.font.rubik_regular)
 
-        subtitleView.setTextColor(DynamicTheme.getInstance().get().textPrimaryColor)
+        subtitleView?.setTextColor(DynamicTheme.getInstance().get().textPrimaryColor)
     }
 }

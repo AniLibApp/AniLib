@@ -51,7 +51,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
                 it.marginStart = dp(6f)
             }
             this.background = null
-            typeface = ResourcesCompat.getFont(context, R.font.cabin_regular)
+            typeface = ResourcesCompat.getFont(context, R.font.rubik_regular)
             textSize = 14f
         }
     }

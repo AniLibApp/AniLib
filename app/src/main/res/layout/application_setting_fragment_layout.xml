@@ -11,22 +11,7 @@
         android:layout_margin="@dimen/setting_padding_dimen"
         android:orientation="vertical">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardUseCompatPadding="true">
-
-            <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
-                android:id="@+id/themeItemView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ads_colorType="text_primary"
-                app:ads_icon="@drawable/ic_style"
-                app:ads_subtitle="@string/dynamically_apply_theme"
-                app:ads_title="@string/theme" />
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/setting_cardview_margin_top"
@@ -64,9 +49,9 @@
                     app:ads_values="@array/media_title_values" />
             </LinearLayout>
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/setting_cardview_margin_top"
@@ -82,7 +67,7 @@
                     android:id="@+id/start_up_page_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ads_colorType="text_primary"
+                    app:adt_colorType="text_primary"
                     app:ads_icon="@drawable/ic_navigation"
                     app:ads_subtitle="@string/start_nav_page_desc"
                     app:ads_title="@string/startup_page" />
@@ -91,14 +76,14 @@
                     android:id="@+id/home_screen_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ads_colorType="text_primary"
+                    app:adt_colorType="text_primary"
                     app:ads_icon="@drawable/ads_ic_sort"
                     app:ads_subtitle="@string/home_screen_order_desc"
                     app:ads_title="@string/home_screen_order" />
             </LinearLayout>
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/setting_cardview_margin_top"
@@ -127,9 +112,9 @@
 
             </LinearLayout>
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/setting_cardview_margin_top"
@@ -144,7 +129,7 @@
                 app:ads_key="load_bio_by_default"
                 app:ads_title="@string/load_user_bio" />
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
     </LinearLayout>
 

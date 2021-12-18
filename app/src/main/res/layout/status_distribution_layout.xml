@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/status_score_wrapper"
     android:layout_width="wrap_content"
@@ -8,9 +8,8 @@
     android:layout_marginStart="6dp"
     android:layout_marginEnd="6dp"
     android:layout_marginBottom="6dp"
-    app:ads_backgroundAware="disable"
-    app:ads_cardElevation="1dp"
-    app:ads_contrastWithColorType="none"
+    app:adt_backgroundAware="disable"
+    app:adt_contrastWithColorType="none"
     >
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -21,11 +20,11 @@
         android:textSize="13sp"
         android:drawablePadding="6dp"
         android:textColor="@color/white"
-        app:ads_colorType="custom"
+        app:adt_colorType="custom"
         app:fontFamily="@font/cabincondensed_semi_bold"
         android:layout_margin="8dp"
         android:includeFontPadding="false"
         android:layout_gravity="center"/>
 
 
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

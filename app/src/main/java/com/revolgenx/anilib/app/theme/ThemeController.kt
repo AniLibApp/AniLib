@@ -6,120 +6,105 @@ import androidx.annotation.StyleRes
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.pranavpandey.android.dynamic.support.model.DynamicAppTheme
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
-import com.pranavpandey.android.dynamic.theme.Theme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
-
-/**
- * Helper class to perform theme related operations.
- */
 
 
 object ThemeController {
 
-    /**
-     * `true` if `auto` theme is selected.
-     */
-    val isAutoTheme: Boolean get() = appThemeColor == Theme.AUTO
-
-
-    /**
-     * Getter and Setter for the app theme color.
-     */
-    private var appThemeColor: Int
+    val themeMode
         get() = DynamicPreferences.getInstance().load(
-            Constants.PREF_SETTINGS_APP_THEME_COLOR,
-            Constants.PREF_SETTINGS_APP_THEME_COLOR_DEFAULT
-        )
-        set(@ColorInt color) = DynamicPreferences.getInstance().save(
-            Constants.PREF_SETTINGS_APP_THEME_COLOR, color
+            Constants.PREF_SETTINGS_THEME_MODE,
+            Constants.DEFAULT_THEME_MODE
         )
 
-    /**
-     * Getter and Setter for the app theme day color.
-     */
-    private var appThemeDayColor: Int
-        @ColorInt get() = DynamicPreferences.getInstance().load(
-            Constants.PREF_SETTINGS_APP_THEME_DAY_COLOR,
-            Constants.PREF_SETTINGS_APP_THEME_DAY_COLOR_DEFAULT
-        )
-        set(@ColorInt color) = DynamicPreferences.getInstance().save(
-            Constants.PREF_SETTINGS_APP_THEME_DAY_COLOR, color
+    val isThemeModeAuto
+        get() = themeMode == "0"
+
+    val isDarkMode
+        get() = if (isThemeModeAuto)
+            DynamicTheme.getInstance().isSystemNightMode
+        else themeMode == "2"
+
+    val lightThemeMode
+        get() = DynamicPreferences.getInstance().load(
+            Constants.PREF_SETTINGS_LIGHT_THEME_MODE,
+            Constants.DEFAULT_LIGHT_THEME_MODE
         )
 
-    /**
-     * Getter and Setter for the app theme night color.
-     */
-    private var appThemeNightColor: Int
-        @ColorInt get() = DynamicPreferences.getInstance().load(
-            Constants.PREF_SETTINGS_APP_THEME_NIGHT_COLOR,
-            Constants.PREF_SETTINGS_APP_THEME_NIGHT_COLOR_DEFAULT
-        )
-        set(@ColorInt color) = DynamicPreferences.getInstance().save(
-            Constants.PREF_SETTINGS_APP_THEME_NIGHT_COLOR, color
+    val darkThemeMode
+        get() = DynamicPreferences.getInstance().load(
+            Constants.PREF_SETTINGS_DARK_THEME_MODE,
+            Constants.DEFAULT_DARK_THEME_MODE
         )
 
-    /**
-     * The app theme splash style according to the current settings.
-     */
-    val appStyle: Int
-        @StyleRes get() = getAppStyle(backgroundColor)
+    val isLightThemeInCustomMode
+        get() = lightThemeMode == "1"
 
-    /**
-     * The background color according to the current settings.
-     */
+    val isDarkThemeInCustomMode
+        get() = darkThemeMode == "1"
+
+
+    val backgroundColorKey
+        get() = if (isDarkMode) Constants.PREF_SETTINGS_BACKGROUND_COLOR_DARK else Constants.PREF_SETTINGS_BACKGROUND_COLOR_LIGHT
+    val surfaceColorKey
+        get() = if (isDarkMode) Constants.PREF_SETTINGS_SURFACE_COLOR_DARK else Constants.PREF_SETTINGS_SURFACE_COLOR_LIGHT
+    val accentColorKey
+        get() = if (isDarkMode) Constants.PREF_SETTINGS_ACCENT_COLOR_DARK else Constants.PREF_SETTINGS_ACCENT_COLOR_LIGHT
+
+    val defaultBackgroundColor
+        get() = if (isDarkMode) Constants.DEFAULT_BACKGROUND_COLOR_DARK else Constants.DEFAULT_BACKGROUND_COLOR_LIGHT
+    val defaultSurfaceColor
+        get() = if (isDarkMode) Constants.DEFAULT_SURFACE_COLOR_DARK else Constants.DEFAULT_SURFACE_COLOR_LIGHT
+    val defaultAccentColor
+        get() = if (isDarkMode) Constants.DEFAULT_ACCENT_COLOR_DARK else Constants.DEFAULT_ACCENT_COLOR_LIGHT
+    private val defaultCornerRadius = Constants.DEFAULT_CORNER_RADIUS
+
     val backgroundColor: Int
-        @ColorInt get() = if (appThemeColor == Theme.AUTO) {
-            if (DynamicTheme.getInstance().isNight)
-                appThemeNightColor
-            else
-                appThemeDayColor
-        } else {
-            appThemeColor
+        get() = DynamicPreferences.getInstance().load(
+            backgroundColorKey,
+            defaultBackgroundColor
+        )
+
+    val surfaceColor: Int
+        get() = DynamicPreferences.getInstance().load(
+            surfaceColorKey,
+            defaultSurfaceColor
+        )
+
+    var accentColor: Int
+        @ColorInt get() = DynamicPreferences.getInstance().load(
+            accentColorKey,
+            defaultAccentColor
+        )
+        set(value) {
+            DynamicPreferences.getInstance()
+                .save(accentColorKey, value)
         }
 
-    /**
-     * The app theme primary color.
-     */
-    val colorPrimaryApp: Int
-        @ColorInt get() = DynamicPreferences.getInstance().load(
-            Constants.PREF_SETTINGS_APP_THEME_COLOR_PRIMARY,
-            Constants.PREF_SETTINGS_APP_THEME_COLOR_PRIMARY_DEFAULT
+    val cornerRadius: Int
+        get() = DynamicPreferences.getInstance().load(
+            Constants.PREF_SETTINGS_CORNER_RADIUS,
+            defaultCornerRadius
         )
 
-    /**
-     * The app theme accent color.
-     */
-    val colorAccentApp: Int
-        @ColorInt get() = DynamicPreferences.getInstance().load(
-            Constants.PREF_SETTINGS_APP_THEME_COLOR_ACCENT,
-            Constants.PREF_SETTINGS_APP_THEME_COLOR_ACCENT_DEFAULT
-        )
-
-    /**
-     * The background color according to the current settings.
-     */
-    val dynamicAppTheme: DynamicAppTheme
-        get() = DynamicAppTheme()
-            .setPrimaryColor(AppController.instance.colorPrimaryApp)
-            .setAccentColor(AppController.instance.colorAccentApp)
-            .setBackgroundColor(backgroundColor)
-            .setCornerRadiusDp(8f);
-
-    /**
-     * Returns the app theme style according to the supplied color.
-     *
-     * @param color The color used for the background.
-     *
-     * @return The app theme style according to the supplied color.
-     */
-    @StyleRes
-    fun getAppStyle(@ColorInt color: Int): Int {
-        return if (DynamicColorUtils.isColorDark(color))
+    val appStyle: Int
+        @StyleRes get() = if (DynamicColorUtils.isColorDark(backgroundColor))
             R.style.AppTheme
         else
             R.style.AppTheme_Dark
-    }
+
+    val dynamicAppTheme: DynamicAppTheme
+        get() = DynamicAppTheme()
+            .setPrimaryColor(backgroundColor)
+            .setAccentColor(accentColor)
+            .setBackgroundColor(backgroundColor)
+            .setSurfaceColor(surfaceColor)
+            .setCornerRadiusDp(cornerRadius.toFloat())
+
+    val elevaton
+        get() = DynamicPreferences.getInstance().load(Constants.PREF_SETTINGS_CARD_ELEVATION, Constants.DEFAULT_CARD_ELEVATION)
+
 
     fun lightSurfaceColor(): Int {
         val surfaceColor = DynamicTheme.getInstance().get().surfaceColor
@@ -130,3 +115,5 @@ object ThemeController {
         }
     }
 }
+
+

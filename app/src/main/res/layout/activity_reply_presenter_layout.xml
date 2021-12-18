@@ -22,8 +22,8 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textSize="14sp"
-        app:ads_colorType="accent"
-        app:ads_contrastWithColorType="background"
+        app:adt_colorType="accent"
+        app:adt_contrastWithColorType="background"
         app:layout_constraintBottom_toBottomOf="@id/user_avatar_iv"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/user_avatar_iv"
@@ -35,7 +35,7 @@
         android:layout_height="24dp"
         android:paddingTop="2dp"
         android:src="@drawable/ads_ic_more_horizontal"
-        app:ads_colorType="text_primary"
+        app:adt_colorType="text_primary"
         app:entries="@array/reply_edit_entries"
         app:layout_constraintBottom_toBottomOf="@+id/user_name_tv"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +80,7 @@
             android:layout_height="24dp"
             android:layout_marginEnd="2dp"
             android:padding="2dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:srcCompat="@drawable/ic_activity_like_outline" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView

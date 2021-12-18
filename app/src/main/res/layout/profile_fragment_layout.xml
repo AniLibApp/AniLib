@@ -9,9 +9,9 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ads_backgroundAware="disable"
-        app:ads_colorType="primary"
-        app:ads_contrastWithColorType="none"
+        app:adt_backgroundAware="disable"
+        app:adt_colorType="primary"
+        app:adt_contrastWithColorType="none"
         app:elevation="1dp">
 
 
@@ -67,8 +67,8 @@
                     android:fontFamily="@font/cabin_medium"
                     android:text="@string/follow"
                     android:visibility="gone"
-                    app:ads_colorType="tint_accent"
-                    app:ads_contrastWithColorType="accent"
+                    app:adt_colorType="tint_accent"
+                    app:adt_contrastWithColorType="accent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/username_tv" />
@@ -163,7 +163,7 @@
                 android:id="@+id/profile_fragment_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                app:ads_colorType="background"
+                app:adt_colorType="background"
                 app:layout_collapseMode="pin" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
@@ -181,9 +181,9 @@
             style="@style/DynamicTextTabLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_backgroundColorType="background"
-            app:ads_colorType="accent"
-            app:ads_contrastWithColorType="background"
+            app:adt_backgroundColorType="background"
+            app:adt_colorType="accent"
+            app:adt_contrastWithColorType="background"
             app:tabMode="scrollable" />
 
         <androidx.viewpager.widget.ViewPager

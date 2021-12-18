@@ -150,7 +150,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
     private fun checkReleaseInfo() {
-        if (getVersion(this) != DynamicPackageUtils.getAppVersion(this)) {
+        if (getVersion(this) != DynamicPackageUtils.getVersionName(this)) {
             ReleaseInfoDialog().show(supportFragmentManager, ReleaseInfoDialog.tag)
         }
     }

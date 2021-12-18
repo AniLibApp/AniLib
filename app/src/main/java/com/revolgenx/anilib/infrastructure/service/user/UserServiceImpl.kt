@@ -9,7 +9,6 @@ import com.revolgenx.anilib.data.field.user.UserFavouriteField
 import com.revolgenx.anilib.data.field.user.UserFollowerField
 import com.revolgenx.anilib.data.field.user.UserProfileField
 import com.revolgenx.anilib.data.field.user.UserToggleFollowField
-import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.model.*
 import com.revolgenx.anilib.data.model.character.CharacterImageModel
 import com.revolgenx.anilib.data.model.character.CharacterNameModel
@@ -24,8 +23,6 @@ import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepositor
 import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.social.factory.AlMarkwonFactory
-import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber

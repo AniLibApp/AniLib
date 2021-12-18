@@ -123,10 +123,10 @@ abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutB
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
             it.textSize = 15f
-            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)
+            it.typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_regular)
             it.setDrawables(
-                icon,
-                R.drawable.ic_angle_right
+//                icon,
+                endRes = R.drawable.ic_angle_right
             )
             it.compoundDrawablePadding = dp(6f)
             it.gravity = Gravity.CENTER_VERTICAL

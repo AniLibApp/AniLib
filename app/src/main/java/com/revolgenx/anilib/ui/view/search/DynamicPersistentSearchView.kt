@@ -3,14 +3,19 @@ package com.revolgenx.anilib.ui.view.search
 import android.content.Context
 import android.util.AttributeSet
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.paulrybitskyi.persistentsearchview.PersistentSearchView
+import com.revolgenx.anilib.R
 
 class DynamicPersistentSearchView : PersistentSearchView {
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet, 0) {
     }
-    constructor(context: Context, attributeSet: AttributeSet?, defStyle:Int):super(context, attributeSet, defStyle)
+    constructor(context: Context, attributeSet: AttributeSet?, defStyle:Int):super(context, attributeSet, defStyle){
+        setQueryTextTypeface(ResourcesCompat.getFont(context, R.font.rubik_regular)!!)
+    }
 
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

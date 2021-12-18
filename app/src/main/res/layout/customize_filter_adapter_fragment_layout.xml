@@ -5,11 +5,10 @@
     android:layout_height="wrap_content"
     android:padding="10dp">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView
         style="@style/Widget.DynamicApp.Card.Clickable"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:ads_cardElevation="6dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -27,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"
-                app:ads_colorType="text_primary"
+                app:adt_colorType="text_primary"
                 android:padding="20dp"/>
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -38,11 +37,11 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/genre"
-                app:ads_rtlSupport="false" />
+                app:adt_rtlSupport="false" />
 
         </LinearLayout>
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

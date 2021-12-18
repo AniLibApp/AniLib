@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.DynamicApp.Card.Clickable"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    app:ads_elevationOnSameBackground="true">
+    app:adt_elevationOnSameBackground="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             app:layout_constraintEnd_toStartOf="@+id/station_play_state_layout"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            app:ads_colorType="tint_background"
+            app:adt_colorType="tint_background"
             />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -73,11 +73,11 @@
                 android:layout_gravity="center"
                 android:padding="6dp"
                 app:srcCompat="@drawable/ads_ic_more"
-                app:ads_colorType="text_primary"
+                app:adt_colorType="text_primary"
                 app:entries="@array/radio_controller_more_actions"
                 app:icons="@array/station_controller_more_icons"/>
 
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

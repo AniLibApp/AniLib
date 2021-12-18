@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/airingCardView"
@@ -51,7 +51,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
-            android:fontFamily="@font/cabin_medium"
             android:includeFontPadding="false"
             android:maxLines="2"
             android:textSize="13sp"
@@ -66,7 +65,7 @@
             android:layout_height="40dp"
             android:background="?selectableItemBackground"
             android:padding="10dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_bookmark" />
@@ -150,7 +149,7 @@
             android:maxLines="1"
             android:text="@string/airing_time_e_s_s"
             android:textSize="12sp"
-            app:ads_colorType="accent"
+            app:adt_colorType="accent"
             app:fontFamily="@font/cabin_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/entryProgressTv"
@@ -177,4 +176,4 @@
             app:layout_constraintVertical_bias="0.7" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

@@ -11,7 +11,7 @@
         android:id="@+id/base_swipe_to_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:ads_colorType="accent_dark"
+        app:adt_colorType="accent_dark"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView

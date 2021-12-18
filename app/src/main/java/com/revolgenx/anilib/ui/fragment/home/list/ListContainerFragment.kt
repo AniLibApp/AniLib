@@ -360,7 +360,7 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         listExtendedFab.isAllowExtended = true
         listExtendedFab.isExtended = true
         mediaListSearchEt.typeface =
-            ResourcesCompat.getFont(requireContext(), R.font.cabin_regular)
+            ResourcesCompat.getFont(requireContext(), R.font.rubik_regular)
 
     }
 

@@ -5,7 +5,7 @@ import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.databinding.ReleaseInfoDialogLayoutBinding
-import com.revolgenx.anilib.markwon.MarkwonImpl
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 
 class ReleaseInfoDialog : BaseDialogFragment<ReleaseInfoDialogLayoutBinding>() {
     companion object {
@@ -19,7 +19,7 @@ class ReleaseInfoDialog : BaseDialogFragment<ReleaseInfoDialogLayoutBinding>() {
     }
 
     override fun builder(dialogBuilder: DynamicDialog.Builder, savedInstanceState: Bundle?) {
-        MarkwonImpl.createInstance(requireContext())
+        AlMarkwonFactory.getMarkwon(requireContext())
             .setMarkdown(binding.releaseInfo, requireContext().getString(R.string.release_info))
     }
 

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.recyclerview.adapter.DynamicItemsAdapter
 import com.pranavpandey.android.dynamic.support.recyclerview.binder.DynamicRecyclerViewBinder
 import com.pranavpandey.android.dynamic.support.utils.DynamicLayoutUtils
-import com.pranavpandey.android.dynamic.support.view.DynamicInfoView
+import com.pranavpandey.android.dynamic.support.view.base.DynamicInfoView
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.adapter.AppInfoAdapter

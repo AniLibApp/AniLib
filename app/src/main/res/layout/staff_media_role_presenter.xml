@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/staffMediaRoleContainer"
@@ -82,11 +82,11 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="10sp"
-            app:ads_colorType="accent_dark"
+            app:adt_colorType="accent_dark"
             app:layout_constraintLeft_toLeftOf="@+id/staffMediaRoleImageContainer"
             app:layout_constraintRight_toRightOf="@+id/staffMediaRoleImageContainer"
             app:layout_constraintTop_toBottomOf="@+id/staffMediaRoleFormatYearTv"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="SmallSp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

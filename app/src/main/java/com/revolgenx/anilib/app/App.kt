@@ -25,7 +25,6 @@ import com.pranavpandey.android.dynamic.theme.AppTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.activity.MainActivity
-import com.revolgenx.anilib.app.theme.AppController
 import com.revolgenx.anilib.app.theme.Constants
 import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.common.logger.AniLibDebugTree
@@ -57,7 +56,6 @@ import okhttp3.OkHttpClient
 open class App : DynamicApplication() {
 
     override fun attachBaseContext(base: Context) {
-        AppController.initializeInstance(this)
         super.attachBaseContext(base)
         MultiDex.install(this)
     }
@@ -255,7 +253,6 @@ open class App : DynamicApplication() {
     }
 
     override fun onCustomiseTheme() {
-        setDelayedTheme()
     }
 
 
@@ -277,7 +274,7 @@ open class App : DynamicApplication() {
                 return ThemeController.backgroundColor
             }
             Theme.ColorType.ACCENT -> {
-                ThemeController.colorAccentApp
+                ThemeController.accentColor
             }
             else -> super.getDefaultColor(colorType)
         }
@@ -286,23 +283,12 @@ open class App : DynamicApplication() {
     override fun onDynamicChanged(context: Boolean, recreate: Boolean) {
         super.onDynamicChanged(context, recreate)
 
-        if (context) {
-            AppController.instance.context = this
-        }
-
         if (recreate) {
             setDelayedTheme()
         }
     }
 
-    /**
-     * Method to do some delayed work.
-     */
     private fun setDelayedTheme() {
-//        DynamicTheme.getInstance().mainThreadHandler.postDelayed({
-//            // Add dynamic app shortcuts after the delay.
-//            setShortcuts()
-//        }, DynamicTheme.DELAY_THEME_CHANGE)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -310,16 +296,23 @@ open class App : DynamicApplication() {
 
         // Update themes on shared preferences change.
         when (key) {
-            Constants.PREF_SETTINGS_APP_THEME_DAY_COLOR ->
-                if (!DynamicTheme.getInstance().isNight && ThemeController.isAutoTheme) {
+            Constants.PREF_SETTINGS_BACKGROUND_COLOR_LIGHT,
+            Constants.PREF_SETTINGS_SURFACE_COLOR_LIGHT,
+            Constants.PREF_SETTINGS_ACCENT_COLOR_LIGHT->{
+                if(!ThemeController.isDarkMode){
                     DynamicTheme.getInstance().onDynamicChanged(false, true)
                 }
-            Constants.PREF_SETTINGS_APP_THEME_NIGHT_COLOR ->
-                if (DynamicTheme.getInstance().isNight && ThemeController.isAutoTheme) {
+            }
+            Constants.PREF_SETTINGS_BACKGROUND_COLOR_DARK,
+            Constants.PREF_SETTINGS_SURFACE_COLOR_DARK,
+            Constants.PREF_SETTINGS_ACCENT_COLOR_DARK->{
+                if(ThemeController.isDarkMode){
                     DynamicTheme.getInstance().onDynamicChanged(false, true)
                 }
-            Constants.PREF_SETTINGS_APP_THEME_COLOR,
-            Constants.PREF_SETTINGS_APP_THEME_COLOR_ACCENT ->
+            }
+            Constants.PREF_SETTINGS_CORNER_RADIUS,
+            Constants.PREF_SETTINGS_CARD_ELEVATION,
+            Constants.PREF_SETTINGS_THEME_MODE ->
                 DynamicTheme.getInstance().onDynamicChanged(false, true)
             languagePrefKey -> {
                 DynamicTheme.getInstance()

@@ -10,7 +10,6 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.data.field.review.ReviewField
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
-import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.model.review.ReviewModel
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.databinding.MarkwonHelperLayoutBinding
@@ -130,13 +129,6 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
         attachHelperToView(
             MarkwonHelperLayoutBinding.bind(binding.markwonHelper.markdownHelperLayout),
             binding.writeReviewEt
-        )
-        binding.writeReviewEt.addTextChangedListener(
-            MarkwonEditorTextWatcher.withProcess(
-                MarkwonImpl.createMarkwonEditor(
-                    requireContext()
-                )
-            )
         )
         binding.summaryPasteIv.setOnClickListener {
             binding.reviewSummaryEt.append(requireContext().getClipBoardText())

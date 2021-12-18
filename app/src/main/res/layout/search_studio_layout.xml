@@ -13,7 +13,7 @@
         android:layout_marginEnd="10dp"
         android:gravity="center_vertical"
         android:textSize="14sp"
-        app:ads_colorType="accent" />
+        app:adt_colorType="accent" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
         android:id="@+id/searchStudioMedia"

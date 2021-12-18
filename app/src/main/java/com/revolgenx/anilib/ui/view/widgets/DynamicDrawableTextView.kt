@@ -20,7 +20,7 @@ class DynamicDrawableTextView : DynamicTextView {
     ) {
     }
 
-    fun setDrawables(@DrawableRes startRes: Int?, @DrawableRes endRes: Int?,@DrawableRes topRes:Int? = null, @DrawableRes bottomRes:Int? = null, color: Int? = null) {
+    fun setDrawables(@DrawableRes startRes: Int? = null, @DrawableRes endRes: Int? = null,@DrawableRes topRes:Int? = null, @DrawableRes bottomRes:Int? = null, color: Int? = null) {
 
         val textPrimary = dynamicTextColorPrimary
 

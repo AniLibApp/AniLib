@@ -12,3 +12,6 @@ abstract class NotificationModel : BaseModel() {
     var notificationUnionType: NotificationUnionType? = null
 }
 
+abstract class ReasonableNotificationModel:NotificationModel(){
+    var reason:String? = null
+}

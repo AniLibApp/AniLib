@@ -912,4 +912,30 @@
         <item>@string/edit</item>
         <item>@string/delete</item>
     </string-array>
+
+    <string-array name="theme_mode_entries">
+        <item>@string/auto</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="theme_mode_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="theme_entries">
+        <item>@string/_default</item>
+        <item>@string/custom</item>
+        <item>@string/bee</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="bee">Bee</string>
 </resources>

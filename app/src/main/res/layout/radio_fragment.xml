@@ -13,15 +13,15 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ads_backgroundAware="disable"
-            app:ads_colorType="primary"
+            app:adt_backgroundAware="disable"
+            app:adt_colorType="primary"
             app:elevation="0dp">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:ads_backgroundAware="disable"
-                app:ads_colorType="background"
+                app:adt_backgroundAware="disable"
+                app:adt_colorType="background"
                 app:layout_scrollFlags="scroll|enterAlways">
 
 
@@ -29,10 +29,10 @@
                     android:id="@+id/list_tab_layout"
                     style="@style/HomeContainerTabLayoutStyle"
                     android:layout_width="match_parent"
-                    app:ads_backgroundColorType="background"
-                    app:ads_colorType="accent"
-                    app:ads_contrastWithColorType="background"
-                    app:ads_textColorType="text_primary"
+                    app:adt_backgroundColorType="background"
+                    app:adt_colorType="accent"
+                    app:adt_contrastWithColorType="background"
+                    app:adt_textColorType="text_primary"
                     app:entries="@array/music_entries"
                     app:layout_scrollFlags="noScroll"
                     app:tabTextAppearance="@style/RadioTabLayoutTextStyle" />

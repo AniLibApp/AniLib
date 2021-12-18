@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mediaListContainer"
@@ -82,7 +82,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="10sp"
-            app:ads_colorType="accent"
+            app:adt_colorType="accent"
             app:layout_constraintLeft_toRightOf="@+id/mediaListImageContainer"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mediaListGenreLayout"
@@ -100,7 +100,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="10sp"
-            app:ads_colorType="accent"
+            app:adt_colorType="accent"
             app:layout_constraintLeft_toRightOf="@+id/mediaListImageContainer"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mediaListStatusTv"
@@ -129,10 +129,10 @@
             android:layout_height="26dp"
             android:background="?selectableItemBackground"
             android:padding="4dp"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:srcCompat="@drawable/ic_plus" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

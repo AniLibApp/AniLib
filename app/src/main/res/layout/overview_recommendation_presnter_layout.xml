@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<com.pranavpandey.android.dynamic.support.widget.DynamicCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.DynamicApp.Card.Margin.Clickable"
@@ -90,7 +90,7 @@
             android:layout_height="match_parent"
             android:padding="6dp"
             android:src="@drawable/ic_thumb_up"
-            app:ads_colorType="text_primary"
+            app:adt_colorType="text_primary"
             />
 
 
@@ -100,7 +100,7 @@
             android:layout_height="match_parent"
             android:padding="6dp"
             android:src="@drawable/ic_thumb_down"
-            app:ads_colorType="text_primary"/>
+            app:adt_colorType="text_primary"/>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/mediaRecommendationRating"
@@ -119,7 +119,7 @@
 
     </LinearLayout>
 
-</com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
 

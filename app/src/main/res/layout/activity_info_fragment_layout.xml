@@ -40,7 +40,7 @@
                         android:layout_gravity="center_horizontal" />
                 </FrameLayout>
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+                <com.revolgenx.anilib.ui.view.widgets.AlCardView
                     android:id="@+id/text_activity_container_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -66,8 +66,8 @@
                             android:layout_marginStart="8dp"
                             android:maxLines="1"
                             android:textSize="14sp"
-                            app:ads_colorType="accent"
-                            app:ads_contrastWithColorType="background"
+                            app:adt_colorType="accent"
+                            app:adt_contrastWithColorType="background"
                             app:layout_constraintBottom_toBottomOf="@id/user_avatar_iv"
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintStart_toEndOf="@+id/user_avatar_iv"
@@ -80,7 +80,7 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="10dp"
                             android:padding="4dp"
-                            app:ads_colorType="text_primary"
+                            app:adt_colorType="text_primary"
                             app:layout_constraintBottom_toBottomOf="@id/user_name_tv"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/user_name_tv"
@@ -92,7 +92,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:padding="5dp"
-                            app:ads_colorType="text_primary"
+                            app:adt_colorType="text_primary"
                             app:layout_constraintBottom_toBottomOf="@id/user_name_tv"
                             app:layout_constraintEnd_toStartOf="@id/activity_more_popup"
                             app:layout_constraintTop_toTopOf="@id/user_name_tv"
@@ -125,10 +125,10 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+                </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+                <com.revolgenx.anilib.ui.view.widgets.AlCardView
                     android:id="@+id/list_activity_container_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -153,8 +153,8 @@
                             android:layout_marginTop="8dp"
                             android:maxLines="1"
                             android:textSize="13sp"
-                            app:ads_colorType="accent"
-                            app:ads_contrastWithColorType="background"
+                            app:adt_colorType="accent"
+                            app:adt_contrastWithColorType="background"
                             app:layout_constraintEnd_toStartOf="@+id/list_activity_subscribe_iv"
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintStart_toEndOf="@+id/media_cover_iv"
@@ -167,7 +167,7 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="10dp"
                             android:padding="5dp"
-                            app:ads_colorType="text_primary"
+                            app:adt_colorType="text_primary"
                             app:entries="@array/activity_more_entries"
                             app:layout_constraintBottom_toBottomOf="@id/list_user_name_tv"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -180,7 +180,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:padding="5dp"
-                            app:ads_colorType="text_primary"
+                            app:adt_colorType="text_primary"
                             app:layout_constraintBottom_toBottomOf="@id/list_user_name_tv"
                             app:layout_constraintEnd_toStartOf="@id/list_activity_more_popup"
                             app:layout_constraintTop_toTopOf="@id/list_user_name_tv"
@@ -230,7 +230,7 @@
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+                </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -252,7 +252,7 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="2dp"
                             android:padding="2dp"
-                            app:ads_colorType="text_primary"
+                            app:adt_colorType="text_primary"
                             app:srcCompat="@drawable/ic_activity_like_outline" />
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView

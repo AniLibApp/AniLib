@@ -25,7 +25,7 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
-import com.pranavpandey.android.dynamic.support.widget.DynamicCardView
+import com.revolgenx.anilib.ui.view.widgets.AlCardView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.enableAutoMlTranslation
 import com.revolgenx.anilib.common.preference.enableMlTranslation
@@ -33,7 +33,6 @@ import com.revolgenx.anilib.common.preference.inUseMlLanguageModel
 import com.revolgenx.anilib.constant.*
 import com.revolgenx.anilib.data.field.media.MediaOverviewField
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
-import com.revolgenx.anilib.markwon.MarkwonImpl
 import com.revolgenx.anilib.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.model.media_info.MediaMetaCollection
 import com.revolgenx.anilib.data.model.media_info.MediaOverviewModel
@@ -48,6 +47,7 @@ import com.revolgenx.anilib.ui.presenter.media.MediaMetaPresenter
 import com.revolgenx.anilib.ui.presenter.media.MediaRecommendationPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.infrastructure.source.MediaOverviewRecommendationSource
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.adapter.MediaGenreChipAdapter
 import com.revolgenx.anilib.ui.adapter.MediaTagChipAdapter
@@ -314,7 +314,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
         overview.airingTimeModel?.let { atModel ->
             airingContainer.visibility = View.VISIBLE
             airingContainer.addView(
-                DynamicCardView(requireContext()).also {
+                AlCardView(requireContext()).also {
                     it.layoutParams = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
@@ -469,7 +469,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
     private fun MediaOverviewFragmentBinding.setMarkdownDescription(
         description: String
     ) {
-        MarkwonImpl.createHtmlInstance(requireContext())
+        AlMarkwonFactory.getMarkwon(requireContext())
             .setMarkdown(mediaDescriptionTv, description)
     }
 

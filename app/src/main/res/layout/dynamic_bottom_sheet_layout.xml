@@ -16,8 +16,8 @@
         android:paddingEnd="10dp"
         android:textSize="18sp"
         android:visibility="gone"
-        app:ads_colorType="accent"
-        app:ads_contrastWithColorType="background" />
+        app:adt_colorType="accent"
+        app:adt_contrastWithColorType="background" />
 
 
     <View
@@ -52,11 +52,11 @@
             android:background="@drawable/ads_button_remote"
             android:gravity="center"
             android:visibility="gone"
-            app:ads_colorType="accent"
+            app:adt_colorType="accent"
             android:textSize="13sp"
-            app:ads_contrastWithColorType="background"
+            app:adt_contrastWithColorType="background"
             app:fontFamily="@font/cabin_semi_bold"
-            app:ads_rtlSupport="false"
+            app:adt_rtlSupport="false"
             app:textAllCaps="true" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -67,9 +67,9 @@
             android:background="@drawable/ads_button_remote"
             android:gravity="center"
             android:visibility="gone"
-            app:ads_colorType="accent"
-            app:ads_contrastWithColorType="background"
-            app:ads_rtlSupport="false"
+            app:adt_colorType="accent"
+            app:adt_contrastWithColorType="background"
+            app:adt_rtlSupport="false"
             android:textSize="13sp"
             app:fontFamily="@font/cabin_semi_bold"
             app:textAllCaps="true" />

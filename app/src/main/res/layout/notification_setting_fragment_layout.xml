@@ -14,7 +14,7 @@
             android:id="@+id/notification_setting_progress_bar"
             layout="@layout/horizontal_progress_bar_layout" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCardView style="@style/Widget.DynamicApp.Card">
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView style="@style/Widget.DynamicApp.Card">
 
             <com.pranavpandey.android.dynamic.support.setting.base.DynamicSpinnerPreference
                 android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 app:ads_title="@string/refresh_interval"
                 app:ads_value="0"
                 app:ads_values="@array/notification_refresh_interval_value" />
-        </com.pranavpandey.android.dynamic.support.widget.DynamicCardView>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
         <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
             android:layout_width="match_parent"

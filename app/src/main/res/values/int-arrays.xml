@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Default app theme colors. -->
-    <integer-array name="pref_app_theme_colors">
-        <item>-3</item>
+    <integer-array name="pref_background_colors">
         <item>@color/window_background_light</item>
         <item>@color/ads_window_background</item>
         <item>@color/ads_window_background_yellow</item>
+        <item>@color/color1</item>
+        <item>@color/color2</item>
+        <item>@color/color3</item>
+        <item>@color/color4</item>
+        <item>@color/color5</item>
+        <item>@color/color6</item>
+        <item>@color/color7</item>
         <item>@color/ads_window_background_indigo_light</item>
         <item>@color/ads_window_background_red_light</item>
         <item>@color/ads_window_background_green_light</item>
@@ -27,35 +33,16 @@
         <item>@color/ads_window_background_gray</item>
     </integer-array>
 
-    <!-- Default app theme day colors. -->
-    <integer-array name="pref_app_theme_day_colors">
-        <item>@color/window_background_light</item>
-        <item>@color/ads_window_background_yellow</item>
-        <item>@color/ads_window_background_indigo_light</item>
-        <item>@color/ads_window_background_red_light</item>
-        <item>@color/ads_window_background_green_light</item>
-        <item>@color/ads_window_background_blue_light</item>
-        <item>@color/ads_window_background_teal_light</item>
-        <item>@color/ads_window_background_purple_light</item>
-        <item>@color/ads_window_background_orange_light</item>
-        <item>@color/ads_window_background_brown_light</item>
-        <item>@color/ads_window_background_gray_light</item>
+    <integer-array name="pref_surface_colors">
+            <item>-3</item>
     </integer-array>
 
-    <!-- Default app theme night colors. -->
-    <integer-array name="pref_app_theme_night_colors">
-        <item>@color/colorPrimaryDark</item>
-        <item>@color/ads_window_background</item>
-        <item>@color/ads_window_background_dark</item>
-        <item>@color/ads_window_background_indigo</item>
-        <item>@color/ads_window_background_red</item>
-        <item>@color/ads_window_background_green</item>
-        <item>@color/ads_window_background_blue</item>
-        <item>@color/ads_window_background_teal</item>
-        <item>@color/ads_window_background_purple</item>
-        <item>@color/ads_window_background_orange</item>
-        <item>@color/ads_window_background_brown</item>
-        <item>@color/ads_window_background_gray</item>
-    </integer-array>
+    <color name="color1">#0A1626</color>
+    <color name="color2">#192A53</color>
+    <color name="color3">#163B3B</color>
+    <color name="color4">#08123A</color>
+    <color name="color5">#1E1E3F</color>
+    <color name="color6">#E0EBF5</color>
+    <color name="color7">#112123</color>
 
 </resources>

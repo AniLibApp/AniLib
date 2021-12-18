@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="6dp"
-        app:ads_backgroundColorType="background"
+        app:adt_backgroundColorType="background"
         app:tabMode="fixed"
         app:tabTextAppearance="@style/SubTabTextAppearance" />
 
