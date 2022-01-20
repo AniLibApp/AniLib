@@ -3,7 +3,7 @@ package com.revolgenx.anilib.infrastructure.source.home.airing
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.extensions.HeaderSource
-import com.revolgenx.anilib.data.model.airing.AiringMediaModel
+import com.revolgenx.anilib.airing.data.model.AiringMediaModel
 
 class AiringHeaderSource : HeaderSource<AiringMediaModel, String>() {
 

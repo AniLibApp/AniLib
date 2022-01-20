@@ -5,8 +5,8 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.extensions.HeaderSource
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.model.CommonMediaModel
-import com.revolgenx.anilib.infrastructure.source.MediaSource
+import com.revolgenx.anilib.common.data.model.CommonMediaModel
+import com.revolgenx.anilib.infrastructure.source.MediaAdapterSource
 
 class MediaFormatHeaderSource(context: Context) : HeaderSource<CommonMediaModel, String>() {
 
@@ -22,7 +22,7 @@ class MediaFormatHeaderSource(context: Context) : HeaderSource<CommonMediaModel,
     }
 
     override fun dependsOn(source: Source<*>): Boolean {
-        return source is MediaSource
+        return source is MediaAdapterSource
     }
 
     override fun computeHeaders(

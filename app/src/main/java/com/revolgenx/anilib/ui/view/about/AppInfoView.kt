@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.recyclerview.DynamicRecyclerViewFrame
 import com.pranavpandey.android.dynamic.support.utils.DynamicLayoutUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.adapter.AppInfoAdapter
+import com.revolgenx.anilib.common.ui.adapter.AlAppInfoAdapter
 
 class AppInfoView : DynamicRecyclerViewFrame {
 
@@ -32,7 +32,7 @@ class AppInfoView : DynamicRecyclerViewFrame {
 
     private fun setAdapter(): AppInfoView {
         // Set adapter for the recycler view.
-        adapter = AppInfoAdapter()
+        adapter = AlAppInfoAdapter()
 
         return this
     }

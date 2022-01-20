@@ -11,8 +11,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
-import com.revolgenx.anilib.data.field.home.AiringMediaField
-import com.revolgenx.anilib.data.meta.type.ALAiringSort
+import com.revolgenx.anilib.airing.data.field.AiringMediaField
+import com.revolgenx.anilib.constant.ALAiringSort
 import com.revolgenx.anilib.databinding.AiringWidgetConfigFragmentLayoutBinding
 import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
@@ -33,6 +33,7 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
     override var titleRes: Int? = R.string.airing_widget_config
     override val noScrollToolBar: Boolean = true
     override val toolbarColorType: Int = Theme.ColorType.BACKGROUND
+    override val menuRes: Int = R.menu.save_menu
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -91,10 +92,6 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.save_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         field.updateField()
@@ -120,8 +117,7 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
         }
     }
 
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.save_menu -> {
                 val oldIsWeekly = field.isWeeklyTypeDate

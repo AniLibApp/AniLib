@@ -11,14 +11,14 @@ import com.revolgenx.anilib.common.preference.storeMediaListFilterField
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.constant.MediaListDisplayMode
+import com.revolgenx.anilib.constant.AlaMediaListStatus
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.data.meta.MediaListFilterMeta
-import com.revolgenx.anilib.data.meta.type.MediaListStatus
-import com.revolgenx.anilib.data.model.list.MediaListModel
+import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
-import com.revolgenx.anilib.ui.presenter.home.discover.MediaListCollectionPresenter
+import com.revolgenx.anilib.home.discover.presenter.MediaListCollectionPresenter
 import com.revolgenx.anilib.ui.viewmodel.home.list.MediaListContainerViewModel
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.registerForEvent
@@ -28,16 +28,16 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel>(),
+abstract class MediaListContainerFragment : BasePresenterFragment<AlMediaListModel>(),
     EventBusListener {
 
-    override val basePresenter: Presenter<MediaListModel>
+    override val basePresenter: Presenter<AlMediaListModel>
         get() = MediaListCollectionPresenter(
             requireContext(),
             mediaListMeta,
             viewModel.mediaListViewModel
         )
-    override val baseSource: Source<MediaListModel>
+    override val baseSource: Source<AlMediaListModel>
         get() = viewModel.mediaListViewModel.source ?: createSource()
 
     private val viewModel by viewModel<MediaListContainerViewModel>()
@@ -51,7 +51,7 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
     }
 
 
-    override fun createSource(): Source<MediaListModel> {
+    override fun createSource(): Source<AlMediaListModel> {
         return viewModel.mediaListViewModel.createSource()
     }
 
@@ -63,7 +63,7 @@ abstract class MediaListContainerFragment : BasePresenterFragment<MediaListModel
 
     fun setCurrentStatus(statusIndex: Int) {
         viewModel.mediaListViewModel.field.filter.search = null
-        viewModel.currentListStatus = MediaListStatus.values()[statusIndex].status
+        viewModel.currentListStatus = AlaMediaListStatus.values()[statusIndex].status
         invalidateAdapter()
     }
 

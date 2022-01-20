@@ -3,9 +3,9 @@ package com.revolgenx.anilib.infrastructure.source
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
-import com.revolgenx.anilib.data.field.user.UserFavouriteField
-import com.revolgenx.anilib.data.model.BaseModel
-import com.revolgenx.anilib.infrastructure.service.user.UserService
+import com.revolgenx.anilib.user.data.field.UserFavouriteField
+import com.revolgenx.anilib.common.data.model.BaseModel
+import com.revolgenx.anilib.user.service.UserService
 import io.reactivex.disposables.CompositeDisposable
 
 class UserFavouriteSource(

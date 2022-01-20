@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.radio.repository.api
 
-import android.content.Context
 import com.revolgenx.anilib.BuildConfig
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineDispatcher
@@ -10,17 +9,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.HttpException
 import java.io.IOException
 
-class NetworkHelper() {
+class NetworkHelper {
     val client by lazy {
         val builder = OkHttpClient.Builder()
-
         if (BuildConfig.DEBUG) {
             val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.HEADERS
             }
             builder.addInterceptor(httpLoggingInterceptor)
         }
-
         builder.build()
     }
 }

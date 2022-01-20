@@ -2,9 +2,9 @@ package com.revolgenx.anilib.infrastructure.source.home.airing
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.data.field.home.AiringMediaField
-import com.revolgenx.anilib.data.model.airing.AiringMediaModel
-import com.revolgenx.anilib.infrastructure.service.airing.AiringMediaService
+import com.revolgenx.anilib.airing.data.field.AiringMediaField
+import com.revolgenx.anilib.airing.data.model.AiringMediaModel
+import com.revolgenx.anilib.airing.service.AiringMediaService
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
 import io.reactivex.disposables.CompositeDisposable
 

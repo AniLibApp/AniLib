@@ -1,34 +1,32 @@
 package com.revolgenx.anilib.infrastructure.repository.network.converter
 
 import com.revolgenx.anilib.*
-import com.revolgenx.anilib.data.model.*
-import com.revolgenx.anilib.data.model.airing.AiringTimeModel
-import com.revolgenx.anilib.data.model.airing.TimeUntilAiringModel
-import com.revolgenx.anilib.data.model.character.CharacterImageModel
-import com.revolgenx.anilib.data.model.character.CharacterNameModel
-import com.revolgenx.anilib.data.model.entry.AdvancedScore
-import com.revolgenx.anilib.data.model.entry.MediaEntryListModel
+import com.revolgenx.anilib.common.data.model.CommonMediaModel
+import com.revolgenx.anilib.media.data.model.MediaTitleModel
+import com.revolgenx.anilib.entry.data.model.AdvancedScoreModel
+import com.revolgenx.anilib.entry.data.model.MediaEntryListModel
 import com.revolgenx.anilib.data.model.list.MediaListCountModel
-import com.revolgenx.anilib.data.model.media_info.*
-import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
-import com.revolgenx.anilib.data.model.setting.MediaListOptionTypeModel
-import com.revolgenx.anilib.data.model.setting.MediaOptionModel
-import com.revolgenx.anilib.data.model.setting.getRowOrder
-import com.revolgenx.anilib.data.model.studio.MediaStudioModel
-import com.revolgenx.anilib.data.model.user.AvatarModel
-import com.revolgenx.anilib.data.model.user.UserMediaListModel
-import com.revolgenx.anilib.data.model.user.UserModel
-import com.revolgenx.anilib.data.model.user.UserPrefModel
+import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
+import com.revolgenx.anilib.app.setting.data.model.MediaListOptionTypeModel
+import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel
+import com.revolgenx.anilib.app.setting.data.model.getRowOrder
+import com.revolgenx.anilib.common.data.model.FuzzyDateModel
+import com.revolgenx.anilib.data.model.list.AlMediaListModel
+import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel
+import com.revolgenx.anilib.studio.data.model.MediaStudioModel
+import com.revolgenx.anilib.user.data.model.UserAvatarModel
+import com.revolgenx.anilib.user.data.model.UserModel
+import com.revolgenx.anilib.user.data.model.UserPrefModel
 import com.revolgenx.anilib.fragment.*
+import com.revolgenx.anilib.list.data.model.MediaListModel
+import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.social.data.model.ListActivityModel
 import com.revolgenx.anilib.social.data.model.MessageActivityModel
 import com.revolgenx.anilib.social.data.model.TextActivityModel
 import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
-import com.revolgenx.anilib.util.pmap
 import com.revolgenx.anilib.util.prettyTime
-import kotlinx.coroutines.runBlocking
 
 fun <T : CommonMediaModel> NarrowMediaContent.getCommonMedia(model: T): T {
     model.mediaId = id()
@@ -86,6 +84,62 @@ fun <T : CommonMediaModel> CommonMediaContent.getCommonMedia(model: T): T {
 }
 
 
+fun NarrowMediaContent.toModel() = MediaModel().also {model->
+    model.id = id()
+    model.title = title()?.fragments()?.mediaTitle()?.toModel()
+    model.description = description() ?: ""
+    model.popularity = popularity()
+    model.favourites = favourites()
+    model.format = format()?.ordinal
+    model.type = type()?.ordinal
+    model.episodes = episodes()
+    model.duration = duration()
+    model.chapters = chapters()
+    model.volumes = volumes()
+    model.status = status()?.ordinal
+    model.coverImage = coverImage()?.fragments()?.mediaCoverImage()?.toModel()
+    model.genres = genres()
+    model.averageScore = averageScore()
+    model.season = season()?.ordinal
+    model.seasonYear = seasonYear()
+
+    model.startDate = startDate()?.fragments()?.fuzzyDate()?.toModel()
+    model.endDate = endDate()?.fragments()?.fuzzyDate()?.toModel()
+    model.bannerImage = bannerImage() ?: model.coverImage!!.largeImage
+
+    model.isAdult = isAdult ?: false
+    model.mediaListEntry = mediaListEntry()?.let {
+        MediaListModel().also {model->
+            model.progress = it.progress() ?: 0
+            model.status = it.status()?.ordinal
+        }
+    }
+    return model
+}
+
+
+fun CommonMediaContent.toModel() = MediaModel().also {model->
+    model.id = id()
+    model.title = title()?.fragments()?.mediaTitle()?.toModel()
+    model.format = format()?.ordinal
+    model.type = type()?.ordinal
+    model.status = status()?.ordinal
+    model.coverImage = coverImage()?.fragments()?.mediaCoverImage()?.toModel()
+    model.averageScore = averageScore()
+    model.season = season()?.ordinal
+    model.seasonYear = seasonYear()
+    model.bannerImage = bannerImage() ?: model.coverImage!!.largeImage
+
+    model.isAdult = isAdult ?: false
+    model.mediaListEntry = mediaListEntry()?.let {
+        MediaListModel().also { list->
+            list.progress = it.progress() ?: 0
+            list.status = it.status()?.ordinal
+        }
+    }
+}
+
+
 fun BasicMediaContent.toBasicMediaContent() = CommonMediaModel().also { media ->
     media.mediaId = id()
     media.title = title()?.fragments()?.mediaTitle()?.toModel()
@@ -99,8 +153,8 @@ fun BasicUserQuery.User.toBasicUserModel() = UserPrefModel().also {
     it.id = id()
     it.name = name()
     it.unreadNotificationCount = unreadNotificationCount()
-    it.mediaListOption = mediaListOptions()?.fragments()?.userMediaListOptions()?.toModel()
-    it.mediaOptions = options()?.fragments()?.userMediaOptions()?.toModel()
+    it.mediaListOptions = mediaListOptions()?.fragments()?.userMediaListOptions()?.toModel()
+    it.options = options()?.fragments()?.userMediaOptions()?.toModel()
 }
 
 
@@ -115,14 +169,14 @@ fun MediaListContent.toListEditorMediaModel() = EntryListEditorMediaModel().also
     it.private = private_() ?: false
     it.repeat = repeat()
     it.startDate = startedAt()?.let {
-        DateModel().also { date ->
+        FuzzyDateModel().also { date ->
             date.day = it.day()
             date.month = it.month()
             date.year = it.year()
         }
     }
     it.endDate = completedAt()?.let {
-        DateModel().also { date ->
+        FuzzyDateModel().also { date ->
             date.day = it.day()
             date.month = it.month()
             date.year = it.year()
@@ -132,107 +186,8 @@ fun MediaListContent.toListEditorMediaModel() = EntryListEditorMediaModel().also
 }
 
 
-fun MediaOverViewQuery.Media.toMediaOverviewModel() = MediaOverviewModel().also {
-    runBlocking {
-
-        it.mediaId = id()
-        it.title = title()?.fragments()?.mediaTitle()?.toModel()
-        it.startDate = startDate()?.fragments()?.fuzzyDate()?.toModel()
-        it.endDate = endDate()?.fragments()?.fuzzyDate()?.toModel()
-        it.genres = genres()
-        it.episodes = episodes()?.toString()
-        it.chapters = chapters()?.toString()
-        it.volumes = volumes()?.toString()
-        it.averageScore = averageScore()
-        it.meanScore = meanScore()
-        it.duration = duration()?.toString()
-        it.status = status()?.ordinal
-        it.format = format()?.ordinal
-        it.type = type()?.ordinal
-        it.isAdult = isAdult ?: false
-        it.popularity = popularity()
-        it.favourites = favourites()
-        it.season = season()?.ordinal
-        it.seasonYear = seasonYear()
-        it.description = description()
-        it.source = source()?.ordinal
-        it.hashTag = hashtag()
-        it.synonyms = synonyms()
-        it.airingTimeModel = nextAiringEpisode()?.let {
-            AiringTimeModel().also { model ->
-                model.episode = it.episode()
-                model.timeUntilAiring =
-                    TimeUntilAiringModel().also { ti -> ti.time = it.timeUntilAiring().toLong() }
-            }
-        }
-        it.relationship = relations()?.edges()?.pmap {
-            MediaRelationshipModel().also { rel ->
-                rel.relationshipType = it.relationType()?.ordinal
-                it.node()?.let { node ->
-                    rel.mediaId = node.id()
-                    rel.title = node.title()?.fragments()?.mediaTitle()?.toModel()
-                    rel.format = node.format()?.ordinal
-                    rel.type = node.type()?.ordinal
-                    rel.status = node.status()?.ordinal
-                    rel.averageScore = node.averageScore()
-                    rel.seasonYear = node.seasonYear()
-                    rel.coverImage = node.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
-                    rel.bannerImage = node.bannerImage() ?: rel.coverImage?.largeImage
-                }
-            }
-        }
-        it.externalLink = externalLinks()?.pmap {
-            MediaExternalLinkModel().also { link ->
-                link.linkId = it.id()
-                link.site = it.site()
-                link.url = it.url()
-            }
-        }
-        it.tags = tags()?.pmap {
-            MediaTagsModel(
-                it.name(),
-                it.description(),
-                it.category(),
-                it.isMediaSpoiler == true,
-                it.rank(),
-                it.isAdult
-            )
-        }
-        it.trailer = trailer()?.let {
-            MediaTrailerModel().also { trailer ->
-                trailer.id = it.id()
-                trailer.site = it.site()
-                trailer.thumbnail = it.thumbnail()
-            }
-        }
-        it.studios = studios()!!.edges()!!.pmap {
-            it.node()!!.fragments().studioInfo().toModel()
-        }
-
-        it.characters = characters()!!.edges()!!.pmap {
-            MediaCharacterModel().also { model ->
-                model.role = it.role()?.ordinal
-                it.node()!!.let {
-                    model.id = it.id()
-                    model.name = it.name()?.let {
-                        CharacterNameModel().also { model ->
-                            model.full = it.full()
-                        }
-                    }
-                    model.image = it.image()?.let {
-                        CharacterImageModel().apply {
-                            large = it.large()
-                            medium = it.medium()
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 fun MediaWatchQuery.Media.toModel() = streamingEpisodes()?.map {
-    MediaWatchModel().also { model ->
+    MediaStreamingEpisodeModel().also { model ->
         model.site = it.site()
         model.thumbnail = it.thumbnail()
         model.title = it.title()
@@ -241,7 +196,7 @@ fun MediaWatchQuery.Media.toModel() = streamingEpisodes()?.map {
 }
 
 
-fun UserMediaOptions.toModel() = MediaOptionModel(
+fun UserMediaOptions.toModel() = UserOptionsModel(
     titleLanguage()!!.ordinal,
     displayAdultContent()!!,
     airingNotifications()!!,
@@ -255,23 +210,33 @@ fun UserMediaListOptions.toModel() = MediaListOptionModel().also {
         MediaListOptionTypeModel().also { optionModel ->
             optionModel.advancedScoringEnabled = it.advancedScoringEnabled()!!
             optionModel.advancedScoring =
-                it.advancedScoring()?.map { AdvancedScore(it, 0.0) }?.toMutableList()
+                it.advancedScoring()?.map { AdvancedScoreModel(it, 0.0) }?.toMutableList()
+            optionModel.customLists = it.customLists()
+        }
+    }
+    it.animeList = mangaList()?.let {
+        MediaListOptionTypeModel().also { optionModel ->
+            optionModel.customLists = it.customLists()
         }
     }
 }
 
-fun MediaTitle.toModel() = TitleModel(english(), romaji(), native_(), userPreferred())
+fun MediaTitle.toModel() = MediaTitleModel(english(), romaji(), native_(), userPreferred())
 
-fun MediaCoverImage.toModel() = MediaCoverImageModel(medium(), large(), extraLarge())
+fun MediaCoverImage.toModel() = MediaCoverImageModel().also{ model->
+    model.medium = medium()
+    model.large = large()
+    model.extraLarge = extraLarge()
+}
 
-fun FuzzyDate.toModel() = DateModel(year(), month(), day())
+fun FuzzyDate.toModel() = FuzzyDateModel(year(), month(), day())
 
 fun UserListCount.toModel() = MediaListCountModel(count(), status()!!.ordinal)
 
 fun StudioInfo.toModel() = MediaStudioModel().also { studio ->
     studio.studioName = name()
     studio.isAnimationStudio = isAnimationStudio
-    studio.studioId = id()
+    studio.id = id()
 }
 
 
@@ -424,7 +389,7 @@ fun LikeUsers.toModel() = UserModel().also { fModel ->
     fModel.id = id()
     fModel.name = name()
     fModel.avatar = avatar()?.let {
-        AvatarModel().also { uModel ->
+        UserAvatarModel().also { uModel ->
             uModel.large = it.large()
             uModel.medium = it.medium()
         }
@@ -449,7 +414,7 @@ fun ReplyUsers.toModel() = ActivityReplyModel().also { model ->
             fModel.id = it.id()
             fModel.name = it.name()
             fModel.avatar = it.avatar()?.let {
-                AvatarModel().also { uModel ->
+                UserAvatarModel().also { uModel ->
                     uModel.large = it.large()
                     uModel.medium = it.medium()
                 }
@@ -465,7 +430,7 @@ fun ActivityUser.toModel() = UserModel().also { model ->
     model.name = name()
     model.avatar =
         avatar()?.let {
-            AvatarModel().also { uModel ->
+            UserAvatarModel().also { uModel ->
                 uModel.large = it.large()
                 uModel.medium = it.medium()
             }
@@ -477,7 +442,7 @@ fun MessengerUser.toModel() = UserModel().also { model ->
     model.name = name()
     model.avatar =
         avatar()?.let {
-            AvatarModel().also { uModel ->
+            UserAvatarModel().also { uModel ->
                 uModel.large = it.large()
                 uModel.medium = it.medium()
             }
@@ -491,11 +456,11 @@ fun MediaSocialFollowingQuery.MediaList.toModel() = MediaSocialFollowingModel().
     model.type = media()?.type()?.ordinal
     model.status = status()?.ordinal
     model.user = user()?.let {
-        UserMediaListModel().also { u ->
+        UserModel().also { u ->
             u.id = it.id()
             u.name = it.name()
             u.avatar = it.avatar()?.let { ava ->
-                AvatarModel().also { avatarModel ->
+                UserAvatarModel().also { avatarModel ->
                     avatarModel.medium = ava.medium()
                     avatarModel.large = ava.large()
                 }
@@ -506,5 +471,43 @@ fun MediaSocialFollowingQuery.MediaList.toModel() = MediaSocialFollowingModel().
                 }
             }
         }
+    }
+}
+
+
+//TODO DELETE
+fun AlMediaListCollectionQuery.Entry.toModel() = AlMediaListModel().also { model ->
+    model.mediaListId = id()
+    model.progress = progress()
+    model.score = score()
+
+    model.listStartDate =
+        startedAt()?.fragments()?.fuzzyDate()?.toModel()
+    model.listCompletedDate =
+        completedAt()?.fragments()?.fuzzyDate()?.toModel()
+    model.listUpdatedDate = updatedAt()
+    model.listCreatedDate = createdAt()
+
+    model.scoreFormat =
+        user()?.mediaListOptions()?.scoreFormat()?.ordinal
+
+    media()?.let { media ->
+        model.mediaId = media.id()
+        model.episodes = media.episodes()?.toString()
+        model.chapters = media.chapters()?.toString()
+        model.title = media.title()?.fragments()?.mediaTitle()?.toModel()
+        model.coverImage = media.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
+        model.bannerImage = media.bannerImage() ?: model.coverImage?.extraLarge
+        model.startDate =
+            media.startDate()?.fragments()?.fuzzyDate()?.toModel()
+        model.endDate =
+            media.endDate()?.fragments()?.fuzzyDate()?.toModel()
+        model.averageScore = media.averageScore()
+        model.popularity = media.popularity()
+        model.type = media.type()?.ordinal
+        model.genres = media.genres()
+        model.format = media.format()?.ordinal
+        model.status = media.status()?.ordinal
+        model.synonyms = media.synonyms()
     }
 }

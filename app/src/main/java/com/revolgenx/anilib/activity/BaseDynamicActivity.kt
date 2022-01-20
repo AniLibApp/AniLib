@@ -15,8 +15,6 @@ import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.infrastructure.event.*
-import com.revolgenx.anilib.ui.dialog.MediaViewDialog
-import com.revolgenx.anilib.ui.fragment.media.MediaListingFragment
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.registerForEvent
@@ -79,23 +77,12 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBaseEvent(event: CommonEvent) {
         when (event) {
-            is ImageClickedEvent -> {
-                SimpleDraweeViewerActivity.openActivity(this, DraweeViewerMeta(event.meta.url))
+            is OpenImageEvent -> {
+                SimpleDraweeViewerActivity.openActivity(this, event.url)
             }
-
-            is YoutubeClickedEvent -> {
-                openLink(event.meta.url)
-            }
-
-            is VideoClickedEvent -> {
-                openLink(event.videoMeta.url)
-            }
-
             is OpenAlSiteEvent -> {
                 openLink(getString(R.string.site_url))
             }
-
-
         }
     }
 

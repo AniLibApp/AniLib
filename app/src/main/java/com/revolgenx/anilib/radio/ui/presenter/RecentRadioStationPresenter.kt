@@ -10,7 +10,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.databinding.RecentRadioStationPresenterBinding
 import com.revolgenx.anilib.radio.repository.room.RadioStation
 import com.revolgenx.anilib.radio.ui.util.RadioPlayerHelper
-import com.revolgenx.anilib.ui.presenter.Constant
+import com.revolgenx.anilib.common.presenter.Constant
 
 class RecentRadioStationPresenter(context: Context) : Presenter<RadioStation>(context) {
     override val elementTypes: Collection<Int> = listOf(0)

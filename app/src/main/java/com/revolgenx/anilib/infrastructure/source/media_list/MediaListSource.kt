@@ -3,7 +3,7 @@ package com.revolgenx.anilib.infrastructure.source.media_list
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.data.field.list.MediaListField
-import com.revolgenx.anilib.data.model.list.MediaListModel
+import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
 import io.reactivex.disposables.CompositeDisposable
@@ -12,8 +12,8 @@ class MediaListSource(
     field: MediaListField,
     private val mediaListService: MediaListService,
     private val compositeDisposable: CompositeDisposable
-) : BaseRecyclerSource<MediaListModel, MediaListField>(field) {
-    override fun areItemsTheSame(first: MediaListModel, second: MediaListModel): Boolean {
+) : BaseRecyclerSource<AlMediaListModel, MediaListField>(field) {
+    override fun areItemsTheSame(first: AlMediaListModel, second: AlMediaListModel): Boolean {
         return first.mediaListId == second.mediaListId
     }
 

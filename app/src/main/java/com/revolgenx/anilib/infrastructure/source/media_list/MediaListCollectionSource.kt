@@ -3,7 +3,7 @@ package com.revolgenx.anilib.infrastructure.source.media_list
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.data.field.list.MediaListCollectionField
-import com.revolgenx.anilib.data.model.list.MediaListModel
+import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
@@ -16,14 +16,14 @@ import kotlinx.coroutines.launch
 
 class MediaListCollectionSource(
     field: MediaListCollectionField,
-    private val listMap: MutableMap<Int, MediaListModel>,
+    private val listMap: MutableMap<Int, AlMediaListModel>,
     private val mediaListService: MediaListService,
     private val compositeDisposable: CompositeDisposable
-) : BaseRecyclerSource<MediaListModel, MediaListCollectionField>(field) {
+) : BaseRecyclerSource<AlMediaListModel, MediaListCollectionField>(field) {
 
     private lateinit var firstPage: Page
 
-    override fun areItemsTheSame(first: MediaListModel, second: MediaListModel): Boolean {
+    override fun areItemsTheSame(first: AlMediaListModel, second: AlMediaListModel): Boolean {
         return first.id == second.id
     }
 
@@ -41,7 +41,7 @@ class MediaListCollectionSource(
             if (listMap.isEmpty()) {
                 mediaListService.getMediaListCollection(field, compositeDisposable) {
                     if (it.status == Status.SUCCESS) {
-                        (it.data as List<MediaListModel>).forEach {
+                        (it.data as List<AlMediaListModel>).forEach {
                             listMap[it.mediaId!!] = it
                         }
                         CoroutineScope(Dispatchers.IO).launch {
@@ -56,7 +56,7 @@ class MediaListCollectionSource(
                 }
             }
         } else {
-            postResult(page, emptyList<MediaListModel>())
+            postResult(page, emptyList<AlMediaListModel>())
         }
     }
 
@@ -69,7 +69,7 @@ class MediaListCollectionSource(
         }
     }
 
-    private fun getFilteredList(): MutableList<MediaListModel> {
+    private fun getFilteredList(): MutableList<AlMediaListModel> {
         val filter = field.filter
 
         return if (filter.formatsIn.isNullOrEmpty()) listMap.values else {

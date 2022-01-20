@@ -3,9 +3,9 @@ package com.revolgenx.anilib.infrastructure.source
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
-import com.revolgenx.anilib.data.field.character.CharacterMediaField
-import com.revolgenx.anilib.data.model.character.CharacterMediaModel
-import com.revolgenx.anilib.infrastructure.service.character.CharacterService
+import com.revolgenx.anilib.character.data.field.CharacterMediaField
+import com.revolgenx.anilib.character.data.model.CharacterMediaModel
+import com.revolgenx.anilib.character.service.CharacterService
 import io.reactivex.disposables.CompositeDisposable
 
 class CharacterMediaSource(

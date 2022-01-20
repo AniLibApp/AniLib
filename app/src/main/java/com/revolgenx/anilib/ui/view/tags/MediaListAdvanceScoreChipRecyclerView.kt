@@ -8,15 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.otaliastudios.elements.Adapter
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.model.entry.AdvancedScore
+import com.revolgenx.anilib.entry.data.model.AdvancedScoreModel
 import com.revolgenx.anilib.databinding.ChipTagPresenterBinding
 import com.revolgenx.anilib.ui.dialog.InputDialog
 
 class MediaListAdvanceScoreChipRecyclerView : DynamicRecyclerView {
-    var chipTagList = mutableListOf<AdvancedScore>()
+    var chipTagList = mutableListOf<AdvancedScoreModel>()
 
     private var fragmentManager: FragmentManager? = null
 
@@ -31,12 +29,12 @@ class MediaListAdvanceScoreChipRecyclerView : DynamicRecyclerView {
         adapter = ChipTagAdapter()
     }
 
-    fun submitTags(chipTags: MutableList<AdvancedScore>) {
+    fun submitTags(chipTags: MutableList<AdvancedScoreModel>) {
         chipTagList = chipTags
         adapter!!.notifyDataSetChanged()
     }
 
-    fun addTag(chipTag: AdvancedScore) {
+    fun addTag(chipTag: AdvancedScoreModel) {
         chipTagList.add(chipTag)
         adapter!!.notifyDataSetChanged()
     }

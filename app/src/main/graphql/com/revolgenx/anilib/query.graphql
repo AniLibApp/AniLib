@@ -30,10 +30,10 @@ query MediaQuery($page: Int
 
                 studios @include(if:$includeStudio){
                     edges{
+                        isMain
                         node{
-                            ... on Studio{
-                                ... studioInfo
-                            }
+                            id
+                            name
                         }
                     }
                 }
@@ -127,6 +127,7 @@ query MediaCharacterQuery(
                         medium
                     }
                     language
+                    languageV2
                 }
 
             }
@@ -250,19 +251,19 @@ query BrowseSimpleMediaQuery($mediaId:Int){
     }
 }
 
+
+
 query MediaOverViewQuery($mediaId:Int){
     Media(id:$mediaId){
         id
         title {
             ... mediaTitle
         }
-
         nextAiringEpisode{
             id
             timeUntilAiring
             episode
         }
-
         isAdult
         format
         type
@@ -330,10 +331,10 @@ query MediaOverViewQuery($mediaId:Int){
         }
         studios{
             edges{
-                node{
-                    ... on Studio{
-                        ... studioInfo
-                    }
+                isMain
+                node {
+                    id
+                    name
                 }
             }
         }
@@ -404,6 +405,7 @@ query CharacterActorQuery($characterId:Int ){
                         medium
                     }
                     language
+                    languageV2
                 }
             }
         }
@@ -426,6 +428,7 @@ query StaffQuery($id:Int){
         description(asHtml:true)
         favourites
         language
+        languageV2
         isFavourite
         siteUrl
     }
@@ -647,7 +650,7 @@ query MediaListQuery(
     }
 }
 
-query MediaListCollectionIdQuery(
+query AlMediaListCollectionIdQuery(
     $userId:Int,
     $userName:String,
     $type:MediaType,
@@ -671,17 +674,15 @@ query MediaListCollectionIdQuery(
     }
 }
 
-query MediaListCollectionQuery(
+query AlMediaListCollectionQuery(
     $userId:Int,
     $userName:String,
     $type:MediaType,
-    $status:MediaListStatus
 ){
     MediaListCollection(
         userId:$userId
         , userName:$userName
         , type:$type
-        , status:$status
         , forceSingleCompletedList:true
     ){
         lists{
@@ -719,6 +720,7 @@ query MediaListCollectionQuery(
                     bannerImage
                     synonyms
                     format
+                    type
                     status
                     genres
                     popularity
@@ -900,28 +902,10 @@ query UserFavouriteQuery($page:Int, $perPage:Int, $id:Int, $name:String,
     }
 }
 
-query UserListCountQuery(
-    $userId:Int
-){
-    User(id:$userId)
-    {
-        statistics{
-            anime{
-                statuses{
-                    ... userListCount
-                }
-            }
-            manga{
-                statuses{
-                    ... userListCount
-                }
-            }
-        }
-    }
-}
-
-query StatsOverviewQuery($id:Int, $name:String,$includeAnime:Boolean!){
+query UserStatisticOverviewQuery($id:Int, $name:String,$includeAnime:Boolean!){
     User(id:$id, name:$name){
+        id
+        name
         mediaListOptions{
             scoreFormat
         }
@@ -1954,6 +1938,10 @@ fragment userMediaListOptions on MediaListOptions{
     animeList{
         advancedScoringEnabled
         advancedScoring
+        customLists
+    }
+    mangaList{
+        customLists
     }
 }
 
@@ -2273,6 +2261,94 @@ fragment messengerUser on User{
 }
 
 
+#media list collection query
+query MediaListCollectionQuery(
+    $userId: Int
+    $userName: String
+    $type: MediaType
+) {
+    MediaListCollection(userId: $userId, userName: $userName, type: $type) {
+        lists {
+            name
+            isCustomList
+            isCompletedList: isSplitCompletedList
+            entries {
+                ...mediaListEntry
+            }
+        }
+        user {
+            id
+            name
+            avatar {
+                large
+            }
+            mediaListOptions {
+                scoreFormat
+                rowOrder
+                animeList {
+                    sectionOrder
+                    customLists
+                    splitCompletedSectionByFormat
+                }
+                mangaList {
+                    sectionOrder
+                    customLists
+                    splitCompletedSectionByFormat
+                }
+            }
+        }
+    }
+}
 
-
+fragment mediaListEntry on MediaList {
+    id
+    mediaId
+    status
+    score
+    progress
+    progressVolumes
+    repeat
+    priority
+    private
+    hiddenFromStatusLists
+    customLists
+    advancedScores
+    notes
+    updatedAt
+    createdAt
+    startedAt {
+        ... fuzzyDate
+    }
+    completedAt {
+        ... fuzzyDate
+    }
+    media {
+        id
+        title {
+            ... mediaTitle
+        }
+        coverImage {
+            ... mediaCoverImage
+        }
+        type
+        format
+        status(version: 2)
+        episodes
+        volumes
+        chapters
+        averageScore
+        popularity
+        isAdult
+        countryOfOrigin
+        genres
+        bannerImage
+        synonyms
+        startDate {
+            ... fuzzyDate
+        }
+        endDate {
+            ... fuzzyDate
+        }
+    }
+}
 

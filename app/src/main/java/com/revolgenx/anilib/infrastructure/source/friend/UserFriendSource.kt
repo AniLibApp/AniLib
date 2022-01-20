@@ -3,9 +3,9 @@ package com.revolgenx.anilib.infrastructure.source.friend
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
-import com.revolgenx.anilib.data.field.friend.UserFriendField
-import com.revolgenx.anilib.data.model.user.UserModel
-import com.revolgenx.anilib.infrastructure.service.user.UserService
+import com.revolgenx.anilib.friend.data.field.UserFriendField
+import com.revolgenx.anilib.friend.data.model.FriendModel
+import com.revolgenx.anilib.user.service.UserService
 import io.reactivex.disposables.CompositeDisposable
 
 class UserFriendSource(
@@ -13,8 +13,8 @@ class UserFriendSource(
     private val userService: UserService,
     private val compositeDisposable: CompositeDisposable
 ) :
-    BaseRecyclerSource<UserModel, UserFriendField>(field) {
-    override fun areItemsTheSame(first: UserModel, second: UserModel): Boolean {
+    BaseRecyclerSource<FriendModel, UserFriendField>(field) {
+    override fun areItemsTheSame(first: FriendModel, second: FriendModel): Boolean {
         return first.id == second.id
     }
 

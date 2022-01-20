@@ -1,14 +1,11 @@
 package com.revolgenx.anilib.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
-import com.revolgenx.anilib.data.field.TagField
-import com.revolgenx.anilib.data.field.TagState
+import com.revolgenx.anilib.common.data.field.TagField
+import com.revolgenx.anilib.common.data.meta.TagState
 import com.revolgenx.anilib.databinding.TagHolderLayoutBinding
 import com.revolgenx.anilib.ui.view.TriStateCheckState
 import com.revolgenx.anilib.ui.view.TriStateMode

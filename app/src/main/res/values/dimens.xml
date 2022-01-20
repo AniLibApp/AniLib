@@ -24,7 +24,6 @@
     <dimen name="profile_overview_margin">6sp</dimen>
     <dimen name="media_browser_button_height">50dp</dimen>
 
-    <dimen name="setting_margin_top">6dp</dimen>
     <dimen name="list_editor_save_icon_size">42dp</dimen>
     <dimen name="stats_chart_padding">10dp</dimen>
     <dimen name="stats_header_margin">16dp</dimen>
@@ -33,10 +32,13 @@
     <dimen name="list_activity_cover_margin_end">8dp</dimen>
     <dimen name="markdown_helper_icon_size">42dp</dimen>
     <dimen name="markdown_helper_icon_padding">10dp</dimen>
-    <dimen name="setting_cardview_margin_top">8dp</dimen>
     <dimen name="setting_padding_dimen">12dp</dimen>
-    <dimen name="theme_title_text_size">14sp</dimen>
-    <dimen name="theme_title_margin_top">12dp</dimen>
+    <dimen name="setting_header_text_size">14sp</dimen>
+    <dimen name="setting_header_padding_top">12dp</dimen>
+    <dimen name="setting_heading_padding_bottom">12dp</dimen>
+    <dimen name="list_heading_padding_top">12dp</dimen>
+    <dimen name="list_heading_padding_bottom">8dp</dimen>
+
 
     <!--    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/toolbar_size</dimen>-->
 

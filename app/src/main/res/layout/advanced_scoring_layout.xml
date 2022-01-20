@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/advancedScoringTv"
+        style="@style/AlListEditorHeaderStyle"
+        android:text="@string/advanced_scores" />
+
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCountEditTextLayout
+            android:id="@+id/advanceScoringEt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+
+</LinearLayout>

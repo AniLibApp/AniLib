@@ -1,9 +1,8 @@
 package com.revolgenx.anilib.social.data.field
 
 import com.revolgenx.anilib.ActivityUnionQuery
-import com.revolgenx.anilib.data.field.BaseSourceField
-import com.revolgenx.anilib.data.field.BaseSourceUserField
-import com.revolgenx.anilib.data.meta.type.AlActivityType
+import com.revolgenx.anilib.common.data.field.BaseSourceUserField
+import com.revolgenx.anilib.constant.AlActivityType
 import com.revolgenx.anilib.type.ActivityType
 
 open class ActivityUnionField : BaseSourceUserField<ActivityUnionQuery>() {

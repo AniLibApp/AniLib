@@ -26,13 +26,10 @@ import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.model.list.MediaListCountTypeModel
 import com.revolgenx.anilib.databinding.ListContainerFragmentBinding
 import com.revolgenx.anilib.infrastructure.event.*
-import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.ui.bottomsheet.list.MediaListFilterBottomSheetFragment
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
-import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.view.setBoundsFor
-import com.revolgenx.anilib.ui.viewmodel.list.ListContainerViewModel
-import com.revolgenx.anilib.ui.viewmodel.notification.NotificationStoreViewModel
+import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
@@ -63,7 +60,6 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
         requireContext().resources.getStringArray(R.array.manga_list_status)
     }
 
-    private val viewModel by viewModel<ListContainerViewModel>()
     private val notificationStoreVM by sharedViewModel<NotificationStoreViewModel>()
 
     override fun bindView(
@@ -139,20 +135,7 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
             updateFabText()
             updateTheme()
 
-            viewModel.listCountLiveData.observe(viewLifecycleOwner) {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        val data = it.data!!
-                        prepareListStatusString(data)
-                        updateFabText()
-                    }
-                    Status.ERROR -> {
-                        makeToast(R.string.failed_to_load_list_count)
-                    }
-                    Status.LOADING -> {
-                    }
-                }
-            }
+
         }
     }
 
@@ -283,7 +266,7 @@ class ListContainerFragment : BaseLayoutFragment<ListContainerFragmentBinding>()
 
     }
 
-    @SuppressLint("UnsafeExperimentalUsageError")
+    @SuppressLint("UnsafeExperimentalUsageError", "UnsafeOptInUsageError")
     private fun initNotificationBadge() {
         binding.listNotificationIv.post {
             val badgeDrawable = BadgeDrawable.create(requireContext())

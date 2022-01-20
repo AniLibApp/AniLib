@@ -2,15 +2,12 @@ package com.revolgenx.anilib.common.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
-import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.databinding.BaseToolbarFragmentLayoutBinding
 
 abstract class BaseToolbarFragment<T : ViewBinding> : BaseLayoutFragment<T>() {

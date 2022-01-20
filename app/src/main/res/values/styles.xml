@@ -155,4 +155,45 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="SettingHeaderStyle">
+        <item name="android:textSize">@dimen/setting_header_text_size</item>
+        <item name="android:fontFamily">@font/rubik_regular</item>
+        <item name="fontFamily">@font/rubik_regular</item>
+        <item name="android:paddingBottom">@dimen/setting_heading_padding_bottom</item>
+        <item name="android:paddingTop">@dimen/setting_header_padding_top</item>
+    </style>
+
+    <style name="AlCheckboxStyle">
+        <item name="android:button">@drawable/ic_checkbox_circle_selector</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AlListEditorHeaderStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/rubik_regular</item>
+        <item name="fontFamily">@font/rubik_regular</item>
+        <item name="android:paddingTop">@dimen/list_heading_padding_top</item>
+        <item name="android:paddingBottom">@dimen/list_heading_padding_bottom</item>
+    </style>
+
+    <style name="AlListEditorItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
+    </style>
+
+    <style name="ModalBottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
+    </style>
+
+    <style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
 </resources>

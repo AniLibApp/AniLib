@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
+import com.otaliastudios.elements.Pager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
@@ -26,6 +27,8 @@ abstract class BasePresenterFragment<M : Any>() :
 
 
     var adapter: Adapter? = null
+
+    protected open val pager: Pager? = null
 
     protected open val loadingPresenter: Presenter<Unit>
         get() = Presenter.forLoadingIndicator(requireContext(), R.layout.loading_layout)
@@ -73,14 +76,11 @@ abstract class BasePresenterFragment<M : Any>() :
                 }
             }
         }
-
-
     }
 
     protected open fun reloadLayoutManager() {
         baseRecyclerView.layoutManager = layoutManager
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -113,7 +113,7 @@ abstract class BasePresenterFragment<M : Any>() :
     }
 
     protected open fun adapterBuilder(): Adapter.Builder {
-        return Adapter.builder(this, 10).setPager(PageSizePager(10)).addSource(baseSource)
+        return Adapter.builder(this, 10).setPager(pager ?: PageSizePager(10)).addSource(baseSource)
             .addPresenter(basePresenter).addPresenter(loadingPresenter).addPresenter(errorPresenter)
             .addPresenter(emptyPresenter)
     }

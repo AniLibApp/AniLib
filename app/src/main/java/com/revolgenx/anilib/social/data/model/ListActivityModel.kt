@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.social.data.model
 
-import com.revolgenx.anilib.data.model.CommonMediaModel
+import com.revolgenx.anilib.common.data.model.CommonMediaModel
 
 class ListActivityModel : ActivityUnionModel() {
     var status: String = ""

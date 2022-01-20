@@ -4,118 +4,197 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/notification_setting_progress_bar"
             layout="@layout/horizontal_progress_bar_layout" />
 
-        <com.revolgenx.anilib.ui.view.widgets.AlCardView style="@style/Widget.DynamicApp.Card">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            <com.pranavpandey.android.dynamic.support.setting.base.DynamicSpinnerPreference
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/SettingHeaderStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:ads_description="@string/notification_interval_desc"
-                app:ads_entries="@array/notification_refresh_interval_entries"
-                app:ads_icon="@drawable/ic_planning"
-                app:ads_key="notification_refresh_interval"
-                app:ads_title="@string/refresh_interval"
-                app:ads_value="0"
-                app:ads_values="@array/notification_refresh_interval_value" />
-        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+                android:text="@string/refresh_interval" />
 
-        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:ads_fillSpace="true"
-            app:ads_title="@string/activity_subscription"
-            app:titleTextSize="14sp" />
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/subscribe_activity_create"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/automatically_subscribe_me_to_activity_i_create" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/subscribe_activity_reply"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/automatically_subscribe_me_to_activity_i_reply_to" />
+                <com.revolgenx.anilib.ui.view.preference.AlSpinnerPreference
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ads_description="@string/notification_interval_desc"
+                    app:ads_entries="@array/notification_refresh_interval_entries"
+                    app:ads_key="notification_refresh_interval"
+                    app:ads_value="0"
+                    app:ads_values="@array/notification_refresh_interval_value" />
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
-        <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:ads_fillSpace="true"
-            app:ads_title="@string/notifications"
-            app:titleTextSize="14sp" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/follows_me_cb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/when_someone_follows_me" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/receive_message_cb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/receive_message_notif" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/mentioned_cb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/mention_replay_notif" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/like_activity_cb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/activity_like_notif" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/like_activity_reply_cb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/likes_activity_reply_notif" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/reply_forum_comment_cb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/forum_reply_notif" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/mention_forum_comment_cb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/forum_mention_notif" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/like_forum_comment_cb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/forum_coment_liked_notif" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/reply_forum_subscribed_cb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/reply_to_subscribed_forum_notif" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-            android:id="@+id/like_forum_thread_cb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/forum_liked_notif" />
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/SettingHeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/notifications"
+                app:fontFamily="@font/rubik_medium"
+                android:layout_marginTop="16dp"/>
 
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/SettingHeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/follower" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/follows_me_cb"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/when_someone_follows_me" />
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/SettingHeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/activity" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/receive_message_cb"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/receive_message_notif" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/mentioned_cb"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mention_replay_notif" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/like_activity_cb"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_like_notif" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/like_activity_reply_cb"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/likes_activity_reply_notif" />
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/SettingHeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/forum" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/reply_forum_comment_cb"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/forum_reply_notif" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/mention_forum_comment_cb"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/forum_mention_notif" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/like_forum_comment_cb"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/forum_coment_liked_notif" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/reply_forum_subscribed_cb"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reply_to_subscribed_forum_notif" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/like_forum_thread_cb"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/forum_liked_notif" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/SettingHeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/media"/>
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/media_related_to_me"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/media_related_to_me" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/media_modified_in_my_list"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/media_modified_in_my_list" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/media_merged_in_my_list"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/media_merged_in_my_list" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/media_deleted_in_my_list"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/media_deleted_in_my_list" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/SettingHeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_subscription"
+                app:fontFamily="@font/rubik_medium" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/subscribe_activity_create"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/automatically_subscribe_me_to_activity_i_create" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/subscribe_activity_reply"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/automatically_subscribe_me_to_activity_i_reply_to" />
+
+
+        </LinearLayout>
+    </FrameLayout>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>

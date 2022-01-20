@@ -9,7 +9,8 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.model.airing.AiringTimeModel
+import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
+import com.revolgenx.anilib.airing.data.model.TimeUntilAiringModel
 import com.revolgenx.anilib.util.CommonTimer
 import com.revolgenx.anilib.util.TimerCallback
 import com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
@@ -125,7 +126,7 @@ class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet
             header.isFillSpace = true
         }
 
-    fun setTimer(airingTimeModel: AiringTimeModel) {
+    fun setTimer(airingTimeModel: AiringScheduleModel) {
         airingTimeModel.let {
             commonTimer = it.commonTimer
             episode = it.episode

@@ -12,18 +12,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.disableCardStyleInHomeScreen
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
-import com.revolgenx.anilib.data.model.entry.MediaEntryListModel
-import com.revolgenx.anilib.data.model.home.SelectableCommonMediaModel
+import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
+import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.databinding.DiscoverShowCaseLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
-import com.revolgenx.anilib.ui.viewmodel.home.discover.ShowCaseViewModel
+import com.revolgenx.anilib.home.discover.viewmodel.ShowCaseViewModel
+import com.revolgenx.anilib.list.data.model.MediaListModel
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.prettyNumberFormat
 
@@ -31,7 +31,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
 
     val showcaseRecyclerView: RecyclerView
 
-    private var mediaModel: SelectableCommonMediaModel? = null
+    private var mediaModel: MediaModel? = null
 
     private var binding: DiscoverShowCaseLayoutBinding? = null
     private var viewLifecycleOwner: LifecycleOwner? = null
@@ -66,7 +66,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
 
 
     fun bindShowCaseMedia(
-        media: SelectableCommonMediaModel,
+        media: MediaModel,
         lifecycleOwner: LifecycleOwner,
         viewModel: ShowCaseViewModel
     ) {
@@ -76,7 +76,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
         this.viewModel = viewModel
         this.mediaModel?.let {
             it.isSelected = false
-            it.selectionListener?.invoke(false)
+            it.onClickListener?.invoke(false)
         }
 
         this.mediaModel = media
@@ -87,17 +87,16 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
             mediaTitleTv.text = media.title?.title(context)
 
             val studioOrWriter = if (media.type == MediaType.ANIME.ordinal) {
-                media.studios?.filter { it.isAnimationStudio }
-                    ?.joinToString(", ") { it.studioName!! }
+                media.studios?.edges?.filter { it.isMain }?.joinToString(", ") { it.node?.studioName!! }
             } else {
-                media.staff?.joinToString(", ") { it.name?.full ?: "" }
+                media.staff?.edges?.joinToString(", ") { it.node?.name?.full ?: "" }
             }
             studioOrWriterTv.text = studioOrWriter?.takeIf { !it.isEmpty() } ?: ""
             mediaDescriptionTv.text =
                 HtmlCompat.fromHtml(media.description!!, HtmlCompat.FROM_HTML_MODE_COMPACT)
             mediaPopularityTv.text = media.popularity?.prettyNumberFormat().naText()
             mediaFavTv.text = media.favourites?.prettyNumberFormat().naText()
-            mediaListStatusTv.text = media.mediaEntryListModel?.status?.let {
+            mediaListStatusTv.text = media.mediaListEntry?.status?.let {
                 mediaListStatus[it]
             } ?: context.getString(R.string.add_to_list)
 
@@ -108,7 +107,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
             root.setOnClickListener {
                 OpenMediaInfoEvent(
                     MediaInfoMeta(
-                        media.mediaId,
+                        media.id,
                         media.type!!,
                         media.title!!.romaji!!,
                         media.coverImage!!.image(context),
@@ -134,8 +133,8 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
 
         if (context.loggedIn()) {
             OpenMediaListEditorEvent(
-                ListEditorMeta(
-                    mediaModel!!.mediaId,
+                EntryEditorMeta(
+                    mediaModel!!.id,
                     mediaModel!!.type!!,
                     mediaModel!!.title!!.title(context)!!,
                     mediaModel!!.coverImage!!.image(context),
@@ -156,21 +155,23 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
             return
         }
 
-
         viewModel!!.saveMediaListEntry(EntryListEditorMediaModel().also {
-            it.mediaId = mediaModel!!.mediaId
+            it.mediaId = mediaModel!!.id
             it.status = position
         }).observe(viewLifecycleOwner!!) {
             if (it.status == Status.SUCCESS) {
                 val data = it.data ?: return@observe
-                if (mediaModel!!.mediaEntryListModel == null) {
-                    mediaModel!!.mediaEntryListModel =
-                        MediaEntryListModel(data.progress, data.status)
+                if (mediaModel!!.mediaListEntry == null) {
+                    mediaModel!!.mediaListEntry =
+                        MediaListModel().also {
+                            it.progress = data.progress
+                            it.status = data.status
+                        }
                 } else {
-                    mediaModel!!.mediaEntryListModel?.status = data.status
-                    mediaModel!!.mediaEntryListModel?.progress = data.status
+                    mediaModel!!.mediaListEntry?.status = data.status
+                    mediaModel!!.mediaListEntry?.progress = data.status
                 }
-                mediaModel!!.mediaEntryListModel?.status?.let {
+                mediaModel!!.mediaListEntry?.status?.let {
                     binding!!.mediaListStatusTv.text =
                         resources.getStringArray(R.array.media_list_status)[it]
                 }

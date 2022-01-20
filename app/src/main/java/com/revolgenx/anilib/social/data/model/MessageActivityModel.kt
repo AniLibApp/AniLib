@@ -2,7 +2,7 @@ package com.revolgenx.anilib.social.data.model
 
 import android.text.Spanned
 import androidx.core.text.toSpanned
-import com.revolgenx.anilib.data.model.user.UserModel
+import com.revolgenx.anilib.user.data.model.UserModel
 
 class MessageActivityModel : ActivityUnionModel() {
     var recipientId: Int? = null

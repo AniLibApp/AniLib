@@ -15,11 +15,11 @@ data class Resource<T>(
             )
         }
 
-        fun <T> error(msg: String, data: T?, exception: Throwable? = null): Resource<T> {
+        fun <T> error(msg: String?, data: T? = null, exception: Throwable? = null): Resource<T> {
             return Resource(
                 Status.ERROR,
                 data,
-                msg,
+                msg?: "error",
                 exception
             )
         }

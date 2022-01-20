@@ -5,7 +5,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.ActivityInfoField
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.infrastructure.service.ActivityUnionService
-import com.revolgenx.anilib.ui.viewmodel.BaseViewModel
+import com.revolgenx.anilib.common.viewmodel.BaseViewModel
 
 class ActivityInfoViewModel(private val service: ActivityUnionService) : BaseViewModel() {
     val field: ActivityInfoField = ActivityInfoField()

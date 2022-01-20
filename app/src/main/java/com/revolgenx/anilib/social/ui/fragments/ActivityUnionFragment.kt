@@ -11,7 +11,7 @@ import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.data.meta.type.AlActivityType
+import com.revolgenx.anilib.constant.AlActivityType
 import com.revolgenx.anilib.databinding.ActivityUnionFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OpenActivityTextComposer
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel

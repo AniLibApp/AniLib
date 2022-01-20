@@ -4,14 +4,12 @@ import android.content.Context
 import android.content.res.Configuration
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.model.entry.AdvancedScore
-import com.revolgenx.anilib.databinding.AdvacedScoringLayoutBinding
+import com.revolgenx.anilib.entry.data.model.AdvancedScoreModel
+import com.revolgenx.anilib.databinding.AdvancedScoringLayoutBinding
 
 class AdvancedScoreView : DynamicRecyclerView {
     private var mAdapter: AdvancedScoringAdapter
@@ -26,15 +24,15 @@ class AdvancedScoreView : DynamicRecyclerView {
         mAdapter = AdvancedScoringAdapter()
         layoutManager = GridLayoutManager(
             context,
-            if (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
+            if (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
         )
         adapter = mAdapter
     }
 
     var advanceScoreObserver: (() -> Unit)? = null
-    var advancedScores = mutableListOf<AdvancedScore>()
+    var advancedScores = mutableListOf<AdvancedScoreModel>()
 
-    fun setAdvanceScore(advancedScores: List<AdvancedScore>) {
+    fun setAdvanceScore(advancedScores: List<AdvancedScoreModel>) {
         this.advancedScores.clear()
         this.advancedScores.addAll(advancedScores)
         mAdapter.notifyDataSetChanged()
@@ -49,7 +47,7 @@ class AdvancedScoreView : DynamicRecyclerView {
             viewType: Int
         ): AdvanceScoringViewHolder {
             return AdvanceScoringViewHolder(
-                AdvacedScoringLayoutBinding.inflate(
+                AdvancedScoringLayoutBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -64,13 +62,11 @@ class AdvancedScoreView : DynamicRecyclerView {
         override fun onBindViewHolder(holder: AdvanceScoringViewHolder, position: Int) {
             val data = advancedScores[position]
             holder.binding.apply {
-                advanceScoringEt.setCounter(data.score)
+                advanceScoringEt.updateCount(data.score)
                 advancedScoringTv.text = data.scoreType
-                advanceScoringEt.textChangeListener {
-                    it.toString().toDoubleOrNull()?.let {
-                        data.score = it
-                        advanceScoreObserver?.invoke()
-                    }
+                advanceScoringEt.onCountChangeListener = {
+                    data.score = it
+                    advanceScoreObserver?.invoke()
                 }
             }
         }
@@ -82,7 +78,7 @@ class AdvancedScoreView : DynamicRecyclerView {
     }
 
 
-    class AdvanceScoringViewHolder(val binding: AdvacedScoringLayoutBinding) :
+    class AdvanceScoringViewHolder(val binding: AdvancedScoringLayoutBinding) :
         ViewHolder(binding.root)
 }
 

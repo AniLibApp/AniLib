@@ -4,20 +4,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.model.media_info.MediaTagsModel
-import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
+import com.revolgenx.anilib.media.data.model.MediaTagModel
+import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.databinding.ChipTagPresenterBinding
 import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
 
-class MediaTagChipAdapter(val onTagInfoClicked: (MediaTagsModel) -> Unit) :
+class MediaTagChipAdapter(val onTagInfoClicked: (MediaTagModel) -> Unit) :
     RecyclerView.Adapter<MediaTagChipAdapter.TagChipViewHolder>() {
 
-    private var currentList: List<MediaTagsModel>? = null
-    private var originalList: List<MediaTagsModel>? = null
+    private var currentList: List<MediaTagModel>? = null
+    private var originalList: List<MediaTagModel>? = null
     private var spoilerShown = false
     private var hasSpoilerTags = false
 
-    fun submitList(list: List<MediaTagsModel>?) {
+    fun submitList(list: List<MediaTagModel>?) {
         originalList = list
         currentList = originalList?.filter { !it.isMediaSpoilerTag }
         hasSpoilerTags = originalList?.any { it.isMediaSpoilerTag } == true

@@ -3,9 +3,9 @@ package com.revolgenx.anilib.infrastructure.source
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
-import com.revolgenx.anilib.data.field.studio.StudioMediaField
-import com.revolgenx.anilib.data.model.studio.StudioMediaModel
-import com.revolgenx.anilib.infrastructure.service.studio.StudioService
+import com.revolgenx.anilib.studio.data.field.StudioMediaField
+import com.revolgenx.anilib.studio.data.model.StudioMediaModel
+import com.revolgenx.anilib.studio.service.StudioService
 import io.reactivex.disposables.CompositeDisposable
 
 class StudioMediaSource(

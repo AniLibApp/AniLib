@@ -2,13 +2,10 @@ package com.revolgenx.anilib.social.factory
 
 import android.content.Context
 import android.text.Spanned
-import com.revolgenx.anilib.data.meta.ImageMeta
-import com.revolgenx.anilib.infrastructure.event.ImageClickedEvent
+import com.revolgenx.anilib.infrastructure.event.OpenImageEvent
 import com.revolgenx.anilib.infrastructure.event.OpenSpoilerContentEvent
 import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
 import com.revolgenx.anilib.social.markwon.AlMarkwonCallback
-import com.revolgenx.anilib.social.ui.bottomsheet.SpoilerBottomSheet
-import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 
 class AlMarkwonCallbackImpl(private val context: Context) : AlMarkwonCallback {
@@ -23,7 +20,7 @@ class AlMarkwonCallbackImpl(private val context: Context) : AlMarkwonCallback {
     }
 
     override fun onImageClick(link: String) {
-        ImageClickedEvent(ImageMeta(link)).postEvent
+        OpenImageEvent(link).postEvent
     }
 
     override fun onSpoilerClick(spanned: Spanned) {

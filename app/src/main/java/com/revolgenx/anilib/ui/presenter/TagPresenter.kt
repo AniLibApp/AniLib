@@ -8,8 +8,9 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.field.TagField
-import com.revolgenx.anilib.data.field.TagState
+import com.revolgenx.anilib.common.presenter.BasePresenter
+import com.revolgenx.anilib.common.data.field.TagField
+import com.revolgenx.anilib.common.data.meta.TagState
 import com.revolgenx.anilib.databinding.TagPresenterLayoutBinding
 
 class TagPresenter(context: Context) : BasePresenter<TagPresenterLayoutBinding, TagField>(context) {

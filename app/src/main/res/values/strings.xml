@@ -548,7 +548,7 @@
     <string name="translating">Translating…</string>
     <string name="airing_widget_config">Airing Widget Config</string>
     <string name="widget">Widget</string>
-    <string name="enable_to_open_list_editor_instead_of_browsing_info">Enable to open list editor instead of browsing info</string>
+    <string name="enable_to_open_list_editor_instead_of_browsing_info">Enable to open list editor instead of browsing info. Saving is not required.</string>
     <string name="copy_link">Copy Link</string>
     <string name="theme_app_summary">Style of the app.</string>
     <string name="theme_app">App theme</string>
@@ -653,4 +653,9 @@
     <string name="customize">Customize</string>
     <string name="card_elevation">Card elevation</string>
     <string name="change_theme_to_custom">Change dark/light theme to Custom.</string>
+    <string name="forum">Forum</string>
+    <string name="media_related_to_me">When an anime or manga in my list has a new related entry created.</string>
+    <string name="media_modified_in_my_list">When an anime or manga in my list has its data changed that affects my list</string>
+    <string name="media_merged_in_my_list">When one or more anime or manga in my list are merged into another</string>
+    <string name="media_deleted_in_my_list">When an anime or manga in my list is deleted from the site</string>
 </resources>

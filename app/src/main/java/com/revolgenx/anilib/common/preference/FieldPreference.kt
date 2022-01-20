@@ -3,13 +3,17 @@ package com.revolgenx.anilib.common.preference
 import android.content.Context
 import com.google.gson.Gson
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
+import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.constant.AiringListDisplayMode
 import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
-import com.revolgenx.anilib.data.field.home.*
-import com.revolgenx.anilib.data.meta.type.AlActivityType
-import com.revolgenx.anilib.data.model.home.HomeOrderType
-import com.revolgenx.anilib.data.model.home.HomePageOrderType
+import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
+import com.revolgenx.anilib.constant.AlActivityType
+import com.revolgenx.anilib.home.data.meta.HomePageOrderType
+import com.revolgenx.anilib.home.discover.data.field.NewlyAddedMediaField
+import com.revolgenx.anilib.home.discover.data.field.PopularMediaField
+import com.revolgenx.anilib.home.discover.data.field.TrendingMediaField
+import com.revolgenx.anilib.home.season.data.field.SeasonField
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.type.MediaType
@@ -91,6 +95,7 @@ const val DISCOVER_READING_SORT_KEY = "DISCOVER_READING_SORT_KEY"
 const val DISCOVER_WATCHING_SORT_KEY = "DISCOVER_WATCHING_SORT_KEY"
 
 const val MEDIA_LIST_GRID_PRESENTER_KEY = "MEDIA_LIST_GRID_PRESENTER_KEY"
+const val AL_LIST_GRID_PRESENTER_KEY = "AL_LIST_GRID_PRESENTER_KEY"
 const val AIRING_DISPLAY_MODE_KEY = "AIRING_DISPLAY_MODE_KEY"
 
 const val SHOW_AIRING_WEEKLY_KEY = "SHOW_AIRING_WEEKLY_KEY"
@@ -270,56 +275,56 @@ fun setRecommendationSort(context: Context, sort: Int) =
     context.putInt(RECOMMENDATION_SORT_KEY, sort)
 
 
-fun getHomeOrderFromType(context: Context, type: HomeOrderType): Int {
+fun getDiscoverOrderFromType(context: Context, type: DiscoverOrderType): Int {
     return when (type) {
-        HomeOrderType.AIRING -> context.getInt(AIRING_ORDER_KEY, 0)
-        HomeOrderType.TRENDING -> context.getInt(TRENDING_ORDER_KEY, 1)
-        HomeOrderType.POPULAR -> context.getInt(POPULAR_ORDER_KEY, 2)
-        HomeOrderType.NEWLY_ADDED -> context.getInt(NEWLY_ADDED_ORDER_KEY, 3)
-        HomeOrderType.WATCHING -> context.getInt(WATCHING_ORDER_KEY, 4)
-        HomeOrderType.READING -> context.getInt(READING_ORDER_KEY, 5)
+        DiscoverOrderType.AIRING -> context.getInt(AIRING_ORDER_KEY, 0)
+        DiscoverOrderType.TRENDING -> context.getInt(TRENDING_ORDER_KEY, 1)
+        DiscoverOrderType.POPULAR -> context.getInt(POPULAR_ORDER_KEY, 2)
+        DiscoverOrderType.NEWLY_ADDED -> context.getInt(NEWLY_ADDED_ORDER_KEY, 3)
+        DiscoverOrderType.WATCHING -> context.getInt(WATCHING_ORDER_KEY, 4)
+        DiscoverOrderType.READING -> context.getInt(READING_ORDER_KEY, 5)
     }
 }
 
-fun isHomeOrderEnabled(context: Context, type: HomeOrderType): Boolean {
+fun isDiscoverOrderEnabled(context: Context, type: DiscoverOrderType): Boolean {
     return when (type) {
-        HomeOrderType.AIRING -> context.getBoolean(AIRING_ORDER_ENABLED_KEY, true)
-        HomeOrderType.TRENDING -> context.getBoolean(TRENDING_ORDER_ENABLED_KEY, true)
-        HomeOrderType.POPULAR -> context.getBoolean(POPULAR_ORDER_ENABLED_KEY, true)
-        HomeOrderType.NEWLY_ADDED -> context.getBoolean(NEWLY_ADDED_ORDER_ENABLED_KEY, true)
-        HomeOrderType.WATCHING -> context.getBoolean(WATCHING_ORDER_ENABLED_KEY, true)
-        HomeOrderType.READING -> context.getBoolean(READING_ORDER_ENABLED_KEY, true)
+        DiscoverOrderType.AIRING -> context.getBoolean(AIRING_ORDER_ENABLED_KEY, true)
+        DiscoverOrderType.TRENDING -> context.getBoolean(TRENDING_ORDER_ENABLED_KEY, true)
+        DiscoverOrderType.POPULAR -> context.getBoolean(POPULAR_ORDER_ENABLED_KEY, true)
+        DiscoverOrderType.NEWLY_ADDED -> context.getBoolean(NEWLY_ADDED_ORDER_ENABLED_KEY, true)
+        DiscoverOrderType.WATCHING -> context.getBoolean(WATCHING_ORDER_ENABLED_KEY, true)
+        DiscoverOrderType.READING -> context.getBoolean(READING_ORDER_ENABLED_KEY, true)
     }
 }
 
 fun setHomeOrderFromType(
     context: Context,
-    type: HomeOrderType,
+    type: DiscoverOrderType,
     order: Int,
     isEnabled: Boolean = false
 ) {
     when (type) {
-        HomeOrderType.AIRING -> {
+        DiscoverOrderType.AIRING -> {
             context.putInt(AIRING_ORDER_KEY, order)
             context.putBoolean(AIRING_ORDER_ENABLED_KEY, isEnabled)
         }
-        HomeOrderType.TRENDING -> {
+        DiscoverOrderType.TRENDING -> {
             context.putInt(TRENDING_ORDER_KEY, order)
             context.putBoolean(TRENDING_ORDER_ENABLED_KEY, isEnabled)
         }
-        HomeOrderType.POPULAR -> {
+        DiscoverOrderType.POPULAR -> {
             context.putInt(POPULAR_ORDER_KEY, order)
             context.putBoolean(POPULAR_ORDER_ENABLED_KEY, isEnabled)
         }
-        HomeOrderType.NEWLY_ADDED -> {
+        DiscoverOrderType.NEWLY_ADDED -> {
             context.putInt(NEWLY_ADDED_ORDER_KEY, order)
             context.putBoolean(NEWLY_ADDED_ORDER_ENABLED_KEY, isEnabled)
         }
-        HomeOrderType.WATCHING -> {
+        DiscoverOrderType.WATCHING -> {
             context.putInt(WATCHING_ORDER_KEY, order)
             context.putBoolean(WATCHING_ORDER_ENABLED_KEY, isEnabled)
         }
-        HomeOrderType.READING -> {
+        DiscoverOrderType.READING -> {
             context.putInt(READING_ORDER_KEY, order)
             context.putBoolean(READING_ORDER_ENABLED_KEY, isEnabled)
         }
@@ -375,6 +380,11 @@ fun getMediaListGridPresenter(): MediaListDisplayMode {
         .load(MEDIA_LIST_GRID_PRESENTER_KEY, MediaListDisplayMode.NORMAL.ordinal)]
 }
 
+fun getAlListGridPresenter(): MediaListDisplayMode {
+    return MediaListDisplayMode.values()[DynamicPreferences.getInstance()
+        .load(AL_LIST_GRID_PRESENTER_KEY, MediaListDisplayMode.NORMAL.ordinal)]
+}
+
 fun getAiringDisplayMode(): AiringListDisplayMode {
     return AiringListDisplayMode.values()[DynamicPreferences.getInstance()
         .load(AIRING_DISPLAY_MODE_KEY, AiringListDisplayMode.COMPACT.ordinal)]
@@ -382,6 +392,9 @@ fun getAiringDisplayMode(): AiringListDisplayMode {
 
 fun setMediaListGridPresenter(which: Int) {
     return DynamicPreferences.getInstance().save(MEDIA_LIST_GRID_PRESENTER_KEY, which)
+}
+fun setAlListGridPresenter(which: Int) {
+    return DynamicPreferences.getInstance().save(AL_LIST_GRID_PRESENTER_KEY, which)
 }
 
 fun setAiringDisplayMode(which: Int) {
@@ -427,7 +440,7 @@ fun showSeasonHeader(context: Context, isChecked: Boolean? = null): Boolean =
     }
 
 
-fun getAiringScheduleFieldForWidget(context: Context, field:AiringMediaField? = null): AiringMediaField {
+fun getAiringScheduleFieldForWidget(context: Context, field: AiringMediaField? = null): AiringMediaField {
     return  (field ?: AiringMediaField()).apply {
         notYetAired = context.getBoolean(WIDGET_AIRING_NOT_AIRED_KEY, true)
         sort = context.getInt(WIDGET_AIRING_SORT_KEY, AiringSort.TIME.ordinal)

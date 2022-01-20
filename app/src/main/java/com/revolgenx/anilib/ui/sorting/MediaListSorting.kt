@@ -1,15 +1,16 @@
 package com.revolgenx.anilib.ui.sorting
 
-import com.revolgenx.anilib.data.model.list.MediaListModel
-import com.revolgenx.anilib.data.model.toDate
+import com.revolgenx.anilib.common.data.model.toDate
+import com.revolgenx.anilib.data.model.list.AlMediaListModel
+import com.revolgenx.anilib.data.sorting.BaseSorting
 import com.revolgenx.anilib.util.getOrDefault
 
 class MediaListSorting() :
-    BaseSorting.SortingColumnsInterface<MediaListModel, MediaListSorting.MediaListSortingType> {
+    BaseSorting.SortingColumnsInterface<AlMediaListModel, MediaListSorting.MediaListSortingType> {
 
     override fun compare(
-        item1: MediaListModel,
-        item2: MediaListModel,
+        item1: AlMediaListModel,
+        item2: AlMediaListModel,
         type: MediaListSortingType
     ): Int {
         return when (type) {
