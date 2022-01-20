@@ -2,8 +2,8 @@ package com.revolgenx.anilib.util
 
 import android.content.Context
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.data.field.TagField
-import com.revolgenx.anilib.data.field.TagState
+import com.revolgenx.anilib.common.data.field.TagField
+import com.revolgenx.anilib.common.data.meta.TagState
 import com.revolgenx.anilib.common.preference.*
 
 object TagPrefUtil {

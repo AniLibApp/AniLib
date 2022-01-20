@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.social.data.field
 
 import com.revolgenx.anilib.DeleteActivityReplyMutation
-import com.revolgenx.anilib.data.field.BaseField
+import com.revolgenx.anilib.common.data.field.BaseField
 
 class DeleteActivityReplyField : BaseField<DeleteActivityReplyMutation>() {
     var id: Int? = null

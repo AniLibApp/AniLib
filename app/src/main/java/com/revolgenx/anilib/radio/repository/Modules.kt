@@ -2,7 +2,6 @@ package com.revolgenx.anilib.radio.repository
 
 import android.content.Context
 import androidx.room.Room
-import com.revolgenx.anilib.radio.repository.api.NetworkHelper
 import com.revolgenx.anilib.radio.repository.api.RadioGithubApi
 import com.revolgenx.anilib.radio.repository.room.RadioStationDao
 import com.revolgenx.anilib.radio.repository.room.RadioStationDatabase
@@ -10,7 +9,6 @@ import org.koin.dsl.module
 
 
 val radioApiModules = module {
-    factory { NetworkHelper() }
     single { RadioGithubApi() }
 }
 

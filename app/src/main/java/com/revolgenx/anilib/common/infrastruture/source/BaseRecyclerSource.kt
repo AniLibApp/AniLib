@@ -3,7 +3,6 @@ package com.revolgenx.anilib.common.infrastruture.source
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.extensions.MainSource
-import com.revolgenx.anilib.data.field.BaseField
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 

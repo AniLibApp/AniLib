@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:adt_backgroundAware="disable"
+            app:adt_colorType="background"
+            app:adt_contrastWithColorType="none"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="noScroll">
+
+                <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
+                    android:id="@+id/list_tab_layout"
+                    style="@style/HomeContainerTabLayoutStyle"
+                    android:layout_width="0dp"
+                    app:adt_backgroundColorType="background"
+                    app:adt_colorType="accent"
+                    app:adt_contrastWithColorType="background"
+                    app:adt_textColorType="text_primary"
+                    app:layout_constraintEnd_toStartOf="@id/list_search_iv"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tabTextAppearance="@style/ListTabLayoutTextStyle" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                    android:id="@+id/list_search_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    app:adt_colorType="text_primary"
+                    app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
+                    app:layout_constraintEnd_toStartOf="@id/list_notif_layout"
+                    app:layout_constraintTop_toTopOf="@id/list_tab_layout"
+                    app:srcCompat="@drawable/ic_search" />
+
+                <FrameLayout
+                    android:id="@+id/list_notif_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
+                    app:layout_constraintEnd_toStartOf="@id/list_more_iv"
+                    app:layout_constraintTop_toTopOf="@id/list_tab_layout">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                        android:id="@+id/list_notification_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:adt_colorType="text_primary"
+                        app:srcCompat="@drawable/ic_notification_outline" />
+                </FrameLayout>
+
+                <com.revolgenx.anilib.ui.view.widgets.action.DynamicPopUpMenu
+                    android:id="@+id/list_more_iv"
+                    style="@style/TabOptionMenuStyle"
+                    app:adt_colorType="text_primary"
+                    app:entries="@array/list_option_menu"
+                    app:layout_constraintBottom_toBottomOf="@id/list_tab_layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/list_tab_layout"
+                    app:srcCompat="@drawable/ads_ic_more" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/media_list_search_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:visibility="gone"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/list_tab_layout">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                        android:id="@+id/media_list_search_et"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:focusable="true"
+                        android:hint="@string/search"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="14sp"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toStartOf="@id/clear_text"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                        android:id="@+id/clear_text"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:padding="12dp"
+                        app:adt_colorType="text_primary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ads_ic_close" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/al_list_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicExtendedFloatingActionButton
+        android:id="@+id/list_extended_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/ads_fab_margin"
+        app:adt_colorType="surface"
+        app:adt_contrastWithColorType="background"
+        app:icon="@drawable/ic_filter"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

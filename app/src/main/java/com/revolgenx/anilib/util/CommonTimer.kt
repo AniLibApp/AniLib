@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.util
 
 import android.os.Handler
-import com.revolgenx.anilib.data.model.airing.TimeUntilAiringModel
+import com.revolgenx.anilib.airing.data.model.TimeUntilAiringModel
 
 
 typealias TimerCallback = (() -> Unit)?

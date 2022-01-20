@@ -2,18 +2,15 @@ package com.revolgenx.anilib.ui.view.navigation
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
-import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicNavigationView
@@ -22,11 +19,11 @@ import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.constant.SearchTypes
 import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.common.preference.*
-import com.revolgenx.anilib.data.field.TagField
-import com.revolgenx.anilib.data.field.TagState
-import com.revolgenx.anilib.data.meta.type.AlMediaSort
-import com.revolgenx.anilib.data.model.search.filter.*
+import com.revolgenx.anilib.common.data.field.TagField
+import com.revolgenx.anilib.common.data.meta.TagState
+import com.revolgenx.anilib.constant.AlMediaSort
 import com.revolgenx.anilib.databinding.BrowseFilterNavigationViewBinding
+import com.revolgenx.anilib.search.data.model.filter.*
 import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.ui.presenter.TagPresenter

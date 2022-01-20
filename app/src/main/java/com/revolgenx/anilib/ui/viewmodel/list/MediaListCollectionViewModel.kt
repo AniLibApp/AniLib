@@ -2,24 +2,21 @@ package com.revolgenx.anilib.ui.viewmodel.list
 
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.data.field.list.MediaListCollectionField
-import com.revolgenx.anilib.data.meta.ListEditorResultMeta
-import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
-import com.revolgenx.anilib.data.model.list.MediaListModel
+import com.revolgenx.anilib.entry.data.meta.EntryEditorResultMeta
+import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel
+import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
-import com.revolgenx.anilib.infrastructure.service.media.MediaListEntryService
+import com.revolgenx.anilib.entry.service.MediaEntryService
 import com.revolgenx.anilib.infrastructure.source.media_list.MediaListCollectionSource
-import com.revolgenx.anilib.ui.viewmodel.SourceViewModel
+import com.revolgenx.anilib.common.viewmodel.SourceViewModel
 
-/*
-* todo addmedialist might not update on rotaion rare case
-* */
 abstract class MediaListCollectionViewModel(
     private val mediaListService: MediaListService,
-    private val entryService: MediaListEntryService
+    private val entryService: MediaEntryService
 ) :
     SourceViewModel<MediaListCollectionSource, MediaListCollectionField>() {
-    val listMap by lazy { mutableMapOf<Int, MediaListModel>() }
+    val listMap by lazy { mutableMapOf<Int, AlMediaListModel>() }
 
 
     fun updateFilter(filter:MediaListCollectionFilterField){
@@ -50,7 +47,7 @@ abstract class MediaListCollectionViewModel(
     }
 
 
-    fun updateMediaListCollection(model: ListEditorResultMeta){
+    fun updateMediaListCollection(model: EntryEditorResultMeta){
         if (model.mediaId == null) {
             return
         }

@@ -80,6 +80,7 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
+            ext.enableCrashlytics = false
         }
         release {
             minifyEnabled false
@@ -99,7 +100,7 @@ android {
 ext {
     multidex_version = '1.0.3'
     preference_version = '1.1.0'
-    koin_version = '2.0.1'
+    koin_version = '3.1.4'
     lifecycle_version = '2.3.1'
     coroutine_version = '1.4.1'
 
@@ -154,8 +155,8 @@ dependencies {
     implementation "androidx.preference:preference-ktx:$preference_version"
 
     //koin
-    implementation "org.koin:koin-android:$koin_version"
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
 
 
     //coroutine

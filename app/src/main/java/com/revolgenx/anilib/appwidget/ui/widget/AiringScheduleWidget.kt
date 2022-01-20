@@ -11,8 +11,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.appwidget.service.AiringScheduleRemoteViewsService
 import com.revolgenx.anilib.common.preference.AiringWidgetPreference
-import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
+import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import java.time.LocalTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -162,7 +162,7 @@ class AiringScheduleWidget : AppWidgetProvider() {
                             this.action = MainActivity.ENTRY_LIST_ACTION_KEY
                             this.putExtra(
                                 MainActivity.ENTRY_LIST_DATA_KEY,
-                                ListEditorMeta(
+                                EntryEditorMeta(
                                     mediaId,
                                     null,
                                     null,

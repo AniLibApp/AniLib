@@ -1,18 +1,18 @@
 package com.revolgenx.anilib.infrastructure.event
 
 import android.text.Spanned
-import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
+import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.meta.MediaListMeta
-import com.revolgenx.anilib.data.meta.TagFilterSettingMeta
-import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
+import com.revolgenx.anilib.app.setting.data.meta.TagFilterSettingMeta
+import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 
 data class OpenUserProfileEvent(val userId: Int? = null, val username: String? = null) : BaseEvent()
 data class OpenUserFriendEvent(val userId: Int? = null, val isFollower: Boolean = false) :
     BaseEvent()
 
 data class OpenMediaInfoEvent(val meta: MediaInfoMeta) : BaseEvent()
-data class OpenMediaListEditorEvent(val meta: ListEditorMeta) : BaseEvent()
+data class OpenMediaListEditorEvent(val meta: EntryEditorMeta) : BaseEvent()
 data class OpenSettingEvent(val settingEventType: SettingEventTypes, val data:SettingEventData?= null) : BaseEvent()
 enum class SettingEventTypes {
     ABOUT, MEDIA_LIST, MEDIA_SETTING, APPLICATION, SETTING, THEME, CUSTOMIZE_FILTER, ADD_REMOVE_TAG_FILTER, AIRING_WIDGET, TRANSLATION, NOTIFICATION, LANGUAGE_CHOOSER
@@ -44,3 +44,4 @@ data class OpenSpoilerContentEvent(val spanned: Spanned) : BaseEvent()
 
 data class OpenActivityInfoEvent(val activityId:Int):BaseEvent()
 data class OnActivityInfoUpdateEvent(val activityId: Int):BaseEvent()
+data class OpenImageEvent(var url:String?) : CommonEvent()

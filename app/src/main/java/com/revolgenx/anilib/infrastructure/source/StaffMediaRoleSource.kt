@@ -3,9 +3,9 @@ package com.revolgenx.anilib.infrastructure.source
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
-import com.revolgenx.anilib.data.field.staff.StaffMediaRoleField
-import com.revolgenx.anilib.data.model.staff.StaffMediaRoleModel
-import com.revolgenx.anilib.infrastructure.service.staff.StaffService
+import com.revolgenx.anilib.staff.data.field.StaffMediaRoleField
+import com.revolgenx.anilib.staff.data.model.StaffMediaRoleModel
+import com.revolgenx.anilib.staff.service.StaffService
 import io.reactivex.disposables.CompositeDisposable
 
 class StaffMediaRoleSource(

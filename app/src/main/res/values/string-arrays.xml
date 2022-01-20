@@ -937,5 +937,25 @@
         <item>2</item>
     </string-array>
 
+    <string-array name="al_anime_list_status_entries">
+        <item>@string/all</item>
+        <item>@string/watching</item>
+        <item>@string/rewatching</item>
+        <item>@string/completed</item>
+        <item>@string/paused</item>
+        <item>@string/dropped</item>
+        <item>@string/planning</item>
+    </string-array>
+
+    <string-array name="al_manga_list_status_entries">
+        <item>@string/all</item>
+        <item>@string/reading</item>
+        <item>@string/completed</item>
+        <item>@string/paused</item>
+        <item>@string/dropped</item>
+        <item>@string/planning</item>
+        <item>@string/repeating</item>
+    </string-array>
+
     <string name="bee">Bee</string>
 </resources>

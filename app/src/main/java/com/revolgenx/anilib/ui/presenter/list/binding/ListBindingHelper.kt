@@ -3,15 +3,15 @@ package com.revolgenx.anilib.ui.presenter.list.binding
 import android.content.Context
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.data.model.list.MediaListModel
+import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
+import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.ui.view.makeToast
 
 object ListBindingHelper {
-    fun openMediaBrowse(context: Context, item: MediaListModel){
+    fun openMediaBrowse(context: Context, item: AlMediaListModel){
         OpenMediaInfoEvent(
             MediaInfoMeta(
                 item.mediaId,
@@ -24,10 +24,10 @@ object ListBindingHelper {
         ).postEvent
     }
 
-    fun openMediaListEditor(context: Context, item: MediaListModel){
+    fun openMediaListEditor(context: Context, item: AlMediaListModel){
         if (context.loggedIn()) {
             OpenMediaListEditorEvent(
-                ListEditorMeta(
+                EntryEditorMeta(
                     item.mediaId,
                     item.type!!,
                     item.title!!.userPreferred,

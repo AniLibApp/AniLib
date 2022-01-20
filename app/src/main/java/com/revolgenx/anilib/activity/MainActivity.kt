@@ -20,22 +20,22 @@ import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
-import com.revolgenx.anilib.data.meta.UserMeta
-import com.revolgenx.anilib.data.model.home.HomePageOrderType
+import com.revolgenx.anilib.user.data.meta.UserMeta
+import com.revolgenx.anilib.home.data.meta.HomePageOrderType
 import com.revolgenx.anilib.databinding.ActivityMainBinding
 import com.revolgenx.anilib.radio.ui.fragments.RadioFragment
 import com.revolgenx.anilib.social.ui.fragments.ActivityUnionFragment
-import com.revolgenx.anilib.ui.fragment.about.AboutFragment
-import com.revolgenx.anilib.ui.fragment.home.discover.DiscoverContainerFragment
+import com.revolgenx.anilib.app.about.fragment.AboutFragment
+import com.revolgenx.anilib.home.discover.fragment.DiscoverContainerFragment
 import com.revolgenx.anilib.ui.fragment.home.list.ListContainerFragment
-import com.revolgenx.anilib.ui.fragment.home.profile.ProfileFragment
-import com.revolgenx.anilib.ui.fragment.home.profile.UserLoginFragment
-import com.revolgenx.anilib.ui.fragment.notification.NotificationSettingFragment
-import com.revolgenx.anilib.ui.fragment.review.AllReviewFragment
-import com.revolgenx.anilib.ui.fragment.settings.*
+import com.revolgenx.anilib.home.profile.fragment.ProfileFragment
+import com.revolgenx.anilib.home.profile.fragment.UserLoginFragment
+import com.revolgenx.anilib.app.setting.fragment.NotificationSettingFragment
+import com.revolgenx.anilib.review.fragment.AllReviewFragment
+import com.revolgenx.anilib.app.setting.fragment.*
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
-import com.revolgenx.anilib.ui.viewmodel.MainActivityViewModel
+import com.revolgenx.anilib.activity.viewmodel.MainActivityViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -52,30 +52,31 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 import com.revolgenx.anilib.BuildConfig
-import com.revolgenx.anilib.data.meta.ListEditorMeta
-import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
+import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.social.ui.bottomsheet.SpoilerBottomSheetFragment
 import com.revolgenx.anilib.social.ui.fragments.activity_composer.message.ActivityMessageComposerContainerFragment
 import com.revolgenx.anilib.social.ui.fragments.activity_composer.reply.ActivityReplyComposerContainerFragment
 import com.revolgenx.anilib.social.ui.fragments.activity_composer.text.ActivityTextComposerContainerFragment
 import com.revolgenx.anilib.social.ui.fragments.info.ActivityInfoFragment
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.ui.fragment.ActivityEventListener
-import com.revolgenx.anilib.ui.fragment.EntryListEditorFragment
-import com.revolgenx.anilib.ui.fragment.airing.AiringFragment
-import com.revolgenx.anilib.ui.fragment.character.CharacterContainerFragment
-import com.revolgenx.anilib.ui.fragment.friend.UserFriendContainerFragment
+import com.revolgenx.anilib.activity.event.ActivityEventListener
+import com.revolgenx.anilib.entry.fragment.MediaEntryEditorFragment
+import com.revolgenx.anilib.airing.fragment.AiringFragment
+import com.revolgenx.anilib.character.fragment.CharacterContainerFragment
+import com.revolgenx.anilib.friend.fragment.UserFriendContainerFragment
+import com.revolgenx.anilib.home.list.fragment.MediaListCollectionContainerFragment
 import com.revolgenx.anilib.ui.fragment.list.UserMediaListContainerFragment
-import com.revolgenx.anilib.ui.fragment.media.MediaInfoFragment
-import com.revolgenx.anilib.ui.fragment.media.MediaListingFragment
-import com.revolgenx.anilib.ui.fragment.notification.NotificationFragment
-import com.revolgenx.anilib.ui.fragment.review.ReviewComposerFragment
-import com.revolgenx.anilib.ui.fragment.review.ReviewFragment
-import com.revolgenx.anilib.ui.fragment.search.SearchFragment
-import com.revolgenx.anilib.ui.fragment.settings.filter.EditTagFilterFragment
-import com.revolgenx.anilib.ui.fragment.staff.StaffContainerFragment
-import com.revolgenx.anilib.ui.fragment.studio.StudioFragment
-import com.revolgenx.anilib.ui.viewmodel.notification.NotificationStoreViewModel
+import com.revolgenx.anilib.media.fragment.MediaInfoFragment
+import com.revolgenx.anilib.user.fragment.MediaListingFragment
+import com.revolgenx.anilib.notification.fragment.NotificationFragment
+import com.revolgenx.anilib.review.fragment.ReviewComposerFragment
+import com.revolgenx.anilib.review.fragment.ReviewFragment
+import com.revolgenx.anilib.search.fragment.SearchFragment
+import com.revolgenx.anilib.app.setting.fragment.EditTagFilterFragment
+import com.revolgenx.anilib.staff.fragment.StaffContainerFragment
+import com.revolgenx.anilib.studio.fragment.StudioFragment
+import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
 
 class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope, EventBusListener {
     private val job = Job()
@@ -103,8 +104,13 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         DiscoverContainerFragment()
     }
 
+    //TODO:// delete later
     private val listContainerFragment by lazy {
         ListContainerFragment()
+    }
+
+    private val alListContainerFragment by lazy {
+        MediaListCollectionContainerFragment()
     }
 
     private val activityUnionFragment by lazy {
@@ -210,7 +216,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     R.string.list,
                     R.drawable.ic_media_list,
                     getHomePageOrderFromType(this@MainActivity, HomePageOrderType.LIST),
-                    listContainerFragment
+                    alListContainerFragment
                 )
             )
             menuList.add(
@@ -253,7 +259,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         mainViewPager.offscreenPageLimit = pagerAdapter.count - 1
 
 
-        mainBottomNavView.setOnNavigationItemSelectedListener {
+        mainBottomNavView.setOnItemSelectedListener  {
             mainBottomNavView.menu.forEachIndexed { index, item ->
                 if (it == item) {
                     mainViewPager.setCurrentItem(index, true)
@@ -380,7 +386,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 }
                 ENTRY_LIST_ACTION_KEY -> {
                     val meta =
-                        intent.getParcelableExtra<ListEditorMeta?>(ENTRY_LIST_DATA_KEY) ?: return
+                        intent.getParcelableExtra<EntryEditorMeta?>(ENTRY_LIST_DATA_KEY) ?: return
                     openMediaListEditorCenter(meta)
                 }
             }
@@ -664,8 +670,8 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         addFragmentToMain(CharacterContainerFragment.newInstance(characterId))
     }
 
-    private fun openMediaListEditorCenter(meta: ListEditorMeta) {
-        addFragmentToMain(EntryListEditorFragment.newInstance(meta))
+    private fun openMediaListEditorCenter(meta: EntryEditorMeta) {
+        addFragmentToMain(MediaEntryEditorFragment.newInstance(meta))
     }
 
     private fun openMediaInfoCenter(meta: MediaInfoMeta) {

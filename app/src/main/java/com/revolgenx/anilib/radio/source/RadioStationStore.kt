@@ -8,15 +8,13 @@ import com.revolgenx.anilib.radio.repository.room.RadioChannel
 import com.revolgenx.anilib.radio.repository.room.RadioStation
 import com.revolgenx.anilib.radio.repository.room.RadioStationDao
 import kotlinx.coroutines.*
-import org.koin.core.KoinComponent
-import org.koin.core.get
-import org.koin.core.inject
 import java.util.*
 
-abstract class RadioStationStore : TreeMap<Long, RadioStation>(), KoinComponent {
-    private val radioStationRepo by inject<RadioStationDao>()
-
-
+abstract class RadioStationStore(
+    private val radioStationRepo: RadioStationDao,
+    private val radioGithubApi: RadioGithubApi
+) :
+    TreeMap<Long, RadioStation>() {
     protected val serviceJob = SupervisorJob()
     protected val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
 
@@ -67,7 +65,7 @@ abstract class RadioStationStore : TreeMap<Long, RadioStation>(), KoinComponent 
     }
 
     private suspend fun loadFromApi() {
-        when (val allRadioStations = get<RadioGithubApi>().getAllRadioStations()) {
+        when (val allRadioStations = radioGithubApi.getAllRadioStations()) {
             is ResourceWrapper.Success -> {
                 val radioStore = this@RadioStationStore
                 val currentFavouriteStation =

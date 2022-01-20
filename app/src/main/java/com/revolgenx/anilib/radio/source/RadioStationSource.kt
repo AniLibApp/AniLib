@@ -7,11 +7,14 @@ import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.radio.repository.room.RadioStation
 import com.revolgenx.anilib.radio.repository.room.getDefaultStream
 import com.revolgenx.anilib.radio.data.PlaybackState
+import com.revolgenx.anilib.radio.repository.api.RadioGithubApi
+import com.revolgenx.anilib.radio.repository.room.RadioStationDao
 import kotlinx.coroutines.launch
 import java.util.*
 
 
-class RadioStationSource : RadioStationStore() {
+class RadioStationSource(radioStationDao: RadioStationDao, radioGithubApi: RadioGithubApi) :
+    RadioStationStore(radioStationDao, radioGithubApi) {
 
     private val getAsNavigableMap get() = this as NavigableMap<Long, RadioStation>
 

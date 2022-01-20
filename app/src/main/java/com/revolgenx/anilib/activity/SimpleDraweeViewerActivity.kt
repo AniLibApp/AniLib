@@ -7,21 +7,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.annotation.NonNull
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.net.toUri
 import com.github.piasy.biv.BigImageViewer
 import com.github.piasy.biv.indicator.progresspie.ProgressPieIndicator
 import com.github.piasy.biv.view.FrescoImageViewFactory
-import com.github.piasy.biv.view.ImageSaveCallback
 import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.ThemeController
-import com.revolgenx.anilib.app.theme.dynamicPrimaryColor
-import com.revolgenx.anilib.data.meta.DraweeViewerMeta
 import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.databinding.SimpleDraweeViewerActivityBinding
-import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.thefuntasty.hauler.setOnDragDismissedListener
 import java.util.*
@@ -32,11 +26,11 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
     companion object {
         fun openActivity(
             context: Context,
-            draweeMeta: DraweeViewerMeta,
+            url: String?,
             option: ActivityOptionsCompat? = null
         ) {
             context.startActivity(Intent(context, SimpleDraweeViewerActivity::class.java).also {
-                it.putExtra(simpleDraweeMetaKey, draweeMeta)
+                it.putExtra(simpleDraweeMetaKey, url)
             }, option?.toBundle())
         }
 
@@ -44,11 +38,11 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
     }
 
 
-    override fun getLocale(): Locale? {
+    override fun getLocale(): Locale {
         return Locale(getApplicationLocale())
     }
 
-    private var draweeMeta:DraweeViewerMeta? = null
+    private val draweeUrl: String? get() = intent.getStringExtra(simpleDraweeMetaKey)
 
     override fun getContentView(): View {
         return binding.root
@@ -59,7 +53,7 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
         setWindowStatusBarColor(statusBarColor)
     }
 
-    private var _binding: SimpleDraweeViewerActivityBinding?  =null
+    private var _binding: SimpleDraweeViewerActivityBinding? = null
     private val binding: SimpleDraweeViewerActivityBinding
         get() = _binding!!
 
@@ -73,14 +67,14 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
         supportActionBar!!.title = ""
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        draweeMeta = intent.getParcelableExtra(simpleDraweeMetaKey) ?: return
+        draweeUrl ?: return
         binding.haulerView.setBackgroundColor(Color.BLACK)
         binding.bigImageViewer.setImageViewFactory(FrescoImageViewFactory())
         binding.bigImageViewer.setProgressIndicator(ProgressPieIndicator())
         binding.haulerView.setOnDragDismissedListener {
             finishAfterTransition()
         }
-        binding.bigImageViewer.showImage(draweeMeta!!.url?.toUri())
+        binding.bigImageViewer.showImage(draweeUrl?.toUri())
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -95,12 +89,11 @@ class SimpleDraweeViewerActivity : DynamicSystemActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.imageShareMenu->{
-                openLink(draweeMeta?.url)
+            R.id.imageShareMenu -> {
+                openLink(draweeUrl)
                 true
             }
             else -> super.onOptionsItemSelected(item)
-
         }
     }
 

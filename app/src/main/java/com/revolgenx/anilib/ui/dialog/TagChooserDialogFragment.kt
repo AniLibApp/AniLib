@@ -10,8 +10,8 @@ import com.revolgenx.anilib.ui.adapter.TagAdapter
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.constant.MediaTagFilterTypes
 import com.revolgenx.anilib.infrastructure.event.TagEvent
-import com.revolgenx.anilib.data.field.TagChooserField
-import com.revolgenx.anilib.data.field.TagField
+import com.revolgenx.anilib.common.data.field.TagChooserField
+import com.revolgenx.anilib.common.data.field.TagField
 import com.revolgenx.anilib.databinding.TagChooserDialogFragmentLayoutBinding
 import com.revolgenx.anilib.ui.view.TriStateMode
 

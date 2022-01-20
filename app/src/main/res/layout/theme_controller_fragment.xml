@@ -15,14 +15,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/theme_mode"
-            android:textSize="@dimen/theme_title_text_size"
-            app:fontFamily="@font/rubik_regular" />
+            style="@style/SettingHeaderStyle"/>
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:cardUseCompatPadding="true">
+            android:layout_height="wrap_content">
 
             <com.revolgenx.anilib.ui.view.preference.AlSpinnerPreference
                 android:id="@+id/theme_mode_spinner"
@@ -37,16 +34,12 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/theme_title_margin_top"
             android:text="@string/theme_app_light"
-            android:textSize="@dimen/theme_title_text_size"
-            app:fontFamily="@font/rubik_regular" />
+            style="@style/SettingHeaderStyle" />
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:cardUseCompatPadding="true">
+            android:layout_height="wrap_content">
 
             <com.revolgenx.anilib.ui.view.preference.AlSpinnerPreference
                 android:id="@+id/light_theme_spinner"
@@ -61,16 +54,12 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/theme_title_margin_top"
             android:text="@string/theme_app_dark"
-            android:textSize="@dimen/theme_title_text_size"
-            app:fontFamily="@font/rubik_regular" />
+            style="@style/SettingHeaderStyle"/>
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:cardUseCompatPadding="true">
+            android:layout_height="wrap_content">
 
             <com.revolgenx.anilib.ui.view.preference.AlSpinnerPreference
                 android:id="@+id/dark_theme_spinner"
@@ -93,16 +82,12 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/theme_title_margin_top"
             android:text="@string/background_color"
-            android:textSize="@dimen/theme_title_text_size"
-            app:fontFamily="@font/rubik_regular" />
+            style="@style/SettingHeaderStyle"/>
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:cardUseCompatPadding="true">
+            android:layout_height="wrap_content">
 
 
             <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
@@ -121,16 +106,12 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/theme_title_margin_top"
             android:text="@string/surface_color"
-            android:textSize="@dimen/theme_title_text_size"
-            app:fontFamily="@font/rubik_regular" />
+            style="@style/SettingHeaderStyle" />
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:cardUseCompatPadding="true">
+            android:layout_height="wrap_content">
 
 
             <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
@@ -148,16 +129,12 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/theme_title_margin_top"
             android:text="@string/theme_color_accent"
-            android:textSize="@dimen/theme_title_text_size"
-            app:fontFamily="@font/rubik_regular" />
+            style="@style/SettingHeaderStyle"/>
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:cardUseCompatPadding="true">
+            android:layout_height="wrap_content">
 
             <com.pranavpandey.android.dynamic.support.setting.base.DynamicColorPreference
                 android:id="@+id/accent_color_pref"
@@ -185,10 +162,8 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/theme_title_margin_top"
             android:text="@string/card_corner_radius"
-            android:textSize="@dimen/theme_title_text_size"
-            app:fontFamily="@font/rubik_regular" />
+            style="@style/SettingHeaderStyle" />
 
         <com.pranavpandey.android.dynamic.support.setting.base.DynamicSeekBarPreference
             android:layout_width="match_parent"
@@ -204,10 +179,8 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/theme_title_margin_top"
             android:text="@string/card_elevation"
-            android:textSize="@dimen/theme_title_text_size"
-            app:fontFamily="@font/rubik_regular" />
+            style="@style/SettingHeaderStyle"/>
 
         <com.pranavpandey.android.dynamic.support.setting.base.DynamicSeekBarPreference
             android:layout_width="match_parent"

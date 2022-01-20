@@ -1,91 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_margin="@dimen/setting_padding_dimen">
+        android:padding="@dimen/setting_padding_dimen">
 
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
             android:id="@+id/wg_include_already_aired"
+            style="@style/AlCheckboxStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/widget_padding_horizontal"
-            android:paddingEnd="@dimen/widget_padding_horizontal"
-            android:text="@string/include_already_aired"
-            android:textSize="14sp" />
+            android:text="@string/include_already_aired" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
             android:id="@+id/wg_is_airing_weekly"
+            style="@style/AlCheckboxStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/widget_padding_horizontal"
-            android:paddingEnd="@dimen/widget_padding_horizontal"
-            android:text="@string/weekly"
-            android:textSize="14sp" />
+            android:text="@string/weekly" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
             android:id="@+id/wg_show_from_watching"
+            style="@style/AlCheckboxStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/widget_padding_horizontal"
-            android:paddingEnd="@dimen/widget_padding_horizontal"
-            android:text="@string/show_only_from_your_watching_list"
-            android:textSize="14sp" />
+            android:text="@string/show_only_from_your_watching_list" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
             android:id="@+id/wg_show_from_planning"
+            style="@style/AlCheckboxStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/widget_padding_horizontal"
-            android:paddingEnd="@dimen/widget_padding_horizontal"
-            android:text="@string/show_only_from_your_planning_list"
-            android:textSize="14sp" />
+            android:text="@string/show_only_from_your_planning_list" />
 
 
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
             android:id="@+id/wg_show_eta"
+            style="@style/AlCheckboxStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/widget_padding_horizontal"
-            android:paddingEnd="@dimen/widget_padding_horizontal"
-            android:text="@string/show_eta"
-            android:textSize="14sp" />
+            android:text="@string/show_eta" />
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
             android:id="@+id/wg_click_open_list_editor"
+            style="@style/AlCheckboxStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/widget_padding_horizontal"
-            android:paddingEnd="@dimen/widget_padding_horizontal"
-            android:text="@string/enable_to_open_list_editor_instead_of_browsing_info"
-            android:textSize="14sp" />
+            android:text="@string/enable_to_open_list_editor_instead_of_browsing_info" />
 
 
-        <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:headerName="@string/sort"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp">
+            android:text="@string/sort" />
 
-            <com.revolgenx.anilib.ui.view.sort.AlSortLayout
-                android:id="@+id/wg_airing_sort"
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"/>
+                android:padding="12dp">
 
-        </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
+                <com.revolgenx.anilib.ui.view.sort.AlSortLayout
+                    android:id="@+id/wg_airing_sort"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
     </LinearLayout>
 

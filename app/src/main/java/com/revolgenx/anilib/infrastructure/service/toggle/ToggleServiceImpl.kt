@@ -1,8 +1,10 @@
 package com.revolgenx.anilib.infrastructure.service.toggle
 
 import com.revolgenx.anilib.ToggleActivitySubscriptionMutation
+import com.revolgenx.anilib.ToggleFavouriteMutation
 import com.revolgenx.anilib.ToggleLikeV2Mutation
-import com.revolgenx.anilib.data.model.toggle.LikeableUnionModel
+import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
+import com.revolgenx.anilib.social.data.model.LikeableUnionModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
@@ -119,4 +121,30 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
         compositeDisposable.add(disposable)
     }
 
+    override fun toggleFavourite(
+        favouriteField: ToggleFavouriteField,
+        compositeDisposable: CompositeDisposable?,
+        callback: (Resource<Boolean>) -> Unit
+    ) {
+        val disposable = graphRepository.request(ToggleFavouriteMutation.builder().apply {
+            if (favouriteField.animeId != null)
+                animeId(favouriteField.animeId)
+            if (favouriteField.mangaId != null)
+                mangaId(favouriteField.mangaId)
+            if (favouriteField.characterId != null)
+                characterId(favouriteField.characterId)
+            if (favouriteField.staffId != null)
+                staffId(favouriteField.staffId)
+            if (favouriteField.studioId != null)
+                studioId(favouriteField.studioId)
+        }.build())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ _ ->
+                callback.invoke(Resource.success(true))
+            }, {
+                Timber.e(it)
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+        compositeDisposable?.add(disposable)
+    }
 }

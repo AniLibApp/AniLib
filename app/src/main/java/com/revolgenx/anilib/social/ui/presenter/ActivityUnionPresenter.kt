@@ -9,8 +9,8 @@ import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.userId
-import com.revolgenx.anilib.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.data.model.CommonMediaModel
+import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.common.data.model.CommonMediaModel
 import com.revolgenx.anilib.databinding.ListActivityPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.MessageActivityPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.TextActivityPresenterLayoutBinding
@@ -25,7 +25,7 @@ import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityMessageComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityTextComposerViewModel
 import com.revolgenx.anilib.type.ActivityType
-import com.revolgenx.anilib.ui.presenter.BasePresenter
+import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.ui.view.makeToast
@@ -158,7 +158,7 @@ class ActivityUnionPresenter(
 
         activityReplyContainer.setOnClickListener {
             activityInfoViewModel.activeModel = item
-            OpenActivityInfoEvent(item.id!!).postEvent
+            OpenActivityInfoEvent(item.id).postEvent
         }
 
         if (BuildConfig.DEBUG) {
@@ -171,7 +171,7 @@ class ActivityUnionPresenter(
 
         activityMorePopup.setOnClickListener {
             val filteredMenu =
-                activityMenuEntries.filterIndexed { index, s -> if (item.userId == userId) true else index < 2 }
+                activityMenuEntries.filterIndexed { index, _ -> if (item.userId == userId) true else index < 2 }
                     .toTypedArray()
             makeArrayPopupMenu(it, filteredMenu) { _, _, position, _ ->
                 when (position) {
@@ -188,7 +188,7 @@ class ActivityUnionPresenter(
                     3 -> {
                         makeConfirmationDialog(context) {
                             context.makeToast(R.string.please_wait)
-                            viewModel.deleteActivity(item.id ?: -1) { id, success ->
+                            viewModel.deleteActivity(item.id) { id, success ->
                                 if (id == item.id) {
                                     if (success) {
                                         context.makeToast(R.string.deleted_successfully_please_refresh)
@@ -206,7 +206,7 @@ class ActivityUnionPresenter(
 
         root.setOnClickListener {
             activityInfoViewModel.activeModel = item
-            OpenActivityInfoEvent(item.id!!).postEvent
+            OpenActivityInfoEvent(item.id).postEvent
         }
 
     }
@@ -244,7 +244,7 @@ class ActivityUnionPresenter(
 
         activityReplyContainer.setOnClickListener {
             activityInfoViewModel.activeModel = item
-            OpenActivityInfoEvent(item.id!!).postEvent
+            OpenActivityInfoEvent(item.id).postEvent
         }
 
         if (BuildConfig.DEBUG) {
@@ -257,7 +257,7 @@ class ActivityUnionPresenter(
 
         activityMorePopup.setOnClickListener {
             val filteredMenu =
-                activityMenuEntries.filterIndexed { index, s -> if (item.userId == userId) true else index < 2 }
+                activityMenuEntries.filterIndexed { index, _ -> if (item.userId == userId) true else index < 2 }
                     .toTypedArray()
             makeArrayPopupMenu(it, filteredMenu) { _, _, position, _ ->
                 when (position) {
@@ -274,7 +274,7 @@ class ActivityUnionPresenter(
                     3 -> {
                         makeConfirmationDialog(context) {
                             context.makeToast(R.string.please_wait)
-                            viewModel.deleteActivity(item.id ?: -1) { id, success ->
+                            viewModel.deleteActivity(item.id) { id, success ->
                                 if (id == item.id) {
                                     if (success) {
                                         context.makeToast(R.string.deleted_successfully_please_refresh)
@@ -292,7 +292,7 @@ class ActivityUnionPresenter(
 
         root.setOnClickListener {
             activityInfoViewModel.activeModel = item
-            OpenActivityInfoEvent(item.id!!).postEvent
+            OpenActivityInfoEvent(item.id).postEvent
         }
 
     }
@@ -357,7 +357,7 @@ class ActivityUnionPresenter(
         }
         activityMorePopup.setOnClickListener {
             val filteredMenu =
-                activityMenuEntries.filterIndexed { index, s -> if (item.userId == userId) index != 2 else index < 2 }
+                activityMenuEntries.filterIndexed { index, _ -> if (item.userId == userId) index != 2 else index < 2 }
                     .toTypedArray()
             makeArrayPopupMenu(it, filteredMenu) { _, _, position, _ ->
                 when (position) {
@@ -387,7 +387,7 @@ class ActivityUnionPresenter(
 
         root.setOnClickListener {
             activityInfoViewModel.activeModel = item
-            OpenActivityInfoEvent(item.id!!).postEvent
+            OpenActivityInfoEvent(item.id).postEvent
         }
     }
 

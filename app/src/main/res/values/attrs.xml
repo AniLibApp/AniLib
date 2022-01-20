@@ -149,7 +149,36 @@
         <attr name="titleTextSize"/>
     </declare-styleable>
 
+    <declare-styleable name="AlSpinnerPreference">
+        <attr name="al_show_icon" format="boolean"/>
+    </declare-styleable>
+
     <declare-styleable name="MediaScoreBadge">
         <attr name="isListScore" format="boolean"/>
     </declare-styleable>
+
+
+    <declare-styleable name="AlCheckPreference">
+        <attr name="al_pref_key" format="string"/>
+        <attr name="al_value" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="AlCountEditTextLayout">
+        <attr name="al_inputType">
+            <flag name="number" value="0x00000002" />
+            <!-- Can be combined with <var>number</var> and its other options to
+                 allow a signed number.  Corresponds to
+                 {@link android.text.InputType#TYPE_CLASS_NUMBER} |
+                 {@link android.text.InputType#TYPE_NUMBER_FLAG_SIGNED}. -->
+            <flag name="numberSigned" value="0x00001002" />
+            <!-- Can be combined with <var>number</var> and its other options to
+                 allow a decimal (fractional) number.  Corresponds to
+                 {@link android.text.InputType#TYPE_CLASS_NUMBER} |
+                 {@link android.text.InputType#TYPE_NUMBER_FLAG_DECIMAL}. -->
+            <flag name="numberDecimal" value="0x00002002" />
+        </attr>
+        <attr name="al_infinite_count" format="boolean"/>
+
+    </declare-styleable>
+
 </resources>

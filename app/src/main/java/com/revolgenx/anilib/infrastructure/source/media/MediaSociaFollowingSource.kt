@@ -3,14 +3,14 @@ package com.revolgenx.anilib.infrastructure.source.media
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
-import com.revolgenx.anilib.data.field.media.MediaSocialFollowingField
-import com.revolgenx.anilib.data.model.media_info.MediaSocialFollowingModel
-import com.revolgenx.anilib.infrastructure.service.media.MediaBrowseService
+import com.revolgenx.anilib.media.data.field.MediaSocialFollowingField
+import com.revolgenx.anilib.media.data.model.MediaSocialFollowingModel
+import com.revolgenx.anilib.media.service.MediaInfoService
 import io.reactivex.disposables.CompositeDisposable
 
 class MediaSocialFollowingSource(
     field: MediaSocialFollowingField,
-    private val service: MediaBrowseService,
+    private val service: MediaInfoService,
     private val compositeDisposable: CompositeDisposable
 ) :
     BaseRecyclerSource<MediaSocialFollowingModel, MediaSocialFollowingField>(field) {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ads_spinner_item_root"
+    style="@style/Widget.DynamicApp.Content.Card.Small.Clickable.Background"
+    android:orientation="horizontal"
+    android:paddingTop="14dp"
+    android:paddingBottom="14sp">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/al_spinner_item_icon"
+        style="@style/Widget.DynamicApp.Image.Preference"
+        android:layout_width="@dimen/ads_popup_selector_icon_size"
+        android:layout_height="@dimen/ads_popup_selector_icon_size" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/al_spinner_item_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1.0"
+        app:adt_contrastWithColorType="surface"
+        android:textAppearance="@style/TextAppearance.DynamicApp.Subtitle1" />
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:adt_colorType="text_primary"
-                app:ads_icon="@drawable/ic_tag"
+                app:ads_fillSpace="true"
                 app:ads_subtitle="@string/edit_filter_tags"
                 app:ads_title="@string/tags" />
 
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:adt_colorType="text_primary"
-                app:ads_icon="@drawable/ic_genre"
+                app:ads_fillSpace="true"
                 app:ads_subtitle="@string/edit_filter_genre"
                 app:ads_title="@string/genre" />
 
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:adt_colorType="text_primary"
-                app:ads_icon="@drawable/ic_watch"
+                app:ads_fillSpace="true"
                 app:ads_subtitle="@string/add_remove_streaming_on"
                 app:ads_title="@string/streaming_on" />
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>

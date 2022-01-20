@@ -1,15 +1,15 @@
 package com.revolgenx.anilib.ui.viewmodel.list
 
 import com.revolgenx.anilib.data.field.list.MediaListField
-import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
+import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
-import com.revolgenx.anilib.infrastructure.service.media.MediaListEntryService
+import com.revolgenx.anilib.entry.service.MediaEntryService
 import com.revolgenx.anilib.infrastructure.source.media_list.MediaListSource
-import com.revolgenx.anilib.ui.viewmodel.SourceViewModel
+import com.revolgenx.anilib.common.viewmodel.SourceViewModel
 
 open class MediaListViewModel(
-    private val entryService: MediaListEntryService,
+    private val entryService: MediaEntryService,
     private val service: MediaListService
 ) : SourceViewModel<MediaListSource, MediaListField>() {
     override var field: MediaListField = MediaListField()

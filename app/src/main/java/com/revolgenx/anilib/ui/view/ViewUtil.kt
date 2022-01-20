@@ -11,7 +11,6 @@ import android.provider.Settings
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -20,28 +19,19 @@ import androidx.annotation.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.badge.BadgeDrawable
-import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.support.popup.DynamicMenuPopup
 import com.pranavpandey.android.dynamic.support.popup.DynamicPopup
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.toasts.internal.ToastCompat
-import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.databinding.DynamicToastViewLayoutBinding
 import com.revolgenx.anilib.ui.dialog.MessageDialog
-
-private val tintSurface by lazy {
-    DynamicTheme.getInstance().get().tintSurfaceColor
-}
 
 fun Fragment.makeToast(
     @StringRes str: Int? = null,
@@ -125,9 +115,9 @@ fun makeArrayPopupMenu(
 fun makeSpinnerAdapter(context: Context, items: List<DynamicMenu>) =
     DynamicSpinnerImageAdapter(
         context,
-        R.layout.ads_layout_spinner_item,
-        R.id.ads_spinner_item_icon,
-        R.id.ads_spinner_item_text, items
+        R.layout.al_spinner_item_layout,
+        R.id.al_spinner_item_icon,
+        R.id.al_spinner_item_text, items
     )
 
 

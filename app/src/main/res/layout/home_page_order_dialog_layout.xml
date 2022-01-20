@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.woxthebox.draglistview.DragListView
+        android:id="@+id/mDragListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>

@@ -11,8 +11,8 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.loadMediaListFilter
+import com.revolgenx.anilib.constant.ALMediaListCollectionSort
 import com.revolgenx.anilib.data.meta.MediaListFilterMeta
-import com.revolgenx.anilib.data.meta.type.ALMediaListCollectionSort
 import com.revolgenx.anilib.databinding.MediaListFilterBottomSheetLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.MediaListCollectionFilterEvent
 import com.revolgenx.anilib.type.MediaType

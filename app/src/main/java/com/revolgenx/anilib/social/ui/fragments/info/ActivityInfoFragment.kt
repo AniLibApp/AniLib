@@ -14,7 +14,7 @@ import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
-import com.revolgenx.anilib.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.ActivityInfoFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
@@ -233,6 +233,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
                     ERROR -> {
                         makeToast(R.string.failed_to_toggle)
                     }
+                    else -> {}
                 }
             }
         }
@@ -321,7 +322,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
 
         activityMorePopup.setOnClickListener {
             val filteredMenu =
-                activityMenuEntries.filterIndexed { index, s -> if (item.userId == userId) true else index < 2 }
+                activityMenuEntries.filterIndexed { index, _ -> if (item.userId == userId) true else index < 2 }
                     .toTypedArray()
             makeArrayPopupMenu(it, filteredMenu) { _, _, position, _ ->
                 when (position) {
@@ -338,7 +339,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
                     3 -> {
                         makeConfirmationDialog(requireContext()) {
                             requireContext().makeToast(R.string.please_wait)
-                            activityUnionViewModel.deleteActivity(item.id ?: -1) { id, success ->
+                            activityUnionViewModel.deleteActivity(item.id) { id, success ->
                                 if (id == item.id) {
                                     if (success) {
                                         requireActivity().makeToast(R.string.deleted_successfully_please_refresh)
@@ -386,7 +387,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
 
         listActivityMorePopup.setOnClickListener {
             val filteredMenu =
-                activityMenuEntries.filterIndexed { index, s -> if (item.userId == userId) index != 2 else index < 2 }
+                activityMenuEntries.filterIndexed { index, _ -> if (item.userId == userId) index != 2 else index < 2 }
                     .toTypedArray()
             makeArrayPopupMenu(it, filteredMenu) { _, _, position, _ ->
                 when (position) {
@@ -399,7 +400,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
                     3 -> {
                         makeConfirmationDialog(requireContext()) {
                             requireContext().makeToast(R.string.please_wait)
-                            activityUnionViewModel.deleteActivity(item.id ?: -1) { id, success ->
+                            activityUnionViewModel.deleteActivity(item.id) { id, success ->
                                 if (id == item.id) {
                                     if (success) {
                                         requireActivity().makeToast(R.string.deleted_successfully_please_refresh)

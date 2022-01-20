@@ -8,26 +8,31 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.util.sp
 
 class AniLibItemView : DynamicItemView {
+    private var textAllCaps = false
+    private var textSize = 12f
     constructor(context: Context) : this(context, null)
-    constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0)
+    constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet?, defStyle: Int) : super(
         context,
         attributeSet,
         defStyle
-    ) {
-        val a = context.theme.obtainStyledAttributes(
-            attributeSet,
-            R.styleable.AniLibItemView,
-            defStyle,
-            0
-        )
+    )
+
+    override fun onLoadAttributes(attrs: AttributeSet?) {
+        super.onLoadAttributes(attrs)
+        val a = context.obtainStyledAttributes(attrs, R.styleable.AniLibItemView)
         try {
-            titleView?.isAllCaps = a.getBoolean(R.styleable.AniLibItemView_titleTextAllCaps, false);
-            val titleTextSize = a.getDimension(R.styleable.AniLibItemView_titleTextSize, sp(14f))
-            titleView?.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize)
-        } catch (ex: Exception) {
-        } finally {
+            textAllCaps = a.getBoolean(R.styleable.AniLibItemView_titleTextAllCaps, false);
+            textSize = a.getDimension(R.styleable.AniLibItemView_titleTextSize, sp(14f))
+        }finally {
             a.recycle()
         }
     }
+
+    override fun onInflate() {
+        super.onInflate()
+        titleView?.isAllCaps = textAllCaps
+        titleView?.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+    }
+
 }

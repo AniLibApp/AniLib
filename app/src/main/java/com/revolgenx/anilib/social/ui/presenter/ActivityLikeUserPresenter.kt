@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.data.model.user.UserModel
+import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.databinding.ActivityLikeUserPresenterLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
-import com.revolgenx.anilib.ui.presenter.BasePresenter
+import com.revolgenx.anilib.common.presenter.BasePresenter
 
 class ActivityLikeUserPresenter(context: Context) :
     BasePresenter<ActivityLikeUserPresenterLayoutBinding, UserModel>(context) {

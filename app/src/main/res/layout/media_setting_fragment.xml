@@ -4,12 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_height="match_parent">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicProgressBar
             android:id="@+id/media_setting_progress_bar"
@@ -18,37 +16,48 @@
             android:layout_height="wrap_content"
             android:indeterminate="true" />
 
-        <com.pranavpandey.android.dynamic.support.view.DynamicHeader
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:ads_fillSpace="true"
-            app:ads_title="@string/title_language" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/SettingHeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_language" />
 
 
-        <com.revolgenx.anilib.ui.view.widgets.spinner.AniLibSpinnerLayout
-            android:id="@+id/title_language_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp" />
+            <com.revolgenx.anilib.ui.view.widgets.AlSpinnerLayout
+                android:id="@+id/title_language_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicSwitchCompat
-            android:id="@+id/airing_anime_notification_switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="@string/airing_anime_notifications" />
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/airing_anime_notification_switch"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/airing_anime_notifications" />
 
-        <com.revolgenx.anilib.ui.view.preference.CustomCheckPreference
-            android:id="@+id/adult_content_switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:ads_description="@string/show_adult_content_desc"
-            app:ads_key="can_show_adult_key"
-            app:ads_title="@string/show_adult_content" />
+            <com.revolgenx.anilib.ui.view.preference.AlCheckPreference
+                android:id="@+id/adult_content_switch"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_adult_content"
+                app:al_pref_key="can_show_adult_key"
+                app:al_value="false" />
 
-    </LinearLayout>
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_adult_content_desc"
+                app:adt_colorType="text_secondary" />
+
+        </LinearLayout>
+    </FrameLayout>
 
 </androidx.core.widget.NestedScrollView>

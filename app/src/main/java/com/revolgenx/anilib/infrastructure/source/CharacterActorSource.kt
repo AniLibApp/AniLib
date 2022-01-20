@@ -3,9 +3,9 @@ package com.revolgenx.anilib.infrastructure.source
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
-import com.revolgenx.anilib.data.field.character.CharacterVoiceActorField
-import com.revolgenx.anilib.data.model.VoiceActorModel
-import com.revolgenx.anilib.infrastructure.service.character.CharacterService
+import com.revolgenx.anilib.character.data.field.CharacterVoiceActorField
+import com.revolgenx.anilib.character.data.model.VoiceActorModel
+import com.revolgenx.anilib.character.service.CharacterService
 import io.reactivex.disposables.CompositeDisposable
 
 class CharacterActorSource(

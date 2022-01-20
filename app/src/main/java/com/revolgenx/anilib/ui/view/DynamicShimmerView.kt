@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.ui.adapter.DynamicShimmerAdapter
+import com.revolgenx.anilib.common.ui.adapter.AlShimmerAdapter
 
 class DynamicShimmerView : ShimmerFrameLayout {
 
@@ -56,7 +56,7 @@ class DynamicShimmerView : ShimmerFrameLayout {
             it.isNestedScrollingEnabled = false
             it.clipToPadding = false
         }
-        val mAdapter = DynamicShimmerAdapter(adapterLayoutRes, totalShimmers)
+        val mAdapter = AlShimmerAdapter(adapterLayoutRes, totalShimmers)
         recyclerView.layoutManager =
             if (whichLayoutManager == 0) {
                 LinearLayoutManager(

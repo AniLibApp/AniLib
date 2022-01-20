@@ -3,15 +3,13 @@ package com.revolgenx.anilib.common.preference
 import android.content.Context
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
-import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.pranavpandey.android.dynamic.theme.DynamicPalette
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.Constants
 import com.revolgenx.anilib.app.theme.ThemeController
-import com.revolgenx.anilib.data.field.home.AiringMediaField
-import com.revolgenx.anilib.data.model.user.UserPrefModel
-import com.revolgenx.anilib.data.model.setting.MediaListOptionModel
-import com.revolgenx.anilib.data.model.setting.MediaOptionModel
+import com.revolgenx.anilib.airing.data.field.AiringMediaField
+import com.revolgenx.anilib.user.data.model.UserPrefModel
+import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
+import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.type.UserTitleLanguage
 import com.revolgenx.anilib.util.shortcutAction
@@ -31,6 +29,10 @@ private const val recentMangaListStatusKey = "recentMangaListStatusKey"
 private const val listEditOrBrowseKey = "list_edit_or_browse_key"
 
 
+private const val recent_anime_list_status_key = "recent_anime_list_status_key"
+private const val recent_manga_list_status_key = "recent_manga_list_status_key"
+
+
 fun Context.loggedIn() = getBoolean(loggedInKey, false)
 fun Context.loggedIn(logIn: Boolean) = putBoolean(loggedInKey, logIn)
 
@@ -47,7 +49,7 @@ fun Context.imageQuality() = getString(imageQualityKey, "0")
 
 fun Context.userName() = getUserPrefModel(this).name
 fun Context.userScoreFormat() =
-    getUserPrefModel(this).mediaListOption!!.scoreFormat!!
+    getUserPrefModel(this).mediaListOptions!!.scoreFormat!!
 
 private var userPrefModelPref: UserPrefModel? = null
 
@@ -103,13 +105,13 @@ fun getUserPrefModel(context: Context): UserPrefModel {
                 }
     }
 
-    if (userPrefModelPref!!.mediaOptions == null) {
-        userPrefModelPref!!.mediaOptions =
-            MediaOptionModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
+    if (userPrefModelPref!!.options == null) {
+        userPrefModelPref!!.options =
+            UserOptionsModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
     }
 
-    if (userPrefModelPref!!.mediaListOption == null) {
-        userPrefModelPref!!.mediaListOption = MediaListOptionModel().also { mediaListOptionModel ->
+    if (userPrefModelPref!!.mediaListOptions == null) {
+        userPrefModelPref!!.mediaListOptions = MediaListOptionModel().also { mediaListOptionModel ->
             mediaListOptionModel.scoreFormat = ScoreFormat.POINT_100.ordinal
         }
     }
@@ -121,10 +123,10 @@ fun getUserPrefModel(context: Context): UserPrefModel {
 fun removeBasicUserDetail(context: Context) {
     userPrefModelPref = UserPrefModel().also {
         it.name = context.getString(R.string.app_name)
-        it.mediaListOption = MediaListOptionModel().also { option ->
+        it.mediaListOptions = MediaListOptionModel().also { option ->
             option.scoreFormat = ScoreFormat.`$UNKNOWN`.ordinal
         }
-        it.mediaOptions = MediaOptionModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
+        it.options = UserOptionsModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
     }
     context.putString(userModelKey, Gson().toJson(userPrefModelPref))
 }
@@ -201,28 +203,28 @@ fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
     }
 
 
-fun storeMediaOption(context: Context, model: MediaOptionModel?) {
+fun storeMediaOption(context: Context, model: UserOptionsModel?) {
     if (model == null) return
 
     val userPrefModel = getUserPrefModel(context)
-    userPrefModel.mediaOptions = model
+    userPrefModel.options = model
     context.saveBasicUserDetail(userPrefModel)
 }
 
-fun getStoredMediaOptions(context: Context): MediaOptionModel {
-    return getUserPrefModel(context).mediaOptions!!
+fun getStoredMediaOptions(context: Context): UserOptionsModel {
+    return getUserPrefModel(context).options!!
 }
 
 fun storeMediaListOptions(context: Context, model: MediaListOptionModel?) {
     if (model == null) return
 
     val userPrefModel = getUserPrefModel(context)
-    userPrefModel.mediaListOption = model
+    userPrefModel.mediaListOptions = model
     context.saveBasicUserDetail(userPrefModel)
 }
 
 fun getStoredMediaListOptions(context: Context): MediaListOptionModel {
-    return getUserPrefModel(context).mediaListOption!!
+    return getUserPrefModel(context).mediaListOptions!!
 }
 
 
@@ -237,6 +239,14 @@ fun recentMangaListStatus(context: Context, value: Int) {
 fun recentAnimeListStatus(context: Context) =
     context.getInt(recentAnimeListStatusKey, 0)
 
+fun animeListStatusHistory(context: Context) = context.getString(recent_anime_list_status_key)
+fun animeListStatusHistory(context: Context, value:String) = context.getString(recent_anime_list_status_key, value.trim())
+
+fun mangaListStatusHistory(context: Context) = context.getString(recent_manga_list_status_key)
+fun mangaListStatusHistory(context: Context, value:String) = context.getString(recent_manga_list_status_key, value.trim())
+
+fun animeCustomLists(context: Context) = getUserPrefModel(context).mediaListOptions!!.animeList?.customLists ?: emptyList()
+fun mangaCustomLists(context: Context) = getUserPrefModel(context).mediaListOptions!!.mangaList?.customLists ?: emptyList()
 
 fun recentMangaListStatus(context: Context) = context.getInt(recentMangaListStatusKey, 0)
 

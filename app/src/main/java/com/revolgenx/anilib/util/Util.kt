@@ -109,6 +109,7 @@ fun TextView.naText(text: String?) {
 }
 
 fun String?.naText() = this.takeIf { it != null && it.isNotEmpty() } ?: "?"
+fun Int?.naText() = this.takeIf { it != null }?.toString() ?: "?"
 
 fun String?.getOrDefault() = this ?: ""
 fun Int?.getOrDefault() = this ?: 0
@@ -142,10 +143,13 @@ fun Context.hideKeyboard(view: View) {
 
 fun Context.openLink(url: String?) {
     try {
-        if (url != null)
+        if (!url.isNullOrBlank()){
             startActivity(Intent(Intent.ACTION_VIEW, url.trim().toUri()).also {
                 it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             })
+        }else{
+            makeToast(R.string.invalid)
+        }
     } catch (e: Exception) {
         Timber.d(e)
         makeToast(R.string.no_app_found_to_open)

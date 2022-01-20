@@ -1,9 +1,9 @@
 package com.revolgenx.anilib.infrastructure.service.media
 
-import com.revolgenx.anilib.data.field.media.MediaField
-import com.revolgenx.anilib.data.model.CommonMediaModel
-import com.revolgenx.anilib.data.model.home.SelectableCommonMediaModel
+import com.revolgenx.anilib.media.data.field.MediaField
+import com.revolgenx.anilib.common.data.model.CommonMediaModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.media.data.model.MediaModel
 import io.reactivex.disposables.CompositeDisposable
 
 interface MediaService {
@@ -17,6 +17,6 @@ interface MediaService {
     fun getSelectableMedia(
         field: MediaField,
         compositeDisposable: CompositeDisposable,
-        callback: ((Resource<List<SelectableCommonMediaModel>>) -> Unit)
+        callback: ((Resource<List<MediaModel>>) -> Unit)
     )
 }

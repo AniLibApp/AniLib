@@ -1,8 +1,8 @@
 package com.revolgenx.anilib.social.data.model.reply
 
 import android.text.Spanned
-import com.revolgenx.anilib.data.model.BaseModel
-import com.revolgenx.anilib.data.model.user.UserModel
+import com.revolgenx.anilib.common.data.model.BaseModel
+import com.revolgenx.anilib.user.data.model.UserModel
 
 
 class ActivityReplyModel : BaseModel() {

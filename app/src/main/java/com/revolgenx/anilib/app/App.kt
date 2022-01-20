@@ -31,12 +31,11 @@ import com.revolgenx.anilib.common.logger.AniLibDebugTree
 import com.revolgenx.anilib.common.logger.LoggerTree
 import com.revolgenx.anilib.infrastructure.repository.networkModules
 import com.revolgenx.anilib.infrastructure.repository.repositoryModules
-import com.revolgenx.anilib.infrastructure.service.notification.NotificationWorker
+import com.revolgenx.anilib.notification.service.NotificationWorker
 import com.revolgenx.anilib.infrastructure.service.serviceModule
 import com.revolgenx.anilib.radio.repository.radioApiModules
 import com.revolgenx.anilib.radio.repository.radioRoomModules
 import com.revolgenx.anilib.radio.source.radioSourceModule
-import com.revolgenx.anilib.ui.viewmodel.viewModelModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -44,6 +43,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.*
+import com.revolgenx.anilib.common.viewmodel.viewModelModules
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.infrastructure.service.activityServiceModules
 import com.revolgenx.anilib.social.ui.viewmodel.activityViewModelModules

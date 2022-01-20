@@ -1,20 +1,18 @@
 package com.revolgenx.anilib.radio.repository.api
 
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
 interface RadioGithubService {
 
-    companion object : KoinComponent {
+    companion object {
         const val BASE_URL = "https://raw.githubusercontent.com/"
         const val REPO_URL = "${BASE_URL}rev0lgenX/AniLib-Radio/repo/"
         const val DEV_URL = "${BASE_URL}rev0lgenX/AniLib-Radio/dev/"
 
         private val client by lazy {
-            val network: NetworkHelper by inject()
+            val network= NetworkHelper()
             network.client.newBuilder()
                 .addNetworkInterceptor { chain ->
                     val originalResponse = chain.proceed(chain.request())

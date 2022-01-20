@@ -7,12 +7,12 @@ import com.apollographql.apollo.exception.ApolloHttpException
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.listEditOrBrowse
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
-import com.revolgenx.anilib.data.model.EntryListEditorMediaModel
-import com.revolgenx.anilib.data.model.list.MediaListModel
-import com.revolgenx.anilib.data.model.search.filter.MediaSearchFilterModel
+import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel
+import com.revolgenx.anilib.data.model.list.AlMediaListModel
+import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.databinding.MediaListCollectionNormalPresenterLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
-import com.revolgenx.anilib.ui.presenter.home.discover.MediaListCollectionPresenter
+import com.revolgenx.anilib.home.discover.presenter.MediaListCollectionPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
@@ -26,7 +26,7 @@ object NormalHolderBinding {
     fun bind(
         binding: MediaListCollectionNormalPresenterLayoutBinding,
         context: Context,
-        item: MediaListModel,
+        item: AlMediaListModel,
         mediaFormats: Array<String>,
         mediaStatus: Array<String>,
         statusColors: Array<String>,

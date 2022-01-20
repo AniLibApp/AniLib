@@ -13,7 +13,7 @@ import com.revolgenx.anilib.radio.data.PlaybackState
 import com.revolgenx.anilib.radio.data.events.FavouriteEvent
 import com.revolgenx.anilib.radio.repository.room.RadioStation
 import com.revolgenx.anilib.radio.ui.util.RadioPlayerHelper
-import com.revolgenx.anilib.ui.presenter.Constant
+import com.revolgenx.anilib.common.presenter.Constant
 
 class FavouriteRadioStationPresenter(context: Context) : Presenter<RadioStation>(context) {
     override val elementTypes: Collection<Int> = listOf(0)

@@ -40,8 +40,8 @@ import com.revolgenx.anilib.radio.repository.room.getDefaultStream
 import com.revolgenx.anilib.radio.source.RadioChildrenType
 import com.revolgenx.anilib.radio.source.RadioStationSource
 import kotlinx.coroutines.*
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.concurrent.atomic.AtomicBoolean
 
 class RadioService : MediaBrowserServiceCompat(),
