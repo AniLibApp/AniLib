@@ -14,6 +14,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.app.setting.data.model.SettingViewModel
+import com.revolgenx.anilib.common.preference.UserPreference
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() {
@@ -69,7 +70,7 @@ class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() 
 
         if (savedInstanceState == null) {
             with(viewModel.mediaSettingField) {
-                userId = requireContext().userId()
+                userId = UserPreference.userId
             }
             viewModel.getMediaSetting(requireContext())
         }

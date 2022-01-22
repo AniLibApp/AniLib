@@ -5,6 +5,7 @@ import com.apollographql.apollo.exception.ApolloHttpException
 import com.revolgenx.anilib.DeleteMediaListEntryMutation
 import com.revolgenx.anilib.MediaListEditorQuery
 import com.revolgenx.anilib.SaveMediaListEntryMutation
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.entry.data.model.AdvancedScoreModel
 import com.revolgenx.anilib.common.preference.userId
@@ -33,7 +34,7 @@ class MediaEntryServiceImpl(context: Context, graphRepository: BaseGraphReposito
         val disposable = graphRepository.request(
             MediaListEditorQuery.builder()
                 .mediaId(mediaId)
-                .userId(context.userId())
+                .userId(UserPreference.userId)
                 .format(ScoreFormat.values()[context.userScoreFormat()])
                 .build()
         ).map { response ->

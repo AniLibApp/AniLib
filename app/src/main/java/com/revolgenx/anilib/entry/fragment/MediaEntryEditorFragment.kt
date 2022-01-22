@@ -22,6 +22,7 @@ import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.entry.data.meta.EntryEditorResultMeta
 import com.revolgenx.anilib.common.data.model.FuzzyDateModel
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.preference.getUserPrefModel
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userScoreFormat
@@ -117,7 +118,7 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
         apiModelEntry.also {
             it.mediaId = mediaListMeta.mediaId
             it.type = mediaListMeta.type
-            it.userId = requireContext().userId()
+            it.userId = UserPreference.userId
         }
 
         setToolbarTheme()

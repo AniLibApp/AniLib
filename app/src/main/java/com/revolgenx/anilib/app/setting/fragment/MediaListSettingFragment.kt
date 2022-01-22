@@ -18,6 +18,7 @@ import com.revolgenx.anilib.ui.dialog.InputDialog
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.app.setting.data.model.SettingViewModel
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.util.onItemSelected
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -85,7 +86,7 @@ class MediaListSettingFragment : BaseToolbarFragment<MediaListSettingFragmentBin
 
         if (savedInstanceState == null) {
             with(viewModel.mediaListSettingField) {
-                userId = requireContext().userId()
+                userId = UserPreference.userId
             }
             viewModel.getListSetting(requireContext())
         }

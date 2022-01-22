@@ -13,24 +13,19 @@ import com.revolgenx.anilib.common.ui.bottomsheet.BottomSheetFragment
 import com.revolgenx.anilib.databinding.SelectorBottomSheetBinding
 import com.revolgenx.anilib.databinding.SelectorItemLayoutBinding
 
-class MediaListGroupSelectorBottomSheet :
-    BottomSheetFragment<SelectorBottomSheetBinding>() {
+class MediaListDisplaySelectorBottomSheet : BottomSheetFragment<SelectorBottomSheetBinding>() {
 
-    private var callback: ((selected: String) -> Unit)? = null
+    private var callback: ((selected: Int) -> Unit)? = null
 
     companion object {
-        private const val media_list_group_selector_arg_key = "media_list_group_selector_arg_key"
-        fun newInstance(
-            groupNameList: List<Pair<Pair<String, Int>, Boolean>>,
-            callback: (selected: String) -> Unit
-        ) =
-            MediaListGroupSelectorBottomSheet().also {
-                it.arguments = bundleOf(media_list_group_selector_arg_key to groupNameList)
-                it.callback = callback
-            }
+        private const val selector_arg_key = "selector_arg_key"
+        fun newInstance(selectedIndex: Int, callback:(selected: Int) -> Unit) = MediaListDisplaySelectorBottomSheet().also {
+            it.arguments = bundleOf(selector_arg_key to selectedIndex)
+            it.callback = callback
+        }
     }
 
-    private val groupNameList get() = arguments?.get(media_list_group_selector_arg_key) as? List<Pair<Pair<String, Int>, Boolean>>
+    private val selectedIndex get() = arguments?.getInt(selector_arg_key)
     override fun bindView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,28 +36,29 @@ class MediaListGroupSelectorBottomSheet :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val groupNameSelectorList = groupNameList ?: return
+        val selectedIndex = selectedIndex ?: return
+
+        val displayModes = requireContext().resources.getStringArray(R.array.list_display_modes)
+            .mapIndexed { index, s -> s to index }
 
         Adapter.builder(viewLifecycleOwner)
             .addPresenter(
-                Presenter.simple<Pair<Pair<String, Int>, Boolean>>(
+                Presenter.simple<Pair<String, Int>>(
                     requireContext(),
                     R.layout.selector_item_layout,
                     0
                 ) { v, item ->
                     SelectorItemLayoutBinding.bind(v).apply {
-                        val groupNameWithCount = item.first
-                        val isSelected = item.second
-
-                        selectorItemCb.text = "%s %d".format(groupNameWithCount.first, groupNameWithCount.second)
-                        selectorItemCb.isChecked = isSelected
+                        selectorItemCb.text = item.first
+                        selectorItemCb.isChecked = item.second == selectedIndex
                         selectorItemCb.setOnCheckedChangeListener { _, _ ->
-                            callback?.invoke(groupNameWithCount.first)
+                            callback?.invoke(item.second)
                             dismiss()
                         }
                     }
                 })
-            .addSource(Source.fromList(groupNameSelectorList))
+            .addSource(Source.fromList(displayModes))
             .into(binding.selectorRecyclerView)
+
     }
 }

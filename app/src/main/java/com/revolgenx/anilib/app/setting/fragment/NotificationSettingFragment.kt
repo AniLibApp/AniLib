@@ -12,6 +12,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.NotificationType
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.app.setting.viewmodel.NotificationSettingViewModel
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.notification.data.field.UserNotificationMutateField
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,7 +56,7 @@ class NotificationSettingFragment :
         if (savedInstanceState == null) {
             if (requireContext().loggedIn()) {
                 with(viewModel.field) {
-                    userId = requireContext().userId()
+                    userId = UserPreference.userId
                 }
             }
             viewModel.getNotificationSettings()

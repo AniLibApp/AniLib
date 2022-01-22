@@ -13,7 +13,7 @@ import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.common.preference.getMediaListGridPresenter
 import com.revolgenx.anilib.constant.MediaListDisplayMode
-import com.revolgenx.anilib.home.discover.presenter.MediaListCollectionPresenter
+import com.revolgenx.anilib.home.discover.presenter.DiscoverMediaListCollectionPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.ui.viewmodel.list.MediaListCollectionViewModel
@@ -24,7 +24,7 @@ import org.greenrobot.eventbus.ThreadMode
 abstract class MediaListFragment : BasePresenterFragment<AlMediaListModel>(), EventBusListener {
 
     override val basePresenter: Presenter<AlMediaListModel>
-        get() = MediaListCollectionPresenter(requireContext(), mediaListMeta!!, viewModel)
+        get() = DiscoverMediaListCollectionPresenter(requireContext(), mediaListMeta!!, viewModel)
     override val baseSource: Source<AlMediaListModel>
         get() = viewModel.source ?: createSource()
 

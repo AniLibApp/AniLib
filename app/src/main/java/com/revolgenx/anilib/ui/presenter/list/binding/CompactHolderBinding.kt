@@ -10,7 +10,7 @@ import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.databinding.MediaListCollectionCompactPresenterLayoutBinding
-import com.revolgenx.anilib.home.discover.presenter.MediaListCollectionPresenter
+import com.revolgenx.anilib.home.discover.presenter.DiscoverMediaListCollectionPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
@@ -50,7 +50,7 @@ object CompactHolderBinding {
                         if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
                     )
 
-            mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(MediaListCollectionPresenter.textPrimaryColor)
+            mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(DiscoverMediaListCollectionPresenter.textPrimaryColor)
 
             when (item.scoreFormat) {
                 ScoreFormat.POINT_3.ordinal -> {

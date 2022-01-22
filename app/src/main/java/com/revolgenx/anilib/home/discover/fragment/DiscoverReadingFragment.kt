@@ -12,11 +12,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.home.discover.dialog.DiscoverMediaListFilterDialog
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.home.discover.data.meta.DiscoverOrderItem
-import com.revolgenx.anilib.common.preference.getDiscoverOrderFromType
-import com.revolgenx.anilib.common.preference.isDiscoverOrderEnabled
-import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.infrastructure.event.ChangeViewPagerPageEvent
 import com.revolgenx.anilib.infrastructure.event.ListContainerFragmentPage
 import com.revolgenx.anilib.infrastructure.event.MainActivityPage
@@ -34,7 +31,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
     private val presenter
         get() = MediaListPresenter(
             requireContext(),
-            MediaListMeta(requireContext().userId()),
+            MediaListMeta(UserPreference.userId),
             viewModel
         )
 
@@ -97,7 +94,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
         if (requireContext().loggedIn() && isSectionEnabled) {
             if (savedInstanceState == null) {
                 viewModel.field.also { field ->
-                    field.userId = requireContext().userId()
+                    field.userId = UserPreference.userId
                     field.status = MediaListStatus.CURRENT.ordinal
                     field.type = MediaType.MANGA.ordinal
                 }

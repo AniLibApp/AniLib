@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/bottom_sheet_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:fontFamily="@font/cabincondensed_medium"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:adt_colorType="accent"
+        app:adt_contrastWithColorType="background" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="?android:attr/dividerHorizontal"
+        android:visibility="gone" />
+
+
+    <FrameLayout
+        android:id="@+id/bottom_sheet_container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="?android:attr/dividerHorizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/bottom_sheet_negative_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ads_button_remote"
+            android:gravity="center"
+            android:textSize="13sp"
+            app:adt_colorType="accent"
+            app:adt_contrastWithColorType="background"
+            app:adt_rtlSupport="false"
+            app:fontFamily="@font/cabin_semi_bold"
+            app:textAllCaps="true" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/bottom_sheet_positive_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ads_button_remote"
+            android:gravity="center"
+            android:textSize="13sp"
+            app:adt_colorType="accent"
+            app:adt_contrastWithColorType="background"
+            app:adt_rtlSupport="false"
+            app:fontFamily="@font/cabin_semi_bold"
+            app:textAllCaps="true" />
+
+    </LinearLayout>
+</LinearLayout>

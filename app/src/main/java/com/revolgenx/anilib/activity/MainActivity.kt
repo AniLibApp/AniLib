@@ -77,6 +77,7 @@ import com.revolgenx.anilib.app.setting.fragment.EditTagFilterFragment
 import com.revolgenx.anilib.staff.fragment.StaffContainerFragment
 import com.revolgenx.anilib.studio.fragment.StudioFragment
 import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
+import com.revolgenx.anilib.user.fragment.UserMediaListCollectionContainerFragment
 
 class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope, EventBusListener {
     private val job = Job()
@@ -552,7 +553,8 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             }
 
             is OpenUserMediaListEvent -> {
-                addFragmentToMain(UserMediaListContainerFragment.newInstance(event.meta))
+//                addFragmentToMain(UserMediaListContainerFragment.newInstance(event.meta))
+                addFragmentToMain(UserMediaListCollectionContainerFragment.newInstance(event.meta))
             }
 
             is OpenSearchEvent -> {

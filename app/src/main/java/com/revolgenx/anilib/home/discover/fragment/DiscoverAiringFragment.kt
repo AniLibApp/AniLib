@@ -98,7 +98,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
 
             if (requireContext().loggedIn()) {
                 with(viewModel.field) {
-                    userId = requireContext().userId()
+                    userId = UserPreference.userId
                 }
             }
 

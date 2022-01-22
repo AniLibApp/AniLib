@@ -15,9 +15,13 @@ class MediaFilterFormatAdapter(private val context: Context) :
         context.resources.getStringArray(R.array.media_format)
     }
 
-    var onItemRemoved: ((item:Int) -> Unit)? = null
+    var onItemRemoved: ((item: Int) -> Unit)? = null
 
-    var currentList = mutableListOf<Int>()
+    var currentList: MutableList<Int>? = null
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaFilterFormatViewHolder {
         return MediaFilterFormatViewHolder(
@@ -30,13 +34,13 @@ class MediaFilterFormatAdapter(private val context: Context) :
     }
 
     override fun onBindViewHolder(holder: MediaFilterFormatViewHolder, position: Int) {
-        val format = currentList[position]
+        val format = currentList?.get(position) ?: return
         val currentFormat = listFormats[format]
 
         holder.binding.chipTagView.text = currentFormat
 
         holder.binding.chipTagView.setOnCloseIconClickListener {
-            val removed = currentList.removeAt(position)
+            val removed = currentList!!.removeAt(position)
             notifyItemRemoved(position)
             notifyItemRangeChanged(position, itemCount - position);
             onItemRemoved?.invoke(removed)
@@ -45,7 +49,7 @@ class MediaFilterFormatAdapter(private val context: Context) :
     }
 
     override fun getItemCount(): Int {
-        return currentList.size
+        return currentList?.size ?: 0
     }
 
     inner class MediaFilterFormatViewHolder(val binding: ChipTagPresenterBinding) :

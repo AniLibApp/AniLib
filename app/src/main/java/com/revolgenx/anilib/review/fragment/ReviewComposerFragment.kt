@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.review.data.model.ReviewModel
@@ -85,7 +86,7 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.field.mediaId = reviewMediaId ?: return
-        viewModel.field.userId = requireContext().userId()
+        viewModel.field.userId = UserPreference.userId
 
         viewModel.reviewLiveData.observe(viewLifecycleOwner) { res ->
             when (res.status) {

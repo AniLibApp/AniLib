@@ -9,6 +9,7 @@ import com.revolgenx.anilib.common.preference.saveBasicUserDetail
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.viewmodel.BaseAndroidViewModel
 import com.revolgenx.anilib.common.data.field.TagField
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toBasicUserModel
 import com.revolgenx.anilib.ui.view.makeToast
@@ -26,7 +27,7 @@ class MainActivityViewModel(
     private val basicUserLiveData = MutableLiveData<UserPrefModel>()
 
     fun getUserLiveData(): LiveData<UserPrefModel> {
-        val disposable = repository.request(BasicUserQuery.builder().id(app.userId()).build())
+        val disposable = repository.request(BasicUserQuery.builder().id(UserPreference.userId).build())
             .map {
                 it.data()?.User()!!.toBasicUserModel()
             }

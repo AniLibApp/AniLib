@@ -31,7 +31,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
     private val presenter
         get() = MediaListPresenter(
             requireContext(),
-            MediaListMeta(requireContext().userId()),
+            MediaListMeta(UserPreference.userId),
             viewModel
         )
 
@@ -95,7 +95,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
         if (requireContext().loggedIn() && isSectionEnabled) {
             if (savedInstanceState == null) {
                 viewModel.field.also { field ->
-                    field.userId = requireContext().userId()
+                    field.userId = UserPreference.userId
                     field.status = MediaListStatus.CURRENT.ordinal
                     field.type = MediaType.ANIME.ordinal
                     field.sort = getDiscoverMediaListSort(requireContext(), field.type!!)

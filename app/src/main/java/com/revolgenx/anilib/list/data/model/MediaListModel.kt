@@ -24,6 +24,9 @@ class MediaListModel:BaseModel(){
     var updatedAt:Int? = null
     var createdAt:Int? = null
 
+    var customLists:Map<String, Boolean>? = null
+
     var media:MediaModel? = null
     var user: UserModel? = null
+
 }

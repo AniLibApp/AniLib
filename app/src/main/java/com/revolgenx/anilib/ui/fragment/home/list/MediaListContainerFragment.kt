@@ -18,7 +18,7 @@ import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.infrastructure.event.DisplayModeChangedEvent
 import com.revolgenx.anilib.infrastructure.event.DisplayTypes
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
-import com.revolgenx.anilib.home.discover.presenter.MediaListCollectionPresenter
+import com.revolgenx.anilib.home.discover.presenter.DiscoverMediaListCollectionPresenter
 import com.revolgenx.anilib.ui.viewmodel.home.list.MediaListContainerViewModel
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.registerForEvent
@@ -32,7 +32,7 @@ abstract class MediaListContainerFragment : BasePresenterFragment<AlMediaListMod
     EventBusListener {
 
     override val basePresenter: Presenter<AlMediaListModel>
-        get() = MediaListCollectionPresenter(
+        get() = DiscoverMediaListCollectionPresenter(
             requireContext(),
             mediaListMeta,
             viewModel.mediaListViewModel

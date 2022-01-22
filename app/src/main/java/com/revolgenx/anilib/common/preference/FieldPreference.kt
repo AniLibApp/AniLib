@@ -14,6 +14,7 @@ import com.revolgenx.anilib.home.discover.data.field.NewlyAddedMediaField
 import com.revolgenx.anilib.home.discover.data.field.PopularMediaField
 import com.revolgenx.anilib.home.discover.data.field.TrendingMediaField
 import com.revolgenx.anilib.home.season.data.field.SeasonField
+import com.revolgenx.anilib.list.data.meta.MediaListCollectionFilterMeta
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.type.MediaType
@@ -65,6 +66,10 @@ const val ANIME_MEDIA_LIST_FILTER_KEY = "ANIME_MEDIA_LIST_FILTER_KEY"
 const val MANGA_MEDIA_LIST_FILTER_KEY = "MANGA_MEDIA_LIST_FILTER_KEY"
 
 
+const val ANIME_MEDIA_LIST_COLLECTION_FILTER_KEY = "ANIME_MEDIA_LIST_COLLECTION_FILTER_KEY"
+const val MANGA_MEDIA_LIST_COLLECTION_FILTER_KEY = "MANGA_MEDIA_LIST_COLLECTION_FILTER_KEY"
+
+
 const val RECOMMENDATION_ON_LIST_KEY = "RECOMMENDATION_ON_LIST_KEY"
 const val RECOMMENDATION_SORT_KEY = "RECOMMENDATION_SORT_KEY"
 
@@ -96,6 +101,14 @@ const val DISCOVER_WATCHING_SORT_KEY = "DISCOVER_WATCHING_SORT_KEY"
 
 const val MEDIA_LIST_GRID_PRESENTER_KEY = "MEDIA_LIST_GRID_PRESENTER_KEY"
 const val AL_LIST_GRID_PRESENTER_KEY = "AL_LIST_GRID_PRESENTER_KEY"
+
+const val USER_ANIME_MEDIA_LIST_DISPLAY_KEY = "USER_ANIME_MEDIA_LIST_DISPLAY_KEY"
+const val USER_MANGA_MEDIA_LIST_DISPLAY_KEY = "USER_MANGA_MEDIA_LIST_DISPLAY_KEY"
+
+const val GENERAL_ANIME_MEDIA_LIST_DISPLAY_KEY = "GENERAL_ANIME_MEDIA_LIST_DISPLAY_KEY"
+const val GENERAL_MANGA_MEDIA_LIST_DISPLAY_KEY = "GENERAL_MANGA_MEDIA_LIST_DISPLAY_KEY"
+
+
 const val AIRING_DISPLAY_MODE_KEY = "AIRING_DISPLAY_MODE_KEY"
 
 const val SHOW_AIRING_WEEKLY_KEY = "SHOW_AIRING_WEEKLY_KEY"
@@ -380,9 +393,22 @@ fun getMediaListGridPresenter(): MediaListDisplayMode {
         .load(MEDIA_LIST_GRID_PRESENTER_KEY, MediaListDisplayMode.NORMAL.ordinal)]
 }
 
-fun getAlListGridPresenter(): MediaListDisplayMode {
+fun getUserMediaListCollectionDisplayMode(mediaType: MediaType): MediaListDisplayMode {
     return MediaListDisplayMode.values()[DynamicPreferences.getInstance()
-        .load(AL_LIST_GRID_PRESENTER_KEY, MediaListDisplayMode.NORMAL.ordinal)]
+        .load(if(mediaType == MediaType.ANIME) USER_ANIME_MEDIA_LIST_DISPLAY_KEY else USER_MANGA_MEDIA_LIST_DISPLAY_KEY, MediaListDisplayMode.NORMAL.ordinal)]
+}
+fun getGeneralMediaListCollectionDisplayMode(mediaType: MediaType): MediaListDisplayMode {
+    return MediaListDisplayMode.values()[DynamicPreferences.getInstance()
+        .load(if(mediaType == MediaType.ANIME) GENERAL_ANIME_MEDIA_LIST_DISPLAY_KEY else GENERAL_MANGA_MEDIA_LIST_DISPLAY_KEY, MediaListDisplayMode.NORMAL.ordinal)]
+}
+
+fun setUserMediaListCollectionDisplayMode(mediaType: MediaType, mode:Int) {
+    DynamicPreferences.getInstance()
+        .save(if(mediaType == MediaType.ANIME) USER_ANIME_MEDIA_LIST_DISPLAY_KEY else USER_MANGA_MEDIA_LIST_DISPLAY_KEY, mode)
+}
+fun setGeneralMediaListCollectionDisplayMode(mediaType: MediaType, mode:Int){
+    DynamicPreferences.getInstance()
+        .save(if(mediaType == MediaType.ANIME) GENERAL_ANIME_MEDIA_LIST_DISPLAY_KEY else GENERAL_MANGA_MEDIA_LIST_DISPLAY_KEY,  mode)
 }
 
 fun getAiringDisplayMode(): AiringListDisplayMode {
@@ -390,9 +416,12 @@ fun getAiringDisplayMode(): AiringListDisplayMode {
         .load(AIRING_DISPLAY_MODE_KEY, AiringListDisplayMode.COMPACT.ordinal)]
 }
 
+//TODO delete
 fun setMediaListGridPresenter(which: Int) {
     return DynamicPreferences.getInstance().save(MEDIA_LIST_GRID_PRESENTER_KEY, which)
 }
+
+//TODO delete
 fun setAlListGridPresenter(which: Int) {
     return DynamicPreferences.getInstance().save(AL_LIST_GRID_PRESENTER_KEY, which)
 }
@@ -410,6 +439,8 @@ fun storeMediaListFilterField(context: Context, filter: MediaListCollectionFilte
     ) // 0 = anime media type
 }
 
+
+//TODO delete
 fun loadMediaListFilter(context: Context, type: Int): MediaListCollectionFilterField {
     val field = Gson().fromJson(
         context.getString(
@@ -421,6 +452,18 @@ fun loadMediaListFilter(context: Context, type: Int): MediaListCollectionFilterF
 
     return field
 }
+
+
+fun loadMediaListCollectionFilter(context: Context, type: Int): MediaListCollectionFilterMeta {
+    return Gson().fromJson(
+        context.getString(
+            if (type == 0) ANIME_MEDIA_LIST_COLLECTION_FILTER_KEY else MANGA_MEDIA_LIST_COLLECTION_FILTER_KEY,
+            ""
+        ),
+        MediaListCollectionFilterMeta::class.java
+    ) ?: MediaListCollectionFilterMeta()
+}
+
 
 fun showAiringWeekly(context: Context, isChecked: Boolean? = null): Boolean =
     if (isChecked == null) context.getBoolean(SHOW_AIRING_WEEKLY_KEY, true) else {

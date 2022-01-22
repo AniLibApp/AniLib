@@ -8,8 +8,7 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="6dp">
+        android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/format_add_header"

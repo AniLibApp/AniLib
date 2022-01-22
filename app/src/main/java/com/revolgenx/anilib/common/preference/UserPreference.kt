@@ -1,8 +1,10 @@
 package com.revolgenx.anilib.common.preference
 
+import android.app.Application
 import android.content.Context
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
+import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.pranavpandey.android.dynamic.theme.DynamicPalette
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.ThemeController
@@ -32,6 +34,10 @@ private const val listEditOrBrowseKey = "list_edit_or_browse_key"
 private const val recent_anime_list_status_key = "recent_anime_list_status_key"
 private const val recent_manga_list_status_key = "recent_manga_list_status_key"
 
+object UserPreference{
+    val userId get() = DynamicPreferences.getInstance().load(userIdKey, -1)
+
+}
 
 fun Context.loggedIn() = getBoolean(loggedInKey, false)
 fun Context.loggedIn(logIn: Boolean) = putBoolean(loggedInKey, logIn)
@@ -39,7 +45,6 @@ fun Context.loggedIn(logIn: Boolean) = putBoolean(loggedInKey, logIn)
 fun Context.token() = getString(tokenKey, "")
 fun Context.token(token: String) = putString(tokenKey, token)
 
-fun Context.userId() = getInt(userIdKey, -1)
 fun Context.userId(userId: Int) = putInt(userIdKey, userId)
 
 fun Context.titlePref() = getString(titleKey, "0")
@@ -239,14 +244,11 @@ fun recentMangaListStatus(context: Context, value: Int) {
 fun recentAnimeListStatus(context: Context) =
     context.getInt(recentAnimeListStatusKey, 0)
 
-fun animeListStatusHistory(context: Context) = context.getString(recent_anime_list_status_key)
-fun animeListStatusHistory(context: Context, value:String) = context.getString(recent_anime_list_status_key, value.trim())
+fun animeListStatusHistory(context: Context) = context.getString(recent_anime_list_status_key, "All")
+fun animeListStatusHistory(context: Context, value:String) = context.putString(recent_anime_list_status_key, value.trim())
 
-fun mangaListStatusHistory(context: Context) = context.getString(recent_manga_list_status_key)
-fun mangaListStatusHistory(context: Context, value:String) = context.getString(recent_manga_list_status_key, value.trim())
-
-fun animeCustomLists(context: Context) = getUserPrefModel(context).mediaListOptions!!.animeList?.customLists ?: emptyList()
-fun mangaCustomLists(context: Context) = getUserPrefModel(context).mediaListOptions!!.mangaList?.customLists ?: emptyList()
+fun mangaListStatusHistory(context: Context) = context.getString(recent_manga_list_status_key, "All")
+fun mangaListStatusHistory(context: Context, value:String) = context.putString(recent_manga_list_status_key, value.trim())
 
 fun recentMangaListStatus(context: Context) = context.getInt(recentMangaListStatusKey, 0)
 
