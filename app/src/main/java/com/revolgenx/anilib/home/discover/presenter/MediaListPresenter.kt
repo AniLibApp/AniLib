@@ -10,6 +10,7 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userName
@@ -58,7 +59,7 @@ class MediaListPresenter(
     }
 
     private val isLoggedInUser by lazy {
-        mediaListMeta.userId == context.userId() || mediaListMeta.userName == context.userName()
+        mediaListMeta.userId == UserPreference.userId || mediaListMeta.userName == context.userName()
     }
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {

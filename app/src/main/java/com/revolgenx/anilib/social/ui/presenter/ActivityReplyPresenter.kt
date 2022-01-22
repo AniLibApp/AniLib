@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.databinding.ActivityReplyPresenterLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OnActivityInfoUpdateEvent
@@ -26,9 +27,7 @@ class ActivityReplyPresenter(
     private val activityReplyComposerViewModel: ActivityReplyComposerViewModel
 ) : BasePresenter<ActivityReplyPresenterLayoutBinding, ActivityReplyModel>(context) {
 
-    private val userId by lazy {
-        context.userId()
-    }
+    private val userId = UserPreference.userId
 
     override val elementTypes: Collection<Int> = listOf(0)
     override fun bindView(

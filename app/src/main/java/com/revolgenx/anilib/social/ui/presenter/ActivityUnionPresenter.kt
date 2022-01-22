@@ -11,6 +11,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.common.data.model.CommonMediaModel
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.databinding.ListActivityPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.MessageActivityPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.TextActivityPresenterLayoutBinding
@@ -58,9 +59,7 @@ class ActivityUnionPresenter(
         context.resources.getStringArray(R.array.activity_more_entries)
     }
 
-    private val userId by lazy {
-        context.userId()
-    }
+    private val userId = UserPreference.userId
 
     override fun bindView(
         inflater: LayoutInflater,

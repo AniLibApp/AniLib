@@ -12,7 +12,7 @@ import com.revolgenx.anilib.databinding.MediaListCollectionClassicCardPresenterL
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
-import com.revolgenx.anilib.home.discover.presenter.MediaListCollectionPresenter
+import com.revolgenx.anilib.home.discover.presenter.DiscoverMediaListCollectionPresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.list.MediaListCollectionViewModel
 import com.revolgenx.anilib.util.naText
@@ -44,7 +44,7 @@ object ClassicCardHolderBinding {
                         if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
                     )
 
-            mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(MediaListCollectionPresenter.textPrimaryColor)
+            mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(DiscoverMediaListCollectionPresenter.textPrimaryColor)
 
             when (item.scoreFormat) {
                 ScoreFormat.POINT_3.ordinal -> {

@@ -26,3 +26,5 @@ val dynamicPrimaryColor get() = dynamicTheme.primaryColor
 val dynamicPrimaryColorDark get() = dynamicTheme.primaryColorDark
 val dynamicAccentColor get() = dynamicTheme.accentColor
 val dynamicTintPrimaryColor get() = dynamicTheme.tintPrimaryColor
+
+val dynamicCornerRadius = dynamicTheme.cornerRadius

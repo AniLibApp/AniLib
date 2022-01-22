@@ -2,7 +2,7 @@ package com.revolgenx.anilib.common.viewmodel
 
 import com.revolgenx.anilib.activity.viewmodel.MainActivityViewModel
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionVM
-import com.revolgenx.anilib.home.list.viewmodel.AlMediaListCollectionSharedVM
+import com.revolgenx.anilib.list.viewmodel.MediaListContainerSharedVM
 import com.revolgenx.anilib.media.viewmodel.*
 import com.revolgenx.anilib.airing.viewmodel.AiringViewModel
 import com.revolgenx.anilib.character.viewmodel.CharacterActorViewModel
@@ -24,6 +24,8 @@ import com.revolgenx.anilib.search.viewmodel.SearchFragmentViewModel
 import com.revolgenx.anilib.app.setting.data.model.SettingViewModel
 import com.revolgenx.anilib.app.setting.data.model.EditTagFilterViewModel
 import com.revolgenx.anilib.home.discover.viewmodel.*
+import com.revolgenx.anilib.list.viewmodel.AnimeListCollectionStoreVM
+import com.revolgenx.anilib.list.viewmodel.MangaListCollectionStoreVM
 import com.revolgenx.anilib.staff.viewmodel.StaffContainerViewModel
 import com.revolgenx.anilib.staff.viewmodel.StaffMediaCharacterViewModel
 import com.revolgenx.anilib.staff.viewmodel.StaffMediaRoleViewModel
@@ -79,8 +81,11 @@ val viewModelModules = module {
     viewModel { RepeatingViewModel(get(), get()) }
 
 
-    viewModel { MediaListCollectionVM(get(), get()) }
-    viewModel { AlMediaListCollectionSharedVM() }
+    viewModel { AnimeListCollectionStoreVM() }
+    viewModel { MangaListCollectionStoreVM() }
+    viewModel { parameters -> MediaListCollectionVM(get(), get(), parameters.get()) }
+
+    viewModel { MediaListContainerSharedVM() }
 
 
     //userprofile

@@ -10,6 +10,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicAccentColor
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
@@ -136,7 +137,7 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
             true
         } else {
             if (requireContext().loggedIn()) {
-                viewModel.userField.userId = requireContext().userId()
+                viewModel.userField.userId = UserPreference.userId
 
                 binding.animeCountHeader.setOnClickListener {
                     ChangeViewPagerPageEvent(MainActivityPage.LIST).postEvent
@@ -224,7 +225,7 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
                         mangaCountHeader.title =
                             model.totalManga.getOrDefault().prettyNumberFormat()
 
-                        if (requireContext().userId() != model.id) {
+                        if (UserPreference.userId != model.id) {
                             userFollowButton.visibility = View.VISIBLE
                         }
 

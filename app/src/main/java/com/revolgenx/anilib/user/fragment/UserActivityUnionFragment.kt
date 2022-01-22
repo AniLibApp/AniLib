@@ -10,7 +10,7 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.userId
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.constant.AlActivityType
 import com.revolgenx.anilib.user.data.meta.UserMeta
@@ -40,9 +40,7 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
     }
 
     private val userMeta get() = arguments?.getParcelable<UserMeta?>(USER_META_KEY)
-    private val userId by lazy {
-        requireContext().userId()
-    }
+    private val userId = UserPreference.userId
 
     override val basePresenter: Presenter<ActivityUnionModel>
         get() = ActivityUnionPresenter(

@@ -7,6 +7,7 @@ import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepositor
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.list.constant.ListConstant
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.list.data.model.MediaListCollectionModel
 import com.revolgenx.anilib.list.data.model.MediaListGroupModel
@@ -18,18 +19,6 @@ import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 class MediaListCollectionService(private val graphRepository: BaseGraphRepository) {
-    private val filteredEntries by lazy {
-        listOf(
-            "Completed",
-            "Dropped",
-            "Planning",
-            "Paused",
-            "Watching",
-            "Rewatching",
-            "Rereading",
-            "Reading"
-        )
-    }
 
     fun getMediaListCollection(
         field: MediaListCollectionField,
@@ -119,13 +108,14 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                             }
                                         }
                                     }
-                                }
+                                }?.toMutableList()
                             }
                         }?.toMutableList()?.also {
                             val model = MediaListGroupModel()
                             model.name = "All"
-                            model.entries = it.filter { f -> filteredEntries.contains(f.name) }
-                                .flatMap { it.entries ?: emptyList() }
+                            model.entries =
+                                it.filter { f -> ListConstant.listDefaultGroup.contains(f.name) }
+                                    .flatMap { it.entries ?: emptyList() }.toMutableList()
                             it.add(model)
                         }
                     }

@@ -5,7 +5,7 @@
     android:orientation="horizontal">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-        android:id="@+id/list_group_name"
+        android:id="@+id/selector_item_cb"
         style="@style/AlCheckboxStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

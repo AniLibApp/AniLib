@@ -16,16 +16,13 @@ import com.facebook.imagepipeline.image.CloseableStaticBitmap
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget
-import com.revolgenx.anilib.common.preference.AiringWidgetPreference
-import com.revolgenx.anilib.common.preference.getAiringScheduleFieldForWidget
-import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.airing.data.model.AiringMediaModel
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.airing.service.AiringMediaService
+import com.revolgenx.anilib.common.preference.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
 import org.greenrobot.eventbus.Subscribe
@@ -78,7 +75,7 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
 
         override fun onCreate() {
             if (context.loggedIn()) {
-                field.userId = context.userId()
+                field.userId = UserPreference.userId
             }
             updateField()
         }

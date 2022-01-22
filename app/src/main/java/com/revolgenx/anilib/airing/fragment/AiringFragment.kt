@@ -228,7 +228,7 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
 
         if (requireContext().loggedIn()) {
             with(viewModel.field) {
-                userId = requireContext().userId()
+                userId = UserPreference.userId
             }
         }
 

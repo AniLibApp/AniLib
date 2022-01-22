@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.ui.fragment.home.list
 
 import android.os.Bundle
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.preference.recentAnimeListStatus
 import com.revolgenx.anilib.common.preference.recentMangaListStatus
 import com.revolgenx.anilib.common.preference.userId
@@ -14,7 +15,7 @@ import org.greenrobot.eventbus.Subscribe
 class MangaListContainerFragment : MediaListContainerFragment() {
 
     override fun mediaListMetaArgs(): MediaListMeta = MediaListMeta(
-        requireContext().userId(),
+        UserPreference.userId,
         null,
         MediaType.MANGA.ordinal
     )

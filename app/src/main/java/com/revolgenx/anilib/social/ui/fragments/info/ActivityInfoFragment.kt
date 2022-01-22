@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
@@ -82,10 +83,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         requireContext().resources.getStringArray(R.array.activity_more_entries)
     }
 
-    private val userId by lazy {
-        requireContext().userId()
-    }
-
+    private val userId = UserPreference.userId
 
     override fun bindView(
         inflater: LayoutInflater,

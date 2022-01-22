@@ -12,7 +12,7 @@ import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.databinding.MediaListCollectionNormalPresenterLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
-import com.revolgenx.anilib.home.discover.presenter.MediaListCollectionPresenter
+import com.revolgenx.anilib.home.discover.presenter.DiscoverMediaListCollectionPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
@@ -56,7 +56,7 @@ object NormalHolderBinding {
                         )
                     )
 
-            mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(MediaListCollectionPresenter.textPrimaryColor)
+            mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(DiscoverMediaListCollectionPresenter.textPrimaryColor)
 
             when (item.scoreFormat) {
                 ScoreFormat.POINT_3.ordinal -> {
