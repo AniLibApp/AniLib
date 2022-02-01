@@ -33,7 +33,7 @@ class ReviewPresenter(context: Context) : BasePresenter<ReviewPresenterLayoutBin
         holder.getBinding()?.apply {
             item.userPrefModel?.let { user ->
                 reviewByTv.text = context.getString(R.string.review_of_s_by_s).format(
-                    item.mediaModel?.title?.title(context),
+                    item.media?.title?.title(context),
                     user.name
                 )
                 reviewByScoreTv.text =
@@ -46,13 +46,13 @@ class ReviewPresenter(context: Context) : BasePresenter<ReviewPresenterLayoutBin
                 }
             }
 
-            item.mediaModel?.let { media ->
+            item.media?.let { media ->
                 reviewMediaBannerImage.setImageURI(media.bannerImage)
                 reviewSummaryTv.text = item.summary
                 reviewByTv.setOnClickListener {
                     OpenMediaInfoEvent(
                         MediaInfoMeta(
-                            media.mediaId,
+                            media.id,
                             media.type!!,
                             media.title!!.romaji!!,
                             media.coverImage!!.image(context),

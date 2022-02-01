@@ -9,19 +9,16 @@ class MediaRecommendationField : BaseSourceField<MediaRecommendationQuery>() {
     var sort: Int? = null
 
     override fun toQueryOrMutation(): MediaRecommendationQuery {
-        return MediaRecommendationQuery.builder()
-            .mediaId(mediaId)
-            .page(page)
-            .perPage(perPage).apply {
-                sort?.let {
-                    sort(listOf(RecommendationSort.values()[it]))
-                }
-            }.apply {
-                if (!canShowAdult) {
-                    isAdult(false)
-                }
-            }
-            .build()
+        val mediaSort = sort?.let {
+            listOf(RecommendationSort.values()[it])
+        }
+        return MediaRecommendationQuery(
+            page = nn(page),
+            perPage = nn(perPage),
+            mediaId = nn(mediaId),
+            sort = nn(mediaSort),
+            isAdult = nn(canShowAdult)
+        )
     }
 
 }

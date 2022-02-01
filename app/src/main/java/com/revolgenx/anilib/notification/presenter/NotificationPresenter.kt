@@ -128,7 +128,7 @@ class NotificationPresenter(context: Context) :
                 NotificationUnionType.AIRING -> {
                     (item as AiringNotificationModel).let {
                         notificationMediaDrawee.setImageURI(
-                            it.commonMediaModel?.coverImage?.image(
+                            it.media?.coverImage?.image(
                                 context
                             )
                         )
@@ -139,19 +139,19 @@ class NotificationPresenter(context: Context) :
                             it.contexts!![0],
                             it.episode,
                             it.contexts!![1],
-                            it.commonMediaModel?.title?.title(context),
+                            it.media?.title?.title(context),
                             it.contexts!![2]
                         )
 
                         root.setOnClickListener { _ ->
                             OpenMediaInfoEvent(
                                 MediaInfoMeta(
-                                    it.commonMediaModel?.mediaId,
-                                    it.commonMediaModel?.type!!,
-                                    it.commonMediaModel?.title!!.romaji!!,
-                                    it.commonMediaModel?.coverImage!!.image(context),
-                                    it.commonMediaModel?.coverImage!!.largeImage,
-                                    it.commonMediaModel?.bannerImage
+                                    it.media?.id,
+                                    it.media?.type!!,
+                                    it.media?.title!!.romaji!!,
+                                    it.media?.coverImage!!.image(context),
+                                    it.media?.coverImage!!.largeImage,
+                                    it.media?.bannerImage
                                 )
                             ).postEvent
                         }
@@ -173,25 +173,25 @@ class NotificationPresenter(context: Context) :
                 NotificationUnionType.RELATED_MEDIA_ADDITION -> {
                     (item as RelatedMediaNotificationModel).let {
                         notificationMediaDrawee.setImageURI(
-                            it.commonMediaModel?.coverImage?.image(
+                            it.media?.coverImage?.image(
                                 context
                             )
                         )
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text =
                             context.getString(R.string.s_space_s).format(
-                                it.commonMediaModel?.title?.title(context), it.context
+                                it.media?.title?.title(context), it.context
                             )
 
                         root.setOnClickListener { _ ->
                             OpenMediaInfoEvent(
                                 MediaInfoMeta(
-                                    it.commonMediaModel?.mediaId,
-                                    it.commonMediaModel?.type,
-                                    it.commonMediaModel?.title!!.romaji!!,
-                                    it.commonMediaModel?.coverImage!!.image(context),
-                                    it.commonMediaModel?.coverImage!!.largeImage,
-                                    it.commonMediaModel?.bannerImage
+                                    it.media?.id,
+                                    it.media?.type,
+                                    it.media?.title!!.romaji!!,
+                                    it.media?.coverImage!!.image(context),
+                                    it.media?.coverImage!!.largeImage,
+                                    it.media?.bannerImage
                                 )
                             ).postEvent
 
@@ -203,7 +203,7 @@ class NotificationPresenter(context: Context) :
                         root.setOnClickListener { _ ->
                             OpenMediaInfoEvent(
                                 MediaInfoMeta(
-                                    it.media?.mediaId,
+                                    it.media?.id,
                                     it.media?.type,
                                     it.media?.title!!.romaji!!,
                                     it.media?.coverImage!!.image(context),
@@ -235,7 +235,7 @@ class NotificationPresenter(context: Context) :
                         root.setOnClickListener { _ ->
                             OpenMediaInfoEvent(
                                 MediaInfoMeta(
-                                    it.media?.mediaId,
+                                    it.media?.id,
                                     it.media?.type,
                                     it.media?.title!!.romaji!!,
                                     it.media?.coverImage!!.image(context),

@@ -129,7 +129,7 @@ fun removeBasicUserDetail(context: Context) {
     userPrefModelPref = UserPrefModel().also {
         it.name = context.getString(R.string.app_name)
         it.mediaListOptions = MediaListOptionModel().also { option ->
-            option.scoreFormat = ScoreFormat.`$UNKNOWN`.ordinal
+            option.scoreFormat = ScoreFormat.UNKNOWN__.ordinal
         }
         it.options = UserOptionsModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
     }

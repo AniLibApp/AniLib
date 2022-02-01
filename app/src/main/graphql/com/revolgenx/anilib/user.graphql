@@ -1,0 +1,360 @@
+query BasicUserQuery($id:Int){
+    user: User(id:$id){
+        id
+        name
+        unreadNotificationCount
+        options{
+            ... userMediaOptions
+        }
+        mediaListOptions{
+            ... userMediaListOptions
+        }
+    }
+}
+
+query UserProfileQuery($name:String, $id:Int){
+    user: User(name:$name, id:$id){
+        id
+        name
+        about
+        avatar{
+            ... userAvatar
+        }
+        bannerImage
+        isFollowing
+        isFollower
+        isBlocked
+        siteUrl
+        statistics{
+            anime{
+                count
+                minutesWatched
+                meanScore
+                episodesWatched
+                genres{
+                    count
+                    genre
+                }
+
+            }
+            manga{
+                count
+                chaptersRead
+                meanScore
+                volumesRead
+                genres{
+                    count
+                    genre
+                }
+            }
+        }
+    }
+}
+
+query UserTotalFollowersQuery($id:Int!){
+    page: Page{
+        pageInfo{
+            total
+        }
+        followers(userId:$id){
+            __typename
+        }
+    }
+}
+
+query UserTotalFollowingQuery($id:Int!){
+    page: Page{
+        pageInfo{
+            total
+        }
+        following(userId:$id){
+            __typename
+        }
+    }
+}
+
+query UserFollowersQuery($id:Int!, $page:Int, $perPage:Int){
+    page: Page(page:$page, perPage:$perPage){
+        followers(userId:$id){
+            id
+            name
+            avatar{
+                ... userAvatar
+            }
+            isFollower
+            isFollowing
+        }
+    }
+}
+
+query UserFollowingQuery($id:Int!, $page:Int, $perPage:Int){
+    page: Page(page:$page, perPage:$perPage){
+        following(userId:$id){
+            id
+            name
+            avatar{
+                ... userAvatar
+            }
+            isFollower
+            isFollowing
+        }
+    }
+}
+
+query UserStatisticOverviewQuery($id:Int, $name:String,$includeAnime:Boolean!){
+    user: User(id:$id, name:$name){
+        id
+        name
+        mediaListOptions{
+            scoreFormat
+        }
+        statistics{
+            anime@include(if:$includeAnime){
+                count
+                meanScore
+                standardDeviation
+                minutesWatched
+                episodesWatched
+                statuses{
+                    count
+                    meanScore
+                    status
+                    minutesWatched
+                }
+                scores(sort:[MEAN_SCORE]){
+                    count
+                    score
+                    meanScore
+                    minutesWatched
+                }
+
+                formats{
+                    count
+                    meanScore
+                    minutesWatched
+                    format
+                }
+
+                countries{
+                    count
+                    meanScore
+                    minutesWatched
+                    country
+                }
+
+                releaseYears{
+                    count
+                    meanScore
+                    minutesWatched
+                    releaseYear
+                }
+
+                startYears{
+                    count
+                    meanScore
+                    minutesWatched
+                    startYear
+                }
+            }
+
+            manga @skip(if:$includeAnime){
+                count
+                meanScore
+                standardDeviation
+
+                chaptersRead
+                volumesRead
+
+                statuses{
+                    count
+                    meanScore
+                    status
+                    minutesWatched
+                }
+                scores(sort:[MEAN_SCORE]){
+                    count
+                    score
+                    meanScore
+                    minutesWatched
+                }
+
+                formats{
+                    count
+                    meanScore
+                    minutesWatched
+                    format
+                }
+
+                countries{
+                    count
+                    meanScore
+                    minutesWatched
+                    country
+                }
+
+                releaseYears{
+                    count
+                    meanScore
+                    minutesWatched
+                    releaseYear
+                }
+
+                startYears{
+                    count
+                    meanScore
+                    minutesWatched
+                    startYear
+                }
+            }
+        }
+    }
+}
+
+
+query UserStatsQuery($id:Int
+    , $name:String
+    , $sort:[UserStatisticsSort]
+    , $includeAnime:Boolean! = false
+    , $includeManga:Boolean! = false
+    , $includeTag:Boolean! = false
+    , $includeGenre:Boolean! = false
+    , $includeStudio:Boolean! = false
+    , $includeStaff:Boolean! = false
+    , $includeVoiceActor:Boolean! = false){
+    user: User(id:$id, name:$name){
+        statistics{
+            anime @include(if:$includeAnime){
+                genres(sort:$sort) @include(if:$includeGenre){
+                    count
+                    genre
+                    minutesWatched
+                    meanScore
+                    mediaIds
+                }
+                tags(sort:$sort) @include(if:$includeTag){
+                    count
+                    tag{
+                        id
+                        name
+                    }
+                    minutesWatched
+                    meanScore
+                    mediaIds
+                }
+                studios(sort:$sort)  @include(if:$includeStudio){
+                    count
+                    studio{
+                        id
+                        name
+                    }
+                    minutesWatched
+                    meanScore
+                    mediaIds
+                }
+
+                voiceActors(sort:$sort) @include(if:$includeVoiceActor){
+                    count
+                    meanScore
+                    minutesWatched
+                    mediaIds
+                    voiceActor{
+                        id
+                        name{
+                            full
+                        }
+
+                        image{
+                            ... staffImage
+                        }
+                    }
+                }
+
+                staff(sort:$sort) @include(if:$includeStaff){
+                    count
+                    meanScore
+                    minutesWatched
+                    mediaIds
+                    staff{
+                        id
+                        name{
+                            full
+                        }
+
+                        image{
+                            ... staffImage
+                        }
+                    }
+                }
+            }
+
+            manga @include(if:$includeManga){
+                genres(sort:$sort) @include(if:$includeGenre){
+                    count
+                    mediaIds
+                    genre
+                    chaptersRead
+                    meanScore
+                    mediaIds
+                }
+                tags(sort:$sort) @include(if:$includeTag){
+                    count
+                    tag{
+                        id
+                        name
+                    }
+                    chaptersRead
+                    meanScore
+                    mediaIds
+                }
+                staff(sort:$sort) @include(if:$includeStaff){
+                    count
+                    meanScore
+                    chaptersRead
+                    mediaIds
+                    staff{
+                        id
+                        name{
+                            full
+                        }
+
+                        image{
+                            ... staffImage
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query IsFavouriteQuery($mediaId:Int){
+    media: Media(id:$mediaId){
+        isFavourite
+    }
+}
+
+
+fragment userMediaOptions on UserOptions{
+    titleLanguage
+    displayAdultContent
+    airingNotifications
+    profileColor
+}
+
+fragment userMediaListOptions on MediaListOptions{
+    scoreFormat
+    rowOrder
+    animeList{
+        advancedScoringEnabled
+        advancedScoring
+        customLists
+    }
+    mangaList{
+        customLists
+    }
+}
+
+fragment userAvatar on UserAvatar{
+    medium
+    large
+}

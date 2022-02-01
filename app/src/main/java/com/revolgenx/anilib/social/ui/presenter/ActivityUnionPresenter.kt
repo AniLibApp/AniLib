@@ -27,6 +27,7 @@ import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityMessag
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityTextComposerViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.common.presenter.BasePresenter
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.ui.view.makeToast
@@ -394,10 +395,10 @@ class ActivityUnionPresenter(
         OpenUserProfileEvent(userId).postEvent
     }
 
-    private fun openMedia(item: CommonMediaModel) {
+    private fun openMedia(item: MediaModel) {
         OpenMediaInfoEvent(
             MediaInfoMeta(
-                item.mediaId,
+                item.id,
                 item.type!!,
                 item.title!!.userPreferred,
                 item.coverImage!!.image(context),

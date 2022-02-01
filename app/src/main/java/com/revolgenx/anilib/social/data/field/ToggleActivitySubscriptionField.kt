@@ -7,9 +7,9 @@ class ToggleActivitySubscriptionField : BaseField<ToggleActivitySubscriptionMuta
     var activityId: Int? = null
     var isSubscribed:Boolean = false
     override fun toQueryOrMutation(): ToggleActivitySubscriptionMutation {
-        return ToggleActivitySubscriptionMutation.builder()
-            .activityId(activityId)
-            .subscribe(isSubscribed)
-            .build()
+        return ToggleActivitySubscriptionMutation(
+            activityId = nn(activityId),
+            subscribe =  nn(isSubscribed)
+        )
     }
 }

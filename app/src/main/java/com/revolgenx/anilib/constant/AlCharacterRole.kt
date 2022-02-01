@@ -24,4 +24,4 @@ enum class AlCharacterRole(val value:String) {
     UNKNOWN("UNKNOWN");
 }
 
-fun CharacterRole?.toRole() = this?.let {AlCharacterRole.valueOf(rawValue())}
+fun CharacterRole?.toRole() = this?.let {AlCharacterRole.valueOf(rawValue)}

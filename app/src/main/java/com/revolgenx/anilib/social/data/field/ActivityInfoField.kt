@@ -6,6 +6,6 @@ import com.revolgenx.anilib.common.data.field.BaseField
 class ActivityInfoField : BaseField<ActivityInfoQuery>(){
     var activityId:Int? = null
     override fun toQueryOrMutation(): ActivityInfoQuery {
-        return ActivityInfoQuery.builder().id(activityId).build()
+        return ActivityInfoQuery(id = nn(activityId))
     }
 }

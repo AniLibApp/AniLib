@@ -10,7 +10,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
-import androidx.multidex.MultiDex
 import androidx.work.*
 import com.facebook.common.logging.FLog
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory
@@ -57,7 +56,6 @@ open class App : DynamicApplication() {
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
-        MultiDex.install(this)
     }
 
     override fun onInitialize() {

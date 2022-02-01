@@ -38,39 +38,31 @@ open class AiringMediaField : BaseSourceUserField<AiringScheduleQuery>() {
         }
 
     override fun toQueryOrMutation(): AiringScheduleQuery {
-        return AiringScheduleQuery.builder()
-            .page(page)
-            .perPage(perPage)
-            .apply {
-                airingGreaterThan?.let {
-                    airingAtGreater(it)
-                }
-                airingLessThan?.let {
-                    airingAtLesser(it)
-                }
-                if (notYetAired) {
-                    notYetAired(notYetAired)
-                }
+        val listIds = if(showFromWatching || showFromPlanning){
+            mediaListIds
+        }else null
 
-                if (showFromWatching || showFromPlanning) {
-                    mediaListIds?.let {
-                        mediaId_in(it)
-                    }
-                }
-
-                if (isWeeklyTypeDate) {
-                    if (sort != null) {
-                        sort(listOf(AiringSort.TIME, AiringSort.values()[sort!!]))
-                    } else {
-                        sort(listOf(AiringSort.TIME))
-                    }
-                } else {
-                    sort?.let {
-                        sort(listOf(AiringSort.values()[it]))
-                    }
-                }
+        val airingSort = if (isWeeklyTypeDate) {
+            if (sort != null) {
+                listOf(AiringSort.TIME, AiringSort.values()[sort!!])
+            } else {
+                listOf(AiringSort.TIME)
             }
-            .build()
+        } else {
+            sort?.let {
+                listOf(AiringSort.values()[it])
+            }
+        }
+
+        return AiringScheduleQuery(
+            page = nn(page),
+            perPage = nn(perPage),
+            airingAtGreater = nn(airingGreaterThan),
+            airingAtLesser = nn(airingLessThan),
+            notYetAired = nn(notYetAired),
+            mediaId_in = nn(listIds),
+            sort = nn(airingSort)
+        )
     }
 
     fun updateOldField() {

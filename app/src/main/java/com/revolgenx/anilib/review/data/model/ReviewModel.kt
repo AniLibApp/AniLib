@@ -16,7 +16,6 @@ open class ReviewModel{
     var score: Int? = null
     var private: Boolean = false
     var userPrefModel: UserPrefModel? = null
-    var mediaModel: CommonMediaModel? = null
     var createdAtDate: String = ""
     var createdAt: Int = 0
     var media: MediaModel? = null

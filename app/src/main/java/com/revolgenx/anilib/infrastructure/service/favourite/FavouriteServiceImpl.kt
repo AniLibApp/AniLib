@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.infrastructure.service.favourite
 
+import com.apollographql.apollo3.api.Optional
 import com.revolgenx.anilib.IsFavouriteQuery
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
@@ -16,10 +17,10 @@ class FavouriteServiceImpl(graphRepository: BaseGraphRepository) :
         callback: (Resource<Boolean>) -> Unit
     ) {
         val disposable =
-            graphRepository.request(IsFavouriteQuery.builder().mediaId(mediaId).build())
+            graphRepository.request(IsFavouriteQuery(mediaId = Optional.presentIfNotNull(mediaId)))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    callback.invoke(Resource.success(it.data()?.Media()!!.isFavourite))
+                    callback.invoke(Resource.success(it.data?.media!!.isFavourite))
                 }, {
                     Timber.w(it)
                     callback.invoke(Resource.error(it.message ?: ERROR, null, it))

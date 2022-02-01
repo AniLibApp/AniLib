@@ -10,6 +10,7 @@ import com.revolgenx.anilib.media.data.model.MediaTagModel
 import com.revolgenx.anilib.staff.data.model.StaffImageModel
 import com.revolgenx.anilib.staff.data.model.StaffModel
 import com.revolgenx.anilib.staff.data.model.StaffNameModel
+import com.revolgenx.anilib.staff.data.model.toModel
 import com.revolgenx.anilib.studio.data.model.StudioModel
 import com.revolgenx.anilib.user.data.field.UserStatisticOverviewField
 import com.revolgenx.anilib.user.data.field.UserStatsField
@@ -33,145 +34,150 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
     ) {
         val disposable =
             baseGraphRepository.request(field.toQueryOrMutation()).map {
-                it.data()?.User()?.let { user ->
+                it.data?.user?.let { user ->
                     UserModel().also { userModel ->
-                        userModel.id = user.id()
-                        userModel.name = user.name()
-                        userModel.mediaListOptions = user.mediaListOptions()?.let { option->
-                            MediaListOptionModel().also {listOptionModel->
-                                listOptionModel.scoreFormat = option.scoreFormat()?.ordinal
+                        userModel.id = user.id
+                        userModel.name = user.name
+                        userModel.mediaListOptions = user.mediaListOptions?.let { option ->
+                            MediaListOptionModel().also { listOptionModel ->
+                                listOptionModel.scoreFormat = option.scoreFormat?.ordinal
                             }
                         }
-                        userModel.statistics  = user.statistics()?.let {stats->
-                            UserStatisticTypesModel().also { sTypeModel->
-                                sTypeModel.anime = stats.anime()?.let {anime->
+                        userModel.statistics = user.statistics?.let { stats ->
+                            UserStatisticTypesModel().also { sTypeModel ->
+                                sTypeModel.anime = stats.anime?.let { anime ->
                                     UserStatisticsModel().also { model ->
-                                        model.count = anime.count()
-                                        model.meanScore = anime.meanScore()
-                                        model.standardDeviation = anime.standardDeviation()
-                                        model.minutesWatched = anime.minutesWatched()
-                                        model.episodesWatched = anime.episodesWatched()
+                                        model.count = anime.count
+                                        model.meanScore = anime.meanScore
+                                        model.standardDeviation = anime.standardDeviation
+                                        model.minutesWatched = anime.minutesWatched
+                                        model.episodesWatched = anime.episodesWatched
 
-                                        model.scores = anime.scores()?.map { scr ->
+                                        model.scores = anime.scores?.filterNotNull()?.map { scr ->
                                             UserScoreStatisticModel().apply {
-                                                count = scr.count()
-                                                meanScore = scr.meanScore()
-                                                minutesWatched = scr.minutesWatched()
-                                                score = scr.score()
+                                                count = scr.count
+                                                meanScore = scr.meanScore
+                                                minutesWatched = scr.minutesWatched
+                                                score = scr.score
                                             }
                                         }
-                                        model.statuses = anime.statuses()?.map { stat ->
-                                            UserStatusStatisticModel().apply {
-                                                count = stat.count()
-                                                meanScore = stat.meanScore()
-                                                minutesWatched = stat.minutesWatched()
-                                                status = stat.status()?.ordinal
+                                        model.statuses =
+                                            anime.statuses?.filterNotNull()?.map { stat ->
+                                                UserStatusStatisticModel().apply {
+                                                    count = stat.count
+                                                    meanScore = stat.meanScore
+                                                    minutesWatched = stat.minutesWatched
+                                                    status = stat.status?.ordinal
+                                                }
                                             }
-                                        }
-                                        model.formats = anime.formats()?.map { fmt ->
+                                        model.formats = anime.formats?.filterNotNull()?.map { fmt ->
                                             UserFormatStatisticModel().apply {
-                                                count = fmt.count()
-                                                meanScore = fmt.meanScore()
-                                                minutesWatched = fmt.minutesWatched()
-                                                format = fmt.format()?.ordinal
+                                                count = fmt.count
+                                                meanScore = fmt.meanScore
+                                                minutesWatched = fmt.minutesWatched
+                                                format = fmt.format?.ordinal
                                             }
                                         }
-                                        model.countries = anime.countries()?.map { cnt ->
-                                            UserCountryStatisticModel().apply {
-                                                count = cnt.count()
-                                                meanScore = cnt.meanScore()
-                                                minutesWatched = cnt.minutesWatched()
-                                                country = cnt.country()?.toString()
+                                        model.countries =
+                                            anime.countries?.filterNotNull()?.map { cnt ->
+                                                UserCountryStatisticModel().apply {
+                                                    count = cnt.count
+                                                    meanScore = cnt.meanScore
+                                                    minutesWatched = cnt.minutesWatched
+                                                    country = cnt.country?.toString()
+                                                }
                                             }
-                                        }
 
-                                        model.releaseYears = anime.releaseYears()?.map { yr ->
-                                            UserReleaseYearStatisticModel().apply {
-                                                count = yr.count()
-                                                meanScore = yr.meanScore()
-                                                minutesWatched = yr.minutesWatched()
-                                                year = yr.releaseYear()
-                                            }
-                                        }?.sortedWith(compareBy { it.year })
+                                        model.releaseYears =
+                                            anime.releaseYears?.filterNotNull()?.map { yr ->
+                                                UserReleaseYearStatisticModel().apply {
+                                                    count = yr.count
+                                                    meanScore = yr.meanScore
+                                                    minutesWatched = yr.minutesWatched
+                                                    year = yr.releaseYear
+                                                }
+                                            }?.sortedWith(compareBy { it.year })
 
-                                        model.startYears = anime.startYears()?.map { yr ->
-                                            UserStartYearStatisticModel().apply {
-                                                count = yr.count()
-                                                meanScore = yr.meanScore()
-                                                minutesWatched = yr.minutesWatched()
-                                                startYear = yr.startYear()
-                                            }
-                                        }?.sortedWith(compareBy { it.startYear })
+                                        model.startYears =
+                                            anime.startYears?.filterNotNull()?.map { yr ->
+                                                UserStartYearStatisticModel().apply {
+                                                    count = yr.count
+                                                    meanScore = yr.meanScore
+                                                    minutesWatched = yr.minutesWatched
+                                                    startYear = yr.startYear
+                                                }
+                                            }?.sortedWith(compareBy { it.startYear })
                                     }
 
                                 }
-                                sTypeModel.manga = stats.manga()?.let {manga->
+                                sTypeModel.manga = stats.manga?.let { manga ->
                                     UserStatisticsModel().also { model ->
-                                        model.count = manga.count()
-                                        model.meanScore = manga.meanScore()
-                                        model.standardDeviation = manga.standardDeviation()
-                                        model.volumesRead = manga.volumesRead()
-                                        model.chaptersRead = manga.chaptersRead()
+                                        model.count = manga.count
+                                        model.meanScore = manga.meanScore
+                                        model.standardDeviation = manga.standardDeviation
+                                        model.volumesRead = manga.volumesRead
+                                        model.chaptersRead = manga.chaptersRead
 
-                                        model.scores = manga.scores()?.map { scr ->
+                                        model.scores = manga.scores?.filterNotNull()?.map { scr ->
                                             UserScoreStatisticModel().apply {
-                                                count = scr.count()
-                                                meanScore = scr.meanScore()
-                                                minutesWatched = scr.minutesWatched()
-                                                score = scr.score()
+                                                count = scr.count
+                                                meanScore = scr.meanScore
+                                                minutesWatched = scr.minutesWatched
+                                                score = scr.score
                                             }
                                         }
-                                        model.statuses = manga.statuses()?.map { stat ->
-                                            UserStatusStatisticModel().apply {
-                                                count = stat.count()
-                                                meanScore = stat.meanScore()
-                                                minutesWatched = stat.minutesWatched()
-                                                status = stat.status()?.ordinal
+                                        model.statuses =
+                                            manga.statuses?.filterNotNull()?.map { stat ->
+                                                UserStatusStatisticModel().apply {
+                                                    count = stat.count
+                                                    meanScore = stat.meanScore
+                                                    minutesWatched = stat.minutesWatched
+                                                    status = stat.status?.ordinal
+                                                }
                                             }
-                                        }
-                                        model.formats = manga.formats()?.map { fmt ->
+                                        model.formats = manga.formats?.filterNotNull()?.map { fmt ->
                                             UserFormatStatisticModel().apply {
-                                                count = fmt.count()
-                                                meanScore = fmt.meanScore()
-                                                minutesWatched = fmt.minutesWatched()
-                                                format = fmt.format()?.ordinal
+                                                count = fmt.count
+                                                meanScore = fmt.meanScore
+                                                minutesWatched = fmt.minutesWatched
+                                                format = fmt.format?.ordinal
                                             }
                                         }
-                                        model.countries = manga.countries()?.map { cnt ->
-                                            UserCountryStatisticModel().apply {
-                                                count = cnt.count()
-                                                meanScore = cnt.meanScore()
-                                                minutesWatched = cnt.minutesWatched()
-                                                country = cnt.country()?.toString()
+                                        model.countries =
+                                            manga.countries?.filterNotNull()?.map { cnt ->
+                                                UserCountryStatisticModel().apply {
+                                                    count = cnt.count
+                                                    meanScore = cnt.meanScore
+                                                    minutesWatched = cnt.minutesWatched
+                                                    country = cnt.country?.toString()
+                                                }
                                             }
-                                        }
 
-                                        model.releaseYears = manga.releaseYears()?.map { yr ->
-                                            UserReleaseYearStatisticModel().apply {
-                                                count = yr.count()
-                                                meanScore = yr.meanScore()
-                                                minutesWatched = yr.minutesWatched()
-                                                year = yr.releaseYear()
-                                            }
-                                        }?.sortedWith(compareBy { it.year })
+                                        model.releaseYears =
+                                            manga.releaseYears?.filterNotNull()?.map { yr ->
+                                                UserReleaseYearStatisticModel().apply {
+                                                    count = yr.count
+                                                    meanScore = yr.meanScore
+                                                    minutesWatched = yr.minutesWatched
+                                                    year = yr.releaseYear
+                                                }
+                                            }?.sortedWith(compareBy { it.year })
 
-                                        model.startYears = manga.startYears()?.map { yr ->
-                                            UserStartYearStatisticModel().apply {
-                                                count = yr.count()
-                                                meanScore = yr.meanScore()
-                                                minutesWatched = yr.minutesWatched()
-                                                startYear = yr.startYear()
-                                            }
-                                        }?.sortedWith(compareBy { it.startYear })
+                                        model.startYears =
+                                            manga.startYears?.filterNotNull()?.map { yr ->
+                                                UserStartYearStatisticModel().apply {
+                                                    count = yr.count
+                                                    meanScore = yr.meanScore
+                                                    minutesWatched = yr.minutesWatched
+                                                    startYear = yr.startYear
+                                                }
+                                            }?.sortedWith(compareBy { it.startYear })
                                     }
 
                                 }
                             }
                         }
 
-                        user.statistics()?.manga()?.let {
-
-                        }
                     }
                 }
 
@@ -192,31 +198,43 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
         callback: (Resource<List<BaseStatisticModel>>) -> Unit
     ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation()).map {
-            it.data()?.User()?.statistics()?.let {
-                if (it.anime() != null) {
-                    if (it.anime()!!.genres() != null) {
-                        getStatsGenreModel(it.anime()!!.genres()!!)
-                    } else if (it.anime()!!.tags() != null) {
-                        getStatsTagModel(it.anime()!!.tags()!!)
-                    } else if (it.anime()!!.studios() != null) {
-                        getStatsStudioModel(it.anime()!!.studios()!!)
-                    } else if (it.anime()!!.voiceActors() != null) {
-                        getStatsVoiceActorModel(it.anime()!!.voiceActors()!!)
-                    } else if (it.anime()!!.staff() != null) {
-                        getStatsStaffModel(it.anime()!!.staff()!!)
-                    } else {
-                        null
+            it.data?.user?.statistics?.let {
+                if (it.anime != null) {
+                    when {
+                        it.anime.genres != null -> {
+                            getStatsGenreModel(it.anime.genres.filterNotNull())
+                        }
+                        it.anime.tags != null -> {
+                            getStatsTagModel(it.anime.tags.filterNotNull())
+                        }
+                        it.anime.studios != null -> {
+                            getStatsStudioModel(it.anime.studios.filterNotNull())
+                        }
+                        it.anime.voiceActors != null -> {
+                            getStatsVoiceActorModel(it.anime.voiceActors.filterNotNull())
+                        }
+                        it.anime.staff != null -> {
+                            getStatsStaffModel(it.anime.staff.filterNotNull())
+                        }
+                        else -> {
+                            null
+                        }
                     }
                 } else {
-                    if (it.manga() != null) {
-                        if (it.manga()!!.genres() != null) {
-                            getStatsGenreModel1(it.manga()!!.genres()!!)
-                        } else if (it.manga()!!.tags() != null) {
-                            getStatsTagModel1(it.manga()!!.tags()!!)
-                        } else if (it.manga()!!.staff() != null) {
-                            getStatsStaffModel1(it.manga()!!.staff()!!)
-                        } else {
-                            null
+                    if (it.manga != null) {
+                        when {
+                            it.manga.genres != null -> {
+                                getStatsGenreModel1(it.manga.genres.filterNotNull())
+                            }
+                            it.manga.tags != null -> {
+                                getStatsTagModel1(it.manga.tags.filterNotNull())
+                            }
+                            it.manga.staff != null -> {
+                                getStatsStaffModel1(it.manga.staff.filterNotNull())
+                            }
+                            else -> {
+                                null
+                            }
                         }
                     } else {
                         null
@@ -235,86 +253,79 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
         compositeDisposable.add(disposable)
     }
 
-    private fun getStatsGenreModel(genres: @Nullable MutableList<UserStatsQuery.Genre>): List<UserGenreStatisticModel> {
+    private fun getStatsGenreModel(genres: List<UserStatsQuery.Genre>): List<UserGenreStatisticModel> {
         return genres.map { genre ->
             UserGenreStatisticModel().also { model ->
-                model.genre = genre.genre()
-                model.count = genre.count()
-                model.minutesWatched = genre.minutesWatched()
-                model.meanScore = genre.meanScore()
-                model.mediaIds = genre.mediaIds()
+                model.genre = genre.genre
+                model.count = genre.count
+                model.minutesWatched = genre.minutesWatched
+                model.meanScore = genre.meanScore
+                model.mediaIds = genre.mediaIds.filterNotNull()
             }
         }
     }
 
-    private fun getStatsGenreModel1(genres: @Nullable MutableList<UserStatsQuery.Genre1>): List<UserGenreStatisticModel> {
+    private fun getStatsGenreModel1(genres: List<UserStatsQuery.Genre1>): List<UserGenreStatisticModel> {
         return genres.map { genre ->
             UserGenreStatisticModel().also { model ->
-                model.genre = genre.genre()
-                model.count = genre.count()
-                model.chaptersRead = genre.chaptersRead()
-                model.meanScore = genre.meanScore()
-                model.mediaIds = genre.mediaIds()
+                model.genre = genre.genre
+                model.count = genre.count
+                model.chaptersRead = genre.chaptersRead
+                model.meanScore = genre.meanScore
+                model.mediaIds = genre.mediaIds.filterNotNull()
             }
         }
     }
 
-    private fun getStatsTagModel(tags: @Nullable MutableList<UserStatsQuery.Tag>): List<UserTagStatisticModel> {
+    private fun getStatsTagModel(tags: List<UserStatsQuery.Tag>): List<UserTagStatisticModel> {
         return tags.map { stats ->
             UserTagStatisticModel().also { model ->
-                model.count = stats.count()
-                model.meanScore = stats.meanScore()
-                model.minutesWatched = stats.minutesWatched()
-                model.mediaIds = stats.mediaIds()
-                stats.tag()?.let {
-                    model.tag = MediaTagModel().also { t ->
-                        t.id = it.id()
-                        t.name = it.name()
-                    }
+                model.count = stats.count
+                model.meanScore = stats.meanScore
+                model.minutesWatched = stats.minutesWatched
+                model.mediaIds = stats.mediaIds.filterNotNull()
+                model.tag = stats.tag?.let {
+                    MediaTagModel(
+                        id = it.id,
+                        name = it.name
+                    )
                 }
             }
         }
     }
 
-    private fun getStatsTagModel1(tags: @Nullable MutableList<UserStatsQuery.Tag2>): List<UserTagStatisticModel> {
+    private fun getStatsTagModel1(tags: List<UserStatsQuery.Tag2>): List<UserTagStatisticModel> {
         return tags.map { stats ->
             UserTagStatisticModel().also { model ->
-                model.count = stats.count()
-                model.meanScore = stats.meanScore()
-                model.chaptersRead = stats.chaptersRead()
-                model.mediaIds = stats.mediaIds()
-                model.tag = stats.tag()?.let {
-                    MediaTagModel().also { t ->
-                        t.id = it.id()
-                        t.name = it.name()
-                    }
+                model.count = stats.count
+                model.meanScore = stats.meanScore
+                model.chaptersRead = stats.chaptersRead
+                model.mediaIds = stats.mediaIds.filterNotNull()
+                model.tag = stats.tag?.let {
+                    MediaTagModel(
+                        id = it.id,
+                        name = it.name
+                    )
                 }
             }
         }
     }
 
 
-    private fun getStatsStaffModel(staff: @Nullable MutableList<UserStatsQuery.Staff>): List<UserStaffStatisticModel> {
+    private fun getStatsStaffModel(staff: @Nullable List<UserStatsQuery.Staff>): List<UserStaffStatisticModel> {
         return staff.map { stats ->
             UserStaffStatisticModel().also { model ->
-                model.count = stats.count()
-                model.meanScore = stats.meanScore()
-                model.minutesWatched = stats.minutesWatched()
-                model.mediaIds = stats.mediaIds()
-                model.staff = stats.staff()?.let {
+                model.count = stats.count
+                model.meanScore = stats.meanScore
+                model.minutesWatched = stats.minutesWatched
+                model.mediaIds = stats.mediaIds.filterNotNull()
+                model.staff = stats.staff?.let {
                     StaffModel().also { staffModel ->
-                        staffModel.id = it.id()
-                        staffModel.name = it.name()?.let { n ->
-                            StaffNameModel().also { name ->
-                                name.full = n.full()
-                            }
+                        staffModel.id = it.id
+                        staffModel.name = it.name?.let { n ->
+                            StaffNameModel(n.full)
                         }
-                        staffModel.image = it.image()?.let { i ->
-                            StaffImageModel().also { image ->
-                                image.large = i.large()
-                                image.medium = i.medium()
-                            }
-                        }
+                        staffModel.image = it.image?.staffImage?.toModel()
                     }
                 }
             }
@@ -322,27 +333,20 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
     }
 
 
-    private fun getStatsStaffModel1(staff: @Nullable MutableList<UserStatsQuery.Staff2>): List<UserStaffStatisticModel> {
+    private fun getStatsStaffModel1(staff: List<UserStatsQuery.Staff2>): List<UserStaffStatisticModel> {
         return staff.map { stats ->
             UserStaffStatisticModel().also { model ->
-                model.count = stats.count()
-                model.meanScore = stats.meanScore()
-                model.chaptersRead = stats.chaptersRead()
-                model.mediaIds = stats.mediaIds()
-                model.staff = stats.staff()?.let {
+                model.count = stats.count
+                model.meanScore = stats.meanScore
+                model.chaptersRead = stats.chaptersRead
+                model.mediaIds = stats.mediaIds.filterNotNull()
+                model.staff = stats.staff?.let {
                     StaffModel().also { staffModel ->
-                        staffModel.id = it.id()
-                        staffModel.name = it.name()?.let { n ->
-                            StaffNameModel().also { name ->
-                                name.full = n.full()
-                            }
+                        staffModel.id = it.id
+                        staffModel.name = it.name?.let { n ->
+                            StaffNameModel(n.full)
                         }
-                        staffModel.image = it.image()?.let { i ->
-                            StaffImageModel().also { image ->
-                                image.large = i.large()
-                                image.medium = i.medium()
-                            }
-                        }
+                        staffModel.image = it.image?.staffImage?.toModel()
                     }
                 }
             }
@@ -350,44 +354,37 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
     }
 
 
-    private fun getStatsStudioModel(studios: @Nullable MutableList<UserStatsQuery.Studio>): List<UserStudioStatisticModel> {
+    private fun getStatsStudioModel(studios: List<UserStatsQuery.Studio>): List<UserStudioStatisticModel> {
         return studios.map { stats ->
             UserStudioStatisticModel().also { model ->
-                model.count = stats.count()
-                model.meanScore = stats.meanScore()
-                model.minutesWatched = stats.minutesWatched()
-                model.mediaIds = stats.mediaIds()
-                model.studio = stats.studio()?.let {
+                model.count = stats.count
+                model.meanScore = stats.meanScore
+                model.minutesWatched = stats.minutesWatched
+                model.mediaIds = stats.mediaIds.filterNotNull()
+                model.studio = stats.studio?.let {
                     StudioModel().also { studioModel ->
-                        studioModel.id = it.id()
-                        studioModel.studioName = it.name()
+                        studioModel.id = it.id
+                        studioModel.studioName = it.name
                     }
                 }
             }
         }
     }
 
-    private fun getStatsVoiceActorModel(voiceActors: @Nullable MutableList<UserStatsQuery.VoiceActor>): List<UserVoiceActorStatisticModel> {
+    private fun getStatsVoiceActorModel(voiceActors: List<UserStatsQuery.VoiceActor>): List<UserVoiceActorStatisticModel> {
         return voiceActors.map { stats ->
             UserVoiceActorStatisticModel().also { model ->
-                model.count = stats.count()
-                model.meanScore = stats.meanScore()
-                model.minutesWatched = stats.minutesWatched()
-                model.mediaIds = stats.mediaIds()
-                model.voiceActor = stats.voiceActor()?.let {
+                model.count = stats.count
+                model.meanScore = stats.meanScore
+                model.minutesWatched = stats.minutesWatched
+                model.mediaIds = stats.mediaIds.filterNotNull()
+                model.voiceActor = stats.voiceActor?.let {
                     StaffModel().also { m ->
-                        m.id = it.id()
-                        m.name = it.name()?.let {
-                            StaffNameModel().also { n ->
-                                n.full = it.full()
-                            }
+                        m.id = it.id
+                        m.name = it.name?.let {
+                            StaffNameModel(it.full)
                         }
-                        m.image = it.image()?.let {
-                            StaffImageModel().also { i ->
-                                i.large = it.large()
-                                i.medium = it.medium()
-                            }
-                        }
+                        m.image = it.image?.staffImage?.toModel()
                     }
                 }
             }

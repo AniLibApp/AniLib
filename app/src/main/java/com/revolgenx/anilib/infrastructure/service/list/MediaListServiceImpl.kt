@@ -3,7 +3,6 @@ package com.revolgenx.anilib.infrastructure.service.list
 import com.revolgenx.anilib.data.field.list.*
 import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
@@ -11,6 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
+//TODO MEDIALIST SERVICE
 class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : MediaListService {
     override fun getMediaListCollection(
         field: MediaListCollectionField,
@@ -20,12 +20,13 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 val mediaListCollection = mutableListOf<AlMediaListModel>()
-                it.data()?.MediaListCollection()?.lists()?.forEach { list ->
-                    list.entries()
-                        ?.filter { if (field.canShowAdult) true else it.media()?.isAdult == false }
-                        ?.map { it.toModel() }?.let { mediaList ->
-                            mediaListCollection.addAll(mediaList)
-                        }
+                it.data?.mediaListCollection?.lists?.filterNotNull()?.forEach { list ->
+                    list.entries
+                        ?.filter { if (field.canShowAdult) true else it?.media?.isAdult == false }
+                        ?.filterNotNull()
+//                        ?.map { it.toModel() }?.let { mediaList ->
+//                            mediaListCollection.addAll(mediaList)
+//                        }
                 }
                 mediaListCollection
             }.observeOn(AndroidSchedulers.mainThread())
@@ -47,10 +48,11 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 val mediaIds = mutableListOf<Int>()
-                it.data()?.MediaListCollection()?.lists()?.forEach {
-                    it.entries()
-                        ?.filter { if (field.canShowAdult) true else it.media()?.isAdult == false }
-                        ?.forEach { mediaIds.add(it.media()?.id()!!) }
+                it.data?.mediaListCollection?.lists?.filterNotNull()?.forEach {
+                    it.entries
+                        ?.filter { if (field.canShowAdult) true else it?.media?.isAdult == false }
+                        ?.filterNotNull()
+                        ?.forEach { mediaIds.add(it.media?.id!!) }
                 }
                 mediaIds
             }
@@ -71,21 +73,20 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Page()?.mediaList()?.filter {
-                    if (field.canShowAdult) true else it.media()?.fragments()
-                        ?.narrowMediaContent()?.isAdult == false
+                it.data?.page?.mediaList?.filterNotNull()?.filter {
+                    if (field.canShowAdult) true else it.media?.mediaContent?.isAdult == false
                 }?.map {
                     AlMediaListModel().also { model ->
-                        model.mediaListId = it.id()
-                        model.progress = it.progress()
-                        model.score = it.score()
+                        model.mediaListId = it.id
+                        model.progress = it.progress
+                        model.score = it.score
 
-                        model.listStartDate = it.startedAt()?.fragments()?.fuzzyDate()?.toModel()
+                        model.listStartDate = it.startedAt?.fuzzyDate?.toModel()
                         model.listCompletedDate =
-                            it.completedAt()?.fragments()?.fuzzyDate()?.toModel()
+                            it.completedAt?.fuzzyDate?.toModel()
                         model.scoreFormat =
-                            it.user()?.mediaListOptions()?.scoreFormat()?.ordinal
-                        it.media()?.fragments()?.narrowMediaContent()?.getCommonMedia(model)
+                            it.user?.mediaListOptions?.scoreFormat?.ordinal
+//                        it.media?.fragments?.narrowMediaContent?.getCommonMedia(model)
                     }
                 }
             }.observeOn(AndroidSchedulers.mainThread())

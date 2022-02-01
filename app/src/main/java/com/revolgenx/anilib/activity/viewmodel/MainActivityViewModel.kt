@@ -3,6 +3,7 @@ package com.revolgenx.anilib.activity.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.apollographql.apollo3.api.Optional
 import com.revolgenx.anilib.BasicUserQuery
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.saveBasicUserDetail
@@ -20,16 +21,12 @@ class MainActivityViewModel(
     private val app: Application,
     private val repository: BaseGraphRepository
 ) : BaseAndroidViewModel(app) {
-    var genreTagFields: MutableList<TagField> = mutableListOf()
-    var tagTagFields: MutableList<TagField> = mutableListOf()
-    var streamTagFields: MutableList<TagField> = mutableListOf()
-
     private val basicUserLiveData = MutableLiveData<UserPrefModel>()
 
     fun getUserLiveData(): LiveData<UserPrefModel> {
-        val disposable = repository.request(BasicUserQuery.builder().id(UserPreference.userId).build())
+        val disposable = repository.request(BasicUserQuery(id = Optional.presentIfNotNull(UserPreference.userId)))
             .map {
-                it.data()?.User()!!.toBasicUserModel()
+                it.data?.user!!.toBasicUserModel()
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ userModel ->
@@ -40,12 +37,5 @@ class MainActivityViewModel(
             })
         compositeDisposable.add(disposable)
         return basicUserLiveData
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        genreTagFields.clear()
-        tagTagFields.clear()
-        streamTagFields.clear()
     }
 }

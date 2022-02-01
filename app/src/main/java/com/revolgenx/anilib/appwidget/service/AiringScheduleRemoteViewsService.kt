@@ -18,6 +18,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.airing.data.model.AiringMediaModel
+import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
@@ -53,7 +54,7 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
             AppWidgetManager.INVALID_APPWIDGET_ID
         )
 
-        private val items = mutableListOf<AiringMediaModel>()
+        private val items = mutableListOf<AiringScheduleModel>()
 
         private val airingMediaService: AiringMediaService by inject()
         private val compositeDisposable = CompositeDisposable()
@@ -102,7 +103,7 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
                 showLoader(true)
                 updateField()
                 val suspendedQuery =
-                    suspendCoroutine<Resource<List<AiringMediaModel>>> { continuation ->
+                    suspendCoroutine<Resource<List<AiringScheduleModel>>> { continuation ->
                         airingMediaService.getAiringMedia(field, compositeDisposable) {
                             continuation.resume(it)
                         }
@@ -127,13 +128,13 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
 
             val item = items[position]
 
-            val airingTimeModel = item.airingTimeModel!!
-            val airingAtTime = airingTimeModel.airingAt!!.airingTime
-            val airingAtDay = airingTimeModel.airingAt!!.airingDayMedium
-            val airingEpisode = airingTimeModel.episode
-            val timeUntilAiring = airingTimeModel.timeUntilAiring!!
-            val coverImage = item.coverImage?.sImage
-            val title = item.title!!.title(context)
+            val airingTimeModel = item.airingAtModel!!
+            val airingAtTime = airingTimeModel.airingTime
+            val airingAtDay = airingTimeModel.airingDayMedium
+            val airingEpisode = item.episode
+            val timeUntilAiring = item.timeUntilAiringModel!!
+            val coverImage = item.media?.coverImage?.sImage
+            val title = item.media?.title!!.title(context)
             val showEta = AiringWidgetPreference.showEta(context)
 
             val remoteViews =

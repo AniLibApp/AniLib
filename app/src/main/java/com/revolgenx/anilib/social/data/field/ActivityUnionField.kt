@@ -9,39 +9,35 @@ open class ActivityUnionField : BaseSourceUserField<ActivityUnionQuery>() {
 
     var isFollowing: Boolean = false
     var type: AlActivityType = AlActivityType.ALL
-    var mediaId:Int? = null
+    var mediaId: Int? = null
     override fun toQueryOrMutation(): ActivityUnionQuery {
-        return ActivityUnionQuery.builder()
-            .page(page)
-            .perPage(perPage)
-            .apply {
-                userId?.let {
-                    userId(it)
-                }
-                mediaId?.let {
-                    mediaId(it)
-                }
-                if (isFollowing) {
-                    isFollowing(true)
-                }
-                when (type) {
-                    AlActivityType.TEXT -> type(ActivityType.TEXT)
-                    AlActivityType.LIST -> type(ActivityType.MEDIA_LIST)
-                    AlActivityType.MESSAGE -> type(ActivityType.MESSAGE)
-                    else ->
-                        if (userId == null) {
-                            type_in(
-                                listOf(
-                                    ActivityType.MEDIA_LIST,
-                                    ActivityType.TEXT,
-                                    ActivityType.ANIME_LIST,
-                                    ActivityType.MANGA_LIST
-                                )
-                            )
-                        }
-                }
-            }
-            .build()
+        val mType = when (type) {
+            AlActivityType.TEXT -> ActivityType.TEXT
+            AlActivityType.LIST -> ActivityType.MEDIA_LIST
+            AlActivityType.MESSAGE -> ActivityType.MESSAGE
+            else -> null
+        }
+
+        val typeIn = if (userId == null) {
+            listOf(
+                ActivityType.MEDIA_LIST,
+                ActivityType.TEXT,
+                ActivityType.ANIME_LIST,
+                ActivityType.MANGA_LIST
+            )
+        } else {
+            null
+        }
+
+        return ActivityUnionQuery(
+            page = nn(page),
+            perPage = nn(perPage),
+            userId = nn(userId),
+            mediaId = nn(mediaId),
+            isFollowing = nn(if (isFollowing) true else null),
+            type = nn(mType),
+            type_in = nn(typeIn)
+        )
     }
 
 }

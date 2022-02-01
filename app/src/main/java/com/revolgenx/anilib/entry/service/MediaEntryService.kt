@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.list.data.model.MediaListModel
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class MediaEntryService(
@@ -14,13 +15,13 @@ abstract class MediaEntryService(
     abstract fun queryMediaListEntry(
         mediaId: Int?,
         compositeDisposable: CompositeDisposable? = null,
-        callback: (Resource<EntryListEditorMediaModel>) -> Unit
+        callback: (Resource<MediaListModel>) -> Unit
     )
 
     abstract fun saveMediaListEntry(
-        model: EntryListEditorMediaModel,
+        model: MediaListModel,
         compositeDisposable: CompositeDisposable? = null,
-        callback: (Resource<EntryListEditorMediaModel>) -> Unit
+        callback: (Resource<MediaListModel>) -> Unit
     )
 
     abstract fun deleteMediaListEntry(
@@ -30,8 +31,8 @@ abstract class MediaEntryService(
     )
 
     abstract fun increaseProgress(
-        model: EntryListEditorMediaModel,
+        model: MediaListModel,
         compositeDisposable: CompositeDisposable? = null,
-        callback: (Resource<EntryListEditorMediaModel>) -> Unit
+        callback: (Resource<MediaListModel>) -> Unit
     )
 }

@@ -7,9 +7,7 @@ class MediaStatsField : BaseField<MediaStatsQuery>(){
 
     var mediaId = -1
     override fun toQueryOrMutation(): MediaStatsQuery {
-        return MediaStatsQuery.builder()
-            .mediaId(mediaId)
-            .build()
+        return MediaStatsQuery(mediaId = nn(mediaId))
     }
 
 }

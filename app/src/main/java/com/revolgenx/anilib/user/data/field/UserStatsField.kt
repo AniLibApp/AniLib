@@ -12,63 +12,69 @@ class UserStatsField : BaseSourceField<UserStatsQuery>() {
     var userId: Int? = null
     var userStatsSort: Int? = null
     override fun toQueryOrMutation(): UserStatsQuery {
-        return UserStatsQuery.builder()
-            .apply {
-                userId?.let {
-                    id(it)
-                }
-                userName?.let {
-                    name(it)
-                }
+        val mSort = userStatsSort?.let {
+            listOf(UserStatisticsSort.values()[it])
+        }
 
-                userStatsSort?.let {
-                    sort(listOf(UserStatisticsSort.values()[it]))
-                }
+        var includeAnime = false
+        var includeManga = false
+        var includeGenre = false
+        var includeTag = false
+        var includeStaff = false
+        var includeStudio = false
+        var includeVoiceActor = false
 
-                when (type) {
-                    MediaType.ANIME.ordinal -> {
-                        includeAnime(true)
-                        when (userStatsType) {
-                            UserStatsType.GENRE -> {
-                                includeGenre(true)
-                            }
-                            UserStatsType.TAG -> {
-                                includeTag(true)
-                            }
-                            UserStatsType.STAFF -> {
-                                includeStaff(true)
-                            }
-                            UserStatsType.STUDIO -> {
-                                includeStudio(true)
-                            }
-                            UserStatsType.VOICE_ACTOR -> {
-                                includeVoiceActor(true)
-                            }
-                            null -> {
-                            }
-                        }
+
+        when (type) {
+            MediaType.ANIME.ordinal -> {
+                includeAnime = true
+                when (userStatsType) {
+                    UserStatsType.GENRE -> {
+                        includeGenre = true
                     }
-
-                    MediaType.MANGA.ordinal -> {
-                        includeManga(true)
-                        when (userStatsType?.ordinal) {
-                            UserStatsType.GENRE.ordinal -> {
-                                includeGenre(true)
-                            }
-                            UserStatsType.TAG.ordinal -> {
-                                includeTag(true)
-                            }
-                            UserStatsType.STAFF.ordinal -> {
-                                includeStaff(true)
-                            }
-                        }
+                    UserStatsType.TAG -> {
+                        includeTag = true
+                    }
+                    UserStatsType.STAFF -> {
+                        includeStaff = true
+                    }
+                    UserStatsType.STUDIO -> {
+                        includeStudio = true
+                    }
+                    UserStatsType.VOICE_ACTOR -> {
+                        includeVoiceActor = true
+                    }
+                    null -> {
                     }
                 }
-
             }
-            .build()
-    }
 
+            MediaType.MANGA.ordinal -> {
+                includeManga = true
+                when (userStatsType?.ordinal) {
+                    UserStatsType.GENRE.ordinal -> {
+                        includeGenre = true
+                    }
+                    UserStatsType.TAG.ordinal -> {
+                        includeTag = true
+                    }
+                    UserStatsType.STAFF.ordinal -> {
+                        includeStaff = true
+                    }
+                }
+            }
+        }
+        return UserStatsQuery(
+            id = nn(userId), name = nn(userName), sort = nn(mSort),
+            includeAnime = nn(includeAnime),
+            includeManga = nn(includeManga),
+            includeTag = nn(includeTag),
+            includeGenre = nn(includeGenre),
+            includeStaff = nn(includeStaff),
+            includeStudio = nn(includeStudio),
+            includeVoiceActor = nn(includeVoiceActor)
+        )
+    }
     enum class UserStatsType {
         GENRE, TAG, STAFF, STUDIO, VOICE_ACTOR
     }

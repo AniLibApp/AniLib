@@ -1,12 +1,13 @@
 package com.revolgenx.anilib.data.field.list
 
-import com.revolgenx.anilib.*
+import com.revolgenx.anilib.AlMediaListCollectionQuery
 import com.revolgenx.anilib.common.data.field.BaseSourceUserField
 import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
-import com.revolgenx.anilib.user.data.field.BaseUserField
 import com.revolgenx.anilib.type.MediaListSort
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.MediaListPageQuery
+import com.revolgenx.anilib.MediaListCollectionIdQuery
 
 
 class MediaListCollectionField : BaseSourceUserField<AlMediaListCollectionQuery>() {
@@ -15,21 +16,7 @@ class MediaListCollectionField : BaseSourceUserField<AlMediaListCollectionQuery>
     var filter = MediaListCollectionFilterField()
 
     override fun toQueryOrMutation(): AlMediaListCollectionQuery {
-        return AlMediaListCollectionQuery.builder()
-            .apply {
-                userId?.let {
-                    userId(it)
-                }
-                userName?.let {
-                    userName(it)
-                }
-                type?.let {
-                    type(MediaType.values()[it])
-                }
-//                mediaListStatus?.let {
-//                    status(MediaListStatus.values()[it])
-//                }
-            }.build()
+        return AlMediaListCollectionQuery()
     }
 }
 
@@ -39,54 +26,51 @@ class MediaListCollectionIdsField : BaseSourceUserField<MediaListCollectionIdQue
     var mediaListStatus: List<Int>? = null
 
     override fun toQueryOrMutation(): MediaListCollectionIdQuery {
-        return MediaListCollectionIdQuery.builder()
-            .apply {
-                userId?.let {
-                    userId(it)
-                }
-                userName?.let {
-                    userName(it)
-                }
-                type?.let {
-                    type(MediaType.values()[it])
-                }
-                mediaListStatus?.let {
-                    status_in(it.map { MediaListStatus.values()[it] })
-                }
-            }.build()
+        val mType =
+            type?.let {
+                MediaType.values()[it]
+            }
+        val listStatus = mediaListStatus?.let {
+            it.map { MediaListStatus.values()[it] }
+        }
+
+        return MediaListCollectionIdQuery(
+            userId = nn(userId),
+            userName = nn(userName),
+            type = nn(mType),
+            status_in = nn(listStatus)
+        )
     }
+
+
 }
 
-class MediaListField : BaseSourceUserField<MediaListQuery>() {
-
+class MediaListField : BaseSourceUserField<MediaListPageQuery>() {
     var type: Int? = null
     var status: Int? = null
     var sort: Int? = null
 
-    override fun toQueryOrMutation(): MediaListQuery {
-        return MediaListQuery.builder()
-            .page(page)
-            .perPage(perPage)
-            .apply {
-                userId?.let {
-                    userId(it)
-                }
-                userName?.let {
-                    userName(it)
-                }
+    override fun toQueryOrMutation(): MediaListPageQuery {
+        val mType = type?.let {
+            MediaType.values()[it]
+        }
 
-                type?.let {
-                    type(MediaType.values()[it])
-                }
+        val mStatus = status?.let {
+            MediaListStatus.values()[it]
+        }
 
-                status?.let {
-                    status(MediaListStatus.values()[it])
-                }
-
-                sort?.let {
-                    sort(listOf(MediaListSort.values()[it]))
-                }
-            }.build()
+        val mSort = sort?.let {
+            listOf(MediaListSort.values()[it])
+        }
+        return MediaListPageQuery(
+            page = nn(page),
+            perPage = nn(perPage),
+            userId = nn(userId),
+            userName = nn(userName),
+            status = nn(mStatus),
+            sort = nn(mSort),
+            type = nn(mType)
+        )
     }
 }
 

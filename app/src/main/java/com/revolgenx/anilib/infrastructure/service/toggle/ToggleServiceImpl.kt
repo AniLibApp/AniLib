@@ -1,8 +1,7 @@
 package com.revolgenx.anilib.infrastructure.service.toggle
 
-import com.revolgenx.anilib.ToggleActivitySubscriptionMutation
+import com.apollographql.apollo3.api.Optional
 import com.revolgenx.anilib.ToggleFavouriteMutation
-import com.revolgenx.anilib.ToggleLikeV2Mutation
 import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.social.data.model.LikeableUnionModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
@@ -27,44 +26,35 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.ToggleLikeV2()?.let {
-                    when (it) {
-                        is ToggleLikeV2Mutation.AsTextActivity -> {
-                            LikeableUnionModel().also { model ->
-                                model.id = it.id()
-                                model.isLiked = it.isLiked ?: false
-                                model.likeCount = it.likeCount()
-                            }
+                it.data?.toggleLikeV2?.let {
+                    it.onTextActivity?.let {
+                        LikeableUnionModel().also { model ->
+                            model.id = it.id
+                            model.isLiked = it.isLiked ?: false
+                            model.likeCount = it.likeCount
                         }
-                        is ToggleLikeV2Mutation.AsListActivity -> {
-                            LikeableUnionModel().also { model ->
-                                model.id = it.id()
-                                model.isLiked = it.isLiked ?: false
-                                model.likeCount = it.likeCount()
+                    }
 
-                            }
+                    it.onListActivity?.let {
+                        LikeableUnionModel().also { model ->
+                            model.id = it.id
+                            model.isLiked = it.isLiked ?: false
+                            model.likeCount = it.likeCount
 
                         }
-                        is ToggleLikeV2Mutation.AsActivityReply -> {
-
-                            LikeableUnionModel().also { model ->
-                                model.id = it.id()
-                                model.isLiked = it.isLiked ?: false
-                                model.likeCount = it.likeCount()
-
-                            }
+                    }
+                    it.onActivityReply?.let {
+                        LikeableUnionModel().also { model ->
+                            model.id = it.id
+                            model.isLiked = it.isLiked ?: false
+                            model.likeCount = it.likeCount
                         }
-                        is ToggleLikeV2Mutation.AsMessageActivity -> {
-
-                            LikeableUnionModel().also { model ->
-                                model.id = it.id()
-                                model.isLiked = it.isLiked ?: false
-                                model.likeCount = it.likeCount()
-
-                            }
-                        }
-                        else -> {
-                            null
+                    }
+                    it.onMessageActivity?.let {
+                        LikeableUnionModel().also { model ->
+                            model.id = it.id
+                            model.isLiked = it.isLiked ?: false
+                            model.likeCount = it.likeCount
                         }
                     }
                 }
@@ -86,28 +76,24 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.ToggleActivitySubscription()?.let {
-                    when (it) {
-                        is ToggleActivitySubscriptionMutation.AsTextActivity -> {
-                            TextActivityModel().also { model ->
-                                model.id = it.id()
-                                model.isSubscribed = it.isSubscribed ?: false
-                            }
+                it.data?.toggleActivitySubscription?.let {
+                    it.onTextActivity?.let {
+                        TextActivityModel().also { model ->
+                            model.id = it.id
+                            model.isSubscribed = it.isSubscribed ?: false
                         }
-                        is ToggleActivitySubscriptionMutation.AsListActivity -> {
-                            ListActivityModel().also { model ->
-                                model.id = it.id()
-                                model.isSubscribed = it.isSubscribed ?: false
-                            }
+                    }
+                    it.onListActivity?.let {
+                        ListActivityModel().also { model ->
+                            model.id = it.id
+                            model.isSubscribed = it.isSubscribed ?: false
                         }
-                        is ToggleActivitySubscriptionMutation.AsMessageActivity->{
-                            MessageActivityModel().also { model ->
-                                model.id = it.id()
-                                model.isSubscribed = it.isSubscribed ?: false
-                            }
-                        }
-                        else -> {
-                            null
+                    }
+
+                    it.onMessageActivity?.let {
+                        MessageActivityModel().also { model ->
+                            model.id = it.id
+                            model.isSubscribed = it.isSubscribed ?: false
                         }
                     }
                 }
@@ -122,22 +108,17 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
     }
 
     override fun toggleFavourite(
-        favouriteField: ToggleFavouriteField,
+        field: ToggleFavouriteField,
         compositeDisposable: CompositeDisposable?,
         callback: (Resource<Boolean>) -> Unit
     ) {
-        val disposable = graphRepository.request(ToggleFavouriteMutation.builder().apply {
-            if (favouriteField.animeId != null)
-                animeId(favouriteField.animeId)
-            if (favouriteField.mangaId != null)
-                mangaId(favouriteField.mangaId)
-            if (favouriteField.characterId != null)
-                characterId(favouriteField.characterId)
-            if (favouriteField.staffId != null)
-                staffId(favouriteField.staffId)
-            if (favouriteField.studioId != null)
-                studioId(favouriteField.studioId)
-        }.build())
+        val disposable = graphRepository.request(ToggleFavouriteMutation(
+            animeId = Optional.presentIfNotNull(field.animeId),
+            mangaId = Optional.presentIfNotNull(field.mangaId),
+            characterId = Optional.presentIfNotNull(field.characterId),
+            staffId = Optional.presentIfNotNull(field.staffId),
+            studioId = Optional.presentIfNotNull(field.studioId),
+        ))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ _ ->
                 callback.invoke(Resource.success(true))

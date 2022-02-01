@@ -1,12 +1,11 @@
 package com.revolgenx.anilib.infrastructure.repository.network
 
-import com.apollographql.apollo.api.Mutation
-import com.apollographql.apollo.api.Operation
-import com.apollographql.apollo.api.Query
-import com.apollographql.apollo.api.Response
+import com.apollographql.apollo3.api.*
+import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 interface BaseGraphRepository {
-    fun <D : Operation.Data, T, V : Operation.Variables> request(query: Query<D, T, V>): Observable<Response<T>>
-    fun <D : Operation.Data, T, V : Operation.Variables> request(mutate: Mutation<D, T, V>): Observable<Response<T>>
+    fun <D : Query.Data> request(query: Query<D>): Single<ApolloResponse<D>>
+    fun <D : Mutation.Data> request(mutate: Mutation<D>): Single<ApolloResponse<D>>
 }

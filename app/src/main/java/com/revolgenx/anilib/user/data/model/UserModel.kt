@@ -3,6 +3,7 @@ package com.revolgenx.anilib.user.data.model
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel
 import com.revolgenx.anilib.common.data.model.BaseModel
+import com.revolgenx.anilib.fragment.UserAvatar
 
 open class UserModel : BaseModel() {
     var name: String? = null
@@ -21,3 +22,6 @@ open class UserModel : BaseModel() {
 
     val isMutual get() = isFollower && isFollowing
 }
+
+
+fun UserAvatar.toModel() = UserAvatarModel(medium, large)

@@ -10,10 +10,10 @@ open class UpdateRecommendationField :
     var mediaRecommendationId: Int? = null
     var rating: Int = RecommendationRating.NO_RATING.ordinal
     override fun toQueryOrMutation(): UpdateRecommendationMutation {
-        return UpdateRecommendationMutation.builder()
-            .mediaId(mediaId)
-            .mediaRecommendationId(mediaRecommendationId)
-            .rating(RecommendationRating.values()[rating])
-            .build()
+        return UpdateRecommendationMutation(
+            mediaId = nn(mediaId),
+            mediaRecommendationId = nn(mediaRecommendationId),
+            rating = nn(RecommendationRating.values()[rating])
+        )
     }
 }

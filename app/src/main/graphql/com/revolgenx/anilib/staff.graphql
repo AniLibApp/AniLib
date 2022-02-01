@@ -1,0 +1,105 @@
+query MediaStaffQuery($page:Int, $perPage:Int, $mediaId:Int){
+    media: Media(id:$mediaId){
+        staff(page:$page,perPage:$perPage){
+            edges{
+                role
+                node{
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        ... staffImage
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+query StaffQuery($id:Int){
+    staff: Staff(id:$id){
+        id
+        name{
+            full
+            native
+            alternative
+        }
+        image{
+            ... staffImage
+        }
+        description(asHtml:true)
+        favourites
+        languageV2
+        isFavourite
+        siteUrl
+    }
+}
+
+query StaffCharacterMediaQuery(
+    $staffId:Int,
+    $page:Int,
+    $perPage:Int,
+    $includeDescription:Boolean! = false){
+    staff: Staff(id:$staffId){
+        characters(page:$page,perPage:$perPage){
+            nodes{
+                id
+                name{
+                    full
+                }
+                image{
+                    ... characterImage
+                }
+
+
+                media{
+                    edges{
+                        characterRole
+                        node{
+                            ... on Media{
+                                ... mediaContent
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query StaffMediaRoleQuery(
+    $staffId:Int,
+    $page:Int,
+    $perPage:Int,
+    $includeDescription:Boolean! = false){
+    staff: Staff(id:$staffId){
+        staffMedia(page:$page,perPage:$perPage){
+            edges{
+                node{
+                    ... on Media{
+                        ... mediaContent
+                    }
+                }
+                staffRole
+            }
+        }
+    }
+}
+
+
+fragment narrowStaffContent on Staff{
+    id
+    name{
+        full
+    }
+    image{
+        ... staffImage
+    }
+}
+
+fragment staffImage on StaffImage{
+    medium
+    large
+}

@@ -7,10 +7,6 @@ class CharacterMediaField :
     BaseSourceField<CharacterMediaQuery>() {
     var characterId: Int? = null
     override fun toQueryOrMutation(): CharacterMediaQuery {
-        return CharacterMediaQuery.builder()
-            .characterId(characterId)
-            .page(page)
-            .perPage(perPage)
-            .build()
+        return CharacterMediaQuery(characterId = nn(characterId), page = nn(page), perPage = nn(perPage))
     }
 }

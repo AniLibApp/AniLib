@@ -11,7 +11,7 @@ interface MediaService {
     fun getMedia(
         field: MediaField,
         compositeDisposable: CompositeDisposable,
-        callback: ((Resource<List<CommonMediaModel>>) -> Unit)
+        callback: ((Resource<List<MediaModel>>) -> Unit)
     )
 
     fun getSelectableMedia(

@@ -5,14 +5,7 @@ import com.revolgenx.anilib.user.data.field.BaseUserField
 
 class MediaListSettingField : BaseUserField<UserMediaListOptionsQuery>() {
     override fun toQueryOrMutation(): UserMediaListOptionsQuery {
-        return UserMediaListOptionsQuery.builder().apply {
-            userId?.let {
-                id(it)
-            }
-            userName?.let {
-                name(it)
-            }
-        }.build()
+        return UserMediaListOptionsQuery(id = nn(userId), name = nn(userName))
     }
 }
 

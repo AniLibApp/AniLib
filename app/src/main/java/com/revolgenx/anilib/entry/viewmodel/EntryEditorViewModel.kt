@@ -9,6 +9,7 @@ import com.revolgenx.anilib.infrastructure.service.favourite.FavouriteService
 import com.revolgenx.anilib.media.service.MediaInfoService
 import com.revolgenx.anilib.entry.service.MediaEntryService
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
+import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.model.MediaInfoModel
 
 class EntryEditorViewModel(
@@ -17,14 +18,14 @@ class EntryEditorViewModel(
     private val favouriteService: FavouriteService,
     private val toggleService: ToggleService
 ) : BaseViewModel() {
-    val queryMediaListEntryLiveData = MutableLiveData<Resource<EntryListEditorMediaModel>>()
+    val queryMediaListEntryLiveData = MutableLiveData<Resource<MediaListModel>>()
     val deleteMediaListEntryLiveData = MutableLiveData<Resource<Boolean>>()
-    val saveMediaListEntryLiveData = MutableLiveData<Resource<EntryListEditorMediaModel>>()
+    val saveMediaListEntryLiveData = MutableLiveData<Resource<MediaListModel>>()
     val toggleFavMediaLiveData = MutableLiveData<Resource<Boolean>>()
     val mediaLiveData = MutableLiveData<Resource<MediaInfoModel>>()
     val isFavLiveData = MutableLiveData<Resource<Boolean>>()
 
-    var apiModelEntry: EntryListEditorMediaModel = EntryListEditorMediaModel()
+    var apiModelEntry: MediaListModel = MediaListModel()
 
     fun queryMediaListEntry(mediaId: Int?) {
         queryMediaListEntryLiveData.value = Resource.loading(null)
@@ -33,7 +34,7 @@ class EntryEditorViewModel(
         }
     }
 
-    fun saveMediaListEntry(model: EntryListEditorMediaModel) {
+    fun saveMediaListEntry(model: MediaListModel) {
         saveMediaListEntryLiveData.value = Resource.loading(null)
         mediaListEntryService.saveMediaListEntry(model,compositeDisposable){
             saveMediaListEntryLiveData.value = it

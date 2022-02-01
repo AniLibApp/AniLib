@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.apollographql.apollo.exception.ApolloHttpException
+import com.apollographql.apollo3.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.theme.Theme
@@ -83,12 +83,12 @@ class RecommendationPresenter(
                         from.format?.let { mediaFormats[it] }.naText(),
                         from.seasonYear?.toString().naText()
                     )
-                recommendedFromFormatYearTv.status = from.mediaEntryListModel?.status
+                recommendedFromFormatYearTv.status = from.mediaListEntry?.status
 
                 recommendedFromImageConstraintLayout.setOnClickListener {
                     OpenMediaInfoEvent(
                         MediaInfoMeta(
-                            from.mediaId,
+                            from.id,
                             from.type!!,
                             from.title!!.romaji!!,
                             from.coverImage!!.image(context),
@@ -102,7 +102,7 @@ class RecommendationPresenter(
                     if (context.loggedIn()) {
                         OpenMediaListEditorEvent(
                             EntryEditorMeta(
-                                from.mediaId,
+                                from.id,
                                 from.type!!,
                                 from.title!!.title(context)!!,
                                 from.coverImage!!.image(context),
@@ -129,11 +129,11 @@ class RecommendationPresenter(
                         rec.format?.let { mediaFormats[it] }.naText(),
                         rec.seasonYear?.toString().naText()
                     )
-                recommendedFormatYearTv.status = rec.mediaEntryListModel?.status
+                recommendedFormatYearTv.status = rec.mediaListEntry?.status
                 recommendedImageConstraintLayout.setOnClickListener {
                     OpenMediaInfoEvent(
                         MediaInfoMeta(
-                            rec.mediaId,
+                            rec.id,
                             rec.type!!,
                             rec.title!!.romaji!!,
                             rec.coverImage!!.image(context),
@@ -147,7 +147,7 @@ class RecommendationPresenter(
                     if (context.loggedIn()) {
                         OpenMediaListEditorEvent(
                             EntryEditorMeta(
-                                rec.mediaId,
+                                rec.id,
                                 rec.type!!,
                                 rec.title!!.title(context)!!,
                                 rec.coverImage!!.image(context),
@@ -183,7 +183,7 @@ class RecommendationPresenter(
                                 }
                                 Status.ERROR -> {
                                     if (it.exception is ApolloHttpException) {
-                                        when (it.exception.code()) {
+                                        when (it.exception.statusCode) {
                                             HTTP_TOO_MANY_REQUEST -> {
                                                 context.makeToast(R.string.too_many_request)
                                             }
@@ -253,8 +253,8 @@ class RecommendationPresenter(
         newRating: RecommendationRating
     ) {
         viewModel.updateRecommendation(updateRecommendationField.also { field ->
-            field.mediaId = data.recommendationFrom?.mediaId
-            field.mediaRecommendationId = data.recommended?.mediaId
+            field.mediaId = data.recommendationFrom?.id
+            field.mediaRecommendationId = data.recommended?.id
             field.rating = if (currentRating == newRating) {
                 RecommendationRating.NO_RATING.ordinal
             } else {

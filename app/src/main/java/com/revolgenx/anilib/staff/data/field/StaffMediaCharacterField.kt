@@ -6,10 +6,10 @@ import com.revolgenx.anilib.common.data.field.BaseSourceField
 class StaffMediaCharacterField : BaseSourceField<StaffCharacterMediaQuery>() {
     var staffId: Int? = null
     override fun toQueryOrMutation(): StaffCharacterMediaQuery {
-        return StaffCharacterMediaQuery.builder()
-            .staffId(staffId)
-            .page(page)
-            .perPage(perPage)
-            .build()
+        return StaffCharacterMediaQuery(
+            staffId =  nn(staffId),
+            page = nn(page),
+            perPage = nn(perPage)
+        )
     }
 }

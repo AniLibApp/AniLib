@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.review.service
 
 import androidx.lifecycle.MutableLiveData
-import com.apollographql.apollo.exception.ApolloHttpException
+import com.apollographql.apollo3.exception.ApolloHttpException
 import com.revolgenx.anilib.DeleteReviewMutation
 import com.revolgenx.anilib.ReviewQuery
 import com.revolgenx.anilib.SaveReviewMutation
@@ -10,12 +10,14 @@ import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepositor
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.review.data.field.AllReviewField
 import com.revolgenx.anilib.review.data.field.RateReviewField
 import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.model.ReviewModel
 import com.revolgenx.anilib.user.data.model.UserAvatarModel
 import com.revolgenx.anilib.user.data.model.UserPrefModel
+import com.revolgenx.anilib.user.data.model.toModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -32,39 +34,33 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
         compositeDisposable: CompositeDisposable
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation() as ReviewQuery).map {
-            it.data()?.Review()?.let {
+            it.data?.review?.let {
                 ReviewModel().also { model ->
-                    model.id = it.id()
-                    model.rating = it.rating()
-                    model.ratingAmount = it.ratingAmount()
-                    model.userRating = it.userRating()?.ordinal
-                    model.summary = it.summary()
-                    model.body = it.body() ?: ""
-                    model.score = it.score()
-                    model.private = it.private_() == true
-                    model.createdAtDate = it.createdAt().let {
+                    model.id = it.id
+                    model.rating = it.rating
+                    model.ratingAmount = it.ratingAmount
+                    model.userRating = it.userRating?.ordinal
+                    model.summary = it.summary
+                    model.body = it.body ?: ""
+                    model.score = it.score
+                    model.private = it.private == true
+                    model.createdAtDate = it.createdAt.let {
                         SimpleDateFormat.getDateInstance().format(Date(it * 1000L))
                     }
-                    model.userPrefModel = it.user()?.let {
+                    model.userPrefModel = it.user?.let {
                         UserPrefModel().also { user ->
-                            user.id = it.id()
-                            user.name = it.name()
-                            user.avatar = it.avatar()?.let {
-                                UserAvatarModel().also { img ->
-                                    img.large = it.large()
-                                    img.medium = it.medium()
-                                }
-                            }
+                            user.id = it.id
+                            user.name = it.name
+                            user.avatar = it.avatar?.userAvatar?.toModel()
                         }
                     }
-                    model.mediaModel = it.media()?.let {
-                        CommonMediaModel().also { media ->
-                            media.mediaId = it.id()
-                            media.title = it.title()?.fragments()?.mediaTitle()?.toModel()
-                            media.coverImage =
-                                it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
-                            media.bannerImage = it.bannerImage()
-                            media.type = it.type()?.ordinal
+                    model.media = it.media?.let {
+                        MediaModel().also { media ->
+                            media.id = it.id
+                            media.title = it.title?.mediaTitle?.toModel()
+                            media.coverImage = it.coverImage?.mediaCoverImage?.toModel()
+                            media.bannerImage = it.bannerImage
+                            media.type = it.type?.ordinal
                         }
                     }
                 }
@@ -74,7 +70,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                 reviewLiveData.value = Resource.success(it)
             }, {
                 if (it is ApolloHttpException) {
-                    if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    if (it.statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
                         reviewLiveData.value = Resource.success(null)
                         return@subscribe
                     }
@@ -92,37 +88,33 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
         callback: (Resource<List<ReviewModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation()).map {
-            it.data()?.Page()?.reviews()
-                ?.filter { if (field.canShowAdult) true else it.media()?.isAdult == false }?.map {
+            it.data?.page?.reviews
+                ?.filterNotNull()
+                ?.filter { if (field.canShowAdult) true else it.media?.isAdult == false }?.map {
                     ReviewModel().also { model ->
-                        model.id = it.id()
-                        model.rating = it.rating()
-                        model.ratingAmount = it.ratingAmount()
-                        model.summary = it.summary()
-                        model.score = it.score()
-                        model.createdAtDate = it.createdAt().let {
+                        model.id = it.id
+                        model.rating = it.rating
+                        model.ratingAmount = it.ratingAmount
+                        model.summary = it.summary
+                        model.score = it.score
+                        model.createdAtDate = it.createdAt.let {
                             SimpleDateFormat.getDateInstance().format(Date(it * 1000L))
                         }
-                        model.userPrefModel = it.user()?.let {
+                        model.userPrefModel = it.user?.let {
                             UserPrefModel().also { user ->
-                                user.id = it.id()
-                                user.name = it.name()
-                                user.avatar = it.avatar()?.let {
-                                    UserAvatarModel().also { img ->
-                                        img.large = it.large()
-                                        img.medium = it.medium()
-                                    }
-                                }
+                                user.id = it.id
+                                user.name = it.name
+                                user.avatar = it.avatar?.userAvatar?.toModel()
                             }
                         }
-                        model.mediaModel = it.media()?.let {
-                            CommonMediaModel().also { media ->
-                                media.mediaId = it.id()
-                                media.title = it.title()?.fragments()?.mediaTitle()?.toModel()
+                        model.media = it.media?.let {
+                            MediaModel().also { media ->
+                                media.id = it.id
+                                media.title = it.title?.mediaTitle?.toModel()
                                 media.coverImage =
-                                    it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
-                                media.bannerImage = it.bannerImage() ?: media.coverImage?.largeImage
-                                media.type = it.type()?.ordinal
+                                    it.coverImage?.mediaCoverImage?.toModel()
+                                media.bannerImage = it.bannerImage ?: media.coverImage?.largeImage
+                                media.type = it.type?.ordinal
                                 media.isAdult = it.isAdult ?: false
                             }
                         }
@@ -179,12 +171,12 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
         callback: (Resource<ReviewModel>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation()).map {
-            it.data()?.RateReview()?.let {
+            it.data?.rateReview?.let {
                 ReviewModel().also { model ->
-                    model.id = it.id()
-                    model.userRating = it.userRating()?.ordinal
-                    model.ratingAmount = it.ratingAmount()
-                    model.rating = it.rating()
+                    model.id = it.id
+                    model.userRating = it.userRating?.ordinal
+                    model.ratingAmount = it.ratingAmount
+                    model.rating = it.rating
                 }
             }
         }.observeOn(AndroidSchedulers.mainThread())

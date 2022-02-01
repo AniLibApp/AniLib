@@ -39,6 +39,7 @@ import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.infrastructure.event.OpenReviewComposerEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.drawable.DynamicBackgroundGradientDrawable
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
@@ -568,8 +569,8 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         }
 
 
-        viewModel.saveMediaListEntry(EntryListEditorMediaModel().also {
-            it.mediaId = mediaInfoMeta!!.mediaId
+        viewModel.saveMediaListEntry(MediaListModel().also {
+            it.mediaId = mediaInfoMeta!!.mediaId ?: -1
             it.status = position
         })
 

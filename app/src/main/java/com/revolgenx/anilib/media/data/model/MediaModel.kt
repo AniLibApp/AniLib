@@ -6,7 +6,10 @@ import com.revolgenx.anilib.character.data.model.CharacterConnectionModel
 import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.common.data.model.FuzzyDateModel
 import com.revolgenx.anilib.constant.*
+import com.revolgenx.anilib.fragment.MediaContent
+import com.revolgenx.anilib.fragment.MediaTitle
 import com.revolgenx.anilib.home.recommendation.data.model.RecommendationConnectionModel
+import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.review.data.model.ReviewConnection
 import com.revolgenx.anilib.staff.data.model.StaffConnectionModel
@@ -68,3 +71,35 @@ open class MediaModel:BaseModel() {
     var onClickListener: ((selected:Boolean) -> Unit)? = null
 }
 
+
+fun MediaContent.toModel() = MediaModel().also {m->
+    m.id = id
+    m.title = title?.onMediaTitle?.mediaTitle?.toModel()
+    m.description = description
+    m.popularity = popularity
+    m.favourites = favourites
+    m.format = format?.ordinal
+    m.type = type?.ordinal
+    m.episodes = episodes
+    m.duration = duration
+    m.chapters = chapters
+    m.volumes = volumes
+    m.status = status?.ordinal
+    m.coverImage = coverImage?.onMediaCoverImage?.mediaCoverImage?.toModel()
+    m.genres = genres?.filterNotNull()
+    m.averageScore = averageScore
+    m.season = season?.ordinal
+    m.seasonYear = seasonYear
+
+    m.startDate = startDate?.onFuzzyDate?.fuzzyDate?.toModel()
+    m.endDate = endDate?.onFuzzyDate?.fuzzyDate?.toModel()
+    m.bannerImage = bannerImage ?: m.coverImage!!.largeImage
+
+    m.isAdult = isAdult ?: false
+    m.mediaListEntry = mediaListEntry?.let {list->
+        MediaListModel().also {listModel->
+            listModel.progress = list.progress ?: 0
+            listModel.status = list.status?.ordinal
+        }
+    }
+}

@@ -7,10 +7,10 @@ class StaffMediaRoleField : BaseSourceField<StaffMediaRoleQuery>() {
     var staffId: Int? = null
 
     override fun toQueryOrMutation(): StaffMediaRoleQuery {
-        return StaffMediaRoleQuery.builder()
-            .staffId(staffId)
-            .page(page)
-            .perPage(perPage)
-            .build()
+        return StaffMediaRoleQuery(
+            staffId = nn(staffId),
+            page = nn(page),
+            perPage = nn(perPage)
+        )
     }
 }

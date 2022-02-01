@@ -7,9 +7,7 @@ class CharacterVoiceActorField :
     BaseField<CharacterActorQuery>() {
     var characterId: Int? = null
     override fun toQueryOrMutation(): CharacterActorQuery {
-        return CharacterActorQuery.builder()
-            .characterId(characterId)
-            .build()
+        return CharacterActorQuery(characterId = nn(characterId))
     }
 
 }

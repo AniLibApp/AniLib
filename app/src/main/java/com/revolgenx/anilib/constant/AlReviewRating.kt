@@ -15,4 +15,4 @@ enum class AlReviewRating(val value:String) {
     UNKNOWN("UNKNOWN");
 }
 
-fun ReviewRating?.toRating() = this?.let {AlReviewRating.valueOf(rawValue())}
+fun ReviewRating?.toRating() = this?.let {AlReviewRating.valueOf(rawValue)}
