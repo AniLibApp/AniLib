@@ -34,7 +34,7 @@ class MediaTagDescriptionDialog : BaseDialogFragment<MediaTagDescriptionDialogBi
         positiveButton?.textSize = 14f
 
         binding.apply {
-            (arguments?.getParcelable(MEDIA_TAG_DIALOG_KEY) as? MediaTagModel)?.let {
+            (arguments?.getParcelable<MediaTagModel?>(MEDIA_TAG_DIALOG_KEY))?.let {
                 tagNameTv.text = it.name
                 tagCategoryTv.text = it.category.naText()
                 tagDescriptionTv.text = it.description.naText()

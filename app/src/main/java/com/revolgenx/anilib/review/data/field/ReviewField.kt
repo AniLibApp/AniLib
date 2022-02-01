@@ -16,48 +16,26 @@ class ReviewField : BaseField<Any>() {
     override fun toQueryOrMutation(): Any {
         return when (type) {
             ReviewFieldType.QUERY -> {
-                ReviewQuery.builder()
-                    .apply {
-                        reviewId?.let {
-                            reviewId(it)
-                        }
-                        mediaId?.let {
-                            mediaId(it)
-                        }
-                        userId?.let {
-                            userId(it)
-                        }
-                    }.build()
+                ReviewQuery(
+                    reviewId = nn(reviewId),
+                    mediaId = nn(mediaId),
+                    userId = nn(userId)
+                )
             }
             ReviewFieldType.MUTATE -> {
-                SaveReviewMutation.builder()
-                    .apply {
-                        model?.let {
-
-                            reviewId(it.id)
-
-                            mediaId?.let {
-                                mediaId(it)
-                            }
-
-                            body(it.body)
-                            it.summary?.let {
-                                summary(it)
-                            }
-
-                            it.score?.let {
-                                score(it)
-                            }
-
-                            private_(it.private)
-
-                        }
-                    }.build()
+                SaveReviewMutation(
+                    reviewId = nn(model?.id),
+                    mediaId = nn(model?.mediaId),
+                    body = nn(model?.body),
+                    summary = nn(model?.summary),
+                    score = nn(model?.score),
+                    private_ = nn(model?.private)
+                )
             }
             ReviewFieldType.DELETE -> {
-                DeleteReviewMutation.builder()
-                    .reviewId(model?.id)
-                    .build()
+                DeleteReviewMutation(
+                    reviewId = nn(model?.id)
+                )
             }
         }
     }

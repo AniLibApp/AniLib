@@ -1,34 +1,19 @@
 package com.revolgenx.anilib.friend.data.field
 
-import com.apollographql.apollo.api.Query
+import com.apollographql.apollo3.api.Query
 import com.revolgenx.anilib.UserFollowersQuery
 import com.revolgenx.anilib.UserFollowingQuery
 import com.revolgenx.anilib.common.data.field.BaseSourceField
 
-class UserFriendField : BaseSourceField<Query<*, *, *>>() {
+class UserFriendField : BaseSourceField<Query<*>>() {
     var userId: Int? = null
     var isFollower: Boolean = false
 
-    override fun toQueryOrMutation(): Query<*, *, *> {
+    override fun toQueryOrMutation(): Query<*> {
         return if (isFollower) {
-            UserFollowersQuery.builder()
-                .apply {
-                    userId?.let {
-                        id(it)
-                    }
-                    page(page)
-                    perPage(perPage)
-                }
-                .build()
+            UserFollowersQuery(id = userId ?: -1, page = nn(page), perPage = nn(perPage))
         } else {
-            UserFollowingQuery.builder()
-                .apply {
-                    userId?.let {
-                        id(it)
-                    }
-                    page(page)
-                    perPage(perPage)
-                }.build()
+            UserFollowingQuery(id = userId ?: -1, page = nn(page), perPage = nn(perPage))
         }
     }
 }

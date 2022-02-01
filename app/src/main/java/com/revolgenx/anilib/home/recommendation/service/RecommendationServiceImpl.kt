@@ -2,8 +2,7 @@ package com.revolgenx.anilib.home.recommendation.service
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.apollographql.apollo.exception.ApolloHttpException
-import com.revolgenx.anilib.common.data.model.CommonMediaModel
+import com.apollographql.apollo3.exception.ApolloHttpException
 import com.revolgenx.anilib.home.recommendation.data.field.AddRecommendationField
 import com.revolgenx.anilib.home.recommendation.data.field.RecommendationField
 import com.revolgenx.anilib.home.recommendation.data.field.UpdateRecommendationField
@@ -11,11 +10,11 @@ import com.revolgenx.anilib.home.recommendation.data.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.data.model.SaveRecommendationModel
 import com.revolgenx.anilib.home.recommendation.data.model.UpdateRecommendationModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.media.data.field.MediaRecommendationField
 import com.revolgenx.anilib.media.data.model.MediaRecommendationModel
+import com.revolgenx.anilib.media.data.model.toModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -31,16 +30,14 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Media()?.recommendations()?.nodes()
+                it.data?.media?.recommendations?.nodes?.filterNotNull()
                     ?.map { node ->
                         MediaRecommendationModel().also { mod ->
-                            mod.id = node.id()
-                            mod.rating = node.rating()
-                            mod.userRating = node.userRating()?.ordinal
-                            mod.mediaId = node.media()!!.id()
-                            mod.recommended = node.mediaRecommendation()?.fragments()?.narrowMediaContent()?.getCommonMedia(
-                                CommonMediaModel()
-                            )
+                            mod.id = node.id
+                            mod.rating = node.rating
+                            mod.userRating = node.userRating?.ordinal
+                            mod.mediaId = node.media!!.id
+                            mod.recommended = node.mediaRecommendation?.mediaContent?.toModel()
                         }
                     }
             }.observeOn(AndroidSchedulers.mainThread())
@@ -48,7 +45,7 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 if ((it is ApolloHttpException)) {
-                    if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    if (it.statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
                         resourceCallback.invoke(Resource.success(null))
                         return@subscribe
                     }
@@ -67,21 +64,18 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Page()?.recommendations()
-                    ?.filter { if (field.canShowAdult) true else ((it.media()?.fragments()?.commonMediaContent()?.isAdult == false) and (it.mediaRecommendation()?.fragments()?.commonMediaContent()?.isAdult == false)) }
+                it.data?.page?.recommendations
+                    ?.filterNotNull()
+                    ?.filter { if (field.canShowAdult) true else ((it.media?.mediaContent?.isAdult == false) and (it.mediaRecommendation?.mediaContent?.isAdult == false)) }
                     ?.map {
                         RecommendationModel().also { mod ->
-                            mod.id = it.id()
-                            mod.rating = it.rating()
-                            mod.userRating = it.userRating()?.ordinal
+                            mod.id = it.id
+                            mod.rating = it.rating
+                            mod.userRating = it.userRating?.ordinal
                             mod.recommendationFrom =
-                                it.media()!!.fragments().commonMediaContent().getCommonMedia(
-                                    CommonMediaModel()
-                                )
+                                it.media?.mediaContent?.toModel()
                             mod.recommended =
-                                it.mediaRecommendation()!!.fragments().commonMediaContent().getCommonMedia(
-                                    CommonMediaModel()
-                                )
+                                it.mediaRecommendation?.mediaContent?.toModel()
                         }
                     }
             }.observeOn(AndroidSchedulers.mainThread())
@@ -101,11 +95,11 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
     ): MutableLiveData<Resource<UpdateRecommendationModel>> {
         val disposable = graphRepository.request(recommendationField.toQueryOrMutation())
             .map {
-                it.data()?.SaveRecommendation()!!.let { rec ->
+                it.data?.saveRecommendation?.let { rec ->
                     UpdateRecommendationModel().also { model ->
-                        model.id = rec.id()
-                        model.rating = rec.rating()
-                        model.userRating = rec.userRating()?.ordinal
+                        model.id = rec.id
+                        model.rating = rec.rating
+                        model.userRating = rec.userRating?.ordinal
                     }
                 }
             }.observeOn(AndroidSchedulers.mainThread())

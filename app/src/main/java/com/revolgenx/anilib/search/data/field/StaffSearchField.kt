@@ -7,11 +7,7 @@ class StaffSearchField : SearchField() {
 
     override val type: Int = SearchTypes.STAFF.ordinal
     override fun toQueryOrMutation(): Any {
-        return StaffSearchQuery.builder()
-            .page(page)
-            .perPage(perPage)
-            .search(query)
-            .build()
+        return StaffSearchQuery(page = nn(page), perPage = nn(perPage), search = nn(query))
     }
 
 }

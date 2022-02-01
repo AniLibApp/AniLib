@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.media.service
 
+import com.apollographql.apollo3.api.Optional
 import com.github.mikephil.charting.data.Entry
 import com.revolgenx.anilib.BrowseSimpleMediaQuery
 import com.revolgenx.anilib.airing.data.model.AiringAtModel
@@ -7,8 +8,6 @@ import com.revolgenx.anilib.airing.data.model.AiringTimeModel
 import com.revolgenx.anilib.character.data.model.*
 import com.revolgenx.anilib.common.data.model.stats.ScoreDistributionModel
 import com.revolgenx.anilib.common.data.model.stats.StatusDistributionModel
-import com.revolgenx.anilib.staff.data.model.StaffImageModel
-import com.revolgenx.anilib.staff.data.model.StaffNameModel
 import com.revolgenx.anilib.user.data.model.UserAvatarModel
 import com.revolgenx.anilib.user.data.model.UserPrefModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
@@ -17,10 +16,9 @@ import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.media.data.field.*
 import com.revolgenx.anilib.media.data.model.*
-import com.revolgenx.anilib.staff.data.model.StaffEdgeModel
-import com.revolgenx.anilib.staff.data.model.StaffModel
+import com.revolgenx.anilib.staff.data.model.*
 import com.revolgenx.anilib.user.data.model.stats.*
-import com.revolgenx.anilib.util.pmap
+import com.revolgenx.anilib.user.data.model.toModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
@@ -38,35 +36,33 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
         callback: (Resource<MediaInfoModel>) -> Unit
     ) {
         val disposable = graphRepository.request(
-            BrowseSimpleMediaQuery.builder()
-                .mediaId(mediaId)
-                .build()
+            BrowseSimpleMediaQuery(mediaId = Optional.presentIfNotNull(mediaId))
         )
             .map {
-                it.data()?.Media()?.let {
+                it.data?.media?.let {
                     MediaInfoModel().also { model ->
-                        model.mediaId = it.id()
-                        model.title = it.title()?.fragments()?.mediaTitle()?.toModel()
+                        model.mediaId = it.id
+                        model.title = it.title?.mediaTitle?.toModel()
                         model.coverImage =
-                            it.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
-                        model.mediaListStatus = it.mediaListEntry()?.status()?.ordinal
-                        model.bannerImage = it.bannerImage() ?: model.coverImage?.largeImage
-                        model.popularity = it.popularity()
-                        model.favourites = it.favourites()
-                        model.season = it.season()?.ordinal
-                        model.seasonYear = it.seasonYear()
-                        model.type = it.type()?.ordinal
-                        model.siteUrl = it.siteUrl()
-                        it.nextAiringEpisode()?.let {
+                            it.coverImage?.mediaCoverImage?.toModel()
+                        model.mediaListStatus = it.mediaListEntry?.status?.ordinal
+                        model.bannerImage = it.bannerImage ?: model.coverImage?.largeImage
+                        model.popularity = it.popularity
+                        model.favourites = it.favourites
+                        model.season = it.season?.ordinal
+                        model.seasonYear = it.seasonYear
+                        model.type = it.type?.ordinal
+                        model.siteUrl = it.siteUrl
+                        it.nextAiringEpisode?.let {
                             model.airingTimeModel = AiringTimeModel().also { timeModel ->
                                 timeModel.airingAt = AiringAtModel(
                                     LocalDateTime.ofInstant(
                                         Instant.ofEpochSecond(
-                                            it.airingAt().toLong()
+                                            it.airingAt.toLong()
                                         ), ZoneOffset.systemDefault()
                                     )
                                 )
-                                timeModel.episode = it.episode()
+                                timeModel.episode = it.episode
                             }
                         }
                     }
@@ -88,7 +84,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
-                response.data()?.Media()!!.toModel()
+                response.data?.media!!.toModel()
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -108,7 +104,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
-                response.data()?.Media()!!.toModel()
+                response.data?.media!!.toModel()
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -128,42 +124,25 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
-                response.data()?.Media()?.characters()?.edges()?.map {
+                response.data?.media?.characters?.edges?.filterNotNull()?.map {
                     CharacterEdgeModel().also { edge ->
-                        edge.role = it.role()?.ordinal
-                        edge.voiceActors = it.voiceActors()?.map {
+                        edge.role = it.role?.ordinal
+                        edge.voiceActors = it.voiceActors?.filterNotNull()?.map {
                             StaffModel().also { model ->
-                                model.id = it.id()
-                                model.name = it.name()?.let { name ->
-                                    StaffNameModel().also { model ->
-                                        model.full = name.full()
-                                    }
+                                model.id = it.id
+                                model.name = it.name?.let { name ->
+                                    StaffNameModel(name.full)
                                 }
-                                model.languageV2 = it.languageV2()
-                                model.image = it.image()?.let {
-                                    StaffImageModel().apply {
-                                        large = it.large()
-                                        medium = it.medium()
-                                    }
-                                }
+                                model.languageV2 = it.languageV2
+                                model.image = it.image?.staffImage?.toModel()
                             }
                         }
-                        edge.node = it.node()?.let { node ->
+                        edge.node = it.node?.let { node ->
                             CharacterModel().also { charac ->
-                                charac.id = node.id()
-                                charac.name = node.name()?.let {
-                                    CharacterNameModel().also { model ->
-                                        model.full = it.full()
-                                    }
-                                }
-                                charac.image = node.image()?.let {
-                                    CharacterImageModel().apply {
-                                        large = it.large()
-                                        medium = it.medium()
-                                    }
-
-                                }
-                                charac.siteUrl = it.node()?.siteUrl()
+                                charac.id = node.id
+                                charac.name = CharacterNameModel(node.name?.full)
+                                charac.image = node.image?.characterImage?.toModel()
+                                charac.siteUrl = it.node.siteUrl
                             }
 
                         }
@@ -189,23 +168,16 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Media()?.staff()?.edges()?.map { s ->
+                it.data?.media?.staff?.edges?.filterNotNull()?.map { s ->
                     StaffEdgeModel().also { model ->
-                        model.role = s.role()
-                        model.node = s.node()?.let { staff ->
+                        model.role = s.role
+                        model.node = s.node?.let { staff ->
                             StaffModel().also { staffModel ->
-                                staffModel.id = staff.id()
-                                staffModel.name = staff.name()?.let {
-                                    StaffNameModel().also { model ->
-                                        model.full = it.full()
-                                    }
+                                staffModel.id = staff.id
+                                staffModel.name = staff.name?.let {
+                                    StaffNameModel(it.full)
                                 }
-                                staffModel.image = staff.image()?.let {
-                                    StaffImageModel().also { imgModel ->
-                                        imgModel.large = it.large()
-                                        imgModel.medium = it.medium()
-                                    }
-                                }
+                                staffModel.image = staff.image?.staffImage?.toModel()
                             }
                         }
                     }
@@ -230,22 +202,18 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 runBlocking {
-                    response.data()?.Media()?.reviews()?.edges()?.pmap { edge ->
+                    response.data?.media?.reviews?.edges?.filterNotNull()?.map { edge ->
                         MediaReviewModel().also { model ->
-                            edge.node()?.let { node ->
-                                model.id = node.id()
-                                model.rating = node.rating()
-                                model.ratingAmount = node.ratingAmount()
-                                model.summary = node.summary()
-                                model.userRating = node.userRating()?.ordinal
-                                model.userPrefModel = node.user()?.let {
+                            edge.node?.let { node ->
+                                model.id = node.id
+                                model.rating = node.rating
+                                model.ratingAmount = node.ratingAmount
+                                model.summary = node.summary
+                                model.userRating = node.userRating?.ordinal
+                                model.userPrefModel = node.user?.let {
                                     UserPrefModel().also { model ->
-                                        model.id = it.id()
-                                        model.avatar = UserAvatarModel().also { imageModel ->
-                                            imageModel.medium = it.avatar()?.medium()
-                                            imageModel.large = it.avatar()?.large()
-                                        }
-
+                                        model.id = it.id
+                                        model.avatar = it.avatar?.userAvatar?.toModel()
                                     }
                                 }
                             }
@@ -271,81 +239,80 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
-                response.data()?.Media()?.let { media ->
+                response.data?.media?.let { media ->
                     AlMediaStatsModel().also { model ->
-                        runBlocking {
-                            model.rankings = media.rankings()?.pmap { rank ->
-                                MediaRankModel().also { rankModel ->
-                                    rankModel.id = rank.id()
-                                    rankModel.context = rank.context()
-                                    rankModel.allTime = rank.allTime() ?: false
-                                    rankModel.rank = rank.rank()
-                                    rankModel.season = rank.season()?.ordinal
-                                    rankModel.year = rank.year()
-                                    rankModel.rankType = rank.type().ordinal
+                        model.rankings = media.rankings?.filterNotNull()?.map { rank ->
+                            MediaRankModel().also { rankModel ->
+                                rankModel.id = rank.id
+                                rankModel.context = rank.context
+                                rankModel.allTime = rank.allTime ?: false
+                                rankModel.rank = rank.rank
+                                rankModel.season = rank.season?.ordinal
+                                rankModel.year = rank.year
+                                rankModel.rankType = rank.type.ordinal
+                            }
+                        }
+
+
+                        model.trends = media.trends?.nodes?.filterNotNull()?.map { node ->
+                            MediaTrendModel().also { trendModel ->
+                                trendModel.date = node.date
+                                trendModel.trending = node.trending
+                            }
+                        }
+
+                        model.trendsEntries = model.trends?.sortedBy { it.date }?.map {
+                            Entry(it.date.toFloat(), it.trending.toFloat())
+                        }
+
+                        model.statusDistribution =
+                            media.stats?.statusDistribution?.filterNotNull()?.map { status ->
+                                StatusDistributionModel().also { statusModel ->
+                                    statusModel.amount = status.amount
+                                    statusModel.status = status.status?.ordinal
                                 }
                             }
 
-
-                            model.trends = media.trends()?.nodes()?.pmap { node ->
-                                MediaTrendModel().also { trendModel ->
-                                    trendModel.date = node.date()
-                                    trendModel.trending = node.trending()
+                        model.scoreDistribution =
+                            media.stats?.scoreDistribution?.filterNotNull()?.map { score ->
+                                ScoreDistributionModel().also { scoreModel ->
+                                    scoreModel.amount = score.amount
+                                    scoreModel.score = score.score
                                 }
                             }
 
-                            model.trendsEntries = model.trends?.sortedBy { it.date }?.pmap {
-                                Entry(it.date.toFloat(), it.trending.toFloat())
-                            }
-
-                            model.statusDistribution =
-                                media.stats()?.statusDistribution()?.pmap { status ->
-                                    StatusDistributionModel().also { statusModel ->
-                                        statusModel.amount = status.amount()
-                                        statusModel.status = status.status()?.ordinal
-                                    }
-                                }
-
-                            model.scoreDistribution =
-                                media.stats()?.scoreDistribution()?.pmap { score ->
-                                    ScoreDistributionModel().also { scoreModel ->
-                                        scoreModel.amount = score.amount()
-                                        scoreModel.score = score.score()
-                                    }
-                                }
-
-                            model.airingTrends =
-                                media.airingTrends()?.nodes()?.filter { it.episode() != null }
-                                    ?.pmap { trends ->
-                                        AiringTrendsModel(
-                                            trends.episode()!!.toFloat(),
-                                            trends.averageScore()?.toFloat() ?: 0f,
-                                            trends.inProgress()?.toFloat() ?: 0f
-                                        )
-                                    }?.sortedBy { it.episode }
-
-                            model.airingTrends?.let { trends ->
-                                val airingWatchersProgressionEntries = mutableListOf<Entry>()
-                                val airingScoreProgressionEntries = mutableListOf<Entry>()
-                                trends.forEach {
-                                    airingWatchersProgressionEntries.add(
-                                        Entry(
-                                            it.episode,
-                                            it.inProgress
-                                        )
+                        model.airingTrends =
+                            media.airingTrends?.nodes?.filterNotNull()
+                                ?.filter { it.episode != null }
+                                ?.map { trends ->
+                                    AiringTrendsModel(
+                                        trends.episode!!.toFloat(),
+                                        trends.averageScore?.toFloat() ?: 0f,
+                                        trends.inProgress?.toFloat() ?: 0f
                                     )
-                                    airingScoreProgressionEntries.add(
-                                        Entry(
-                                            it.episode,
-                                            it.averageScore
-                                        )
-                                    )
-                                }
+                                }?.sortedBy { it.episode }
 
-                                model.airingWatchersProgressionEntries =
-                                    airingWatchersProgressionEntries
-                                model.airingScoreProgressionEntries = airingScoreProgressionEntries
+                        model.airingTrends?.let { trends ->
+                            val airingWatchersProgressionEntries = mutableListOf<Entry>()
+                            val airingScoreProgressionEntries = mutableListOf<Entry>()
+                            trends.forEach {
+                                airingWatchersProgressionEntries.add(
+                                    Entry(
+                                        it.episode,
+                                        it.inProgress
+                                    )
+                                )
+                                airingScoreProgressionEntries.add(
+                                    Entry(
+                                        it.episode,
+                                        it.averageScore
+                                    )
+                                )
                             }
+
+                            model.airingWatchersProgressionEntries =
+                                airingWatchersProgressionEntries
+                            model.airingScoreProgressionEntries = airingScoreProgressionEntries
                         }
                     }
                 }
@@ -368,7 +335,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Page()?.mediaList()?.map { list ->
+                it.data?.page?.mediaList?.filterNotNull()?.map { list ->
                     list.toModel()
                 }
             }

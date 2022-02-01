@@ -21,7 +21,7 @@ class SeasonViewModel(private val service: MediaService) :
     }
 
     fun updateMediaProgress(mediaId: Int?, progress: Int?) {
-        source?.resources?.get(mediaId)?.mediaEntryListModel?.progress = progress
+        source?.resources?.get(mediaId)?.mediaListEntry?.progress = progress
     }
 
     fun nextSeason(context: Context) {

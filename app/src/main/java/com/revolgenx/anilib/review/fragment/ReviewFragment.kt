@@ -85,14 +85,14 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
 
         viewModel.field.model!!.apply {
             binding.reviewMediaBannerImage.setImageURI(
-                mediaModel?.bannerImage ?: mediaModel?.coverImage?.largeImage
+                media?.bannerImage ?: media?.coverImage?.largeImage
             )
-            binding.reviewMediaTitleTv.text = mediaModel!!.title!!.title(requireContext())
+            binding.reviewMediaTitleTv.text = media!!.title!!.title(requireContext())
             binding.reviewMediaTitleTv.setOnClickListener {
-                model.mediaModel?.let { item ->
+                model.media?.let { item ->
                     OpenMediaInfoEvent(
                         MediaInfoMeta(
-                            item.mediaId,
+                            item.id,
                             item.type!!,
                             item.title!!.romaji!!,
                             item.coverImage!!.image(requireContext()),

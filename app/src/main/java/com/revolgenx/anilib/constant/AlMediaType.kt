@@ -19,4 +19,4 @@ enum class AlMediaType(val value:String) {
     UNKNOWN("UNKNOWN");
 }
 
-fun MediaType?.toType() = this?.let {AlMediaType.valueOf(rawValue())}
+fun MediaType?.toType() = this?.let {AlMediaType.valueOf(rawValue)}

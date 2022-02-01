@@ -10,60 +10,65 @@ class UserFavouriteField : BaseSourceField<UserFavouriteQuery>() {
     var userName: String? = null
     var favType: SearchTypes? = null
     override fun toQueryOrMutation(): UserFavouriteQuery {
-        return UserFavouriteQuery.builder().apply {
-            userId?.let {
-                id(userId)
+
+        var includeAnime: Boolean = false
+        var includeManga: Boolean = false
+        var includeCharacter: Boolean = false
+        var includeStaff: Boolean = false
+        var includeStudio: Boolean = false
+
+        when (favType) {
+            SearchTypes.ANIME -> {
+                includeAnime = true
+                includeManga = false
+                includeCharacter = false
+                includeStaff = false
+                includeStudio = false
             }
-            userName?.let {
-                name(userName)
+            SearchTypes.MANGA -> {
+
+                includeAnime = false
+                includeManga = true
+                includeCharacter = false
+                includeStaff = false
+                includeStudio = false
             }
+            SearchTypes.CHARACTER -> {
 
-            page(page)
-            perPage(perPage)
-            when (favType) {
-                SearchTypes.ANIME -> {
-                    includeAnime(true)
-                    includeManga(false)
-                    includeCharacter(false)
-                    includeStaff(false)
-                    includeStudio(false)
-                }
-                SearchTypes.MANGA -> {
-
-                    includeAnime(false)
-                    includeManga(true)
-                    includeCharacter(false)
-                    includeStaff(false)
-                    includeStudio(false)
-                }
-                SearchTypes.CHARACTER -> {
-
-                    includeAnime(false)
-                    includeManga(false)
-                    includeCharacter(true)
-                    includeStaff(false)
-                    includeStudio(false)
-                }
-                SearchTypes.STAFF -> {
-
-                    includeAnime(false)
-                    includeManga(false)
-                    includeCharacter(false)
-                    includeStaff(true)
-                    includeStudio(false)
-                }
-                SearchTypes.STUDIO -> {
-
-                    includeAnime(false)
-                    includeManga(false)
-                    includeCharacter(false)
-                    includeStaff(false)
-                    includeStudio(true)
-                }
-                else -> {
-
-                }
+                includeAnime = false
+                includeManga = false
+                includeCharacter = true
+                includeStaff = false
+                includeStudio = false
             }
-        }.build()
+            SearchTypes.STAFF -> {
+
+                includeAnime = false
+                includeManga = false
+                includeCharacter = false
+                includeStaff = true
+                includeStudio = false
+            }
+            SearchTypes.STUDIO -> {
+
+                includeAnime = false
+                includeManga = false
+                includeCharacter = false
+                includeStaff = false
+                includeStudio = true
+            }
+            else -> {}
+        }
+        return UserFavouriteQuery(
+            id = nn(userId),
+            name = nn(userName),
+            page = nn(page),
+            perPage = nn(perPage),
+            includeAnime = includeAnime,
+            includeManga = includeManga,
+            includeCharacter = includeCharacter,
+            includeStaff = includeStaff,
+            includeStudio = includeStudio
+        )
     }
 }

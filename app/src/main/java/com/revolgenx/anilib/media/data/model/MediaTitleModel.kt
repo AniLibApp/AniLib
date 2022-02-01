@@ -3,7 +3,7 @@ package com.revolgenx.anilib.media.data.model
 import android.content.Context
 import com.revolgenx.anilib.common.preference.titlePref
 
-class MediaTitleModel(
+data class MediaTitleModel(
     var english: String? = null,
     var romaji: String? = null,
     var native: String? = null,

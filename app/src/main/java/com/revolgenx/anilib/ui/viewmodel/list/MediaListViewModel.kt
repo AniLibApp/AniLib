@@ -7,6 +7,7 @@ import com.revolgenx.anilib.infrastructure.service.list.MediaListService
 import com.revolgenx.anilib.entry.service.MediaEntryService
 import com.revolgenx.anilib.infrastructure.source.media_list.MediaListSource
 import com.revolgenx.anilib.common.viewmodel.SourceViewModel
+import com.revolgenx.anilib.list.data.model.MediaListModel
 
 open class MediaListViewModel(
     private val entryService: MediaEntryService,
@@ -20,8 +21,8 @@ open class MediaListViewModel(
     }
 
     fun increaseProgress(
-        model: EntryListEditorMediaModel,
-        callback: (Resource<EntryListEditorMediaModel>) -> Unit
+        model: MediaListModel,
+        callback: (Resource<MediaListModel>) -> Unit
     ) {
         entryService.increaseProgress(model, compositeDisposable, callback)
     }

@@ -1,0 +1,37 @@
+query StudioQuery($studioId:Int){
+    studio: Studio(id:$studioId){
+        id
+        name
+        isFavourite
+        favourites
+        siteUrl
+    }
+}
+
+query StudioMediaQuery(
+    $studioId:Int,
+    $page:Int,
+    $perPage:Int,
+    $includeDescription:Boolean! = false){
+    studio: Studio(id:$studioId){
+        media(page:$page,perPage:$perPage){
+            nodes{
+                ... on Media{
+                    ... mediaContent
+                }
+            }
+        }
+    }
+}
+
+
+fragment studioContent on Studio{
+    id
+    name
+    isAnimationStudio
+    media(page:1, perPage:8, sort:[POPULARITY_DESC]){
+        nodes{
+            ... mediaContent
+        }
+    }
+}

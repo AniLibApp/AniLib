@@ -5,6 +5,7 @@ import com.revolgenx.anilib.util.CommonTimer
 
 class AiringScheduleModel {
     var airingAt: Int = -1
+    var airingAtModel: AiringAtModel? = null
     var episode: Int = -1
     var id: Int = -1
     var media: MediaModel? = null

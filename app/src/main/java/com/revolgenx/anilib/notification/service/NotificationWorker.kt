@@ -165,14 +165,14 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             NotificationUnionType.THREAD_COMMENT_LIKE -> createThreadNotif(item as ThreadCommentLikeNotification)
             NotificationUnionType.AIRING -> {
                 (item as AiringNotificationModel).let {
-                    notificationImage = it.commonMediaModel?.coverImage?.image(context)
+                    notificationImage = it.media?.coverImage?.image(context)
                     String.format(
                         Locale.getDefault(),
                         context.getString(R.string.episode_airing_notif),
                         it.contexts!![0],
                         it.episode,
                         it.contexts!![1],
-                        it.commonMediaModel?.title?.title(context),
+                        it.media?.title?.title(context),
                         it.contexts!![2]
                     )
                 }
@@ -183,9 +183,9 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                 if (!getNotificationPreference(context.getString(R.string.related_media_added_notif))) return ""
 
                 (item as RelatedMediaNotificationModel)
-                notificationImage = item.commonMediaModel?.coverImage?.image
+                notificationImage = item.media?.coverImage?.image
                 return context.getString(R.string.s_space_s)
-                    .format(item.commonMediaModel?.title?.title(context), item.context)
+                    .format(item.media?.title?.title(context), item.context)
             }
 
             NotificationUnionType.MEDIA_DATA_CHANGE -> createMediaDataChangeNotification(item as MediaDataChangeNotificationModel)

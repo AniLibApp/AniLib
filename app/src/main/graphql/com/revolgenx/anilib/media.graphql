@@ -1,0 +1,337 @@
+query MediaQuery(
+    $page: Int,
+    $perPage: Int,
+    $seasonYear: Int,
+    $season: MediaSeason,
+    $status: MediaStatus,
+    $genre:String,
+    $format: MediaFormat,
+    $format_in: [MediaFormat],
+    $genre_in:[String],
+    $tag_in:[String],
+    $sort: [MediaSort],
+    $idIn: [Int],
+    $isAdult:Boolean,
+    $includeStudio:Boolean! = false,
+    $includeStaff:Boolean! = false,
+    $includeDescription: Boolean! = false) {
+    page: Page(page: $page, perPage: $perPage) {
+        media(seasonYear: $seasonYear
+            , season: $season
+            , genre: $genre
+            , format: $format
+            , format_in: $format_in
+            , status: $status
+            , genre_in: $genre_in
+            , tag_in: $tag_in
+            , sort: $sort
+            , id_in:$idIn
+            , isAdult:$isAdult) {
+            ... on Media{
+                ... mediaContent
+
+                studios @include(if:$includeStudio){
+                    edges{
+                        isMain
+                        node{
+                            id
+                            name
+                        }
+                    }
+                }
+                staff(sort:[ROLE_DESC])  @include(if:$includeStaff){
+                    edges{
+                        role
+                        node{
+                            id
+                            name{
+                                full
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query MediaWatchQuery($mediaId:Int){
+    media: Media(id:$mediaId){
+        streamingEpisodes{
+            title
+            thumbnail
+            url
+            site
+        }
+    }
+}
+
+query MediaStatsQuery($mediaId:Int){
+    media: Media(id:$mediaId){
+        rankings{
+            id
+            rank
+            type
+            year
+            allTime
+            context
+            season
+        }
+
+        trends(page:1, perPage:7,sort:[DATE_DESC]){
+            nodes{
+                date
+                trending
+            }
+        }
+
+
+        airingTrends:trends(releasing:true, sort:[EPISODE_DESC])    {
+            nodes{
+                episode
+                averageScore
+                inProgress
+            }
+        }
+
+        stats{
+            statusDistribution{
+                amount
+                status
+            }
+        }
+        stats{
+            scoreDistribution{
+                score
+                amount
+            }
+        }
+    }
+}
+
+query BrowseSimpleMediaQuery($mediaId:Int){
+    media: Media(id:$mediaId){
+        id
+        title {
+            ... mediaTitle
+        }
+        coverImage {
+            ... mediaCoverImage
+        }
+        mediaListEntry{
+            status
+        }
+
+        popularity
+        favourites
+        bannerImage
+        season
+        seasonYear
+        siteUrl
+        type
+        nextAiringEpisode{
+            id
+            airingAt
+            episode
+        }
+    }
+}
+
+query MediaOverViewQuery($mediaId:Int){
+    media: Media(id:$mediaId){
+        id
+        title {
+            ... mediaTitle
+        }
+        nextAiringEpisode{
+            id
+            timeUntilAiring
+            episode
+        }
+        isAdult
+        format
+        type
+        genres
+        status
+        averageScore
+        meanScore
+        chapters
+        volumes
+        popularity
+        favourites
+        episodes
+        duration
+        season
+        seasonYear
+        description(asHtml:true)
+        chapters
+        volumes
+        source
+        hashtag
+        synonyms
+        relations{
+            edges{
+                relationType(version:2)
+                node{
+                    id
+                    title{
+                        ... mediaTitle
+                    }
+                    coverImage{
+                        ... mediaCoverImage
+                    }
+                    bannerImage
+                    type
+                    seasonYear
+                    format
+                    status
+                    averageScore
+                }
+            }
+        }
+        externalLinks{
+            id
+            url
+            site
+        }
+        tags{
+            name
+            description
+            category
+            isMediaSpoiler
+            rank
+            isAdult
+        }
+        startDate {
+            ... fuzzyDate
+        }
+        endDate{
+            ... fuzzyDate
+        }
+        trailer{
+            id
+            site
+            thumbnail
+        }
+        studios{
+            edges{
+                isMain
+                node {
+                    id
+                    name
+                }
+            }
+        }
+        characters(sort:[ROLE, ID]){
+            edges{
+                role
+                node{
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        large
+                        medium
+                    }
+                }
+            }
+        }
+    }
+}
+
+query MediaSocialFollowingQuery(
+    $page:Int,
+    $perPage:Int,
+    $mediaId:Int
+){
+    page: Page(page:$page, perPage:$perPage){
+        mediaList(mediaId:$mediaId, isFollowing:true, sort:[UPDATED_TIME_DESC]){
+            id
+            status
+            score
+            progress
+            media{
+                type
+            }
+            user{
+                id
+                name
+                avatar{
+                    medium
+                    large
+                }
+                mediaListOptions{
+                    scoreFormat
+                }
+            }
+        }
+    }
+}
+
+
+fragment mediaContent on Media{
+    id
+    title {
+        ... on MediaTitle{
+            ... mediaTitle
+        }
+    }
+    coverImage {
+        ... on MediaCoverImage{
+            ... mediaCoverImage
+        }
+    }
+    bannerImage
+    description(asHtml:true) @include(if:$includeDescription)
+    isAdult
+    format
+    type
+    genres
+    status(version: 2)
+    season
+    seasonYear
+    averageScore
+    episodes
+    chapters
+    volumes
+    duration
+    popularity
+    favourites
+    startDate {
+        ... on FuzzyDate{
+            ... fuzzyDate
+        }
+    }
+    endDate{
+        ... on FuzzyDate{
+            ... fuzzyDate
+        }
+    }
+
+    mediaListEntry{
+        status
+        progress
+    }
+}
+
+
+fragment fuzzyDate on FuzzyDate{
+    year
+    month
+    day
+}
+
+fragment mediaTitle on MediaTitle{
+    english
+    romaji
+    native
+    userPreferred
+}
+
+fragment mediaCoverImage on MediaCoverImage{
+    medium
+    large
+    extraLarge
+}

@@ -1,7 +1,8 @@
 package com.revolgenx.anilib.infrastructure.repository.network
 
 import android.content.Context
-import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.network.okHttpClient
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.token
 import okhttp3.OkHttpClient
@@ -15,7 +16,7 @@ object NetworkProvider {
         return OkHttpClient().newBuilder().build()
     }
 
-    fun provideApolloClient(context: Context): ApolloClient = ApolloClient.builder()
+    fun provideApolloClient(context: Context): ApolloClient = ApolloClient.Builder()
         .okHttpClient(
             OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().apply {
@@ -26,8 +27,7 @@ object NetworkProvider {
                         it.proceed(it.request())
                     } else {
                         val request = it.request()
-                        val newRequest: Request
-                        newRequest = request.newBuilder()
+                        val newRequest: Request = request.newBuilder()
                             .addHeader(
                                 "Authorization",
                                 "Bearer ${context.token()}"

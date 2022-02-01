@@ -7,13 +7,9 @@ import com.revolgenx.anilib.type.UserTitleLanguage
 
 class MediaSettingMutateField(val model: UserOptionsModel): BaseField<UserMediaSettingMutation>(){
     override fun toQueryOrMutation(): UserMediaSettingMutation {
-        return UserMediaSettingMutation.builder()
-            .apply {
-                with(model){
-                    title(UserTitleLanguage.values()[titleLanguage])
-                    airingNotification(airingNotifications)
-                }
-            }
-            .build()
+        return UserMediaSettingMutation(
+            title = nn(UserTitleLanguage.values()[model.titleLanguage]),
+            airingNotification = nn(model.airingNotifications)
+        )
     }
 }

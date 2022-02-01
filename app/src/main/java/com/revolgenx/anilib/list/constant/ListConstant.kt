@@ -24,7 +24,7 @@ object ListConstant {
             MediaListStatus.DROPPED -> "Dropped"
             MediaListStatus.PAUSED -> "Paused"
             MediaListStatus.REPEATING -> if(type == MediaType.ANIME) "Rewatching" else "Rereading"
-            MediaListStatus.`$UNKNOWN` -> ""
+            else->""
         }
     }
 }

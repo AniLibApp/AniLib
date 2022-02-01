@@ -1,21 +1,19 @@
 package com.revolgenx.anilib.infrastructure.repository.network
 
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.Mutation
-import com.apollographql.apollo.api.Operation
-import com.apollographql.apollo.api.Query
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.rx2.Rx2Apollo
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.ApolloResponse
+import com.apollographql.apollo3.api.Mutation
+import com.apollographql.apollo3.api.Query
+import com.apollographql.apollo3.rx2.Rx2Apollo
+import io.reactivex.Single
 
 class GraphRepositoryImpl(private val apolloClient: ApolloClient): BaseGraphRepository {
-    override fun <D : Operation.Data, T, V : Operation.Variables> request(query: Query<D, T, V>): Observable<Response<T>> {
-        return Rx2Apollo.from(apolloClient.query(query)).subscribeOn(Schedulers.io())
+    override fun <D : Query.Data> request(query: Query<D>): Single<ApolloResponse<D>> {
+        return Rx2Apollo.single(apolloClient.query(query))
     }
 
-    override fun <D : Operation.Data, T, V : Operation.Variables> request(mutate: Mutation<D, T, V>): Observable<Response<T>> {
-        return Rx2Apollo.from(apolloClient.mutate(mutate)).subscribeOn(Schedulers.io())
+    override fun <D : Mutation.Data> request(mutate: Mutation<D>): Single<ApolloResponse<D>> {
+        return Rx2Apollo.single(apolloClient.mutation(mutate))
     }
 
 

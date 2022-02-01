@@ -7,11 +7,7 @@ class CharacterSearchField : SearchField() {
     override val type: Int = SearchTypes.CHARACTER.ordinal
 
     override fun toQueryOrMutation(): Any {
-        return CharacterSearchQuery.builder()
-            .page(page)
-            .perPage(perPage)
-            .search(query)
-            .build()
+        return CharacterSearchQuery(page = nn(page), perPage = nn(perPage), search = nn(query))
     }
 
 }

@@ -42,7 +42,7 @@ import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-
+//TODO refactor
 class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBinding>() {
 
     companion object {
@@ -116,8 +116,8 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
         val mediaListMeta = mediaMeta ?: return
 
         apiModelEntry.also {
-            it.mediaId = mediaListMeta.mediaId
-            it.type = mediaListMeta.type
+            it.mediaId = mediaListMeta.mediaId ?: -1
+//            it.type = mediaListMeta.type
             it.userId = UserPreference.userId
         }
 
@@ -130,7 +130,7 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
                 SUCCESS -> {
                     if (it.data == null) return@observe
                     mediaListMeta.type = it.data.type
-                    apiModelEntry.type = mediaListMeta.type
+//                    apiModelEntry.type = mediaListMeta.type
                     if (mediaListMeta.coverImage == null || mediaListMeta.bannerImage == null) {
                         mediaListMeta.coverImage = it.data.coverImage?.large ?: ""
                         mediaListMeta.bannerImage = it.data.bannerImage ?: ""
@@ -156,10 +156,10 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
                     binding.listEditorContainer.visibility = View.VISIBLE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
-                    if (apiModelEntry.hasData.not() && resource.data != null) {
-                        apiModelEntry = resource.data
-                        apiModelEntry.hasData = true
-                    }
+//                    if (apiModelEntry.hasData.not() && resource.data != null) {
+//                        apiModelEntry = resource.data
+//                        apiModelEntry.hasData = true
+//                    }
                     binding.updateView()
                     updateToolbar()
                 }
@@ -391,12 +391,12 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
 
         startDateClearIv.setOnClickListener {
             startDateDynamicTv.text = ""
-            apiModelEntry.startDate = null
+            apiModelEntry.startedAt = null
         }
 
         endDateClearIv.setOnClickListener {
             endDateDynamicTv.text = ""
-            apiModelEntry.endDate = null
+            apiModelEntry.completedAt = null
         }
 
         startDateDynamicTv.setDrawables(startRes = R.drawable.ic_calendar)
@@ -406,13 +406,13 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
             CalendarViewBottomSheetDialog().show(requireContext()) {
                 selectionMode = CalendarViewBottomSheetDialog.SelectionMode.DATE
                 selectedDate = LocalDate.of(
-                    apiModelEntry.startDate?.year ?: calendar.get(Calendar.YEAR),
-                    apiModelEntry.startDate?.month ?: calendar.get(Calendar.MONTH) + 1,
-                    apiModelEntry.startDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
+                    apiModelEntry.startedAt?.year ?: calendar.get(Calendar.YEAR),
+                    apiModelEntry.startedAt?.month ?: calendar.get(Calendar.MONTH) + 1,
+                    apiModelEntry.startedAt?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
                 )
                 listener = { startDate, _ ->
-                    apiModelEntry.startDate =
-                        (apiModelEntry.startDate ?: FuzzyDateModel()).also {
+                    apiModelEntry.startedAt =
+                        (apiModelEntry.startedAt ?: FuzzyDateModel()).also {
                             it.year = startDate.year
                             it.month = startDate.month.value
                             it.day = startDate.dayOfMonth
@@ -427,13 +427,13 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
             CalendarViewBottomSheetDialog().show(requireContext()) {
                 selectionMode = CalendarViewBottomSheetDialog.SelectionMode.DATE
                 selectedDate = LocalDate.of(
-                    apiModelEntry.endDate?.year ?: calendar.get(Calendar.YEAR),
-                    apiModelEntry.endDate?.month ?: calendar.get(Calendar.MONTH) + 1,
-                    apiModelEntry.endDate?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
+                    apiModelEntry.completedAt?.year ?: calendar.get(Calendar.YEAR),
+                    apiModelEntry.completedAt?.month ?: calendar.get(Calendar.MONTH) + 1,
+                    apiModelEntry.completedAt?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
                 )
                 listener = { startDate, _ ->
-                    apiModelEntry.endDate =
-                        (apiModelEntry.endDate ?: FuzzyDateModel()).also {
+                    apiModelEntry.completedAt =
+                        (apiModelEntry.completedAt ?: FuzzyDateModel()).also {
                             it.year = startDate.year
                             it.month = startDate.month.value
                             it.day = startDate.dayOfMonth
@@ -488,9 +488,9 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
         }
 
         advanceScoreView.advanceScoreObserver = {
-            apiModelEntry.advancedScoring?.let { advanceScoring ->
-                val meanScore = advanceScoring.map { it.score }.sum()
-                    .div(advanceScoring.count { it.score != 0.0 }.takeIf { it != 0 } ?: 1)
+            apiModelEntry.advanceScores?.let { advanceScoring ->
+                val meanScore = advanceScoring.values.sum()
+                    .div(advanceScoring.values.count { it != 0.0 }.takeIf { it != 0 } ?: 1)
                 alListEditorScoreLayout.updateScore((meanScore * 10).roundToInt() / 10.0)
             }
         }
@@ -511,32 +511,32 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
 
         getUserPrefModel(requireContext()).mediaListOptions?.let { optionSetting ->
             if (optionSetting.scoreFormat == ScoreFormat.POINT_10_DECIMAL.ordinal || optionSetting.scoreFormat == ScoreFormat.POINT_100.ordinal) {
-                if (apiModelEntry.type == MediaType.ANIME.ordinal) {
-                    optionSetting.animeList?.let { animeListOption ->
-                        if (animeListOption.advancedScoringEnabled) {
-                            if (apiModelEntry.advancedScoring == null) {
-                                apiModelEntry.advancedScoring =
-                                    optionSetting.animeList?.advancedScoring
-                            }
-                            advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
-                        } else {
-                            advanceScoreHeader.visibility = View.GONE
-                            advanceScoreView.visibility = View.GONE
-                        }
-                    }
-                } else {
-                    optionSetting.animeList?.let { mangaListOptions ->
-                        if (mangaListOptions.advancedScoringEnabled) {
-                            if (apiModelEntry.advancedScoring == null) {
-                                apiModelEntry.advancedScoring = mangaListOptions.advancedScoring
-                            }
-                            advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
-                        } else {
-                            advanceScoreHeader.visibility = View.GONE
-                            advanceScoreView.visibility = View.GONE
-                        }
-                    }
-                }
+//                if (apiModelEntry.type == MediaType.ANIME.ordinal) {
+//                    optionSetting.animeList?.let { animeListOption ->
+//                        if (animeListOption.advancedScoringEnabled) {
+//                            if (apiModelEntry.advancedScoring == null) {
+//                                apiModelEntry.advancedScoring =
+//                                    optionSetting.animeList?.advancedScoring
+//                            }
+//                            advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
+//                        } else {
+//                            advanceScoreHeader.visibility = View.GONE
+//                            advanceScoreView.visibility = View.GONE
+//                        }
+//                    }
+//                } else {
+//                    optionSetting.animeList?.let { mangaListOptions ->
+//                        if (mangaListOptions.advancedScoringEnabled) {
+//                            if (apiModelEntry.advancedScoring == null) {
+//                                apiModelEntry.advancedScoring = mangaListOptions.advancedScoring
+//                            }
+//                            advanceScoreView.setAdvanceScore(apiModelEntry.advancedScoring!!)
+//                        } else {
+//                            advanceScoreHeader.visibility = View.GONE
+//                            advanceScoreView.visibility = View.GONE
+//                        }
+//                    }
+//                }
             } else {
                 advanceScoreHeader.visibility = View.GONE
                 advanceScoreView.visibility = View.GONE
@@ -546,12 +546,12 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
 
 
     private fun updateMediaProgressDate() {
-        if (apiModelEntry.startDate?.year != null) {
-            binding.startDateDynamicTv.text = this.apiModelEntry.startDate!!.let { "${it.year}-${it.month}-${it.day}" }
+        if (apiModelEntry.startedAt?.year != null) {
+            binding.startDateDynamicTv.text = this.apiModelEntry.startedAt!!.let { "${it.year}-${it.month}-${it.day}" }
         }
 
-        if (apiModelEntry.endDate?.year != null) {
-            binding.endDateDynamicTv.text = this.apiModelEntry.endDate!!.let { "${it.year}-${it.month}-${it.day}" }
+        if (apiModelEntry.completedAt?.year != null) {
+            binding.endDateDynamicTv.text = this.apiModelEntry.completedAt!!.let { "${it.year}-${it.month}-${it.day}" }
         }
     }
 
@@ -572,8 +572,8 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
     }
 
     private fun deleteList() {
-        if (deleting || !apiModelEntry.hasData || mediaMeta == null) return
-        apiModelEntry.listId.takeIf { it != -1 }?.let { listId ->
+//        if (deleting || !apiModelEntry.hasData || mediaMeta == null) return
+        apiModelEntry.id.takeIf { it != -1 }?.let { listId ->
             makeConfirmationDialog(
                 requireContext(),
                 message = getString(
@@ -595,11 +595,11 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
     override fun updateToolbar() {
         super.updateToolbar()
         if (state == EXPANDED) {
-            if (!apiModelEntry.isUserList) {
-                binding.listDeleteButton.visibility = View.GONE
-            } else {
-                binding.listDeleteButton.visibility = View.VISIBLE
-            }
+//            if (!apiModelEntry.isUserList) {
+//                binding.listDeleteButton.visibility = View.GONE
+//            } else {
+//                binding.listDeleteButton.visibility = View.VISIBLE
+//            }
 
             if (isFavourite) {
                 binding.listFavButton.setImageResource(R.drawable.ic_favourite)
@@ -609,12 +609,12 @@ class MediaEntryEditorFragment : BaseLayoutFragment<ListEditorFragmentLayoutBind
 
         getBaseToolbar().inflateMenu(R.menu.list_editor_menu)
         val menu = getBaseToolbar().menu
-        if (!apiModelEntry.isUserList) {
-            menu.findItem(R.id.listDeleteMenu).isVisible = false
-            binding.listDeleteButton.visibility = View.GONE
-        } else {
-            binding.listDeleteButton.visibility = View.VISIBLE
-        }
+//        if (!apiModelEntry.isUserList) {
+//            menu.findItem(R.id.listDeleteMenu).isVisible = false
+//            binding.listDeleteButton.visibility = View.GONE
+//        } else {
+//            binding.listDeleteButton.visibility = View.VISIBLE
+//        }
 
         if (isFavourite) {
             val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favourite)

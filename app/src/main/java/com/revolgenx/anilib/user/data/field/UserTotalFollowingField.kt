@@ -4,10 +4,6 @@ import com.revolgenx.anilib.UserTotalFollowingQuery
 
 class UserTotalFollowingField : BaseUserField<UserTotalFollowingQuery>() {
     override fun toQueryOrMutation(): UserTotalFollowingQuery {
-        return UserTotalFollowingQuery.builder().apply {
-            userId?.let {
-                id(it)
-            }
-        }.build()
+        return UserTotalFollowingQuery(id = userId ?: -1)
     }
 }

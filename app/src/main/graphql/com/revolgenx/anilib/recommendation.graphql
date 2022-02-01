@@ -1,0 +1,74 @@
+query MediaRecommendationQuery(
+    $mediaId:Int,
+    $page:Int,
+    $perPage:Int,
+    $sort:[RecommendationSort],
+    $isAdult:Boolean,
+    $includeDescription:Boolean! = false){
+    media: Media(id:$mediaId, isAdult:$isAdult){
+        recommendations(page:$page, perPage:$perPage,sort:$sort){
+            nodes{
+                id
+                rating
+                userRating
+                media{
+                    id
+                }
+                mediaRecommendation{
+                    ... mediaContent
+                }
+            }
+        }
+    }
+}
+
+query RecommendationQuery(
+    $page:Int,
+    $perPage:Int,
+    $onList:Boolean,
+    $sort:[RecommendationSort],
+    $includeDescription:Boolean! = false){
+    page: Page(page:$page, perPage:$perPage){
+        recommendations(onList:$onList, sort:$sort){
+            id
+            rating
+            userRating
+            media{
+                ... mediaContent
+            }
+            mediaRecommendation{
+                ... mediaContent
+            }
+        }
+    }
+}
+
+
+#mutation
+mutation UpdateRecommendationMutation($mediaId:Int, $mediaRecommendationId:Int, $rating:RecommendationRating){
+    saveRecommendation: SaveRecommendation(mediaId:$mediaId, mediaRecommendationId:$mediaRecommendationId, rating:$rating){
+        id
+        userRating
+        rating
+    }
+}
+
+mutation SaveRecommendationMutation($mediaId:Int, $mediaRecommendationId:Int, $rating:RecommendationRating){
+    saveRecommendation: SaveRecommendation(mediaId:$mediaId, mediaRecommendationId:$mediaRecommendationId, rating:$rating){
+        id
+        rating
+        userRating
+        media{
+            id
+        }
+        mediaRecommendation{
+            title{
+                english
+                romaji
+                english
+            }
+            averageScore
+        }
+    }
+}
+

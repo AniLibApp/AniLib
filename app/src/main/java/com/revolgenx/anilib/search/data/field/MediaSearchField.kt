@@ -29,101 +29,93 @@ class MediaSearchField : SearchField() {
     var hentaiOnly: Boolean? = null
 
     override fun toQueryOrMutation(): Any {
-        return MediaSearchQuery.builder()
-            .page(page)
-            .perPage(perPage)
-            .apply {
+        val mSeason = season?.let {
+            MediaSeason.values()[it]
+        }
 
-                if (!query.isNullOrEmpty()) {
-                    search(query)
-                }
+        var seasonYear: Int? = null
+        var yearGreater: Int? = null
+        var yearLesser: Int? = null
 
-                season?.let {
-                    season(MediaSeason.values()[it])
+        if (yearEnabled) {
+            if (isYearSame) {
+                seasonYear = minYear
+            } else {
+                yearGreater = minYear?.let {
+                    it * 10000
                 }
-
-                if (yearEnabled) {
-                    if (isYearSame) {
-                        minYear?.let {
-                            seasonYear(it)
-                        }
-                    } else {
-                        minYear?.let {
-                            yearGreater(it * 10000)
-                        }
-                        maxYear?.let {
-                            yearLesser(it * 10000)
-                        }
-                    }
+                yearLesser = maxYear?.let {
+                    it * 10000
                 }
-
-                when (type) {
-                    SearchTypes.ANIME.ordinal -> {
-                        type(MediaType.ANIME)
-                    }
-                    SearchTypes.MANGA.ordinal -> {
-                        type(MediaType.MANGA)
-                    }
-                }
-
-                format?.let {
-                    format(MediaFormat.values()[it])
-                }
-                season?.let {
-                    season(MediaSeason.values()[it])
-                }
-                status?.let {
-                    status(MediaStatus.values()[it])
-                }
-                source?.let {
-                    source(MediaSource.values()[it])
-                }
-
-                streamingOn?.takeIf { it.isNotEmpty() }?.let {
-                    streamingOn(it)
-                }
-
-                genre?.takeIf { it.isNotEmpty() }?.let {
-                    genre(it)
-                }
-
-                tags?.takeIf { it.isNotEmpty() }?.let {
-                    tag(it)
-                }
-
-                tagsNotIn?.let {
-                    tagNotIn(it)
-                }
-
-                genreNotIn?.let {
-                    genreNotIn(it)
-                }
-
-                sort?.let {
-                    sort(listOf(MediaSort.values()[it]))
-                }
-
-                countryOfOrigin?.let {
-                    country(CountryOfOrigins.values()[it].name)
-                }
-
-                if (userEnabledAdultContent(context)) {
-                    if (!canShowAdult) {
-                        isAdult(canShowAdult)
-                    }
-
-                    if (hentaiOnly == true && canShowAdult) {
-                        isAdult(hentaiOnly)
-                    } else if (hentaiOnly == false) {
-                        isAdult(false)
-                    }
-
-                } else {
-                    isAdult(canShowAdult)
-                }
-
             }
-            .build()
-    }
+        }
 
+
+        val mType = when (type) {
+            SearchTypes.ANIME.ordinal -> {
+                MediaType.ANIME
+            }
+            SearchTypes.MANGA.ordinal -> {
+                MediaType.MANGA
+            }
+            else -> null
+        }
+
+        val mFormat = format?.let {
+            MediaFormat.values()[it]
+        }
+
+        val mStatus = status?.let {
+            MediaStatus.values()[it]
+        }
+        val mSource = source?.let {
+            MediaSource.values()[it]
+        }
+
+        val mSort = sort?.let {
+            listOf(MediaSort.values()[it])
+        }
+
+        val cOO = countryOfOrigin?.let {
+            CountryOfOrigins.values()[it].name
+        }
+
+        var isAdult: Boolean? = null
+
+        if (userEnabledAdultContent(context)) {
+            if (!canShowAdult) {
+                isAdult = canShowAdult
+            }
+            if (hentaiOnly == true && canShowAdult) {
+                isAdult = hentaiOnly
+            } else if (hentaiOnly == false) {
+                isAdult = false
+            }
+
+        } else {
+            isAdult = canShowAdult
+        }
+
+        return MediaSearchQuery(
+            page = nn(page),
+            perPage = nn(perPage),
+            search = nn(query),
+            season = nn(mSeason),
+            seasonYear = nn(seasonYear),
+            yearGreater = nn(yearGreater),
+            yearLesser = nn(yearLesser),
+            type = nn(mType),
+            source = nn(mSource),
+            tag = nn(tags),
+            tagNotIn = nn(tagsNotIn),
+            genreNotIn = nn(genreNotIn),
+            genre = nn(genre),
+            sort = nn(mSort),
+            streamingOn = nn(streamingOn),
+            country = nn(cOO),
+            isAdult = nn(isAdult),
+            status = nn(mStatus),
+            format = nn(mFormat)
+        )
+    }
 }

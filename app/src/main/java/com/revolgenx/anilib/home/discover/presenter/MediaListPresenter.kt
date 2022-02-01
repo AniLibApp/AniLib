@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import com.apollographql.apollo.exception.ApolloHttpException
+import com.apollographql.apollo3.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
@@ -29,6 +29,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.common.presenter.Constant
+import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.list.MediaListViewModel
 import com.revolgenx.anilib.util.naText
@@ -119,9 +120,9 @@ class MediaListPresenter(
 
             if (isLoggedInUser) {
                 mediaListProgressIncrease.setOnClickListener {
-                    viewModel.increaseProgress(EntryListEditorMediaModel().also {
-                        it.mediaId = item.mediaId
-                        it.listId = item.mediaListId
+                    viewModel.increaseProgress(MediaListModel().also {
+                        it.mediaId = item.mediaId ?: -1
+                        it.id = item.mediaListId?: -1
                         it.progress = (item.progress ?: 0).plus(1)
                     }) { res ->
                         when (res.status) {
@@ -137,7 +138,7 @@ class MediaListPresenter(
                             }
                             Status.ERROR -> {
                                 if (res.exception is ApolloHttpException) {
-                                    when (res.exception.code()) {
+                                    when (res.exception.statusCode) {
                                         HTTP_TOO_MANY_REQUEST -> {
                                             context.makeToast(
                                                 R.string.too_many_request,

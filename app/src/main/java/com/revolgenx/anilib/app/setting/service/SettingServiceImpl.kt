@@ -21,7 +21,7 @@ class SettingServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
         callback: (resource: Resource<UserOptionsModel>) -> Unit
     ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation()).map {
-            it.data()?.User()?.options()?.fragments()?.userMediaOptions()?.toModel()
+            it.data?.user?.options?.userMediaOptions?.toModel()
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 callback.invoke(Resource.success(it))
@@ -38,7 +38,7 @@ class SettingServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
         callback: (resource: Resource<MediaListOptionModel>) -> Unit
     ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation()).map {
-            it.data()?.User()?.mediaListOptions()?.fragments()?.userMediaListOptions()?.toModel()
+            it.data?.user?.mediaListOptions?.userMediaListOptions?.toModel()
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 callback.invoke(Resource.success(it))

@@ -9,10 +9,6 @@ class MediaReviewField : BaseField<MediaReviewQuery>(){
     var perPage = PER_PAGE
 
     override fun toQueryOrMutation(): MediaReviewQuery {
-        return MediaReviewQuery.builder()
-            .page(page)
-            .perPage(perPage)
-            .mediaId(mediaId)
-            .build()
+        return MediaReviewQuery(page = nn(page), perPage = nn(perPage), mediaId = nn(mediaId))
     }
 }

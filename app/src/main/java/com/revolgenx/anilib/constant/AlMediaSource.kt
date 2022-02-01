@@ -85,4 +85,4 @@ enum class AlMediaSource(val value:String) {
 }
 
 
-fun MediaSource?.toSource() = this?.let {AlMediaSource.valueOf(rawValue())}
+fun MediaSource?.toSource() = this?.let {AlMediaSource.valueOf(rawValue)}

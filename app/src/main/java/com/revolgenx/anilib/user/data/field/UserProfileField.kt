@@ -4,14 +4,7 @@ import com.revolgenx.anilib.UserProfileQuery
 
 class UserProfileField : BaseUserField<UserProfileQuery>() {
     override fun toQueryOrMutation(): UserProfileQuery {
-        return UserProfileQuery.builder().apply {
-            userId?.let {
-                id(userId)
-            }
-            userName?.let {
-                name(userName)
-            }
-        }.build()
+        return UserProfileQuery(id = nn(userId), name = nn(userName))
     }
 
     val userTotalFollowingField: UserTotalFollowingField

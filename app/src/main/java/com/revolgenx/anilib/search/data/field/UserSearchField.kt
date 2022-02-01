@@ -6,11 +6,7 @@ class UserSearchField : SearchField() {
     override val type: Int = com.revolgenx.anilib.constant.SearchTypes.USER.ordinal
 
     override fun toQueryOrMutation(): Any {
-        return UserSearchQuery.builder()
-            .page(page)
-            .perPage(perPage)
-            .search(query)
-            .build()
+        return UserSearchQuery(page = nn(page), perPage = nn(perPage), search = nn(query))
     }
 
 }

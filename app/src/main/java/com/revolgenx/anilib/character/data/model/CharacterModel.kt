@@ -2,6 +2,7 @@ package com.revolgenx.anilib.character.data.model
 
 import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.common.data.model.FuzzyDateModel
+import com.revolgenx.anilib.fragment.CharacterImage
 import com.revolgenx.anilib.media.data.model.MediaConnectionModel
 
 
@@ -22,5 +23,8 @@ class CharacterModel:BaseModel(){
     var description: String? = null
     var image: CharacterImageModel? = null
 }
+
+
+fun CharacterImage.toModel() = CharacterImageModel(medium, large)
 
 

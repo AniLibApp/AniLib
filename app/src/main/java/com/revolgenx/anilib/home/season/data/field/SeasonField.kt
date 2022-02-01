@@ -8,7 +8,10 @@ import com.revolgenx.anilib.common.preference.getSeasonField
 import com.revolgenx.anilib.common.preference.storeSeasonField
 import com.revolgenx.anilib.common.preference.storeSeasonGenre
 import com.revolgenx.anilib.common.preference.storeSeasonTag
+import com.revolgenx.anilib.type.MediaFormat
+import com.revolgenx.anilib.type.MediaSeason
 import com.revolgenx.anilib.type.MediaSort
+import com.revolgenx.anilib.type.MediaStatus
 
 
 class SeasonField : MediaField() {
@@ -69,22 +72,51 @@ class SeasonField : MediaField() {
 
 
     override fun toQueryOrMutation(): MediaQuery {
-        return MediaQuery.builder()
-            .builder()
-            .apply {
-                if (showFormatHeader) {
-                    if (sort != null) {
-                        sort(listOf(MediaSort.FORMAT, MediaSort.values()[sort!!]))
-                    } else {
-                        sort(listOf(MediaSort.FORMAT))
-                    }
-                } else {
-                    sort?.let {
-                        sort(listOf(MediaSort.values()[it]))
-                    }
-                }
+
+        val mediaSeason = season?.let {
+            MediaSeason.values()[it]
+        }
+
+        val mediaFormatsIn = formatsIn?.let {
+            val formats = MediaFormat.values()
+            it.map { formats[it] }
+        }
+
+        val mediaFormat = format?.let {
+            MediaFormat.values()[it]
+        }
+        val mediaStatus = status?.let {
+            MediaStatus.values()[it]
+        }
+
+        val mediaSort = if (showFormatHeader) {
+            if (sort != null) {
+                listOf(MediaSort.FORMAT, MediaSort.values()[sort!!])
+            } else {
+                listOf(MediaSort.FORMAT)
             }
-            .build()
+        } else {
+            sort?.let {
+                listOf(MediaSort.values()[it])
+            }
+        }
+
+        return MediaQuery(
+            page = nn(page),
+            perPage = nn(perPage),
+            season = nn(mediaSeason),
+            seasonYear = nn(seasonYear),
+            sort = nn(mediaSort),
+            format_in = nn(mediaFormatsIn),
+            tag_in = nn(tags),
+            idIn = nn(mediaIdsIn),
+            isAdult = nn(canShowAdult),
+            format = nn(mediaFormat),
+            status =  nn(mediaStatus),
+            includeStaff = nn(includeStaff),
+            includeStudio = nn(includeStudio),
+            genre_in = nn(genres)
+        )
     }
 
 

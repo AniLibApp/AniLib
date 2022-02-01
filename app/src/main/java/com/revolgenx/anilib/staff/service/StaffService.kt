@@ -1,7 +1,9 @@
 package com.revolgenx.anilib.staff.service
 
 import androidx.lifecycle.MutableLiveData
+import com.revolgenx.anilib.character.data.model.CharacterConnectionModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.media.data.model.MediaConnectionModel
 import com.revolgenx.anilib.staff.data.field.StaffField
 import com.revolgenx.anilib.staff.data.field.StaffMediaCharacterField
 import com.revolgenx.anilib.staff.data.field.StaffMediaRoleField
@@ -21,12 +23,12 @@ interface StaffService {
 
     fun getStaffMediaCharacter(
         field: StaffMediaCharacterField, compositeDisposable: CompositeDisposable,
-        resourceCallback: ((Resource<List<StaffMediaCharacterModel>>) -> Unit)
+        resourceCallback: ((Resource<CharacterConnectionModel>) -> Unit)
     )
 
     fun getStaffMediaRole(
         field: StaffMediaRoleField,
         compositeDisposable: CompositeDisposable,
-        resourceCallback: ((Resource<List<StaffMediaRoleModel>>) -> Unit)
+        resourceCallback: ((Resource<MediaConnectionModel>) -> Unit)
     )
 }

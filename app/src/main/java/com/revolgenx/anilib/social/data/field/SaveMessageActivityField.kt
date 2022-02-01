@@ -10,18 +10,14 @@ class SaveMessageActivityField : SaveActivityField<SaveMessageActivityMutation>(
         }
 
     var private = false
-    var recipientId:Int? = null
+    var recipientId: Int? = null
 
     override fun toQueryOrMutation(): SaveMessageActivityMutation {
-        return SaveMessageActivityMutation.builder()
-            .apply {
-                id?.let {
-                    id(it)
-                }
-            }
-            ._private(private)
-            .recipientId(recipientId)
-            .message(message)
-            .build()
+        return SaveMessageActivityMutation(
+            id = nn(id),
+            _private = nn(private),
+            recipientId = nn(recipientId),
+            message = nn(message)
+        )
     }
 }

@@ -16,61 +16,59 @@ class MediaOverviewField :
     BaseField<MediaOverViewQuery>() {
     var mediaId: Int? = null
     override fun toQueryOrMutation(): MediaOverViewQuery {
-        return MediaOverViewQuery.builder()
-            .mediaId(mediaId)
-            .build()
+        return MediaOverViewQuery(mediaId = nn(mediaId))
     }
 }
 
 fun MediaOverViewQuery.Media.toModel() = MediaModel().also {
-    it.id = id()
-    it.title = title()?.fragments()?.mediaTitle()?.toModel()
-    it.startDate = startDate()?.fragments()?.fuzzyDate()?.toModel()
-    it.endDate = endDate()?.fragments()?.fuzzyDate()?.toModel()
-    it.genres = genres()
-    it.episodes = episodes()
-    it.chapters = chapters()
-    it.volumes = volumes()
-    it.averageScore = averageScore()
-    it.meanScore = meanScore()
-    it.duration = duration()
-    it.status = status()?.ordinal
-    it.format = format()?.ordinal
-    it.type = type()?.ordinal
+    it.id = id
+    it.title = title?.mediaTitle?.toModel()
+    it.startDate = startDate?.fuzzyDate?.toModel()
+    it.endDate = endDate?.fuzzyDate?.toModel()
+    it.genres = genres?.filterNotNull()
+    it.episodes = episodes
+    it.chapters = chapters
+    it.volumes = volumes
+    it.averageScore = averageScore
+    it.meanScore = meanScore
+    it.duration = duration
+    it.status = status?.ordinal
+    it.format = format?.ordinal
+    it.type = type?.ordinal
     it.isAdult = isAdult ?: false
-    it.popularity = popularity()
-    it.favourites = favourites()
-    it.season = season()?.ordinal
-    it.seasonYear = seasonYear()
-    it.description = description()
-    it.source = source().toSource()
-    it.hashtag = hashtag()
-    it.synonyms = synonyms()
-    it.nextAiringEpisode = nextAiringEpisode()?.let {
+    it.popularity = popularity
+    it.favourites = favourites
+    it.season = season?.ordinal
+    it.seasonYear = seasonYear
+    it.description = description
+    it.source = source.toSource()
+    it.hashtag = hashtag
+    it.synonyms = synonyms?.filterNotNull()
+    it.nextAiringEpisode = nextAiringEpisode?.let {
         AiringScheduleModel().also { model ->
-            model.episode = it.episode()
-            model.timeUntilAiring = it.timeUntilAiring()
+            model.episode = it.episode
+            model.timeUntilAiring = it.timeUntilAiring
             model.timeUntilAiringModel =
-                TimeUntilAiringModel().also { ti -> ti.time = it.timeUntilAiring().toLong() }
+                TimeUntilAiringModel().also { ti -> ti.time = it.timeUntilAiring.toLong() }
         }
     }
-    it.relations = relations()?.let {
+    it.relations = relations?.let {
         MediaConnectionModel().also { m ->
-            m.edges = it.edges()?.map { edge ->
+            m.edges = it.edges?.map { edge ->
                 MediaEdgeModel().also { model ->
-                    model.relationType = edge.relationType().toRelation()
-                    model.node = edge.node()?.let { node ->
+                    model.relationType = edge?.relationType.toRelation()
+                    model.node = edge?.node?.let { node ->
                         MediaModel().also { rel ->
-                            rel.id = node.id()
-                            rel.title = node.title()?.fragments()?.mediaTitle()?.toModel()
-                            rel.format = node.format()?.ordinal
-                            rel.type = node.type()?.ordinal
-                            rel.status = node.status()?.ordinal
-                            rel.averageScore = node.averageScore()
-                            rel.seasonYear = node.seasonYear()
+                            rel.id = node.id
+                            rel.title = node.title?.mediaTitle?.toModel()
+                            rel.format = node.format?.ordinal
+                            rel.type = node.type?.ordinal
+                            rel.status = node.status?.ordinal
+                            rel.averageScore = node.averageScore
+                            rel.seasonYear = node.seasonYear
                             rel.coverImage =
-                                node.coverImage()?.fragments()?.mediaCoverImage()?.toModel()
-                            rel.bannerImage = node.bannerImage() ?: rel.coverImage?.largeImage
+                                node.coverImage?.mediaCoverImage?.toModel()
+                            rel.bannerImage = node.bannerImage ?: rel.coverImage?.largeImage
                         }
                     }
                 }
@@ -78,42 +76,42 @@ fun MediaOverViewQuery.Media.toModel() = MediaModel().also {
         }
     }
 
-    it.externalLinks = externalLinks()?.map {
+    it.externalLinks = externalLinks?.filterNotNull()?.map {
         MediaExternalLinkModel().also { link ->
-            link.id = it.id()
-            link.site = it.site()
-            link.url = it.url()
+            link.id = it.id
+            link.site = it.site
+            link.url = it.url
         }
     }
 
-    it.tags = tags()?.map {
-        MediaTagModel().apply {
-            name = it.name()
-            description = it.description()
-            category = it.category()
-            isMediaSpoilerTag = it.isMediaSpoiler == true
-            rank = it.rank()
+    it.tags = tags?.filterNotNull()?.map {
+        MediaTagModel(
+            name = it.name,
+            description = it.description,
+            category = it.category,
+            isMediaSpoilerTag = it.isMediaSpoiler == true,
+            rank = it.rank,
             isAdult = it.isAdult == true
-        }
+        )
     }
 
-    it.trailer = trailer()?.let {
+    it.trailer = trailer?.let {
         MediaTrailerModel().also { trailer ->
-            trailer.id = it.id()
-            trailer.site = it.site()
-            trailer.thumbnail = it.thumbnail()
+            trailer.id = it.id
+            trailer.site = it.site
+            trailer.thumbnail = it.thumbnail
         }
     }
 
-    it.studios = studios()?.let {
+    it.studios = studios?.let {
         StudioConnectionModel().also { model ->
-            model.edges = it.edges()?.map {
+            model.edges = it.edges?.map {
                 StudioEdgeModel().also { edge ->
-                    edge.isMain = it.isMain
-                    edge.node = it.node()?.let { node ->
+                    edge.isMain = it?.isMain == true
+                    edge.node = it?.node?.let { node ->
                         StudioModel().also { studio ->
-                            studio.id = node.id()
-                            studio.studioName = node.name()
+                            studio.id = node.id
+                            studio.studioName = node.name
                         }
                     }
                 }
@@ -121,24 +119,19 @@ fun MediaOverViewQuery.Media.toModel() = MediaModel().also {
         }
     }
 
-    it.characters = characters()?.let {
+    it.characters = characters?.let {
         CharacterConnectionModel().also { c ->
-            c.edges = it.edges()?.map { edge ->
+            c.edges = it.edges?.map { edge ->
                 CharacterEdgeModel().also { model ->
-                    model.role = edge.role()?.ordinal
-                    model.node = edge.node()?.let { node ->
+                    model.role = edge?.role?.ordinal
+                    model.node = edge?.node?.let { node ->
                         CharacterModel().also { character ->
-                            character.id = node.id()
-                            character.name = node.name()?.let {
-                                CharacterNameModel().also { model ->
-                                    model.full = it.full()
-                                }
+                            character.id = node.id
+                            character.name = node.name?.let {
+                                CharacterNameModel(it.full)
                             }
-                            character.image = node.image()?.let {
-                                CharacterImageModel().apply {
-                                    large = it.large()
-                                    medium = it.medium()
-                                }
+                            character.image = node.image?.let {
+                                CharacterImageModel(it.medium, it.large)
                             }
                         }
                     }

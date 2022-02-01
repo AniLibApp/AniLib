@@ -1,0 +1,91 @@
+
+query MediaSearchQuery(
+    $search:String,
+    $page:Int,
+    $perPage:Int,
+    $type:MediaType,
+    $format:MediaFormat,
+    $season:MediaSeason,
+    $seasonYear:Int,
+    $yearGreater:FuzzyDateInt,
+    $yearLesser:FuzzyDateInt,
+    $status:MediaStatus,
+    $source:MediaSource,
+    $streamingOn:[String],
+    $genre:[String],
+    $tag:[String],
+    $tagNotIn:[String],
+    $genreNotIn:[String],
+    $sort:[MediaSort],
+    $country:CountryCode,
+    $isAdult:Boolean,
+    $includeDescription:Boolean! = false){
+    page: Page(page:$page,perPage:$perPage){
+        media(search:$search
+            , type:$type
+            , format:$format
+            , season:$season
+            , seasonYear:$seasonYear
+            , startDate_greater:$yearGreater
+            , startDate_lesser:$yearLesser
+            , status:$status
+            , source:$source
+            , licensedBy_in:$streamingOn
+            , genre_in:$genre
+            , tag_in:$tag
+            , tag_not_in:$tagNotIn
+            , genre_not_in:$genreNotIn
+            , sort:$sort
+            , countryOfOrigin:$country
+            , isAdult:$isAdult){
+            ... on Media{
+                ... mediaContent
+            }
+        }
+    }
+}
+
+query CharacterSearchQuery($search:String, $page:Int, $perPage:Int){
+    page: Page(page:$page,perPage:$perPage){
+        characters(search:$search, sort:[FAVOURITES_DESC]){
+            ... narrowCharacterContent
+        }
+    }
+}
+
+query StaffSearchQuery($search:String, $page:Int, $perPage:Int){
+    page: Page(page:$page, perPage:$perPage){
+        staff(search:$search, sort:[FAVOURITES_DESC]){
+            ... narrowStaffContent
+        }
+    }
+}
+
+query StudioSearchQuery(
+    $search:String,
+    $page:Int,
+    $perPage:Int,
+    $includeDescription:Boolean! = false){
+    page: Page(page:$page, perPage:$perPage){
+        studios(search:$search, sort:[FAVOURITES_DESC]){
+            ... studioContent
+        }
+
+    }
+}
+
+
+query UserSearchQuery(
+    $page:Int,
+    $perPage:Int,
+    $search:String){
+    page: Page(page:$page, perPage:$perPage){
+        users(search:$search){
+            id
+            name
+            avatar{
+                ... userAvatar
+            }
+        }
+    }
+}

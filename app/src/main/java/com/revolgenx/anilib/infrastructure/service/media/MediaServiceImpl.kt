@@ -1,14 +1,12 @@
 package com.revolgenx.anilib.infrastructure.service.media
 
 import com.revolgenx.anilib.media.data.field.MediaField
-import com.revolgenx.anilib.common.data.model.CommonMediaModel
 import com.revolgenx.anilib.staff.data.model.StaffNameModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
-import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
+import com.revolgenx.anilib.media.data.model.toModel
 import com.revolgenx.anilib.staff.data.model.StaffConnectionModel
 import com.revolgenx.anilib.staff.data.model.StaffEdgeModel
 import com.revolgenx.anilib.staff.data.model.StaffModel
@@ -20,15 +18,16 @@ import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : MediaService {
+    //TODO SEE HERE STAFF STSUDIO
     override fun getMedia(
         field: MediaField,
         compositeDisposable: CompositeDisposable,
-        callback: ((Resource<List<CommonMediaModel>>) -> Unit)
+        callback: ((Resource<List<MediaModel>>) -> Unit)
     ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Page()?.media()?.map {
-                    it.fragments().narrowMediaContent().getCommonMedia(CommonMediaModel())
+                it.data?.page?.media?.filterNotNull()?.map {
+                    it.onMedia.mediaContent.toModel()
                 }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -48,35 +47,36 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
     ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Page()?.media()?.map {
-                    it.fragments().narrowMediaContent().toModel().also { model ->
-                        model.studios = it.studios()?.let {
-                            StudioConnectionModel().also { studioConnectionModel ->
-                                studioConnectionModel.edges = it.edges()?.map { edge ->
-                                    StudioEdgeModel().also { edgeModel ->
-                                        edgeModel.isMain = edge.isMain
-                                        edgeModel.node = edge.node()?.let { node ->
-                                            StudioModel().also { studioModel ->
-                                                studioModel.id = node.id()
-                                                studioModel.studioName = node.name()
+                it.data?.page?.media?.filterNotNull()?.map {
+                    it.onMedia.let { media ->
+                        media.mediaContent.toModel().also { model ->
+                            model.studios = media.studios?.let {
+                                StudioConnectionModel().also { studioConnectionModel ->
+                                    studioConnectionModel.edges =
+                                        it.edges?.filterNotNull()?.map { edge ->
+                                            StudioEdgeModel().also { edgeModel ->
+                                                edgeModel.isMain = edge.isMain
+                                                edgeModel.node = edge.node?.let { node ->
+                                                    StudioModel().also { studioModel ->
+                                                        studioModel.id = node.id
+                                                        studioModel.studioName = node.name
+                                                    }
+                                                }
                                             }
                                         }
-                                    }
                                 }
                             }
-                        }
 
-                        it.staff()?.let {
-                            StaffConnectionModel().also { staffConnectionModel ->
-                                staffConnectionModel.edges = it.edges()?.map { edge ->
-                                    StaffEdgeModel().also { edgeModel ->
-                                        edgeModel.role = edge.role()
-                                        edgeModel.node = edge.node()?.let { node ->
-                                            StaffModel().also { model ->
-                                                model.id = node.id()
-                                                model.name = node.name()?.let {
-                                                    StaffNameModel().also { model ->
-                                                        model.full = it.full()
+                            media.staff?.let {
+                                StaffConnectionModel().also { staffConnectionModel ->
+                                    staffConnectionModel.edges = it.edges?.filterNotNull()?.map { edge ->
+                                        StaffEdgeModel().also { edgeModel ->
+                                            edgeModel.role = edge.role
+                                            edgeModel.node = edge.node?.let { node ->
+                                                StaffModel().also { model ->
+                                                    model.id = node.id
+                                                    model.name = node.name?.let {
+                                                        StaffNameModel(full = it.full)
                                                     }
                                                 }
                                             }
@@ -86,6 +86,7 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
                             }
                         }
                     }
+
                 }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({

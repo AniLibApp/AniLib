@@ -14,7 +14,7 @@ abstract class ActivityUnionModel: BaseModel() {
     var likes: List<UserModel>? = null
     var replies: List<ActivityReplyModel>? = null
     var siteUrl: String? = null
-    var type: ActivityType = ActivityType.`$UNKNOWN`
+    var type: ActivityType = ActivityType.UNKNOWN__
     var userId:Int? = null
     var isLiked:Boolean = false
 

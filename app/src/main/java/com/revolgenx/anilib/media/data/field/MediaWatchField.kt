@@ -7,8 +7,6 @@ class MediaWatchField :
     BaseField<MediaWatchQuery>() {
     var mediaId = -1
     override fun toQueryOrMutation(): MediaWatchQuery {
-        return MediaWatchQuery.builder()
-            .mediaId(mediaId)
-            .build()
+        return MediaWatchQuery(mediaId = nn(mediaId))
     }
 }

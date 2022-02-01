@@ -155,7 +155,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
             return
         }
 
-        viewModel!!.saveMediaListEntry(EntryListEditorMediaModel().also {
+        viewModel!!.saveMediaListEntry(MediaListModel().also {
             it.mediaId = mediaModel!!.id
             it.status = position
         }).observe(viewLifecycleOwner!!) {

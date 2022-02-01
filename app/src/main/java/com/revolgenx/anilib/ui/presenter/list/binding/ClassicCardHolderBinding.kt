@@ -2,7 +2,7 @@ package com.revolgenx.anilib.ui.presenter.list.binding
 
 import android.content.Context
 import android.view.View
-import com.apollographql.apollo.exception.ApolloHttpException
+import com.apollographql.apollo3.exception.ApolloHttpException
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.listEditOrBrowse
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
@@ -13,6 +13,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.home.discover.presenter.DiscoverMediaListCollectionPresenter
+import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.viewmodel.list.MediaListCollectionViewModel
 import com.revolgenx.anilib.util.naText
@@ -68,9 +69,9 @@ object ClassicCardHolderBinding {
 
             if (isLoggedInUser) {
                 mediaListProgressIncrease.setOnClickListener {
-                    viewModel.increaseProgress(EntryListEditorMediaModel().also {
-                        it.mediaId = item.mediaId
-                        it.listId = item.mediaListId
+                    viewModel.increaseProgress(MediaListModel().also {
+                        it.mediaId = item.mediaId?: -1
+                        it.id = item.mediaListId?: -1
                         it.progress = (item.progress ?: 0).plus(1)
                     }) { res ->
                         when (res.status) {
@@ -88,7 +89,7 @@ object ClassicCardHolderBinding {
                             }
                             Status.ERROR -> {
                                 if (res.exception is ApolloHttpException) {
-                                    when (res.exception.code()) {
+                                    when (res.exception.statusCode) {
                                         HTTP_TOO_MANY_REQUEST -> {
                                             context.makeToast(
                                                 R.string.too_many_request,

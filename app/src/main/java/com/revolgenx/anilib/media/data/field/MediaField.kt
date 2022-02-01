@@ -22,51 +22,43 @@ open class MediaField : BaseSourceField<MediaQuery>() {
     open var includeStudio = false
 
     override fun toQueryOrMutation(): MediaQuery {
-        return MediaQuery.builder()
-            .builder()
-            .build()
-    }
 
-    protected open fun MediaQuery.Builder.builder(): MediaQuery.Builder {
-        if (page != null) {
-            page(page!!)
-            perPage(perPage)
+        val mediaSort = sort?.let {
+            listOf(MediaSort.values()[it])
         }
-        if (genres?.isNullOrEmpty() == false) {
-            genre_in(genres)
+
+        val mediaSeason = season?.let {
+            MediaSeason.values()[it]
         }
-        if (tags?.isNullOrEmpty() == false) {
-            tag_in(tags)
-        }
-        sort?.let {
-            sort(listOf(MediaSort.values()[it]))
-        }
-        seasonYear?.let {
-            seasonYear(it)
-        }
-        season?.let {
-            season(MediaSeason.values()[it])
-        }
-        format?.let {
-            format(MediaFormat.values()[it])
-        }
-        formatsIn?.let {
+
+        val mediaFormatsIn = formatsIn?.let {
             val formats = MediaFormat.values()
-            format_in(it.map { formats[it] })
-        }
-        status?.let {
-            status(MediaStatus.values()[it])
-        }
-        mediaIdsIn?.let {
-            idIn(it)
-        }
-        if (!canShowAdult) {
-            isAdult(false)
+            it.map { formats[it] }
         }
 
-        includeStaff(includeStaff)
-        includeStudio(includeStudio)
-        return this
+        val mediaFormat = format?.let {
+            MediaFormat.values()[it]
+        }
+        val mediaStatus = status?.let {
+            MediaStatus.values()[it]
+        }
+
+        return MediaQuery(
+            page = nn(page),
+            perPage = nn(perPage),
+            season = nn(mediaSeason),
+            seasonYear = nn(seasonYear),
+            sort = nn(mediaSort),
+            format_in = nn(mediaFormatsIn),
+            tag_in = nn(tags),
+            idIn = nn(mediaIdsIn),
+            isAdult = nn(canShowAdult),
+            format = nn(mediaFormat),
+            status =  nn(mediaStatus),
+            includeStaff = nn(includeStaff),
+            includeStudio = nn(includeStudio),
+            genre_in = nn(genres)
+        )
     }
 
 }

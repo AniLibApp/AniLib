@@ -8,9 +8,9 @@ class ToggleLikeV2Field : BaseField<ToggleLikeV2Mutation>() {
     var id: Int? = null
     var type: LikeableType? = null
     override fun toQueryOrMutation(): ToggleLikeV2Mutation {
-        return ToggleLikeV2Mutation.builder()
-            .id(id)
-            .type(type)
-            .build()
+        return ToggleLikeV2Mutation(
+            id = nn(id),
+            type = nn(type)
+        )
     }
 }

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.apollographql.apollo.exception.ApolloHttpException
+import com.apollographql.apollo3.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.theme.Theme
@@ -80,7 +80,7 @@ class MediaRecommendationPresenter(
             )
         }
 
-        mediaEpisodeFormatTv.status = item.mediaEntryListModel?.status
+        mediaEpisodeFormatTv.status = item.mediaListEntry?.status
         mediaSeasonYearTv.text = item.seasonYear?.toString().naText()
         mediaRecommendationRating.text = data.rating?.toString()
 
@@ -96,7 +96,7 @@ class MediaRecommendationPresenter(
         root.setOnClickListener {
             OpenMediaInfoEvent(
                 MediaInfoMeta(
-                    item.mediaId!!,
+                    item.id,
                     item.type!!,
                     item.title!!.romaji!!,
                     item.coverImage!!.image(context),
@@ -110,7 +110,7 @@ class MediaRecommendationPresenter(
             if (context.loggedIn()) {
                 OpenMediaListEditorEvent(
                     EntryEditorMeta(
-                        item.mediaId,
+                        item.id,
                         item.type!!,
                         item.title!!.title(context)!!,
                         item.coverImage!!.image(context),
@@ -143,7 +143,7 @@ class MediaRecommendationPresenter(
                             }
                             Status.ERROR -> {
                                 if (it.exception is ApolloHttpException) {
-                                    when (it.exception.code()) {
+                                    when (it.exception.statusCode) {
                                         HTTP_TOO_MANY_REQUEST -> {
                                             context.makeToast(R.string.too_many_request)
                                         }
@@ -190,7 +190,7 @@ class MediaRecommendationPresenter(
 
                             Status.ERROR -> {
                                 if (it.exception is ApolloHttpException) {
-                                    when (it.exception.code()) {
+                                    when (it.exception.statusCode) {
                                         HTTP_TOO_MANY_REQUEST -> {
                                             context.makeToast(R.string.too_many_request)
                                         }

@@ -28,20 +28,19 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Page()?.activities()
-                    ?.map {
-                        when (it.__typename()) {
-                            LIST_ACTIVITY -> {
-                                (it as ActivityUnionQuery.AsListActivity).toModel()
-                            }
-                            MESSAGE_ACTIVITY->{
-                                (it as ActivityUnionQuery.AsMessageActivity).toModel()
-                            }
-                            else -> {
-                                (it as ActivityUnionQuery.AsTextActivity).toModel()
-                            }
+                it.data?.page?.activities?.mapNotNull {
+                    when (it?.__typename) {
+                        LIST_ACTIVITY -> {
+                            it.onListActivity?.toModel()
+                        }
+                        MESSAGE_ACTIVITY -> {
+                            it.onMessageActivity?.toModel()
+                        }
+                        else -> {
+                            it?.onTextActivity?.toModel()
                         }
                     }
+                }
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -61,16 +60,16 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Activity()?.let {
-                    when (it.__typename()) {
+                it.data?.activity?.let {
+                    when (it.__typename) {
                         LIST_ACTIVITY -> {
-                            (it as ActivityInfoQuery.AsListActivity).toModel()
+                            it.onListActivity?.toModel()
                         }
-                        MESSAGE_ACTIVITY->{
-                            (it as ActivityInfoQuery.AsMessageActivity).toModel()
+                        MESSAGE_ACTIVITY -> {
+                            it.onMessageActivity?.toModel()
                         }
                         else -> {
-                            (it as ActivityInfoQuery.AsTextActivity).toModel()
+                            it.onTextActivity?.toModel()
                         }
                     }
                 }
@@ -92,7 +91,7 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
         resourceCallback: (Resource<Boolean>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
-            .map { it.data()?.DeleteActivity()?.deleted() }
+            .map { it.data?.deleteActivity?.deleted }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
@@ -110,12 +109,12 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
         resourceCallback: (Resource<Int>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
-            .map { it.data()?.SaveTextActivity()?.id() }
+            .map { it.data?.saveTextActivity?.id }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.e(it)
+                Timber.w(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable.add(disposable)
@@ -127,12 +126,12 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
         resourceCallback: (Resource<Int>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
-            .map { it.data()?.SaveMessageActivity()?.id() }
+            .map { it.data?.saveMessageActivity?.id }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.e(it)
+                Timber.w(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable.add(disposable)
@@ -145,10 +144,10 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.SaveActivityReply()?.let {
+                it.data?.saveActivityReply?.let {
                     ActivityReplyModel().also { model ->
-                        model.id = it.id()
-                        model.activityId = it.activityId()
+                        model.id = it.id
+                        model.activityId = it.activityId
                     }
                 }
             }
@@ -168,11 +167,11 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
         resourceCallback: (Resource<Boolean>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
-            .map { it.data()?.DeleteActivityReply()?.deleted() }
+            .map { it.data?.deleteActivityReply?.deleted }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
-            },{
+            }, {
                 Timber.e(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })

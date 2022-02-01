@@ -1,33 +1,25 @@
 package com.revolgenx.anilib.notification.service
 
-import com.revolgenx.anilib.NotificationQuery
-import com.revolgenx.anilib.constant.LIST_ACTIVITY
-import com.revolgenx.anilib.constant.MESSAGE_ACTIVITY
 import com.revolgenx.anilib.constant.NotificationUnionType
-import com.revolgenx.anilib.constant.TEXT_ACTIVITY
-import com.revolgenx.anilib.user.data.model.UserAvatarModel
-import com.revolgenx.anilib.notification.data.model.media.MediaDataChangeNotificationModel
-import com.revolgenx.anilib.notification.data.model.media.MediaDeletionNotificationModel
-import com.revolgenx.anilib.notification.data.model.media.MediaMergeNotificationModel
-import com.revolgenx.anilib.notification.data.model.media.RelatedMediaNotificationModel
-import com.revolgenx.anilib.fragment.NotificationActivity
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.network.converter.toBasicMediaContent
+import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.notification.data.field.NotificationField
 import com.revolgenx.anilib.notification.data.field.UserNotificationMutateField
 import com.revolgenx.anilib.notification.data.field.UserNotificationSettingField
 import com.revolgenx.anilib.notification.data.model.*
 import com.revolgenx.anilib.notification.data.model.activity.*
+import com.revolgenx.anilib.notification.data.model.media.*
 import com.revolgenx.anilib.notification.data.model.thread.*
 import com.revolgenx.anilib.type.NotificationType
 import com.revolgenx.anilib.user.data.model.UserModel
+import com.revolgenx.anilib.user.data.model.toModel
 import com.revolgenx.anilib.util.prettyTime
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
-
 
 //todo check all notification
 class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) :
@@ -38,642 +30,555 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
         callback: (Resource<List<NotificationModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation()).map { response ->
-            response.data()?.Page()?.notifications()?.map {
-                when (it.__typename()) {
-                    "AiringNotification" -> {
-                        (it as NotificationQuery.AsAiringNotification).let {
+            response.data?.page?.notifications?.filterNotNull()?.map {
+                when {
+                    it.onAiringNotification != null -> {
+                        it.onAiringNotification.let {
                             AiringNotificationModel().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
+                                id = it.id
+                                type = it.type?.ordinal
 
 
                                 notificationUnionType = NotificationUnionType.AIRING
-                                episode = it.episode()
-                                contexts = it.contexts()
-                                commonMediaModel = it.media()?.fragments()?.basicMediaContent()
-                                    ?.toBasicMediaContent()
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
-                            }
-                        }
-                    }
-
-                    "FollowingNotification" -> {
-                        (it as NotificationQuery.AsFollowingNotification).let {
-                            FollowingNotificationModel().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
-                                notificationUnionType = NotificationUnionType.FOLLOWING
-                                userModel = it.user()?.fragments()?.notificationUserContent()?.let {
-                                    UserModel().also { user ->
-                                        user.id = it.id()
-                                        user.name = it.name()
-                                        user.avatar = it.avatar()?.let {
-                                            UserAvatarModel().also { img ->
-                                                img.medium = it.medium()
-                                                img.large = it.large()
-                                            }
-                                        }
-                                        user.bannerImage = it.bannerImage()
+                                episode = it.episode
+                                contexts = it.contexts?.filterNotNull()
+                                media = it.media?.onMedia?.notificationMediaContent?.let { media ->
+                                    MediaModel().also { m ->
+                                        m.id = media.id
+                                        m.title = media.title?.mediaTitle?.toModel()
+                                        m.coverImage = media.coverImage?.mediaCoverImage?.toModel()
+                                        m.bannerImage = media.bannerImage
+                                        m.format = media.format?.ordinal
+                                        m.isAdult = media.isAdult == true
+                                        m.type = media.type?.ordinal
                                     }
                                 }
-                                context = it.context()
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
                             }
                         }
                     }
-                    "ActivityMessageNotification" -> {
-                        (it as NotificationQuery.AsActivityMessageNotification).let {
+                    it.onFollowingNotification != null -> {
+                        it.onFollowingNotification.let {
+                            FollowingNotificationModel().apply {
+                                id = it.id
+                                type = it.type?.ordinal
+                                notificationUnionType = NotificationUnionType.FOLLOWING
+                                userModel = it.user?.onUser?.notificationUserContent?.let {
+                                    UserModel().also { user ->
+                                        user.id = it.id
+                                        user.name = it.name
+                                        user.avatar = it.avatar?.userAvatar?.toModel()
+                                        user.bannerImage = it.bannerImage
+                                    }
+                                }
+                                context = it.context
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
+                            }
+                        }
+                    }
+                    it.onActivityMessageNotification != null -> {
+                        it.onActivityMessageNotification.let {
                             ActivityMessageNotification().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
+                                id = it.id
+                                type = it.type?.ordinal
                                 notificationUnionType = NotificationUnionType.ACTIVITY_MESSAGE
                                 user =
-                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                    it.user?.onUser?.notificationUserContent?.let {
                                         UserModel().also { user ->
-                                            user.id = it.id()
-                                            user.name = it.name()
-                                            user.avatar = it.avatar()?.let {
-                                                UserAvatarModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                            user.bannerImage = it.bannerImage()
+                                            user.id = it.id
+                                            user.name = it.name
+                                            user.avatar = it.avatar?.userAvatar?.toModel()
+                                            user.bannerImage = it.bannerImage
                                         }
                                     }
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
-                                activityId = it.activityId()
-                                context = it.context()
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
+                                activityId = it.activityId
+                                context = it.context
                             }
                         }
-
                     }
-                    "ActivityMentionNotification" -> {
-                        (it as NotificationQuery.AsActivityMentionNotification).let {
+                    it.onActivityMentionNotification != null -> {
+                        it.onActivityMentionNotification.let {
                             ActivityMentionNotification().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
+                                id = it.id
+                                type = it.type?.ordinal
                                 notificationUnionType = NotificationUnionType.ACTIVITY_MENTION
-                                activityId = it.activityId()
-                                context = it.context()
+                                activityId = it.activityId
+                                context = it.context
                                 user =
-                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                    it.user?.onUser?.notificationUserContent?.let {
                                         UserModel().also { user ->
-                                            user.id = it.id()
-                                            user.name = it.name()
-                                            user.avatar = it.avatar()?.let {
-                                                UserAvatarModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                            user.bannerImage = it.bannerImage()
+                                            user.id = it.id
+                                            user.name = it.name
+                                            user.avatar = it.avatar?.userAvatar?.toModel()
+                                            user.bannerImage = it.bannerImage
                                         }
                                     }
 
-                                when (it.activity()?.__typename()) {
-                                    TEXT_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsTextActivity).let {
-                                            textActivityModel = TextActivityModel().also { model ->
-                                                model.id = it.id()
-                                                model.siteUrl = it.siteUrl()
-                                            }
+                                textActivityModel =
+                                    it.activity?.notificationActivity?.onTextActivity?.let {
+                                        TextActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
                                         }
                                     }
-                                    LIST_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsListActivity).let {
-                                            listActivityModel = ListActivityModel().also { model ->
-                                                model.id = it.id()
-                                                model.siteUrl = it.siteUrl()
-                                            }
-                                        }
-                                    }
-                                    MESSAGE_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
-                                            messageActivityModel =
-                                                MessageActivityModel().also { model ->
-                                                    model.id = it.id()
-                                                    model.siteUrl = it.siteUrl()
-                                                }
-                                        }
 
+                                listActivityModel =
+                                    it.activity?.notificationActivity?.onListActivity?.let {
+                                        ListActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
+                                        }
                                     }
-                                }
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
 
+
+
+                                messageActivityModel =
+                                    it.activity?.notificationActivity?.onMessageActivity?.let {
+                                        MessageActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
+                                        }
+                                    }
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
                             }
                         }
-
                     }
-                    "ActivityReplyNotification" -> {
-                        (it as NotificationQuery.AsActivityReplyNotification).let {
-
+                    it.onActivityReplyNotification != null -> {
+                        it.onActivityReplyNotification.let {
                             ActivityReplyNotification().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
+                                id = it.id
+                                type = it.type?.ordinal
                                 notificationUnionType = NotificationUnionType.ACTIVITY_REPLY
-                                activityId = it.activityId()
-                                context = it.context()
+                                activityId = it.activityId
+                                context = it.context
                                 user =
-                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                    it.user?.onUser?.notificationUserContent?.let {
                                         UserModel().also { user ->
-                                            user.id = it.id()
-                                            user.name = it.name()
-                                            user.avatar = it.avatar()?.let {
-                                                UserAvatarModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                            user.bannerImage = it.bannerImage()
+                                            user.id = it.id
+                                            user.name = it.name
+                                            user.avatar = it.avatar?.userAvatar?.toModel()
+                                            user.bannerImage = it.bannerImage
                                         }
                                     }
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
 
-                                when (it.activity()?.__typename()) {
-                                    TEXT_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsTextActivity).let {
-                                            textActivityModel = TextActivityModel().also { model ->
-                                                model.id = it.id()
-                                                model.siteUrl = it.siteUrl()
-                                            }
+                                textActivityModel =
+                                    it.activity?.notificationActivity?.onTextActivity?.let {
+                                        TextActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
                                         }
                                     }
-                                    LIST_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsListActivity).let {
-                                            listActivityModel = ListActivityModel().also { model ->
-                                                model.id = it.id()
-                                                model.siteUrl = it.siteUrl()
-                                            }
-                                        }
-                                    }
-                                    MESSAGE_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
-                                            messageActivityModel =
-                                                MessageActivityModel().also { model ->
-                                                    model.id = it.id()
-                                                    model.siteUrl = it.siteUrl()
-                                                }
-                                        }
 
+                                listActivityModel =
+                                    it.activity?.notificationActivity?.onListActivity?.let {
+                                        ListActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
+                                        }
                                     }
-                                }
+
+                                messageActivityModel =
+                                    it.activity?.notificationActivity?.onMessageActivity?.let {
+                                        MessageActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
+                                        }
+                                    }
+
                             }
-
                         }
                     }
-                    "ActivityReplySubscribedNotification" -> {
-                        (it as NotificationQuery.AsActivityReplySubscribedNotification).let {
-
+                    it.onActivityReplySubscribedNotification != null -> {
+                        it.onActivityReplySubscribedNotification.let {
                             ActivityReplySubscribedNotification().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
+                                id = it.id
+                                type = it.type?.ordinal
                                 notificationUnionType =
                                     NotificationUnionType.ACTIVITY_REPLY_SUBSCRIBED
-                                activityId = it.activityId()
-                                context = it.context()
+                                activityId = it.activityId
+                                context = it.context
                                 user =
-                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                    it.user?.onUser?.notificationUserContent?.let {
                                         UserModel().also { user ->
-                                            user.id = it.id()
-                                            user.name = it.name()
-                                            user.avatar = it.avatar()?.let {
-                                                UserAvatarModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                            user.bannerImage = it.bannerImage()
+                                            user.id = it.id
+                                            user.name = it.name
+                                            user.avatar = it.avatar?.userAvatar?.toModel()
+                                            user.bannerImage = it.bannerImage
                                         }
                                     }
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
 
-                                when (it.activity()?.__typename()) {
-                                    TEXT_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsTextActivity).let {
-                                            textActivityModel = TextActivityModel().also { model ->
-                                                model.id = it.id()
-                                                model.siteUrl = it.siteUrl()
-                                            }
+                                textActivityModel =
+                                    it.activity?.notificationActivity?.onTextActivity?.let {
+                                        TextActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
                                         }
                                     }
-                                    LIST_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsListActivity).let {
-                                            listActivityModel = ListActivityModel().also { model ->
-                                                model.id = it.id()
-                                                model.siteUrl = it.siteUrl()
-                                            }
-                                        }
-                                    }
-                                    MESSAGE_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
-                                            messageActivityModel =
-                                                MessageActivityModel().also { model ->
-                                                    model.id = it.id()
-                                                    model.siteUrl = it.siteUrl()
-                                                }
-                                        }
 
+                                listActivityModel =
+                                    it.activity?.notificationActivity?.onListActivity?.let {
+                                        ListActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
+                                        }
                                     }
-                                }
+
+                                messageActivityModel =
+                                    it.activity?.notificationActivity?.onMessageActivity?.let {
+                                        MessageActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
+                                        }
+                                    }
                             }
 
                         }
                     }
-                    "ActivityLikeNotification" -> {
-                        (it as NotificationQuery.AsActivityLikeNotification).let {
+                    it.onActivityLikeNotification != null -> {
+                        it.onActivityLikeNotification.let {
 
                             ActivityLikeNotification().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
+                                id = it.id
+                                type = it.type?.ordinal
                                 notificationUnionType = NotificationUnionType.ACTIVITY_LIKE
-                                activityId = it.activityId()
-                                context = it.context()
+                                activityId = it.activityId
+                                context = it.context
                                 user =
-                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                    it.user?.onUser?.notificationUserContent?.let {
                                         UserModel().also { user ->
-                                            user.id = it.id()
-                                            user.name = it.name()
-                                            user.avatar = it.avatar()?.let {
-                                                UserAvatarModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                            user.bannerImage = it.bannerImage()
+                                            user.id = it.id
+                                            user.name = it.name
+                                            user.avatar = it.avatar?.userAvatar?.toModel()
+                                            user.bannerImage = it.bannerImage
                                         }
                                     }
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
 
-                                when (it.activity()?.__typename()) {
-                                    TEXT_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsTextActivity).let {
-                                            textActivityModel = TextActivityModel().also { model ->
-                                                model.id = it.id()
-                                                model.siteUrl = it.siteUrl()
-                                            }
-                                        }
-                                    }
-                                    LIST_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsListActivity).let {
-                                            listActivityModel = ListActivityModel().also { model ->
-                                                model.id = it.id()
-                                                model.siteUrl = it.siteUrl()
-                                            }
-                                        }
-                                    }
-                                    MESSAGE_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
-                                            messageActivityModel =
-                                                MessageActivityModel().also { model ->
-                                                    model.id = it.id()
-                                                    model.siteUrl = it.siteUrl()
-                                                }
-                                        }
 
+                                textActivityModel =
+                                    it.activity?.notificationActivity?.onTextActivity?.let {
+                                        TextActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
+                                        }
                                     }
-                                }
+
+                                listActivityModel =
+                                    it.activity?.notificationActivity?.onListActivity?.let {
+                                        ListActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
+                                        }
+                                    }
+
+                                messageActivityModel =
+                                    it.activity?.notificationActivity?.onMessageActivity?.let {
+                                        MessageActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
+                                        }
+                                    }
                             }
                         }
                     }
-                    "ActivityReplyLikeNotification" -> {
-                        (it as NotificationQuery.AsActivityReplyLikeNotification).let {
+                    it.onActivityReplyLikeNotification != null -> {
+                        it.onActivityReplyLikeNotification.let {
                             ActivityReplyLikeNotification().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
-                                notificationUnionType = NotificationUnionType.ACTIVITY_REPLY_LIKE
+                                id = it.id
+                                type = it.type?.ordinal
+                                notificationUnionType =
+                                    NotificationUnionType.ACTIVITY_REPLY_LIKE
                                 user =
-                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                    it.user?.onUser?.notificationUserContent?.let {
                                         UserModel().also { user ->
-                                            user.id = it.id()
-                                            user.name = it.name()
-                                            user.avatar = it.avatar()?.let {
-                                                UserAvatarModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                            user.bannerImage = it.bannerImage()
+                                            user.id = it.id
+                                            user.name = it.name
+                                            user.avatar = it.avatar?.userAvatar?.toModel()
+                                            user.bannerImage = it.bannerImage
                                         }
                                     }
 
-                                activityId = it.activityId()
-                                context = it.context()
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                activityId = it.activityId
+                                context = it.context
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
 
-                                when (it.activity()?.__typename()) {
-                                    TEXT_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsTextActivity).let {
-                                            textActivityModel = TextActivityModel().also { model ->
-                                                model.id = it.id()
-                                                model.siteUrl = it.siteUrl()
-                                            }
+                                textActivityModel =
+                                    it.activity?.notificationActivity?.onTextActivity?.let {
+                                        TextActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
                                         }
                                     }
-                                    LIST_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsListActivity).let {
-                                            listActivityModel = ListActivityModel().also { model ->
-                                                model.id = it.id()
-                                                model.siteUrl = it.siteUrl()
-                                            }
-                                        }
-                                    }
-                                    MESSAGE_ACTIVITY -> {
-                                        (it.activity()?.fragments()
-                                            ?.notificationActivity() as NotificationActivity.AsMessageActivity).let {
-                                            messageActivityModel =
-                                                MessageActivityModel().also { model ->
-                                                    model.id = it.id()
-                                                    model.siteUrl = it.siteUrl()
-                                                }
-                                        }
 
+                                listActivityModel =
+                                    it.activity?.notificationActivity?.onListActivity?.let {
+                                        ListActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
+                                        }
                                     }
-                                }
+
+                                messageActivityModel =
+                                    it.activity?.notificationActivity?.onMessageActivity?.let {
+                                        MessageActivityModel().also { model ->
+                                            model.id = it.id
+                                            model.siteUrl = it.siteUrl
+                                        }
+                                    }
                             }
                         }
                     }
-
-                    "ThreadCommentMentionNotification" -> {
-                        (it as NotificationQuery.AsThreadCommentMentionNotification).let {
+                    it.onThreadCommentMentionNotification != null -> {
+                        it.onThreadCommentMentionNotification.let {
                             ThreadCommentMentionNotification().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
-                                notificationUnionType = NotificationUnionType.THREAD_COMMENT_MENTION
+                                id = it.id
+                                type = it.type?.ordinal
+                                notificationUnionType =
+                                    NotificationUnionType.THREAD_COMMENT_MENTION
                                 user =
-                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                    it.user?.onUser?.notificationUserContent?.let {
                                         UserModel().also { user ->
-                                            user.id = it.id()
-                                            user.name = it.name()
-                                            user.avatar = it.avatar()?.let {
-                                                UserAvatarModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                            user.bannerImage = it.bannerImage()
+                                            user.id = it.id
+                                            user.name = it.name
+                                            user.avatar = it.avatar?.userAvatar?.toModel()
+                                            user.bannerImage = it.bannerImage
                                         }
                                     }
-                                threadModel = it.thread()?.fragments()?.basicThreadContent()?.let {
-                                    ThreadModel().apply {
-                                        id = it.id()
-                                        title = it.title()
-                                        siteUrl = it.siteUrl()
+                                threadModel =
+                                    it.thread?.onThread?.basicThreadContent?.let {
+                                        ThreadModel().apply {
+                                            id = it.id
+                                            title = it.title
+                                            siteUrl = it.siteUrl
 
+                                        }
                                     }
-                                }
-                                threadCommentModel = it.comment()?.let {
+                                threadCommentModel = it.comment?.let {
                                     ThreadCommentModel().also { cModel ->
-                                        cModel.id = it.id()
-                                        cModel.siteUrl = it.siteUrl()
+                                        cModel.id = it.id
+                                        cModel.siteUrl = it.siteUrl
                                     }
 
                                 }
-                                context = it.context()
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                context = it.context
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
 
 
                             }
                         }
                     }
-                    "ThreadCommentReplyNotification" -> {
-                        (it as NotificationQuery.AsThreadCommentReplyNotification).let {
+                    it.onThreadCommentReplyNotification != null -> {
+                        it.onThreadCommentReplyNotification.let {
                             ThreadCommentReplyNotification().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
-                                notificationUnionType = NotificationUnionType.THREAD_COMMENT_REPLY
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                id = it.id
+                                type = it.type?.ordinal
+                                notificationUnionType =
+                                    NotificationUnionType.THREAD_COMMENT_REPLY
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
 
                                 user =
-                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                    it.user?.onUser?.notificationUserContent?.let {
                                         UserModel().also { user ->
-                                            user.id = it.id()
-                                            user.name = it.name()
-                                            user.avatar = it.avatar()?.let {
-                                                UserAvatarModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                            user.bannerImage = it.bannerImage()
+                                            user.id = it.id
+                                            user.name = it.name
+                                            user.avatar = it.avatar?.userAvatar?.toModel()
+                                            user.bannerImage = it.bannerImage
                                         }
                                     }
-                                threadModel = it.thread()?.fragments()?.basicThreadContent()?.let {
-                                    ThreadModel().apply {
-                                        id = it.id()
-                                        title = it.title()
-                                        siteUrl = it.siteUrl()
+                                threadModel =
+                                    it.thread?.onThread?.basicThreadContent?.let {
+                                        ThreadModel().apply {
+                                            id = it.id
+                                            title = it.title
+                                            siteUrl = it.siteUrl
 
+                                        }
                                     }
-                                }
-                                threadCommentModel = it.comment()?.let {
+                                threadCommentModel = it.comment?.let {
                                     ThreadCommentModel().also { cModel ->
-                                        cModel.id = it.id()
-                                        cModel.siteUrl = it.siteUrl()
+                                        cModel.id = it.id
+                                        cModel.siteUrl = it.siteUrl
                                     }
 
                                 }
-                                context = it.context()
+                                context = it.context
                             }
                         }
                     }
-                    "ThreadCommentSubscribedNotification" -> {
-                        (it as NotificationQuery.AsThreadCommentSubscribedNotification).let {
+                    it.onThreadCommentSubscribedNotification != null -> {
+                        it.onThreadCommentSubscribedNotification.let {
                             ThreadCommentSubscribedNotification().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
+                                id = it.id
+                                type = it.type?.ordinal
                                 notificationUnionType = NotificationUnionType.THREAD_SUBSCRIBED
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
 
                                 user =
-                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                    it.user?.onUser?.notificationUserContent?.let {
                                         UserModel().also { user ->
-                                            user.id = it.id()
-                                            user.name = it.name()
-                                            user.avatar = it.avatar()?.let {
-                                                UserAvatarModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                            user.bannerImage = it.bannerImage()
+                                            user.id = it.id
+                                            user.name = it.name
+                                            user.avatar = it.avatar?.userAvatar?.toModel()
+                                            user.bannerImage = it.bannerImage
                                         }
                                     }
-                                threadModel = it.thread()?.fragments()?.basicThreadContent()?.let {
-                                    ThreadModel().apply {
-                                        id = it.id()
-                                        title = it.title()
-                                        siteUrl = it.siteUrl()
+                                threadModel =
+                                    it.thread?.onThread?.basicThreadContent?.let {
+                                        ThreadModel().apply {
+                                            id = it.id
+                                            title = it.title
+                                            siteUrl = it.siteUrl
 
+                                        }
                                     }
-                                }
-                                threadCommentModel = it.comment()?.let {
+                                threadCommentModel = it.comment?.let {
                                     ThreadCommentModel().also { cModel ->
-                                        cModel.id = it.id()
-                                        cModel.siteUrl = it.siteUrl()
+                                        cModel.id = it.id
+                                        cModel.siteUrl = it.siteUrl
                                     }
 
                                 }
-                                context = it.context()
+                                context = it.context
                             }
                         }
                     }
-                    "ThreadCommentLikeNotification" -> {
-                        (it as NotificationQuery.AsThreadCommentLikeNotification).let {
+                    it.onThreadCommentLikeNotification != null -> {
+                        it.onThreadCommentLikeNotification.let {
                             ThreadCommentLikeNotification().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
-                                notificationUnionType = NotificationUnionType.THREAD_COMMENT_LIKE
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                id = it.id
+                                type = it.type?.ordinal
+                                notificationUnionType =
+                                    NotificationUnionType.THREAD_COMMENT_LIKE
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
 
                                 user =
-                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                    it.user?.onUser?.notificationUserContent?.let {
                                         UserModel().also { user ->
-                                            user.id = it.id()
-                                            user.name = it.name()
-                                            user.avatar = it.avatar()?.let {
-                                                UserAvatarModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                            user.bannerImage = it.bannerImage()
+                                            user.id = it.id
+                                            user.name = it.name
+                                            user.avatar = it.avatar?.userAvatar?.toModel()
+                                            user.bannerImage = it.bannerImage
                                         }
                                     }
-                                threadModel = it.thread()?.fragments()?.basicThreadContent()?.let {
-                                    ThreadModel().apply {
-                                        id = it.id()
-                                        title = it.title()
-                                        siteUrl = it.siteUrl()
+                                threadModel =
+                                    it.thread?.onThread?.basicThreadContent?.let {
+                                        ThreadModel().apply {
+                                            id = it.id
+                                            title = it.title
+                                            siteUrl = it.siteUrl
 
+                                        }
                                     }
-                                }
-                                threadCommentModel = it.comment()?.let {
+                                threadCommentModel = it.comment?.let {
                                     ThreadCommentModel().also { cModel ->
-                                        cModel.id = it.id()
-                                        cModel.siteUrl = it.siteUrl()
+                                        cModel.id = it.id
+                                        cModel.siteUrl = it.siteUrl
                                     }
 
                                 }
-                                context = it.context()
+                                context = it.context
                             }
                         }
                     }
-                    "ThreadLikeNotification" -> {
-                        (it as NotificationQuery.AsThreadLikeNotification).let {
+                    it.onThreadLikeNotification != null -> {
+                        it.onThreadLikeNotification.let {
                             ThreadLikeNotification().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
+                                id = it.id
+                                type = it.type?.ordinal
                                 notificationUnionType = NotificationUnionType.THREAD_LIKE
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
                                 user =
-                                    it.user()?.fragments()?.notificationUserContent()?.let {
+                                    it.user?.onUser?.notificationUserContent?.let {
                                         UserModel().also { user ->
-                                            user.id = it.id()
-                                            user.name = it.name()
-                                            user.avatar = it.avatar()?.let {
-                                                UserAvatarModel().also { img ->
-                                                    img.medium = it.medium()
-                                                    img.large = it.large()
-                                                }
-                                            }
-                                            user.bannerImage = it.bannerImage()
+                                            user.id = it.id
+                                            user.name = it.name
+                                            user.avatar = it.avatar?.userAvatar?.toModel()
+                                            user.bannerImage = it.bannerImage
                                         }
                                     }
-                                threadModel = it.thread()?.fragments()?.basicThreadContent()?.let {
-                                    ThreadModel().apply {
-                                        id = it.id()
-                                        title = it.title()
-                                        siteUrl = it.siteUrl()
+                                threadModel =
+                                    it.thread?.onThread?.basicThreadContent?.let {
+                                        ThreadModel().apply {
+                                            id = it.id
+                                            title = it.title
+                                            siteUrl = it.siteUrl
 
+                                        }
                                     }
-                                }
-                                context = it.context()
+                                context = it.context
                             }
                         }
                     }
-
-                    "RelatedMediaAdditionNotification" -> {
-                        (it as NotificationQuery.AsRelatedMediaAdditionNotification).let {
+                    it.onRelatedMediaAdditionNotification != null -> {
+                        it.onRelatedMediaAdditionNotification.let {
                             RelatedMediaNotificationModel().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
-                                notificationUnionType = NotificationUnionType.RELATED_MEDIA_ADDITION
-                                context = it.context()
-                                commonMediaModel = it.media()?.fragments()?.basicMediaContent()
-                                    ?.toBasicMediaContent()
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                id = it.id
+                                type = it.type?.ordinal
+                                notificationUnionType =
+                                    NotificationUnionType.RELATED_MEDIA_ADDITION
+                                context = it.context
+                                media = it.media?.onMedia?.notificationMediaContent?.toModel()
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
                             }
                         }
                     }
-                    "MediaDataChangeNotification" -> {
-                        (it as NotificationQuery.AsMediaDataChangeNotification).let {
+                    it.onMediaDataChangeNotification != null -> {
+                        it.onMediaDataChangeNotification.let {
                             MediaDataChangeNotificationModel().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
+                                id = it.id
+                                type = it.type?.ordinal
                                 notificationUnionType = NotificationUnionType.MEDIA_DATA_CHANGE
-                                context = it.context()
-                                media = it.media()?.fragments()?.basicMediaContent()
-                                    ?.toBasicMediaContent()
-                                reason = it.reason()
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                context = it.context
+                                media = it.media?.onMedia?.notificationMediaContent?.toModel()
+                                reason = it.reason
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
                             }
                         }
                     }
-
-                    "MediaMergeNotification" -> {
-                        (it as NotificationQuery.AsMediaMergeNotification).let {
+                    it.onMediaMergeNotification != null -> {
+                        it.onMediaMergeNotification.let {
                             MediaMergeNotificationModel().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
+                                id = it.id
+                                type = it.type?.ordinal
                                 notificationUnionType = NotificationUnionType.MEDIA_MERGE
-                                context = it.context()
-                                media = it.media()?.fragments()?.basicMediaContent()
-                                    ?.toBasicMediaContent()
-                                reason = it.reason()
-                                deletedMediaTitles = it.deletedMediaTitles()
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                context = it.context
+                                media = it.media?.onMedia?.notificationMediaContent?.toModel()
+                                reason = it.reason
+                                deletedMediaTitles = it.deletedMediaTitles?.filterNotNull()
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
                             }
                         }
                     }
-
-                    "MediaDeletionNotification" -> {
-                        (it as NotificationQuery.AsMediaDeletionNotification).let {
+                    it.onMediaDeletionNotification != null -> {
+                        it.onMediaDeletionNotification.let {
                             MediaDeletionNotificationModel().apply {
-                                id = it.id()
-                                type = it.type()?.ordinal
+                                id = it.id
+                                type = it.type?.ordinal
                                 notificationUnionType = NotificationUnionType.MEDIA_DELETION
-                                context = it.context()
-                                reason = it.reason()
-                                deletedMediaTitle = it.deletedMediaTitle()
-                                createdAt = it.createdAt()?.toLong()?.prettyTime()
+                                context = it.context
+                                reason = it.reason
+                                deletedMediaTitle = it.deletedMediaTitle
+                                createdAt = it.createdAt?.toLong()?.prettyTime()
                             }
                         }
                     }
-                    else -> EmptyNotificationModel()
+                    else -> {
+                        EmptyNotificationModel()
+                    }
                 }
             }
         }.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                callback.invoke(Resource.success(it))
-            }, {
-                Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
-            })
+            .subscribe(
+                {
+                    callback.invoke(Resource.success(it))
+                },
+                {
+                    Timber.e(it)
+                    callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                })
         compositeDisposable.add(disposable)
     }
 
@@ -700,8 +605,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.User()?.options()?.notificationOptions()
-                    ?.associateBy({ it.type()!! }, { it.enabled() == true })
+                it.data?.user?.options?.notificationOptions?.filterNotNull()?.associateBy({ it.type!! }, { it.enabled == true })
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

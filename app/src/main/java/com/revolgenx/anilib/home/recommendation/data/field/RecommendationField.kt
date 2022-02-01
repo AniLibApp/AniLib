@@ -9,30 +9,27 @@ class RecommendationField : BaseSourceField<RecommendationQuery>() {
     var sort: Int? = null
 
     override fun toQueryOrMutation(): RecommendationQuery {
-        return RecommendationQuery.builder()
-            .page(page)
-            .perPage(perPage)
-            .apply {
-                onList?.let {
-                    onList(onList)
+        val mediaSort = sort?.let {
+            when (it) {
+                0 -> {
+                    listOf(RecommendationSort.ID_DESC)
                 }
-                sort?.let {
-                    when (it) {
-                        0 -> {
-                            sort(listOf(RecommendationSort.ID_DESC))
-                        }
-                        1 -> {
-                            sort(listOf(RecommendationSort.RATING_DESC))
-                        }
-                        2 -> {
-                            sort(listOf(RecommendationSort.RATING))
-                        }
-                        else -> {
-
-                        }
-                    }
+                1 -> {
+                    listOf(RecommendationSort.RATING_DESC)
+                }
+                2 -> {
+                    listOf(RecommendationSort.RATING)
+                }
+                else -> {
+                    null
                 }
             }
-            .build()
+        }
+        return RecommendationQuery(
+            page = nn(page),
+            perPage = nn(perPage),
+            onList = nn(onList),
+            sort = nn(mediaSort)
+        )
     }
 }

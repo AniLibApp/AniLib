@@ -8,14 +8,9 @@ class RateReviewField : BaseField<RateReviewMutation>() {
     var reviewId: Int? = null
     var reviewRating: Int? = null
     override fun toQueryOrMutation(): RateReviewMutation {
-        return RateReviewMutation.builder()
-            .apply {
-                reviewId?.let {
-                    reviewId(it)
-                }
-                reviewRating?.let {
-                    rating(ReviewRating.values()[it])
-                }
-            }.build()
+        val rRating = reviewRating?.let {
+            ReviewRating.values()[it]
+        }
+        return RateReviewMutation(reviewId = nn(reviewId), rating = nn(rRating))
     }
 }

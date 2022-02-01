@@ -3,6 +3,7 @@ package com.revolgenx.anilib.staff.data.model
 import com.revolgenx.anilib.character.data.model.CharacterConnectionModel
 import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.common.data.model.FuzzyDateModel
+import com.revolgenx.anilib.fragment.StaffImage
 import com.revolgenx.anilib.media.data.model.MediaConnectionModel
 
 
@@ -48,3 +49,6 @@ class StaffModel:BaseModel() {
 
     var yearsActive: List<Int>? = null
 }
+
+
+fun StaffImage.toModel() = StaffImageModel(medium, large)

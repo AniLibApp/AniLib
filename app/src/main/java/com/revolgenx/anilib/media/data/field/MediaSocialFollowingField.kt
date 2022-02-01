@@ -6,11 +6,7 @@ import com.revolgenx.anilib.common.data.field.BaseSourceField
 class MediaSocialFollowingField : BaseSourceField<MediaSocialFollowingQuery>() {
     var mediaId: Int? = null
     override fun toQueryOrMutation(): MediaSocialFollowingQuery {
-        return MediaSocialFollowingQuery.builder()
-            .page(page)
-            .perPage(perPage)
-            .mediaId(mediaId)
-            .build()
+        return MediaSocialFollowingQuery(page = nn(page), perPage = nn(perPage), mediaId = nn(mediaId))
     }
 
 }

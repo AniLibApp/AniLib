@@ -7,6 +7,7 @@ import com.revolgenx.anilib.character.data.model.VoiceActorModel
 import com.revolgenx.anilib.character.data.model.CharacterMediaModel
 import com.revolgenx.anilib.character.data.model.CharacterModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.media.data.model.MediaModel
 import io.reactivex.disposables.CompositeDisposable
 
 interface CharacterService {
@@ -19,7 +20,7 @@ interface CharacterService {
     fun getCharacterMediaInfo(
         field: CharacterMediaField,
         compositeDisposable: CompositeDisposable? = null,
-        resourceCallback: ((Resource<List<CharacterMediaModel>>) -> Unit)
+        resourceCallback: ((Resource<List<MediaModel>>) -> Unit)
     )
 
     fun getCharacterActor(

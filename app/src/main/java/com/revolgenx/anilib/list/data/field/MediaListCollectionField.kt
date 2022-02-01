@@ -7,15 +7,10 @@ import com.revolgenx.anilib.type.MediaType
 class MediaListCollectionField : BaseSourceUserField<MediaListCollectionQuery>() {
     var type: MediaType = MediaType.ANIME
     override fun toQueryOrMutation(): MediaListCollectionQuery {
-        return MediaListCollectionQuery.builder()
-            .apply {
-                userId?.let {
-                    userId(it)
-                }
-                userName?.let {
-                    userName(it)
-                }
-                type(type)
-            }.build()
+        return MediaListCollectionQuery(
+            userId = nn(userId),
+            userName = nn(userName),
+            type = nn(type)
+        )
     }
 }

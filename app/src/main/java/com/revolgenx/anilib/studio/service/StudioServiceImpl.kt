@@ -1,12 +1,12 @@
 package com.revolgenx.anilib.studio.service
 
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.network.converter.getCommonMedia
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.media.data.model.MediaModel
+import com.revolgenx.anilib.media.data.model.toModel
 import com.revolgenx.anilib.studio.data.field.StudioField
 import com.revolgenx.anilib.studio.data.field.StudioMediaField
-import com.revolgenx.anilib.studio.data.model.StudioMediaModel
 import com.revolgenx.anilib.studio.data.model.StudioModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -22,13 +22,13 @@ class StudioServiceImpl(private val graphRepository: BaseGraphRepository) : Stud
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Studio()?.let {
+                it.data?.studio?.let {
                     StudioModel().also { model ->
-                        model.id = it.id()
-                        model.studioName = it.name()
-                        model.favourites = it.favourites()
+                        model.id = it.id
+                        model.studioName = it.name
+                        model.favourites = it.favourites
                         model.isFavourite = it.isFavourite
-                        model.siteUrl = it.siteUrl()
+                        model.siteUrl = it.siteUrl
                     }
                 }
             }.observeOn(AndroidSchedulers.mainThread())
@@ -45,16 +45,15 @@ class StudioServiceImpl(private val graphRepository: BaseGraphRepository) : Stud
     override fun getStudioMedia(
         field: StudioMediaField,
         compositeDisposable: CompositeDisposable,
-        resourceCallback: (Resource<List<StudioMediaModel>>) -> Unit
+        resourceCallback: (Resource<List<MediaModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data()?.Studio()?.media()?.nodes()
+                it.data?.studio?.media?.nodes?.filterNotNull()
                     ?.filter {
-                        if (field.canShowAdult) true else it.fragments()
-                            .commonMediaContent().isAdult == false
+                        if (field.canShowAdult) true else it.onMedia.mediaContent.isAdult == false
                     }?.map {
-                        it.fragments().commonMediaContent().getCommonMedia(StudioMediaModel())
+                        it.onMedia.mediaContent.toModel()
                     }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({

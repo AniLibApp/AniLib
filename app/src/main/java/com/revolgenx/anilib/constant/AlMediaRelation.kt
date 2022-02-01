@@ -75,4 +75,4 @@ enum class AlMediaRelation(val value:String) {
 
 }
 
-fun MediaRelation?.toRelation() = this?.let {AlMediaRelation.valueOf(rawValue())}
+fun MediaRelation?.toRelation() = this?.let {AlMediaRelation.valueOf(rawValue)}

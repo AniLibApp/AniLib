@@ -11,10 +11,6 @@ class StudioSearchField : SearchField() {
     override val type: Int = SearchTypes.STUDIO.ordinal
 
     override fun toQueryOrMutation(): Any {
-        return StudioSearchQuery.builder()
-            .page(page)
-            .perPage(perPage)
-            .search(query)
-            .build()
+        return StudioSearchQuery(page = nn(page), perPage = nn(perPage), search = nn(query))
     }
 }

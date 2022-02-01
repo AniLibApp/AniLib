@@ -12,12 +12,11 @@ import com.revolgenx.anilib.type.NotificationType
 class NotificationField : BaseSourceField<NotificationQuery>() {
     var resetNotificationCount = true
     override fun toQueryOrMutation(): NotificationQuery {
-        return NotificationQuery
-            .builder()
-            .page(page)
-            .perPage(perPage)
-            .resetNotificationCount(resetNotificationCount)
-            .build()
+        return NotificationQuery(
+            page = nn(page),
+            perPage = nn(perPage),
+            resetNotificationCount = nn(resetNotificationCount)
+        )
     }
 }
 
@@ -25,24 +24,18 @@ class UserNotificationMutateField : BaseField<UserNotificationSettingMutation>()
     var notificationSettings: Map<NotificationType, Boolean>? = null
 
     override fun toQueryOrMutation(): UserNotificationSettingMutation {
-        return UserNotificationSettingMutation.builder()
-            .notificationOptions(notificationSettings?.map { NotificationOptionInput.builder().type(it.key).enabled(it.value).build() })
-            .build()
+
+        return UserNotificationSettingMutation(
+            notificationOptions = nn(notificationSettings
+                ?.map { NotificationOptionInput(type = nn(it.key), enabled = nn(it.value)) })
+        )
     }
 
 }
 
 class UserNotificationSettingField : BaseUserField<UserNotificationSettingQuery>() {
     override fun toQueryOrMutation(): UserNotificationSettingQuery {
-        return UserNotificationSettingQuery.builder()
-            .apply {
-                userId?.let {
-                    id(it)
-                }
-                userName?.let {
-                    name(it)
-                }
-            }.build()
+        return UserNotificationSettingQuery(id = nn(userId), name = nn(userName))
     }
 
 }

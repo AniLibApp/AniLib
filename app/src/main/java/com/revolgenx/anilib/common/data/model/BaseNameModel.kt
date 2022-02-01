@@ -1,14 +1,11 @@
 package com.revolgenx.anilib.common.data.model
 
-open class BaseNameModel {
-    var full: String? = null
-    var native: String? = null
-    var alternative: List<String>? = null
-    var first: String? = null
-    var last: String? = null
-    var middle: String? = null
-
-    //The currently authenticated users preferred name language. Default romaji for non-authenticated
-    var userPreferred: String? = null
-
-}
+open class BaseNameModel(
+    val full: String? = null,
+    val native: String? = null,
+    val alternative: List<String>? = null,
+    val first: String? = null,
+    val last: String? = null,
+    val middle: String? = null,
+    val userPreferred: String? = null
+)

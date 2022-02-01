@@ -4,10 +4,10 @@ import android.content.Context
 import com.revolgenx.anilib.common.data.model.BaseImageModel
 import com.revolgenx.anilib.common.preference.imageQuality
 
-class MediaCoverImageModel :
-    BaseImageModel() {
+class MediaCoverImageModel(medium: String?, large: String?, val extraLarge: String?) :
+    BaseImageModel(medium, large) {
     var color: String? = null
-    var extraLarge:String? = null
+
     val sImage: String
         get() = medium ?: large ?: ""
 

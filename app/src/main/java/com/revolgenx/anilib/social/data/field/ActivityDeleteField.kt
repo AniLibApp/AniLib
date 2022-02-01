@@ -6,6 +6,6 @@ import com.revolgenx.anilib.common.data.field.BaseField
 class ActivityDeleteField: BaseField<DeleteActivityMutation>() {
     var activityId:Int? = null
     override fun toQueryOrMutation(): DeleteActivityMutation {
-        return DeleteActivityMutation.builder().id(activityId).build()
+        return DeleteActivityMutation(id = nn(activityId))
     }
 }
