@@ -28,9 +28,9 @@ android {
             val fis = FileInputStream(rootProject.file("secret.properties"))
             val prop = Properties()
             prop.load(fis)
-            return prop.getProperty(name) ?: default
+            return prop.getProperty(name) ?: "\"$default\""
         } else {
-            default
+            "\"$default\""
         }
     }
 
