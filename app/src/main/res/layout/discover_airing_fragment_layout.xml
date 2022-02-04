@@ -14,12 +14,16 @@
         app:tabMode="fixed"
         app:tabTextAppearance="@style/SubTabTextAppearance" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/discover_airing_recycler_view"
+    <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/discover_recycler_height"
-        android:nestedScrollingEnabled="false"
-        android:clipToPadding="false"/>
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/discover_airing_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/discover_recycler_height"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false" />
+    </com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout>
 
 
 </LinearLayout>

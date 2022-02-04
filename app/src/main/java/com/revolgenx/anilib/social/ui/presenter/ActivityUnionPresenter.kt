@@ -8,9 +8,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.common.data.model.CommonMediaModel
 import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.databinding.ListActivityPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.MessageActivityPresenterLayoutBinding

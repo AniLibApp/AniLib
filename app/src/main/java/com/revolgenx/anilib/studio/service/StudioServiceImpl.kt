@@ -35,7 +35,7 @@ class StudioServiceImpl(private val graphRepository: BaseGraphRepository) : Stud
             .subscribe({
                 callback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
@@ -59,7 +59,7 @@ class StudioServiceImpl(private val graphRepository: BaseGraphRepository) : Stud
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 

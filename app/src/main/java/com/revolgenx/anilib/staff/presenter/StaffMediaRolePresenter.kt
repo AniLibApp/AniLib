@@ -12,13 +12,13 @@ import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.StaffMediaRolePresenterBinding
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
-import com.revolgenx.anilib.staff.data.model.StaffMediaRoleModel
 import com.revolgenx.anilib.common.presenter.BasePresenter
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 
 //staff roles
-class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePresenterBinding, StaffMediaRoleModel>(context) {
+class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePresenterBinding, MediaModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -36,7 +36,7 @@ class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePr
         return StaffMediaRolePresenterBinding.inflate(inflater, parent, false)
     }
 
-    override fun onBind(page: Page, holder: Holder, element: Element<StaffMediaRoleModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<MediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
         val binding = holder.getBinding() ?: return
@@ -51,11 +51,11 @@ class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePr
                     item.format?.let { mediaFormats[it] }.naText(),
                     item.seasonYear?.toString().naText()
                 )
-            staffMediaRoleFormatYearTv.status = item.mediaEntryListModel?.status
+            staffMediaRoleFormatYearTv.status = item.mediaListEntry?.status
             staffMediaRoleContainer.setOnClickListener {
                 OpenMediaInfoEvent(
                     MediaInfoMeta(
-                        item.mediaId,
+                        item.id,
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(context),
@@ -69,7 +69,7 @@ class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePr
                 if (context.loggedIn()) {
                     OpenMediaListEditorEvent(
                         EntryEditorMeta(
-                            item.mediaId,
+                            item.id,
                             item.type!!,
                             item.title!!.title(context)!!,
                             item.coverImage!!.image(context),

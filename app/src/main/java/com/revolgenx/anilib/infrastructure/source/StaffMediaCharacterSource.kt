@@ -2,9 +2,10 @@ package com.revolgenx.anilib.infrastructure.source
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
+import com.revolgenx.anilib.character.data.model.CharacterModel
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.staff.data.field.StaffMediaCharacterField
-import com.revolgenx.anilib.staff.data.model.StaffMediaCharacterModel
 import com.revolgenx.anilib.staff.service.StaffService
 import io.reactivex.disposables.CompositeDisposable
 
@@ -13,12 +14,12 @@ class StaffMediaCharacterSource(
     private val staffService: StaffService,
     private val compositeDisposable: CompositeDisposable
 ) :
-    BaseRecyclerSource<StaffMediaCharacterModel, StaffMediaCharacterField>(field) {
+    BaseRecyclerSource<MediaModel, StaffMediaCharacterField>(field) {
     override fun areItemsTheSame(
-        first: StaffMediaCharacterModel,
-        second: StaffMediaCharacterModel
+        first: MediaModel,
+        second: MediaModel
     ): Boolean {
-        return first.mediaId == second.mediaId
+        return first.id == second.id
     }
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {

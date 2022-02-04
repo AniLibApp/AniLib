@@ -1,21 +1,29 @@
 package com.revolgenx.anilib.home.list.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.tabs.TabLayoutMediator
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.MediaListCollectionContainerFragmentBinding
+import com.revolgenx.anilib.infrastructure.event.OpenNotificationCenterEvent
 import com.revolgenx.anilib.list.fragment.AnimeListCollectionFragment
 import com.revolgenx.anilib.list.fragment.BaseMediaListCollectionFragment
 import com.revolgenx.anilib.list.fragment.MangaListCollectionFragment
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionContainerCallback
 import com.revolgenx.anilib.list.viewmodel.MediaListContainerSharedVM
+import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.view.setBoundsFor
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaListCollectionContainerFragment :
@@ -27,6 +35,7 @@ class MediaListCollectionContainerFragment :
         )
     }
     private val sharedViewModel by viewModel<MediaListContainerSharedVM>()
+    private val notificationStoreVM by sharedViewModel<NotificationStoreViewModel>()
 
     private var tabLayoutMediator: TabLayoutMediator? = null
     override fun bindView(
@@ -75,6 +84,14 @@ class MediaListCollectionContainerFragment :
                     MediaListCollectionContainerCallback.GROUP to alListViewPager.currentItem
             }
 
+
+            initNotificationBadge()
+
+            listNotificationIv.setOnClickListener {
+                notificationStoreVM.setUnreadNotificationCount(0)
+                OpenNotificationCenterEvent().postEvent
+            }
+
             listMoreIv.onPopupMenuClickListener = { _, position ->
                 when (position) {
                     0 -> {
@@ -88,6 +105,34 @@ class MediaListCollectionContainerFragment :
                 }
             }
 
+        }
+    }
+
+
+    @SuppressLint("UnsafeExperimentalUsageError", "UnsafeOptInUsageError")
+    private fun initNotificationBadge() {
+        binding.listNotificationIv.post {
+            val badgeDrawable = BadgeDrawable.create(requireContext())
+
+            badgeDrawable.badgeGravity = BadgeDrawable.TOP_END
+            badgeDrawable.backgroundColor = dynamicAccentColor
+            badgeDrawable.verticalOffset = 4
+            badgeDrawable.horizontalOffset = 4
+            badgeDrawable.setBoundsFor(binding.listNotificationIv, binding.listNotifLayout)
+            notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner, {
+                if (it > 0) {
+                    BadgeUtils.attachBadgeDrawable(
+                        badgeDrawable,
+                        binding.listNotificationIv,
+                        binding.listNotifLayout
+                    )
+                } else {
+                    BadgeUtils.detachBadgeDrawable(
+                        badgeDrawable,
+                        binding.listNotificationIv
+                    )
+                }
+            })
         }
     }
 

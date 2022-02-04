@@ -3,8 +3,7 @@ query MediaRecommendationQuery(
     $page:Int,
     $perPage:Int,
     $sort:[RecommendationSort],
-    $isAdult:Boolean,
-    $includeDescription:Boolean! = false){
+    $isAdult:Boolean){
     media: Media(id:$mediaId, isAdult:$isAdult){
         recommendations(page:$page, perPage:$perPage,sort:$sort){
             nodes{
@@ -26,8 +25,7 @@ query RecommendationQuery(
     $page:Int,
     $perPage:Int,
     $onList:Boolean,
-    $sort:[RecommendationSort],
-    $includeDescription:Boolean! = false){
+    $sort:[RecommendationSort]){
     page: Page(page:$page, perPage:$perPage){
         recommendations(onList:$onList, sort:$sort){
             id

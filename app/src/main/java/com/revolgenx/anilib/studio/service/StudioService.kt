@@ -4,7 +4,6 @@ import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.studio.data.field.StudioField
 import com.revolgenx.anilib.studio.data.field.StudioMediaField
-import com.revolgenx.anilib.studio.data.model.StudioMediaModel
 import com.revolgenx.anilib.studio.data.model.StudioModel
 import io.reactivex.disposables.CompositeDisposable
 

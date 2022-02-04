@@ -5,7 +5,7 @@ import com.revolgenx.anilib.common.data.model.stats.ScoreDistributionModel
 import com.revolgenx.anilib.common.data.model.stats.StatusDistributionModel
 
 
-class AlMediaStatsModel {
+class MediaStatsModel {
     var rankings: List<MediaRankModel>? = null
     var trends: List<MediaTrendModel>? = null
     var statusDistribution: List<StatusDistributionModel>? = null

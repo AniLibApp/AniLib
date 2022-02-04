@@ -3,14 +3,14 @@ package com.revolgenx.anilib.infrastructure.source.home.airing
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.extensions.HeaderSource
-import com.revolgenx.anilib.airing.data.model.AiringMediaModel
+import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 
-class AiringHeaderSource : HeaderSource<AiringMediaModel, String>() {
+class AiringHeaderSource : HeaderSource<AiringScheduleModel, String>() {
 
     private var lastHeader: String = ""
     override fun areItemsTheSame(
-        first: Data<AiringMediaModel, String>,
-        second: Data<AiringMediaModel, String>
+        first: Data<AiringScheduleModel, String>,
+        second: Data<AiringScheduleModel, String>
     ): Boolean {
         return first.anchor.mediaId == second.anchor.mediaId
     }
@@ -21,13 +21,13 @@ class AiringHeaderSource : HeaderSource<AiringMediaModel, String>() {
 
     override fun computeHeaders(
         page: Page,
-        list: List<AiringMediaModel>
-    ): List<Data<AiringMediaModel, String>> {
-        val results = arrayListOf<Data<AiringMediaModel, String>>()
+        list: List<AiringScheduleModel>
+    ): List<Data<AiringScheduleModel, String>> {
+        val results = arrayListOf<Data<AiringScheduleModel, String>>()
 
         for (airingMediaModel in list) {
             val header =
-                airingMediaModel.airingTimeModel!!.airingAt!!.airingDay
+                airingMediaModel.airingAtModel!!.airingDay
 
             if (header != lastHeader) {
                 results.add(Data(airingMediaModel, header))

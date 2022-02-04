@@ -1,45 +1,21 @@
 package com.revolgenx.anilib.infrastructure.service.list
 
+import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.data.field.list.*
-import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.list.data.model.MediaListModel
+import com.revolgenx.anilib.media.data.model.toModel
+import com.revolgenx.anilib.user.data.model.UserModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
-//TODO MEDIALIST SERVICE
 class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : MediaListService {
-    override fun getMediaListCollection(
-        field: MediaListCollectionField,
-        compositeDisposable: CompositeDisposable,
-        resourceCallback: (Resource<List<AlMediaListModel>>) -> Unit
-    ) {
-        val disposable = graphRepository.request(field.toQueryOrMutation())
-            .map {
-                val mediaListCollection = mutableListOf<AlMediaListModel>()
-                it.data?.mediaListCollection?.lists?.filterNotNull()?.forEach { list ->
-                    list.entries
-                        ?.filter { if (field.canShowAdult) true else it?.media?.isAdult == false }
-                        ?.filterNotNull()
-//                        ?.map { it.toModel() }?.let { mediaList ->
-//                            mediaListCollection.addAll(mediaList)
-//                        }
-                }
-                mediaListCollection
-            }.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                resourceCallback.invoke(Resource.success(it))
-            }, {
-                Timber.w(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
-            })
 
-        compositeDisposable.add(disposable)
-    }
-
+    //TODO check if can be removed from airing list
     override fun getMediaListCollectionIds(
         field: MediaListCollectionIdsField,
         compositeDisposable: CompositeDisposable,
@@ -69,25 +45,35 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
     override fun getMediaList(
         field: MediaListField,
         compositeDisposable: CompositeDisposable,
-        callback: (Resource<List<AlMediaListModel>>) -> Unit
+        callback: (Resource<List<MediaListModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.page?.mediaList?.filterNotNull()?.filter {
-                    if (field.canShowAdult) true else it.media?.mediaContent?.isAdult == false
-                }?.map {
-                    AlMediaListModel().also { model ->
-                        model.mediaListId = it.id
-                        model.progress = it.progress
-                        model.score = it.score
+                it.data?.page?.mediaList?.mapNotNull { list ->
+                    list?.takeIf { if (field.canShowAdult) true else it.media?.mediaContent?.isAdult == false }
+                        ?.let { mediaList ->
+                            MediaListModel().also { model ->
+                                model.id = mediaList.id
+                                model.progress = mediaList.progress
+                                model.score = mediaList.score
+                                model.startedAt = mediaList.startedAt?.fuzzyDate?.toModel()
+                                model.completedAt =
+                                    mediaList.completedAt?.fuzzyDate?.toModel()
+                                mediaList.user?.let { user ->
+                                    UserModel().also { userModel ->
+                                        userModel.mediaListOptions =
+                                            user.mediaListOptions?.let { option ->
+                                                MediaListOptionModel().also { optionModel ->
+                                                    optionModel.scoreFormat =
+                                                        option.scoreFormat?.ordinal
+                                                }
+                                            }
 
-                        model.listStartDate = it.startedAt?.fuzzyDate?.toModel()
-                        model.listCompletedDate =
-                            it.completedAt?.fuzzyDate?.toModel()
-                        model.scoreFormat =
-                            it.user?.mediaListOptions?.scoreFormat?.ordinal
-//                        it.media?.fragments?.narrowMediaContent?.getCommonMedia(model)
-                    }
+                                    }
+                                }
+                                model.media = mediaList.media?.mediaContent?.toModel()
+                            }
+                        }
                 }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -96,7 +82,6 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                 Timber.e(it)
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
-
         compositeDisposable.add(disposable)
     }
 

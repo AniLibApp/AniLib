@@ -9,8 +9,9 @@ abstract class MediaListCollectionStoreFragment : BaseMediaListCollectionFragmen
         if (isLoggedInUser) {
             listCollectionStoreVM.dataSetChangeLiveData.observe(viewLifecycleOwner) {
                 if(it == viewModel.currentGroupNameHistory){
-                    viewModel.reevaluateGroupNameWithCount()
-                    notifyDataSetChanged()
+                    //uncomment later
+//                    viewModel.reevaluateGroupNameWithCount()
+//                    notifyDataSetChanged()
                 }
             }
         }

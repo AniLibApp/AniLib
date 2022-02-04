@@ -9,7 +9,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.airing.data.model.AiringMediaModel
+import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.airing.presenter.AiringPresenterBindingHelper.bindPresenter
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.common.preference.getAiringDisplayMode
@@ -21,7 +21,7 @@ import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.drawable.DynamicBackgroundGradientDrawable
 
 class AiringPresenter(context: Context) :
-    BasePresenter<ViewBinding, AiringMediaModel>(context) {
+    BasePresenter<ViewBinding, AiringScheduleModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -78,7 +78,7 @@ class AiringPresenter(context: Context) :
     private val displayMode = getAiringDisplayMode()
 
 
-    override fun onBind(page: Page, holder: Holder, element: Element<AiringMediaModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<AiringScheduleModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
 

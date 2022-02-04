@@ -9,19 +9,19 @@ import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.studio.data.model.StudioMediaModel
 import com.revolgenx.anilib.studio.data.model.StudioModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.StudioFragmentLayoutBinding
 import com.revolgenx.anilib.studio.presenter.StudioMediaPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.studio.viewmodel.StudioViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
+class StudioFragment : BasePresenterFragment<MediaModel>() {
 
     companion object {
         private const val STUDIO_ID_KEY = "STUDIO_ID_KEY"
@@ -32,12 +32,12 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
 
     private val studioId get() = arguments?.getInt(STUDIO_ID_KEY)
 
-    override val basePresenter: Presenter<StudioMediaModel>
+    override val basePresenter: Presenter<MediaModel>
         get() = StudioMediaPresenter(
             requireContext()
         )
 
-    override val baseSource: Source<StudioMediaModel>
+    override val baseSource: Source<MediaModel>
         get() = viewModel.source ?: createSource()
 
     private var studioModel: StudioModel? = null
@@ -55,7 +55,7 @@ class StudioFragment : BasePresenterFragment<StudioMediaModel>() {
     override var gridMinSpan: Int = 3
 
 
-    override fun createSource(): Source<StudioMediaModel> {
+    override fun createSource(): Source<MediaModel> {
         return viewModel.createSource()
     }
 

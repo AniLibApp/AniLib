@@ -3,7 +3,7 @@ package com.revolgenx.anilib.infrastructure.source.home.airing
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
-import com.revolgenx.anilib.airing.data.model.AiringMediaModel
+import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.airing.service.AiringMediaService
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
 import io.reactivex.disposables.CompositeDisposable
@@ -13,8 +13,8 @@ class AiringSource(
     , private val airingMediaService: AiringMediaService
     , private val compositeDisposable: CompositeDisposable
 ) :
-    BaseRecyclerSource<AiringMediaModel, AiringMediaField>(mediaField) {
-    override fun areItemsTheSame(first: AiringMediaModel, second: AiringMediaModel): Boolean {
+    BaseRecyclerSource<AiringScheduleModel, AiringMediaField>(mediaField) {
+    override fun areItemsTheSame(first: AiringScheduleModel, second: AiringScheduleModel): Boolean {
         return first.id == second.id
     }
 
@@ -29,11 +29,11 @@ class AiringSource(
     override fun onPageClosed(page: Page) {
         super.onPageClosed(page)
         page.elements().forEach {
-            if (it.data is AiringMediaModel) {
-                (it.data as? AiringMediaModel)?.airingTimeModel?.commonTimer?.handler?.removeCallbacksAndMessages(
+            if (it.data is AiringScheduleModel) {
+                (it.data as? AiringScheduleModel)?.commonTimer?.handler?.removeCallbacksAndMessages(
                     null
                 )
-                (it.data as? AiringMediaModel)?.airingTimeModel?.commonTimer?.handler = null
+                (it.data as? AiringScheduleModel)?.commonTimer?.handler = null
             }
         }
     }

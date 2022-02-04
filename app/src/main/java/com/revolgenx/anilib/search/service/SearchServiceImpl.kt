@@ -107,7 +107,7 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
             .subscribe({
                 callback.invoke(Resource.success(it ?: emptyList()))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable.add(disposable)

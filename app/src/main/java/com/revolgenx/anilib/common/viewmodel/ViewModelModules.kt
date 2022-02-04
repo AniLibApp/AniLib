@@ -71,16 +71,6 @@ val viewModelModules = module {
     //recommendation
     viewModel { RecommendationViewModel(get()) }
 
-    //medialist
-    viewModel { UserMediaListContainerViewModel() }
-    viewModel { WatchingViewModel(get(), get()) }
-    viewModel { PlanningViewModel(get(), get()) }
-    viewModel { CompletedViewModel(get(), get()) }
-    viewModel { DroppedViewModel(get(), get()) }
-    viewModel { PausedViewModel(get(), get()) }
-    viewModel { RepeatingViewModel(get(), get()) }
-
-
     viewModel { AnimeListCollectionStoreVM() }
     viewModel { MangaListCollectionStoreVM() }
     viewModel { parameters -> MediaListCollectionVM(get(), get(), parameters.get()) }

@@ -3,8 +3,7 @@
 query MediaListCollectionQuery(
     $userId: Int,
     $userName: String,
-    $type: MediaType,
-    $includeDescription: Boolean! = false
+    $type: MediaType
 ) {
     mediaListCollection: MediaListCollection(userId: $userId, userName: $userName, type: $type) {
         lists {
@@ -47,8 +46,7 @@ query MediaListPageQuery(
     $userName:String,
     $type:MediaType,
     $status:MediaListStatus,
-    $sort:[MediaListSort],
-    $includeDescription:Boolean! = false
+    $sort:[MediaListSort]
 ){
     page: Page(page:$page, perPage:$perPage){
         mediaList(userId:$userId
@@ -174,8 +172,7 @@ mutation SaveMediaListEntryMutation(
     $startedAt:FuzzyDateInput,
     $completedAt:FuzzyDateInput,
     $hiddenFromStatusLists:Boolean,
-    $customLists:[String],
-    $includeDescription: Boolean! = false
+    $customLists:[String]
 ){
     saveMediaListEntry: SaveMediaListEntry(id:$id,
         mediaId:$mediaId ,
@@ -217,7 +214,6 @@ fragment mediaListEntry on MediaList {
     private
     hiddenFromStatusLists
     customLists
-    advancedScores
     notes
     updatedAt
     createdAt

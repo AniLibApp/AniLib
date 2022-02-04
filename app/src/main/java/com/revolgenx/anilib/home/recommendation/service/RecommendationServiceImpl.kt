@@ -82,7 +82,7 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 resourceCallback.invoke(Resource.success(it ?: emptyList()))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
@@ -106,7 +106,7 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 updateRecommendationLiveData.value = Resource.success(it)
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 updateRecommendationLiveData.value =
                     Resource.error(it.message ?: ERROR, null, it)
             })

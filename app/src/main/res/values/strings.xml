@@ -327,6 +327,7 @@
 
     <!--media_status-->
     <string name="cancelled">Cancelled</string>
+    <string name="hiatus">Hiatus</string>
     <string name="not_yet_released">Not yet released</string>
     <string name="releasing">Releasing</string>
     <string name="finished">Finished</string>

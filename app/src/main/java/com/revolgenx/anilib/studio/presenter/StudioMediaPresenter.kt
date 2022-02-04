@@ -11,10 +11,10 @@ import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.StudioMediaPresenterBinding
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.studio.data.model.StudioMediaModel
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.util.naText
 
-class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresenterBinding, StudioMediaModel>(context) {
+class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresenterBinding, MediaModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -39,7 +39,7 @@ class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresente
         return StudioMediaPresenterBinding.inflate(inflater, parent, false)
     }
 
-    override fun onBind(page: Page, holder: Holder, element: Element<StudioMediaModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<MediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
 
@@ -57,7 +57,7 @@ class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresente
             root.setOnClickListener {
                 OpenMediaInfoEvent(
                     MediaInfoMeta(
-                        item.mediaId,
+                        item.id,
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(context),

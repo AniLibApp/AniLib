@@ -6,9 +6,12 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     kotlin("plugin.parcelize")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
     id("com.apollographql.apollo3").version(LibraryVersion.apollo_version)
+}
+
+if (gradle.startParameter.taskRequests.toString().contains("Standard")) {
+    apply(plugin = "com.google.gms.google-services")
+    apply(plugin = "com.google.firebase.crashlytics")
 }
 
 
@@ -74,12 +77,26 @@ android {
             applicationIdSuffix = ".debug"
             extra["enableCrashlytics"] = false
         }
+
         named("release") {
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
     }
+
+    flavorDimensions.add("default")
+
+    productFlavors {
+        create("standard") {
+            dimension = "default"
+        }
+        create("dev") {
+            resourceConfigurations.addAll(listOf("en", "xxhdpi"))
+            dimension = "default"
+        }
+    }
+
 
     bundle {
         language {

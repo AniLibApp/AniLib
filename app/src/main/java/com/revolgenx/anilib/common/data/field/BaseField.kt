@@ -19,4 +19,6 @@ abstract class BaseField<T>() : KoinComponent {
     }
 
     protected fun <V : Any> nn(value: V?): Optional<V> = Optional.presentIfNotNull(value)
+    protected fun nnBool(value: Boolean?): Optional<Boolean> = Optional.presentIfNotNull(value?.takeIf { it })
+    protected fun <V : Any>nn(value: List<V>?): Optional<List<V>> = Optional.presentIfNotNull(value?.takeIf { it.isNullOrEmpty().not() })
 }

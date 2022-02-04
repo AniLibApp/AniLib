@@ -15,7 +15,6 @@ import com.revolgenx.anilib.common.data.field.TagField
 import com.revolgenx.anilib.common.data.meta.TagState
 import com.revolgenx.anilib.home.season.data.field.SeasonField
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.common.data.model.CommonMediaModel
 import com.revolgenx.anilib.common.preference.getUserGenre
 import com.revolgenx.anilib.common.preference.getUserTag
 import com.revolgenx.anilib.common.data.field.TagChooserField
@@ -26,16 +25,17 @@ import com.revolgenx.anilib.home.season.presenter.SeasonPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.home.season.viewmodel.SeasonViewModel
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.util.EventBusListener
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListener {
+class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
 
     private val viewModel by viewModel<SeasonViewModel>()
 
-    override val basePresenter: Presenter<CommonMediaModel> by lazy {
+    override val basePresenter: Presenter<MediaModel> by lazy {
         SeasonPresenter(requireContext())
     }
 
@@ -44,13 +44,13 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
             requireContext(), R.layout.season_shimmer_loader_layout
         )
 
-    override val baseSource: Source<CommonMediaModel>
+    override val baseSource: Source<MediaModel>
         get() {
             return viewModel.source ?: createSource()
         }
 
 
-    override fun createSource(): Source<CommonMediaModel> {
+    override fun createSource(): Source<MediaModel> {
         return viewModel.createSource()
     }
 
@@ -98,7 +98,7 @@ class SeasonFragment : BasePresenterFragment<CommonMediaModel>(), EventBusListen
         if (viewModel.isHeaderEnabled()) {
             builder.addSource(MediaFormatHeaderSource(requireContext()))
             builder.addPresenter(
-                SimplePresenter<HeaderSource.Data<CommonMediaModel, String>>(
+                SimplePresenter<HeaderSource.Data<MediaModel, String>>(
                     requireContext(),
                     R.layout.header_presenter_layout,
                     HeaderSource.ELEMENT_TYPE

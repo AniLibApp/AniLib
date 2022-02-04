@@ -23,7 +23,7 @@ import com.revolgenx.anilib.app.theme.dynamicTintSurfaceColor
 import com.revolgenx.anilib.media.data.field.MediaStatsField
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.user.data.model.stats.AlMediaStatsModel
+import com.revolgenx.anilib.user.data.model.stats.MediaStatsModel
 import com.revolgenx.anilib.databinding.MediaStatsFragmentLayoutBinding
 import com.revolgenx.anilib.media.presenter.RankingsPresenter
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
@@ -152,7 +152,7 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
         super.onSaveInstanceState(outState)
     }
 
-    private fun MediaStatsFragmentLayoutBinding.updateView(data: AlMediaStatsModel) {
+    private fun MediaStatsFragmentLayoutBinding.updateView(data: MediaStatsModel) {
         context ?: return
 
 

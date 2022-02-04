@@ -17,7 +17,6 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
-import com.revolgenx.anilib.airing.data.model.AiringMediaModel
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.infrastructure.repository.util.Resource

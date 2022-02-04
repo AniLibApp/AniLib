@@ -18,8 +18,7 @@ query MediaSearchQuery(
     $genreNotIn:[String],
     $sort:[MediaSort],
     $country:CountryCode,
-    $isAdult:Boolean,
-    $includeDescription:Boolean! = false){
+    $isAdult:Boolean){
     page: Page(page:$page,perPage:$perPage){
         media(search:$search
             , type:$type
@@ -64,8 +63,7 @@ query StaffSearchQuery($search:String, $page:Int, $perPage:Int){
 query StudioSearchQuery(
     $search:String,
     $page:Int,
-    $perPage:Int,
-    $includeDescription:Boolean! = false){
+    $perPage:Int){
     page: Page(page:$page, perPage:$perPage){
         studios(search:$search, sort:[FAVOURITES_DESC]){
             ... studioContent

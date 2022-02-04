@@ -20,7 +20,7 @@ import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.constant.AiringListDisplayMode
-import com.revolgenx.anilib.airing.data.model.AiringMediaModel
+import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.databinding.AiringFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringHeaderSource
 import com.revolgenx.anilib.ui.bottomsheet.calendar.CalendarViewBottomSheetDialog
@@ -37,15 +37,15 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 
-class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
-    override val basePresenter: Presenter<AiringMediaModel>
+class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
+    override val basePresenter: Presenter<AiringScheduleModel>
         get() = AiringPresenter(requireContext())
-    override val baseSource: Source<AiringMediaModel>
+    override val baseSource: Source<AiringScheduleModel>
         get() = viewModel.source ?: createSource()
 
     private val viewModel by viewModel<AiringViewModel>()
 
-    override fun createSource(): Source<AiringMediaModel> {
+    override fun createSource(): Source<AiringScheduleModel> {
         return viewModel.createSource()
     }
 
@@ -330,7 +330,7 @@ class AiringFragment : BasePresenterFragment<AiringMediaModel>() {
         if (viewModel.isDateTypeRange) {
             builder.addSource(AiringHeaderSource())
             builder.addPresenter(
-                SimplePresenter<HeaderSource.Data<AiringMediaModel, String>>(
+                SimplePresenter<HeaderSource.Data<AiringScheduleModel, String>>(
                     requireContext(),
                     R.layout.header_presenter_layout,
                     HeaderSource.ELEMENT_TYPE

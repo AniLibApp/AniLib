@@ -5,11 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
+import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
+import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.MediaSocialFragmentLayoutBinding
+import com.revolgenx.anilib.list.viewmodel.MediaListCollectionContainerCallback
+import com.revolgenx.anilib.type.MediaType
 
 class MediaSocialContainerFragment : BaseLayoutFragment<MediaSocialFragmentLayoutBinding>() {
     private val mediaBrowserMeta
@@ -44,12 +52,12 @@ class MediaSocialContainerFragment : BaseLayoutFragment<MediaSocialFragmentLayou
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            val adapter = makePagerAdapter(
-                mediaSocialFragments,
-                resources.getStringArray(R.array.media_social_tab_menu)
+            mediaSocialViewPager.adapter = makeViewPagerAdapter2(mediaSocialFragments)
+            setupWithViewPager2(
+                mediaSocialTabLayout,
+                mediaSocialViewPager,
+                resources.getStringArray(R.array.list_tab_menu)
             )
-            mediaSocialViewPager.adapter = adapter
-            mediaSocialTabLayout.setupWithViewPager(mediaSocialViewPager)
         }
 
     }

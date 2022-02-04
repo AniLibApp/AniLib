@@ -27,7 +27,6 @@ import com.revolgenx.anilib.radio.ui.fragments.RadioFragment
 import com.revolgenx.anilib.social.ui.fragments.ActivityUnionFragment
 import com.revolgenx.anilib.app.about.fragment.AboutFragment
 import com.revolgenx.anilib.home.discover.fragment.DiscoverContainerFragment
-import com.revolgenx.anilib.ui.fragment.home.list.ListContainerFragment
 import com.revolgenx.anilib.home.profile.fragment.ProfileFragment
 import com.revolgenx.anilib.home.profile.fragment.UserLoginFragment
 import com.revolgenx.anilib.app.setting.fragment.NotificationSettingFragment
@@ -66,7 +65,6 @@ import com.revolgenx.anilib.airing.fragment.AiringFragment
 import com.revolgenx.anilib.character.fragment.CharacterContainerFragment
 import com.revolgenx.anilib.friend.fragment.UserFriendContainerFragment
 import com.revolgenx.anilib.home.list.fragment.MediaListCollectionContainerFragment
-import com.revolgenx.anilib.ui.fragment.list.UserMediaListContainerFragment
 import com.revolgenx.anilib.media.fragment.MediaInfoFragment
 import com.revolgenx.anilib.user.fragment.MediaListingFragment
 import com.revolgenx.anilib.notification.fragment.NotificationFragment
@@ -103,11 +101,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private val discoverContainerFragment by lazy {
         DiscoverContainerFragment()
-    }
-
-    //TODO:// delete later
-    private val listContainerFragment by lazy {
-        ListContainerFragment()
     }
 
     private val alListContainerFragment by lazy {
@@ -409,7 +402,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 clientAuth
             ) { tokenResponse, exception ->
                 if (exception != null) {
-                    Timber.w(exception, "Token Exchange failed")
+                    Timber.e(exception, "Token Exchange failed")
                 } else {
                     val accessToken = tokenResponse?.accessToken!!
                     logIn(accessToken)

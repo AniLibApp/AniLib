@@ -14,14 +14,14 @@ import com.revolgenx.anilib.databinding.StaffMediaCharacterPresenterBinding
 import com.revolgenx.anilib.infrastructure.event.OpenCharacterEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
-import com.revolgenx.anilib.staff.data.model.StaffMediaCharacterModel
 import com.revolgenx.anilib.common.presenter.BasePresenter
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 
 //voice roles
 class StaffMediaCharacterPresenter(context: Context) :
-    BasePresenter<StaffMediaCharacterPresenterBinding, StaffMediaCharacterModel>(context) {
+    BasePresenter<StaffMediaCharacterPresenterBinding, MediaModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -50,7 +50,7 @@ class StaffMediaCharacterPresenter(context: Context) :
         return StaffMediaCharacterPresenterBinding.inflate(inflater, parent, false)
     }
 
-    override fun onBind(page: Page, holder: Holder, element: Element<StaffMediaCharacterModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<MediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
 
@@ -68,11 +68,11 @@ class StaffMediaCharacterPresenter(context: Context) :
                     item.format?.let { mediaFormats[it] }.naText(),
                     item.seasonYear?.toString().naText()
                 )
-            staffMediaFormatYearTv.status = item.mediaEntryListModel?.status
+            staffMediaFormatYearTv.status = item.mediaListEntry?.status
             staffMediaContainer.setOnClickListener {
                 OpenMediaInfoEvent(
                     MediaInfoMeta(
-                        item.mediaId,
+                        item.id,
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(context),
@@ -86,7 +86,7 @@ class StaffMediaCharacterPresenter(context: Context) :
                 if (context.loggedIn()) {
                     OpenMediaListEditorEvent(
                         EntryEditorMeta(
-                            item.mediaId,
+                            item.id,
                             item.type!!,
                             item.title!!.title(context)!!,
                             item.coverImage!!.image(context),
@@ -99,13 +99,14 @@ class StaffMediaCharacterPresenter(context: Context) :
                 true
             }
 
-            staffCharacterImageView.setImageURI(item.characterImageModel?.image)
-            staffCharacterNameTv.text = item.characterName?.full
-            staffCharacterRoleTv.text = item.mediaRole?.let { characterRoles[it] }.naText()
+            val character = item.character ?: return
+            staffCharacterImageView.setImageURI(character.image?.image)
+            staffCharacterNameTv.text = character.name?.full
+            staffCharacterRoleTv.text = item.characterRole?.let { characterRoles[it] }.naText()
 
             staffCharacterContainer.setOnClickListener {
                 OpenCharacterEvent(
-                    item.characterId!!
+                    character.id
                 ).postEvent
             }
         }

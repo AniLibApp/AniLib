@@ -25,7 +25,8 @@
         <item>#00C853</item>    <!--//releasing-->
         <item>#673AB7</item>    <!--//NOT_YET_RELEASED-->
         <item>#D50000</item>    <!--//CANCELLED-->
-        <item>#FF6E40</item>
+        <item>#FF6E40</item>    <!--//HIATUS-->
+        <item>#D50000</item>    <!--//UNKNOWN-->
     </string-array>
 
     <!--media entry list status-->

@@ -3,14 +3,13 @@ package com.revolgenx.anilib.entry.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel
-import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.favourite.FavouriteService
 import com.revolgenx.anilib.media.service.MediaInfoService
 import com.revolgenx.anilib.entry.service.MediaEntryService
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 import com.revolgenx.anilib.list.data.model.MediaListModel
-import com.revolgenx.anilib.media.data.model.MediaInfoModel
+import com.revolgenx.anilib.media.data.model.MediaModel
 
 class EntryEditorViewModel(
     private val mediaListEntryService: MediaEntryService,
@@ -22,7 +21,7 @@ class EntryEditorViewModel(
     val deleteMediaListEntryLiveData = MutableLiveData<Resource<Boolean>>()
     val saveMediaListEntryLiveData = MutableLiveData<Resource<MediaListModel>>()
     val toggleFavMediaLiveData = MutableLiveData<Resource<Boolean>>()
-    val mediaLiveData = MutableLiveData<Resource<MediaInfoModel>>()
+    val mediaLiveData = MutableLiveData<Resource<MediaModel>>()
     val isFavLiveData = MutableLiveData<Resource<Boolean>>()
 
     var apiModelEntry: MediaListModel = MediaListModel()

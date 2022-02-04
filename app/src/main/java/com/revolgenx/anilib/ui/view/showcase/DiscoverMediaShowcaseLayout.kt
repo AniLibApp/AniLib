@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.disableCardStyleInHomeScreen
 import com.revolgenx.anilib.common.preference.loggedIn
@@ -61,7 +62,15 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
             it.isNestedScrollingEnabled = false
         }
 
-        addView(showcaseRecyclerView)
+        val recyclerViewContainer = DynamicViewPager2Layout(context).also {
+            it.layoutParams = LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+        recyclerViewContainer.addView(showcaseRecyclerView)
+
+        addView(recyclerViewContainer)
     }
 
 
@@ -89,11 +98,11 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
             val studioOrWriter = if (media.type == MediaType.ANIME.ordinal) {
                 media.studios?.edges?.filter { it.isMain }?.joinToString(", ") { it.node?.studioName!! }
             } else {
-                media.staff?.edges?.joinToString(", ") { it.node?.name?.full ?: "" }
+                media.staffs?.edges?.joinToString(", ") { it.node?.name?.full ?: "" }
             }
             studioOrWriterTv.text = studioOrWriter?.takeIf { !it.isEmpty() } ?: ""
             mediaDescriptionTv.text =
-                HtmlCompat.fromHtml(media.description!!, HtmlCompat.FROM_HTML_MODE_COMPACT)
+                HtmlCompat.fromHtml(media.description ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT)
             mediaPopularityTv.text = media.popularity?.prettyNumberFormat().naText()
             mediaFavTv.text = media.favourites?.prettyNumberFormat().naText()
             mediaListStatusTv.text = media.mediaListEntry?.status?.let {

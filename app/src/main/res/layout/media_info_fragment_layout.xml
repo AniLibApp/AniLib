@@ -424,8 +424,8 @@
         </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager
-            android:id="@+id/browseMediaViewPager"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/media_info_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
@@ -435,9 +435,9 @@
 
 
     <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicIconTabLayout
-        android:id="@+id/browse_media_tab_layout"
+        android:id="@+id/media_info_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:adt_backgroundAware="disable"
         app:adt_backgroundColorType="background"
@@ -445,6 +445,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:tabMode="scrollable"
+        app:tabInlineLabel="true"
         app:tabTextAppearance="@style/MediaBrowseTabTextAppearance" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -114,7 +114,7 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable.add(disposable)
@@ -131,7 +131,7 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable.add(disposable)

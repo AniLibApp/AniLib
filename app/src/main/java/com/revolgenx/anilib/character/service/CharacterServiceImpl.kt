@@ -94,7 +94,7 @@ class CharacterServiceImpl(
             .subscribe({
                 resourceCallback.invoke(Resource.success(hashMap.values.toList()))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable?.add(disposable)

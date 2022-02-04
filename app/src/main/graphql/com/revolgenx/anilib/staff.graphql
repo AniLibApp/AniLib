@@ -40,8 +40,7 @@ query StaffQuery($id:Int){
 query StaffCharacterMediaQuery(
     $staffId:Int,
     $page:Int,
-    $perPage:Int,
-    $includeDescription:Boolean! = false){
+    $perPage:Int){
     staff: Staff(id:$staffId){
         characters(page:$page,perPage:$perPage){
             nodes{
@@ -72,8 +71,7 @@ query StaffCharacterMediaQuery(
 query StaffMediaRoleQuery(
     $staffId:Int,
     $page:Int,
-    $perPage:Int,
-    $includeDescription:Boolean! = false){
+    $perPage:Int){
     staff: Staff(id:$staffId){
         staffMedia(page:$page,perPage:$perPage){
             edges{

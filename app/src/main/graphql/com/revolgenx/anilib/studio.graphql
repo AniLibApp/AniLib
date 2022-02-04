@@ -11,8 +11,7 @@ query StudioQuery($studioId:Int){
 query StudioMediaQuery(
     $studioId:Int,
     $page:Int,
-    $perPage:Int,
-    $includeDescription:Boolean! = false){
+    $perPage:Int){
     studio: Studio(id:$studioId){
         media(page:$page,perPage:$perPage){
             nodes{

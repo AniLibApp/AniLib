@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.core.view.setMargins
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.home.discover.dialog.DiscoverMediaListFilterDialog
@@ -57,14 +58,20 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
                 it.layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
-                ).also {
-                    it.setMargins(dp(10f))
-                }
+                )
                 it.isNestedScrollingEnabled = false
             }
 
+            val recyclerViewContainer = DynamicViewPager2Layout(requireContext()).also {
+                it.layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            }
+            recyclerViewContainer.addView(watchingRecyclerView)
+
             orderedViewList.add(DiscoverOrderItem(
-                watchingRecyclerView!!, order,
+                recyclerViewContainer, order,
                 getString(R.string.watching),
                 R.drawable.ic_media
                 , showSetting = true

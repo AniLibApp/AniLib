@@ -10,7 +10,6 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.data.model.CommonMediaModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
@@ -21,12 +20,13 @@ import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.common.presenter.BasePresenter
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
 
 class SeasonPresenter(context: Context) :
-    BasePresenter<SeasonPresenterLayoutBinding, CommonMediaModel>(context) {
+    BasePresenter<SeasonPresenterLayoutBinding, MediaModel>(context) {
 
     override val elementTypes: Collection<Int>
         get() = listOf(0)
@@ -61,7 +61,7 @@ class SeasonPresenter(context: Context) :
     }
 
 
-    override fun onBind(page: Page, holder: Holder, element: Element<CommonMediaModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<MediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
         val binding = holder.getBinding() ?: return
@@ -91,7 +91,7 @@ class SeasonPresenter(context: Context) :
                 mediaFormats[it]
             }.naText()
 
-            mediaFormatTv.status = item.mediaEntryListModel?.status
+            mediaFormatTv.status = item.mediaListEntry?.status
 
             mediaStatusTv.naText(item.status?.let {
                 mediaStatusTv.color = Color.parseColor(statusColors[it])
@@ -101,7 +101,7 @@ class SeasonPresenter(context: Context) :
             mediaCardView.setOnClickListener {
                 OpenMediaInfoEvent(
                     MediaInfoMeta(
-                        item.mediaId,
+                        item.id,
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(context),
@@ -115,7 +115,7 @@ class SeasonPresenter(context: Context) :
                 if (isLoggedIn) {
                     OpenMediaListEditorEvent(
                         EntryEditorMeta(
-                            item.mediaId,
+                            item.id,
                             item.type!!,
                             item.title!!.title(context)!!,
                             item.coverImage!!.image(context),
@@ -131,7 +131,7 @@ class SeasonPresenter(context: Context) :
                 entryProgressTv.visibility = View.VISIBLE
                 entryProgressTv.compoundDrawablesRelative[0]?.setTint(textPrimary)
                 entryProgressTv.text = context.getString(R.string.s_slash_s).format(
-                    item.mediaEntryListModel?.progress?.toString().naText(),
+                    item.mediaListEntry?.progress?.toString().naText(),
                     when (item.type) {
                         MediaType.ANIME.ordinal -> {
                             item.episodes.naText()
@@ -143,7 +143,7 @@ class SeasonPresenter(context: Context) :
                     }
                 )
 
-                item.mediaEntryListModel?.status?.let {
+                item.mediaListEntry?.status?.let {
                     bookmarkIv.setImageDrawable(
                         ContextCompat.getDrawable(
                             context,

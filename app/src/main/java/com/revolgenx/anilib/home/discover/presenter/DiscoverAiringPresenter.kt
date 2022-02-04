@@ -8,7 +8,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.airing.data.model.AiringMediaModel
+import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
@@ -21,7 +21,7 @@ import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 
-class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPresenterLayoutBinding, AiringMediaModel>(context) {
+class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPresenterLayoutBinding, AiringScheduleModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -47,24 +47,26 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
     }
 
 
-    override fun onBind(page: Page, holder: Holder, element: Element<AiringMediaModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<AiringScheduleModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
         val binding = holder.getBinding()?:return
 
+        val media = item.media ?: return
+
         binding.apply {
-            airingMediaSimpleDrawee.setImageURI(item.coverImage?.image(context))
-            mediaRatingTv.text = item.averageScore
-            airingMediaTitleTv.text = item.title?.title(context)
+            airingMediaSimpleDrawee.setImageURI(media.coverImage?.image(context))
+            mediaRatingTv.text = media.averageScore
+            airingMediaTitleTv.text = media.title?.title(context)
             airingFormatTv.text = context.getString(R.string.format_episode_s).format(
-                item.format?.let { mediaFormats[it] }.naText(),
-                item.episodes.naText()
+                media.format?.let { mediaFormats[it] }.naText(),
+                media.episodes.naText()
             )
 
-            airingFormatTv.status = item.mediaEntryListModel?.status
+            airingFormatTv.status = media.mediaListEntry?.status
 
-            airingTimeTv.setAiringText(item.airingTimeModel)
-            airingGenreLayout.addGenre(item.genres?.take(3)) { genre ->
+            airingTimeTv.setAiringText(item)
+            airingGenreLayout.addGenre(media.genres?.take(3)) { genre ->
                 OpenSearchEvent(MediaSearchFilterModel().also {
                     it.genre = listOf(genre.trim())
                 }).postEvent
@@ -73,12 +75,12 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
             root.setOnClickListener {
                 OpenMediaInfoEvent(
                     MediaInfoMeta(
-                        item.mediaId,
-                        item.type!!,
-                        item.title!!.romaji!!,
-                        item.coverImage!!.image(context),
-                        item.coverImage!!.largeImage,
-                        item.bannerImage
+                        media.id,
+                        media.type!!,
+                        media.title!!.romaji!!,
+                        media.coverImage!!.image(context),
+                        media.coverImage!!.largeImage,
+                        media.bannerImage
                     )
                 ).postEvent
             }
@@ -87,11 +89,11 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
                 if (context.loggedIn()) {
                     OpenMediaListEditorEvent(
                         EntryEditorMeta(
-                            item.mediaId,
-                            item.type!!,
-                            item.title!!.title(context)!!,
-                            item.coverImage!!.image(context),
-                            item.bannerImage
+                            media.id,
+                            media.type!!,
+                            media.title!!.title(context)!!,
+                            media.coverImage!!.image(context),
+                            media.bannerImage
                         )
                     ).postEvent
                 } else {

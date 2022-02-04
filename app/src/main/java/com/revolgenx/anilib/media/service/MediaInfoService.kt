@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.media.service
 
 import com.revolgenx.anilib.character.data.model.CharacterEdgeModel
-import com.revolgenx.anilib.user.data.model.stats.AlMediaStatsModel
+import com.revolgenx.anilib.user.data.model.stats.MediaStatsModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.media.data.field.*
@@ -14,7 +14,7 @@ abstract class MediaInfoService(protected val graphRepository: BaseGraphReposito
     abstract fun getSimpleMedia(
         mediaId: Int?,
         compositeDisposable: CompositeDisposable,
-        callback: (Resource<MediaInfoModel>) -> Unit
+        callback: (Resource<MediaModel>) -> Unit
     )
 
     abstract fun getMediaOverview(
@@ -52,7 +52,7 @@ abstract class MediaInfoService(protected val graphRepository: BaseGraphReposito
     abstract fun getMediaStats(
         field: MediaStatsField,
         compositeDisposable: CompositeDisposable? = null,
-        callback: (Resource<AlMediaStatsModel>) -> Unit
+        callback: (Resource<MediaStatsModel>) -> Unit
     )
 
     abstract fun getMediaSocialFollowing(

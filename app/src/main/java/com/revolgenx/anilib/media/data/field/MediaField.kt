@@ -52,11 +52,11 @@ open class MediaField : BaseSourceField<MediaQuery>() {
             format_in = nn(mediaFormatsIn),
             tag_in = nn(tags),
             idIn = nn(mediaIdsIn),
-            isAdult = nn(canShowAdult),
+            isAdult = nn(canShowAdult.takeIf { it.not() }),
             format = nn(mediaFormat),
             status =  nn(mediaStatus),
-            includeStaff = nn(includeStaff),
-            includeStudio = nn(includeStudio),
+            includeStaff = includeStaff,
+            includeStudio = includeStudio,
             genre_in = nn(genres)
         )
     }

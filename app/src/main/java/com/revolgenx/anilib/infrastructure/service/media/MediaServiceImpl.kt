@@ -27,13 +27,15 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data?.page?.media?.filterNotNull()?.map {
-                    it.onMedia.mediaContent.toModel()
+                    it.onMedia.mediaContent.toModel().also{ model->
+                        model.description = it.onMedia.description
+                    }
                 }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 callback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
@@ -50,6 +52,7 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
                 it.data?.page?.media?.filterNotNull()?.map {
                     it.onMedia.let { media ->
                         media.mediaContent.toModel().also { model ->
+                            model.description = media.description
                             model.studios = media.studios?.let {
                                 StudioConnectionModel().also { studioConnectionModel ->
                                     studioConnectionModel.edges =
@@ -67,7 +70,7 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
                                 }
                             }
 
-                            media.staff?.let {
+                            model.staffs = media.staff?.let {
                                 StaffConnectionModel().also { staffConnectionModel ->
                                     staffConnectionModel.edges = it.edges?.filterNotNull()?.map { edge ->
                                         StaffEdgeModel().also { edgeModel ->
@@ -92,7 +95,7 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
             .subscribe({
                 callback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 

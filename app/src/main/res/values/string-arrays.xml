@@ -442,6 +442,7 @@
         <item>@string/releasing</item>
         <item>@string/not_yet_released</item>
         <item>@string/cancelled</item>
+        <item>@string/hiatus</item>
     </string-array>
 
     <string-array name="media_season">
@@ -625,6 +626,7 @@
         <item>@string/releasing</item>
         <item>@string/not_yet_released</item>
         <item>@string/cancelled</item>
+        <item>@string/hiatus</item>
     </string-array>
 
     <string-array name="advance_search_source">

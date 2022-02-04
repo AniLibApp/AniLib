@@ -12,14 +12,11 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userName
 import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.meta.MediaListMeta
-import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel
-import com.revolgenx.anilib.data.model.list.AlMediaListModel
 import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.databinding.MediaListPresenterBinding
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
@@ -31,7 +28,7 @@ import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.common.presenter.Constant
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.ui.view.makeToast
-import com.revolgenx.anilib.ui.viewmodel.list.MediaListViewModel
+import com.revolgenx.anilib.home.discover.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.util.naText
 
 class MediaListPresenter(
@@ -39,7 +36,7 @@ class MediaListPresenter(
     private val mediaListMeta: MediaListMeta,
     private val viewModel: MediaListViewModel
 ) :
-    Presenter<AlMediaListModel>(context) {
+    Presenter<MediaListModel>(context) {
 
     override val elementTypes: Collection<Int>
         get() = listOf(0)
@@ -69,36 +66,39 @@ class MediaListPresenter(
         }
     }
 
-    override fun onBind(page: Page, holder: Holder, element: Element<AlMediaListModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<MediaListModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
+        val media = item.media ?: return
         val binding: MediaListPresenterBinding = holder[Constant.PRESENTER_BINDING_KEY] ?: return
+
         binding.apply {
-            mediaListTitleTv.text = item.title?.userPreferred
-            mediaListCoverImageView.setImageURI(item.coverImage?.large)
-            mediaListFormatTv.text = item.format?.let {
+            mediaListTitleTv.text = media.title?.userPreferred
+            mediaListCoverImageView.setImageURI(media.coverImage?.large)
+            mediaListFormatTv.text = media.format?.let {
                 mediaFormats[it]
             }.naText()
-            mediaListStatusTv.text = item.status?.let {
+            mediaListStatusTv.text = media.status?.let {
                 mediaListStatusTv.color = Color.parseColor(statusColors[it])
                 mediaStatus[it]
             }.naText()
 
             mediaListProgressTv.text = context.getString(R.string.s_slash_s).format(
                 item.progress?.toString().naText(),
-                if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
+                if (media.type == MediaType.ANIME.ordinal) media.episodes.naText() else media.chapters.naText()
             )
 
             mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
 
-            mediaListGenreLayout.addGenre(item.genres?.take(3)) { genre ->
+            mediaListGenreLayout.addGenre(media.genres?.take(3)) { genre ->
                 OpenSearchEvent(MediaSearchFilterModel().also {
                     it.genre = listOf(genre.trim())
                 }).postEvent
             }
 
+            //TODO SCORE FORMAT
 
-            when (item.scoreFormat) {
+            when (item.user?.mediaListOptions?.scoreFormat) {
                 ScoreFormat.POINT_3.ordinal -> {
                     val drawable = when (item.score?.toInt()) {
                         1 -> R.drawable.ic_score_sad
@@ -121,18 +121,18 @@ class MediaListPresenter(
             if (isLoggedInUser) {
                 mediaListProgressIncrease.setOnClickListener {
                     viewModel.increaseProgress(MediaListModel().also {
-                        it.mediaId = item.mediaId ?: -1
-                        it.id = item.mediaListId?: -1
+                        it.mediaId = media.id
+                        it.id = item.id
                         it.progress = (item.progress ?: 0).plus(1)
                     }) { res ->
                         when (res.status) {
                             Status.SUCCESS -> {
-                                if (res.data?.mediaId == item.mediaId) {
-                                    item.progress = res.data?.progress
+                                if (res.data?.mediaId == media.id) {
+                                    item.progress = res.data.progress
                                     mediaListProgressTv.text =
                                         context.getString(R.string.s_slash_s).format(
                                             item.progress?.toString().naText(),
-                                            if (item.type == MediaType.ANIME.ordinal) item.episodes.naText() else item.chapters.naText()
+                                            if (media.type == MediaType.ANIME.ordinal) media.episodes.naText() else media.chapters.naText()
                                         )
                                 }
                             }
@@ -174,12 +174,12 @@ class MediaListPresenter(
             mediaListContainer.setOnLongClickListener {
                 OpenMediaInfoEvent(
                     MediaInfoMeta(
-                        item.mediaId,
-                        item.type!!,
-                        item.title!!.userPreferred,
-                        item.coverImage!!.image(context),
-                        item.coverImage!!.largeImage,
-                        item.bannerImage
+                        media.id,
+                        media.type!!,
+                        media.title!!.userPreferred,
+                        media.coverImage!!.image(context),
+                        media.coverImage!!.largeImage,
+                        media.bannerImage
                     )
                 ).postEvent
                 true
@@ -189,11 +189,11 @@ class MediaListPresenter(
                 if (context.loggedIn()) {
                     OpenMediaListEditorEvent(
                         EntryEditorMeta(
-                            item.mediaId,
-                            item.type!!,
-                            item.title!!.userPreferred,
-                            item.coverImage!!.image(context),
-                            item.bannerImage
+                            media.id,
+                            media.type!!,
+                            media.title!!.userPreferred,
+                            media.coverImage!!.image(context),
+                            media.bannerImage
                         )
                     ).postEvent
                 } else {

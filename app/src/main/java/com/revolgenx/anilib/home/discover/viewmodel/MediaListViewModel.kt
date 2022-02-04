@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.ui.viewmodel.list
+package com.revolgenx.anilib.home.discover.viewmodel
 
 import com.revolgenx.anilib.data.field.list.MediaListField
 import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel

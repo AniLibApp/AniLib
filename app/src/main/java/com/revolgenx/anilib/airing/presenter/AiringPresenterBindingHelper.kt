@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.airing.data.model.AiringMediaModel
+import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
@@ -26,42 +26,43 @@ import com.revolgenx.anilib.util.string
 object AiringPresenterBindingHelper {
     fun AiringPresenterLayoutBinding.bindPresenter(
         context: Context,
-        item: AiringMediaModel,
+        item: AiringScheduleModel,
         vararg misc: Array<String> //formats status statuscolor
     ) {
-        mediaTitleTv.naText(item.title!!.title(context))
-        coverImageIv.setImageURI(item.coverImage!!.image(context))
+        val media = item.media?: return
+        mediaTitleTv.naText(media.title!!.title(context))
+        coverImageIv.setImageURI(media.coverImage!!.image(context))
 
-        if (item.type == MediaType.ANIME.ordinal) {
+        if (media.type == MediaType.ANIME.ordinal) {
             mediaEpisodeTv.text =
                 context.string(R.string.ep_d_s)
-                    .format(item.episodes.naText(), item.duration.naText())
+                    .format(media.episodes.naText(), media.duration.naText())
         } else {
             mediaEpisodeTv.text =
                 context.string(R.string.chap_s)
-                    .format(item.chapters.naText(), item.volumes.naText())
+                    .format(media.chapters.naText(), media.volumes.naText())
         }
         mediaStartDateTv.text = context.getString(R.string.startdate_format)
-            .format(item.startDate?.date.naText(), item.endDate?.date?.naText())
+            .format(media.startDate?.date.naText(), media.endDate?.date?.naText())
 
         mediaGenreLayout.addGenre(
-            item.genres?.take(5)
+            media.genres?.take(5)
         ) { genre ->
             OpenSearchEvent(MediaSearchFilterModel().also {
                 it.genre = listOf(genre.trim())
             }).postEvent
         }
 
-        mediaRatingTv.text = item.averageScore
+        mediaRatingTv.text = media.averageScore
 
-        mediaFormatTv.text = item.format?.let {
+        mediaFormatTv.text = media.format?.let {
             misc[0][it]
         }.naText()
 
-        mediaFormatTv.status = item.mediaEntryListModel?.status
+        mediaFormatTv.status = media.mediaListEntry?.status
 
 
-        mediaStatusTv.naText(item.status?.let {
+        mediaStatusTv.naText(media.status?.let {
             mediaStatusTv.color = Color.parseColor(misc[2][it])
             misc[1][it]
         })
@@ -69,12 +70,12 @@ object AiringPresenterBindingHelper {
         airingCardView.setOnClickListener {
             OpenMediaInfoEvent(
                 MediaInfoMeta(
-                    item.mediaId,
-                    item.type!!,
-                    item.title!!.romaji!!,
-                    item.coverImage!!.image(context),
-                    item.coverImage!!.largeImage,
-                    item.bannerImage
+                    media.id,
+                    media.type!!,
+                    media.title!!.romaji!!,
+                    media.coverImage!!.image(context),
+                    media.coverImage!!.largeImage,
+                    media.bannerImage
                 )
             ).postEvent
         }
@@ -83,11 +84,11 @@ object AiringPresenterBindingHelper {
             if (context.loggedIn()) {
                 OpenMediaListEditorEvent(
                     EntryEditorMeta(
-                        item.mediaId,
-                        item.type!!,
-                        item.title!!.title(context)!!,
-                        item.coverImage!!.image(context),
-                        item.bannerImage
+                        media.id,
+                        media.type!!,
+                        media.title!!.title(context)!!,
+                        media.coverImage!!.image(context),
+                        media.bannerImage
                     )
                 ).postEvent
             } else {
@@ -95,7 +96,7 @@ object AiringPresenterBindingHelper {
             }
         }
 
-        airingTimeTv.setAiringText(item.airingTimeModel)
+        airingTimeTv.setAiringText(item)
 
 
         if (context.loggedIn()) {
@@ -104,19 +105,19 @@ object AiringPresenterBindingHelper {
                 dynamicTextColorPrimary
             )
             entryProgressTv.text = context.getString(R.string.s_slash_s).format(
-                item.mediaEntryListModel?.progress?.toString().naText(),
-                when (item.type) {
+                media.mediaListEntry?.progress?.toString().naText(),
+                when (media.type) {
                     MediaType.ANIME.ordinal -> {
-                        item.episodes.naText()
+                        media.episodes.naText()
                     }
                     else -> {
-                        item.chapters.naText()
+                        media.chapters.naText()
                     }
 
                 }
             )
 
-            item.mediaEntryListModel?.let {
+            media.mediaListEntry?.let {
                 it.progress?.let {
                     bookmarkIv.setImageDrawable(
                         ContextCompat.getDrawable(
@@ -140,40 +141,41 @@ object AiringPresenterBindingHelper {
 
     fun AiringCompactPresenterLayoutBinding.bindPresenter(
         context: Context,
-        item: AiringMediaModel,
+        item: AiringScheduleModel,
         vararg misc: Array<String>
     ) { //formats status statuscolor
-        mediaTitleTv.naText(item.title!!.title(context))
-        coverImageIv.setImageURI(item.coverImage!!.image(context))
+        val media = item.media?: return
+        mediaTitleTv.naText(media.title!!.title(context))
+        coverImageIv.setImageURI(media.coverImage!!.image(context))
 
-        if (item.type == MediaType.ANIME.ordinal) {
+        if (media.type == MediaType.ANIME.ordinal) {
             mediaEpisodeTv.text =
                 context.string(R.string.ep_d_s)
-                    .format(item.episodes.naText(), item.duration.naText())
+                    .format(media.episodes.naText(), media.duration.naText())
         } else {
             mediaEpisodeTv.text =
                 context.string(R.string.chap_s)
-                    .format(item.chapters.naText(), item.volumes.naText())
+                    .format(media.chapters.naText(), media.volumes.naText())
         }
 
-        mediaRatingTv.text = item.averageScore
+        mediaRatingTv.text = media.averageScore
 
-        mediaFormatTv.text = item.format?.let {
+        mediaFormatTv.text = media.format?.let {
             misc[0][it]
         }.naText()
 
-        mediaFormatTv.status = item.mediaEntryListModel?.status
+        mediaFormatTv.status = media.mediaListEntry?.status
 
 
         root.setOnClickListener {
             OpenMediaInfoEvent(
                 MediaInfoMeta(
-                    item.mediaId,
-                    item.type!!,
-                    item.title!!.romaji!!,
-                    item.coverImage!!.image(context),
-                    item.coverImage!!.largeImage,
-                    item.bannerImage
+                    media.id,
+                    media.type!!,
+                    media.title!!.romaji!!,
+                    media.coverImage!!.image(context),
+                    media.coverImage!!.largeImage,
+                    media.bannerImage
                 )
             ).postEvent
         }
@@ -182,11 +184,11 @@ object AiringPresenterBindingHelper {
             if (context.loggedIn()) {
                 OpenMediaListEditorEvent(
                     EntryEditorMeta(
-                        item.mediaId,
-                        item.type!!,
-                        item.title!!.title(context)!!,
-                        item.coverImage!!.image(context),
-                        item.bannerImage
+                        media.id,
+                        media.type!!,
+                        media.title!!.title(context)!!,
+                        media.coverImage!!.image(context),
+                        media.bannerImage
                     )
                 ).postEvent
             } else {
@@ -196,21 +198,21 @@ object AiringPresenterBindingHelper {
         }
 
         airingTimeTv.text = context.getString(R.string.episode_format_s).format(
-            item.airingTimeModel?.episode,
-            item.airingTimeModel?.airingAt!!.airingTime
+            item.episode,
+            item.airingAtModel?.airingTime
         )
 
         if (context.loggedIn()) {
             entryProgressTv.visibility = View.VISIBLE
             entryProgressTv.compoundDrawablesRelative[0]?.setTint(dynamicTextColorPrimary)
             entryProgressTv.text = context.getString(R.string.s_slash_s).format(
-                item.mediaEntryListModel?.progress?.toString().naText(),
-                when (item.type) {
+                media.mediaListEntry?.progress?.toString().naText(),
+                when (media.type) {
                     MediaType.ANIME.ordinal -> {
-                        item.episodes.naText()
+                        media.episodes.naText()
                     }
                     else -> {
-                        item.chapters.naText()
+                        media.chapters.naText()
                     }
 
                 }
@@ -222,19 +224,20 @@ object AiringPresenterBindingHelper {
 
     fun AiringMinimalListPresenterLayoutBinding.bindPresenter(
         context: Context,
-        item: AiringMediaModel,
+        item: AiringScheduleModel,
         blurDrawable: Drawable,
         vararg misc: Array<String>
     ) {
-        mediaBannerIv.setImageURI(item.bannerImage)
-        mediaTitleTv.text = item.title?.title(context)
+        val media = item.media ?: return
+        mediaBannerIv.setImageURI(media.bannerImage)
+        mediaTitleTv.text = media.title?.title(context)
         blurFrameLayout.background = blurDrawable
         mediaAiringAtHeaderTv.text =
-            context.getString(R.string.ep_1_s_airing_at).format(item.airingTimeModel?.episode ?: 0)
-        mediaAiringAtTv.text = item.airingTimeModel?.airingAt?.airingTime
-        airingTimeTv.setAiringText(item.airingTimeModel, false)
-        mediaStatusTv.status = item.mediaEntryListModel?.status
-        item.mediaEntryListModel?.status?.let {
+            context.getString(R.string.ep_1_s_airing_at).format(item.episode ?: 0)
+        mediaAiringAtTv.text = item.airingAtModel?.airingTime
+        airingTimeTv.setAiringText(item, false)
+        mediaStatusTv.status = media.mediaListEntry?.status
+        media.mediaListEntry?.status?.let {
             mediaStatusTv.text = misc[1][it]
             mediaStatusTv.textView.color = Color.parseColor(misc[2][it])
         }?:let {
@@ -245,12 +248,12 @@ object AiringPresenterBindingHelper {
         root.setOnClickListener {
             OpenMediaInfoEvent(
                 MediaInfoMeta(
-                    item.mediaId,
-                    item.type!!,
-                    item.title!!.romaji!!,
-                    item.coverImage!!.image(context),
-                    item.coverImage!!.largeImage,
-                    item.bannerImage
+                    media.id,
+                    media.type!!,
+                    media.title!!.romaji!!,
+                    media.coverImage!!.image(context),
+                    media.coverImage!!.largeImage,
+                    media.bannerImage
                 )
             ).postEvent
         }
@@ -261,11 +264,11 @@ object AiringPresenterBindingHelper {
             if (context.loggedIn()) {
                 OpenMediaListEditorEvent(
                     EntryEditorMeta(
-                        item.mediaId,
-                        item.type!!,
-                        item.title!!.title(context)!!,
-                        item.coverImage!!.image(context),
-                        item.bannerImage
+                        media.id,
+                        media.type!!,
+                        media.title!!.title(context)!!,
+                        media.coverImage!!.image(context),
+                        media.bannerImage
                     )
                 ).postEvent
             } else {

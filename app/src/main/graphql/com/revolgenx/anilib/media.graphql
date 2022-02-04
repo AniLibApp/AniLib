@@ -12,9 +12,8 @@ query MediaQuery(
     $sort: [MediaSort],
     $idIn: [Int],
     $isAdult:Boolean,
-    $includeStudio:Boolean! = false,
-    $includeStaff:Boolean! = false,
-    $includeDescription: Boolean! = false) {
+    $includeStudio:Boolean!,
+    $includeStaff:Boolean!) {
     page: Page(page: $page, perPage: $perPage) {
         media(seasonYear: $seasonYear
             , season: $season
@@ -29,6 +28,7 @@ query MediaQuery(
             , isAdult:$isAdult) {
             ... on Media{
                 ... mediaContent
+                description(asHtml:true)
 
                 studios @include(if:$includeStudio){
                     edges{
@@ -284,7 +284,6 @@ fragment mediaContent on Media{
         }
     }
     bannerImage
-    description(asHtml:true) @include(if:$includeDescription)
     isAdult
     format
     type

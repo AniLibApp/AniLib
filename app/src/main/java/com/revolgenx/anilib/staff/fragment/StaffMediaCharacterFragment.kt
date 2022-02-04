@@ -4,19 +4,20 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
+import com.revolgenx.anilib.character.data.model.CharacterModel
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.staff.data.model.StaffMediaCharacterModel
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.staff.presenter.StaffMediaCharacterPresenter
 import com.revolgenx.anilib.staff.viewmodel.StaffMediaCharacterViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class StaffMediaCharacterFragment : BasePresenterFragment<StaffMediaCharacterModel>() {
-    override val basePresenter: Presenter<StaffMediaCharacterModel>
+class StaffMediaCharacterFragment : BasePresenterFragment<MediaModel>() {
+    override val basePresenter: Presenter<MediaModel>
         get() = StaffMediaCharacterPresenter(
             requireContext()
         )
 
-    override val baseSource: Source<StaffMediaCharacterModel>
+    override val baseSource: Source<MediaModel>
         get() = viewModel.source ?: createSource()
 
     companion object {
@@ -33,7 +34,7 @@ class StaffMediaCharacterFragment : BasePresenterFragment<StaffMediaCharacterMod
 
 
     private val viewModel by viewModel<StaffMediaCharacterViewModel>()
-    override fun createSource(): Source<StaffMediaCharacterModel> {
+    override fun createSource(): Source<MediaModel> {
         return viewModel.createSource()
     }
 

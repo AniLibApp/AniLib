@@ -10,15 +10,15 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.common.data.model.CommonMediaModel
 import com.revolgenx.anilib.databinding.MediaListingPresenterLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 
-class MediaListingPresenter(context: Context) : BasePresenter<MediaListingPresenterLayoutBinding, CommonMediaModel>(context) {
+class MediaListingPresenter(context: Context) : BasePresenter<MediaListingPresenterLayoutBinding, MediaModel>(context) {
 
     override val elementTypes: Collection<Int> = listOf(0)
 
@@ -41,7 +41,7 @@ class MediaListingPresenter(context: Context) : BasePresenter<MediaListingPresen
     }
 
 
-    override fun onBind(page: Page, holder: Holder, element: Element<CommonMediaModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<MediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
 
@@ -52,7 +52,7 @@ class MediaListingPresenter(context: Context) : BasePresenter<MediaListingPresen
                 context.getString(R.string.media_format_year_s).format(item.format?.let {
                     mediaFormatList[it]
                 }.naText(), item.seasonYear?.toString().naText())
-            mediaFormatTv.status = item.mediaEntryListModel?.status
+            mediaFormatTv.status = item.mediaListEntry?.status
             mediaStatusTv.text = item.status?.let {
                 mediaStatusTv.color = Color.parseColor(statusColors[it])
                 mediaStatus[it]
@@ -62,7 +62,7 @@ class MediaListingPresenter(context: Context) : BasePresenter<MediaListingPresen
             root.setOnClickListener {
                 OpenMediaInfoEvent(
                     MediaInfoMeta(
-                        item.mediaId,
+                        item.id,
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(context),
@@ -76,7 +76,7 @@ class MediaListingPresenter(context: Context) : BasePresenter<MediaListingPresen
                 if (context.loggedIn()) {
                     OpenMediaListEditorEvent(
                         EntryEditorMeta(
-                            item.mediaId,
+                            item.id,
                             item.type!!,
                             item.title!!.title(context)!!,
                             item.coverImage!!.image(context),

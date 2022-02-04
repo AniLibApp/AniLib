@@ -4,8 +4,8 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
 import com.revolgenx.anilib.character.data.field.CharacterMediaField
-import com.revolgenx.anilib.character.data.model.CharacterMediaModel
 import com.revolgenx.anilib.character.service.CharacterService
+import com.revolgenx.anilib.media.data.model.MediaModel
 import io.reactivex.disposables.CompositeDisposable
 
 class CharacterMediaSource(
@@ -13,10 +13,10 @@ class CharacterMediaSource(
     private val characterService: CharacterService,
     private val compositeDisposable: CompositeDisposable
 ) :
-    BaseRecyclerSource<CharacterMediaModel, CharacterMediaField>(field) {
+    BaseRecyclerSource<MediaModel, CharacterMediaField>(field) {
 
-    override fun areItemsTheSame(first: CharacterMediaModel, second: CharacterMediaModel): Boolean {
-        return first.mediaId == second.mediaId
+    override fun areItemsTheSame(first: MediaModel, second: MediaModel): Boolean {
+        return first.id == second.id
     }
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {

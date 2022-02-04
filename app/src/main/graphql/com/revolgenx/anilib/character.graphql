@@ -56,8 +56,7 @@ query CharacterQuery($characterId:Int){
 query CharacterMediaQuery(
     $characterId:Int,
     $page:Int,
-    $perPage:Int,
-    $includeDescription:Boolean!= false){
+    $perPage:Int){
     character: Character(id:$characterId){
         media(page:$page, perPage:$perPage){
             nodes{

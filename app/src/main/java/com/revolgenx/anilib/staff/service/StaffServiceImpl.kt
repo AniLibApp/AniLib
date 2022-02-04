@@ -7,6 +7,7 @@ import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaConnectionModel
 import com.revolgenx.anilib.media.data.model.MediaEdgeModel
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.media.data.model.toModel
 import com.revolgenx.anilib.staff.data.field.StaffField
 import com.revolgenx.anilib.staff.data.field.StaffMediaCharacterField
@@ -59,44 +60,32 @@ class StaffServiceImpl(
     override fun getStaffMediaCharacter(
         field: StaffMediaCharacterField,
         compositeDisposable: CompositeDisposable,
-        resourceCallback: (Resource<CharacterConnectionModel>) -> Unit
+        resourceCallback: (Resource<List<MediaModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data?.staff?.characters?.let {
-                    CharacterConnectionModel().also { characterConnectionModel ->
-                        characterConnectionModel.nodes =
-                            it.nodes?.filterNotNull()?.map { character ->
-                                CharacterModel().also { characterModel ->
+                    it.nodes?.mapNotNull { character ->
+                        character?.media?.edges?.filterNotNull()?.mapNotNull { edge ->
+                            edge.node?.onMedia?.mediaContent?.toModel()?.also { mediaModel ->
+                                mediaModel.character = CharacterModel().also { characterModel ->
                                     characterModel.id = character.id
                                     characterModel.name = CharacterNameModel(character.name?.full)
                                     characterModel.image =
                                         character.image?.characterImage?.toModel()
 
-                                    characterModel.media = character.media?.let { media ->
-                                        MediaConnectionModel().also { mediaConnectionModel ->
-                                            mediaConnectionModel.edges =
-                                                media.edges?.filterNotNull()?.map { edge ->
-                                                    MediaEdgeModel().also { edgeModel ->
-                                                        edgeModel.characterRole =
-                                                            edge.characterRole?.ordinal
-                                                        edgeModel.node =
-                                                            edge.node?.onMedia?.mediaContent?.toModel()
-                                                    }
-                                                }
-                                        }
-                                    }
-
                                 }
+                                mediaModel.characterRole = edge.characterRole?.ordinal
                             }
-                    }
+                        }
+                    }?.flatten()
                 }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             },
                 {
-                    Timber.w(it)
+                    Timber.e(it)
                     resourceCallback.invoke(Resource.error(it.message ?: "ERROR", null, it))
                 })
         compositeDisposable.add(disposable)
@@ -105,21 +94,13 @@ class StaffServiceImpl(
     override fun getStaffMediaRole(
         field: StaffMediaRoleField,
         compositeDisposable: CompositeDisposable,
-        resourceCallback: (Resource<MediaConnectionModel>) -> Unit
+        resourceCallback: (Resource<List<MediaModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-
-                it.data?.staff?.staffMedia?.let { staffMedia ->
-                    MediaConnectionModel().also { mediaConnectionModel ->
-                        mediaConnectionModel.edges =
-                            staffMedia.edges?.filterNotNull()?.map { edge ->
-                                MediaEdgeModel().also { staffEdgeModel ->
-                                    staffEdgeModel.staffRole = edge.staffRole
-                                    staffEdgeModel.node =
-                                        edge.node?.onMedia?.mediaContent?.toModel()
-                                }
-                            }
+                it.data?.staff?.staffMedia?.edges?.mapNotNull { edge->
+                    edge?.node?.onMedia?.mediaContent?.toModel()?.also { model->
+                        model.staffRole = edge.staffRole
                     }
                 }
             }.observeOn(AndroidSchedulers.mainThread())

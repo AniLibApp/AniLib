@@ -7,8 +7,7 @@ query UserFavouriteQuery(
     $includeManga:Boolean!,
     $includeCharacter:Boolean!,
     $includeStaff:Boolean!,
-    $includeStudio:Boolean!,
-    $includeDescription:Boolean! = false)  {
+    $includeStudio:Boolean!)  {
     user: User(id:$id, name:$name){
         favourites{
             anime(page:$page,perPage:$perPage) @include(if:$includeAnime){

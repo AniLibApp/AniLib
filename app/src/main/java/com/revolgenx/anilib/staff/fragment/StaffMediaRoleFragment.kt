@@ -5,17 +5,17 @@ import androidx.core.os.bundleOf
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.staff.data.model.StaffMediaRoleModel
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.staff.presenter.StaffMediaRolePresenter
 import com.revolgenx.anilib.staff.viewmodel.StaffMediaRoleViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class StaffMediaRoleFragment : BasePresenterFragment<StaffMediaRoleModel>() {
-    override val basePresenter: Presenter<StaffMediaRoleModel>
+class StaffMediaRoleFragment : BasePresenterFragment<MediaModel>() {
+    override val basePresenter: Presenter<MediaModel>
         get() = StaffMediaRolePresenter(
             requireContext()
         )
-    override val baseSource: Source<StaffMediaRoleModel>
+    override val baseSource: Source<MediaModel>
         get() = viewModel.source ?: createSource()
 
     companion object {
@@ -29,7 +29,7 @@ class StaffMediaRoleFragment : BasePresenterFragment<StaffMediaRoleModel>() {
     override var gridMaxSpan: Int = 6
     override var gridMinSpan: Int = 3
 
-    override fun createSource(): Source<StaffMediaRoleModel> {
+    override fun createSource(): Source<MediaModel> {
         return viewModel.createSource()
     }
 

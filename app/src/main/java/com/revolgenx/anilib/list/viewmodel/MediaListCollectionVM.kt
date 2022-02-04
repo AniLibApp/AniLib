@@ -124,14 +124,14 @@ class MediaListCollectionVM(
                 MediaType.ANIME -> {
                     it.animeList?.sectionOrder?.forEach { order ->
                         lists.firstOrNull { it.name == order }?.let {
-                            groupNameMap[order] = it.entries!!.count()
+                            groupNameMap[order] = it.entries?.count() ?: 0
                         }
                     }
                 }
                 MediaType.MANGA -> {
                     it.mangaList?.sectionOrder?.forEach { order ->
                         lists.firstOrNull { it.name == order }?.let {
-                            groupNameMap[order] = it.entries!!.count()
+                            groupNameMap[order] = it.entries?.count() ?: 0
                         }
                     }
                 }

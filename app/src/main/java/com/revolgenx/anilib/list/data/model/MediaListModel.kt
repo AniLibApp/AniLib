@@ -46,7 +46,7 @@ fun MediaListEntry.toModel() = MediaListModel().also { model ->
     model.private = private == true
     model.hiddenFromStatusLists = hiddenFromStatusLists == true
     model.customLists = customLists as? Map<String, Boolean>
-    model.advanceScores = advancedScores as? Map<String, Double>
+//    model.advanceScores = advancedScores as? Map<String, Double>
     model.notes = notes
     model.updatedAt = updatedAt
     model.createdAt = createdAt

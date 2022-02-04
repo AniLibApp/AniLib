@@ -1,24 +1,17 @@
 package com.revolgenx.anilib.infrastructure.repository.network.converter
 
 import com.revolgenx.anilib.*
-import com.revolgenx.anilib.common.data.model.CommonMediaModel
 import com.revolgenx.anilib.media.data.model.MediaTitleModel
 import com.revolgenx.anilib.entry.data.model.AdvancedScoreModel
-import com.revolgenx.anilib.entry.data.model.MediaEntryListModel
-import com.revolgenx.anilib.data.model.list.MediaListCountModel
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionTypeModel
 import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel
 import com.revolgenx.anilib.app.setting.data.model.getRowOrder
 import com.revolgenx.anilib.common.data.model.FuzzyDateModel
-import com.revolgenx.anilib.data.model.list.AlMediaListModel
-import com.revolgenx.anilib.entry.data.model.EntryListEditorMediaModel
-import com.revolgenx.anilib.studio.data.model.MediaStudioModel
 import com.revolgenx.anilib.user.data.model.UserAvatarModel
 import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.user.data.model.UserPrefModel
 import com.revolgenx.anilib.fragment.*
-import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.social.data.model.ListActivityModel
 import com.revolgenx.anilib.social.data.model.MessageActivityModel

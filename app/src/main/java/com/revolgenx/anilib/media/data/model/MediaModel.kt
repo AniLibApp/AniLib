@@ -3,16 +3,17 @@ package com.revolgenx.anilib.media.data.model
 import com.revolgenx.anilib.airing.data.model.AiringScheduleConnectionModel
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.character.data.model.CharacterConnectionModel
+import com.revolgenx.anilib.character.data.model.CharacterModel
 import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.common.data.model.FuzzyDateModel
 import com.revolgenx.anilib.constant.*
 import com.revolgenx.anilib.fragment.MediaContent
-import com.revolgenx.anilib.fragment.MediaTitle
 import com.revolgenx.anilib.home.recommendation.data.model.RecommendationConnectionModel
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.review.data.model.ReviewConnection
 import com.revolgenx.anilib.staff.data.model.StaffConnectionModel
+import com.revolgenx.anilib.staff.data.model.StaffModel
 import com.revolgenx.anilib.studio.data.model.StudioConnectionModel
 import com.revolgenx.anilib.user.data.model.stats.MediaRankModel
 
@@ -21,7 +22,15 @@ open class MediaModel:BaseModel() {
     var averageScore: Int? = null
     var bannerImage: String? = null
     var chapters: Int? = null
+
+    var character: CharacterModel? = null
+    var characterRole: Int? = null
     var characters: CharacterConnectionModel? = null
+
+    var staff: StaffModel? = null
+    var staffRole: String? = null
+    var staffs: StaffConnectionModel? = null
+
     var countryOfOrigin: String? = null
     var coverImage: MediaCoverImageModel? = null
     var description:String? = null
@@ -49,7 +58,6 @@ open class MediaModel:BaseModel() {
     var seasonYear: Int? = null
     var siteUrl: String? = null
     var source: AlMediaSource? = null
-    var staff: StaffConnectionModel? = null
     var startDate: FuzzyDateModel? = null
     var stats: MediaStatsModel? = null
     var status: Int? = null
@@ -75,7 +83,6 @@ open class MediaModel:BaseModel() {
 fun MediaContent.toModel() = MediaModel().also {m->
     m.id = id
     m.title = title?.onMediaTitle?.mediaTitle?.toModel()
-    m.description = description
     m.popularity = popularity
     m.favourites = favourites
     m.format = format?.ordinal

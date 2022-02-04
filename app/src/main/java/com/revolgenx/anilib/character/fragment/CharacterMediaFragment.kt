@@ -5,14 +5,14 @@ import androidx.core.os.bundleOf
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.character.data.model.CharacterMediaModel
 import com.revolgenx.anilib.character.presenter.CharacterMediaPresenter
 import com.revolgenx.anilib.character.viewmodel.CharacterMediaViewModel
+import com.revolgenx.anilib.media.data.model.MediaModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CharacterMediaFragment : BasePresenterFragment<CharacterMediaModel>() {
+class CharacterMediaFragment : BasePresenterFragment<MediaModel>() {
 
-    override val basePresenter: Presenter<CharacterMediaModel>
+    override val basePresenter: Presenter<MediaModel>
         get() {
             return CharacterMediaPresenter(
                 requireContext()
@@ -20,7 +20,7 @@ class CharacterMediaFragment : BasePresenterFragment<CharacterMediaModel>() {
         }
 
     private val viewModel by viewModel<CharacterMediaViewModel>()
-    override val baseSource: Source<CharacterMediaModel>
+    override val baseSource: Source<MediaModel>
         get() = viewModel.source ?: createSource()
 
     private val characterId: Int? get() =arguments?.getInt(CHARACTER_ID_KEY)
@@ -34,7 +34,7 @@ class CharacterMediaFragment : BasePresenterFragment<CharacterMediaModel>() {
         }
     }
 
-    override fun createSource(): Source<CharacterMediaModel> {
+    override fun createSource(): Source<MediaModel> {
         return viewModel.createSource()
     }
 

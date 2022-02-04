@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.character.data.model.CharacterMediaModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
@@ -15,10 +14,11 @@ import com.revolgenx.anilib.databinding.CharacterMediaPresenterBinding
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 
-class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPresenterBinding, CharacterMediaModel>(context) {
+class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPresenterBinding, MediaModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -41,7 +41,7 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
         return CharacterMediaPresenterBinding.inflate(inflater, parent, false)
     }
 
-    override fun onBind(page: Page, holder: Holder, element: Element<CharacterMediaModel>) {
+    override fun onBind(page: Page, holder: Holder, element: Element<MediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
 
@@ -52,7 +52,7 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
                 context.getString(R.string.media_format_year_s).format(item.format?.let {
                     mediaFormatList[it]
                 }.naText(), item.seasonYear?.toString().naText())
-            characterMediaFormatTv.status = item.mediaEntryListModel?.status
+            characterMediaFormatTv.status = item.mediaListEntry?.status
             characterMediaStatusTv.text = item.status?.let {
                 characterMediaStatusTv.color = Color.parseColor(statusColors[it])
                 mediaStatus[it]
@@ -62,7 +62,7 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
             root.setOnClickListener {
                 OpenMediaInfoEvent(
                     MediaInfoMeta(
-                        item.mediaId,
+                        item.id,
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(context),
@@ -76,7 +76,7 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
                 if (context.loggedIn()) {
                     OpenMediaListEditorEvent(
                         EntryEditorMeta(
-                            item.mediaId,
+                            item.id,
                             item.type!!,
                             item.title!!.title(context)!!,
                             item.coverImage!!.image(context),

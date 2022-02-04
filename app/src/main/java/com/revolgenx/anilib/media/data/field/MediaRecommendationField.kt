@@ -12,12 +12,13 @@ class MediaRecommendationField : BaseSourceField<MediaRecommendationQuery>() {
         val mediaSort = sort?.let {
             listOf(RecommendationSort.values()[it])
         }
+
         return MediaRecommendationQuery(
             page = nn(page),
             perPage = nn(perPage),
             mediaId = nn(mediaId),
             sort = nn(mediaSort),
-            isAdult = nn(canShowAdult)
+            isAdult = nn(canShowAdult.takeIf { it.not() })
         )
     }
 

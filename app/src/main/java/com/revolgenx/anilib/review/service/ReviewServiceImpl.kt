@@ -5,7 +5,6 @@ import com.apollographql.apollo3.exception.ApolloHttpException
 import com.revolgenx.anilib.DeleteReviewMutation
 import com.revolgenx.anilib.ReviewQuery
 import com.revolgenx.anilib.SaveReviewMutation
-import com.revolgenx.anilib.common.data.model.CommonMediaModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
@@ -15,7 +14,6 @@ import com.revolgenx.anilib.review.data.field.AllReviewField
 import com.revolgenx.anilib.review.data.field.RateReviewField
 import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.model.ReviewModel
-import com.revolgenx.anilib.user.data.model.UserAvatarModel
 import com.revolgenx.anilib.user.data.model.UserPrefModel
 import com.revolgenx.anilib.user.data.model.toModel
 import io.reactivex.android.schedulers.AndroidSchedulers

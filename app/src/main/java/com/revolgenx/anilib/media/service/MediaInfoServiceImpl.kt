@@ -4,20 +4,21 @@ import com.apollographql.apollo3.api.Optional
 import com.github.mikephil.charting.data.Entry
 import com.revolgenx.anilib.BrowseSimpleMediaQuery
 import com.revolgenx.anilib.airing.data.model.AiringAtModel
-import com.revolgenx.anilib.airing.data.model.AiringTimeModel
+import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.character.data.model.*
 import com.revolgenx.anilib.common.data.model.stats.ScoreDistributionModel
 import com.revolgenx.anilib.common.data.model.stats.StatusDistributionModel
-import com.revolgenx.anilib.user.data.model.UserAvatarModel
 import com.revolgenx.anilib.user.data.model.UserPrefModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.field.*
 import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.staff.data.model.*
 import com.revolgenx.anilib.user.data.model.stats.*
+import com.revolgenx.anilib.user.data.model.stats.MediaStatsModel
 import com.revolgenx.anilib.user.data.model.toModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -33,19 +34,23 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     override fun getSimpleMedia(
         mediaId: Int?,
         compositeDisposable: CompositeDisposable,
-        callback: (Resource<MediaInfoModel>) -> Unit
+        callback: (Resource<MediaModel>) -> Unit
     ) {
         val disposable = graphRepository.request(
             BrowseSimpleMediaQuery(mediaId = Optional.presentIfNotNull(mediaId))
         )
             .map {
                 it.data?.media?.let {
-                    MediaInfoModel().also { model ->
-                        model.mediaId = it.id
+                    MediaModel().also { model ->
+                        model.id = it.id
                         model.title = it.title?.mediaTitle?.toModel()
                         model.coverImage =
                             it.coverImage?.mediaCoverImage?.toModel()
-                        model.mediaListStatus = it.mediaListEntry?.status?.ordinal
+                        model.mediaListEntry = it.mediaListEntry?.let {
+                            MediaListModel().also { l ->
+                                l.status = it.status?.ordinal
+                            }
+                        }
                         model.bannerImage = it.bannerImage ?: model.coverImage?.largeImage
                         model.popularity = it.popularity
                         model.favourites = it.favourites
@@ -53,16 +58,17 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
                         model.seasonYear = it.seasonYear
                         model.type = it.type?.ordinal
                         model.siteUrl = it.siteUrl
-                        it.nextAiringEpisode?.let {
-                            model.airingTimeModel = AiringTimeModel().also { timeModel ->
-                                timeModel.airingAt = AiringAtModel(
+
+                        model.nextAiringEpisode = it.nextAiringEpisode?.let { next ->
+                            AiringScheduleModel().also { aModel ->
+                                aModel.airingAtModel = AiringAtModel(
                                     LocalDateTime.ofInstant(
                                         Instant.ofEpochSecond(
-                                            it.airingAt.toLong()
+                                            next.airingAt.toLong()
                                         ), ZoneOffset.systemDefault()
                                     )
                                 )
-                                timeModel.episode = it.episode
+                                aModel.episode = next.episode
                             }
                         }
                     }
@@ -110,7 +116,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 Resource.success(Resource.error(it.message ?: ERROR, null, it))
             })
 
@@ -154,7 +160,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
@@ -187,7 +193,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
@@ -225,7 +231,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
@@ -235,12 +241,12 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     override fun getMediaStats(
         field: MediaStatsField,
         compositeDisposable: CompositeDisposable?,
-        callback: (Resource<AlMediaStatsModel>) -> Unit
+        callback: (Resource<MediaStatsModel>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 response.data?.media?.let { media ->
-                    AlMediaStatsModel().also { model ->
+                    MediaStatsModel().also { model ->
                         model.rankings = media.rankings?.filterNotNull()?.map { rank ->
                             MediaRankModel().also { rankModel ->
                                 rankModel.id = rank.id
@@ -321,7 +327,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 callback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable?.add(disposable)
@@ -343,7 +349,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
             .subscribe({
                 resourceCallback.invoke(Resource.success(it ?: emptyList()))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable.add(disposable)

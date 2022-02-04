@@ -119,7 +119,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                             }
                     }
                 }, {
-                    Timber.w(it)
+                    Timber.e(it)
                 })
         compositeDisposable.add(disposable)
     }
@@ -145,7 +145,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                             }
                     }
                 }, {
-                    Timber.w(it)
+                    Timber.e(it)
                 })
         compositeDisposable.add(disposable)
     }
@@ -193,19 +193,19 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
     ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.user?.favourites?.let {
-                    it.anime?.nodes?.filterNotNull()?.filter {
-                        if (field.canShowAdult) true else it.onMedia.mediaContent.isAdult == false
-                    }?.map { map ->
-                        map.onMedia.mediaContent.toModel()
-                    }
-                    it.manga?.nodes?.filterNotNull()?.filter {
-                        if (field.canShowAdult) true else it.onMedia.mediaContent.isAdult == false
-                    }?.map { map ->
-                        map.onMedia.mediaContent.toModel()
-                    }
-                    it.characters?.nodes?.filterNotNull()?.map { map ->
-                        map.onCharacter.narrowCharacterContent.let {
+                it.data?.user?.favourites?.let { fav ->
+                    fav.anime?.nodes?.mapNotNull { node ->
+                        node?.takeIf {
+                            if (field.canShowAdult) true else it.onMedia.mediaContent.isAdult == false
+                        }?.onMedia?.mediaContent?.toModel()
+
+                    } ?: fav.manga?.nodes?.mapNotNull { node ->
+                        node?.takeIf {
+                            if (field.canShowAdult) true else it.onMedia.mediaContent.isAdult == false
+                        }?.onMedia?.mediaContent?.toModel()
+
+                    } ?: fav.characters?.nodes?.mapNotNull { node ->
+                        node?.onCharacter?.narrowCharacterContent?.let {
                             CharacterModel().also { model ->
                                 model.id = it.id
                                 model.name = it.name?.let {
@@ -214,9 +214,8 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                                 model.image = it.image?.characterImage?.toModel()
                             }
                         }
-                    }
-                    it.staff?.nodes?.filterNotNull()?.map { map ->
-                        map.onStaff.narrowStaffContent.let {
+                    } ?: fav.staff?.nodes?.mapNotNull { map ->
+                        map?.onStaff?.narrowStaffContent?.let {
                             StaffModel().also { model ->
                                 model.id = it.id
                                 model.name = it.name?.let {
@@ -225,10 +224,8 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                                 model.image = it.image?.staffImage?.toModel()
                             }
                         }
-                    }
-
-                    it.studios?.nodes?.filterNotNull()?.map { map ->
-                        map.onStudio.studioContent.let {
+                    } ?: fav.studios?.nodes?.mapNotNull { map ->
+                        map?.onStudio?.studioContent?.let {
                             StudioModel().also { model ->
                                 model.id = it.id
                                 model.studioName = it.name
@@ -249,7 +246,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
             .subscribe({
                 callback.invoke(Resource.success(it))
             }, {
-                Timber.w(it)
+                Timber.e(it)
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable.add(disposable)

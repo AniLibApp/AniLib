@@ -1,11 +1,11 @@
-query  AiringScheduleQuery($page:Int
-    , $perPage:Int
-    , $notYetAired:Boolean
-    , $airingAtGreater:Int
-    , $airingAtLesser:Int
-    , $mediaId_in:[Int]
-    , $sort: [AiringSort],
-    $includeDescription:Boolean! = true){
+query  AiringScheduleQuery(
+    $page:Int,
+    $perPage:Int,
+    $notYetAired:Boolean,
+    $airingAtGreater:Int,
+    $airingAtLesser:Int,
+    $mediaId_in:[Int],
+    $sort: [AiringSort]){
     page: Page(page:$page, perPage:$perPage){
         airingSchedules(notYetAired:$notYetAired
             , airingAt_greater:$airingAtGreater
@@ -16,6 +16,7 @@ query  AiringScheduleQuery($page:Int
             airingAt
             timeUntilAiring
             episode
+            mediaId
             media{
                 ... mediaContent
             }

@@ -5,7 +5,6 @@ import com.revolgenx.anilib.common.preference.getDiscoverMediaListSort
 import com.revolgenx.anilib.data.field.list.MediaListField
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
 import com.revolgenx.anilib.entry.service.MediaEntryService
-import com.revolgenx.anilib.ui.viewmodel.list.MediaListViewModel
 
 class DiscoverWatchingViewModel(entryService: MediaEntryService, service: MediaListService) :
     MediaListViewModel(entryService,service) {

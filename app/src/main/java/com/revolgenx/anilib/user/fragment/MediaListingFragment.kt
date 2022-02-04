@@ -6,15 +6,15 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterToolbarFragment
-import com.revolgenx.anilib.common.data.model.CommonMediaModel
+import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.media.presenter.MediaListingPresenter
 import com.revolgenx.anilib.media.viewmodel.MediaListingViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaListingFragment:BasePresenterToolbarFragment<CommonMediaModel>() {
-    override val basePresenter: Presenter<CommonMediaModel>
+class MediaListingFragment:BasePresenterToolbarFragment<MediaModel>() {
+    override val basePresenter: Presenter<MediaModel>
         get() = MediaListingPresenter(requireContext())
-    override val baseSource: Source<CommonMediaModel>
+    override val baseSource: Source<MediaModel>
         get() = viewModel.source?:createSource()
 
     private val viewModel by viewModel<MediaListingViewModel>()
@@ -31,7 +31,7 @@ class MediaListingFragment:BasePresenterToolbarFragment<CommonMediaModel>() {
         }
     }
 
-    override fun createSource(): Source<CommonMediaModel> {
+    override fun createSource(): Source<MediaModel> {
         return viewModel.createSource()
     }
 

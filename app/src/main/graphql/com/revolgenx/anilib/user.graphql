@@ -214,13 +214,13 @@ query UserStatisticOverviewQuery($id:Int, $name:String,$includeAnime:Boolean!){
 query UserStatsQuery($id:Int
     , $name:String
     , $sort:[UserStatisticsSort]
-    , $includeAnime:Boolean! = false
-    , $includeManga:Boolean! = false
-    , $includeTag:Boolean! = false
-    , $includeGenre:Boolean! = false
-    , $includeStudio:Boolean! = false
-    , $includeStaff:Boolean! = false
-    , $includeVoiceActor:Boolean! = false){
+    , $includeAnime:Boolean!
+    , $includeManga:Boolean!
+    , $includeTag:Boolean!
+    , $includeGenre:Boolean!
+    , $includeStudio:Boolean!
+    , $includeStaff:Boolean!
+    , $includeVoiceActor:Boolean!){
     user: User(id:$id, name:$name){
         statistics{
             anime @include(if:$includeAnime){

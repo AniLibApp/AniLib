@@ -66,13 +66,13 @@ class UserStatsField : BaseSourceField<UserStatsQuery>() {
         }
         return UserStatsQuery(
             id = nn(userId), name = nn(userName), sort = nn(mSort),
-            includeAnime = nn(includeAnime),
-            includeManga = nn(includeManga),
-            includeTag = nn(includeTag),
-            includeGenre = nn(includeGenre),
-            includeStaff = nn(includeStaff),
-            includeStudio = nn(includeStudio),
-            includeVoiceActor = nn(includeVoiceActor)
+            includeAnime = includeAnime,
+            includeManga = includeManga,
+            includeTag = includeTag,
+            includeGenre = includeGenre,
+            includeStaff = includeStaff,
+            includeStudio = includeStudio,
+            includeVoiceActor = includeVoiceActor
         )
     }
     enum class UserStatsType {
