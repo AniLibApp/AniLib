@@ -13,7 +13,7 @@ buildscript {
     dependencies {
         classpath ("com.google.gms:google-services:${BuildPluginsVersion.GOOGLE_SERVICE}")
         classpath ("com.google.firebase:firebase-crashlytics-gradle:2.5.2")
-        classpath("com.android.tools.build:gradle:${BuildPluginsVersion.AGP}")
+        classpath("com.android.tools.build:gradle:7.1.1")
     }
 }
 

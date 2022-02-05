@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
+import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
+import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.constant.UserConstant
 import com.revolgenx.anilib.user.data.meta.UserMeta
@@ -60,13 +62,16 @@ class UserFavouriteContainerFragment :
             it.userProfileViewModel = this.userProfileViewModel
         }
 
-        val adapter = makePagerAdapter(
-            userFavouriteFragments,
+        binding.userFavouriteContainerViewPager.adapter = makeViewPagerAdapter2(
+            userFavouriteFragments
+        )
+
+        setupWithViewPager2(
+            binding.userFavouriteTabLayout,
+            binding.userFavouriteContainerViewPager,
             resources.getStringArray(R.array.user_favourite_tab_menu)
         )
-        binding.userFavouriteContainerViewPager.adapter = adapter
         binding.userFavouriteContainerViewPager.offscreenPageLimit = 4
-        binding.userFavouriteTabLayout.setupWithViewPager(binding.userFavouriteContainerViewPager)
 
     }
 

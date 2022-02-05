@@ -10,7 +10,6 @@
 
     <dimen name="discover_text_separation">6dp</dimen>
 
-
     <dimen name="toolbar_size">48dp</dimen>
     <dimen name="bottom_scroll_behavior_margin">96dp</dimen>
 
@@ -39,6 +38,7 @@
     <dimen name="list_heading_padding_top">12dp</dimen>
     <dimen name="list_heading_padding_bottom">8dp</dimen>
 
+    <dimen name="media_overview_header_margin">10dp</dimen>
 
     <!--    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/toolbar_size</dimen>-->
 

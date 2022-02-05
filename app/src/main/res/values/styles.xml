@@ -53,13 +53,16 @@
     </style>
 
 
+    <style name="DynamicTextTabLayoutStyle.Small">
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
     <style name="HomeContainerTabLayoutStyle" parent="DynamicTextTabLayoutStyle">
-        <item name="tabIndicatorHeight">3dp</item>
+<!--        <item name="tabIndicatorHeight">3dp</item>-->
     </style>
 
     <style name="HomeTabLayoutTextStyle">
-        <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="fontFamily">@font/roboto_medium</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">15sp</item>
     </style>
@@ -67,17 +70,11 @@
     <style name="DiscoverTabLayoutTextStyle" parent="HomeTabLayoutTextStyle">
     </style>
     <style name="ListTabLayoutTextStyle" parent="HomeTabLayoutTextStyle">
-
     </style>
     <style name="RadioTabLayoutTextStyle" parent="HomeTabLayoutTextStyle">
-
     </style>
-
     <style name="ActivityUnionTabLayoutTextStyle" parent="HomeTabLayoutTextStyle">
-
     </style>
-
-
 
     <style name="DynamicTextTabLayoutStyle.Background">
         <item name="adt_backgroundColorType">background</item>
@@ -146,13 +143,29 @@
     <style name="MediaBrowseTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">11sp</item>
-        <item name="android:paddingBottom">10dp</item>
     </style>
 
     <style name="MediaBrowseTitleStyle">
         <item name="fontFamily">@font/cabin_semi_bold</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="DynamicTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="tabIndicatorHeight">1dp</item>
+    </style>
+
+    <style name="AlTabStyle">
+        <item name="tabMode">scrollable</item>
+    </style>
+
+    <style name="AlTabStyle.Indicator">
+        <item name="tabMode">scrollable</item>
+        <item name="tabIndicatorHeight">1dp</item>
+    </style>
+
+    <style name="AlTabTextAppearance.NoCaps" parent="TextAppearance.Design.Tab">
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
     </style>
 
     <style name="SettingHeaderStyle">

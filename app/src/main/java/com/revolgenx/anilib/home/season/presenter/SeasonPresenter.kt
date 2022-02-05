@@ -111,7 +111,7 @@ class SeasonPresenter(context: Context) :
                 ).postEvent
             }
 
-            bookmarkIv.setOnClickListener {
+            root.setOnLongClickListener {
                 if (isLoggedIn) {
                     OpenMediaListEditorEvent(
                         EntryEditorMeta(
@@ -125,6 +125,7 @@ class SeasonPresenter(context: Context) :
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                 }
+                true
             }
 
             if (isLoggedIn) {
@@ -142,22 +143,6 @@ class SeasonPresenter(context: Context) :
 
                     }
                 )
-
-                item.mediaListEntry?.status?.let {
-                    bookmarkIv.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context,
-                            R.drawable.ic_bookmark_filled
-                        )
-                    )
-                }?:let {
-                    bookmarkIv.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context,
-                            R.drawable.ic_bookmark
-                        )
-                    )
-                }
             } else {
                 entryProgressTv.visibility = View.GONE
             }

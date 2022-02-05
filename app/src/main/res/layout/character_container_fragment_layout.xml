@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/character_bottom_nav"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <include
-            android:id="@+id/character_toolbar"
-            layout="@layout/toolbar_layout" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager
-            android:id="@+id/character_view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <com.pranavpandey.android.dynamic.support.widget.DynamicBottomNavigationView
-        android:id="@+id/character_bottom_nav"
+    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        app:adt_backgroundAware="disable"
         app:adt_colorType="background"
-        app:adt_textColorType="accent"
-        app:adt_contrastWithColorType="background"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:adt_contrastWithColorType="none">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+            android:id="@+id/dynamicToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:adt_colorType="background"
+            app:adt_textColorType="text_primary"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_scrollFlags="enterAlways|scroll"
+            app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
+            app:titleTextAppearance="@style/DynamicToolbarTitleTheme">
+
+            <com.revolgenx.anilib.ui.view.widgets.tablayout.DynamicIconTabLayout
+                android:id="@+id/character_tab_layout"
+                style="@style/AlTabStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:adt_colorType="background"
+                app:adt_contrastWithColorType="background"
+                app:adt_textColorType="accent"
+                app:tabInlineLabel="true"
+                app:tabPaddingStart="0dp"
+                app:tabPaddingEnd="16dp"
+                app:tabTextAppearance="@style/AlTabTextAppearance.NoCaps" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicToolbar>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/character_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

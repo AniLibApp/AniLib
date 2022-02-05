@@ -13,7 +13,6 @@ import com.revolgenx.anilib.entry.viewmodel.EntryEditorViewModel
 import com.revolgenx.anilib.friend.viewmodel.FriendViewModel
 import com.revolgenx.anilib.home.recommendation.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.home.season.viewmodel.SeasonViewModel
-import com.revolgenx.anilib.ui.viewmodel.list.*
 import com.revolgenx.anilib.app.setting.viewmodel.NotificationSettingViewModel
 import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
 import com.revolgenx.anilib.notification.viewmodel.NotificationViewModel

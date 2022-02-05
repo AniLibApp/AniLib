@@ -20,22 +20,22 @@
             app:adt_textColorType="text_primary"
             app:layout_scrollFlags="enterAlways|scroll"
             app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
-            app:titleTextAppearance="@style/DynamicToolbarTitleTheme"  />
+            app:titleTextAppearance="@style/DynamicToolbarTitleTheme">
 
-        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
-            android:id="@+id/dynamic_tab_layout"
-            style="@style/DynamicTextTabLayoutStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:adt_backgroundColorType="background"
-            app:adt_colorType="accent"
-            app:adt_textColorType="text_primary"
-            app:tabGravity="fill"
-            app:tabMode="fixed" />
+            <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
+                android:id="@+id/dynamic_tab_layout"
+                style="@style/AlTabStyle.Indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:adt_backgroundColorType="background"
+                app:adt_colorType="accent"
+                app:adt_textColorType="text_primary"
+                app:tabTextAppearance="@style/AlTabTextAppearance.NoCaps" />
 
+        </com.pranavpandey.android.dynamic.support.widget.DynamicToolbar>
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/user_friend_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

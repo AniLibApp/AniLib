@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
+import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
+import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.constant.UserConstant
 import com.revolgenx.anilib.user.data.meta.UserStatsMeta
@@ -56,7 +59,8 @@ class UserStatsContainerFragment : BaseLayoutFragment<UserStatsContainerFragment
 
         val userStats = userStatsMeta ?: return
 
-        val adapter: FragmentPagerAdapter
+        val adapter: FragmentStateAdapter
+        val tabItems: Array<String>
 
         when (userStats.type) {
             MediaType.ANIME.ordinal -> {
@@ -66,10 +70,10 @@ class UserStatsContainerFragment : BaseLayoutFragment<UserStatsContainerFragment
                     )
                 }
 
-                adapter = makePagerAdapter(
-                    userAnimeStatsFragments,
-                    resources.getStringArray(R.array.user_anime_stats_tab_menu)
+                adapter = makeViewPagerAdapter2(
+                    userAnimeStatsFragments
                 )
+                tabItems = resources.getStringArray(R.array.user_anime_stats_tab_menu)
             }
             else -> {
                 userMangaStatsFragments.forEach {
@@ -77,15 +81,15 @@ class UserStatsContainerFragment : BaseLayoutFragment<UserStatsContainerFragment
                         UserConstant.USER_STATS_META_KEY to userStats
                     )
                 }
-                adapter = makePagerAdapter(
-                    userMangaStatsFragments,
-                    resources.getStringArray(R.array.user_manga_stats_tab_menu)
+                adapter = makeViewPagerAdapter2(
+                    userMangaStatsFragments
                 )
+                tabItems = resources.getStringArray(R.array.user_manga_stats_tab_menu)
             }
         }
 
         binding.userStatsContainerViewPager.adapter = adapter
-        binding.userStatsContainerViewPager.offscreenPageLimit = adapter.count - 1
-        binding.userStatsTabLayout.setupWithViewPager(binding.userStatsContainerViewPager)
+        setupWithViewPager2(binding.userStatsTabLayout, binding.userStatsContainerViewPager, tabItems)
+        binding.userStatsContainerViewPager.offscreenPageLimit = tabItems.size - 1
     }
 }

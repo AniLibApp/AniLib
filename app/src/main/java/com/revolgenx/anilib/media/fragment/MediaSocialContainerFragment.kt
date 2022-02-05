@@ -16,8 +16,6 @@ import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.MediaSocialFragmentLayoutBinding
-import com.revolgenx.anilib.list.viewmodel.MediaListCollectionContainerCallback
-import com.revolgenx.anilib.type.MediaType
 
 class MediaSocialContainerFragment : BaseLayoutFragment<MediaSocialFragmentLayoutBinding>() {
     private val mediaBrowserMeta
@@ -56,7 +54,7 @@ class MediaSocialContainerFragment : BaseLayoutFragment<MediaSocialFragmentLayou
             setupWithViewPager2(
                 mediaSocialTabLayout,
                 mediaSocialViewPager,
-                resources.getStringArray(R.array.list_tab_menu)
+                resources.getStringArray(R.array.media_social_tab_menu)
             )
         }
 

@@ -38,6 +38,12 @@ fun Fragment.makeViewPagerAdapter2(fragments: List<BaseFragment>) =
         override fun createFragment(position: Int): Fragment = fragments[position]
     }
 
+fun AppCompatActivity.makeViewPagerAdapter2(fragments: List<BaseFragment>) =
+    object : FragmentStateAdapter(this) {
+        override fun getItemCount(): Int = fragments.count()
+        override fun createFragment(position: Int): Fragment = fragments[position]
+    }
+
 fun Fragment.setupWithViewPager2(
     tabLayout: TabLayout,
     viewpager2: ViewPager2,
@@ -59,18 +65,16 @@ fun Fragment.setupWithViewPager2(
 fun Fragment.setupWithViewPager2(
     tabLayout: TabLayout,
     viewpager2: ViewPager2,
-    tabMeta:List<Pair<Int, Int?>>? = null
+    tabMeta: List<Pair<Int, Int>>? = null
 ) = TabLayoutMediator(tabLayout, viewpager2) { tab, position ->
     val item = tabMeta?.get(position) ?: return@TabLayoutMediator
     tab.setText(item.first)
-    item.second?.let {
-        tab.setIcon(it)
-    }
+    tab.setIcon(item.second)
 }.also { mediator ->
     mediator.attach()
-    val lifecycleObserver = object: LifecycleObserver {
-        @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-        fun onStop(){
+    val lifecycleObserver = object : LifecycleObserver {
+        @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        fun onDestroy() {
             mediator.detach()
             viewLifecycleOwner.lifecycle.removeObserver(this)
         }
@@ -87,12 +91,15 @@ fun TabLayout.setupWithViewPager2(
 }.also { it.attach() }
 
 
-fun Fragment.registerOnPageChangeCallback(viewpager2: ViewPager2, callback:ViewPager2.OnPageChangeCallback) {
+fun Fragment.registerOnPageChangeCallback(
+    viewpager2: ViewPager2,
+    callback: ViewPager2.OnPageChangeCallback
+) {
     viewpager2.registerOnPageChangeCallback(callback)
 
-    val lifecycleObserver = object: LifecycleObserver{
-        @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-        fun onStop(){
+    val lifecycleObserver = object : LifecycleObserver {
+        @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        fun onDestroy() {
             viewpager2.unregisterOnPageChangeCallback(callback)
             viewLifecycleOwner.lifecycle.removeObserver(this)
         }

@@ -19,7 +19,7 @@ class ReleaseInfoDialog : BaseDialogFragment<ReleaseInfoDialogLayoutBinding>() {
     }
 
     override fun builder(dialogBuilder: DynamicDialog.Builder, savedInstanceState: Bundle?) {
-        AlMarkwonFactory.getMarkwon(requireContext())
+        AlMarkwonFactory.getMarkwon()
             .setMarkdown(binding.releaseInfo, requireContext().getString(R.string.release_info))
     }
 

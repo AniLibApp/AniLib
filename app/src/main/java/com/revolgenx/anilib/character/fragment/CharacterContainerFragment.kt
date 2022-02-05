@@ -6,14 +6,12 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
-import androidx.core.view.forEachIndexed
-import androidx.core.view.iterator
-import androidx.viewpager.widget.ViewPager
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.CharacterContainerFragmentLayoutBinding
 import com.revolgenx.anilib.character.viewmodel.CharacterContainerViewModel
+import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
+import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.util.openLink
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -51,35 +49,16 @@ class CharacterContainerFragment : BaseLayoutFragment<CharacterContainerFragment
 
         characterId ?: return
         updateToolbarTitle(viewModel.title ?: requireContext().getString(R.string.character))
-        binding.characterViewPager.adapter = makePagerAdapter(characterFragments)
+        binding.characterViewPager.adapter = makeViewPagerAdapter2(characterFragments)
+        val tabItems = listOf(R.string.about to R.drawable.ic_role, R.string.media to R.drawable.ic_media, R.string.voice_role to R.drawable.ic_voice_role)
+        setupWithViewPager2(binding.characterTabLayout, binding.characterViewPager, tabItems)
         binding.characterViewPager.offscreenPageLimit = 2
-        binding.characterBottomNav.inflateMenu(R.menu.character_nav_menu)
 
-        binding.characterBottomNav.setOnItemSelectedListener {
-            binding.characterBottomNav.menu.forEachIndexed { index, item ->
-                if (it == item) {
-                    binding.characterViewPager.setCurrentItem(index, true)
-                    return@setOnItemSelectedListener true
-                }
-            }
-            false
-        }
-
-        binding.characterViewPager.addOnPageChangeListener(object :
-            ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected(position: Int) {
-                binding.characterBottomNav.menu.iterator().forEach {
-                    it.isChecked = false
-                }
-                binding.characterBottomNav.menu.getItem(position).isChecked = true
-            }
-        })
     }
 
     override fun getBaseToolbar(): Toolbar {
-        return binding.characterToolbar.dynamicToolbar
+        return binding.dynamicToolbar
     }
-
 
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

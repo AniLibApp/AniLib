@@ -57,9 +57,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>() {
 
-    private val mediaBrowserMeta: MediaInfoMeta? get() = arguments?.getParcelable(
-        MEDIA_INFO_META_KEY
-    )
+    private val mediaBrowserMeta: MediaInfoMeta?
+        get() = arguments?.getParcelable(
+            MEDIA_INFO_META_KEY
+        )
 
     private val viewModel by viewModel<MediaOverviewVM>()
 
@@ -109,7 +110,8 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
 
     private var metaLinkAdapter: Adapter? = null
     private var metaContainerAdapter: Adapter? = null
-    companion object{
+
+    companion object {
         private const val MEDIA_INFO_META_KEY = "MEDIA_INFO_META_KEY"
         fun newInstance(meta: MediaInfoMeta) = MediaOverviewFragment().also {
             it.arguments = bundleOf(MEDIA_INFO_META_KEY to meta)
@@ -157,7 +159,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        mediaBrowserMeta?: return
+        mediaBrowserMeta ?: return
 
         viewModel.field.mediaId = mediaBrowserMeta!!.mediaId
 
@@ -220,11 +222,6 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
 
     private fun MediaOverviewFragmentBinding.updateView(overview: MediaModel) {
         context ?: return
-
-        overview.status?.let {
-            statusDivider.setBackgroundColor(Color.parseColor(statusColors[it]))
-        }
-
 
         if (overview.title!!.native != null) {
             nativeTitle.subtitle = overview.title!!.native
@@ -307,10 +304,12 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             }
         }
 
-        startEndDateTv.text = getString(R.string.start_s_end_s).format(
-            overview.startDate.toString().naText(),
-            overview.endDate.toString().naText()
-        )
+        mediaStatusTv.subtitle = overview.status?.let {
+            requireContext().resources.getStringArray(R.array.media_status)[it]
+        } ?: "?"
+
+        startDateTv.subtitle = overview.startDate.toString().naText()
+        endDateTv.subtitle = overview.endDate.toString().naText()
 
         overview.nextAiringEpisode?.let { atModel ->
             airingContainer.visibility = View.VISIBLE
@@ -319,9 +318,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                     it.layoutParams = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
-                    ).also { params ->
-                        params.bottomMargin = dp(20f)
-                    }
+                    )
                     it.useCompatPadding = true
                 }.also {
                     it.addView(
@@ -341,7 +338,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
 
         if (overview.relations?.edges.isNullOrEmpty()) {
             relationRecyclerView.visibility = View.GONE
-            relationShipHeaderTv.visibility = View.GONE
+            relationshipHeaderTv.visibility = View.GONE
         } else {
             invalidateRelationshipAdapter(overview.relations!!.edges!!)
         }
@@ -360,26 +357,12 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                 addToMediaCollection(getString(R.string.hashtag), it)
             }
 
-            overview.averageScore?.let {
-                addToMediaCollection(getString(R.string.average_score), "$it %")
-            }
+            mediaAvgScoreTv.subtitle = "${overview.averageScore ?: 0} %"
+            mediaMeanScoreTv.subtitle = "${overview.meanScore ?: 0} %"
+            mediaPopularityTv.subtitle = "${overview.popularity ?: 0}"
+            mediaFavouriteScoreTv.subtitle = "${overview.favourites ?: 0}"
 
-            overview.meanScore?.let {
-                addToMediaCollection(getString(R.string.mean_score), "$it %")
-            }
 
-            overview.status?.let {
-                requireContext().resources.getStringArray(R.array.media_status)[it]?.let {
-                    addToMediaCollection(getString(R.string.status), it)
-                }
-            }
-
-            overview.popularity?.let {
-                addToMediaCollection(getString(R.string.popularity), "$it")
-            }
-            overview.favourites?.let {
-                addToMediaCollection(getString(R.string.favourites), "$it")
-            }
 
             bindGenre(overview.genres)
 
@@ -470,7 +453,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
     private fun MediaOverviewFragmentBinding.setMarkdownDescription(
         description: String
     ) {
-        AlMarkwonFactory.getMarkwon(requireContext())
+        AlMarkwonFactory.getMarkwon()
             .setMarkdown(mediaDescriptionTv, description)
     }
 

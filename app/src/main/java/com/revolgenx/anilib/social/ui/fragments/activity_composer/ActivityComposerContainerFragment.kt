@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
+import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
+import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.ActivityComposerContainerFragmentLayoutBinding
@@ -38,8 +40,8 @@ abstract class ActivityComposerContainerFragment<VM:ActivityComposerViewModel<*,
         super.onActivityCreated(savedInstanceState)
 
         binding.apply {
-            activityComposerViewPager.adapter = makePagerAdapter(activityComposerFragments, tabEntries)
-            activityComposerTabLayout.setupWithViewPager(activityComposerViewPager)
+            activityComposerViewPager.adapter = makeViewPagerAdapter2(activityComposerFragments)
+            setupWithViewPager2(activityComposerTabLayout,activityComposerViewPager, tabEntries)
         }
     }
 

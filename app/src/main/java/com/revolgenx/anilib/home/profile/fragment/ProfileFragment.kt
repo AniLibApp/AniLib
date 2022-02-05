@@ -14,6 +14,8 @@ import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
+import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
+import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.user.data.model.UserFollowerCountModel
@@ -56,19 +58,30 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
 
     private val userMeta get() = arguments?.getParcelable<UserMeta?>(USER_PROFILE_INFO_KEY)
 
-    private val _userMeta get() = userMeta ?:  UserMeta(
-        viewModel.userField.userId,
-        viewModel.userField.userName,
-        false
-    )
+    private val _userMeta
+        get() = userMeta ?: UserMeta(
+            viewModel.userField.userId,
+            viewModel.userField.userName,
+            false
+        )
 
     private val userProfileFragments by lazy {
         listOf(
             UserOverviewFragment.newInstance(_userMeta),
             UserActivityUnionFragment.newInstance(_userMeta),
             UserFavouriteContainerFragment.newInstance(_userMeta),
-            UserStatsContainerFragment.newInstance(UserStatsMeta(_userMeta, MediaType.ANIME.ordinal)), //anime
-            UserStatsContainerFragment.newInstance(UserStatsMeta(_userMeta, MediaType.MANGA.ordinal)), //manga
+            UserStatsContainerFragment.newInstance(
+                UserStatsMeta(
+                    _userMeta,
+                    MediaType.ANIME.ordinal
+                )
+            ), //anime
+            UserStatsContainerFragment.newInstance(
+                UserStatsMeta(
+                    _userMeta,
+                    MediaType.MANGA.ordinal
+                )
+            ), //manga
         )
     }
 
@@ -254,15 +267,16 @@ class ProfileFragment : BaseLayoutFragment<ProfileFragmentLayoutBinding>() {
             }
         }
 
-
-        val adapter = makePagerAdapter(
-            userProfileFragments,
-            requireContext().resources.getStringArray(R.array.profile_tab_menu)
+        userInfoViewPager.adapter = makeViewPagerAdapter2(
+            userProfileFragments
         )
 
-        userInfoViewPager.adapter = adapter
+        setupWithViewPager2(
+            userTabLayout,
+            userInfoViewPager,
+            requireContext().resources.getStringArray(R.array.profile_tab_menu)
+        )
         userInfoViewPager.offscreenPageLimit = 4
-        userTabLayout.setupWithViewPager(userInfoViewPager)
 
     }
 

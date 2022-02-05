@@ -262,12 +262,8 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             false
         }
 
-
         mainViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                mainBottomNavView.menu.iterator().forEach {
-                    it.isChecked = false
-                }
                 mainBottomNavView.menu.getItem(position).isChecked = true
             }
         })

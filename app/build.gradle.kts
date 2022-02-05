@@ -14,7 +14,6 @@ if (gradle.startParameter.taskRequests.toString().contains("Standard")) {
     apply(plugin = "com.google.firebase.crashlytics")
 }
 
-
 android {
     compileSdk = AndroidSdk.compile
     buildToolsVersion = "30.0.3"
@@ -49,39 +48,41 @@ android {
 
         buildConfigField("String", "anilistRedirectUri", getAniListProperty("anilist_redirect_uri"))
         buildConfigField(
-            "String",
-            "anilistAuthEndPoint",
-            getAniListProperty("anilist_auth_endpoint")
+                "String",
+                "anilistAuthEndPoint",
+                getAniListProperty("anilist_auth_endpoint")
         )
         buildConfigField(
-            "String",
-            "anilistTokenEndPoint",
-            getAniListProperty("anilist_token_endpoint")
+                "String",
+                "anilistTokenEndPoint",
+                getAniListProperty("anilist_token_endpoint")
         )
 
         buildConfigField("String", "anilistclientId", getAniListSecretProperty("anilist_client_id"))
         buildConfigField(
-            "String",
-            "anilistclientSecret",
-            getAniListSecretProperty("anilist_client_secret")
+                "String",
+                "anilistclientSecret",
+                getAniListSecretProperty("anilist_client_secret")
         )
         buildConfigField(
-            "String",
-            "adUnitId",
-            getAniListSecretProperty("ad_unit_id", "ca-app-pub-3940256099942544/6300978111")
+                "String",
+                "adUnitId",
+                getAniListSecretProperty("ad_unit_id", "ca-app-pub-3940256099942544/6300978111")
         )
     }
 
     buildTypes {
-        named("debug") {
+        debug {
             applicationIdSuffix = ".debug"
             extra["enableCrashlytics"] = false
         }
-
-        named("release") {
+        release {
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
+        }
+        create("alpha"){
+            initWith(getByName("debug"))
         }
     }
 
@@ -110,9 +111,9 @@ android {
 
 
     lint {
-        disable("MissingTranslation", "ExtraTranslation")
-        isAbortOnError = false
-        isCheckReleaseBuilds = false
+        disable.addAll(listOf("MissingTranslation", "ExtraTranslation"))
+        abortOnError = false
+        checkReleaseBuilds = false
     }
 
     buildFeatures {

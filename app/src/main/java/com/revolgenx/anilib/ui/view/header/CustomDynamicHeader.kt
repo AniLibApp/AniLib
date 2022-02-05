@@ -4,11 +4,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.marginBottom
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.view.DynamicHeader
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.util.copyToClipBoard
+import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.sp
 
 class CustomDynamicHeader(context: Context, attributeSet: AttributeSet?, defAttSet: Int) :
@@ -37,6 +39,8 @@ class CustomDynamicHeader(context: Context, attributeSet: AttributeSet?, defAttS
 
             titleView?.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize)
             subtitleView?.setTextSize(TypedValue.COMPLEX_UNIT_PX, subtitleTextSize)
+
+            titleView?.setPadding(0,0,0,dp(4f))
 
             if(copySubtitle){
                 subtitleView?.setOnLongClickListener {

@@ -124,11 +124,16 @@
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/al_list_view_pager"
+    <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/al_list_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicButton
         android:id="@+id/list_extended_fab"
@@ -136,9 +141,9 @@
         android:layout_height="56dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/ads_fab_margin"
+        android:text="@string/all"
         app:adt_colorType="surface"
         app:adt_contrastWithColorType="background"
-        android:text="@string/all"
         app:iconPadding="4dp"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior" />
 

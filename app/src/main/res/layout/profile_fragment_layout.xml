@@ -159,6 +159,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
             <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
                 android:id="@+id/profile_fragment_toolbar"
                 android:layout_width="match_parent"
@@ -167,31 +168,33 @@
                 app:layout_collapseMode="pin" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
-    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
             android:id="@+id/user_tab_layout"
             style="@style/DynamicTextTabLayoutStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?actionBarSize"
             app:adt_backgroundColorType="background"
             app:adt_colorType="accent"
             app:adt_contrastWithColorType="background"
             app:tabMode="scrollable" />
 
-        <androidx.viewpager.widget.ViewPager
+    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/user_info_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

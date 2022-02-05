@@ -135,7 +135,7 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
             characterFavIv.setImageResource(R.drawable.ic_favourite)
         }
 
-        AlMarkwonFactory.getMarkwon(requireContext())
+        AlMarkwonFactory.getMarkwon()
             .setMarkdown(characterDescriptionTv, item.description ?: "")
     }
 }

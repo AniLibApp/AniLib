@@ -36,10 +36,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:closeIcon="@drawable/ic_people"
         android:visibility="gone"
         android:clickable="false"
         android:enabled="false"
+        app:closeIconVisible="false"
+        app:closeIcon="@null"
         android:text="@string/mutual"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

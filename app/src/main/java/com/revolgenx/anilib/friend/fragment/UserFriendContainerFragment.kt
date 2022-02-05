@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
+import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
+import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.UserFriendContainerFragmentLayoutBinding
 
@@ -22,11 +23,9 @@ class UserFriendContainerFragment : BaseLayoutFragment<UserFriendContainerFragme
     }
 
     private val userId get() = arguments?.getInt(USER_ID_KEY)
-    private val isFollower get() = arguments?.getBoolean(IS_FOLLOWER_KEY)
+    private val isFollower get() = arguments?.getBoolean(IS_FOLLOWER_KEY) ?: false
 
-    override val titleRes: Int = R.string.friend
-    override val setHomeAsUp: Boolean =true
-
+    override val setHomeAsUp: Boolean = true
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -48,17 +47,20 @@ class UserFriendContainerFragment : BaseLayoutFragment<UserFriendContainerFragme
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         userId ?: return
 
-        binding.userFriendViewPager.adapter = makePagerAdapter(
-            userFriendFragments, resources.getStringArray(
+        binding.userFriendViewPager.adapter = makeViewPagerAdapter2(
+            userFriendFragments
+        )
+        setupWithViewPager2(
+            binding.dynamicTabLayout, binding.userFriendViewPager,
+            resources.getStringArray(
                 R.array.user_friend_tab_entries
             )
         )
-
-        binding.userFriendViewPager.currentItem = if (isFollower!!) 1 else 0
-        binding.dynamicTabLayout.setupWithViewPager(binding.userFriendViewPager)
+        binding.userFriendViewPager.post {
+            binding.userFriendViewPager.currentItem = if (isFollower) 1 else 0
+        }
 
     }
 }

@@ -210,7 +210,7 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
             }
         }
 
-        viewModel.toggleFavMediaLiveData.observe(this.viewLifecycleOwner, {
+        viewModel.toggleFavMediaLiveData.observe(this.viewLifecycleOwner) {
             toggling = when (it.status) {
                 Status.SUCCESS -> {
                     isFavourite = !isFavourite
@@ -227,7 +227,7 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
                     true
                 }
             }
-        })
+        }
 
         viewModel.saveMediaListEntryLiveData.observe(viewLifecycleOwner) {
             if (it.status == Status.SUCCESS) {
@@ -238,7 +238,6 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
                 }
             }
         }
-
 
         binding.mediaInfoViewPager.adapter = makeViewPagerAdapter2(mediaInfoList)
         binding.mediaInfoViewPager.offscreenPageLimit = 5

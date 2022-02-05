@@ -154,7 +154,7 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
             staffFavIv.setImageResource(R.drawable.ic_favourite)
         }
 
-        AlMarkwonFactory.getMarkwon(requireContext())
+        AlMarkwonFactory.getMarkwon()
             .setMarkdown(staffDescriptionTv, item.description ?: "")
     }
 

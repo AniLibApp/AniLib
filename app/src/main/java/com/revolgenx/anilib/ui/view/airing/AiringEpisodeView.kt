@@ -121,7 +121,7 @@ class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet
                 }
             (header.titleView as DynamicTextView).isRtlSupport = false
             header.titleView?.textAlignment = TEXT_ALIGNMENT_CENTER
-            header.titleView?.textSize = 12f
+            header.titleView?.textSize = 14f
             header.subtitleView?.textSize = 12f
             header.isFillSpace = true
         }
