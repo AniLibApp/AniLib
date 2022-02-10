@@ -3,14 +3,17 @@ package com.revolgenx.anilib.home.discover.fragment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicAccentColor
@@ -48,6 +51,8 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
     private val recommendationViewModel by viewModel<RecommendationViewModel>()
     private val notificationStoreVM by sharedViewModel<NotificationStoreViewModel>()
 
+    override val menuRes: Int = R.menu.discover_container_fragment_menu
+
     private val seasons by lazy {
         requireContext().resources.getStringArray(R.array.media_season)
     }
@@ -68,35 +73,6 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
         binding.initSeasonListener()
         binding.initRecommendationListener()
 
-        binding.discoverNotificationIv.visibility =
-            if (requireContext().loggedIn()) View.VISIBLE else View.GONE
-
-        binding.discoverNotificationIv.post {
-            val badgeDrawable = BadgeDrawable.create(requireContext())
-
-            badgeDrawable.badgeGravity = BadgeDrawable.TOP_END
-            badgeDrawable.backgroundColor = dynamicAccentColor
-            badgeDrawable.verticalOffset = 4
-            badgeDrawable.horizontalOffset = 4
-            badgeDrawable.setBoundsFor(binding.discoverNotificationIv, binding.discoverNotifLayout)
-
-            notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner, {
-                if (it > 0) {
-                    BadgeUtils.attachBadgeDrawable(
-                        badgeDrawable,
-                        binding.discoverNotificationIv,
-                        binding.discoverNotifLayout
-                    )
-                } else {
-                    BadgeUtils.detachBadgeDrawable(
-                        badgeDrawable,
-                        binding.discoverNotificationIv
-                    )
-                }
-            })
-        }
-
-
         binding.discoverContainerViewPager.adapter = makeViewPagerAdapter2(
             discoverFragments,
         )
@@ -116,6 +92,51 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
                 onList = getRecommendationOnList(requireContext())
             }
         }
+    }
+
+    override fun getBaseToolbar(): Toolbar {
+        return binding.dynamicToolbar
+    }
+
+    @SuppressLint("UnsafeOptInUsageError")
+    override fun onToolbarInflated() {
+        val notificationMenuItem = getBaseToolbar().menu.findItem(R.id.discover_notification_menu)
+        if(requireContext().loggedIn()){
+            notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner) {
+                val badgeDrawable = BadgeDrawable.create(requireContext())
+                if (it > 0) {
+                    BadgeUtils.attachBadgeDrawable(
+                        badgeDrawable,
+                        getBaseToolbar(),
+                        R.id.discover_notification_menu
+                    )
+                } else {
+                    BadgeUtils.detachBadgeDrawable(
+                        badgeDrawable,
+                        getBaseToolbar(),
+                        R.id.discover_notification_menu
+                    )
+                }
+            }
+        }else{
+            notificationMenuItem.isVisible = false
+        }
+    }
+
+    override fun onToolbarMenuSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.discover_search_menu -> {
+                OpenSearchEvent().postEvent
+                true
+            }
+            R.id.discover_notification_menu -> {
+                notificationStoreVM.setUnreadNotificationCount(0)
+                OpenNotificationCenterEvent().postEvent
+                true
+            }
+            else -> super.onToolbarMenuSelected(item)
+        }
+
     }
 
 
@@ -192,13 +213,6 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
 
 
     private fun DiscoverContainerFragmentBinding.initListener() {
-        discoverSearchIv.setOnClickListener {
-            OpenSearchEvent().postEvent
-        }
-        discoverNotificationIv.setOnClickListener {
-            notificationStoreVM.setUnreadNotificationCount(0)
-            OpenNotificationCenterEvent().postEvent
-        }
         registerOnPageChangeCallback(
             discoverContainerViewPager, object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {

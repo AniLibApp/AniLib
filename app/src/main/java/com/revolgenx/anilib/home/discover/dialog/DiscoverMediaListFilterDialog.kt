@@ -1,38 +1,38 @@
 package com.revolgenx.anilib.home.discover.dialog
 
-import android.content.DialogInterface
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.common.preference.getDiscoverMediaListSort
 import com.revolgenx.anilib.common.preference.setDiscoverMediaListSort
+import com.revolgenx.anilib.common.ui.bottomsheet.DynamicBottomSheetFragment
 import com.revolgenx.anilib.constant.ALMediaListSort
 import com.revolgenx.anilib.databinding.MediaListFilterDialogLayoutBinding
 import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 
-class DiscoverMediaListFilterDialog : BaseDialogFragment<MediaListFilterDialogLayoutBinding>() {
-    override var positiveText: Int? = R.string.done
-    override var negativeText: Int? = R.string.cancel
-    override var titleRes: Int? = R.string.filter
-
-
+class DiscoverMediaListFilterDialog :
+    DynamicBottomSheetFragment<MediaListFilterDialogLayoutBinding>() {
     var onDoneListener: (() -> Unit)? = null
 
     private val alMediaListSorts by lazy {
         requireContext().resources.getStringArray(R.array.al_media_list_sort)
     }
 
-    override fun bindView(): MediaListFilterDialogLayoutBinding {
-        return MediaListFilterDialogLayoutBinding.inflate(provideLayoutInflater)
+    override fun bindView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): MediaListFilterDialogLayoutBinding {
+        return MediaListFilterDialogLayoutBinding.inflate(inflater, container, false)
     }
 
     companion object {
         private const val MEDIA_LIST_FILTER_TYPE = "MEDIA_LIST_FILTER_TYPE"
         private const val MEDIA_LIST_SORT_KEY = "MEDIA_LIST_SORT_KEY"
-
 
         fun newInstance(type: Int): DiscoverMediaListFilterDialog {
             return DiscoverMediaListFilterDialog().apply {
@@ -41,10 +41,15 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment<MediaListFilterDialogLa
         }
     }
 
-    override fun builder(dialogBuilder: DynamicDialog.Builder, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         with(binding) {
             val type = arguments?.getInt(MEDIA_LIST_FILTER_TYPE)!!
-            val savedMediaSort = savedInstanceState?.getInt(MEDIA_LIST_SORT_KEY) ?: getDiscoverMediaListSort(requireContext(), type)
+            val savedMediaSort =
+                savedInstanceState?.getInt(MEDIA_LIST_SORT_KEY) ?: getDiscoverMediaListSort(
+                    requireContext(),
+                    type
+                )
 
             var savedSortOrder: SortOrder = SortOrder.NONE
             val alMediaListSortEnums = ALMediaListSort.values()
@@ -71,11 +76,13 @@ class DiscoverMediaListFilterDialog : BaseDialogFragment<MediaListFilterDialogLa
             }
 
             mediaListSort.setSortItems(alMediaListSortModels)
+
+            initListener()
         }
     }
 
-    override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
-        if (dialogInterface is DynamicDialog) {
+    private fun initListener() {
+        onPositiveClicked = {
             setDiscoverMediaListSort(
                 requireContext(),
                 arguments?.getInt(MEDIA_LIST_FILTER_TYPE)!!,

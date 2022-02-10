@@ -11,12 +11,13 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.common.preference.getNewlyAddedField
 import com.revolgenx.anilib.common.preference.getPopularField
 import com.revolgenx.anilib.common.preference.getSeasonField
 import com.revolgenx.anilib.common.preference.getTrendingField
+import com.revolgenx.anilib.common.ui.bottomsheet.DynamicBottomSheetFragment
 import com.revolgenx.anilib.constant.AlMediaSort
 import com.revolgenx.anilib.databinding.MediaFilterBottomSheetLayoutBinding
 import com.revolgenx.anilib.home.discover.data.field.NewlyAddedMediaField
@@ -25,7 +26,6 @@ import com.revolgenx.anilib.home.discover.data.field.TrendingMediaField
 import com.revolgenx.anilib.home.season.data.field.SeasonField
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.ui.adapter.MediaFilterFormatAdapter
-import com.revolgenx.anilib.ui.bottomsheet.DynamicBottomSheetFragment
 import com.revolgenx.anilib.ui.dialog.FormatSelectionDialog
 import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
@@ -39,18 +39,11 @@ class MediaFilterBottomSheetFragment :
 
     var onDoneListener: (() -> Unit)? = null
 
-    override val positiveText: Int
-        get() = R.string.done
-
-    override val negativeText: Int
-        get() = R.string.cancel
-
     companion object {
         const val mediaFilterTypeKey = "mediaFilterTypeKey"
     }
 
     private var formatDialog: DialogFragment? = null
-
 
     fun show(
         ctx: Context,
@@ -120,7 +113,7 @@ class MediaFilterBottomSheetFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): MediaFilterBottomSheetLayoutBinding {
-        return MediaFilterBottomSheetLayoutBinding.inflate(layoutInflater())
+        return MediaFilterBottomSheetLayoutBinding.inflate(inflater, container, false)
     }
 
     private fun onDone() {
@@ -181,7 +174,7 @@ class MediaFilterBottomSheetFragment :
                             it
                         } else {
                             sortOrder = SortOrder.DESC
-                            it -1
+                            it - 1
                         }
                     } else if (it > 34) {
                         if (it % 2 == 0) {
@@ -191,13 +184,13 @@ class MediaFilterBottomSheetFragment :
                             sortOrder = SortOrder.ASC
                             it
                         }
-                    }else{
+                    } else {
                         null
                     }
                 }
 
                 var currentSortIndex = -1
-                if(currentSort != null){
+                if (currentSort != null) {
                     currentSortIndex = alMediaSorts.first { it.sort == currentSort }.ordinal
                 }
 
@@ -226,7 +219,8 @@ class MediaFilterBottomSheetFragment :
                 }
 
             } else {
-                seasonSortHeaderLayout.visibility = View.GONE
+                seasonSortHeaderTv.visibility = View.GONE
+                seasonSortCardView.visibility = View.GONE
             }
 
             field.status?.let {
@@ -245,29 +239,31 @@ class MediaFilterBottomSheetFragment :
                 )
             )
 
-            DynamicTheme.getInstance().get().accentColor.let {
-                seasonYearSeekBar.progressColor = it
-                seasonYearSeekBar.leftSeekBar?.indicatorBackgroundColor = it
-            }
+            seasonYearSeekBar.progressColor = dynamicAccentColor
+            seasonYearSeekBar.leftSeekBar?.indicatorBackgroundColor = dynamicAccentColor
 
             val currentYear = Calendar.getInstance().get(Calendar.YEAR) + 1f
 
             seasonYearSeekBar.setRange(1950f, currentYear)
 
-
-            if (field !is SeasonField) {
-                enableYearCheckBox.visibility = View.VISIBLE
-                enableYearCheckBox.isChecked = field.seasonYear != null
-                seasonYearSeekBar.isEnabled = field.seasonYear != null
+            if (field is SeasonField) {
+                enableYearCheckBox.visibility = View.GONE
+                yearHeaderTv.visibility = View.VISIBLE
+                seasonYearSeekBar.visibility = View.VISIBLE
+            }else{
+                val hasSeasonYear = field.seasonYear != null
+                enableYearCheckBox.setOnCheckedChangeListener(null)
+                enableYearCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                    seasonYearSeekBar.visibility = if (isChecked) View.VISIBLE else View.GONE
+                }
+                seasonYearSeekBar.visibility = if (hasSeasonYear) View.VISIBLE else View.GONE
+                enableYearCheckBox.isChecked = hasSeasonYear
             }
 
             field.seasonYear?.toFloat()?.let {
                 seasonYearSeekBar.setProgress(it)
             }
 
-            enableYearCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                seasonYearSeekBar.isEnabled = isChecked
-            }
             seasonStatusSpinner.onItemSelected {
                 field.status = it.minus(1).takeIf { it >= 0 }
             }
@@ -295,11 +291,6 @@ class MediaFilterBottomSheetFragment :
 
             onPositiveClicked = {
                 onDone()
-                dismiss()
-            }
-
-            onNegativeClicked = {
-                dismiss()
             }
         }
     }

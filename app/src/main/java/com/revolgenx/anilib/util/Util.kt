@@ -179,7 +179,7 @@ fun Context.copyToClipBoard(str: String?) {
 
 
 
-inline fun shortcutAction(context: Context,action: (ShortcutManager) -> Unit): Unit {
+inline fun shortcutAction(context: Context,action: (ShortcutManager) -> Unit) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
         val shortcutManager = context.getSystemService(ShortcutManager::class.java)
         action(shortcutManager)

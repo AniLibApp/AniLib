@@ -90,10 +90,10 @@ abstract class BaseMediaListCollectionFragment() :
     private fun MediaListCollectionFragmentBinding.onBind() {
         loadLayoutManager()
 
-        viewModel.sourceLiveData.observe(viewLifecycleOwner, {
+        viewModel.sourceLiveData.observe(viewLifecycleOwner) {
             alListSwipeToRefresh.isRefreshing = false
             invalidateSource()
-        })
+        }
 
         containerSharedVM.mediaListContainerCallback.observe(viewLifecycleOwner) {
             if (it == null) return@observe

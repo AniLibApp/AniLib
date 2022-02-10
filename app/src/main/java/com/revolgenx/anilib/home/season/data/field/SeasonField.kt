@@ -19,9 +19,6 @@ class SeasonField : MediaField() {
         fun create(context: Context) = getSeasonField(context)
     }
 
-    var tagTagFields = mutableMapOf<String, TagField>()
-    var genreTagFields = mutableMapOf<String, TagField>()
-
     var showFormatHeader:Boolean = true
 
     fun saveSeasonField(context: Context) {

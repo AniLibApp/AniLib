@@ -13,68 +13,33 @@
         app:elevation="0dp">
 
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+            android:id="@+id/dynamicToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:adt_backgroundAware="disable"
             app:adt_colorType="background"
-            app:adt_contrastWithColorType="none"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:adt_textColorType="text_primary"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_scrollFlags="enterAlways|scroll"
+            app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
+            app:titleTextAppearance="@style/DynamicToolbarTitleTheme">
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
+                android:id="@+id/discover_main_tab_layout"
+                style="@style/HomeContainerTabLayoutStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:adt_backgroundColorType="background"
+                app:adt_colorType="accent"
+                app:adt_contrastWithColorType="background"
+                app:adt_textColorType="text_primary"
+                app:tabTextAppearance="@style/DiscoverTabLayoutTextStyle" />
 
 
-                <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
-                    android:id="@+id/discover_main_tab_layout"
-                    style="@style/HomeContainerTabLayoutStyle"
-                    android:layout_width="0dp"
-                    app:adt_backgroundColorType="background"
-                    app:adt_colorType="accent"
-                    app:adt_contrastWithColorType="background"
-                    app:adt_textColorType="text_primary"
-                    app:layout_constraintEnd_toStartOf="@id/discover_search_iv"
-                    app:layout_constraintHorizontal_bias="0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tabTextAppearance="@style/DiscoverTabLayoutTextStyle" />
-
-                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                    android:id="@+id/discover_search_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
-                    app:adt_colorType="text_primary"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/discover_notif_layout"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_search" />
-
-                <FrameLayout
-                    android:id="@+id/discover_notif_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                        android:id="@+id/discover_notification_iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:adt_colorType="text_primary"
-                        app:srcCompat="@drawable/ic_notification_outline" />
-                </FrameLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
-
+        </com.pranavpandey.android.dynamic.support.widget.DynamicToolbar>
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 

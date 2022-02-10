@@ -11,7 +11,6 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.disableCardStyleInHomeScreen
 import com.revolgenx.anilib.databinding.MediaPresenterLayoutBinding
@@ -77,9 +76,9 @@ class MediaPresenter(
             mediaFormatTv.status = item.mediaListEntry?.status
 
             mediaGenreLayout.addGenre(item.genres?.take(3)) { genre ->
-                OpenSearchEvent(MediaSearchFilterModel().also {
-                    it.genre = listOf(genre.trim())
-                }).postEvent
+//                OpenSearchEvent(MediaSearchFilterModel().also {
+//                    it.genre = listOf(genre.trim())
+//                }).postEvent
             }
 
             mediaPresenterCardView.strokeColor =

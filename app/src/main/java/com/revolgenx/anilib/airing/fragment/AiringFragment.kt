@@ -23,8 +23,8 @@ import com.revolgenx.anilib.constant.AiringListDisplayMode
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.databinding.AiringFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringHeaderSource
-import com.revolgenx.anilib.ui.bottomsheet.calendar.CalendarViewBottomSheetDialog
-import com.revolgenx.anilib.airing.dialog.AiringFragmentFilterDialog
+import com.revolgenx.anilib.ui.calendar.bottomsheet.CalendarViewBottomSheetDialog
+import com.revolgenx.anilib.airing.bottomsheet.AiringFilterBottomSheet
 import com.revolgenx.anilib.airing.presenter.AiringPresenter
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.airing.viewmodel.AiringViewModel
@@ -53,7 +53,7 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
     private val airingBinding: AiringFragmentLayoutBinding get() = _airingBinding!!
 
 
-    override var selfAddLayoutManager: Boolean = false
+    override var autoAddLayoutManager: Boolean = false
     override val setHomeAsUp: Boolean = true
     override val menuRes: Int = R.menu.airing_menu
 
@@ -146,19 +146,16 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
                 true
             }
             R.id.airing_filter -> {
-                val airingDialog = AiringFragmentFilterDialog.newInstance()
-                airingDialog.onDoneListener = {
-                    if (context != null) {
-                        viewModel.updateField(requireContext())
-                        storeAiringField(requireContext(), viewModel.field)
-                        createSource()
-                        invalidateAdapter()
+                AiringFilterBottomSheet.newInstance().also {
+                    it.onDoneListener = {
+                        if (context != null) {
+                            viewModel.updateField(requireContext())
+                            storeAiringField(requireContext(), viewModel.field)
+                            createSource()
+                            invalidateAdapter()
+                        }
                     }
-                }
-                airingDialog.show(
-                    childFragmentManager,
-                    AiringFragmentFilterDialog::class.java.simpleName
-                )
+                }.show(requireContext())
                 true
             }
             R.id.weekly_filter -> {

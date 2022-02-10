@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.home.discover.fragment
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,10 @@ import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
 import com.revolgenx.anilib.home.discover.data.meta.DiscoverOrderItem
 import com.revolgenx.anilib.databinding.DiscoverAiringFragmentLayoutBinding
+import com.revolgenx.anilib.home.discover.bottomsheet.DiscoverAiringBottomSheet
 import com.revolgenx.anilib.infrastructure.event.OpenAiringScheduleEvent
 import com.revolgenx.anilib.home.discover.presenter.DiscoverAiringPresenter
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
-import com.revolgenx.anilib.home.discover.dialog.DiscoverAiringFilterDialog
 import com.revolgenx.anilib.home.discover.viewmodel.DiscoverAiringViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -124,15 +123,11 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
                 OpenAiringScheduleEvent().postEvent
             }
             1 -> {
-                val airingDialog = DiscoverAiringFilterDialog()
-                airingDialog.onButtonClickedListener = { _, w ->
-                    when (w) {
-                        AlertDialog.BUTTON_POSITIVE -> {
-                            renewAdapter()
-                        }
+                DiscoverAiringBottomSheet.newInstance().also {
+                    it.onDoneListener = {
+                        renewAdapter()
                     }
-                }
-                airingDialog.show(childFragmentManager, "Airing_Filter_Dialog")
+                }.show(requireContext())
             }
         }
     }

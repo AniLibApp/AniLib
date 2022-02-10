@@ -399,6 +399,12 @@
         <item>@string/novel</item>
         <item>@string/doujinshi</item>
         <item>@string/anime</item>
+        <item>@string/web_novel</item>
+        <item>@string/live_action</item>
+        <item>@string/game</item>
+        <item>@string/comic</item>
+        <item>@string/multimedia_project</item>
+        <item>@string/picture_book</item>
         <item>@string/unknown</item>
     </string-array>
 
@@ -940,4 +946,8 @@
     </string-array>
 
     <string name="bee">Bee</string>
+    <string name="game">Game</string>
+    <string name="multimedia_project">Multimedia Project</string>
+    <string name="picture_book">Picture Book</string>
+    <string name="comic">Comic</string>
 </resources>

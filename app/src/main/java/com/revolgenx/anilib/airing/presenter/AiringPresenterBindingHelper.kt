@@ -11,7 +11,6 @@ import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.databinding.AiringCompactPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.AiringMinimalListPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.AiringPresenterLayoutBinding
@@ -48,9 +47,9 @@ object AiringPresenterBindingHelper {
         mediaGenreLayout.addGenre(
             media.genres?.take(5)
         ) { genre ->
-            OpenSearchEvent(MediaSearchFilterModel().also {
-                it.genre = listOf(genre.trim())
-            }).postEvent
+//            OpenSearchEvent(MediaSearchFilterModel().also {
+//                it.genre = listOf(genre.trim())
+//            }).postEvent
         }
 
         mediaRatingTv.text = media.averageScore

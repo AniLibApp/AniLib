@@ -70,7 +70,7 @@ abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment() {
             }
 
             if (setHomeAsUp) {
-                t.setNavigationIcon(R.drawable.ads_ic_back)
+                t.setNavigationIcon(R.drawable.ic_back)
                 t.setNavigationOnClickListener {
                     popBackStack()
                 }

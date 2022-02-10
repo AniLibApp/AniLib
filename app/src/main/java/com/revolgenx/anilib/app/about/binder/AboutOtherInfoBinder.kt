@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.recyclerview.binder.DynamicRecyclerViewBinder
 import com.pranavpandey.android.dynamic.support.view.DynamicHeader
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.adapter.AlAppInfoAdapter
+import com.revolgenx.anilib.app.about.adapter.AlAppInfoAdapter
 import com.revolgenx.anilib.ui.dialog.ReleaseInfoDialog
 import com.revolgenx.anilib.ui.view.widgets.AniLibItemView
 import com.revolgenx.anilib.util.openLink

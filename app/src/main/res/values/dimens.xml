@@ -39,7 +39,10 @@
     <dimen name="list_heading_padding_bottom">8dp</dimen>
 
     <dimen name="media_overview_header_margin">10dp</dimen>
+    <dimen name="filter_heading_padding">10dp</dimen>
 
+    <dimen name="design_bottom_navigation_height">50dp</dimen>
+    <dimen name="search_filter_item_padding">3dp</dimen>
     <!--    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/toolbar_size</dimen>-->
 
 </resources>

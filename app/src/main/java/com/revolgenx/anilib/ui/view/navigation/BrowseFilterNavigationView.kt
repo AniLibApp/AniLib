@@ -15,24 +15,20 @@ import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicNavigationView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.constant.MediaTagFilterTypes
-import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.ui.selector.constant.SelectableTypes
 import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.data.field.TagField
 import com.revolgenx.anilib.common.data.meta.TagState
 import com.revolgenx.anilib.constant.AlMediaSort
 import com.revolgenx.anilib.databinding.BrowseFilterNavigationViewBinding
-import com.revolgenx.anilib.search.data.model.filter.*
 import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
-import com.revolgenx.anilib.ui.presenter.TagPresenter
-import com.revolgenx.anilib.ui.view.TriStateCheckState
+import com.revolgenx.anilib.search.presenter.TagPresenter
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.util.hideKeyboard
 import com.revolgenx.anilib.util.onItemSelected
 import java.util.*
-import kotlin.math.ceil
 
 class BrowseFilterNavigationView : DynamicNavigationView {
 
@@ -55,7 +51,7 @@ class BrowseFilterNavigationView : DynamicNavigationView {
         TagPresenter(context).also {
             it.tagRemoved {
                 streamingTagMap!![it]?.tagState = TagState.EMPTY
-                mListener?.onTagRemoved(it, MediaTagFilterTypes.STREAMING_ON)
+                mListener?.onTagRemoved(it, SelectableTypes.STREAMING_ON)
             }
         }
     }
@@ -63,7 +59,7 @@ class BrowseFilterNavigationView : DynamicNavigationView {
         TagPresenter(context).also {
             it.tagRemoved {
                 genreTagMap!![it]?.tagState = TagState.EMPTY
-                mListener?.onTagRemoved(it, MediaTagFilterTypes.GENRES)
+                mListener?.onTagRemoved(it, SelectableTypes.GENRES)
             }
         }
     }
@@ -72,7 +68,7 @@ class BrowseFilterNavigationView : DynamicNavigationView {
         TagPresenter(context).also {
             it.tagRemoved {
                 tagTagMap!![it]?.tagState = TagState.EMPTY
-                mListener?.onTagRemoved(it, MediaTagFilterTypes.TAGS)
+                mListener?.onTagRemoved(it, SelectableTypes.TAGS)
             }
         }
     }
@@ -234,12 +230,12 @@ class BrowseFilterNavigationView : DynamicNavigationView {
 
 
     fun invalidateTagAdapter(builder: Adapter.Builder) {
-        tagAdapter = builder
-            .addSource(
-                Source.fromList(tagTagMap!!.values.filter { it.tagState == TagState.TAGGED || it.tagState == TagState.UNTAGGED })
-            )
-            .addPresenter(tagPresenter)
-            .into(rViewBinding.tagRecyclerView)
+//        tagAdapter = builder
+//            .addSource(
+//                Source.fromList(tagTagMap!!.values.filter { it.tagState == TagState.TAGGED || it.tagState == TagState.UNTAGGED })
+//            )
+//            .addPresenter(tagPresenter)
+//            .into(rViewBinding.tagRecyclerView)
     }
 
 
@@ -311,7 +307,7 @@ class BrowseFilterNavigationView : DynamicNavigationView {
                 context.getString(R.string.year_disabled)
         browseYearSeekBar.progressLeft = 1950
 
-        tagRecyclerView.layoutManager = FlexboxLayoutManager(context)
+//        tagRecyclerView.layoutManager = FlexboxLayoutManager(context)
         tagGenreRecyclerView.layoutManager = FlexboxLayoutManager(context)
         streamingOnRecyclerView.layoutManager = FlexboxLayoutManager(context)
 
@@ -380,19 +376,19 @@ class BrowseFilterNavigationView : DynamicNavigationView {
         streamAddIv.setOnClickListener {
             mListener?.openTagChooserDialog(
                 streamingTagMap!!.values.toList(),
-                MediaTagFilterTypes.STREAMING_ON
+                SelectableTypes.STREAMING_ON
             )
         }
 
         genreAddIv.setOnClickListener {
             mListener?.openTagChooserDialog(
                 genreTagMap!!.values.toList(),
-                MediaTagFilterTypes.GENRES
+                SelectableTypes.GENRES
             )
         }
 
         tagAddIv.setOnClickListener {
-            mListener?.openTagChooserDialog(tagTagMap!!.values.toList(), MediaTagFilterTypes.TAGS)
+            mListener?.openTagChooserDialog(tagTagMap!!.values.toList(), SelectableTypes.TAGS)
         }
 
         applyFilterCardView.setOnClickListener {
@@ -402,221 +398,6 @@ class BrowseFilterNavigationView : DynamicNavigationView {
     }
 
 
-    fun getFilter(): SearchFilterModel {
-        return when (rViewBinding.browseTypeSpinner.selectedItemPosition) {
-            SearchTypes.ANIME.ordinal, SearchTypes.MANGA.ordinal -> {
-                MediaSearchFilterModel().apply {
-                    query = searchText
-                    season = rViewBinding.browseSeasonSpinner.selectedItemPosition.minus(1)
-                        .takeIf { it >= 0 }
-
-                    type = rViewBinding.browseTypeSpinner.selectedItemPosition
-                    yearEnabled = rViewBinding.enableYearCheckBox.isChecked
-                    if (yearEnabled) {
-                        minYear = rViewBinding.browseYearSeekBar.leftSeekBar.progress.let {
-                            ceil(it).toInt()
-                        }
-                        maxYear = rViewBinding.browseYearSeekBar.rightSeekBar.progress.let {
-                            ceil(it).toInt()
-                        }
-                    }
-                    sort = rViewBinding.alBrowseSort.getActiveSortItem()?.let {
-                        if (it.order == SortOrder.DESC) {
-                            (it.data as AlMediaSort).sort + 1
-                        } else {
-                            (it.data as AlMediaSort).sort
-                        }
-                    }
-                    format =
-                        rViewBinding.browseFormatSpinner.selectedItemPosition.minus(1).takeIf {
-                            it >= 0
-                        }
-                    status =
-                        rViewBinding.browseStatusSpinner.selectedItemPosition.minus(1).takeIf {
-                            it >= 0
-                        }
-                    countryOfOrigin =
-                        rViewBinding.browseCountrySpinner.selectedItemPosition.minus(1).takeIf {
-                            it >= 0
-                        }
-                    source =
-                        rViewBinding.browseSourceSpinner.selectedItemPosition.minus(1).takeIf {
-                            it >= 0
-                        }
-                    streamingOn = streamingTagMap!!.values.filter { it.tagState == TagState.TAGGED }
-                        .map { it.tag }
-                    genre = genreTagMap!!.values.filter { it.tagState == TagState.TAGGED }
-                        .map { it.tag }
-                    genreToExclude =
-                        genreTagMap!!.values.filter { it.tagState == TagState.UNTAGGED }
-                            .map { it.tag }
-                    tags =
-                        tagTagMap!!.values.filter { it.tagState == TagState.TAGGED }.map { it.tag }
-                    tagsToExclude = tagTagMap!!.values.filter { it.tagState == TagState.UNTAGGED }
-                        .map { it.tag }
-
-                    hentaiOnly = when(rViewBinding.hentaiOnlySwtich.checkedState){
-                        TriStateCheckState.TICK -> true
-                        TriStateCheckState.CROSS -> false
-                        TriStateCheckState.EMPTY -> null
-                    }
-                }
-            }
-            SearchTypes.CHARACTER.ordinal -> {
-                CharacterSearchFilterModel().apply {
-                    query = searchText
-                }
-            }
-            SearchTypes.STAFF.ordinal -> {
-                StaffSearchFilterModel().apply {
-                    query = searchText
-                }
-            }
-            SearchTypes.STUDIO.ordinal -> {
-                StudioSearchFilterModel().apply {
-                    query = searchText
-                }
-            }
-            SearchTypes.USER.ordinal -> {
-                UserSearchFilterModel().apply {
-                    query = searchText
-                }
-            }
-            else -> {
-                MediaSearchFilterModel().apply {
-                    query = searchText
-                }
-            }
-        }
-    }
-
-
-    fun setFilter(value: SearchFilterModel, applyFilter: Boolean = true) {
-        rViewBinding.browseTypeSpinner.setSelection(value.type)
-        when (value) {
-            is MediaSearchFilterModel -> {
-                value.let {
-                    searchText = value.query
-                    it.season?.let {
-                        rViewBinding.browseSeasonSpinner.setSelection(it + 1)
-                    }
-                    rViewBinding.enableYearCheckBox.isChecked = it.yearEnabled
-                    rViewBinding.browseYearSeekBar.isEnabled = it.yearEnabled
-
-                    if (it.minYear != null && it.maxYear != null)
-                        rViewBinding.browseYearSeekBar.setProgress(
-                            it.minYear!!.toFloat(),
-                            it.maxYear!!.toFloat()
-                        )
-                    it.sort?.let { sort ->
-                        val alMediaSorts = AlMediaSort.values()
-                        var sortOrder = SortOrder.NONE
-                        val currentSort = if (sort < 34) {
-                            if (sort % 2 == 0) {
-                                sortOrder = SortOrder.ASC
-                                sort
-                            } else {
-                                sortOrder = SortOrder.DESC
-                                sort - 1
-                            }
-                        } else if (sort > 34) {
-                            if (sort % 2 == 0) {
-                                sortOrder = SortOrder.DESC
-                                sort - 1
-                            } else {
-                                sortOrder = SortOrder.ASC
-                                sort
-                            }
-                        } else {
-                            null
-                        }
-
-                        if (currentSort != null) {
-                            val currentSortEnum = alMediaSorts.first { it.sort == currentSort }
-                            AniLibSortingModel(
-                                currentSortEnum,
-                                alMediaSortList[currentSortEnum.ordinal],
-                                sortOrder
-                            ).let { model ->
-                                rViewBinding.alBrowseSort.setActiveSortItem(model)
-                            }
-                        }
-                    }
-                    it.format?.let {
-                        rViewBinding.browseFormatSpinner.setSelection(it + 1)
-                    }
-                    it.status?.let {
-                        rViewBinding.browseStatusSpinner.setSelection(it + 1)
-                    }
-                    it.streamingOn?.mapNotNull {
-                        streamingTagMap!![it]?.tagState = TagState.TAGGED
-                        streamingTagMap!![it]
-                    }?.let {
-                        mListener?.onTagAdd(it, MediaTagFilterTypes.STREAMING_ON)
-                    }
-
-                    it.countryOfOrigin?.let {
-                        rViewBinding.browseCountrySpinner.setSelection(it + 1)
-                    }
-                    it.source?.let {
-                        rViewBinding.browseSourceSpinner.setSelection(it + 1)
-                    }
-                    it.genre?.mapNotNull {
-                        genreTagMap!![it]?.tagState = TagState.TAGGED
-                        genreTagMap!![it]
-                    }?.let {
-                        mListener?.onTagAdd(it, MediaTagFilterTypes.GENRES)
-                    }
-
-                    it.tags?.mapNotNull {
-                        tagTagMap!![it]?.tagState = TagState.TAGGED
-                        tagTagMap!![it]
-                    }?.let {
-                        mListener?.onTagAdd(it, MediaTagFilterTypes.TAGS)
-                    }
-
-                    it.tagsToExclude?.mapNotNull {
-                        tagTagMap!![it]?.tagState = TagState.UNTAGGED
-                        tagTagMap!![it]
-                    }?.let {
-                        mListener?.onTagAdd(it, MediaTagFilterTypes.TAGS)
-                    }
-
-                    it.genreToExclude?.mapNotNull {
-                        genreTagMap!![it]?.tagState = TagState.UNTAGGED
-                        genreTagMap!![it]
-                    }?.let {
-                        mListener?.onTagAdd(it, MediaTagFilterTypes.GENRES)
-                    }
-
-                    rViewBinding.hentaiOnlySwtich.checkedState = when(it.hentaiOnly){
-                        true -> TriStateCheckState.TICK
-                        false -> TriStateCheckState.CROSS
-                        null -> TriStateCheckState.EMPTY
-                    }
-
-                    mListener?.updateTags(MediaTagFilterTypes.TAGS)
-                    mListener?.updateTags(MediaTagFilterTypes.GENRES)
-                    mListener?.updateTags(MediaTagFilterTypes.STREAMING_ON)
-                }
-            }
-            is CharacterSearchFilterModel -> {
-                searchText = value.query
-            }
-            is StaffSearchFilterModel -> {
-                searchText = value.query
-            }
-            is StudioSearchFilterModel -> {
-                searchText = value.query
-            }
-            is UserSearchFilterModel -> {
-                searchText = value.query
-            }
-        }
-        if (applyFilter) {
-            applyFilter()
-        }
-    }
 
     private fun applyFilter() {
         mListener?.applyFilter()
@@ -628,10 +409,10 @@ class BrowseFilterNavigationView : DynamicNavigationView {
     }
 
     interface AdvanceBrowseNavigationCallbackListener {
-        fun openTagChooserDialog(tags: List<TagField>, tagType: MediaTagFilterTypes)
-        fun onTagAdd(tags: List<TagField>, tagType: MediaTagFilterTypes)
-        fun onTagRemoved(tag: String, tagType: MediaTagFilterTypes)
-        fun updateTags(tagType: MediaTagFilterTypes)
+        fun openTagChooserDialog(tags: List<TagField>, tagType: SelectableTypes)
+        fun onTagAdd(tags: List<TagField>, tagType: SelectableTypes)
+        fun onTagRemoved(tag: String, tagType: SelectableTypes)
+        fun updateTags(tagType: SelectableTypes)
         fun getQuery(): String
         fun applyFilter()
     }

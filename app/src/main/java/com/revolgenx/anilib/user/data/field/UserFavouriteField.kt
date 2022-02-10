@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.user.data.field
 
 import com.revolgenx.anilib.UserFavouriteQuery
-import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.search.data.field.SearchTypes
 import com.revolgenx.anilib.common.data.field.BaseSourceField
 
 class UserFavouriteField : BaseSourceField<UserFavouriteQuery>() {

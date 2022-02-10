@@ -659,4 +659,11 @@
     <string name="media_modified_in_my_list">When an anime or manga in my list has its data changed that affects my list</string>
     <string name="media_merged_in_my_list">When one or more anime or manga in my list are merged into another</string>
     <string name="media_deleted_in_my_list">When an anime or manga in my list is deleted from the site</string>
+    <string name="web_novel">Web Novel</string>
+    <string name="live_action">Live Action</string>
+    <string name="select">Select</string>
+    <string name="doujin">Doujin</string>
+    <string name="year_range">Year Range</string>
+    <string name="year_range_s_s">Year Range (%s - %s)</string>
+    <string name="episodes_range_s_s">Episodes (%s - %s)</string>
 </resources>

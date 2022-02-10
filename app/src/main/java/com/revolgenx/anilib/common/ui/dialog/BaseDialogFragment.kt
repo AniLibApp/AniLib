@@ -25,15 +25,15 @@ typealias OnButtonClickedListener = ((dialogInterface: DialogInterface, which: I
 
 abstract class BaseDialogFragment<V : ViewBinding> : DynamicDialogFragment() {
 
-    protected open var titleRes: Int? = null
-    protected open var positiveText: Int? = null
-    protected open var negativeText: Int? = null
+    protected open val titleRes: Int? = null
+    protected open val positiveText: Int? = null
+    protected open val negativeText: Int? = null
 
-    protected open var neutralText: Int? = null
+    protected open val neutralText: Int? = null
     protected open var messageText: Int? = null
 
-    protected open var isAutoDismissEnabled = false
-    protected open var dismissOnTouchOutside = true
+    protected open val isAutoDismissEnabled = false
+    protected open val dismissOnTouchOutside = true
 
     protected var positiveButton: Button? = null
     protected var titleTextView:TextView? = null

@@ -12,7 +12,6 @@ import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.infrastructure.event.*
-import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.databinding.ImageStatsPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.TextStatsPresenterLayoutBinding
 import com.revolgenx.anilib.common.presenter.Constant.PRESENTER_BINDING_KEY
@@ -77,9 +76,9 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatisticModel>(conte
                     item.genre?.let { genre ->
                         statsTitleTv.text = genre
                         root.setOnClickListener { _ ->
-                            OpenSearchEvent(MediaSearchFilterModel().also {
-                                it.genre = listOf(genre.trim())
-                            }).postEvent
+//                            OpenSearchEvent(MediaSearchFilterModel().also {
+//                                it.genre = listOf(genre.trim())
+//                            }).postEvent
                         }
                     }
                 }
@@ -91,9 +90,9 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatisticModel>(conte
                             return@setOnClickListener;
                         }
                         root.setOnClickListener { _ ->
-                            OpenSearchEvent(MediaSearchFilterModel().also {
-                                it.tags = listOf(tag.name.trim())
-                            }).postEvent
+//                            OpenSearchEvent(MediaSearchFilterModel().also {
+//                                it.tags = listOf(tag.name.trim())
+//                            }).postEvent
                         }
                     }
                 }

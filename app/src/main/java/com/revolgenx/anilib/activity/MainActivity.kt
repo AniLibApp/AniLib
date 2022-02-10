@@ -253,7 +253,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         mainViewPager.offscreenPageLimit = pagerAdapter.count - 1
 
 
-        mainBottomNavView.setOnItemSelectedListener  {
+        mainBottomNavView.setOnItemSelectedListener {
             mainBottomNavView.menu.forEachIndexed { index, item ->
                 if (it == item) {
                     mainViewPager.setCurrentItem(index, true)
@@ -414,38 +414,27 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
     override fun onBackPressed() {
-        when {
-            binding.drawerLayout.isDrawerOpen(GravityCompat.START) -> {
-                binding.drawerLayout.closeDrawer(GravityCompat.START)
-            }
-            binding.drawerLayout.isDrawerOpen(GravityCompat.END) -> {
-                binding.drawerLayout.closeDrawer(GravityCompat.END)
-            }
-            else -> {
-                if ((supportFragmentManager.backStackEntryCount >= 1)) {
-
-                    val topFragment = supportFragmentManager.fragments.lastOrNull()
-                    if ((topFragment is ActivityEventListener)) {
-                        if (!topFragment.onBackPressed()) {
-                            super.onBackPressed()
-                        }
-                    } else {
-                        super.onBackPressed()
-                    }
-                    return
+        if ((supportFragmentManager.backStackEntryCount >= 1)) {
+            val topFragment = supportFragmentManager.fragments.lastOrNull()
+            if ((topFragment is ActivityEventListener)) {
+                if (!topFragment.onBackPressed()) {
+                    super.onBackPressed()
                 }
-
-                if (pressedTwice) {
-                    finish()
-                } else {
-                    makeToast(R.string.press_again_to_exit, icon = R.drawable.ic_exit)
-                    Handler(Looper.myLooper()!!).postDelayed({
-                        pressedTwice = false
-                    }, 1000)
-                }
-                pressedTwice = true
+            } else {
+                super.onBackPressed()
             }
+            return
         }
+
+        if (pressedTwice) {
+            finish()
+        } else {
+            makeToast(R.string.press_again_to_exit, icon = R.drawable.ic_exit)
+            Handler(Looper.myLooper()!!).postDelayed({
+                pressedTwice = false
+            }, 1000)
+        }
+        pressedTwice = true
     }
 
 

@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.media.data.model.MediaTagModel
-import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.databinding.ChipTagPresenterBinding
 import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
 
@@ -49,9 +48,9 @@ class MediaTagChipAdapter(val onTagInfoClicked: (MediaTagModel) -> Unit) :
                 chipTagView.isCloseIconVisible = true
 
                 root.setOnClickListener {
-                    OpenSearchEvent(MediaSearchFilterModel().also {
-                        it.tags = listOf(tags.name.trim())
-                    }).postEvent
+//                    OpenSearchEvent(MediaSearchFilterModel().also {
+//                        it.tags = listOf(tags.name.trim())
+//                    }).postEvent
                 }
 
                 chipTagView.setOnCloseIconClickListener {

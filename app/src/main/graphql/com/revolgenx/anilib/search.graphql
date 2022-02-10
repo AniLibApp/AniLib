@@ -1,42 +1,61 @@
-
 query MediaSearchQuery(
     $search:String,
     $page:Int,
     $perPage:Int,
     $type:MediaType,
-    $format:MediaFormat,
+    $formatIn:[MediaFormat],
     $season:MediaSeason,
     $seasonYear:Int,
     $yearGreater:FuzzyDateInt,
     $yearLesser:FuzzyDateInt,
     $status:MediaStatus,
     $source:MediaSource,
-    $streamingOn:[String],
+    $licensedBy:[String],
     $genre:[String],
     $tag:[String],
     $tagNotIn:[String],
     $genreNotIn:[String],
     $sort:[MediaSort],
     $country:CountryCode,
-    $isAdult:Boolean){
+    $isAdult:Boolean,
+    $isLicensed:Boolean,
+    $episodesGreater:Int,
+    $episodesLesser:Int,
+    $chaptersGreater:Int,
+    $chaptersLesser:Int,
+    $volumesGreater:Int,
+    $volumesLesser:Int,
+    $durationLesser:Int,
+    $durationGreater:Int
+){
     page: Page(page:$page,perPage:$perPage){
-        media(search:$search
-            , type:$type
-            , format:$format
-            , season:$season
-            , seasonYear:$seasonYear
-            , startDate_greater:$yearGreater
-            , startDate_lesser:$yearLesser
-            , status:$status
-            , source:$source
-            , licensedBy_in:$streamingOn
-            , genre_in:$genre
-            , tag_in:$tag
-            , tag_not_in:$tagNotIn
-            , genre_not_in:$genreNotIn
-            , sort:$sort
-            , countryOfOrigin:$country
-            , isAdult:$isAdult){
+        media(
+            search:$search,
+            type:$type,
+            format_in: $formatIn,
+            season:$season,
+            seasonYear:$seasonYear,
+            startDate_greater:$yearGreater,
+            startDate_lesser:$yearLesser,
+            status:$status, source:$source,
+            licensedBy_in:$licensedBy,
+            genre_in:$genre,
+            tag_in:$tag,
+            tag_not_in:$tagNotIn,
+            genre_not_in:$genreNotIn,
+            sort:$sort,
+            countryOfOrigin:$country,
+            isAdult:$isAdult,
+            episodes_greater: $episodesGreater,
+            episodes_lesser: $episodesLesser,
+            chapters_greater: $chaptersGreater,
+            chapters_lesser: $chaptersLesser,
+            volumes_greater: $volumesGreater,
+            volumes_lesser: $volumesLesser,
+            duration_greater: $durationGreater,
+            duration_lesser: $durationLesser,
+            isLicensed: $isLicensed
+        ){
             ... on Media{
                 ... mediaContent
             }

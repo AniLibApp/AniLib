@@ -61,6 +61,12 @@
         <attr name="mode" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="AlCheckBox">
+        <attr name="text" format="string" />
+        <attr name="intermediate_mode" format="boolean"/>
+    </declare-styleable>
+
+
     <declare-styleable name="IndicatorTextView">
         <attr name="textSize" format="integer" />
         <attr name="textColorType" format="enum">

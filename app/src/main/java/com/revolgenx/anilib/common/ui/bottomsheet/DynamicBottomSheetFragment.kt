@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.common.ui.bottomsheet
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,10 +20,13 @@ abstract class DynamicBottomSheetFragment<VB : ViewBinding> : BottomSheetFragmen
     var onNegativeClicked: (() -> Unit)? = null
 
     @StringRes
-    var positiveTextRes: Int = R.string.done
+    protected open val positiveTextRes: Int = R.string.done
 
     @StringRes
-    var negativeTextRes: Int = R.string.cancel
+    protected open val negativeTextRes: Int = R.string.cancel
+
+    @StringRes
+    protected open val titleTextRes: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +39,6 @@ abstract class DynamicBottomSheetFragment<VB : ViewBinding> : BottomSheetFragmen
         return bottomSheetBinding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupSheetBackground(bottomSheetBinding.root)
@@ -43,13 +46,26 @@ abstract class DynamicBottomSheetFragment<VB : ViewBinding> : BottomSheetFragmen
         bottomSheetBinding.apply {
             bottomSheetPositiveTv.setText(positiveTextRes)
             bottomSheetNegativeTv.setText(negativeTextRes)
+
+            titleTextRes?.let {
+                bottomSheetTitleTv.visibility = View.VISIBLE
+                bottomSheetTitleTv.setText(it)
+            }
+
             bottomSheetPositiveTv.setOnClickListener {
                 onPositiveClicked?.invoke()
+                dismiss()
             }
             bottomSheetNegativeTv.setOnClickListener {
                 onNegativeClicked?.invoke()
+                dismiss()
             }
         }
+    }
+
+
+    protected fun displayButtonPositive(bool: Boolean) {
+        bottomSheetBinding.bottomSheetPositiveTv.visibility = if (bool) View.VISIBLE else View.GONE
     }
 
 }

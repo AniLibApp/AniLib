@@ -12,7 +12,6 @@ import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.databinding.DiscoverAiringPresenterLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
@@ -67,9 +66,9 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
 
             airingTimeTv.setAiringText(item)
             airingGenreLayout.addGenre(media.genres?.take(3)) { genre ->
-                OpenSearchEvent(MediaSearchFilterModel().also {
-                    it.genre = listOf(genre.trim())
-                }).postEvent
+//                OpenSearchEvent(MediaSearchFilterModel().also {
+//                    it.genre = listOf(genre.trim())
+//                }).postEvent
             }
 
             root.setOnClickListener {

@@ -2,7 +2,6 @@ package com.revolgenx.anilib.social.ui.bottomsheet
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Spanned
 import android.view.LayoutInflater
@@ -46,7 +45,7 @@ class SpoilerBottomSheetFragment : BaseLayoutFragment<SpoilerBottomSheetFragment
         v.setBackgroundColor(
             ContextCompat.getColor(
                 requireContext(),
-                R.color.persistent_bottom_sheet_bg_color
+                R.color.standard_bottom_sheet_dim
             )
         )
         return v

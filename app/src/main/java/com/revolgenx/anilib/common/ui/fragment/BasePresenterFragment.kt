@@ -48,7 +48,7 @@ abstract class BasePresenterFragment<M : Any>() :
 
     open protected var gridMinSpan = 1
     open protected var gridMaxSpan = 2
-    open protected var selfAddLayoutManager = true
+    open protected var autoAddLayoutManager = true
 
     var span: Int = 1
 
@@ -61,7 +61,7 @@ abstract class BasePresenterFragment<M : Any>() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (selfAddLayoutManager) {
+        if (autoAddLayoutManager) {
             span =
                 if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) gridMaxSpan else gridMinSpan
             layoutManager = GridLayoutManager(this.context, span).also {

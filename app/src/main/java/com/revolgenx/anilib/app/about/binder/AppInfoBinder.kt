@@ -10,7 +10,7 @@ import com.pranavpandey.android.dynamic.support.utils.DynamicLayoutUtils
 import com.pranavpandey.android.dynamic.support.view.base.DynamicInfoView
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.adapter.AlAppInfoAdapter
+import com.revolgenx.anilib.app.about.adapter.AlAppInfoAdapter
 import com.revolgenx.anilib.util.openLink
 
 class AppInfoBinder(binderAdapter: AlAppInfoAdapter) : DynamicRecyclerViewBinder<AppInfoBinder.ViewHolder>(binderAdapter) {

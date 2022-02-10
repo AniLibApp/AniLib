@@ -24,6 +24,7 @@ import com.revolgenx.anilib.media.presenter.MediaCharacterPresenter
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.media.viewmodel.MediaCharacterVM
+import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaCharacterFragment : BasePresenterFragment<CharacterEdgeModel>() {
@@ -40,9 +41,10 @@ class MediaCharacterFragment : BasePresenterFragment<CharacterEdgeModel>() {
             return viewModel.source ?: createSource()
         }
 
-    private val mediaBrowserMeta get() = arguments?.getParcelable<MediaInfoMeta?>(
-        MEDIA_INFO_META_KEY
-    )
+    private val mediaBrowserMeta
+        get() = arguments?.getParcelable<MediaInfoMeta?>(
+            MEDIA_INFO_META_KEY
+        )
     private val viewModel by viewModel<MediaCharacterVM>()
 
     private lateinit var languageSpinner: DynamicSpinner
@@ -139,12 +141,7 @@ class MediaCharacterFragment : BasePresenterFragment<CharacterEdgeModel>() {
         }
 
         if (mediaBrowserMeta?.type != MediaType.MANGA.ordinal) {
-            languageSpinner.adapter = DynamicSpinnerImageAdapter(
-                requireContext(),
-                R.layout.ads_layout_spinner_item,
-                R.id.ads_spinner_item_icon,
-                R.id.ads_spinner_item_text, spinnerItems
-            )
+            languageSpinner.adapter = makeSpinnerAdapter(requireContext(), spinnerItems)
 
             viewModel.field.language?.let {
                 languageSpinner.setSelection(it)

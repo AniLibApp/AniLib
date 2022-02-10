@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -27,67 +27,63 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/formatChipRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
 
-        <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/FilterHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            app:headerName="@string/status">
-            <com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout
+            android:text="@string/status" />
+
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                android:id="@+id/listStatusSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" />
 
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                    android:id="@+id/listStatusSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout>
-        </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
-
-        <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/FilterHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            app:headerName="@string/genre">
+            android:text="@string/genre" />
 
-            <com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                android:id="@+id/listGenreSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" />
 
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-                    android:id="@+id/listGenreSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout>
-        </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
-
-        <com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/FilterHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            app:headerName="@string/sort">
+            android:text="@string/sort" />
 
-            <com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.revolgenx.anilib.ui.view.sort.AlSortLayout
+                android:id="@+id/list_sort_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:padding="10dp"/>
 
-                <com.revolgenx.anilib.ui.view.sort.AlSortLayout
-                    android:id="@+id/list_sort_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-            </com.revolgenx.anilib.ui.view.widgets.misc.BackgroundStrokeLayout>
-        </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>
-
-
-    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>
 
 

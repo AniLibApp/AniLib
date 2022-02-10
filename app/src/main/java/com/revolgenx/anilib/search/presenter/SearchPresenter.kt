@@ -17,7 +17,7 @@ import com.revolgenx.anilib.character.data.model.CharacterModel
 import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.presenter.BasePresenter
-import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.search.data.field.SearchTypes
 import com.revolgenx.anilib.databinding.*
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.infrastructure.event.*

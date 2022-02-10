@@ -59,7 +59,7 @@
     </style>
 
     <style name="HomeContainerTabLayoutStyle" parent="DynamicTextTabLayoutStyle">
-<!--        <item name="tabIndicatorHeight">3dp</item>-->
+        <!--        <item name="tabIndicatorHeight">3dp</item>-->
     </style>
 
     <style name="HomeTabLayoutTextStyle">
@@ -67,14 +67,13 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="DiscoverTabLayoutTextStyle" parent="HomeTabLayoutTextStyle">
-    </style>
-    <style name="ListTabLayoutTextStyle" parent="HomeTabLayoutTextStyle">
-    </style>
-    <style name="RadioTabLayoutTextStyle" parent="HomeTabLayoutTextStyle">
-    </style>
-    <style name="ActivityUnionTabLayoutTextStyle" parent="HomeTabLayoutTextStyle">
-    </style>
+    <style name="DiscoverTabLayoutTextStyle" parent="HomeTabLayoutTextStyle"></style>
+
+    <style name="ListTabLayoutTextStyle" parent="HomeTabLayoutTextStyle"></style>
+
+    <style name="RadioTabLayoutTextStyle" parent="HomeTabLayoutTextStyle"></style>
+
+    <style name="ActivityUnionTabLayoutTextStyle" parent="HomeTabLayoutTextStyle"></style>
 
     <style name="DynamicTextTabLayoutStyle.Background">
         <item name="adt_backgroundColorType">background</item>
@@ -168,12 +167,24 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="SettingHeaderStyle">
+    <style name="DiscoverTabTextAppearance" parent="AlTabTextAppearance.NoCaps">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="HeaderStyle">
         <item name="android:textSize">@dimen/setting_header_text_size</item>
         <item name="android:fontFamily">@font/rubik_regular</item>
         <item name="fontFamily">@font/rubik_regular</item>
+    </style>
+
+    <style name="SettingHeaderStyle" parent="HeaderStyle">
         <item name="android:paddingBottom">@dimen/setting_heading_padding_bottom</item>
         <item name="android:paddingTop">@dimen/setting_header_padding_top</item>
+    </style>
+
+    <style name="FilterHeaderStyle" parent="HeaderStyle">
+        <item name="android:paddingBottom">@dimen/filter_heading_padding</item>
+        <item name="android:paddingTop">@dimen/filter_heading_padding</item>
     </style>
 
     <style name="AlCheckboxStyle">

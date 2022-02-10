@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.recyclerview.DynamicRecyclerViewFrame
 import com.pranavpandey.android.dynamic.support.utils.DynamicLayoutUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.adapter.AlAppInfoAdapter
+import com.revolgenx.anilib.app.about.adapter.AlAppInfoAdapter
 
 class AppInfoView : DynamicRecyclerViewFrame {
 

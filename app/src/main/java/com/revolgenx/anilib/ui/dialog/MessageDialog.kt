@@ -51,36 +51,26 @@ class MessageDialog : BaseDialogFragment<ViewBinding>() {
         return null
     }
 
+    override val titleRes: Int? get() = arguments?.getInt(titleKey)
+    override val positiveText: Int? get() = arguments?.getInt(positiveKey)
+    override val negativeText: Int? get() = arguments?.getInt(negativeKey)
+    override val neutralText: Int? get() = arguments?.getInt(neutralKey)
+
     override fun onCustomiseBuilder(
         dialogBuilder: DynamicDialog.Builder,
         savedInstanceState: Bundle?
     ): DynamicDialog.Builder {
         with(dialogBuilder) {
             arguments?.apply {
-                if (getInt(titleKey) != 0) {
-                    titleRes = getInt(titleKey)
-                }
-
                 if (getInt(messageResKey) != 0) {
                     setMessage(getInt(messageResKey))
                 }
-
-
                 getString(messageKey)?.let {
                     setMessage(it)
                 }
                 if (getInt(viewKey) != 0) {
                     val viewRes = getInt(viewKey)
                     setView(viewRes)
-                }
-                if (getInt(positiveKey) != 0) {
-                    positiveText = getInt(positiveKey)
-                }
-                if (getInt(negativeKey) != 0) {
-                    negativeText = getInt(negativeKey)
-                }
-                if (getInt(neutralKey) != 0) {
-                    neutralText = getInt(neutralKey)
                 }
             }
         }

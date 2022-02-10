@@ -9,7 +9,6 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.home.discover.data.field.TrendingMediaField
 import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
 import com.revolgenx.anilib.home.discover.data.meta.DiscoverOrderItem
-import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.common.preference.getDiscoverOrderFromType
 import com.revolgenx.anilib.common.preference.isDiscoverOrderEnabled
 import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
@@ -93,9 +92,9 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
 
     private fun handleClick(which: Int) {
         if (which == 0) {
-            OpenSearchEvent(MediaSearchFilterModel().also {
-                it.sort = MediaSort.TRENDING_DESC.ordinal
-            }).postEvent
+//            OpenSearchEvent(MediaSearchFilterModel().also {
+//                it.sort = MediaSort.TRENDING_DESC.ordinal
+//            }).postEvent
         } else if (which == 1) {
             showMediaFilterDialog(
                 MediaFilterBottomSheetFragment.MediaFilterType.TRENDING.ordinal

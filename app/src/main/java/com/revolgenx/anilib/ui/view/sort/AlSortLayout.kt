@@ -17,13 +17,13 @@ import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.util.dp
 
-class AlSortLayout:LinearLayout {
+class AlSortLayout : LinearLayout {
 
-    private var sortItems:List<AniLibSortingModel>? =  null
-    private val sortTitleTv:DynamicTextView
-    private val sortOrderIv:DynamicImageView
+    private var sortItems: List<AniLibSortingModel>? = null
+    private val sortTitleTv: DynamicTextView
+    private val sortOrderIv: DynamicImageView
 
-    var onSortItemSelected: ((item:AniLibSortingModel?)->Unit)? = null
+    var onSortItemSelected: ((item: AniLibSortingModel?) -> Unit)? = null
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0)
@@ -34,22 +34,21 @@ class AlSortLayout:LinearLayout {
     ) {
         orientation = HORIZONTAL
 
-        sortTitleTv = DynamicTextView(context, attributeSet, def).also {
-            it.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT).also {params->
-                params.gravity = Gravity.CENTER_VERTICAL
-            }
+        sortTitleTv = DynamicTextView(context).also {
+            it.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).also { params ->
+                    params.gravity = Gravity.CENTER_VERTICAL
+                }
             it.textSize = 13f
             it.gravity = Gravity.CENTER_VERTICAL
         }
 
-        sortOrderIv = DynamicImageView(context, attributeSet, def).also {
-            it.layoutParams = LayoutParams(dp(24f), dp(24f)).also { params->
-                params.gravity = Gravity.CENTER_VERTICAL
+        sortOrderIv = DynamicImageView(context).also {
+            it.layoutParams = LayoutParams(dp(24f), dp(24f)).also { params ->
+                params.gravity = Gravity.END or Gravity.CENTER_VERTICAL
                 params.marginEnd = dp(6f)
                 params.marginStart = dp(6f)
             }
             it.colorType = Theme.ColorType.TEXT_PRIMARY
-
             it.setPadding(3)
         }
 
@@ -61,12 +60,12 @@ class AlSortLayout:LinearLayout {
         }
     }
 
-    private fun openSortingDialog(context: Context){
-        if(sortItems == null) return
-        AniLibSortingDialog(sortItems!!).show(context){
+    private fun openSortingDialog(context: Context) {
+        if (sortItems == null) return
+        AniLibSortingDialog(sortItems!!).show(context) {
             onButtonClickedListener = onButtonClickedListener@{ _, which ->
-                if(sortItems == null || getContext() == null) return@onButtonClickedListener
-                if(which == AlertDialog.BUTTON_POSITIVE){
+                if (sortItems == null || getContext() == null) return@onButtonClickedListener
+                if (which == AlertDialog.BUTTON_POSITIVE) {
                     val activeItem = getActiveSortItem()
                     updateActiveSortItem(activeItem)
                     onSortItemSelected?.invoke(activeItem)
@@ -75,14 +74,14 @@ class AlSortLayout:LinearLayout {
         }
     }
 
-    fun setSortItems(sortItems:List<AniLibSortingModel>){
+    fun setSortItems(sortItems: List<AniLibSortingModel>) {
         this.sortItems = sortItems
         updateActiveSortItem(getActiveSortItem())
     }
 
-    fun setActiveSortItem(sortItem:AniLibSortingModel){
-        if(sortItems == null) return
-        sortItems!!.firstOrNull{ it.data == sortItem.data }?.let {
+    fun setActiveSortItem(sortItem: AniLibSortingModel) {
+        if (sortItems == null) return
+        sortItems!!.firstOrNull { it.data == sortItem.data }?.let {
             it.order = sortItem.order
             updateActiveSortItem(sortItem)
         }
@@ -90,22 +89,22 @@ class AlSortLayout:LinearLayout {
 
     fun getActiveSortItem() = sortItems?.firstOrNull { it.order != SortOrder.NONE }
 
-    private fun updateActiveSortItem(activeSortItem:AniLibSortingModel?){
-        val sortTitle:String
-        val sortIcon:Drawable?
-        if(activeSortItem == null){
+    private fun updateActiveSortItem(activeSortItem: AniLibSortingModel?) {
+        val sortTitle: String
+        val sortIcon: Drawable?
+        if (activeSortItem == null) {
             sortTitle = context.getString(R.string.none)
             sortIcon = null
-        }else{
+        } else {
             sortTitle = activeSortItem.title
             val icon = when (activeSortItem.order) {
                 SortOrder.ASC -> {
                     R.drawable.ic_asc
                 }
-                SortOrder.DESC->{
+                SortOrder.DESC -> {
                     R.drawable.ic_desc
                 }
-                else->{
+                else -> {
                     R.drawable.ic_asc
                 }
             }

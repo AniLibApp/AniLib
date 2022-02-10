@@ -370,7 +370,7 @@
                         android:minHeight="40dp">
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-                            android:id="@+id/tagRecyclerView"
+                            android:id="@+id/selectable_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"

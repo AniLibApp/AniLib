@@ -20,8 +20,7 @@ import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 
-class MediaListCollectionFilterBottomSheet :
-    DynamicBottomSheetFragment<MediaListFilterBottomSheetLayoutBinding>() {
+class MediaListCollectionFilterBottomSheet : DynamicBottomSheetFragment<MediaListFilterBottomSheetLayoutBinding>() {
 
     private var formatDialog: DialogFragment? = null
 
@@ -30,8 +29,8 @@ class MediaListCollectionFilterBottomSheet :
             ?: MediaListCollectionFilterMeta()
     }
 
-
     private var onFilterMediaList: ((filter:MediaListCollectionFilterMeta) -> Unit)? = null
+
     companion object {
         private const val media_list_collection_filter_meta_key =
             "media_list_collection_filter_meta_key"
@@ -67,11 +66,6 @@ class MediaListCollectionFilterBottomSheet :
             }
 
             onFilterMediaList?.invoke(mediaListFilter)
-            dismiss()
-        }
-
-        onNegativeClicked = {
-            dismiss()
         }
     }
 

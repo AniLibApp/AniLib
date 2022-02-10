@@ -17,7 +17,6 @@ import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.meta.MediaListMeta
-import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
 import com.revolgenx.anilib.databinding.MediaListPresenterBinding
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
@@ -91,9 +90,9 @@ class MediaListPresenter(
             mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
 
             mediaListGenreLayout.addGenre(media.genres?.take(3)) { genre ->
-                OpenSearchEvent(MediaSearchFilterModel().also {
-                    it.genre = listOf(genre.trim())
-                }).postEvent
+//                OpenSearchEvent(MediaSearchFilterModel().also {
+//                    it.genre = listOf(genre.trim())
+//                }).postEvent
             }
 
             //TODO SCORE FORMAT

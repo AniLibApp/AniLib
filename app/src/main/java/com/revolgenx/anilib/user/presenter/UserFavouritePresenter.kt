@@ -11,7 +11,7 @@ import androidx.viewbinding.ViewBinding
 import com.otaliastudios.elements.*
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.data.model.CharacterModel
-import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.search.data.field.SearchTypes
 import com.revolgenx.anilib.infrastructure.event.*
 import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.common.preference.loggedIn

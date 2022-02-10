@@ -2,6 +2,7 @@ package com.revolgenx.anilib.common.preference
 
 import android.app.Application
 import android.content.Context
+import androidx.work.WorkManager
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
@@ -12,6 +13,7 @@ import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.user.data.model.UserPrefModel
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel
+import com.revolgenx.anilib.notification.service.NotificationWorker
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.type.UserTitleLanguage
 import com.revolgenx.anilib.util.shortcutAction
@@ -125,7 +127,7 @@ fun getUserPrefModel(context: Context): UserPrefModel {
 }
 
 
-fun removeBasicUserDetail(context: Context) {
+private fun removeBasicUserDetail(context: Context) {
     userPrefModelPref = UserPrefModel().also {
         it.name = context.getString(R.string.app_name)
         it.mediaListOptions = MediaListOptionModel().also { option ->
@@ -147,13 +149,19 @@ fun Context.logOut() {
     shortcutAction(this) {
         it.removeAllDynamicShortcuts()
     }
+    removeNotificationWorker(this)
 }
 
-fun removeNotification(context: Context) {
+private fun removeNotificationWorker(context: Context){
+    WorkManager.getInstance(context)
+        .cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
+}
+
+private fun removeNotification(context: Context) {
     setNewNotification(context)
 }
 
-fun removeAiringField(context: Context) {
+private fun removeAiringField(context: Context) {
     storeDiscoverAiringField(context, AiringMediaField())
     storeAiringField(context, AiringMediaField())
 }

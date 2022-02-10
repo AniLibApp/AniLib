@@ -6,7 +6,9 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+import com.pranavpandey.android.dynamic.theme.Theme
 import com.pranavpandey.android.dynamic.utils.DynamicDrawableUtils
+import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 
 class DynamicDrawableTextView : DynamicTextView {
@@ -18,9 +20,22 @@ class DynamicDrawableTextView : DynamicTextView {
         attributeSet,
         defStyle
     ) {
+
+        compoundDrawablesRelative.forEach {
+            DynamicDrawableUtils.colorizeDrawable(
+                it,
+                getColor(true)
+            )
+        }
     }
 
-    fun setDrawables(@DrawableRes startRes: Int? = null, @DrawableRes endRes: Int? = null,@DrawableRes topRes:Int? = null, @DrawableRes bottomRes:Int? = null, color: Int? = null) {
+    fun setDrawables(
+        @DrawableRes startRes: Int? = null,
+        @DrawableRes endRes: Int? = null,
+        @DrawableRes topRes: Int? = null,
+        @DrawableRes bottomRes: Int? = null,
+        color: Int? = null
+    ) {
 
         val textPrimary = dynamicTextColorPrimary
 
@@ -65,7 +80,12 @@ class DynamicDrawableTextView : DynamicTextView {
         }
 
 
-        this.setCompoundDrawablesRelativeWithIntrinsicBounds(startDrawable, topDrawable, endDrawable, bottomDrawable)
+        this.setCompoundDrawablesRelativeWithIntrinsicBounds(
+            startDrawable,
+            topDrawable,
+            endDrawable,
+            bottomDrawable
+        )
     }
 
 }

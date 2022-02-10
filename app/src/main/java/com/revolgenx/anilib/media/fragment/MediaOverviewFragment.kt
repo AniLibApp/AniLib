@@ -235,18 +235,13 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             englishTitle.visibility = View.GONE
         }
 
-
         setDescription(overview.description)
 
         mediaFormatTv.subtitle = overview.format?.let {
-            requireContext().resources.getStringArray(
-                R.array.media_format
-            )[it]
+            requireContext().resources.getStringArray(R.array.media_format)[it]
         }.naText()
         mediaSourceTv.subtitle = overview.source?.let {
-            requireContext().resources.getStringArray(
-                R.array.media_source
-            )[it.ordinal]
+            requireContext().resources.getStringArray(R.array.media_source)[it.ordinal]
         }.naText()
 
         when (overview.type) {

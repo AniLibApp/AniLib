@@ -5,7 +5,7 @@ import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.app.setting.data.meta.TagFilterSettingMeta
-import com.revolgenx.anilib.search.data.model.filter.MediaSearchFilterModel
+import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 
 data class OpenUserProfileEvent(val userId: Int? = null, val username: String? = null) : BaseEvent()
 data class OpenUserFriendEvent(val userId: Int? = null, val isFollower: Boolean = false) :
@@ -20,7 +20,7 @@ enum class SettingEventTypes {
 interface SettingEventData
 data class TagSettingEventMeta(val meta: TagFilterSettingMeta):SettingEventData
 
-data class OpenSearchEvent(val data: MediaSearchFilterModel? = null) : BaseEvent()
+class OpenSearchEvent(val data: SearchFilterModel? = null) : BaseEvent()
 data class OpenReviewEvent(val reviewId: Int) : BaseEvent()
 class OpenAllReviewEvent() : BaseEvent()
 class OpenNotificationCenterEvent : BaseEvent()

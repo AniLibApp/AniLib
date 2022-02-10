@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
         android:id="@+id/bottom_sheet_title_tv"
         android:layout_width="match_parent"

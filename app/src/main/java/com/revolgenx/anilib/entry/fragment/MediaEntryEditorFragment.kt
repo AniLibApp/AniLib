@@ -24,7 +24,6 @@ import com.revolgenx.anilib.entry.data.meta.EntryEditorResultMeta
 import com.revolgenx.anilib.common.data.model.FuzzyDateModel
 import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.preference.getUserPrefModel
-import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.preference.userScoreFormat
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.constant.MediaListStatusEditor
@@ -32,7 +31,7 @@ import com.revolgenx.anilib.databinding.ListEditorFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status.*
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
-import com.revolgenx.anilib.ui.bottomsheet.calendar.CalendarViewBottomSheetDialog
+import com.revolgenx.anilib.ui.calendar.bottomsheet.CalendarViewBottomSheetDialog
 import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.entry.viewmodel.EntryEditorViewModel

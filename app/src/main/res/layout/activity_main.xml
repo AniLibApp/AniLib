@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pranavpandey.android.dynamic.support.widget.DynamicDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,30 +12,26 @@
             android:id="@+id/main_view_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constrainedHeight="true"
-            app:layout_constraintBottom_toTopOf="@id/main_bottom_nav_view"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toTopOf="@+id/main_bottom_nav_view"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicBottomNavigationView
             android:id="@+id/main_bottom_nav_view"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             app:adt_colorType="background"
             app:adt_contrastWithColorType="background"
             app:adt_textColorType="accent"
             app:labelVisibilityMode="unlabeled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <FrameLayout
         android:id="@+id/main_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
-</com.pranavpandey.android.dynamic.support.widget.DynamicDrawerLayout>
-
+</FrameLayout>

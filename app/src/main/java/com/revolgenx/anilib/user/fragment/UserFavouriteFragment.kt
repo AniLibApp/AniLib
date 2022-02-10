@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.revolgenx.anilib.constant.SearchTypes
+import com.revolgenx.anilib.search.data.field.SearchTypes
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.user.data.meta.UserMeta
 import com.revolgenx.anilib.common.data.model.BaseModel

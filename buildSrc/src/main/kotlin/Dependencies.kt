@@ -49,7 +49,7 @@ object LibraryVersion {
     const val preetytime_version = "4.0.4.Final"
 
     const val exo_version = "2.12.1"
-    const val work_version = "2.4.0-alpha03"
+    const val work_version = "2.7.1"
     const val rx_version = "2.1.1"
     const val jwt_token_version = "1.2.0"
 

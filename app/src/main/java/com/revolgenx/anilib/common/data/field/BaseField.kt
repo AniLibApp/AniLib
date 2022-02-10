@@ -18,7 +18,12 @@ abstract class BaseField<T>() : KoinComponent {
         const val PER_PAGE = 20
     }
 
+    protected fun nn(value: String?) = Optional.presentIfNotNull(value?.takeIf { it.isNotBlank() })
     protected fun <V : Any> nn(value: V?): Optional<V> = Optional.presentIfNotNull(value)
-    protected fun nnBool(value: Boolean?): Optional<Boolean> = Optional.presentIfNotNull(value?.takeIf { it })
-    protected fun <V : Any>nn(value: List<V>?): Optional<List<V>> = Optional.presentIfNotNull(value?.takeIf { it.isNullOrEmpty().not() })
+    protected fun <V : Any> nn(value: List<V>?): Optional<List<V>> =
+        Optional.presentIfNotNull(value?.takeIf { it.isNullOrEmpty().not() })
+
+    protected fun nnBool(value: Boolean?): Optional<Boolean> =
+        Optional.presentIfNotNull(value?.takeIf { it })
+
 }

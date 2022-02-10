@@ -59,179 +59,17 @@ open class App : DynamicApplication() {
     }
 
     override fun onInitialize() {
-        val requestListeners: MutableSet<RequestListener> = HashSet()
-
         if (BuildConfig.DEBUG) {
             Timber.plant(LoggerTree())
-
-            requestListeners.add(RequestLoggingListener())
-            FLog.setMinimumLoggingLevel(FLog.VERBOSE);
-
         } else {
             Timber.plant(AniLibDebugTree(this))
         }
 
-        if(!disableAds()){
-            MobileAds.initialize(this)
-        }
-
-        val config = OkHttpImagePipelineConfigFactory.newBuilder(context, OkHttpClient()) // other setters
-            .setRequestListeners(requestListeners)
-            .build()
-        BigImageViewer.initialize(FrescoImageLoader.with(this, config))
-        AlMarkwonFactory.init(this)
         startKoin {
             androidContext(this@App)
             modules(getKoinModules())
         }
-
-
-        if (context.loggedIn()) {
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-            val interval = when (context.getString("notification_refresh_interval", "0")) {
-                "0" -> {
-                    15
-                }
-                "1" -> {
-                    20
-                }
-                "2" -> {
-                    25
-                }
-                "3" -> {
-                    30
-                }
-                else -> {
-                    15
-                }
-            }
-            val periodicWork =
-                PeriodicWorkRequestBuilder<NotificationWorker>(interval.toLong(), TimeUnit.MINUTES)
-                    .setConstraints(constraints).build()
-            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                NotificationWorker.NOTIFICATION_WORKER_TAG,
-                ExistingPeriodicWorkPolicy.REPLACE,
-                periodicWork
-            )
-        } else {
-            WorkManager.getInstance(this)
-                .cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
-        }
-
-        setAppShortcuts()
     }
-
-    private fun setAppShortcuts() {
-        shortcutAction(this) {
-
-            if (it.dynamicShortcuts.size != 0) return@shortcutAction
-
-            val anilibShortcuts = mutableListOf<ShortcutInfo>()
-            val homeShortcut = createShortcut(
-                "home_shortcut",
-                getString(R.string.home),
-                getString(R.string.open_home_desc),
-                R.drawable.ic_shortcut_home_filled,
-                Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
-                    it.putExtra(
-                        LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
-                        LauncherShortcuts.HOME.ordinal
-                    )
-                    it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                }
-            )
-            anilibShortcuts.add(homeShortcut)
-            if (loggedIn()) {
-
-                val animeShortcut = createShortcut(
-                    "anime_shortcut",
-                    getString(R.string.anime_list),
-                    getString(R.string.open_anime_list),
-                    R.drawable.ic_shortcut_laptop_chromebook,
-                    Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
-                        it.putExtra(
-                            LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
-                            LauncherShortcuts.ANIME.ordinal
-                        )
-                        it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    }
-                )
-                val mangaShortcut = createShortcut(
-                    "manga_shortcut",
-                    getString(R.string.manga_list),
-                    getString(R.string.open_manga_list),
-                    R.drawable.ic_shortcut_menu_book,
-                    Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
-                        it.putExtra(
-                            LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
-                            LauncherShortcuts.MANGA.ordinal
-                        )
-                        it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    }
-                )
-
-                anilibShortcuts.add(animeShortcut)
-                anilibShortcuts.add(mangaShortcut)
-            }
-
-
-            val radioShortcut = createShortcut(
-                "radio_shortcut",
-                getString(R.string.radio),
-                getString(R.string.open_radio),
-                R.drawable.ic_shortcut_radio,
-                Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
-                    it.putExtra(
-                        LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
-                        LauncherShortcuts.RADIO.ordinal
-                    )
-                    it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                }
-            )
-
-            anilibShortcuts.add(radioShortcut)
-
-
-            if (loggedIn()) {
-                val notificationShortcut = createShortcut(
-                    "notification_shortcut",
-                    getString(R.string.notification),
-                    getString(R.string.notification),
-                    R.drawable.ic_shortcut_notifications,
-                    Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
-                        it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                        it.putExtra(
-                            LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
-                            LauncherShortcuts.NOTIFICATION.ordinal
-                        )
-                    })
-
-                anilibShortcuts.add(notificationShortcut)
-            }
-
-
-            it.dynamicShortcuts = anilibShortcuts
-        }
-    }
-
-    @RequiresApi(N_MR1)
-    private fun createShortcut(
-        id: String,
-        label: String,
-        longLabel: String,
-        @DrawableRes drawRes: Int,
-        intent: Intent
-    ): ShortcutInfo {
-        return ShortcutInfo.Builder(this, id).setShortLabel(label).setLongLabel(longLabel)
-            .setIcon(Icon.createWithResource(this, drawRes))
-            .setIntent(intent)
-            .build()
-    }
-
-
-
 
     protected open fun getKoinModules() = listOf(
         viewModelModules,

@@ -16,8 +16,8 @@ import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.app.theme.dynamicCornerRadius
-import com.revolgenx.anilib.app.theme.dynamicSurfaceColor
 
 abstract class BottomSheetFragment<VB : ViewBinding> : BottomSheetDialogFragment() {
     open lateinit var windowContext: Context
@@ -82,7 +82,7 @@ abstract class BottomSheetFragment<VB : ViewBinding> : BottomSheetDialogFragment
         }.build()
 
         val shape = MaterialShapeDrawable(model).apply {
-            val backgroundColor = dynamicSurfaceColor
+            val backgroundColor = dynamicBackgroundColor
             fillColor = ColorStateList.valueOf(backgroundColor)
         }
 

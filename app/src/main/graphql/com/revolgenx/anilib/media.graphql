@@ -167,7 +167,7 @@ query MediaOverViewQuery($mediaId:Int){
         description(asHtml:true)
         chapters
         volumes
-        source
+        source(version: 3)
         hashtag
         synonyms
         relations{

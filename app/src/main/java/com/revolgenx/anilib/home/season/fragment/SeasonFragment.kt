@@ -8,7 +8,7 @@ import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.extensions.HeaderSource
 import com.otaliastudios.elements.extensions.SimplePresenter
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.constant.MediaTagFilterTypes
+import com.revolgenx.anilib.ui.selector.constant.SelectableTypes
 import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.infrastructure.event.TagEvent
 import com.revolgenx.anilib.common.data.field.TagField
@@ -17,15 +17,17 @@ import com.revolgenx.anilib.home.season.data.field.SeasonField
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.common.preference.getUserGenre
 import com.revolgenx.anilib.common.preference.getUserTag
-import com.revolgenx.anilib.common.data.field.TagChooserField
+import com.revolgenx.anilib.data.tuples.MutablePair
+import com.revolgenx.anilib.ui.selector.data.meta.SelectableMeta
 import com.revolgenx.anilib.infrastructure.event.SeasonEvent
 import com.revolgenx.anilib.infrastructure.source.home.discover.MediaFormatHeaderSource
-import com.revolgenx.anilib.ui.dialog.TagChooserDialogFragment
+import com.revolgenx.anilib.ui.selector.dialog.SelectableDialogFragment
 import com.revolgenx.anilib.home.season.presenter.SeasonPresenter
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent
 import com.revolgenx.anilib.home.season.viewmodel.SeasonViewModel
 import com.revolgenx.anilib.media.data.model.MediaModel
+import com.revolgenx.anilib.ui.selector.constant.SelectedState
 import com.revolgenx.anilib.util.EventBusListener
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -34,7 +36,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
 
     private val viewModel by viewModel<SeasonViewModel>()
-
+    private val field get() = viewModel.field
     override val basePresenter: Presenter<MediaModel> by lazy {
         SeasonPresenter(requireContext())
     }
@@ -49,6 +51,13 @@ class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
             return viewModel.source ?: createSource()
         }
 
+    private val tagList by lazy {
+        getUserTag(requireContext())
+    }
+
+    private val genreList by lazy {
+        getUserGenre(requireContext())
+    }
 
     override fun createSource(): Source<MediaModel> {
         return viewModel.createSource()
@@ -57,18 +66,6 @@ class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             viewModel.field = SeasonField.create(requireContext())
-            getUserTag(requireContext()).forEach {
-                viewModel.field.tagTagFields[it] = TagField(it, TagState.EMPTY)
-            }
-            getUserGenre(requireContext()).forEach {
-                viewModel.field.genreTagFields[it] = TagField(it, TagState.EMPTY)
-            }
-            viewModel.field.genres?.forEach {
-                viewModel.field.genreTagFields[it]?.tagState = TagState.TAGGED
-            }
-            viewModel.field.tags?.forEach {
-                viewModel.field.tagTagFields[it]?.tagState = TagState.TAGGED
-            }
         }
         super.onActivityCreated(savedInstanceState)
         initListener()
@@ -82,7 +79,6 @@ class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
         super.onStart()
         registerForEvent()
     }
-
 
 
     private fun renewAdapter() {
@@ -111,34 +107,34 @@ class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
     }
 
 
-
-    @Subscribe
-    fun onTagEvent(event: TagEvent) {
-        when (event.tagType) {
-            MediaTagFilterTypes.SEASON_TAG -> {
-                event.tagFields.forEach {
-                    viewModel.field.tagTagFields[it.tag]?.tagState = it.tagState
-                }
-                viewModel.field.tags =
-                    event.tagFields.filter { it.tagState == TagState.TAGGED }.map { it.tag }
-                        .toList()
-                viewModel.field.saveTags(requireContext())
-                renewAdapter()
-            }
-            MediaTagFilterTypes.SEASON_GENRE -> {
-                event.tagFields.forEach {
-                    viewModel.field.genreTagFields[it.tag]?.tagState = it.tagState
-                }
-                viewModel.field.genres =
-                    event.tagFields.filter { it.tagState == TagState.TAGGED }.map { it.tag }
-                        .toList()
-                viewModel.field.saveGenre(requireContext())
-                renewAdapter()
-            }
-            else -> {}
-        }
-
-    }
+//
+//    @Subscribe
+//    fun onTagEvent(event: TagEvent) {
+//        when (event.tagType) {
+//            SelectableTypes.SEASON_TAG -> {
+//                event.tagFields.forEach {
+//                    viewModel.field.tagTagFields[it.tag]?.tagState = it.tagState
+//                }
+//                viewModel.field.tags =
+//                    event.tagFields.filter { it.tagState == TagState.TAGGED }.map { it.tag }
+//                        .toList()
+//                viewModel.field.saveTags(requireContext())
+//                renewAdapter()
+//            }
+//            SelectableTypes.SEASON_GENRE -> {
+//                event.tagFields.forEach {
+//                    viewModel.field.genreTagFields[it.tag]?.tagState = it.tagState
+//                }
+//                viewModel.field.genres =
+//                    event.tagFields.filter { it.tagState == TagState.TAGGED }.map { it.tag }
+//                        .toList()
+//                viewModel.field.saveGenre(requireContext())
+//                renewAdapter()
+//            }
+//            else -> {}
+//        }
+//
+//    }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -150,8 +146,8 @@ class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
     }
 
     @Subscribe()
-    fun seasonEvent(event:SeasonEvent){
-        when(event){
+    fun seasonEvent(event: SeasonEvent) {
+        when (event) {
             SeasonEvent.SeasonFilterEvent -> {
                 renewAdapter()
             }
@@ -164,27 +160,48 @@ class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
                 renewAdapter()
             }
             SeasonEvent.SeasonTagEvent -> {
-                openTagChooserDialog(
-                    viewModel.field.tagTagFields.values.toList(),
-                    MediaTagFilterTypes.SEASON_TAG
-                )
+                val selectableList = genreList.map {
+                    val state = when {
+                        field.genres?.contains(it) == true -> {
+                            SelectedState.SELECTED
+                        }
+                        else -> {
+                            SelectedState.NONE
+                        }
+                    }
+                    MutablePair(it, state)
+                }
+                openSelectorDialog(R.string.genre, selectableList)
             }
             SeasonEvent.SeasonGenreEvent -> {
-                openTagChooserDialog(
-                    viewModel.field.genreTagFields.values.toList(),
-                    MediaTagFilterTypes.SEASON_GENRE
-                )
+                val selectableList = tagList.map {
+                    val state = when {
+                        field.tags?.contains(it) == true -> {
+                            SelectedState.SELECTED
+                        }
+                        else -> {
+                            SelectedState.NONE
+                        }
+                    }
+                    MutablePair(it, state)
+                }
+                openSelectorDialog(R.string.tags, selectableList)
             }
         }
     }
 
-    private fun openTagChooserDialog(tags: List<TagField>, tagType: MediaTagFilterTypes) {
-        TagChooserDialogFragment.newInstance(
-            TagChooserField(
-                tagType,
-                tags
+    private fun openSelectorDialog(
+        title: Int,
+        selectableItem: List<MutablePair<String, SelectedState>>,
+        hasIntermediateMode: Boolean = false
+    ) {
+        SelectableDialogFragment.newInstance(
+            SelectableMeta(
+                title = title,
+                hasIntermediateMode = hasIntermediateMode,
+                selectableItems = selectableItem
             )
-        ).show(childFragmentManager, TagChooserDialogFragment::class.java.simpleName)
+        ).show(childFragmentManager, SelectableDialogFragment::class.java.simpleName)
     }
 
 
