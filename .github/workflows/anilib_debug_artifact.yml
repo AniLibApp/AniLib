@@ -27,7 +27,7 @@ jobs:
           echo "$ANILIST_SECRET" | base64 -d > ./secret.properties
 
       - name: Build app
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDevDebug
 
       - name: Set CURRENT_SHA
         run: |

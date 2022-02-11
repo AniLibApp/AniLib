@@ -1,24 +1,11 @@
 package com.revolgenx.anilib.data.field.list
 
-import com.revolgenx.anilib.AlMediaListCollectionQuery
 import com.revolgenx.anilib.common.data.field.BaseSourceUserField
-import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.type.MediaListSort
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.MediaListPageQuery
 import com.revolgenx.anilib.MediaListCollectionIdQuery
-
-
-class MediaListCollectionField : BaseSourceUserField<AlMediaListCollectionQuery>() {
-    var type: Int? = null
-    var mediaListStatus: Int? = null
-    var filter = MediaListCollectionFilterField()
-
-    override fun toQueryOrMutation(): AlMediaListCollectionQuery {
-        return AlMediaListCollectionQuery()
-    }
-}
 
 
 class MediaListCollectionIdsField : BaseSourceUserField<MediaListCollectionIdQuery>() {

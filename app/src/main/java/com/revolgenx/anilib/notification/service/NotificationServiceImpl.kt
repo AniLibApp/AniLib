@@ -21,7 +21,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
-//todo check all notification
 class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) :
     NotificationService {
     override fun getNotifications(

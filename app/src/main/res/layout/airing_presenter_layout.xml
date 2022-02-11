@@ -54,21 +54,9 @@
             android:includeFontPadding="false"
             android:maxLines="2"
             android:textSize="13sp"
-            app:layout_constraintEnd_toStartOf="@+id/bookmarkIv"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/mediaImageLayout"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-            android:id="@+id/bookmarkIv"
-            style="@style/Widget.DynamicApp.Image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?selectableItemBackground"
-            android:padding="10dp"
-            app:adt_colorType="text_primary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_bookmark" />
 
         <com.revolgenx.anilib.ui.view.GenreLayout
             android:id="@+id/mediaGenreLayout"

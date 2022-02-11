@@ -341,35 +341,6 @@ class LicenseView : DynamicRecyclerViewFrame {
             .setIconBig(DynamicResourceUtils.getDrawable(
                 context, R.drawable.ads_ic_android)))
 
-      licenses.add(DynamicInfo()
-            .setTitle(context
-                .getString(R.string.license_persistentsearchview))
-            .setLinks(resources.getStringArray(
-                R.array.license_links_persistentsearchview))
-            .setLinksSubtitles(resources.getStringArray(
-                R.array.license_links_subtitles_persistentsearchview))
-            .setLinksUrls(resources.getStringArray(
-                R.array.license_links_url_persistentsearchview))
-            .setLinksIconsResId(R.array.ads_license_links_icons)
-            .setLinksColorsResId(R.array.ads_license_links_colors)
-            .setIconBig(DynamicResourceUtils.getDrawable(
-                context, R.drawable.ads_ic_android)))
-
-     licenses.add(DynamicInfo()
-            .setTitle(context
-                .getString(R.string.license_rangeseekbar))
-            .setLinks(resources.getStringArray(
-                R.array.license_links_rangeseekbar))
-            .setLinksSubtitles(resources.getStringArray(
-                R.array.license_links_subtitles_rangeseekbar))
-            .setLinksUrls(resources.getStringArray(
-                R.array.license_links_url_rangeseekbar))
-            .setLinksIconsResId(R.array.ads_license_links_icons)
-            .setLinksColorsResId(R.array.ads_license_links_colors)
-            .setIconBig(DynamicResourceUtils.getDrawable(
-                context, R.drawable.ads_ic_android)))
-
-
      licenses.add(DynamicInfo()
             .setTitle(context
                 .getString(R.string.license_android_toggle_switch))

@@ -10,12 +10,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.appbar.AppBarLayout
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -37,19 +36,23 @@ import com.revolgenx.anilib.ui.selector.dialog.SelectableDialogFragment
 import com.revolgenx.anilib.activity.event.ActivityEventListener
 import com.revolgenx.anilib.common.data.meta.TagState
 import com.revolgenx.anilib.common.preference.*
+import com.revolgenx.anilib.common.ui.model.SelectableSpinnerMenu
 import com.revolgenx.anilib.constant.AlMediaSort
 import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.search.presenter.SearchPresenter
 import com.revolgenx.anilib.search.viewmodel.SearchFragmentViewModel
 import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
-import com.revolgenx.anilib.search.presenter.TagPresenter
+import com.revolgenx.anilib.search.presenter.SearchTagPresenter
 import com.revolgenx.anilib.ui.selector.constant.SelectedState
+import com.revolgenx.anilib.ui.view.makeSelectableSpinnerAdapter
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
+import com.revolgenx.anilib.ui.view.widgets.checkbox.AlCheckBox
 import com.revolgenx.anilib.util.onItemSelected
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
+// TODO add readable on for manga
 class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener {
     companion object {
         private const val SEARCH_FILTER_DATA_KEY = "SEARCH_FILTER_DATA_KEY"
@@ -91,8 +94,25 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private val episodesGreater = 0f
     private val episodesLesser = 150f
 
+    private val chaptersGreater = 0f
+    private val chaptersLesser = 500f
+
+    private val durationGreater = 0f
+    private val durationLesser = 170f
+
+    private val volumesGreater = 0f
+    private val volumesLesser = 50f
+
+    private var applyingFilter = false
+    private val yearList by lazy {
+        (yearLesser.toInt() downTo 1940).toList()
+    }
+
+    private val searchTypeAnime get() = field.searchType == SearchTypes.ANIME
+    private val searchTypeManga get() = field.searchType == SearchTypes.MANGA
+
     private val genrePresenter by lazy {
-        TagPresenter(requireContext()).also {
+        SearchTagPresenter(requireContext()).also {
             it.tagRemoved { genre ->
                 field.genreIn?.remove(genre)
                 field.genreNotIn?.remove(genre)
@@ -101,7 +121,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     }
 
     private val licensedByPresenter by lazy {
-        TagPresenter(requireContext()).also {
+        SearchTagPresenter(requireContext()).also {
             it.tagRemoved { licensedBy ->
                 if (field.searchType == SearchTypes.ANIME) {
                     field.streamingOn?.remove(licensedBy)
@@ -113,7 +133,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     }
 
     private val tagPresenter by lazy {
-        TagPresenter(requireContext()).also {
+        SearchTagPresenter(requireContext()).also {
             it.tagRemoved { tag ->
                 field.tagsIn?.remove(tag)
                 field.tagsNotIn?.remove(tag)
@@ -122,6 +142,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     }
 
     private val streamingOnList by lazy {
+        getUserStream(requireContext())
+    }
+
+    private val readableOnList by lazy {
         getUserStream(requireContext())
     }
 
@@ -197,7 +221,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
 
 
         bottomSheetBehavior = BottomSheetBehavior.from(sBinding.searchFilterBottomSheet)
-        bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
+        hideBottomSheet()
         bottomSheetBehavior!!.peekHeight = 0
         bottomSheetBehavior!!.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -220,6 +244,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         if (savedInstanceState == null) {
             field.genreNotIn = getExcludedGenre(requireContext()).toMutableList()
             field.tagsNotIn = getExcludedTags(requireContext()).toMutableList()
+            field.isHentai = if(canShowAdult(requireContext())) null else false
         }
 
         sBinding.bind()
@@ -262,11 +287,35 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
                 DynamicMenu(null, it)
             }
 
+        val searchYearItems =
+            mutableListOf(SelectableSpinnerMenu(getString(R.string.none), field.year == null))
+        yearList.map {
+            searchYearItems.add(
+                SelectableSpinnerMenu(
+                    it.toString(),
+                    it == field.year
+                )
+            )
+        }
+
         filterTypeSpinner.adapter = makeSpinnerAdapter(requireContext(), searchTypeItems)
         filterSeasonSpinner.adapter = makeSpinnerAdapter(requireContext(), searchSeasonItems)
         filterFormatSpinner.adapter = makeSpinnerAdapter(requireContext(), searchFormatItems)
         filterStatusSpinner.adapter = makeSpinnerAdapter(requireContext(), searchStatusItems)
         filterSourceSpinner.adapter = makeSpinnerAdapter(requireContext(), searchSourceItems)
+        filterYearSpinner.adapter = makeSelectableSpinnerAdapter(requireContext(), searchYearItems)
+        filterCountrySpinner.adapter = makeSpinnerAdapter(requireContext(), searchCountryItems)
+
+        filterYearSpinner.onItemSelected { position ->
+            searchYearItems.firstOrNull { it.isSelected }?.isSelected = false
+            searchYearItems[position].isSelected = true
+            field.year = position.takeIf { it > 0 }?.let {
+                yearList[it - 1]
+            }
+        }
+
+        hentaiCheckbox.visibility =
+            if (canShowAdult(requireContext())) View.VISIBLE else View.GONE
 
         val alMediaSorts = AlMediaSort.values()
         filterSortLayout.setSortItems(
@@ -275,6 +324,9 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
                     AniLibSortingModel(alMediaSorts[index], s, SortOrder.NONE)
                 })
 
+        genreRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
+        tagsRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
+        licensedByRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
         invalidateGenreAdapter()
         invalidateTagAdapter()
         invalidateStreamingOnAdapter()
@@ -286,9 +338,23 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             it.toInt().toString()
         }
 
-        episodeRangeSlider.valueFrom = episodesGreater
-        episodeRangeSlider.valueTo = episodesLesser
-        episodeRangeSlider.stepSize = 1f
+        episodeOrChapterRangeSlider.valueFrom = episodesGreater
+        episodeOrChapterRangeSlider.valueTo = episodesLesser
+        episodeOrChapterRangeSlider.stepSize = 1f
+        episodeOrChapterRangeSlider.setLabelFormatter {
+            it.toInt().toString()
+        }
+
+        durationOrVolumeRangeSlider.valueFrom = durationGreater
+        durationOrVolumeRangeSlider.valueTo = durationLesser
+        durationOrVolumeRangeSlider.stepSize = 1f
+        durationOrVolumeRangeSlider.setLabelFormatter {
+            it.toInt().toString()
+        }
+
+        minimumTagRank.setLabelFormatter {
+            it.toInt().toString()
+        }
 
         if (field.yearGreater != null || field.yearLesser != null) {
             yearRangeFilterHeader.text = getString(R.string.year_range_s_s).format(
@@ -299,25 +365,72 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             yearRangeFilterHeader.setText(R.string.year_range)
         }
 
-        if (field.episodesGreater != null || field.episodesLesser != null) {
-            episodeRangeFilterHeader.text = getString(R.string.episodes_range_s_s).format(
-                field.episodesGreater ?: episodesGreater.toInt(),
-                field.episodesLesser ?: episodesLesser.toInt()
-            )
+        if (field.searchType == SearchTypes.ANIME) {
+            if (field.episodesGreater != null || field.episodesLesser != null) {
+                episodeOrChapterRangeFilterHeader.text =
+                    getString(R.string.episodes_range_s_s).format(
+                        field.episodesGreater ?: episodesGreater.toInt(),
+                        field.episodesLesser ?: episodesLesser.toInt()
+                    )
+            } else {
+                episodeOrChapterRangeFilterHeader.setText(R.string.episodes)
+            }
+        } else if (field.searchType == SearchTypes.MANGA) {
+            if (field.chaptersGreater != null || field.chaptersLesser != null) {
+                episodeOrChapterRangeFilterHeader.text =
+                    getString(R.string.chapters_range_s_s).format(
+                        field.chaptersGreater ?: chaptersGreater.toInt(),
+                        field.chaptersLesser ?: chaptersLesser.toInt()
+                    )
+            } else {
+                episodeOrChapterRangeFilterHeader.setText(R.string.chapters)
+            }
+        }
+
+        if (field.searchType == SearchTypes.ANIME) {
+            if (field.durationGreater != null || field.durationLesser != null) {
+                durationOrVolumeRangeFilterHeader.text =
+                    getString(R.string.duration_range_s_s).format(
+                        field.durationGreater ?: durationGreater.toInt(),
+                        field.durationLesser ?: durationLesser.toInt()
+                    )
+            } else {
+                durationOrVolumeRangeFilterHeader.setText(R.string.duration)
+            }
+        } else if (field.searchType == SearchTypes.MANGA) {
+            if (field.volumesGreater != null || field.volumesLesser != null) {
+                durationOrVolumeRangeFilterHeader.text =
+                    getString(R.string.volumes_range_s_s).format(
+                        field.volumesGreater ?: volumesGreater.toInt(),
+                        field.volumesLesser ?: volumesLesser.toInt()
+                    )
+            } else {
+                durationOrVolumeRangeFilterHeader.setText(R.string.volumes)
+            }
+        }
+
+        if (field.minimumTagRank != null) {
+            minimumTagPercetageHeader.text =
+                getString(R.string.minimum_tag_percentage_s).format(field.minimumTagRank)
         } else {
-            episodeRangeFilterHeader.setText(R.string.episodes)
+            minimumTagPercetageHeader.setText(R.string.minimum_tag_percentage)
         }
 
         if (savedInstanceState == null) {
             yearRangeSlider.values = listOf(yearGreater, yearLesser)
-            episodeRangeSlider.values = listOf(episodesGreater, episodesLesser)
+            episodeOrChapterRangeSlider.values = listOf(episodesGreater, episodesLesser)
+            durationOrVolumeRangeSlider.values = listOf(durationGreater, durationLesser)
         }
 
     }
 
+    private fun hideBottomSheet() {
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
     private fun SearchFragmentLayoutBinding.initListener() {
         bottomSheetDimLayout.setOnClickListener {
-            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+            hideBottomSheet()
         }
         clearIv.setOnClickListener {
             searchEt.setText("")
@@ -326,6 +439,12 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         searchEt.doOnTextChanged { text, _, _, _ ->
             if (field.search != text) {
                 field.search = text?.toString()
+            } else {
+                return@doOnTextChanged
+            }
+            if (applyingFilter) {
+                applyingFilter = false
+                return@doOnTextChanged
             }
             filterSearchEt.setText(text)
             search()
@@ -338,17 +457,73 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         }
 
         filterTypeSpinner.onItemSelected {
+            val searchType = SearchTypes.values()[it]
+            if (field.searchType == searchType) return@onItemSelected
+            field.searchType = searchType
+
             when (it) {
                 0, 1 -> {
                     filterLayer1.visibility = View.VISIBLE
                     filterLayer2.visibility = View.VISIBLE
-                    filterSeasonLayout.visibility = View.VISIBLE
+                    filterLayer3.visibility = View.VISIBLE
+                    filterLayer4.visibility = View.VISIBLE
+                    filterLayer5.visibility = View.VISIBLE
+                    filterLayer6.visibility = View.VISIBLE
+                    when (it) {
+                        0 -> {
+                            changeViewForAnime()
+                        }
+                        else -> {
+                            changeViewForManga()
+                        }
+                    }
                 }
                 else -> {
-                    filterLayer1.visibility = View.GONE
-                    filterLayer2.visibility = View.GONE
-                    filterSeasonLayout.visibility = View.GONE
+                    changeViewForOtherSearchType()
                 }
+            }
+        }
+
+        filterSeasonSpinner.onItemSelected {
+            field.season = it.takeIf { it > 0 }?.let { it - 1 }
+        }
+
+        filterStatusSpinner.onItemSelected {
+            field.status = it.takeIf { it > 0 }?.let { it - 1 }
+        }
+
+        filterFormatSpinner.onItemSelected {
+            field.format = it.takeIf { it > 0 }?.let { it - 1 }
+        }
+
+        filterSortLayout.onSortItemSelected = sort@{
+            if (context == null) return@sort
+            field.sort = if (it != null) {
+                if (it.order == SortOrder.DESC) {
+                    (it.data as AlMediaSort).sort + 1
+                } else {
+                    (it.data as AlMediaSort).sort
+                }
+            } else null
+        }
+        filterSourceSpinner.onItemSelected {
+            field.source = it.takeIf { it > 0 }?.let { it - 1 }
+        }
+
+        filterCountrySpinner.onItemSelected {
+            field.countryOfOrigin = it.takeIf { it > 0 }?.let { it - 1 }
+        }
+
+        doujinCheckbox.setOnCheckedChangeListener(null)
+        doujinCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            field.doujins = isChecked
+        }
+
+        hentaiCheckbox.onCheckChangeListener = check@{
+            context ?: return@check
+
+            field.isHentai = it.takeIf { it != AlCheckBox.CheckBoxState.UNCHECKED }?.let {
+                it == AlCheckBox.CheckBoxState.CHECKED
             }
         }
 
@@ -367,7 +542,20 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
                 }
                 MutablePair(it, state)
             }
-            openSelectorDialog(R.string.genre, selectableList, true)
+            openSelectorDialog(R.string.genre, selectableList, true) { list ->
+                if (context != null) {
+                    field.genreIn = mutableListOf()
+                    field.genreNotIn = mutableListOf()
+                    list.forEach { genrePair ->
+                        if (genrePair.second == SelectedState.SELECTED) {
+                            field.genreIn!!.add(genrePair.first)
+                        } else if (genrePair.second == SelectedState.INTERMEDIATE) {
+                            field.genreNotIn!!.add(genrePair.first)
+                        }
+                    }
+                    invalidateGenreAdapter()
+                }
+            }
         }
 
         filterTagChip.setOnClickListener {
@@ -385,22 +573,71 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
                 }
                 MutablePair(it, state)
             }
-            openSelectorDialog(R.string.tags, selectableList, true)
+            openSelectorDialog(R.string.tags, selectableList, true) { list ->
+                if (context != null) {
+                    field.tagsIn = mutableListOf()
+                    field.tagsNotIn = mutableListOf()
+                    list.forEach { pair ->
+                        if (pair.second == SelectedState.SELECTED) {
+                            field.tagsIn!!.add(pair.first)
+                        } else if (pair.second == SelectedState.INTERMEDIATE) {
+                            field.tagsNotIn!!.add(pair.first)
+                        }
+                    }
+                    invalidateTagAdapter()
+                }
+            }
         }
 
         licensedByTagChip.setOnClickListener {
-            val selectableList = streamingOnList.map {
-                val state = when {
-                    field.streamingOn?.contains(it) == true -> {
-                        SelectedState.SELECTED
+            if (field.searchType == SearchTypes.ANIME) {
+                val selectableList = streamingOnList.map {
+                    val state = when {
+                        field.streamingOn?.contains(it) == true -> {
+                            SelectedState.SELECTED
+                        }
+                        else -> {
+                            SelectedState.NONE
+                        }
                     }
-                    else -> {
-                        SelectedState.NONE
+                    MutablePair(it, state)
+                }
+                openSelectorDialog(R.string.streaming_on, selectableList) { list ->
+                    if (context != null) {
+                        field.streamingOn = mutableListOf()
+                        list.forEach { pair ->
+                            if (pair.second == SelectedState.SELECTED) {
+                                field.streamingOn!!.add(pair.first)
+                            }
+                        }
+                        invalidateStreamingOnAdapter()
                     }
                 }
-                MutablePair(it, state)
+            } else if (field.searchType == SearchTypes.MANGA) {
+                val selectableList = readableOnList.map {
+                    val state = when {
+                        field.readableOn?.contains(it) == true -> {
+                            SelectedState.SELECTED
+                        }
+                        else -> {
+                            SelectedState.NONE
+                        }
+                    }
+                    MutablePair(it, state)
+                }
+
+                openSelectorDialog(R.string.readable_on, selectableList) { list ->
+                    if (context != null) {
+                        field.streamingOn = mutableListOf()
+                        list.forEach { pair ->
+                            if (pair.second == SelectedState.SELECTED) {
+                                field.streamingOn!!.add(pair.first)
+                            }
+                        }
+                        invalidateReadableOnAdapter()
+                    }
+                }
             }
-            openSelectorDialog(R.string.streaming_on, selectableList)
         }
 
         yearRangeSlider.addOnChangeListener { slider, _, _ ->
@@ -419,29 +656,152 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             }
         }
 
-        episodeRangeSlider.addOnChangeListener { slider, _, _ ->
+        episodeOrChapterRangeSlider.addOnChangeListener { slider, _, _ ->
             val currentEpisodeGreater = slider.values[0]
             val currentEpisodeLesser = slider.values[1]
-            field.episodesGreater = currentEpisodeGreater.takeIf { it != episodesGreater }?.toInt()
-            field.episodesLesser = currentEpisodeLesser.takeIf { it != episodesLesser }?.toInt()
 
-            if (field.episodesGreater != null || field.episodesLesser != null) {
-                episodeRangeFilterHeader.text = getString(R.string.episodes_range_s_s).format(
-                    field.episodesGreater ?: episodesGreater.toInt(),
-                    field.episodesLesser ?: episodesLesser.toInt()
-                )
-            } else {
-                episodeRangeFilterHeader.setText(R.string.episodes)
+            if (searchTypeAnime) {
+                field.episodesGreater =
+                    currentEpisodeGreater.takeIf { it != episodesGreater }?.toInt()
+                field.episodesLesser = currentEpisodeLesser.takeIf { it != episodesLesser }?.toInt()
+
+                if (field.episodesGreater != null || field.episodesLesser != null) {
+                    episodeOrChapterRangeFilterHeader.text =
+                        getString(R.string.episodes_range_s_s).format(
+                            field.episodesGreater ?: episodesGreater.toInt(),
+                            field.episodesLesser ?: episodesLesser.toInt()
+                        )
+                } else {
+                    episodeOrChapterRangeFilterHeader.setText(R.string.episodes)
+                }
+            } else if (searchTypeManga) {
+                field.chaptersGreater =
+                    currentEpisodeGreater.takeIf { it != chaptersGreater }?.toInt()
+                field.chaptersLesser = currentEpisodeLesser.takeIf { it != chaptersLesser }?.toInt()
+
+                if (field.chaptersGreater != null || field.chaptersLesser != null) {
+                    episodeOrChapterRangeFilterHeader.text =
+                        getString(R.string.chapters_range_s_s).format(
+                            field.chaptersGreater ?: chaptersGreater.toInt(),
+                            field.chaptersLesser ?: chaptersLesser.toInt()
+                        )
+                } else {
+                    episodeOrChapterRangeFilterHeader.setText(R.string.chapters)
+                }
             }
+        }
+
+        durationOrVolumeRangeSlider.addOnChangeListener { slider, _, _ ->
+            val currentDurationGreater = slider.values[0]
+            val currentDurationLesser = slider.values[1]
+
+            if (searchTypeAnime) {
+                field.durationGreater =
+                    currentDurationGreater.takeIf { it != durationGreater }?.toInt()
+                field.durationLesser =
+                    currentDurationLesser.takeIf { it != durationLesser }?.toInt()
+
+                if (field.durationGreater != null || field.durationLesser != null) {
+                    durationOrVolumeRangeFilterHeader.text =
+                        getString(R.string.duration_range_s_s).format(
+                            field.durationGreater ?: durationGreater.toInt(),
+                            field.durationLesser ?: durationLesser.toInt()
+                        )
+                } else {
+                    durationOrVolumeRangeFilterHeader.setText(R.string.duration)
+                }
+            } else if (searchTypeManga) {
+                field.volumesGreater =
+                    currentDurationGreater.takeIf { it != volumesGreater }?.toInt()
+                field.volumesLesser =
+                    currentDurationLesser.takeIf { it != volumesLesser }?.toInt()
+
+                if (field.volumesGreater != null || field.volumesLesser != null) {
+                    durationOrVolumeRangeFilterHeader.text =
+                        getString(R.string.volumes_range_s_s).format(
+                            field.volumesGreater ?: volumesGreater.toInt(),
+                            field.volumesLesser ?: volumesLesser.toInt()
+                        )
+                } else {
+                    durationOrVolumeRangeFilterHeader.setText(R.string.volumes)
+                }
+            }
+        }
+
+        minimumTagRank.addOnChangeListener { _, value, _ ->
+            field.minimumTagRank = value.toInt()
+            minimumTagPercetageHeader.text  = getString(R.string.minimum_tag_percentage_s).format(field.minimumTagRank)
         }
 
         yearRangeFilterHeader.setOnClickListener {
             yearRangeSlider.values = listOf(yearGreater, yearLesser)
         }
 
-        episodeRangeFilterHeader.setOnClickListener {
-            episodeRangeSlider.values = listOf(episodesGreater, episodesLesser)
+        episodeOrChapterRangeFilterHeader.setOnClickListener {
+            if (searchTypeAnime) {
+                episodeOrChapterRangeSlider.values = listOf(episodesGreater, episodesLesser)
+            } else if (searchTypeManga) {
+                episodeOrChapterRangeSlider.values = listOf(chaptersGreater, chaptersLesser)
+            }
         }
+
+        durationOrVolumeRangeFilterHeader.setOnClickListener {
+            durationOrVolumeRangeSlider.values = listOf(durationGreater, durationLesser)
+        }
+
+        minimumTagPercetageHeader.setOnClickListener {
+            minimumTagRank.value = 18f
+        }
+
+        searchApplyFilter.setOnClickListener {
+            applyFilter()
+        }
+
+    }
+
+
+    private fun SearchFragmentLayoutBinding.changeViewForAnime() {
+        filterSeasonLayout.visibility = View.VISIBLE
+        licensedByTagChip.setText(R.string.streaming_on)
+        episodeOrChapterRangeFilterHeader.setText(R.string.episodes)
+        durationOrVolumeRangeFilterHeader.setText(R.string.duration)
+
+        episodeOrChapterRangeSlider.valueFrom = episodesGreater
+        episodeOrChapterRangeSlider.valueTo = episodesLesser
+        episodeOrChapterRangeSlider.values = listOf(episodesGreater, episodesLesser)
+
+        durationOrVolumeRangeSlider.valueFrom = durationGreater
+        durationOrVolumeRangeSlider.valueTo = durationLesser
+        durationOrVolumeRangeSlider.values = listOf(durationGreater, durationLesser)
+
+        invalidateStreamingOnAdapter()
+    }
+
+    private fun SearchFragmentLayoutBinding.changeViewForManga() {
+        licensedByTagChip.setText(R.string.readable_on)
+        filterSeasonLayout.visibility = View.GONE
+        episodeOrChapterRangeFilterHeader.setText(R.string.chapters)
+        durationOrVolumeRangeFilterHeader.setText(R.string.volumes)
+
+        episodeOrChapterRangeSlider.valueFrom = chaptersGreater
+        episodeOrChapterRangeSlider.valueTo = chaptersLesser
+        episodeOrChapterRangeSlider.values = listOf(chaptersGreater, chaptersLesser)
+
+        durationOrVolumeRangeSlider.valueFrom = volumesGreater
+        durationOrVolumeRangeSlider.valueTo = volumesLesser
+        durationOrVolumeRangeSlider.values = listOf(volumesGreater, volumesLesser)
+
+        invalidateReadableOnAdapter()
+    }
+
+    private fun SearchFragmentLayoutBinding.changeViewForOtherSearchType() {
+        filterLayer1.visibility = View.GONE
+        filterLayer2.visibility = View.GONE
+        filterLayer3.visibility = View.GONE
+        filterLayer4.visibility = View.GONE
+        filterLayer5.visibility = View.GONE
+        filterLayer6.visibility = View.GONE
+        filterSeasonLayout.visibility = View.GONE
     }
 
 
@@ -459,6 +819,26 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         Adapter.builder(this)
             .addSource(
                 Source.fromList(streamingOnTagMap)
+            )
+            .addPresenter(licensedByPresenter)
+            .into(sBinding.licensedByRecyclerView)
+    }
+
+
+    private fun invalidateReadableOnAdapter() {
+        val readableTagMap = readableOnList.mapNotNull {
+            when {
+                field.streamingOn?.contains(it) == true -> {
+                    TagField(it, TagState.TAGGED)
+                }
+                else -> {
+                    null
+                }
+            }
+        }
+        Adapter.builder(this)
+            .addSource(
+                Source.fromList(readableTagMap)
             )
             .addPresenter(licensedByPresenter)
             .into(sBinding.licensedByRecyclerView)
@@ -523,7 +903,8 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private fun openSelectorDialog(
         title: Int,
         selectableItem: List<MutablePair<String, SelectedState>>,
-        hasIntermediateMode: Boolean = false
+        hasIntermediateMode: Boolean = false,
+        callback: (selectedList: List<MutablePair<String, SelectedState>>) -> Unit
     ) {
         SelectableDialogFragment.newInstance(
             SelectableMeta(
@@ -531,21 +912,30 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
                 hasIntermediateMode = hasIntermediateMode,
                 selectableItems = selectableItem
             )
-        ).show(childFragmentManager, SelectableDialogFragment::class.java.simpleName)
+        ).also {
+            it.onSelectionDoneListener = callback
+        }.show(childFragmentManager, SelectableDialogFragment::class.java.simpleName)
     }
 
-    fun search() {
+    private fun search() {
         handler.removeCallbacksAndMessages(null)
         handler.postDelayed({
             filter()
-        }, 400)
+        }, 500)
     }
 
-    fun filter() {
+    private fun filter() {
         changeLayoutManager()
         createSource()
         invalidateAdapter()
         visibleToUser = true
+    }
+
+    private fun SearchFragmentLayoutBinding.applyFilter() {
+        applyingFilter = true
+        hideBottomSheet()
+        searchEt.setText(filterSearchEt.text?.toString())
+        filter()
     }
 
     private fun changeLayoutManager() {
@@ -580,7 +970,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     override fun onBackPressed(): Boolean {
         return when (bottomSheetBehavior?.state) {
             BottomSheetBehavior.STATE_EXPANDED, BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
+                hideBottomSheet()
                 true
             }
             else -> {

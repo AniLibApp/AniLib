@@ -22,10 +22,7 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp"
-            app:layout_scrollFlags="enterAlways|scroll"
-            app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
-            app:titleTextAppearance="@style/DynamicToolbarTitleTheme">
-
+            app:layout_scrollFlags="enterAlways|scroll">
 
             <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
                 android:id="@+id/discover_main_tab_layout"
@@ -37,7 +34,6 @@
                 app:adt_contrastWithColorType="background"
                 app:adt_textColorType="text_primary"
                 app:tabTextAppearance="@style/DiscoverTabLayoutTextStyle" />
-
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicToolbar>
 
@@ -135,15 +131,15 @@
             android:layout_height="@dimen/toolbar_size"
             android:orientation="horizontal">
 
-            <com.revolgenx.anilib.ui.view.preference.AlSwitchPreference
+            <com.revolgenx.anilib.ui.view.preference.AlCheckPreference
                 android:id="@+id/recommendation_on_list_check_box"
+                style="@style/AlCheckboxStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/on_list"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
-                app:ads_key="RECOMMENDATION_ON_LIST_KEY"
-                app:ads_title="@string/on_list"
-                app:text_size="14sp" />
+                app:al_pref_key="RECOMMENDATION_ON_LIST_KEY" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 style="@style/FilterHeaderKeyTextStyle"

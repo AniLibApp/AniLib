@@ -2,6 +2,7 @@ query MediaQuery(
     $page: Int,
     $perPage: Int,
     $seasonYear: Int,
+    $year:String,
     $season: MediaSeason,
     $status: MediaStatus,
     $genre:String,
@@ -25,6 +26,7 @@ query MediaQuery(
             , tag_in: $tag_in
             , sort: $sort
             , id_in:$idIn
+            , startDate_like: $year
             , isAdult:$isAdult) {
             ... on Media{
                 ... mediaContent
@@ -153,7 +155,7 @@ query MediaOverViewQuery($mediaId:Int){
         format
         type
         genres
-        status
+        status(version: 2)
         averageScore
         meanScore
         chapters

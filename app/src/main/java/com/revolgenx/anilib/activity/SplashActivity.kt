@@ -250,7 +250,6 @@ class SplashActivity : DynamicSplashActivity() {
     }
 
     override fun onPostSplash() {
-        // TODO: Do any operation on post splash.
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

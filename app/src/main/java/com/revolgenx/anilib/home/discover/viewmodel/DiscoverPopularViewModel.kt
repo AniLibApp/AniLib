@@ -16,7 +16,7 @@ class DiscoverPopularViewModel(mediaService: MediaService) :
     fun updateField(context: Context) {
         getPopularField(context).let {
             field.season = it.season
-            field.seasonYear = it.seasonYear
+            field.year = it.year
             field.format = it.format
             field.status = it.status
             field.formatsIn = it.formatsIn

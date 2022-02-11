@@ -13,6 +13,7 @@ open class MediaField : BaseSourceField<MediaQuery>() {
     var format: Int? = null
     var sort: Int? = null
     var seasonYear: Int? = null
+    var year: Int? = null
     var season: Int? = null
     var status: Int? = null
     var mediaIdsIn: List<Int>? = null
@@ -48,6 +49,7 @@ open class MediaField : BaseSourceField<MediaQuery>() {
             perPage = nn(perPage),
             season = nn(mediaSeason),
             seasonYear = nn(seasonYear),
+            year = nn(year?.let { "$it%" }),
             sort = nn(mediaSort),
             format_in = nn(mediaFormatsIn),
             tag_in = nn(tags),

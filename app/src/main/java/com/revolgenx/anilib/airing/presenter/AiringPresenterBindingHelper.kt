@@ -28,7 +28,7 @@ object AiringPresenterBindingHelper {
         item: AiringScheduleModel,
         vararg misc: Array<String> //formats status statuscolor
     ) {
-        val media = item.media?: return
+        val media = item.media ?: return
         mediaTitleTv.naText(media.title!!.title(context))
         coverImageIv.setImageURI(media.coverImage!!.image(context))
 
@@ -79,7 +79,7 @@ object AiringPresenterBindingHelper {
             ).postEvent
         }
 
-        bookmarkIv.setOnClickListener {
+        root.setOnLongClickListener {
             if (context.loggedIn()) {
                 OpenMediaListEditorEvent(
                     EntryEditorMeta(
@@ -93,6 +93,7 @@ object AiringPresenterBindingHelper {
             } else {
                 context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
+            true
         }
 
         airingTimeTv.setAiringText(item)
@@ -115,24 +116,6 @@ object AiringPresenterBindingHelper {
 
                 }
             )
-
-            media.mediaListEntry?.let {
-                it.progress?.let {
-                    bookmarkIv.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context,
-                            R.drawable.ic_bookmark_filled
-                        )
-                    )
-                } ?: let {
-                    bookmarkIv.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context,
-                            R.drawable.ic_bookmark
-                        )
-                    )
-                }
-            }
         } else {
             entryProgressTv.visibility = View.GONE
         }
@@ -143,7 +126,7 @@ object AiringPresenterBindingHelper {
         item: AiringScheduleModel,
         vararg misc: Array<String>
     ) { //formats status statuscolor
-        val media = item.media?: return
+        val media = item.media ?: return
         mediaTitleTv.naText(media.title!!.title(context))
         coverImageIv.setImageURI(media.coverImage!!.image(context))
 
@@ -239,7 +222,7 @@ object AiringPresenterBindingHelper {
         media.mediaListEntry?.status?.let {
             mediaStatusTv.text = misc[1][it]
             mediaStatusTv.textView.color = Color.parseColor(misc[2][it])
-        }?:let {
+        } ?: let {
             mediaStatusTv.text = ""
         }
 

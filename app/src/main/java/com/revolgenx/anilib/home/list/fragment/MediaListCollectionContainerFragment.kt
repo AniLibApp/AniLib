@@ -3,14 +3,17 @@ package com.revolgenx.anilib.home.list.fragment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.tabs.TabLayoutMediator
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicAccentColor
+import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.MediaListCollectionContainerFragmentBinding
@@ -28,6 +31,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaListCollectionContainerFragment :
     BaseLayoutFragment<MediaListCollectionContainerFragmentBinding>() {
+    override val menuRes: Int = R.menu.media_list_collection_container_menu
+
     private val fragments: List<BaseMediaListCollectionFragment> by lazy {
         listOf(
             AnimeListCollectionFragment(),
@@ -43,6 +48,63 @@ class MediaListCollectionContainerFragment :
         parent: ViewGroup?
     ): MediaListCollectionContainerFragmentBinding {
         return MediaListCollectionContainerFragmentBinding.inflate(inflater, parent, false)
+    }
+
+    override fun getBaseToolbar(): Toolbar {
+        return binding.dynamicToolbar
+    }
+
+
+    @SuppressLint("UnsafeOptInUsageError")
+    override fun onToolbarInflated() {
+        val notificationMenuItem = getBaseToolbar().menu.findItem(R.id.list_notification_menu)
+        if(requireContext().loggedIn()){
+            notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner) {
+                val badgeDrawable = BadgeDrawable.create(requireContext())
+                if (it > 0) {
+                    BadgeUtils.attachBadgeDrawable(
+                        badgeDrawable,
+                        getBaseToolbar(),
+                        R.id.list_notification_menu
+                    )
+                } else {
+                    BadgeUtils.detachBadgeDrawable(
+                        badgeDrawable,
+                        getBaseToolbar(),
+                        R.id.list_notification_menu
+                    )
+                }
+            }
+        }else{
+            notificationMenuItem.isVisible = false
+        }
+    }
+
+    override fun onToolbarMenuSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.list_search_menu -> {
+                sharedViewModel.mediaListContainerCallback.value =
+                    MediaListCollectionContainerCallback.SEARCH to binding.alListViewPager.currentItem
+                true
+            }
+            R.id.list_notification_menu -> {
+                notificationStoreVM.setUnreadNotificationCount(0)
+                OpenNotificationCenterEvent().postEvent
+                true
+            }
+            R.id.list_display_mode_menu -> {
+                sharedViewModel.mediaListContainerCallback.value =
+                    MediaListCollectionContainerCallback.DISPLAY to binding.alListViewPager.currentItem
+                true
+            }
+            R.id.list_filter_menu -> {
+                sharedViewModel.mediaListContainerCallback.value =
+                    MediaListCollectionContainerCallback.FILTER to binding.alListViewPager.currentItem
+                true
+            }
+            else -> super.onToolbarMenuSelected(item)
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,65 +136,10 @@ class MediaListCollectionContainerFragment :
                 }
             }
 
-            listSearchIv.setOnClickListener {
-                sharedViewModel.mediaListContainerCallback.value =
-                    MediaListCollectionContainerCallback.SEARCH to alListViewPager.currentItem
-            }
-
             listExtendedFab.setOnClickListener {
                 sharedViewModel.mediaListContainerCallback.value =
                     MediaListCollectionContainerCallback.GROUP to alListViewPager.currentItem
             }
-
-
-            initNotificationBadge()
-
-            listNotificationIv.setOnClickListener {
-                notificationStoreVM.setUnreadNotificationCount(0)
-                OpenNotificationCenterEvent().postEvent
-            }
-
-            listMoreIv.onPopupMenuClickListener = { _, position ->
-                when (position) {
-                    0 -> {
-                        sharedViewModel.mediaListContainerCallback.value =
-                            MediaListCollectionContainerCallback.DISPLAY to alListViewPager.currentItem
-                    }
-                    1 -> {
-                        sharedViewModel.mediaListContainerCallback.value =
-                            MediaListCollectionContainerCallback.FILTER to alListViewPager.currentItem
-                    }
-                }
-            }
-
-        }
-    }
-
-
-    @SuppressLint("UnsafeExperimentalUsageError", "UnsafeOptInUsageError")
-    private fun initNotificationBadge() {
-        binding.listNotificationIv.post {
-            val badgeDrawable = BadgeDrawable.create(requireContext())
-
-            badgeDrawable.badgeGravity = BadgeDrawable.TOP_END
-            badgeDrawable.backgroundColor = dynamicAccentColor
-            badgeDrawable.verticalOffset = 4
-            badgeDrawable.horizontalOffset = 4
-            badgeDrawable.setBoundsFor(binding.listNotificationIv, binding.listNotifLayout)
-            notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner, {
-                if (it > 0) {
-                    BadgeUtils.attachBadgeDrawable(
-                        badgeDrawable,
-                        binding.listNotificationIv,
-                        binding.listNotifLayout
-                    )
-                } else {
-                    BadgeUtils.detachBadgeDrawable(
-                        badgeDrawable,
-                        binding.listNotificationIv
-                    )
-                }
-            })
         }
     }
 

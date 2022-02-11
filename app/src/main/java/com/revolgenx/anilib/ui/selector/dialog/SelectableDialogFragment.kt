@@ -9,6 +9,7 @@ import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
+import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.databinding.SelectableDialogFragmentBinding
 import com.revolgenx.anilib.ui.selector.data.meta.SelectableMeta
 import com.revolgenx.anilib.ui.selector.constant.SelectedState
@@ -17,6 +18,9 @@ import com.revolgenx.anilib.ui.selector.presenter.SelectableItemPresenter
 class SelectableDialogFragment : BaseDialogFragment<SelectableDialogFragmentBinding>() {
     override var positiveText: Int? = R.string.done
     override var negativeText: Int? = R.string.cancel
+
+    var onSelectionDoneListener: ((items: List<MutablePair<String, SelectedState>>) -> Unit)? =
+        null
 
     companion object {
         private const val selectable_meta_key = "selectable_meta_key"
@@ -67,6 +71,9 @@ class SelectableDialogFragment : BaseDialogFragment<SelectableDialogFragmentBind
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
+        onSelectionDoneListener?.invoke(
+            selectableItems.filter { it.second == SelectedState.INTERMEDIATE || it.second == SelectedState.SELECTED }
+        )
     }
 
 }

@@ -382,9 +382,11 @@
     <!--not translated-->
 
     <!--country of origin-->
+    <string name="country_of_origin">Country Of Origin</string>
     <string name="China">China</string>
     <string name="South_Korean">South Korean</string>
     <string name="Japan">Japan</string>
+    <string name="Taiwan">Taiwan</string>
 
     <!--recommendation_sort-->
     <string name="on_list">On List</string>
@@ -666,4 +668,11 @@
     <string name="year_range">Year Range</string>
     <string name="year_range_s_s">Year Range (%s - %s)</string>
     <string name="episodes_range_s_s">Episodes (%s - %s)</string>
+    <string name="duration_range_s_s">Duration (%s - %s)</string>
+    <string name="chapters_range_s_s">Chapters (%s - %s)</string>
+    <string name="volumes_range_s_s">Volumes (%s - %s)</string>
+    <string name="readable_on">Readable On</string>
+    <string name="minimum_tag_percentage">Minimum Tag Percentage</string>
+    <string name="minimum_tag_percentage_s">Minimum Tag Percentage (%s)</string>
+
 </resources>

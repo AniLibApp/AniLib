@@ -3,9 +3,10 @@ query MediaSearchQuery(
     $page:Int,
     $perPage:Int,
     $type:MediaType,
-    $formatIn:[MediaFormat],
+    $format:MediaFormat,
     $season:MediaSeason,
     $seasonYear:Int,
+    $year:String,
     $yearGreater:FuzzyDateInt,
     $yearLesser:FuzzyDateInt,
     $status:MediaStatus,
@@ -15,7 +16,7 @@ query MediaSearchQuery(
     $tag:[String],
     $tagNotIn:[String],
     $genreNotIn:[String],
-    $sort:[MediaSort],
+    $sort:[MediaSort] = [POPULARITY_DESC, SCORE_DESC],
     $country:CountryCode,
     $isAdult:Boolean,
     $isLicensed:Boolean,
@@ -26,15 +27,17 @@ query MediaSearchQuery(
     $volumesGreater:Int,
     $volumesLesser:Int,
     $durationLesser:Int,
-    $durationGreater:Int
+    $durationGreater:Int,
+    $minimumTagRank:Int
 ){
     page: Page(page:$page,perPage:$perPage){
         media(
             search:$search,
             type:$type,
-            format_in: $formatIn,
+            format: $format,
             season:$season,
             seasonYear:$seasonYear,
+            startDate_like: $year,
             startDate_greater:$yearGreater,
             startDate_lesser:$yearLesser,
             status:$status, source:$source,
@@ -54,7 +57,8 @@ query MediaSearchQuery(
             volumes_lesser: $volumesLesser,
             duration_greater: $durationGreater,
             duration_lesser: $durationLesser,
-            isLicensed: $isLicensed
+            isLicensed: $isLicensed,
+            minimumTagRank: $minimumTagRank
         ){
             ... on Media{
                 ... mediaContent

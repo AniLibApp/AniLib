@@ -36,13 +36,14 @@ class SearchField : BaseSourceField<Any>() {
     var countryOfOrigin: Int? = null
     var source: Int? = null
     var doujins: Boolean? = null
-    var formatIn: MutableList<Int>? = null
+    var format:Int? = null
     var genreIn: MutableList<String>? = null
     var genreNotIn: MutableList<String>? = null
     var tagsIn: MutableList<String>? = null
     var tagsNotIn: MutableList<String>? = null
 
-    var sort: List<Int>? = null
+    var sort: Int? = null
+    var minimumTagRank:Int? = null
 
     override fun toQueryOrMutation(): Any {
         return when (searchType) {
@@ -56,8 +57,8 @@ class SearchField : BaseSourceField<Any>() {
                     genreNotIn = nn(genreNotIn),
                     tag = nn(tagsIn),
                     tagNotIn = nn(tagsNotIn),
-                    formatIn = nn(formatIn?.map { MediaFormat.values()[it] }),
-                    isLicensed = nn(doujins?.takeIf { !it }),
+                    format = nn(format?.let { MediaFormat.values()[it] }),
+                    isLicensed = nn(doujins?.takeIf { it }?.not()),
                     isAdult = nn(isHentai),
                     episodesGreater = nn(episodesGreater),
                     episodesLesser = nn(episodesLesser),
@@ -67,11 +68,12 @@ class SearchField : BaseSourceField<Any>() {
                     yearGreater = nn(yearGreater),
                     yearLesser = nn(yearLesser),
                     season = nn(season?.let { MediaSeason.values()[it] }),
-                    seasonYear = nn(year),
+                    year = nn(year?.let { "$it%" }),
                     status = nn(status?.let { MediaStatus.values()[it] }),
-                    country = nn(countryOfOrigin?.let { CountryOfOrigins.values()[it] }),
-                    sort = nn(sort?.map { MediaSort.values()[it] }),
-                    source = nn(source?.let { MediaSource.values()[it] })
+                    country = nn(countryOfOrigin?.let { CountryOfOrigins.values()[it].name }),
+                    sort = nn(sort?.let { listOf(MediaSort.values()[it]) }),
+                    source = nn(source?.let { MediaSource.values()[it] }),
+                    minimumTagRank = nn(minimumTagRank)
                 )
             }
             SearchTypes.MANGA -> {
@@ -84,7 +86,7 @@ class SearchField : BaseSourceField<Any>() {
                     genreNotIn = nn(genreNotIn),
                     tag = nn(tagsIn),
                     tagNotIn = nn(tagsNotIn),
-                    formatIn = nn(formatIn?.map { MediaFormat.values()[it] }),
+                    format = nn(format?.let { MediaFormat.values()[it] }),
                     isLicensed = nn(doujins?.takeIf { !it }),
                     isAdult = nn(isHentai),
                     chaptersGreater = nn(chaptersGreater),
@@ -92,13 +94,15 @@ class SearchField : BaseSourceField<Any>() {
                     volumesGreater = nn(volumesGreater),
                     volumesLesser = nn(volumesLesser),
                     licensedBy = nn(readableOn),
+                    year = nn(year?.let { "$it%" }),
                     yearGreater = nn(yearGreater),
                     yearLesser = nn(yearLesser),
                     seasonYear = nn(year),
                     status = nn(status?.let { MediaStatus.values()[it] }),
                     country = nn(countryOfOrigin?.let { CountryOfOrigins.values()[it] }),
-                    sort = nn(sort?.map { MediaSort.values()[it] }),
-                    source = nn(source?.let { MediaSource.values()[it] })
+                    sort = nn(sort?.let { listOf(MediaSort.values()[it]) }),
+                    source = nn(source?.let { MediaSource.values()[it] }),
+                    minimumTagRank = nn(minimumTagRank)
                 )
             }
             SearchTypes.CHARACTER -> {

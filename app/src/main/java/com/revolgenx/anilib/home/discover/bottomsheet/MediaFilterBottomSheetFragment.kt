@@ -5,19 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.jaygoo.widget.OnRangeChangedListener
-import com.jaygoo.widget.RangeSeekBar
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.common.preference.getNewlyAddedField
 import com.revolgenx.anilib.common.preference.getPopularField
 import com.revolgenx.anilib.common.preference.getSeasonField
 import com.revolgenx.anilib.common.preference.getTrendingField
 import com.revolgenx.anilib.common.ui.bottomsheet.DynamicBottomSheetFragment
+import com.revolgenx.anilib.common.ui.model.SelectableSpinnerMenu
 import com.revolgenx.anilib.constant.AlMediaSort
 import com.revolgenx.anilib.databinding.MediaFilterBottomSheetLayoutBinding
 import com.revolgenx.anilib.home.discover.data.field.NewlyAddedMediaField
@@ -29,10 +26,10 @@ import com.revolgenx.anilib.ui.adapter.MediaFilterFormatAdapter
 import com.revolgenx.anilib.ui.dialog.FormatSelectionDialog
 import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
+import com.revolgenx.anilib.ui.view.makeSelectableSpinnerAdapter
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.util.onItemSelected
 import java.util.*
-import kotlin.math.round
 
 class MediaFilterBottomSheetFragment :
     DynamicBottomSheetFragment<MediaFilterBottomSheetLayoutBinding>() {
@@ -44,6 +41,11 @@ class MediaFilterBottomSheetFragment :
     }
 
     private var formatDialog: DialogFragment? = null
+
+    private val yearLesser = Calendar.getInstance().get(Calendar.YEAR) + 1
+    private val yearList by lazy {
+        (yearLesser downTo 1940).toList()
+    }
 
     fun show(
         ctx: Context,
@@ -79,26 +81,11 @@ class MediaFilterBottomSheetFragment :
         }
     }
 
-    private val listStatusItems
-        get() =
-            requireContext().resources.getStringArray(R.array.advance_search_status).map {
-                DynamicMenu(
-                    null, it
-                )
-            }
 
     private val alMediaSortList by lazy {
         requireContext().resources.getStringArray(R.array.al_media_sort)
     }
 
-    private val seasons
-        get() =
-            requireContext().resources.getStringArray(if (mediaFilterType == MediaFilterType.SEASON.ordinal) R.array.media_season else R.array.advance_search_season)
-                .map {
-                    DynamicMenu(
-                        null, it
-                    )
-                }
 
     private val adapter by lazy {
         MediaFilterFormatAdapter(requireContext())
@@ -121,21 +108,12 @@ class MediaFilterBottomSheetFragment :
         when (field) {
             is SeasonField -> (field as SeasonField).saveSeasonField(requireContext())
             is TrendingMediaField -> {
-                if (!binding.enableYearCheckBox.isChecked) {
-                    field.seasonYear = null
-                }
                 (field as TrendingMediaField).saveTrendingField(requireContext())
             }
             is PopularMediaField -> {
-                if (!binding.enableYearCheckBox.isChecked) {
-                    field.seasonYear = null
-                }
                 (field as PopularMediaField).savePopularField(requireContext())
             }
             is NewlyAddedMediaField -> {
-                if (!binding.enableYearCheckBox.isChecked) {
-                    field.seasonYear = null
-                }
                 (field as NewlyAddedMediaField).saveNewlyAddedField(requireContext())
             }
         }
@@ -161,8 +139,19 @@ class MediaFilterBottomSheetFragment :
                 }
             }
 
+            val listStatusItems =
+                requireContext().resources.getStringArray(R.array.advance_search_status).map {
+                    DynamicMenu(null, it)
+                }
+
+            val seasonItems =
+                requireContext().resources.getStringArray(if (mediaFilterType == MediaFilterType.SEASON.ordinal) R.array.media_season else R.array.advance_search_season)
+                    .map {
+                        DynamicMenu(null, it)
+                    }
+
             seasonStatusSpinner.adapter = makeSpinnerAdapter(requireContext(), listStatusItems)
-            seasonSpinner.adapter = makeSpinnerAdapter(requireContext(), seasons)
+            seasonSpinner.adapter = makeSpinnerAdapter(requireContext(), seasonItems)
 
             if (field is SeasonField) {
                 val alMediaSorts = AlMediaSort.values()
@@ -218,9 +207,53 @@ class MediaFilterBottomSheetFragment :
                     }
                 }
 
+
+                val seasonYearItems = mutableListOf<SelectableSpinnerMenu>()
+                yearList.map {
+                    seasonYearItems.add(
+                        SelectableSpinnerMenu(
+                            it.toString(),
+                            it == field.seasonYear
+                        )
+                    )
+                }
+                filterYearSpinner.adapter =
+                    makeSelectableSpinnerAdapter(requireContext(), seasonYearItems)
+                field.seasonYear?.takeIf { it < yearLesser }?.let {
+                    filterYearSpinner.setSelection(yearList.indexOf(it))
+                }
+                filterYearSpinner.onItemSelected {
+                    seasonYearItems.firstOrNull{ it.isSelected }?.isSelected = false
+                    seasonYearItems[it].isSelected = true
+                    field.seasonYear = yearList[it]
+                }
             } else {
                 seasonSortHeaderTv.visibility = View.GONE
                 seasonSortCardView.visibility = View.GONE
+
+                val yearItems = mutableListOf(
+                    SelectableSpinnerMenu(
+                        getString(R.string.none), field.year == null
+                    )
+                )
+                yearList.map {
+                    yearItems.add(
+                        SelectableSpinnerMenu(
+                            it.toString(),
+                            it == field.year
+                        )
+                    )
+                }
+                filterYearSpinner.adapter =
+                    makeSelectableSpinnerAdapter(requireContext(), yearItems)
+                field.year?.takeIf { it < yearLesser }?.let {
+                    filterYearSpinner.setSelection(yearList.indexOf(it) + 1)
+                }
+                filterYearSpinner.onItemSelected {
+                    yearItems.firstOrNull{ it.isSelected }?.isSelected = false
+                    yearItems[it].isSelected = true
+                    field.year = it.takeIf { it > 0 }?.let { yearList[it - 1] }
+                }
             }
 
             field.status?.let {
@@ -229,65 +262,12 @@ class MediaFilterBottomSheetFragment :
             field.season?.let {
                 seasonSpinner.setSelection(if (field is SeasonField) it else it + 1)
             }
-
-
-            seasonYearSeekBar.setIndicatorTextDecimalFormat("0")
-            seasonYearSeekBar.setTypeface(
-                ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.cabincondensed_regular
-                )
-            )
-
-            seasonYearSeekBar.progressColor = dynamicAccentColor
-            seasonYearSeekBar.leftSeekBar?.indicatorBackgroundColor = dynamicAccentColor
-
-            val currentYear = Calendar.getInstance().get(Calendar.YEAR) + 1f
-
-            seasonYearSeekBar.setRange(1950f, currentYear)
-
-            if (field is SeasonField) {
-                enableYearCheckBox.visibility = View.GONE
-                yearHeaderTv.visibility = View.VISIBLE
-                seasonYearSeekBar.visibility = View.VISIBLE
-            }else{
-                val hasSeasonYear = field.seasonYear != null
-                enableYearCheckBox.setOnCheckedChangeListener(null)
-                enableYearCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                    seasonYearSeekBar.visibility = if (isChecked) View.VISIBLE else View.GONE
-                }
-                seasonYearSeekBar.visibility = if (hasSeasonYear) View.VISIBLE else View.GONE
-                enableYearCheckBox.isChecked = hasSeasonYear
-            }
-
-            field.seasonYear?.toFloat()?.let {
-                seasonYearSeekBar.setProgress(it)
-            }
-
             seasonStatusSpinner.onItemSelected {
                 field.status = it.minus(1).takeIf { it >= 0 }
             }
             seasonSpinner.onItemSelected {
                 field.season = if (field is SeasonField) it else it.minus(1).takeIf { it >= 0 }
             }
-            seasonYearSeekBar.setOnRangeChangedListener(object : OnRangeChangedListener {
-                override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
-                }
-
-                override fun onRangeChanged(
-                    view: RangeSeekBar?,
-                    leftValue: Float,
-                    rightValue: Float,
-                    isFromUser: Boolean
-                ) {
-                }
-
-                override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
-                    view?.leftSeekBar?.progress?.let {
-                        field.seasonYear = round(it).toInt()
-                    }
-                }
-            })
 
             onPositiveClicked = {
                 onDone()
@@ -304,7 +284,6 @@ class MediaFilterBottomSheetFragment :
 
     private fun MediaFilterBottomSheetLayoutBinding.bindFormat() {
         formatChipRecyclerView.adapter = adapter
-
         adapter.currentList = field.formatsIn!!
     }
 

@@ -6,7 +6,6 @@ import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.constant.AiringListDisplayMode
 import com.revolgenx.anilib.constant.MediaListDisplayMode
-import com.revolgenx.anilib.data.field.MediaListCollectionFilterField
 import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
 import com.revolgenx.anilib.constant.AlActivityType
 import com.revolgenx.anilib.home.data.meta.HomePageOrderType
@@ -62,10 +61,6 @@ const val AIRING_SORT_KEY = "AIRING_SORT_KEY"
 const val AIRING_PLANNING_KEY = "AIRING_PLANNING_KEY"
 const val AIRING_WATCHING_KEY = "AIRING_WATCHING_KEY"
 
-const val ANIME_MEDIA_LIST_FILTER_KEY = "ANIME_MEDIA_LIST_FILTER_KEY"
-const val MANGA_MEDIA_LIST_FILTER_KEY = "MANGA_MEDIA_LIST_FILTER_KEY"
-
-
 const val ANIME_MEDIA_LIST_COLLECTION_FILTER_KEY = "ANIME_MEDIA_LIST_COLLECTION_FILTER_KEY"
 const val MANGA_MEDIA_LIST_COLLECTION_FILTER_KEY = "MANGA_MEDIA_LIST_COLLECTION_FILTER_KEY"
 
@@ -99,8 +94,6 @@ const val ACTIVITY_PAGE_ORDER_KEY = "ACTIVITY_PAGE_ORDER_1_KEY"
 const val DISCOVER_READING_SORT_KEY = "DISCOVER_READING_SORT_KEY"
 const val DISCOVER_WATCHING_SORT_KEY = "DISCOVER_WATCHING_SORT_KEY"
 
-const val MEDIA_LIST_GRID_PRESENTER_KEY = "MEDIA_LIST_GRID_PRESENTER_KEY"
-const val AL_LIST_GRID_PRESENTER_KEY = "AL_LIST_GRID_PRESENTER_KEY"
 
 const val USER_ANIME_MEDIA_LIST_DISPLAY_KEY = "USER_ANIME_MEDIA_LIST_DISPLAY_KEY"
 const val USER_MANGA_MEDIA_LIST_DISPLAY_KEY = "USER_MANGA_MEDIA_LIST_DISPLAY_KEY"
@@ -164,7 +157,7 @@ fun getTrendingField(context: Context) = TrendingMediaField().apply {
     formatsIn =
         context.getString(TRENDING_FORMAT_IN_KEY, "")?.takeIf { it.isNotEmpty() }?.split(",")
             ?.map { it.toInt() }?.toMutableList()
-    seasonYear = context.getInt(TRENDING_YEAR_KEY, -1).takeIf { it > -1 }
+    year = context.getInt(TRENDING_YEAR_KEY, -1).takeIf { it > -1 }
     season = context.getInt(
         TRENDING_SEASON_KEY,
         -1
@@ -175,7 +168,7 @@ fun getTrendingField(context: Context) = TrendingMediaField().apply {
 fun getPopularField(context: Context) = PopularMediaField().apply {
     formatsIn = context.getString(POPULAR_FORMAT_IN_KEY, "")?.takeIf { it.isNotEmpty() }?.split(",")
         ?.map { it.toInt() }?.toMutableList()
-    seasonYear = context.getInt(POPULAR_YEAR_KEY, -1).takeIf { it > -1 }
+    year = context.getInt(POPULAR_YEAR_KEY, -1).takeIf { it > -1 }
     season = context.getInt(
         POPULAR_SEASON_KEY,
         -1
@@ -188,7 +181,7 @@ fun getNewlyAddedField(context: Context) = NewlyAddedMediaField().apply {
     formatsIn =
         context.getString(NEWLY_ADDED_FORMAT_IN_KEY, "")?.takeIf { it.isNotEmpty() }?.split(",")
             ?.map { it.toInt() }?.toMutableList()
-    seasonYear = context.getInt(NEWLY_ADDED_YEAR_KEY, -1).takeIf { it > -1 }
+    year = context.getInt(NEWLY_ADDED_YEAR_KEY, -1).takeIf { it > -1 }
     season = context.getInt(
         NEWLY_ADDED_SEASON_KEY,
         -1
@@ -219,7 +212,7 @@ fun storeNewlyAddedField(context: Context, field: NewlyAddedMediaField) {
     with(field) {
         context.putString(NEWLY_ADDED_FORMAT_IN_KEY, formatsIn?.joinToString(",") ?: "")
         context.putInt(NEWLY_ADDED_FORMAT_KEY, format ?: DEFAULT_FORMAT)
-        context.putInt(NEWLY_ADDED_YEAR_KEY, seasonYear ?: -1)
+        context.putInt(NEWLY_ADDED_YEAR_KEY, year ?: -1)
         context.putInt(
             NEWLY_ADDED_SEASON_KEY,
             season ?: -1
@@ -247,7 +240,7 @@ fun storeTrendingField(context: Context, field: TrendingMediaField) {
     with(field) {
         context.putString(TRENDING_FORMAT_IN_KEY, formatsIn?.joinToString(",") ?: "")
         context.putInt(TRENDING_FORMAT_KEY, format ?: DEFAULT_FORMAT)
-        context.putInt(TRENDING_YEAR_KEY, seasonYear ?: -1)
+        context.putInt(TRENDING_YEAR_KEY, year ?: -1)
         context.putInt(
             TRENDING_SEASON_KEY,
             season ?: -1
@@ -260,7 +253,7 @@ fun storePopularField(context: Context, field: PopularMediaField) {
     with(field) {
         context.putString(POPULAR_FORMAT_IN_KEY, formatsIn?.joinToString(",") ?: "")
         context.putInt(POPULAR_FORMAT_KEY, format ?: DEFAULT_FORMAT)
-        context.putInt(POPULAR_YEAR_KEY, seasonYear ?: -1)
+        context.putInt(POPULAR_YEAR_KEY, year ?: -1)
         context.putInt(
             POPULAR_SEASON_KEY,
             season ?: -1
@@ -388,11 +381,6 @@ fun getDiscoverMediaListSort(context: Context, type: Int): Int? {
 }
 
 
-fun getMediaListGridPresenter(): MediaListDisplayMode {
-    return MediaListDisplayMode.values()[DynamicPreferences.getInstance()
-        .load(MEDIA_LIST_GRID_PRESENTER_KEY, MediaListDisplayMode.NORMAL.ordinal)]
-}
-
 fun getUserMediaListCollectionDisplayMode(mediaType: MediaType): MediaListDisplayMode {
     return MediaListDisplayMode.values()[DynamicPreferences.getInstance()
         .load(if(mediaType == MediaType.ANIME) USER_ANIME_MEDIA_LIST_DISPLAY_KEY else USER_MANGA_MEDIA_LIST_DISPLAY_KEY, MediaListDisplayMode.NORMAL.ordinal)]
@@ -416,41 +404,8 @@ fun getAiringDisplayMode(): AiringListDisplayMode {
         .load(AIRING_DISPLAY_MODE_KEY, AiringListDisplayMode.COMPACT.ordinal)]
 }
 
-//TODO delete
-fun setMediaListGridPresenter(which: Int) {
-    return DynamicPreferences.getInstance().save(MEDIA_LIST_GRID_PRESENTER_KEY, which)
-}
-
-//TODO delete
-fun setAlListGridPresenter(which: Int) {
-    return DynamicPreferences.getInstance().save(AL_LIST_GRID_PRESENTER_KEY, which)
-}
-
 fun setAiringDisplayMode(which: Int) {
     return DynamicPreferences.getInstance().save(AIRING_DISPLAY_MODE_KEY, which)
-}
-
-
-fun storeMediaListFilterField(context: Context, filter: MediaListCollectionFilterField, type: Int) {
-    val json = Gson().toJson(filter)
-    context.putString(
-        if (type == 0) ANIME_MEDIA_LIST_FILTER_KEY else MANGA_MEDIA_LIST_FILTER_KEY,
-        json
-    ) // 0 = anime media type
-}
-
-
-//TODO delete
-fun loadMediaListFilter(context: Context, type: Int): MediaListCollectionFilterField {
-    val field = Gson().fromJson(
-        context.getString(
-            if (type == 0) ANIME_MEDIA_LIST_FILTER_KEY else MANGA_MEDIA_LIST_FILTER_KEY,
-            ""
-        ),
-        MediaListCollectionFilterField::class.java
-    ) ?: MediaListCollectionFilterField()
-
-    return field
 }
 
 

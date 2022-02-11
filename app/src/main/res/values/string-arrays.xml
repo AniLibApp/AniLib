@@ -624,6 +624,7 @@
         <item>@string/Japan</item>
         <item>@string/South_Korean</item>
         <item>@string/China</item>
+        <item>@string/Taiwan</item>
     </string-array>
 
     <string-array name="advance_search_status">

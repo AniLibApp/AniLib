@@ -215,16 +215,7 @@ dependencies {
     implementation("com.google.android.exoplayer:exoplayer-core:${LibraryVersion.exo_version}")
     implementation("com.google.android.exoplayer:exoplayer-ui:${LibraryVersion.exo_version}")
 
-
-    //searchview /*make own view implementation, remove later*/
-    implementation("com.paulrybitskyi.persistentsearchview:persistentsearchview:${LibraryVersion.persistent_search_version}")
-    implementation("com.arthurivanets.adapster:adapster:1.0.12")
-
-
-    //range seekbar
-    implementation("com.github.Jay-Goo:RangeSeekBar:${LibraryVersion.range_seekbar_version}")
-
-    //toggle
+    //toggle //TODO try to remove later
     implementation("com.llollox:androidtoggleswitch:2.0.1")
 
     //hauler

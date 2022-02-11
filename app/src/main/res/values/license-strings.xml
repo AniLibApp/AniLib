@@ -48,10 +48,6 @@
     <string name="license_copy_jsoup" translatable="false">Copyright © 2009–2020 Jonathan Hedley </string>
     <!--ExoPlayer-->
     <string name="license_exoplayer" translatable="false">ExoPlayer</string>
-    <!--persistentsearchview-->
-    <string name="license_persistentsearchview" translatable="false">PersistentSearchView</string>
-    <!--RangeSeekBar-->
-    <string name="license_rangeseekbar" translatable="false">RangeSeekBar</string>
     <!--Android-Toggle-Switch-->
     <string name="license_android_toggle_switch" translatable="false">Android-Toggle-Switch</string>
     <string name="license_copy_android_toggle_switch" translatable="false">Copyright © 2017 Lorenzo Rigato</string>
@@ -306,39 +302,6 @@
     <string-array name="license_links_url_exoplayer">
         <item>@string/apache_url</item>
         <item>https://github.com/google/ExoPlayer</item>
-    </string-array>
-
-    <!--persistentsearchview-->
-    <string-array name="license_links_persistentsearchview">
-        <item>@string/apache_2</item>
-        <item>@string/sources</item>
-    </string-array>
-
-    <string-array name="license_links_subtitles_persistentsearchview">
-        <item>@string/license_desc</item>
-        <item>@string/license_sources_desc</item>
-    </string-array>
-
-    <string-array name="license_links_url_persistentsearchview">
-        <item>@string/apache_url</item>
-        <item>https://github.com/mars885/persistentsearchview</item>
-    </string-array>
-
-
-    <!--RangeSeekBar-->
-    <string-array name="license_links_rangeseekbar">
-        <item>@string/apache_2</item>
-        <item>@string/sources</item>
-    </string-array>
-
-    <string-array name="license_links_subtitles_rangeseekbar">
-        <item>@string/license_desc</item>
-        <item>@string/license_sources_desc</item>
-    </string-array>
-
-    <string-array name="license_links_url_rangeseekbar">
-        <item>@string/apache_url</item>
-        <item>https://github.com/Jay-Goo/RangeSeekBar</item>
     </string-array>
 
     <!--Android-Toggle-Switch-->

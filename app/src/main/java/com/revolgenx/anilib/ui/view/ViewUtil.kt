@@ -30,6 +30,8 @@ import com.pranavpandey.android.dynamic.toasts.internal.ToastCompat
 import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
+import com.revolgenx.anilib.common.ui.adapter.SelectableSpinnerAdapter
+import com.revolgenx.anilib.common.ui.model.SelectableSpinnerMenu
 import com.revolgenx.anilib.databinding.DynamicToastViewLayoutBinding
 import com.revolgenx.anilib.ui.dialog.MessageDialog
 
@@ -121,10 +123,16 @@ fun makeSpinnerAdapter(context: Context, items: List<DynamicMenu>) =
     )
 
 
-fun makeSpinnerAdapter(context: Context, @ArrayRes itemsRes:Int)=
-    makeSpinnerAdapter(context, context.resources.getStringArray(itemsRes).map{DynamicMenu(null, it)})
+fun makeSpinnerAdapter(context: Context, @ArrayRes itemsRes: Int) =
+    makeSpinnerAdapter(
+        context,
+        context.resources.getStringArray(itemsRes).map { DynamicMenu(null, it) })
 
 
+fun makeSelectableSpinnerAdapter(context: Context, item: List<SelectableSpinnerMenu>) =
+    SelectableSpinnerAdapter(
+        context, item
+    )
 
 inline fun is29(func: () -> Unit) {
     if (DynamicSdkUtils.is29()) {
@@ -176,7 +184,7 @@ fun makeConfirmationDialog(
 }
 
 
-fun BadgeDrawable.setBoundsFor(anchor: View, parent: FrameLayout){
+fun BadgeDrawable.setBoundsFor(anchor: View, parent: FrameLayout) {
     val rect = Rect()
     parent.getDrawingRect(rect)
     this.bounds = rect

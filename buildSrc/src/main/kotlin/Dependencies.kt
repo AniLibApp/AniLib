@@ -38,9 +38,7 @@ object LibraryVersion {
     const val markwon_version = "4.6.2"
     const val jsoup_version = "1.13.1"
 
-    const val range_seekbar_version = "3.0.0"
     const val hauler_version = "3.1.0"
-    const val persistent_search_version = "1.1.3"
     const val shimmer_version = "0.5.0"
     const val spin_kit_version = "1.4.0"
     const val draglist_version = "1.7.2"

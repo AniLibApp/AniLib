@@ -190,7 +190,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
     }
 
     private fun DiscoverContainerFragmentBinding.initRecommendationListener() {
-        recommendationOnListCheckBox.onCheckedChangeListener = null
+        recommendationOnListCheckBox.setOnCheckedChangeListener(null)
         recommendationOnListCheckBox.setOnCheckedChangeListener { _, isChecked ->
             val onList =
                 if (requireContext().loggedIn()) isChecked else null

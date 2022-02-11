@@ -17,12 +17,16 @@
             app:adt_colorType="primary"
             app:elevation="0dp">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+            <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+                android:id="@+id/dynamicToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:adt_backgroundAware="disable"
                 app:adt_colorType="background"
-                app:layout_scrollFlags="scroll|enterAlways">
+                app:adt_textColorType="text_primary"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:layout_scrollFlags="enterAlways|scroll">
 
 
                 <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
@@ -36,8 +40,7 @@
                     app:entries="@array/music_entries"
                     app:layout_scrollFlags="noScroll"
                     app:tabTextAppearance="@style/RadioTabLayoutTextStyle" />
-            </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
-
+            </com.pranavpandey.android.dynamic.support.widget.DynamicToolbar>
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 
@@ -86,7 +89,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/recent_station_recycler_view"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent" />
 
                         </LinearLayout>
 
@@ -107,7 +110,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/favourite_station_recycler_view"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent" />
 
                         </LinearLayout>
 
@@ -126,7 +129,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/radio_station_recycler_view"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent" />
                         </LinearLayout>
 
                     </LinearLayout>

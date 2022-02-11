@@ -13,7 +13,6 @@ import java.time.ZonedDateTime
 import java.time.temporal.WeekFields
 import java.util.*
 
-//todo update progress after bookmark
 class AiringViewModel(private val airingMediaService: AiringMediaService) :
     SourceViewModel<AiringSource, AiringMediaField>() {
 
@@ -97,5 +96,10 @@ class AiringViewModel(private val airingMediaService: AiringMediaService) :
             field.showFromWatching = it.showFromWatching
             field.isWeeklyTypeDate = showAiringWeekly(context)
         }
+    }
+
+    fun updateWeeklyField(context: Context, bool: Boolean) {
+        showAiringWeekly(context, bool)
+        field.isWeeklyTypeDate = bool
     }
 }

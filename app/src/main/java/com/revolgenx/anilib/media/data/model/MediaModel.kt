@@ -15,6 +15,7 @@ import com.revolgenx.anilib.review.data.model.ReviewConnection
 import com.revolgenx.anilib.staff.data.model.StaffConnectionModel
 import com.revolgenx.anilib.staff.data.model.StaffModel
 import com.revolgenx.anilib.studio.data.model.StudioConnectionModel
+import com.revolgenx.anilib.studio.data.model.StudioModel
 import com.revolgenx.anilib.user.data.model.stats.MediaRankModel
 
 open class MediaModel:BaseModel() {
@@ -28,6 +29,7 @@ open class MediaModel:BaseModel() {
     var characters: CharacterConnectionModel? = null
 
     var staff: StaffModel? = null
+//    var staffs: List<StaffModel>? = null
     var staffRole: String? = null
     var staffs: StaffConnectionModel? = null
 
@@ -63,6 +65,7 @@ open class MediaModel:BaseModel() {
     var status: Int? = null
     var streamingEpisodes: List<MediaStreamingEpisodeModel>? = null
     var studios: StudioConnectionModel? = null
+//    var studios: List<StudioModel>? = null
     var synonyms: List<String>? = null
     var tags: List<MediaTagModel>? = null
     var title: MediaTitleModel? = null

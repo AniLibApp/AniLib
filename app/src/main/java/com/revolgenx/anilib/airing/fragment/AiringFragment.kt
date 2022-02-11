@@ -159,7 +159,7 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
                 true
             }
             R.id.weekly_filter -> {
-                showAiringWeekly(requireContext(), !item.isChecked)
+                viewModel.updateWeeklyField(requireContext(), !item.isChecked)
                 item.isChecked = !item.isChecked
                 viewModel.updateDateRange(item.isChecked)
                 updateToolbarTitle()
