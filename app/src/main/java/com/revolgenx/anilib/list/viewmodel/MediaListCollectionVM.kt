@@ -198,7 +198,7 @@ class MediaListCollectionVM(
         return if (mediaListFilter.formatsIn.isNullOrEmpty()) listCollection else {
             listCollection.filter { mediaListFilter.formatsIn!!.contains(it.media?.format) }
         }.let {
-            if (mediaListFilter.status == null) it else it.filter { it.status == mediaListFilter.status }
+            if (mediaListFilter.status == null) it else it.filter { it.media?.status == mediaListFilter.status }
         }.let {
             if (mediaListFilter.genre == null) it else it.filter {
                 it.media?.genres?.contains(

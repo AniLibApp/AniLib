@@ -137,8 +137,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/on_list"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
+                app:adt_stateNormalColorType="text_primary"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
                 app:al_pref_key="RECOMMENDATION_ON_LIST_KEY" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
