@@ -96,7 +96,7 @@
                         android:layout_margin="2dp"
                         android:background="?selectableItemBackground"
                         app:adt_colorType="text_primary"
-                        app:srcCompat="@drawable/ic_plus" />
+                        app:srcCompat="@drawable/ic_add" />
 
                 </LinearLayout>
 

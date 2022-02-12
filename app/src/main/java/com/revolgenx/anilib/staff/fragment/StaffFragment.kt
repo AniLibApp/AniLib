@@ -100,7 +100,7 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
                 }
                 Status.ERROR -> {
                     binding.staffFavIv.showLoading(false)
-                    makeToast(R.string.failed_to_toggle, icon = R.drawable.ads_ic_error)
+                    makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
                 }
                 Status.LOADING -> {
                     binding.staffFavIv.showLoading(true)

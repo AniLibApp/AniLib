@@ -67,7 +67,7 @@ class PlusMinusEditTextLayout(context: Context, attributeSet: AttributeSet?, set
                 it.addRule(CENTER_VERTICAL)
             }
             this.setPadding(DynamicUnitUtils.convertDpToPixels(10f))
-            setImageResource(R.drawable.ic_plus)
+            setImageResource(R.drawable.ic_add)
             this.color = dynamicTextColorPrimary
         }
     }

@@ -4,17 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:adt_backgroundAware="disable"
-        app:adt_colorType="primary"
-        app:elevation="0dp">
+        app:adt_colorType="background"
+        app:adt_contrastWithColorType="none">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?actionBarSize"
             app:adt_backgroundAware="disable"
             app:adt_colorType="background"
             app:layout_scrollFlags="scroll|enterAlways">
@@ -22,7 +21,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
                     android:id="@+id/activity_union_tab_layout"
@@ -33,6 +32,7 @@
                     app:adt_contrastWithColorType="background"
                     app:adt_textColorType="text_primary"
                     app:entries="@array/activity_entries"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/activity_type_popup_menu"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

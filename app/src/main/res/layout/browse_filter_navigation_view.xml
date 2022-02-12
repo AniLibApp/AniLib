@@ -21,7 +21,7 @@
             app:boxBackgroundMode="filled"
             app:endIconMode="clear_text"
             app:hintEnabled="false"
-            app:startIconDrawable="@drawable/ads_ic_search">
+            app:startIconDrawable="@drawable/ic_search">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextInputEditText
                 android:id="@+id/browseSearchEt"
@@ -278,7 +278,7 @@
                             android:layout_centerVertical="true"
                             android:padding="10dp"
                             app:adt_colorType="accent"
-                            app:srcCompat="@drawable/ic_add" />
+                            app:srcCompat="@drawable/ads_ic_arrow_right" />
 
                     </com.pranavpandey.android.dynamic.support.widget.DynamicRelativeLayout>
                 </com.revolgenx.anilib.ui.view.header.DynamicHeaderLinearLayout>

@@ -34,7 +34,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:paddingTop="2dp"
-        android:src="@drawable/ads_ic_more_horizontal"
+        android:src="@drawable/ic_more_horiz"
         app:adt_colorType="text_primary"
         app:entries="@array/reply_edit_entries"
         app:layout_constraintBottom_toBottomOf="@+id/user_name_tv"

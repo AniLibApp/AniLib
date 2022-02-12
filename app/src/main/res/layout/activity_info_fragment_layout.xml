@@ -84,7 +84,7 @@
                             app:layout_constraintBottom_toBottomOf="@id/user_name_tv"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/user_name_tv"
-                            app:srcCompat="@drawable/ads_ic_more_horizontal" />
+                            app:srcCompat="@drawable/ic_more_horiz" />
 
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -96,7 +96,7 @@
                             app:layout_constraintBottom_toBottomOf="@id/user_name_tv"
                             app:layout_constraintEnd_toStartOf="@id/activity_more_popup"
                             app:layout_constraintTop_toTopOf="@id/user_name_tv"
-                            app:srcCompat="@drawable/ads_ic_notification" />
+                            app:srcCompat="@drawable/ic_notification_filled" />
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                             android:id="@+id/text_activity_tv"
@@ -172,7 +172,7 @@
                             app:layout_constraintBottom_toBottomOf="@id/list_user_name_tv"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/list_user_name_tv"
-                            app:srcCompat="@drawable/ads_ic_more_horizontal" />
+                            app:srcCompat="@drawable/ic_more_horiz" />
 
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
@@ -184,7 +184,7 @@
                             app:layout_constraintBottom_toBottomOf="@id/list_user_name_tv"
                             app:layout_constraintEnd_toStartOf="@id/list_activity_more_popup"
                             app:layout_constraintTop_toTopOf="@id/list_user_name_tv"
-                            app:srcCompat="@drawable/ads_ic_notification" />
+                            app:srcCompat="@drawable/ic_notification_filled" />
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                             android:id="@+id/activity_list_status"

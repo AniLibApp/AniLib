@@ -21,7 +21,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:padding="6dp"
-        android:src="@drawable/ads_ic_check"
+        android:src="@drawable/ic_check"
         app:adt_colorType="text_primary"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/download_delete_ml_model"

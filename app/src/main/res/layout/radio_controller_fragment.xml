@@ -72,7 +72,7 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:padding="6dp"
-                app:srcCompat="@drawable/ads_ic_more"
+                app:srcCompat="@drawable/ic_more_vert"
                 app:adt_colorType="text_primary"
                 app:entries="@array/radio_controller_more_actions"
                 app:icons="@array/station_controller_more_icons"/>

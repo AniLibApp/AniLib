@@ -138,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:ads_icon="@drawable/ads_ic_info"
+                app:ads_icon="@drawable/ic_info"
                 app:ads_title="@string/about_anilib"
                 app:adt_colorType="text_primary" />
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>

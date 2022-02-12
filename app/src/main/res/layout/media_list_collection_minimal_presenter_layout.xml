@@ -60,6 +60,6 @@
         app:adt_colorType="text_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/media_list_title_tv"
-        app:srcCompat="@drawable/ic_plus" />
+        app:srcCompat="@drawable/ic_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

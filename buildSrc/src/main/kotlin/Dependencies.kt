@@ -32,7 +32,7 @@ object LibraryVersion {
     const val elements_version = "0.5.0"
     const val eventbus_version = "3.2.0"
     const val okhttp_version = "4.9.0"
-    const val apollo_version = "3.0.0"
+    const val apollo_version = "3.1.0"
     const val fresco_version = "2.4.0"
     const val big_image_viewer_version = "1.8.0"
     const val markwon_version = "4.6.2"

@@ -43,6 +43,13 @@ fun Fragment.makeToast(
     requireContext().makeToast(str, msg, icon)
 }
 
+fun Fragment.makeErrorToast(
+    @StringRes str: Int? = null,
+    msg: String? = null,
+) {
+    requireContext().makeToast(str, msg, R.drawable.ic_error)
+}
+
 fun Context.makeToast(
     @StringRes str: Int? = null,
     msg: String? = null,
@@ -177,7 +184,6 @@ fun makeConfirmationDialog(
                     ctx.supportFragmentManager,
                     "ConfirmationDialogTag"
                 )
-                is Fragment -> it.show(ctx.childFragmentManager, "ConfirmationDialogTag")
             }
         }
     }

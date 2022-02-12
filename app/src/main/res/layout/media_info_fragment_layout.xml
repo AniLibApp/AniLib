@@ -226,7 +226,7 @@
                                 android:layout_marginEnd="16dp"
                                 app:adt_colorType="text_primary"
                                 app:layout_constraintEnd_toStartOf="@+id/media_add_divider"
-                                app:srcCompat="@drawable/ads_ic_more_horizontal"
+                                app:srcCompat="@drawable/ic_more_horiz"
                                 tools:layout_editor_absoluteY="0dp" />
 
                             <View
@@ -361,7 +361,7 @@
                             android:layout_marginEnd="8dp"
                             android:background="@drawable/ads_button_remote"
                             app:adt_colorType="text_primary"
-                            app:srcCompat="@drawable/ads_ic_more_horizontal" />
+                            app:srcCompat="@drawable/ic_more_horiz" />
 
                         <View
                             android:layout_width="0.5dp"

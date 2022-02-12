@@ -13,10 +13,10 @@ abstract class MediaListCollectionStoreVM : ViewModel() {
     val dataSetChangeLiveData = MutableLiveData<String?>() //group name
 
     fun update(item: MediaListModel) {
-        val storedLists = lists?: return
+        val storedLists = lists ?: return
 
         val customListKeys =
-            item.customLists?.filter { it.value }?.keys?.map { it to false }?.toMutableList()
+            item.customLists?.filter { it.second }?.map { it.first to false }?.toMutableList()
                 ?: mutableListOf()
         val statusToDefaultGroup = ListConstant.statusToDefaultGroup(
             MediaListStatus.values()[item.status!!],
@@ -54,10 +54,10 @@ abstract class MediaListCollectionStoreVM : ViewModel() {
         notifyDataChange(customListKeys.map { it.first })
     }
 
-    fun delete(item: MediaListModel){
-        val storedLists = lists?: return
+    fun delete(item: MediaListModel) {
+        val storedLists = lists ?: return
         val customListKeys =
-            item.customLists?.filter { it.value }?.keys?.toMutableList()
+            item.customLists?.mapNotNull { it.first.takeIf { _ -> it.second } }?.toMutableList()
                 ?: mutableListOf()
         val statusToDefaultGroup = ListConstant.statusToDefaultGroup(
             MediaListStatus.values()[item.status!!],
@@ -70,7 +70,7 @@ abstract class MediaListCollectionStoreVM : ViewModel() {
         notifyDataChange(customListKeys)
     }
 
-    private fun notifyDataChange(list:List<String>){
+    private fun notifyDataChange(list: List<String>) {
         list.forEach {
             dataSetChangeLiveData.value = it
         }

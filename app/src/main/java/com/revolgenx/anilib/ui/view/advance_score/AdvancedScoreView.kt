@@ -2,12 +2,14 @@ package com.revolgenx.anilib.ui.view.advance_score
 
 import android.content.Context
 import android.content.res.Configuration
+import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.entry.data.model.AdvancedScoreModel
 import com.revolgenx.anilib.databinding.AdvancedScoringLayoutBinding
 
@@ -30,9 +32,9 @@ class AdvancedScoreView : DynamicRecyclerView {
     }
 
     var advanceScoreObserver: (() -> Unit)? = null
-    var advancedScores = mutableListOf<AdvancedScoreModel>()
+    var advancedScores = mutableListOf<MutablePair<String, Double>>()
 
-    fun setAdvanceScore(advancedScores: List<AdvancedScoreModel>) {
+    fun setAdvanceScore(advancedScores: List<MutablePair<String, Double>>) {
         this.advancedScores.clear()
         this.advancedScores.addAll(advancedScores)
         mAdapter.notifyDataSetChanged()
@@ -62,10 +64,11 @@ class AdvancedScoreView : DynamicRecyclerView {
         override fun onBindViewHolder(holder: AdvanceScoringViewHolder, position: Int) {
             val data = advancedScores[position]
             holder.binding.apply {
-                advanceScoringEt.updateCount(data.score)
-                advancedScoringTv.text = data.scoreType
+                advanceScoringEt.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
+                advanceScoringEt.updateCount(data.second)
+                advancedScoringTv.text = data.first
                 advanceScoringEt.onCountChangeListener = {
-                    data.score = it
+                    data.second = it
                     advanceScoreObserver?.invoke()
                 }
             }

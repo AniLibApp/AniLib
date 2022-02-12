@@ -183,7 +183,7 @@
             app:adt_color="@color/white"
             app:tint="@color/white"
             app:entries="@array/media_list_status"
-            app:srcCompat="@drawable/ads_ic_more_horizontal" />
+            app:srcCompat="@drawable/ic_more_horiz" />
 
     </LinearLayout>
 

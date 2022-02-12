@@ -22,6 +22,7 @@ import com.revolgenx.anilib.review.viewmodel.ReviewViewModel
 import com.revolgenx.anilib.search.viewmodel.SearchFragmentViewModel
 import com.revolgenx.anilib.app.setting.data.model.SettingViewModel
 import com.revolgenx.anilib.app.setting.data.model.EditTagFilterViewModel
+import com.revolgenx.anilib.entry.viewmodel.MediaListEntryVM
 import com.revolgenx.anilib.home.discover.viewmodel.*
 import com.revolgenx.anilib.list.viewmodel.AnimeListCollectionStoreVM
 import com.revolgenx.anilib.list.viewmodel.MangaListCollectionStoreVM
@@ -70,12 +71,12 @@ val viewModelModules = module {
     //recommendation
     viewModel { RecommendationViewModel(get()) }
 
+    //list
     viewModel { AnimeListCollectionStoreVM() }
     viewModel { MangaListCollectionStoreVM() }
     viewModel { parameters -> MediaListCollectionVM(get(), get(), parameters.get()) }
-
     viewModel { MediaListContainerSharedVM() }
-
+    viewModel { MediaListEntryVM(get()) }
 
     //userprofile
     viewModel { UserProfileViewModel(get()) }

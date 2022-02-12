@@ -123,7 +123,7 @@
             app:adt_colorType="text_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_plus" />
+            app:srcCompat="@drawable/ic_add" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.revolgenx.anilib.ui.view.widgets.AlCardView>

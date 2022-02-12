@@ -64,7 +64,7 @@
         app:adt_colorType="custom"
         app:adt_color="@color/white"
         android:layout_toStartOf="@id/exoScreenSize"
-        app:srcCompat="@drawable/ads_ic_share"/>
+        app:srcCompat="@drawable/ic_share"/>
 
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout

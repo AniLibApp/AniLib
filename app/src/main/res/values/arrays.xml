@@ -103,7 +103,7 @@
 
 
     <array name="station_more_action_icons">
-        <item>@drawable/ads_ic_share</item>
+        <item>@drawable/ic_share</item>
     </array>
 
     <array name="favourite_station_more_action_icons">
@@ -111,8 +111,8 @@
     </array>
 
     <array name="station_controller_more_icons">
-        <item>@drawable/ads_ic_copy</item>
-        <item>@drawable/ads_ic_share</item>
+        <item>@drawable/ic_copy</item>
+        <item>@drawable/ic_share</item>
     </array>
 
     <string name="github" translatable="false">Github</string>

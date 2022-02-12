@@ -54,7 +54,7 @@ fun UserMediaListOptions.toModel() = MediaListOptionModel().also {
         MediaListOptionTypeModel().also { optionModel ->
             optionModel.advancedScoringEnabled = it.advancedScoringEnabled == true
             optionModel.advancedScoring =
-                it.advancedScoring?.filterNotNull()?.map { AdvancedScoreModel(it, 0.0) }?.toMutableList()
+                it.advancedScoring?.filterNotNull()?.toMutableList()
             optionModel.customLists = it.customLists?.filterNotNull()
         }
     }
@@ -69,7 +69,11 @@ fun MediaTitle.toModel() = MediaTitleModel(english, romaji, native, userPreferre
 
 fun MediaCoverImage.toModel() = MediaCoverImageModel(medium, large, extraLarge)
 
-fun FuzzyDate.toModel() = FuzzyDateModel(year, month, day)
+fun FuzzyDate.toModel() = FuzzyDateModel(
+    year,
+    month,
+    day
+).takeIf { it.year != null && it.month != null && it.day != null }
 
 fun ActivityUnionQuery.OnTextActivity.toModel() = TextActivityModel().also { model ->
     model.id = id

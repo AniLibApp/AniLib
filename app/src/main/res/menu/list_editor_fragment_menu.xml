@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/list_favourite_menu"
+        android:icon="@drawable/ic_not_favourite"
+        android:title="@string/favourite"
+        app:showAsAction="always"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/list_delete_menu"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/delete"
+        android:visible="false"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+
+    <item
+        android:id="@+id/list_save_menu"
+        android:icon="@drawable/ic_save"
+        android:title="@string/save"
+        android:visible="false"
+        app:showAsAction="always" />
+
+
+</menu>

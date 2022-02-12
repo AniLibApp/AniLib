@@ -53,7 +53,7 @@ class IndicatorTextView : DynamicLinearLayout {
                         R.drawable.ic_rewatching
                     }
                     else -> {
-                        R.drawable.ads_ic_info
+                        R.drawable.ic_info
                     }
                 }
                 indicator.background =

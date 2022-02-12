@@ -14,6 +14,7 @@ import com.revolgenx.anilib.list.data.model.MediaListGroupModel
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.data.model.toModel
 import com.revolgenx.anilib.media.data.model.MediaModel
+import com.revolgenx.anilib.media.data.model.toModel
 import com.revolgenx.anilib.user.data.model.UserModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -42,15 +43,19 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                             optionModel.animeList =
                                                 option.animeList?.let { type ->
                                                     MediaListOptionTypeModel().also { typeModel ->
-                                                        typeModel.customLists = type.customLists?.filterNotNull()
-                                                        typeModel.sectionOrder = type.sectionOrder?.filterNotNull()
+                                                        typeModel.customLists =
+                                                            type.customLists?.filterNotNull()
+                                                        typeModel.sectionOrder =
+                                                            type.sectionOrder?.filterNotNull()
                                                     }
                                                 }
                                             optionModel.mangaList =
                                                 option.mangaList?.let { type ->
                                                     MediaListOptionTypeModel().also { typeModel ->
-                                                        typeModel.customLists = type.customLists?.filterNotNull()
-                                                        typeModel.sectionOrder = type.sectionOrder?.filterNotNull()
+                                                        typeModel.customLists =
+                                                            type.customLists?.filterNotNull()
+                                                        typeModel.sectionOrder =
+                                                            type.sectionOrder?.filterNotNull()
                                                     }
                                                 }
                                         }
@@ -64,7 +69,9 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                 groupModel.isCustomList = group.isCustomList == true
                                 groupModel.isCompletedList = group.isCompletedList == true
                                 groupModel.entries = group.entries?.filterNotNull()?.map {
-                                    it.mediaListEntry.toModel()
+                                    it.mediaListEntry.toModel().also { entry ->
+                                        entry.media = it.media?.mediaContent?.toModel()
+                                    }
                                 }?.toMutableList()
                             }
                         }?.toMutableList()?.also {

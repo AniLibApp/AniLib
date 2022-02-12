@@ -17,6 +17,7 @@ import com.revolgenx.anilib.review.service.ReviewService
 import com.revolgenx.anilib.review.service.ReviewServiceImpl
 import com.revolgenx.anilib.app.setting.service.SettingService
 import com.revolgenx.anilib.app.setting.service.SettingServiceImpl
+import com.revolgenx.anilib.entry.service.MediaListEntryService
 import com.revolgenx.anilib.infrastructure.service.favourite.FavouriteService
 import com.revolgenx.anilib.infrastructure.service.favourite.FavouriteServiceImpl
 import com.revolgenx.anilib.staff.service.StaffService
@@ -55,4 +56,5 @@ val serviceModule = module {
     factory<SettingService> { SettingServiceImpl(get()) }
     factory<ToggleService> { ToggleServiceImpl(get()) }
     factory { MediaListCollectionService(get()) }
+    factory { MediaListEntryService(get()) }
 }

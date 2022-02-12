@@ -154,7 +154,7 @@ class MlLanguageChooserFragment : BaseToolbarFragment<MlLanguageChooserFragmentL
                 binding.mlLanguagesRecyclerView.adapter = adapter
                 showLoading(false)
             }.addOnFailureListener {
-                makeToast(R.string.failed_to_load, null, R.drawable.ads_ic_info)
+                makeToast(R.string.failed_to_load, null, R.drawable.ic_info)
             }
 
     }

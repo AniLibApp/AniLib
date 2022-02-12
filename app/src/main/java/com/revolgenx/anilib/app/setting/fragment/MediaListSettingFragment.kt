@@ -44,9 +44,8 @@ class MediaListSettingFragment : BaseToolbarFragment<MediaListSettingFragmentBin
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val scoringSystemList =
             requireContext().resources.getStringArray(R.array.scoring_system_list).map {
                 DynamicMenu(null, it)
@@ -152,9 +151,14 @@ class MediaListSettingFragment : BaseToolbarFragment<MediaListSettingFragmentBin
         }
 
         advanceScoreHeader.setOnClickListener {
-            val inputDialog = InputDialog.newInstance(null, InputType.TYPE_CLASS_TEXT, null, showPasteButton = false)
+            val inputDialog = InputDialog.newInstance(
+                null,
+                InputType.TYPE_CLASS_TEXT,
+                null,
+                showPasteButton = false
+            )
             inputDialog.onInputDoneListener = {
-                advanceScoreRecyclerView.addTag(AdvancedScoreModel(it, 0.0))
+                advanceScoreRecyclerView.addTag(it)
             }
             inputDialog.show(childFragmentManager, "chip_input_dialog")
         }
@@ -170,7 +174,7 @@ class MediaListSettingFragment : BaseToolbarFragment<MediaListSettingFragmentBin
         val model = viewModel.mediaListSettingLiveData.value?.data ?: return
 
         model.scoreFormat = scoringSystemSpinner.spinnerView.selectedItemPosition
-        if(model.scoreFormat == ScoreFormat.POINT_100.ordinal || model.scoreFormat == ScoreFormat.POINT_10_DECIMAL.ordinal){
+        if (model.scoreFormat == ScoreFormat.POINT_100.ordinal || model.scoreFormat == ScoreFormat.POINT_10_DECIMAL.ordinal) {
             model.animeList!!.advancedScoringEnabled = advanceScoreSwitch.isChecked
         }
 

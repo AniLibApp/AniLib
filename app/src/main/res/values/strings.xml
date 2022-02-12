@@ -47,6 +47,7 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">Finish Date</string>
     <string name="total_rewatch">Total Rewatches</string>
+    <string name="total_reread">Total Rereads</string>
     <string name="private_">Private</string>
     <string name="notes">Notes</string>
     <string name="failed_to_save">Failed to save.</string>
@@ -582,7 +583,7 @@
     <string name="added_desc">Added Desc</string>
     <string name="updated">Updated</string>
     <string name="updated_desc">Updated Desc</string>
-    <string name="do_you_really_want_to_delete_the_entry_s">Do you really want to delete the entry %s?</string>
+    <string name="do_you_really_want_to_delete_the_entry_s">Do you really want to delete the entry%s?</string>
 
     <!--do not translate this unless you want to change format to dd//MM/yyyy or yyyy/MM/dd-->
     <string name="date_format_pattern">MM/dd/yyyy</string>
@@ -674,5 +675,9 @@
     <string name="readable_on">Readable On</string>
     <string name="minimum_tag_percentage">Minimum Tag Percentage</string>
     <string name="minimum_tag_percentage_s">Minimum Tag Percentage (%s)</string>
+    <string name="favourite">Favourite</string>
+    <string name="hide_from_status_list">Hide from status lists</string>
+    <string name="custom_lists">Custom Lists</string>
+    <string name="no_custom_lists">No custom lists</string>
 
 </resources>

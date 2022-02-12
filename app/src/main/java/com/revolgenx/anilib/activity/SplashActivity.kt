@@ -63,7 +63,7 @@ class SplashActivity : DynamicSplashActivity() {
     }
 
     override fun getMinSplashTime(): Long {
-        return 550
+        return 300
     }
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {

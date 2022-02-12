@@ -85,7 +85,7 @@
             app:adt_contrastWithColorType="background"
             app:entries="@array/station_more_actions"
             app:icons="@array/station_more_action_icons"
-            app:srcCompat="@drawable/ads_ic_more" />
+            app:srcCompat="@drawable/ic_more_vert" />
 
     </FrameLayout>
 

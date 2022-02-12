@@ -40,6 +40,7 @@ class AlCountEditTextLayout : AlCardView {
                 R.styleable.AlCountEditTextLayout_al_inputType,
                 InputType.TYPE_CLASS_NUMBER
             )
+
             infiniteCount = a.getBoolean(
                 R.styleable.AlCountEditTextLayout_al_infinite_count,
                 false
@@ -120,8 +121,7 @@ class AlCountEditTextLayout : AlCardView {
     }
 
     fun updateCount(count: Int?) {
-        this.count = count?.toDouble() ?: 0.0
-        updateView()
+        updateCount(count?.toDouble())
     }
 
 }

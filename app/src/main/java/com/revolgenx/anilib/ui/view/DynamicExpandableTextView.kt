@@ -26,7 +26,7 @@ class DynamicExpandableTextView(context: Context, attributeSet: AttributeSet?, s
         DynamicDrawableUtils.colorizeDrawable(
             ContextCompat.getDrawable(
                 context,
-                R.drawable.ads_ic_more_horizontal
+                R.drawable.ic_more_horiz
             ), dynamicTextColorPrimary
         )
     }

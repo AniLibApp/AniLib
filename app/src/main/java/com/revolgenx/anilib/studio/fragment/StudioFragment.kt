@@ -123,7 +123,7 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
                 }
                 ERROR -> {
                     studioBinding.studioFavIv.showLoading(false)
-                    makeToast(R.string.failed_to_toggle, icon = R.drawable.ads_ic_error)
+                    makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
                 }
                 LOADING -> {
                     studioBinding.studioFavIv.showLoading(true)

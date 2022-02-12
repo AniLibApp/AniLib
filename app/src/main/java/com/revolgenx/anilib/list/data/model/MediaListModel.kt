@@ -2,6 +2,7 @@ package com.revolgenx.anilib.list.data.model
 
 import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.common.data.model.FuzzyDateModel
+import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.fragment.MediaListEntry
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.media.data.model.MediaModel
@@ -26,8 +27,8 @@ class MediaListModel : BaseModel() {
     var updatedAt: Int? = null
     var createdAt: Int? = null
 
-    var customLists: Map<String, Boolean>? = null
-    var advanceScores: Map<String, Double>? = null
+    var customLists: List<MutablePair<String, Boolean>>? = null
+    var advanceScores: List<MutablePair<String, Double>>? = null
 
     var media: MediaModel? = null
     var user: UserModel? = null
@@ -45,13 +46,12 @@ fun MediaListEntry.toModel() = MediaListModel().also { model ->
     model.priority = priority
     model.private = private == true
     model.hiddenFromStatusLists = hiddenFromStatusLists == true
-    model.customLists = customLists as? Map<String, Boolean>
+    model.customLists = (customLists as? Map<String, Boolean>)?.map { MutablePair(it.key, it.value) }
 //    model.advanceScores = advancedScores as? Map<String, Double>
     model.notes = notes
     model.updatedAt = updatedAt
     model.createdAt = createdAt
     model.startedAt = startedAt?.fuzzyDate?.toModel()
     model.completedAt = completedAt?.fuzzyDate?.toModel()
-    model.media = media?.mediaContent?.toModel()
 }
 

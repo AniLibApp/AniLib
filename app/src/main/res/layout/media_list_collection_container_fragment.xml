@@ -8,7 +8,7 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp">
+        android:elevation="0dp">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
             android:id="@+id/dynamicToolbar"
@@ -21,7 +21,6 @@
             app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="enterAlways|scroll">
 
-
             <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
                 android:id="@+id/list_tab_layout"
                 style="@style/HomeContainerTabLayoutStyle"
@@ -30,10 +29,6 @@
                 app:adt_colorType="accent"
                 app:adt_contrastWithColorType="background"
                 app:adt_textColorType="text_primary"
-                app:layout_constraintEnd_toStartOf="@id/list_search_iv"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:tabTextAppearance="@style/ListTabLayoutTextStyle" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicToolbar>

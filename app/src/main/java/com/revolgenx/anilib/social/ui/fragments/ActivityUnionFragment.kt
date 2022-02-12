@@ -29,11 +29,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
     override val basePresenter: Presenter<ActivityUnionModel>
-        get() = ActivityUnionPresenter(requireContext()
-            , viewModel
-            , activityInfoViewModel
-            , textComposerViewModel
-            , messageComposerViewModel)
+        get() = ActivityUnionPresenter(
+            requireContext(),
+            viewModel,
+            activityInfoViewModel,
+            textComposerViewModel,
+            messageComposerViewModel
+        )
     override val baseSource: Source<ActivityUnionModel>
         get() = viewModel.source ?: createSource()
 
@@ -112,10 +114,10 @@ class ActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
         val adapter = makeSpinnerAdapter(requireContext(), activityAdapterItems)
         uBinding.activityGlobalSpinner.adapter = adapter
         uBinding.activityGlobalSpinner.onItemSelectedListener = null
-        uBinding.activityGlobalSpinner.setSelection(if(viewModel.field.isFollowing) 0 else 1)
+        uBinding.activityGlobalSpinner.setSelection(if (viewModel.field.isFollowing) 0 else 1)
 
         uBinding.activityGlobalSpinner.onItemSelected {
-            if(!visibleToUser) return@onItemSelected
+            if (!visibleToUser) return@onItemSelected
             viewModel.field.isFollowing = it == 0
             viewModel.storeField()
             createSource()

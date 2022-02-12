@@ -2,8 +2,10 @@ package com.revolgenx.anilib.user.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
@@ -11,7 +13,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.meta.MediaListMeta
-import com.revolgenx.anilib.databinding.UserMediaListCollectionFragmentBinding
+import com.revolgenx.anilib.databinding.UserMediaListCollectionContainerFragmentBinding
 import com.revolgenx.anilib.list.viewmodel.MediaListContainerSharedVM
 import com.revolgenx.anilib.list.fragment.AnimeListCollectionFragment
 import com.revolgenx.anilib.list.fragment.MangaListCollectionFragment
@@ -21,7 +23,10 @@ import com.revolgenx.anilib.type.MediaType
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserMediaListCollectionContainerFragment :
-    BaseLayoutFragment<UserMediaListCollectionFragmentBinding>() {
+    BaseLayoutFragment<UserMediaListCollectionContainerFragmentBinding>() {
+
+    override val menuRes: Int = R.menu.user_media_list_collection_container_menu
+    override val setHomeAsUp: Boolean = true
 
     companion object {
         private const val media_list_meta_key = "media_list_meta_key"
@@ -47,8 +52,33 @@ class UserMediaListCollectionContainerFragment :
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?
-    ): UserMediaListCollectionFragmentBinding {
-        return UserMediaListCollectionFragmentBinding.inflate(inflater, parent, false)
+    ): UserMediaListCollectionContainerFragmentBinding {
+        return UserMediaListCollectionContainerFragmentBinding.inflate(inflater, parent, false)
+    }
+
+    override fun getBaseToolbar(): Toolbar {
+        return binding.dynamicToolbar
+    }
+
+    override fun onToolbarMenuSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.list_search_menu -> {
+                sharedViewModel.mediaListContainerCallback.value =
+                    MediaListCollectionContainerCallback.SEARCH to binding.userListViewPager.currentItem
+                true
+            }
+            R.id.list_filter_menu -> {
+                sharedViewModel.mediaListContainerCallback.value =
+                    MediaListCollectionContainerCallback.FILTER to binding.userListViewPager.currentItem
+                true
+            }
+            R.id.list_display_mode_menu -> {
+                sharedViewModel.mediaListContainerCallback.value =
+                    MediaListCollectionContainerCallback.DISPLAY to binding.userListViewPager.currentItem
+                true
+            }
+            else -> super.onToolbarMenuSelected(item)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,10 +97,11 @@ class UserMediaListCollectionContainerFragment :
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    sharedViewModel.mediaListContainerCallback.value = MediaListCollectionContainerCallback.CURRENT_TAB to
-                        if (position == 0)
-                            MediaType.ANIME.ordinal
-                        else MediaType.MANGA.ordinal
+                    sharedViewModel.mediaListContainerCallback.value =
+                        MediaListCollectionContainerCallback.CURRENT_TAB to
+                                if (position == 0)
+                                    MediaType.ANIME.ordinal
+                                else MediaType.MANGA.ordinal
                 }
             })
 
@@ -87,11 +118,6 @@ class UserMediaListCollectionContainerFragment :
                 userListViewPager.post {
                     userListViewPager.currentItem = if (it == MediaType.ANIME.ordinal) 0 else 1
                 }
-            }
-
-            listSearchIv.setOnClickListener {
-                sharedViewModel.mediaListContainerCallback.value =
-                    MediaListCollectionContainerCallback.SEARCH to userListViewPager.currentItem
             }
 
             listExtendedFab.setOnClickListener {

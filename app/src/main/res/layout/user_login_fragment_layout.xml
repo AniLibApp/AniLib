@@ -144,7 +144,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:adt_colorType="text_primary"
-                        app:ads_icon="@drawable/ads_ic_info"
+                        app:ads_icon="@drawable/ic_info"
                         app:ads_title="@string/about_anilib" />
 
                 </LinearLayout>

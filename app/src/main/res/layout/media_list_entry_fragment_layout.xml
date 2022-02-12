@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:adt_backgroundAware="disable"
+        app:adt_colorType="background"
+        app:adt_contrastWithColorType="none">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+            android:id="@+id/dynamicToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:adt_colorType="background"
+            app:adt_textColorType="text_primary"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_scrollFlags="noScroll"
+            app:menu="@menu/list_editor_fragment_menu"
+            app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
+            app:titleTextAppearance="@style/DynamicToolbarTitleTheme" />
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/listEditorContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="vertical"
+                android:paddingBottom="40dp"
+                android:visibility="invisible">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            style="@style/AlListEditorHeaderStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status" />
+
+                        <com.revolgenx.anilib.ui.view.widgets.AlSpinnerLayout
+                            android:id="@+id/status_spinner_layout"
+                            style="@style/AlListEditorItem" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            style="@style/AlListEditorHeaderStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/score" />
+
+                        <com.revolgenx.anilib.ui.view.score.AlListEditorScoreLayout
+                            android:id="@+id/list_score_layout"
+                            style="@style/AlListEditorItem" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            android:id="@+id/list_episode_chapter_header"
+                            style="@style/AlListEditorHeaderStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/episode_progress" />
+
+                        <com.revolgenx.anilib.ui.view.widgets.AlCountEditTextLayout
+                            android:id="@+id/list_episode_chapter_count_layout"
+                            style="@style/AlListEditorItem" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            android:id="@+id/total_rewatch_header"
+                            style="@style/AlListEditorHeaderStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total_rewatch" />
+
+
+                        <com.revolgenx.anilib.ui.view.widgets.AlCountEditTextLayout
+                            android:id="@+id/total_rewatch_count_layout"
+                            style="@style/AlListEditorItem" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/list_volume_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            style="@style/AlListEditorHeaderStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/volume_progress" />
+
+                        <com.revolgenx.anilib.ui.view.widgets.AlCountEditTextLayout
+                            android:id="@+id/list_volume_count_layout"
+                            style="@style/AlListEditorItem"
+                            app:al_infinite_count="true" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            style="@style/AlListEditorHeaderStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/start_date" />
+
+                        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
+                                    android:id="@+id/start_date_tv"
+                                    android:layout_width="0dp"
+                                    android:layout_height="48dp"
+                                    android:drawablePadding="6dp"
+                                    android:gravity="center_vertical"
+                                    android:maxLines="1"
+                                    android:paddingStart="6dp"
+                                    android:paddingEnd="6dp"
+                                    android:textSize="12sp"
+                                    app:drawableStartCompat="@drawable/ic_calendar"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/start_date_clear_iv"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                                    android:id="@+id/start_date_clear_iv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="4dp"
+                                    android:paddingEnd="4dp"
+                                    android:src="@drawable/ic_close"
+                                    app:adt_colorType="text_primary"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                            style="@style/AlListEditorHeaderStyle"
+                            android:text="@string/end_date" />
+
+                        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
+                                    android:id="@+id/finish_date_tv"
+                                    android:layout_width="0dp"
+                                    android:layout_height="48dp"
+                                    android:drawablePadding="6dp"
+                                    android:gravity="center_vertical"
+                                    android:maxLines="1"
+                                    android:paddingStart="6dp"
+                                    android:paddingEnd="6dp"
+                                    android:textSize="12sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/finish_date_clear_iv"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                                    android:id="@+id/finish_date_clear_iv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="4dp"
+                                    android:paddingEnd="4dp"
+                                    android:src="@drawable/ic_close"
+                                    app:adt_colorType="text_primary"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    style="@style/AlListEditorHeaderStyle"
+                    android:text="@string/notes" />
+
+                <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                        android:id="@+id/notesEt"
+                        style="@style/Widget.AppCompat.EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@null"
+                        android:minHeight="48dp"
+                        android:textSize="16sp" />
+
+                </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                    android:id="@+id/list_private_check_box"
+                    style="@style/AlCheckboxStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="4dp"
+                    android:text="@string/private_" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                    android:id="@+id/hide_from_status_list"
+                    style="@style/AlCheckboxStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="4dp"
+                    android:text="@string/hide_from_status_list" />
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    style="@style/AlListEditorHeaderStyle"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/custom_lists"
+                    android:textSize="14sp" />
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                    android:id="@+id/custom_list_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+                <LinearLayout
+                    android:id="@+id/advanced_score_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/advance_score_header"
+                        style="@style/AlListEditorHeaderStyle"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/advanced_scores"
+                        android:textSize="14sp" />
+
+
+                    <com.revolgenx.anilib.ui.view.advance_score.AdvancedScoreView
+                        android:id="@+id/advanceScoreView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
+
+        <include
+            android:id="@+id/resource_status_layout"
+            layout="@layout/resource_status_container_layout" />
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

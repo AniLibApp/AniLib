@@ -48,7 +48,7 @@ class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val languageListAdapter = makeSpinnerAdapter(requireContext(), titleList)
-        binding.titleLanguageSpinner.adapter = languageListAdapter
+        binding.titleLanguageSpinner.spinnerView.adapter = languageListAdapter
 
         viewModel.mediaOptionLiveData.observe(viewLifecycleOwner) {
             when (it.status) {
@@ -59,7 +59,7 @@ class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() 
                 }
                 Status.ERROR -> {
                     binding.showLoading(false)
-                    makeToast(R.string.something_went_wrong, icon = R.drawable.ads_ic_info)
+                    makeToast(R.string.something_went_wrong, icon = R.drawable.ic_info)
                 }
                 Status.LOADING -> {
                     binding.showLoading(true)
@@ -81,7 +81,7 @@ class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() 
     }
 
     private fun MediaSettingFragmentBinding.updateView(data: UserOptionsModel) {
-        titleLanguageSpinner.setSelection(data.titleLanguage)
+        titleLanguageSpinner.spinnerView.setSelection(data.titleLanguage)
         airingAnimeNotificationSwitch.isChecked = data.airingNotifications
         if (data.displayAdultContent) {
             adultContentSwitch.visibility = View.VISIBLE
@@ -93,7 +93,7 @@ class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() 
     private fun MediaSettingFragmentBinding.saveMediaSetting() {
         val model = viewModel.mediaOptionLiveData.value?.data ?: return
         model.airingNotifications = airingAnimeNotificationSwitch.isChecked
-        model.titleLanguage = titleLanguageSpinner.selectedItemPosition
+        model.titleLanguage = titleLanguageSpinner.spinnerView.selectedItemPosition
         viewModel.setMediaSetting(requireContext(), MediaSettingMutateField(model))
             .observe(viewLifecycleOwner) {
                 when (it.status) {

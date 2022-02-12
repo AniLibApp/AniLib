@@ -6,9 +6,11 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterToolbarFragment
+import com.revolgenx.anilib.list.viewmodel.AnimeListCollectionStoreVM
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.media.presenter.MediaListingPresenter
 import com.revolgenx.anilib.media.viewmodel.MediaListingViewModel
+import org.koin.androidx.viewmodel.ext.android.getSharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaListingFragment:BasePresenterToolbarFragment<MediaModel>() {
@@ -32,6 +34,7 @@ class MediaListingFragment:BasePresenterToolbarFragment<MediaModel>() {
     }
 
     override fun createSource(): Source<MediaModel> {
+        getSharedViewModel<AnimeListCollectionStoreVM>()
         return viewModel.createSource()
     }
 

@@ -30,7 +30,7 @@ class MediaTagChipAdapter(val onTagInfoClicked: (MediaTagModel) -> Unit) :
                     parent.context
                 ), parent, false
             ).also {
-                it.chipTagView.setCloseIconResource(R.drawable.ads_ic_info)
+                it.chipTagView.setCloseIconResource(R.drawable.ic_info)
                 it.chipTagView.setChipIconResource(R.drawable.ic_hide)
             }
         )

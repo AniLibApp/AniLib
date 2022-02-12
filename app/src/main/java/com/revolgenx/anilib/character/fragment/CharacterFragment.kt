@@ -79,7 +79,7 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
                 }
                 ERROR -> {
                     binding.characterFavIv.showLoading(false)
-                    makeToast(R.string.failed_to_toggle, icon = R.drawable.ads_ic_error)
+                    makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
                 }
                 LOADING -> {
                     binding.characterFavIv.showLoading(true)

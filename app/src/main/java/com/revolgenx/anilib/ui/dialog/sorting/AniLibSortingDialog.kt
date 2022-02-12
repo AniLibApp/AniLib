@@ -36,7 +36,7 @@ class AniLibSortingDialog(val items: List<AniLibSortingModel>) :
     }
 
     private val checkDrawable by lazy {
-        ContextCompat.getDrawable(requireContext(), R.drawable.ads_ic_check).also {
+        ContextCompat.getDrawable(requireContext(), R.drawable.ic_check).also {
             DynamicDrawableUtils.colorizeDrawable(it, contrastAccentWithBg)
         }
     }

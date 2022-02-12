@@ -60,7 +60,6 @@ import com.revolgenx.anilib.social.ui.fragments.activity_composer.text.ActivityT
 import com.revolgenx.anilib.social.ui.fragments.info.ActivityInfoFragment
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.activity.event.ActivityEventListener
-import com.revolgenx.anilib.entry.fragment.MediaEntryEditorFragment
 import com.revolgenx.anilib.airing.fragment.AiringFragment
 import com.revolgenx.anilib.character.fragment.CharacterContainerFragment
 import com.revolgenx.anilib.friend.fragment.UserFriendContainerFragment
@@ -72,6 +71,7 @@ import com.revolgenx.anilib.review.fragment.ReviewComposerFragment
 import com.revolgenx.anilib.review.fragment.ReviewFragment
 import com.revolgenx.anilib.search.fragment.SearchFragment
 import com.revolgenx.anilib.app.setting.fragment.EditTagFilterFragment
+import com.revolgenx.anilib.entry.fragment.MediaListEntryFragment
 import com.revolgenx.anilib.staff.fragment.StaffContainerFragment
 import com.revolgenx.anilib.studio.fragment.StudioFragment
 import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
@@ -651,7 +651,9 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
     private fun openMediaListEditorCenter(meta: EntryEditorMeta) {
-        addFragmentToMain(MediaEntryEditorFragment.newInstance(meta))
+        meta.mediaId?.let {
+            addFragmentToMain(MediaListEntryFragment.newInstance(it))
+        }
     }
 
     private fun openMediaInfoCenter(meta: MediaInfoMeta) {

@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/studio_share_menu"
-        android:icon="@drawable/ads_ic_share"
+        android:icon="@drawable/ic_share"
         android:title="@string/share"
         app:showAsAction="ifRoom" />
 

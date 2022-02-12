@@ -9,12 +9,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.entry.data.model.AdvancedScoreModel
 import com.revolgenx.anilib.databinding.ChipTagPresenterBinding
 import com.revolgenx.anilib.ui.dialog.InputDialog
 
 class MediaListAdvanceScoreChipRecyclerView : DynamicRecyclerView {
-    var chipTagList = mutableListOf<AdvancedScoreModel>()
+    var chipTagList = mutableListOf<String>()
 
     private var fragmentManager: FragmentManager? = null
 
@@ -29,12 +30,12 @@ class MediaListAdvanceScoreChipRecyclerView : DynamicRecyclerView {
         adapter = ChipTagAdapter()
     }
 
-    fun submitTags(chipTags: MutableList<AdvancedScoreModel>) {
+    fun submitTags(chipTags: MutableList<String>) {
         chipTagList = chipTags
         adapter!!.notifyDataSetChanged()
     }
 
-    fun addTag(chipTag: AdvancedScoreModel) {
+    fun addTag(chipTag: String) {
         chipTagList.add(chipTag)
         adapter!!.notifyDataSetChanged()
     }
@@ -57,11 +58,16 @@ class MediaListAdvanceScoreChipRecyclerView : DynamicRecyclerView {
 
         override fun onBindViewHolder(holder: ChipTagViewHolder, position: Int) {
             val chipTag = chipTagList[position]
-            holder.binding.chipTagView.text = chipTag.scoreType
+            holder.binding.chipTagView.text = chipTag
             holder.binding.chipTagView.setOnClickListener {
-                val inputDialog = InputDialog.newInstance(null, InputType.TYPE_CLASS_TEXT, chipTag.scoreType, showPasteButton = false)
+                val inputDialog = InputDialog.newInstance(
+                    null,
+                    InputType.TYPE_CLASS_TEXT,
+                    chipTag,
+                    showPasteButton = false
+                )
                 inputDialog.onInputDoneListener = {
-                    chipTagList[position].scoreType = it
+                    chipTagList[position] = it
                     notifyDataSetChanged()
                 }
                 inputDialog.show(fragmentManager!!, "chip_input_dialog")

@@ -1,9 +1,8 @@
-
 #media list collection query
 query MediaListCollectionQuery(
     $userId: Int,
     $userName: String,
-    $type: MediaType
+    $type: MediaType,
 ) {
     mediaListCollection: MediaListCollection(userId: $userId, userName: $userName, type: $type) {
         lists {
@@ -11,7 +10,10 @@ query MediaListCollectionQuery(
             isCustomList
             isCompletedList: isSplitCompletedList
             entries {
-                ...mediaListEntry
+                ... mediaListEntry
+                media {
+                    ... mediaContent
+                }
             }
         }
         user {
@@ -159,6 +161,46 @@ query AlMediaListCollectionQuery(
     }
 }
 
+query MediaListEntryQuery(
+    $mediaId: Int,
+    $userId:Int
+) {
+    user: User(id:$userId){
+        id
+        mediaListOptions{
+            scoreFormat
+            animeList{
+                advancedScoring
+                customLists
+                advancedScoringEnabled
+            }
+            mangaList{
+                advancedScoring
+                customLists
+                advancedScoringEnabled
+            }
+        }
+    }
+    media: Media(id: $mediaId) {
+        id
+        title {
+            ... mediaTitle
+        }
+        type
+        status(version: 2)
+        episodes
+        chapters
+        volumes
+        isFavourite
+        mediaListEntry {
+            ... mediaListEntry
+            advancedScores
+        }
+    }
+}
+
+
+
 mutation SaveMediaListEntryMutation(
     $id:Int, $mediaId:Int,
     $status:MediaListStatus,
@@ -172,7 +214,7 @@ mutation SaveMediaListEntryMutation(
     $startedAt:FuzzyDateInput,
     $completedAt:FuzzyDateInput,
     $hiddenFromStatusLists:Boolean,
-    $customLists:[String]
+    $customLists:[String],
 ){
     saveMediaListEntry: SaveMediaListEntry(id:$id,
         mediaId:$mediaId ,
@@ -190,6 +232,9 @@ mutation SaveMediaListEntryMutation(
         customLists:$customLists,
     ){
         ... mediaListEntry
+        media {
+            ... mediaContent
+        }
     }
 }
 
@@ -223,8 +268,5 @@ fragment mediaListEntry on MediaList {
     }
     completedAt {
         ... fuzzyDate
-    }
-    media {
-        ... mediaContent
     }
 }

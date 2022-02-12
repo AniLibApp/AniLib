@@ -12,7 +12,7 @@ class MediaListSettingMutateField(val model: MediaListOptionModel) :
     override fun toQueryOrMutation(): UserMediaListSettingMutation {
 
         val options = MediaListOptionsInput(
-            advancedScoring = nn(model.animeList!!.advancedScoring!!.map { it.scoreType }),
+            advancedScoring = nn(model.animeList!!.advancedScoring!!),
             advancedScoringEnabled = nn(model.animeList!!.advancedScoringEnabled),
         )
         return UserMediaListSettingMutation(
