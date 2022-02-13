@@ -6,14 +6,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.ACCESS_TOKEN }}
-          repository: rev0lgenX/AniLib-Snapshot
-          event-type: build-snapshot-event
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
-
       - name: Clone repo
         uses: actions/checkout@v2
         with:
@@ -34,3 +26,12 @@ jobs:
 
       - name: Build app
         run: ./gradlew assembleDevDebug
+        
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          repository: rev0lgenX/AniLib-Snapshot
+          event-type: build-snapshot-event
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+
