@@ -300,7 +300,8 @@
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                     style="@style/AlListEditorHeaderStyle"
-                    android:text="@string/notes" />
+                    android:text="@string/notes"
+                    android:textSize="14sp"  />
 
                 <com.revolgenx.anilib.ui.view.widgets.AlCardView
                     android:layout_width="match_parent"

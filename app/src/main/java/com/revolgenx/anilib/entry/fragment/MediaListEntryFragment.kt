@@ -50,6 +50,9 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
     private val field get() = viewModel.field
     private val saveField get() = viewModel.saveField
 
+    private val mediaModel get() = viewModel.media
+    private val userModel get() = viewModel.user
+
 
     private val calendar = Calendar.getInstance()
 
@@ -119,6 +122,19 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
                 }
             }
         }
+
+        viewModel.favouriteLiveData.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    updateFavouriteToolbar()
+                }
+                Status.ERROR -> {
+                    makeToast(R.string.failed_to_toggle)
+                    updateFavouriteToolbar()
+                }
+                Status.LOADING -> {}
+            }
+        }
         if (savedInstanceState == null) {
             viewModel.getMediaListEntry()
         }
@@ -126,21 +142,21 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
 
     override fun updateToolbar() {
         super.updateToolbar()
-        viewModel.mediaListEntry.value?.data?.updateToolbar()
+        updateEntryToolbar()
     }
 
     private fun MediaListEntryFragmentLayoutBinding.bind(userMediaModel: UserMediaModel) {
-        userMediaModel.media ?: return
+        mediaModel ?: return
         listEditorContainer.visibility = View.VISIBLE
-        userMediaModel.updateToolbar()
-        bindStatus(userMediaModel)
-        bindScore(userMediaModel)
-        bindProgress(userMediaModel)
+        updateEntryToolbar()
+        bindStatus()
+        bindScore()
+        bindProgress()
         bindDate()
-        bindTotalRewatch(userMediaModel)
+        bindTotalRewatch()
         bindNotes()
         bindCustomLists()
-        bindAdvancedScores(userMediaModel)
+        bindAdvancedScores()
 
         listPrivateCheckBox.isChecked = saveField.private == true
         listPrivateCheckBox.setOnCheckedChangeListener { _, isChecked ->
@@ -153,8 +169,8 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
         }
     }
 
-    private fun MediaListEntryFragmentLayoutBinding.bindStatus(userMediaModel: UserMediaModel) {
-        val media = userMediaModel.media ?: return
+    private fun MediaListEntryFragmentLayoutBinding.bindStatus() {
+        val media = mediaModel ?: return
 
         val statusListRes = if (media.isAnime()) {
             R.array.media_list_status
@@ -180,8 +196,8 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
         }
     }
 
-    private fun MediaListEntryFragmentLayoutBinding.bindScore(userMediaModel: UserMediaModel) {
-        userMediaModel.user?.mediaListOptions?.scoreFormat?.let {
+    private fun MediaListEntryFragmentLayoutBinding.bindScore() {
+        userModel?.mediaListOptions?.scoreFormat?.let {
             listScoreLayout.scoreFormatType = ScoreFormat.values()[it]
         }
 
@@ -194,8 +210,8 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
         }
     }
 
-    private fun MediaListEntryFragmentLayoutBinding.bindProgress(userMediaModel: UserMediaModel) {
-        val media = userMediaModel.media ?: return
+    private fun MediaListEntryFragmentLayoutBinding.bindProgress() {
+        val media = mediaModel ?: return
 
         if (media.isManga()) {
             listEpisodeChapterHeader.setText(R.string.manga_progress)
@@ -305,8 +321,8 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
         }
     }
 
-    private fun MediaListEntryFragmentLayoutBinding.bindTotalRewatch(userMediaModel: UserMediaModel) {
-        val media = userMediaModel.media ?: return
+    private fun MediaListEntryFragmentLayoutBinding.bindTotalRewatch() {
+        val media = mediaModel ?: return
 
         if (media.isManga()) {
             totalRewatchHeader.setText(R.string.total_reread)
@@ -370,9 +386,9 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
             .into(customListRecyclerView)
     }
 
-    private fun MediaListEntryFragmentLayoutBinding.bindAdvancedScores(userMediaModel: UserMediaModel) {
-        val user = userMediaModel.user ?: return
-        val media = userMediaModel.media ?: return
+    private fun MediaListEntryFragmentLayoutBinding.bindAdvancedScores() {
+        val user = userModel ?: return
+        val media = mediaModel ?: return
 
         val isAdvancedScoreEnabled = if (media.isAnime()) {
             user.mediaListOptions?.let {
@@ -431,17 +447,22 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
     private fun MediaModel.isManga() = type == MediaType.MANGA.ordinal
 
 
-    private fun UserMediaModel.updateToolbar() {
-        val media = media ?: return
+    private fun updateEntryToolbar() {
+        val media = mediaModel ?: return
         media.title?.title(requireContext())?.let { updateToolbarTitle(it) }
         val mediaListEntry = media.mediaListEntry
-
         getBaseToolbar().menu.let { menu ->
             menu.findItem(R.id.list_save_menu).isVisible = true
             menu.findItem(R.id.list_delete_menu).isVisible = mediaListEntry != null
-            menu.findItem(R.id.list_favourite_menu).let { favMenu ->
-                favMenu.isVisible = true
-                favMenu.setIcon(if (media.isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
+        }
+        updateFavouriteToolbar()
+    }
+
+    private fun updateFavouriteToolbar() {
+        mediaModel?.apply {
+            getBaseToolbar().menu.findItem(R.id.list_favourite_menu)?.let {
+                it.isVisible = true
+                it.setIcon(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
             }
         }
     }
@@ -458,6 +479,7 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.list_favourite_menu -> {
+                viewModel.toggleFavourite()
                 true
             }
             R.id.list_delete_menu -> {

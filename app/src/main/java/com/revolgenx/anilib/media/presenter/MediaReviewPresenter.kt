@@ -33,7 +33,7 @@ class MediaReviewPresenter(context: Context) : BasePresenter<MediaReviewPresente
         val item = element.data ?: return
 
         holder.getBinding()?.apply {
-            reviewUserIv.setImageURI(item.userPrefModel?.avatar?.large)
+            reviewUserIv.setImageURI(item.user?.avatar?.large)
 
             reviewSummaryTv.text = item.summary
             likedReviewTv.text = item.rating?.toString()
@@ -52,11 +52,11 @@ class MediaReviewPresenter(context: Context) : BasePresenter<MediaReviewPresente
             )
 
             reviewUserIv.setOnClickListener {
-                OpenUserProfileEvent(item.userPrefModel?.id ?: -1).postEvent
+                OpenUserProfileEvent(item.user?.id ?: -1).postEvent
             }
 
             reviewContainer.setOnClickListener{
-                OpenReviewEvent(item.id!!).postEvent
+                OpenReviewEvent(item.id).postEvent
             }
         }
     }

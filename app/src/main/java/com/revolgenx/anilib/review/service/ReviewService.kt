@@ -5,15 +5,15 @@ import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.review.data.field.AllReviewField
 import com.revolgenx.anilib.review.data.field.RateReviewField
 import com.revolgenx.anilib.review.data.field.ReviewField
+import com.revolgenx.anilib.review.data.field.SaveReviewField
 import com.revolgenx.anilib.review.data.model.ReviewModel
 import io.reactivex.disposables.CompositeDisposable
 
 interface ReviewService {
-    abstract val reviewLiveData: MutableLiveData<Resource<ReviewModel>>
-
     fun getReview(
         field: ReviewField,
-        compositeDisposable: CompositeDisposable
+        compositeDisposable: CompositeDisposable,
+        callback: (Resource<ReviewModel?>) -> Unit
     )
 
     fun getAllReview(
@@ -23,13 +23,13 @@ interface ReviewService {
     )
 
     fun saveReview(
-        field: ReviewField,
+        field: SaveReviewField,
         compositeDisposable: CompositeDisposable,
-        callback: (Resource<Boolean>) -> Unit
+        callback: (Resource<Int>) -> Unit
     )
 
     fun deleteReview(
-        field: ReviewField,
+        id:Int?,
         compositeDisposable: CompositeDisposable,
         callback: (Resource<Boolean>) -> Unit
     )

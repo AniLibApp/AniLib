@@ -6,11 +6,11 @@ import com.revolgenx.anilib.type.ReviewRating
 
 class RateReviewField : BaseField<RateReviewMutation>() {
     var reviewId: Int? = null
-    var reviewRating: Int? = null
+    var userRating: Int? = null
     override fun toQueryOrMutation(): RateReviewMutation {
-        val rRating = reviewRating?.let {
-            ReviewRating.values()[it]
-        }
-        return RateReviewMutation(reviewId = nn(reviewId), rating = nn(rRating))
+        return RateReviewMutation(
+            reviewId = nn(reviewId),
+            rating = nn(userRating?.let { ReviewRating.values()[it] })
+        )
     }
 }

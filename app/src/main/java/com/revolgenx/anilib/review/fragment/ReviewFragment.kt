@@ -2,30 +2,31 @@ package com.revolgenx.anilib.review.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.review.data.field.RateReviewField
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.review.data.model.ReviewModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.ReviewFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.infrastructure.event.OpenReviewComposerEvent
 import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.repository.util.Status
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.type.ReviewRating
 import com.revolgenx.anilib.ui.view.makeToast
-import com.revolgenx.anilib.review.viewmodel.ReviewViewModel
+import com.revolgenx.anilib.review.viewmodel.ReviewVM
+import com.revolgenx.anilib.util.openLink
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
     override var titleRes: Int? = R.string.review
+    override val menuRes: Int = R.menu.review_fragment_menu
 
     companion object {
         private const val REVIEW_ID_KEY = "REVIEW_ID_KEY"
@@ -34,8 +35,9 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
         }
     }
 
-
-    private val viewModel by viewModel<ReviewViewModel>()
+    private val viewModel by viewModel<ReviewVM>()
+    private val reviewModel get() = viewModel.review
+    private val rateReviewField get() = viewModel.rateReviewField
 
     private val reviewId: Int? get() = arguments?.getInt(REVIEW_ID_KEY)
 
@@ -55,8 +57,7 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
             when (res.status) {
                 Status.SUCCESS -> {
                     showLoading(false)
-                    updateView(res.data)
-                    initListener()
+                    binding.bind()
                 }
                 Status.ERROR -> {
                     showError()
@@ -67,29 +68,32 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
             }
         }
 
+        viewModel.rateReviewLiveData.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.bindRating()
+                }
+                Status.ERROR -> {
+                    makeToast(R.string.operation_failed)
+                    binding.bindRating()
+                }
+                Status.LOADING -> {}
+            }
+        }
+
         if (savedInstanceState == null) {
             viewModel.getReview()
         }
     }
 
-    private fun initListener() {
-        if (viewModel.field.model == null) return
-        binding.reviewByIv.setOnClickListener {
-            OpenUserProfileEvent(viewModel.field.model?.userPrefModel?.id).postEvent
-        }
-    }
-
-    private fun updateView(model: ReviewModel?) {
-        if (model == null) return
-        viewModel.field.model = model
-
-        viewModel.field.model!!.apply {
-            binding.reviewMediaBannerImage.setImageURI(
+    private fun ReviewFragmentLayoutBinding.bind() {
+        reviewModel?.apply {
+            reviewMediaBannerImage.setImageURI(
                 media?.bannerImage ?: media?.coverImage?.largeImage
             )
-            binding.reviewMediaTitleTv.text = media!!.title!!.title(requireContext())
-            binding.reviewMediaTitleTv.setOnClickListener {
-                model.media?.let { item ->
+            reviewMediaTitleTv.text = media!!.title!!.title(requireContext())
+            reviewMediaTitleTv.setOnClickListener {
+                media?.let { item ->
                     OpenMediaInfoEvent(
                         MediaInfoMeta(
                             item.id,
@@ -102,104 +106,105 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
                     ).postEvent
                 }
             }
-            binding.reviewByIv.setImageURI(userPrefModel?.avatar?.image)
-            binding.reviewByTv.text = getString(R.string.review_by).format(userPrefModel?.name)
-            binding.createdAtTv.text = createdAtDate
-            binding.reviewByScoreTv.text =
+            reviewByIv.setImageURI(user?.avatar?.image)
+            reviewByTv.text = getString(R.string.review_by).format(user?.name)
+            createdAtTv.text = createdAtDate
+            reviewByScoreTv.text =
                 getString(R.string.review_score_format).format(score?.toString())
 
-            AlMarkwonFactory.getMarkwon().setMarkdown(binding.reviewTv, anilify(body))
-            binding.reviewLikesInfo.text =
-                getString(R.string.s_out_of_s_liked_this_review).format(rating, ratingAmount)
+            AlMarkwonFactory.getMarkwon().setMarkdown(reviewTv, anilify(body ?: ""))
 
-            updateLikeDisLike(userRating)
-            initListenerForLikeDislike()
+            binding.reviewByIv.setOnClickListener {
+                OpenUserProfileEvent(user?.id).postEvent
+            }
+
+            bindRating()
+            bindReviewToolbar()
         }
     }
 
-    private fun initListenerForLikeDislike() {
-        binding.reviewLikeIv.setOnClickListener {
+    private fun ReviewFragmentLayoutBinding.bindRating() {
+        updateReviewRatingButton()
+        bindRatingAmount()
+        reviewLikeIv.setOnClickListener {
             if (requireContext().loggedIn()) {
-                viewModel.rateReview(RateReviewField().also {
-                    it.reviewId = reviewId
-                    when (viewModel.field.model?.userRating) {
-                        ReviewRating.UP_VOTE.ordinal -> {
-                            it.reviewRating = ReviewRating.NO_VOTE.ordinal
-                        }
-                        else -> {
-                            it.reviewRating = ReviewRating.UP_VOTE.ordinal
-                        }
-                    }
-                }) {
-                    checkReviewRatingCondition(it)
-                }
+                viewModel.upVoteReview()
             } else {
                 makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
         }
 
-        binding.reviewDisLikeIv.setOnClickListener {
+        reviewDisLikeIv.setOnClickListener {
             if (requireContext().loggedIn()) {
-                viewModel.rateReview(RateReviewField().also {
-                    it.reviewId = reviewId
-                    when (viewModel.field.model?.userRating) {
-                        ReviewRating.DOWN_VOTE.ordinal -> {
-                            it.reviewRating = ReviewRating.NO_VOTE.ordinal
-                        }
-                        else -> {
-                            it.reviewRating = ReviewRating.DOWN_VOTE.ordinal
-                        }
-                    }
-                }) {
-                    checkReviewRatingCondition(it)
-                }
+                viewModel.downVoteReview()
             } else {
                 makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
         }
     }
 
-    private fun checkReviewRatingCondition(it: Resource<ReviewModel>) {
-        when (it.status) {
-            Status.SUCCESS -> {
-                viewModel.field.model?.let { model ->
-                    model.userRating = it.data?.userRating
-                    model.ratingAmount = it.data?.ratingAmount
-                    model.rating = it.data?.rating
-                    binding.reviewLikesInfo.text =
-                        getString(R.string.s_out_of_s_liked_this_review).format(
-                            model.rating,
-                            model.ratingAmount
-                        )
-                }
-
-                updateLikeDisLike(it.data?.userRating)
-            }
-            Status.ERROR -> {
-                makeToast(R.string.operation_failed)
-            }
-            Status.LOADING -> {
-
-            }
-        }
-    }
-
-    private fun updateLikeDisLike(userRating: Int?) {
+    private fun ReviewFragmentLayoutBinding.updateReviewRatingButton() {
         resetLikeDislike()
-        when (userRating) {
+        when (rateReviewField.userRating) {
             ReviewRating.UP_VOTE.ordinal -> {
-                binding.reviewLikeIv.colorType = Theme.ColorType.TINT_ACCENT
+                reviewLikeIv.colorType = Theme.ColorType.ACCENT
             }
             ReviewRating.DOWN_VOTE.ordinal -> {
-                binding.reviewDisLikeIv.colorType = Theme.ColorType.TINT_ACCENT
+                reviewDisLikeIv.colorType = Theme.ColorType.ACCENT
+            }
+            else -> {
+
             }
         }
-
     }
+
+
+    private fun ReviewFragmentLayoutBinding.bindRatingAmount() {
+        val review = reviewModel ?: return
+        reviewLikesInfo.text =
+            getString(R.string.s_out_of_s_liked_this_review).format(
+                review.rating,
+                review.ratingAmount
+            )
+    }
+
 
     private fun resetLikeDislike() {
         binding.reviewLikeIv.colorType = Theme.ColorType.TINT_SURFACE
         binding.reviewDisLikeIv.colorType = Theme.ColorType.TINT_SURFACE
+    }
+
+    override fun updateToolbar() {
+        super.updateToolbar()
+        bindReviewToolbar()
+    }
+
+    private fun bindReviewToolbar() {
+        getBaseToolbar().menu.let {
+            it.findItem(R.id.review_edit_menu)?.isVisible = viewModel.showEdit
+            it.findItem(R.id.review_open_link)?.isVisible =
+                reviewModel?.siteUrl.isNullOrBlank().not()
+        }
+    }
+
+    override fun onToolbarMenuSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.review_edit_menu -> {
+                reviewId?.let {
+                    reviewModel?.mediaId?.let {
+                        OpenReviewComposerEvent(it).postEvent
+                    }
+                }
+                true
+            }
+            R.id.review_open_link -> {
+                reviewModel?.siteUrl?.let {
+                    requireContext().openLink(it)
+                }
+                true
+            }
+            else -> super.onToolbarMenuSelected(item)
+        }
     }
 
     private fun showLoading(b: Boolean) {

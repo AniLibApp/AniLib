@@ -282,9 +282,9 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private fun silentFetchUserInfo() {
         if (loggedIn()) {
-            viewModel.getUserLiveData().observe(this, {
+            viewModel.getUserLiveData().observe(this) {
                 notificationStoreVM.setUnreadNotificationCount(it.unreadNotificationCount ?: 0)
-            })
+            }
         }
     }
 

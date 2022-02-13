@@ -47,6 +47,19 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                                             type.customLists?.filterNotNull()
                                                         typeModel.sectionOrder =
                                                             type.sectionOrder?.filterNotNull()
+                                                                ?.toMutableList()
+                                                                ?.also { sectionOrder ->
+                                                                    typeModel.customLists?.forEach { customList ->
+                                                                        if (sectionOrder.contains(
+                                                                                customList
+                                                                            ).not()
+                                                                        ) {
+                                                                            sectionOrder.add(
+                                                                                customList
+                                                                            )
+                                                                        }
+                                                                    }
+                                                                }
                                                     }
                                                 }
                                             optionModel.mangaList =
@@ -56,6 +69,19 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                                             type.customLists?.filterNotNull()
                                                         typeModel.sectionOrder =
                                                             type.sectionOrder?.filterNotNull()
+                                                                ?.toMutableList()
+                                                                ?.also { sectionOrder ->
+                                                                    typeModel.customLists?.forEach { customList ->
+                                                                        if (sectionOrder.contains(
+                                                                                customList
+                                                                            ).not()
+                                                                        ) {
+                                                                            sectionOrder.add(
+                                                                                customList
+                                                                            )
+                                                                        }
+                                                                    }
+                                                                }
                                                     }
                                                 }
                                         }
@@ -68,8 +94,8 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                 groupModel.name = group.name
                                 groupModel.isCustomList = group.isCustomList == true
                                 groupModel.isCompletedList = group.isCompletedList == true
-                                groupModel.entries = group.entries?.filterNotNull()?.map {
-                                    it.mediaListEntry.toModel().also { entry ->
+                                groupModel.entries = group.entries?.mapNotNull {
+                                    it?.mediaListEntry?.toModel()?.also { entry ->
                                         entry.media = it.media?.mediaContent?.toModel()
                                     }
                                 }?.toMutableList()

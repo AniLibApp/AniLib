@@ -4,8 +4,6 @@ import com.revolgenx.anilib.airing.service.AiringMediaService
 import com.revolgenx.anilib.airing.service.AiringMediaServiceImpl
 import com.revolgenx.anilib.character.service.CharacterService
 import com.revolgenx.anilib.character.service.CharacterServiceImpl
-import com.revolgenx.anilib.entry.service.MediaEntryService
-import com.revolgenx.anilib.entry.service.MediaEntryServiceImpl
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
 import com.revolgenx.anilib.infrastructure.service.list.MediaListServiceImpl
 import com.revolgenx.anilib.infrastructure.service.media.*
@@ -39,7 +37,6 @@ import org.koin.dsl.module
 
 val serviceModule = module {
     factory<FavouriteService> { FavouriteServiceImpl(get()) }
-    factory<MediaEntryService> { MediaEntryServiceImpl(get(), get()) }
     factory<RecommendationService> { RecommendationServiceImpl(get()) }
     factory<MediaInfoService> { MediaInfoServiceImpl(get()) }
     factory<CharacterService> { CharacterServiceImpl(get()) }

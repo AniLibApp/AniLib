@@ -679,5 +679,8 @@
     <string name="hide_from_status_list">Hide from status lists</string>
     <string name="custom_lists">Custom Lists</string>
     <string name="no_custom_lists">No custom lists</string>
+    <string name="review_insufficient_character_msg">Review must be greater than 2200 characters</string>
+    <string name="d_d">%1$d/%2$d</string>
+    <string name="review_summary_character_length_err_msg">"Summary must be less than 120 characters and greater than 20 characters "</string>
 
 </resources>

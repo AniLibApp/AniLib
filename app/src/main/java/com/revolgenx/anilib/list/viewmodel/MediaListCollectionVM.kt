@@ -147,7 +147,6 @@ class MediaListCollectionVM(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-
                     if (isLoggedInUser) {
                         val hasRecentGroupNameHistory =
                             mediaListCollectionModel?.lists?.any { it.name == currentGroupNameHistory } == true

@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.app.setting.data.model
 
 import com.revolgenx.anilib.common.data.model.BaseModel
-import com.revolgenx.anilib.entry.data.model.AdvancedScoreModel
 
 class MediaListOptionTypeModel : BaseModel() {
     var advancedScoringEnabled: Boolean = false

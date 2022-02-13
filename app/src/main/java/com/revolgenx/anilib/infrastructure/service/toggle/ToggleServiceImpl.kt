@@ -33,24 +33,20 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
                             model.isLiked = it.isLiked ?: false
                             model.likeCount = it.likeCount
                         }
-                    }
-
-                    it.onListActivity?.let {
+                    } ?: it.onListActivity?.let {
                         LikeableUnionModel().also { model ->
                             model.id = it.id
                             model.isLiked = it.isLiked ?: false
                             model.likeCount = it.likeCount
 
                         }
-                    }
-                    it.onActivityReply?.let {
+                    } ?: it.onActivityReply?.let {
                         LikeableUnionModel().also { model ->
                             model.id = it.id
                             model.isLiked = it.isLiked ?: false
                             model.likeCount = it.likeCount
                         }
-                    }
-                    it.onMessageActivity?.let {
+                    } ?: it.onMessageActivity?.let {
                         LikeableUnionModel().also { model ->
                             model.id = it.id
                             model.isLiked = it.isLiked ?: false
@@ -82,15 +78,12 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
                             model.id = it.id
                             model.isSubscribed = it.isSubscribed ?: false
                         }
-                    }
-                    it.onListActivity?.let {
+                    } ?: it.onListActivity?.let {
                         ListActivityModel().also { model ->
                             model.id = it.id
                             model.isSubscribed = it.isSubscribed ?: false
                         }
-                    }
-
-                    it.onMessageActivity?.let {
+                    } ?: it.onMessageActivity?.let {
                         MessageActivityModel().also { model ->
                             model.id = it.id
                             model.isSubscribed = it.isSubscribed ?: false
@@ -112,18 +105,12 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
         compositeDisposable: CompositeDisposable?,
         callback: (Resource<Boolean>) -> Unit
     ) {
-        val disposable = graphRepository.request(ToggleFavouriteMutation(
-            animeId = Optional.presentIfNotNull(field.animeId),
-            mangaId = Optional.presentIfNotNull(field.mangaId),
-            characterId = Optional.presentIfNotNull(field.characterId),
-            staffId = Optional.presentIfNotNull(field.staffId),
-            studioId = Optional.presentIfNotNull(field.studioId),
-        ))
+        val disposable = graphRepository.request(field.toQueryOrMutation())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ _ ->
+            .subscribe({
                 callback.invoke(Resource.success(true))
             }, {
-                Timber.e(it)
+                Timber.w(it)
                 callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable?.add(disposable)

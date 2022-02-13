@@ -21,8 +21,8 @@ interface ToggleService {
         callback: (Resource<ActivityUnionModel>) -> Unit
     )
 
-    abstract fun toggleFavourite(
-        favouriteField: ToggleFavouriteField,
+    fun toggleFavourite(
+        field: ToggleFavouriteField,
         compositeDisposable: CompositeDisposable? = null,
         callback: (Resource<Boolean>)->Unit
     )

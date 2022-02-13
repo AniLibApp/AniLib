@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/privateReview"
-        android:icon="@drawable/ic_eye"
-        android:title="@string/private_"
-        android:checkable="true"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/deleteReview"
         android:icon="@drawable/ic_delete"
         android:title="@string/save_review"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/saveReview"
         android:icon="@drawable/ic_save"
         android:title="@string/save_review"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/open_review_menu"
+        android:icon="@drawable/ic_link"
+        android:title="@string/open_in_anilist"
+        android:visible="false"
+        app:showAsAction="never" />
 
 </menu>

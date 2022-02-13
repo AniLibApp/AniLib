@@ -9,4 +9,5 @@
     <string name="translate_link" translatable="false">https://github.com/rev0lgenX/AniLib-Localization</string>
     <string name="activity_guide_line_link" translatable="false">https://anilist.co/forum/thread/14</string>
     <string name="sign_up_url" translatable="false">https://anilist.co/signup</string>
+    <string name="review_editor_url" translatable="false">https://anilist.co/review/editor/%d</string>
 </resources>

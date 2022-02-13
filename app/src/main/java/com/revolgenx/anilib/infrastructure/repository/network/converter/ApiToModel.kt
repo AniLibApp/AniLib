@@ -2,7 +2,6 @@ package com.revolgenx.anilib.infrastructure.repository.network.converter
 
 import com.revolgenx.anilib.*
 import com.revolgenx.anilib.media.data.model.MediaTitleModel
-import com.revolgenx.anilib.entry.data.model.AdvancedScoreModel
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionTypeModel
 import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel

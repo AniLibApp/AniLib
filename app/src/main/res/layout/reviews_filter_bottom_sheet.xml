@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        style="@style/FilterHeaderStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/season" />
+
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.revolgenx.anilib.ui.view.sort.AlSortLayout
+            android:id="@+id/review_sort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp" />
+
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+</LinearLayout>

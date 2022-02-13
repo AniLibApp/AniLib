@@ -9,8 +9,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
-import com.revolgenx.anilib.data.tuples.MutablePair
-import com.revolgenx.anilib.entry.data.model.AdvancedScoreModel
 import com.revolgenx.anilib.databinding.ChipTagPresenterBinding
 import com.revolgenx.anilib.ui.dialog.InputDialog
 

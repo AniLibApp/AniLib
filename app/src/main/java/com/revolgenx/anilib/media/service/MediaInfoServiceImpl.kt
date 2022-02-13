@@ -17,6 +17,7 @@ import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.field.*
 import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.staff.data.model.*
+import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.user.data.model.stats.*
 import com.revolgenx.anilib.user.data.model.stats.MediaStatsModel
 import com.revolgenx.anilib.user.data.model.toModel
@@ -216,8 +217,8 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
                                 model.ratingAmount = node.ratingAmount
                                 model.summary = node.summary
                                 model.userRating = node.userRating?.ordinal
-                                model.userPrefModel = node.user?.let {
-                                    UserPrefModel().also { model ->
+                                model.user = node.user?.let {
+                                    UserModel().also { model ->
                                         model.id = it.id
                                         model.avatar = it.avatar?.userAvatar?.toModel()
                                     }

@@ -269,18 +269,6 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onListEditorEvent(event: ListEditorResultEvent) {
-        viewModel.field.isNewField = true
-
-        if (!event.listEditorResultMeta.deleted) {
-            event.listEditorResultMeta.let {
-                viewModel.updateMediaProgress(it.mediaId, it.progress)
-            }
-        }
-        adapter?.notifyDataSetChanged()
-    }
-
     private fun updateToolbarTitle() {
         val startDate = viewModel.startDateTime
         val endDate = viewModel.endDateTime

@@ -1,0 +1,8 @@
+//TODO reminder to myself
+
+search with genre, tags not working
+list status option change not working
+list card not displaying properly
+setting list option advance score
+media info -> social list like not working
+fix activity composer sharedviewmodel

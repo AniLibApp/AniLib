@@ -4,9 +4,8 @@ import android.content.Context
 import com.revolgenx.anilib.common.preference.getDiscoverMediaListSort
 import com.revolgenx.anilib.data.field.list.MediaListField
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
-import com.revolgenx.anilib.entry.service.MediaEntryService
 
-class DiscoverReadingViewModel(entryService: MediaEntryService, service: MediaListService) : MediaListViewModel(entryService,service) {
+class DiscoverReadingViewModel(service: MediaListService) : MediaListViewModel(service) {
     override var field: MediaListField = MediaListField()
 
     fun updateField(context: Context) {

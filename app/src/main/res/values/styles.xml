@@ -187,6 +187,14 @@
         <item name="android:paddingTop">@dimen/filter_heading_padding</item>
     </style>
 
+
+    <style name="ReviewComposerHeaderStyle" parent="HeaderStyle">
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+    </style>
+
     <style name="AlCheckboxStyle">
         <item name="android:button">@drawable/ic_checkbox_circle_selector</item>
         <item name="android:padding">10dp</item>
@@ -197,6 +205,8 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
         <item name="android:fontFamily">@font/rubik_regular</item>
         <item name="fontFamily">@font/rubik_regular</item>
         <item name="android:paddingTop">@dimen/list_heading_padding_top</item>

@@ -5,7 +5,6 @@ import android.os.Looper
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.airing.data.model.*
 import com.revolgenx.anilib.data.field.list.MediaListCollectionIdsField
-import com.revolgenx.anilib.entry.data.model.MediaEntryListModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
@@ -17,9 +16,6 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.CommonTimer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.Instant
 import java.time.LocalDateTime

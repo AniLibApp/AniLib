@@ -11,6 +11,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
+import com.revolgenx.anilib.common.ui.adapter.registerOnPageChangeCallback
+import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.databinding.UserMediaListCollectionContainerFragmentBinding
@@ -88,12 +90,12 @@ class UserMediaListCollectionContainerFragment :
 
         binding.apply {
             userListViewPager.adapter = makeViewPagerAdapter2(fragments)
-            tabLayoutMediator =
-                TabLayoutMediator(listTabLayout, userListViewPager) { tab, position ->
-                    tab.text = resources.getStringArray(R.array.list_tab_menu)[position]
-                }.also { it.attach() }
-
-            userListViewPager.registerOnPageChangeCallback(object :
+            setupWithViewPager2(
+                listTabLayout,
+                userListViewPager,
+                resources.getStringArray(R.array.list_tab_menu)
+            )
+            registerOnPageChangeCallback(userListViewPager, object :
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)

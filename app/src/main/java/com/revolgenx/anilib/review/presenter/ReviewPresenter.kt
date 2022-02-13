@@ -31,7 +31,7 @@ class ReviewPresenter(context: Context) : BasePresenter<ReviewPresenterLayoutBin
         super.onBind(page, holder, element)
         val item = element.data ?: return
         holder.getBinding()?.apply {
-            item.userPrefModel?.let { user ->
+            item.user?.let { user ->
                 reviewByTv.text = context.getString(R.string.review_of_s_by_s).format(
                     item.media?.title?.title(context),
                     user.name

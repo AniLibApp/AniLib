@@ -57,6 +57,10 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
         requireContext().resources.getStringArray(R.array.media_season)
     }
 
+    private val badgeDrawable by lazy {
+        BadgeDrawable.create(requireContext())
+    }
+
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?
@@ -103,7 +107,6 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
         val notificationMenuItem = getBaseToolbar().menu.findItem(R.id.discover_notification_menu)
         if(requireContext().loggedIn()){
             notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner) {
-                val badgeDrawable = BadgeDrawable.create(requireContext())
                 if (it > 0) {
                     BadgeUtils.attachBadgeDrawable(
                         badgeDrawable,

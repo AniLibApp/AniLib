@@ -5,7 +5,6 @@ import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.media.service.MediaInfoService
-import com.revolgenx.anilib.entry.service.MediaEntryService
 import com.revolgenx.anilib.infrastructure.service.favourite.FavouriteService
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 import com.revolgenx.anilib.list.data.model.MediaListModel
@@ -14,8 +13,7 @@ import com.revolgenx.anilib.media.data.model.MediaModel
 class MediaInfoViewModel(
     private val mediaBrowseService: MediaInfoService,
     private val toggleService: ToggleService,
-    private val favouriteService: FavouriteService,
-    private val mediaListEntryService: MediaEntryService
+    private val favouriteService: FavouriteService
 ) : BaseViewModel() {
 
     val mediaLiveData = MutableLiveData<Resource<MediaModel>>()
@@ -26,9 +24,11 @@ class MediaInfoViewModel(
 
     fun saveMediaListEntry(model: MediaListModel) {
         saveMediaListEntryLiveData.value = Resource.loading(null)
-        mediaListEntryService.saveMediaListEntry(model,compositeDisposable){
-            saveMediaListEntryLiveData.value = it
-        }
+
+        //TODO update entry list
+//        mediaListEntryService.saveMediaListEntry(model,compositeDisposable){
+//            saveMediaListEntryLiveData.value = it
+//        }
     }
 
     fun getMediaInfo(mediaId: Int?) {

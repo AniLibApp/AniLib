@@ -9,7 +9,6 @@ import com.revolgenx.anilib.character.viewmodel.CharacterActorViewModel
 import com.revolgenx.anilib.character.viewmodel.CharacterContainerViewModel
 import com.revolgenx.anilib.character.viewmodel.CharacterMediaViewModel
 import com.revolgenx.anilib.character.viewmodel.CharacterViewModel
-import com.revolgenx.anilib.entry.viewmodel.EntryEditorViewModel
 import com.revolgenx.anilib.friend.viewmodel.FriendViewModel
 import com.revolgenx.anilib.home.recommendation.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.home.season.viewmodel.SeasonViewModel
@@ -17,8 +16,8 @@ import com.revolgenx.anilib.app.setting.viewmodel.NotificationSettingViewModel
 import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
 import com.revolgenx.anilib.notification.viewmodel.NotificationViewModel
 import com.revolgenx.anilib.review.viewmodel.AllReviewViewModel
-import com.revolgenx.anilib.review.viewmodel.ReviewComposerViewModel
-import com.revolgenx.anilib.review.viewmodel.ReviewViewModel
+import com.revolgenx.anilib.review.viewmodel.ReviewComposerVM
+import com.revolgenx.anilib.review.viewmodel.ReviewVM
 import com.revolgenx.anilib.search.viewmodel.SearchFragmentViewModel
 import com.revolgenx.anilib.app.setting.data.model.SettingViewModel
 import com.revolgenx.anilib.app.setting.data.model.EditTagFilterViewModel
@@ -40,9 +39,8 @@ import org.koin.dsl.module
 
 val viewModelModules = module {
     viewModel { SeasonViewModel(get()) }
-    viewModel { EntryEditorViewModel(get(), get(), get(), get()) }
     viewModel { MainActivityViewModel(get(), get()) }
-    viewModel { MediaInfoViewModel(get(), get(), get(), get()) }
+    viewModel { MediaInfoViewModel(get(), get(), get()) }
 
     //overview
     viewModel { MediaOverviewVM(get(), get()) }
@@ -76,7 +74,7 @@ val viewModelModules = module {
     viewModel { MangaListCollectionStoreVM() }
     viewModel { parameters -> MediaListCollectionVM(get(), get(), parameters.get()) }
     viewModel { MediaListContainerSharedVM() }
-    viewModel { MediaListEntryVM(get()) }
+    viewModel { MediaListEntryVM(get(), get()) }
 
     //userprofile
     viewModel { UserProfileViewModel(get()) }
@@ -121,23 +119,13 @@ val viewModelModules = module {
             get()
         )
     }
-    viewModel {
-        DiscoverWatchingViewModel(
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        DiscoverReadingViewModel(
-            get(),
-            get()
-        )
-    }
-    viewModel { ShowCaseViewModel(get()) }
+    viewModel { DiscoverWatchingViewModel(get()) }
+    viewModel { DiscoverReadingViewModel(get()) }
+    viewModel { ShowCaseViewModel() }
 
     //review
-    viewModel { ReviewComposerViewModel(get()) }
-    viewModel { ReviewViewModel(get()) }
+    viewModel { ReviewComposerVM(get()) }
+    viewModel { ReviewVM(get()) }
     viewModel { AllReviewViewModel(get()) }
 
     //dialog

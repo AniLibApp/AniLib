@@ -42,6 +42,10 @@ class MediaListCollectionContainerFragment :
     private val sharedViewModel by viewModel<MediaListContainerSharedVM>()
     private val notificationStoreVM by sharedViewModel<NotificationStoreViewModel>()
 
+    private val badgeDrawable by lazy {
+        BadgeDrawable.create(requireContext())
+    }
+
     private var tabLayoutMediator: TabLayoutMediator? = null
     override fun bindView(
         inflater: LayoutInflater,
@@ -60,7 +64,6 @@ class MediaListCollectionContainerFragment :
         val notificationMenuItem = getBaseToolbar().menu.findItem(R.id.list_notification_menu)
         if(requireContext().loggedIn()){
             notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner) {
-                val badgeDrawable = BadgeDrawable.create(requireContext())
                 if (it > 0) {
                     BadgeUtils.attachBadgeDrawable(
                         badgeDrawable,

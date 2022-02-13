@@ -50,3 +50,35 @@ mutation ToggleActivitySubscriptionMutation($activityId:Int, $subscribe:Boolean)
     }
 }
 
+
+
+mutation ToggleFavouriteMutation($animeId:Int,$mangaId:Int, $characterId:Int
+    ,$staffId:Int, $studioId:Int){
+    toggleFavourite: ToggleFavourite(animeId:$animeId, mangaId:$mangaId, characterId:$characterId, staffId:$staffId, studioId:$studioId){
+        anime{
+            nodes{
+                isFavourite
+            }
+        }
+        manga{
+            nodes{
+                isFavourite
+            }
+        }
+        characters{
+            nodes{
+                isFavourite
+            }
+        }
+        staff{
+            nodes{
+                isFavourite
+            }
+        }
+        studios{
+            nodes{
+                isFavourite
+            }
+        }
+    }
+}

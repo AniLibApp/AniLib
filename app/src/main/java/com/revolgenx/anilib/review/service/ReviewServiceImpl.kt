@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.review.service
 
 import androidx.lifecycle.MutableLiveData
+import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloHttpException
 import com.revolgenx.anilib.DeleteReviewMutation
 import com.revolgenx.anilib.ReviewQuery
@@ -13,7 +14,9 @@ import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.review.data.field.AllReviewField
 import com.revolgenx.anilib.review.data.field.RateReviewField
 import com.revolgenx.anilib.review.data.field.ReviewField
+import com.revolgenx.anilib.review.data.field.SaveReviewField
 import com.revolgenx.anilib.review.data.model.ReviewModel
+import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.user.data.model.UserPrefModel
 import com.revolgenx.anilib.user.data.model.toModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,14 +27,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : ReviewService {
-
-    override val reviewLiveData: MutableLiveData<Resource<ReviewModel>> = MutableLiveData()
-
     override fun getReview(
         field: ReviewField,
-        compositeDisposable: CompositeDisposable
+        compositeDisposable: CompositeDisposable,
+        callback: (Resource<ReviewModel?>) -> Unit
     ) {
-        val disposable = graphRepository.request(field.toQueryOrMutation() as ReviewQuery).map {
+        val disposable = graphRepository.request(field.toQueryOrMutation()).map {
             it.data?.review?.let {
                 ReviewModel().also { model ->
                     model.id = it.id
@@ -45,13 +46,15 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                     model.createdAtDate = it.createdAt.let {
                         SimpleDateFormat.getDateInstance().format(Date(it * 1000L))
                     }
-                    model.userPrefModel = it.user?.let {
-                        UserPrefModel().also { user ->
+                    model.userId = it.userId
+                    model.user = it.user?.let {
+                        UserModel().also { user ->
                             user.id = it.id
                             user.name = it.name
                             user.avatar = it.avatar?.userAvatar?.toModel()
                         }
                     }
+                    model.mediaId = it.mediaId
                     model.media = it.media?.let {
                         MediaModel().also { media ->
                             media.id = it.id
@@ -65,16 +68,16 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
             }
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                reviewLiveData.value = Resource.success(it)
+                callback.invoke(Resource.success(it))
             }, {
                 if (it is ApolloHttpException) {
                     if (it.statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-                        reviewLiveData.value = Resource.success(null)
+                        callback.invoke(Resource.success(null))
                         return@subscribe
                     }
                 }
-                Timber.e(it)
-                reviewLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+                Timber.w(it)
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -98,7 +101,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                         model.createdAtDate = it.createdAt.let {
                             SimpleDateFormat.getDateInstance().format(Date(it * 1000L))
                         }
-                        model.userPrefModel = it.user?.let {
+                        model.user = it.user?.let {
                             UserPrefModel().also { user ->
                                 user.id = it.id
                                 user.name = it.name
@@ -130,33 +133,38 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
 
 
     override fun saveReview(
-        field: ReviewField,
+        field: SaveReviewField,
         compositeDisposable: CompositeDisposable,
-        callback: (Resource<Boolean>) -> Unit
+        callback: (Resource<Int>) -> Unit
     ) {
-        val disposable = graphRepository.request(field.toQueryOrMutation() as SaveReviewMutation)
+        val disposable = graphRepository.request(field.toQueryOrMutation())
+            .map { it.data?.saveReview?.id }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                callback.invoke(Resource.success(true))
+                callback.invoke(Resource.success(it))
             }, {
-                Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, false, it))
+                Timber.w(it)
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
         compositeDisposable.add(disposable)
     }
 
     override fun deleteReview(
-        field: ReviewField,
+        id: Int?,
         compositeDisposable: CompositeDisposable,
         callback: (Resource<Boolean>) -> Unit
     ) {
-        val disposable = graphRepository.request(field.toQueryOrMutation() as DeleteReviewMutation)
+        val disposable = graphRepository.request(
+            DeleteReviewMutation(
+                reviewId = Optional.presentIfNotNull(id)
+            )
+        ).map { it.data?.deleteReview?.deleted == true }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                callback.invoke(Resource.success(true))
+                callback.invoke(Resource.success(it))
             }, {
-                Timber.e(it)
+                Timber.w(it)
                 callback.invoke(Resource.error(it.message ?: ERROR, false, it))
             })
         compositeDisposable.add(disposable)

@@ -24,7 +24,8 @@
             <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
                 android:id="@+id/list_tab_layout"
                 style="@style/HomeContainerTabLayoutStyle"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:adt_backgroundColorType="background"
                 app:adt_colorType="accent"
                 app:adt_contrastWithColorType="background"
