@@ -2,10 +2,14 @@ package com.revolgenx.anilib.list.adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.graphics.ColorUtils
 import androidx.viewbinding.ViewBinding
 import com.facebook.drawee.view.SimpleDraweeView
 import com.otaliastudios.elements.Element
@@ -13,6 +17,8 @@ import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.common.presenter.Constant
@@ -72,7 +78,14 @@ class MediaListCollectionPresenter(
             inflater,
             parent,
             false
-        )
+        ).also {
+            it.mediaMetaBackground.setBackgroundColor(
+                ColorUtils.setAlphaComponent(
+                    dynamicBackgroundColor,
+                    200
+                )
+            )
+        }
         MediaListDisplayMode.MINIMAL -> MediaListCollectionMinimalPresenterLayoutBinding.inflate(
             inflater,
             parent,
@@ -100,7 +113,6 @@ class MediaListCollectionPresenter(
         var formatTv: DynamicTextView? = null
         var statusTv: DynamicTextView? = null
         var progressTv: DynamicTextView? = null
-        var statusDivider: View? = null
         var scoreBadgeTv: MediaScoreBadge? = null
         var genreLayout: GenreLayout? = null
         var startDateTv: TextView? = null
@@ -132,8 +144,8 @@ class MediaListCollectionPresenter(
                     titleTv = it.mediaListTitleTv
                     coverIv = it.mediaListCoverImageView
                     formatTv = it.mediaListFormatTv
+                    statusTv = it.mediaListStatusTv
                     progressTv = it.mediaListProgressTv
-                    statusDivider = it.statusDivider
                     scoreBadgeTv = it.mediaListRatingTv
                     mediaListProgressIncrease = it.mediaListProgressIncrease
                 }
@@ -154,6 +166,7 @@ class MediaListCollectionPresenter(
                     titleTv = it.mediaListTitleTv
                     coverIv = it.mediaListCoverImageView
                     formatTv = it.mediaListFormatTv
+                    statusTv = it.mediaListStatusTv
                     progressTv = it.mediaListProgressTv
                     scoreBadgeTv = it.mediaListRatingTv
                     mediaListProgressIncrease = it.mediaListProgressIncrease
@@ -171,14 +184,6 @@ class MediaListCollectionPresenter(
             coverIv?.setImageURI(item.media?.coverImage?.image(context))
             formatTv?.text = item.media?.format?.let { mediaFormats[it] }.naText()
 
-            if (displayMode == MediaListDisplayMode.CLASSIC) {
-                formatTv?.append(item.media?.status?.let { " · " + mediaStatus[it] }.naText())
-            }
-
-            item.media?.status?.let {
-                statusDivider?.setBackgroundColor(Color.parseColor(statusColors[it]))
-            }
-
             statusTv?.text = item.media?.status?.let { status ->
                 statusTv?.color = Color.parseColor(statusColors[status])
                 mediaStatus[status]
@@ -188,6 +193,8 @@ class MediaListCollectionPresenter(
                 item.progress?.toString().naText(),
                 if (item.media?.type == MediaType.ANIME.ordinal) item.media?.episodes.naText() else item.media?.chapters.naText()
             )
+
+            progressTv?.compoundDrawablesRelative?.get(0)?.setTint(dynamicTextColorPrimary)
 
             genreLayout?.addGenre(item.media?.genres?.take(3)) { genre ->
 //                OpenSearchEvent(MediaSearchFilterModel().also {

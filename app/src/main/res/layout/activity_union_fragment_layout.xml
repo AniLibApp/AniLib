@@ -9,11 +9,12 @@
         android:layout_height="wrap_content"
         app:adt_backgroundAware="disable"
         app:adt_colorType="background"
-        app:adt_contrastWithColorType="none">
+        app:adt_contrastWithColorType="none"
+        app:elevation="0dp">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="@dimen/toolbar_size"
             app:adt_backgroundAware="disable"
             app:adt_colorType="background"
             app:layout_scrollFlags="scroll|enterAlways">

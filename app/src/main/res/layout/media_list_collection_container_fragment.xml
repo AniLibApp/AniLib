@@ -8,12 +8,13 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="0dp">
+        android:elevation="0dp"
+        app:elevation="0dp">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
             android:id="@+id/dynamicToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/toolbar_size"
             app:adt_colorType="background"
             app:adt_textColorType="text_primary"
             app:contentInsetLeft="0dp"

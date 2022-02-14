@@ -99,7 +99,7 @@ class SearchField : BaseSourceField<Any>() {
                     yearLesser = nn(yearLesser),
                     seasonYear = nn(year),
                     status = nn(status?.let { MediaStatus.values()[it] }),
-                    country = nn(countryOfOrigin?.let { CountryOfOrigins.values()[it] }),
+                    country = nn(countryOfOrigin?.let { CountryOfOrigins.values()[it].name }),
                     sort = nn(sort?.let { listOf(MediaSort.values()[it]) }),
                     source = nn(source?.let { MediaSource.values()[it] }),
                     minimumTagRank = nn(minimumTagRank)

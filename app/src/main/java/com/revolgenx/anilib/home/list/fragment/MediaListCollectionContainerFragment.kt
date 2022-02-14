@@ -15,6 +15,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
+import com.revolgenx.anilib.common.ui.adapter.registerOnPageChangeCallback
+import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.MediaListCollectionContainerFragmentBinding
 import com.revolgenx.anilib.infrastructure.event.OpenNotificationCenterEvent
@@ -46,7 +48,6 @@ class MediaListCollectionContainerFragment :
         BadgeDrawable.create(requireContext())
     }
 
-    private var tabLayoutMediator: TabLayoutMediator? = null
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?
@@ -62,7 +63,7 @@ class MediaListCollectionContainerFragment :
     @SuppressLint("UnsafeOptInUsageError")
     override fun onToolbarInflated() {
         val notificationMenuItem = getBaseToolbar().menu.findItem(R.id.list_notification_menu)
-        if(requireContext().loggedIn()){
+        if (requireContext().loggedIn()) {
             notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner) {
                 if (it > 0) {
                     BadgeUtils.attachBadgeDrawable(
@@ -78,7 +79,7 @@ class MediaListCollectionContainerFragment :
                     )
                 }
             }
-        }else{
+        } else {
             notificationMenuItem.isVisible = false
         }
     }
@@ -115,11 +116,12 @@ class MediaListCollectionContainerFragment :
 
         binding.apply {
             alListViewPager.adapter = makeViewPagerAdapter2(fragments)
-            tabLayoutMediator = TabLayoutMediator(listTabLayout, alListViewPager) { tab, position ->
-                tab.text = resources.getStringArray(R.array.list_tab_menu)[position]
-            }.also { it.attach() }
-
-            alListViewPager.registerOnPageChangeCallback(object :
+            setupWithViewPager2(
+                listTabLayout,
+                alListViewPager,
+                resources.getStringArray(R.array.list_tab_menu)
+            )
+            registerOnPageChangeCallback(alListViewPager, object :
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
@@ -147,7 +149,6 @@ class MediaListCollectionContainerFragment :
     }
 
     override fun onDestroyView() {
-        tabLayoutMediator?.detach()
         super.onDestroyView()
     }
 

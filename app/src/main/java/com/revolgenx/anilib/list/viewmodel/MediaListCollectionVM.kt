@@ -103,7 +103,7 @@ class MediaListCollectionVM(
                     if(isLoggedInUser){
                         mediaListCollectionStore.lists = mediaListCollectionModel?.lists ?: mutableListOf()
                     }
-                    reevaluateGroupNameWithCount()
+                    reEvaluateGroupNameWithCount()
                 }
                 Status.ERROR -> {
                     sourceLiveData.value = MediaListCollectionSource(Resource.error(it.message))
@@ -115,7 +115,7 @@ class MediaListCollectionVM(
         }
     }
 
-    fun reevaluateGroupNameWithCount(){
+    fun reEvaluateGroupNameWithCount(){
         val lists = mediaListCollectionModel?.lists ?: return
         val groupNameMap = mutableMapOf<String, Int>()
         groupNameMap["All"] = lists.first { it.name == "All" }.entries!!.count()

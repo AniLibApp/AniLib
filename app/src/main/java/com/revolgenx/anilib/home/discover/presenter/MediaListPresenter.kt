@@ -10,6 +10,7 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userName
@@ -51,10 +52,6 @@ class MediaListPresenter(
         context.resources.getStringArray(R.array.status_color)
     }
 
-    private val tintSurfaceColor by lazy {
-        DynamicTheme.getInstance().get().tintSurfaceColor
-    }
-
     private val isLoggedInUser by lazy {
         mediaListMeta.userId == UserPreference.userId || mediaListMeta.userName == context.userName()
     }
@@ -87,7 +84,7 @@ class MediaListPresenter(
                 if (media.type == MediaType.ANIME.ordinal) media.episodes.naText() else media.chapters.naText()
             )
 
-            mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(tintSurfaceColor)
+            mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(dynamicTextColorPrimary)
 
             mediaListGenreLayout.addGenre(media.genres?.take(3)) { genre ->
 //                OpenSearchEvent(MediaSearchFilterModel().also {

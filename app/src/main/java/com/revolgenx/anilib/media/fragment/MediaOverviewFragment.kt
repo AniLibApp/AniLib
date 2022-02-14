@@ -303,8 +303,8 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             requireContext().resources.getStringArray(R.array.media_status)[it]
         } ?: "?"
 
-        startDateTv.subtitle = overview.startDate.toString().naText()
-        endDateTv.subtitle = overview.endDate.toString().naText()
+        startDateTv.subtitle = overview.startDate?.toString().naText()
+        endDateTv.subtitle = overview.endDate?.toString().naText()
 
         overview.nextAiringEpisode?.let { atModel ->
             airingContainer.visibility = View.VISIBLE
