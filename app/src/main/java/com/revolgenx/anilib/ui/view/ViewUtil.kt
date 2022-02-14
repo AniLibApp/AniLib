@@ -11,10 +11,7 @@ import android.provider.Settings
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.AdapterView
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
@@ -26,6 +23,7 @@ import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapt
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.support.popup.DynamicMenuPopup
 import com.pranavpandey.android.dynamic.support.popup.DynamicPopup
+import com.pranavpandey.android.dynamic.support.utils.DynamicInputUtils
 import com.pranavpandey.android.dynamic.toasts.internal.ToastCompat
 import com.pranavpandey.android.dynamic.utils.DynamicSdkUtils
 import com.revolgenx.anilib.R
@@ -189,10 +187,7 @@ fun makeConfirmationDialog(
     }
 }
 
-
-fun BadgeDrawable.setBoundsFor(anchor: View, parent: FrameLayout) {
-    val rect = Rect()
-    parent.getDrawingRect(rect)
-    this.bounds = rect
-    this.updateBadgeCoordinates(anchor, parent)
+@SuppressLint("RestrictedApi")
+fun EditText.hideKeyboard() {
+    DynamicInputUtils.hideSoftInput(this)
 }

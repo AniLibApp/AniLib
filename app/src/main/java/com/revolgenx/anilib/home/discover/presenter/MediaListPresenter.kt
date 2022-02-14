@@ -29,6 +29,7 @@ import com.revolgenx.anilib.common.presenter.Constant
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.home.discover.viewmodel.MediaListViewModel
+import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.util.naText
 
 class MediaListPresenter(
@@ -87,9 +88,7 @@ class MediaListPresenter(
             mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(dynamicTextColorPrimary)
 
             mediaListGenreLayout.addGenre(media.genres?.take(3)) { genre ->
-//                OpenSearchEvent(MediaSearchFilterModel().also {
-//                    it.genre = listOf(genre.trim())
-//                }).postEvent
+                OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
             }
 
             //TODO SCORE FORMAT

@@ -531,7 +531,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             }
 
             is OpenUserMediaListEvent -> {
-//                addFragmentToMain(UserMediaListContainerFragment.newInstance(event.meta))
                 addFragmentToMain(UserMediaListCollectionContainerFragment.newInstance(event.meta))
             }
 

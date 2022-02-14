@@ -2,9 +2,6 @@ package com.revolgenx.anilib.list.adapter
 
 import android.content.Context
 import android.graphics.Color
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +28,7 @@ import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.model.MediaModel
+import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.view.GenreLayout
@@ -197,9 +195,7 @@ class MediaListCollectionPresenter(
             progressTv?.compoundDrawablesRelative?.get(0)?.setTint(dynamicTextColorPrimary)
 
             genreLayout?.addGenre(item.media?.genres?.take(3)) { genre ->
-//                OpenSearchEvent(MediaSearchFilterModel().also {
-//                    it.genre = listOf(genre.trim())
-//                }).postEvent
+                OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
             }
 
             startDateTv?.text = context.getString(R.string.startdate_format)

@@ -17,6 +17,7 @@ import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
+import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 
@@ -66,9 +67,7 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
 
             airingTimeTv.setAiringText(item)
             airingGenreLayout.addGenre(media.genres?.take(3)) { genre ->
-//                OpenSearchEvent(MediaSearchFilterModel().also {
-//                    it.genre = listOf(genre.trim())
-//                }).postEvent
+                OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
             }
 
             root.setOnClickListener {

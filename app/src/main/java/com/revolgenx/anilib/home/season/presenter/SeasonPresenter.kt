@@ -19,6 +19,7 @@ import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
+import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
@@ -78,9 +79,7 @@ class SeasonPresenter(context: Context) :
             mediaGenreLayout.addGenre(
                 item.genres?.take(5)
             ) { genre ->
-//                OpenSearchEvent(MediaSearchFilterModel().also {
-//                    it.genre = listOf(genre.trim())
-//                }).postEvent
+                OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
             }
 
             mediaRatingTv.text = item.averageScore

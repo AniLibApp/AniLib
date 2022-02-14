@@ -45,6 +45,7 @@ import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.search.presenter.SearchTagPresenter
 import com.revolgenx.anilib.ui.selector.constant.SelectedState
+import com.revolgenx.anilib.ui.view.hideKeyboard
 import com.revolgenx.anilib.ui.view.makeSelectableSpinnerAdapter
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.ui.view.widgets.checkbox.AlCheckBox
@@ -63,6 +64,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     }
 
     private val viewModel by viewModel<SearchFragmentViewModel>()
+    private val searchFilterModel
+        get() = arguments?.getParcelable<SearchFilterModel?>(
+            SEARCH_FILTER_DATA_KEY
+        )
 
     override val basePresenter: Presenter<BaseModel>
         get() = SearchPresenter(requireContext(), viewLifecycleOwner)
@@ -244,7 +249,17 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         if (savedInstanceState == null) {
             field.genreNotIn = getExcludedGenre(requireContext()).toMutableList()
             field.tagsNotIn = getExcludedTags(requireContext()).toMutableList()
-            field.isHentai = if(canShowAdult(requireContext())) null else false
+            field.isHentai = if (canShowAdult(requireContext())) null else false
+
+            searchFilterModel?.let {
+                it.genre?.let { genre ->
+                    field.genreIn = (field.genreIn ?: mutableListOf()).also { it.add(genre) }
+                }
+                it.tag?.let { tag ->
+                    field.tagsIn = (field.tagsIn ?: mutableListOf()).also { it.add(tag) }
+                }
+                field.sort = it.sort
+            }
         }
 
         sBinding.bind()
@@ -318,11 +333,46 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             if (canShowAdult(requireContext())) View.VISIBLE else View.GONE
 
         val alMediaSorts = AlMediaSort.values()
-        filterSortLayout.setSortItems(
-            requireContext().resources.getStringArray(R.array.al_media_sort)
-                .mapIndexed { index, s ->
-                    AniLibSortingModel(alMediaSorts[index], s, SortOrder.NONE)
-                })
+        val alMediaSortList = requireContext().resources.getStringArray(R.array.al_media_sort)
+
+        val mediaSortItems = alMediaSortList.mapIndexed { index, s ->
+            AniLibSortingModel(alMediaSorts[index], s, SortOrder.NONE)
+        }
+        filterSortLayout.setSortItems(mediaSortItems)
+
+        field.sort?.let { sort ->
+            var sortOrder = SortOrder.NONE
+            val currentSort = if (sort < 34) {
+                if (sort % 2 == 0) {
+                    sortOrder = SortOrder.ASC
+                    sort
+                } else {
+                    sortOrder = SortOrder.DESC
+                    sort - 1
+                }
+            } else if (sort > 34) {
+                if (sort % 2 == 0) {
+                    sortOrder = SortOrder.DESC
+                    sort - 1
+                } else {
+                    sortOrder = SortOrder.ASC
+                    sort
+                }
+            } else {
+                null
+            }
+
+            if (currentSort != null) {
+                val currentSortEnum = alMediaSorts.first { it.sort == currentSort }
+                AniLibSortingModel(
+                    currentSortEnum,
+                    alMediaSortList[currentSortEnum.ordinal],
+                    sortOrder
+                ).let { model ->
+                    filterSortLayout.setActiveSortItem(model)
+                }
+            }
+        }
 
         genreRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
         tagsRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
@@ -730,7 +780,8 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
 
         minimumTagRank.addOnChangeListener { _, value, _ ->
             field.minimumTagRank = value.toInt()
-            minimumTagPercetageHeader.text  = getString(R.string.minimum_tag_percentage_s).format(field.minimumTagRank)
+            minimumTagPercetageHeader.text =
+                getString(R.string.minimum_tag_percentage_s).format(field.minimumTagRank)
         }
 
         yearRangeFilterHeader.setOnClickListener {
@@ -795,12 +846,12 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     }
 
     private fun SearchFragmentLayoutBinding.changeViewForOtherSearchType() {
-        filterLayer1.visibility = View.GONE
-        filterLayer2.visibility = View.GONE
-        filterLayer3.visibility = View.GONE
-        filterLayer4.visibility = View.GONE
-        filterLayer5.visibility = View.GONE
-        filterLayer6.visibility = View.GONE
+        filterLayer1.visibility = View.INVISIBLE
+        filterLayer2.visibility = View.INVISIBLE
+        filterLayer3.visibility = View.INVISIBLE
+        filterLayer4.visibility = View.INVISIBLE
+        filterLayer5.visibility = View.INVISIBLE
+        filterLayer6.visibility = View.INVISIBLE
         filterSeasonLayout.visibility = View.GONE
     }
 
@@ -932,6 +983,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     }
 
     private fun SearchFragmentLayoutBinding.applyFilter() {
+        filterSearchEt.hideKeyboard()
         applyingFilter = true
         hideBottomSheet()
         searchEt.setText(filterSearchEt.text?.toString())

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.revolgenx.anilib.app.theme.dynamicSurfaceColor
 import com.revolgenx.anilib.databinding.ChipTagPresenterBinding
 import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
+import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 
 class MediaGenreChipAdapter() : RecyclerView.Adapter<MediaGenreChipAdapter.GenreChipViewHolder>() {
 
@@ -34,9 +35,7 @@ class MediaGenreChipAdapter() : RecyclerView.Adapter<MediaGenreChipAdapter.Genre
         val genre = currentList?.get(position) ?: return
         holder.binding.chipTagView.text = genre
         holder.binding.root.setOnClickListener {
-//            OpenSearchEvent(MediaSearchFilterModel().also {
-//                it.genre = listOf(genre.trim())
-//            }).postEvent
+            OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
         }
     }
 

@@ -19,6 +19,7 @@ import com.revolgenx.anilib.home.discover.bottomsheet.MediaFilterBottomSheetFrag
 import com.revolgenx.anilib.ui.view.showcase.DiscoverMediaShowcaseLayout
 import com.revolgenx.anilib.home.discover.viewmodel.DiscoverTrendingViewModel
 import com.revolgenx.anilib.home.discover.viewmodel.ShowCaseViewModel
+import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverTrendingFragment : DiscoverReadingFragment() {
@@ -92,9 +93,7 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
 
     private fun handleClick(which: Int) {
         if (which == 0) {
-//            OpenSearchEvent(MediaSearchFilterModel().also {
-//                it.sort = MediaSort.TRENDING_DESC.ordinal
-//            }).postEvent
+            OpenSearchEvent(SearchFilterModel(sort = MediaSort.TRENDING_DESC.ordinal)).postEvent
         } else if (which == 1) {
             showMediaFilterDialog(
                 MediaFilterBottomSheetFragment.MediaFilterType.TRENDING.ordinal

@@ -6,6 +6,7 @@ import com.revolgenx.anilib.constant.CountryOfOrigins
 import com.revolgenx.anilib.type.*
 
 class SearchField : BaseSourceField<Any>() {
+    override var perPage: Int = 30
     var searchType = SearchTypes.ANIME
     var search: String? = null
     var season: Int? = null

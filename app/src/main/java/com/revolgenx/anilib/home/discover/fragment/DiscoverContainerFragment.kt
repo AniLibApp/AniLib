@@ -29,7 +29,6 @@ import com.revolgenx.anilib.home.discover.bottomsheet.MediaFilterBottomSheetFrag
 import com.revolgenx.anilib.home.season.dialog.ShowSeasonHeaderDialog
 import com.revolgenx.anilib.home.recommendation.fragment.RecommendationFragment
 import com.revolgenx.anilib.home.season.fragment.SeasonFragment
-import com.revolgenx.anilib.ui.view.setBoundsFor
 import com.revolgenx.anilib.home.recommendation.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.home.season.viewmodel.SeasonViewModel
 import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
