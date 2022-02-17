@@ -182,15 +182,7 @@ class MediaListPresenter(
 
             mediaListContainer.setOnClickListener {
                 if (context.loggedIn()) {
-                    OpenMediaListEditorEvent(
-                        EntryEditorMeta(
-                            media.id,
-                            media.type!!,
-                            media.title!!.userPreferred,
-                            media.coverImage!!.image(context),
-                            media.bannerImage
-                        )
-                    ).postEvent
+                    OpenMediaListEditorEvent(media.id).postEvent
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                 }

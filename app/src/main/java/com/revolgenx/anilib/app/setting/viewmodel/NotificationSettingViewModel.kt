@@ -14,6 +14,7 @@ class NotificationSettingViewModel(private val notificationService: Notification
 
     val field: UserNotificationSettingField = UserNotificationSettingField()
     val notificationSettings = MutableLiveData<Resource<Map<NotificationType, Boolean>>>()
+    val saveNotifSettingLiveData = MutableLiveData<Resource<Boolean>>()
 
     fun getNotificationSettings() {
         notificationSettings.value = Resource.loading(null)
@@ -22,12 +23,10 @@ class NotificationSettingViewModel(private val notificationService: Notification
         }
     }
 
-    fun saveNotificationSetting(field: UserNotificationMutateField): LiveData<Resource<Boolean>> {
-        val saveNotifSettingLiveData = MutableLiveData<Resource<Boolean>>()
+    fun saveNotificationSetting(field: UserNotificationMutateField){
         saveNotifSettingLiveData.value = Resource.loading(null)
         notificationService.saveNotificationSettings(field, compositeDisposable) {
             saveNotifSettingLiveData.value = it
         }
-        return saveNotifSettingLiveData
     }
 }

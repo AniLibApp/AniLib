@@ -21,6 +21,7 @@ import com.revolgenx.anilib.review.viewmodel.ReviewVM
 import com.revolgenx.anilib.search.viewmodel.SearchFragmentViewModel
 import com.revolgenx.anilib.app.setting.data.model.SettingViewModel
 import com.revolgenx.anilib.app.setting.data.model.EditTagFilterViewModel
+import com.revolgenx.anilib.app.setting.viewmodel.MediaListSettingVM
 import com.revolgenx.anilib.entry.viewmodel.MediaListEntryVM
 import com.revolgenx.anilib.home.discover.viewmodel.*
 import com.revolgenx.anilib.list.viewmodel.AnimeListCollectionStoreVM
@@ -32,7 +33,6 @@ import com.revolgenx.anilib.staff.viewmodel.StaffViewModel
 import com.revolgenx.anilib.studio.viewmodel.StudioViewModel
 import com.revolgenx.anilib.user.viewmodel.UserFavouriteViewModel
 import com.revolgenx.anilib.user.viewmodel.UserFollowerViewModel
-import com.revolgenx.anilib.user.viewmodel.UserProfileViewModel
 import com.revolgenx.anilib.user.viewmodel.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -76,10 +76,13 @@ val viewModelModules = module {
     viewModel { MediaListContainerSharedVM() }
     viewModel { MediaListEntryVM(get(), get()) }
 
-    //userprofile
-    viewModel { UserProfileViewModel(get()) }
+    //user
+    viewModel { UserContainerSharedVM(get()) }
+    viewModel { UserOverViewFragmentVM(get(), get()) }
     viewModel { UserFollowerViewModel(get()) }
+    viewModel { UserFavouriteContainerSharedVM() }
     viewModel { UserFavouriteViewModel(get()) }
+    viewModel { UserStatsContainerSharedVM() }
 
     //userstats
     viewModel { StatsOverviewViewModel(get()) }
@@ -132,6 +135,7 @@ val viewModelModules = module {
     viewModel { MediaListingViewModel(get()) }
 
     //setting
+    viewModel { MediaListSettingVM(get()) }
     viewModel { SettingViewModel(get()) }
     viewModel { EditTagFilterViewModel() }
 

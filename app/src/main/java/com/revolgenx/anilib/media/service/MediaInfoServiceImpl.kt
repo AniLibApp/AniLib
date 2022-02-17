@@ -8,7 +8,6 @@ import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.character.data.model.*
 import com.revolgenx.anilib.common.data.model.stats.ScoreDistributionModel
 import com.revolgenx.anilib.common.data.model.stats.StatusDistributionModel
-import com.revolgenx.anilib.user.data.model.UserPrefModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR

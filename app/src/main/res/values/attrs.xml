@@ -128,7 +128,7 @@
     </declare-styleable>
 
 
-    <declare-styleable name="CustomDynamicHeader">
+    <declare-styleable name="AlHeaderItemView">
         <attr name="titleAlignCenter" format="boolean" />
         <attr name="subtitleAlignCenter" format="boolean" />
         <attr name="titleTextSize" />

@@ -157,23 +157,6 @@ class AiringScheduleWidget : AppWidgetProvider() {
 
                     if (AiringWidgetPreference.clickOpenListEditor(context)) {
 
-                        context.startActivity(Intent(context, MainActivity::class.java).apply {
-                            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            this.action = MainActivity.ENTRY_LIST_ACTION_KEY
-                            this.putExtra(
-                                MainActivity.ENTRY_LIST_DATA_KEY,
-                                EntryEditorMeta(
-                                    mediaId,
-                                    null,
-                                    null,
-                                    null,
-                                    null
-                                )
-                            )
-                        })
-
-                    } else {
-
                         context.startActivity(
                             Intent(
                                 context,
@@ -192,6 +175,16 @@ class AiringScheduleWidget : AppWidgetProvider() {
                                     )
                                 )
                             })
+                    } else {
+
+                        context.startActivity(Intent(context, MainActivity::class.java).apply {
+                            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            this.action = MainActivity.ENTRY_LIST_ACTION_KEY
+                            this.putExtra(
+                                MainActivity.ENTRY_LIST_DATA_KEY, mediaId
+                            )
+                        })
+
                     }
 
                 }

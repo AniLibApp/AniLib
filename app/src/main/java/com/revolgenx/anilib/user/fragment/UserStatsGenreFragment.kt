@@ -5,7 +5,7 @@ import com.revolgenx.anilib.user.viewmodel.StatsGenreViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 //TODO SHOW ANIME
-class StatsGenreFragment : UserStatsFragment() {
+abstract class UserStatsGenreFragment : UserStatsFragment() {
     override val viewModel by viewModel<StatsGenreViewModel>()
     override val statsType: UserStatsField.UserStatsType = UserStatsField.UserStatsType.GENRE
 }

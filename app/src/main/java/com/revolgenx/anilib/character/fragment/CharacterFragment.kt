@@ -13,6 +13,7 @@ import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.prettyNumberFormat
 import com.revolgenx.anilib.character.viewmodel.CharacterViewModel
+import com.revolgenx.anilib.infrastructure.event.OpenImageEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
@@ -118,14 +119,18 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
         characterNameTv.text = item.name?.full
         characterFavCountTv.text = item.favourites?.toLong()?.prettyNumberFormat()
         characterIv.setImageURI(characterModel?.image?.image)
-
+        characterIv.setOnClickListener {
+            characterModel?.image?.image?.let {
+                OpenImageEvent(it).postEvent
+            }
+        }
         item.name?.native?.let {
             nativeNameTv.subtitle = it
         } ?: let {
             nativeNameTv.visibility = View.GONE
         }
 
-        item.name?.alternative?.let {
+        item.name?.alternative?.takeIf { it.isNullOrEmpty().not() }?.let {
             alternativeNameTv.subtitle = it.joinToString()
         } ?: let {
             alternativeNameTv.visibility = View.GONE

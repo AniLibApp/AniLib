@@ -66,7 +66,7 @@ class MediaCharacterPresenter(context: Context) :
                         }
                         voiceActorLayoutContainer.setOnClickListener {
                             OpenStaffEvent(
-                                actorModel.id!!,
+                                actorModel.id,
                             ).postEvent
                         }
                     }

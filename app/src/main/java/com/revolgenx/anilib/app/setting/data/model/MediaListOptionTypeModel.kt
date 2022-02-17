@@ -7,4 +7,5 @@ class MediaListOptionTypeModel : BaseModel() {
     var advancedScoring: MutableList<String>? = null
     var customLists: List<String>? = null
     var sectionOrder: List<String>? = null
+    var splitCompletedSectionByFormat:Boolean? = null
 }

@@ -27,7 +27,7 @@ import com.revolgenx.anilib.radio.ui.fragments.RadioFragment
 import com.revolgenx.anilib.social.ui.fragments.ActivityUnionFragment
 import com.revolgenx.anilib.app.about.fragment.AboutFragment
 import com.revolgenx.anilib.home.discover.fragment.DiscoverContainerFragment
-import com.revolgenx.anilib.home.profile.fragment.ProfileFragment
+import com.revolgenx.anilib.home.profile.fragment.UserContainerFragment
 import com.revolgenx.anilib.home.profile.fragment.UserLoginFragment
 import com.revolgenx.anilib.app.setting.fragment.NotificationSettingFragment
 import com.revolgenx.anilib.review.fragment.AllReviewFragment
@@ -51,7 +51,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 import com.revolgenx.anilib.BuildConfig
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.social.ui.bottomsheet.SpoilerBottomSheetFragment
 import com.revolgenx.anilib.social.ui.fragments.activity_composer.message.ActivityMessageComposerContainerFragment
@@ -116,7 +115,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
     private val profileFragment by lazy {
-        ProfileFragment()
+        UserContainerFragment()
     }
 
     private val loginFragment by lazy {
@@ -375,9 +374,9 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     openMediaInfoCenter(meta)
                 }
                 ENTRY_LIST_ACTION_KEY -> {
-                    val meta =
-                        intent.getParcelableExtra<EntryEditorMeta?>(ENTRY_LIST_DATA_KEY) ?: return
-                    openMediaListEditorCenter(meta)
+                    intent.getIntExtra(ENTRY_LIST_DATA_KEY, -1).takeIf { it != -1 }?.let {
+                        openMediaListEditorCenter(it)
+                    }
                 }
             }
 
@@ -495,7 +494,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         when (event) {
             is OpenUserProfileEvent -> {
                 addFragmentToMain(
-                    ProfileFragment.newInstance(
+                    UserContainerFragment.newInstance(
                         UserMeta(
                             event.userId,
                             event.username
@@ -519,7 +518,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             }
 
             is OpenMediaListEditorEvent -> {
-                openMediaListEditorCenter(event.meta)
+                openMediaListEditorCenter(event.mediaId)
             }
 
             is OpenMediaInfoEvent -> {
@@ -649,10 +648,8 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         addFragmentToMain(CharacterContainerFragment.newInstance(characterId))
     }
 
-    private fun openMediaListEditorCenter(meta: EntryEditorMeta) {
-        meta.mediaId?.let {
-            addFragmentToMain(MediaListEntryFragment.newInstance(it))
-        }
+    private fun openMediaListEditorCenter(mediaId: Int) {
+        addFragmentToMain(MediaListEntryFragment.newInstance(mediaId))
     }
 
     private fun openMediaInfoCenter(meta: MediaInfoMeta) {

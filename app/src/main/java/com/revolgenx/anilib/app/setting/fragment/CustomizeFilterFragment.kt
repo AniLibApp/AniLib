@@ -31,15 +31,6 @@ class CustomizeFilterFragment : BaseToolbarFragment<CustomizeFilterFragmentLayou
         super.onActivityCreated(savedInstanceState)
 
         binding.addRemoveTagIv.setOnClickListener {
-//            TagFilterSettingDialogFragment.newInstance(
-//                TagFilterSettingMeta(
-//                    TagFilterMetaType.TAG
-//                )
-//            ).show(
-//                childFragmentManager,
-//                TagFilterSettingDialogFragment::class.java.simpleName
-//            )
-
             OpenSettingEvent(
                 SettingEventTypes.ADD_REMOVE_TAG_FILTER, TagSettingEventMeta(
                     TagFilterSettingMeta(
@@ -47,11 +38,9 @@ class CustomizeFilterFragment : BaseToolbarFragment<CustomizeFilterFragmentLayou
                     )
                 )
             ).postEvent
-
         }
 
         binding.addRemoveGenreIv.setOnClickListener {
-
             OpenSettingEvent(
                 SettingEventTypes.ADD_REMOVE_TAG_FILTER, TagSettingEventMeta(
                     TagFilterSettingMeta(
@@ -59,15 +48,6 @@ class CustomizeFilterFragment : BaseToolbarFragment<CustomizeFilterFragmentLayou
                     )
                 )
             ).postEvent
-
-//            TagFilterSettingDialogFragment.newInstance(
-//                TagFilterSettingMeta(
-//                    TagFilterMetaType.GENRE
-//                )
-//            ).show(
-//                childFragmentManager,
-//                TagFilterSettingDialogFragment::class.java.simpleName
-//            )
         }
         binding.addRemoveStreamingOnIv.setOnClickListener {
             OpenSettingEvent(
@@ -77,15 +57,7 @@ class CustomizeFilterFragment : BaseToolbarFragment<CustomizeFilterFragmentLayou
                     )
                 )
             ).postEvent
-//
-//            TagFilterSettingDialogFragment.newInstance(
-//                TagFilterSettingMeta(
-//                    TagFilterMetaType.STREAMING_ON
-//                )
-//            ).show(
-//                childFragmentManager,
-//                TagFilterSettingDialogFragment::class.java.simpleName
-//            )
+
         }
     }
 }

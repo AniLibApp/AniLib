@@ -48,6 +48,7 @@ import com.revolgenx.anilib.ui.selector.constant.SelectedState
 import com.revolgenx.anilib.ui.view.hideKeyboard
 import com.revolgenx.anilib.ui.view.makeSelectableSpinnerAdapter
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
+import com.revolgenx.anilib.ui.view.showKeyboard
 import com.revolgenx.anilib.ui.view.widgets.checkbox.AlCheckBox
 import com.revolgenx.anilib.util.onItemSelected
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -86,7 +87,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private val handler = Handler(Looper.getMainLooper())
 
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
-    override var autoAddLayoutManager: Boolean = false
+    override val autoAddLayoutManager: Boolean = false
 
     private var genreAdapter: Adapter? = null
     private var tagsAdapter: Adapter? = null
@@ -483,6 +484,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             hideBottomSheet()
         }
         clearIv.setOnClickListener {
+            searchEt.showKeyboard()
             searchEt.setText("")
         }
 
@@ -972,7 +974,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         handler.removeCallbacksAndMessages(null)
         handler.postDelayed({
             filter()
-        }, 500)
+        }, 600)
     }
 
     private fun filter() {

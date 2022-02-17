@@ -18,13 +18,11 @@ import com.revolgenx.anilib.type.LikeableType
 import com.revolgenx.anilib.common.viewmodel.SourceViewModel
 
 class ActivityUnionViewModel(
-    private val context: Context,
     private val activityUnionService: ActivityUnionService,
     private val toggleService: ToggleService
 ) :
     SourceViewModel<ActivityUnionSource, ActivityUnionField>() {
-    override var field: ActivityUnionField = getActivityUnionField(context)
-
+    override var field: ActivityUnionField = getActivityUnionField()
 
     override fun createSource(): ActivityUnionSource {
         source = ActivityUnionSource(field, activityUnionService, compositeDisposable)
@@ -33,7 +31,7 @@ class ActivityUnionViewModel(
 
 
     fun storeField() {
-        storeActivityUnionField(context, field)
+        storeActivityUnionField(field)
     }
 
     fun toggleActivityLike(

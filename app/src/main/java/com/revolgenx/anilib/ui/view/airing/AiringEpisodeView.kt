@@ -10,10 +10,9 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
-import com.revolgenx.anilib.airing.data.model.TimeUntilAiringModel
 import com.revolgenx.anilib.util.CommonTimer
 import com.revolgenx.anilib.util.TimerCallback
-import com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+import com.revolgenx.anilib.ui.view.header.AlHeaderItemView
 import com.revolgenx.anilib.util.dp
 
 class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet?, attstyle: Int) :
@@ -111,7 +110,7 @@ class AiringEpisodeView(context: Context, private val attributeSet: AttributeSet
 
 
     private fun makeDynamicHeaderLayout(context: Context, attributeSet: AttributeSet?) =
-        CustomDynamicHeader(
+        AlHeaderItemView(
             context,
             attributeSet
         ).also { header ->

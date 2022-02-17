@@ -73,7 +73,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/username_tv" />
 
-                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                     android:id="@+id/following_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                     app:titleAlignCenter="true"
                     app:titleTextSize="@dimen/profile_title_size" />
 
-                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                     android:id="@+id/follower_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                     app:titleTextSize="@dimen/profile_title_size" />
 
 
-                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                     android:id="@+id/anime_count_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                     app:titleTextSize="@dimen/profile_title_size" />
 
 
-                <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                     android:id="@+id/manga_count_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

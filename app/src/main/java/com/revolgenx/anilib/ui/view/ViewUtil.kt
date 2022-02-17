@@ -191,3 +191,7 @@ fun makeConfirmationDialog(
 fun EditText.hideKeyboard() {
     DynamicInputUtils.hideSoftInput(this)
 }
+@SuppressLint("RestrictedApi")
+fun EditText.showKeyboard() {
+    DynamicInputUtils.showSoftInput(this)
+}

@@ -113,7 +113,7 @@ const val WIDGET_AIRING_SORT_KEY = "WIDGET_AIRING_SORT_KEY"
 const val WIDGET_AIRING_PLANNING_KEY = "WIDGET_AIRING_PLANNING_KEY"
 const val WIDGET_AIRING_WATCHING_KEY = "WIDGET_AIRING_WATCHING_KEY"
 const val WIDGET_IS_AIRING_WEEKLY_KEY = "WIDGET_IS_AIRING_WEEKLY_KEY"
-const val WIDGET_AIRING_CLICK_OPEN_LIST_EDITOR = "WIDGET_AIRING_CLICK_OPEN_LIST_EDITOR_KEY"
+const val WIDGET_AIRING_CLICK_OPEN_LIST_EDITOR = "WIDGET_AIRING_CLICK_OPEN_MEDIA_INFO_KEY"
 const val WIDGET_AIRING_SHOW_ETA_KEY = "WIDGET_AIRING_SHOW_ETA_KEY"
 
 //activity union
@@ -459,17 +459,21 @@ fun storeAiringScheduleFieldForWidget(context: Context, field: AiringMediaField)
     }
 }
 
-fun getActivityUnionField(context: Context, field:ActivityUnionField? = null): ActivityUnionField {
+fun getActivityUnionField(field:ActivityUnionField? = null): ActivityUnionField {
     return (field ?: ActivityUnionField()).apply {
-        type = context.getInt(ACTIVITY_UNION_TYPE_KEY, AlActivityType.ALL.ordinal).let { AlActivityType.values()[it] }
-        isFollowing = context.getBoolean(ACTIVITY_IS_FOLLOWING_KEY, false)
+        DynamicPreferences.getInstance().let {
+            type = it.load(ACTIVITY_UNION_TYPE_KEY, AlActivityType.ALL.ordinal).let { AlActivityType.values()[it] }
+            isFollowing = it.load(ACTIVITY_IS_FOLLOWING_KEY, false)
+        }
     }
 }
 
 
-fun storeActivityUnionField(context: Context, field:ActivityUnionField){
+fun storeActivityUnionField(field:ActivityUnionField){
     with(field){
-        context.putInt(ACTIVITY_UNION_TYPE_KEY, type.ordinal)
-        context.putBoolean(ACTIVITY_IS_FOLLOWING_KEY, isFollowing)
+        DynamicPreferences.getInstance().let {
+            it.save(ACTIVITY_UNION_TYPE_KEY, type.ordinal)
+            it.save(ACTIVITY_IS_FOLLOWING_KEY, isFollowing)
+        }
     }
 }

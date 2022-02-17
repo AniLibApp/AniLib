@@ -7,7 +7,7 @@ class UserStatisticsModel {
     var minutesWatched: Int = 0
         set(value) {
             field = value
-            daysWatched = value.div(60f).div(24)
+            daysWatched = value.div(60.0).div(24)
         }
 
     var episodesWatched: Int = 0
@@ -27,5 +27,5 @@ class UserStatisticsModel {
     var staff: List<UserStaffStatisticModel>? = null
     var studios: List<UserStudioStatisticModel>? = null
 
-    var daysWatched: Float = 0f
+    var daysWatched: Double = 0.0
 }

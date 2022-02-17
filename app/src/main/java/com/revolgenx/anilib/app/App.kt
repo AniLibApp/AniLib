@@ -64,7 +64,8 @@ open class App : DynamicApplication() {
         } else {
             Timber.plant(AniLibDebugTree(this))
         }
-
+        setupFresco()
+        setupNotificationWorker()
         startKoin {
             androidContext(this@App)
             modules(getKoinModules())
@@ -82,6 +83,49 @@ open class App : DynamicApplication() {
         activityServiceModules,
         activityViewModelModules
     )
+
+
+    private fun setupFresco() {
+        val requestListeners: MutableSet<RequestListener> = HashSet()
+        if (BuildConfig.DEBUG) {
+            requestListeners.add(RequestLoggingListener())
+            FLog.setMinimumLoggingLevel(FLog.VERBOSE);
+        }
+        val config =
+            OkHttpImagePipelineConfigFactory.newBuilder(context, OkHttpClient()) // other setters
+                .setRequestListeners(requestListeners)
+                .build()
+        BigImageViewer.initialize(FrescoImageLoader.with(this.applicationContext, config))
+    }
+
+
+    private fun setupNotificationWorker() {
+        if (context.loggedIn()) {
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+            val interval = when (context.getString("notification_refresh_interval", "0")) {
+                "0" -> 15
+                "1" -> 20
+                "2" -> 25
+                "3" -> 30
+                else -> 15
+            }
+            val periodicWork =
+                PeriodicWorkRequestBuilder<NotificationWorker>(interval.toLong(), TimeUnit.MINUTES)
+                    .setConstraints(constraints).build()
+
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                NotificationWorker.NOTIFICATION_WORKER_TAG,
+                ExistingPeriodicWorkPolicy.REPLACE,
+                periodicWork
+            )
+        } else {
+            WorkManager.getInstance(this)
+                .cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
+        }
+    }
 
 
     override fun getLocale(): Locale? {

@@ -125,15 +125,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
 
         root.setOnLongClickListener {
             if (context.loggedIn()) {
-                OpenMediaListEditorEvent(
-                    EntryEditorMeta(
-                        data.id,
-                        data.type!!,
-                        data.title!!.title(context)!!,
-                        data.coverImage!!.image(context),
-                        data.bannerImage
-                    )
-                ).postEvent
+                OpenMediaListEditorEvent(data.id).postEvent
             } else {
                 context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
@@ -228,15 +220,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
 
                 root.setOnLongClickListener {
                     if (context.loggedIn()) {
-                        OpenMediaListEditorEvent(
-                            EntryEditorMeta(
-                                item.id,
-                                item.type!!,
-                                item.title!!.title(context)!!,
-                                item.coverImage!!.image(context),
-                                item.bannerImage
-                            )
-                        ).postEvent
+                        OpenMediaListEditorEvent(item.id).postEvent
                     } else {
                         context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                     }

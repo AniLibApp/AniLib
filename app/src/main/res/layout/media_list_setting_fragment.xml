@@ -11,16 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/media_list_setting_progress_bar"
-            layout="@layout/horizontal_progress_bar_layout" />
-
         <LinearLayout
+            android:id="@+id/media_list_setting_container_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:paddingRight="16dp"
+            android:paddingBottom="30dp"
+            android:visibility="gone">
 
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -46,43 +45,200 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.revolgenx.anilib.ui.view.preference.AlCheckPreference
-                android:id="@+id/list_browse_or_edit_switch"
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/SettingHeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/media_list_setting_header_margin_top"
+                android:text="@string/split_completed_list_by_format" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/split_anime_list"
                 style="@style/AlCheckboxStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/enable_to_open_list_editor_instead_of_browsing_info"
-                app:al_pref_key="@string/list_edit_or_browse_key"
-                app:al_value="true" />
+                android:gravity="center_vertical"
+                android:text="@string/anime_list" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/split_manga_list"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/manga_list" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/advance_scoring_list_header"
+                style="@style/SettingHeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/media_list_setting_header_margin_top"
+                android:text="@string/advanced_scoring_list" />
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
                 android:id="@+id/advance_score_switch"
                 style="@style/AlCheckboxStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:text="@string/advanced_scores" />
 
-            <com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
+
+            <LinearLayout
+                android:id="@+id/advance_scoring_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="4dp">
+
+
+                <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                            android:id="@+id/advance_scoring_add_et"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:hint="@string/name"
+                            android:textSize="14sp" />
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                            android:id="@+id/advance_scoring_add"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_add_circle"
+                            app:adt_colorType="accent" />
+
+                    </LinearLayout>
+                </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+                <com.revolgenx.anilib.ui.view.tags.MediaListSettingChipRecyclerView
+                    android:id="@+id/advanced_scores_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp" />
+            </LinearLayout>
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 style="@style/SettingHeaderStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/advanced_scoring_list" />
+                android:layout_marginTop="@dimen/media_list_setting_header_margin_top"
+                android:text="@string/custom_anime_lists" />
 
-            <com.revolgenx.anilib.ui.view.widgets.chip.DynamicChip
-                android:id="@+id/advance_score_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="@string/add"
-                app:closeIcon="@drawable/ic_add" />
 
-            <com.revolgenx.anilib.ui.view.tags.MediaListAdvanceScoreChipRecyclerView
-                android:id="@+id/advance_score_recycler_view"
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                        android:id="@+id/custom_anime_list_et"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="@string/custom_list_name"
+                        android:textSize="14sp" />
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                        android:id="@+id/custom_anime_list_add_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_add_circle"
+                        app:adt_colorType="accent" />
+
+                </LinearLayout>
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+            <com.revolgenx.anilib.ui.view.tags.MediaListSettingChipRecyclerView
+                android:id="@+id/custom_anime_list_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp" />
+
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/SettingHeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/media_list_setting_header_margin_top"
+                android:text="@string/custom_manga_lists" />
+
+
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                        android:id="@+id/custom_manga_list_et"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="@string/custom_list_name"
+                        android:textSize="14sp" />
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                        android:id="@+id/custom_manga_list_add_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_add_circle"
+                        app:adt_colorType="accent" />
+
+                </LinearLayout>
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+            <com.revolgenx.anilib.ui.view.tags.MediaListSettingChipRecyclerView
+                android:id="@+id/custom_manga_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp" />
 
 
         </LinearLayout>
+
+
+        <include
+            android:id="@+id/resource_status_layout"
+            layout="@layout/resource_status_container_layout" />
+
+
     </FrameLayout>
 
 

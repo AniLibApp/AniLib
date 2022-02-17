@@ -574,15 +574,7 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         val mediaInfo = mediaInfoMeta ?: return
 
         if (requireContext().loggedIn()) {
-            val meta = EntryEditorMeta(
-                mediaInfo.mediaId,
-                mediaInfo.type,
-                mediaInfo.title,
-                mediaInfo.coverImage,
-                mediaInfo.bannerImage
-            )
-
-            OpenMediaListEditorEvent(meta).postEvent
+            OpenMediaListEditorEvent(mediaInfo.mediaId!!).postEvent
         } else {
             makeToast(R.string.please_log_in, null, R.drawable.ic_person)
         }

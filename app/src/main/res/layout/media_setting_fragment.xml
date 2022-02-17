@@ -9,19 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicProgressBar
-            android:id="@+id/media_setting_progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true" />
-
         <LinearLayout
+            android:id="@+id/media_setting_container_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:paddingRight="16dp"
+            android:visibility="gone">
 
             <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                 style="@style/SettingHeaderStyle"
@@ -40,6 +35,7 @@
                 style="@style/AlCheckboxStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="@string/airing_anime_notifications" />
 
             <com.revolgenx.anilib.ui.view.preference.AlCheckPreference
@@ -58,6 +54,10 @@
                 app:adt_colorType="text_secondary" />
 
         </LinearLayout>
+
+        <include
+            android:id="@+id/resource_status_layout"
+            layout="@layout/resource_status_container_layout" />
     </FrameLayout>
 
 </androidx.core.widget.NestedScrollView>

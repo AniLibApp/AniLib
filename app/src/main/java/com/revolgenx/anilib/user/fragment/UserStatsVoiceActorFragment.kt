@@ -4,7 +4,7 @@ import com.revolgenx.anilib.user.data.field.UserStatsField
 import com.revolgenx.anilib.user.viewmodel.StatsVoiceActorViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class StatsVoiceActorFragment : UserStatsFragment() {
+class UserStatsVoiceActorFragment : UserStatsFragment() {
     override val viewModel by viewModel<StatsVoiceActorViewModel>()
     override val statsType: UserStatsField.UserStatsType = UserStatsField.UserStatsType.VOICE_ACTOR
 }

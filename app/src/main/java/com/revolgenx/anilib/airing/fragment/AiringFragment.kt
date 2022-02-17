@@ -53,7 +53,7 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
     private val airingBinding: AiringFragmentLayoutBinding get() = _airingBinding!!
 
 
-    override var autoAddLayoutManager: Boolean = false
+    override val autoAddLayoutManager: Boolean = false
     override val setHomeAsUp: Boolean = true
     override val menuRes: Int = R.menu.airing_menu
 

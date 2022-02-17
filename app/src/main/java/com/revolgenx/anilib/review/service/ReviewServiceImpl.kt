@@ -1,11 +1,8 @@
 package com.revolgenx.anilib.review.service
 
-import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloHttpException
 import com.revolgenx.anilib.DeleteReviewMutation
-import com.revolgenx.anilib.ReviewQuery
-import com.revolgenx.anilib.SaveReviewMutation
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
@@ -17,7 +14,6 @@ import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.field.SaveReviewField
 import com.revolgenx.anilib.review.data.model.ReviewModel
 import com.revolgenx.anilib.user.data.model.UserModel
-import com.revolgenx.anilib.user.data.model.UserPrefModel
 import com.revolgenx.anilib.user.data.model.toModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -102,7 +98,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                             SimpleDateFormat.getDateInstance().format(Date(it * 1000L))
                         }
                         model.user = it.user?.let {
-                            UserPrefModel().also { user ->
+                            UserModel().also { user ->
                                 user.id = it.id
                                 user.name = it.name
                                 user.avatar = it.avatar?.userAvatar?.toModel()

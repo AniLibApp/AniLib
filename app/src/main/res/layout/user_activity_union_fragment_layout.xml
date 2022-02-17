@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,20 +11,34 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
-            android:id="@+id/user_activity_spinner"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"/>
+            android:orientation="horizontal"
+            android:paddingHorizontal="6dp">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                android:id="@+id/user_activity_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                    android:id="@+id/user_activity_create_iv"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:padding="2dp"
+                    android:src="@drawable/ic_create_pencil"
+                    app:adt_colorType="text_primary" />
+            </FrameLayout>
+        </LinearLayout>
+
     </LinearLayout>
-
-    <com.pranavpandey.android.dynamic.support.widget.DynamicFloatingActionButton
-        android:id="@+id/user_activity_create_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/ads_fab_margin"
-        android:src="@drawable/ic_create_pencil" />
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

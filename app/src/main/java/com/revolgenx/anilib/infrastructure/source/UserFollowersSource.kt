@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
 import com.revolgenx.anilib.user.data.field.UserFollowerField
-import com.revolgenx.anilib.user.data.model.UserFollowersModel
+import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.user.service.UserService
 import io.reactivex.disposables.CompositeDisposable
 
@@ -13,8 +13,8 @@ class UserFollowersSource(
     private val userService: UserService,
     private val compositeDisposable: CompositeDisposable
 ) :
-    BaseRecyclerSource<UserFollowersModel, UserFollowerField>(field) {
-    override fun areItemsTheSame(first: UserFollowersModel, second: UserFollowersModel): Boolean {
+    BaseRecyclerSource<UserModel, UserFollowerField>(field) {
+    override fun areItemsTheSame(first: UserModel, second: UserModel): Boolean {
         return first.id == second.id
     }
 

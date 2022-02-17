@@ -12,7 +12,7 @@ data class OpenUserFriendEvent(val userId: Int? = null, val isFollower: Boolean 
     BaseEvent()
 
 data class OpenMediaInfoEvent(val meta: MediaInfoMeta) : BaseEvent()
-data class OpenMediaListEditorEvent(val meta: EntryEditorMeta) : BaseEvent()
+data class OpenMediaListEditorEvent(val mediaId:Int) : BaseEvent()
 data class OpenSettingEvent(val settingEventType: SettingEventTypes, val data:SettingEventData?= null) : BaseEvent()
 enum class SettingEventTypes {
     ABOUT, MEDIA_LIST, MEDIA_SETTING, APPLICATION, SETTING, THEME, CUSTOMIZE_FILTER, ADD_REMOVE_TAG_FILTER, AIRING_WIDGET, TRANSLATION, NOTIFICATION, LANGUAGE_CHOOSER

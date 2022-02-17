@@ -7,19 +7,21 @@ import com.revolgenx.anilib.fragment.UserAvatar
 
 open class UserModel : BaseModel() {
     var name: String? = null
+    var about: String? = null
     var avatar: UserAvatarModel? = null
-    var bannerImage:String? = null
+    var bannerImage: String? = null
     var isFollowing = false
     var isFollower = false
     var isBlocked = false
-    var options:UserOptionsModel? = null
-    var mediaListOptions:MediaListOptionModel? = null
+    var options: UserOptionsModel? = null
+    var mediaListOptions: MediaListOptionModel? = null
     var favourites: FavouritesModel? = null
     var statistics: UserStatisticTypesModel? = null
+    var unreadNotificationCount: Int? = null
+    var siteUrl: String? = null
 
-    var unreadNotificationCount:Int? = null
-
-
+    var following: Int = 0
+    var followers: Int = 0
     val isMutual get() = isFollower && isFollowing
 }
 

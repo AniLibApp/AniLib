@@ -74,15 +74,7 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
 
             root.setOnLongClickListener {
                 if (context.loggedIn()) {
-                    OpenMediaListEditorEvent(
-                        EntryEditorMeta(
-                            item.id,
-                            item.type!!,
-                            item.title!!.title(context)!!,
-                            item.coverImage!!.image(context),
-                            item.bannerImage
-                        )
-                    ).postEvent
+                    OpenMediaListEditorEvent(item.id).postEvent
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                 }

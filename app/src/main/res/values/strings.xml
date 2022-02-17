@@ -683,5 +683,9 @@
     <string name="review_summary_character_length_err_msg">Summary must be less than 120 characters and greater than 20 characters</string>
     <string name="open_media_info">Open media info.</string>
     <string name="enable_to_open_media_info_on_single_click">Enable to open Media Info in list on single click.</string>
+    <string name="split_completed_list_by_format">Split Completed List Section By Format.</string>
+    <string name="custom_anime_lists">Custom Anime Lists</string>
+    <string name="custom_manga_lists">Custom Manga Lists</string>
+    <string name="custom_list_name">Custom List Name</string>
 
 </resources>

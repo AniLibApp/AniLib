@@ -125,7 +125,7 @@ abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutB
             it.textSize = 15f
             it.typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_regular)
             it.setDrawables(
-//                icon,
+                icon,
                 endRes = R.drawable.ic_angle_right
             )
             it.compoundDrawablePadding = dp(6f)

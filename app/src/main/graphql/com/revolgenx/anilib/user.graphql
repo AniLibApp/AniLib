@@ -11,9 +11,31 @@ query BasicUserQuery($id:Int){
         }
     }
 }
+query UserOverViewQuery(
+    $userId:Int!,
+    $id:Int,
+    $name:String,
+    $includeFollow:Boolean!
+){
+    followingPage:Page @include(if:$includeFollow){
+        pageInfo{
+            total
+        }
+        following(userId:$userId){
+            __typename
+        }
+    }
 
-query UserProfileQuery($name:String, $id:Int){
-    user: User(name:$name, id:$id){
+    followerPage:Page @include(if:$includeFollow){
+        pageInfo{
+            total
+        }
+        followers(userId:$userId){
+            __typename
+        }
+    }
+
+    user: User(id:$id, name:$name){
         id
         name
         about
@@ -50,24 +72,23 @@ query UserProfileQuery($name:String, $id:Int){
         }
     }
 }
-
-query UserTotalFollowersQuery($id:Int!){
-    page: Page{
+query UserFollowingFollowerCountQuery(
+    $userId:Int!
+){
+    followingPage:Page{
         pageInfo{
             total
         }
-        followers(userId:$id){
+        following(userId:$userId){
             __typename
         }
     }
-}
 
-query UserTotalFollowingQuery($id:Int!){
-    page: Page{
+    followerPage:Page{
         pageInfo{
             total
         }
-        following(userId:$id){
+        followers(userId:$userId){
             __typename
         }
     }
@@ -350,6 +371,8 @@ fragment userMediaListOptions on MediaListOptions{
         customLists
     }
     mangaList{
+        advancedScoringEnabled
+        advancedScoring
         customLists
     }
 }

@@ -227,26 +227,25 @@ class MediaListCollectionPresenter(
 
 
             it.root.setOnClickListener {
-                if (listEditOrBrowse(context)) {
-                    openMediaListEditor(
-                        context,
-                        item.media!!
-                    )
-                    return@setOnClickListener;
+                if (openMediaInfoOrListEditor(context)) {
+                    openMediaInfo(context, item.media!!)
+                }else{
+                    openMediaListEditor(context, item.media!!)
                 }
             }
 
             it.root.setOnLongClickListener {
-                if (listEditOrBrowse(context)) {
-                    openMediaBrowse(context, item.media!!)
-                    return@setOnLongClickListener true
+                if (openMediaInfoOrListEditor(context)) {
+                    openMediaListEditor(context, item.media!!)
+                }else{
+                    openMediaInfo(context, item.media!!)
                 }
                 true
             }
         }
     }
 
-    private fun openMediaBrowse(context: Context, item: MediaModel) {
+    private fun openMediaInfo(context: Context, item: MediaModel) {
         OpenMediaInfoEvent(
             MediaInfoMeta(
                 item.id,
@@ -261,15 +260,7 @@ class MediaListCollectionPresenter(
 
     private fun openMediaListEditor(context: Context, item: MediaModel) {
         if (context.loggedIn()) {
-            OpenMediaListEditorEvent(
-                EntryEditorMeta(
-                    item.id,
-                    item.type!!,
-                    item.title!!.userPreferred,
-                    item.coverImage!!.image(context),
-                    item.bannerImage
-                )
-            ).postEvent
+            OpenMediaListEditorEvent(item.id).postEvent
         } else {
             context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
         }

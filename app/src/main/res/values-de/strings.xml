@@ -527,7 +527,6 @@
     <string name="translating">"Übersetzt .."</string>
     <string name="airing_widget_config">"Widget konfiguration"</string>
     <string name="widget">"Widget"</string>
-    <string name="enable_to_open_list_editor_instead_of_browsing_info">"Antippen von Einträgen öffnet das Bearbeitungsmenü, anstatt die Informationen"</string>
     <string name="copy_link">"Link kopieren"</string>
     <string name="theme_app_summary">"Der Standardstyle"</string>
     <string name="theme_app">"Standard-Theme"</string>

@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.app.setting.service
 
 import com.revolgenx.anilib.app.setting.data.field.MediaListSettingField
-import com.revolgenx.anilib.app.setting.data.field.MediaListSettingMutateField
+import com.revolgenx.anilib.app.setting.data.field.MediaListSettingMutationField
 import com.revolgenx.anilib.app.setting.data.field.MediaSettingField
 import com.revolgenx.anilib.app.setting.data.field.MediaSettingMutateField
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
@@ -38,7 +38,16 @@ class SettingServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
         callback: (resource: Resource<MediaListOptionModel>) -> Unit
     ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation()).map {
-            it.data?.user?.mediaListOptions?.userMediaListOptions?.toModel()
+            it.data?.user?.mediaListOptions?.let { mediaListOptions ->
+                mediaListOptions.userMediaListOptions.let { option ->
+                    option.toModel().also { model ->
+                        model.animeList?.splitCompletedSectionByFormat =
+                            mediaListOptions.animeList?.splitCompletedSectionByFormat
+                        model.mangaList?.splitCompletedSectionByFormat =
+                            mediaListOptions.mangaList?.splitCompletedSectionByFormat
+                    }
+                }
+            }
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 callback.invoke(Resource.success(it))
@@ -65,7 +74,7 @@ class SettingServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
     }
 
     override fun saveMediaListSetting(
-        field: MediaListSettingMutateField,
+        field: MediaListSettingMutationField,
         compositeDisposable: CompositeDisposable,
         callback: (status: Resource<Boolean>) -> Unit
     ) {

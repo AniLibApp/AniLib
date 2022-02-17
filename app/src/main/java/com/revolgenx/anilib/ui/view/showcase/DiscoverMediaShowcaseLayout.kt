@@ -95,7 +95,8 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
             mediaTitleTv.text = media.title?.title(context)
 
             val studioOrWriter = if (media.type == MediaType.ANIME.ordinal) {
-                media.studios?.edges?.filter { it.isMain }?.joinToString(", ") { it.node?.studioName!! }
+                media.studios?.edges?.filter { it.isMain }
+                    ?.joinToString(", ") { it.node?.studioName!! }
             } else {
                 media.staffs?.edges?.joinToString(", ") { it.node?.name?.full ?: "" }
             }
@@ -137,18 +138,10 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
     }
 
     private fun openListEditor() {
-        if (mediaModel == null) return
+        val media = mediaModel ?: return
 
         if (context.loggedIn()) {
-            OpenMediaListEditorEvent(
-                EntryEditorMeta(
-                    mediaModel!!.id,
-                    mediaModel!!.type!!,
-                    mediaModel!!.title!!.title(context)!!,
-                    mediaModel!!.coverImage!!.image(context),
-                    mediaModel!!.bannerImage
-                )
-            ).postEvent
+            OpenMediaListEditorEvent(media.id).postEvent
         } else {
             context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
         }

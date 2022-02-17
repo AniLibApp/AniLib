@@ -56,7 +56,8 @@
                 <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="true">
+                    android:nestedScrollingEnabled="true"
+                    android:padding="6dp">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                         android:id="@+id/user_about_tv"
@@ -95,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/episodes_watched_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -113,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/days_watched_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -130,7 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/anime_mean_score_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -161,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/volume_read_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -179,7 +180,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/chapters_read_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -196,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/manga_mean_score_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

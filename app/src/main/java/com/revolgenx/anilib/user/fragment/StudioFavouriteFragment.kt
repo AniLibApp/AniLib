@@ -8,8 +8,4 @@ import com.revolgenx.anilib.search.data.field.SearchTypes
 class StudioFavouriteFragment : UserFavouriteFragment(){
     override val favouriteType: SearchTypes = SearchTypes.STUDIO
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        layoutManager = LinearLayoutManager(requireContext())
-    }
 }

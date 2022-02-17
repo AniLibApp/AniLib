@@ -1,7 +1,5 @@
 package com.revolgenx.anilib.infrastructure.service.toggle
 
-import com.apollographql.apollo3.api.Optional
-import com.revolgenx.anilib.ToggleFavouriteMutation
 import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.social.data.model.LikeableUnionModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
@@ -13,6 +11,8 @@ import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.data.model.ListActivityModel
 import com.revolgenx.anilib.social.data.model.MessageActivityModel
 import com.revolgenx.anilib.social.data.model.TextActivityModel
+import com.revolgenx.anilib.user.data.field.UserToggleFollowField
+import com.revolgenx.anilib.user.data.model.UserModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -115,4 +115,29 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
             })
         compositeDisposable?.add(disposable)
     }
+
+
+    // TODO create global store
+    override fun toggleUserFollow(
+        field: UserToggleFollowField,
+        compositeDisposable: CompositeDisposable,
+        callback: ((Resource<UserModel>) -> Unit)?
+    ) {
+        val disposable = graphRepository.request(field.toQueryOrMutation()).map {
+            it.data?.toggleFollow?.let {
+                UserModel().also { model ->
+                    model.id = it.id
+                    model.isFollowing = it.isFollowing ?: false
+                }
+            }
+        }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback?.invoke(Resource.success(it))
+            }, {
+                Timber.e(it)
+                callback?.invoke(Resource.error(it.message ?: ERROR, null, it))
+            })
+        compositeDisposable.add(disposable)
+    }
+
 }

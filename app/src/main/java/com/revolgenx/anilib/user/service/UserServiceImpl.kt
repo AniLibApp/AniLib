@@ -1,166 +1,155 @@
 package com.revolgenx.anilib.user.service
 
-import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.UserFollowersQuery
 import com.revolgenx.anilib.UserFollowingQuery
-import com.revolgenx.anilib.character.data.model.CharacterImageModel
 import com.revolgenx.anilib.character.data.model.CharacterModel
 import com.revolgenx.anilib.character.data.model.CharacterNameModel
 import com.revolgenx.anilib.character.data.model.toModel
 import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.friend.data.field.UserFriendField
-import com.revolgenx.anilib.friend.data.model.FriendModel
 import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.infrastructure.repository.util.ERROR
 import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaConnectionModel
 import com.revolgenx.anilib.media.data.model.toModel
-import com.revolgenx.anilib.staff.data.model.StaffImageModel
 import com.revolgenx.anilib.staff.data.model.StaffModel
 import com.revolgenx.anilib.staff.data.model.StaffNameModel
 import com.revolgenx.anilib.staff.data.model.toModel
 import com.revolgenx.anilib.studio.data.model.StudioModel
-import com.revolgenx.anilib.user.data.field.UserFavouriteField
-import com.revolgenx.anilib.user.data.field.UserFollowerField
-import com.revolgenx.anilib.user.data.field.UserProfileField
-import com.revolgenx.anilib.user.data.field.UserToggleFollowField
+import com.revolgenx.anilib.user.data.field.*
 import com.revolgenx.anilib.user.data.model.*
+import com.revolgenx.anilib.user.data.model.stats.UserGenreStatisticModel
+import com.revolgenx.anilib.user.data.model.stats.UserStatisticsModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : UserService {
-    override var userProfileLiveData: MutableLiveData<Resource<UserProfileModel>> =
-        MutableLiveData()
-    override val userFollowerCountLiveData: MutableLiveData<Resource<UserFollowerCountModel>> =
-        MutableLiveData()
-
-    override fun getUserProfile(
-        userProfileField: UserProfileField,
-        compositeDisposable: CompositeDisposable
+    override fun getUserOverView(
+        field: UserOverViewField,
+        compositeDisposable: CompositeDisposable,
+        callback: (Resource<UserModel>) -> Unit
     ) {
         val disposable =
-            baseGraphRepository.request(userProfileField.toQueryOrMutation()).map { response ->
-                response.data?.user?.let {
-                    UserProfileModel().also { model ->
-                        model.id = it.id
-                        model.name = it.name
-                        model.avatar = it.avatar?.userAvatar?.toModel()
-                        model.bannerImage = it.bannerImage ?: model.avatar?.image
-                        model.isBlocked = it.isBlocked ?: false
-                        model.isFollower = it.isFollower ?: false
-                        model.isFollowing = it.isFollowing ?: false
-                        model.about = it.about ?: ""
-                        model.siteUrl = it.siteUrl
-                        it.statistics?.let { stats ->
-                            stats.anime?.let { a ->
-                                model.totalAnime = a.count
-                                model.daysWatched = a.minutesWatched.toDouble().div(60).div(24)
-                                model.episodesWatched = a.episodesWatched
-                                model.animeMeanScore = a.meanScore
-                                a.genres?.filterNotNull()?.forEach { g ->
-                                    model.genreOverView[g.genre!!] = g.count
-                                }
-                            }
-                            stats.manga?.let { m ->
-                                model.totalManga = m.count
-                                model.chaptersRead = m.chaptersRead
-                                model.volumeRead = m.volumesRead
-                                model.mangaMeanScore = m.meanScore
-                                m.genres?.filterNotNull()?.forEach { g ->
-                                    if (model.genreOverView.containsKey(g.genre)) {
-                                        model.genreOverView[g.genre!!] =
-                                            model.genreOverView[g.genre]!!.plus(g.count)
-                                    } else {
-                                        model.genreOverView[g.genre!!] = g.count
+            baseGraphRepository.request(field.toQueryOrMutation()).map { response ->
+                response.data?.let {
+                    it.user?.let { user ->
+                        UserModel().also { model ->
+                            model.id = user.id
+                            model.name = user.name
+                            model.avatar = user.avatar?.userAvatar?.toModel()
+                            model.bannerImage = user.bannerImage ?: model.avatar?.image
+                            model.isBlocked = user.isBlocked ?: false
+                            model.isFollower = user.isFollower ?: false
+                            model.isFollowing = user.isFollowing ?: false
+                            model.about = user.about ?: ""
+                            model.siteUrl = user.siteUrl
+                            model.statistics = user.statistics?.let { stats ->
+                                UserStatisticTypesModel().also {
+                                    it.anime = stats.anime?.let { anime ->
+                                        UserStatisticsModel().also { sModel ->
+                                            sModel.count = anime.count
+                                            sModel.daysWatched =
+                                                anime.minutesWatched.toDouble().div(60).div(24)
+                                            sModel.episodesWatched = anime.episodesWatched
+                                            sModel.meanScore = anime.meanScore
+                                            sModel.genres = anime.genres?.mapNotNull { genre ->
+                                                genre?.let { g ->
+                                                    UserGenreStatisticModel().also { gModel ->
+                                                        gModel.genre = g.genre
+                                                        gModel.count = g.count
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+
+                                    it.manga = stats.manga?.let { manga ->
+                                        UserStatisticsModel().also { sModel ->
+                                            sModel.count = manga.count
+                                            sModel.volumesRead =
+                                                manga.volumesRead
+                                            sModel.chaptersRead = manga.chaptersRead
+                                            sModel.meanScore = manga.meanScore
+                                            sModel.genres = manga.genres?.mapNotNull { genre ->
+                                                genre?.let { g ->
+                                                    UserGenreStatisticModel().also { gModel ->
+                                                        gModel.genre = g.genre
+                                                        gModel.count = g.count
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
+                            }
+                        }
+                    }?.also { userModel ->
+                        if (field.includeFollow) {
+                            userModel.following = it.followingPage?.pageInfo?.total ?: 0
+                            userModel.followers = it.followerPage?.pageInfo?.total ?: 0
+                        } else {
+                            runBlocking {
+                                val fResponse = suspendCoroutine<Resource<Pair<Int, Int>>> { cont ->
+                                    getUserFollowingFollowerCount(UserFollowingFollowerCountField().also { countField ->
+                                        countField.userId = userModel.id
+                                    }, compositeDisposable) {
+                                        cont.resume(it)
+                                    }
+                                }
+                                userModel.following = fResponse.data?.first ?: 0
+                                userModel.followers = fResponse.data?.second ?: 0
                             }
                         }
                     }
                 }
             }.observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ model ->
-                    model?.genreOverView?.toList()?.sortedByDescending { (_, value) -> value }
-                        ?.toMap()
-                        ?.toMutableMap()?.let {
-                            model.genreOverView = it
-                        }
-                    userProfileLiveData.value = Resource.success(model)
-                    model?.let {
-                        getTotalFollowing(userProfileField, compositeDisposable)
-                    }
+                .subscribe({
+                    callback.invoke(Resource.success(it))
                 }, {
-                    Timber.e(it)
-                    userProfileLiveData.value = Resource.error(it.message ?: ERROR, null, it)
+                    Timber.w(it)
+                    callback.invoke(Resource.error(it.message, null, it))
                 })
 
         compositeDisposable.add(disposable)
     }
 
-    override fun getTotalFollower(
-        userProfileField: UserProfileField,
+    override fun getUserFollowingFollowerCount(
+        field: UserFollowingFollowerCountField,
         compositeDisposable: CompositeDisposable,
-        callback: ((Resource<Int>) -> Unit)?
+        callback: (Resource<Pair<Int, Int>>) -> Unit
     ) {
-        val disposable =
-            baseGraphRepository.request(userProfileField.userTotalFollowerField.toQueryOrMutation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response ->
-                    if (userFollowerCountLiveData.value == null) {
-                        userFollowerCountLiveData.value =
-                            Resource.success(UserFollowerCountModel().also { mod ->
-                                mod.followers = response.data?.page?.pageInfo?.total
-                            })
-                    } else {
-                        userFollowerCountLiveData.value =
-                            userFollowerCountLiveData.value?.also { mod ->
-                                mod.data?.followers = response.data?.page?.pageInfo?.total
-                            }
-                    }
-                }, {
-                    Timber.e(it)
-                })
-        compositeDisposable.add(disposable)
-    }
+        val disposable = baseGraphRepository.request(field.toQueryOrMutation()).map {
+            it.data?.let {
+                (it.followingPage?.pageInfo?.total ?: 0) to
+                        (it.followerPage?.pageInfo?.total ?: 0)
+            }
+        }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(it))
+            }, {
+                Timber.w(it)
+                callback.invoke(Resource.error(it.message, null, it))
+            })
 
-    override fun getTotalFollowing(
-        userProfileField: UserProfileField,
-        compositeDisposable: CompositeDisposable,
-        callback: ((Resource<Int>) -> Unit)?
-    ) {
-        val disposable =
-            baseGraphRepository.request(userProfileField.userTotalFollowingField.toQueryOrMutation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response ->
-                    if (userFollowerCountLiveData.value == null) {
-                        userFollowerCountLiveData.value =
-                            Resource.success(UserFollowerCountModel().also { mod ->
-                                mod.following = response.data?.page?.pageInfo?.total
-                            })
-                    } else {
-                        userFollowerCountLiveData.value =
-                            userFollowerCountLiveData.value?.also { mod ->
-                                mod.data?.following = response.data?.page?.pageInfo?.total
-                            }
-                    }
-                }, {
-                    Timber.e(it)
-                })
         compositeDisposable.add(disposable)
     }
 
     override fun getFollowersUsers(
-        userField: UserFollowerField,
+        field: UserFollowerField,
         compositeDisposable: CompositeDisposable,
-        callback: (Resource<List<UserFollowersModel>>) -> Unit
+        callback: (Resource<List<UserModel>>) -> Unit
     ) {
-        val disposable = baseGraphRepository.request(userField.toQueryOrMutation())
+        val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 val data = response.data
                 if (data is UserFollowersQuery.Data)
                     (data as? UserFollowersQuery.Data)?.page?.followers?.filterNotNull()?.map {
-                        UserFollowersModel().also { model ->
+                        UserModel().also { model ->
                             model.id = it.id
                             model.name = it.name
                             model.avatar = it.avatar?.userAvatar?.toModel()
@@ -168,7 +157,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                     }
                 else
                     (data as? UserFollowingQuery.Data)?.page?.following?.filterNotNull()?.map {
-                        UserFollowersModel().also { model ->
+                        UserModel().also { model ->
                             model.id = it.id
                             model.name = it.name
                             model.avatar = it.avatar?.userAvatar?.toModel()
@@ -253,44 +242,17 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
     }
 
 
-    override fun toggleUserFollowing(
-        field: UserToggleFollowField,
-        compositeDisposable: CompositeDisposable,
-        callback: ((Resource<UserProfileModel>) -> Unit)?
-    ) {
-        val disposable = baseGraphRepository.request(field.toQueryOrMutation()).map {
-            it.data?.toggleFollow?.let {
-                UserProfileModel().also { model ->
-                    model.id = it.id
-                    model.isFollowing = it.isFollowing ?: false
-                }
-            }
-        }.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                it?.isFollowing?.let {
-                    userProfileLiveData.value?.data?.isFollowing = it
-                }
-                callback?.invoke(Resource.success(it))
-            }, {
-                Timber.e(it)
-                callback?.invoke(Resource.error(it.message ?: ERROR, null, it))
-            })
-
-        compositeDisposable.add(disposable)
-    }
-
-
     override fun getUserFriend(
         field: UserFriendField,
         compositeDisposable: CompositeDisposable,
-        callback: ((Resource<List<FriendModel>>) -> Unit)
+        callback: ((Resource<List<UserModel>>) -> Unit)
     ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 val data = response.data
                 if (data is UserFollowersQuery.Data)
                     (data as? UserFollowersQuery.Data)?.page?.followers?.filterNotNull()?.map {
-                        FriendModel().also { model ->
+                        UserModel().also { model ->
                             model.id = it.id
                             model.name = it.name
                             model.avatar = it.avatar?.userAvatar?.toModel()
@@ -300,7 +262,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                     }
                 else
                     (data as? UserFollowingQuery.Data)?.page?.following?.filterNotNull()?.map {
-                        FriendModel().also { model ->
+                        UserModel().also { model ->
                             model.id = it.id
                             model.name = it.name
                             model.avatar = it.avatar?.userAvatar?.toModel()

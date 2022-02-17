@@ -60,7 +60,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/stats_title_tv">
 
-            <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+            <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                 android:id="@+id/stats_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
             app:layout_constraintStart_toEndOf="@+id/statsCountFrameLayout"
             app:layout_constraintTop_toTopOf="@id/statsCountFrameLayout">
 
-            <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+            <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                 android:id="@+id/stats_mean_score_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
             app:layout_constraintStart_toEndOf="@+id/dynamicFrameLayout"
             app:layout_constraintTop_toTopOf="@id/dynamicFrameLayout">
 
-            <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+            <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                 android:id="@+id/stats_time_watched"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -80,15 +80,7 @@ object AiringPresenterBindingHelper {
 
         root.setOnLongClickListener {
             if (context.loggedIn()) {
-                OpenMediaListEditorEvent(
-                    EntryEditorMeta(
-                        media.id,
-                        media.type!!,
-                        media.title!!.title(context)!!,
-                        media.coverImage!!.image(context),
-                        media.bannerImage
-                    )
-                ).postEvent
+                OpenMediaListEditorEvent(media.id).postEvent
             } else {
                 context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
@@ -163,15 +155,7 @@ object AiringPresenterBindingHelper {
 
         root.setOnLongClickListener {
             if (context.loggedIn()) {
-                OpenMediaListEditorEvent(
-                    EntryEditorMeta(
-                        media.id,
-                        media.type!!,
-                        media.title!!.title(context)!!,
-                        media.coverImage!!.image(context),
-                        media.bannerImage
-                    )
-                ).postEvent
+                OpenMediaListEditorEvent(media.id).postEvent
             } else {
                 context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
@@ -243,15 +227,7 @@ object AiringPresenterBindingHelper {
 
         root.setOnLongClickListener {
             if (context.loggedIn()) {
-                OpenMediaListEditorEvent(
-                    EntryEditorMeta(
-                        media.id,
-                        media.type!!,
-                        media.title!!.title(context)!!,
-                        media.coverImage!!.image(context),
-                        media.bannerImage
-                    )
-                ).postEvent
+                OpenMediaListEditorEvent(media.id).postEvent
             } else {
                 context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }

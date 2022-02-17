@@ -13,11 +13,9 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.constant.AlActivityType
-import com.revolgenx.anilib.user.data.meta.UserMeta
 import com.revolgenx.anilib.databinding.UserActivityUnionFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OpenActivityMessageComposer
 import com.revolgenx.anilib.infrastructure.event.OpenActivityTextComposer
-import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.ui.presenter.ActivityUnionPresenter
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
@@ -26,21 +24,20 @@ import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityMessag
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityTextComposerViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
+import com.revolgenx.anilib.user.viewmodel.UserContainerSharedVM
 import com.revolgenx.anilib.util.onItemSelected
+import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
-
-    companion object {
-        private const val USER_META_KEY = "USER_META_KEY"
-        fun newInstance(userMeta: UserMeta) = UserActivityUnionFragment().also {
-            it.arguments = bundleOf(USER_META_KEY to userMeta)
-        }
-    }
-
-    private val userMeta get() = arguments?.getParcelable<UserMeta?>(USER_META_KEY)
-    private val userId = UserPreference.userId
+    private val sharedViewModel by viewModel<UserContainerSharedVM>(owner = {
+        ViewModelOwner.from(
+            this.parentFragment ?: this,
+            this.parentFragment
+        )
+    })
+    private val userId get() = UserPreference.userId
 
     override val basePresenter: Presenter<ActivityUnionModel>
         get() = ActivityUnionPresenter(
@@ -53,7 +50,7 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
     override val baseSource: Source<ActivityUnionModel>
         get() = viewModel.source ?: createSource()
 
-    override var autoAddLayoutManager: Boolean = false
+    override val autoAddLayoutManager: Boolean = false
     private val viewModel by viewModel<ActivityUnionViewModel>()
     private val textComposerViewModel by sharedViewModel<ActivityTextComposerViewModel>()
     private val messageComposerViewModel by sharedViewModel<ActivityMessageComposerViewModel>()
@@ -91,18 +88,16 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        layoutManager = LinearLayoutManager(requireContext())
-    }
+        sharedViewModel.hasUserData ?: return
 
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        val user = userMeta ?: return
-        if(savedInstanceState == null){
-            viewModel.field = ActivityUnionField()
-            viewModel.field.userId = user.userId
+        if (savedInstanceState == null) {
+            with(viewModel.field) {
+                userId = sharedViewModel.userId
+                userName = sharedViewModel.userName
+            }
         }
+
+        layoutManager = LinearLayoutManager(requireContext())
         val adapter = makeSpinnerAdapter(requireContext(), activityAdapterItems)
         uBinding.userActivitySpinner.adapter = adapter
         uBinding.userActivitySpinner.onItemSelectedListener = null
@@ -114,8 +109,8 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
             invalidateAdapter()
         }
 
-        uBinding.userActivityCreateFab.setOnClickListener {
-            if (user.userId == userId) {
+        uBinding.userActivityCreateIv.setOnClickListener {
+            if (viewModel.field.userId == userId) {
                 OpenActivityTextComposer().postEvent
             } else {
                 OpenActivityMessageComposer(viewModel.field.userId!!).postEvent

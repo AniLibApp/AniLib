@@ -17,8 +17,6 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.themeIt
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
-import com.revolgenx.anilib.constant.UserConstant
-import com.revolgenx.anilib.user.data.meta.UserStatsMeta
 import com.revolgenx.anilib.databinding.StatsDistributionRecyclerLayoutBinding
 import com.revolgenx.anilib.databinding.UserStatisticOverviewFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.repository.util.Status
@@ -28,14 +26,21 @@ import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.user.data.model.stats.*
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.user.viewmodel.StatsOverviewViewModel
+import com.revolgenx.anilib.user.viewmodel.UserStatsContainerSharedVM
+import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 //todo: add piechart in distribution
-class UserStatisticOverviewFragment :
+abstract class UserStatisticOverviewFragment :
     BaseLayoutFragment<UserStatisticOverviewFragmentLayoutBinding>() {
 
     private val viewModel by viewModel<StatsOverviewViewModel>()
-    private lateinit var userStatsMeta: UserStatsMeta
+    private val sharedViewModel by viewModel<UserStatsContainerSharedVM>(owner = {
+        ViewModelOwner.from(
+            this.parentFragment ?: this,
+            this.parentFragment
+        )
+    })
 
     private val mediaFormat by lazy {
         requireContext().resources.getStringArray(R.array.media_format)
@@ -44,6 +49,7 @@ class UserStatisticOverviewFragment :
         requireContext().resources.getStringArray(R.array.media_list_status)
     }
 
+    protected open val type:Int = MediaType.ANIME.ordinal
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?
@@ -59,10 +65,11 @@ class UserStatisticOverviewFragment :
         visibleToUser = true
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sharedViewModel.hasUserData ?: return
 
-        userStatsMeta = arguments?.getParcelable(UserConstant.USER_STATS_META_KEY) ?: return
+
 
         binding.updateTheme()
         binding.initListener()
@@ -91,10 +98,10 @@ class UserStatisticOverviewFragment :
         }
 
         if (savedInstanceState == null) {
-            viewModel.field.type = userStatsMeta.type
-            viewModel.field.userName = userStatsMeta.userMeta.userName
-            viewModel.field.userId = userStatsMeta.userMeta.userId
-
+            with(viewModel.field) {
+                userId = sharedViewModel.userId
+                userName = sharedViewModel.userName
+            }
         }
     }
 
@@ -394,7 +401,7 @@ class UserStatisticOverviewFragment :
                 viewModel.scoreTogglePos = position
 
                 viewModel.statsLiveData.value?.data?.statistics?.let {
-                    val media = it.anime?: it.manga
+                    val media = it.anime ?: it.manga
                     updateScoreChart(media?.scores)
                 }
 
@@ -404,7 +411,7 @@ class UserStatisticOverviewFragment :
             override fun onToggleSwitchChanged(position: Int) {
                 viewModel.releaseYearTogglePos = position
                 viewModel.statsLiveData.value?.data?.statistics?.let {
-                    val media = it.anime?: it.manga
+                    val media = it.anime ?: it.manga
                     updateReleaseChart(media?.releaseYears)
                 }
             }
@@ -413,7 +420,7 @@ class UserStatisticOverviewFragment :
             override fun onToggleSwitchChanged(position: Int) {
                 viewModel.watchYearTogglePos = position
                 viewModel.statsLiveData.value?.data?.statistics?.let {
-                    val media = it.anime?: it.manga
+                    val media = it.anime ?: it.manga
                     updateWatchChart(media?.startYears)
                 }
             }
@@ -424,7 +431,7 @@ class UserStatisticOverviewFragment :
         scoreToggleSwitch.let {
             it.themeIt()
             it.setEntries(
-                if (userStatsMeta.type == MediaType.ANIME.ordinal)
+                if (type == MediaType.ANIME.ordinal)
                     R.array.score_toggle_list
                 else
                     R.array.manga_score_toggle_list
@@ -438,7 +445,7 @@ class UserStatisticOverviewFragment :
         releaseYearToggleSwitch.let {
             it.themeIt()
             it.setEntries(
-                if (userStatsMeta.type == MediaType.ANIME.ordinal)
+                if (type == MediaType.ANIME.ordinal)
                     R.array.stats_toggle_list
                 else
                     R.array.manga_stats_toggle_list
@@ -452,7 +459,7 @@ class UserStatisticOverviewFragment :
         watchYearToggleSwitch.let {
             it.themeIt()
             it.setEntries(
-                if (userStatsMeta.type == MediaType.ANIME.ordinal)
+                if (type == MediaType.ANIME.ordinal)
                     R.array.stats_toggle_list
                 else
                     R.array.manga_stats_toggle_list
@@ -462,7 +469,7 @@ class UserStatisticOverviewFragment :
             )
         }
 
-        if (userStatsMeta.type == MediaType.MANGA.ordinal) {
+        if (type == MediaType.MANGA.ordinal) {
             totalCountTv.subtitle = getString(R.string.total_manga)
             episodeWatched.subtitle = getString(R.string.chapters_read)
             daysWatchedTv.subtitle = getString(R.string.volumes_read)

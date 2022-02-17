@@ -51,7 +51,7 @@
             style="@style/AlCheckboxStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/enable_to_open_list_editor_instead_of_browsing_info" />
+            android:text="@string/enable_to_open_media_info_on_single_click" />
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView

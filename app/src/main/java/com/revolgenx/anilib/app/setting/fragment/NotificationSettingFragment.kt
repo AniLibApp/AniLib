@@ -14,6 +14,7 @@ import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.app.setting.viewmodel.NotificationSettingViewModel
 import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.notification.data.field.UserNotificationMutateField
+import com.revolgenx.anilib.ui.view.makeErrorToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NotificationSettingFragment :
@@ -32,37 +33,72 @@ class NotificationSettingFragment :
         return NotificationSettingFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.saveNotifSettingLiveData.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    clearStatus()
+                    makeToast(R.string.saved_successfully)
+                }
+                Status.ERROR -> {
+                    clearStatus()
+                    makeErrorToast(R.string.failed_to_save)
+                }
+                Status.LOADING -> {
+                    showLoading()
+                }
+            }
+        }
         viewModel.notificationSettings.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.notificationSettingProgressBar.root.visibility = View.GONE
+                    clearStatus()
                     it.data?.let {
                         binding.updateView(it)
                     }
                 }
                 Status.ERROR -> {
-                    binding.notificationSettingProgressBar.root.visibility = View.GONE
-                    makeToast(R.string.error)
+                    showError()
+                    makeErrorToast(R.string.error)
                 }
                 Status.LOADING -> {
-                    binding.notificationSettingProgressBar.root.visibility = View.VISIBLE
+                    showLoading()
                 }
             }
         }
 
         if (savedInstanceState == null) {
-            if (requireContext().loggedIn()) {
-                with(viewModel.field) {
-                    userId = UserPreference.userId
-                }
-            }
+            viewModel.field.userId = UserPreference.userId
             viewModel.getNotificationSettings()
         }
     }
 
+    private fun showLoading() {
+        binding.resourceStatusLayout.apply {
+            resourceProgressLayout.progressLayout.visibility = View.VISIBLE
+            resourceErrorLayout.errorLayout.visibility = View.GONE
+            resourceStatusContainer.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showError() {
+        binding.resourceStatusLayout.apply {
+            resourceErrorLayout.errorLayout.visibility = View.VISIBLE
+            resourceProgressLayout.progressLayout.visibility = View.GONE
+            resourceStatusContainer.visibility = View.VISIBLE
+        }
+    }
+
+    private fun clearStatus() {
+        binding.resourceStatusLayout.apply {
+            resourceErrorLayout.errorLayout.visibility = View.GONE
+            resourceProgressLayout.progressLayout.visibility = View.GONE
+            resourceStatusContainer.visibility = View.GONE
+        }
+    }
 
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return if (item.itemId == R.id.save_menu) {
@@ -76,24 +112,22 @@ class NotificationSettingFragment :
         val notificationSettings = binding.getNotificationSettingsFromView()
         viewModel.saveNotificationSetting(UserNotificationMutateField().also {
             it.notificationSettings = notificationSettings
-        }).observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    binding.notificationSettingProgressBar.root.visibility = View.GONE
-                    makeToast(R.string.saved_successfully)
-                }
-                Status.ERROR -> {
-                    binding.notificationSettingProgressBar.root.visibility = View.GONE
-                    makeToast(R.string.error_occured_while_saving)
-                }
-                Status.LOADING -> {
-                    binding.notificationSettingProgressBar.root.visibility = View.VISIBLE
-                }
-            }
-        }
+        })
+    }
+
+    override fun updateToolbar() {
+        super.updateToolbar()
+        updateNotificationToolbar()
+    }
+
+    private fun updateNotificationToolbar() {
+        getBaseToolbar().menu.findItem(R.menu.save_menu)?.isVisible =
+            viewModel.notificationSettings.value?.data?.isNotEmpty() == true
     }
 
     private fun NotificationSettingFragmentLayoutBinding.updateView(data: Map<NotificationType, Boolean>) {
+        notificationSettingLayout.visibility = View.VISIBLE
+        updateNotificationToolbar()
         data.forEach { t ->
             val isChecked = t.value
             val checkbox = when (t.key) {
@@ -143,8 +177,10 @@ class NotificationSettingFragment :
         notificationTypesEnabled[NotificationType.THREAD_COMMENT_LIKE] =
             likeForumCommentCb.isChecked
 
-        notificationTypesEnabled[NotificationType.RELATED_MEDIA_ADDITION] = mediaRelatedToMe.isChecked
-        notificationTypesEnabled[NotificationType.MEDIA_DATA_CHANGE] = mediaModifiedInMyList.isChecked
+        notificationTypesEnabled[NotificationType.RELATED_MEDIA_ADDITION] =
+            mediaRelatedToMe.isChecked
+        notificationTypesEnabled[NotificationType.MEDIA_DATA_CHANGE] =
+            mediaModifiedInMyList.isChecked
         notificationTypesEnabled[NotificationType.MEDIA_MERGE] = mediaMergedInMyList.isChecked
         notificationTypesEnabled[NotificationType.MEDIA_DELETION] = mediaDeletedInMyList.isChecked
 

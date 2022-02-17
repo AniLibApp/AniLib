@@ -1,0 +1,3 @@
+package com.revolgenx.anilib.user.fragment
+
+class AnimeUserStatsContainerFragment:BaseUserStatsContainerFragment()

@@ -100,15 +100,7 @@ class RecommendationPresenter(
 
                 recommendedFromImageConstraintLayout.setOnLongClickListener {
                     if (context.loggedIn()) {
-                        OpenMediaListEditorEvent(
-                            EntryEditorMeta(
-                                from.id,
-                                from.type!!,
-                                from.title!!.title(context)!!,
-                                from.coverImage!!.image(context),
-                                from.bannerImage
-                            )
-                        ).postEvent
+                        OpenMediaListEditorEvent(from.id).postEvent
                     } else {
                         context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                     }
@@ -145,15 +137,7 @@ class RecommendationPresenter(
 
                 recommendedImageConstraintLayout.setOnLongClickListener {
                     if (context.loggedIn()) {
-                        OpenMediaListEditorEvent(
-                            EntryEditorMeta(
-                                rec.id,
-                                rec.type!!,
-                                rec.title!!.title(context)!!,
-                                rec.coverImage!!.image(context),
-                                rec.bannerImage
-                            )
-                        ).postEvent
+                        OpenMediaListEditorEvent(rec.id).postEvent
                     } else {
                         context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                     }

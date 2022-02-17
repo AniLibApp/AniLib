@@ -9,7 +9,6 @@ import com.revolgenx.anilib.app.setting.data.model.getRowOrder
 import com.revolgenx.anilib.common.data.model.FuzzyDateModel
 import com.revolgenx.anilib.user.data.model.UserAvatarModel
 import com.revolgenx.anilib.user.data.model.UserModel
-import com.revolgenx.anilib.user.data.model.UserPrefModel
 import com.revolgenx.anilib.fragment.*
 import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.social.data.model.ListActivityModel
@@ -20,7 +19,7 @@ import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.util.prettyTime
 
-fun BasicUserQuery.User.toBasicUserModel() = UserPrefModel().also {
+fun BasicUserQuery.User.toBasicUserModel() = UserModel().also {
     it.id = id
     it.name = name
     it.unreadNotificationCount = unreadNotificationCount
@@ -57,8 +56,11 @@ fun UserMediaListOptions.toModel() = MediaListOptionModel().also {
             optionModel.customLists = it.customLists?.filterNotNull()
         }
     }
-    it.animeList = mangaList?.let {
+    it.mangaList = mangaList?.let {
         MediaListOptionTypeModel().also { optionModel ->
+            optionModel.advancedScoringEnabled = it.advancedScoringEnabled == true
+            optionModel.advancedScoring =
+                it.advancedScoring?.filterNotNull()?.toMutableList()
             optionModel.customLists = it.customLists?.filterNotNull()
         }
     }

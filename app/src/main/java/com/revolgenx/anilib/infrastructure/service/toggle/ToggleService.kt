@@ -6,6 +6,8 @@ import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.ToggleActivitySubscriptionField
 import com.revolgenx.anilib.social.data.field.ToggleLikeV2Field
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
+import com.revolgenx.anilib.user.data.field.UserToggleFollowField
+import com.revolgenx.anilib.user.data.model.UserModel
 import io.reactivex.disposables.CompositeDisposable
 
 interface ToggleService {
@@ -25,6 +27,13 @@ interface ToggleService {
         field: ToggleFavouriteField,
         compositeDisposable: CompositeDisposable? = null,
         callback: (Resource<Boolean>)->Unit
+    )
+
+
+    fun toggleUserFollow(
+        field: UserToggleFollowField,
+        compositeDisposable: CompositeDisposable,
+        callback: ((Resource<UserModel>) -> Unit)?
     )
 
 }

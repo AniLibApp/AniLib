@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.app.setting.service
 
 import com.revolgenx.anilib.app.setting.data.field.MediaListSettingField
-import com.revolgenx.anilib.app.setting.data.field.MediaListSettingMutateField
+import com.revolgenx.anilib.app.setting.data.field.MediaListSettingMutationField
 import com.revolgenx.anilib.app.setting.data.field.MediaSettingField
 import com.revolgenx.anilib.app.setting.data.field.MediaSettingMutateField
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
@@ -29,7 +29,7 @@ interface SettingService {
     )
 
     fun saveMediaListSetting(
-        field: MediaListSettingMutateField,
+        field: MediaListSettingMutationField,
         compositeDisposable: CompositeDisposable,
         callback: ((status: Resource<Boolean>) -> Unit)
     )

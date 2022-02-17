@@ -3,46 +3,37 @@ package com.revolgenx.anilib.user.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
 import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
-import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
-import com.revolgenx.anilib.constant.UserConstant
-import com.revolgenx.anilib.user.data.meta.UserStatsMeta
 import com.revolgenx.anilib.databinding.UserStatsContainerFragmentLayoutBinding
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.user.viewmodel.UserStatsContainerSharedVM
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UserStatsContainerFragment : BaseLayoutFragment<UserStatsContainerFragmentLayoutBinding>() {
-    companion object {
-        fun newInstance(userStatsMeta: UserStatsMeta) = UserStatsContainerFragment().also {
-            it.arguments = bundleOf(UserConstant.USER_STATS_META_KEY to userStatsMeta)
-        }
-    }
+abstract class BaseUserStatsContainerFragment :
+    BaseUserFragment<UserStatsContainerFragmentLayoutBinding>() {
+    protected open val type: Int = MediaType.ANIME.ordinal
 
-
-    private val userStatsMeta get()= arguments?.getParcelable<UserStatsMeta?>(UserConstant.USER_STATS_META_KEY)
-
+    private val viewModel by viewModel<UserStatsContainerSharedVM>()
     private val userAnimeStatsFragments by lazy {
         listOf(
-            UserStatisticOverviewFragment(),
-            StatsGenreFragment(),
-            StatsTagFragment(),
-            StatsVoiceActorFragment(),
-            StatsStudioFragment(),
-            StatsStaffFragment()
+            AnimeStatisticOverViewFragment(),
+            AnimeUserStatsGenreFragment(),
+            AnimeUserStatsTagFragment(),
+            UserStatsVoiceActorFragment(),
+            UserStatsStudioFragment(),
+            AnimeUserStatsStaffFragment()
         )
     }
 
     private val userMangaStatsFragments by lazy {
         listOf(
-            UserStatisticOverviewFragment(),
-            StatsGenreFragment(),
-            StatsTagFragment(),
-            StatsStaffFragment()
+            MangaStatisticOverViewFragment(),
+            MangaUserStatsGenreFragment(),
+            MangaUserStatsTagFragment(),
+            MangaUserStatsStaffFragment()
         )
     }
 
@@ -57,30 +48,26 @@ class UserStatsContainerFragment : BaseLayoutFragment<UserStatsContainerFragment
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val userStats = userStatsMeta ?: return
+        sharedViewModel.hasUserData ?: return
+        if(savedInstanceState == null) {
+
+            with(viewModel) {
+                userId = sharedViewModel.userId
+                userName = sharedViewModel.userName
+            }
+        }
 
         val adapter: FragmentStateAdapter
         val tabItems: Array<String>
 
-        when (userStats.type) {
+        when (type) {
             MediaType.ANIME.ordinal -> {
-                userAnimeStatsFragments.forEach {
-                    it.arguments = bundleOf(
-                        UserConstant.USER_STATS_META_KEY to userStats
-                    )
-                }
-
                 adapter = makeViewPagerAdapter2(
                     userAnimeStatsFragments
                 )
                 tabItems = resources.getStringArray(R.array.user_anime_stats_tab_menu)
             }
             else -> {
-                userMangaStatsFragments.forEach {
-                    it.arguments = bundleOf(
-                        UserConstant.USER_STATS_META_KEY to userStats
-                    )
-                }
                 adapter = makeViewPagerAdapter2(
                     userMangaStatsFragments
                 )
@@ -89,7 +76,11 @@ class UserStatsContainerFragment : BaseLayoutFragment<UserStatsContainerFragment
         }
 
         binding.userStatsContainerViewPager.adapter = adapter
-        setupWithViewPager2(binding.userStatsTabLayout, binding.userStatsContainerViewPager, tabItems)
+        setupWithViewPager2(
+            binding.userStatsTabLayout,
+            binding.userStatsContainerViewPager,
+            tabItems
+        )
         binding.userStatsContainerViewPager.offscreenPageLimit = tabItems.size - 1
     }
 }

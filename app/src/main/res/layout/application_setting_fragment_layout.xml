@@ -119,9 +119,46 @@
             android:layout_height="wrap_content"
             android:text="@string/other" />
 
+
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="12dp">
+
+                <com.revolgenx.anilib.ui.view.preference.AlCheckPreference
+                    style="@style/AlCheckboxStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/open_media_info"
+                    app:al_pref_key="@string/media_info_or_list_editor_key"
+                    app:al_value="false" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enable_to_open_media_info_on_single_click"
+                    app:adt_colorType="text_secondary"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    app:adt_contrastWithColorType="surface" />
+
+            </LinearLayout>
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

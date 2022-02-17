@@ -7,38 +7,21 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
-import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
-import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.work.*
-import com.facebook.common.logging.FLog
-import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory
-import com.facebook.imagepipeline.listener.RequestListener
-import com.facebook.imagepipeline.listener.RequestLoggingListener
-import com.github.piasy.biv.BigImageViewer
-import com.github.piasy.biv.loader.fresco.FrescoImageLoader
 import com.google.android.gms.ads.MobileAds
 import com.pranavpandey.android.dynamic.support.splash.activity.DynamicSplashActivity
-import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
-import com.revolgenx.anilib.common.logger.LoggerTree
 import com.revolgenx.anilib.common.preference.disableAds
 import com.revolgenx.anilib.common.preference.getApplicationLocale
-import com.revolgenx.anilib.common.preference.getString
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.notification.service.NotificationWorker
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.util.LauncherShortcutKeys
 import com.revolgenx.anilib.util.LauncherShortcuts
 import com.revolgenx.anilib.util.shortcutAction
-import okhttp3.OkHttpClient
-import timber.log.Timber
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 /**
  * Implementing a splash screen by using [DynamicSplashActivity].
@@ -83,9 +66,7 @@ class SplashActivity : DynamicSplashActivity() {
     }
 
     override fun doBehindSplash() {
-        setupNotificationWorker()
         setupAlMarkwon()
-        setupFresco()
         setupAds()
         setAppShortcuts()
     }
@@ -204,50 +185,10 @@ class SplashActivity : DynamicSplashActivity() {
         }
     }
 
-    private fun setupFresco() {
-        val requestListeners: MutableSet<RequestListener> = HashSet()
-        if (BuildConfig.DEBUG) {
-            requestListeners.add(RequestLoggingListener())
-            FLog.setMinimumLoggingLevel(FLog.VERBOSE);
-        }
-        val config =
-            OkHttpImagePipelineConfigFactory.newBuilder(context, OkHttpClient()) // other setters
-                .setRequestListeners(requestListeners)
-                .build()
-        BigImageViewer.initialize(FrescoImageLoader.with(this.applicationContext, config))
-    }
-
     private fun setupAlMarkwon() {
         AlMarkwonFactory.init(this.applicationContext)
     }
 
-    private fun setupNotificationWorker() {
-        if (context.loggedIn()) {
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-
-            val interval = when (context.getString("notification_refresh_interval", "0")) {
-                "0" -> 15
-                "1" -> 20
-                "2" -> 25
-                "3" -> 30
-                else -> 15
-            }
-            val periodicWork =
-                PeriodicWorkRequestBuilder<NotificationWorker>(interval.toLong(), TimeUnit.MINUTES)
-                    .setConstraints(constraints).build()
-
-            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                NotificationWorker.NOTIFICATION_WORKER_TAG,
-                ExistingPeriodicWorkPolicy.REPLACE,
-                periodicWork
-            )
-        } else {
-            WorkManager.getInstance(this)
-                .cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
-        }
-    }
 
     override fun onPostSplash() {
         startActivity(Intent(this, MainActivity::class.java))

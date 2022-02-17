@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.common.preference
 
-import android.app.Application
 import android.content.Context
 import androidx.work.WorkManager
 import com.auth0.android.jwt.JWT
@@ -10,15 +9,15 @@ import com.pranavpandey.android.dynamic.theme.DynamicPalette
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
-import com.revolgenx.anilib.user.data.model.UserPrefModel
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel
 import com.revolgenx.anilib.notification.service.NotificationWorker
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.type.UserTitleLanguage
+import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.util.shortcutAction
 
-private const val userModelKey = "user_model_key"
+private const val userModelKey = "save_user_model_key"
 private const val loggedInKey = "logged_in_key"
 private const val tokenKey = "token_key"
 private const val titleKey = "title_key"
@@ -30,7 +29,7 @@ private const val sharedPrefSyncKey = "sharedPrefSyncKey"
 private const val updateProfileColorKey = "updateProfileColorKey"
 private const val recentAnimeListStatusKey = "recentAnimeListStatusKey"
 private const val recentMangaListStatusKey = "recentMangaListStatusKey"
-private const val listEditOrBrowseKey = "list_edit_or_browse_key"
+private const val media_info_or_list_editor_key = "media_info_or_list_editor_key"
 
 
 private const val recent_anime_list_status_key = "recent_anime_list_status_key"
@@ -58,10 +57,10 @@ fun Context.userName() = getUserPrefModel(this).name
 fun Context.userScoreFormat() =
     getUserPrefModel(this).mediaListOptions!!.scoreFormat!!
 
-private var userPrefModelPref: UserPrefModel? = null
+private var userModel: UserModel? = null
 
-fun Context.saveBasicUserDetail(userPrefModel: UserPrefModel) {
-    userPrefModelPref = userPrefModel
+fun Context.saveBasicUserDetail(userPrefModel: UserModel) {
+    userModel = userPrefModel
     this.putString(userModelKey, Gson().toJson(userPrefModel))
 
     if (shouldUpdateProfileColor(this)) {
@@ -103,39 +102,36 @@ fun saveUserAccentColor(it: String) {
     ThemeController.accentColor = accentColorToSave
 }
 
-fun getUserPrefModel(context: Context): UserPrefModel {
-    if (userPrefModelPref == null) {
-        userPrefModelPref =
-            Gson().fromJson(context.getString(userModelKey, ""), UserPrefModel::class.java)
-                ?: UserPrefModel().also { model ->
+fun getUserPrefModel(context: Context): UserModel {
+    if (userModel == null) {
+        userModel =
+            Gson().fromJson(context.getString(userModelKey, ""), UserModel::class.java)
+                ?: UserModel().also { model ->
                     model.name = context.getString(R.string.app_name)
                 }
     }
 
-    if (userPrefModelPref!!.options == null) {
-        userPrefModelPref!!.options =
+    if (userModel!!.options == null) {
+        userModel!!.options =
             UserOptionsModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
     }
 
-    if (userPrefModelPref!!.mediaListOptions == null) {
-        userPrefModelPref!!.mediaListOptions = MediaListOptionModel().also { mediaListOptionModel ->
+    if (userModel!!.mediaListOptions == null) {
+        userModel!!.mediaListOptions = MediaListOptionModel().also { mediaListOptionModel ->
             mediaListOptionModel.scoreFormat = ScoreFormat.POINT_100.ordinal
         }
     }
 
-    return userPrefModelPref!!
+    return userModel!!
 }
 
 
 private fun removeBasicUserDetail(context: Context) {
-    userPrefModelPref = UserPrefModel().also {
+    userModel = UserModel().also {
         it.name = context.getString(R.string.app_name)
-        it.mediaListOptions = MediaListOptionModel().also { option ->
-            option.scoreFormat = ScoreFormat.UNKNOWN__.ordinal
-        }
         it.options = UserOptionsModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
     }
-    context.putString(userModelKey, Gson().toJson(userPrefModelPref))
+    context.putString(userModelKey, Gson().toJson(userModel))
 }
 
 fun Context.logOut() {
@@ -260,4 +256,4 @@ fun mangaListStatusHistory(context: Context, value:String) = context.putString(r
 
 fun recentMangaListStatus(context: Context) = context.getInt(recentMangaListStatusKey, 0)
 
-fun listEditOrBrowse(context: Context) = context.getBoolean(listEditOrBrowseKey, true)
+fun openMediaInfoOrListEditor(context: Context) = context.getBoolean(media_info_or_list_editor_key, false)

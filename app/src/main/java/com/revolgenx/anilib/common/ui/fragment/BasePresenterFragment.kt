@@ -48,7 +48,7 @@ abstract class BasePresenterFragment<M : Any>() :
 
     open protected var gridMinSpan = 1
     open protected var gridMaxSpan = 2
-    open protected var autoAddLayoutManager = true
+    open protected val autoAddLayoutManager = true
 
     var span: Int = 1
 

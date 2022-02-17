@@ -39,7 +39,7 @@ class ActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
     override val baseSource: Source<ActivityUnionModel>
         get() = viewModel.source ?: createSource()
 
-    override var autoAddLayoutManager: Boolean = false
+    override val autoAddLayoutManager: Boolean = false
 
     private val viewModel by viewModel<ActivityUnionViewModel>()
     private val textComposerViewModel by sharedViewModel<ActivityTextComposerViewModel>()

@@ -5,15 +5,15 @@ import androidx.core.os.bundleOf
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.friend.data.model.FriendModel
 import com.revolgenx.anilib.friend.presenter.UserFriendPresenter
 import com.revolgenx.anilib.friend.viewmodel.FriendViewModel
+import com.revolgenx.anilib.user.data.model.UserModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UserFriendFragment : BasePresenterFragment<FriendModel>() {
-    override val basePresenter: Presenter<FriendModel>
+class UserFriendFragment : BasePresenterFragment<UserModel>() {
+    override val basePresenter: Presenter<UserModel>
         get() = UserFriendPresenter(requireContext())
-    override val baseSource: Source<FriendModel>
+    override val baseSource: Source<UserModel>
         get() = viewModel.source ?: createSource()
 
 
@@ -28,7 +28,7 @@ class UserFriendFragment : BasePresenterFragment<FriendModel>() {
         }
     }
 
-    override fun createSource(): Source<FriendModel> {
+    override fun createSource(): Source<UserModel> {
         return viewModel.createSource()
     }
 

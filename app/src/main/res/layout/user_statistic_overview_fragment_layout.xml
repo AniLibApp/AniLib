@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/totalCountTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/episodeWatched"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/daysWatchedTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/dayPlannedTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/statsStandardDeviationTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <com.revolgenx.anilib.ui.view.header.CustomDynamicHeader
+                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                         android:id="@+id/stats_mean_score_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
