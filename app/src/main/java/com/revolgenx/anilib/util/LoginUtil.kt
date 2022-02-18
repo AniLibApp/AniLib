@@ -14,6 +14,7 @@ fun Fragment.loginContinue(showLoginMsg: Boolean = true, callback: () -> Unit) {
 fun Context.loginContinue(showLoginMsg: Boolean = true, callback: () -> Unit) {
     if (loggedIn()) {
         callback.invoke()
+        return
     }
     if (showLoginMsg) {
         makeToast(R.string.please_log_in, null, R.drawable.ic_person)
