@@ -52,14 +52,14 @@ fun Fragment.setupWithViewPager2(
     tab.text = titles[position]
 }.also { mediator ->
     mediator.attach()
-    viewLifecycleOwnerLiveData.observe(viewLifecycleOwner) { owner ->
-        when (owner.lifecycle.currentState) {
-            Lifecycle.State.DESTROYED -> {
-                mediator.detach()
-            }
-            else -> {}
+    val lifecycleObserver = object : LifecycleObserver {
+        @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        fun onDestroy() {
+            mediator.detach()
         }
+
     }
+    viewLifecycleOwner.lifecycle.addObserver(lifecycleObserver)
 }
 
 fun Fragment.setupWithViewPager2(
@@ -76,19 +76,11 @@ fun Fragment.setupWithViewPager2(
         @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         fun onDestroy() {
             mediator.detach()
-            viewLifecycleOwner.lifecycle.removeObserver(this)
         }
 
     }
     viewLifecycleOwner.lifecycle.addObserver(lifecycleObserver)
 }
-
-fun TabLayout.setupWithViewPager2(
-    viewpager2: ViewPager2,
-    titles: Array<String>
-) = TabLayoutMediator(this, viewpager2) { tab, position ->
-    tab.text = titles[position]
-}.also { it.attach() }
 
 
 fun Fragment.registerOnPageChangeCallback(
@@ -101,7 +93,6 @@ fun Fragment.registerOnPageChangeCallback(
         @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         fun onDestroy() {
             viewpager2.unregisterOnPageChangeCallback(callback)
-            viewLifecycleOwner.lifecycle.removeObserver(this)
         }
 
     }

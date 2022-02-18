@@ -13,6 +13,7 @@ import com.revolgenx.anilib.constant.ALAiringSort
 import com.revolgenx.anilib.databinding.AiringFilterDialogLayoutBinding
 import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
+import com.revolgenx.anilib.util.loginContinue
 
 class AiringFilterBottomSheet : DynamicBottomSheetFragment<AiringFilterDialogLayoutBinding>() {
     companion object {
@@ -40,7 +41,7 @@ class AiringFilterBottomSheet : DynamicBottomSheetFragment<AiringFilterDialogLay
         binding.apply {
             showAllAiringSwitch.isChecked = !airingField.notYetAired
 
-            if (requireContext().loggedIn()) {
+            loginContinue(false) {
                 showFromWatchListSwitch.visibility = View.VISIBLE
                 showFromPlanningListSwitch.visibility = View.VISIBLE
                 showFromPlanningListSwitch.isChecked = airingField.showFromPlanning

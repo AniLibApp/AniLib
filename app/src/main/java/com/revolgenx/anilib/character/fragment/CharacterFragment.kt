@@ -14,6 +14,7 @@ import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.prettyNumberFormat
 import com.revolgenx.anilib.character.viewmodel.CharacterViewModel
 import com.revolgenx.anilib.infrastructure.event.OpenImageEvent
+import com.revolgenx.anilib.util.loginContinue
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
@@ -105,10 +106,8 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
 
     private fun initListener() {
         binding.characterFavLayout.setOnClickListener {
-            if (requireContext().loggedIn()) {
+            loginContinue {
                 viewModel.toggleCharacterFav(viewModel.toggleField)
-            } else {
-                makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
         }
     }

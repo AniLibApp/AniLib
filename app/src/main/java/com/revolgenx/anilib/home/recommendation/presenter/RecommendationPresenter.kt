@@ -28,6 +28,7 @@ import com.revolgenx.anilib.type.RecommendationRating
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.home.recommendation.viewmodel.RecommendationViewModel
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
 class RecommendationPresenter(
@@ -99,10 +100,8 @@ class RecommendationPresenter(
                 }
 
                 recommendedFromImageConstraintLayout.setOnLongClickListener {
-                    if (context.loggedIn()) {
+                    context.loginContinue {
                         OpenMediaListEditorEvent(from.id).postEvent
-                    } else {
-                        context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                     }
                     true
                 }
@@ -136,10 +135,8 @@ class RecommendationPresenter(
                 }
 
                 recommendedImageConstraintLayout.setOnLongClickListener {
-                    if (context.loggedIn()) {
+                    context.loginContinue {
                         OpenMediaListEditorEvent(rec.id).postEvent
-                    } else {
-                        context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                     }
                     true
                 }

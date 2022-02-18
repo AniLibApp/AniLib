@@ -16,6 +16,7 @@ import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
 class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPresenterBinding, MediaModel>(context) {
@@ -73,10 +74,8 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
             }
 
             root.setOnLongClickListener {
-                if (context.loggedIn()) {
+                context.loginContinue {
                     OpenMediaListEditorEvent(item.id).postEvent
-                } else {
-                    context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                 }
                 true
             }

@@ -10,6 +10,7 @@ import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.databinding.ApplicationSettingFragmentLayoutBinding
 import com.revolgenx.anilib.app.setting.dialog.DiscoverOrderDialog
 import com.revolgenx.anilib.app.setting.dialog.HomePageOrderDialog
+import com.revolgenx.anilib.util.loginContinue
 
 class ApplicationSettingFragment : BaseToolbarFragment<ApplicationSettingFragmentLayoutBinding>() {
 
@@ -27,7 +28,7 @@ class ApplicationSettingFragment : BaseToolbarFragment<ApplicationSettingFragmen
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (requireContext().loggedIn()) {
+        loginContinue(false) {
             binding.mediaTitlePreference.isEnabled = false
         }
 

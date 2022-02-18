@@ -35,6 +35,7 @@ import com.revolgenx.anilib.ui.view.GenreLayout
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.view.score.MediaScoreBadge
 import com.revolgenx.anilib.user.data.model.UserModel
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
 class MediaListCollectionPresenter(
@@ -259,10 +260,8 @@ class MediaListCollectionPresenter(
     }
 
     private fun openMediaListEditor(context: Context, item: MediaModel) {
-        if (context.loggedIn()) {
+        context.loginContinue {
             OpenMediaListEditorEvent(item.id).postEvent
-        } else {
-            context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
         }
     }
 

@@ -151,6 +151,7 @@
                             android:text="@string/description"
                             android:textSize="14sp"
                             app:adt_colorType="accent"
+                            app:adt_contrastWithColorType="surface"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/translate_switch"
                             app:layout_constraintHorizontal_bias="0"

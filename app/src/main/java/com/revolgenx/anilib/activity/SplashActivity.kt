@@ -4,22 +4,18 @@ import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.graphics.drawable.Icon
 import android.os.Build
-import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
-import com.google.android.gms.ads.MobileAds
 import com.pranavpandey.android.dynamic.support.splash.activity.DynamicSplashActivity
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
-import com.revolgenx.anilib.common.preference.disableAds
 import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.util.LauncherShortcutKeys
 import com.revolgenx.anilib.util.LauncherShortcuts
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.shortcutAction
 import java.util.*
 
@@ -49,25 +45,14 @@ class SplashActivity : DynamicSplashActivity() {
         return 300
     }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-    }
-
     override fun onViewCreated(view: View) {
         mSplash = view.findViewById(R.id.splash_image)
     }
 
-
     override fun getStatusBarColor(): Int {
         return dynamicBackgroundColor
     }
-
-    override fun onPreSplash() {
-    }
-
     override fun doBehindSplash() {
-        setupAlMarkwon()
-        setupAds()
         setAppShortcuts()
     }
 
@@ -142,7 +127,7 @@ class SplashActivity : DynamicSplashActivity() {
             anilibShortcuts.add(radioShortcut)
 
 
-            if (loggedIn()) {
+            loginContinue(false){
                 val notificationShortcut = createShortcut(
                     "notification_shortcut",
                     getString(R.string.notification),
@@ -177,18 +162,6 @@ class SplashActivity : DynamicSplashActivity() {
             .setIntent(intent)
             .build()
     }
-
-
-    private fun setupAds() {
-        if (!disableAds()) {
-            MobileAds.initialize(this.applicationContext)
-        }
-    }
-
-    private fun setupAlMarkwon() {
-        AlMarkwonFactory.init(this.applicationContext)
-    }
-
 
     override fun onPostSplash() {
         startActivity(Intent(this, MainActivity::class.java))

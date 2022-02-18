@@ -10,6 +10,7 @@ import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.databinding.SettingFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.*
+import com.revolgenx.anilib.util.loginContinue
 
 class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
 
@@ -64,7 +65,7 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
             OpenSettingEvent(SettingEventTypes.TRANSLATION).postEvent
         }
 
-        if(requireContext().loggedIn()){
+        loginContinue(false) {
             binding.aboutItemView.visibility = View.VISIBLE
             binding.aboutItemView.setOnClickListener {
                 OpenSettingEvent(SettingEventTypes.ABOUT).postEvent

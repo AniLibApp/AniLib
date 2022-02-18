@@ -70,6 +70,8 @@ open class App : DynamicApplication() {
             androidContext(this@App)
             modules(getKoinModules())
         }
+        setupAds()
+        setupAlMarkwon()
     }
 
     protected open fun getKoinModules() = listOf(
@@ -127,6 +129,18 @@ open class App : DynamicApplication() {
         }
     }
 
+
+    private fun setupAds() {
+        if (!disableAds()) {
+            MobileAds.initialize(this.applicationContext)
+        }
+    }
+
+
+
+    private fun setupAlMarkwon() {
+        AlMarkwonFactory.init(this.applicationContext)
+    }
 
     override fun getLocale(): Locale? {
         return Locale(getApplicationLocale())

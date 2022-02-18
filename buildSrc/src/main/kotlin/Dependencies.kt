@@ -59,7 +59,7 @@ object LibraryVersion {
     const val androidbuttonprogress_version = "1.1.0"
     const val calendarview_version = "1.0.1"
     const val room_version = "2.4.1"
-    const val firebase_bom_version = "29.0.4"
+    const val firebase_bom_version = "29.1.0"
 
 
 

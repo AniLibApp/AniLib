@@ -9,7 +9,14 @@ import android.os.Looper
 import android.view.*
 import androidx.annotation.*
 import androidx.core.view.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager.widget.ViewPager
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.R
@@ -202,7 +209,8 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 discoverContainerFragment
             )
         )
-        if (loggedIn()) {
+
+        loginContinue(false) {
             menuList.add(
                 HomeMenuItem(
                     R.id.list_navigation_menu,
@@ -664,6 +672,17 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         baseFragment: BaseFragment,
         transactionAnimation: FragmentAnimationType = FragmentAnimationType.FADE
     ) {
+//
+//        val lifecycleObserver = object : LifecycleObserver {
+//            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+//            fun onResume() {
+//                Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+//                    param(FirebaseAnalytics.Param.SCREEN_NAME, baseFragment.javaClass.simpleName)
+//                    param(FirebaseAnalytics.Param.SCREEN_CLASS, baseFragment.javaClass.simpleName)
+//                }
+//            }
+//        }
+//        baseFragment.viewLifecycleOwner.lifecycle.addObserver(lifecycleObserver)
         getTransactionWithAnimation(transactionAnimation)
             .add(R.id.main_fragment_container, baseFragment)
             .addToBackStack(null).commit()

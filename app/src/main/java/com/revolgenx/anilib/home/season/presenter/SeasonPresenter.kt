@@ -21,6 +21,7 @@ import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
 
@@ -109,10 +110,8 @@ class SeasonPresenter(context: Context) :
             }
 
             root.setOnLongClickListener {
-                if (isLoggedIn) {
+                context.loginContinue {
                     OpenMediaListEditorEvent(item.id).postEvent
-                } else {
-                    context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                 }
                 true
             }

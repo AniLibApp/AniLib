@@ -21,6 +21,7 @@ import com.revolgenx.anilib.common.presenter.Constant
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
 class MediaPresenter(
@@ -116,10 +117,8 @@ class MediaPresenter(
             }
 
             holder.itemView.setOnLongClickListener {
-                if (context.loggedIn()) {
+                context.loginContinue {
                     OpenMediaListEditorEvent(item.id).postEvent
-                } else {
-                    context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                 }
                 true
             }

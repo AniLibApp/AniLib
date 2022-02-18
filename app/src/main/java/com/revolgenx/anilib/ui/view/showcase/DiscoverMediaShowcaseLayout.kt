@@ -24,6 +24,7 @@ import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.home.discover.viewmodel.ShowCaseViewModel
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.model.MediaModel
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.prettyNumberFormat
 
@@ -139,11 +140,8 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
 
     private fun openListEditor() {
         val media = mediaModel ?: return
-
-        if (context.loggedIn()) {
+        context.loginContinue {
             OpenMediaListEditorEvent(media.id).postEvent
-        } else {
-            context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
         }
     }
 
