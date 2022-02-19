@@ -54,8 +54,6 @@ class MediaListCollectionVM(
 
     private var mediaListCollectionModel: MediaListCollectionModel? = null
 
-    var filteredMediaListCollection: FilteredMediaListGroupModel? = null
-
     val groupNamesWithCount = MutableLiveData<Map<String, Int>>()
 
     val sourceLiveData = MutableLiveData<MediaListCollectionSource>()
@@ -168,11 +166,6 @@ class MediaListCollectionVM(
                             ?: emptyList()
 
                     val filteredList = getFilteredList(mediaListEntries)
-
-                    filteredMediaListCollection = FilteredMediaListGroupModel().also { model ->
-                        model.entries = filteredList
-                        model.user = mediaListCollectionModel!!.user
-                    }
                     sourceLiveData.postValue(MediaListCollectionSource(Resource.success(filteredList)))
                 } catch (e: Exception) {
                     Timber.e(e)
@@ -231,11 +224,5 @@ class MediaListCollectionVM(
                 it.sortedWith(sortingComparator)
             }
         }.toMutableList()
-    }
-
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
     }
 }

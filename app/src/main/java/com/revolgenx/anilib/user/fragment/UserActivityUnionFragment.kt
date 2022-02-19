@@ -16,6 +16,7 @@ import com.revolgenx.anilib.constant.AlActivityType
 import com.revolgenx.anilib.databinding.UserActivityUnionFragmentLayoutBinding
 import com.revolgenx.anilib.infrastructure.event.OpenActivityMessageComposer
 import com.revolgenx.anilib.infrastructure.event.OpenActivityTextComposer
+import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.ui.presenter.ActivityUnionPresenter
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
@@ -91,7 +92,7 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
         sharedViewModel.hasUserData ?: return
 
         if (savedInstanceState == null) {
-            with(viewModel.field) {
+            viewModel.field = ActivityUnionField().apply {
                 userId = sharedViewModel.userId
                 userName = sharedViewModel.userName
             }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
@@ -13,8 +14,8 @@ import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.ThemeController
 
-class MediaSmileyScoreLayout(context: Context, attributeSet: AttributeSet?, style: Int) :
-    DynamicLinearLayout(context, attributeSet, style) {
+class ListEntrySmileyScoreLayout(context: Context, attributeSet: AttributeSet?, style: Int) :
+    LinearLayout(context, attributeSet, style) {
 
     private val accentColor by lazy {
         DynamicTheme.getInstance().get().accentColor
@@ -74,7 +75,6 @@ class MediaSmileyScoreLayout(context: Context, attributeSet: AttributeSet?, styl
         addView(smileySadImageButton)
         addView(smileyNeutralImageButton)
         addView(smileySmileImageButton)
-        setBackgroundColor(ThemeController.lightSurfaceColor())
 
         smileySmileImageButton.setOnClickListener {
             if (smileyScore == 3) {

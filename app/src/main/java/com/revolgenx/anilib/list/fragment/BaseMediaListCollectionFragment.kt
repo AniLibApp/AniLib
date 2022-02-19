@@ -17,7 +17,7 @@ import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.databinding.MediaListCollectionFragmentBinding
-import com.revolgenx.anilib.list.adapter.MediaListCollectionPresenter
+import com.revolgenx.anilib.list.presenter.MediaListCollectionPresenter
 import com.revolgenx.anilib.list.bottomsheet.MediaListCollectionFilterBottomSheet
 import com.revolgenx.anilib.list.bottomsheet.MediaListDisplaySelectorBottomSheet
 import com.revolgenx.anilib.type.MediaType
@@ -198,10 +198,7 @@ abstract class BaseMediaListCollectionFragment() :
 
     private fun invalidateSource() {
         val source = viewModel.sourceLiveData.value ?: return
-        val user = viewModel.filteredMediaListCollection?.user
-        invalidateAdapter(basePresenter.also {
-            it.listUser = user
-        }, source)
+        invalidateAdapter(basePresenter, source)
     }
 
     private fun updateCurrentGroupWithCount() {

@@ -96,6 +96,8 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                 groupModel.isCompletedList = group.isCompletedList == true
                                 groupModel.entries = group.entries?.mapNotNull {
                                     it?.mediaListEntry?.toModel()?.also { entry ->
+                                        entry.userId = collectionModel.user?.id ?: -1
+                                        entry.user = collectionModel.user
                                         entry.media = it.media?.mediaContent?.toModel()
                                     }
                                 }?.toMutableList()

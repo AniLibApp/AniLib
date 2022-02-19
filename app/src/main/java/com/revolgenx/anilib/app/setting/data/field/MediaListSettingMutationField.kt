@@ -21,13 +21,13 @@ class MediaListSettingMutationField : BaseField<UserMediaListSettingMutation>() 
     override fun toQueryOrMutation(): UserMediaListSettingMutation {
         val animeListOptionsInput = MediaListOptionsInput(
             splitCompletedSectionByFormat = nn(splitCompletedAnimeListByFormat),
-            advancedScoring = nn(advancedScoring),
-            customLists = nn(animeCustomLists),
+            advancedScoring = nnList(advancedScoring),
+            customLists = nnList(animeCustomLists),
             advancedScoringEnabled = nn(advancedScoringEnabled)
         )
         val mangaListOptionsInput = MediaListOptionsInput(
             splitCompletedSectionByFormat = nn(splitCompletedMangaListByFormat),
-            customLists = nn(mangaCustomLists)
+            customLists = nnList(mangaCustomLists)
         )
         return UserMediaListSettingMutation(
             animeListOptions = nn(animeListOptionsInput),

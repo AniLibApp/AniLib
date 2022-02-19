@@ -5,55 +5,51 @@ import android.text.InputType
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.revolgenx.anilib.type.ScoreFormat
-import com.revolgenx.anilib.ui.view.MediaSmileyScoreLayout
+import com.revolgenx.anilib.ui.view.ListEntrySmileyScoreLayout
+import com.revolgenx.anilib.ui.view.widgets.AlCardView
 import com.revolgenx.anilib.ui.view.widgets.AlCountEditTextLayout
 
 class AlListEditorScoreLayout : FrameLayout {
-    var onScoreChangeListener: ((score:Double)->Unit)? = null
+    var onScoreChangeListener: ((score: Double) -> Unit)? = null
     var scoreFormatType = ScoreFormat.POINT_100
         set(value) {
             field = value
             when (value) {
                 ScoreFormat.POINT_100 -> {
-                    alSmileyScoreLayout.visibility = GONE
+                    smileyContainer.visibility = GONE
                     alCountEditTextLayout.inputType = InputType.TYPE_CLASS_NUMBER
                     alCountEditTextLayout.max = 100
                 }
                 ScoreFormat.POINT_10_DECIMAL -> {
-                    alSmileyScoreLayout.visibility = GONE
+                    smileyContainer.visibility = GONE
                     alCountEditTextLayout.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
                     alCountEditTextLayout.max = 10
                 }
                 ScoreFormat.POINT_10 -> {
-                    alSmileyScoreLayout.visibility = GONE
+                    smileyContainer.visibility = GONE
                     alCountEditTextLayout.inputType = InputType.TYPE_CLASS_NUMBER
                     alCountEditTextLayout.max = 10
                 }
                 ScoreFormat.POINT_5 -> {
-                    alSmileyScoreLayout.visibility = GONE
+                    smileyContainer.visibility = GONE
                     alCountEditTextLayout.inputType = InputType.TYPE_CLASS_NUMBER
                     alCountEditTextLayout.max = 5
                 }
-                ScoreFormat.POINT_3->{
+                ScoreFormat.POINT_3 -> {
                     alCountEditTextLayout.visibility = GONE
-                    alSmileyScoreLayout.visibility = VISIBLE
+                    smileyContainer.visibility = VISIBLE
                 }
                 else -> {}
             }
         }
 
-    var mediaListScore = 0.0
-
-    private val alCountEditTextLayout: AlCountEditTextLayout
-    private val alSmileyScoreLayout: MediaSmileyScoreLayout
+    private lateinit var alCountEditTextLayout: AlCountEditTextLayout
+    private lateinit var alSmileyScoreLayout: ListEntrySmileyScoreLayout
+    private lateinit var smileyContainer: AlCardView
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet) {
-        alCountEditTextLayout = AlCountEditTextLayout(context, attributeSet)
-        alSmileyScoreLayout = MediaSmileyScoreLayout(context, attributeSet)
-        addView(alCountEditTextLayout)
-        addView(alSmileyScoreLayout)
-        initListener()
+        initView()
     }
 
     constructor(context: Context, attributeSet: AttributeSet?, defStyle: Int) : super(
@@ -61,14 +57,20 @@ class AlListEditorScoreLayout : FrameLayout {
         attributeSet,
         defStyle
     ) {
-        alCountEditTextLayout = AlCountEditTextLayout(context, attributeSet, defStyle)
-        alSmileyScoreLayout = MediaSmileyScoreLayout(context, attributeSet, defStyle)
+        initView()
+    }
+
+    private fun initView() {
+        alCountEditTextLayout = AlCountEditTextLayout(context)
+        alSmileyScoreLayout = ListEntrySmileyScoreLayout(context)
+        smileyContainer = AlCardView(context)
+        smileyContainer.addView(alSmileyScoreLayout)
         addView(alCountEditTextLayout)
-        addView(alSmileyScoreLayout)
+        addView(smileyContainer)
         initListener()
     }
 
-    private fun initListener(){
+    private fun initListener() {
         alCountEditTextLayout.onCountChangeListener = {
             onScoreChangeListener?.invoke(it)
         }
@@ -79,7 +81,6 @@ class AlListEditorScoreLayout : FrameLayout {
     }
 
     fun updateScore(score: Double) {
-        mediaListScore = score
         when (scoreFormatType) {
             ScoreFormat.POINT_3 -> {
                 alSmileyScoreLayout.smileyScore = score.toInt()

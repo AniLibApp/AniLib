@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.list.adapter
+package com.revolgenx.anilib.list.presenter
 
 import android.content.Context
 import android.graphics.Color
@@ -20,7 +20,6 @@ import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.common.presenter.Constant
 import com.revolgenx.anilib.constant.MediaListDisplayMode
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.*
 import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
@@ -32,7 +31,6 @@ import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.view.GenreLayout
-import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.view.score.MediaScoreBadge
 import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.util.loginContinue
