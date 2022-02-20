@@ -26,7 +26,7 @@ import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.databinding.MediaListEntryFragmentLayoutBinding
 import com.revolgenx.anilib.entry.data.model.UserMediaModel
 import com.revolgenx.anilib.entry.viewmodel.MediaListEntryVM
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
@@ -173,9 +173,9 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
         val media = mediaModel ?: return
 
         val statusListRes = if (media.isAnime()) {
-            R.array.media_list_status
+            R.array.anime_media_list_entry_status
         } else {
-            R.array.media_list_manga_status
+            R.array.manga_media_list_entry_status
         }
 
         val statusItems = requireContext().resources.getStringArray(statusListRes).map {
@@ -187,12 +187,12 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
 
         saveField.status?.let {
             statusSpinner.setSelection(
-                MediaListStatusEditor.from(it).ordinal
+                MediaListStatusEditor.fromMediaListStatus(it).ordinal
             )
         }
 
         statusSpinner.onItemSelected {
-            saveField.status = MediaListStatusEditor.values()[it].status
+            saveField.status = MediaListStatusEditor.toMediaListStatus(it)
         }
     }
 

@@ -10,8 +10,8 @@ import com.revolgenx.anilib.common.preference.enableMlTranslation
 import com.revolgenx.anilib.common.preference.inUseMlLanguageModel
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.databinding.TranslationSettingFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenSettingEvent
-import com.revolgenx.anilib.infrastructure.event.SettingEventTypes
+import com.revolgenx.anilib.common.event.OpenSettingEvent
+import com.revolgenx.anilib.common.event.SettingEventTypes
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 

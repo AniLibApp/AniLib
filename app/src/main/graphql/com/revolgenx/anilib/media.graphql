@@ -112,7 +112,7 @@ query MediaStatsQuery($mediaId:Int){
     }
 }
 
-query BrowseSimpleMediaQuery($mediaId:Int){
+query MediaOverViewQuery($mediaId:Int){
     media: Media(id:$mediaId){
         id
         title {
@@ -121,37 +121,15 @@ query BrowseSimpleMediaQuery($mediaId:Int){
         coverImage {
             ... mediaCoverImage
         }
-        mediaListEntry{
-            status
-        }
-
-        popularity
-        favourites
-        bannerImage
-        season
-        seasonYear
-        siteUrl
-        type
-        nextAiringEpisode{
-            id
-            airingAt
-            episode
-        }
-    }
-}
-
-query MediaOverViewQuery($mediaId:Int){
-    media: Media(id:$mediaId){
-        id
-        title {
-            ... mediaTitle
-        }
         nextAiringEpisode{
             id
             timeUntilAiring
+            airingAt
             episode
         }
+        bannerImage
         isAdult
+        isFavourite
         format
         type
         genres
@@ -172,6 +150,11 @@ query MediaOverViewQuery($mediaId:Int){
         source(version: 3)
         hashtag
         synonyms
+        siteUrl
+        mediaListEntry {
+            id
+            status
+        }
         relations{
             edges{
                 relationType(version:2)

@@ -35,8 +35,8 @@ abstract class BaseMediaListCollectionFragment() :
     BaseLayoutFragment<MediaListCollectionFragmentBinding>() {
     abstract val mediaType: MediaType
 
-    protected abstract val listCollectionStoreVM:MediaListCollectionStoreVM
-    protected val viewModel by viewModel<MediaListCollectionVM>{ parametersOf(listCollectionStoreVM)}
+    protected abstract val listCollectionStoreVM: MediaListCollectionStoreVM
+    protected val viewModel by viewModel<MediaListCollectionVM> { parametersOf(listCollectionStoreVM) }
 
     private val containerSharedVM by viewModel<MediaListContainerSharedVM>(owner = {
         ViewModelOwner.from(
@@ -54,7 +54,8 @@ abstract class BaseMediaListCollectionFragment() :
         get() = MediaListCollectionPresenter(
             requireContext(),
             isLoggedInUser,
-            mediaType
+            mediaType,
+            viewModel
         )
 
     private val errorPresenter: Presenter<Unit> by lazy {
@@ -257,7 +258,7 @@ abstract class BaseMediaListCollectionFragment() :
     }
 
 
-    protected fun notifyDataSetChanged(){
+    protected fun notifyDataSetChanged() {
         adapter?.notifyDataSetChanged()
     }
 

@@ -5,7 +5,7 @@ import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.user.data.field.UserStatsField
 import com.revolgenx.anilib.user.data.model.stats.BaseStatisticModel
 import com.revolgenx.anilib.user.service.UserStatsService
-import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
+import com.revolgenx.anilib.common.source.BaseRecyclerSource
 import io.reactivex.disposables.CompositeDisposable
 
 class UserStatsSource(

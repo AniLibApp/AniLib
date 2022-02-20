@@ -8,9 +8,9 @@ import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.entry.data.field.MediaListEntryField
 import com.revolgenx.anilib.entry.data.field.SaveMediaListEntryField
 import com.revolgenx.anilib.entry.data.model.UserMediaModel
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.network.converter.toModel
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.data.model.toModel
 import com.revolgenx.anilib.media.data.model.MediaModel

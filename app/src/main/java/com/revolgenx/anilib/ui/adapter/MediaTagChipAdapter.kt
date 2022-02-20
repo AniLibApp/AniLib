@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.media.data.model.MediaTagModel
 import com.revolgenx.anilib.databinding.ChipTagPresenterBinding
-import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
+import com.revolgenx.anilib.common.event.OpenSearchEvent
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 
 class MediaTagChipAdapter(val onTagInfoClicked: (MediaTagModel) -> Unit) :

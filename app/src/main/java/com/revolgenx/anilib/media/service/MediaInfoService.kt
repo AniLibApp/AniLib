@@ -2,8 +2,8 @@ package com.revolgenx.anilib.media.service
 
 import com.revolgenx.anilib.character.data.model.CharacterEdgeModel
 import com.revolgenx.anilib.user.data.model.stats.MediaStatsModel
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.field.*
 import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.staff.data.model.StaffEdgeModel
@@ -11,12 +11,6 @@ import io.reactivex.disposables.CompositeDisposable
 
 
 abstract class MediaInfoService(protected val graphRepository: BaseGraphRepository) {
-    abstract fun getSimpleMedia(
-        mediaId: Int?,
-        compositeDisposable: CompositeDisposable,
-        callback: (Resource<MediaModel>) -> Unit
-    )
-
     abstract fun getMediaOverview(
         field: MediaOverviewField,
         compositeDisposable: CompositeDisposable? = null,

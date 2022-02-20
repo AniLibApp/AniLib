@@ -2,8 +2,8 @@ package com.revolgenx.anilib.social.ui.fragments.activity_composer.text
 
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
-import com.revolgenx.anilib.infrastructure.event.OnActivityInfoUpdateEvent
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.event.OnActivityInfoUpdateEvent
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.social.ui.fragments.activity_composer.ActivityComposerContainerFragment
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityTextComposerViewModel
 import com.revolgenx.anilib.ui.view.makeToast

@@ -10,7 +10,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.home.recommendation.data.model.RecommendationModel
-import com.revolgenx.anilib.infrastructure.event.RecommendationEvent
+import com.revolgenx.anilib.home.recommendation.event.RecommendationEvent
 import com.revolgenx.anilib.home.recommendation.presenter.RecommendationPresenter
 import com.revolgenx.anilib.home.recommendation.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.util.EventBusListener
@@ -79,7 +79,7 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() , Ev
     }
 
     @Subscribe()
-    fun onRecommendationEvent(event:RecommendationEvent){
+    fun onRecommendationEvent(event: RecommendationEvent){
         when(event){
             is RecommendationEvent.RecommendationFilterEvent->{
                 viewModel.field.onList = event.onList

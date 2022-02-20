@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.revolgenx.anilib.app.theme.dynamicSurfaceColor
 import com.revolgenx.anilib.databinding.ChipTagPresenterBinding
-import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
+import com.revolgenx.anilib.common.event.OpenSearchEvent
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 
 class MediaGenreChipAdapter() : RecyclerView.Adapter<MediaGenreChipAdapter.GenreChipViewHolder>() {

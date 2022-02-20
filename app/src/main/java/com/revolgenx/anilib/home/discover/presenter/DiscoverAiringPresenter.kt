@@ -13,9 +13,9 @@ import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.DiscoverAiringPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
-import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
+import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
+import com.revolgenx.anilib.common.event.OpenSearchEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.ui.view.makeToast

@@ -29,8 +29,8 @@ import com.revolgenx.anilib.notification.data.model.media.MediaDataChangeNotific
 import com.revolgenx.anilib.notification.data.model.media.MediaDeletionNotificationModel
 import com.revolgenx.anilib.notification.data.model.media.MediaMergeNotificationModel
 import com.revolgenx.anilib.notification.data.model.media.RelatedMediaNotificationModel
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.notification.data.field.NotificationField
 import com.revolgenx.anilib.notification.data.model.NotificationModel
 import com.revolgenx.anilib.notification.data.model.activity.*

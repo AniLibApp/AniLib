@@ -14,7 +14,7 @@ import com.revolgenx.anilib.common.preference.loadBioByDefault
 import com.revolgenx.anilib.databinding.ResourceStatusContainerLayoutBinding
 import com.revolgenx.anilib.databinding.UserActivityGenrePresenterBinding
 import com.revolgenx.anilib.databinding.UserOverviewFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.user.viewmodel.UserOverViewFragmentVM

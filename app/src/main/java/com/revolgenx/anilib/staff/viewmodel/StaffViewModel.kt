@@ -2,7 +2,7 @@ package com.revolgenx.anilib.staff.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.staff.service.StaffService
 import com.revolgenx.anilib.staff.data.field.StaffField
 import com.revolgenx.anilib.staff.data.model.StaffModel

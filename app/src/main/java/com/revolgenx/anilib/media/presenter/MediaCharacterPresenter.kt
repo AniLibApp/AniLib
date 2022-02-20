@@ -11,8 +11,8 @@ import com.revolgenx.anilib.character.data.model.CharacterEdgeModel
 import com.revolgenx.anilib.media.data.model.MediaEdgeModel
 import com.revolgenx.anilib.databinding.AnimeCharacterPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.MangaCharacterPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenCharacterEvent
-import com.revolgenx.anilib.infrastructure.event.OpenStaffEvent
+import com.revolgenx.anilib.common.event.OpenCharacterEvent
+import com.revolgenx.anilib.common.event.OpenStaffEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
 
 class MediaCharacterPresenter(context: Context) :

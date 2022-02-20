@@ -2,9 +2,9 @@ package com.revolgenx.anilib.social.factory
 
 import android.content.Context
 import android.text.Spanned
-import com.revolgenx.anilib.infrastructure.event.OpenImageEvent
-import com.revolgenx.anilib.infrastructure.event.OpenSpoilerContentEvent
-import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
+import com.revolgenx.anilib.common.event.OpenImageEvent
+import com.revolgenx.anilib.common.event.OpenSpoilerContentEvent
+import com.revolgenx.anilib.common.event.OpenUserProfileEvent
 import com.revolgenx.anilib.social.markwon.AlMarkwonCallback
 import com.revolgenx.anilib.util.openLink
 

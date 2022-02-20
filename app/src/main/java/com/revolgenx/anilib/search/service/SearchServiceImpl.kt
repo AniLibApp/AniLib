@@ -2,23 +2,20 @@ package com.revolgenx.anilib.search.service
 
 import com.apollographql.apollo3.api.Query
 import com.revolgenx.anilib.*
-import com.revolgenx.anilib.character.data.model.CharacterImageModel
 import com.revolgenx.anilib.character.data.model.CharacterModel
 import com.revolgenx.anilib.character.data.model.CharacterNameModel
 import com.revolgenx.anilib.character.data.model.toModel
 import com.revolgenx.anilib.common.data.model.BaseModel
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.util.ERROR
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.util.ERROR
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaConnectionModel
 import com.revolgenx.anilib.media.data.model.toModel
 import com.revolgenx.anilib.search.data.field.SearchField
-import com.revolgenx.anilib.staff.data.model.StaffImageModel
 import com.revolgenx.anilib.staff.data.model.StaffModel
 import com.revolgenx.anilib.staff.data.model.StaffNameModel
 import com.revolgenx.anilib.staff.data.model.toModel
 import com.revolgenx.anilib.studio.data.model.StudioModel
-import com.revolgenx.anilib.user.data.model.UserAvatarModel
 import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.user.data.model.toModel
 import io.reactivex.android.schedulers.AndroidSchedulers

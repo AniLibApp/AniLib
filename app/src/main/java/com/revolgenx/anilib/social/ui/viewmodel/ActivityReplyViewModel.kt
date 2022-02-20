@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.social.ui.viewmodel
 
 import com.revolgenx.anilib.social.data.model.LikeableUnionModel
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 import com.revolgenx.anilib.social.data.field.DeleteActivityReplyField
 import com.revolgenx.anilib.social.data.field.ToggleLikeV2Field

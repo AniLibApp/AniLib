@@ -24,8 +24,10 @@ import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.home.season.data.field.SeasonField
 import com.revolgenx.anilib.databinding.DiscoverContainerFragmentBinding
-import com.revolgenx.anilib.infrastructure.event.*
+import com.revolgenx.anilib.common.event.*
 import com.revolgenx.anilib.home.discover.bottomsheet.MediaFilterBottomSheetFragment
+import com.revolgenx.anilib.home.discover.event.SeasonEvent
+import com.revolgenx.anilib.home.recommendation.event.RecommendationEvent
 import com.revolgenx.anilib.home.season.dialog.ShowSeasonHeaderDialog
 import com.revolgenx.anilib.home.recommendation.fragment.RecommendationFragment
 import com.revolgenx.anilib.home.season.fragment.SeasonFragment

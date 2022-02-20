@@ -14,9 +14,9 @@ import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.disableCardStyleInHomeScreen
 import com.revolgenx.anilib.databinding.MediaPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
-import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
+import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
+import com.revolgenx.anilib.common.event.OpenSearchEvent
 import com.revolgenx.anilib.common.presenter.Constant
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel

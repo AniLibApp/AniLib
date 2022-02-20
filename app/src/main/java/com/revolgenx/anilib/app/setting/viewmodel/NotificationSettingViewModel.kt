@@ -1,8 +1,7 @@
 package com.revolgenx.anilib.app.setting.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.notification.service.NotificationService
 import com.revolgenx.anilib.type.NotificationType
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel

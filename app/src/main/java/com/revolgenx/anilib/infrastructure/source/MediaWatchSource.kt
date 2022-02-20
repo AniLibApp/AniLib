@@ -6,7 +6,7 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.extensions.MainSource
 import com.revolgenx.anilib.media.data.field.MediaWatchField
 import com.revolgenx.anilib.media.data.model.MediaStreamingEpisodeModel
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.media.service.MediaInfoService
 import io.reactivex.disposables.CompositeDisposable
 

@@ -8,7 +8,7 @@ import com.revolgenx.anilib.staff.data.model.StaffModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.StaffFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink

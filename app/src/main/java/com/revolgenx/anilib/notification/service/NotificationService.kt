@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.notification.service
 
 import com.revolgenx.anilib.notification.data.model.NotificationModel
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.notification.data.field.NotificationField
 import com.revolgenx.anilib.notification.data.field.UserNotificationMutateField
 import com.revolgenx.anilib.notification.data.field.UserNotificationSettingField

@@ -20,7 +20,7 @@ import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.search.data.field.SearchTypes
 import com.revolgenx.anilib.databinding.*
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
-import com.revolgenx.anilib.infrastructure.event.*
+import com.revolgenx.anilib.common.event.*
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.staff.data.model.StaffModel

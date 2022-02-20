@@ -9,9 +9,9 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.constant.NotificationUnionType
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.NotificationPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenActivityInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
+import com.revolgenx.anilib.common.event.OpenActivityInfoEvent
+import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.common.event.OpenUserProfileEvent
 import com.revolgenx.anilib.notification.data.model.FollowingNotificationModel
 import com.revolgenx.anilib.notification.data.model.activity.*
 import com.revolgenx.anilib.notification.data.model.media.MediaDataChangeNotificationModel

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.infrastructure.event
+package com.revolgenx.anilib.common.event
 
 import org.greenrobot.eventbus.EventBus
 
@@ -13,5 +13,3 @@ abstract class BaseEvent {
         }
 }
 
-class AuthenticateEvent:BaseEvent()
-abstract class CommonEvent:BaseEvent()

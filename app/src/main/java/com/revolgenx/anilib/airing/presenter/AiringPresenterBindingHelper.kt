@@ -4,22 +4,19 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.AiringCompactPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.AiringMinimalListPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.AiringPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
-import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
+import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
+import com.revolgenx.anilib.common.event.OpenSearchEvent
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.string
@@ -44,7 +41,7 @@ object AiringPresenterBindingHelper {
                     .format(media.chapters.naText(), media.volumes.naText())
         }
         mediaStartDateTv.text = context.getString(R.string.startdate_format)
-            .format(media.startDate?.date.naText(), media.endDate?.date?.naText())
+            .format(media.startDate?.date.naText(), media.endDate?.date.naText())
 
         mediaGenreLayout.addGenre(
             media.genres?.take(5)
@@ -195,7 +192,7 @@ object AiringPresenterBindingHelper {
         mediaTitleTv.text = media.title?.title(context)
         blurFrameLayout.background = blurDrawable
         mediaAiringAtHeaderTv.text =
-            context.getString(R.string.ep_1_s_airing_at).format(item.episode ?: 0)
+            context.getString(R.string.ep_1_s_airing_at).format(item.episode)
         mediaAiringAtTv.text = item.airingAtModel?.airingTime
         airingTimeTv.setAiringText(item, false)
         mediaStatusTv.status = media.mediaListEntry?.status
@@ -205,7 +202,6 @@ object AiringPresenterBindingHelper {
         } ?: let {
             mediaStatusTv.text = ""
         }
-
 
         root.setOnClickListener {
             OpenMediaInfoEvent(

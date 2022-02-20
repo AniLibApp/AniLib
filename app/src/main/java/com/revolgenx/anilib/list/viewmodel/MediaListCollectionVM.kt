@@ -12,15 +12,16 @@ import com.revolgenx.anilib.common.preference.loadMediaListCollectionFilter
 import com.revolgenx.anilib.common.preference.mangaListStatusHistory
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.list.data.meta.MediaListCollectionFilterMeta
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.data.sorting.MediaListCollectionSortingComparator
 import com.revolgenx.anilib.list.service.MediaListCollectionService
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.common.viewmodel.BaseAndroidViewModel
-import com.revolgenx.anilib.list.data.model.FilteredMediaListGroupModel
+import com.revolgenx.anilib.entry.service.MediaListEntryService
+import com.revolgenx.anilib.entry.service.increaseProgress
 import com.revolgenx.anilib.list.data.model.MediaListCollectionModel
 import com.revolgenx.anilib.list.source.MediaListCollectionSource
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +33,7 @@ import java.lang.Exception
 class MediaListCollectionVM(
     app: Application,
     private val alMediaListCollectionService: MediaListCollectionService,
+    private val mediaListEntryService: MediaListEntryService,
     private val mediaListCollectionStore: MediaListCollectionStoreVM
 ) : BaseAndroidViewModel(app) {
 
@@ -98,8 +100,9 @@ class MediaListCollectionVM(
             when (it.status) {
                 Status.SUCCESS -> {
                     mediaListCollectionModel = it.data ?: return@getMediaListCollection
-                    if(isLoggedInUser){
-                        mediaListCollectionStore.lists = mediaListCollectionModel?.lists ?: mutableListOf()
+                    if (isLoggedInUser) {
+                        mediaListCollectionStore.lists =
+                            mediaListCollectionModel?.lists ?: mutableListOf()
                     }
                     reEvaluateGroupNameWithCount()
                 }
@@ -113,7 +116,7 @@ class MediaListCollectionVM(
         }
     }
 
-    fun reEvaluateGroupNameWithCount(){
+    fun reEvaluateGroupNameWithCount() {
         val lists = mediaListCollectionModel?.lists ?: return
         val groupNameMap = mutableMapOf<String, Int>()
         groupNameMap["All"] = lists.first { it.name == "All" }.entries!!.count()
@@ -184,6 +187,10 @@ class MediaListCollectionVM(
                 }
             }
         }
+    }
+
+    fun increaseProgress(item: MediaListModel) {
+        mediaListEntryService.increaseProgress(item, compositeDisposable)
     }
 
     private fun getFilteredList(listCollection: List<MediaListModel>): List<MediaListModel> {

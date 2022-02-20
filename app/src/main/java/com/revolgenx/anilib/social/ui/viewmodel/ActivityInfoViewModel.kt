@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.social.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.ActivityInfoField
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.infrastructure.service.ActivityUnionService

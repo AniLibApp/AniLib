@@ -22,28 +22,30 @@ import com.revolgenx.anilib.common.presenter.Constant
 import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.*
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
-import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
+import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
+import com.revolgenx.anilib.common.event.OpenSearchEvent
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.list.data.model.MediaListModel
+import com.revolgenx.anilib.list.viewmodel.MediaListCollectionVM
 import com.revolgenx.anilib.media.data.model.MediaModel
+import com.revolgenx.anilib.media.data.model.isAnime
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.view.GenreLayout
+import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.view.score.MediaScoreBadge
-import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
 class MediaListCollectionPresenter(
     context: Context,
     private val isLoggedInUser: Boolean = false,
-    private val mediaType: MediaType
+    private val mediaType: MediaType,
+    private val viewModel: MediaListCollectionVM
 ) : BasePresenter<ViewBinding, MediaListModel>(context) {
     override val elementTypes: Collection<Int> = listOf(0)
-
-    var listUser: UserModel? = null
 
     private val displayMode
         get() = if (isLoggedInUser) getUserMediaListCollectionDisplayMode(mediaType)
@@ -104,6 +106,7 @@ class MediaListCollectionPresenter(
         super.onBind(page, holder, element)
         val item = element.data ?: return
         val binding: ViewBinding = holder[Constant.PRESENTER_BINDING_KEY] ?: return
+        holder[Constant.PRESENTER_HOLDER_ITEM_KEY] = item
 
         var titleTv: DynamicTextView? = null
         var coverIv: SimpleDraweeView? = null
@@ -186,11 +189,7 @@ class MediaListCollectionPresenter(
                 mediaStatus[status]
             }.naText()
 
-            progressTv?.text = context.getString(R.string.s_slash_s).format(
-                item.progress?.toString().naText(),
-                if (item.media?.type == MediaType.ANIME.ordinal) item.media?.episodes.naText() else item.media?.chapters.naText()
-            )
-
+            progressTv?.updateProgressView(item)
             progressTv?.compoundDrawablesRelative?.get(0)?.setTint(dynamicTextColorPrimary)
 
             genreLayout?.addGenre(item.media?.genres?.take(3)) { genre ->
@@ -228,7 +227,7 @@ class MediaListCollectionPresenter(
             it.root.setOnClickListener {
                 if (openMediaInfoOrListEditor(context)) {
                     openMediaInfo(context, item.media!!)
-                }else{
+                } else {
                     openMediaListEditor(context, item.media!!)
                 }
             }
@@ -236,12 +235,40 @@ class MediaListCollectionPresenter(
             it.root.setOnLongClickListener {
                 if (openMediaInfoOrListEditor(context)) {
                     openMediaListEditor(context, item.media!!)
-                }else{
+                } else {
                     openMediaInfo(context, item.media!!)
                 }
                 true
             }
+
+            mediaListProgressIncrease?.setOnClickListener {
+                viewModel.increaseProgress(item)
+            }
+
+            item.onDataChanged = {
+                when(it.status){
+                    Status.SUCCESS -> {
+                        progressTv?.updateProgressView(item)
+                    }
+                    Status.ERROR -> {
+                        context.makeToast(R.string.operation_failed)
+                    }
+                    Status.LOADING -> {}
+                }
+            }
         }
+    }
+
+    private fun DynamicTextView.updateProgressView(item: MediaListModel) {
+        text = context.getString(R.string.s_slash_s).format(
+            item.progress?.toString().naText(),
+            if (isAnime(item.media)) item.media?.episodes.naText() else item.media?.chapters.naText()
+        )
+    }
+
+    override fun onUnbind(holder: Holder) {
+        super.onUnbind(holder)
+        holder.get<MediaListModel?>(Constant.PRESENTER_HOLDER_ITEM_KEY)?.onDataChanged = null
     }
 
     private fun openMediaInfo(context: Context, item: MediaModel) {

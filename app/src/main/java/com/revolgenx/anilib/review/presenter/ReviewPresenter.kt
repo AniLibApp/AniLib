@@ -8,9 +8,9 @@ import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.ReviewPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenReviewEvent
-import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
+import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.common.event.OpenReviewEvent
+import com.revolgenx.anilib.common.event.OpenUserProfileEvent
 import com.revolgenx.anilib.review.data.model.ReviewModel
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.util.naText

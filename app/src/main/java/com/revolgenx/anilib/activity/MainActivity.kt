@@ -9,21 +9,14 @@ import android.os.Looper
 import android.view.*
 import androidx.annotation.*
 import androidx.core.view.*
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager.widget.ViewPager
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.analytics.ktx.logEvent
-import com.google.firebase.ktx.Firebase
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.appwidget.ui.fragment.AiringWidgetConfigFragment
 import com.revolgenx.anilib.ui.dialog.*
-import com.revolgenx.anilib.infrastructure.event.*
+import com.revolgenx.anilib.common.event.*
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
@@ -70,18 +63,24 @@ import com.revolgenx.anilib.airing.fragment.AiringFragment
 import com.revolgenx.anilib.character.fragment.CharacterContainerFragment
 import com.revolgenx.anilib.friend.fragment.UserFriendContainerFragment
 import com.revolgenx.anilib.home.list.fragment.MediaListCollectionContainerFragment
-import com.revolgenx.anilib.media.fragment.MediaInfoFragment
+import com.revolgenx.anilib.media.fragment.MediaInfoContainerFragment
 import com.revolgenx.anilib.user.fragment.MediaListingFragment
 import com.revolgenx.anilib.notification.fragment.NotificationFragment
 import com.revolgenx.anilib.review.fragment.ReviewComposerFragment
 import com.revolgenx.anilib.review.fragment.ReviewFragment
 import com.revolgenx.anilib.search.fragment.SearchFragment
 import com.revolgenx.anilib.app.setting.fragment.EditTagFilterFragment
+import com.revolgenx.anilib.common.event.AuthenticateEvent
+import com.revolgenx.anilib.common.event.BaseEvent
+import com.revolgenx.anilib.common.event.SessionEvent
 import com.revolgenx.anilib.entry.fragment.MediaListEntryFragment
 import com.revolgenx.anilib.staff.fragment.StaffContainerFragment
 import com.revolgenx.anilib.studio.fragment.StudioFragment
 import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
 import com.revolgenx.anilib.user.fragment.UserMediaListCollectionContainerFragment
+import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
+import com.revolgenx.anilib.home.event.ListContainerFragmentPage
+import com.revolgenx.anilib.home.event.MainActivityPage
 
 class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope, EventBusListener {
     private val job = Job()
@@ -661,7 +660,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
     private fun openMediaInfoCenter(meta: MediaInfoMeta) {
-        addFragmentToMain(MediaInfoFragment.newInstance(meta))
+        addFragmentToMain(MediaInfoContainerFragment.newInstance(meta))
     }
 
     private fun openNotificationCenter() {

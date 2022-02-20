@@ -6,7 +6,7 @@ import com.revolgenx.anilib.app.setting.data.field.MediaListSettingMutationField
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.app.setting.service.SettingService
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 
 class MediaListSettingVM(private val settingService: SettingService) : BaseViewModel() {
     val field = MediaListSettingField()

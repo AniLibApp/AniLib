@@ -13,7 +13,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.constant.AlActivityType
 import com.revolgenx.anilib.databinding.ActivityUnionFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenActivityTextComposer
+import com.revolgenx.anilib.common.event.OpenActivityTextComposer
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.ui.presenter.ActivityUnionPresenter
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel

@@ -182,7 +182,7 @@
             android:layout_marginEnd="4dp"
             app:adt_color="@color/white"
             app:tint="@color/white"
-            app:entries="@array/media_list_status"
+            app:entries="@array/anime_list_status"
             app:srcCompat="@drawable/ic_more_horiz" />
 
     </LinearLayout>

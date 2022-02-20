@@ -10,6 +10,7 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicAccentColor
+import com.revolgenx.anilib.common.event.AuthenticateEvent
 import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
@@ -17,8 +18,8 @@ import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.databinding.UserContainerFragmentBinding
-import com.revolgenx.anilib.infrastructure.event.*
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.event.*
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.dialog.MessageDialog
 import com.revolgenx.anilib.ui.view.makeErrorToast
@@ -29,6 +30,9 @@ import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
+import com.revolgenx.anilib.home.event.ListContainerFragmentPage
+import com.revolgenx.anilib.home.event.MainActivityPage
 
 class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>() {
 

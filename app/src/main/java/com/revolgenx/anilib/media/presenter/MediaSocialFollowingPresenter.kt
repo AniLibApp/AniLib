@@ -8,11 +8,10 @@ import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.media.data.model.MediaSocialFollowingModel
 import com.revolgenx.anilib.databinding.MediaSocialFollowingPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
+import com.revolgenx.anilib.common.event.OpenUserProfileEvent
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.common.presenter.BasePresenter
-import com.revolgenx.anilib.constant.AlaMediaListStatus
 
 class MediaSocialFollowingPresenter(context: Context) :
     BasePresenter<MediaSocialFollowingPresenterLayoutBinding, MediaSocialFollowingModel>(context) {
@@ -46,9 +45,9 @@ class MediaSocialFollowingPresenter(context: Context) :
                 }
             }
             userListStatusTv.text = if (item.type == MediaType.MANGA.ordinal) {
-                mangaListStatus[AlaMediaListStatus.from(item.status!!).ordinal]
+                mangaListStatus[item.status!!]
             } else {
-                animeListStatus[AlaMediaListStatus.from(item.status!!).ordinal]
+                animeListStatus[item.status!!]
             }
 
             var userScore = item.score?.toInt()?.toString()

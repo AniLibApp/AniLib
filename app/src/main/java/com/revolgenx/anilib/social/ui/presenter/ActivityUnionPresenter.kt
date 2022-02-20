@@ -13,7 +13,7 @@ import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.databinding.ListActivityPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.MessageActivityPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.TextActivityPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.*
+import com.revolgenx.anilib.common.event.*
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.data.model.ListActivityModel
 import com.revolgenx.anilib.social.data.model.MessageActivityModel

@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.infrastructure.service.list
 
 import com.revolgenx.anilib.data.field.list.*
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import io.reactivex.disposables.CompositeDisposable
 

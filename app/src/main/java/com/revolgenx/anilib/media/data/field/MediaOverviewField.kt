@@ -1,16 +1,21 @@
 package com.revolgenx.anilib.media.data.field
 
 import com.revolgenx.anilib.MediaOverViewQuery
+import com.revolgenx.anilib.airing.data.model.AiringAtModel
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.airing.data.model.TimeUntilAiringModel
 import com.revolgenx.anilib.character.data.model.*
 import com.revolgenx.anilib.common.data.field.BaseField
 import com.revolgenx.anilib.constant.*
-import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
+import com.revolgenx.anilib.common.repository.network.converter.toModel
+import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.studio.data.model.StudioConnectionModel
 import com.revolgenx.anilib.studio.data.model.StudioEdgeModel
 import com.revolgenx.anilib.studio.data.model.StudioModel
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class MediaOverviewField :
     BaseField<MediaOverViewQuery>() {
@@ -23,6 +28,9 @@ class MediaOverviewField :
 fun MediaOverViewQuery.Media.toModel() = MediaModel().also {
     it.id = id
     it.title = title?.mediaTitle?.toModel()
+    it.coverImage = coverImage?.mediaCoverImage?.toModel()
+    it.bannerImage = bannerImage
+    it.siteUrl = siteUrl
     it.startDate = startDate?.fuzzyDate?.toModel()
     it.endDate = endDate?.fuzzyDate?.toModel()
     it.genres = genres?.filterNotNull()
@@ -44,12 +52,27 @@ fun MediaOverViewQuery.Media.toModel() = MediaModel().also {
     it.source = source.toSource()
     it.hashtag = hashtag
     it.synonyms = synonyms?.filterNotNull()
+    it.isFavourite = isFavourite
+    it.mediaListEntry = MediaListModel().also { listModel ->
+        mediaListEntry?.let { list ->
+            listModel.id = list.id
+            listModel.status = list.status?.ordinal
+        }
+    }
     it.nextAiringEpisode = nextAiringEpisode?.let {
         AiringScheduleModel().also { model ->
             model.episode = it.episode
             model.timeUntilAiring = it.timeUntilAiring
             model.timeUntilAiringModel =
                 TimeUntilAiringModel().also { ti -> ti.time = it.timeUntilAiring.toLong() }
+            model.airingAt = it.airingAt
+            model.airingAtModel = AiringAtModel(
+                LocalDateTime.ofInstant(
+                    Instant.ofEpochSecond(
+                        it.airingAt.toLong()
+                    ), ZoneOffset.systemDefault()
+                )
+            )
         }
     }
     it.relations = relations?.let {

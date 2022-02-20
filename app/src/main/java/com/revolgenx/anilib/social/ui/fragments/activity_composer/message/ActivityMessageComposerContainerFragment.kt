@@ -6,8 +6,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
-import com.revolgenx.anilib.infrastructure.event.OnActivityInfoUpdateEvent
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.event.OnActivityInfoUpdateEvent
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.social.data.model.MessageActivityModel
 import com.revolgenx.anilib.social.ui.fragments.activity_composer.ActivityComposerContainerFragment
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityMessageComposerViewModel

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.core.view.setMargins
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
@@ -15,15 +14,14 @@ import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.home.discover.data.meta.DiscoverOrderItem
-import com.revolgenx.anilib.infrastructure.event.ChangeViewPagerPageEvent
-import com.revolgenx.anilib.infrastructure.event.ListContainerFragmentPage
-import com.revolgenx.anilib.infrastructure.event.MainActivityPage
 import com.revolgenx.anilib.home.discover.presenter.MediaListPresenter
 import com.revolgenx.anilib.infrastructure.source.media_list.MediaListSource
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.home.discover.viewmodel.DiscoverReadingViewModel
-import com.revolgenx.anilib.util.dp
+import com.revolgenx.anilib.home.discover.viewmodel.DiscoverReadingVM
+import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
+import com.revolgenx.anilib.home.event.ListContainerFragmentPage
+import com.revolgenx.anilib.home.event.MainActivityPage
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverReadingFragment : DiscoverWatchingFragment() {
@@ -39,7 +37,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
     private val source: MediaListSource
         get() = viewModel.source ?: viewModel.createSource()
 
-    private val viewModel by viewModel<DiscoverReadingViewModel>()
+    private val viewModel by viewModel<DiscoverReadingVM>()
 
     private val order: Int
         get() = getDiscoverOrderFromType(requireContext(), DiscoverOrderType.READING)

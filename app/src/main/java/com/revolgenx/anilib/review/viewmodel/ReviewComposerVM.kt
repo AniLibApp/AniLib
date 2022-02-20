@@ -3,7 +3,7 @@ package com.revolgenx.anilib.review.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.common.preference.UserPreference
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.review.service.ReviewService
 import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.field.SaveReviewField

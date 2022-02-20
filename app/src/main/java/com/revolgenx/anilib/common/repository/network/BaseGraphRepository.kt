@@ -1,8 +1,6 @@
-package com.revolgenx.anilib.infrastructure.repository.network
+package com.revolgenx.anilib.common.repository.network
 
 import com.apollographql.apollo3.api.*
-import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.Single
 
 interface BaseGraphRepository {

@@ -2,7 +2,7 @@ package com.revolgenx.anilib.user.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 import com.revolgenx.anilib.user.data.field.UserToggleFollowField
 import com.revolgenx.anilib.user.data.model.UserModel

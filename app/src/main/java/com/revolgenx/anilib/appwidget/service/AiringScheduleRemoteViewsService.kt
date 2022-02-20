@@ -18,15 +18,12 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
-import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.airing.service.AiringMediaService
 import com.revolgenx.anilib.common.preference.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber

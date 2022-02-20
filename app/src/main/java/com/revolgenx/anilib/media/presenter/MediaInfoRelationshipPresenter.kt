@@ -10,7 +10,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.BrowserRelationshipPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.media.data.model.MediaEdgeModel
 import com.revolgenx.anilib.util.naText
 

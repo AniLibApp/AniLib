@@ -1,14 +1,16 @@
 package com.revolgenx.anilib.home.discover.viewmodel
 
 import com.revolgenx.anilib.data.field.list.MediaListField
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
 import com.revolgenx.anilib.infrastructure.source.media_list.MediaListSource
 import com.revolgenx.anilib.common.viewmodel.SourceViewModel
+import com.revolgenx.anilib.entry.service.MediaListEntryService
+import com.revolgenx.anilib.entry.service.increaseProgress
 import com.revolgenx.anilib.list.data.model.MediaListModel
 
-open class MediaListViewModel(
-    private val service: MediaListService
+open class MediaListVM(
+    private val service: MediaListService,
+    private val entryService: MediaListEntryService
 ) : SourceViewModel<MediaListSource, MediaListField>() {
     override var field: MediaListField = MediaListField()
 
@@ -18,12 +20,9 @@ open class MediaListViewModel(
     }
 
     fun increaseProgress(
-        model: MediaListModel,
-        callback: (Resource<MediaListModel>) -> Unit
+        item: MediaListModel
     ) {
-
-        // TODO INCREASE SERVICE
-//        entryService.increaseProgress(model, compositeDisposable, callback)
+        entryService.increaseProgress(item, compositeDisposable)
     }
 
 }

@@ -4,9 +4,9 @@ import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.common.data.model.FuzzyDateModel
 import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.fragment.MediaListEntry
-import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
+import com.revolgenx.anilib.common.repository.network.converter.toModel
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
-import com.revolgenx.anilib.media.data.model.toModel
 import com.revolgenx.anilib.user.data.model.UserModel
 
 class MediaListModel : BaseModel() {
@@ -33,6 +33,7 @@ class MediaListModel : BaseModel() {
     var media: MediaModel? = null
     var user: UserModel? = null
 
+    var onDataChanged: ((Resource<MediaListModel>) -> Unit)? = null
 }
 
 fun MediaListEntry.toModel() = MediaListModel().also { model ->
@@ -46,7 +47,8 @@ fun MediaListEntry.toModel() = MediaListModel().also { model ->
     model.priority = priority
     model.private = private == true
     model.hiddenFromStatusLists = hiddenFromStatusLists == true
-    model.customLists = (customLists as? Map<String, Boolean>)?.map { MutablePair(it.key, it.value) }
+    model.customLists =
+        (customLists as? Map<String, Boolean>)?.map { MutablePair(it.key, it.value) }
 //    model.advanceScores = advancedScores as? Map<String, Double>
     model.notes = notes
     model.updatedAt = updatedAt

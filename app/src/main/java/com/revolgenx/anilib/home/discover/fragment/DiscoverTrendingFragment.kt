@@ -11,7 +11,7 @@ import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
 import com.revolgenx.anilib.home.discover.data.meta.DiscoverOrderItem
 import com.revolgenx.anilib.common.preference.getDiscoverOrderFromType
 import com.revolgenx.anilib.common.preference.isDiscoverOrderEnabled
-import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
+import com.revolgenx.anilib.common.event.OpenSearchEvent
 import com.revolgenx.anilib.home.discover.presenter.MediaPresenter
 import com.revolgenx.anilib.infrastructure.source.discover.DiscoverMediaSource
 import com.revolgenx.anilib.type.MediaSort

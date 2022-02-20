@@ -1,18 +1,13 @@
 package com.revolgenx.anilib.media.service
 
-import com.apollographql.apollo3.api.Optional
 import com.github.mikephil.charting.data.Entry
-import com.revolgenx.anilib.BrowseSimpleMediaQuery
-import com.revolgenx.anilib.airing.data.model.AiringAtModel
-import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.character.data.model.*
 import com.revolgenx.anilib.common.data.model.stats.ScoreDistributionModel
 import com.revolgenx.anilib.common.data.model.stats.StatusDistributionModel
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
-import com.revolgenx.anilib.infrastructure.repository.util.ERROR
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.list.data.model.MediaListModel
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.network.converter.toModel
+import com.revolgenx.anilib.common.repository.util.ERROR
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.field.*
 import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.staff.data.model.*
@@ -24,64 +19,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 
 class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     MediaInfoService(graphRepository) {
-
-    override fun getSimpleMedia(
-        mediaId: Int?,
-        compositeDisposable: CompositeDisposable,
-        callback: (Resource<MediaModel>) -> Unit
-    ) {
-        val disposable = graphRepository.request(
-            BrowseSimpleMediaQuery(mediaId = Optional.presentIfNotNull(mediaId))
-        )
-            .map {
-                it.data?.media?.let {
-                    MediaModel().also { model ->
-                        model.id = it.id
-                        model.title = it.title?.mediaTitle?.toModel()
-                        model.coverImage =
-                            it.coverImage?.mediaCoverImage?.toModel()
-                        model.mediaListEntry = it.mediaListEntry?.let {
-                            MediaListModel().also { l ->
-                                l.status = it.status?.ordinal
-                            }
-                        }
-                        model.bannerImage = it.bannerImage ?: model.coverImage?.largeImage
-                        model.popularity = it.popularity
-                        model.favourites = it.favourites
-                        model.season = it.season?.ordinal
-                        model.seasonYear = it.seasonYear
-                        model.type = it.type?.ordinal
-                        model.siteUrl = it.siteUrl
-
-                        model.nextAiringEpisode = it.nextAiringEpisode?.let { next ->
-                            AiringScheduleModel().also { aModel ->
-                                aModel.airingAtModel = AiringAtModel(
-                                    LocalDateTime.ofInstant(
-                                        Instant.ofEpochSecond(
-                                            next.airingAt.toLong()
-                                        ), ZoneOffset.systemDefault()
-                                    )
-                                )
-                                aModel.episode = next.episode
-                            }
-                        }
-                    }
-                }
-            }.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                callback.invoke(Resource.success(it))
-            }, {
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
-            })
-
-        compositeDisposable.add(disposable)
-    }
 
     override fun getMediaOverview(
         field: MediaOverviewField,

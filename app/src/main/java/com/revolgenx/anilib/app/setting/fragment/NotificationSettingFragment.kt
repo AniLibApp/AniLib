@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.*
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.databinding.NotificationSettingFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.type.NotificationType
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.app.setting.viewmodel.NotificationSettingViewModel

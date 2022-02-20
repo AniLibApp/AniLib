@@ -5,7 +5,7 @@ import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.airing.service.AiringMediaService
-import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
+import com.revolgenx.anilib.common.source.BaseRecyclerSource
 import io.reactivex.disposables.CompositeDisposable
 
 class AiringSource(

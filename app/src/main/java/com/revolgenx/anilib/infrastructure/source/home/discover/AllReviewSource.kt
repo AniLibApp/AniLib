@@ -5,7 +5,7 @@ import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.review.data.field.AllReviewField
 import com.revolgenx.anilib.review.data.model.ReviewModel
 import com.revolgenx.anilib.review.service.ReviewService
-import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
+import com.revolgenx.anilib.common.source.BaseRecyclerSource
 import io.reactivex.disposables.CompositeDisposable
 
 class AllReviewSource(

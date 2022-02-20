@@ -2,9 +2,9 @@ package com.revolgenx.anilib.infrastructure.service.favourite
 
 import com.apollographql.apollo3.api.Optional
 import com.revolgenx.anilib.IsFavouriteQuery
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.util.ERROR
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.util.ERROR
+import com.revolgenx.anilib.common.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber

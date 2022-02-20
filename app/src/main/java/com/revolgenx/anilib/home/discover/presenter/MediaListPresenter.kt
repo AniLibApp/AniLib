@@ -4,38 +4,35 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import com.apollographql.apollo3.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.common.preference.UserPreference
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.userName
-import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.databinding.MediaListPresenterBinding
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
-import com.revolgenx.anilib.infrastructure.event.OpenSearchEvent
-import com.revolgenx.anilib.infrastructure.repository.util.Status
-import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
+import com.revolgenx.anilib.common.event.OpenSearchEvent
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.common.presenter.Constant
 import com.revolgenx.anilib.list.data.model.MediaListModel
-import com.revolgenx.anilib.ui.view.makeToast
-import com.revolgenx.anilib.home.discover.viewmodel.MediaListViewModel
+import com.revolgenx.anilib.home.discover.viewmodel.MediaListVM
+import com.revolgenx.anilib.media.data.model.isAnime
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
+import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
 class MediaListPresenter(
     context: Context,
     private val mediaListMeta: MediaListMeta,
-    private val viewModel: MediaListViewModel
+    private val viewModel: MediaListVM
 ) :
     Presenter<MediaListModel>(context) {
 
@@ -80,18 +77,13 @@ class MediaListPresenter(
                 mediaStatus[it]
             }.naText()
 
-            mediaListProgressTv.text = context.getString(R.string.s_slash_s).format(
-                item.progress?.toString().naText(),
-                if (media.type == MediaType.ANIME.ordinal) media.episodes.naText() else media.chapters.naText()
-            )
+            mediaListProgressTv.updateProgressView(item)
 
             mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(dynamicTextColorPrimary)
 
             mediaListGenreLayout.addGenre(media.genres?.take(3)) { genre ->
                 OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
             }
-
-            //TODO SCORE FORMAT
 
             when (item.user?.mediaListOptions?.scoreFormat) {
                 ScoreFormat.POINT_3.ordinal -> {
@@ -115,51 +107,20 @@ class MediaListPresenter(
 
             if (isLoggedInUser) {
                 mediaListProgressIncrease.setOnClickListener {
-                    viewModel.increaseProgress(MediaListModel().also {
-                        it.mediaId = media.id
-                        it.id = item.id
-                        it.progress = (item.progress ?: 0).plus(1)
-                    }) { res ->
-                        when (res.status) {
-                            Status.SUCCESS -> {
-                                if (res.data?.mediaId == media.id) {
-                                    item.progress = res.data.progress
-                                    mediaListProgressTv.text =
-                                        context.getString(R.string.s_slash_s).format(
-                                            item.progress?.toString().naText(),
-                                            if (media.type == MediaType.ANIME.ordinal) media.episodes.naText() else media.chapters.naText()
-                                        )
-                                }
-                            }
-                            Status.ERROR -> {
-                                if (res.exception is ApolloHttpException) {
-                                    when (res.exception.statusCode) {
-                                        HTTP_TOO_MANY_REQUEST -> {
-                                            context.makeToast(
-                                                R.string.too_many_request,
-                                                icon = R.drawable.ic_error
-                                            )
-                                        }
-                                        else -> {
-                                            context.makeToast(
-                                                R.string.operation_failed,
-                                                icon = R.drawable.ic_error
-                                            )
-                                        }
-                                    }
-                                } else {
-                                    context.makeToast(
-                                        R.string.operation_failed,
-                                        icon = R.drawable.ic_error
-                                    )
-                                }
-                            }
-                            Status.LOADING -> {
+                    viewModel.increaseProgress(item)
+                }
 
-                            }
+                item.onDataChanged = {
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            mediaListProgressTv.updateProgressView(item)
                         }
-
+                        Status.ERROR -> {
+                            context.makeToast(R.string.operation_failed)
+                        }
+                        Status.LOADING -> {}
                     }
+
                 }
 
             } else {
@@ -181,13 +142,19 @@ class MediaListPresenter(
             }
 
             mediaListContainer.setOnClickListener {
-                if (context.loggedIn()) {
+                context.loginContinue {
                     OpenMediaListEditorEvent(media.id).postEvent
-                } else {
-                    context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                 }
             }
         }
+    }
+
+    private fun DynamicTextView.updateProgressView(item: MediaListModel) {
+        text =
+            context.getString(R.string.s_slash_s).format(
+                item.progress?.toString().naText(),
+                if (isAnime(item.media)) item.media?.episodes.naText() else item.media?.chapters.naText()
+            )
     }
 
 }

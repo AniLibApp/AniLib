@@ -19,7 +19,7 @@ import com.revolgenx.anilib.app.theme.themeIt
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.StatsDistributionRecyclerLayoutBinding
 import com.revolgenx.anilib.databinding.UserStatisticOverviewFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.data.model.UserModel
@@ -46,7 +46,7 @@ abstract class UserStatisticOverviewFragment :
         requireContext().resources.getStringArray(R.array.media_format)
     }
     private val mediaListStatus by lazy {
-        requireContext().resources.getStringArray(R.array.media_list_status)
+        requireContext().resources.getStringArray(R.array.anime_list_status)
     }
 
     protected open val type:Int = MediaType.ANIME.ordinal

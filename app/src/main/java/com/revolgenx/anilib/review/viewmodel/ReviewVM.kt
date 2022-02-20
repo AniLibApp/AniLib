@@ -2,13 +2,13 @@ package com.revolgenx.anilib.review.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.common.preference.UserPreference
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.review.service.ReviewService
 import com.revolgenx.anilib.review.data.field.RateReviewField
 import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.model.ReviewModel
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.type.ReviewRating
 
 class ReviewVM(private val reviewService: ReviewService) : BaseViewModel() {

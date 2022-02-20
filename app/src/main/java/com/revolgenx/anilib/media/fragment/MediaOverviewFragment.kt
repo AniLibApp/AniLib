@@ -2,7 +2,6 @@ package com.revolgenx.anilib.media.fragment
 
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -35,12 +34,12 @@ import com.revolgenx.anilib.media.data.field.MediaOverviewField
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.MediaOverviewFragmentBinding
-import com.revolgenx.anilib.infrastructure.event.OpenStudioEvent
+import com.revolgenx.anilib.common.event.OpenStudioEvent
 import com.revolgenx.anilib.media.presenter.MediaInfoRelationshipPresenter
 import com.revolgenx.anilib.media.presenter.MediaExternalLinkPresenter
 import com.revolgenx.anilib.media.presenter.MediaMetaPresenter
 import com.revolgenx.anilib.media.presenter.MediaRecommendationPresenter
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.infrastructure.source.MediaOverviewRecommendationSource
 import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
@@ -48,11 +47,12 @@ import com.revolgenx.anilib.ui.adapter.MediaGenreChipAdapter
 import com.revolgenx.anilib.ui.adapter.MediaTagChipAdapter
 import com.revolgenx.anilib.ui.dialog.MediaTagDescriptionDialog
 import com.revolgenx.anilib.media.presenter.MediaOverviewCharacterPresenter
-import com.revolgenx.anilib.util.dp
+import com.revolgenx.anilib.media.viewmodel.MediaInfoContainerSharedVM
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.ui.view.airing.AiringEpisodeView
 import com.revolgenx.anilib.media.viewmodel.MediaOverviewVM
 import com.revolgenx.anilib.studio.data.model.StudioEdgeModel
+import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>() {
@@ -63,6 +63,12 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
         )
 
     private val viewModel by viewModel<MediaOverviewVM>()
+    private val sharedViewModel by viewModel<MediaInfoContainerSharedVM>(owner = {
+        ViewModelOwner.from(
+            this.parentFragment ?: this,
+            this.parentFragment
+        )
+    })
 
     private val recommendationSource: MediaOverviewRecommendationSource
         get() = viewModel.source ?: createRecommendationSource()
@@ -165,8 +171,8 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
 
         binding.initView()
 
-
         viewModel.mediaOverviewLiveData.observe(viewLifecycleOwner) { res ->
+            sharedViewModel.mediaLiveData.value = res
             when (res.status) {
                 Status.SUCCESS -> {
                     binding.resourceStatusLayout.resourceStatusContainer.visibility = View.GONE

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.infrastructure.repository.network
+package com.revolgenx.anilib.common.repository.network
 
 import android.content.Context
 import com.apollographql.apollo3.ApolloClient

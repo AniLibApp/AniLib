@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.UserLoginFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.AuthenticateEvent
-import com.revolgenx.anilib.infrastructure.event.OpenSettingEvent
-import com.revolgenx.anilib.infrastructure.event.SettingEventTypes
+import com.revolgenx.anilib.common.event.AuthenticateEvent
+import com.revolgenx.anilib.common.event.OpenSettingEvent
+import com.revolgenx.anilib.common.event.SettingEventTypes
 import com.revolgenx.anilib.util.openLink
 
 class UserLoginFragment:BaseLayoutFragment<UserLoginFragmentLayoutBinding>(){

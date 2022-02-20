@@ -10,9 +10,9 @@ import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.app.setting.data.meta.TagFilterMetaType
 import com.revolgenx.anilib.app.setting.data.meta.TagFilterSettingMeta
 import com.revolgenx.anilib.databinding.CustomizeFilterFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenSettingEvent
-import com.revolgenx.anilib.infrastructure.event.SettingEventTypes
-import com.revolgenx.anilib.infrastructure.event.TagSettingEventMeta
+import com.revolgenx.anilib.common.event.OpenSettingEvent
+import com.revolgenx.anilib.common.event.SettingEventTypes
+import com.revolgenx.anilib.common.event.TagSettingEventMeta
 
 class CustomizeFilterFragment : BaseToolbarFragment<CustomizeFilterFragmentLayoutBinding>() {
     override var titleRes: Int? = R.string.custom_filters

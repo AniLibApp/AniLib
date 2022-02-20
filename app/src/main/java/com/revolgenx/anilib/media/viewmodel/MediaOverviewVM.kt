@@ -10,7 +10,7 @@ import com.revolgenx.anilib.home.recommendation.data.field.UpdateRecommendationF
 import com.revolgenx.anilib.media.data.model.MediaRecommendationModel
 import com.revolgenx.anilib.home.recommendation.data.model.UpdateRecommendationModel
 import com.revolgenx.anilib.app.setting.store.TranslationStore
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.service.MediaInfoService
 import com.revolgenx.anilib.home.recommendation.service.RecommendationService
 import com.revolgenx.anilib.infrastructure.source.MediaOverviewRecommendationSource

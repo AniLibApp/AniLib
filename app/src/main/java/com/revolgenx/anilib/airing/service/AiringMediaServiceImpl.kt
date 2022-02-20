@@ -5,10 +5,10 @@ import android.os.Looper
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.airing.data.model.*
 import com.revolgenx.anilib.data.field.list.MediaListCollectionIdsField
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.util.ERROR
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.util.ERROR
+import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.model.toModel

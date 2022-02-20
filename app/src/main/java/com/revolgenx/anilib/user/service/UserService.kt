@@ -2,7 +2,7 @@ package com.revolgenx.anilib.user.service
 
 import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.friend.data.field.UserFriendField
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.user.data.field.*
 import com.revolgenx.anilib.user.data.model.UserModel
 import io.reactivex.disposables.CompositeDisposable

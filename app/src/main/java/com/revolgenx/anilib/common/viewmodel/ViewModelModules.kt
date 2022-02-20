@@ -40,9 +40,9 @@ import org.koin.dsl.module
 val viewModelModules = module {
     viewModel { SeasonViewModel(get()) }
     viewModel { MainActivityViewModel(get(), get()) }
-    viewModel { MediaInfoViewModel(get(), get(), get()) }
 
-    //overview
+    //media
+    viewModel { MediaInfoContainerSharedVM(get(), get()) }
     viewModel { MediaOverviewVM(get(), get()) }
     viewModel { MediaWatchViewModel(get()) }
     viewModel { MediaCharacterVM(get()) }
@@ -72,7 +72,7 @@ val viewModelModules = module {
     //list
     viewModel { AnimeListCollectionStoreVM() }
     viewModel { MangaListCollectionStoreVM() }
-    viewModel { parameters -> MediaListCollectionVM(get(), get(), parameters.get()) }
+    viewModel { parameters -> MediaListCollectionVM(get(), get(), get(), parameters.get()) }
     viewModel { MediaListContainerSharedVM() }
     viewModel { MediaListEntryVM(get(), get()) }
 
@@ -122,9 +122,9 @@ val viewModelModules = module {
             get()
         )
     }
-    viewModel { DiscoverWatchingViewModel(get()) }
-    viewModel { DiscoverReadingViewModel(get()) }
-    viewModel { ShowCaseViewModel() }
+    viewModel { DiscoverWatchingVM(get(), get()) }
+    viewModel { DiscoverReadingVM(get(), get()) }
+    viewModel { ShowCaseViewModel(get()) }
 
     //review
     viewModel { ReviewComposerVM(get()) }

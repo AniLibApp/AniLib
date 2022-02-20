@@ -23,13 +23,12 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.AppTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.BuildConfig
-import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.app.theme.Constants
 import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.common.logger.AniLibDebugTree
 import com.revolgenx.anilib.common.logger.LoggerTree
-import com.revolgenx.anilib.infrastructure.repository.networkModules
-import com.revolgenx.anilib.infrastructure.repository.repositoryModules
+import com.revolgenx.anilib.common.repository.networkModules
+import com.revolgenx.anilib.common.repository.repositoryModules
 import com.revolgenx.anilib.notification.service.NotificationWorker
 import com.revolgenx.anilib.infrastructure.service.serviceModule
 import com.revolgenx.anilib.radio.repository.radioApiModules
@@ -40,15 +39,11 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 import java.util.*
 import java.util.concurrent.TimeUnit
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.viewmodel.viewModelModules
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.infrastructure.service.activityServiceModules
 import com.revolgenx.anilib.social.ui.viewmodel.activityViewModelModules
-import com.revolgenx.anilib.util.LauncherShortcutKeys
-import com.revolgenx.anilib.util.LauncherShortcuts
-import com.revolgenx.anilib.util.shortcutAction
 import okhttp3.OkHttpClient
 
 

@@ -5,7 +5,7 @@ import com.revolgenx.anilib.character.data.field.CharacterMediaField
 import com.revolgenx.anilib.character.data.field.CharacterVoiceActorField
 import com.revolgenx.anilib.character.data.model.VoiceActorModel
 import com.revolgenx.anilib.character.data.model.CharacterModel
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import io.reactivex.disposables.CompositeDisposable
 

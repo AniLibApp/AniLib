@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.review.service
 
-import androidx.lifecycle.MutableLiveData
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.review.data.field.AllReviewField
 import com.revolgenx.anilib.review.data.field.RateReviewField
 import com.revolgenx.anilib.review.data.field.ReviewField

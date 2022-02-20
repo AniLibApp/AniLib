@@ -26,7 +26,7 @@ import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.user.data.model.stats.MediaStatsModel
 import com.revolgenx.anilib.databinding.MediaStatsFragmentLayoutBinding
 import com.revolgenx.anilib.media.presenter.RankingsPresenter
-import com.revolgenx.anilib.infrastructure.repository.util.Status.*
+import com.revolgenx.anilib.common.repository.util.Status.*
 import com.revolgenx.anilib.media.presenter.MediaStatusDistributionPresenter
 import com.revolgenx.anilib.media.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.util.prettyNumberFormat

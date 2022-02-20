@@ -2,7 +2,7 @@ package com.revolgenx.anilib.infrastructure.source
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
+import com.revolgenx.anilib.common.source.BaseRecyclerSource
 import com.revolgenx.anilib.media.data.field.MediaRecommendationField
 import com.revolgenx.anilib.media.data.model.MediaRecommendationModel
 import com.revolgenx.anilib.home.recommendation.service.RecommendationService

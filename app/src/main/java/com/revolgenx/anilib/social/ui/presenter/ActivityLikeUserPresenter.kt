@@ -7,7 +7,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.databinding.ActivityLikeUserPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
+import com.revolgenx.anilib.common.event.OpenUserProfileEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
 
 class ActivityLikeUserPresenter(context: Context) :

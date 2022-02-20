@@ -13,12 +13,11 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.disableCardStyleInHomeScreen
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.DiscoverShowCaseLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.home.discover.viewmodel.ShowCaseViewModel
@@ -39,7 +38,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
     private var viewModel: ShowCaseViewModel? = null
 
     private val mediaListStatus by lazy {
-        context.resources.getStringArray(R.array.media_list_status)
+        context.resources.getStringArray(R.array.anime_list_status)
     }
 
     constructor(context: Context) : this(context, null)
@@ -146,7 +145,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
     }
 
 
-    private fun changeMediaListStatus(position: Int) {
+    private fun changeMediaListStatus(status: Int) {
         if (binding == null || this.mediaModel == null || this.viewLifecycleOwner == null || viewModel == null) return
 
         if (!context.loggedIn()) {
@@ -154,10 +153,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
             return
         }
 
-        viewModel!!.saveMediaListEntry(MediaListModel().also {
-            it.mediaId = mediaModel!!.id
-            it.status = position
-        }).observe(viewLifecycleOwner!!) {
+        viewModel!!.changeListEntryStatus(mediaModel!!.id, status).observe(viewLifecycleOwner!!) {
             if (it.status == Status.SUCCESS) {
                 val data = it.data ?: return@observe
                 if (mediaModel!!.mediaListEntry == null) {
@@ -172,7 +168,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
                 }
                 mediaModel!!.mediaListEntry?.status?.let {
                     binding!!.mediaListStatusTv.text =
-                        resources.getStringArray(R.array.media_list_status)[it]
+                        resources.getStringArray(R.array.anime_list_status)[it]
                 }
                 context.makeToast(R.string.saved_successfully)
             } else if (it.status == Status.ERROR) {

@@ -19,7 +19,7 @@ import com.revolgenx.anilib.common.ui.adapter.registerOnPageChangeCallback
 import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.MediaListCollectionContainerFragmentBinding
-import com.revolgenx.anilib.infrastructure.event.OpenNotificationCenterEvent
+import com.revolgenx.anilib.common.event.OpenNotificationCenterEvent
 import com.revolgenx.anilib.list.fragment.AnimeListCollectionFragment
 import com.revolgenx.anilib.list.fragment.BaseMediaListCollectionFragment
 import com.revolgenx.anilib.list.fragment.MangaListCollectionFragment

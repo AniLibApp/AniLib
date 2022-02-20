@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.infrastructure.repository.util
+package com.revolgenx.anilib.common.repository.util
 
 data class Resource<T>(
     val status: Status,

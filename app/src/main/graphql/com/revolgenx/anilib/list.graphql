@@ -50,6 +50,12 @@ query MediaListPageQuery(
     $status:MediaListStatus,
     $sort:[MediaListSort]
 ){
+    user: User(id:$userId
+        , name:$userName){
+        mediaListOptions{
+            scoreFormat
+        }
+    }
     page: Page(page:$page, perPage:$perPage){
         mediaList(userId:$userId
             , userName:$userName
@@ -65,11 +71,7 @@ query MediaListPageQuery(
             completedAt{
                 ... fuzzyDate
             }
-            user{
-                mediaListOptions{
-                    scoreFormat
-                }
-            }
+
             media{
                 ... mediaContent
             }

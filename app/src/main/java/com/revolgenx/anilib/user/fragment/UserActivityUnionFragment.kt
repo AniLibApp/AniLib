@@ -14,8 +14,8 @@ import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.constant.AlActivityType
 import com.revolgenx.anilib.databinding.UserActivityUnionFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenActivityMessageComposer
-import com.revolgenx.anilib.infrastructure.event.OpenActivityTextComposer
+import com.revolgenx.anilib.common.event.OpenActivityMessageComposer
+import com.revolgenx.anilib.common.event.OpenActivityTextComposer
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.ui.presenter.ActivityUnionPresenter

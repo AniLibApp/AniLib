@@ -17,7 +17,7 @@ class MediaStatusDistributionPresenter(context: Context):
     BasePresenter<StatusDistributionLayoutBinding, StatusDistributionModel>(context) {
 
     private val mediaListStatus by lazy {
-        context.resources.getStringArray(R.array.media_list_status)
+        context.resources.getStringArray(R.array.anime_list_status)
     }
     private val mediaListStatusColors by lazy {
         context.resources.getStringArray(R.array.media_list_status_color)

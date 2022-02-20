@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.airing.presenter.AiringPresenterBindingHelper.bindPresenter
-import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.common.preference.getAiringDisplayMode
 import com.revolgenx.anilib.constant.AiringListDisplayMode
 import com.revolgenx.anilib.databinding.AiringCompactPresenterLayoutBinding
@@ -56,11 +54,7 @@ class AiringPresenter(context: Context) :
     }
 
     private val mediaListStatus by lazy {
-        context.resources.getStringArray(R.array.media_list_status)
-    }
-
-    private val blurColor by lazy {
-        DynamicColorUtils.setAlpha(dynamicBackgroundColor, 140)
+        context.resources.getStringArray(R.array.anime_list_status)
     }
 
     private val gradientBlur by lazy {

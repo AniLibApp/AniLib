@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel
 import com.revolgenx.anilib.media.data.field.MediaStatsField
 import com.revolgenx.anilib.user.data.model.stats.MediaStatsModel
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.service.MediaInfoService
 
 class MediaStatsViewModel(private val browseService: MediaInfoService) : BaseViewModel() {

@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.infrastructure.service.media
 
 import com.revolgenx.anilib.media.data.field.MediaField
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import io.reactivex.disposables.CompositeDisposable
 

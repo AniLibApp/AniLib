@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.infrastructure.repository.network.converter
+package com.revolgenx.anilib.common.repository.network.converter
 
 import com.revolgenx.anilib.*
 import com.revolgenx.anilib.media.data.model.MediaTitleModel

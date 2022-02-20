@@ -1,14 +1,13 @@
 package com.revolgenx.anilib.app.setting.data.model
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.common.preference.getStoredMediaOptions
 import com.revolgenx.anilib.common.preference.storeMediaOption
 import com.revolgenx.anilib.app.setting.data.field.MediaSettingField
 import com.revolgenx.anilib.app.setting.data.field.MediaSettingMutateField
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.app.setting.service.SettingService
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel
 

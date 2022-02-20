@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.studio.service
 
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.studio.data.field.StudioField
 import com.revolgenx.anilib.studio.data.field.StudioMediaField

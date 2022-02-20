@@ -9,24 +9,6 @@ enum class AiringListDisplayMode{
 }
 
 
-enum class AlaMediaListStatus(val status: Int) {
-    CURRENT(0),
-    COMPLETED(2),
-    PAUSED(4),
-    DROPPED(3),
-    PLANNING(1),
-    REPEATING(5),
-    UNKNOWN(6);
-
-
-    companion object {
-        fun from(status: Int): AlaMediaListStatus {
-            return values().first { it.status == status }
-        }
-    }
-}
-
-
 enum class MediaListStatusEditor(val status: Int) {
     CURRENT(0),
     PLANNING(1),
@@ -37,9 +19,11 @@ enum class MediaListStatusEditor(val status: Int) {
     UNKNOWN(6);
 
     companion object {
-        fun from(status: Int): MediaListStatusEditor {
+        fun fromMediaListStatus(status: Int): MediaListStatusEditor {
             return values().first { it.status == status }
         }
+
+        fun toMediaListStatus(alStatus:Int) = values()[alStatus].status
     }
 }
 

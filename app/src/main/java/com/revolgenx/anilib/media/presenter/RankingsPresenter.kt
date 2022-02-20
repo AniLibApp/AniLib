@@ -9,7 +9,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.presenter.BasePresenter
-import com.revolgenx.anilib.infrastructure.event.BrowseRankEvent
+import com.revolgenx.anilib.media.event.BrowseRankEvent
 import com.revolgenx.anilib.user.data.model.stats.MediaRankModel
 import com.revolgenx.anilib.databinding.RankingPresenterLayoutBinding
 import com.revolgenx.anilib.type.MediaRankType

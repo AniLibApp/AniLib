@@ -1,13 +1,11 @@
-package com.revolgenx.anilib.infrastructure.event
+package com.revolgenx.anilib.home.discover.event
 
-sealed class SeasonEvent:BaseEvent() {
+import com.revolgenx.anilib.common.event.BaseEvent
+
+sealed class SeasonEvent: BaseEvent() {
     object SeasonFilterEvent : SeasonEvent()
     object SeasonChangeEvent : SeasonEvent()
     object SeasonTagEvent : SeasonEvent()
     object SeasonGenreEvent : SeasonEvent()
     data class SeasonHeaderEvent(val showHeader:Boolean) : SeasonEvent()
-}
-
-sealed class RecommendationEvent:BaseEvent(){
-    data class RecommendationFilterEvent(val onList:Boolean?, val sort:Int):RecommendationEvent()
 }

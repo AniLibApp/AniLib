@@ -11,8 +11,8 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.media.data.model.MediaReviewModel
 import com.revolgenx.anilib.databinding.MediaReviewPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenReviewEvent
-import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
+import com.revolgenx.anilib.common.event.OpenReviewEvent
+import com.revolgenx.anilib.common.event.OpenUserProfileEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
 
 class MediaReviewPresenter(context: Context) : BasePresenter<MediaReviewPresenterLayoutBinding, MediaReviewModel>(context) {

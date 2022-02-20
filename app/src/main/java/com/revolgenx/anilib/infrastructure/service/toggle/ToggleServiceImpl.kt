@@ -2,9 +2,9 @@ package com.revolgenx.anilib.infrastructure.service.toggle
 
 import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.social.data.model.LikeableUnionModel
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.util.ERROR
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.util.ERROR
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.ToggleActivitySubscriptionField
 import com.revolgenx.anilib.social.data.field.ToggleLikeV2Field
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel

@@ -9,7 +9,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.databinding.SettingFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.*
+import com.revolgenx.anilib.common.event.*
 import com.revolgenx.anilib.util.loginContinue
 
 class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {

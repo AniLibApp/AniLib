@@ -3,7 +3,7 @@ package com.revolgenx.anilib.studio.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.common.viewmodel.SourceViewModel
 import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 import com.revolgenx.anilib.studio.service.StudioService
 import com.revolgenx.anilib.infrastructure.source.StudioMediaSource

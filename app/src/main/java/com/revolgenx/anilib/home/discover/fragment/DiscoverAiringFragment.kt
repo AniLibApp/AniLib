@@ -13,7 +13,7 @@ import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
 import com.revolgenx.anilib.home.discover.data.meta.DiscoverOrderItem
 import com.revolgenx.anilib.databinding.DiscoverAiringFragmentLayoutBinding
 import com.revolgenx.anilib.home.discover.bottomsheet.DiscoverAiringBottomSheet
-import com.revolgenx.anilib.infrastructure.event.OpenAiringScheduleEvent
+import com.revolgenx.anilib.common.event.OpenAiringScheduleEvent
 import com.revolgenx.anilib.home.discover.presenter.DiscoverAiringPresenter
 import com.revolgenx.anilib.infrastructure.source.home.airing.AiringSource
 import com.revolgenx.anilib.home.discover.viewmodel.DiscoverAiringViewModel

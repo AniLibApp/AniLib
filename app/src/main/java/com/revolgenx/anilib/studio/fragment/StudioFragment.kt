@@ -13,7 +13,7 @@ import com.revolgenx.anilib.studio.data.model.StudioModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.StudioFragmentLayoutBinding
 import com.revolgenx.anilib.studio.presenter.StudioMediaPresenter
-import com.revolgenx.anilib.infrastructure.repository.util.Status.*
+import com.revolgenx.anilib.common.repository.util.Status.*
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText

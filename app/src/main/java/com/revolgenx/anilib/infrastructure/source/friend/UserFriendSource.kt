@@ -2,7 +2,7 @@ package com.revolgenx.anilib.infrastructure.source.friend
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
+import com.revolgenx.anilib.common.source.BaseRecyclerSource
 import com.revolgenx.anilib.friend.data.field.UserFriendField
 import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.user.service.UserService

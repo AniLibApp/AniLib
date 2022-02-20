@@ -8,12 +8,11 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.UserPreference
-import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.databinding.ActivityReplyPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OnActivityInfoUpdateEvent
-import com.revolgenx.anilib.infrastructure.event.OpenActivityReplyComposer
-import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.event.OnActivityInfoUpdateEvent
+import com.revolgenx.anilib.common.event.OpenActivityReplyComposer
+import com.revolgenx.anilib.common.event.OpenUserProfileEvent
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel

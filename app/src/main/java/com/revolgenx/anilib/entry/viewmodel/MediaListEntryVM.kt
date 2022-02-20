@@ -9,14 +9,13 @@ import com.revolgenx.anilib.entry.data.field.MediaListEntryField
 import com.revolgenx.anilib.entry.data.field.SaveMediaListEntryField
 import com.revolgenx.anilib.entry.data.model.UserMediaModel
 import com.revolgenx.anilib.entry.service.MediaListEntryService
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
-import org.koin.core.component.getScopeName
 
 class MediaListEntryVM(
     private val mediaListEntryService: MediaListEntryService,

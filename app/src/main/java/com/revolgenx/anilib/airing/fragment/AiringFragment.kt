@@ -17,7 +17,6 @@ import com.otaliastudios.elements.extensions.HeaderSource
 import com.otaliastudios.elements.extensions.SimplePresenter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.*
-import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.constant.AiringListDisplayMode
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
@@ -28,8 +27,6 @@ import com.revolgenx.anilib.airing.bottomsheet.AiringFilterBottomSheet
 import com.revolgenx.anilib.airing.presenter.AiringPresenter
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.airing.viewmodel.AiringViewModel
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalTime
 import java.time.ZoneId

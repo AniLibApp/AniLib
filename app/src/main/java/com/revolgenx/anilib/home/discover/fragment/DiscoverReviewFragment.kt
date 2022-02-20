@@ -10,7 +10,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.OpenAllReviewEvent
+import com.revolgenx.anilib.common.event.OpenAllReviewEvent
 import com.revolgenx.anilib.review.presenter.ReviewPresenter
 import com.revolgenx.anilib.infrastructure.source.home.discover.AllReviewSource
 import com.revolgenx.anilib.util.dp

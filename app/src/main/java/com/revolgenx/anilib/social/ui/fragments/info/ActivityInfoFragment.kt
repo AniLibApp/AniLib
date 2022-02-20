@@ -13,12 +13,11 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.UserPreference
-import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.ActivityInfoFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.*
-import com.revolgenx.anilib.infrastructure.repository.util.Status.*
+import com.revolgenx.anilib.common.event.*
+import com.revolgenx.anilib.common.repository.util.Status.*
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.data.model.ListActivityModel
 import com.revolgenx.anilib.social.data.model.MessageActivityModel

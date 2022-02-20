@@ -11,56 +11,44 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.tabs.TabLayout
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.common.preference.loadLegacyMediaBrowseTheme
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.common.ui.adapter.makePagerAdapter
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
-import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
 import com.revolgenx.anilib.common.ui.adapter.registerOnPageChangeCallback
 import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
-import com.revolgenx.anilib.constant.AlaMediaListStatus
-import com.revolgenx.anilib.constant.MediaListStatusEditor
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.databinding.MediaInfoFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
-import com.revolgenx.anilib.infrastructure.event.OpenImageEvent
-import com.revolgenx.anilib.infrastructure.event.OpenMediaListEditorEvent
-import com.revolgenx.anilib.infrastructure.event.OpenReviewComposerEvent
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.repository.util.Status
-import com.revolgenx.anilib.list.data.model.MediaListModel
-import com.revolgenx.anilib.media.data.model.MediaModel
+import com.revolgenx.anilib.common.event.OpenImageEvent
+import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
+import com.revolgenx.anilib.common.event.OpenReviewComposerEvent
+import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.databinding.MediaInfoContainerFragmentLayoutBinding
+import com.revolgenx.anilib.media.data.model.isAnime
+import com.revolgenx.anilib.media.viewmodel.MediaInfoContainerSharedVM
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.drawable.DynamicBackgroundGradientDrawable
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
+import com.revolgenx.anilib.ui.view.makeErrorToast
 import com.revolgenx.anilib.ui.view.makeToast
-import com.revolgenx.anilib.media.viewmodel.MediaInfoViewModel
 import com.revolgenx.anilib.util.*
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
-class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), EventBusListener {
+class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragmentLayoutBinding>(),
+    EventBusListener {
 
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?
-    ): MediaInfoFragmentLayoutBinding {
-        return MediaInfoFragmentLayoutBinding.inflate(inflater, parent, false)
+    ): MediaInfoContainerFragmentLayoutBinding {
+        return MediaInfoContainerFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
 
@@ -75,35 +63,25 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         const val COLLAPSED = 0
         const val EXPANDED = 1
 
-        fun newInstance(meta: MediaInfoMeta): MediaInfoFragment = MediaInfoFragment().also {
-            it.arguments = bundleOf(MEDIA_INFO_META_KEY to meta)
-        }
+        fun newInstance(meta: MediaInfoMeta): MediaInfoContainerFragment =
+            MediaInfoContainerFragment().also {
+                it.arguments = bundleOf(MEDIA_INFO_META_KEY to meta)
+            }
     }
 
     private var isFavourite = false
-    private var toggling = false
     private val mediaInfoMeta: MediaInfoMeta?
         get() = arguments?.getParcelable(
             MEDIA_INFO_META_KEY
         )
 
-    private var circularProgressDrawable: CircularProgressDrawable? = null
-
-    private var mediaModel: MediaModel? = null
 
     private val seasons by lazy {
         resources.getStringArray(R.array.media_season)
     }
 
-    private val viewModel by viewModel<MediaInfoViewModel>()
-    private val pageChangeListener by lazy {
-        object :
-            ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected(position: Int) {
-
-            }
-        }
-    }
+    private val viewModel by viewModel<MediaInfoContainerSharedVM>()
+    private val mediaModel get() = viewModel.mediaModel
 
     private var state = COLLAPSED
 
@@ -147,40 +125,23 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val mediaInfo = mediaInfoMeta ?: return
 
         viewModel.mediaLiveData.observe(this.viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    mediaModel = it.data
-                    if (mediaInfo.coverImage == null || mediaInfo.bannerImage == null) {
-                        mediaInfo.coverImage = it.data?.coverImage?.large ?: ""
-                        mediaInfo.coverImageLarge = it.data?.coverImage?.largeImage
-                        mediaInfo.bannerImage =
-                            it.data?.bannerImage ?: it.data?.coverImage?.largeImage
-                        mediaInfo.title = it.data?.title?.romaji ?: ""
-                    }
-                    mediaInfo.type = it.data?.type
-                    binding.updateView()
+                    binding.bind()
                 }
-                else -> {
-                }
+                else -> {}
             }
         }
-
-
-        if (savedInstanceState == null) {
-            viewModel.getMediaInfo(mediaInfo.mediaId)
-        }
-
 
         binding.initListener()
         binding.initTabLayout()
         binding.updateTheme()
-        binding.updateView()
+        binding.bindPossibleView()
 
         val mediaInfoList = mutableListOf(
             MediaOverviewFragment.newInstance(mediaInfo),
@@ -191,18 +152,15 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
             MediaStatsFragment.newInstance(mediaInfo)
         )
 
-        if (requireContext().loggedIn()) {
+        loginContinue(false) {
             mediaInfoList.add(MediaSocialContainerFragment.newInstance(mediaInfo))
         }
 
-
-
-        viewModel.isFavLiveData.observe(this.viewLifecycleOwner) {
+        viewModel.onFavouriteChanged = {
             when (it.status) {
                 Status.SUCCESS -> {
-                    isFavourite = it.data!!
                     binding.mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
-                    updateToolbar()
+                    binding.bindFavourite()
                 }
                 else -> {
 
@@ -210,32 +168,27 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
             }
         }
 
-        viewModel.toggleFavMediaLiveData.observe(this.viewLifecycleOwner) {
-            toggling = when (it.status) {
+        viewModel.onFavouriteChanged = {
+            when (it.status) {
                 Status.SUCCESS -> {
-                    isFavourite = !isFavourite
-                    viewModel.isFavLiveData.value = Resource.success(isFavourite)
-                    binding.mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
                     updateToolbar()
-                    false
                 }
                 Status.ERROR -> {
-                    makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
-                    false
+                    makeErrorToast(R.string.failed_to_toggle)
                 }
-                Status.LOADING -> {
-                    true
-                }
+                Status.LOADING -> {}
             }
         }
 
-        viewModel.saveMediaListEntryLiveData.observe(viewLifecycleOwner) {
-            if (it.status == Status.SUCCESS) {
-                val data = it.data ?: return@observe
-                mediaModel?.mediaListEntry?.status = data.status
-                mediaModel?.mediaListEntry?.status?.let { status ->
-                    updateMediaStatusView(status)
+        viewModel.onListEntryDataChanged = {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    updateMediaStatusView()
                 }
+                Status.ERROR -> {
+                    makeErrorToast(R.string.operation_failed)
+                }
+                Status.LOADING -> {}
             }
         }
 
@@ -251,7 +204,7 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
             R.string.stats to R.drawable.ic_chart
         )
 
-        if (requireContext().loggedIn()) {
+        loginContinue(false) {
             tabs.add(R.string.social to R.drawable.ic_activity_union)
         }
 
@@ -270,11 +223,6 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
                 }
             }
         )
-
-        if (savedInstanceState == null) {
-            viewModel.isFavourite(mediaInfo.mediaId)
-        }
-
     }
 
 
@@ -286,12 +234,9 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        registerForEvent()
-    }
 
-    private fun updateMediaStatusView(status: Int) {
+    private fun updateMediaStatusView() {
+        val status = mediaModel?.mediaListEntry?.status ?: return
         if (loadLegacyMediaBrowseTheme()) {
             binding.updateLegacyListStatusView(status)
         } else {
@@ -299,30 +244,22 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         }
     }
 
-    private fun MediaInfoFragmentLayoutBinding.updateListStatusView(status: Int) {
+    private fun MediaInfoContainerFragmentLayoutBinding.updateListStatusView(status: Int) {
         val mediaListStatus =
-            if (mediaModel?.type == MediaType.MANGA.ordinal) resources.getStringArray(R.array.manga_list_status) else resources.getStringArray(
-                R.array.anime_list_status
-            )
-        val fromStatus = AlaMediaListStatus.from(status).ordinal
+            resources.getStringArray(if (isAnime(mediaModel)) R.array.anime_list_status else R.array.manga_list_status)
         mediaAddButton.text =
-            mediaListStatus[fromStatus]
+            mediaListStatus[status]
     }
 
-    private fun MediaInfoFragmentLayoutBinding.updateLegacyListStatusView(status: Int) {
+    private fun MediaInfoContainerFragmentLayoutBinding.updateLegacyListStatusView(status: Int) {
         val mediaListStatus =
-            if (mediaModel?.type == MediaType.MANGA.ordinal) resources.getStringArray(R.array.manga_list_status) else resources.getStringArray(
-                R.array.anime_list_status
-            )
-        val fromStatus = AlaMediaListStatus.from(status).ordinal
-
+            resources.getStringArray(if (isAnime(mediaModel)) R.array.anime_list_status else R.array.manga_list_status)
         legacyMediaAddButton.text =
-            mediaListStatus[fromStatus]
+            mediaListStatus[status]
     }
 
 
-    private fun MediaInfoFragmentLayoutBinding.updateTheme() {
-
+    private fun MediaInfoContainerFragmentLayoutBinding.updateTheme() {
         if (loadLegacyMediaBrowseTheme()) {
             mediaBrowseContentLayout.visibility = View.GONE
             legacyMediaBrowseContentLayout.visibility = View.VISIBLE
@@ -344,58 +281,90 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
             mediaAddLayout.updateChildTheme()
         }
         setToolbarTheme()
-
     }
 
-    private fun MediaInfoFragmentLayoutBinding.updateView() {
-        val mediaInfo = mediaInfoMeta ?: return
-        getBaseToolbar().title = mediaInfo.title
+    private fun MediaInfoContainerFragmentLayoutBinding.bindPossibleView() {
+        if (mediaModel != null) return
+        val media = mediaInfoMeta ?: return
+        media.title?.let {
+            val toolbar = getBaseToolbar()
+            toolbar.title = it
+        }
+        media.let {
+            if (loadLegacyMediaBrowseTheme()) {
+                legacyMediaTitleTv.text = media.title ?: ""
+                legacyMediaBrowserCoverImage.setImageURI(media.coverImage)
+                legacyMediaBrowserBannerImage.setImageURI(media.bannerImage)
+            } else {
+                mediaTitleTv.text = media.title ?: ""
+                mediaBrowserCoverImage.setImageURI(media.coverImage)
+                mediaBrowserBannerImage.setImageURI(media.bannerImage)
+            }
+        }
+    }
 
+    private fun MediaInfoContainerFragmentLayoutBinding.bind() {
+        val media = mediaModel ?: return
         if (loadLegacyMediaBrowseTheme()) {
-
-            legacyMediaTitleTv.text = mediaInfo.title
-            legacyMediaBrowserCoverImage.setImageURI(mediaInfo.coverImage)
-            legacyMediaBrowserBannerImage.setImageURI(mediaInfo.bannerImage)
-
-            mediaModel?.mediaListEntry?.status?.let {
-                updateLegacyListStatusView(it)
-            }
+            bindLegacyHeader()
         } else {
-            mediaTitleTv.text = mediaInfo.title
-            mediaBrowserCoverImage.setImageURI(mediaInfo.coverImage)
-            mediaBrowserBannerImage.setImageURI(mediaInfo.bannerImage)
+            bindHeader()
+        }
+        bindFavourite()
+    }
 
-            mediaModel?.let { model ->
-                mediaPopularityTv.text =
-                    model.popularity?.prettyNumberFormat().naText()
-                mediaFavTv.text = model.favourites?.prettyNumberFormat().naText()
+    private fun MediaInfoContainerFragmentLayoutBinding.bindLegacyHeader() {
+        val media = mediaModel ?: return
+        val toolbarTitle = media.title?.romaji ?: media.title?.title(requireContext()).naText()
 
-                if (model.type == MediaType.ANIME.ordinal) {
-                    seasonYearTv.text =
-                        getString(R.string.source_seasonyear_s).format(model.season?.let { seasons[it] }
-                            ?: "?", model.seasonYear ?: "?")
-                } else {
-                    seasonYearTv.visibility = View.GONE
-                }
+        legacyMediaTitleTv.text = toolbarTitle
+        legacyMediaBrowserCoverImage.setImageURI(media.coverImage?.image(requireContext()))
+        legacyMediaBrowserBannerImage.setImageURI(media.bannerImage)
 
-                model.mediaListEntry?.status?.let {
-                    binding.updateListStatusView(it)
-                }
+        media.mediaListEntry?.status?.let {
+            updateLegacyListStatusView(it)
+        }
+    }
 
-                model.nextAiringEpisode?.let {
-                    mediaAiringAtTv.text = getString(R.string.episode_airing_date).format(
-                        it.episode,
-                        it.airingAtModel!!.airingDateTime
-                    )
-                }
-            }
+    private fun MediaInfoContainerFragmentLayoutBinding.bindHeader() {
+        val media = mediaModel ?: return
+        val toolbarTitle = media.title?.romaji ?: media.title?.title(requireContext()).naText()
 
+        mediaTitleTv.text = toolbarTitle
+        mediaBrowserCoverImage.setImageURI(media.coverImage?.image(requireContext()))
+        mediaBrowserBannerImage.setImageURI(media.bannerImage)
+
+        mediaPopularityTv.text =
+            media.popularity?.prettyNumberFormat().naText()
+        mediaFavTv.text = media.favourites?.prettyNumberFormat().naText()
+
+        if (isAnime(media)) {
+            seasonYearTv.text =
+                getString(R.string.source_seasonyear_s).format(media.season?.let { seasons[it] }
+                    ?: "?", media.seasonYear ?: "?")
+        } else {
+            seasonYearTv.visibility = View.GONE
         }
 
+        media.mediaListEntry?.status?.let {
+            updateListStatusView(it)
+        }
+
+        media.nextAiringEpisode?.let {
+            mediaAiringAtTv.text = getString(R.string.episode_airing_date).format(
+                it.episode,
+                it.airingAtModel!!.airingDateTime
+            )
+        }
     }
 
+    private fun MediaInfoContainerFragmentLayoutBinding.bindFavourite() {
+        val media = mediaModel ?: return
+        mediaFavButton.setImageResource(if (media.isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
+        updateFavouriteToolbar()
+    }
 
-    private fun MediaInfoFragmentLayoutBinding.initTabLayout() {
+    private fun MediaInfoContainerFragmentLayoutBinding.initTabLayout() {
         createTabLayout(R.string.overview, R.drawable.ic_fire)
         createTabLayout(R.string.watch, R.drawable.ic_watch)
         createTabLayout(R.string.character, R.drawable.ic_character)
@@ -408,23 +377,16 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         }
     }
 
-    private fun MediaInfoFragmentLayoutBinding.createTabLayout(
+    private fun MediaInfoContainerFragmentLayoutBinding.createTabLayout(
         @StringRes tabText: Int,
         @DrawableRes tabIcon: Int
     ) {
         val newTab =
             mediaInfoTabLayout.newTab().setText(tabText).setIcon(tabIcon)
-//        val iconView = newTab.view.getChildAt(0)!!
-//
-//        val lp = iconView.layoutParams as ViewGroup.MarginLayoutParams
-//        lp.bottomMargin = 0;
-//        iconView.layoutParams = lp
-//        iconView.requestLayout()
         mediaInfoTabLayout.addTab(newTab)
     }
 
-    private fun MediaInfoFragmentLayoutBinding.initListener() {
-
+    private fun MediaInfoContainerFragmentLayoutBinding.initListener() {
         appbarLayout.addOnOffsetChangedListener(offSetChangeListener)
 
         if (loadLegacyMediaBrowseTheme()) {
@@ -433,15 +395,14 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
             }
 
             legacyMediaAddMoreIv.setOnClickListener {
-
                 val meta = mediaInfoMeta ?: return@setOnClickListener
                 val mediaListStatus =
-                    if (meta.type == MediaType.MANGA.ordinal) R.array.media_list_manga_status else R.array.media_list_status
+                    if (meta.type == MediaType.MANGA.ordinal) R.array.manga_list_status else R.array.anime_list_status
                 makeArrayPopupMenu(
                     it,
                     resources.getStringArray(mediaListStatus)
                 ) { _, _, position, _ ->
-                    changeMediaListStatus(MediaListStatusEditor.values()[position].status)
+                    changeMediaListStatus(position)
                 }
             }
 
@@ -473,12 +434,12 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
             mediaAddMoreIv.setOnClickListener {
                 val meta = mediaInfoMeta ?: return@setOnClickListener
                 val mediaListStatus =
-                    if (meta.type == MediaType.MANGA.ordinal) R.array.media_list_manga_status else R.array.media_list_status
+                    if (meta.type == MediaType.MANGA.ordinal) R.array.manga_list_status else R.array.anime_list_status
                 makeArrayPopupMenu(
                     it,
                     resources.getStringArray(mediaListStatus)
                 ) { _, _, position, _ ->
-                    changeMediaListStatus(MediaListStatusEditor.values()[position].status)
+                    changeMediaListStatus(position)
                 }
             }
 
@@ -509,16 +470,22 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
 
     @SuppressLint("RestrictedApi")
     override fun onToolbarInflated() {
-        getBaseToolbar().menu.let { menu ->
+        val toolbar = getBaseToolbar()
+        toolbar.menu.let { menu ->
             if (menu is MenuBuilder) {
                 menu.setOptionalIconsVisible(true)
             }
-            if (isFavourite) {
-                menu?.findItem(R.id.toggleFavMenu)?.let {
-                    it.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favourite)
-                }
-            }
+            val media = mediaModel ?: return
+            toolbar.title = media.title?.romaji ?: media.title?.title(requireContext()).naText()
+            updateFavouriteToolbar()
         }
+    }
+
+    private fun updateFavouriteToolbar() {
+        val media = mediaModel ?: return
+        val toolbar = getBaseToolbar()
+        toolbar.menu.findItem(R.id.toggleFavMenu)
+            ?.setIcon(if (media.isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
     }
 
 
@@ -533,9 +500,6 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
                 true
             }
             R.id.toggleFavMenu -> {
-                if (requireContext().loggedIn())
-                    makeToast(R.string.please_wait, icon = R.drawable.ic_hour_glass)
-
                 toggleFav()
                 true
             }
@@ -553,51 +517,26 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         }
     }
 
-    private fun changeMediaListStatus(position: Int) {
-        if (mediaInfoMeta == null) return
-
-        if (!requireContext().loggedIn()) {
-            makeToast(R.string.please_log_in, null, R.drawable.ic_person)
-            return
+    private fun changeMediaListStatus(status: Int) {
+        mediaModel ?: return
+        loginContinue {
+            viewModel.changeListEntryStatus(status)
         }
-
-
-        viewModel.saveMediaListEntry(MediaListModel().also {
-            it.mediaId = mediaInfoMeta!!.mediaId ?: -1
-            it.status = position
-        })
 
     }
 
     private fun openListEditor() {
-
-        val mediaInfo = mediaInfoMeta ?: return
-
-        if (requireContext().loggedIn()) {
-            OpenMediaListEditorEvent(mediaInfo.mediaId!!).postEvent
-        } else {
-            makeToast(R.string.please_log_in, null, R.drawable.ic_person)
+        val media = mediaModel ?: return
+        loginContinue {
+            OpenMediaListEditorEvent(media.id).postEvent
         }
     }
 
     private fun toggleFav() {
-        if (toggling || mediaInfoMeta == null) return
-
-        if (!requireContext().loggedIn()) {
-            makeToast(R.string.please_log_in, null, R.drawable.ic_person)
-            return
+        mediaModel ?: return
+        loginContinue {
+            viewModel.toggleFavourite()
         }
-
-        viewModel.toggleMediaFavourite(ToggleFavouriteField().also {
-            when (mediaInfoMeta!!.type) {
-                MediaType.ANIME.ordinal -> {
-                    it.animeId = mediaInfoMeta!!.mediaId
-                }
-                MediaType.MANGA.ordinal -> {
-                    it.mangaId = mediaInfoMeta!!.mediaId
-                }
-            }
-        })
     }
 
     private fun openReviewWriter() {
@@ -640,26 +579,4 @@ class MediaInfoFragment : BaseLayoutFragment<MediaInfoFragmentLayoutBinding>(), 
         }
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: ListEditorResultEvent) {
-        if (event.listEditorResultMeta.deleted) {
-            binding.mediaAddButton.setText(R.string.add)
-            binding.legacyMediaAddButton.setText(R.string.add)
-        } else {
-            event.listEditorResultMeta.status?.let {
-                updateMediaStatusView(it)
-            }
-        }
-    }
-
-    override fun onStop() {
-        unRegisterForEvent()
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        circularProgressDrawable?.stop()
-        super.onDestroy()
-    }
 }

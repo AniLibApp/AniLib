@@ -9,16 +9,16 @@ import com.revolgenx.anilib.common.data.model.FuzzyDateModel
 import com.revolgenx.anilib.constant.*
 import com.revolgenx.anilib.fragment.MediaContent
 import com.revolgenx.anilib.home.recommendation.data.model.RecommendationConnectionModel
-import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
+import com.revolgenx.anilib.common.repository.network.converter.toModel
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.review.data.model.ReviewConnection
 import com.revolgenx.anilib.staff.data.model.StaffConnectionModel
 import com.revolgenx.anilib.staff.data.model.StaffModel
 import com.revolgenx.anilib.studio.data.model.StudioConnectionModel
-import com.revolgenx.anilib.studio.data.model.StudioModel
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.data.model.stats.MediaRankModel
 
-open class MediaModel:BaseModel() {
+open class MediaModel : BaseModel() {
     var airingSchedule: AiringScheduleConnectionModel? = null
     var averageScore: Int? = null
     var bannerImage: String? = null
@@ -29,13 +29,14 @@ open class MediaModel:BaseModel() {
     var characters: CharacterConnectionModel? = null
 
     var staff: StaffModel? = null
-//    var staffs: List<StaffModel>? = null
+
+    //    var staffs: List<StaffModel>? = null
     var staffRole: String? = null
     var staffs: StaffConnectionModel? = null
 
     var countryOfOrigin: String? = null
     var coverImage: MediaCoverImageModel? = null
-    var description:String? = null
+    var description: String? = null
     var duration: Int? = null
     var endDate: FuzzyDateModel? = null
     var episodes: Int? = null
@@ -65,7 +66,8 @@ open class MediaModel:BaseModel() {
     var status: Int? = null
     var streamingEpisodes: List<MediaStreamingEpisodeModel>? = null
     var studios: StudioConnectionModel? = null
-//    var studios: List<StudioModel>? = null
+
+    //    var studios: List<StudioModel>? = null
     var synonyms: List<String>? = null
     var tags: List<MediaTagModel>? = null
     var title: MediaTitleModel? = null
@@ -79,11 +81,16 @@ open class MediaModel:BaseModel() {
 
     //optional entry
     var isSelected: Boolean = false
-    var onClickListener: ((selected:Boolean) -> Unit)? = null
+    var onClickListener: ((selected: Boolean) -> Unit)? = null
+
+    val isAnime get() = type == MediaType.ANIME.ordinal
 }
 
+fun isAnime(item: MediaModel?): Boolean {
+    return item?.isAnime ?: false
+}
 
-fun MediaContent.toModel() = MediaModel().also {m->
+fun MediaContent.toModel() = MediaModel().also { m ->
     m.id = id
     m.title = title?.onMediaTitle?.mediaTitle?.toModel()
     m.popularity = popularity
@@ -106,10 +113,11 @@ fun MediaContent.toModel() = MediaModel().also {m->
     m.bannerImage = bannerImage ?: m.coverImage!!.largeImage
 
     m.isAdult = isAdult ?: false
-    m.mediaListEntry = mediaListEntry?.let {list->
-        MediaListModel().also {listModel->
+    m.mediaListEntry = mediaListEntry?.let { list ->
+        MediaListModel().also { listModel ->
             listModel.progress = list.progress ?: 0
             listModel.status = list.status?.ordinal
         }
     }
 }
+

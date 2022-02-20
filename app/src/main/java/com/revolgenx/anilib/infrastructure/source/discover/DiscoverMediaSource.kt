@@ -2,9 +2,9 @@ package com.revolgenx.anilib.infrastructure.source.discover
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
+import com.revolgenx.anilib.common.source.BaseRecyclerSource
 import com.revolgenx.anilib.media.data.field.MediaField
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.media.MediaService
 import com.revolgenx.anilib.media.data.model.MediaModel
 import io.reactivex.disposables.CompositeDisposable

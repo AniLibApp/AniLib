@@ -1,4 +1,6 @@
-package com.revolgenx.anilib.infrastructure.event
+package com.revolgenx.anilib.home.event
+
+import com.revolgenx.anilib.common.event.BaseEvent
 
 data class ChangeViewPagerPageEvent(val data: ToPage) : BaseEvent()
 

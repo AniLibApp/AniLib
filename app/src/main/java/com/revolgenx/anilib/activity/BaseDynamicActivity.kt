@@ -11,10 +11,10 @@ import com.pranavpandey.android.dynamic.support.activity.DynamicSystemActivity
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicPrimaryColor
+import com.revolgenx.anilib.common.event.CommonEvent
 import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
-import com.revolgenx.anilib.data.meta.*
-import com.revolgenx.anilib.infrastructure.event.*
+import com.revolgenx.anilib.common.event.*
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.registerForEvent

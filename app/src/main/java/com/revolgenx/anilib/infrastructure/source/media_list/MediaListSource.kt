@@ -4,7 +4,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.data.field.list.MediaListField
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
-import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
+import com.revolgenx.anilib.common.source.BaseRecyclerSource
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import io.reactivex.disposables.CompositeDisposable
 

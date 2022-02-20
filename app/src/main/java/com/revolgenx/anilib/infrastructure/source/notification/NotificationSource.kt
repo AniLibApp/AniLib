@@ -3,7 +3,7 @@ package com.revolgenx.anilib.infrastructure.source.notification
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.notification.service.NotificationService
-import com.revolgenx.anilib.common.infrastruture.source.BaseRecyclerSource
+import com.revolgenx.anilib.common.source.BaseRecyclerSource
 import com.revolgenx.anilib.notification.data.field.NotificationField
 import com.revolgenx.anilib.notification.data.model.NotificationModel
 import io.reactivex.disposables.CompositeDisposable

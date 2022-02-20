@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.databinding.MediaStaffPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenStaffEvent
+import com.revolgenx.anilib.common.event.OpenStaffEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.staff.data.model.StaffEdgeModel
 

@@ -3,8 +3,8 @@ package com.revolgenx.anilib.list.source
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.extensions.MainSource
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.list.data.model.MediaListModel
 
 class MediaListCollectionSource(private val resource: Resource<List<MediaListModel>>) : MainSource<MediaListModel>() {

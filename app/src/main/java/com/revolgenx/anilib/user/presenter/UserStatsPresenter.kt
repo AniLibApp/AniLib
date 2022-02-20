@@ -11,7 +11,7 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.infrastructure.event.*
+import com.revolgenx.anilib.common.event.*
 import com.revolgenx.anilib.databinding.ImageStatsPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.TextStatsPresenterLayoutBinding
 import com.revolgenx.anilib.common.presenter.Constant.PRESENTER_BINDING_KEY

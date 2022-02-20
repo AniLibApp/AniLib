@@ -12,10 +12,10 @@ import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.ReviewFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenMediaInfoEvent
-import com.revolgenx.anilib.infrastructure.event.OpenReviewComposerEvent
-import com.revolgenx.anilib.infrastructure.event.OpenUserProfileEvent
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.common.event.OpenReviewComposerEvent
+import com.revolgenx.anilib.common.event.OpenUserProfileEvent
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.type.ReviewRating

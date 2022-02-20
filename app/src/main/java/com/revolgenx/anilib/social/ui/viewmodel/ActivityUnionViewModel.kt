@@ -1,11 +1,10 @@
 package com.revolgenx.anilib.social.ui.viewmodel
 
-import android.content.Context
 import com.revolgenx.anilib.common.preference.getActivityUnionField
 import com.revolgenx.anilib.common.preference.storeActivityUnionField
 import com.revolgenx.anilib.social.data.model.LikeableUnionModel
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 import com.revolgenx.anilib.social.data.field.ActivityDeleteField
 import com.revolgenx.anilib.social.data.field.ActivityUnionField

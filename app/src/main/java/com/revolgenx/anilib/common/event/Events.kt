@@ -1,10 +1,11 @@
-package com.revolgenx.anilib.infrastructure.event
+package com.revolgenx.anilib.common.event
 
 import android.text.Spanned
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.app.setting.data.meta.TagFilterSettingMeta
+import com.revolgenx.anilib.common.event.BaseEvent
+import com.revolgenx.anilib.common.event.CommonEvent
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 
 data class OpenUserProfileEvent(val userId: Int? = null, val username: String? = null) : BaseEvent()
@@ -42,6 +43,6 @@ data class OpenActivityMessageComposer(val recipientId:Int) : BaseEvent()
 data class OpenActivityReplyComposer(val activityId: Int) : BaseEvent()
 data class OpenSpoilerContentEvent(val spanned: Spanned) : BaseEvent()
 
-data class OpenActivityInfoEvent(val activityId:Int):BaseEvent()
-data class OnActivityInfoUpdateEvent(val activityId: Int):BaseEvent()
+data class OpenActivityInfoEvent(val activityId:Int): BaseEvent()
+data class OnActivityInfoUpdateEvent(val activityId: Int): BaseEvent()
 data class OpenImageEvent(var url:String?) : CommonEvent()

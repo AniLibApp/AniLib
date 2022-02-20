@@ -5,15 +5,14 @@ import android.view.*
 import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.data.model.CharacterModel
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.CharacterFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.repository.util.Status.*
+import com.revolgenx.anilib.common.repository.util.Status.*
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.prettyNumberFormat
 import com.revolgenx.anilib.character.viewmodel.CharacterViewModel
-import com.revolgenx.anilib.infrastructure.event.OpenImageEvent
+import com.revolgenx.anilib.common.event.OpenImageEvent
 import com.revolgenx.anilib.util.loginContinue
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

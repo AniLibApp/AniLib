@@ -5,12 +5,11 @@ import android.view.*
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.userId
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.app.setting.data.field.MediaSettingMutateField
 import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel
 import com.revolgenx.anilib.databinding.MediaSettingFragmentBinding
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.app.setting.data.model.SettingViewModel

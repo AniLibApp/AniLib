@@ -2,10 +2,9 @@ package com.revolgenx.anilib.infrastructure.service.media
 
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.staff.data.model.StaffNameModel
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.util.ERROR
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.media.data.model.MediaConnectionModel
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.util.ERROR
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.media.data.model.toModel
 import com.revolgenx.anilib.staff.data.model.StaffConnectionModel

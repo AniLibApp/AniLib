@@ -8,8 +8,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.databinding.ReviewComposerFragmentLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenReviewEvent
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.event.OpenReviewEvent
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.review.viewmodel.ReviewComposerVM
 import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.ui.view.makeErrorToast

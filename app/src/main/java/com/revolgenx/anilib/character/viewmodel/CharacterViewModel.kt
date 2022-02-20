@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.character.data.field.CharacterField
 import com.revolgenx.anilib.character.data.model.CharacterModel
 import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.character.service.CharacterService
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService

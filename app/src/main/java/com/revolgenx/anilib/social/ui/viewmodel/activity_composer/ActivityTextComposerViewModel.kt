@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.social.ui.viewmodel.activity_composer
 
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.SaveTextActivityField
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.infrastructure.service.ActivityUnionService

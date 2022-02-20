@@ -8,7 +8,7 @@ import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.data.model.VoiceActorModel
 import com.revolgenx.anilib.databinding.CharacterActorPresenterLayoutBinding
-import com.revolgenx.anilib.infrastructure.event.OpenStaffEvent
+import com.revolgenx.anilib.common.event.OpenStaffEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
 
 class CharacterActorPresenter(context: Context) : BasePresenter<CharacterActorPresenterLayoutBinding, VoiceActorModel>(context) {

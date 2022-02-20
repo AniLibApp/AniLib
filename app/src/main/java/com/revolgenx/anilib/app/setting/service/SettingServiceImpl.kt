@@ -6,10 +6,10 @@ import com.revolgenx.anilib.app.setting.data.field.MediaSettingField
 import com.revolgenx.anilib.app.setting.data.field.MediaSettingMutateField
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.network.converter.toModel
-import com.revolgenx.anilib.infrastructure.repository.util.ERROR
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.network.converter.toModel
+import com.revolgenx.anilib.common.repository.util.ERROR
+import com.revolgenx.anilib.common.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 

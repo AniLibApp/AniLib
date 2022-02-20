@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.social.infrastructure.service
 
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.*
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel

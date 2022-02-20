@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.infrastructure.service.favourite
 
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.util.Resource
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class FavouriteService(val graphRepository: BaseGraphRepository) {

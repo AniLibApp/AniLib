@@ -9,9 +9,9 @@ import com.revolgenx.anilib.home.recommendation.data.field.UpdateRecommendationF
 import com.revolgenx.anilib.home.recommendation.data.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.data.model.SaveRecommendationModel
 import com.revolgenx.anilib.home.recommendation.data.model.UpdateRecommendationModel
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.util.ERROR
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.util.ERROR
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.field.MediaRecommendationField
 import com.revolgenx.anilib.media.data.model.MediaRecommendationModel
 import com.revolgenx.anilib.media.data.model.toModel

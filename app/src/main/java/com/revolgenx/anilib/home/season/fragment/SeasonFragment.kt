@@ -8,18 +8,13 @@ import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.extensions.HeaderSource
 import com.otaliastudios.elements.extensions.SimplePresenter
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.ui.selector.constant.SelectableTypes
-import com.revolgenx.anilib.infrastructure.event.ListEditorResultEvent
-import com.revolgenx.anilib.infrastructure.event.TagEvent
-import com.revolgenx.anilib.common.data.field.TagField
-import com.revolgenx.anilib.common.data.meta.TagState
 import com.revolgenx.anilib.home.season.data.field.SeasonField
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.common.preference.getUserGenre
 import com.revolgenx.anilib.common.preference.getUserTag
 import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.ui.selector.data.meta.SelectableMeta
-import com.revolgenx.anilib.infrastructure.event.SeasonEvent
+import com.revolgenx.anilib.home.discover.event.SeasonEvent
 import com.revolgenx.anilib.infrastructure.source.home.discover.MediaFormatHeaderSource
 import com.revolgenx.anilib.ui.selector.dialog.SelectableDialogFragment
 import com.revolgenx.anilib.home.season.presenter.SeasonPresenter
@@ -30,7 +25,6 @@ import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.selector.constant.SelectedState
 import com.revolgenx.anilib.util.EventBusListener
 import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
@@ -136,14 +130,6 @@ class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
 //
 //    }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onListEditorEvent(event: ListEditorResultEvent) {
-        event.listEditorResultMeta.let {
-            viewModel.updateMediaProgress(it.mediaId, it.progress)
-        }
-        notifyDataSetChanged()
-    }
 
     @Subscribe()
     fun seasonEvent(event: SeasonEvent) {

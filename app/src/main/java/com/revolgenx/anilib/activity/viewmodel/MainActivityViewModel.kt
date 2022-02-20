@@ -9,8 +9,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.saveBasicUserDetail
 import com.revolgenx.anilib.common.viewmodel.BaseAndroidViewModel
 import com.revolgenx.anilib.common.preference.UserPreference
-import com.revolgenx.anilib.infrastructure.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.infrastructure.repository.network.converter.toBasicUserModel
+import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.network.converter.toBasicUserModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.user.data.model.UserModel
 import io.reactivex.android.schedulers.AndroidSchedulers

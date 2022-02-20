@@ -1,10 +1,10 @@
-package com.revolgenx.anilib.common.infrastruture.source
+package com.revolgenx.anilib.common.source
 
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.extensions.MainSource
-import com.revolgenx.anilib.infrastructure.repository.util.Resource
-import com.revolgenx.anilib.infrastructure.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.common.repository.util.Status
 
 abstract class BaseRecyclerSource<M : Any, F>(protected var field: F) : MainSource<M>() {
     protected var pageNo = 1
