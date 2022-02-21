@@ -4,18 +4,6 @@ import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 
 object ListConstant {
-    val listDefaultGroup =
-        listOf(
-            "Completed",
-            "Dropped",
-            "Planning",
-            "Paused",
-            "Watching",
-            "Rewatching",
-            "Rereading",
-            "Reading"
-        )
-
     fun statusToDefaultGroup(status:MediaListStatus, type:MediaType): String {
         return when(status){
             MediaListStatus.CURRENT -> if(type == MediaType.ANIME) "Watching" else "Reading"

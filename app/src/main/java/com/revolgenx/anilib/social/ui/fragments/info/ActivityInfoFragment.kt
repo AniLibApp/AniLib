@@ -394,7 +394,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
                     1 -> {
                         requireContext().copyToClipBoard(item.siteUrl)
                     }
-                    3 -> {
+                    2 -> {
                         makeConfirmationDialog(requireContext()) {
                             requireContext().makeToast(R.string.please_wait)
                             activityUnionViewModel.deleteActivity(item.id) { id, success ->
