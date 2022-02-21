@@ -74,10 +74,6 @@ open class DiscoverReviewFragment : DiscoverNewFragment() {
                 this.context,
                 if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
             )
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         invalidateAdapter()
     }
 

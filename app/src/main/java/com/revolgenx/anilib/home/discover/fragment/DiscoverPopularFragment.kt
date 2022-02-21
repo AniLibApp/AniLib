@@ -73,19 +73,12 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
         if (isSectionEnabled) {
             popularShowCaseLayout!!.showcaseRecyclerView.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (isSectionEnabled) {
             if (savedInstanceState == null)
                 viewModel.field = PopularMediaField.create(requireContext()).also {
                     it.sort = MediaSort.POPULARITY_DESC.ordinal
                 }
-
             invalidateAdapter()
         }
-        super.onActivityCreated(savedInstanceState)
     }
 
 

@@ -59,7 +59,7 @@ open class AiringMediaField : BaseSourceUserField<AiringScheduleQuery>() {
             perPage = nn(perPage),
             airingAtGreater = nn(airingGreaterThan),
             airingAtLesser = nn(airingLessThan),
-            notYetAired = nn(notYetAired),
+            notYetAired = nnBool(notYetAired),
             mediaId_in = nn(listIds),
             sort = nn(airingSort)
         )

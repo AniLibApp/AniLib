@@ -10,6 +10,7 @@ import com.revolgenx.anilib.list.constant.ListConstant
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.list.data.model.MediaListCollectionModel
 import com.revolgenx.anilib.list.data.model.MediaListGroupModel
+import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.data.model.toModel
 import com.revolgenx.anilib.media.data.model.toModel
 import com.revolgenx.anilib.user.data.model.UserModel
@@ -86,26 +87,34 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                             }
                         }
 
-                        collectionModel.lists = collection.lists?.filterNotNull()?.map { group ->
-                            MediaListGroupModel().also { groupModel ->
-                                groupModel.name = group.name
-                                groupModel.isCustomList = group.isCustomList == true
-                                groupModel.isCompletedList = group.isCompletedList == true
-                                groupModel.entries = group.entries?.mapNotNull {
-                                    it?.mediaListEntry?.toModel()?.also { entry ->
-                                        entry.userId = collectionModel.user?.id ?: -1
-                                        entry.user = collectionModel.user
-                                        entry.media = it.media?.mediaContent?.toModel()
+                        val collectionList = collection.lists
+
+                        if (collectionList != null) {
+                            val allEntries = mutableMapOf<Int, MediaListModel>()
+                            collectionModel.lists = collectionList.mapNotNull { g ->
+                                g?.let { group ->
+                                    MediaListGroupModel().also { groupModel ->
+                                        groupModel.name = group.name
+                                        groupModel.isCustomList = group.isCustomList == true
+                                        groupModel.isCompletedList = group.isCompletedList == true
+                                        groupModel.entries = group.entries?.mapNotNull {
+                                            it?.mediaListEntry?.toModel()?.also { entry ->
+                                                entry.userId = collectionModel.user?.id ?: -1
+                                                entry.user = collectionModel.user
+                                                entry.media = it.media?.mediaContent?.toModel()
+                                                if ((groupModel.isCustomList.not() && entry.hiddenFromStatusLists.not()) || (groupModel.isCustomList && entry.hiddenFromStatusLists)) {
+                                                    allEntries[entry.id] = entry
+                                                }
+                                            }
+                                        }?.toMutableList()
                                     }
-                                }?.toMutableList()
+                                }
+                            }.toMutableList().also {
+                                val allListGroupModel = MediaListGroupModel()
+                                allListGroupModel.name = "All"
+                                allListGroupModel.entries = allEntries.values.toMutableList()
+                                it.add(allListGroupModel)
                             }
-                        }?.toMutableList()?.also {
-                            val model = MediaListGroupModel()
-                            model.name = "All"
-                            model.entries =
-                                it.filter { f -> ListConstant.listDefaultGroup.contains(f.name) }
-                                    .flatMap { it.entries ?: emptyList() }.toMutableList()
-                            it.add(model)
                         }
                     }
                 }

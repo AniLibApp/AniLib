@@ -12,6 +12,7 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.tabs.TabLayoutMediator
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.viewmodel.MainSharedVM
 import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
@@ -41,6 +42,7 @@ class MediaListCollectionContainerFragment :
         )
     }
     private val sharedViewModel by viewModel<MediaListContainerSharedVM>()
+    private val mainSharedVM by sharedViewModel<MainSharedVM>()
     private val notificationStoreVM by sharedViewModel<NotificationStoreViewModel>()
 
     private val badgeDrawable by lazy {
@@ -143,6 +145,25 @@ class MediaListCollectionContainerFragment :
             listExtendedFab.setOnClickListener {
                 sharedViewModel.mediaListContainerCallback.value =
                     MediaListCollectionContainerCallback.GROUP to alListViewPager.currentItem
+            }
+
+            mainSharedVM.mediaListCurrentTab.observe(viewLifecycleOwner) {
+                when (it) {
+                    MediaType.ANIME.ordinal -> {
+                        alListViewPager.post {
+                            alListViewPager.currentItem = 0
+                        }
+                    }
+                    MediaType.MANGA.ordinal -> {
+                        alListViewPager.post {
+                            alListViewPager.currentItem = 1
+                        }
+                    }
+                    else -> {
+                        return@observe
+                    }
+                }
+                mainSharedVM.mediaListCurrentTab.value = null
             }
         }
     }

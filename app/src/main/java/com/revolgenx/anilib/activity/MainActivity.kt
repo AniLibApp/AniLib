@@ -59,6 +59,7 @@ import com.revolgenx.anilib.social.ui.fragments.activity_composer.text.ActivityT
 import com.revolgenx.anilib.social.ui.fragments.info.ActivityInfoFragment
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.activity.event.ActivityEventListener
+import com.revolgenx.anilib.activity.viewmodel.MainSharedVM
 import com.revolgenx.anilib.airing.fragment.AiringFragment
 import com.revolgenx.anilib.character.fragment.CharacterContainerFragment
 import com.revolgenx.anilib.friend.fragment.UserFriendContainerFragment
@@ -79,7 +80,6 @@ import com.revolgenx.anilib.studio.fragment.StudioFragment
 import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
 import com.revolgenx.anilib.user.fragment.UserMediaListCollectionContainerFragment
 import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
-import com.revolgenx.anilib.home.event.ListContainerFragmentPage
 import com.revolgenx.anilib.home.event.MainActivityPage
 
 class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope, EventBusListener {
@@ -88,6 +88,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         get() = job + Dispatchers.Main
 
     private val viewModel by viewModel<MainActivityViewModel>()
+    private val mainSharedVM by viewModel<MainSharedVM>()
     private val notificationStoreVM by viewModel<NotificationStoreViewModel>()
 
     companion object {
@@ -179,11 +180,11 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     }
                     LauncherShortcuts.ANIME -> {
                         binding.mainBottomNavView.selectedItemId = R.id.list_navigation_menu
-                        ChangeViewPagerPageEvent(ListContainerFragmentPage.ANIME).postSticky
+                        mainSharedVM.mediaListCurrentTab.value = MediaType.ANIME.ordinal
                     }
                     LauncherShortcuts.MANGA -> {
                         binding.mainBottomNavView.selectedItemId = R.id.list_navigation_menu
-                        ChangeViewPagerPageEvent(ListContainerFragmentPage.MANGA).postSticky
+                        mainSharedVM.mediaListCurrentTab.value = MediaType.MANGA.ordinal
                     }
                     LauncherShortcuts.RADIO -> {
                         binding.mainBottomNavView.selectedItemId = R.id.music_navigation_menu
@@ -296,21 +297,19 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     @Subscribe
     fun goToPageEvent(event: ChangeViewPagerPageEvent) {
-        if (event.data is MainActivityPage) {
-            val homePageOrder = when (event.data) {
-                MainActivityPage.HOME -> {
-                    getHomePageOrderFromType(this, HomePageOrderType.HOME)
-                }
-                MainActivityPage.LIST -> {
-                    getHomePageOrderFromType(this, HomePageOrderType.LIST)
-                }
-                MainActivityPage.RADIO -> {
-                    getHomePageOrderFromType(this, HomePageOrderType.RADIO)
-                }
+        val homePageOrder = when (event.data) {
+            MainActivityPage.HOME -> {
+                getHomePageOrderFromType(this, HomePageOrderType.HOME)
             }
-
-            binding.mainViewPager.setCurrentItem(homePageOrder, false)
+            MainActivityPage.LIST -> {
+                getHomePageOrderFromType(this, HomePageOrderType.LIST)
+            }
+            MainActivityPage.RADIO -> {
+                getHomePageOrderFromType(this, HomePageOrderType.RADIO)
+            }
         }
+
+        binding.mainViewPager.setCurrentItem(homePageOrder, false)
     }
 
     override fun onNewIntent(intent: Intent) {

@@ -74,18 +74,11 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
         if (isSectionEnabled) {
             trendingShowCaseLayout!!.showcaseRecyclerView.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (isSectionEnabled) {
             if (savedInstanceState == null) {
                 viewModel.field = TrendingMediaField.create(requireContext()).also {
                     it.sort = MediaSort.TRENDING_DESC.ordinal
                 }
             }
-
             invalidateAdapter()
         }
     }

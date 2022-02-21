@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.common.viewmodel
 
 import com.revolgenx.anilib.activity.viewmodel.MainActivityViewModel
+import com.revolgenx.anilib.activity.viewmodel.MainSharedVM
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionVM
 import com.revolgenx.anilib.list.viewmodel.MediaListContainerSharedVM
 import com.revolgenx.anilib.media.viewmodel.*
@@ -40,6 +41,7 @@ import org.koin.dsl.module
 val viewModelModules = module {
     viewModel { SeasonViewModel(get()) }
     viewModel { MainActivityViewModel(get(), get()) }
+    viewModel { MainSharedVM() }
 
     //media
     viewModel { MediaInfoContainerSharedVM(get(), get()) }

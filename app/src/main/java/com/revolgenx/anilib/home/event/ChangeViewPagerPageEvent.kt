@@ -2,14 +2,8 @@ package com.revolgenx.anilib.home.event
 
 import com.revolgenx.anilib.common.event.BaseEvent
 
-data class ChangeViewPagerPageEvent(val data: ToPage) : BaseEvent()
-
-
-interface ToPage {}
-enum class MainActivityPage : ToPage {
+data class ChangeViewPagerPageEvent(val data: MainActivityPage) : BaseEvent()
+enum class MainActivityPage{
     HOME, LIST, RADIO
 }
 
-enum class ListContainerFragmentPage : ToPage {
-    ANIME, MANGA
-}

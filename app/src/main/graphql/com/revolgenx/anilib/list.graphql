@@ -4,7 +4,7 @@ query MediaListCollectionQuery(
     $userName: String,
     $type: MediaType,
 ) {
-    mediaListCollection: MediaListCollection(userId: $userId, userName: $userName, type: $type) {
+    mediaListCollection: MediaListCollection(userId: $userId, userName: $userName, type: $type, forceSingleCompletedList: true) {
         lists {
             name
             isCustomList

@@ -19,7 +19,6 @@ class ShowCaseViewModel(private val entryService: MediaListEntryService) : BaseV
                 it.status = status
             }
             emit(suspendCoroutine { cont ->
-                // TODO save media list entry
                 entryService.saveMediaListEntry(
                     saveEntryField,
                     compositeDisposable

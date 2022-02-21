@@ -73,12 +73,6 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
         if (isSectionEnabled) {
             discoverNewShowCaseLayout!!.showcaseRecyclerView.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        }
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (isSectionEnabled) {
             if (savedInstanceState == null)
                 viewModel.field = NewlyAddedMediaField.create(requireContext()).also {
                     it.sort = MediaSort.ID_DESC.ordinal
@@ -86,7 +80,6 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
 
             invalidateAdapter()
         }
-        super.onActivityCreated(savedInstanceState)
     }
 
 

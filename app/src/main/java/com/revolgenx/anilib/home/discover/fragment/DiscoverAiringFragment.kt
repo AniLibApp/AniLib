@@ -80,16 +80,8 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (isSectionEnabled) {
-
             discoverAiringRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        }
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (isSectionEnabled) {
 
             airingBinding.dslWeekTabLayout.addOnTabSelectedListener(onDaySelectListener)
             airingBinding.dslWeekTabLayout.getTabAt(viewModel.selectedDay)?.select()

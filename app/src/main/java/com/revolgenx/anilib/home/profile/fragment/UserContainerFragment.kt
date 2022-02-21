@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.viewmodel.MainSharedVM
 import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.common.event.AuthenticateEvent
 import com.revolgenx.anilib.common.preference.UserPreference
@@ -31,8 +32,8 @@ import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
-import com.revolgenx.anilib.home.event.ListContainerFragmentPage
 import com.revolgenx.anilib.home.event.MainActivityPage
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>() {
 
@@ -49,6 +50,8 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
     private val userMeta get() = arguments?.getParcelable<UserMeta?>(USER_PROFILE_INFO_KEY)
 
     private val viewModel by viewModel<UserContainerSharedVM>()
+    private val mainSharedVM by sharedViewModel<MainSharedVM>()
+
     private val userModel get() = viewModel.userLiveData.value?.data
 
     private val userProfileFragments by lazy {
@@ -124,12 +127,12 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
 
                 binding.animeCountHeader.setOnClickListener {
                     ChangeViewPagerPageEvent(MainActivityPage.LIST).postEvent
-                    ChangeViewPagerPageEvent(ListContainerFragmentPage.ANIME).postEvent
+                    mainSharedVM.mediaListCurrentTab.value = MediaType.ANIME.ordinal
                 }
 
                 binding.mangaCountHeader.setOnClickListener {
                     ChangeViewPagerPageEvent(MainActivityPage.LIST).postEvent
-                    ChangeViewPagerPageEvent(ListContainerFragmentPage.MANGA).postEvent
+                    mainSharedVM.mediaListCurrentTab.value = MediaType.MANGA.ordinal
                 }
             }
         }

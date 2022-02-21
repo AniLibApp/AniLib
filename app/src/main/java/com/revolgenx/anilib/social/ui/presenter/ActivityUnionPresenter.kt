@@ -83,27 +83,27 @@ class ActivityUnionPresenter(
 
     override fun onBind(page: Page, holder: Holder, element: Element<ActivityUnionModel>) {
         super.onBind(page, holder, element)
-
         val item = element.data ?: return
-        val type = element.type
-
-
-        when (type) {
-            ActivityType.TEXT.ordinal -> {
-                (holder.getBinding() as TextActivityPresenterLayoutBinding).bind(item as TextActivityModel)
+        val binding = holder.getBinding()?: return
+        when (binding) {
+            is TextActivityPresenterLayoutBinding -> {
+                binding.bind(item as TextActivityModel)
             }
-            ActivityType.MESSAGE.ordinal -> {
-                (holder.getBinding() as MessageActivityPresenterLayoutBinding).bind(item as MessageActivityModel)
+            is MessageActivityPresenterLayoutBinding -> {
+                binding.bind(item as MessageActivityModel)
+            }
+            is ListActivityPresenterLayoutBinding->{
+                binding.bind(item as ListActivityModel)
             }
             else -> {
-                (holder.getBinding() as ListActivityPresenterLayoutBinding).bind(item as ListActivityModel)
+                return
             }
         }
 
 
         holder[ACTIVITY_UNION_HOLDER_ITEM_KEY] = item
         item.onDataChanged = {
-            when (val binding = holder.getBinding()) {
+            when (binding) {
                 is TextActivityPresenterLayoutBinding -> {
                     binding.updateItems(item)
                 }
@@ -365,10 +365,10 @@ class ActivityUnionPresenter(
                     1 -> {
                         context.copyToClipBoard(item.siteUrl)
                     }
-                    3 -> {
+                    2 -> {
                         makeConfirmationDialog(context) {
                             context.makeToast(R.string.please_wait)
-                            viewModel.deleteActivity(item.id ?: -1) { id, success ->
+                            viewModel.deleteActivity(item.id) { id, success ->
                                 if (id == item.id) {
                                     if (success) {
                                         context.makeToast(R.string.deleted_successfully_please_refresh)

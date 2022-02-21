@@ -9,19 +9,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.viewmodel.MainSharedVM
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.home.discover.dialog.DiscoverMediaListFilterDialog
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
 import com.revolgenx.anilib.home.discover.data.meta.DiscoverOrderItem
 import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
-import com.revolgenx.anilib.home.event.ListContainerFragmentPage
 import com.revolgenx.anilib.home.event.MainActivityPage
 import com.revolgenx.anilib.home.discover.presenter.MediaListPresenter
 import com.revolgenx.anilib.infrastructure.source.media_list.MediaListSource
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.home.discover.viewmodel.DiscoverWatchingVM
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverWatchingFragment : DiscoverAiringFragment() {
@@ -38,6 +39,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
         get() = viewModel.source ?: viewModel.createSource()
 
     private val viewModel by viewModel<DiscoverWatchingVM>()
+    private val mainSharedVM by sharedViewModel<MainSharedVM>()
 
     private val order: Int
         get() = getDiscoverOrderFromType(requireContext(), DiscoverOrderType.WATCHING)
@@ -71,8 +73,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
             orderedViewList.add(DiscoverOrderItem(
                 recyclerViewContainer, order,
                 getString(R.string.watching),
-                R.drawable.ic_media
-                , showSetting = true
+                R.drawable.ic_media, showSetting = true
             ) {
                 handleClick(it)
             })
@@ -83,21 +84,10 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         if (requireContext().loggedIn() && isSectionEnabled) {
             watchingRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        }
-    }
 
-    override fun reloadAll() {
-        super.reloadAll()
-
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (requireContext().loggedIn() && isSectionEnabled) {
             if (savedInstanceState == null) {
                 viewModel.field.also { field ->
                     field.userId = UserPreference.userId
@@ -106,8 +96,6 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
                     field.sort = getDiscoverMediaListSort(requireContext(), field.type!!)
                 }
             }
-
-            super.onActivityCreated(savedInstanceState)
 
             if (savedInstanceState != null) {
                 childFragmentManager.findFragmentByTag(MEDIA_LIST_WATCHING_TAG)?.let {
@@ -120,9 +108,6 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
 
             invalidateAdapter()
         }
-        else{
-            super.onActivityCreated(savedInstanceState)
-        }
     }
 
 
@@ -130,7 +115,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
         when (which) {
             0 -> {
                 ChangeViewPagerPageEvent(MainActivityPage.LIST).postEvent
-                ChangeViewPagerPageEvent(ListContainerFragmentPage.ANIME).postEvent
+                mainSharedVM.mediaListCurrentTab.value = MediaType.ANIME.ordinal
             }
             1 -> {
                 showMediaListFilterDialog(
@@ -145,7 +130,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
 
 
     private fun renewAdapter() {
-        if(context == null) return
+        if (context == null) return
         viewModel.updateField(requireContext())
         viewModel.createSource()
         invalidateAdapter()

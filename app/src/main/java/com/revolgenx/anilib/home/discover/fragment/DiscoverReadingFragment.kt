@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.viewmodel.MainSharedVM
 import com.revolgenx.anilib.home.discover.dialog.DiscoverMediaListFilterDialog
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
@@ -20,8 +21,8 @@ import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.home.discover.viewmodel.DiscoverReadingVM
 import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
-import com.revolgenx.anilib.home.event.ListContainerFragmentPage
 import com.revolgenx.anilib.home.event.MainActivityPage
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverReadingFragment : DiscoverWatchingFragment() {
@@ -38,6 +39,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
         get() = viewModel.source ?: viewModel.createSource()
 
     private val viewModel by viewModel<DiscoverReadingVM>()
+    private val mainSharedVM by sharedViewModel<MainSharedVM>()
 
     private val order: Int
         get() = getDiscoverOrderFromType(requireContext(), DiscoverOrderType.READING)
@@ -82,21 +84,10 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         if (requireContext().loggedIn() && isSectionEnabled) {
             dRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        }
-    }
 
-    override fun reloadAll() {
-        super.reloadAll()
-
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (requireContext().loggedIn() && isSectionEnabled) {
             if (savedInstanceState == null) {
                 viewModel.field.also { field ->
                     field.userId = UserPreference.userId
@@ -104,7 +95,6 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
                     field.type = MediaType.MANGA.ordinal
                 }
             }
-            super.onActivityCreated(savedInstanceState)
 
             if (savedInstanceState != null) {
                 childFragmentManager.findFragmentByTag(MEDIA_LIST_READING_TAG)?.let {
@@ -115,8 +105,6 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
             }
 
             invalidateAdapter()
-        } else {
-            super.onActivityCreated(savedInstanceState)
         }
     }
 
@@ -125,7 +113,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
         when (which) {
             0 -> {
                 ChangeViewPagerPageEvent(MainActivityPage.LIST).postEvent
-                ChangeViewPagerPageEvent(ListContainerFragmentPage.MANGA).postEvent
+                mainSharedVM.mediaListCurrentTab.value = MediaType.MANGA.ordinal
             }
             1 -> {
                 showMediaListFilterDialog(

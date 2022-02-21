@@ -46,9 +46,9 @@ abstract class BasePresenterFragment<M : Any>() :
 
     lateinit var layoutManager: RecyclerView.LayoutManager
 
-    open protected var gridMinSpan = 1
-    open protected var gridMaxSpan = 2
-    open protected val autoAddLayoutManager = true
+    protected open var gridMinSpan = 1
+    protected open var gridMaxSpan = 2
+    protected open val autoAddLayoutManager = true
 
     var span: Int = 1
 
