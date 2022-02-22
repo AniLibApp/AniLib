@@ -1,31 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:padding="6dp">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-        android:id="@+id/ml_language_name"
-        android:layout_width="match_parent"
+    <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+        android:id="@+id/ml_language_check_box"
+        style="@style/AlCheckboxStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="15sp"
+        android:layout_weight="1"
         android:gravity="center_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-        android:id="@+id/using_downloaded_ml_model"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:padding="6dp"
-        android:src="@drawable/ic_check"
-        app:adt_colorType="text_primary"
-        android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/download_delete_ml_model"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:adt_stateNormalColorType="text_primary"
+        android:padding="10dp"
+        android:clickable="false"
+        android:textSize="15sp" />
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
         android:id="@+id/download_delete_ml_model"
@@ -33,8 +24,6 @@
         android:layout_height="40dp"
         android:padding="6dp"
         android:src="@drawable/ads_ic_download"
-        app:adt_colorType="text_primary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:adt_colorType="text_primary" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -9,6 +9,7 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
@@ -43,9 +44,6 @@ class SeasonPresenter(context: Context) :
     private val mediaStatus by lazy {
         context.resources.getStringArray(R.array.media_status)
     }
-
-    private val textPrimary =
-        DynamicTheme.getInstance().get().textPrimaryColor
 
     private val isLoggedIn by lazy {
         context.loggedIn()
@@ -118,7 +116,7 @@ class SeasonPresenter(context: Context) :
 
             if (isLoggedIn) {
                 entryProgressTv.visibility = View.VISIBLE
-                entryProgressTv.compoundDrawablesRelative[0]?.setTint(textPrimary)
+                entryProgressTv.compoundDrawablesRelative[0]?.setTint(dynamicTextColorPrimary)
                 entryProgressTv.text = context.getString(R.string.s_slash_s).format(
                     item.mediaListEntry?.progress?.toString().naText(),
                     when (item.type) {

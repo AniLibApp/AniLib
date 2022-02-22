@@ -73,6 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
+            android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toTopOf="@id/mediaFormatTv"
             app:layout_constraintLeft_toLeftOf="@id/media_cover_frame_layout"
             app:layout_constraintRight_toRightOf="@id/media_cover_frame_layout" />

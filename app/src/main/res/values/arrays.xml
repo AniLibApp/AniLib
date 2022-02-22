@@ -36,6 +36,7 @@
         <item>Natalie</item>
         <item>André Niebuhr (Epr0m)</item>
         <item>natsuthelight</item>
+        <item>MrJako2001</item>
     </string-array>
 
     <string-array name="info_translators_languages">
@@ -48,6 +49,7 @@
         <item>@string/russian</item>
         <item>@string/german</item>
         <item>@string/french</item>
+        <item>@string/spanish</item>
     </string-array>
 
     <string-array name="info_translators_flags">
@@ -60,6 +62,7 @@
         <item>@drawable/ic_flag_ru</item>
         <item>@drawable/ic_flag_de</item>
         <item>@drawable/ic_flag_fr</item>
+        <item>@drawable/ads_ic_flag_es</item>
     </string-array>
 
     <string-array name="info_translators_urls">
@@ -72,6 +75,7 @@
         <item>@null</item>
         <item>https://anilist.co/user/Epr0m/</item>
         <item>@null</item>
+        <item>https://anilist.co/user/MrJaco/</item>
     </string-array>
     <!--end region-->
 

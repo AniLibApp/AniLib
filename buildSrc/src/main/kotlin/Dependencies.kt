@@ -11,10 +11,6 @@ object AndroidSdk {
     const val target = 31
 }
 
-object DefaultConfig {
-    val manifestPlaceholders = mapOf("appAuthRedirectScheme" to "callback")
-}
-
 object PackagingOptions {
     val excludes =
         listOf("META-INF/LICENSE", "META-INF/LICENSE.txt", "META-INF/NOTICE", "META-INF/NOTICE.txt")

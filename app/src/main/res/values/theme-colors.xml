@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="midnight_background_light">#fbf9fb</color>
+    <color name="midnight_surface_light">#f4ebf2</color>
+    <color name="midnight_accent_light">#5c0b78</color>
+
+    <color name="bee_background_light">#f3f2ec</color>
+    <color name="bee_surface_light">#f0eee4</color>
+    <color name="bee_accent_light">#FFEB3B</color>
+
+
+    <color name="strawberry_daiquiri_background_light">#fff8f9</color>
+    <color name="strawberry_daiquiri_surface_light">#FFECF0</color>
+    <color name="strawberry_daiquiri_accent_light">#f92e4d</color>
+
+
+    <color name="tako_background_light">#fcf9f6</color>
+    <color name="tako_surface_light">#f6ece3</color>
+    <color name="tako_accent_light">#ffffb74d</color>
+
+
+    <color name="teal_background_light">#f6fafa</color>
+    <color name="teal_surface_light">#e2f0f0</color>
+    <color name="teal_accent_light">#008080</color>
+
+    <color name="green_apple_background_light">#f5fcf2</color>
+    <color name="green_apple_surface_light">#eaf5e6</color>
+    <color name="green_apple_accent_light">#52b441</color>
+
+    <color name="midnight_background_dark">#29222b</color>
+    <color name="midnight_surface_dark">#312833</color>
+    <color name="midnight_accent_dark">#5c0b78</color>
+
+    <color name="bee_background_dark">#201e22</color>
+    <color name="bee_surface_dark">#2e2c30</color>
+    <color name="bee_accent_dark">#FFEB3B</color>
+
+
+    <color name="strawberry_daiquiri_background_dark">#33292a</color>
+    <color name="strawberry_daiquiri_surface_dark">#3d3132</color>
+    <color name="strawberry_daiquiri_accent_dark">#f92e4d</color>
+
+
+    <color name="tako_background_dark">#212733</color>
+    <color name="tako_surface_dark">#2c3342</color>
+    <color name="tako_accent_dark">#ffffb74d</color>
+
+
+    <color name="teal_background_dark">#212226</color>
+    <color name="teal_surface_dark">#2a2b30</color>
+    <color name="teal_accent_dark">#008080</color>
+
+    <color name="green_apple_background_dark">#212626</color>
+    <color name="green_apple_surface_dark">#282e2e</color>
+    <color name="green_apple_accent_dark">#52b441</color>
+</resources>

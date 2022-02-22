@@ -15,17 +15,19 @@
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="6dp">
+            android:layout_marginEnd="10dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingHorizontal="6dp">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
                     style="@style/AlCheckboxStyle"
                     android:id="@+id/homeOrderName"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/homeOrderDragIcon"
@@ -46,7 +48,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_drag" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>

@@ -687,5 +687,9 @@
     <string name="custom_anime_lists">Custom Anime Lists</string>
     <string name="custom_manga_lists">Custom Manga Lists</string>
     <string name="custom_list_name">Custom List Name</string>
-
+    <string name="game">Game</string>
+    <string name="multimedia_project">Multimedia Project</string>
+    <string name="picture_book">Picture Book</string>
+    <string name="comic">Comic</string>
+    <string name="failed_to_sign_in">Failed to Sign In, %s</string>
 </resources>

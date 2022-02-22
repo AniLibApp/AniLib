@@ -104,16 +104,13 @@
 
         <activity
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
-            android:exported="true">
+            android:exported="true"
+            tools:node="replace">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="anilib.app"
-                    android:scheme="callback" />
+                <data android:scheme="${applicationId}" android:host="anilist.co" />
             </intent-filter>
         </activity>
         <activity
@@ -122,12 +119,6 @@
             android:launchMode="singleTop" />
         <activity android:name=".activity.MarkwonPlaygroundActivity" />
 
-        <!--        <activity-->
-        <!--            android:name=".activity.ExoVideoPlayerActivity"-->
-        <!--            android:configChanges="orientation|screenSize|keyboardHidden"-->
-        <!--            android:launchMode="singleTop"-->
-        <!--            android:screenOrientation="fullSensor" />-->
-
         <service
             android:name=".radio.service.RadioService"
             android:exported="true">
@@ -135,7 +126,6 @@
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
-
 
         <!--Widget-->
 

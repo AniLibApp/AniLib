@@ -79,7 +79,9 @@ abstract class BasePresenterFragment<M : Any>() :
     }
 
     protected open fun reloadLayoutManager() {
-        baseRecyclerView.layoutManager = layoutManager
+        if(::layoutManager.isInitialized){
+            baseRecyclerView.layoutManager = layoutManager
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

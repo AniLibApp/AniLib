@@ -41,6 +41,7 @@
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:id="@+id/media_setting_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp">
@@ -56,6 +57,7 @@
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:id="@+id/media_list_setting_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp">
@@ -71,6 +73,7 @@
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:id="@+id/notification_setting_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp">

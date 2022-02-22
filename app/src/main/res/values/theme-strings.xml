@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="midnight">Midnight</string>
+    <string name="bee">Bee</string>
+    <string name="strawberry_daiquiri">Strawberry Daiquiri</string>
+    <string name="tako">Tako</string>
+    <string name="teal">Teal</string>
+    <string name="green_apple">Green Apple</string>
+
+    <integer-array name="midnight_light">
+        <item>@color/midnight_background_light</item>
+        <item>@color/midnight_surface_light</item>
+        <item>@color/midnight_accent_light</item>
+    </integer-array>
+    <integer-array name="bee_light">
+        <item>@color/bee_background_light</item>
+        <item>@color/bee_surface_light</item>
+        <item>@color/bee_accent_light</item>
+    </integer-array>
+    <integer-array name="strawberry_daiquiri_light">
+        <item>@color/strawberry_daiquiri_background_light</item>
+        <item>@color/strawberry_daiquiri_surface_light</item>
+        <item>@color/strawberry_daiquiri_accent_light</item>
+    </integer-array>
+    <integer-array name="tako_light">
+        <item>@color/tako_background_light</item>
+        <item>@color/tako_surface_light</item>
+        <item>@color/tako_accent_light</item>
+    </integer-array>
+    <integer-array name="teal_light">
+        <item>@color/teal_background_light</item>
+        <item>@color/teal_surface_light</item>
+        <item>@color/teal_accent_light</item>
+    </integer-array>
+
+
+    <integer-array name="green_apple_light">
+        <item>@color/green_apple_background_light</item>
+        <item>@color/green_apple_surface_light</item>
+        <item>@color/green_apple_accent_light</item>
+    </integer-array>
+
+    <integer-array name="midnight_dark">
+        <item>@color/midnight_background_dark</item>
+        <item>@color/midnight_surface_dark</item>
+        <item>@color/midnight_accent_dark</item>
+    </integer-array>
+    <integer-array name="bee_dark">
+        <item>@color/bee_background_dark</item>
+        <item>@color/bee_surface_dark</item>
+        <item>@color/bee_accent_dark</item>
+    </integer-array>
+    <integer-array name="strawberry_daiquiri_dark">
+        <item>@color/strawberry_daiquiri_background_dark</item>
+        <item>@color/strawberry_daiquiri_surface_dark</item>
+        <item>@color/strawberry_daiquiri_accent_dark</item>
+    </integer-array>
+    <integer-array name="tako_dark">
+        <item>@color/tako_background_dark</item>
+        <item>@color/tako_surface_dark</item>
+        <item>@color/tako_accent_dark</item>
+    </integer-array>
+    <integer-array name="teal_dark">
+        <item>@color/teal_background_dark</item>
+        <item>@color/teal_surface_dark</item>
+        <item>@color/teal_accent_dark</item>
+    </integer-array>
+    <integer-array name="green_apple_dark">
+        <item>@color/green_apple_background_dark</item>
+        <item>@color/green_apple_surface_dark</item>
+        <item>@color/green_apple_accent_dark</item>
+    </integer-array>
+</resources>

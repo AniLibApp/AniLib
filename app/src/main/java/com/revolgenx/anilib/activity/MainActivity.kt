@@ -1,12 +1,14 @@
 package com.revolgenx.anilib.activity
 
-import android.app.PendingIntent
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.*
 import androidx.core.view.*
 import androidx.viewpager.widget.ViewPager
@@ -38,14 +40,6 @@ import com.revolgenx.anilib.activity.viewmodel.MainActivityViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import net.openid.appauth.AuthorizationResponse
-import net.openid.appauth.AuthorizationService
-import net.openid.appauth.ClientAuthentication
-import net.openid.appauth.ClientSecretBasic
-import net.openid.appauth.AuthorizationServiceConfiguration
-import net.openid.appauth.ResponseTypeValues
-import net.openid.appauth.AuthorizationRequest
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -81,15 +75,19 @@ import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
 import com.revolgenx.anilib.user.fragment.UserMediaListCollectionContainerFragment
 import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
 import com.revolgenx.anilib.home.event.MainActivityPage
+import kotlinx.coroutines.launch
+import net.openid.appauth.*
 
 class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope, EventBusListener {
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
-
     private val viewModel by viewModel<MainActivityViewModel>()
+
     private val mainSharedVM by viewModel<MainSharedVM>()
     private val notificationStoreVM by viewModel<NotificationStoreViewModel>()
+    private var resultLauncher: ActivityResultLauncher<Intent>? = null
+    private var authorizationService: AuthorizationService? = null
 
     companion object {
         private const val authIntent: String = "auth_intent_key"
@@ -142,7 +140,13 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     override fun onStop() {
         super.onStop()
+        disposeAuthorizationService()
         unRegisterForEvent()
+    }
+
+    private fun disposeAuthorizationService() {
+        authorizationService?.dispose()
+        authorizationService = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -153,6 +157,23 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         binding.updateView()
         silentFetchUserInfo()
         checkIntent(intent)
+        registerForResult()
+    }
+
+    private fun registerForResult() {
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                when (result.resultCode) {
+                    Activity.RESULT_OK -> {
+                        val intent = result.data ?: return@registerForActivityResult
+                        handleAuthorizationResponse(intent)
+                    }
+                    Activity.RESULT_CANCELED -> {
+                        makeToast(R.string.cancelled)
+                        dismissAuthLoadingDialog()
+                    }
+                }
+            }
     }
 
     private fun checkReleaseInfo() {
@@ -320,10 +341,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private fun checkIntent(@Nullable intent: Intent?) {
         if (intent != null) {
-            if (intent.hasExtra(authIntent)) {
-                handleAuthorizationResponse(intent)
-                intent.removeExtra(authIntent)
-            }
 
             checkIsFromShortcut(intent)
 
@@ -393,12 +410,17 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private fun handleAuthorizationResponse(@NonNull intent: Intent) {
         val response = AuthorizationResponse.fromIntent(intent)
+        val ex = AuthorizationException.fromIntent(intent)
+        if (ex != null) {
+            Timber.w(ex)
+            makeToast(msg = getString(R.string.failed_to_sign_in, ex.message))
+        }
         if (response != null) {
-            val service = AuthorizationService(this)
+            authorizationService = authorizationService ?: AuthorizationService(this)
             val clientAuth: ClientAuthentication =
                 ClientSecretBasic(BuildConfig.anilistclientSecret)
 
-            service.performTokenRequest(
+            authorizationService?.performTokenRequest(
                 response.createTokenExchangeRequest(),
                 clientAuth
             ) { tokenResponse, exception ->
@@ -411,12 +433,17 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     startActivity(Intent(this.context, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     })
-                    (supportFragmentManager.findFragmentByTag(authDialogTag) as? DynamicDialogFragment)?.dismiss()
+                    dismissAuthLoadingDialog()
                     finish()
                 }
             }
         }
     }
+
+    private fun dismissAuthLoadingDialog() {
+        (supportFragmentManager.findFragmentByTag(authDialogTag) as? DynamicDialogFragment)?.dismiss()
+    }
+
 
     override fun onBackPressed() {
         if ((supportFragmentManager.backStackEntryCount >= 1)) {
@@ -476,21 +503,10 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 redirectUri
             )
             val request = builder.build()
-            val authorizationService = AuthorizationService(this)
-
-            val postAuthorizationIntent = Intent(this, MainActivity::class.java)
-                .also {
-                    it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    it.putExtra(authIntent, authorizationExtra)
-                }
-            val pendingIntent = PendingIntent.getActivity(
-                this,
-                0,
-                postAuthorizationIntent,
-                0
-            )
             launch(Dispatchers.IO) {
-                authorizationService.performAuthorizationRequest(request, pendingIntent)
+                authorizationService = AuthorizationService(this@MainActivity)
+                val requestIntent = authorizationService!!.getAuthorizationRequestIntent(request)
+                resultLauncher?.launch(requestIntent)
             }
         }
     }

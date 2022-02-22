@@ -44,44 +44,64 @@ android {
         versionName = "1.1.11"
         vectorDrawables.useSupportLibrary = true
 
-        addManifestPlaceholders(DefaultConfig.manifestPlaceholders)
-
-        buildConfigField("String", "anilistRedirectUri", getAniListProperty("anilist_redirect_uri"))
         buildConfigField(
-                "String",
-                "anilistAuthEndPoint",
-                getAniListProperty("anilist_auth_endpoint")
+            "String",
+            "anilistAuthEndPoint",
+            getAniListProperty("anilist_auth_endpoint")
         )
         buildConfigField(
-                "String",
-                "anilistTokenEndPoint",
-                getAniListProperty("anilist_token_endpoint")
-        )
-
-        buildConfigField("String", "anilistclientId", getAniListSecretProperty("anilist_client_id"))
-        buildConfigField(
-                "String",
-                "anilistclientSecret",
-                getAniListSecretProperty("anilist_client_secret")
+            "String",
+            "anilistTokenEndPoint",
+            getAniListProperty("anilist_token_endpoint")
         )
         buildConfigField(
-                "String",
-                "adUnitId",
-                getAniListSecretProperty("ad_unit_id", "ca-app-pub-3940256099942544/6300978111")
+            "String",
+            "adUnitId",
+            getAniListSecretProperty("ad_unit_id", "ca-app-pub-3940256099942544/6300978111")
         )
     }
 
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
+            buildConfigField(
+                "String",
+                "anilistRedirectUri",
+                getAniListSecretProperty("anilist_debug_redirect_uri")
+            )
+            buildConfigField(
+                "String",
+                "anilistclientId",
+                getAniListSecretProperty("anilist_debug_client_id")
+            )
+            buildConfigField(
+                "String",
+                "anilistclientSecret",
+                getAniListSecretProperty("anilist_debug_client_secret")
+            )
             extra["enableCrashlytics"] = false
         }
         release {
+            buildConfigField(
+                "String",
+                "anilistRedirectUri",
+                getAniListSecretProperty("anilist_redirect_uri")
+            )
+            buildConfigField(
+                "String",
+                "anilistclientId",
+                getAniListSecretProperty("anilist_client_id")
+            )
+            buildConfigField(
+                "String",
+                "anilistclientSecret",
+                getAniListSecretProperty("anilist_client_secret")
+            )
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
-        create("alpha"){
+        create("alpha") {
             initWith(getByName("debug"))
         }
     }
@@ -190,7 +210,7 @@ dependencies {
     implementation("com.jakewharton.timber:timber:${LibraryVersion.timber_version}")
 
     //app auth
-    implementation("com.github.openid:AppAuth-Android:0.8.1")
+    implementation("net.openid:appauth:0.11.1")
 
     //jwt token
     implementation("com.auth0.android:jwtdecode:${LibraryVersion.jwt_token_version}")

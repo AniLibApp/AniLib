@@ -47,9 +47,9 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
                 OpenSettingEvent(SettingEventTypes.MEDIA_LIST).postEvent
             }
         } else {
-            binding.notificationSetting.visibility = View.GONE
-            binding.listSettingIv.visibility = View.GONE
-            binding.mediaSettingIv.visibility = View.GONE
+            binding.notificationSettingLayout.visibility = View.GONE
+            binding.mediaListSettingLayout.visibility = View.GONE
+            binding.mediaSettingLayout.visibility = View.GONE
         }
 
 

@@ -32,14 +32,12 @@ class MlLanguagePresenter(
         super.onBind(page, holder, element)
         val item = element.data!!
         with(holder.getBinding()!!) {
-            mlLanguageName.text = item.locale
-            usingDownloadedMlModel.visibility = if (item.isInUse) View.VISIBLE else View.GONE
+            mlLanguageCheckBox.text = item.locale
+            mlLanguageCheckBox.isChecked = item.isInUse
             downloadDeleteMlModel.setImageResource(if (item.downloaded) R.drawable.ic_delete else R.drawable.ads_ic_download)
-
             downloadDeleteMlModel.setOnClickListener {
                 onDownloadDeleteClicked.invoke(item)
             }
-
             root.setOnClickListener {
                 onSetMlDefault.invoke(item)
             }

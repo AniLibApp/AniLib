@@ -10,8 +10,7 @@ import androidx.preference.PreferenceManager
 import com.pranavpandey.android.dynamic.support.setting.base.DynamicSpinnerPreference
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.AlThemeModel
-import com.revolgenx.anilib.app.theme.AlThemes
+import com.revolgenx.anilib.app.setting.data.model.AlThemeModel
 import com.revolgenx.anilib.app.theme.Constants
 import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
@@ -23,6 +22,33 @@ class ThemeControllerFragment : BaseToolbarFragment<ThemeControllerFragmentBindi
 
     override var titleRes: Int? = R.string.theme
     override val toolbarColorType: Int = Theme.ColorType.BACKGROUND
+
+    private val lightThemeIds = listOf(
+        R.array.midnight_light,
+        R.array.bee_light,
+        R.array.strawberry_daiquiri_light,
+        R.array.tako_light,
+        R.array.teal_light,
+        R.array.green_apple_light
+    )
+
+
+    private val darkThemeIds = listOf(
+        R.array.midnight_dark,
+        R.array.bee_dark,
+        R.array.strawberry_daiquiri_dark,
+        R.array.tako_dark,
+        R.array.teal_dark,
+        R.array.green_apple_dark
+    )
+
+    private val lightThemes by lazy {
+        lightThemeIds.map { requireContext().resources.getIntArray(it).let { AlThemeModel(it[0], it[1], it[2]) } }
+    }
+    private val darkThemes by lazy {
+        darkThemeIds.map { requireContext().resources.getIntArray(it).let { AlThemeModel(it[0], it[1], it[2]) } }
+    }
+
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?
@@ -71,7 +97,7 @@ class ThemeControllerFragment : BaseToolbarFragment<ThemeControllerFragmentBindi
         backgroundColorPref.isEnabled = enable
         surfaceColorPref.isEnabled = enable
         accentColorPref.isEnabled = enable
-        if(!enable){
+        if (!enable) {
             backgroundColorPref.setOnClickListener { makeToast(R.string.change_theme_to_custom) }
             surfaceColorPref.setOnClickListener { makeToast(R.string.change_theme_to_custom) }
             accentColorPref.setOnClickListener { makeToast(R.string.change_theme_to_custom) }
@@ -102,14 +128,14 @@ class ThemeControllerFragment : BaseToolbarFragment<ThemeControllerFragmentBindi
                         "0" -> {
                             saveDefaultLightTheme()
                         }
-                        "1" -> {
-                        }
+                        "1" -> {}
                         else -> {
-                            lightThemeMode?.toInt()?.let { mode ->
-                                AlThemes.getThemes().firstOrNull { it.index == mode }?.let {
-                                    saveAlTheme(isDarkMode, it)
+                            lightThemeMode?.toInt()?.let { it - 2 }?.takeIf { it >= 0 }
+                                ?.let { mode ->
+                                    lightThemes.getOrNull(mode)?.let {
+                                        saveAlTheme(false, it)
+                                    }
                                 }
-                            }
                         }
                     }
                 }
@@ -131,11 +157,12 @@ class ThemeControllerFragment : BaseToolbarFragment<ThemeControllerFragmentBindi
                         "1" -> {
                         }
                         else -> {
-                            darkThemeMode?.toInt()?.let { mode ->
-                                AlThemes.getThemes().firstOrNull { it.index == mode }?.let {
-                                    saveAlTheme(isDarkMode, it)
+                            darkThemeMode?.toInt()?.let { it - 2 }?.takeIf { it >= 0 }
+                                ?.let { mode ->
+                                    darkThemes.getOrNull(mode)?.let {
+                                        saveAlTheme(true, it)
+                                    }
                                 }
-                            }
                         }
                     }
                 }
