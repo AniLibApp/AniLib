@@ -8,15 +8,45 @@
     android:paddingStart="12dp"
     android:paddingEnd="12dp">
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            app:adt_color="@color/ads_color_yellow_dark"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ads_ic_warning" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_watching_feature_desc"
+            android:textSize="14sp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            tools:ignore="SmallSp" />
+    </LinearLayout>
+
+    <com.revolgenx.anilib.ui.view.widgets.AniLibDividerView
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginTop="8dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="10dp"
             android:layout_gravity="center_vertical"
+            app:adt_colorType="text_primary"
             android:src="@drawable/ic_star" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -26,35 +56,8 @@
             android:textSize="18sp"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"/>
+
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp">
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:padding="6dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_push_pin" />
-
-        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/no_watching_feature_desc"
-            android:textSize="11sp"
-            app:fontFamily="@font/cabincondensed_regular"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            tools:ignore="SmallSp" />
-    </LinearLayout>
-
-    <com.revolgenx.anilib.ui.view.widgets.AniLibDividerView
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:layout_marginTop="4dp"/>
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
         android:layout_width="match_parent"
@@ -64,7 +67,8 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/releaseInfo"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:textSize="14sp"/>
     </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

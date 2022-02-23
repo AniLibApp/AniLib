@@ -28,12 +28,14 @@ fun BasicUserQuery.User.toBasicUserModel() = UserModel().also {
 }
 
 
-fun MediaWatchQuery.Media.toModel() = streamingEpisodes?.filterNotNull()?.map {
-    MediaStreamingEpisodeModel().also { model ->
-        model.site = it.site
-        model.thumbnail = it.thumbnail
-        model.title = it.title
-        model.url = it.url
+fun MediaWatchQuery.Media.toModel() = streamingEpisodes?.mapNotNull {ep->
+    ep?.let {
+        MediaStreamingEpisodeModel().also { model ->
+            model.site = it.site
+            model.thumbnail = it.thumbnail
+            model.title = it.title
+            model.url = it.url
+        }
     }
 }
 
@@ -86,8 +88,8 @@ fun ActivityUnionQuery.OnTextActivity.toModel() = TextActivityModel().also { mod
     model.isSubscribed = isSubscribed ?: false
     model.type = type!!
     model.user = user?.activityUser?.toModel()
-    model.likes = likes?.filterNotNull()?.map {
-        it.likeUsers.toModel()
+    model.likes = likes?.mapNotNull {
+        it?.likeUsers?.toModel()
     }
     model.siteUrl = siteUrl
     model.createdAt = createdAt.toLong().prettyTime()
@@ -114,8 +116,8 @@ fun ActivityUnionQuery.OnListActivity.toModel() = ListActivityModel().also { mod
     model.isSubscribed = isSubscribed ?: false
     model.type = type!!
     model.user = user?.activityUser?.toModel()
-    model.likes = likes?.filterNotNull()?.map {
-        it.likeUsers.toModel()
+    model.likes = likes?.mapNotNull {
+        it?.likeUsers?.toModel()
     }
     model.siteUrl = siteUrl
     model.createdAt = createdAt.toLong().prettyTime()
@@ -132,8 +134,8 @@ fun ActivityUnionQuery.OnMessageActivity.toModel() = MessageActivityModel().also
     model.messengerId = messengerId
     model.messenger = messenger?.messengerUser?.toModel()
     model.isPrivate = isPrivate ?: false
-    model.likes = likes?.filterNotNull()?.map {
-        it.likeUsers.toModel()
+    model.likes = likes?.mapNotNull {
+        it?.likeUsers?.toModel()
     }
     model.likeCount = likeCount
     model.replyCount = replyCount
@@ -154,11 +156,11 @@ fun ActivityInfoQuery.OnTextActivity.toModel() = TextActivityModel().also { mode
     model.isSubscribed = isSubscribed ?: false
     model.type = type!!
     model.user = user?.activityUser?.toModel()
-    model.likes = likes?.filterNotNull()?.map {
-        it.likeUsers.toModel()
+    model.likes = likes?.mapNotNull {
+        it?.likeUsers?.toModel()
     }
-    model.replies = replies?.filterNotNull()?.map {
-        it.replyUsers.toModel()
+    model.replies = replies?.mapNotNull {
+        it?.replyUsers?.toModel()
     }
     model.siteUrl = siteUrl
     model.createdAt = createdAt.toLong().prettyTime()
@@ -184,11 +186,11 @@ fun ActivityInfoQuery.OnListActivity.toModel() = ListActivityModel().also { mode
     model.isSubscribed = isSubscribed ?: false
     model.type = type!!
     model.user = user?.activityUser?.toModel()
-    model.likes = likes?.filterNotNull()?.map {
-        it.likeUsers.toModel()
+    model.likes = likes?.mapNotNull {
+        it?.likeUsers?.toModel()
     }
-    model.replies = replies?.filterNotNull()?.map {
-        it.replyUsers.toModel()
+    model.replies = replies?.mapNotNull {
+        it?.replyUsers?.toModel()
     }
     model.siteUrl = siteUrl
     model.createdAt = createdAt.toLong().prettyTime()
@@ -206,11 +208,11 @@ fun ActivityInfoQuery.OnMessageActivity.toModel() = MessageActivityModel().also 
     model.messenger = messenger?.messengerUser?.toModel()
     model.isPrivate = isPrivate ?: false
 
-    model.likes = likes?.filterNotNull()?.map {
-        it.likeUsers.toModel()
+    model.likes = likes?.mapNotNull {
+        it?.likeUsers?.toModel()
     }
-    model.replies = replies?.filterNotNull()?.map {
-        it.replyUsers.toModel()
+    model.replies = replies?.mapNotNull {
+        it?.replyUsers?.toModel()
     }
     model.likeCount = likeCount
     model.replyCount = replyCount

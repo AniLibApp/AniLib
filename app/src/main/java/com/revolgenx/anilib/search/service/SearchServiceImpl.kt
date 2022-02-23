@@ -34,13 +34,13 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
             .map {
                 when (val data = it.data) {
                     is MediaSearchQuery.Data -> {
-                        data.page?.media?.filterNotNull()?.map {
-                            it.onMedia.mediaContent.toModel()
+                        data.page?.media?.mapNotNull {
+                            it?.onMedia?.mediaContent?.toModel()
                         }
                     }
                     is CharacterSearchQuery.Data -> {
-                        data.page?.characters?.filterNotNull()?.map { map ->
-                            map.narrowCharacterContent.let {
+                        data.page?.characters?.mapNotNull { map ->
+                            map?.narrowCharacterContent?.let {
                                 CharacterModel().also { model ->
                                     model.id = it.id
                                     model.name = it.name?.let {
@@ -53,8 +53,8 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                     }
 
                     is StaffSearchQuery.Data -> {
-                        data.page?.staff?.filterNotNull()?.map { map ->
-                            map.narrowStaffContent.let {
+                        data.page?.staff?.mapNotNull { map ->
+                            map?.narrowStaffContent?.let {
                                 StaffModel().also { model ->
                                     model.id = it.id
                                     model.name = it.name?.let {
@@ -67,20 +67,17 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                     }
 
                     is StudioSearchQuery.Data -> {
-                        data.page?.studios?.filterNotNull()?.map { map ->
-                            map.studioContent.let {
+                        data.page?.studios?.mapNotNull { map ->
+                            map?.studioContent?.let {
                                 StudioModel().also { model ->
                                     model.id = it.id
                                     model.studioName = it.name
                                     model.media = it.media?.let {
                                         MediaConnectionModel().also { connectionModel ->
                                             connectionModel.nodes =
-                                                it.nodes?.filterNotNull()?.filter {
-                                                    if (field.canShowAdult) true else it.mediaContent.isAdult == false
+                                                it.nodes?.mapNotNull {
+                                                    it?.takeIf { if (field.canShowAdult) true else it.mediaContent.isAdult == false }?.mediaContent?.toModel()
                                                 }
-                                                    ?.map {
-                                                        it.mediaContent.toModel()
-                                                    }
                                         }
                                     }
                                 }
@@ -88,11 +85,13 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                         }
                     }
                     is UserSearchQuery.Data -> {
-                        data.page?.users?.filterNotNull()?.map {
-                            UserModel().apply {
-                                id = it.id
-                                name = it.name
-                                avatar = it.avatar?.userAvatar?.toModel()
+                        data.page?.users?.mapNotNull { user ->
+                            user?.let {
+                                UserModel().apply {
+                                    id = it.id
+                                    name = it.name
+                                    avatar = it.avatar?.userAvatar?.toModel()
+                                }
                             }
                         }
                     }

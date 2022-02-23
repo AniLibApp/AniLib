@@ -15,6 +15,7 @@ import com.revolgenx.anilib.common.event.CommonEvent
 import com.revolgenx.anilib.common.preference.getApplicationLocale
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.common.event.*
+import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.registerForEvent
@@ -78,7 +79,9 @@ abstract class BaseDynamicActivity<T : ViewBinding> : DynamicSystemActivity(), E
     fun onBaseEvent(event: CommonEvent) {
         when (event) {
             is OpenImageEvent -> {
-                SimpleDraweeViewerActivity.openActivity(this, event.url)
+                event.url?.let {
+                    SimpleDraweeViewerActivity.openActivity(this, it)
+                } ?: makeToast(R.string.invalid)
             }
             is OpenAlSiteEvent -> {
                 openLink(getString(R.string.site_url))

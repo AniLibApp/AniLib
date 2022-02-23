@@ -64,19 +64,20 @@ class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.page?.recommendations
-                    ?.filterNotNull()
-                    ?.filter { if (field.canShowAdult) true else ((it.media?.mediaContent?.isAdult == false) and (it.mediaRecommendation?.mediaContent?.isAdult == false)) }
-                    ?.map {
-                        RecommendationModel().also { mod ->
-                            mod.id = it.id
-                            mod.rating = it.rating
-                            mod.userRating = it.userRating?.ordinal
-                            mod.recommendationFrom =
-                                it.media?.mediaContent?.toModel()
-                            mod.recommended =
-                                it.mediaRecommendation?.mediaContent?.toModel()
-                        }
+                it.data?.page?.recommendations?.mapNotNull {
+                        it?.takeIf { if (field.canShowAdult) true else ((it.media?.mediaContent?.isAdult == false)
+                                and (it.mediaRecommendation?.mediaContent?.isAdult == false)) }
+                            ?.let {
+                                RecommendationModel().also { mod ->
+                                    mod.id = it.id
+                                    mod.rating = it.rating
+                                    mod.userRating = it.userRating?.ordinal
+                                    mod.recommendationFrom =
+                                        it.media?.mediaContent?.toModel()
+                                    mod.recommended =
+                                        it.mediaRecommendation?.mediaContent?.toModel()
+                                }
+                            }
                     }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({

@@ -46,7 +46,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     override fun getMediaWatch(
         field: MediaWatchField,
         compositeDisposable: CompositeDisposable?,
-        resourceCallback: (Resource<List<MediaStreamingEpisodeModel>>) -> Unit
+        callback: (Resource<List<MediaStreamingEpisodeModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
@@ -54,10 +54,10 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                resourceCallback.invoke(Resource.success(it))
+                callback.invoke(Resource.success(it))
             }, {
-                Timber.e(it)
-                Resource.success(Resource.error(it.message ?: ERROR, null, it))
+                Timber.w(it)
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -66,42 +66,47 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     override fun getMediaCharacter(
         field: MediaCharacterField,
         compositeDisposable: CompositeDisposable?,
-        resourceCallback: (Resource<List<CharacterEdgeModel>>) -> Unit
+        callback: (Resource<List<CharacterEdgeModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
-                response.data?.media?.characters?.edges?.filterNotNull()?.map {
-                    CharacterEdgeModel().also { edge ->
-                        edge.role = it.role?.ordinal
-                        edge.voiceActors = it.voiceActors?.filterNotNull()?.map {
-                            StaffModel().also { model ->
-                                model.id = it.id
-                                model.name = it.name?.let { name ->
-                                    StaffNameModel(name.full)
+                response.data?.media?.characters?.edges?.mapNotNull { edgeData ->
+                    edgeData?.let {
+                        CharacterEdgeModel().also { edge ->
+                            edge.role = it.role?.ordinal
+                            edge.voiceActors = it.voiceActors?.mapNotNull { v ->
+                                v?.let {
+                                    StaffModel().also { model ->
+                                        model.id = it.id
+                                        model.name = it.name?.let { name ->
+                                            StaffNameModel(name.full)
+                                        }
+                                        model.languageV2 = it.languageV2
+                                        model.image = it.image?.staffImage?.toModel()
+                                    }
                                 }
-                                model.languageV2 = it.languageV2
-                                model.image = it.image?.staffImage?.toModel()
                             }
-                        }
-                        edge.node = it.node?.let { node ->
-                            CharacterModel().also { charac ->
-                                charac.id = node.id
-                                charac.name = CharacterNameModel(node.name?.full)
-                                charac.image = node.image?.characterImage?.toModel()
-                                charac.siteUrl = it.node.siteUrl
+                            edge.node = it.node?.let { node ->
+                                CharacterModel().also { charac ->
+                                    charac.id = node.id
+                                    charac.name = CharacterNameModel(node.name?.full)
+                                    charac.image = node.image?.characterImage?.toModel()
+                                    charac.siteUrl = it.node.siteUrl
+                                }
+
                             }
 
                         }
-
                     }
+
                 }
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                resourceCallback.invoke(Resource.success(it))
+                callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -110,20 +115,22 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     override fun getMediaStaff(
         field: MediaStaffField,
         compositeDisposable: CompositeDisposable?,
-        resourceCallback: (Resource<List<StaffEdgeModel>>) -> Unit
+        callback: (Resource<List<StaffEdgeModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.media?.staff?.edges?.filterNotNull()?.map { s ->
-                    StaffEdgeModel().also { model ->
-                        model.role = s.role
-                        model.node = s.node?.let { staff ->
-                            StaffModel().also { staffModel ->
-                                staffModel.id = staff.id
-                                staffModel.name = staff.name?.let {
-                                    StaffNameModel(it.full)
+                it.data?.media?.staff?.edges?.mapNotNull { sData ->
+                    sData?.let { s ->
+                        StaffEdgeModel().also { model ->
+                            model.role = s.role
+                            model.node = s.node?.let { staff ->
+                                StaffModel().also { staffModel ->
+                                    staffModel.id = staff.id
+                                    staffModel.name = staff.name?.let {
+                                        StaffNameModel(it.full)
+                                    }
+                                    staffModel.image = staff.image?.staffImage?.toModel()
                                 }
-                                staffModel.image = staff.image?.staffImage?.toModel()
                             }
                         }
                     }
@@ -131,10 +138,10 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                resourceCallback.invoke(Resource.success(it))
+                callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -143,23 +150,25 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     override fun getMediaReview(
         field: MediaReviewField,
         compositeDisposable: CompositeDisposable?,
-        resourceCallback: (Resource<List<MediaReviewModel>>) -> Unit
+        callback: (Resource<List<MediaReviewModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->
                 runBlocking {
-                    response.data?.media?.reviews?.edges?.filterNotNull()?.map { edge ->
-                        MediaReviewModel().also { model ->
-                            edge.node?.let { node ->
-                                model.id = node.id
-                                model.rating = node.rating
-                                model.ratingAmount = node.ratingAmount
-                                model.summary = node.summary
-                                model.userRating = node.userRating?.ordinal
-                                model.user = node.user?.let {
-                                    UserModel().also { model ->
-                                        model.id = it.id
-                                        model.avatar = it.avatar?.userAvatar?.toModel()
+                    response.data?.media?.reviews?.edges?.mapNotNull { edgeData ->
+                        edgeData?.let { edge ->
+                            MediaReviewModel().also { model ->
+                                edge.node?.let { node ->
+                                    model.id = node.id
+                                    model.rating = node.rating
+                                    model.ratingAmount = node.ratingAmount
+                                    model.summary = node.summary
+                                    model.userRating = node.userRating?.ordinal
+                                    model.user = node.user?.let {
+                                        UserModel().also { model ->
+                                            model.id = it.id
+                                            model.avatar = it.avatar?.userAvatar?.toModel()
+                                        }
                                     }
                                 }
                             }
@@ -169,10 +178,10 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                resourceCallback.invoke(Resource.success(it))
+                callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -187,23 +196,27 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
             .map { response ->
                 response.data?.media?.let { media ->
                     MediaStatsModel().also { model ->
-                        model.rankings = media.rankings?.filterNotNull()?.map { rank ->
-                            MediaRankModel().also { rankModel ->
-                                rankModel.id = rank.id
-                                rankModel.context = rank.context
-                                rankModel.allTime = rank.allTime ?: false
-                                rankModel.rank = rank.rank
-                                rankModel.season = rank.season?.ordinal
-                                rankModel.year = rank.year
-                                rankModel.rankType = rank.type.ordinal
+                        model.rankings = media.rankings?.mapNotNull { rankData ->
+                            rankData?.let { rank ->
+                                MediaRankModel().also { rankModel ->
+                                    rankModel.id = rank.id
+                                    rankModel.context = rank.context
+                                    rankModel.allTime = rank.allTime ?: false
+                                    rankModel.rank = rank.rank
+                                    rankModel.season = rank.season?.ordinal
+                                    rankModel.year = rank.year
+                                    rankModel.rankType = rank.type.ordinal
+                                }
                             }
                         }
 
 
-                        model.trends = media.trends?.nodes?.filterNotNull()?.map { node ->
-                            MediaTrendModel().also { trendModel ->
-                                trendModel.date = node.date
-                                trendModel.trending = node.trending
+                        model.trends = media.trends?.nodes?.mapNotNull { nodeData ->
+                            nodeData?.let { node ->
+                                MediaTrendModel().also { trendModel ->
+                                    trendModel.date = node.date
+                                    trendModel.trending = node.trending
+                                }
                             }
                         }
 
@@ -212,31 +225,35 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
                         }
 
                         model.statusDistribution =
-                            media.stats?.statusDistribution?.filterNotNull()?.map { status ->
-                                StatusDistributionModel().also { statusModel ->
-                                    statusModel.amount = status.amount
-                                    statusModel.status = status.status?.ordinal
+                            media.stats?.statusDistribution?.mapNotNull { statusData ->
+                                statusData?.let { status ->
+                                    StatusDistributionModel().also { statusModel ->
+                                        statusModel.amount = status.amount
+                                        statusModel.status = status.status?.ordinal
+                                    }
                                 }
                             }
 
                         model.scoreDistribution =
-                            media.stats?.scoreDistribution?.filterNotNull()?.map { score ->
-                                ScoreDistributionModel().also { scoreModel ->
-                                    scoreModel.amount = score.amount
-                                    scoreModel.score = score.score
+                            media.stats?.scoreDistribution?.mapNotNull { scoreData ->
+                                scoreData?.let { score->
+                                    ScoreDistributionModel().also { scoreModel ->
+                                        scoreModel.amount = score.amount
+                                        scoreModel.score = score.score
+                                    }
                                 }
                             }
 
                         model.airingTrends =
-                            media.airingTrends?.nodes?.filterNotNull()
-                                ?.filter { it.episode != null }
-                                ?.map { trends ->
+                            media.airingTrends?.nodes?.mapNotNull {
+                                it?.takeIf { it.episode != null }?.let { trends ->
                                     AiringTrendsModel(
                                         trends.episode!!.toFloat(),
                                         trends.averageScore?.toFloat() ?: 0f,
                                         trends.inProgress?.toFloat() ?: 0f
                                     )
-                                }?.sortedBy { it.episode }
+                                }
+                            }?.sortedBy { it.episode }
 
                         model.airingTrends?.let { trends ->
                             val airingWatchersProgressionEntries = mutableListOf<Entry>()
@@ -277,20 +294,20 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     override fun getMediaSocialFollowing(
         field: MediaSocialFollowingField,
         compositeDisposable: CompositeDisposable,
-        resourceCallback: (Resource<List<MediaSocialFollowingModel>>) -> Unit
+        callback: (Resource<List<MediaSocialFollowingModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.page?.mediaList?.filterNotNull()?.map { list ->
-                    list.toModel()
+                it.data?.page?.mediaList?.mapNotNull { list ->
+                    list?.toModel()
                 }
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                resourceCallback.invoke(Resource.success(it ?: emptyList()))
+                callback.invoke(Resource.success(it ?: emptyList()))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
             })
         compositeDisposable.add(disposable)
     }

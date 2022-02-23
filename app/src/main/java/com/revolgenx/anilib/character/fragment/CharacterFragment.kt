@@ -35,9 +35,9 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
         return CharacterFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.field.characterId = characterId ?: return
         viewModel.toggleField.characterId = characterId
 

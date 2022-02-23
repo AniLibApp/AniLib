@@ -25,8 +25,8 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
     ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.page?.media?.filterNotNull()?.map {
-                    it.onMedia.let { media ->
+                it.data?.page?.media?.mapNotNull {
+                    it?.onMedia?.let { media ->
                         media.mediaContent.toModel().also { mediaModel ->
                             mediaModel.staffs = media.staff?.let { staff ->
                                 StaffConnectionModel().also { staffConnectionModel ->
@@ -49,13 +49,15 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
                             mediaModel.studios = media.studios?.let {
                                 StudioConnectionModel().also { studioConnectionModel ->
                                     studioConnectionModel.edges =
-                                        it.edges?.filterNotNull()?.map { edge ->
-                                            StudioEdgeModel().also { edgeModel ->
-                                                edgeModel.isMain = edge.isMain
-                                                edgeModel.node = edge.node?.let { node ->
-                                                    StudioModel().also { studioModel ->
-                                                        studioModel.id = node.id
-                                                        studioModel.studioName = node.name
+                                        it.edges?.mapNotNull { edgeData ->
+                                            edgeData?.let { edge ->
+                                                StudioEdgeModel().also { edgeModel ->
+                                                    edgeModel.isMain = edge.isMain
+                                                    edgeModel.node = edge.node?.let { node ->
+                                                        StudioModel().also { studioModel ->
+                                                            studioModel.id = node.id
+                                                            studioModel.studioName = node.name
+                                                        }
                                                     }
                                                 }
                                             }
@@ -83,20 +85,22 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
     ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.page?.media?.filterNotNull()?.map {
-                    it.onMedia.let { media ->
+                it.data?.page?.media?.mapNotNull {
+                    it?.onMedia?.let { media ->
                         media.mediaContent.toModel().also { model ->
                             model.description = media.description
                             model.studios = media.studios?.let {
                                 StudioConnectionModel().also { studioConnectionModel ->
                                     studioConnectionModel.edges =
-                                        it.edges?.filterNotNull()?.map { edge ->
-                                            StudioEdgeModel().also { edgeModel ->
-                                                edgeModel.isMain = edge.isMain
-                                                edgeModel.node = edge.node?.let { node ->
-                                                    StudioModel().also { studioModel ->
-                                                        studioModel.id = node.id
-                                                        studioModel.studioName = node.name
+                                        it.edges?.mapNotNull { edgeData ->
+                                            edgeData?.let { edge ->
+                                                StudioEdgeModel().also { edgeModel ->
+                                                    edgeModel.isMain = edge.isMain
+                                                    edgeModel.node = edge.node?.let { node ->
+                                                        StudioModel().also { studioModel ->
+                                                            studioModel.id = node.id
+                                                            studioModel.studioName = node.name
+                                                        }
                                                     }
                                                 }
                                             }
@@ -107,14 +111,16 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
                             model.staffs = media.staff?.let {
                                 StaffConnectionModel().also { staffConnectionModel ->
                                     staffConnectionModel.edges =
-                                        it.edges?.filterNotNull()?.map { edge ->
-                                            StaffEdgeModel().also { edgeModel ->
-                                                edgeModel.role = edge.role
-                                                edgeModel.node = edge.node?.let { node ->
-                                                    StaffModel().also { model ->
-                                                        model.id = node.id
-                                                        model.name = node.name?.let {
-                                                            StaffNameModel(full = it.full)
+                                        it.edges?.mapNotNull { edgeData ->
+                                            edgeData?.let { edge ->
+                                                StaffEdgeModel().also { edgeModel ->
+                                                    edgeModel.role = edge.role
+                                                    edgeModel.node = edge.node?.let { node ->
+                                                        StaffModel().also { model ->
+                                                            model.id = node.id
+                                                            model.name = node.name?.let {
+                                                                StaffNameModel(full = it.full)
+                                                            }
                                                         }
                                                     }
                                                 }

@@ -29,9 +29,9 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
         callback: (Resource<List<NotificationModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation()).map { response ->
-            response.data?.page?.notifications?.filterNotNull()?.map {
+            response.data?.page?.notifications?.mapNotNull {
                 when {
-                    it.onAiringNotification != null -> {
+                    it?.onAiringNotification != null -> {
                         it.onAiringNotification.let {
                             AiringNotificationModel().apply {
                                 id = it.id
@@ -56,7 +56,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onFollowingNotification != null -> {
+                    it?.onFollowingNotification != null -> {
                         it.onFollowingNotification.let {
                             FollowingNotificationModel().apply {
                                 id = it.id
@@ -75,7 +75,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onActivityMessageNotification != null -> {
+                    it?.onActivityMessageNotification != null -> {
                         it.onActivityMessageNotification.let {
                             ActivityMessageNotification().apply {
                                 id = it.id
@@ -96,7 +96,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onActivityMentionNotification != null -> {
+                    it?.onActivityMentionNotification != null -> {
                         it.onActivityMentionNotification.let {
                             ActivityMentionNotification().apply {
                                 id = it.id
@@ -143,7 +143,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onActivityReplyNotification != null -> {
+                    it?.onActivityReplyNotification != null -> {
                         it.onActivityReplyNotification.let {
                             ActivityReplyNotification().apply {
                                 id = it.id
@@ -189,7 +189,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onActivityReplySubscribedNotification != null -> {
+                    it?.onActivityReplySubscribedNotification != null -> {
                         it.onActivityReplySubscribedNotification.let {
                             ActivityReplySubscribedNotification().apply {
                                 id = it.id
@@ -236,7 +236,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
 
                         }
                     }
-                    it.onActivityLikeNotification != null -> {
+                    it?.onActivityLikeNotification != null -> {
                         it.onActivityLikeNotification.let {
 
                             ActivityLikeNotification().apply {
@@ -283,7 +283,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onActivityReplyLikeNotification != null -> {
+                    it?.onActivityReplyLikeNotification != null -> {
                         it.onActivityReplyLikeNotification.let {
                             ActivityReplyLikeNotification().apply {
                                 id = it.id
@@ -330,7 +330,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onThreadCommentMentionNotification != null -> {
+                    it?.onThreadCommentMentionNotification != null -> {
                         it.onThreadCommentMentionNotification.let {
                             ThreadCommentMentionNotification().apply {
                                 id = it.id
@@ -369,7 +369,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onThreadCommentReplyNotification != null -> {
+                    it?.onThreadCommentReplyNotification != null -> {
                         it.onThreadCommentReplyNotification.let {
                             ThreadCommentReplyNotification().apply {
                                 id = it.id
@@ -407,7 +407,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onThreadCommentSubscribedNotification != null -> {
+                    it?.onThreadCommentSubscribedNotification != null -> {
                         it.onThreadCommentSubscribedNotification.let {
                             ThreadCommentSubscribedNotification().apply {
                                 id = it.id
@@ -444,7 +444,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onThreadCommentLikeNotification != null -> {
+                    it?.onThreadCommentLikeNotification != null -> {
                         it.onThreadCommentLikeNotification.let {
                             ThreadCommentLikeNotification().apply {
                                 id = it.id
@@ -482,7 +482,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onThreadLikeNotification != null -> {
+                    it?.onThreadLikeNotification != null -> {
                         it.onThreadLikeNotification.let {
                             ThreadLikeNotification().apply {
                                 id = it.id
@@ -511,7 +511,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onRelatedMediaAdditionNotification != null -> {
+                    it?.onRelatedMediaAdditionNotification != null -> {
                         it.onRelatedMediaAdditionNotification.let {
                             RelatedMediaNotificationModel().apply {
                                 id = it.id
@@ -524,7 +524,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onMediaDataChangeNotification != null -> {
+                    it?.onMediaDataChangeNotification != null -> {
                         it.onMediaDataChangeNotification.let {
                             MediaDataChangeNotificationModel().apply {
                                 id = it.id
@@ -537,7 +537,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onMediaMergeNotification != null -> {
+                    it?.onMediaMergeNotification != null -> {
                         it.onMediaMergeNotification.let {
                             MediaMergeNotificationModel().apply {
                                 id = it.id
@@ -551,7 +551,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                             }
                         }
                     }
-                    it.onMediaDeletionNotification != null -> {
+                    it?.onMediaDeletionNotification != null -> {
                         it.onMediaDeletionNotification.let {
                             MediaDeletionNotificationModel().apply {
                                 id = it.id
@@ -604,7 +604,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.user?.options?.notificationOptions?.filterNotNull()?.associateBy({ it.type!! }, { it.enabled == true })
+                it.data?.user?.options?.notificationOptions?.filterNotNull()
+                    ?.associateBy({ it.type!! }, { it.enabled == true })
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

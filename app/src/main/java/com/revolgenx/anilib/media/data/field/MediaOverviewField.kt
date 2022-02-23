@@ -99,23 +99,27 @@ fun MediaOverViewQuery.Media.toModel() = MediaModel().also {
         }
     }
 
-    it.externalLinks = externalLinks?.filterNotNull()?.map {
-        MediaExternalLinkModel().also { link ->
-            link.id = it.id
-            link.site = it.site
-            link.url = it.url
+    it.externalLinks = externalLinks?.mapNotNull {linkData->
+        linkData?.let {
+            MediaExternalLinkModel().also { link ->
+                link.id = it.id
+                link.site = it.site
+                link.url = it.url
+            }
         }
     }
 
-    it.tags = tags?.filterNotNull()?.map {
-        MediaTagModel(
-            name = it.name,
-            description = it.description,
-            category = it.category,
-            isMediaSpoilerTag = it.isMediaSpoiler == true,
-            rank = it.rank,
-            isAdult = it.isAdult == true
-        )
+    it.tags = tags?.mapNotNull {tagData->
+        tagData?.let {
+            MediaTagModel(
+                name = it.name,
+                description = it.description,
+                category = it.category,
+                isMediaSpoilerTag = it.isMediaSpoiler == true,
+                rank = it.rank,
+                isAdult = it.isAdult == true
+            )
+        }
     }
 
     it.trailer = trailer?.let {

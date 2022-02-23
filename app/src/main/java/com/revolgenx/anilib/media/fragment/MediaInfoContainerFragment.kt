@@ -32,7 +32,6 @@ import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.databinding.MediaInfoContainerFragmentLayoutBinding
 import com.revolgenx.anilib.media.data.model.isAnime
 import com.revolgenx.anilib.media.viewmodel.MediaInfoContainerSharedVM
-import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.drawable.DynamicBackgroundGradientDrawable
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeErrorToast
@@ -159,24 +158,15 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
         viewModel.onFavouriteChanged = {
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.mediaFavButton.setImageResource(if (isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
                     binding.bindFavourite()
+                }
+                Status.ERROR -> {
+                    binding.bindFavourite()
+                    makeErrorToast(R.string.failed_to_toggle)
                 }
                 else -> {
 
                 }
-            }
-        }
-
-        viewModel.onFavouriteChanged = {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    updateToolbar()
-                }
-                Status.ERROR -> {
-                    makeErrorToast(R.string.failed_to_toggle)
-                }
-                Status.LOADING -> {}
             }
         }
 
@@ -395,9 +385,9 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
             }
 
             legacyMediaAddMoreIv.setOnClickListener {
-                val meta = mediaInfoMeta ?: return@setOnClickListener
+                val media = mediaModel ?: return@setOnClickListener
                 val mediaListStatus =
-                    if (meta.type == MediaType.MANGA.ordinal) R.array.manga_list_status else R.array.anime_list_status
+                    if (media.isAnime) R.array.anime_list_status else R.array.manga_list_status
                 makeArrayPopupMenu(
                     it,
                     resources.getStringArray(mediaListStatus)
@@ -415,15 +405,19 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
             }
 
             legacyMediaBrowserBannerImage.setOnClickListener {
-                OpenImageEvent(mediaInfoMeta!!.bannerImage).postEvent
+                val media = mediaModel ?: return@setOnClickListener
+                OpenImageEvent(media.bannerImage).postEvent
             }
 
             legacyMediaBrowserCoverImage.setOnClickListener {
-                OpenImageEvent(mediaInfoMeta!!.coverImageLarge).postEvent
+                val media = mediaModel ?: return@setOnClickListener
+                OpenImageEvent(media.coverImage?.largeImage).postEvent
             }
 
             legacyMediaTitleTv.setOnLongClickListener {
-                requireContext().copyToClipBoard(mediaInfoMeta!!.title)
+                val title = mediaInfoMeta?.title ?: mediaModel?.title?.romaji
+                ?: return@setOnLongClickListener false
+                requireContext().copyToClipBoard(title)
                 true
             }
         } else {
@@ -432,9 +426,9 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
             }
 
             mediaAddMoreIv.setOnClickListener {
-                val meta = mediaInfoMeta ?: return@setOnClickListener
+                val model = mediaModel ?: return@setOnClickListener
                 val mediaListStatus =
-                    if (meta.type == MediaType.MANGA.ordinal) R.array.manga_list_status else R.array.anime_list_status
+                    if (model.isAnime) R.array.anime_list_status else R.array.manga_list_status
                 makeArrayPopupMenu(
                     it,
                     resources.getStringArray(mediaListStatus)
@@ -452,15 +446,19 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
             }
 
             mediaBrowserBannerImage.setOnClickListener {
-                OpenImageEvent(mediaInfoMeta!!.bannerImage).postEvent
+                val media = mediaModel ?: return@setOnClickListener
+                OpenImageEvent(media.bannerImage).postEvent
             }
 
             mediaBrowserCoverImage.setOnClickListener {
-                OpenImageEvent(mediaInfoMeta!!.coverImageLarge).postEvent
+                val media = mediaModel ?: return@setOnClickListener
+                OpenImageEvent(media.coverImage?.largeImage).postEvent
             }
 
             mediaTitleTv.setOnLongClickListener {
-                requireContext().copyToClipBoard(mediaInfoMeta!!.title)
+                val title = mediaInfoMeta?.title ?: mediaModel?.title?.romaji
+                ?: return@setOnLongClickListener false
+                requireContext().copyToClipBoard(title)
                 true
             }
 
@@ -540,9 +538,9 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
     }
 
     private fun openReviewWriter() {
-        if (mediaInfoMeta == null) return
+        val media = mediaModel ?: return
         if (requireContext().loggedIn()) {
-            OpenReviewComposerEvent(mediaInfoMeta!!.mediaId!!).postEvent
+            OpenReviewComposerEvent(media.id).postEvent
         } else {
             makeToast(R.string.please_log_in, null, R.drawable.ic_person)
         }

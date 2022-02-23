@@ -23,14 +23,11 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                val mediaIds = mutableListOf<Int>()
-                it.data?.mediaListCollection?.lists?.filterNotNull()?.forEach {
-                    it.entries
-                        ?.filter { if (field.canShowAdult) true else it?.media?.isAdult == false }
-                        ?.filterNotNull()
-                        ?.forEach { mediaIds.add(it.media?.id!!) }
-                }
-                mediaIds
+                it.data?.mediaListCollection?.lists?.mapNotNull {
+                    it?.entries?.mapNotNull {
+                        it?.takeIf { if (field.canShowAdult) true else it.media?.isAdult == false }?.media?.id
+                    }
+                }?.flatten()
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

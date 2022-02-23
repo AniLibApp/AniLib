@@ -86,36 +86,39 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation()).map {
             it.data?.page?.reviews
-                ?.filterNotNull()
-                ?.filter { if (field.canShowAdult) true else it.media?.isAdult == false }?.map {
-                    ReviewModel().also { model ->
-                        model.id = it.id
-                        model.rating = it.rating
-                        model.ratingAmount = it.ratingAmount
-                        model.summary = it.summary
-                        model.score = it.score
-                        model.createdAtDate = it.createdAt.let {
-                            SimpleDateFormat.getDateInstance().format(Date(it * 1000L))
-                        }
-                        model.user = it.user?.let {
-                            UserModel().also { user ->
-                                user.id = it.id
-                                user.name = it.name
-                                user.avatar = it.avatar?.userAvatar?.toModel()
+                ?.mapNotNull { review ->
+                    review?.takeIf { if (field.canShowAdult) true else it.media?.isAdult == false }
+                        ?.let {
+                            ReviewModel().also { model ->
+                                model.id = it.id
+                                model.rating = it.rating
+                                model.ratingAmount = it.ratingAmount
+                                model.summary = it.summary
+                                model.score = it.score
+                                model.createdAtDate = it.createdAt.let {
+                                    SimpleDateFormat.getDateInstance().format(Date(it * 1000L))
+                                }
+                                model.user = it.user?.let {
+                                    UserModel().also { user ->
+                                        user.id = it.id
+                                        user.name = it.name
+                                        user.avatar = it.avatar?.userAvatar?.toModel()
+                                    }
+                                }
+                                model.media = it.media?.let {
+                                    MediaModel().also { media ->
+                                        media.id = it.id
+                                        media.title = it.title?.mediaTitle?.toModel()
+                                        media.coverImage =
+                                            it.coverImage?.mediaCoverImage?.toModel()
+                                        media.bannerImage =
+                                            it.bannerImage ?: media.coverImage?.largeImage
+                                        media.type = it.type?.ordinal
+                                        media.isAdult = it.isAdult ?: false
+                                    }
+                                }
                             }
                         }
-                        model.media = it.media?.let {
-                            MediaModel().also { media ->
-                                media.id = it.id
-                                media.title = it.title?.mediaTitle?.toModel()
-                                media.coverImage =
-                                    it.coverImage?.mediaCoverImage?.toModel()
-                                media.bannerImage = it.bannerImage ?: media.coverImage?.largeImage
-                                media.type = it.type?.ordinal
-                                media.isAdult = it.isAdult ?: false
-                            }
-                        }
-                    }
                 }
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({

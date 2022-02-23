@@ -148,19 +148,23 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
             .map { response ->
                 val data = response.data
                 if (data is UserFollowersQuery.Data)
-                    (data as? UserFollowersQuery.Data)?.page?.followers?.filterNotNull()?.map {
-                        UserModel().also { model ->
-                            model.id = it.id
-                            model.name = it.name
-                            model.avatar = it.avatar?.userAvatar?.toModel()
+                    (data as? UserFollowersQuery.Data)?.page?.followers?.mapNotNull {follower->
+                        follower?.let {
+                            UserModel().also { model ->
+                                model.id = it.id
+                                model.name = it.name
+                                model.avatar = it.avatar?.userAvatar?.toModel()
+                            }
                         }
                     }
                 else
-                    (data as? UserFollowingQuery.Data)?.page?.following?.filterNotNull()?.map {
-                        UserModel().also { model ->
-                            model.id = it.id
-                            model.name = it.name
-                            model.avatar = it.avatar?.userAvatar?.toModel()
+                    (data as? UserFollowingQuery.Data)?.page?.following?.mapNotNull {following->
+                        following?.let {
+                            UserModel().also { model ->
+                                model.id = it.id
+                                model.name = it.name
+                                model.avatar = it.avatar?.userAvatar?.toModel()
+                            }
                         }
                     }
             }.observeOn(AndroidSchedulers.mainThread())
@@ -220,10 +224,10 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                                 model.studioName = it.name
                                 model.media = it.media?.let {
                                     MediaConnectionModel().also { mediaConnection ->
-                                        mediaConnection.nodes = it.nodes?.filterNotNull()?.filter {
-                                            if (field.canShowAdult) true else it.mediaContent.isAdult == false
-                                        }?.map {
-                                            it.mediaContent.toModel()
+                                        mediaConnection.nodes = it.nodes?.mapNotNull {
+                                            it?.takeIf {
+                                                if (field.canShowAdult) true else it.mediaContent.isAdult == false
+                                            }?.mediaContent?.toModel()
                                         }
                                     }
                                 }
@@ -251,23 +255,27 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
             .map { response ->
                 val data = response.data
                 if (data is UserFollowersQuery.Data)
-                    (data as? UserFollowersQuery.Data)?.page?.followers?.filterNotNull()?.map {
-                        UserModel().also { model ->
-                            model.id = it.id
-                            model.name = it.name
-                            model.avatar = it.avatar?.userAvatar?.toModel()
-                            model.isFollower = it.isFollower ?: false
-                            model.isFollowing = it.isFollowing ?: false
+                    (data as? UserFollowersQuery.Data)?.page?.followers?.mapNotNull { follower ->
+                        follower?.let {
+                            UserModel().also { model ->
+                                model.id = it.id
+                                model.name = it.name
+                                model.avatar = it.avatar?.userAvatar?.toModel()
+                                model.isFollower = it.isFollower ?: false
+                                model.isFollowing = it.isFollowing ?: false
+                            }
                         }
                     }
                 else
-                    (data as? UserFollowingQuery.Data)?.page?.following?.filterNotNull()?.map {
-                        UserModel().also { model ->
-                            model.id = it.id
-                            model.name = it.name
-                            model.avatar = it.avatar?.userAvatar?.toModel()
-                            model.isFollower = it.isFollower ?: false
-                            model.isFollowing = it.isFollowing ?: false
+                    (data as? UserFollowingQuery.Data)?.page?.following?.mapNotNull { following ->
+                        following?.let {
+                            UserModel().also { model ->
+                                model.id = it.id
+                                model.name = it.name
+                                model.avatar = it.avatar?.userAvatar?.toModel()
+                                model.isFollower = it.isFollower ?: false
+                                model.isFollowing = it.isFollowing ?: false
+                            }
                         }
                     }
             }.observeOn(AndroidSchedulers.mainThread())

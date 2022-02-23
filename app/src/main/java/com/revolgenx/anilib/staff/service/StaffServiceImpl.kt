@@ -64,8 +64,8 @@ class StaffServiceImpl(
             .map {
                 it.data?.staff?.characters?.let {
                     it.nodes?.mapNotNull { character ->
-                        character?.media?.edges?.filterNotNull()?.mapNotNull { edge ->
-                            edge.node?.onMedia?.mediaContent?.toModel()?.also { mediaModel ->
+                        character?.media?.edges?.mapNotNull { edge ->
+                            edge?.node?.onMedia?.mediaContent?.toModel()?.also { mediaModel ->
                                 mediaModel.character = CharacterModel().also { characterModel ->
                                     characterModel.id = character.id
                                     characterModel.name = CharacterNameModel(character.name?.full)

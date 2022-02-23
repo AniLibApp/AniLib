@@ -2,6 +2,31 @@
 <resources>
     <string name="release_info" translatable="false">
 
+        ### -v1.1.12 \n
+        * Theme settings has be modified. \n
+        \t * Choose theme mode and then theme to correctly apply theme. \n
+        \t * To enable customization, select __Customize__ from theme dropdown. \n
+        \t * There is also other theme setting, personalize according to your taste. \n
+        * Notification changes. \n
+        \t    * Notification badge without count will be shown if notification is not read. \n
+        \t    * Fixed bugs related to some notification not showing up in list.\n
+        * List \n
+        \t    * Custom List is now shown with count. \n
+        \t* Custom List can be added from settings. \n
+        \t    * List entry editor design has been changed. \n
+        * Search \n
+        \t    * Search filters has been improved. \n
+        \t    * Text search on text change. \n
+        * Support for Hiatus status. \n
+        * Friend List now shows mutual. \n
+        * Bugs \n
+        \t    * Missing save button in settings has been fixed. \n
+        \t    * List activity delete doing nothing fixed. \n
+        \t    * Typos fixed. \n
+        * Other fixes, optimization, and changes \n
+        * __Translator__. Thank you for the contribution. \n
+        \t * Spanish - MrJako2001  [AniList](https://anilist.co/user/MrJaco/) \n
+
         ### -v1.1.11 \n
         * Added activity section in home screen, user screen and media browse screen. \n
         * Compose activity, reply or create message with preview support. \n

@@ -627,7 +627,7 @@
     <string name="send">Send</string>
     <string name="recent_activity">Recent Activity</string>
     <string name="register">Register</string>
-    <string name="no_watching_feature_desc">Note: This app is for tracking and managing your anime/manga list. It does not provide any feature to show any anime nor display any manga.</string>
+    <string name="no_watching_feature_desc">Note: This app is not for watching anime/manga. Its an Unofficial Client For AniList; visit Anilist official website for more info.</string>
     <string name="reload">Reload</string>
     <string name="reset_to_default">Reset to default?</string>
     <string name="edit_genre">Edit Genre</string>

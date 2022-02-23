@@ -52,58 +52,70 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                         model.minutesWatched = anime.minutesWatched
                                         model.episodesWatched = anime.episodesWatched
 
-                                        model.scores = anime.scores?.filterNotNull()?.map { scr ->
-                                            UserScoreStatisticModel().apply {
-                                                count = scr.count
-                                                meanScore = scr.meanScore
-                                                minutesWatched = scr.minutesWatched
-                                                score = scr.score
+                                        model.scores = anime.scores?.mapNotNull { scrData ->
+                                            scrData?.let { scr ->
+                                                UserScoreStatisticModel().apply {
+                                                    count = scr.count
+                                                    meanScore = scr.meanScore
+                                                    minutesWatched = scr.minutesWatched
+                                                    score = scr.score
+                                                }
                                             }
                                         }
                                         model.statuses =
-                                            anime.statuses?.filterNotNull()?.map { stat ->
-                                                UserStatusStatisticModel().apply {
-                                                    count = stat.count
-                                                    meanScore = stat.meanScore
-                                                    minutesWatched = stat.minutesWatched
-                                                    status = stat.status?.ordinal
+                                            anime.statuses?.mapNotNull { statData ->
+                                                statData?.let { stat ->
+                                                    UserStatusStatisticModel().apply {
+                                                        count = stat.count
+                                                        meanScore = stat.meanScore
+                                                        minutesWatched = stat.minutesWatched
+                                                        status = stat.status?.ordinal
+                                                    }
                                                 }
                                             }
-                                        model.formats = anime.formats?.filterNotNull()?.map { fmt ->
-                                            UserFormatStatisticModel().apply {
-                                                count = fmt.count
-                                                meanScore = fmt.meanScore
-                                                minutesWatched = fmt.minutesWatched
-                                                format = fmt.format?.ordinal
+                                        model.formats = anime.formats?.mapNotNull { fmtData ->
+                                            fmtData?.let { fmt ->
+                                                UserFormatStatisticModel().apply {
+                                                    count = fmt.count
+                                                    meanScore = fmt.meanScore
+                                                    minutesWatched = fmt.minutesWatched
+                                                    format = fmt.format?.ordinal
+                                                }
                                             }
                                         }
                                         model.countries =
-                                            anime.countries?.filterNotNull()?.map { cnt ->
-                                                UserCountryStatisticModel().apply {
-                                                    count = cnt.count
-                                                    meanScore = cnt.meanScore
-                                                    minutesWatched = cnt.minutesWatched
-                                                    country = cnt.country?.toString()
+                                            anime.countries?.mapNotNull { cntData ->
+                                                cntData?.let { cnt ->
+                                                    UserCountryStatisticModel().apply {
+                                                        count = cnt.count
+                                                        meanScore = cnt.meanScore
+                                                        minutesWatched = cnt.minutesWatched
+                                                        country = cnt.country?.toString()
+                                                    }
                                                 }
                                             }
 
                                         model.releaseYears =
-                                            anime.releaseYears?.filterNotNull()?.map { yr ->
-                                                UserReleaseYearStatisticModel().apply {
-                                                    count = yr.count
-                                                    meanScore = yr.meanScore
-                                                    minutesWatched = yr.minutesWatched
-                                                    year = yr.releaseYear
+                                            anime.releaseYears?.mapNotNull { yrData ->
+                                                yrData?.let { yr ->
+                                                    UserReleaseYearStatisticModel().apply {
+                                                        count = yr.count
+                                                        meanScore = yr.meanScore
+                                                        minutesWatched = yr.minutesWatched
+                                                        year = yr.releaseYear
+                                                    }
                                                 }
                                             }?.sortedWith(compareBy { it.year })
 
                                         model.startYears =
-                                            anime.startYears?.filterNotNull()?.map { yr ->
-                                                UserStartYearStatisticModel().apply {
-                                                    count = yr.count
-                                                    meanScore = yr.meanScore
-                                                    minutesWatched = yr.minutesWatched
-                                                    startYear = yr.startYear
+                                            anime.startYears?.mapNotNull { yrData ->
+                                                yrData?.let { yr ->
+                                                    UserStartYearStatisticModel().apply {
+                                                        count = yr.count
+                                                        meanScore = yr.meanScore
+                                                        minutesWatched = yr.minutesWatched
+                                                        startYear = yr.startYear
+                                                    }
                                                 }
                                             }?.sortedWith(compareBy { it.startYear })
                                     }
@@ -117,58 +129,70 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                                         model.volumesRead = manga.volumesRead
                                         model.chaptersRead = manga.chaptersRead
 
-                                        model.scores = manga.scores?.filterNotNull()?.map { scr ->
-                                            UserScoreStatisticModel().apply {
-                                                count = scr.count
-                                                meanScore = scr.meanScore
-                                                minutesWatched = scr.minutesWatched
-                                                score = scr.score
+                                        model.scores = manga.scores?.mapNotNull { scrData ->
+                                            scrData?.let { scr ->
+                                                UserScoreStatisticModel().apply {
+                                                    count = scr.count
+                                                    meanScore = scr.meanScore
+                                                    minutesWatched = scr.minutesWatched
+                                                    score = scr.score
+                                                }
                                             }
                                         }
                                         model.statuses =
-                                            manga.statuses?.filterNotNull()?.map { stat ->
-                                                UserStatusStatisticModel().apply {
-                                                    count = stat.count
-                                                    meanScore = stat.meanScore
-                                                    minutesWatched = stat.minutesWatched
-                                                    status = stat.status?.ordinal
+                                            manga.statuses?.mapNotNull { statData ->
+                                                statData?.let { stat ->
+                                                    UserStatusStatisticModel().apply {
+                                                        count = stat.count
+                                                        meanScore = stat.meanScore
+                                                        minutesWatched = stat.minutesWatched
+                                                        status = stat.status?.ordinal
+                                                    }
                                                 }
                                             }
-                                        model.formats = manga.formats?.filterNotNull()?.map { fmt ->
-                                            UserFormatStatisticModel().apply {
-                                                count = fmt.count
-                                                meanScore = fmt.meanScore
-                                                minutesWatched = fmt.minutesWatched
-                                                format = fmt.format?.ordinal
+                                        model.formats = manga.formats?.mapNotNull { fmtData ->
+                                            fmtData?.let { fmt ->
+                                                UserFormatStatisticModel().apply {
+                                                    count = fmt.count
+                                                    meanScore = fmt.meanScore
+                                                    minutesWatched = fmt.minutesWatched
+                                                    format = fmt.format?.ordinal
+                                                }
                                             }
                                         }
                                         model.countries =
-                                            manga.countries?.filterNotNull()?.map { cnt ->
-                                                UserCountryStatisticModel().apply {
-                                                    count = cnt.count
-                                                    meanScore = cnt.meanScore
-                                                    minutesWatched = cnt.minutesWatched
-                                                    country = cnt.country?.toString()
+                                            manga.countries?.mapNotNull { cntData ->
+                                                cntData?.let { cnt ->
+                                                    UserCountryStatisticModel().apply {
+                                                        count = cnt.count
+                                                        meanScore = cnt.meanScore
+                                                        minutesWatched = cnt.minutesWatched
+                                                        country = cnt.country?.toString()
+                                                    }
                                                 }
                                             }
 
                                         model.releaseYears =
-                                            manga.releaseYears?.filterNotNull()?.map { yr ->
-                                                UserReleaseYearStatisticModel().apply {
-                                                    count = yr.count
-                                                    meanScore = yr.meanScore
-                                                    minutesWatched = yr.minutesWatched
-                                                    year = yr.releaseYear
+                                            manga.releaseYears?.mapNotNull { yrData ->
+                                                yrData?.let { yr ->
+                                                    UserReleaseYearStatisticModel().apply {
+                                                        count = yr.count
+                                                        meanScore = yr.meanScore
+                                                        minutesWatched = yr.minutesWatched
+                                                        year = yr.releaseYear
+                                                    }
                                                 }
                                             }?.sortedWith(compareBy { it.year })
 
                                         model.startYears =
-                                            manga.startYears?.filterNotNull()?.map { yr ->
-                                                UserStartYearStatisticModel().apply {
-                                                    count = yr.count
-                                                    meanScore = yr.meanScore
-                                                    minutesWatched = yr.minutesWatched
-                                                    startYear = yr.startYear
+                                            manga.startYears?.mapNotNull { yrData ->
+                                                yrData?.let { yr ->
+                                                    UserStartYearStatisticModel().apply {
+                                                        count = yr.count
+                                                        meanScore = yr.meanScore
+                                                        minutesWatched = yr.minutesWatched
+                                                        startYear = yr.startYear
+                                                    }
                                                 }
                                             }?.sortedWith(compareBy { it.startYear })
                                     }

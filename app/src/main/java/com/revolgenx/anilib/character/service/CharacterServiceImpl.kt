@@ -59,8 +59,8 @@ class CharacterServiceImpl(
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.character?.media?.nodes?.filterNotNull()?.map {
-                    it.onMedia.mediaContent.toModel()
+                it.data?.character?.media?.nodes?.mapNotNull {
+                    it?.onMedia?.mediaContent?.toModel()
                 }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({

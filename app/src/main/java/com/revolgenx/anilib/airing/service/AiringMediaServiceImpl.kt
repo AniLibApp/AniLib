@@ -73,43 +73,43 @@ class AiringMediaServiceImpl(
     ) {
         val disposable = baseGraphRepository.request(field.toQueryOrMutation())
             .map { response ->
-                response.data?.page?.airingSchedules?.filter {
-                    if (field.canShowAdult) true else it?.media?.mediaContent?.isAdult == false
-                }?.mapNotNull {
-                    it?.let {
-                        AiringScheduleModel().also { aModel ->
-                            aModel.timeUntilAiring = it.timeUntilAiring
-                            aModel.timeUntilAiringModel = TimeUntilAiringModel().also { ti ->
-                                ti.time = it.timeUntilAiring.toLong()
-                            }
-                            aModel.episode = it.episode
-                            aModel.airingAt = it.airingAt
-                            aModel.airingAtModel =  AiringAtModel(
-                                LocalDateTime.ofInstant(
-                                    Instant.ofEpochSecond(
-                                        it.airingAt.toLong()
-                                    ), ZoneOffset.systemDefault()
-                                )
-                            )
-
-                            aModel.commonTimer =
-                                CommonTimer(
-                                    Handler(Looper.getMainLooper()),
-                                    aModel.timeUntilAiringModel!!
-                                )
-                            aModel.mediaId = it.mediaId
-                            aModel.media = it.media?.mediaContent?.toModel()
-                            aModel.media?.let { mediaModel->
-                                mediaModel.mediaListEntry = it.media?.mediaContent?.mediaListEntry?.let {
-                                    MediaListModel().also { lModel->
-                                        lModel.progress = it.progress ?: 0
-                                        lModel.status = it.status?.ordinal
-                                    }
+                response.data?.page?.airingSchedules?.mapNotNull {
+                    it?.takeIf { if (field.canShowAdult) true else it.media?.mediaContent?.isAdult == false }
+                        ?.let {
+                            AiringScheduleModel().also { aModel ->
+                                aModel.timeUntilAiring = it.timeUntilAiring
+                                aModel.timeUntilAiringModel = TimeUntilAiringModel().also { ti ->
+                                    ti.time = it.timeUntilAiring.toLong()
                                 }
-                            }
+                                aModel.episode = it.episode
+                                aModel.airingAt = it.airingAt
+                                aModel.airingAtModel = AiringAtModel(
+                                    LocalDateTime.ofInstant(
+                                        Instant.ofEpochSecond(
+                                            it.airingAt.toLong()
+                                        ), ZoneOffset.systemDefault()
+                                    )
+                                )
 
+                                aModel.commonTimer =
+                                    CommonTimer(
+                                        Handler(Looper.getMainLooper()),
+                                        aModel.timeUntilAiringModel!!
+                                    )
+                                aModel.mediaId = it.mediaId
+                                aModel.media = it.media?.mediaContent?.toModel()
+                                aModel.media?.let { mediaModel ->
+                                    mediaModel.mediaListEntry =
+                                        it.media?.mediaContent?.mediaListEntry?.let {
+                                            MediaListModel().also { lModel ->
+                                                lModel.progress = it.progress ?: 0
+                                                lModel.status = it.status?.ordinal
+                                            }
+                                        }
+                                }
+
+                            }
                         }
-                    }
                 }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({

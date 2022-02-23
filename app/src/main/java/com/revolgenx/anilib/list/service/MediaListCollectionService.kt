@@ -98,14 +98,15 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                         groupModel.isCustomList = group.isCustomList == true
                                         groupModel.isCompletedList = group.isCompletedList == true
                                         groupModel.entries = group.entries?.mapNotNull {
-                                            it?.mediaListEntry?.toModel()?.also { entry ->
-                                                entry.userId = collectionModel.user?.id ?: -1
-                                                entry.user = collectionModel.user
-                                                entry.media = it.media?.mediaContent?.toModel()
-                                                if ((groupModel.isCustomList.not() && entry.hiddenFromStatusLists.not()) || (groupModel.isCustomList && entry.hiddenFromStatusLists)) {
-                                                    allEntries[entry.id] = entry
+                                            it?.takeIf { if (field.canShowAdult) true else it.media?.mediaContent?.isAdult == false }?.mediaListEntry?.toModel()
+                                                ?.also { entry ->
+                                                    entry.userId = collectionModel.user?.id ?: -1
+                                                    entry.user = collectionModel.user
+                                                    entry.media = it.media?.mediaContent?.toModel()
+                                                    if ((groupModel.isCustomList.not() && entry.hiddenFromStatusLists.not()) || (groupModel.isCustomList && entry.hiddenFromStatusLists)) {
+                                                        allEntries[entry.id] = entry
+                                                    }
                                                 }
-                                            }
                                         }?.toMutableList()
                                     }
                                 }

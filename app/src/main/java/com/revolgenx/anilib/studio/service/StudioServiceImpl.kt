@@ -49,12 +49,9 @@ class StudioServiceImpl(private val graphRepository: BaseGraphRepository) : Stud
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.studio?.media?.nodes?.filterNotNull()
-                    ?.filter {
-                        if (field.canShowAdult) true else it.onMedia.mediaContent.isAdult == false
-                    }?.map {
-                        it.onMedia.mediaContent.toModel()
-                    }
+                it.data?.studio?.media?.nodes?.mapNotNull {
+                    it?.takeIf { if (field.canShowAdult) true else it.onMedia.mediaContent.isAdult == false }?.onMedia?.mediaContent?.toModel()
+                }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
