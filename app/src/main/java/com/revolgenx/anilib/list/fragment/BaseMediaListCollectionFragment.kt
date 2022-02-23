@@ -15,6 +15,7 @@ import com.otaliastudios.elements.pagers.NoPagesPager
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.databinding.MediaListCollectionFragmentBinding
 import com.revolgenx.anilib.list.presenter.MediaListCollectionPresenter
@@ -38,12 +39,7 @@ abstract class BaseMediaListCollectionFragment() :
     protected abstract val listCollectionStoreVM: MediaListCollectionStoreVM
     protected val viewModel by viewModel<MediaListCollectionVM> { parametersOf(listCollectionStoreVM) }
 
-    private val containerSharedVM by viewModel<MediaListContainerSharedVM>(owner = {
-        ViewModelOwner.from(
-            this.parentFragment ?: this,
-            this.parentFragment
-        )
-    })
+    private val containerSharedVM by viewModel<MediaListContainerSharedVM>(owner = getViewModelOwner())
 
 
     protected val isLoggedInUser by lazy { viewModel.field.userId == UserPreference.userId }

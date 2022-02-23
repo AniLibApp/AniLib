@@ -50,6 +50,7 @@ query ActivityUnionQuery(
                     }
                     bannerImage
                     type
+                    isAdult
                 }
                 likes{
                     ... likeUsers

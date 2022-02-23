@@ -40,6 +40,7 @@ import com.revolgenx.anilib.media.presenter.MediaExternalLinkPresenter
 import com.revolgenx.anilib.media.presenter.MediaMetaPresenter
 import com.revolgenx.anilib.media.presenter.MediaRecommendationPresenter
 import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.infrastructure.source.MediaOverviewRecommendationSource
 import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
@@ -63,12 +64,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
         )
 
     private val viewModel by viewModel<MediaOverviewVM>()
-    private val sharedViewModel by viewModel<MediaInfoContainerSharedVM>(owner = {
-        ViewModelOwner.from(
-            this.parentFragment ?: this,
-            this.parentFragment
-        )
-    })
+    private val sharedViewModel by viewModel<MediaInfoContainerSharedVM>(owner = getViewModelOwner())
 
     private val recommendationSource: MediaOverviewRecommendationSource
         get() = viewModel.source ?: createRecommendationSource()

@@ -16,6 +16,7 @@ import com.revolgenx.anilib.constant.AlActivityType
 import com.revolgenx.anilib.databinding.UserActivityUnionFragmentLayoutBinding
 import com.revolgenx.anilib.common.event.OpenActivityMessageComposer
 import com.revolgenx.anilib.common.event.OpenActivityTextComposer
+import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.ui.presenter.ActivityUnionPresenter
@@ -32,12 +33,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
-    private val sharedViewModel by viewModel<UserContainerSharedVM>(owner = {
-        ViewModelOwner.from(
-            this.parentFragment ?: this,
-            this.parentFragment
-        )
-    })
+    private val sharedViewModel by viewModel<UserContainerSharedVM>(owner = getViewModelOwner())
     private val userId get() = UserPreference.userId
 
     override val basePresenter: Presenter<ActivityUnionModel>

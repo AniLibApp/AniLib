@@ -29,7 +29,7 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
                 it.data?.page?.activities?.mapNotNull {
                     when (it?.__typename) {
                         LIST_ACTIVITY -> {
-                            it.onListActivity?.toModel()
+                            it.onListActivity?.takeIf { if (field.canShowAdult) true else it.media?.isAdult == false }?.toModel()
                         }
                         MESSAGE_ACTIVITY -> {
                             it.onMessageActivity?.toModel()

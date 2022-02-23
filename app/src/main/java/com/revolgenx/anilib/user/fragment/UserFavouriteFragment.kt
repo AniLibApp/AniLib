@@ -9,6 +9,7 @@ import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.search.data.field.SearchTypes
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.common.data.model.BaseModel
+import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.user.presenter.UserFavouritePresenter
 import com.revolgenx.anilib.user.viewmodel.UserFavouriteContainerSharedVM
 import com.revolgenx.anilib.user.viewmodel.UserFavouriteViewModel
@@ -29,12 +30,7 @@ abstract class UserFavouriteFragment() : BasePresenterFragment<BaseModel>() {
     abstract val favouriteType: SearchTypes
 
     private val viewModel by viewModel<UserFavouriteViewModel>()
-    protected val sharedViewModel by viewModel<UserFavouriteContainerSharedVM>(owner = {
-        ViewModelOwner.from(
-            this.parentFragment ?: this,
-            this.parentFragment
-        )
-    })
+    protected val sharedViewModel by viewModel<UserFavouriteContainerSharedVM>(owner = getViewModelOwner())
 
     override var gridMaxSpan: Int = 6
     override var gridMinSpan: Int = 3

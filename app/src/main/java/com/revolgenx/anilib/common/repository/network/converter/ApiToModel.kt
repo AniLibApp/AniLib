@@ -104,6 +104,7 @@ fun ActivityUnionQuery.OnListActivity.toModel() = ListActivityModel().also { mod
             cModel.type = it.type?.ordinal
             cModel.coverImage = it.coverImage?.mediaCoverImage?.toModel()
             cModel.bannerImage = it.bannerImage
+            cModel.isAdult = it.isAdult == true
         }
     }
     model.status = status!!

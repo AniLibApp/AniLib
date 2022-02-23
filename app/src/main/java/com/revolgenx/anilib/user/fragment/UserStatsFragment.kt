@@ -6,6 +6,7 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.user.data.field.UserStatsField
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
+import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.data.model.stats.BaseStatisticModel
 import com.revolgenx.anilib.user.presenter.UserStatsPresenter
@@ -27,12 +28,7 @@ abstract class UserStatsFragment : BasePresenterFragment<BaseStatisticModel>() {
         return viewModel.createSource()
     }
 
-    protected val sharedViewModel by viewModel<UserStatsContainerSharedVM>(owner = {
-        ViewModelOwner.from(
-            this.parentFragment ?: this,
-            this.parentFragment
-        )
-    })
+    protected val sharedViewModel by viewModel<UserStatsContainerSharedVM>(owner = getViewModelOwner())
 
     protected open val type = MediaType.ANIME.ordinal
 

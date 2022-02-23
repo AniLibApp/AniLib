@@ -20,6 +20,7 @@ import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.StatsDistributionRecyclerLayoutBinding
 import com.revolgenx.anilib.databinding.UserStatisticOverviewFragmentLayoutBinding
 import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.data.model.UserModel
@@ -35,12 +36,7 @@ abstract class UserStatisticOverviewFragment :
     BaseLayoutFragment<UserStatisticOverviewFragmentLayoutBinding>() {
 
     private val viewModel by viewModel<StatsOverviewViewModel>()
-    private val sharedViewModel by viewModel<UserStatsContainerSharedVM>(owner = {
-        ViewModelOwner.from(
-            this.parentFragment ?: this,
-            this.parentFragment
-        )
-    })
+    private val sharedViewModel by viewModel<UserStatsContainerSharedVM>(owner = getViewModelOwner())
 
     private val mediaFormat by lazy {
         requireContext().resources.getStringArray(R.array.media_format)
