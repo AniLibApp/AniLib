@@ -3,7 +3,7 @@
 # AniLib (AniList Client for Android)
 AniList is an unofficial App for [AniList](https://anilist.co/). Track, share and discover your favorite anime and manga in one place by using the power of [AniList](https://anilist.co/).
 
-[![Build Check](https://github.com/rev0lgenX/AniLib/workflows/AniLib%20build%20check/badge.svg?branch=dev&event=push)](https://github.com/rev0lgenX/AniLib/actions)   [![Discord](https://img.shields.io/discord/762249048748589066?color=%236E85D3&label=Discord&logo=Discord)](https://discord.gg/Gd2TVQT)
+[![Build Check](https://github.com/rev0lgenX/AniLib/workflows/AniLib%20build%20check/badge.svg?branch=dev&event=push)](https://github.com/rev0lgenX/AniLib/actions) [![Snapshot](https://img.shields.io/github/v/release/rev0lgenX/AniLib-Snapshot?label=Snapshot)](https://github.com/rev0lgenX/AniLib-Snapshot/releases)   [![Discord](https://img.shields.io/discord/762249048748589066?color=%236E85D3&label=Discord&logo=Discord)](https://discord.gg/Gd2TVQT)
 
 ## Links
 <a href='https://play.google.com/store/apps/details?id=com.revolgenx.anilib&hl=en&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'  target="_blank"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200px"/></a>
