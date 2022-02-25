@@ -63,10 +63,10 @@ If you like this weeb's project, feel free to contribute through [Buymeacoffee](
 * Hindi - Manoj Chetry (KcMj)
 * Italian - Yoshimitsu, cayzon
 * Portuguese - Satoru, SamOak
-* Spanish - ricardoric_03
+* Spanish - ricardoric_03, MrJako2001 [AniList](https://anilist.co/user/MrJaco/)
 * Russian - Natalie
 * French - natsuthelight
-* German - André Niebuhr (Epr0m)
+* German - André Niebuhr (Epr0m) [AniList](https://anilist.co/user/Epr0m/)
         
 ### Note
 Visit [POEditor](https://poeditor.com/join/project?hash=d9NRHxgZSb) to join open collaborative translation team. Please email me first on anilib.dev@gmail.com.        

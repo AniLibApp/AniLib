@@ -12,10 +12,10 @@
         android:padding="@dimen/setting_padding_dimen">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/theme_mode"
-            style="@style/SettingHeaderStyle"/>
+            android:text="@string/theme_mode" />
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
@@ -32,10 +32,10 @@
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/theme_app_light"
-            style="@style/SettingHeaderStyle" />
+            android:text="@string/theme_app_light" />
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
@@ -52,10 +52,10 @@
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/theme_app_dark"
-            style="@style/SettingHeaderStyle"/>
+            android:text="@string/theme_app_dark" />
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
@@ -80,10 +80,10 @@
             app:fontFamily="@font/rubik_medium" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/background_color"
-            style="@style/SettingHeaderStyle"/>
+            android:text="@string/background_color" />
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
@@ -94,20 +94,20 @@
                 android:id="@+id/background_color_pref"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:adt_color="@color/window_background_light"
                 app:ads_description="@string/background_color_desc"
                 app:ads_icon="@drawable/ads_ic_paint_bucket"
                 app:ads_popup="true"
                 app:ads_popupColors="@array/pref_background_colors"
-                app:ads_shape="circle" />
+                app:ads_shape="circle"
+                app:adt_color="@color/window_background_light" />
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/surface_color"
-            style="@style/SettingHeaderStyle" />
+            android:text="@string/surface_color" />
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
@@ -127,10 +127,10 @@
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/theme_color_accent"
-            style="@style/SettingHeaderStyle"/>
+            android:text="@string/theme_color_accent" />
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
@@ -141,11 +141,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ads_alphaEnabled="true"
-                app:adt_color="@color/colorAccent"
                 app:ads_description="@string/theme_background_aware_desc"
                 app:ads_icon="@drawable/ads_ic_palette"
                 app:ads_popup="true"
-                app:ads_summary="@string/theme_color_accent_summary" />
+                app:ads_popupColors="@array/pref_accent_colors"
+                app:ads_summary="@string/theme_color_accent_summary"
+                app:adt_color="@color/colorAccent" />
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
@@ -160,38 +161,36 @@
             app:fontFamily="@font/rubik_medium" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/card_corner_radius"
-            style="@style/SettingHeaderStyle" />
+            android:text="@string/card_corner_radius" />
 
         <com.pranavpandey.android.dynamic.support.setting.base.DynamicSeekBarPreference
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            app:ads_controls="false"
             app:ads_key="pref_settings_corner_radius"
             app:ads_max="16"
-            app:ads_progress="8"
-            app:ads_controls="false"
-            />
+            app:ads_progress="8" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/card_elevation"
-            style="@style/SettingHeaderStyle"/>
+            android:text="@string/card_elevation" />
 
         <com.pranavpandey.android.dynamic.support.setting.base.DynamicSeekBarPreference
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            app:ads_controls="false"
             app:ads_key="pref_settings_card_elevation"
             app:ads_max="2"
-            app:ads_progress="1"
-            app:ads_controls="false"
-            />
+            app:ads_progress="1" />
 
     </LinearLayout>
 

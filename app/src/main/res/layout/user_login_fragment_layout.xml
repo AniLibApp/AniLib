@@ -71,7 +71,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
                             android:gravity="center_vertical"
-                            android:text="Important to know"
+                            android:text="@string/important_to_know"
                             android:textSize="14sp"
                             app:fontFamily="@font/cabincondensed_bold" />
                     </LinearLayout>
@@ -82,7 +82,7 @@
                         android:paddingStart="10dp"
                         android:paddingTop="2dp"
                         android:paddingEnd="10dp"
-                        android:text="AniLib is a 3rd party client app for AniList. You will be redirect to anilist.co to login/register. Please make sure the URL is anilist.co before entering your credentials."
+                        android:text="@string/sign_in_browser_requirement_desc"
                         android:textSize="12sp" />
 
                     <LinearLayout

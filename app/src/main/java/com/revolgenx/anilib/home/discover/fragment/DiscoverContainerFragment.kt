@@ -106,7 +106,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
     @SuppressLint("UnsafeOptInUsageError")
     override fun onToolbarInflated() {
         val notificationMenuItem = getBaseToolbar().menu.findItem(R.id.discover_notification_menu)
-        if(requireContext().loggedIn()){
+        if (requireContext().loggedIn()) {
             notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner) {
                 if (it > 0) {
                     BadgeUtils.attachBadgeDrawable(
@@ -122,7 +122,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
                     )
                 }
             }
-        }else{
+        } else {
             notificationMenuItem.isVisible = false
         }
     }
@@ -194,16 +194,22 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
     }
 
     private fun DiscoverContainerFragmentBinding.initRecommendationListener() {
-        recommendationOnListCheckBox.setOnCheckedChangeListener(null)
-        recommendationOnListCheckBox.setOnCheckedChangeListener { _, isChecked ->
-            val onList =
-                if (requireContext().loggedIn()) isChecked else null
-            recommendationViewModel.field.onList = onList
-            RecommendationEvent.RecommendationFilterEvent(
-                onList,
-                recommendationViewModel.field.sort!!
-            ).postEvent
+        if (requireContext().loggedIn()) {
+            recommendationOnListCheckBox.visibility = View.VISIBLE
+            recommendationOnListCheckBox.setOnCheckedChangeListener(null)
+            recommendationOnListCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                val onList =
+                    if (requireContext().loggedIn()) isChecked else null
+                recommendationViewModel.field.onList = onList
+                RecommendationEvent.RecommendationFilterEvent(
+                    onList,
+                    recommendationViewModel.field.sort!!
+                ).postEvent
+            }
+        } else {
+            recommendationOnListCheckBox.visibility = View.GONE
         }
+
 
         recommendationSortSpinner.onItemSelectedListener = null
         recommendationSortSpinner.setSelection(recommendationViewModel.field.sort ?: 0, false)

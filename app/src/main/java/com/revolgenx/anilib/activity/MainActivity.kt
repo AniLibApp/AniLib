@@ -11,7 +11,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.*
 import androidx.core.view.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.R
@@ -89,6 +95,17 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     private var resultLauncher: ActivityResultLauncher<Intent>? = null
     private var authorizationService: AuthorizationService? = null
 
+
+    private val fragmentLifeCycleCallback = object : FragmentManager.FragmentLifecycleCallbacks() {
+        override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
+            super.onFragmentResumed(fm, f)
+            Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+                param(FirebaseAnalytics.Param.SCREEN_NAME, f.javaClass.simpleName)
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, f.javaClass.simpleName)
+            }
+        }
+    }
+
     companion object {
         private const val authIntent: String = "auth_intent_key"
         private const val authDialogTag = "auth_dialog_tag"
@@ -135,12 +152,21 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     override fun onStart() {
         super.onStart()
         registerForEvent()
+        doIfNotDevFlavor {
+            supportFragmentManager.registerFragmentLifecycleCallbacks(
+                fragmentLifeCycleCallback,
+                true
+            )
+        }
     }
 
 
     override fun onStop() {
         super.onStop()
         disposeAuthorizationService()
+        doIfNotDevFlavor {
+            supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifeCycleCallback)
+        }
         unRegisterForEvent()
     }
 
@@ -686,17 +712,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         baseFragment: BaseFragment,
         transactionAnimation: FragmentAnimationType = FragmentAnimationType.FADE
     ) {
-//
-//        val lifecycleObserver = object : LifecycleObserver {
-//            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-//            fun onResume() {
-//                Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
-//                    param(FirebaseAnalytics.Param.SCREEN_NAME, baseFragment.javaClass.simpleName)
-//                    param(FirebaseAnalytics.Param.SCREEN_CLASS, baseFragment.javaClass.simpleName)
-//                }
-//            }
-//        }
-//        baseFragment.viewLifecycleOwner.lifecycle.addObserver(lifecycleObserver)
         getTransactionWithAnimation(transactionAnimation)
             .add(R.id.main_fragment_container, baseFragment)
             .addToBackStack(null).commit()

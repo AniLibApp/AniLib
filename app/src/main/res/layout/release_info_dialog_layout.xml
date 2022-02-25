@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:padding="6dp"
             app:adt_color="@color/ads_color_yellow_dark"
+            app:adt_colorType="custom"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ads_ic_warning" />
 

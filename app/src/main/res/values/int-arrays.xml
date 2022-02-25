@@ -2,16 +2,14 @@
 <resources>
     <!-- Default app theme colors. -->
     <integer-array name="pref_background_colors">
-        <item>@color/window_background_light</item>
-        <item>@color/ads_window_background</item>
-        <item>@color/ads_window_background_yellow</item>
-        <item>@color/color1</item>
-        <item>@color/color2</item>
-        <item>@color/color3</item>
-        <item>@color/color4</item>
-        <item>@color/color5</item>
+        <item>@color/default_background_light</item>
+        <item>@color/midnight_background_light</item>
+        <item>@color/bee_background_light</item>
+        <item>@color/strawberry_daiquiri_background_light</item>
+        <item>@color/tako_background_light</item>
+        <item>@color/teal_background_light</item>
+        <item>@color/green_apple_background_light</item>
         <item>@color/color6</item>
-        <item>@color/color7</item>
         <item>@color/ads_window_background_indigo_light</item>
         <item>@color/ads_window_background_red_light</item>
         <item>@color/ads_window_background_green_light</item>
@@ -20,21 +18,53 @@
         <item>@color/ads_window_background_purple_light</item>
         <item>@color/ads_window_background_orange_light</item>
         <item>@color/ads_window_background_brown_light</item>
-        <item>@color/ads_window_background_gray</item>
-        <item>@color/ads_window_background_dark</item>
         <item>@color/ads_window_background_indigo</item>
-        <item>@color/ads_window_background_red</item>
-        <item>@color/ads_window_background_green</item>
-        <item>@color/ads_window_background_blue</item>
-        <item>@color/ads_window_background_teal</item>
-        <item>@color/ads_window_background_purple</item>
-        <item>@color/ads_window_background_orange</item>
-        <item>@color/ads_window_background_brown</item>
+        <item>@color/default_background_dark</item>
+        <item>@color/midnight_background_dark</item>
+        <item>@color/bee_background_dark</item>
+        <item>@color/strawberry_daiquiri_background_dark</item>
+        <item>@color/tako_background_dark</item>
+        <item>@color/teal_background_dark</item>
+        <item>@color/green_apple_background_dark</item>
+        <item>@color/color1</item>
+        <item>@color/color2</item>
+        <item>@color/color3</item>
+        <item>@color/color4</item>
+        <item>@color/color5</item>
+        <item>@color/color7</item>
         <item>@color/ads_window_background_gray</item>
     </integer-array>
 
     <integer-array name="pref_surface_colors">
-            <item>-3</item>
+        <item>-3</item>
+        <item>@color/midnight_surface_light</item>
+        <item>@color/bee_surface_light</item>
+        <item>@color/strawberry_daiquiri_surface_light</item>
+        <item>@color/tako_surface_light</item>
+        <item>@color/teal_surface_light</item>
+        <item>@color/green_apple_surface_light</item>
+        <item>@color/midnight_surface_dark</item>
+        <item>@color/bee_surface_dark</item>
+        <item>@color/strawberry_daiquiri_surface_dark</item>
+        <item>@color/tako_surface_dark</item>
+        <item>@color/teal_surface_dark</item>
+        <item>@color/green_apple_surface_dark</item>
+    </integer-array>
+
+    <integer-array name="pref_accent_colors">
+        <item>-3</item>
+        <item>@color/midnight_accent_light</item>
+        <item>@color/bee_accent_light</item>
+        <item>@color/strawberry_daiquiri_accent_light</item>
+        <item>@color/tako_accent_light</item>
+        <item>@color/teal_accent_light</item>
+        <item>@color/green_apple_accent_light</item>
+        <item>@color/midnight_accent_dark</item>
+        <item>@color/bee_accent_dark</item>
+        <item>@color/strawberry_daiquiri_accent_dark</item>
+        <item>@color/tako_accent_dark</item>
+        <item>@color/teal_accent_dark</item>
+        <item>@color/green_apple_accent_dark</item>
     </integer-array>
 
     <color name="color1">#0A1626</color>

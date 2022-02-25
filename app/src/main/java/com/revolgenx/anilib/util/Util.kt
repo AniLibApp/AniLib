@@ -17,6 +17,7 @@ import androidx.core.net.toUri
 import com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
 import com.pranavpandey.android.dynamic.utils.DynamicLinkUtils
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
+import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.type.MediaSeason
 import com.revolgenx.anilib.ui.view.makeToast
@@ -29,12 +30,12 @@ import timber.log.Timber
 import java.util.*
 
 
-object LauncherShortcutKeys{
+object LauncherShortcutKeys {
     const val LAUNCHER_SHORTCUT_EXTRA_KEY = "LAUNCHER_SHORTCUT_EXTRA_KEY"
 
 }
 
-enum class LauncherShortcuts{
+enum class LauncherShortcuts {
     HOME, ANIME, MANGA, RADIO, NOTIFICATION
 }
 
@@ -78,13 +79,13 @@ fun Long.prettyNumberFormat(): String { //Long.MIN_VALUE == -Long.MIN_VALUE so w
 }
 
 
-fun <T:EventBusListener> T.registerForEvent() {
+fun <T : EventBusListener> T.registerForEvent() {
     val bus = EventBus.getDefault()
     if (!bus.isRegistered(this))
         bus.register(this)
 }
 
-fun <T:EventBusListener> T.unRegisterForEvent() {
+fun <T : EventBusListener> T.unRegisterForEvent() {
     val bus = EventBus.getDefault()
     if (bus.isRegistered(this)) {
         bus.unregister(this)
@@ -143,11 +144,11 @@ fun Context.hideKeyboard(view: View) {
 
 fun Context.openLink(url: String?) {
     try {
-        if (!url.isNullOrBlank()){
+        if (!url.isNullOrBlank()) {
             startActivity(Intent(Intent.ACTION_VIEW, url.trim().toUri()).also {
                 it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             })
-        }else{
+        } else {
             makeToast(R.string.invalid)
         }
     } catch (e: Exception) {
@@ -157,7 +158,7 @@ fun Context.openLink(url: String?) {
 }
 
 fun Long.prettyTime(): String {
-    return PrettyTime().format(Date(this * 1000L ))
+    return PrettyTime().format(Date(this * 1000L))
 }
 
 fun View.string(@StringRes id: Int) = context.getString(id)
@@ -178,10 +179,16 @@ fun Context.copyToClipBoard(str: String?) {
 }
 
 
-
-inline fun shortcutAction(context: Context,action: (ShortcutManager) -> Unit) {
+inline fun shortcutAction(context: Context, action: (ShortcutManager) -> Unit) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
         val shortcutManager = context.getSystemService(ShortcutManager::class.java)
         action(shortcutManager)
+    }
+}
+
+
+fun doIfNotDevFlavor(callback: () -> Unit) {
+    if (BuildConfig.FLAVOR != "dev") {
+        callback.invoke()
     }
 }

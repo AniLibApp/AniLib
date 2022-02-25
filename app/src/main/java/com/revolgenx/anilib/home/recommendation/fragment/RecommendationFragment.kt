@@ -29,6 +29,8 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() , Ev
         get() = Presenter.forLoadingIndicator(
             requireContext(), R.layout.recommendation_shimmer_loader_layout
         )
+    override var gridMaxSpan: Int = 4
+    override var gridMinSpan: Int = 2
 
     private val viewModel by viewModel<RecommendationViewModel>()
 
@@ -47,35 +49,13 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() , Ev
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val span =
-            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
-        layoutManager =
-            GridLayoutManager(
-                this.context,
-                span
-            ).also {
-                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.getItemViewType(position) == 0) {
-                            1
-                        } else {
-                            span
-                        }
-                    }
-                }
-            }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+        super.onViewCreated(view, savedInstanceState)
         if (savedInstanceState == null) {
             with(viewModel.field) {
                 sort = getRecommendationSort(requireContext())
                 onList = getRecommendationOnList(requireContext())
             }
         }
-
     }
 
     @Subscribe()

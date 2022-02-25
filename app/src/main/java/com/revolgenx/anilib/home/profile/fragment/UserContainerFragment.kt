@@ -33,6 +33,7 @@ import com.revolgenx.anilib.util.prettyNumberFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
 import com.revolgenx.anilib.home.event.MainActivityPage
+import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>() {

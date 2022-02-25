@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="default_background_light">#f0f0f0</color>
+    <color name="default_background_dark">#000000</color>
+    <color name="default_surface_light">#E6E6E6</color>
+    <color name="default_surface_dark">#242424</color>
+    <color name="default_accent_light">#02A4F8</color>
+    <color name="default_accent_dark">#02A4F8</color>
+
     <color name="midnight_background_light">#fbf9fb</color>
     <color name="midnight_surface_light">#f4ebf2</color>
     <color name="midnight_accent_light">#5c0b78</color>
