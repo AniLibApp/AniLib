@@ -7,26 +7,24 @@ AniList is an unofficial App for [AniList](https://anilist.co/). Track, share an
 
 ## Links
 <a href='https://play.google.com/store/apps/details?id=com.revolgenx.anilib&hl=en&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'  target="_blank"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200px"/></a>
-<a href="https://anilib.onrender.com" target="_blank"><img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/ftr-social/.github/assets/anilib_icon.png" width="70px"/></a>
+<a href="https://anilib.onrender.com" target="_blank"><img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/master/.github/assets/anilib_icon.png" width="70px"/></a>
 
 ## Screenshots
-<img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/ftr-social/.github/assets/discover.png" width="26%"> <img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/ftr-social/.github/assets/list.png" width="26%">    <img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/ftr-social/.github/assets/activity.png" width="26%">
+<img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/master/.github/assets/1a.jpg" width="20%"> <img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/master/.github/assets/1b.jpg" width="20%"> <img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/master/.github/assets/1c.jpg" width="20%"> <img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/master/.github/assets/1d.jpg" width="20%"> <img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/master/.github/assets/2a.jpg" width="20%"> <img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/master/.github/assets/2b.jpg" width="20%"> <img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/master/.github/assets/2c.jpg" width="20%">
+
 
 ## Development
 <details><summary>Api Keys</summary>
         
 Supply AniList Api Keys into `secret.properties`.
 
-Create file `secret.properties` in root project folder and once you obtain then key, set them like below
-``` 
-anilist_client_id=<here>
-anilist_client_secret=<here>
-```    
+Rename file `example.secret.properties` to `secret.properties` and add properties as required in root project folder.
+ 
 </details>
 
 <details><summary>Contributions</summary>
         
-* Always create pull request to dev branch.<br>
+* Always create pull request to master branch.<br>
 * Please pull to latest before sending pull request to avoid merge conflict.<br>
 * Create description about what it does or solve.<br>
 
