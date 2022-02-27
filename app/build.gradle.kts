@@ -18,30 +18,32 @@ android {
     compileSdk = AndroidSdk.compile
     buildToolsVersion = "30.0.3"
 
-    fun getAniListProperty(name: String, default: String = ""): String {
-        val fis = FileInputStream(rootProject.file("anilist.properties"))
+    fun loadProperties(file: String) = if (rootProject.file(file).exists()) {
+        val fis = FileInputStream(rootProject.file(file))
         val prop = Properties()
         prop.load(fis)
-        return prop.getProperty(name) ?: default
-    }
+        prop
+    } else null
 
-    fun getAniListSecretProperty(name: String, default: String = ""): String {
-        return if (rootProject.file("secret.properties").exists()) {
-            val fis = FileInputStream(rootProject.file("secret.properties"))
-            val prop = Properties()
-            prop.load(fis)
-            return prop.getProperty(name) ?: "\"$default\""
-        } else {
-            "\"$default\""
-        }
-    }
+    val secretProps = loadProperties("secret.properties")
+    val aniListProps = loadProperties("anilist.properties")
+    val releaseProps = loadProperties("release.properties")
+
+    fun getAniListProperty(name: String, default: String = ""): String =
+        aniListProps?.getProperty(name) ?: "\"$default\""
+
+    fun getAniListSecretProperty(name: String, default: String = ""): String =
+        secretProps?.getProperty(name) ?: "\"$default\""
+
+    fun getReleaseProperty(name: String, default: String = ""): String =
+        releaseProps?.getProperty(name) ?: "\"$default\""
 
     defaultConfig {
         applicationId = "com.revolgenx.anilib"
         minSdk = AndroidSdk.min
         targetSdk = AndroidSdk.target
-        versionCode = 30
-        versionName = "1.1.11"
+        versionCode = 31
+        versionName = "1.1.12"
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField(
@@ -61,6 +63,16 @@ android {
         )
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(getReleaseProperty("store_file_path"))
+            storePassword = getReleaseProperty("store_password")
+            keyAlias = getReleaseProperty("key_alias")
+            keyPassword = getReleaseProperty("key_password")
+
+            enableV2Signing = true
+        }
+    }
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -97,8 +109,8 @@ android {
                 "anilistclientSecret",
                 getAniListSecretProperty("anilist_client_secret")
             )
-            isShrinkResources = true
-            isMinifyEnabled = true
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
         create("alpha") {

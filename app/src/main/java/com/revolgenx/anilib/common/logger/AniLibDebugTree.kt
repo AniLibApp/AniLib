@@ -2,6 +2,7 @@ package com.revolgenx.anilib.common.logger
 
 import android.content.Context
 import android.util.Log
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.revolgenx.anilib.BuildConfig
@@ -18,6 +19,8 @@ class AniLibDebugTree(context: Context) : Timber.DebugTree() {
         doIfNotDevFlavor {
             Firebase.crashlytics
                 .setCrashlyticsCollectionEnabled(isCrashReportEnabled(context))
+            Firebase.analytics
+                .setAnalyticsCollectionEnabled(true)
         }
     }
 
