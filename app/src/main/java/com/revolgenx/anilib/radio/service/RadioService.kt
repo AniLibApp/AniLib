@@ -39,6 +39,7 @@ import com.revolgenx.anilib.radio.data.PlaybackState
 import com.revolgenx.anilib.radio.repository.room.getDefaultStream
 import com.revolgenx.anilib.radio.source.RadioChildrenType
 import com.revolgenx.anilib.radio.source.RadioStationSource
+import com.revolgenx.anilib.util.getPendingIntentEmptyFlag
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -142,7 +143,8 @@ class RadioService : MediaBrowserServiceCompat(),
             PLAY_ACTION_KEY -> {
                 var mediaId = intent.getLongExtra(MEDIA_ID_EXTRA_KEY, -1)
 
-                val isDifferentStation = mediaId != -1L && currentRadioStation.value != null && mediaId != currentRadioStation.value!!.id
+                val isDifferentStation =
+                    mediaId != -1L && currentRadioStation.value != null && mediaId != currentRadioStation.value!!.id
 
                 if (mediaId == -1L) {
                     if (currentRadioStation.value != null) {
@@ -152,14 +154,14 @@ class RadioService : MediaBrowserServiceCompat(),
                     }
                 }
 
-                if(isDifferentStation){
+                if (isDifferentStation) {
                     stopCurrentPlayer()
                     radioSource.setCurrentRadioStation(mediaId)
                     playCurrentStation()
-                }else{
-                    if(radioSource.playbackState.value is PlaybackState.RadioPlayState || radioSource.playbackState.value is PlaybackState.RadioBufferingState){
+                } else {
+                    if (radioSource.playbackState.value is PlaybackState.RadioPlayState || radioSource.playbackState.value is PlaybackState.RadioBufferingState) {
                         stopCurrentPlayback()
-                    }else{
+                    } else {
                         stopCurrentPlayer()
                         radioSource.setCurrentRadioStation(mediaId)
                         playCurrentStation()
@@ -190,14 +192,14 @@ class RadioService : MediaBrowserServiceCompat(),
     }
 
     override fun onCreate() {
-        mDispatcher.onServicePreSuperOnCreate();
+        mDispatcher.onServicePreSuperOnCreate()
         super.onCreate()
 
 
         //create session
         val sessionActivityPendingIntent =
             packageManager?.getLaunchIntentForPackage(packageName)?.let { sessionIntent ->
-                PendingIntent.getActivity(this, 0, sessionIntent, 0)
+                PendingIntent.getActivity(this, 0, sessionIntent, getPendingIntentEmptyFlag())
             }
 
         mediaSession = MediaSessionCompat(this, RadioService::class.java.simpleName).apply {
@@ -327,7 +329,12 @@ class RadioService : MediaBrowserServiceCompat(),
 
         val sessionActivityPendingIntent =
             packageManager?.getLaunchIntentForPackage(packageName)?.let { sessionIntent ->
-                PendingIntent.getActivity(this, 0, sessionIntent, 0)
+                PendingIntent.getActivity(
+                    this,
+                    0,
+                    sessionIntent,
+                    getPendingIntentEmptyFlag()
+                )
             }
 
         val contentText = currentRadioStation.streamTitle ?: ""
@@ -417,37 +424,37 @@ class RadioService : MediaBrowserServiceCompat(),
     private fun makePlayPendingIntent(): PendingIntent? {
         val intent = Intent(PLAY_ACTION_KEY)
         intent.component = ComponentName(this, RadioService::class.java)
-        return PendingIntent.getService(this, 1, intent, 0)
+        return PendingIntent.getService(this, 1, intent, getPendingIntentEmptyFlag())
     }
 
     private fun makePausePendingIntent(): PendingIntent? {
         val intent = Intent(PAUSE_ACTION_KEY)
         intent.component = ComponentName(this, RadioService::class.java)
-        return PendingIntent.getService(this, 2, intent, 0)
+        return PendingIntent.getService(this, 2, intent, getPendingIntentEmptyFlag())
     }
 
     private fun makeClosePendingIntent(): PendingIntent? {
         val intent = Intent(STOP_ACTION_KEY)
         intent.component = ComponentName(this, RadioService::class.java)
-        return PendingIntent.getService(this, 3, intent, 0)
+        return PendingIntent.getService(this, 3, intent, getPendingIntentEmptyFlag())
     }
 
     private fun makePreviousPendingIntent(): PendingIntent? {
         val intent = Intent(PREVIOUS_ACTION_KEY)
         intent.component = ComponentName(this, RadioService::class.java)
-        return PendingIntent.getService(this, 4, intent, 0)
+        return PendingIntent.getService(this, 4, intent, getPendingIntentEmptyFlag())
     }
 
     private fun makeNextPendingIntent(): PendingIntent? {
         val intent = Intent(NEXT_ACTION_KEY)
         intent.component = ComponentName(this, RadioService::class.java)
-        return PendingIntent.getService(this, 5, intent, 0)
+        return PendingIntent.getService(this, 5, intent, getPendingIntentEmptyFlag())
     }
 
     //#endregion
 
     override fun onBind(intent: Intent?): IBinder? {
-        mDispatcher.onServicePreSuperOnBind();
+        mDispatcher.onServicePreSuperOnBind()
         return super.onBind(intent)
     }
 
@@ -548,7 +555,7 @@ class RadioService : MediaBrowserServiceCompat(),
         clientPackageName: String,
         clientUid: Int,
         rootHints: Bundle?
-    ): BrowserRoot? {
+    ): BrowserRoot {
         return BrowserRoot(RadioService::class.java.simpleName, null)
     }
 

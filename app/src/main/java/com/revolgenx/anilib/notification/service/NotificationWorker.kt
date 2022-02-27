@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.notification.service
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -37,6 +38,7 @@ import com.revolgenx.anilib.notification.data.model.activity.*
 import com.revolgenx.anilib.notification.data.model.thread.*
 import com.revolgenx.anilib.util.LauncherShortcutKeys
 import com.revolgenx.anilib.util.LauncherShortcuts
+import com.revolgenx.anilib.util.getPendingIntentUpdateFlag
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
@@ -242,7 +244,12 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
         pendingIntent =
-            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                getPendingIntentUpdateFlag()
+            )
     }
 
     private fun createChannel() {

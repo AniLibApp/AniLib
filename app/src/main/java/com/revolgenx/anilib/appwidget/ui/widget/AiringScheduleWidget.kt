@@ -11,8 +11,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.appwidget.service.AiringScheduleRemoteViewsService
 import com.revolgenx.anilib.common.preference.AiringWidgetPreference
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
+import com.revolgenx.anilib.util.getPendingIntentUpdateFlag
 import java.time.LocalTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -224,12 +224,15 @@ class AiringScheduleWidget : AppWidgetProvider() {
         action: String,
         appWidgetId: Int
     ): PendingIntent {
-        return PendingIntent.getBroadcast(context, 0, Intent(context, javaClass).also {
-            it.action = action
-            it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
-        }, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getBroadcast(
+            context, 0, Intent(context, javaClass).also {
+                it.action = action
+                it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
+            }, getPendingIntentUpdateFlag()
+        )
     }
+
 
     private fun openAiringSchedulePendingIntent(context: Context): PendingIntent {
         return PendingIntent.getActivity(
@@ -239,7 +242,7 @@ class AiringScheduleWidget : AppWidgetProvider() {
                 this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 action = MainActivity.OPEN_AIRING_ACTION_KEY
             },
-            PendingIntent.FLAG_UPDATE_CURRENT
+            getPendingIntentUpdateFlag()
         )
     }
 

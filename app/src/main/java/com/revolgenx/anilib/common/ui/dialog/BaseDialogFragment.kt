@@ -123,6 +123,8 @@ abstract class BaseDialogFragment<V : ViewBinding> : DynamicDialogFragment() {
     ): DynamicDialog {
         with(alertDialog) {
             setOnShowListener {
+                if(this@BaseDialogFragment.context == null) return@setOnShowListener
+
                 this.setCanceledOnTouchOutside(dismissOnTouchOutside)
                 findViewById<TextView>(com.pranavpandey.android.dynamic.support.R.id.alertTitle)?.let {
                     titleTextView = it

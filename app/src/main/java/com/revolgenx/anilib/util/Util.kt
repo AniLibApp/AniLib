@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.util
 
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -186,6 +187,12 @@ inline fun shortcutAction(context: Context, action: (ShortcutManager) -> Unit) {
     }
 }
 
+fun immutablePendingFlag(flag: Int) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+    flag or PendingIntent.FLAG_IMMUTABLE
+else flag
+
+fun getPendingIntentUpdateFlag() = immutablePendingFlag(PendingIntent.FLAG_UPDATE_CURRENT)
+fun     getPendingIntentEmptyFlag() = immutablePendingFlag(0)
 
 fun doIfNotDevFlavor(callback: () -> Unit) {
     if (BuildConfig.FLAVOR != "dev") {
