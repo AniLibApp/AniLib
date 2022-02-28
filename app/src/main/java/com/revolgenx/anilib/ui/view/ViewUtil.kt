@@ -38,14 +38,14 @@ fun Fragment.makeToast(
     msg: String? = null,
     @DrawableRes icon: Int? = null
 ) {
-    requireContext().makeToast(str, msg, icon)
+    context?.makeToast(str, msg, icon)
 }
 
 fun Fragment.makeErrorToast(
     @StringRes str: Int? = null,
     msg: String? = null,
 ) {
-    requireContext().makeToast(str, msg, R.drawable.ic_error)
+    context?.makeToast(str, msg, R.drawable.ic_error)
 }
 
 fun Context.makeToast(

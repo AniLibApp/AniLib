@@ -156,19 +156,9 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
         context ?: return
 
 
-        data.rankings?.let {
-            rankingAdapter = Adapter.builder(viewLifecycleOwner)
-                .addSource(Source.fromList(it))
-                .addPresenter(rankingsPresenter)
-                .into(rankingRecyclerView)
-        }
 
-        data.statusDistribution?.let {
-            Adapter.builder(viewLifecycleOwner)
-                .addSource(Source.fromList(it))
-                .addPresenter(statusDistributionPresenter)
-                .into(statusDistributionRecyclerView)
-        }
+        binding.fillRankingRecyclerView(data)
+        binding.fillStatusDistributionRecyclerView(data)
 
         data.trendsEntries?.let { entries ->
             LineDataSet(entries, "").apply {
@@ -248,13 +238,39 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
             }
         }
 
+        binding.updateStatusDistribution(data)
+        binding.updateScoreDistribution(data)
 
-        val statusTotalAmount = data.statusDistribution?.sumOf { it.amount!! }?.toFloat() ?: 1f
+    }
+
+    private fun MediaStatsFragmentLayoutBinding.fillRankingRecyclerView(data: MediaStatsModel) {
+        data.rankings?.let {
+            rankingAdapter = Adapter.builder(viewLifecycleOwner)
+                .addSource(Source.fromList(it))
+                .addPresenter(rankingsPresenter)
+                .into(rankingRecyclerView)
+        }
+    }
+
+    private fun MediaStatsFragmentLayoutBinding.fillStatusDistributionRecyclerView(data: MediaStatsModel) {
+        data.statusDistribution?.let {
+            Adapter.builder(viewLifecycleOwner)
+                .addSource(Source.fromList(it))
+                .addPresenter(statusDistributionPresenter)
+                .into(statusDistributionRecyclerView)
+        }
+    }
+
+    private fun MediaStatsFragmentLayoutBinding.updateStatusDistribution(data: MediaStatsModel) {
+        val statusDistribution = data.statusDistribution ?: return
+
+        val statusTotalAmount = statusDistribution.sumOf { it.amount!! }.toFloat()
         val statusPercentageAmount =
-            data.statusDistribution?.map { it.amount!!.div(statusTotalAmount).times(100f) }
-        val statusColors = data.statusDistribution?.map { mediaListStatusColors[it.status!!] }
+            statusDistribution.map { it.amount!!.div(statusTotalAmount).times(100f) }
+        val statusColors = statusDistribution.map { mediaListStatusColors[it.status!!] }
 
-        val barEntry = listOf(BarEntry(0f, statusPercentageAmount?.toFloatArray() ?: floatArrayOf(0f)))
+        val barEntry =
+            listOf(BarEntry(0f, statusPercentageAmount.toFloatArray()))
 
         val barDataSet = BarDataSet(barEntry, "").also {
             it.colors = statusColors
@@ -279,18 +295,15 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
             it.invalidate()
         }
 
+    }
 
-        val scores = data.scoreDistribution?.map { it.score!! } ?: emptyList()
-
-        listOfScores.map { score ->
-            if (scores.contains(score)) {
-                BarEntry(
-                    score.toFloat(),
-                    data.scoreDistribution?.get(scores.indexOf(score))?.amount?.toFloat() ?: 0f
-                )
-            } else {
-                BarEntry(score.toFloat(), 0f)
-            }
+    private fun MediaStatsFragmentLayoutBinding.updateScoreDistribution(data: MediaStatsModel) {
+        val scoreDistribution = data.scoreDistribution ?: return
+        listOfScores.mapIndexed { index, score ->
+            BarEntry(
+                score.toFloat(),
+                scoreDistribution.getOrNull(index)?.amount?.toFloat() ?: 0f
+            )
         }.let {
             val dataSet = BarDataSet(it, getString(R.string.score_distribution)).also {
                 it.colors = barColors
