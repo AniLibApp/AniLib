@@ -39,7 +39,7 @@ import com.revolgenx.anilib.radio.data.PlaybackState
 import com.revolgenx.anilib.radio.repository.room.getDefaultStream
 import com.revolgenx.anilib.radio.source.RadioChildrenType
 import com.revolgenx.anilib.radio.source.RadioStationSource
-import com.revolgenx.anilib.util.getPendingIntentEmptyFlag
+import com.revolgenx.anilib.util.immutableFlagEmpty
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -199,7 +199,7 @@ class RadioService : MediaBrowserServiceCompat(),
         //create session
         val sessionActivityPendingIntent =
             packageManager?.getLaunchIntentForPackage(packageName)?.let { sessionIntent ->
-                PendingIntent.getActivity(this, 0, sessionIntent, getPendingIntentEmptyFlag())
+                PendingIntent.getActivity(this, 0, sessionIntent, immutableFlagEmpty)
             }
 
         mediaSession = MediaSessionCompat(this, RadioService::class.java.simpleName).apply {
@@ -333,7 +333,7 @@ class RadioService : MediaBrowserServiceCompat(),
                     this,
                     0,
                     sessionIntent,
-                    getPendingIntentEmptyFlag()
+                    immutableFlagEmpty
                 )
             }
 
@@ -424,31 +424,31 @@ class RadioService : MediaBrowserServiceCompat(),
     private fun makePlayPendingIntent(): PendingIntent? {
         val intent = Intent(PLAY_ACTION_KEY)
         intent.component = ComponentName(this, RadioService::class.java)
-        return PendingIntent.getService(this, 1, intent, getPendingIntentEmptyFlag())
+        return PendingIntent.getService(this, 1, intent, immutableFlagEmpty)
     }
 
     private fun makePausePendingIntent(): PendingIntent? {
         val intent = Intent(PAUSE_ACTION_KEY)
         intent.component = ComponentName(this, RadioService::class.java)
-        return PendingIntent.getService(this, 2, intent, getPendingIntentEmptyFlag())
+        return PendingIntent.getService(this, 2, intent, immutableFlagEmpty)
     }
 
     private fun makeClosePendingIntent(): PendingIntent? {
         val intent = Intent(STOP_ACTION_KEY)
         intent.component = ComponentName(this, RadioService::class.java)
-        return PendingIntent.getService(this, 3, intent, getPendingIntentEmptyFlag())
+        return PendingIntent.getService(this, 3, intent, immutableFlagEmpty)
     }
 
     private fun makePreviousPendingIntent(): PendingIntent? {
         val intent = Intent(PREVIOUS_ACTION_KEY)
         intent.component = ComponentName(this, RadioService::class.java)
-        return PendingIntent.getService(this, 4, intent, getPendingIntentEmptyFlag())
+        return PendingIntent.getService(this, 4, intent, immutableFlagEmpty)
     }
 
     private fun makeNextPendingIntent(): PendingIntent? {
         val intent = Intent(NEXT_ACTION_KEY)
         intent.component = ComponentName(this, RadioService::class.java)
-        return PendingIntent.getService(this, 5, intent, getPendingIntentEmptyFlag())
+        return PendingIntent.getService(this, 5, intent, immutableFlagEmpty)
     }
 
     //#endregion

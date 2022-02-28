@@ -697,7 +697,9 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
     private fun openMediaListEditorCenter(mediaId: Int) {
-        addFragmentToMain(MediaListEntryFragment.newInstance(mediaId))
+        loginContinue {
+            addFragmentToMain(MediaListEntryFragment.newInstance(mediaId))
+        }
     }
 
     private fun openMediaInfoCenter(meta: MediaInfoMeta) {

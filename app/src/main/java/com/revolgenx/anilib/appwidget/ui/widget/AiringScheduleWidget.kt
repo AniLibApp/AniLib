@@ -12,7 +12,7 @@ import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.appwidget.service.AiringScheduleRemoteViewsService
 import com.revolgenx.anilib.common.preference.AiringWidgetPreference
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.util.getPendingIntentUpdateFlag
+import com.revolgenx.anilib.util.mutableFlagUpdateCurrent
 import java.time.LocalTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -229,7 +229,7 @@ class AiringScheduleWidget : AppWidgetProvider() {
                 it.action = action
                 it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
                 it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
-            }, getPendingIntentUpdateFlag()
+            }, mutableFlagUpdateCurrent
         )
     }
 
@@ -242,7 +242,7 @@ class AiringScheduleWidget : AppWidgetProvider() {
                 this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 action = MainActivity.OPEN_AIRING_ACTION_KEY
             },
-            getPendingIntentUpdateFlag()
+            mutableFlagUpdateCurrent
         )
     }
 

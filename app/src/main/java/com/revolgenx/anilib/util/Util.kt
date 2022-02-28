@@ -191,8 +191,17 @@ fun immutablePendingFlag(flag: Int) = if (Build.VERSION.SDK_INT >= Build.VERSION
     flag or PendingIntent.FLAG_IMMUTABLE
 else flag
 
-fun getPendingIntentUpdateFlag() = immutablePendingFlag(PendingIntent.FLAG_UPDATE_CURRENT)
-fun     getPendingIntentEmptyFlag() = immutablePendingFlag(0)
+fun mutablePendingFlag(flag: Int) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+    flag or PendingIntent.FLAG_MUTABLE
+else flag
+
+val immutableFlagUpdateCurrent get() = immutablePendingFlag(PendingIntent.FLAG_UPDATE_CURRENT)
+val immutableFlagEmpty get() = immutablePendingFlag(0)
+
+
+val mutableFlagUpdateCurrent get() = mutablePendingFlag(PendingIntent.FLAG_UPDATE_CURRENT)
+val mutableFlagEmpty get() = mutablePendingFlag(0)
+
 
 fun doIfNotDevFlavor(callback: () -> Unit) {
     if (BuildConfig.FLAVOR != "dev") {
