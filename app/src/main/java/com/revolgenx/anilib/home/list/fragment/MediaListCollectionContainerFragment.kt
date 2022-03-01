@@ -21,6 +21,7 @@ import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.MediaListCollectionContainerFragmentBinding
 import com.revolgenx.anilib.common.event.OpenNotificationCenterEvent
+import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.list.fragment.AnimeListCollectionFragment
 import com.revolgenx.anilib.list.fragment.BaseMediaListCollectionFragment
 import com.revolgenx.anilib.list.fragment.MangaListCollectionFragment
@@ -115,6 +116,7 @@ class MediaListCollectionContainerFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sharedViewModel.userId = UserPreference.userId
         binding.apply {
             alListViewPager.adapter = makeViewPagerAdapter2(fragments)
             setupWithViewPager2(

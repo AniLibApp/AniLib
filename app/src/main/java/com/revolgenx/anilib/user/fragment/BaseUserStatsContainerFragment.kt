@@ -2,6 +2,7 @@ package com.revolgenx.anilib.user.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.revolgenx.anilib.R
@@ -45,12 +46,11 @@ abstract class BaseUserStatsContainerFragment :
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if(!sharedViewModel.hasUserData) return
 
-        sharedViewModel.hasUserData ?: return
         if(savedInstanceState == null) {
-
             with(viewModel) {
                 userId = sharedViewModel.userId
                 userName = sharedViewModel.userName

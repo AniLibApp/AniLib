@@ -194,8 +194,11 @@ mutation SaveMessageActivityMutation(
     $message:String,
     $_private:Boolean
 ){
-    saveMessageActivity: SaveMessageActivity(id:$id,recipientId:$recipientId
-        , message:$message, private:$_private){
+    saveMessageActivity: SaveMessageActivity(
+        id:$id,
+        recipientId:$recipientId,
+        message:$message,
+        private:$_private){
         id
     }
 }

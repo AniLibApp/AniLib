@@ -16,6 +16,7 @@ import com.revolgenx.anilib.constant.AlActivityType
 import com.revolgenx.anilib.databinding.UserActivityUnionFragmentLayoutBinding
 import com.revolgenx.anilib.common.event.OpenActivityMessageComposer
 import com.revolgenx.anilib.common.event.OpenActivityTextComposer
+import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
@@ -85,12 +86,23 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedViewModel.hasUserData ?: return
+        if (!sharedViewModel.hasUserData) return
 
         if (savedInstanceState == null) {
             viewModel.field = ActivityUnionField().apply {
                 userId = sharedViewModel.userId
                 userName = sharedViewModel.userName
+            }
+        }
+
+
+        sharedViewModel.userLiveData.observe(viewLifecycleOwner) {
+            if (it.status == Status.SUCCESS) {
+                with(viewModel.field) {
+                    val data = it.data ?: return@observe
+                    userId = data.id
+                    userName = data.name
+                }
             }
         }
 
@@ -110,7 +122,9 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
             if (viewModel.field.userId == userId) {
                 OpenActivityTextComposer().postEvent
             } else {
-                OpenActivityMessageComposer(viewModel.field.userId!!).postEvent
+                viewModel.field.userId?.let {
+                    OpenActivityMessageComposer(it).postEvent
+                }
             }
         }
     }

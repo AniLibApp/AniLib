@@ -113,13 +113,13 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
 
             binding.animeCountHeader.setOnClickListener {
                 OpenUserMediaListEvent(
-                    MediaListMeta(meta.userId, meta.userName, MediaType.ANIME.ordinal)
+                    MediaListMeta(viewModel.userId, viewModel.userName, MediaType.ANIME.ordinal)
                 ).postEvent
             }
 
             binding.mangaCountHeader.setOnClickListener {
                 OpenUserMediaListEvent(
-                    MediaListMeta(meta.userId, meta.userName, MediaType.MANGA.ordinal)
+                    MediaListMeta(viewModel.userId, viewModel.userName, MediaType.MANGA.ordinal)
                 ).postEvent
             }
         } else {
@@ -177,6 +177,9 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
 
     private fun UserContainerFragmentBinding.bind() {
         val user = userModel ?: return
+
+        viewModel.userId = user.id
+        viewModel.userName = user.name
 
         userAvatarIv.hierarchy.roundingParams?.let { roundingParams ->
             roundingParams.borderColor = dynamicAccentColor

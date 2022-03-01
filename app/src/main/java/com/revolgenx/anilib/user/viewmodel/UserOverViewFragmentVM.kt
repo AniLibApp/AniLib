@@ -8,8 +8,7 @@ import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.user.service.UserService
 
 class UserOverViewFragmentVM(
-    private val userService: UserService,
-    private val userContainerSharedVM: UserContainerSharedVM
+    private val userService: UserService
 ) : BaseViewModel() {
     val field = UserOverViewField()
     val overviewLiveData = MutableLiveData<Resource<UserModel>>()

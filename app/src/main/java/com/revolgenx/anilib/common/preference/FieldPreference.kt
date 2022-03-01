@@ -382,36 +382,57 @@ fun getDiscoverMediaListSort(context: Context, type: Int): Int? {
 
 
 fun getUserMediaListCollectionDisplayMode(mediaType: MediaType): MediaListDisplayMode {
-    return MediaListDisplayMode.values()[DynamicPreferences.getInstance()
-        .load(if(mediaType == MediaType.ANIME) USER_ANIME_MEDIA_LIST_DISPLAY_KEY else USER_MANGA_MEDIA_LIST_DISPLAY_KEY, MediaListDisplayMode.NORMAL.ordinal)]
-}
-fun getGeneralMediaListCollectionDisplayMode(mediaType: MediaType): MediaListDisplayMode {
-    return MediaListDisplayMode.values()[DynamicPreferences.getInstance()
-        .load(if(mediaType == MediaType.ANIME) GENERAL_ANIME_MEDIA_LIST_DISPLAY_KEY else GENERAL_MANGA_MEDIA_LIST_DISPLAY_KEY, MediaListDisplayMode.NORMAL.ordinal)]
+    return MediaListDisplayMode.values()[dynamicPreferences
+        .load(
+            if (mediaType == MediaType.ANIME) USER_ANIME_MEDIA_LIST_DISPLAY_KEY else USER_MANGA_MEDIA_LIST_DISPLAY_KEY,
+            MediaListDisplayMode.NORMAL.ordinal
+        )]
 }
 
-fun setUserMediaListCollectionDisplayMode(mediaType: MediaType, mode:Int) {
-    DynamicPreferences.getInstance()
-        .save(if(mediaType == MediaType.ANIME) USER_ANIME_MEDIA_LIST_DISPLAY_KEY else USER_MANGA_MEDIA_LIST_DISPLAY_KEY, mode)
+fun getGeneralMediaListCollectionDisplayMode(mediaType: MediaType): MediaListDisplayMode {
+    return MediaListDisplayMode.values()[dynamicPreferences
+        .load(
+            if (mediaType == MediaType.ANIME) GENERAL_ANIME_MEDIA_LIST_DISPLAY_KEY else GENERAL_MANGA_MEDIA_LIST_DISPLAY_KEY,
+            MediaListDisplayMode.NORMAL.ordinal
+        )]
 }
-fun setGeneralMediaListCollectionDisplayMode(mediaType: MediaType, mode:Int){
-    DynamicPreferences.getInstance()
-        .save(if(mediaType == MediaType.ANIME) GENERAL_ANIME_MEDIA_LIST_DISPLAY_KEY else GENERAL_MANGA_MEDIA_LIST_DISPLAY_KEY,  mode)
+
+fun setUserMediaListCollectionDisplayMode(mediaType: MediaType, mode: Int) {
+    dynamicPreferences
+        .save(
+            if (mediaType == MediaType.ANIME) USER_ANIME_MEDIA_LIST_DISPLAY_KEY else USER_MANGA_MEDIA_LIST_DISPLAY_KEY,
+            mode
+        )
+}
+
+fun setGeneralMediaListCollectionDisplayMode(mediaType: MediaType, mode: Int) {
+    dynamicPreferences
+        .save(
+            if (mediaType == MediaType.ANIME) GENERAL_ANIME_MEDIA_LIST_DISPLAY_KEY else GENERAL_MANGA_MEDIA_LIST_DISPLAY_KEY,
+            mode
+        )
 }
 
 fun getAiringDisplayMode(): AiringListDisplayMode {
-    return AiringListDisplayMode.values()[DynamicPreferences.getInstance()
+    return AiringListDisplayMode.values()[dynamicPreferences
         .load(AIRING_DISPLAY_MODE_KEY, AiringListDisplayMode.COMPACT.ordinal)]
 }
 
 fun setAiringDisplayMode(which: Int) {
-    return DynamicPreferences.getInstance().save(AIRING_DISPLAY_MODE_KEY, which)
+    return dynamicPreferences.save(AIRING_DISPLAY_MODE_KEY, which)
 }
 
+fun storeMediaListFilterField(filter: MediaListCollectionFilterMeta) {
+    val json = Gson().toJson(filter)
+    dynamicPreferences.save(
+        if (filter.type == 0) ANIME_MEDIA_LIST_COLLECTION_FILTER_KEY else MANGA_MEDIA_LIST_COLLECTION_FILTER_KEY,
+        json
+    ) // 0 = anime media type
+}
 
-fun loadMediaListCollectionFilter(context: Context, type: Int): MediaListCollectionFilterMeta {
+fun loadMediaListCollectionFilter(type: Int): MediaListCollectionFilterMeta {
     return Gson().fromJson(
-        context.getString(
+        dynamicPreferences.load(
             if (type == 0) ANIME_MEDIA_LIST_COLLECTION_FILTER_KEY else MANGA_MEDIA_LIST_COLLECTION_FILTER_KEY,
             ""
         ),
@@ -438,8 +459,11 @@ fun showSeasonHeader(context: Context, isChecked: Boolean? = null): Boolean =
     }
 
 
-fun getAiringScheduleFieldForWidget(context: Context, field: AiringMediaField? = null): AiringMediaField {
-    return  (field ?: AiringMediaField()).apply {
+fun getAiringScheduleFieldForWidget(
+    context: Context,
+    field: AiringMediaField? = null
+): AiringMediaField {
+    return (field ?: AiringMediaField()).apply {
         notYetAired = context.getBoolean(WIDGET_AIRING_NOT_AIRED_KEY, true)
         sort = context.getInt(WIDGET_AIRING_SORT_KEY, AiringSort.TIME.ordinal)
         showFromPlanning = context.getBoolean(WIDGET_AIRING_PLANNING_KEY, false)
@@ -459,19 +483,20 @@ fun storeAiringScheduleFieldForWidget(context: Context, field: AiringMediaField)
     }
 }
 
-fun getActivityUnionField(field:ActivityUnionField? = null): ActivityUnionField {
+fun getActivityUnionField(field: ActivityUnionField? = null): ActivityUnionField {
     return (field ?: ActivityUnionField()).apply {
-        DynamicPreferences.getInstance().let {
-            type = it.load(ACTIVITY_UNION_TYPE_KEY, AlActivityType.ALL.ordinal).let { AlActivityType.values()[it] }
+        dynamicPreferences.let {
+            type = it.load(ACTIVITY_UNION_TYPE_KEY, AlActivityType.ALL.ordinal)
+                .let { AlActivityType.values()[it] }
             isFollowing = it.load(ACTIVITY_IS_FOLLOWING_KEY, false)
         }
     }
 }
 
 
-fun storeActivityUnionField(field:ActivityUnionField){
-    with(field){
-        DynamicPreferences.getInstance().let {
+fun storeActivityUnionField(field: ActivityUnionField) {
+    with(field) {
+        dynamicPreferences.let {
             it.save(ACTIVITY_UNION_TYPE_KEY, type.ordinal)
             it.save(ACTIVITY_IS_FOLLOWING_KEY, isFollowing)
         }

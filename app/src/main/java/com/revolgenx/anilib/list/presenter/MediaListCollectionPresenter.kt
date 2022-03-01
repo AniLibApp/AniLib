@@ -225,18 +225,26 @@ class MediaListCollectionPresenter(
 
 
             it.root.setOnClickListener {
-                if (openMediaInfoOrListEditor(context)) {
+                if(isLoggedInUser){
+                    if (openMediaInfoOrListEditor()) {
+                        openMediaInfo(context, item.media!!)
+                    } else {
+                        openMediaListEditor(context, item.media!!)
+                    }
+                }else{
                     openMediaInfo(context, item.media!!)
-                } else {
-                    openMediaListEditor(context, item.media!!)
                 }
             }
 
             it.root.setOnLongClickListener {
-                if (openMediaInfoOrListEditor(context)) {
+                if(isLoggedInUser) {
+                    if (openMediaInfoOrListEditor()) {
+                        openMediaListEditor(context, item.media!!)
+                    } else {
+                        openMediaInfo(context, item.media!!)
+                    }
+                }else{
                     openMediaListEditor(context, item.media!!)
-                } else {
-                    openMediaInfo(context, item.media!!)
                 }
                 true
             }

@@ -97,6 +97,7 @@ abstract class UserStatisticOverviewFragment :
             with(viewModel.field) {
                 userId = sharedViewModel.userId
                 userName = sharedViewModel.userName
+                type = this@UserStatisticOverviewFragment.type
             }
         }
     }

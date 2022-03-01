@@ -28,7 +28,6 @@ import com.revolgenx.anilib.list.bottomsheet.MediaListGroupSelectorBottomSheet
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionContainerCallback
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionStoreVM
-import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -73,10 +72,11 @@ abstract class BaseMediaListCollectionFragment() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (!containerSharedVM.hasUserData) return
+
         viewModel.type = mediaType
-        containerSharedVM.userId?.let {
-            viewModel.field.userId = it
-        }
+        viewModel.field.userId = containerSharedVM.userId
+        viewModel.field.userName = containerSharedVM.userName
         binding.onBind()
     }
 
@@ -113,9 +113,9 @@ abstract class BaseMediaListCollectionFragment() :
 
                                     if (isLoggedInUser) {
                                         if (mediaType == MediaType.ANIME) {
-                                            animeListStatusHistory(requireContext(), it)
+                                            animeListStatusHistory(it)
                                         } else {
-                                            mangaListStatusHistory(requireContext(), it)
+                                            mangaListStatusHistory(it)
                                         }
                                     } else {
                                         viewModel.groupNameHistory = it
@@ -129,10 +129,7 @@ abstract class BaseMediaListCollectionFragment() :
                         updateCurrentGroupWithCount()
                     }
                     MediaListCollectionContainerCallback.FILTER -> {
-                        MediaListCollectionFilterBottomSheet.newInstance(
-                            viewModel.mediaListFilter.copy().also {
-                                it.type = mediaType.ordinal
-                            }) {
+                        MediaListCollectionFilterBottomSheet.newInstance(viewModel.mediaListFilter.copy()) {
                             if (context == null) return@newInstance
                             with(viewModel.mediaListFilter) {
                                 formatsIn = it.formatsIn
@@ -140,7 +137,7 @@ abstract class BaseMediaListCollectionFragment() :
                                 genre = it.genre
                                 status = it.status
                             }
-                            viewModel.filter()
+                            viewModel.applyFilter()
                         }.show(requireContext())
                     }
                     MediaListCollectionContainerCallback.DISPLAY -> {

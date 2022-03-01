@@ -2,6 +2,7 @@ package com.revolgenx.anilib.common.preference
 
 import android.content.Context
 import androidx.preference.PreferenceManager
+import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 
 
 fun Context.putBoolean(key: String, value: Boolean = false) =
@@ -21,5 +22,7 @@ fun Context.putInt(key: String, value: Int = -1) =
 fun Context.getInt(key: String, def: Int) = sharedPreference().getInt(key, def)
 
 fun Context.sharedPreference() = PreferenceManager.getDefaultSharedPreferences(this)
+
+val dynamicPreferences get() = DynamicPreferences.getInstance()
 
 

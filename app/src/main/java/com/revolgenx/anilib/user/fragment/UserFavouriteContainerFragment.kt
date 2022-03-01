@@ -36,7 +36,7 @@ class UserFavouriteContainerFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedViewModel.hasUserData ?: return
+        if(!sharedViewModel.hasUserData) return
         if(savedInstanceState == null){
             with(viewModel) {
                 userName = sharedViewModel.userName

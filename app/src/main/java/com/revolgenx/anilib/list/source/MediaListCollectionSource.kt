@@ -7,7 +7,7 @@ import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.list.data.model.MediaListModel
 
-class MediaListCollectionSource(private val resource: Resource<List<MediaListModel>>) : MainSource<MediaListModel>() {
+class MediaListCollectionSource(val resource: Resource<List<MediaListModel>>) : MainSource<MediaListModel>() {
 
     override fun areItemsTheSame(first: MediaListModel, second: MediaListModel): Boolean {
         return first.id == second.id

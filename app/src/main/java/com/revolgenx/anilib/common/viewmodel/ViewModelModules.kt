@@ -74,13 +74,13 @@ val viewModelModules = module {
     //list
     viewModel { AnimeListCollectionStoreVM() }
     viewModel { MangaListCollectionStoreVM() }
-    viewModel { parameters -> MediaListCollectionVM(get(), get(), get(), parameters.get()) }
+    viewModel { parameters -> MediaListCollectionVM(get(), get(), parameters.get()) }
     viewModel { MediaListContainerSharedVM() }
     viewModel { MediaListEntryVM(get(), get()) }
 
     //user
     viewModel { UserContainerSharedVM(get()) }
-    viewModel { UserOverViewFragmentVM(get(), get()) }
+    viewModel { UserOverViewFragmentVM(get()) }
     viewModel { UserFollowerViewModel(get()) }
     viewModel { UserFavouriteContainerSharedVM() }
     viewModel { UserFavouriteViewModel(get()) }

@@ -3,7 +3,7 @@ package com.revolgenx.anilib.app.setting.data.model
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.common.preference.getStoredMediaOptions
-import com.revolgenx.anilib.common.preference.storeMediaOption
+import com.revolgenx.anilib.common.preference.storeMediaOptions
 import com.revolgenx.anilib.app.setting.data.field.MediaSettingField
 import com.revolgenx.anilib.app.setting.data.field.MediaSettingMutateField
 import com.revolgenx.anilib.common.repository.util.Resource
@@ -24,7 +24,7 @@ class SettingViewModel(private val settingService: SettingService) : BaseViewMod
         mediaOptionLiveData.value = Resource.loading(getStoredMediaOptions(context))
         settingService.getMediaSetting(mediaSettingField, compositeDisposable) {
             if (it.status == Status.SUCCESS) {
-                storeMediaOption(context, it.data)
+                storeMediaOptions(context, it.data)
             }
 
             mediaOptionLiveData.value = it
@@ -38,7 +38,7 @@ class SettingViewModel(private val settingService: SettingService) : BaseViewMod
         saveMediaOptionLiveData.value = Resource.loading()
         settingService.saveMediaSetting(field, compositeDisposable) {
             if (it.status == Status.SUCCESS) {
-                storeMediaOption(context, field.model)
+                storeMediaOptions(context, field.model)
             }
             saveMediaOptionLiveData.value = it
         }

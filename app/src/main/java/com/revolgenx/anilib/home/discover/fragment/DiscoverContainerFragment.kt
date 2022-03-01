@@ -203,7 +203,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
                 recommendationViewModel.field.onList = onList
                 RecommendationEvent.RecommendationFilterEvent(
                     onList,
-                    recommendationViewModel.field.sort!!
+                    recommendationViewModel.field.sort ?: 0
                 ).postEvent
             }
         } else {

@@ -85,8 +85,11 @@ class UserMediaListCollectionContainerFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userMediaListMeta ?: return
-        sharedViewModel.userId = userMediaListMeta?.userId ?: return
+        val userListMeta = userMediaListMeta ?: return
+        if (!userListMeta.hasUserData) return
+
+        sharedViewModel.userId = userListMeta.userId
+        sharedViewModel.userName = userListMeta.userName
 
         binding.apply {
             userListViewPager.adapter = makeViewPagerAdapter2(fragments)

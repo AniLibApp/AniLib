@@ -19,7 +19,7 @@ class UserContainerSharedVM(private val toggleService: ToggleService) : BaseView
             toggleFollowField.userName = value
         }
 
-    val hasUserData get()= takeIf { userId != null || userName != null }
+    val hasUserData get() = (userId ?: userName) != null
     private val toggleFollowField = UserToggleFollowField()
 
     val userLiveData = MutableLiveData<Resource<UserModel>>()

@@ -212,7 +212,7 @@ fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
     }
 
 
-fun storeMediaOption(context: Context, model: UserOptionsModel?) {
+fun storeMediaOptions(context: Context, model: UserOptionsModel?) {
     if (model == null) return
 
     val userPrefModel = getUserPrefModel(context)
@@ -224,36 +224,10 @@ fun getStoredMediaOptions(context: Context): UserOptionsModel {
     return getUserPrefModel(context).options!!
 }
 
-fun storeMediaListOptions(context: Context, model: MediaListOptionModel?) {
-    if (model == null) return
+fun animeListStatusHistory() = dynamicPreferences.load(recent_anime_list_status_key, "All")
+fun animeListStatusHistory(value: String) = dynamicPreferences.save(recent_anime_list_status_key, value.trim())
 
-    val userPrefModel = getUserPrefModel(context)
-    userPrefModel.mediaListOptions = model
-    context.saveBasicUserDetail(userPrefModel)
-}
+fun mangaListStatusHistory() = dynamicPreferences.load(recent_manga_list_status_key, "All")
+fun mangaListStatusHistory(value:String) = dynamicPreferences.save(recent_manga_list_status_key, value.trim())
 
-fun getStoredMediaListOptions(context: Context): MediaListOptionModel {
-    return getUserPrefModel(context).mediaListOptions!!
-}
-
-
-fun recentAnimeListStatus(context: Context, value: Int) {
-    context.putInt(recentAnimeListStatusKey, value)
-}
-
-fun recentMangaListStatus(context: Context, value: Int) {
-    context.putInt(recentMangaListStatusKey, value)
-}
-
-fun recentAnimeListStatus(context: Context) =
-    context.getInt(recentAnimeListStatusKey, 0)
-
-fun animeListStatusHistory(context: Context) = context.getString(recent_anime_list_status_key, "All")
-fun animeListStatusHistory(context: Context, value:String) = context.putString(recent_anime_list_status_key, value.trim())
-
-fun mangaListStatusHistory(context: Context) = context.getString(recent_manga_list_status_key, "All")
-fun mangaListStatusHistory(context: Context, value:String) = context.putString(recent_manga_list_status_key, value.trim())
-
-fun recentMangaListStatus(context: Context) = context.getInt(recentMangaListStatusKey, 0)
-
-fun openMediaInfoOrListEditor(context: Context) = context.getBoolean(media_info_or_list_editor_key, false)
+fun openMediaInfoOrListEditor() = dynamicPreferences.load(media_info_or_list_editor_key, false)

@@ -13,14 +13,14 @@ import com.revolgenx.anilib.common.ui.bottomsheet.DynamicBottomSheetFragment
 import com.revolgenx.anilib.constant.ALMediaListCollectionSort
 import com.revolgenx.anilib.databinding.MediaListFilterBottomSheetLayoutBinding
 import com.revolgenx.anilib.list.data.meta.MediaListCollectionFilterMeta
-import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.adapter.MediaFilterFormatAdapter
 import com.revolgenx.anilib.ui.dialog.FormatSelectionDialog
 import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 
-class MediaListCollectionFilterBottomSheet : DynamicBottomSheetFragment<MediaListFilterBottomSheetLayoutBinding>() {
+class MediaListCollectionFilterBottomSheet :
+    DynamicBottomSheetFragment<MediaListFilterBottomSheetLayoutBinding>() {
 
     private var formatDialog: DialogFragment? = null
 
@@ -29,13 +29,16 @@ class MediaListCollectionFilterBottomSheet : DynamicBottomSheetFragment<MediaLis
             ?: MediaListCollectionFilterMeta()
     }
 
-    private var onFilterMediaList: ((filter:MediaListCollectionFilterMeta) -> Unit)? = null
+    private var onFilterMediaList: ((filter: MediaListCollectionFilterMeta) -> Unit)? = null
 
     companion object {
         private const val media_list_collection_filter_meta_key =
             "media_list_collection_filter_meta_key"
 
-        fun newInstance(meta: MediaListCollectionFilterMeta, onFilterMediaList: (filter:MediaListCollectionFilterMeta) -> Unit) =
+        fun newInstance(
+            meta: MediaListCollectionFilterMeta,
+            onFilterMediaList: (filter: MediaListCollectionFilterMeta) -> Unit
+        ) =
             MediaListCollectionFilterBottomSheet().also {
                 it.arguments = bundleOf(media_list_collection_filter_meta_key to meta)
                 it.onFilterMediaList = onFilterMediaList
@@ -111,14 +114,9 @@ class MediaListCollectionFilterBottomSheet : DynamicBottomSheetFragment<MediaLis
         listGenreSpinner.adapter = makeSpinnerAdapter(requireContext(), listGenreItems)
 
 
-        if (mediaListFilter.type != MediaType.ANIME.ordinal) {
-            formatAddHeader.visibility = View.GONE
-            formatChipRecyclerView.visibility = View.GONE
-        } else {
-            mediaListFilter.formatsIn = mediaListFilter.formatsIn ?: mutableListOf()
-            binding.formatChipRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
-            bindFormat()
-        }
+        mediaListFilter.formatsIn = mediaListFilter.formatsIn ?: mutableListOf()
+        binding.formatChipRecyclerView.layoutManager = FlexboxLayoutManager(requireContext())
+        bindFormat()
 
         mediaListFilter.status?.let { listStatusSpinner.setSelection(it + 1) }
         mediaListFilter.genre?.let { listGenreSpinner.setSelection(genre.indexOf(it) + 1) }

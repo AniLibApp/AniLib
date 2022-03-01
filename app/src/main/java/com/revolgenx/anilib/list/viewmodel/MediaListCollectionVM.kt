@@ -1,15 +1,10 @@
 package com.revolgenx.anilib.list.viewmodel
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.UserPreference
-import com.revolgenx.anilib.common.preference.animeListStatusHistory
-import com.revolgenx.anilib.common.preference.loadMediaListCollectionFilter
-import com.revolgenx.anilib.common.preference.mangaListStatusHistory
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.list.data.meta.MediaListCollectionFilterMeta
 import com.revolgenx.anilib.common.repository.util.Resource
@@ -18,8 +13,7 @@ import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.data.sorting.MediaListCollectionSortingComparator
 import com.revolgenx.anilib.list.service.MediaListCollectionService
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.ui.view.makeToast
-import com.revolgenx.anilib.common.viewmodel.BaseAndroidViewModel
+import com.revolgenx.anilib.common.viewmodel.BaseViewModel
 import com.revolgenx.anilib.entry.service.MediaListEntryService
 import com.revolgenx.anilib.entry.service.increaseProgress
 import com.revolgenx.anilib.list.data.model.MediaListCollectionModel
@@ -31,23 +25,22 @@ import timber.log.Timber
 import java.lang.Exception
 
 class MediaListCollectionVM(
-    app: Application,
     private val alMediaListCollectionService: MediaListCollectionService,
     private val mediaListEntryService: MediaListEntryService,
     private val mediaListCollectionStore: MediaListCollectionStoreVM
-) : BaseAndroidViewModel(app) {
+) : BaseViewModel() {
 
-    val field: MediaListCollectionField = MediaListCollectionField().also {
-        it.userId = UserPreference.userId
-    }
+    val field: MediaListCollectionField = MediaListCollectionField()
 
     private val isLoggedInUser get() = field.userId == UserPreference.userId
 
     val mediaListFilter by lazy {
         if (isLoggedInUser) {
-            loadMediaListCollectionFilter(app, type.ordinal)
+            loadMediaListCollectionFilter(type.ordinal)
         } else {
             MediaListCollectionFilterMeta()
+        }.also {
+            it.type = type.ordinal
         }
     }
 
@@ -59,15 +52,16 @@ class MediaListCollectionVM(
     val groupNamesWithCount = MutableLiveData<Map<String, Int>>()
 
     val sourceLiveData = MutableLiveData<MediaListCollectionSource>()
+    val collectionSource get() = sourceLiveData.value
 
     private val loadingSource = MediaListCollectionSource(Resource.loading(null))
 
     val currentGroupNameHistory
         get() = if (isLoggedInUser) {
             if (field.type == MediaType.ANIME)
-                animeListStatusHistory(getApplication())
+                animeListStatusHistory()
             else
-                mangaListStatusHistory(getApplication())
+                mangaListStatusHistory()
         } else {
             groupNameHistory
         }
@@ -75,10 +69,12 @@ class MediaListCollectionVM(
     var groupNameHistory = "All"
 
     var searchViewVisible = false
+
+    var query = ""
     var search: String = ""
         set(value) {
             if (field != value) {
-                mediaListFilter.search = value
+                query = value
                 handler.removeCallbacksAndMessages(null)
                 handler.postDelayed({
                     filter()
@@ -86,7 +82,7 @@ class MediaListCollectionVM(
             }
             field = value
         }
-        get() = mediaListFilter.search
+        get() = query
 
     var type: MediaType
         set(value) {
@@ -105,6 +101,7 @@ class MediaListCollectionVM(
                             mediaListCollectionModel?.lists ?: mutableListOf()
                     }
                     reEvaluateGroupNameWithCount()
+                    filter()
                 }
                 Status.ERROR -> {
                     sourceLiveData.value = MediaListCollectionSource(Resource.error(it.message))
@@ -112,7 +109,6 @@ class MediaListCollectionVM(
                 else -> {
                 }
             }
-            filter()
         }
     }
 
@@ -143,6 +139,13 @@ class MediaListCollectionVM(
         groupNamesWithCount.value = groupNameMap
     }
 
+    fun applyFilter(){
+        if(isLoggedInUser){
+            storeMediaListFilterField(mediaListFilter)
+        }
+        filter()
+    }
+
     fun filter() {
         sourceLiveData.value = loadingSource
         viewModelScope.launch {
@@ -153,9 +156,9 @@ class MediaListCollectionVM(
                             mediaListCollectionModel?.lists?.any { it.name == currentGroupNameHistory } == true
                         if (!hasRecentGroupNameHistory) {
                             if (field.type == MediaType.ANIME) {
-                                animeListStatusHistory(getApplication(), "All")
+                                animeListStatusHistory("All")
                             } else {
-                                mangaListStatusHistory(getApplication(), "All")
+                                mangaListStatusHistory("All")
                             }
                         }
                     }
@@ -173,7 +176,6 @@ class MediaListCollectionVM(
                 } catch (e: Exception) {
                     Timber.e(e)
                     launch(Dispatchers.Main) {
-                        getApplication<Application>().makeToast(R.string.operation_failed)
                         sourceLiveData.postValue(
                             MediaListCollectionSource(
                                 Resource.error(
@@ -205,20 +207,20 @@ class MediaListCollectionVM(
                 ) == true
             }
         }.let {
-            if (mediaListFilter.search.isEmpty()) it else {
+            if (query.isEmpty()) it else {
                 it.filter { model ->
-                    model.media?.title!!.romaji?.contains(mediaListFilter.search, true) == true ||
+                    model.media?.title!!.romaji?.contains(query, true) == true ||
                             model.media?.title!!.english?.contains(
-                                mediaListFilter.search,
+                                query,
                                 true
                             ) == true ||
                             model.media?.title!!.native?.contains(
-                                mediaListFilter.search,
+                                query,
                                 true
                             ) == true ||
                             model.media?.synonyms?.any {
                                 it.contains(
-                                    mediaListFilter.search,
+                                    query,
                                     true
                                 )
                             } == true

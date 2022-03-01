@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 
 class MediaListContainerSharedVM : ViewModel() {
     var userId: Int? = null
-    var userName: Int? = null
+    var userName: String? = null
+
+    val hasUserData get()= (userId ?: userName) != null
+
     var currentGroupNameWithCount = MutableLiveData<Pair<String, Int>?>()
     var mediaListContainerCallback = MutableLiveData<Pair<MediaListCollectionContainerCallback, Int>>()
 }
