@@ -2,6 +2,13 @@
 <resources>
     <string name="release_info" translatable="false">
 
+        ### -v1.1.13 \n
+        * Fixed crashing on some media stats. \n
+        * Fixed Anime/Manga list filter not saving. \n
+        * User anime and media stats overview is separated. \n
+        * Widget related issues fixed. \n
+        * User activity related issues fixed. \n
+
         ### -v1.1.12 \n
         * Theme settings has be modified. \n
         \t * Choose theme mode and then theme to correctly apply theme. \n
