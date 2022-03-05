@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
@@ -16,7 +15,7 @@ import com.revolgenx.anilib.constant.AlActivityType
 import com.revolgenx.anilib.databinding.UserActivityUnionFragmentLayoutBinding
 import com.revolgenx.anilib.common.event.OpenActivityMessageComposer
 import com.revolgenx.anilib.common.event.OpenActivityTextComposer
-import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
@@ -29,7 +28,6 @@ import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.user.viewmodel.UserContainerSharedVM
 import com.revolgenx.anilib.util.onItemSelected
-import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -97,7 +95,7 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
 
 
         sharedViewModel.userLiveData.observe(viewLifecycleOwner) {
-            if (it.status == Status.SUCCESS) {
+            if (it is Resource.Success) {
                 with(viewModel.field) {
                     val data = it.data ?: return@observe
                     userId = data.id

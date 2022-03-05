@@ -30,7 +30,6 @@ import com.revolgenx.anilib.notification.data.model.media.MediaDeletionNotificat
 import com.revolgenx.anilib.notification.data.model.media.MediaMergeNotificationModel
 import com.revolgenx.anilib.notification.data.model.media.RelatedMediaNotificationModel
 import com.revolgenx.anilib.common.repository.util.Resource
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.notification.data.field.NotificationField
 import com.revolgenx.anilib.notification.data.model.NotificationModel
 import com.revolgenx.anilib.notification.data.model.activity.*
@@ -85,7 +84,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                         }
                     }
 
-                if (suspendedQuery.status == Status.SUCCESS && suspendedQuery.data != null) {
+                if (suspendedQuery is Resource.Success && suspendedQuery.data != null) {
                     val item = suspendedQuery.data
                     if (isNewNotification(item.firstOrNull())) {
                         setNewNotification(item.firstOrNull())

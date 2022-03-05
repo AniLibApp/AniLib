@@ -3,7 +3,7 @@ package com.revolgenx.anilib.social.ui.fragments.activity_composer.text
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.common.event.OnActivityInfoUpdateEvent
-import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.ui.fragments.activity_composer.ActivityComposerContainerFragment
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityTextComposerViewModel
 import com.revolgenx.anilib.ui.view.makeToast
@@ -25,8 +25,8 @@ class ActivityTextComposerContainerFragment :
 
     override fun publish() {
         this.viewModel.saveActivity {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     if (this.viewModel.field.id == null) {
                         makeToast(R.string.posted_successfully)
                     } else {
@@ -35,10 +35,10 @@ class ActivityTextComposerContainerFragment :
                     OnActivityInfoUpdateEvent(it.data!!).postEvent
                     popBackStack()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     makeToast(R.string.operation_failed)
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     makeToast(R.string.posting)
                 }
             }

@@ -11,9 +11,9 @@ import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.studio.data.model.StudioModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.databinding.StudioFragmentLayoutBinding
 import com.revolgenx.anilib.studio.presenter.StudioMediaPresenter
-import com.revolgenx.anilib.common.repository.util.Status.*
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
@@ -86,19 +86,19 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
 
         val statusLayout = studioBinding.resourceStatusLayout
         viewModel.studioInfoLiveData.observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                SUCCESS -> {
+            when (res) {
+                is Resource.Success -> {
                     statusLayout.resourceStatusContainer.visibility = View.GONE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                     updateView(res.data!!)
                 }
-                ERROR -> {
+                is Resource.Error -> {
                     statusLayout.resourceStatusContainer.visibility = View.VISIBLE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
                 }
-                LOADING -> {
+                is Resource.Loading -> {
                     statusLayout.resourceStatusContainer.visibility = View.VISIBLE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
@@ -107,8 +107,8 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
         }
 
         viewModel.toggleFavouriteLiveData.observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                SUCCESS -> {
+            when (res) {
+                is Resource.Success -> {
                     studioBinding.studioFavIv.showLoading(false)
                     if (res.data == true) {
                         studioModel?.isFavourite = studioModel?.isFavourite?.not() ?: false
@@ -121,11 +121,11 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
                         )
                     }
                 }
-                ERROR -> {
+                is Resource.Error -> {
                     studioBinding.studioFavIv.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
                 }
-                LOADING -> {
+                is Resource.Loading -> {
                     studioBinding.studioFavIv.showLoading(true)
                 }
             }

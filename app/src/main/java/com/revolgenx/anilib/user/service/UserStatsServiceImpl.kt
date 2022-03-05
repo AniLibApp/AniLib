@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.UserStatsQuery
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaTagModel
 import com.revolgenx.anilib.staff.data.model.StaffModel
@@ -209,7 +208,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                     callback.invoke(Resource.success(it))
                 }, {
                     Timber.e(it)
-                    callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                    callback.invoke(Resource.error(it.message , null, it))
                 })
 
         compositeDisposable.add(disposable)
@@ -270,7 +269,7 @@ class UserStatsServiceImpl(private val baseGraphRepository: BaseGraphRepository)
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)

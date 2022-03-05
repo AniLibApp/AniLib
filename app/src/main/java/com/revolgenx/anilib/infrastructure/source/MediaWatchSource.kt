@@ -4,9 +4,9 @@ package com.revolgenx.anilib.infrastructure.source
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.extensions.MainSource
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.field.MediaWatchField
 import com.revolgenx.anilib.media.data.model.MediaStreamingEpisodeModel
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.media.service.MediaInfoService
 import io.reactivex.disposables.CompositeDisposable
 
@@ -22,11 +22,11 @@ class MediaWatchSource(
         super.onPageOpened(page, dependencies)
         if (page.isFirstPage()) {
             mediaBrowseService.getMediaWatch(field, compositeDisposable) { res ->
-                when (res.status) {
-                    Status.SUCCESS -> {
+                when (res) {
+                    is Resource.Success -> {
                         postResult(page, res.data ?: emptyList())
                     }
-                    Status.ERROR -> {
+                    is Resource.Error -> {
                         postResult(page, Exception(res.message))
                     }
                     else -> {}

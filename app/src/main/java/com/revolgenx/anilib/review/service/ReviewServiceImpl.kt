@@ -5,7 +5,6 @@ import com.apollographql.apollo3.exception.ApolloHttpException
 import com.revolgenx.anilib.DeleteReviewMutation
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.common.repository.network.converter.toModel
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.review.data.field.AllReviewField
@@ -73,7 +72,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                     }
                 }
                 Timber.w(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -125,7 +124,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -143,7 +142,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.w(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)
@@ -164,7 +163,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.w(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, false, it))
+                callback.invoke(Resource.error(it.message , false, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -189,7 +188,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it?.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it?.message , null, it))
             })
 
         compositeDisposable.add(disposable)

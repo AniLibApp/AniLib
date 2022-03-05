@@ -48,6 +48,13 @@ fun Fragment.makeErrorToast(
     context?.makeToast(str, msg, R.drawable.ic_error)
 }
 
+fun Context.makeErrorToast(
+    @StringRes str: Int? = null,
+    msg: String? = null,
+) {
+    makeToast(str, msg, R.drawable.ic_error)
+}
+
 fun Context.makeToast(
     @StringRes str: Int? = null,
     msg: String? = null,

@@ -17,7 +17,7 @@ import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.DiscoverShowCaseLayoutBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
-import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.home.discover.viewmodel.ShowCaseViewModel
@@ -154,7 +154,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
         }
 
         viewModel!!.changeListEntryStatus(mediaModel!!.id, status).observe(viewLifecycleOwner!!) {
-            if (it.status == Status.SUCCESS) {
+            if (it is Resource.Success) {
                 val data = it.data ?: return@observe
                 if (mediaModel!!.mediaListEntry == null) {
                     mediaModel!!.mediaListEntry =
@@ -171,7 +171,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
                         resources.getStringArray(R.array.anime_list_status)[it]
                 }
                 context.makeToast(R.string.saved_successfully)
-            } else if (it.status == Status.ERROR) {
+            } else if (it is Resource.Error) {
                 context.makeToast(R.string.error)
             }
         }

@@ -3,7 +3,6 @@ package com.revolgenx.anilib.notification.service
 import com.revolgenx.anilib.constant.NotificationUnionType
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.common.repository.network.converter.toModel
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.notification.data.field.NotificationField
@@ -576,7 +575,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                 },
                 {
                     Timber.e(it)
-                    callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                    callback.invoke(Resource.error(it.message , null, it))
                 })
         compositeDisposable.add(disposable)
     }
@@ -592,7 +591,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
             .subscribe({
                 callback.invoke(Resource.success(true))
             }, {
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -611,7 +610,7 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
             .subscribe({
                 callback.invoke(Resource.success(it))
             }, {
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)

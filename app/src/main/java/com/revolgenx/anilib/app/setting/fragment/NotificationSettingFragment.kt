@@ -6,11 +6,11 @@ import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.databinding.NotificationSettingFragmentLayoutBinding
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.type.NotificationType
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.app.setting.viewmodel.NotificationSettingViewModel
 import com.revolgenx.anilib.common.preference.UserPreference
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.notification.data.field.UserNotificationMutateField
 import com.revolgenx.anilib.ui.view.makeErrorToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,33 +36,33 @@ class NotificationSettingFragment :
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.saveNotifSettingLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    clearStatus()
-                    makeToast(R.string.saved_successfully)
-                }
-                Status.ERROR -> {
+            when (it) {
+                is Resource.Error -> {
                     clearStatus()
                     makeErrorToast(R.string.failed_to_save)
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     showLoading()
+                }
+                is Resource.Success -> {
+                    clearStatus()
+                    makeToast(R.string.saved_successfully)
                 }
             }
         }
         viewModel.notificationSettings.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     clearStatus()
                     it.data?.let {
                         binding.updateView(it)
                     }
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     showError()
                     makeErrorToast(R.string.error)
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     showLoading()
                 }
             }

@@ -11,10 +11,10 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.loadBioByDefault
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.databinding.ResourceStatusContainerLayoutBinding
 import com.revolgenx.anilib.databinding.UserActivityGenrePresenterBinding
 import com.revolgenx.anilib.databinding.UserOverviewFragmentLayoutBinding
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.user.viewmodel.UserOverViewFragmentVM
@@ -46,17 +46,17 @@ class UserOverviewFragment : BaseUserFragment<UserOverviewFragmentLayoutBinding>
 
         viewModel.overviewLiveData.observe(viewLifecycleOwner) {
             sharedViewModel.userLiveData.value = it
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     binding.resourceStatusLayout.statusSuccess()
                     it.data?.let {
                         binding.bind()
                     }
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     binding.resourceStatusLayout.statusError()
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     binding.resourceStatusLayout.statusLoading()
                 }
             }

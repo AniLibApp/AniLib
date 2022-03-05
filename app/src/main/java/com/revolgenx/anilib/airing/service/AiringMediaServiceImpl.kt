@@ -6,9 +6,7 @@ import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.airing.data.model.*
 import com.revolgenx.anilib.data.field.list.MediaListCollectionIdsField
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.list.MediaListService
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.model.toModel
@@ -40,19 +38,19 @@ class AiringMediaServiceImpl(
                     it.mediaListStatus = field.mediaListStatus
                     it.type = MediaType.ANIME.ordinal
                 }, compositeDisposable) {
-                    when (it.status) {
-                        Status.SUCCESS -> {
+                    when (it) {
+                        is Resource.Error -> {
+                            callback.invoke(Resource.error(it.message, null, it.exception))
+                        }
+                        is Resource.Loading -> {
+                            callback.invoke(Resource.loading())
+                        }
+                        is Resource.Success -> {
                             val data = it.data ?: return@getMediaListCollectionIds
                             field.isNewField = false
                             field.updateOldField()
                             field.mediaListIds = data
                             getAiringMediaList(field, compositeDisposable, callback)
-                        }
-                        Status.ERROR -> {
-                            callback.invoke(Resource.error(it.message ?: ERROR, null, it.exception))
-                        }
-                        Status.LOADING -> {
-                            callback.invoke(Resource.loading())
                         }
                     }
                 }
@@ -116,7 +114,7 @@ class AiringMediaServiceImpl(
                 callback.invoke(Resource.success(it ?: emptyList()))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message, null, it))
             })
         compositeDisposable.add(disposable)
     }

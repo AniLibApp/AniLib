@@ -1,127 +1,110 @@
 package com.revolgenx.anilib.home.recommendation.service
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.apollographql.apollo3.exception.ApolloHttpException
-import com.revolgenx.anilib.home.recommendation.data.field.AddRecommendationField
 import com.revolgenx.anilib.home.recommendation.data.field.RecommendationField
-import com.revolgenx.anilib.home.recommendation.data.field.UpdateRecommendationField
+import com.revolgenx.anilib.home.recommendation.data.field.SaveRecommendationField
 import com.revolgenx.anilib.home.recommendation.data.model.RecommendationModel
-import com.revolgenx.anilib.home.recommendation.data.model.SaveRecommendationModel
-import com.revolgenx.anilib.home.recommendation.data.model.UpdateRecommendationModel
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.field.MediaRecommendationField
-import com.revolgenx.anilib.media.data.model.MediaRecommendationModel
 import com.revolgenx.anilib.media.data.model.toModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import java.net.HttpURLConnection
 
-class RecommendationServiceImpl(graphRepository: BaseGraphRepository) :
-    RecommendationService(graphRepository) {
+class RecommendationServiceImpl(private val graphRepository: BaseGraphRepository) :
+    RecommendationService {
 
-    override fun mediaRecommendation(
+    override fun getMediaRecommendations(
         field: MediaRecommendationField,
         compositeDisposable: CompositeDisposable,
-        resourceCallback: ((Resource<List<MediaRecommendationModel>>) -> Unit)
+        callback: ((Resource<List<RecommendationModel>>) -> Unit)
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data?.media?.recommendations?.nodes?.filterNotNull()
                     ?.map { node ->
-                        MediaRecommendationModel().also { mod ->
+                        RecommendationModel().also { mod ->
                             mod.id = node.id
                             mod.rating = node.rating
                             mod.userRating = node.userRating?.ordinal
-                            mod.mediaId = node.media!!.id
+                            mod.recommendedFromId = node.media?.id
                             mod.recommended = node.mediaRecommendation?.mediaContent?.toModel()
                         }
                     }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                resourceCallback.invoke(Resource.success(it))
+                callback.invoke(Resource.success(it))
             }, {
                 if ((it is ApolloHttpException)) {
                     if (it.statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-                        resourceCallback.invoke(Resource.success(null))
+                        callback.invoke(Resource.success(null))
                         return@subscribe
                     }
                 }
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null))
+                callback.invoke(Resource.error(it.message, null))
             })
         compositeDisposable.add(disposable)
     }
 
 
-    override fun recommendation(
+    override fun getRecommendations(
         field: RecommendationField,
         compositeDisposable: CompositeDisposable,
-        resourceCallback: (Resource<List<RecommendationModel>>) -> Unit
+        callback: (Resource<List<RecommendationModel>>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data?.page?.recommendations?.mapNotNull {
-                        it?.takeIf { if (field.canShowAdult) true else ((it.media?.mediaContent?.isAdult == false)
-                                and (it.mediaRecommendation?.mediaContent?.isAdult == false)) }
-                            ?.let {
-                                RecommendationModel().also { mod ->
-                                    mod.id = it.id
-                                    mod.rating = it.rating
-                                    mod.userRating = it.userRating?.ordinal
-                                    mod.recommendationFrom =
-                                        it.media?.mediaContent?.toModel()
-                                    mod.recommended =
-                                        it.mediaRecommendation?.mediaContent?.toModel()
-                                }
-                            }
+                    it?.takeIf {
+                        if (field.canShowAdult) true else ((it.media?.mediaContent?.isAdult == false)
+                                and (it.mediaRecommendation?.mediaContent?.isAdult == false))
                     }
+                        ?.let {
+                            RecommendationModel().also { mod ->
+                                mod.id = it.id
+                                mod.rating = it.rating
+                                mod.userRating = it.userRating?.ordinal
+                                mod.recommendationFrom =
+                                    it.media?.mediaContent?.toModel()
+                                mod.recommended =
+                                    it.mediaRecommendation?.mediaContent?.toModel()
+                            }
+                        }
+                }
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                resourceCallback.invoke(Resource.success(it ?: emptyList()))
+                callback.invoke(Resource.success(it ?: emptyList()))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message, null, it))
             })
 
         compositeDisposable.add(disposable)
     }
 
-    override fun updateRecommendation(
-        recommendationField: UpdateRecommendationField,
-        compositeDisposable: CompositeDisposable?
-    ): MutableLiveData<Resource<UpdateRecommendationModel>> {
-        val disposable = graphRepository.request(recommendationField.toQueryOrMutation())
+    override fun saveRecommendation(
+        recommendationField: SaveRecommendationField
+    ): Flow<Resource<RecommendationModel>> {
+        return graphRepository.mutation(recommendationField.toQueryOrMutation())
             .map {
-                it.data?.saveRecommendation?.let { rec ->
-                    UpdateRecommendationModel().also { model ->
-                        model.id = rec.id
-                        model.rating = rec.rating
-                        model.userRating = rec.userRating?.ordinal
+                Resource.success(
+                    it.data?.saveRecommendation?.let {
+                        RecommendationModel().also { model ->
+                            model.id = it.id
+                            model.userRating = it.userRating?.ordinal
+                            model.rating = it.rating
+                        }
                     }
-                }
-            }.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                updateRecommendationLiveData.value = Resource.success(it)
-            }, {
-                Timber.e(it)
-                updateRecommendationLiveData.value =
-                    Resource.error(it.message ?: ERROR, null, it)
-            })
-        compositeDisposable?.add(disposable)
-        return updateRecommendationLiveData
-    }
-
-    override fun removeUpdateRecommendationObserver(observer: Observer<Resource<UpdateRecommendationModel>>) {
-        updateRecommendationLiveData.removeObserver(observer)
-        updateRecommendationLiveData.value = null
-    }
-
-    override fun saveRecommendation(addRecommendationField: AddRecommendationField): MutableLiveData<Resource<SaveRecommendationModel>> {
-        return MutableLiveData<Resource<SaveRecommendationModel>>()
+                )
+            }.catch {
+                emit(Resource.error(it))
+            }
     }
 
 }

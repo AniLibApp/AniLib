@@ -43,30 +43,10 @@ query RecommendationQuery(
 
 
 #mutation
-mutation UpdateRecommendationMutation($mediaId:Int, $mediaRecommendationId:Int, $rating:RecommendationRating){
-    saveRecommendation: SaveRecommendation(mediaId:$mediaId, mediaRecommendationId:$mediaRecommendationId, rating:$rating){
-        id
-        userRating
-        rating
-    }
-}
-
 mutation SaveRecommendationMutation($mediaId:Int, $mediaRecommendationId:Int, $rating:RecommendationRating){
     saveRecommendation: SaveRecommendation(mediaId:$mediaId, mediaRecommendationId:$mediaRecommendationId, rating:$rating){
         id
-        rating
         userRating
-        media{
-            id
-        }
-        mediaRecommendation{
-            title{
-                english
-                romaji
-                english
-            }
-            averageScore
-        }
+        rating
     }
 }
-

@@ -7,12 +7,12 @@ import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.databinding.MediaListSettingFragmentBinding
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.app.setting.viewmodel.MediaListSettingVM
 import com.revolgenx.anilib.common.preference.UserPreference
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.ui.view.makeErrorToast
 import com.revolgenx.anilib.util.onItemSelected
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,32 +37,32 @@ class MediaListSettingFragment : BaseToolbarFragment<MediaListSettingFragmentBin
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.listLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     binding.clearStatus()
                     binding.bind()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     binding.showError()
                     makeToast(R.string.something_went_wrong, icon = R.drawable.ic_error)
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     binding.showLoading()
                 }
             }
         }
 
         viewModel.saveListLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     makeToast(R.string.saved_successfully)
                     binding.clearStatus()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     binding.clearStatus()
                     makeErrorToast(R.string.failed_to_save)
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     binding.showLoading()
                 }
             }

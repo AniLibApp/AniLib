@@ -3,7 +3,6 @@ package com.revolgenx.anilib.infrastructure.service.toggle
 import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.social.data.model.LikeableUnionModel
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.ToggleActivitySubscriptionField
 import com.revolgenx.anilib.social.data.field.ToggleLikeV2Field
@@ -59,7 +58,7 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -94,7 +93,7 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
             .subscribe({
                 callback.invoke(Resource.success(it))
             }, {
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)
@@ -111,7 +110,7 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
                 callback.invoke(Resource.success(true))
             }, {
                 Timber.w(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable?.add(disposable)
     }
@@ -135,7 +134,7 @@ class ToggleServiceImpl(private val graphRepository: BaseGraphRepository) :
                 callback?.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback?.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback?.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }

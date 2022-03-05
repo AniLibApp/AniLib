@@ -17,7 +17,7 @@ import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.ActivityInfoFragmentLayoutBinding
 import com.revolgenx.anilib.common.event.*
-import com.revolgenx.anilib.common.repository.util.Status.*
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
 import com.revolgenx.anilib.social.data.model.ListActivityModel
 import com.revolgenx.anilib.social.data.model.MessageActivityModel
@@ -129,19 +129,19 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         binding.initListener()
 
         viewModel.activityInfoLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     val item = it.data ?: return@observe
                     updateViews(item)
                     showLoading(false)
                     showErrorLayout(false)
                 }
-                ERROR -> {
+                is Resource.Error -> {
                     showLoading(false)
                     showErrorLayout(true)
                     binding.errorLayout.errorMsg.text = it.message
                 }
-                LOADING -> {
+                is Resource.Loading -> {
                     showLoading(true)
                     showErrorLayout(false)
                 }
@@ -184,8 +184,8 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
             viewModel.getActivityUnionModel()?.let {
                 activityUnionViewModel.toggleActivityLike(it) { re ->
                     updateItems(it)
-                    when (re.status) {
-                        SUCCESS -> {
+                    when (re) {
+                        is Resource.Success -> {
                             val item = re.data ?: return@toggleActivityLike
                             viewModel.activeModel?.let {
                                 it.isLiked = item.isLiked
@@ -193,9 +193,10 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
                                 it.onDataChanged?.invoke()
                             }
                         }
-                        ERROR -> {
+                        is Resource.Error -> {
                             makeToast(R.string.failed_to_toggle)
                         }
+                        else -> {}
                     }
                 }
             }
@@ -219,15 +220,15 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         viewModel.getActivityUnionModel()?.let {
             activityUnionViewModel.toggleActivitySubscription(it) { re ->
                 updateItems(it)
-                when (re.status) {
-                    SUCCESS -> {
+                when (re) {
+                    is Resource.Success -> {
                         val item = re.data ?: return@toggleActivitySubscription
                         viewModel.activeModel?.let {
                             it.isSubscribed = item.isSubscribed
                             it.onDataChanged?.invoke()
                         }
                     }
-                    ERROR -> {
+                    is Resource.Error -> {
                         makeToast(R.string.failed_to_toggle)
                     }
                     else -> {}

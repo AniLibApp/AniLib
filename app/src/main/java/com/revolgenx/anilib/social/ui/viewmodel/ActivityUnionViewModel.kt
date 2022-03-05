@@ -4,7 +4,6 @@ import com.revolgenx.anilib.common.preference.getActivityUnionField
 import com.revolgenx.anilib.common.preference.storeActivityUnionField
 import com.revolgenx.anilib.social.data.model.LikeableUnionModel
 import com.revolgenx.anilib.common.repository.util.Resource
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 import com.revolgenx.anilib.social.data.field.ActivityDeleteField
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
@@ -41,8 +40,8 @@ class ActivityUnionViewModel(
             it.id = item.id
             it.type = LikeableType.ACTIVITY
         }, compositeDisposable) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     val data = it.data ?: return@toggleLikeV2
                     item.likeCount = data.likeCount
                     item.isLiked = data.isLiked
@@ -63,8 +62,8 @@ class ActivityUnionViewModel(
             it.activityId = item.id
             it.isSubscribed = !item.isSubscribed
         }, compositeDisposable) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     val data = it.data ?: return@toggleActivitySubscription
                     item.isSubscribed = data.isSubscribed
                     item.onDataChanged?.invoke()
@@ -81,7 +80,7 @@ class ActivityUnionViewModel(
         }, compositeDisposable) {
             callback.invoke(
                 id,
-                if (it.status == Status.SUCCESS) {
+                if (it is Resource.Success) {
                     it.data!!
                 } else {
                     false

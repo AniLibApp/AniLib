@@ -2,7 +2,6 @@ package com.revolgenx.anilib.social.infrastructure.service
 
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.common.repository.network.converter.toModel
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.data.field.*
 import com.revolgenx.anilib.social.data.model.ActivityUnionModel
@@ -45,7 +44,7 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
                 resourceCallback.invoke(Resource.success(it ?: emptyList()))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)
@@ -77,7 +76,7 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)
@@ -95,7 +94,7 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -113,7 +112,7 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -130,7 +129,7 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -154,7 +153,7 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -171,7 +170,7 @@ class ActivityUnionServiceImpl(private val graphRepository: BaseGraphRepository)
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }

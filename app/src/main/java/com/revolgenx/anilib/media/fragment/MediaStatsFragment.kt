@@ -20,13 +20,13 @@ import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.contrastAccentWithBg
 import com.revolgenx.anilib.app.theme.dynamicTintSurfaceColor
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.field.MediaStatsField
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.user.data.model.stats.MediaStatsModel
 import com.revolgenx.anilib.databinding.MediaStatsFragmentLayoutBinding
 import com.revolgenx.anilib.media.presenter.RankingsPresenter
-import com.revolgenx.anilib.common.repository.util.Status.*
 import com.revolgenx.anilib.media.presenter.MediaStatusDistributionPresenter
 import com.revolgenx.anilib.media.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.util.prettyNumberFormat
@@ -116,19 +116,19 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
 
         val statusLayout = binding.resourceStatusLayout
         viewModel.statsLiveData.observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                SUCCESS -> {
+            when (res) {
+                is Resource.Success -> {
                     statusLayout.resourceStatusContainer.visibility = View.GONE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     binding.updateView(res.data!!)
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                 }
-                ERROR -> {
+                is Resource.Error -> {
                     statusLayout.resourceStatusContainer.visibility = View.VISIBLE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
                 }
-                LOADING -> {
+                is Resource.Loading -> {
                     statusLayout.resourceStatusContainer.visibility = View.VISIBLE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE

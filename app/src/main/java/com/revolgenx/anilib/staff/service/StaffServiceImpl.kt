@@ -3,7 +3,6 @@ package com.revolgenx.anilib.staff.service
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.character.data.model.*
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.media.data.model.toModel
@@ -49,7 +48,7 @@ class StaffServiceImpl(
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)
@@ -105,7 +104,7 @@ class StaffServiceImpl(
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }

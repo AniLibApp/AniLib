@@ -5,7 +5,6 @@ import com.revolgenx.anilib.character.data.field.CharacterMediaField
 import com.revolgenx.anilib.character.data.field.CharacterVoiceActorField
 import com.revolgenx.anilib.character.data.model.*
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.media.data.model.toModel
@@ -46,7 +45,7 @@ class CharacterServiceImpl(
             .subscribe({
                 callback.invoke(Resource.success(it))
             }, {
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -66,7 +65,7 @@ class CharacterServiceImpl(
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -95,7 +94,7 @@ class CharacterServiceImpl(
                 resourceCallback.invoke(Resource.success(hashMap.values.toList()))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable?.add(disposable)
     }

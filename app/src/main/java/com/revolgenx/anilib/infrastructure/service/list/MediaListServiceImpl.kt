@@ -4,7 +4,6 @@ import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.data.field.list.*
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.common.repository.network.converter.toModel
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.model.toModel
@@ -33,7 +32,7 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)
@@ -79,7 +78,7 @@ class MediaListServiceImpl(private val graphRepository: BaseGraphRepository) : M
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }

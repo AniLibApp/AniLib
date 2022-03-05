@@ -9,18 +9,15 @@ import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.disableCardStyleInHomeScreen
 import com.revolgenx.anilib.databinding.MediaPresenterLayoutBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.event.OpenSearchEvent
-import com.revolgenx.anilib.common.presenter.Constant
+import com.revolgenx.anilib.common.presenter.BasePresenter.Companion.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
-import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
@@ -45,7 +42,7 @@ class MediaPresenter(
                         220
                     )
                 )
-                Holder(binding.root).also { it[Constant.PRESENTER_BINDING_KEY] = binding }
+                Holder(binding.root).also { it[PRESENTER_BINDING_KEY] = binding }
             }
     }
 
@@ -64,7 +61,7 @@ class MediaPresenter(
     override fun onBind(page: Page, holder: Holder, element: Element<MediaModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-        val binding: MediaPresenterLayoutBinding = holder[Constant.PRESENTER_BINDING_KEY] ?: return
+        val binding: MediaPresenterLayoutBinding = holder[PRESENTER_BINDING_KEY] ?: return
 
         holder[SELECTABLE_MEDIA_MODEL_KEY] = item
         binding.apply {

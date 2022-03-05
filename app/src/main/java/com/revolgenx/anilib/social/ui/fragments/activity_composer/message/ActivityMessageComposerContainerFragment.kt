@@ -7,7 +7,7 @@ import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.common.event.OnActivityInfoUpdateEvent
-import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.data.model.MessageActivityModel
 import com.revolgenx.anilib.social.ui.fragments.activity_composer.ActivityComposerContainerFragment
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityMessageComposerViewModel
@@ -61,12 +61,13 @@ class ActivityMessageComposerContainerFragment :
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if(savedInstanceState == null){
-            viewModel.field.private = (viewModel.activeModel as? MessageActivityModel)?.isPrivate == true
+        if (savedInstanceState == null) {
+            viewModel.field.private =
+                (viewModel.activeModel as? MessageActivityModel)?.isPrivate == true
         }
     }
 
-    private fun togglePrivateMenu(isPrivate:Boolean){
+    private fun togglePrivateMenu(isPrivate: Boolean) {
         val privateMessageMenu = getBaseToolbar().menu.findItem(R.id.private_message_menu)
         privateMessageMenu.icon = ContextCompat.getDrawable(
             requireContext(),
@@ -81,8 +82,14 @@ class ActivityMessageComposerContainerFragment :
     override fun publish() {
         viewModel.field.recipientId = recipientId ?: return
         this.viewModel.saveActivity {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Error -> {
+                    makeToast(R.string.operation_failed)
+                }
+                is Resource.Loading -> {
+                    makeToast(R.string.sending)
+                }
+                is Resource.Success -> {
                     if (this.viewModel.field.id == null) {
                         makeToast(R.string.sent_successfully)
                     } else {
@@ -90,12 +97,6 @@ class ActivityMessageComposerContainerFragment :
                     }
                     OnActivityInfoUpdateEvent(it.data!!).postEvent
                     popBackStack()
-                }
-                Status.ERROR -> {
-                    makeToast(R.string.operation_failed)
-                }
-                Status.LOADING -> {
-                    makeToast(R.string.sending)
                 }
             }
         }

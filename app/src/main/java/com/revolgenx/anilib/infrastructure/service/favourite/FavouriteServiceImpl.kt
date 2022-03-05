@@ -3,7 +3,6 @@ package com.revolgenx.anilib.infrastructure.service.favourite
 import com.apollographql.apollo3.api.Optional
 import com.revolgenx.anilib.IsFavouriteQuery
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,7 +22,7 @@ class FavouriteServiceImpl(graphRepository: BaseGraphRepository) :
                     callback.invoke(Resource.success(it.data?.media!!.isFavourite))
                 }, {
                     Timber.e(it)
-                    callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                    callback.invoke(Resource.error(it.message , null, it))
                 })
         compositeDisposable?.add(disposable)
     }

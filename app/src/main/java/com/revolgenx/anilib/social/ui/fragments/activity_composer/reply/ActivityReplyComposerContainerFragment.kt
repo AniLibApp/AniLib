@@ -5,7 +5,7 @@ import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.common.event.OnActivityInfoUpdateEvent
-import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.ui.fragments.activity_composer.ActivityComposerContainerFragment
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityReplyComposerViewModel
 import com.revolgenx.anilib.ui.view.makeToast
@@ -44,8 +44,8 @@ class ActivityReplyComposerContainerFragment :
             return
         }
         this.viewModel.saveActivity {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     if (this.viewModel.field.id == null) {
                         makeToast(R.string.replied_successfully)
                     } else {
@@ -54,10 +54,10 @@ class ActivityReplyComposerContainerFragment :
                     OnActivityInfoUpdateEvent(it.data!!.activityId!!).postEvent
                     popBackStack()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     makeToast(R.string.operation_failed)
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     makeToast(R.string.replying)
                 }
             }

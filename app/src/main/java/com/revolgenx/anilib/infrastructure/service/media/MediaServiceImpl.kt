@@ -3,7 +3,6 @@ package com.revolgenx.anilib.infrastructure.service.media
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.staff.data.model.StaffNameModel
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.media.data.model.toModel
@@ -72,7 +71,7 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)
@@ -137,7 +136,7 @@ class MediaServiceImpl(private val baseGraphRepository: BaseGraphRepository) : M
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)

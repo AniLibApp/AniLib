@@ -15,7 +15,7 @@ import com.revolgenx.anilib.databinding.ReviewFragmentLayoutBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenReviewComposerEvent
 import com.revolgenx.anilib.common.event.OpenUserProfileEvent
-import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.type.ReviewRating
@@ -54,30 +54,30 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
         viewModel.field.reviewId = reviewId ?: return
 
         viewModel.reviewLiveData.observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                Status.SUCCESS -> {
+            when (res) {
+                is Resource.Success -> {
                     showLoading(false)
                     binding.bind()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     showError()
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     showLoading(true)
                 }
             }
         }
 
         viewModel.rateReviewLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     binding.bindRating()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     makeToast(R.string.operation_failed)
                     binding.bindRating()
                 }
-                Status.LOADING -> {}
+                is Resource.Loading -> {}
             }
         }
 

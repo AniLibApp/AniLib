@@ -18,14 +18,13 @@ import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.presenter.BasePresenter
-import com.revolgenx.anilib.common.presenter.Constant
 import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.*
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.event.OpenSearchEvent
-import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionVM
 import com.revolgenx.anilib.media.data.model.MediaModel
@@ -105,8 +104,8 @@ class MediaListCollectionPresenter(
     override fun onBind(page: Page, holder: Holder, element: Element<MediaListModel>) {
         super.onBind(page, holder, element)
         val item = element.data ?: return
-        val binding: ViewBinding = holder[Constant.PRESENTER_BINDING_KEY] ?: return
-        holder[Constant.PRESENTER_HOLDER_ITEM_KEY] = item
+        val binding: ViewBinding = holder[PRESENTER_BINDING_KEY] ?: return
+        holder[PRESENTER_HOLDER_ITEM_KEY] = item
 
         var titleTv: DynamicTextView? = null
         var coverIv: SimpleDraweeView? = null
@@ -254,14 +253,14 @@ class MediaListCollectionPresenter(
             }
 
             item.onDataChanged = {
-                when(it.status){
-                    Status.SUCCESS -> {
+                when(it){
+                    is Resource.Success -> {
                         progressTv?.updateProgressView(item)
                     }
-                    Status.ERROR -> {
+                    is Resource.Error -> {
                         context.makeToast(R.string.operation_failed)
                     }
-                    Status.LOADING -> {}
+                    else -> {}
                 }
             }
         }
@@ -276,7 +275,7 @@ class MediaListCollectionPresenter(
 
     override fun onUnbind(holder: Holder) {
         super.onUnbind(holder)
-        holder.get<MediaListModel?>(Constant.PRESENTER_HOLDER_ITEM_KEY)?.onDataChanged = null
+        holder.get<MediaListModel?>(PRESENTER_HOLDER_ITEM_KEY)?.onDataChanged = null
     }
 
     private fun openMediaInfo(context: Context, item: MediaModel) {

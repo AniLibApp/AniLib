@@ -19,7 +19,6 @@ import com.revolgenx.anilib.appwidget.ui.widget.AiringScheduleWidget
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.common.repository.util.Resource
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.airing.service.AiringMediaService
 import com.revolgenx.anilib.common.preference.*
 import io.reactivex.disposables.CompositeDisposable
@@ -105,12 +104,15 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
                             continuation.resume(it)
                         }
                     }
-                if (suspendedQuery.status == Status.SUCCESS && suspendedQuery.data != null) {
-                    val airingModels = suspendedQuery.data
-                    items.clear()
-                    items.addAll(airingModels)
-                } else {
-                    Timber.e(suspendedQuery.exception, suspendedQuery.message)
+                when {
+                    suspendedQuery is Resource.Success && suspendedQuery.data != null -> {
+                        val airingModels = suspendedQuery.data
+                        items.clear()
+                        items.addAll(airingModels)
+                    }
+                    suspendedQuery is Resource.Error -> {
+                        Timber.e(suspendedQuery.exception, suspendedQuery.message)
+                    }
                 }
                 showLoader(false)
             }

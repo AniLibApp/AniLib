@@ -3,7 +3,6 @@ package com.revolgenx.anilib.media.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.common.data.field.ToggleFavouriteField
 import com.revolgenx.anilib.common.repository.util.Resource
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel
 import com.revolgenx.anilib.entry.data.field.SaveMediaListEntryField
 import com.revolgenx.anilib.entry.service.MediaListEntryService
@@ -32,7 +31,7 @@ class MediaInfoContainerSharedVM(
             toggleFavouriteField.mangaId = media.id
         }
         toggleService.toggleFavourite(toggleFavouriteField, compositeDisposable) {
-            if (it.status == Status.ERROR) {
+            if (it is Resource.Error) {
                 media.isFavourite = media.isFavourite.not()
                 onFavouriteChanged?.invoke(it)
             }

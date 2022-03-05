@@ -7,12 +7,12 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.data.model.CharacterModel
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.CharacterFragmentLayoutBinding
-import com.revolgenx.anilib.common.repository.util.Status.*
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.prettyNumberFormat
 import com.revolgenx.anilib.character.viewmodel.CharacterViewModel
 import com.revolgenx.anilib.common.event.OpenImageEvent
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.util.loginContinue
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -43,19 +43,19 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
 
         viewModel.characterInfoLiveData.observe(viewLifecycleOwner) { res ->
             val resourceLayout = binding.resourceStatusLayout
-            when (res.status) {
-                SUCCESS -> {
+            when (res) {
+                is Resource.Success -> {
                     resourceLayout.resourceStatusContainer.visibility = View.GONE
                     resourceLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     resourceLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                     binding.updateView(res.data!!)
                 }
-                ERROR -> {
+                is Resource.Error -> {
                     resourceLayout.resourceStatusContainer.visibility = View.VISIBLE
                     resourceLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
                     resourceLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
                 }
-                LOADING -> {
+                is Resource.Loading -> {
                     resourceLayout.resourceStatusContainer.visibility = View.VISIBLE
                     resourceLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     resourceLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
@@ -64,8 +64,8 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
         }
 
         viewModel.toggleFavouriteLiveData.observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                SUCCESS -> {
+            when (res) {
+                is Resource.Success -> {
                     binding.characterFavIv.showLoading(false)
                     if (res.data == true) {
                         characterModel?.isFavourite = characterModel?.isFavourite?.not() ?: false
@@ -78,11 +78,11 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
                         )
                     }
                 }
-                ERROR -> {
+                is Resource.Error -> {
                     binding.characterFavIv.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
                 }
-                LOADING -> {
+                is Resource.Loading -> {
                     binding.characterFavIv.showLoading(true)
                 }
             }

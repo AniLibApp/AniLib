@@ -20,7 +20,7 @@ import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.data.meta.*
 import com.revolgenx.anilib.databinding.UserContainerFragmentBinding
 import com.revolgenx.anilib.common.event.*
-import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.dialog.MessageDialog
 import com.revolgenx.anilib.ui.view.makeErrorToast
@@ -33,7 +33,6 @@ import com.revolgenx.anilib.util.prettyNumberFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
 import com.revolgenx.anilib.home.event.MainActivityPage
-import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>() {
@@ -139,8 +138,8 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
         }
 
         viewModel.userLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     binding.bind()
                 }
                 else -> {}
@@ -149,14 +148,14 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
 
 
         viewModel.toggleFollowLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     binding.updateFollowView()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     makeErrorToast(R.string.operation_failed)
                 }
-                Status.LOADING -> {}
+                else -> {}
             }
 
         }

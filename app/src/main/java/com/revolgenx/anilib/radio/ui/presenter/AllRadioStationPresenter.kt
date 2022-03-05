@@ -9,12 +9,12 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.revolgenx.anilib.common.presenter.BasePresenter.Companion.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.databinding.AllRadioStationPresenterLayoutBinding
 import com.revolgenx.anilib.radio.data.PlaybackState
 import com.revolgenx.anilib.radio.data.events.FavouriteEvent
 import com.revolgenx.anilib.radio.repository.room.RadioStation
 import com.revolgenx.anilib.radio.ui.util.RadioPlayerHelper
-import com.revolgenx.anilib.common.presenter.Constant
 import com.revolgenx.anilib.util.openLink
 
 class AllRadioStationPresenter(context: Context) : Presenter<RadioStation>(context) {
@@ -25,7 +25,7 @@ class AllRadioStationPresenter(context: Context) : Presenter<RadioStation>(conte
             parent,
             false
         ).let { binding ->
-            Holder(binding.root).also { it[Constant.PRESENTER_BINDING_KEY] = binding }
+            Holder(binding.root).also { it[PRESENTER_BINDING_KEY] = binding }
         }
     }
 
@@ -35,7 +35,7 @@ class AllRadioStationPresenter(context: Context) : Presenter<RadioStation>(conte
         val station = element.data ?: return
 
         val binding: AllRadioStationPresenterLayoutBinding =
-            holder[Constant.PRESENTER_BINDING_KEY] ?: return
+            holder[PRESENTER_BINDING_KEY] ?: return
 
         binding.radioStationName.text = station.name
         binding.radioStationSiteName.text = station.site

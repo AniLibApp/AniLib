@@ -4,7 +4,6 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.extensions.MainSource
 import com.revolgenx.anilib.common.repository.util.Resource
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.list.data.model.MediaListModel
 
 class MediaListCollectionSource(val resource: Resource<List<MediaListModel>>) : MainSource<MediaListModel>() {
@@ -16,14 +15,14 @@ class MediaListCollectionSource(val resource: Resource<List<MediaListModel>>) : 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {
         super.onPageOpened(page, dependencies)
         if (page.isFirstPage()) {
-            when (resource.status) {
-                Status.SUCCESS -> {
-                    postResult(page, resource.data ?: emptyList())
-                }
-                Status.ERROR -> {
+            when (resource) {
+                is Resource.Error -> {
                     postResult(page, Exception(resource.exception))
                 }
-                else -> {}
+                is Resource.Loading -> {}
+                is Resource.Success -> {
+                    postResult(page, resource.data ?: emptyList())
+                }
             }
         }
     }

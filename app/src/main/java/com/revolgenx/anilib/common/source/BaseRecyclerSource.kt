@@ -4,7 +4,6 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.otaliastudios.elements.extensions.MainSource
 import com.revolgenx.anilib.common.repository.util.Resource
-import com.revolgenx.anilib.common.repository.util.Status
 
 abstract class BaseRecyclerSource<M : Any, F>(protected var field: F) : MainSource<M>() {
     protected var pageNo = 1
@@ -26,11 +25,11 @@ abstract class BaseRecyclerSource<M : Any, F>(protected var field: F) : MainSour
 
     @Suppress("UNCHECKED_CAST")
     protected open fun <R> postResult(page: Page, resource: Resource<R>) {
-        when (resource.status) {
-            Status.SUCCESS -> {
+        when (resource) {
+            is Resource.Success -> {
                 postResult(page, resource.data as? List<M> ?: emptyList())
             }
-            Status.ERROR -> {
+            is Resource.Error -> {
                 postResult(page, Exception(resource.exception))
             }
             else->{}

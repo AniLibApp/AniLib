@@ -35,11 +35,11 @@ import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.MediaOverviewFragmentBinding
 import com.revolgenx.anilib.common.event.OpenStudioEvent
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.presenter.MediaInfoRelationshipPresenter
 import com.revolgenx.anilib.media.presenter.MediaExternalLinkPresenter
 import com.revolgenx.anilib.media.presenter.MediaMetaPresenter
 import com.revolgenx.anilib.media.presenter.MediaRecommendationPresenter
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.infrastructure.source.MediaOverviewRecommendationSource
 import com.revolgenx.anilib.media.data.model.*
@@ -53,7 +53,6 @@ import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.ui.view.airing.AiringEpisodeView
 import com.revolgenx.anilib.media.viewmodel.MediaOverviewVM
 import com.revolgenx.anilib.studio.data.model.StudioEdgeModel
-import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>() {
@@ -169,8 +168,8 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
 
         viewModel.mediaOverviewLiveData.observe(viewLifecycleOwner) { res ->
             sharedViewModel.mediaLiveData.value = res
-            when (res.status) {
-                Status.SUCCESS -> {
+            when (res) {
+                is Resource.Success -> {
                     binding.resourceStatusLayout.resourceStatusContainer.visibility = View.GONE
                     binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility =
                         View.VISIBLE
@@ -179,7 +178,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                     binding.updateView(res.data!!)
                     invalidateRecommendationAdapter()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     binding.resourceStatusLayout.resourceStatusContainer.visibility = View.VISIBLE
                     binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility =
                         View.GONE
@@ -187,7 +186,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                         View.VISIBLE
                     invalidateRecommendationAdapter()
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     binding.resourceStatusLayout.resourceStatusContainer.visibility = View.VISIBLE
                     binding.resourceStatusLayout.resourceProgressLayout.progressLayout.visibility =
                         View.VISIBLE

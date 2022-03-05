@@ -697,4 +697,6 @@
     <string name="sign_in_browser_requirement_desc">AniLib is a 3rd party client app for AniList, so there is like no direct means of Signing In. Browsers such as Chrome will be needed and you will be redirect to anilist.co to login/register. Please make sure the URL is anilist.co before entering your credentials.</string>
     <string name="important_to_know">Important to know</string>
     <string name="okay">Okay</string>
+    <string name="enable_12hr_format">Enable 12 hr format.</string>
+    <string name="enable_12hr_format_desc">Enable to show 12 hr format in airing schedule instead of 24 hr format.</string>
 </resources>

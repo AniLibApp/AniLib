@@ -18,9 +18,9 @@ import com.revolgenx.anilib.databinding.MediaListPresenterBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.event.OpenSearchEvent
-import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.presenter.BasePresenter.Companion.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.type.ScoreFormat
-import com.revolgenx.anilib.common.presenter.Constant
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.home.discover.viewmodel.MediaListVM
 import com.revolgenx.anilib.media.data.model.isAnime
@@ -56,7 +56,7 @@ class MediaListPresenter(
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
         return MediaListPresenterBinding.inflate(getLayoutInflater(), parent, false).let {
-            Holder(it.root).also { h -> h[Constant.PRESENTER_BINDING_KEY] = it }
+            Holder(it.root).also { h -> h[PRESENTER_BINDING_KEY] = it }
         }
     }
 
@@ -64,7 +64,7 @@ class MediaListPresenter(
         super.onBind(page, holder, element)
         val item = element.data ?: return
         val media = item.media ?: return
-        val binding: MediaListPresenterBinding = holder[Constant.PRESENTER_BINDING_KEY] ?: return
+        val binding: MediaListPresenterBinding = holder[PRESENTER_BINDING_KEY] ?: return
 
         binding.apply {
             mediaListTitleTv.text = media.title?.userPreferred
@@ -111,14 +111,14 @@ class MediaListPresenter(
                 }
 
                 item.onDataChanged = {
-                    when (it.status) {
-                        Status.SUCCESS -> {
+                    when (it) {
+                        is Resource.Success -> {
                             mediaListProgressTv.updateProgressView(item)
                         }
-                        Status.ERROR -> {
+                        is Resource.Error -> {
                             context.makeToast(R.string.operation_failed)
                         }
-                        Status.LOADING -> {}
+                        else -> {}
                     }
 
                 }

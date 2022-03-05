@@ -8,7 +8,6 @@ import com.revolgenx.anilib.character.data.model.toModel
 import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.friend.data.field.UserFriendField
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaConnectionModel
 import com.revolgenx.anilib.media.data.model.toModel
@@ -172,7 +171,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)
@@ -240,7 +239,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -283,7 +282,7 @@ class UserServiceImpl(private val baseGraphRepository: BaseGraphRepository) : Us
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)

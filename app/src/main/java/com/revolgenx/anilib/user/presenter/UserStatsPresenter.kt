@@ -12,9 +12,9 @@ import com.otaliastudios.elements.Presenter
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.event.*
+import com.revolgenx.anilib.common.presenter.BasePresenter.Companion.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.databinding.ImageStatsPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.TextStatsPresenterLayoutBinding
-import com.revolgenx.anilib.common.presenter.Constant.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.user.data.model.stats.*
 

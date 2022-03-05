@@ -12,12 +12,12 @@ import com.revolgenx.anilib.databinding.ActivityReplyPresenterLayoutBinding
 import com.revolgenx.anilib.common.event.OnActivityInfoUpdateEvent
 import com.revolgenx.anilib.common.event.OpenActivityReplyComposer
 import com.revolgenx.anilib.common.event.OpenUserProfileEvent
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityReplyComposerViewModel
 import com.revolgenx.anilib.common.presenter.BasePresenter
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.ui.view.makeToast
 
 class ActivityReplyPresenter(
@@ -59,7 +59,7 @@ class ActivityReplyPresenter(
                         }
                         1->{
                             activityReplyViewModel.deleteActivityReply(item.id){
-                                if(it.status == Status.SUCCESS){
+                                if(it is Resource.Success){
                                     OnActivityInfoUpdateEvent(item.activityId!!).postEvent
                                 }
                             }
@@ -73,7 +73,7 @@ class ActivityReplyPresenter(
 
             listActivityLikeIv.setOnClickListener {
                 activityReplyViewModel.toggleLike(item) {
-                    if (it.status == Status.ERROR) {
+                    if (it is Resource.Error) {
                         context.makeToast(R.string.failed_to_toggle)
                     } else {
                         val likeAbleItem = it.data ?: return@toggleLike

@@ -10,7 +10,6 @@ import com.revolgenx.anilib.entry.data.field.SaveMediaListEntryField
 import com.revolgenx.anilib.entry.data.model.UserMediaModel
 import com.revolgenx.anilib.entry.service.MediaListEntryService
 import com.revolgenx.anilib.common.repository.util.Resource
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.model.MediaModel
@@ -110,7 +109,7 @@ class MediaListEntryVM(
         media.isFavourite = media.isFavourite.not()
         favouriteLiveData.value = Resource.success(media.isFavourite)
         toggleService.toggleFavourite(toggleFavouriteField, compositeDisposable) {
-            if (it.status == Status.ERROR) {
+            if (it is Resource.Error) {
                 media.isFavourite = media.isFavourite.not()
                 favouriteLiveData.value = it
             }

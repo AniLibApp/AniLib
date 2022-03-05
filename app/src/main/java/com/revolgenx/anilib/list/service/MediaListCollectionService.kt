@@ -4,9 +4,7 @@ import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionTypeModel
 import com.revolgenx.anilib.app.setting.data.model.getRowOrder
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
-import com.revolgenx.anilib.list.constant.ListConstant
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.list.data.model.MediaListCollectionModel
 import com.revolgenx.anilib.list.data.model.MediaListGroupModel
@@ -125,7 +123,7 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }

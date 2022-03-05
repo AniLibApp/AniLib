@@ -117,7 +117,7 @@ object AiringPresenterBindingHelper {
         mediaTitleTv.naText(media.title!!.title(context))
         coverImageIv.setImageURI(media.coverImage!!.image(context))
 
-        if (media.type == MediaType.ANIME.ordinal) {
+        if (media.isAnime) {
             mediaEpisodeTv.text =
                 context.string(R.string.ep_d_s)
                     .format(media.episodes.naText(), media.duration.naText())

@@ -6,9 +6,9 @@ import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.staff.data.model.StaffModel
 import com.revolgenx.anilib.common.preference.loggedIn
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.StaffFragmentLayoutBinding
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
@@ -63,19 +63,19 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
         viewModel.staffToggleField.staffId = staffId
         val statusLayout = binding.resourceStatusLayout
         viewModel.staffInfoLiveData.observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                Status.SUCCESS -> {
+            when (res) {
+                is Resource.Success -> {
                     statusLayout.resourceStatusContainer.visibility = View.GONE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
                     binding.updateView(res.data!!)
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     statusLayout.resourceStatusContainer.visibility = View.VISIBLE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.GONE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.VISIBLE
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     statusLayout.resourceStatusContainer.visibility = View.VISIBLE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
@@ -84,8 +84,8 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
         }
 
         viewModel.toggleStaffFavLiveData.observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                Status.SUCCESS -> {
+            when (res) {
+                is Resource.Success -> {
                     binding.staffFavIv.showLoading(false)
                     if (res.data == true) {
                         staffModel?.isFavourite = staffModel?.isFavourite?.not() ?: false
@@ -98,11 +98,11 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
                         )
                     }
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     binding.staffFavIv.showLoading(false)
                     makeToast(R.string.failed_to_toggle, icon = R.drawable.ic_error)
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     binding.staffFavIv.showLoading(true)
                 }
             }

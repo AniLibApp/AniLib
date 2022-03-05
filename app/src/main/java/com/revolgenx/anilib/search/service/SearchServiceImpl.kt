@@ -7,7 +7,6 @@ import com.revolgenx.anilib.character.data.model.CharacterNameModel
 import com.revolgenx.anilib.character.data.model.toModel
 import com.revolgenx.anilib.common.data.model.BaseModel
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaConnectionModel
 import com.revolgenx.anilib.media.data.model.toModel
@@ -104,7 +103,7 @@ class SearchServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
                 callback.invoke(Resource.success(it ?: emptyList()))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }

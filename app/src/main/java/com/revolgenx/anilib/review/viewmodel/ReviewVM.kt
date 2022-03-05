@@ -8,7 +8,6 @@ import com.revolgenx.anilib.review.data.field.RateReviewField
 import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.model.ReviewModel
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.type.ReviewRating
 
 class ReviewVM(private val reviewService: ReviewService) : BaseViewModel() {
@@ -62,12 +61,12 @@ class ReviewVM(private val reviewService: ReviewService) : BaseViewModel() {
     private fun rateReview() {
         rateReviewLiveData.value = Resource.success(review)
         reviewService.rateReview(rateReviewField, compositeDisposable) rateReviewS@{
-            when (it.status) {
-                Status.ERROR -> {
+            when (it) {
+                is Resource.Error -> {
                     rateReviewField.userRating = review?.userRating
                     rateReviewLiveData.value = it
                 }
-                Status.SUCCESS -> {
+                is Resource.Success -> {
                     val review = review ?: return@rateReviewS
                     val rateReview = it.data ?: return@rateReviewS
                     with(review) {
@@ -77,7 +76,7 @@ class ReviewVM(private val reviewService: ReviewService) : BaseViewModel() {
                     }
                     rateReviewLiveData.value = it
                 }
-                Status.LOADING -> {}
+                else -> {}
             }
         }
     }

@@ -6,7 +6,6 @@ import com.revolgenx.anilib.common.data.model.stats.ScoreDistributionModel
 import com.revolgenx.anilib.common.data.model.stats.StatusDistributionModel
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.common.repository.network.converter.toModel
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.field.*
 import com.revolgenx.anilib.media.data.model.*
@@ -37,7 +36,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -57,7 +56,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.w(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -106,7 +105,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -141,7 +140,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -181,7 +180,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable?.add(disposable)
@@ -285,7 +284,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable?.add(disposable)
     }
@@ -307,7 +306,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
                 callback.invoke(Resource.success(it ?: emptyList()))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }

@@ -19,6 +19,8 @@ private const val mlLanguageToUseKey = "ml_Language_To_Use_Key"
 private const val enableMlLanguageToUseKey = "enable_ml_Language_To_Use_Key"
 private const val enableAutoMlLanguageToUseKey = "enable_auto_ml_Language_To_Use_Key"
 
+private const val isAiring12hrFormatKey = "is_airing_12_hr_format_key"
+
 
 fun isCrashReportEnabled(context: Context): Boolean {
     return context.getBoolean(crashReportKey, true)
@@ -50,36 +52,43 @@ fun setUpdateVersion(newVersion: String) {
 fun disableCardStyleInHomeScreen() = DynamicPreferences.getInstance().load(showCaseLayoutKey, false)
 
 fun disableAds() = DynamicPreferences.getInstance().load(showAdsKey, false)
-fun disableAds(disableAds: Boolean){
+fun disableAds(disableAds: Boolean) {
     DynamicPreferences.getInstance().save(showAdsKey, disableAds)
 }
 
 fun loadBioByDefault() = DynamicPreferences.getInstance().load(loadBioByDefault, false)
 
-fun loadLegacyMediaBrowseTheme() = DynamicPreferences.getInstance().load(loadLegacyMediaBrowseHeader, false)
+fun loadLegacyMediaBrowseTheme() =
+    DynamicPreferences.getInstance().load(loadLegacyMediaBrowseHeader, false)
 
-fun inUseMlLanguageModel(context: Context, code:String? = null): String {
-    return if(code != null){
+fun inUseMlLanguageModel(context: Context, code: String? = null): String {
+    return if (code != null) {
         context.putString(mlLanguageToUseKey, code)
         code
-    }else{
+    } else {
         context.getString(mlLanguageToUseKey)!!
     }
 }
-fun enableMlTranslation(context: Context, enable:Boolean? = null): Boolean {
-    return if(enable != null){
+
+fun enableMlTranslation(context: Context, enable: Boolean? = null): Boolean {
+    return if (enable != null) {
         context.putBoolean(enableMlLanguageToUseKey, enable)
         enable
-    }else{
+    } else {
         context.getBoolean(enableMlLanguageToUseKey)
     }
 }
 
-fun enableAutoMlTranslation(context: Context, enable:Boolean? = null): Boolean {
-    return if(enable != null){
+fun enableAutoMlTranslation(context: Context, enable: Boolean? = null): Boolean {
+    return if (enable != null) {
         context.putBoolean(enableAutoMlLanguageToUseKey, enable)
         enable
-    }else{
+    } else {
         context.getBoolean(enableAutoMlLanguageToUseKey)
     }
+}
+
+val isAiring12hrFormat get()= dynamicPreferences.load(isAiring12hrFormatKey, false)
+fun isAiring12hrFormat(bool: Boolean) {
+    dynamicPreferences.save(isAiring12hrFormatKey, bool)
 }

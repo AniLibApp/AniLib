@@ -6,27 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.apollographql.apollo3.exception.ApolloHttpException
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.constant.HTTP_TOO_MANY_REQUEST
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.RecommendationPresenterLayoutBinding
-import com.revolgenx.anilib.home.recommendation.data.field.UpdateRecommendationField
+import com.revolgenx.anilib.home.recommendation.data.field.SaveRecommendationField
 import com.revolgenx.anilib.home.recommendation.data.model.RecommendationModel
-import com.revolgenx.anilib.home.recommendation.data.model.UpdateRecommendationModel
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.repository.util.Resource
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.type.RecommendationRating
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.home.recommendation.viewmodel.RecommendationViewModel
+import com.revolgenx.anilib.ui.view.makeErrorToast
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
@@ -51,10 +49,10 @@ class RecommendationPresenter(
         context.resources.getStringArray(R.array.media_format)
     }
 
-    private val updateRecommendationField by lazy {
-        UpdateRecommendationField()
-    }
 
+    companion object {
+        private const val RECOMMENDATION_RATE_OBSERVER_KEY = "RECOMMENDATION_RATE_OBSERVER_KEY"
+    }
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -144,103 +142,59 @@ class RecommendationPresenter(
             updateRecommendationLikeView(item)
 
             recommendationLikeIv.setOnClickListener {
-                if (it.checkLoggedIn()) {
-                    val observer = object : Observer<Resource<UpdateRecommendationModel>> {
-                        override fun onChanged(it: Resource<UpdateRecommendationModel>?) {
-                            if (it != null) {
-                                viewModel.removeUpdateRecommendationObserver(this)
-                            }
-                            when (it?.status) {
-                                Status.SUCCESS -> {
-                                    viewModel.recommendedList[it.data?.id]?.let { cache ->
-                                        cache.rating = it.data?.rating
-                                        cache.userRating = it.data?.userRating
+                context.loginContinue {
+                    val liveData = viewModel.upVoteRecommendation(item)
+                    holder.get<LiveData<*>?>(RECOMMENDATION_RATE_OBSERVER_KEY)
+                        ?.removeObservers(lifecycleOwner)
+                    holder[RECOMMENDATION_RATE_OBSERVER_KEY] = liveData
+                    liveData.observe(lifecycleOwner,
+                        object : Observer<Resource<RecommendationModel>> {
+                            override fun onChanged(it: Resource<RecommendationModel>) {
+                                when (it) {
+                                    is Resource.Error -> {
+                                        context.makeErrorToast(R.string.operation_failed)
                                     }
-
-                                    if (item.id == it.data?.id) {
+                                    is Resource.Success -> {
                                         updateRecommendationLikeView(item)
                                     }
+                                    is Resource.Loading -> {}
                                 }
-                                Status.ERROR -> {
-                                    if (it.exception is ApolloHttpException) {
-                                        when (it.exception.statusCode) {
-                                            HTTP_TOO_MANY_REQUEST -> {
-                                                context.makeToast(R.string.too_many_request)
-                                            }
-                                            else -> {
-                                                context.makeToast(R.string.operation_failed)
-                                            }
-                                        }
-                                    } else {
-                                        context.makeToast(R.string.operation_failed)
-                                    }
-                                }
-                                else->{}
+                                liveData.removeObserver(this)
+                                holder[RECOMMENDATION_RATE_OBSERVER_KEY] = null
                             }
-                        }
-                    }
-
-                    updateRecommendation(observer, item,
-                        item.userRating?.let { RecommendationRating.values()[it] }
-                            ?: RecommendationRating.NO_RATING,
-                        RecommendationRating.RATE_UP
-                    )
+                        })
                 }
             }
 
             recommendationDislikeIv.setOnClickListener {
-                if (it.checkLoggedIn()) {
-                    val observer = object : Observer<Resource<UpdateRecommendationModel>> {
-                        override fun onChanged(it: Resource<UpdateRecommendationModel>?) {
-                            if (it != null) {
-                                viewModel.removeUpdateRecommendationObserver(this)
-                            }
-
-                            when (it?.status) {
-                                Status.SUCCESS -> {
-                                    viewModel.recommendedList[it.data?.id]?.let { cache ->
-                                        cache.rating = it.data?.rating
-                                        cache.userRating = it.data?.userRating
+                context.loginContinue {
+                    val liveData = viewModel.downVoteRecommendation(item)
+                    holder.get<LiveData<*>?>(RECOMMENDATION_RATE_OBSERVER_KEY)
+                        ?.removeObservers(lifecycleOwner)
+                    holder[RECOMMENDATION_RATE_OBSERVER_KEY] = liveData
+                    liveData.observe(lifecycleOwner,
+                        object : Observer<Resource<RecommendationModel>> {
+                            override fun onChanged(it: Resource<RecommendationModel>) {
+                                when (it) {
+                                    is Resource.Error -> {
+                                        context.makeErrorToast(R.string.operation_failed)
                                     }
-
-                                    if (item.id == it.data?.id) {
+                                    is Resource.Success -> {
                                         updateRecommendationLikeView(item)
                                     }
+                                    is Resource.Loading -> {}
                                 }
-                                Status.ERROR -> {
-                                    context.makeToast(R.string.operation_failed)
-                                }
-                                else->{}
+                                liveData.removeObserver(this)
                             }
-                        }
-                    }
-
-                    updateRecommendation(observer, item,
-                        item.userRating?.let { RecommendationRating.values()[it] }
-                            ?: RecommendationRating.NO_RATING,
-                        RecommendationRating.RATE_DOWN
-                    )
+                        })
                 }
             }
         }
     }
 
-
-    private fun updateRecommendation(
-        observer: Observer<Resource<UpdateRecommendationModel>>,
-        data: RecommendationModel,
-        currentRating: RecommendationRating,
-        newRating: RecommendationRating
-    ) {
-        viewModel.updateRecommendation(updateRecommendationField.also { field ->
-            field.mediaId = data.recommendationFrom?.id
-            field.mediaRecommendationId = data.recommended?.id
-            field.rating = if (currentRating == newRating) {
-                RecommendationRating.NO_RATING.ordinal
-            } else {
-                newRating.ordinal
-            }
-        }).observe(lifecycleOwner, observer)
+    override fun onUnbind(holder: Holder) {
+        super.onUnbind(holder)
+        holder.get<LiveData<*>?>(RECOMMENDATION_RATE_OBSERVER_KEY)?.removeObservers(lifecycleOwner)
     }
 
     private fun RecommendationPresenterLayoutBinding.updateRecommendationLikeView(item: RecommendationModel) {
@@ -258,11 +212,4 @@ class RecommendationPresenter(
         }
     }
 
-    private fun View.checkLoggedIn(): Boolean {
-        return context.loggedIn().also {
-            if (!it) {
-                context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
-            }
-        }
-    }
 }

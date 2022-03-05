@@ -20,13 +20,13 @@ import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.model.FuzzyDateModel
 import com.revolgenx.anilib.common.preference.UserPreference
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.constant.MediaListStatusEditor
 import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.databinding.MediaListEntryFragmentLayoutBinding
 import com.revolgenx.anilib.entry.data.model.UserMediaModel
 import com.revolgenx.anilib.entry.viewmodel.MediaListEntryVM
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
@@ -79,60 +79,60 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
         field.userId = UserPreference.userId
 
         viewModel.mediaListEntry.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     binding.clearResourceStatus()
                     it.data?.let {
                         binding.bind(it)
                     }
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     binding.showError()
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     binding.showLoading()
                 }
             }
         }
 
         viewModel.saveMediaListEntry.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     popBackStack()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     makeToast(R.string.failed_to_save)
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     binding.showLoading()
                 }
             }
         }
 
         viewModel.deleteMediaListEntry.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     popBackStack()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     makeErrorToast(R.string.failed_to_delete)
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     binding.showLoading()
                 }
             }
         }
 
         viewModel.favouriteLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     updateFavouriteToolbar()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     makeToast(R.string.failed_to_toggle)
                     updateFavouriteToolbar()
                 }
-                Status.LOADING -> {}
+                else -> {}
             }
         }
         if (savedInstanceState == null) {

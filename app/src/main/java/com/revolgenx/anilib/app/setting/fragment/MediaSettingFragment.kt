@@ -9,11 +9,11 @@ import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.app.setting.data.field.MediaSettingMutateField
 import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel
 import com.revolgenx.anilib.databinding.MediaSettingFragmentBinding
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.app.setting.data.model.SettingViewModel
 import com.revolgenx.anilib.common.preference.UserPreference
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.ui.view.makeErrorToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -56,34 +56,34 @@ class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() 
         binding.titleLanguageSpinner.spinnerView.adapter = languageListAdapter
 
         viewModel.mediaOptionLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     clearStatus()
                     it.data?.let {
                         binding.updateView(it)
                     }
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     showError()
                     makeToast(R.string.something_went_wrong, icon = R.drawable.ic_info)
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     showLoading()
                 }
             }
         }
 
         viewModel.saveMediaOptionLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     clearStatus()
                     makeToast(R.string.saved_successfully)
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     clearStatus()
                     makeErrorToast(R.string.error_occured_while_saving)
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     showLoading()
                 }
             }

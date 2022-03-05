@@ -28,7 +28,7 @@ import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.common.event.OpenImageEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.event.OpenReviewComposerEvent
-import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.databinding.MediaInfoContainerFragmentLayoutBinding
 import com.revolgenx.anilib.media.data.model.isAnime
 import com.revolgenx.anilib.media.viewmodel.MediaInfoContainerSharedVM
@@ -129,8 +129,8 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
         val mediaInfo = mediaInfoMeta ?: return
 
         viewModel.mediaLiveData.observe(this.viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     binding.bind()
                 }
                 else -> {}
@@ -156,11 +156,11 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
         }
 
         viewModel.onFavouriteChanged = {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     binding.bindFavourite()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     binding.bindFavourite()
                     makeErrorToast(R.string.failed_to_toggle)
                 }
@@ -171,14 +171,14 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
         }
 
         viewModel.onListEntryDataChanged = {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     updateMediaStatusView()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     makeErrorToast(R.string.operation_failed)
                 }
-                Status.LOADING -> {}
+                else -> {}
             }
         }
 

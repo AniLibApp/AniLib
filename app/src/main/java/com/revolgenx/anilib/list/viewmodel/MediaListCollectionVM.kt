@@ -8,7 +8,6 @@ import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.list.data.meta.MediaListCollectionFilterMeta
 import com.revolgenx.anilib.common.repository.util.Resource
-import com.revolgenx.anilib.common.repository.util.Status
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.data.sorting.MediaListCollectionSortingComparator
 import com.revolgenx.anilib.list.service.MediaListCollectionService
@@ -93,8 +92,8 @@ class MediaListCollectionVM(
     fun getMediaList() {
         sourceLiveData.value = loadingSource
         alMediaListCollectionService.getMediaListCollection(field, compositeDisposable) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     mediaListCollectionModel = it.data ?: return@getMediaListCollection
                     if (isLoggedInUser) {
                         mediaListCollectionStore.lists =
@@ -103,7 +102,7 @@ class MediaListCollectionVM(
                     reEvaluateGroupNameWithCount()
                     filter()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     sourceLiveData.value = MediaListCollectionSource(Resource.error(it.message))
                 }
                 else -> {

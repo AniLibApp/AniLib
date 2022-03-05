@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.studio.service
 
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.media.data.model.toModel
@@ -36,7 +35,7 @@ class StudioServiceImpl(private val graphRepository: BaseGraphRepository) : Stud
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)
@@ -57,7 +56,7 @@ class StudioServiceImpl(private val graphRepository: BaseGraphRepository) : Stud
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                resourceCallback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)

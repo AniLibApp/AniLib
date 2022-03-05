@@ -9,7 +9,7 @@ import com.revolgenx.anilib.common.preference.UserPreference
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.databinding.ReviewComposerFragmentLayoutBinding
 import com.revolgenx.anilib.common.event.OpenReviewEvent
-import com.revolgenx.anilib.common.repository.util.Status
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.review.viewmodel.ReviewComposerVM
 import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.ui.view.makeErrorToast
@@ -104,45 +104,45 @@ class ReviewComposerFragment : BaseToolbarFragment<ReviewComposerFragmentLayoutB
         viewModel.saveField.mediaId = reviewMediaId
 
         viewModel.reviewLiveData.observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                Status.SUCCESS -> {
+            when (res) {
+                is Resource.Success -> {
                     showLoading(false)
                     binding.bind()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     showError()
                 }
-                Status.LOADING -> {
+                is Resource.Loading -> {
                     showLoading(true)
                 }
             }
         }
 
         viewModel.saveReviewLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Success -> {
                     showLoading(false)
                     it.data?.let {
                         OpenReviewEvent(it).postEvent
                     }
                     popBackStack()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     showLoading(false)
                     makeErrorToast(R.string.failed_to_save)
                 }
-                Status.LOADING -> showLoading(true)
+                is Resource.Loading -> showLoading(true)
             }
         }
 
         viewModel.deleteLiveData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> popBackStack()
-                Status.ERROR -> {
+            when (it) {
+                is Resource.Success -> popBackStack()
+                is Resource.Error -> {
                     showLoading(false)
                     makeErrorToast(R.string.failed_to_delete)
                 }
-                Status.LOADING -> showLoading(true)
+                is Resource.Loading -> showLoading(true)
             }
         }
 

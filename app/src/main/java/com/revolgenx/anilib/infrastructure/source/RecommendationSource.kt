@@ -21,7 +21,7 @@ class RecommendationSource(
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {
         super.onPageOpened(page, dependencies)
         field.page = pageNo
-        recommendationService.recommendation(field, compositeDisposable) {
+        recommendationService.getRecommendations(field, compositeDisposable) {
             postResult(page, it)
         }
     }

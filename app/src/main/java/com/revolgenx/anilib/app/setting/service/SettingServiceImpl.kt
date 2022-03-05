@@ -8,7 +8,6 @@ import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.common.repository.network.converter.toModel
-import com.revolgenx.anilib.common.repository.util.ERROR
 import com.revolgenx.anilib.common.repository.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -26,7 +25,7 @@ class SettingServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
             .subscribe({
                 callback.invoke(Resource.success(it))
             }, {
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
 
         compositeDisposable.add(disposable)
@@ -52,7 +51,7 @@ class SettingServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
             .subscribe({
                 callback.invoke(Resource.success(it))
             }, {
-                callback.invoke(Resource.error(it.message ?: ERROR, null, it))
+                callback.invoke(Resource.error(it.message , null, it))
             })
         compositeDisposable.add(disposable)
     }
@@ -67,7 +66,7 @@ class SettingServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
             .subscribe({
                 callback.invoke(Resource.success(true))
             }, {
-                callback.invoke(Resource.error(it.message ?: ERROR, false, it))
+                callback.invoke(Resource.error(it.message , false, it))
             })
 
         compositeDisposable.add(disposable)
@@ -83,7 +82,7 @@ class SettingServiceImpl(private val baseGraphRepository: BaseGraphRepository) :
             .subscribe({
                 callback.invoke(Resource.success(true))
             }, {
-                callback.invoke(Resource.error(it.message ?: ERROR, false, it))
+                callback.invoke(Resource.error(it.message , false, it))
             })
         compositeDisposable.add(disposable)
     }
