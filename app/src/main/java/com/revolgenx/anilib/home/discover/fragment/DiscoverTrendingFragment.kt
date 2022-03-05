@@ -84,6 +84,14 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
     }
 
 
+    override fun reloadContent() {
+        super.reloadContent()
+        if (isSectionEnabled) {
+            viewModel.createSource()
+            invalidateAdapter()
+        }
+    }
+
     private fun handleClick(which: Int) {
         if (which == 0) {
             OpenSearchEvent(SearchFilterModel(sort = MediaSort.TRENDING_DESC.ordinal)).postEvent

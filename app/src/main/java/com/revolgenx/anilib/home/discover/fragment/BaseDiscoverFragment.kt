@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.annotation.CallSuper
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -29,8 +30,7 @@ import com.revolgenx.anilib.home.discover.bottomsheet.MediaFilterBottomSheetFrag
 import com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
 import com.revolgenx.anilib.util.dp
 
-abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutBinding>(),
-    BaseDiscoverHelper {
+abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutBinding>(){
 
     protected val discoverLayout: ViewGroup get() = binding.discoverLinearLayout
     protected lateinit var garlandLayout: View
@@ -85,8 +85,12 @@ abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutB
         return v
     }
 
+    @CallSuper
+    protected open fun reloadContent(){
 
-    override fun addView(
+    }
+
+    protected fun addView(
         discoverChildView: View,
         title: String,
         showSetting: Boolean,
@@ -234,7 +238,6 @@ abstract class BaseDiscoverFragment : BaseLayoutFragment<DiscoverFragmentLayoutB
 
         discoverLayout.addView(garlandLinearLayout)
     }
-
 
     protected fun showMediaFilterDialog(type: Int, callback: (() -> Unit)) {
         MediaFilterBottomSheetFragment().show(requireContext()){

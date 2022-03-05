@@ -11,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -225,10 +227,23 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             }
         }
 
-
         bottomSheetBehavior = BottomSheetBehavior.from(sBinding.searchFilterBottomSheet)
+
+        ViewCompat.setOnApplyWindowInsetsListener(
+            sBinding.searchFilterBottomSheet
+        ) { v, insets ->
+            v.setPadding(
+                v.paddingLeft,
+                insets.getInsets(WindowInsetsCompat.Type.systemBars()).top,
+                v.paddingRight,
+                v.bottom + insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            )
+            bottomSheetBehavior?.peekHeight =
+                insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            insets
+        }
+
         hideBottomSheet()
-        bottomSheetBehavior!!.peekHeight = 0
         bottomSheetBehavior!!.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -236,15 +251,15 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
                     BottomSheetBehavior.STATE_EXPANDED, BottomSheetBehavior.STATE_HALF_EXPANDED, BottomSheetBehavior.STATE_SETTLING -> {
                         sBinding.bottomSheetDimLayout.visibility = View.VISIBLE
                     }
-                    BottomSheetBehavior.STATE_HIDDEN, BottomSheetBehavior.STATE_COLLAPSED -> {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        hideBottomSheet()
+                    }
+                    BottomSheetBehavior.STATE_HIDDEN->{
                         sBinding.bottomSheetDimLayout.visibility = View.GONE
                     }
                 }
             }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
         if (savedInstanceState == null) {

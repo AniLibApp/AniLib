@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -54,12 +56,23 @@ class SpoilerBottomSheetFragment : BaseLayoutFragment<SpoilerBottomSheetFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupSheetBackground(binding.spoierContainerLayout)
-    }
 
-    @SuppressLint("SetTextI18n")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.spoierContainerLayout)
+
+        ViewCompat.setOnApplyWindowInsetsListener(
+            binding.spoierContainerLayout
+        ) { v, insets ->
+            v.setPadding(
+                v.paddingLeft,
+                insets.getInsets(WindowInsetsCompat.Type.systemBars()).top,
+                v.paddingRight,
+                v.bottom + insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            )
+            bottomSheetBehavior.peekHeight =
+                insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            insets
+        }
+
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         bottomSheetBehavior.addBottomSheetCallback(object :

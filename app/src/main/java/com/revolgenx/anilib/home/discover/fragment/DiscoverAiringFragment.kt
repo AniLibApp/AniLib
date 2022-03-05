@@ -103,10 +103,12 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
         }
     }
 
-
-    override fun reloadAll() {
-        viewModel.createSource()
-        invalidateAdapter()
+    override fun reloadContent() {
+        super.reloadContent()
+        if (isSectionEnabled) {
+            viewModel.createSource()
+            invalidateAdapter()
+        }
     }
 
     private fun handleClick(which: Int) {

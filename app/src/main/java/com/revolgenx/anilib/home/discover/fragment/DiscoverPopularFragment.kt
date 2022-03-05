@@ -95,6 +95,15 @@ open class DiscoverPopularFragment : DiscoverTrendingFragment() {
     }
 
 
+    override fun reloadContent() {
+        super.reloadContent()
+        if (isSectionEnabled) {
+            viewModel.createSource()
+            invalidateAdapter()
+        }
+    }
+
+
     private fun renewAdapter() {
         viewModel.updateField(requireContext())
         viewModel.createSource()

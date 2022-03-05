@@ -83,6 +83,14 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
     }
 
 
+    override fun reloadContent() {
+        super.reloadContent()
+        if (isSectionEnabled) {
+            viewModel.createSource()
+            invalidateAdapter()
+        }
+    }
+
     private fun renewAdapter() {
         viewModel.updateField(requireContext())
         viewModel.createSource()

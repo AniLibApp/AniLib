@@ -129,6 +129,15 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
     }
 
 
+
+    override fun reloadContent() {
+        super.reloadContent()
+        if (isSectionEnabled) {
+            viewModel.createSource()
+            invalidateAdapter()
+        }
+    }
+
     private fun renewAdapter() {
         if (context == null) return
         viewModel.updateField(requireContext())
