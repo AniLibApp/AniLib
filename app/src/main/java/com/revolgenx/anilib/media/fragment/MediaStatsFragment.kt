@@ -105,10 +105,7 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
 
         binding.statusDistributionRecyclerView.layoutManager =
             FlexboxLayoutManager(requireContext())
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         mediaBrowserMeta =
             arguments?.getParcelable(MEDIA_INFO_META_KEY) ?: return
 

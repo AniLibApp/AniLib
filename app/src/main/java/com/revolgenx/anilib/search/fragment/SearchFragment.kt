@@ -47,11 +47,9 @@ import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.search.presenter.SearchTagPresenter
 import com.revolgenx.anilib.ui.selector.constant.SelectedState
-import com.revolgenx.anilib.ui.view.hideKeyboard
-import com.revolgenx.anilib.ui.view.makeSelectableSpinnerAdapter
-import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
-import com.revolgenx.anilib.ui.view.showKeyboard
+import com.revolgenx.anilib.ui.view.*
 import com.revolgenx.anilib.ui.view.widgets.checkbox.AlCheckBox
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.onItemSelected
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -228,7 +226,6 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         }
 
         bottomSheetBehavior = BottomSheetBehavior.from(sBinding.searchFilterBottomSheet)
-
         ViewCompat.setOnApplyWindowInsetsListener(
             sBinding.searchFilterBottomSheet
         ) { v, insets ->
@@ -254,11 +251,12 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         hideBottomSheet()
                     }
-                    BottomSheetBehavior.STATE_HIDDEN->{
+                    BottomSheetBehavior.STATE_HIDDEN -> {
                         sBinding.bottomSheetDimLayout.visibility = View.GONE
                     }
                 }
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
@@ -285,6 +283,22 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     }
 
     private fun SearchFragmentLayoutBinding.bind() {
+        searchTypeTabLayout.apply {
+            listOf(
+                R.string.anime,
+                R.string.manga,
+                R.string.character,
+                R.string.staff,
+                R.string.studio
+            ).forEach {
+                addTab(newTab().setText(it))
+            }
+            loginContinue(false) {
+                addTab(newTab().setText(R.string.users))
+            }
+
+            getTabAt(field.searchType.ordinal)?.select()
+        }
     }
 
 
@@ -502,7 +516,6 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             searchEt.showKeyboard()
             searchEt.setText("")
         }
-
         searchEt.doOnTextChanged { text, _, _, _ ->
             if (field.search != text) {
                 field.search = text?.toString()
@@ -516,6 +529,14 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             filterSearchEt.setText(text)
             search()
         }
+
+        searchTypeTabLayout.doOnTabSelected(viewLifecycleOwner) { _, position ->
+            if (applyingFilter) return@doOnTabSelected
+
+            filterTypeSpinner.setSelection(position, false)
+            field.searchType = SearchTypes.values()[position]
+            filter()
+        }
     }
 
     private fun SearchFragmentLayoutBinding.initFilterListener() {
@@ -525,7 +546,6 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
 
         filterTypeSpinner.onItemSelected {
             val searchType = SearchTypes.values()[it]
-            if (field.searchType == searchType) return@onItemSelected
             field.searchType = searchType
 
             when (it) {
@@ -996,13 +1016,13 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         changeLayoutManager()
         createSource()
         invalidateAdapter()
-        visibleToUser = true
     }
 
     private fun SearchFragmentLayoutBinding.applyFilter() {
         filterSearchEt.hideKeyboard()
         applyingFilter = true
         hideBottomSheet()
+        searchTypeTabLayout.getTabAt(field.searchType.ordinal)?.select()
         searchEt.setText(filterSearchEt.text?.toString())
         filter()
     }

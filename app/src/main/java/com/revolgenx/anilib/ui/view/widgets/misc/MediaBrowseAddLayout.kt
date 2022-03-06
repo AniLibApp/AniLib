@@ -10,7 +10,7 @@ import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.app.theme.dynamicAccentColor
-import com.revolgenx.anilib.util.isEnoughWhite
+import com.revolgenx.anilib.app.theme.isEnoughWhite
 
 class MediaBrowseAddLayout:AlCardView {
     constructor(context: Context) : this(context, null)

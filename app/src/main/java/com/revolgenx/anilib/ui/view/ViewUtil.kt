@@ -1,12 +1,9 @@
 package com.revolgenx.anilib.ui.view
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.DialogInterface
-import android.graphics.Rect
-import android.os.Build
 import android.provider.Settings
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -18,7 +15,11 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.google.android.material.badge.BadgeDrawable
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
+import com.google.android.material.tabs.TabLayout
 import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.support.popup.DynamicMenuPopup
@@ -198,7 +199,34 @@ fun makeConfirmationDialog(
 fun EditText.hideKeyboard() {
     DynamicInputUtils.hideSoftInput(this)
 }
+
 @SuppressLint("RestrictedApi")
 fun EditText.showKeyboard() {
     DynamicInputUtils.showSoftInput(this)
+}
+
+
+fun TabLayout.doOnTabSelected(
+    viewLifecycleOwner: LifecycleOwner,
+    onTabSelected: (tab: TabLayout.Tab, position: Int) -> Unit
+) {
+    val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
+        override fun onTabSelected(tab: TabLayout.Tab) {
+            onTabSelected.invoke(tab, tab.position)
+        }
+
+        override fun onTabUnselected(tab: TabLayout.Tab) {
+        }
+
+        override fun onTabReselected(tab: TabLayout.Tab) {
+        }
+    }
+    val lifecycleObserver = object : LifecycleObserver {
+        @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        fun onDestroy() {
+            removeOnTabSelectedListener(onTabSelectedListener)
+        }
+    }
+    addOnTabSelectedListener(onTabSelectedListener)
+    viewLifecycleOwner.lifecycle.addObserver(lifecycleObserver)
 }

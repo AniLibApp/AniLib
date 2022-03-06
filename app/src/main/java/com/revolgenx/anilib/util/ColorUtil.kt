@@ -45,4 +45,3 @@ val colorsMap by lazy {
     )
 }
 
-fun isEnoughWhite(color:Int) = DynamicColorUtils.getColorDarkness(color) <= 0.2

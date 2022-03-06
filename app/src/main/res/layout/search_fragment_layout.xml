@@ -79,7 +79,20 @@
 
             </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
+
         </com.pranavpandey.android.dynamic.support.widget.DynamicToolbar>
+
+        <com.revolgenx.anilib.search.views.SearchTypeTabLayout
+            android:id="@+id/search_type_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:adt_textColorType="text_primary"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginBottom="2dp"
+            app:layout_scrollFlags="enterAlways|scroll"
+            app:tabIndicatorHeight="36dp"
+            app:tabMode="scrollable"
+            app:tabIndicatorGravity="center"/>
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
 
@@ -554,10 +567,10 @@
                             android:id="@+id/minimum_tag_rank"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:stepSize="1"
                             android:value="18"
                             android:valueFrom="0"
-                            android:stepSize="1"
-                            android:valueTo="100"/>
+                            android:valueTo="100" />
 
                     </LinearLayout>
 
