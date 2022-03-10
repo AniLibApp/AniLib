@@ -27,7 +27,7 @@
     <string name="next">Siguiente</string>
     <string name="filter">Filtro</string>
     <string name="users">Usuarios</string>
-    <string name="user_detail_fetch_failed">Fallo en la obtención de los datos del usuario</string>
+    <string name="user_detail_fetch_failed">Fallo en la obtención de datos del usuario</string>
     <string name="save">Guardar</string>
     <string name="status">Estado</string>
     <string name="score">Calificación</string>
@@ -93,7 +93,7 @@
     <string name="favourites">Favoritos</string>
     <string name="day">d</string>
     <string name="hour">h</string>
-    <string name="min">Min</string>
+    <string name="min">min</string>
     <string name="sec">s</string>
     <string name="ep_s">Ep %1$d</string>
     <string name="no_app_found_to_open">No se puede abrir este enlace</string>
