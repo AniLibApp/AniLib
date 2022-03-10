@@ -55,10 +55,10 @@
     <string name="manga_progress">Progreso de manga</string>
     <string name="make_private">Hacer privado</string>
     <string name="overview">Resumen</string>
-    <string name="character">Personaje</string>
+    <string name="character">Personajes</string>
     <string name="stats">Estadísticas</string>
     <string name="staff">Staff</string>
-    <string name="review">Reseña</string>
+    <string name="review">Reseñas</string>
     <string name="watch">Ver</string>
     <string name="open_list_editor">Abrir editor de listas</string>
     <string name="delete">Borrar</string>
@@ -113,7 +113,7 @@
     <string name="staff_role">Staff</string>
     <string name="media_format_year_s">%1$s · %2$s</string>
     <string name="language">Idioma</string>
-    <string name="studio">Estudio</string>
+    <string name="studio">Estudios</string>
     <string name="apply_filter">Aplicar filtro</string>
     <string name="search">Buscar</string>
     <string name="sort">Ordenar</string>
@@ -195,7 +195,7 @@
     <string name="check_character_length">Comprobar la longitud de los caracteres</string>
     <string name="review_score_format">Calificación: %1$s/100</string>
     <string name="review_by">Reseña por %1$s</string>
-    <string name="s_out_of_s_liked_this_review">A %1$s de %2$s usuarios les gusto esta reseña</string>
+    <string name="s_out_of_s_liked_this_review">A %1$s de %2$s usuarios les gustó esta reseña</string>
     <string name="review_of_s_by_s">Reseña de %1$s por %2$s</string>
     <string name="recent_reviews">Reseñas recientes</string>
     <string name="reviews">Reseñas</string>
@@ -209,7 +209,7 @@
 
     <!-- crash report -->
     <string name="crash_reporting">Reporte de errores</string>
-    <string name="crash_report_desc">Ayuda a mejorar las características de AniLib enviando automáticamente informes de errores.</string>
+    <string name="crash_report_desc">Ayuda a mejorar las características de AniLib enviando automáticamente informes de errores</string>
 
     <!-- notification -->
     <string name="notification_setting">Notificaciones</string>
@@ -218,13 +218,13 @@
     <string name="when_someone_follows_me">Cuando alguien me sigue</string>
     <string name="receive_message_notif">Cuando recibo un mensaje</string>
     <string name="mention_replay_notif">Cuando se me menciona en una actividad o respuesta</string>
-    <string name="activity_like_notif">Cuando alguien le da \"Me gusta\" a mi actividad</string>
-    <string name="likes_activity_reply_notif">Cuando alguien le da \"Me gusta\" a mi respuesta</string>
+    <string name="activity_like_notif">Cuando alguien da \"Me gusta\" a mi actividad</string>
+    <string name="likes_activity_reply_notif">Cuando alguien da \"Me gusta\" a mi respuesta</string>
     <string name="forum_reply_notif">Cuando alguien responde a mi comentario en el foro</string>
     <string name="forum_mention_notif">Cuando soy mencionado en un comentario del foro</string>
-    <string name="forum_coment_liked_notif">Cuando a alguien le da \"Me gusta\" a mi comentario en el foro</string>
+    <string name="forum_coment_liked_notif">Cuando alguien da \"Me gusta\" a mi comentario en el foro</string>
     <string name="reply_to_subscribed_forum_notif">Cuando alguien responde a un hilo del foro al que estoy suscrito</string>
-    <string name="forum_liked_notif">Cuando a alguien le da \"Me gusta\" a mi hilo del foro</string>
+    <string name="forum_liked_notif">Cuando alguien da \"Me gusta\" a mi hilo del foro</string>
     <string name="episode_aired_notif">Cuando se emite un episodio</string>
     <string name="related_media_added_notif">Cuando se añaden medios relacionados a AniList</string>
     <string name="media_title">Título</string>
@@ -392,7 +392,7 @@
     <string name="checking_for_update">Buscando actualizaciones</string>
     <string name="checking_for_update_failed">Error al buscar actualizaciones</string>
     <string name="discord">Discord</string>
-    <string name="github_desc">Código fuente en Github</string>
+    <string name="github_desc">Código fuente en GitHub</string>
     <string name="start_nav_page_desc">Cambia el orden de los iconos en la cinta inferior</string>
     <string name="startup_page">Iconos de pagina de inicio</string>
     <string name="update_">Actualizar</string>
@@ -401,7 +401,7 @@
     <string name="card_mode">Tarjetas</string>
     <string name="preferred_application_language">Seleccione su idioma preferido</string>
     <string name="show_adult_content">Mostar contenido +18</string>
-    <string name="show_adult_content_desc">Editar esto no cambiará la configuración en AniList. Por lo que cambiar la preferencia en la web eliminaría esta configuración.</string>
+    <string name="show_adult_content_desc">Editar esto no cambiará la configuración en AniList. Por lo que cambiar la preferencia en la web eliminaría esta configuración</string>
     <string name="theme">Tema</string>
     <string name="failed_to_load">No se ha podido cargar</string>
 
@@ -455,11 +455,11 @@
     <string name="show_only_from_your_watching_list">Mostrar solo viendo</string>
     <string name="home_screen_order">Categorías de pagina de inicio</string>
     <string name="home_screen_order_desc">Cambia el orden de las categorias de la pagina de inicio\n(Los cambios se aplicarán en el próximo lanzamiento de la aplicación)</string>
-    <string name="display_card_in_home_desc">No mostrar ninguna tarjeta de descripción en la pantalla de inicio.</string>
+    <string name="display_card_in_home_desc">No mostrar ninguna tarjeta de descripción en la pantalla de inicio</string>
     <string name="display_home_screen_cards">Eliminar tarjetas de descripción</string>
     <string name="activity_subscription">Suscripción de actividades</string>
-    <string name="automatically_subscribe_me_to_activity_i_create">Suscribirme automáticamente mi actividad</string>
-    <string name="automatically_subscribe_me_to_activity_i_reply_to">Suscribirme automáticamente a la actividad cuando respondo</string>
+    <string name="automatically_subscribe_me_to_activity_i_create">Suscribirme automáticamente a mi actividad</string>
+    <string name="automatically_subscribe_me_to_activity_i_reply_to">Suscribirme automáticamente a la actividad que respondo</string>
     <string name="copy_playing_radio">Copiar título de radio en reproducción</string>
     <string name="open_home_desc">Abrir inicio</string>
     <string name="open_manga_list">Abrir lista de manga</string>
@@ -471,7 +471,7 @@
     <string name="date_range_to">a</string>
     <string name="select_days_within_a_week">Seleccione rango de días</string>
     <string name="disable_ads">Desactivar publicidad</string>
-    <string name="disable_ads_desc">Desactivar publicidad en la sección de radio\nSi lo dejas habilitado, apoyarás el desarrollo de la aplicación.</string>
+    <string name="disable_ads_desc">Desactivar publicidad en la sección de radio\nSi lo dejas habilitado, apoyarás el desarrollo de la aplicación</string>
     <string name="load_bio">Cargar biografía</string>
     <string name="load_bio_desc">Cargar biografía cuando se acceda al perfil de usuario</string>
     <string name="load_user_bio">Cargar automáticamente biografía</string>
@@ -616,8 +616,8 @@ country of origin -->
     <string name="edit_tags">Editar etiquetas</string>
     <string name="edit_streaming_on">Editar enlaces de streaming</string>
     <string name="exclude">Excluir</string>
-    <string name="edit_filter_tags">Agrega, edita, elimina o excluye etiquetas. Las etiquetas excluidas se agregaran automáticamente al buscar medios</string>
-    <string name="edit_filter_genre">Agrega, edita, elimina o excluye los géneros. Los géneros excluidos se agregará automáticamente al buscar medios</string>
+    <string name="edit_filter_tags">Agrega, edita, elimina o excluye etiquetas. Las etiquetas excluidas se agregarán automáticamente al buscar medios</string>
+    <string name="edit_filter_genre">Agrega, edita, elimina o excluye géneros. Los géneros excluidos se agregarán automáticamente al buscar medios</string>
     <string name="do_not_exclude">No excluir</string>
     <string name="mutual">Mutuo</string>
     <string name="show_reason">Mostrar motivo</string>
@@ -640,10 +640,10 @@ country of origin -->
     <string name="card_elevation">Elevación de tarjetas</string>
     <string name="change_theme_to_custom">Cambia el tema a personalizado</string>
     <string name="forum">Foro</string>
-    <string name="media_related_to_me">Cuando un anime/manga de mi lista tiene una nueva entrada relacionada</string>
-    <string name="media_modified_in_my_list">Cuando un anime/manga de mi lista reciben una modificación de datos que afecta mi lista</string>
-    <string name="media_merged_in_my_list">Cuando uno o varios animes/mangas de mi lista se fusionan con otro</string>
-    <string name="media_deleted_in_my_list">Cuando un anime/manga de mi lista es eliminado del sitio</string>
+    <string name="media_related_to_me">Cuando un anime/manga en mi lista tiene una nueva entrada relacionada</string>
+    <string name="media_modified_in_my_list">Cuando un anime/manga en mi lista recibe una modificación de datos que afecta mi lista</string>
+    <string name="media_merged_in_my_list">Cuando uno o varios anime/manga en mi lista se fusionan con otro</string>
+    <string name="media_deleted_in_my_list">Cuando un anime/manga en mi lista es eliminado del sitio</string>
     <string name="web_novel">Novela web</string>
     <string name="live_action">Live action</string>
     <string name="select">Seleccionar</string>
