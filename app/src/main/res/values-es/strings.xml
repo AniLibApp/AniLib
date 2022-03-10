@@ -354,8 +354,8 @@
     <string name="status_desc">Estado Desc</string>
     <string name="chapters_desc">Capítulos Desc</string>
     <string name="volumes_desc">Volúmenes Desc</string>
-    <string name="updated_at">Actualizado en</string>
-    <string name="updated_at_desc">Actualizado en Desc</string>
+    <string name="updated_at">Última actualización</string>
+    <string name="updated_at_desc">Última actualización Desc</string>
     <string name="search_match">Buscar coincidencias</string>
     <string name="favourites_desc">Favoritos Desc</string>
 
