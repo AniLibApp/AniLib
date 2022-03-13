@@ -35,13 +35,11 @@ class UserOverviewFragment : BaseUserFragment<UserOverviewFragmentLayoutBinding>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(!sharedViewModel.hasUserData) return
+        if (!sharedViewModel.hasUserData) return
 
-        if (savedInstanceState == null) {
-            with(viewModel.field) {
-                userId = sharedViewModel.userId
-                userName = sharedViewModel.userName
-            }
+        with(viewModel.field) {
+            userId = sharedViewModel.userId
+            userName = sharedViewModel.userName
         }
 
         viewModel.overviewLiveData.observe(viewLifecycleOwner) {
@@ -60,6 +58,11 @@ class UserOverviewFragment : BaseUserFragment<UserOverviewFragmentLayoutBinding>
                     binding.resourceStatusLayout.statusLoading()
                 }
             }
+        }
+
+        if (savedInstanceState != null) {
+            viewModel.getUserOverView()
+            visibleToUser = true
         }
     }
 
@@ -89,7 +92,8 @@ class UserOverviewFragment : BaseUserFragment<UserOverviewFragmentLayoutBinding>
             GridLayoutManager(requireContext(), 2, RecyclerView.HORIZONTAL, false)
 
         Adapter.builder(viewLifecycleOwner)
-            .addSource(Source.fromList(animeStats?.genres?.map { it.genre to it.count } ?: emptyList()))
+            .addSource(Source.fromList(animeStats?.genres?.map { it.genre to it.count }
+                ?: emptyList()))
             .addPresenter(
                 Presenter.simple<Pair<String, Int>>(
                     requireContext(),

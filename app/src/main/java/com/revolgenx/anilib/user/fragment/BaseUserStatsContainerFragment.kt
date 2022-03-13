@@ -48,13 +48,11 @@ abstract class BaseUserStatsContainerFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(!sharedViewModel.hasUserData) return
+        if (!sharedViewModel.hasUserData) return
 
-        if(savedInstanceState == null) {
-            with(viewModel) {
-                userId = sharedViewModel.userId
-                userName = sharedViewModel.userName
-            }
+        with(viewModel) {
+            userId = sharedViewModel.userId
+            userName = sharedViewModel.userName
         }
 
         val adapter: FragmentStateAdapter
