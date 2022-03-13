@@ -12,8 +12,8 @@ class DiscoverTrendingViewModel(mediaService: MediaService) : BaseDiscoverViewMo
         it.sort = MediaSort.TRENDING_DESC.ordinal
     }
 
-    fun updateField(context: Context) {
-        getTrendingField(context).let {
+    fun updateField() {
+        getTrendingField().let {
             field.season = it.season
             field.year = it.year
             field.format = it.format

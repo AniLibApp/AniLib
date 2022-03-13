@@ -36,10 +36,10 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
     private var _airingBinding: DiscoverAiringFragmentLayoutBinding? = null
 
     private val order: Int
-        get() = getDiscoverOrderFromType(requireContext(), DiscoverOrderType.AIRING)
+        get() = getDiscoverOrderFromType(DiscoverOrderType.AIRING)
 
     private val isSectionEnabled: Boolean
-        get() = isDiscoverOrderEnabled(requireContext(), DiscoverOrderType.AIRING)
+        get() = isDiscoverOrderEnabled(DiscoverOrderType.AIRING)
 
     private val onDaySelectListener = object : TabLayout.OnTabSelectedListener {
         override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -93,13 +93,9 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
                 }
             }
 
-            if (savedInstanceState == null) {
-                viewModel.updateField(requireContext())
-                viewModel.createSource()
-            }
-
+            viewModel.updateField(requireContext())
+            viewModel.createSource()
             invalidateAdapter()
-
         }
     }
 

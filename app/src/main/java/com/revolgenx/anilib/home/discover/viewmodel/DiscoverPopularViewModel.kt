@@ -13,8 +13,8 @@ class DiscoverPopularViewModel(mediaService: MediaService) :
         it.sort = MediaSort.POPULARITY_DESC.ordinal
     }
 
-    fun updateField(context: Context) {
-        getPopularField(context).let {
+    fun updateField() {
+        getPopularField().let {
             field.season = it.season
             field.year = it.year
             field.format = it.format

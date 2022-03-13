@@ -66,7 +66,7 @@ class AiringScheduleWidget : AppWidgetProvider() {
 
 
     private fun getTodayDate(context: Context): String {
-        val isWeeklyAiring = AiringWidgetPreference.isAiringWeekly(context)
+        val isWeeklyAiring = AiringWidgetPreference.isAiringWeekly()
 
         val startDateTime = if (isWeeklyAiring)
             ZonedDateTime.now().with(weekFields.dayOfWeek(), 1)
@@ -92,7 +92,7 @@ class AiringScheduleWidget : AppWidgetProvider() {
 
 
     private fun resetToDefaultPage(context: Context, id: Int, remoteViews: RemoteViews) {
-        AiringWidgetPreference.storePage(context, id, 1)
+        AiringWidgetPreference.storePage(id, 1)
         remoteViews.setTextViewText(R.id.wg_airing_page_tv, 1.toString())
     }
 
@@ -155,7 +155,7 @@ class AiringScheduleWidget : AppWidgetProvider() {
                 WIDGET_MEDIA_ITEM_ACTION -> {
                     val mediaId = intent.getIntExtra(WIDGET_MEDIA_ITEM, -1)
 
-                    if (AiringWidgetPreference.clickOpenListEditor(context)) {
+                    if (AiringWidgetPreference.clickOpenListEditor()) {
 
                         context.startActivity(
                             Intent(
@@ -194,13 +194,13 @@ class AiringScheduleWidget : AppWidgetProvider() {
     }
 
     private fun goToPage(context: Context, widgetId: Int, isNext: Boolean) {
-        val currentPage = AiringWidgetPreference.getPage(context, widgetId)
+        val currentPage = AiringWidgetPreference.getPage(widgetId)
         var newPage = if (isNext) currentPage + 1 else currentPage - 1
         if (newPage == 0) {
             newPage = 1
         }
         updatePageView(context, widgetId, newPage)
-        AiringWidgetPreference.storePage(context, widgetId, newPage)
+        AiringWidgetPreference.storePage(widgetId, newPage)
         notifyDataChanged(context, widgetId)
     }
 

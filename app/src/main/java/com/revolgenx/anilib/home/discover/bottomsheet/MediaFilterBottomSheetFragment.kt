@@ -64,16 +64,16 @@ class MediaFilterBottomSheetFragment :
     private val field: MediaField by lazy {
         when (mediaFilterType) {
             MediaFilterType.SEASON.ordinal -> {
-                getSeasonField(requireContext())
+                getSeasonField()
             }
             MediaFilterType.TRENDING.ordinal -> {
-                getTrendingField(requireContext())
+                getTrendingField()
             }
             MediaFilterType.POPULAR.ordinal -> {
-                getPopularField(requireContext())
+                getPopularField()
             }
             MediaFilterType.NEWLY_ADDED.ordinal -> {
-                getNewlyAddedField(requireContext())
+                getNewlyAddedField()
             }
             else -> {
                 MediaField()
@@ -106,7 +106,7 @@ class MediaFilterBottomSheetFragment :
     private fun onDone() {
         field.formatsIn = adapter.currentList
         when (field) {
-            is SeasonField -> (field as SeasonField).saveSeasonField(requireContext())
+            is SeasonField -> (field as SeasonField).saveSeasonField()
             is TrendingMediaField -> {
                 (field as TrendingMediaField).saveTrendingField(requireContext())
             }

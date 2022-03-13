@@ -162,11 +162,7 @@ fun Long.prettyTime(): String {
     return PrettyTime().format(Date(this * 1000L))
 }
 
-fun View.string(@StringRes id: Int) = context.getString(id)
-fun Context.string(@StringRes id: Int) = getString(id)
-
 fun Context.color(@ColorRes id: Int) = ContextCompat.getColor(this, id)
-
 
 fun Context.getClipBoardText(): String {
     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

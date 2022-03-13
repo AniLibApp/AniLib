@@ -42,11 +42,11 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
     private val mainSharedVM by sharedViewModel<MainSharedVM>()
 
     private val order: Int
-        get() = getDiscoverOrderFromType(requireContext(), DiscoverOrderType.WATCHING)
+        get() = getDiscoverOrderFromType(DiscoverOrderType.WATCHING)
 
 
     private val isSectionEnabled: Boolean
-        get() = isDiscoverOrderEnabled(requireContext(), DiscoverOrderType.WATCHING)
+        get() = isDiscoverOrderEnabled(DiscoverOrderType.WATCHING)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,7 +92,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
                 field.userId = UserPreference.userId
                 field.status = MediaListStatus.CURRENT.ordinal
                 field.type = MediaType.ANIME.ordinal
-                field.sort = getDiscoverMediaListSort(requireContext(), field.type!!)
+                field.sort = getDiscoverMediaListSort(field.type!!)
             }
 
             if (savedInstanceState != null) {
@@ -136,7 +136,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
 
     private fun renewAdapter() {
         context ?: return
-        viewModel.updateField(requireContext())
+        viewModel.updateField()
         viewModel.createSource()
         invalidateAdapter()
     }

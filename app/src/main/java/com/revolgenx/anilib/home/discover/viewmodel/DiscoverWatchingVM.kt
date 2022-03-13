@@ -10,7 +10,7 @@ class DiscoverWatchingVM(service: MediaListService, entryService: MediaListEntry
     MediaListVM(service, entryService) {
     override var field: MediaListField = MediaListField()
 
-    fun updateField(context: Context) {
-        field.sort = getDiscoverMediaListSort(context, field.type!!)
+    fun updateField() {
+        field.sort = getDiscoverMediaListSort(field.type!!)
     }
 }

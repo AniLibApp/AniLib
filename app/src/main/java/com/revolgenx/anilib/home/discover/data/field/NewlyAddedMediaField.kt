@@ -7,7 +7,7 @@ import com.revolgenx.anilib.common.preference.storeNewlyAddedField
 
 class NewlyAddedMediaField : MediaField() {
     companion object {
-        fun create(context: Context) = getNewlyAddedField(context)
+        fun create() = getNewlyAddedField()
     }
 
     override var includeStaff: Boolean = true

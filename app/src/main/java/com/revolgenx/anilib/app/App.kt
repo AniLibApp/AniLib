@@ -102,7 +102,7 @@ open class App : DynamicApplication() {
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
-            val interval = when (context.getString("notification_refresh_interval", "0")) {
+            val interval = when (load("notification_refresh_interval", "0")) {
                 "0" -> 15
                 "1" -> 20
                 "2" -> 25

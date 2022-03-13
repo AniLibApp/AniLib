@@ -19,7 +19,6 @@ import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
-import com.revolgenx.anilib.util.string
 
 object AiringPresenterBindingHelper {
     fun AiringPresenterLayoutBinding.bindPresenter(
@@ -33,11 +32,11 @@ object AiringPresenterBindingHelper {
 
         if (media.type == MediaType.ANIME.ordinal) {
             mediaEpisodeTv.text =
-                context.string(R.string.ep_d_s)
+                context.getString(R.string.ep_d_s)
                     .format(media.episodes.naText(), media.duration.naText())
         } else {
             mediaEpisodeTv.text =
-                context.string(R.string.chap_s)
+                context.getString(R.string.chap_s)
                     .format(media.chapters.naText(), media.volumes.naText())
         }
         mediaStartDateTv.text = context.getString(R.string.startdate_format)
@@ -119,11 +118,11 @@ object AiringPresenterBindingHelper {
 
         if (media.isAnime) {
             mediaEpisodeTv.text =
-                context.string(R.string.ep_d_s)
+                context.getString(R.string.ep_d_s)
                     .format(media.episodes.naText(), media.duration.naText())
         } else {
             mediaEpisodeTv.text =
-                context.string(R.string.chap_s)
+                context.getString(R.string.chap_s)
                     .format(media.chapters.naText(), media.volumes.naText())
         }
 

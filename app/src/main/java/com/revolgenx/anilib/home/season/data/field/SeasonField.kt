@@ -2,7 +2,6 @@ package com.revolgenx.anilib.home.season.data.field
 
 import android.content.Context
 import com.revolgenx.anilib.MediaQuery
-import com.revolgenx.anilib.common.data.field.TagField
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.common.preference.getSeasonField
 import com.revolgenx.anilib.common.preference.storeSeasonField
@@ -16,45 +15,45 @@ import com.revolgenx.anilib.type.MediaStatus
 
 class SeasonField : MediaField() {
     companion object {
-        fun create(context: Context) = getSeasonField(context)
+        fun create() = getSeasonField()
     }
 
     var showFormatHeader:Boolean = true
 
-    fun saveSeasonField(context: Context) {
-        storeSeasonField(context, this)
+    fun saveSeasonField() {
+        storeSeasonField(this)
     }
 
-    fun saveGenre(context: Context) {
-        storeSeasonGenre(context, this)
+    fun saveGenre() {
+        storeSeasonGenre(this)
     }
 
-    fun saveTags(context: Context) {
-        storeSeasonTag(context, this)
+    fun saveTags() {
+        storeSeasonTag(this)
     }
 
-    fun nextSeason(context: Context) {
+    fun nextSeason() {
         if (season == null) return
         season = season!! + 1
         if (season!! > 3) {
             seasonYear = seasonYear!! + 1
             season = 0
         }
-        saveSeasonField(context)
+        saveSeasonField()
     }
 
-    fun previousSeason(context: Context) {
+    fun previousSeason() {
         if (season == null) return
         season = season!! - 1
         if (season!! < 0) {
             seasonYear = seasonYear!! - 1
             season = 3
         }
-        saveSeasonField(context)
+        saveSeasonField()
     }
 
-    fun updateFields(context: Context) {
-        getSeasonField(context).also {
+    fun updateFields() {
+        getSeasonField().also {
             this.season = it.season
             this.seasonYear = it.seasonYear
             this.tags = it.tags

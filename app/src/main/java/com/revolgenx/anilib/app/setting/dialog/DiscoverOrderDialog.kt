@@ -47,9 +47,9 @@ class DiscoverOrderDialog : BaseDialogFragment<DiscoverOrderDialogLayoutBinding>
                     index.toLong(),
                     DiscoverOrderAdapterItem(
                         s,
-                        getDiscoverOrderFromType(requireContext(), type),
+                        getDiscoverOrderFromType(type),
                         type,
-                        isDiscoverOrderEnabled(requireContext(), type)
+                        isDiscoverOrderEnabled(type)
                     )
                 )
             }.sortedBy { it.second.order }.toMutableList()

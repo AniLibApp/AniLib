@@ -1,28 +1,18 @@
 package com.revolgenx.anilib.common.preference
 
-import android.content.Context
-import androidx.preference.PreferenceManager
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
-
-
-fun Context.putBoolean(key: String, value: Boolean = false) =
-    sharedPreference().edit().putBoolean(key, value).apply()
-
-fun Context.getBoolean(key: String, def: Boolean = false) =
-    sharedPreference().getBoolean(key, def)
-
-fun Context.putString(key: String, value: String? = "") =
-    sharedPreference().edit().putString(key, value).apply()
-
-fun Context.getString(key: String, def: String = "") = sharedPreference().getString(key, def)
-
-fun Context.putInt(key: String, value: Int = -1) =
-        sharedPreference().edit().putInt(key, value).apply()
-
-fun Context.getInt(key: String, def: Int) = sharedPreference().getInt(key, def)
-
-fun Context.sharedPreference() = PreferenceManager.getDefaultSharedPreferences(this)
 
 val dynamicPreferences get() = DynamicPreferences.getInstance()
 
+fun load(key: String, default: String?) = dynamicPreferences.load(key, default)
+fun save(key: String, value: String?) = dynamicPreferences.save(key, value)
+
+fun load(key: String, default: Int) = dynamicPreferences.load(key, default)
+fun save(key: String, value: Int?) = dynamicPreferences.save(key, value)
+
+fun load(key: String, default: Boolean) = dynamicPreferences.load(key, default)
+fun save(key: String, value: Boolean?) = dynamicPreferences.save(key, value)
+
+fun loadStringSet(key: String, default: Set<String>?) = dynamicPreferences.loadStringSet(key, default)
+fun saveStringSet(key: String, value: Set<String>?) = dynamicPreferences.save(key, value)
 

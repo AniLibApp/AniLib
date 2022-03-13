@@ -1,9 +1,7 @@
 package com.revolgenx.anilib.home.recommendation.fragment
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
-import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.R
@@ -19,7 +17,7 @@ import com.revolgenx.anilib.util.unRegisterForEvent
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class RecommendationFragment : BasePresenterFragment<RecommendationModel>() , EventBusListener {
+class RecommendationFragment : BasePresenterFragment<RecommendationModel>(), EventBusListener {
     override val basePresenter: Presenter<RecommendationModel>
         get() = RecommendationPresenter(requireContext(), viewLifecycleOwner, viewModel)
     override val baseSource: Source<RecommendationModel>
@@ -50,18 +48,16 @@ class RecommendationFragment : BasePresenterFragment<RecommendationModel>() , Ev
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState == null) {
-            with(viewModel.field) {
-                sort = getRecommendationSort(requireContext())
-                onList = getRecommendationOnList(requireContext())
-            }
+        with(viewModel.field) {
+            sort = getRecommendationSort()
+            onList = getRecommendationOnList()
         }
     }
 
     @Subscribe()
-    fun onRecommendationEvent(event: RecommendationEvent){
-        when(event){
-            is RecommendationEvent.RecommendationFilterEvent->{
+    fun onRecommendationEvent(event: RecommendationEvent) {
+        when (event) {
+            is RecommendationEvent.RecommendationFilterEvent -> {
                 viewModel.field.onList = event.onList
                 viewModel.field.sort = event.sort
                 if (!visibleToUser) return

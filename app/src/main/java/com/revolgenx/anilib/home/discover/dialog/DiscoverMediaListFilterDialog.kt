@@ -47,7 +47,6 @@ class DiscoverMediaListFilterDialog :
             val type = arguments?.getInt(MEDIA_LIST_FILTER_TYPE)!!
             val savedMediaSort =
                 savedInstanceState?.getInt(MEDIA_LIST_SORT_KEY) ?: getDiscoverMediaListSort(
-                    requireContext(),
                     type
                 )
 
@@ -84,7 +83,6 @@ class DiscoverMediaListFilterDialog :
     private fun initListener() {
         onPositiveClicked = {
             setDiscoverMediaListSort(
-                requireContext(),
                 arguments?.getInt(MEDIA_LIST_FILTER_TYPE)!!,
                 getActiveListSort()
             )

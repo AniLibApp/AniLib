@@ -40,18 +40,18 @@ object UserPreference{
 
 }
 
-fun Context.loggedIn() = getBoolean(loggedInKey, false)
-fun Context.loggedIn(logIn: Boolean) = putBoolean(loggedInKey, logIn)
+fun Context.loggedIn() = load(loggedInKey, false)
+fun Context.loggedIn(logIn: Boolean) = save(loggedInKey, logIn)
 
-fun Context.token() = getString(tokenKey, "")
-fun Context.token(token: String) = putString(tokenKey, token)
+fun Context.token() = load(tokenKey, "")
+fun Context.token(token: String) = save(tokenKey, token)
 
-fun Context.userId(userId: Int) = putInt(userIdKey, userId)
+fun Context.userId(userId: Int) = save(userIdKey, userId)
 
-fun Context.titlePref() = getString(titleKey, "0")
-fun titlePref(context: Context, pref: String) = context.putString(titleKey, pref)
+fun Context.titlePref() = load(titleKey, "0")
+fun titlePref(context: Context, pref: String) = save(titleKey, pref)
 
-fun Context.imageQuality() = getString(imageQualityKey, "0")
+fun Context.imageQuality() = load(imageQualityKey, "0")
 
 fun Context.userName() = getUserPrefModel(this).name
 fun Context.userScoreFormat() =
@@ -61,7 +61,7 @@ private var userModel: UserModel? = null
 
 fun Context.saveBasicUserDetail(userPrefModel: UserModel) {
     userModel = userPrefModel
-    this.putString(userModelKey, Gson().toJson(userPrefModel))
+    save(userModelKey, Gson().toJson(userPrefModel))
 
     if (shouldUpdateProfileColor(this)) {
         shouldUpdateProfileColor(this, false)
@@ -105,7 +105,7 @@ fun saveUserAccentColor(it: String) {
 fun getUserPrefModel(context: Context): UserModel {
     if (userModel == null) {
         userModel =
-            Gson().fromJson(context.getString(userModelKey, ""), UserModel::class.java)
+            Gson().fromJson(load(userModelKey, ""), UserModel::class.java)
                 ?: UserModel().also { model ->
                     model.name = context.getString(R.string.app_name)
                 }
@@ -131,7 +131,7 @@ private fun removeBasicUserDetail(context: Context) {
         it.name = context.getString(R.string.app_name)
         it.options = UserOptionsModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
     }
-    context.putString(userModelKey, Gson().toJson(userModel))
+    save(userModelKey, Gson().toJson(userModel))
 }
 
 fun Context.logOut() {
@@ -175,25 +175,25 @@ fun Context.logIn(accessToken: String) {
 }
 
 private fun shouldUpdateProfileColor(context: Context, update: Boolean) {
-    context.putBoolean(updateProfileColorKey, update)
+    save(updateProfileColorKey, update)
 }
 
 private fun shouldUpdateProfileColor(context: Context) =
-    context.getBoolean(updateProfileColorKey, false)
+    load(updateProfileColorKey, false)
 
 
 fun getLastNotification(context: Context): Int {
-    return context.getInt(lastNotificationKey, -1)
+    return load(lastNotificationKey, -1)
 }
 
 fun setNewNotification(context: Context, notifId: Int = -1) {
-    context.putInt(lastNotificationKey, notifId)
+    save(lastNotificationKey, notifId)
 }
 
 
 fun canShowAdult(context: Context): Boolean {
     return if (userEnabledAdultContent(context)) {
-        context.getBoolean(canShowAdultKey, false)
+        load(canShowAdultKey, false)
     } else {
         false
     }
@@ -205,9 +205,9 @@ fun userEnabledAdultContent(context: Context): Boolean {
 
 fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
     if (synced == null) {
-        context.getBoolean(sharedPrefSyncKey, false)
+        load(sharedPrefSyncKey, false)
     } else {
-        context.putBoolean(sharedPrefSyncKey, synced)
+        save(sharedPrefSyncKey, synced)
         synced
     }
 

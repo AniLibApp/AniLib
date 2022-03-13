@@ -61,8 +61,8 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
             wgIsAiringWeekly.isChecked = field.isWeeklyTypeDate
             wgShowFromPlanning.isChecked = field.showFromPlanning
             wgShowFromWatching.isChecked = field.showFromWatching
-            wgClickOpenListEditor.isChecked = AiringWidgetPreference.clickOpenListEditor(requireContext())
-            wgShowEta.isChecked = AiringWidgetPreference.showEta(requireContext())
+            wgClickOpenListEditor.isChecked = AiringWidgetPreference.clickOpenListEditor()
+            wgShowEta.isChecked = AiringWidgetPreference.showEta()
 
             val saveSortIndex:Int
             val savedSortOrder: SortOrder
@@ -123,8 +123,8 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
                 val oldIsWeekly = field.isWeeklyTypeDate
                 field.updateField()
                 storeAiringScheduleFieldForWidget(requireContext(), field)
-                AiringWidgetPreference.clickOpenListEditor(requireContext(), binding.wgClickOpenListEditor.isChecked)
-                AiringWidgetPreference.showEta(requireContext(), binding.wgShowEta.isChecked)
+                AiringWidgetPreference.clickOpenListEditor(binding.wgClickOpenListEditor.isChecked)
+                AiringWidgetPreference.showEta(binding.wgShowEta.isChecked)
 
 
                 val isWeeklyAiring = field.isWeeklyTypeDate
@@ -191,7 +191,7 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
     }
 
     private fun resetToDefaultPage(context: Context, id: Int, remoteViews: RemoteViews) {
-        AiringWidgetPreference.storePage(context, id, 1)
+        AiringWidgetPreference.storePage(id, 1)
         remoteViews.setTextViewText(R.id.wg_airing_page_tv, 1.toString())
     }
 }

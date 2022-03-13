@@ -282,6 +282,6 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
     }
 
     private fun getNotificationPreference(key: String): Boolean {
-        return context.getBoolean(key, true)
+        return load(key, true)
     }
 }

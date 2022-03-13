@@ -39,11 +39,11 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
     private val showCaseViewModel by viewModel<ShowCaseViewModel>()
 
     private val order: Int
-        get() = getDiscoverOrderFromType(requireContext(), DiscoverOrderType.TRENDING)
+        get() = getDiscoverOrderFromType(DiscoverOrderType.TRENDING)
 
 
     private val isSectionEnabled: Boolean
-        get() = isDiscoverOrderEnabled(requireContext(), DiscoverOrderType.TRENDING)
+        get() = isDiscoverOrderEnabled(DiscoverOrderType.TRENDING)
 
 
     override fun onCreateView(
@@ -74,10 +74,9 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
         if (isSectionEnabled) {
             trendingShowCaseLayout!!.showcaseRecyclerView.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            if (savedInstanceState == null) {
-                viewModel.field = TrendingMediaField.create(requireContext()).also {
-                    it.sort = MediaSort.TRENDING_DESC.ordinal
-                }
+
+            viewModel.field = TrendingMediaField.create().also {
+                it.sort = MediaSort.TRENDING_DESC.ordinal
             }
             invalidateAdapter()
         }
@@ -105,7 +104,7 @@ open class DiscoverTrendingFragment : DiscoverReadingFragment() {
     }
 
     private fun renewAdapter() {
-        viewModel.updateField(requireContext())
+        viewModel.updateField()
         viewModel.createSource()
         invalidateAdapter()
     }

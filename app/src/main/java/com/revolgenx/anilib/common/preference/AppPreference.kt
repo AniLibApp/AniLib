@@ -23,11 +23,11 @@ private const val isAiring12hrFormatKey = "is_airing_12_hr_format_key"
 
 
 fun isCrashReportEnabled(context: Context): Boolean {
-    return context.getBoolean(crashReportKey, true)
+    return load(crashReportKey, true)
 }
 
 fun enableCrashReport(context: Context, enable: Boolean) {
-    context.putBoolean(crashReportKey, enable)
+    save(crashReportKey, enable)
 }
 
 fun getApplicationLocale(): String {
@@ -35,8 +35,8 @@ fun getApplicationLocale(): String {
 }
 
 fun getVersion(context: Context): String {
-    val version = context.getString(versionKey) ?: ""
-    context.putString(versionKey, DynamicPackageUtils.getVersionName(context))
+    val version = load(versionKey, "") ?: ""
+    save(versionKey, DynamicPackageUtils.getVersionName(context))
     return version
 }
 
@@ -63,28 +63,28 @@ fun loadLegacyMediaBrowseTheme() =
 
 fun inUseMlLanguageModel(context: Context, code: String? = null): String {
     return if (code != null) {
-        context.putString(mlLanguageToUseKey, code)
+        save(mlLanguageToUseKey, code)
         code
     } else {
-        context.getString(mlLanguageToUseKey)!!
+        load(mlLanguageToUseKey, "")!!
     }
 }
 
 fun enableMlTranslation(context: Context, enable: Boolean? = null): Boolean {
     return if (enable != null) {
-        context.putBoolean(enableMlLanguageToUseKey, enable)
+        save(enableMlLanguageToUseKey, enable)
         enable
     } else {
-        context.getBoolean(enableMlLanguageToUseKey)
+        load(enableMlLanguageToUseKey, false)
     }
 }
 
 fun enableAutoMlTranslation(context: Context, enable: Boolean? = null): Boolean {
     return if (enable != null) {
-        context.putBoolean(enableAutoMlLanguageToUseKey, enable)
+        save(enableAutoMlLanguageToUseKey, enable)
         enable
     } else {
-        context.getBoolean(enableAutoMlLanguageToUseKey)
+        load(enableAutoMlLanguageToUseKey, false)
     }
 }
 

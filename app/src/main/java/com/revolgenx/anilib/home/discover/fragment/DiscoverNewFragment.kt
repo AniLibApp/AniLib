@@ -38,11 +38,11 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
         get() = viewModel.source ?: viewModel.createSource()
 
     private val order: Int
-        get() = getDiscoverOrderFromType(requireContext(), DiscoverOrderType.NEWLY_ADDED)
+        get() = getDiscoverOrderFromType(DiscoverOrderType.NEWLY_ADDED)
 
 
     private val isSectionEnabled: Boolean
-        get() = isDiscoverOrderEnabled(requireContext(), DiscoverOrderType.NEWLY_ADDED)
+        get() = isDiscoverOrderEnabled(DiscoverOrderType.NEWLY_ADDED)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,7 +74,7 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
             discoverNewShowCaseLayout!!.showcaseRecyclerView.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             if (savedInstanceState == null)
-                viewModel.field = NewlyAddedMediaField.create(requireContext()).also {
+                viewModel.field = NewlyAddedMediaField.create().also {
                     it.sort = MediaSort.ID_DESC.ordinal
                 }
 
@@ -92,7 +92,7 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
     }
 
     private fun renewAdapter() {
-        viewModel.updateField(requireContext())
+        viewModel.updateField()
         viewModel.createSource()
         invalidateAdapter()
     }

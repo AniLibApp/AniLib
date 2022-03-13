@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.home.season.fragment
 
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
@@ -46,27 +47,20 @@ class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
         }
 
     private val tagList by lazy {
-        getUserTag(requireContext())
+        getUserTag()
     }
 
     private val genreList by lazy {
-        getUserGenre(requireContext())
+        getUserGenre()
     }
 
     override fun createSource(): Source<MediaModel> {
         return viewModel.createSource()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-            viewModel.field = SeasonField.create(requireContext())
-        }
-        super.onActivityCreated(savedInstanceState)
-        initListener()
-    }
-
-
-    private fun initListener() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.field = SeasonField.create()
     }
 
     override fun onStart() {
@@ -76,7 +70,7 @@ class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
 
 
     private fun renewAdapter() {
-        viewModel.field.updateFields(requireContext())
+        viewModel.field.updateFields()
         createSource()
         invalidateAdapter()
     }

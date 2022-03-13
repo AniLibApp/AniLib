@@ -148,19 +148,19 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     }
 
     private val streamingOnList by lazy {
-        getUserStream(requireContext())
+        getUserStream()
     }
 
     private val readableOnList by lazy {
-        getUserStream(requireContext())
+        getUserStream()
     }
 
     private val tagList by lazy {
-        getUserTag(requireContext())
+        getUserTag()
     }
 
     private val genreList by lazy {
-        getUserGenre(requireContext())
+        getUserGenre()
     }
 
     override fun createSource(): Source<BaseModel> {
@@ -261,8 +261,8 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         })
 
         if (savedInstanceState == null) {
-            field.genreNotIn = getExcludedGenre(requireContext()).toMutableList()
-            field.tagsNotIn = getExcludedTags(requireContext()).toMutableList()
+            field.genreNotIn = getExcludedGenre().toMutableList()
+            field.tagsNotIn = getExcludedTags().toMutableList()
             field.isHentai = if (canShowAdult(requireContext())) null else false
 
             searchFilterModel?.let {

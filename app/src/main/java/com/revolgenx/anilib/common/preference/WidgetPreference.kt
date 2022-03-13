@@ -7,70 +7,70 @@ object AiringWidgetPreference {
 
     private const val AIRING_WIDGET_PAGE_PREF_KEY = "AIRING_WIDGET_PAGE_PREF_KEY"
 
-    fun storePage(context:Context, widgetId: Int, page:Int){
+    fun storePage(widgetId: Int, page: Int){
         val widgetKey = prepareWidgetKey(widgetId, AIRING_WIDGET_PAGE_PREF_KEY)
-        context.putInt(widgetKey, page)
+        save(widgetKey, page)
     }
 
-    fun getPage(context: Context, widgetId: Int): Int {
+    fun getPage(widgetId: Int): Int {
         val widgetKey = prepareWidgetKey(widgetId, AIRING_WIDGET_PAGE_PREF_KEY)
-        return context.getInt(widgetKey, 1)
+        return load(widgetKey, 1)
     }
 
-    fun isAiringWeekly(context: Context, weekly:Boolean? = null): Boolean {
+    fun isAiringWeekly(weekly: Boolean? = null): Boolean {
         return if(weekly == null){
-            context.getBoolean(WIDGET_IS_AIRING_WEEKLY_KEY, false)
+            load(WIDGET_IS_AIRING_WEEKLY_KEY, false)
         }else{
-            context.putBoolean(WIDGET_IS_AIRING_WEEKLY_KEY, weekly)
+            save(WIDGET_IS_AIRING_WEEKLY_KEY, weekly)
             weekly
         }
     }
 
 
-    fun isAlreadyAired(context: Context, isAired:Boolean? = null): Boolean {
+    fun isAlreadyAired(isAired: Boolean? = null): Boolean {
         return if(isAired == null){
-            context.getBoolean(WIDGET_AIRING_NOT_AIRED_KEY, false)
+            load(WIDGET_AIRING_NOT_AIRED_KEY, false)
         }else{
-            context.putBoolean(WIDGET_AIRING_NOT_AIRED_KEY, isAired)
+            save(WIDGET_AIRING_NOT_AIRED_KEY, isAired)
             isAired
         }
     }
 
 
-    fun isAiringPlanningOnly(context: Context, planning:Boolean? = null): Boolean {
+    fun isAiringPlanningOnly(planning: Boolean? = null): Boolean {
         return if(planning == null){
-            context.getBoolean(WIDGET_AIRING_PLANNING_KEY, false)
+            load(WIDGET_AIRING_PLANNING_KEY, false)
         }else{
-            context.putBoolean(WIDGET_AIRING_PLANNING_KEY, planning)
+            save(WIDGET_AIRING_PLANNING_KEY, planning)
             planning
         }
     }
 
 
-    fun isAiringWatchingOnly(context: Context, watching:Boolean? = null): Boolean {
+    fun isAiringWatchingOnly(watching: Boolean? = null): Boolean {
         return if(watching == null){
-            context.getBoolean(WIDGET_AIRING_WATCHING_KEY, false)
+            load(WIDGET_AIRING_WATCHING_KEY, false)
         }else{
-            context.putBoolean(WIDGET_AIRING_WATCHING_KEY, watching)
+            save(WIDGET_AIRING_WATCHING_KEY, watching)
             watching
         }
     }
 
 
-    fun clickOpenListEditor(context: Context, opensListEditor:Boolean? = null): Boolean {
+    fun clickOpenListEditor(opensListEditor: Boolean? = null): Boolean {
         return if(opensListEditor == null){
-            context.getBoolean(WIDGET_AIRING_CLICK_OPEN_LIST_EDITOR, false)
+            load(WIDGET_AIRING_CLICK_OPEN_LIST_EDITOR, false)
         }else{
-            context.putBoolean(WIDGET_AIRING_CLICK_OPEN_LIST_EDITOR, opensListEditor)
+            save(WIDGET_AIRING_CLICK_OPEN_LIST_EDITOR, opensListEditor)
             opensListEditor
         }
     }
 
-    fun showEta(context: Context, showEta:Boolean? = null): Boolean {
+    fun showEta(showEta: Boolean? = null): Boolean {
         return if(showEta == null){
-            context.getBoolean(WIDGET_AIRING_SHOW_ETA_KEY, true)
+            load(WIDGET_AIRING_SHOW_ETA_KEY, true)
         }else{
-            context.putBoolean(WIDGET_AIRING_SHOW_ETA_KEY, showEta)
+            save(WIDGET_AIRING_SHOW_ETA_KEY, showEta)
             showEta
         }
     }

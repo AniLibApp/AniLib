@@ -25,18 +25,18 @@ class EditTagFilterViewModel : BaseViewModel() {
         tagFields.clear()
         val tags = when (tagFilterType) {
             TagFilterMetaType.GENRE -> {
-                val excludedTags = TagPrefUtil.getExcludedPrefGenre(context)
-                val userPrefGenres = TagPrefUtil.getUserPrefGenres(context)
+                val excludedTags = TagPrefUtil.getExcludedPrefGenre()
+                val userPrefGenres = TagPrefUtil.getUserPrefGenres()
                 userPrefGenres.map { EditTagField(false, excludedTags.contains(it),it) }
 
             }
             TagFilterMetaType.TAG -> {
-                val excludedTags = TagPrefUtil.getExcludedPrefTags(context)
-                val userPrefTags = TagPrefUtil.getUserPrefTags(context)
+                val excludedTags = TagPrefUtil.getExcludedPrefTags()
+                val userPrefTags = TagPrefUtil.getUserPrefTags()
                 userPrefTags.map { EditTagField(false, excludedTags.contains(it),it) }
             }
             TagFilterMetaType.STREAMING_ON -> {
-                val streamingOnTags = TagPrefUtil.getUserPrefStreamingOn(context)
+                val streamingOnTags = TagPrefUtil.getUserPrefStreamingOn()
                 streamingOnTags.map { EditTagField(false, false, it) }
             }
         }
@@ -67,30 +67,30 @@ class EditTagFilterViewModel : BaseViewModel() {
     fun saveTagFields(context: Context) {
         when(tagFilterType){
             TagFilterMetaType.GENRE -> {
-                TagPrefUtil.saveExcludedGenre(context, tagFields.filter { it.isExcluded }.map { it.tag })
-                TagPrefUtil.saveGenrePref(context, tagFields.map { it.tag })
+                TagPrefUtil.saveExcludedGenre(tagFields.filter { it.isExcluded }.map { it.tag })
+                TagPrefUtil.saveGenrePref(tagFields.map { it.tag })
             }
             TagFilterMetaType.TAG -> {
-                TagPrefUtil.saveExcludedTags(context, tagFields.filter { it.isExcluded }.map { it.tag })
-                TagPrefUtil.saveTagPref(context, tagFields.map { it.tag })
+                TagPrefUtil.saveExcludedTags(tagFields.filter { it.isExcluded }.map { it.tag })
+                TagPrefUtil.saveTagPref(tagFields.map { it.tag })
             }
             TagFilterMetaType.STREAMING_ON -> {
-                TagPrefUtil.saveStreamingOnPref(context, tagFields.map { it.tag })
+                TagPrefUtil.saveStreamingOnPref(tagFields.map { it.tag })
             }
         }
-        TagPrefUtil.invalidateAll(context)
+        TagPrefUtil.invalidateAll()
     }
 
     fun saveExcludedTags(context: Context){
         when(tagFilterType){
             TagFilterMetaType.GENRE -> {
-                TagPrefUtil.saveExcludedGenre(context, tagFields.filter { it.isSelected || it.isExcluded}.map {
+                TagPrefUtil.saveExcludedGenre(tagFields.filter { it.isSelected || it.isExcluded}.map {
                     it.isExcluded = true
                     it.tag
                 })
             }
             TagFilterMetaType.TAG -> {
-                TagPrefUtil.saveExcludedTags(context, tagFields.filter { it.isSelected  || it.isExcluded }.map {
+                TagPrefUtil.saveExcludedTags(tagFields.filter { it.isSelected  || it.isExcluded }.map {
                     it.isExcluded = true
                     it.tag
                 })
@@ -102,13 +102,13 @@ class EditTagFilterViewModel : BaseViewModel() {
         when(tagFilterType){
             TagFilterMetaType.GENRE -> {
                 tagFields.filter { it.isSelected }.forEach { it.isExcluded = false }
-                TagPrefUtil.saveExcludedGenre(context, tagFields.filter { it.isExcluded }.map {
+                TagPrefUtil.saveExcludedGenre(tagFields.filter { it.isExcluded }.map {
                     it.tag
                 })
             }
             TagFilterMetaType.TAG -> {
                 tagFields.filter { it.isSelected }.forEach { it.isExcluded = false }
-                TagPrefUtil.saveExcludedTags(context, tagFields.filter { it.isExcluded }.map {it.tag })
+                TagPrefUtil.saveExcludedTags(tagFields.filter { it.isExcluded }.map {it.tag })
             }
         }
     }

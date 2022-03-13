@@ -7,7 +7,7 @@ import com.revolgenx.anilib.common.preference.storePopularField
 
 class PopularMediaField: MediaField() {
     companion object {
-        fun create(context: Context) = getPopularField(context)
+        fun create() = getPopularField()
     }
 
     override var includeStaff: Boolean = true

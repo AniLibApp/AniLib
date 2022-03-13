@@ -46,7 +46,7 @@ class HomePageOrderDialog : BaseDialogFragment<HomePageOrderDialogLayoutBinding>
                     index.toLong(),
                     HomePageOrderAdapterItem(
                         s,
-                        getHomePageOrderFromType(requireContext(), homePageOrderTypes[index]),
+                        getHomePageOrderFromType(homePageOrderTypes[index]),
                         homePageOrderTypes[index]
                     )
                 )
@@ -59,7 +59,7 @@ class HomePageOrderDialog : BaseDialogFragment<HomePageOrderDialogLayoutBinding>
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
         adapterPage.itemList.forEachIndexed { index, pair ->
-            setHomePageOrderFromType(requireContext(), pair.second.orderType, index)
+            setHomePageOrderFromType(pair.second.orderType, index)
         }
         dismiss()
     }

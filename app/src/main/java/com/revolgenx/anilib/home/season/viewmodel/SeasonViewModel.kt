@@ -24,14 +24,14 @@ class SeasonViewModel(private val service: MediaService) :
         source?.resources?.get(mediaId)?.mediaListEntry?.progress = progress
     }
 
-    fun nextSeason(context: Context) {
+    fun nextSeason() {
         dispose()
-        field.nextSeason(context)
+        field.nextSeason()
     }
 
     fun previousSeason(context: Context) {
         dispose()
-        field.previousSeason(context)
+        field.previousSeason()
     }
 
     fun isHeaderEnabled(checked:Boolean){

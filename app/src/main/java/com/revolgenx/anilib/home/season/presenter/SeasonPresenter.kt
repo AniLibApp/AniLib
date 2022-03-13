@@ -21,10 +21,8 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
-import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
-import com.revolgenx.anilib.util.string
 
 class SeasonPresenter(context: Context) :
     BasePresenter<SeasonPresenterLayoutBinding, MediaModel>(context) {
@@ -68,10 +66,10 @@ class SeasonPresenter(context: Context) :
             coverImageIv.setImageURI(item.coverImage!!.image(context))
             if (item.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeTv.text =
-                    context.string(R.string.ep_d_s).format(item.episodes.naText(), item.duration.naText())
+                    context.getString(R.string.ep_d_s).format(item.episodes.naText(), item.duration.naText())
             } else {
                 mediaEpisodeTv.text =
-                    context.string(R.string.chap_s).format(item.chapters.naText(), item.volumes.naText())
+                    context.getString(R.string.chap_s).format(item.chapters.naText(), item.volumes.naText())
             }
             mediaStartDateTv.text =
                 item.startDate?.date.naText() + " ~ " + item.endDate?.date.naText()

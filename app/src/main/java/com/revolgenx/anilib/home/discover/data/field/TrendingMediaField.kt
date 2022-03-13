@@ -11,7 +11,7 @@ class TrendingMediaField : MediaField() {
     override var includeStudio: Boolean = true
 
     companion object {
-        fun create(context: Context) = getTrendingField(context)
+        fun create() = getTrendingField()
     }
 
     fun saveTrendingField(context: Context) {

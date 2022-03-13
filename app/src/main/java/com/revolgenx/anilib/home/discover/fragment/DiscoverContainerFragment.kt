@@ -9,14 +9,11 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
-import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
 import com.revolgenx.anilib.common.ui.adapter.registerOnPageChangeCallback
@@ -90,11 +87,11 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
         binding.discoverContainerViewPager.offscreenPageLimit = 3
 
         if (savedInstanceState == null) {
-            seasonViewModel.field = SeasonField.create(requireContext())
+            seasonViewModel.field = SeasonField.create()
 
             with(recommendationViewModel.field) {
-                sort = getRecommendationSort(requireContext())
-                onList = getRecommendationOnList(requireContext())
+                sort = getRecommendationSort()
+                onList = getRecommendationOnList()
             }
         }
     }
@@ -155,7 +152,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
         }
 
         seasonNextIv.setOnClickListener {
-            seasonViewModel.nextSeason(requireContext())
+            seasonViewModel.nextSeason()
             updateSeasonFooterTitle()
             SeasonEvent.SeasonChangeEvent.postEvent
         }
@@ -167,7 +164,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
                         arguments =
                             bundleOf(MediaFilterBottomSheetFragment.mediaFilterTypeKey to MediaFilterBottomSheetFragment.MediaFilterType.SEASON.ordinal)
                         onDoneListener = {
-                            seasonViewModel.field.updateFields(requireContext())
+                            seasonViewModel.field.updateFields()
                             updateSeasonFooterTitle()
                             SeasonEvent.SeasonFilterEvent.postEvent
                         }

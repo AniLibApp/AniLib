@@ -91,7 +91,7 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
             field.airingGreaterThan = startDateTime.toEpochSecond().toInt()
             field.airingLessThan = endDateTime.toEpochSecond().toInt()
             field.perPage = 8
-            field.page = AiringWidgetPreference.getPage(context, appWidgetId)
+            field.page = AiringWidgetPreference.getPage(appWidgetId)
         }
 
         override fun onDataSetChanged() {
@@ -134,7 +134,7 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
             val timeUntilAiring = item.timeUntilAiringModel!!
             val coverImage = item.media?.coverImage?.sImage
             val title = item.media?.title!!.title(context)
-            val showEta = AiringWidgetPreference.showEta(context)
+            val showEta = AiringWidgetPreference.showEta()
 
             val remoteViews =
                 RemoteViews(context.packageName, R.layout.airing_schedule_widget_item_layout)

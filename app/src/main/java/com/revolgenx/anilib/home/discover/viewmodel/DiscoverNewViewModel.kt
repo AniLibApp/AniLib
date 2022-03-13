@@ -14,8 +14,8 @@ class DiscoverNewViewModel(mediaService: MediaService) :
     }
 
 
-    fun updateField(context: Context) {
-        getNewlyAddedField(context).let {
+    fun updateField() {
+        getNewlyAddedField().let {
             field.format = it.format
             field.year = it.year
             field.season = it.season

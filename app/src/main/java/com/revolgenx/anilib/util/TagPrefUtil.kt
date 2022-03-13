@@ -7,49 +7,48 @@ import com.revolgenx.anilib.common.data.meta.TagState
 import com.revolgenx.anilib.common.preference.*
 
 object TagPrefUtil {
-    fun saveTagPref(context: Context, tags: List<String>) {
-        setUserTag(context, tags)
+    fun saveTagPref(tags: List<String>) {
+        setUserTag(tags)
     }
 
-    fun saveGenrePref(context: Context, genre: List<String>) {
-        setUserGenre(context, genre)
+    fun saveGenrePref(genre: List<String>) {
+        setUserGenre(genre)
     }
 
-    fun saveStreamingOnPref(context: Context, streams: List<String>) {
-        setUserStream(context, streams)
+    fun saveStreamingOnPref(streams: List<String>) {
+        setUserStream(streams)
     }
 
 
-    fun saveExcludedTags(context: Context, tags:List<String>){
-        setUserExcludedTags(context, tags)
+    fun saveExcludedTags(tags: List<String>){
+        setUserExcludedTags(tags)
     }
 
-    fun saveExcludedGenre(context: Context, tags:List<String>){
-        setUserExcludedGenre(context, tags)
+    fun saveExcludedGenre(tags: List<String>){
+        setUserExcludedGenre(tags)
     }
 
     fun reloadTagPref(context: Context): List<TagField> {
         val tags = context.resources.getStringArray(R.array.media_tags).toList()
 
         saveTagPref(
-            context,
             tags
         )
         return tags.map { TagField(it, TagState.EMPTY) }
     }
 
 
-    fun getUserPrefTags(context: Context): List<String> = getUserTag(context)
-    fun getUserPrefGenres(context: Context) = getUserGenre(context)
-    fun getUserPrefStreamingOn(context: Context) = getUserStream(context)
+    fun getUserPrefTags(): List<String> = getUserTag()
+    fun getUserPrefGenres() = getUserGenre()
+    fun getUserPrefStreamingOn() = getUserStream()
 
-    fun getExcludedPrefTags(context: Context): List<String> = getExcludedTags(context)
-    fun getExcludedPrefGenre(context: Context) = getExcludedGenre(context)
+    fun getExcludedPrefTags(): List<String> = getExcludedTags()
+    fun getExcludedPrefGenre() = getExcludedGenre()
 
 
     fun reloadGenrePref(context: Context): List<TagField> {
         val tags = context.resources.getStringArray(R.array.media_genre).toList()
-        saveGenrePref(context, tags)
+        saveGenrePref(tags)
         return tags.map { TagField(it, TagState.EMPTY) }
     }
 
@@ -57,15 +56,14 @@ object TagPrefUtil {
         val tags = context.resources.getStringArray(R.array.streaming_on).toList()
 
         saveStreamingOnPref(
-            context,
             tags
         )
 
         return tags.map { TagField(it, TagState.EMPTY) }
     }
 
-    fun invalidateAll(context: Context) {
-        storeSeasonTag(context, null)
-        storeSeasonGenre(context, null)
+    fun invalidateAll() {
+        storeSeasonTag(null)
+        storeSeasonGenre(null)
     }
 }

@@ -252,7 +252,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 R.id.home_navigation_menu,
                 R.string.home,
                 R.drawable.ic_home,
-                getHomePageOrderFromType(this@MainActivity, HomePageOrderType.HOME),
+                getHomePageOrderFromType(HomePageOrderType.HOME),
                 discoverContainerFragment
             )
         )
@@ -263,7 +263,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     R.id.list_navigation_menu,
                     R.string.list,
                     R.drawable.ic_media_list,
-                    getHomePageOrderFromType(this@MainActivity, HomePageOrderType.LIST),
+                    getHomePageOrderFromType(HomePageOrderType.LIST),
                     alListContainerFragment
                 )
             )
@@ -272,7 +272,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     R.id.activity_navigation_menu,
                     R.string.social,
                     R.drawable.ic_activity_union,
-                    getHomePageOrderFromType(this@MainActivity, HomePageOrderType.ACTIVITY),
+                    getHomePageOrderFromType(HomePageOrderType.ACTIVITY),
                     activityUnionFragment
                 )
             )
@@ -282,7 +282,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 R.id.music_navigation_menu,
                 R.string.radio,
                 R.drawable.ic_radio,
-                getHomePageOrderFromType(this@MainActivity, HomePageOrderType.RADIO),
+                getHomePageOrderFromType(HomePageOrderType.RADIO),
                 radioFragment
             )
         )
@@ -346,13 +346,13 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     fun goToPageEvent(event: ChangeViewPagerPageEvent) {
         val homePageOrder = when (event.data) {
             MainActivityPage.HOME -> {
-                getHomePageOrderFromType(this, HomePageOrderType.HOME)
+                getHomePageOrderFromType(HomePageOrderType.HOME)
             }
             MainActivityPage.LIST -> {
-                getHomePageOrderFromType(this, HomePageOrderType.LIST)
+                getHomePageOrderFromType(HomePageOrderType.LIST)
             }
             MainActivityPage.RADIO -> {
-                getHomePageOrderFromType(this, HomePageOrderType.RADIO)
+                getHomePageOrderFromType(HomePageOrderType.RADIO)
             }
         }
 
