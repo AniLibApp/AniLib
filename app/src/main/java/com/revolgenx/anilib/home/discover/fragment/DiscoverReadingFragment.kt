@@ -88,12 +88,11 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
             dRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-            if (savedInstanceState == null) {
-                viewModel.field.also { field ->
-                    field.userId = UserPreference.userId
-                    field.status = MediaListStatus.CURRENT.ordinal
-                    field.type = MediaType.MANGA.ordinal
-                }
+            viewModel.field.also { field ->
+                field.userId = UserPreference.userId
+                field.status = MediaListStatus.CURRENT.ordinal
+                field.type = MediaType.MANGA.ordinal
+                field.sort = getDiscoverMediaListSort(requireContext(), field.type!!)
             }
 
             if (savedInstanceState != null) {
@@ -136,6 +135,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
     }
 
     private fun renewAdapter() {
+        context ?: return
         viewModel.updateField(requireContext())
         viewModel.createSource()
         invalidateAdapter()
@@ -144,7 +144,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
 
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {
-        if (dRecyclerView == null) return
+        dRecyclerView ?: return
         dRecyclerView!!.createAdapter(source, presenter)
     }
 }

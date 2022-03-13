@@ -88,13 +88,11 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
             watchingRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-            if (savedInstanceState == null) {
-                viewModel.field.also { field ->
-                    field.userId = UserPreference.userId
-                    field.status = MediaListStatus.CURRENT.ordinal
-                    field.type = MediaType.ANIME.ordinal
-                    field.sort = getDiscoverMediaListSort(requireContext(), field.type!!)
-                }
+            viewModel.field.also { field ->
+                field.userId = UserPreference.userId
+                field.status = MediaListStatus.CURRENT.ordinal
+                field.type = MediaType.ANIME.ordinal
+                field.sort = getDiscoverMediaListSort(requireContext(), field.type!!)
             }
 
             if (savedInstanceState != null) {
@@ -104,7 +102,6 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
                     }
                 }
             }
-
 
             invalidateAdapter()
         }
@@ -129,7 +126,6 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
     }
 
 
-
     override fun reloadContent() {
         super.reloadContent()
         if (isSectionEnabled) {
@@ -139,7 +135,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
     }
 
     private fun renewAdapter() {
-        if (context == null) return
+        context ?: return
         viewModel.updateField(requireContext())
         viewModel.createSource()
         invalidateAdapter()
@@ -148,7 +144,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
 
     /** call this method to load into recyclerview*/
     private fun invalidateAdapter() {
-        if (watchingRecyclerView == null) return
+        watchingRecyclerView ?: return
         watchingRecyclerView!!.createAdapter(source, presenter)
     }
 }

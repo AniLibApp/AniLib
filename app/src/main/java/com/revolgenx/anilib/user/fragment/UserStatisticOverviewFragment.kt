@@ -44,7 +44,7 @@ abstract class UserStatisticOverviewFragment :
         requireContext().resources.getStringArray(R.array.anime_list_status)
     }
 
-    protected open val type:Int = MediaType.ANIME.ordinal
+    protected open val type: Int = MediaType.ANIME.ordinal
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?
@@ -92,12 +92,10 @@ abstract class UserStatisticOverviewFragment :
             }
         }
 
-        if (savedInstanceState == null) {
-            with(viewModel.field) {
-                userId = sharedViewModel.userId
-                userName = sharedViewModel.userName
-                type = this@UserStatisticOverviewFragment.type
-            }
+        with(viewModel.field) {
+            userId = sharedViewModel.userId
+            userName = sharedViewModel.userName
+            type = this@UserStatisticOverviewFragment.type
         }
     }
 

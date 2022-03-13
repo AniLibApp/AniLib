@@ -86,13 +86,10 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
         super.onViewCreated(view, savedInstanceState)
         if (!sharedViewModel.hasUserData) return
 
-        if (savedInstanceState == null) {
-            viewModel.field = ActivityUnionField().apply {
-                userId = sharedViewModel.userId
-                userName = sharedViewModel.userName
-            }
+        viewModel.field = ActivityUnionField().apply {
+            userId = sharedViewModel.userId
+            userName = sharedViewModel.userName
         }
-
 
         sharedViewModel.userLiveData.observe(viewLifecycleOwner) {
             if (it is Resource.Success) {

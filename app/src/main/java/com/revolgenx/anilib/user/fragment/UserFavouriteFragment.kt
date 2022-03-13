@@ -57,12 +57,10 @@ abstract class UserFavouriteFragment() : BasePresenterFragment<BaseModel>() {
                     }
                 }
         }
-        if (savedInstanceState == null) {
-            with(viewModel.field) {
-                userName = sharedViewModel.userName
-                userId = sharedViewModel.userId
-                favType = favouriteType
-            }
+        with(viewModel.field) {
+            userName = sharedViewModel.userName
+            userId = sharedViewModel.userId
+            favType = favouriteType
         }
     }
 }

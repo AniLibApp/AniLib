@@ -36,12 +36,11 @@ class UserFavouriteContainerFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(!sharedViewModel.hasUserData) return
-        if(savedInstanceState == null){
-            with(viewModel) {
-                userName = sharedViewModel.userName
-                userId = sharedViewModel.userId
-            }
+        if (!sharedViewModel.hasUserData) return
+
+        with(viewModel) {
+            userName = sharedViewModel.userName
+            userId = sharedViewModel.userId
         }
 
         binding.userFavouriteContainerViewPager.adapter = makeViewPagerAdapter2(
