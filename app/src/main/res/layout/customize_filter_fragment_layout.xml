@@ -20,10 +20,10 @@
                 android:id="@+id/add_remove_tag_iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:adt_colorType="text_primary"
                 app:ads_fillSpace="true"
                 app:ads_subtitle="@string/edit_filter_tags"
-                app:ads_title="@string/tags" />
+                app:ads_title="@string/tags"
+                app:adt_colorType="text_primary" />
 
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
@@ -39,10 +39,10 @@
                 android:id="@+id/add_remove_genre_iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:adt_colorType="text_primary"
                 app:ads_fillSpace="true"
                 app:ads_subtitle="@string/edit_filter_genre"
-                app:ads_title="@string/genre" />
+                app:ads_title="@string/genre"
+                app:adt_colorType="text_primary" />
 
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
@@ -58,13 +58,153 @@
                 android:id="@+id/add_remove_streaming_on_iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:adt_colorType="text_primary"
                 app:ads_fillSpace="true"
                 app:ads_subtitle="@string/add_remove_streaming_on"
-                app:ads_title="@string/streaming_on" />
+                app:ads_title="@string/streaming_on"
+                app:adt_colorType="text_primary" />
+
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    app:ads_fillSpace="true"
+                    app:ads_subtitle="@string/search_max_episode_desc"
+                    app:ads_title="@string/search_max_episodes"
+                    app:adt_colorType="text_primary" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                    android:id="@+id/search_max_episode_et"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    app:ads_fillSpace="true"
+                    app:ads_subtitle="@string/search_max_duration_desc"
+                    app:ads_title="@string/search_max_duration"
+                    app:adt_colorType="text_primary" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                    android:id="@+id/search_max_duration_et"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:inputType="number" />
+
+            </LinearLayout>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    app:ads_fillSpace="true"
+                    app:ads_subtitle="@string/search_max_chapter_desc"
+                    app:ads_title="@string/search_max_chapters"
+                    app:adt_colorType="text_primary" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                    android:id="@+id/search_max_chapter_et"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    app:ads_fillSpace="true"
+                    app:ads_subtitle="@string/search_max_volume_desc"
+                    app:ads_title="@string/search_max_volumes"
+                    app:adt_colorType="text_primary" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                    android:id="@+id/search_max_volume_et"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

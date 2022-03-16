@@ -39,6 +39,10 @@ class AdvancedScoreView : DynamicRecyclerView {
         mAdapter.notifyDataSetChanged()
     }
 
+    override fun applyWindowInsets() {
+
+    }
+
     inner class AdvancedScoringAdapter :
         RecyclerView.Adapter<AdvanceScoringViewHolder>() {
 

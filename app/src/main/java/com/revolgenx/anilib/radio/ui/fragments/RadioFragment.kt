@@ -27,7 +27,7 @@ import com.revolgenx.anilib.radio.ui.adapter.RadioListAdapter
 import com.revolgenx.anilib.radio.ui.presenter.AllRadioStationPresenter
 import com.revolgenx.anilib.radio.ui.presenter.FavouriteRadioStationPresenter
 import com.revolgenx.anilib.radio.ui.presenter.RecentRadioStationPresenter
-import com.revolgenx.anilib.radio.ui.view.KaoMojiStateView
+import com.revolgenx.anilib.common.ui.view.KaoMojiStateView
 import com.revolgenx.anilib.util.EventBusListener
 import com.revolgenx.anilib.util.registerForEvent
 import com.revolgenx.anilib.util.unRegisterForEvent

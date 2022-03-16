@@ -231,4 +231,15 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">16dp</item>
     </style>
+
+    <style name="AlAppBarLayoutStyle">
+        <item name="adt_backgroundAware">disable</item>
+        <item name="adt_backgroundColorType">background</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="AlTabSwitchTextAppearance">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 </resources>

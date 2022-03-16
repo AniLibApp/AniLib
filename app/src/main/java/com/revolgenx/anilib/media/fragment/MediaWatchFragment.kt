@@ -25,6 +25,9 @@ class MediaWatchFragment : BasePresenterFragment<MediaStreamingEpisodeModel>() {
         }
     }
 
+    override var gridMaxSpan: Int = 4
+    override var gridMinSpan: Int = 4
+
     override val basePresenter: Presenter<MediaStreamingEpisodeModel> by lazy {
         MediaWatchPresenter(requireContext())
     }
@@ -38,7 +41,7 @@ class MediaWatchFragment : BasePresenterFragment<MediaStreamingEpisodeModel>() {
             }
         }
 
-    companion object{
+    companion object {
         private const val MEDIA_INFO_META_KEY = "MEDIA_INFO_META_KEY"
         fun newInstance(meta: MediaInfoMeta) = MediaWatchFragment().also {
             it.arguments = bundleOf(MEDIA_INFO_META_KEY to meta)
@@ -51,27 +54,7 @@ class MediaWatchFragment : BasePresenterFragment<MediaStreamingEpisodeModel>() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val span =
-            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
-        layoutManager =
-            GridLayoutManager(
-                this.context,
-                span
-            ).also {
-                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.getItemViewType(position) == 0) {
-                            1
-                        } else {
-                            span
-                        }
-                    }
-                }
-            }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
         mediaBrowserMeta = arguments?.getParcelable(MEDIA_INFO_META_KEY) ?: return
     }
 

@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.entry.service
 
+import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.entry.data.field.SaveMediaListEntryField
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import io.reactivex.disposables.CompositeDisposable
@@ -14,7 +15,9 @@ fun MediaListEntryService.increaseProgress(
         it.progress = newProgress
     }
     saveMediaListEntry(progressSaveField, compositeDisposable) {
-        item.progress = it.data?.progress ?: newProgress
+        if (it is Resource.Success) {
+            item.progress = it.data?.progress ?: newProgress
+        }
         item.onDataChanged?.invoke(it)
     }
 }

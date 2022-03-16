@@ -10,9 +10,7 @@ import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.dynamicAccentColor
-import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
-import com.revolgenx.anilib.app.theme.dynamicTintBackgroundColor
+import com.revolgenx.anilib.app.theme.*
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.common.data.field.TagField
 import com.revolgenx.anilib.common.data.meta.TagState
@@ -48,16 +46,12 @@ class SearchTagPresenter(context: Context) :
                     redTextColor
                 }
                 else -> {
-                    dynamicTintBackgroundColor
+                    dynamicTintSurfaceColor
                 }
             }
-            ColorStateList.valueOf(textColor).also {
-                tagChip.chipStrokeColor = it
-                tagChip.closeIconTint = it
-            }
-            tagChip.chipStrokeWidth = 2f
+            tagChip.closeIconTint = ColorStateList.valueOf(textColor)
             tagChip.isCloseIconVisible = true
-            tagChip.chipBackgroundColor = ColorStateList.valueOf(dynamicBackgroundColor)
+            tagChip.chipBackgroundColor = ColorStateList.valueOf(dynamicSurfaceColor)
             tagChip.setTextColor(textColor)
             tagChip.text = data.tag
             root.setOnClickListener {

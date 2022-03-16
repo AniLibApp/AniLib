@@ -13,8 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.annotation.StringRes
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,9 +26,11 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.ui.view.widgets.AlCardView
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.theme.contrastAccentWithBg
+import com.revolgenx.anilib.app.theme.contrastAccentWithSurface
+import com.revolgenx.anilib.app.theme.dynamicTintAccentColor
 import com.revolgenx.anilib.common.preference.enableAutoMlTranslation
 import com.revolgenx.anilib.common.preference.enableMlTranslation
 import com.revolgenx.anilib.common.preference.inUseMlLanguageModel
@@ -91,11 +96,6 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
         )
     }
 
-    private val statusColors by lazy {
-        requireContext().resources.getStringArray(R.array.status_color)
-    }
-
-
     private val mediaMetaList by lazy {
         mutableListOf<MediaMetaCollection>()
     }
@@ -155,10 +155,6 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         binding.relationRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
         mediaBrowserMeta ?: return
 
@@ -224,17 +220,8 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
     private fun MediaOverviewFragmentBinding.updateView(overview: MediaModel) {
         context ?: return
 
-        if (overview.title!!.native != null) {
-            nativeTitle.subtitle = overview.title!!.native
-        } else {
-            nativeTitle.visibility = View.GONE
-        }
-
-        if (overview.title!!.english != null) {
-            englishTitle.subtitle = overview.title!!.english
-        } else {
-            englishTitle.visibility = View.GONE
-        }
+        nativeTitle.subtitle = overview.title?.native.naText()
+        englishTitle.subtitle = overview.title?.english.naText()
 
         setDescription(overview.description)
 
@@ -341,26 +328,22 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
 
 
         if (mediaMetaList.isEmpty()) {
-            overview.title?.romaji?.let {
-                addToMediaCollection(getString(R.string.romaji_title), it)
+            addToMediaCollection(getString(R.string.romaji_title), overview.title?.romaji.naText())
+            overview.hashtag?.let {
+                addToMediaCollection(getString(R.string.hashtag), it)
             }
+
+            addToMediaCollection(R.string.average_score, "${overview.averageScore ?: 0} %")
+            addToMediaCollection(R.string.mean_score, "${overview.meanScore ?: 0} %")
+            addToMediaCollection(R.string.popularity, "${overview.popularity ?: 0}")
+            addToMediaCollection(R.string.favourites, "${overview.favourites ?: 0}")
 
             addSynonymsToMetaCollection(overview.synonyms)
             addStudioToMetaCollection(overview.studios?.edges?.filter { it.isMain })
             addProducerToMetaCollection(overview.studios?.edges?.filter { !it.isMain })
 
-            overview.hashtag?.let {
-                addToMediaCollection(getString(R.string.hashtag), it)
-            }
-
-            mediaAvgScoreTv.subtitle = "${overview.averageScore ?: 0} %"
-            mediaMeanScoreTv.subtitle = "${overview.meanScore ?: 0} %"
-            mediaPopularityTv.subtitle = "${overview.popularity ?: 0}"
-            mediaFavouriteScoreTv.subtitle = "${overview.favourites ?: 0}"
-
-
-
             bindGenre(overview.genres)
+
 
             if (overview.tags.isNullOrEmpty()) {
                 mediaTagsHeaderTv.visibility = View.GONE
@@ -368,6 +351,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             } else {
                 bindTags(overview.tags)
             }
+
         }
 
 
@@ -476,6 +460,13 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
         })
     }
 
+    private fun addToMediaCollection(@StringRes header: Int, subtitle: String) {
+        mediaMetaList.add(MediaMetaCollection().also { col ->
+            col.header = requireContext().getString(header)
+            col.subTitle = subtitle
+        })
+    }
+
 
     private fun addSynonymsToMetaCollection(synonyms: List<String>?) {
         synonyms?.takeIf { it.isNotEmpty() }?.joinToString("\n")?.let { jSynonyms ->
@@ -502,7 +493,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                     }
 
                     override fun updateDrawState(ds: TextPaint) {
-                        ds.color = DynamicTheme.getInstance().get().tintSurfaceColor
+                        ds.color = contrastAccentWithSurface
                     }
                 },
                 current,
@@ -540,7 +531,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                     }
 
                     override fun updateDrawState(ds: TextPaint) {
-                        ds.color = DynamicTheme.getInstance().get().tintSurfaceColor
+                        ds.color = contrastAccentWithSurface
                     }
                 },
                 current,

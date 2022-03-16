@@ -10,14 +10,12 @@
         app:layout_constraintBottom_toTopOf="@id/player_controller_container"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+        <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
+            style="@style/AlAppBarLayoutStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:adt_backgroundAware="disable"
-            app:adt_colorType="primary"
-            app:elevation="0dp">
+            android:layout_height="wrap_content">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+            <com.revolgenx.anilib.common.ui.view.AlToolbar
                 android:id="@+id/dynamicToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_size"
@@ -29,7 +27,7 @@
                 app:layout_scrollFlags="enterAlways|scroll">
 
 
-                <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
+                <com.revolgenx.anilib.common.ui.view.AlTextTabLayout
                     android:id="@+id/list_tab_layout"
                     style="@style/HomeContainerTabLayoutStyle"
                     android:layout_width="match_parent"
@@ -40,9 +38,9 @@
                     app:entries="@array/music_entries"
                     app:layout_scrollFlags="noScroll"
                     app:tabTextAppearance="@style/RadioTabLayoutTextStyle" />
-            </com.pranavpandey.android.dynamic.support.widget.DynamicToolbar>
+            </com.revolgenx.anilib.common.ui.view.AlToolbar>
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+        </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout
@@ -58,11 +56,11 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <androidx.core.widget.NestedScrollView
+                <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clipToPadding="false"
                     app:layout_constrainedHeight="true"
+                    app:adt_windowInsets="false"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <LinearLayout
@@ -86,10 +84,11 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/recently_played_stations" />
 
-                            <androidx.recyclerview.widget.RecyclerView
+                            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                                 android:id="@+id/recent_station_recycler_view"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                app:adt_windowInsets="false" />
 
                         </LinearLayout>
 
@@ -107,10 +106,11 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/favourite_radio_station" />
 
-                            <androidx.recyclerview.widget.RecyclerView
+                            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                                 android:id="@+id/favourite_station_recycler_view"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                app:adt_windowInsets="false" />
 
                         </LinearLayout>
 
@@ -126,17 +126,18 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/all_radio_stations" />
 
-                            <androidx.recyclerview.widget.RecyclerView
+                            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                                 android:id="@+id/radio_station_recycler_view"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                app:adt_windowInsets="false" />
                         </LinearLayout>
 
                     </LinearLayout>
-                </androidx.core.widget.NestedScrollView>
+                </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
             </LinearLayout>
 
-            <com.revolgenx.anilib.radio.ui.view.KaoMojiStateView
+            <com.revolgenx.anilib.common.ui.view.KaoMojiStateView
                 android:id="@+id/kao_moji_state_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

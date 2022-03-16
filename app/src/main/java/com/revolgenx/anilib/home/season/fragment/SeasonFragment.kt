@@ -30,6 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SeasonFragment : BasePresenterFragment<MediaModel>(), EventBusListener {
 
+    override val applyInset: Boolean = false
     private val viewModel by viewModel<SeasonViewModel>()
     private val field get() = viewModel.field
     override val basePresenter: Presenter<MediaModel> by lazy {

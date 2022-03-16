@@ -66,6 +66,8 @@ class MediaListSettingChipRecyclerView : DynamicRecyclerView {
         override fun getItemCount() = chipTagList.size
     }
 
+    override fun applyWindowInsets() {
+    }
     class ChipTagViewHolder(val binding: ChipTagPresenterBinding) :
         RecyclerView.ViewHolder(binding.root)
 }

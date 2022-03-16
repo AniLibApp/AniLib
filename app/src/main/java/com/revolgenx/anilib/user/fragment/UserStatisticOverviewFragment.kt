@@ -9,13 +9,11 @@ import androidx.core.content.res.ResourcesCompat
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.llollox.androidtoggleswitch.widgets.ToggleSwitch
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.themeIt
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.StatsDistributionRecyclerLayoutBinding
@@ -23,6 +21,7 @@ import com.revolgenx.anilib.databinding.UserStatisticOverviewFragmentLayoutBindi
 import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.ui.view.doOnTabSelected
 import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.user.data.model.stats.*
 import com.revolgenx.anilib.util.naText
@@ -136,7 +135,7 @@ abstract class UserStatisticOverviewFragment :
         }
         val entries = list.map {
             Entry(
-                it.startYear?.toFloat() ?: 0.0f, when (watchYearToggleSwitch.getCheckedPosition()) {
+                it.startYear?.toFloat() ?: 0.0f, when (viewModel.watchYearTogglePos) {
                     0 -> {
                         it.count.toFloat()
                     }
@@ -215,7 +214,7 @@ abstract class UserStatisticOverviewFragment :
 
         val entries = list.map {
             Entry(
-                it.year!!.toFloat(), when (releaseYearToggleSwitch.getCheckedPosition()) {
+                it.year!!.toFloat(), when (viewModel.releaseYearTogglePos) {
                     0 -> {
                         it.count.toFloat()
                     }
@@ -343,7 +342,7 @@ abstract class UserStatisticOverviewFragment :
             model.score?.let {
                 BarEntry(
                     model.score!!.toFloat(),
-                    if (scoreToggleSwitch.getCheckedPosition() == 0) model.count.toFloat() else model.hoursWatched.toFloat()
+                    if (viewModel.scoreTogglePos == 0) model.count.toFloat() else model.hoursWatched.toFloat()
                 )
             }
         }.let {
@@ -390,78 +389,58 @@ abstract class UserStatisticOverviewFragment :
 
 
     private fun UserStatisticOverviewFragmentLayoutBinding.initListener() {
-        scoreToggleSwitch.onChangeListener = object : ToggleSwitch.OnChangeListener {
-            override fun onToggleSwitchChanged(position: Int) {
-                viewModel.scoreTogglePos = position
-
-                viewModel.statsLiveData.value?.data?.statistics?.let {
-                    val media = it.anime ?: it.manga
-                    updateScoreChart(media?.scores)
-                }
-
+        userStatsScoreTabSwitch.doOnTabSelected(viewLifecycleOwner){_, position->
+            viewModel.scoreTogglePos = position
+            viewModel.statsLiveData.value?.data?.statistics?.let {
+                val media = it.anime ?: it.manga
+                updateScoreChart(media?.scores)
             }
         }
-        releaseYearToggleSwitch.onChangeListener = object : ToggleSwitch.OnChangeListener {
-            override fun onToggleSwitchChanged(position: Int) {
-                viewModel.releaseYearTogglePos = position
-                viewModel.statsLiveData.value?.data?.statistics?.let {
-                    val media = it.anime ?: it.manga
-                    updateReleaseChart(media?.releaseYears)
-                }
+
+        userStatsReleaseYearTabSwitch.doOnTabSelected(viewLifecycleOwner){_, position->
+            viewModel.releaseYearTogglePos = position
+            viewModel.statsLiveData.value?.data?.statistics?.let {
+                val media = it.anime ?: it.manga
+                updateReleaseChart(media?.releaseYears)
             }
         }
-        watchYearToggleSwitch.onChangeListener = object : ToggleSwitch.OnChangeListener {
-            override fun onToggleSwitchChanged(position: Int) {
-                viewModel.watchYearTogglePos = position
-                viewModel.statsLiveData.value?.data?.statistics?.let {
-                    val media = it.anime ?: it.manga
-                    updateWatchChart(media?.startYears)
-                }
+        userStatsWatchYearTabSwitch.doOnTabSelected(viewLifecycleOwner){_, position->
+            viewModel.watchYearTogglePos = position
+            viewModel.statsLiveData.value?.data?.statistics?.let {
+                val media = it.anime ?: it.manga
+                updateWatchChart(media?.startYears)
             }
         }
     }
 
     private fun UserStatisticOverviewFragmentLayoutBinding.updateTheme() {
-        scoreToggleSwitch.let {
-            it.themeIt()
-            it.setEntries(
-                if (type == MediaType.ANIME.ordinal)
-                    R.array.score_toggle_list
-                else
-                    R.array.manga_score_toggle_list
-            )
-            it.setCheckedPosition(
-                viewModel.scoreTogglePos
-            )
-        }
+        userStatsScoreTabSwitch.setEntries(
+            if (type == MediaType.ANIME.ordinal)
+                R.array.score_toggle_list
+            else
+                R.array.manga_score_toggle_list
+        )
+
+        userStatsScoreTabSwitch.getTabAt(viewModel.scoreTogglePos)?.select()
+
+        userStatsReleaseYearTabSwitch.setEntries(
+            if (type == MediaType.ANIME.ordinal)
+                R.array.stats_toggle_list
+            else
+                R.array.manga_stats_toggle_list
+        )
+
+        userStatsReleaseYearTabSwitch.getTabAt(viewModel.releaseYearTogglePos)?.select()
 
 
-        releaseYearToggleSwitch.let {
-            it.themeIt()
-            it.setEntries(
-                if (type == MediaType.ANIME.ordinal)
-                    R.array.stats_toggle_list
-                else
-                    R.array.manga_stats_toggle_list
-            )
-            it.setCheckedPosition(
-                viewModel.releaseYearTogglePos
-            )
-        }
+        userStatsWatchYearTabSwitch.setEntries(
+            if (type == MediaType.ANIME.ordinal)
+                R.array.stats_toggle_list
+            else
+                R.array.manga_stats_toggle_list
+        )
 
-
-        watchYearToggleSwitch.let {
-            it.themeIt()
-            it.setEntries(
-                if (type == MediaType.ANIME.ordinal)
-                    R.array.stats_toggle_list
-                else
-                    R.array.manga_stats_toggle_list
-            )
-            it.setCheckedPosition(
-                viewModel.watchYearTogglePos
-            )
-        }
+        userStatsWatchYearTabSwitch.getTabAt(viewModel.watchYearTogglePos)?.select()
 
         if (type == MediaType.MANGA.ordinal) {
             totalCountTv.subtitle = getString(R.string.total_manga)

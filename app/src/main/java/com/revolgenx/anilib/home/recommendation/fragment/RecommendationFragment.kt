@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RecommendationFragment : BasePresenterFragment<RecommendationModel>(), EventBusListener {
+    override val applyInset: Boolean = false
     override val basePresenter: Presenter<RecommendationModel>
         get() = RecommendationPresenter(requireContext(), viewLifecycleOwner, viewModel)
     override val baseSource: Source<RecommendationModel>

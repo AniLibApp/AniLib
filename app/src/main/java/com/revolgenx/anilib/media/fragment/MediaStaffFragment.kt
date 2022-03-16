@@ -37,7 +37,7 @@ class MediaStaffFragment : BasePresenterFragment<StaffEdgeModel>() {
         }
     }
 
-    companion object{
+    companion object {
         private const val MEDIA_INFO_META_KEY = "MEDIA_INFO_META_KEY"
         fun newInstance(meta: MediaInfoMeta) = MediaStaffFragment().also {
             it.arguments = bundleOf(MEDIA_INFO_META_KEY to meta)
@@ -48,31 +48,20 @@ class MediaStaffFragment : BasePresenterFragment<StaffEdgeModel>() {
         return viewModel.createSource(field)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val span =
-            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 3
-        layoutManager =
-            GridLayoutManager(
-                this.context,
-                span
-            ).also {
-                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.getItemViewType(position) == 0) {
-                            1
-                        } else {
-                            span
-                        }
-                    }
-                }
-            }
-    }
+    override val gridMaxSpan: Int = 6
+    override val gridMinSpan: Int = 3
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun getItemSpanSize(position: Int): Int =
+        if (adapter?.getItemViewType(position) == 0) {
+            1
+        } else {
+            span
+        }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         mediaBrowserMeta =
             arguments?.getParcelable(MEDIA_INFO_META_KEY) ?: return
     }
-
 
 }

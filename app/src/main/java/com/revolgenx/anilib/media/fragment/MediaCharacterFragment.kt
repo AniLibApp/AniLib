@@ -11,7 +11,6 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
-import com.pranavpandey.android.dynamic.support.adapter.DynamicSpinnerImageAdapter
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.ui.view.widgets.AlCardView
 import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
@@ -98,9 +97,8 @@ class MediaCharacterFragment : BasePresenterFragment<CharacterEdgeModel>() {
         return v
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mediaBrowserMeta ?: return
-        val span: Int = when (mediaBrowserMeta!!.type) {
+    override fun getSpanCount(): Int {
+        return when (mediaBrowserMeta!!.type) {
             MediaType.ANIME.ordinal -> {
                 if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
             }
@@ -108,28 +106,22 @@ class MediaCharacterFragment : BasePresenterFragment<CharacterEdgeModel>() {
                 if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 3
             }
         }
-
-        layoutManager =
-            GridLayoutManager(
-                this.context,
-                span
-            ).also {
-                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.elementAt(position)?.element!!.let {
-                                it.type == MediaType.ANIME.ordinal || it.type == MediaType.MANGA.ordinal
-                            }) {
-                            1
-                        } else {
-                            span
-                        }
-                    }
-                }
-            }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun getItemSpanSize(position: Int): Int {
+        return if (adapter?.elementAt(position)?.element!!.let {
+                it.type == MediaType.ANIME.ordinal || it.type == MediaType.MANGA.ordinal
+            }) {
+            1
+        } else {
+            span
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mediaBrowserMeta ?: return
+
         val spinnerItems = mutableListOf<DynamicMenu>()
         requireContext().resources.getStringArray(R.array.staff_language).forEach {
             spinnerItems.add(DynamicMenu(null, it))

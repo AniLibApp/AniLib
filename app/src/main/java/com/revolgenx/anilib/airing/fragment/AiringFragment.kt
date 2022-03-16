@@ -50,7 +50,6 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
     private val airingBinding: AiringFragmentLayoutBinding get() = _airingBinding!!
 
 
-    override val autoAddLayoutManager: Boolean = false
     override val setHomeAsUp: Boolean = true
     override val menuRes: Int = R.menu.airing_menu
 
@@ -60,19 +59,17 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
     }
 
 
+    override val gridMaxSpan: Int = 4
+    override val gridMinSpan: Int = 2
+
+    override fun getItemSpanSize(position: Int) = if (adapter?.getItemViewType(position) == 0) {
+        1
+    } else {
+        span
+    }
+
     override fun reloadLayoutManager() {
-        var span =
-            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
 
-        when (getAiringDisplayMode()) {
-            AiringListDisplayMode.COMPACT -> {
-
-            }
-
-            AiringListDisplayMode.NORMAL, AiringListDisplayMode.MINIMAL_LIST -> {
-                span /= 2
-            }
-        }
 
         layoutManager =
             GridLayoutManager(
@@ -91,6 +88,20 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
             }
 
         super.reloadLayoutManager()
+    }
+
+    override fun getSpanCount(): Int {
+        var span =
+            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
+        return when (getAiringDisplayMode()) {
+            AiringListDisplayMode.NORMAL, AiringListDisplayMode.MINIMAL_LIST -> {
+                span /= 2
+                span
+            }
+            else -> {
+                span
+            }
+        }
     }
 
     override fun onCreateView(
@@ -213,9 +224,8 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         airingBinding.airingToolbar.dynamicToolbar.setOnClickListener {
             openCalendarChooserSheet()
         }

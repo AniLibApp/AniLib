@@ -131,26 +131,26 @@
         app:layout_constraintTop_toBottomOf="@+id/infoContainer"
         app:layout_goneMarginBottom="16dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
         android:id="@+id/yearsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipChildren="false"
-        android:clipToPadding="false"
         android:padding="16dp"
+        app:adt_windowInsets="false"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/calendarView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/calendarView" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
         android:id="@+id/monthsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipChildren="true"
-        android:clipToPadding="false"
         android:padding="16dp"
+        app:adt_windowInsets="false"
         android:visibility="gone"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="@+id/calendarView"

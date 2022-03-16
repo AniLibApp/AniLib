@@ -10,6 +10,10 @@ val contrastAccentWithBg
     get() =
         DynamicColorUtils.getContrastColor(dynamicAccentColor, dynamicTheme.backgroundColor)
 
+val contrastAccentWithSurface
+    get() =
+        DynamicColorUtils.getContrastColor(dynamicAccentColor, dynamicSurfaceColor)
+
 val contrastAccentWithPrimary
     get() =
         DynamicColorUtils.getContrastColor(dynamicAccentColor, dynamicTheme.primaryColor)
@@ -28,8 +32,12 @@ val dynamicTextColorPrimaryInverse get() = dynamicTheme.textPrimaryColorInverse
 val dynamicPrimaryColor get() = dynamicTheme.primaryColor
 val dynamicPrimaryColorDark get() = dynamicTheme.primaryColorDark
 val dynamicAccentColor get() = dynamicTheme.accentColor
+val dynamicTintAccentColor get() = dynamicTheme.tintAccentColor
 val dynamicTintPrimaryColor get() = dynamicTheme.tintPrimaryColor
 
 val dynamicCornerRadius get() = dynamicTheme.cornerRadius
 val dynamicTextColorOverAccent = if (isEnoughWhite(dynamicAccentColor)) Color.BLACK else Color.WHITE
+val dynamicTextColorOverContrastAccentOverBg =
+    if (isEnoughWhite(contrastAccentWithBg)) Color.BLACK else Color.WHITE
+
 fun isEnoughWhite(color: Int) = DynamicColorUtils.getColorDarkness(color) <= 0.2

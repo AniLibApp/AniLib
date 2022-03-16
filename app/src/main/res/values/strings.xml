@@ -672,7 +672,6 @@
     <string name="chapters_range_s_s">Chapters (%s - %s)</string>
     <string name="volumes_range_s_s">Volumes (%s - %s)</string>
     <string name="readable_on">Readable On</string>
-    <string name="minimum_tag_percentage">Minimum Tag Percentage</string>
     <string name="minimum_tag_percentage_s">Minimum Tag Percentage (%s)</string>
     <string name="favourite">Favourite</string>
     <string name="hide_from_status_list">Hide from status lists</string>
@@ -699,4 +698,13 @@
     <string name="okay">Okay</string>
     <string name="enable_12hr_format">Enable 12 hr format.</string>
     <string name="enable_12hr_format_desc">Enable to show 12 hr format in airing schedule instead of 24 hr format.</string>
+    <string name="search_max_episodes">Max total episodes</string>
+    <string name="search_max_chapters">Max total chapters</string>
+    <string name="search_max_volumes">Max total volumes</string>
+    <string name="search_max_duration">Max durations</string>
+    <string name="search_max_episode_desc">Set maximum total episodes in search filter. Default value is 150.</string>
+    <string name="search_max_chapter_desc">Set maximum total chapters in search filter. Default value is 500.</string>
+    <string name="search_max_duration_desc">Set maximum duration in search filter. Default value is 170.</string>
+    <string name="search_max_volume_desc">Set maximum total volumes in search filter. Default value is 50.</string>
+
 </resources>

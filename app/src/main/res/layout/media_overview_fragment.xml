@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
@@ -60,6 +59,7 @@
                     android:layout_height="wrap_content"
                     app:ads_fillSpace="true"
                     app:ads_title="@string/source"
+                    app:ellipsizeSubtitle="true"
                     app:layout_constraintLeft_toRightOf="@id/mediaFormatTv"
                     app:layout_constraintRight_toLeftOf="@id/mediaEpisodeTv"
                     app:layout_constraintTop_toTopOf="parent"
@@ -96,6 +96,56 @@
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                android:id="@+id/native_title_card_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true"
+                app:layout_constrainedHeight="true"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/english_title_card_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
+                    android:id="@+id/nativeTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ads_fillSpace="true"
+                    app:ads_title="@string/_native"
+                    app:copySubtitleOnLongClick="true" />
+
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                android:id="@+id/english_title_card_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:cardUseCompatPadding="true"
+                app:layout_constrainedHeight="true"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/native_title_card_view"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
+                    android:id="@+id/englishTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ads_fillSpace="true"
+                    app:ads_title="@string/english_title"
+                    app:copySubtitleOnLongClick="true" />
+
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,97 +155,60 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="4dp">
+                android:padding="12dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
-                        android:id="@+id/nativeTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:ads_fillSpace="true"
-                        app:ads_title="@string/_native"
-                        app:copySubtitleOnLongClick="true" />
-
-                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
-                        android:id="@+id/englishTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:ads_fillSpace="true"
-                        app:ads_title="@string/english_title"
-                        app:copySubtitleOnLongClick="true" />
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="18dp">
+                        android:text="@string/description"
+                        android:textSize="14sp"
+                        app:adt_colorType="accent"
+                        app:adt_contrastWithColorType="surface"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/translate_switch"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/description"
-                            android:textSize="14sp"
-                            app:adt_colorType="accent"
-                            app:adt_contrastWithColorType="surface"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/translate_switch"
-                            app:layout_constraintHorizontal_bias="0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
-                            android:id="@+id/translate_switch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:scaleX="0.8"
-                            android:scaleY="0.8"
-                            android:text="@string/translate"
-                            android:textSize="11sp"
-                            android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="1"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="SmallSp" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    <com.revolgenx.anilib.ui.view.DynamicExpandableTextView
-                        android:id="@+id/mediaDescriptionTv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginBottom="4dp"
-                        android:drawablePadding="6dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/cabin_regular"
-                        android:textSize="14sp" />
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
-                        android:id="@+id/translated_by_google_sign"
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                        android:id="@+id/translate_switch"
                         android:layout_width="wrap_content"
-                        android:layout_height="12dp"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/translate_by_google"
+                        android:layout_height="wrap_content"
+                        android:scaleX="0.8"
+                        android:scaleY="0.8"
+                        android:text="@string/translate"
+                        android:textSize="11sp"
                         android:visibility="gone"
-                        app:adt_colorType="text_primary" />
-                </LinearLayout>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="SmallSp" />
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.revolgenx.anilib.ui.view.DynamicExpandableTextView
+                    android:id="@+id/mediaDescriptionTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="4dp"
+                    android:drawablePadding="6dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/cabin_regular"
+                    android:textSize="14sp" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                    android:id="@+id/translated_by_google_sign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="12dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/translate_by_google"
+                    android:visibility="gone"
+                    app:adt_colorType="text_primary" />
             </LinearLayout>
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
@@ -259,78 +272,6 @@
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
-        <!--        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView-->
-        <!--            android:id="@+id/media_stats_header_tv"-->
-        <!--            style="@style/MediaBrowseTitleStyle"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_margin="@dimen/media_overview_header_margin"-->
-        <!--            android:text="@string/stats" />-->
-
-
-        <com.revolgenx.anilib.ui.view.widgets.AlCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardUseCompatPadding="true">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
-                    android:id="@+id/media_avg_score_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:ads_fillSpace="true"
-                    app:ads_title="@string/average_score"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/media_mean_score_tv"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:subtitleAlignCenter="true"
-                    app:titleAlignCenter="true" />
-
-                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
-                    android:id="@+id/media_mean_score_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:ads_fillSpace="true"
-                    app:ads_title="@string/mean_score"
-                    app:layout_constraintLeft_toRightOf="@id/media_avg_score_tv"
-                    app:layout_constraintRight_toLeftOf="@id/media_favourite_score_tv"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:subtitleAlignCenter="true"
-                    app:titleAlignCenter="true" />
-
-                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
-                    android:id="@+id/media_popularity_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:ads_fillSpace="true"
-                    app:ads_title="@string/popularity"
-                    app:layout_constraintLeft_toRightOf="@id/media_mean_score_tv"
-                    app:layout_constraintRight_toLeftOf="@id/media_favourite_score_tv"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:subtitleAlignCenter="true"
-                    app:titleAlignCenter="true" />
-
-                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
-                    android:id="@+id/media_favourite_score_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    app:ads_fillSpace="true"
-                    app:ads_title="@string/favourites"
-                    app:layout_constraintLeft_toRightOf="@id/media_popularity_tv"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:subtitleAlignCenter="true"
-                    app:titleAlignCenter="true" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
-
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             style="@style/MediaBrowseTitleStyle"
             android:layout_width="match_parent"
@@ -338,14 +279,14 @@
             android:layout_margin="@dimen/media_overview_header_margin"
             android:text="@string/genre" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/genre_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
             android:nestedScrollingEnabled="false"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp" />
+            android:paddingEnd="8dp"
+            app:adt_windowInsets="false" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/character_header_tv"
@@ -360,10 +301,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                 android:id="@+id/media_character_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:adt_windowInsets="false" />
         </com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout>
 
 
@@ -417,11 +359,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                 android:id="@+id/relationRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                app:adt_windowInsets="false" />
         </com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout>
 
 
@@ -432,24 +375,13 @@
             android:layout_margin="@dimen/media_overview_header_margin"
             android:text="@string/info" />
 
-        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+            android:id="@+id/metaContainerRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardUseCompatPadding="true">
-
-            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/metaContainerRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-
-        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+            android:nestedScrollingEnabled="false"
+            app:adt_windowInsets="false" />
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -460,12 +392,13 @@
             android:layout_margin="@dimen/media_overview_header_margin"
             android:text="@string/tags" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/mediaTagsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:nestedScrollingEnabled="false" />
+            android:nestedScrollingEnabled="false"
+            app:adt_windowInsets="false" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             style="@style/MediaBrowseTitleStyle"
@@ -479,11 +412,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                 android:id="@+id/recommendationRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                app:adt_windowInsets="false" />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout>
 
@@ -495,12 +429,13 @@
             android:layout_margin="@dimen/media_overview_header_margin"
             android:text="@string/links" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/metaLinkRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:nestedScrollingEnabled="false" />
+            android:nestedScrollingEnabled="false"
+            app:adt_windowInsets="false" />
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 

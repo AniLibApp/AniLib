@@ -4,15 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+    <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:adt_backgroundAware="disable"
-        app:adt_colorType="background"
-        app:adt_contrastWithColorType="none"
-        app:elevation="0dp">
+        style="@style/AlAppBarLayoutStyle">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+        <com.revolgenx.anilib.common.ui.view.AlToolbar
             android:id="@+id/dynamicToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,9 +34,9 @@
                 app:tabPaddingEnd="16dp"
                 app:tabPaddingStart="0dp"
                 app:tabTextAppearance="@style/AlTabTextAppearance.NoCaps" />
-        </com.pranavpandey.android.dynamic.support.widget.DynamicToolbar>
+        </com.revolgenx.anilib.common.ui.view.AlToolbar>
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+    </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/staff_view_pager"

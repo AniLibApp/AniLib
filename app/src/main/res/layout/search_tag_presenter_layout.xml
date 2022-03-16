@@ -5,7 +5,7 @@
     android:id="@+id/tag_chip"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_margin="2dp"
     android:textSize="11sp"
     app:ensureMinTouchTargetSize="false"
-    android:layout_margin="2dp"
     tools:ignore="SmallSp" />

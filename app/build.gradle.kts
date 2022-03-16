@@ -247,9 +247,6 @@ dependencies {
     implementation("com.google.android.exoplayer:exoplayer-core:${LibraryVersion.exo_version}")
     implementation("com.google.android.exoplayer:exoplayer-ui:${LibraryVersion.exo_version}")
 
-    //toggle //TODO try to remove later
-    implementation("com.llollox:androidtoggleswitch:2.0.1")
-
     //hauler
     implementation("com.thefuntasty.hauler:core:${LibraryVersion.hauler_version}")
 

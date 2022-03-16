@@ -26,7 +26,6 @@ class MediaGenreChipAdapter() : RecyclerView.Adapter<MediaGenreChipAdapter.Genre
                 ), parent, false
             ).also {
                 it.chipTagView.isCloseIconVisible = false
-                it.chipTagView.chipBackgroundColor =  ColorStateList.valueOf(dynamicSurfaceColor)
             }
         )
     }

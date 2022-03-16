@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.ui.view.widgets.tablayout
+package com.revolgenx.anilib.common.ui.view
 
 import android.content.Context
 import android.graphics.Color
@@ -12,7 +12,7 @@ import com.revolgenx.anilib.app.theme.contrastAccentWithBg
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 
-class AniLibTextPrimaryTabLayout : AniLibTextTabLayout {
+class AlTextPrimaryTabLayout : AlTextTabLayout {
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet) {
     }

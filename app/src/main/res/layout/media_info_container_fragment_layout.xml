@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,13 +7,11 @@
     android:layout_height="match_parent"
     app:layout_constraintTop_toTopOf="parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+    <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
         android:id="@+id/appbarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:adt_backgroundAware="disable"
-        app:adt_colorType="background"
-        app:adt_contrastWithColorType="none"
+        style="@style/AlAppBarLayoutStyle"
         app:expanded="true">
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout
@@ -401,7 +398,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+            <com.revolgenx.anilib.common.ui.view.AlToolbar
                 android:id="@+id/media_browser_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
@@ -412,7 +409,8 @@
                 app:contentInsetRight="0dp"
                 app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin"
+                />
 
         </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
 
@@ -427,7 +425,7 @@
             app:tabMode="scrollable"
             app:tabTextAppearance="@style/MediaBrowseTabTextAppearance" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+    </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
 
     <androidx.viewpager2.widget.ViewPager2

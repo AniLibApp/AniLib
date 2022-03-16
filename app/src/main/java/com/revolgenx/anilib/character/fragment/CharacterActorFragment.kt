@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.character.fragment
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.os.bundleOf
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
@@ -38,8 +39,8 @@ class CharacterActorFragment : BasePresenterFragment<VoiceActorModel>() {
         return viewModel.createSource()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.field.characterId = characterId ?: return
     }
 

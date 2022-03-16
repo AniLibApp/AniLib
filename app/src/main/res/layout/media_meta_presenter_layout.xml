@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.revolgenx.anilib.ui.view.header.AlHeaderItemView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:ads_fillSpace="true"
-    app:copySubtitleOnLongClick="true"/>
+    app:cardUseCompatPadding="true">
 
+    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ads_fillSpace="true"
+        app:copySubtitleOnLongClick="true" />
+
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

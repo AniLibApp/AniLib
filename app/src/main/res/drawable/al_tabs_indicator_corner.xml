@@ -3,5 +3,4 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <solid android:color="#FFFFFF" />
-    <corners android:radius="@dimen/ads_tab_indicator_corner_size"/>
 </shape>

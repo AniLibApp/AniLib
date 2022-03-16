@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.media.fragment
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.os.bundleOf
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
@@ -35,7 +36,7 @@ class MediaReviewFragment : BasePresenterFragment<MediaReviewModel>() {
         }
     }
 
-    companion object{
+    companion object {
         private const val MEDIA_INFO_META_KEY = "MEDIA_INFO_META_KEY"
         fun newInstance(meta: MediaInfoMeta) = MediaReviewFragment().also {
             it.arguments = bundleOf(MEDIA_INFO_META_KEY to meta)
@@ -46,9 +47,8 @@ class MediaReviewFragment : BasePresenterFragment<MediaReviewModel>() {
         return viewModel.createSource(field)
     }
 
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         mediaBrowserMeta =
             arguments?.getParcelable(MEDIA_INFO_META_KEY) ?: return
     }

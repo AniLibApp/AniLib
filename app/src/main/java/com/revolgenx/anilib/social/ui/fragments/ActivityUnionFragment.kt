@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.otaliastudios.elements.Presenter
@@ -28,6 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
+    override val applyInset: Boolean = false
     override val basePresenter: Presenter<ActivityUnionModel>
         get() = ActivityUnionPresenter(
             requireContext(),
@@ -39,7 +41,6 @@ class ActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
     override val baseSource: Source<ActivityUnionModel>
         get() = viewModel.source ?: createSource()
 
-    override val autoAddLayoutManager: Boolean = false
 
     private val viewModel by viewModel<ActivityUnionViewModel>()
     private val textComposerViewModel by sharedViewModel<ActivityTextComposerViewModel>()
@@ -76,12 +77,6 @@ class ActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
         return uBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        layoutManager = LinearLayoutManager(requireContext())
-        uBinding.activityUnionTabLayout.addOnTabSelectedListener(onTabSelectListener)
-    }
-
     private val onTabSelectListener = object : TabLayout.OnTabSelectedListener {
         override fun onTabSelected(tab: TabLayout.Tab?) {
         }
@@ -94,9 +89,11 @@ class ActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
         }
     }
 
+    override fun getBaseLayoutManager() = LinearLayoutManager(requireContext())
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        uBinding.activityUnionTabLayout.addOnTabSelectedListener(onTabSelectListener)
 
         uBinding.activityTypePopupMenu.setOnClickListener {
             makeArrayPopupMenu(

@@ -208,11 +208,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        statusBarColor = dynamicBackgroundColor
-    }
-
     private fun checkIsFromShortcut(newIntent: Intent?) {
         val intent = newIntent ?: return
         if (intent.action == Intent.ACTION_VIEW) {

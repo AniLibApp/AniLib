@@ -88,8 +88,6 @@ class MediaListEntryVM(
         if (saveField.id == null && saveField.mediaId == null) return
         saveMediaListEntry.value = Resource.loading(null)
         mediaListEntryService.saveMediaListEntry(saveField, compositeDisposable) {
-            //TODO LATER in fragment
-//            mediaListCollectionStoreVM.update(it)
             saveMediaListEntry.value = it
         }
     }
@@ -98,8 +96,6 @@ class MediaListEntryVM(
         if (saveField.id == null) return
         saveMediaListEntry.value = Resource.loading(null)
         mediaListEntryService.deleteMediaListEntry(saveField.id, compositeDisposable) {
-            //TODO LATER in fragment
-//            mediaListCollectionStoreVM.delete(it)
             deleteMediaListEntry.value = it
         }
     }

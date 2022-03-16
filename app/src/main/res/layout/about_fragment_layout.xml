@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+        <com.revolgenx.anilib.common.ui.view.AlToolbar
             android:id="@+id/dynamicToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
             app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
             app:titleTextAppearance="@style/DynamicToolbarTitleTheme" />
 
-        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
+        <com.revolgenx.anilib.common.ui.view.AlTextPrimaryTabLayout
             android:id="@+id/about_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

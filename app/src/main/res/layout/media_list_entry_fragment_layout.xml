@@ -4,14 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+    <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:adt_backgroundAware="disable"
-        app:adt_colorType="background"
-        app:adt_contrastWithColorType="none">
+        style="@style/AlAppBarLayoutStyle">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+        <com.revolgenx.anilib.common.ui.view.AlToolbar
             android:id="@+id/dynamicToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +23,7 @@
             app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
             app:titleTextAppearance="@style/DynamicToolbarTitleTheme" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+    </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

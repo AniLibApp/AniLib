@@ -1,10 +1,12 @@
 package com.revolgenx.anilib.ui.view.header
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.marginBottom
+import androidx.core.view.setPadding
 import com.pranavpandey.android.dynamic.support.Dynamic
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.pranavpandey.android.dynamic.support.view.DynamicHeader
@@ -16,26 +18,32 @@ import com.revolgenx.anilib.util.copyToClipBoard
 import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.util.sp
 
-class AlHeaderItemView(context: Context, attributeSet: AttributeSet?, defAttSet: Int) :
+open class AlHeaderItemView(context: Context, attributeSet: AttributeSet?, defAttSet: Int) :
     DynamicHeader(context, attributeSet, defAttSet) {
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
         val a = context.obtainStyledAttributes(attributeSet, R.styleable.AlHeaderItemView)
 
-        try{
-            val titleAlignCenter = a.getBoolean(R.styleable.AlHeaderItemView_titleAlignCenter, false)
-            val subtitleAlignCenter = a.getBoolean(R.styleable.AlHeaderItemView_subtitleAlignCenter, false)
+        try {
+            val titleAlignCenter =
+                a.getBoolean(R.styleable.AlHeaderItemView_titleAlignCenter, false)
+            val subtitleAlignCenter =
+                a.getBoolean(R.styleable.AlHeaderItemView_subtitleAlignCenter, false)
             val titleTextSize = a.getDimension(R.styleable.AlHeaderItemView_titleTextSize, sp(14f))
-            val subtitleTextSize = a.getDimension(R.styleable.AlHeaderItemView_subtitleTextSize, sp(13f))
-            val copySubtitle = a.getBoolean(R.styleable.AlHeaderItemView_copySubtitleOnLongClick, false)
+            val subtitleTextSize =
+                a.getDimension(R.styleable.AlHeaderItemView_subtitleTextSize, sp(13f))
+            val copySubtitle =
+                a.getBoolean(R.styleable.AlHeaderItemView_copySubtitleOnLongClick, false)
+            val ellipsizeSubtitle =
+                a.getBoolean(R.styleable.AlHeaderItemView_ellipsizeSubtitle, false)
 
-            if(titleAlignCenter){
+            if (titleAlignCenter) {
                 (titleView as DynamicTextView).isRtlSupport = false
                 titleView?.textAlignment = TEXT_ALIGNMENT_CENTER
             }
 
-            if(subtitleAlignCenter){
+            if (subtitleAlignCenter) {
                 (subtitleView as DynamicTextView).isRtlSupport = false
                 subtitleView?.textAlignment = TEXT_ALIGNMENT_CENTER
             }
@@ -43,9 +51,8 @@ class AlHeaderItemView(context: Context, attributeSet: AttributeSet?, defAttSet:
             titleView?.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize)
             subtitleView?.setTextSize(TypedValue.COMPLEX_UNIT_PX, subtitleTextSize)
 
-            titleView?.setPadding(0,0,0,dp(4f))
-
-            if(copySubtitle){
+            titleView?.setPadding(0, 0, 0, dp(4f))
+            if (copySubtitle) {
                 subtitleView?.setOnLongClickListener {
                     subtitleView?.text?.trim()?.takeIf { it.isNotEmpty() }?.let {
                         context.copyToClipBoard(it.toString())
@@ -54,10 +61,14 @@ class AlHeaderItemView(context: Context, attributeSet: AttributeSet?, defAttSet:
                 }
             }
 
-        }catch (_:Exception){
+            if (ellipsizeSubtitle) {
+                subtitleView?.ellipsize = TextUtils.TruncateAt.END
+            }
 
-        }finally{
-          a.recycle()
+        } catch (_: Exception) {
+
+        } finally {
+            a.recycle()
         }
 
         titleView?.typeface = ResourcesCompat.getFont(context, R.font.rubik_regular)

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
@@ -32,6 +33,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
+    override val applyInset: Boolean = false
     private val sharedViewModel by viewModel<UserContainerSharedVM>(owner = getViewModelOwner())
     private val userId get() = UserPreference.userId
 
@@ -46,7 +48,6 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
     override val baseSource: Source<ActivityUnionModel>
         get() = viewModel.source ?: createSource()
 
-    override val autoAddLayoutManager: Boolean = false
     private val viewModel by viewModel<ActivityUnionViewModel>()
     private val textComposerViewModel by sharedViewModel<ActivityTextComposerViewModel>()
     private val messageComposerViewModel by sharedViewModel<ActivityMessageComposerViewModel>()
@@ -82,6 +83,8 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
     }
 
 
+    override fun getBaseLayoutManager() = LinearLayoutManager(requireContext())
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (!sharedViewModel.hasUserData) return
@@ -101,7 +104,6 @@ class UserActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
             }
         }
 
-        layoutManager = LinearLayoutManager(requireContext())
         val adapter = makeSpinnerAdapter(requireContext(), activityAdapterItems)
         uBinding.userActivitySpinner.adapter = adapter
         uBinding.userActivitySpinner.onItemSelectedListener = null

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.radio.ui.view
+package com.revolgenx.anilib.common.ui.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -11,11 +11,6 @@ import com.revolgenx.anilib.R
 
 class KaoMojiStateView : RelativeLayout {
 
-
-    companion object {
-        private val errorKoeMoji = listOf("(×_×)", "(×_×)⌒☆", "(x_x)⌒☆", "(×﹏×)", "( ╥ω╥ )")
-        private val loadingKoeMoji = listOf("(^０^)ノ", "(〜￣△￣)〜", "(^◔ᴥ◔^)", "(￣_￣)・・・")
-    }
 
     enum class KoeMojiState {
         ERROR, LOADING

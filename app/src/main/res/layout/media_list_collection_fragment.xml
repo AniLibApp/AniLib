@@ -73,11 +73,11 @@
         android:layout_height="match_parent"
         app:adt_colorType="accent_dark">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/al_list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false" />
+            app:adt_windowInsets="false" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicExtendedFloatingActionButton
             android:id="@+id/list_extended_fab"

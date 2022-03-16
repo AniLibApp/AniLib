@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.search.views
+package com.revolgenx.anilib.search.view
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable

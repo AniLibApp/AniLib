@@ -657,7 +657,6 @@ country of origin -->
     <string name="chapters_range_s_s">Capítulos (%s - %s)</string>
     <string name="volumes_range_s_s">Volúmenes (%s - %s)</string>
     <string name="readable_on">Legible</string>
-    <string name="minimum_tag_percentage">Porcentaje de etiqueta mínima</string>
     <string name="minimum_tag_percentage_s">Porcentaje de etiqueta mínima (%s)</string>
     <string name="favourite">Favorito</string>
     <string name="hide_from_status_list">Ocultar de la lista de estados</string>

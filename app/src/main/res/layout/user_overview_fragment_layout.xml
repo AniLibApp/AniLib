@@ -40,30 +40,30 @@
             android:id="@+id/about_container_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardUseCompatPadding="true"
             android:visibility="gone"
-            >
+            app:cardUseCompatPadding="true">
 
             <com.revolgenx.anilib.ui.view.MaxHeightFrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="true"
                 android:paddingStart="6dp"
-                android:paddingEnd="6dp"
                 android:paddingTop="10dp"
+                android:paddingEnd="6dp"
                 android:paddingBottom="10dp">
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="true"
-                    android:padding="6dp">
+                    android:padding="6dp"
+                    app:adt_windowInsets="false">
 
                     <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                         android:id="@+id/user_about_tv"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:adt_rtlSupport="false" />
+                        android:layout_height="wrap_content" />
+
                 </com.pranavpandey.android.dynamic.support.widget.DynamicScrollView>
 
             </com.revolgenx.anilib.ui.view.MaxHeightFrameLayout>
@@ -230,6 +230,7 @@
                 android:id="@+id/tag_genre_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:adt_windowInsets="false"
                 android:nestedScrollingEnabled="false" />
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>

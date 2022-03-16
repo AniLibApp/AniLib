@@ -4,14 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+    <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:adt_backgroundAware="disable"
-        app:adt_colorType="primary"
-        app:elevation="0dp">
+        style="@style/AlAppBarLayoutStyle">
 
-        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
+        <com.revolgenx.anilib.common.ui.view.AlTextTabLayout
             android:id="@+id/list_tab_layout"
             style="@style/HomeContainerTabLayoutStyle"
             android:layout_width="match_parent"
@@ -25,7 +23,7 @@
             app:tabTextAppearance="@style/RadioTabLayoutTextStyle" />
 
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+    </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

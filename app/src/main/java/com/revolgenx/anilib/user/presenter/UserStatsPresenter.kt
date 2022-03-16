@@ -97,7 +97,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatisticModel>(conte
                     item.studio?.let { studio ->
                         statsTitleTv.text = studio.studioName
                         root.setOnClickListener {
-                            OpenStudioEvent(item.id).postEvent
+                            OpenStudioEvent(item.studio?.id ?: -1).postEvent
                         }
                     }
                 }

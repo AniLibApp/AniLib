@@ -12,8 +12,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/resource_status_container_layout"
-            android:id="@+id/resource_status_layout"/>
+        <include
+            android:id="@+id/resource_status_layout"
+            layout="@layout/resource_status_container_layout" />
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             style="@style/Widget.DynamicApp.Card.Clickable"
@@ -42,10 +43,10 @@
                         app:ads_fillSpace="true"
                         app:ads_subtitle="@string/total_anime"
                         app:ads_title="0"
-                        app:titleTextSize="11sp"
+                        app:subtitleAlignCenter="true"
                         app:subtitleTextSize="11sp"
                         app:titleAlignCenter="true"
-                        app:subtitleAlignCenter="true"/>
+                        app:titleTextSize="11sp" />
 
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
@@ -62,10 +63,10 @@
                         app:ads_fillSpace="true"
                         app:ads_subtitle="@string/episodes_watched"
                         app:ads_title="0"
-                        app:titleTextSize="11sp"
+                        app:subtitleAlignCenter="true"
                         app:subtitleTextSize="11sp"
                         app:titleAlignCenter="true"
-                        app:subtitleAlignCenter="true"/>
+                        app:titleTextSize="11sp" />
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
@@ -81,10 +82,10 @@
                         app:ads_fillSpace="true"
                         app:ads_subtitle="@string/days_watched"
                         app:ads_title="0"
-                        app:titleTextSize="11sp"
+                        app:subtitleAlignCenter="true"
                         app:subtitleTextSize="11sp"
                         app:titleAlignCenter="true"
-                        app:subtitleAlignCenter="true" />
+                        app:titleTextSize="11sp" />
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 
@@ -117,10 +118,10 @@
                         app:ads_fillSpace="true"
                         app:ads_subtitle="@string/days_planned"
                         app:ads_title="0"
-                        app:titleTextSize="11sp"
+                        app:subtitleAlignCenter="true"
                         app:subtitleTextSize="11sp"
                         app:titleAlignCenter="true"
-                        app:subtitleAlignCenter="true" />
+                        app:titleTextSize="11sp" />
 
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
@@ -138,10 +139,10 @@
                         app:ads_fillSpace="true"
                         app:ads_subtitle="@string/standard_deviation"
                         app:ads_title="0"
-                        app:titleTextSize="11sp"
+                        app:subtitleAlignCenter="true"
                         app:subtitleTextSize="11sp"
                         app:titleAlignCenter="true"
-                        app:subtitleAlignCenter="true" />
+                        app:titleTextSize="11sp" />
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
                 <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
@@ -157,10 +158,10 @@
                         app:ads_fillSpace="true"
                         app:ads_subtitle="@string/mean_score"
                         app:ads_title="0"
-                        app:titleTextSize="11sp"
+                        app:subtitleAlignCenter="true"
                         app:subtitleTextSize="11sp"
                         app:titleAlignCenter="true"
-                        app:subtitleAlignCenter="true" />
+                        app:titleTextSize="11sp" />
                 </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
 
             </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
@@ -176,13 +177,21 @@
             android:textSize="16sp"
             app:fontFamily="@font/cabin_semi_bold" />
 
-        <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
-            android:id="@+id/scoreToggleSwitch"
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toggle_switch_dime"
-            android:layout_margin="10dp"
-            android:textSize="11sp"
-            tools:ignore="SmallSp" />
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true">
+
+            <com.revolgenx.anilib.common.ui.view.AlTabSwitchLayout
+                android:id="@+id/user_stats_score_tab_switch"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/user_stats_tab_switch_height"
+                app:tabGravity="fill"
+                app:tabIndicatorHeight="@dimen/user_stats_tab_switch_height"
+                app:tabMode="fixed"
+                app:tabTextAppearance="@style/AlTabSwitchTextAppearance" />
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             style="@style/Widget.DynamicApp.Card"
@@ -219,7 +228,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="horizontal"
+                app:adt_windowInsets="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
@@ -246,7 +255,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="horizontal"
+                app:adt_windowInsets="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
@@ -273,7 +282,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="horizontal"
+                app:adt_windowInsets="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
@@ -294,13 +303,21 @@
                 android:textSize="16sp"
                 app:fontFamily="@font/cabin_semi_bold" />
 
-            <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
-                android:id="@+id/releaseYearToggleSwitch"
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/toggle_switch_dime"
-                android:layout_margin="10dp"
-                android:textSize="11sp"
-                tools:ignore="SmallSp" />
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true">
+
+                <com.revolgenx.anilib.common.ui.view.AlTabSwitchLayout
+                    android:id="@+id/user_stats_release_year_tab_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/user_stats_tab_switch_height"
+                    app:tabGravity="fill"
+                    app:tabIndicatorHeight="@dimen/user_stats_tab_switch_height"
+                    app:tabMode="fixed"
+                    app:tabTextAppearance="@style/AlTabSwitchTextAppearance" />
+
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
             <com.revolgenx.anilib.ui.view.widgets.AlCardView
                 style="@style/Widget.DynamicApp.Card"
@@ -334,13 +351,22 @@
                 android:textSize="16sp"
                 app:fontFamily="@font/cabin_semi_bold" />
 
-            <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
-                android:id="@+id/watchYearToggleSwitch"
+
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/toggle_switch_dime"
-                android:layout_margin="10dp"
-                android:textSize="11sp"
-                tools:ignore="SmallSp" />
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true">
+
+                <com.revolgenx.anilib.common.ui.view.AlTabSwitchLayout
+                    android:id="@+id/user_stats_watch_year_tab_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/user_stats_tab_switch_height"
+                    app:tabGravity="fill"
+                    app:tabIndicatorHeight="@dimen/user_stats_tab_switch_height"
+                    app:tabMode="fixed"
+                    app:tabTextAppearance="@style/AlTabSwitchTextAppearance" />
+
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
             <com.revolgenx.anilib.ui.view.widgets.AlCardView
                 style="@style/Widget.DynamicApp.Card"

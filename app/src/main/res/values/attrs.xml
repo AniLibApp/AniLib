@@ -113,7 +113,12 @@
         <attr name="entries" />
     </declare-styleable>
 
-    <declare-styleable name="AniLibTextTabLayout">
+    <declare-styleable name="AlTextTabLayout">
+        <attr name="entries" />
+        <attr name="apply_inset" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="AlTabSwitchLayout">
         <attr name="entries" />
     </declare-styleable>
 
@@ -134,6 +139,7 @@
         <attr name="titleTextSize" />
         <attr name="subtitleTextSize" format="dimension" />
         <attr name="copySubtitleOnLongClick" format="boolean" />
+        <attr name="ellipsizeSubtitle" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="HorizontalHeaderLayout">

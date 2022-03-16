@@ -9,7 +9,18 @@ const val GENRE_LIST_KEY = "genre_list_key"
 const val STREAM_LIST_KEY = "stream_list_key"
 const val EXCLUDED_TAG_KEY = "EXCLUDED_TAG_KEY"
 const val EXCLUDED_GENRE_KEY = "EXCLUDED_GENRE_KEY"
+const val max_search_episode_key = "max_search_episode_key"
+const val max_search_duration_key = "max_search_duration_key"
+const val max_search_chapter_key = "max_search_chapter_key"
+const val max_search_volume_key = "max_search_volume_key"
 
+
+object SearchPreferenceDefault {
+    const val SEARCH_MAX_EPISODE = 150
+    const val SEARCH_MAX_DURATION = 170
+    const val SEARCH_MAX_CHAPTER = 500
+    const val SEARCH_MAX_VOLUME = 50
+}
 
 fun getUserGenre(): List<String> {
     val typeToken = object : TypeToken<List<String>>() {}.type;
@@ -71,3 +82,31 @@ fun getExcludedGenre(): List<String> {
         Gson().fromJson(it, typeToken) ?: emptyList()
     }
 }
+
+var maxEpisodesPref
+    get() = load(max_search_episode_key, SearchPreferenceDefault.SEARCH_MAX_EPISODE)
+    set(value) {
+        save(max_search_episode_key, value)
+    }
+
+var maxDurationsPref
+    get() = load(
+        max_search_duration_key,
+        SearchPreferenceDefault.SEARCH_MAX_DURATION
+    )
+    set(value) {
+        save(max_search_duration_key, value)
+    }
+
+var maxChaptersPref
+    get() = load(max_search_chapter_key, SearchPreferenceDefault.SEARCH_MAX_CHAPTER)
+    set(value) {
+        save(max_search_chapter_key, value)
+    }
+
+var maxVolumesPref
+    get() = load(max_search_volume_key, SearchPreferenceDefault.SEARCH_MAX_VOLUME)
+    set(value) {
+        save(max_search_volume_key, value)
+    }
+

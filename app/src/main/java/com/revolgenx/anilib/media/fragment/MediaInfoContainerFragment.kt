@@ -84,6 +84,9 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
 
     private var state = COLLAPSED
 
+    private var isCollapsingAnimationRunning = false
+    private var isExpandingAnimationRunning = false
+
     private val offSetChangeListener =
         AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (isBindingEmpty()) return@OnOffsetChangedListener
@@ -94,9 +97,30 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
             val collapsingToolbarContentHideRange = appBarOffsetHeight / 1.4f
             val verticalOff = abs(verticalOffset)
             if (verticalOff > collapsingToolbarContentHideRange) {
-                binding.collapsingBarContentLayout.visibility = View.INVISIBLE
+                if (!isCollapsingAnimationRunning) {
+                    binding.collapsingBarContentLayout.animate().alpha(0f)
+                        .scaleX(0.6f)
+                        .scaleY(0.6f)
+                        .setDuration(300).withEndAction {
+                            binding.collapsingBarContentLayout.visibility = View.INVISIBLE
+                        }.setUpdateListener {
+                            isCollapsingAnimationRunning = it.isRunning
+                            isExpandingAnimationRunning = false
+                        }.start()
+                }
+
             } else {
-                binding.collapsingBarContentLayout.visibility = View.VISIBLE
+                if (!isExpandingAnimationRunning) {
+                    binding.collapsingBarContentLayout.animate().alpha(1f)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(300).withStartAction {
+                            binding.collapsingBarContentLayout.visibility = View.VISIBLE
+                        }.setUpdateListener {
+                            isExpandingAnimationRunning = it.isRunning
+                            isCollapsingAnimationRunning = false
+                        }.start()
+                }
             }
 
             if (verticalOffset == 0) {
@@ -108,17 +132,6 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
                 if (state != COLLAPSED) {
                     state = COLLAPSED
                     updateToolbar()
-
-                    binding.mediaBrowserCollapsingToolbar.layoutParams.let {
-                        if (it is AppBarLayout.LayoutParams) {
-                            val flags =
-                                AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
-                            if (it.scrollFlags != flags) {
-                                it.scrollFlags = flags
-                            }
-
-                        }
-                    }
                 }
             }
         }

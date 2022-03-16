@@ -5,18 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+    <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="@style/AlAppBarLayoutStyle">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+        <com.revolgenx.anilib.common.ui.view.AlToolbar
             android:id="@+id/activity_composer_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:adt_colorType="background"
             app:adt_textColorType="text_primary" />
 
-        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
+        <com.revolgenx.anilib.common.ui.view.AlTextPrimaryTabLayout
             android:id="@+id/activity_composer_tab_layout"
             style="@style/DynamicTextTabLayoutStyle"
             android:layout_width="match_parent"
@@ -27,7 +28,7 @@
             app:tabGravity="fill"
             app:tabMode="fixed" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+    </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
 
     <androidx.viewpager2.widget.ViewPager2

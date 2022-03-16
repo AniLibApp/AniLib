@@ -16,6 +16,7 @@ import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class UserStatsFragment : BasePresenterFragment<BaseStatisticModel>() {
+    override val applyInset: Boolean = false
     abstract val viewModel: UserStatsViewModel
     abstract val statsType: UserStatsField.UserStatsType
     override val basePresenter: Presenter<BaseStatisticModel>

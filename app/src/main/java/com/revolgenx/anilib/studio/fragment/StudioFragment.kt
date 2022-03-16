@@ -78,8 +78,8 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.field.studioId = studioId ?: return
         viewModel.studioField.studioId = studioId
         viewModel.toggleFavouriteField.studioId = studioId

@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.friend.fragment
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.os.bundleOf
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
@@ -32,8 +33,8 @@ class UserFriendFragment : BasePresenterFragment<UserModel>() {
         return viewModel.createSource()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             field.userId = it.getInt(USER_ID_KEY)
             field.isFollower = it.getBoolean(IS_FOLLOWER_KEY)

@@ -17,11 +17,11 @@
     <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <androidx.recyclerview.widget.RecyclerView
+        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/discover_airing_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/discover_recycler_height"
-            android:clipToPadding="false"
+            app:adt_windowInsets="false"
             android:nestedScrollingEnabled="false" />
     </com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout>
 

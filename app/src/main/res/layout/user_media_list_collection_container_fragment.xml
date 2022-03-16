@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+    <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp">
+        style="@style/AlAppBarLayoutStyle">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+        <com.revolgenx.anilib.common.ui.view.AlToolbar
             android:id="@+id/dynamicToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="enterAlways|scroll">
 
-            <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextTabLayout
+            <com.revolgenx.anilib.common.ui.view.AlTextTabLayout
                 android:id="@+id/list_tab_layout"
                 style="@style/HomeContainerTabLayoutStyle"
                 android:layout_width="match_parent"
@@ -32,9 +32,9 @@
                 app:adt_textColorType="text_primary"
                 app:tabTextAppearance="@style/ListTabLayoutTextStyle" />
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicToolbar>
+        </com.revolgenx.anilib.common.ui.view.AlToolbar>
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+    </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/user_list_view_pager"

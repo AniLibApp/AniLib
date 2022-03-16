@@ -2,6 +2,7 @@ package com.revolgenx.anilib.search.data.field
 
 import com.revolgenx.anilib.*
 import com.revolgenx.anilib.common.data.field.BaseSourceField
+import com.revolgenx.anilib.common.data.model.FuzzyDateIntModel
 import com.revolgenx.anilib.constant.CountryOfOrigins
 import com.revolgenx.anilib.type.*
 
@@ -11,8 +12,8 @@ class SearchField : BaseSourceField<Any>() {
     var search: String? = null
     var season: Int? = null
 
-    var yearGreater: Int? = null
-    var yearLesser: Int? = null
+    var yearGreater: FuzzyDateIntModel? = null
+    var yearLesser: FuzzyDateIntModel? = null
 
     var year: Int? = null
     var status: Int? = null
@@ -66,8 +67,8 @@ class SearchField : BaseSourceField<Any>() {
                     durationGreater = nn(durationGreater),
                     durationLesser = nn(durationLesser),
                     licensedBy = nn(streamingOn),
-                    yearGreater = nn(yearGreater),
-                    yearLesser = nn(yearLesser),
+                    yearGreater = nn(yearGreater?.toFuzzyDateInt()),
+                    yearLesser = nn(yearLesser?.toFuzzyDateInt()),
                     season = nn(season?.let { MediaSeason.values()[it] }),
                     year = nn(year?.let { "$it%" }),
                     status = nn(status?.let { MediaStatus.values()[it] }),
@@ -96,8 +97,8 @@ class SearchField : BaseSourceField<Any>() {
                     volumesLesser = nn(volumesLesser),
                     licensedBy = nn(readableOn),
                     year = nn(year?.let { "$it%" }),
-                    yearGreater = nn(yearGreater),
-                    yearLesser = nn(yearLesser),
+                    yearGreater = nn(yearGreater?.toFuzzyDateInt()),
+                    yearLesser = nn(yearLesser?.toFuzzyDateInt()),
                     seasonYear = nn(year),
                     status = nn(status?.let { MediaStatus.values()[it] }),
                     country = nn(countryOfOrigin?.let { CountryOfOrigins.values()[it].name }),

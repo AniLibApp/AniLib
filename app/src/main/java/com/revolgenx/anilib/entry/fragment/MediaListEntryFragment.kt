@@ -27,6 +27,7 @@ import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.databinding.MediaListEntryFragmentLayoutBinding
 import com.revolgenx.anilib.entry.data.model.UserMediaModel
 import com.revolgenx.anilib.entry.viewmodel.MediaListEntryVM
+import com.revolgenx.anilib.list.event.ListEvent
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
@@ -98,6 +99,13 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
         viewModel.saveMediaListEntry.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
+                    if (it.value != null) {
+                        if (saveField.id == null) {
+                            ListEvent.ListAddEvent(it.value).postEvent
+                        } else {
+                            ListEvent.ListUpdateEvent(it.value).postEvent
+                        }
+                    }
                     popBackStack()
                 }
                 is Resource.Error -> {
@@ -109,9 +117,12 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
             }
         }
 
-        viewModel.deleteMediaListEntry.observe(viewLifecycleOwner) {
-            when (it) {
+        viewModel.deleteMediaListEntry.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
                 is Resource.Success -> {
+                    saveField.id?.let {
+                        ListEvent.ListDeleteEvent(it).postEvent
+                    }
                     popBackStack()
                 }
                 is Resource.Error -> {

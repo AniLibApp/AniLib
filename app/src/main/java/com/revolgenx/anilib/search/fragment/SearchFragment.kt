@@ -37,6 +37,7 @@ import com.revolgenx.anilib.databinding.SearchFragmentLayoutBinding
 import com.revolgenx.anilib.ui.selector.dialog.SelectableDialogFragment
 import com.revolgenx.anilib.activity.event.ActivityEventListener
 import com.revolgenx.anilib.common.data.meta.TagState
+import com.revolgenx.anilib.common.data.model.FuzzyDateIntModel
 import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.common.ui.model.SelectableSpinnerMenu
 import com.revolgenx.anilib.constant.AlMediaSort
@@ -87,7 +88,6 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private val handler = Handler(Looper.getMainLooper())
 
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
-    override val autoAddLayoutManager: Boolean = false
 
     private var genreAdapter: Adapter? = null
     private var tagsAdapter: Adapter? = null
@@ -98,16 +98,24 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private val yearLesser = Calendar.getInstance().get(Calendar.YEAR) + 1f
 
     private val episodesGreater = 0f
-    private val episodesLesser = 150f
+    private val episodesLesser by lazy {
+        maxEpisodesPref.toFloat()
+    }
 
     private val chaptersGreater = 0f
-    private val chaptersLesser = 500f
+    private val chaptersLesser by lazy {
+        maxChaptersPref.toFloat()
+    }
 
     private val durationGreater = 0f
-    private val durationLesser = 170f
+    private val durationLesser by lazy {
+        maxDurationsPref.toFloat()
+    }
 
     private val volumesGreater = 0f
-    private val volumesLesser = 50f
+    private val volumesLesser by lazy {
+        maxVolumesPref.toFloat()
+    }
 
     private var applyingFilter = false
     private val yearList by lazy {
@@ -200,30 +208,23 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     }
 
 
+    override var gridMaxSpan: Int = 6
+    override var gridMinSpan: Int = 3
+
+    override fun getItemSpanSize(position: Int) = if (adapter?.getItemViewType(position)?.let {
+            it == SearchTypes.MANGA.ordinal
+                    || it == SearchTypes.ANIME.ordinal
+                    || it == SearchTypes.CHARACTER.ordinal
+                    || it == SearchTypes.STAFF.ordinal
+                    || it == SearchTypes.USER.ordinal
+        } == true) {
+        1
+    } else {
+        span
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val span =
-            if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 3
-        layoutManager = GridLayoutManager(
-            this.context,
-            span
-        ).also {
-            it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return if (adapter?.getItemViewType(position)?.let {
-                            it == SearchTypes.MANGA.ordinal
-                                    || it == SearchTypes.ANIME.ordinal
-                                    || it == SearchTypes.CHARACTER.ordinal
-                                    || it == SearchTypes.STAFF.ordinal
-                                    || it == SearchTypes.USER.ordinal
-                        } == true) {
-                        1
-                    } else {
-                        span
-                    }
-                }
-            }
-        }
 
         bottomSheetBehavior = BottomSheetBehavior.from(sBinding.searchFilterBottomSheet)
         ViewCompat.setOnApplyWindowInsetsListener(
@@ -260,20 +261,18 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
-        if (savedInstanceState == null) {
-            field.genreNotIn = getExcludedGenre().toMutableList()
-            field.tagsNotIn = getExcludedTags().toMutableList()
-            field.isHentai = if (canShowAdult(requireContext())) null else false
+        field.genreNotIn = getExcludedGenre().toMutableList()
+        field.tagsNotIn = getExcludedTags().toMutableList()
+        field.isHentai = if (canShowAdult(requireContext())) null else false
 
-            searchFilterModel?.let {
-                it.genre?.let { genre ->
-                    field.genreIn = (field.genreIn ?: mutableListOf()).also { it.add(genre) }
-                }
-                it.tag?.let { tag ->
-                    field.tagsIn = (field.tagsIn ?: mutableListOf()).also { it.add(tag) }
-                }
-                field.sort = it.sort
+        searchFilterModel?.let {
+            it.genre?.let { genre ->
+                field.genreIn = (field.genreIn ?: mutableListOf()).also { it.add(genre) }
             }
+            it.tag?.let { tag ->
+                field.tagsIn = (field.tagsIn ?: mutableListOf()).also { it.add(tag) }
+            }
+            field.sort = it.sort
         }
 
         sBinding.bind()
@@ -438,8 +437,8 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
 
         if (field.yearGreater != null || field.yearLesser != null) {
             yearRangeFilterHeader.text = getString(R.string.year_range_s_s).format(
-                field.yearGreater ?: yearGreater.toInt(),
-                field.yearLesser ?: yearLesser.toInt()
+                field.yearGreater?.year ?: yearGreater.toInt(),
+                field.yearLesser?.year ?: yearLesser.toInt()
             )
         } else {
             yearRangeFilterHeader.setText(R.string.year_range)
@@ -489,12 +488,8 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             }
         }
 
-        if (field.minimumTagRank != null) {
-            minimumTagPercetageHeader.text =
-                getString(R.string.minimum_tag_percentage_s).format(field.minimumTagRank)
-        } else {
-            minimumTagPercetageHeader.setText(R.string.minimum_tag_percentage)
-        }
+        minimumTagPercetageHeader.text =
+            getString(R.string.minimum_tag_percentage_s).format(field.minimumTagRank ?: 18)
 
         if (savedInstanceState == null) {
             yearRangeSlider.values = listOf(yearGreater, yearLesser)
@@ -730,13 +725,15 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         yearRangeSlider.addOnChangeListener { slider, _, _ ->
             val currentYearGreater = slider.values[0]
             val currentYearLesser = slider.values[1]
-            field.yearGreater = currentYearGreater.takeIf { it != yearGreater }?.toInt()
-            field.yearLesser = currentYearLesser.takeIf { it != yearLesser }?.toInt()
+            field.yearGreater = currentYearGreater.takeIf { it != yearGreater }
+                ?.let { FuzzyDateIntModel(it.toInt(), 0, 0) }
+            field.yearLesser = currentYearLesser.takeIf { it != yearLesser }
+                ?.let { FuzzyDateIntModel(it.toInt(), 0, 0) }
 
             if (field.yearGreater != null || field.yearLesser != null) {
                 yearRangeFilterHeader.text = getString(R.string.year_range_s_s).format(
-                    field.yearGreater ?: yearGreater.toInt(),
-                    field.yearLesser ?: yearLesser.toInt()
+                    field.yearGreater?.year ?: yearGreater.toInt(),
+                    field.yearLesser?.year ?: yearLesser.toInt()
                 )
             } else {
                 yearRangeFilterHeader.setText(R.string.year_range)

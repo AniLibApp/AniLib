@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
@@ -44,13 +45,15 @@ abstract class BasePresenterFragment<M : Any>() :
     val baseRecyclerView get() = binding.basePresenterRecyclerView
     val baseSwipeRefreshLayout get() = binding.baseSwipeToRefresh
 
+    protected open val applyInset = true
+
     lateinit var layoutManager: RecyclerView.LayoutManager
 
-    protected open var gridMinSpan = 1
-    protected open var gridMaxSpan = 2
+    protected open val gridMinSpan = 1
+    protected open val gridMaxSpan = 2
     protected open val autoAddLayoutManager = true
 
-    var span: Int = 1
+    protected var span: Int = 1
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -59,42 +62,50 @@ abstract class BasePresenterFragment<M : Any>() :
         return BasePresenterFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
+    @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (autoAddLayoutManager) {
-            span =
-                if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) gridMaxSpan else gridMinSpan
-            layoutManager = GridLayoutManager(this.context, span).also {
-                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.getItemViewType(position) == 0) {
-                            1
-                        } else {
-                            span
-                        }
-                    }
-                }
-            }
-        }
-    }
+        span = getSpanCount()
+        layoutManager = getBaseLayoutManager()
 
-    protected open fun reloadLayoutManager() {
-        if(::layoutManager.isInitialized){
-            baseRecyclerView.layoutManager = layoutManager
+        if (applyInset) {
+            baseRecyclerView.applyWindowInsets()
         }
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        reloadLayoutManager()
 
         baseSwipeRefreshLayout.setOnRefreshListener {
             createSource()
             baseSwipeRefreshLayout.isRefreshing = false
             invalidateAdapter()
         }
+
+        reloadLayoutManager()
     }
 
+    protected open fun getSpanCount() =
+        if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) gridMaxSpan else gridMinSpan
+
+    protected open fun getItemSpanSize(position: Int) =
+        if (adapter?.getItemViewType(position) == 0) {
+            1
+        } else {
+            span
+        }
+
+    protected open fun getBaseLayoutManager(): RecyclerView.LayoutManager =
+        GridLayoutManager(this.context, span).also {
+            it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return getItemSpanSize(position)
+                }
+            }
+        }
+
+    protected open fun reloadLayoutManager() {
+        if (::layoutManager.isInitialized) {
+            baseRecyclerView.layoutManager = layoutManager
+        }
+    }
 
     override fun onResume() {
         super.onResume()

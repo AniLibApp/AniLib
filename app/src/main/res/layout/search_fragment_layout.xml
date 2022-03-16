@@ -5,18 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+    <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
         android:id="@+id/search_app_bar_layout"
+        style="@style/AlAppBarLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
-        app:adt_backgroundAware="disable"
-        app:adt_colorType="background"
-        app:adt_contrastWithColorType="none"
-        app:elevation="0dp"
         app:layout_behavior="com.revolgenx.anilib.search.behavior.SearchAppBarBehavior">
 
-        <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+        <com.revolgenx.anilib.common.ui.view.AlToolbar
             android:id="@+id/dynamic_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,21 +76,21 @@
             </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
-        </com.pranavpandey.android.dynamic.support.widget.DynamicToolbar>
+        </com.revolgenx.anilib.common.ui.view.AlToolbar>
 
-        <com.revolgenx.anilib.search.views.SearchTypeTabLayout
+        <com.revolgenx.anilib.search.view.SearchTypeTabLayout
             android:id="@+id/search_type_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            app:adt_textColorType="text_primary"
             android:layout_marginHorizontal="4dp"
             android:layout_marginBottom="2dp"
+            app:adt_textColorType="text_primary"
             app:layout_scrollFlags="enterAlways|scroll"
+            app:tabIndicatorGravity="center"
             app:tabIndicatorHeight="36dp"
-            app:tabMode="scrollable"
-            app:tabIndicatorGravity="center"/>
+            app:tabMode="scrollable" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+    </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
     <FrameLayout
         android:id="@+id/search_container_frame_layout"
@@ -128,10 +124,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.core.widget.NestedScrollView
+            <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
                 android:id="@+id/filter_nested_scroll_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:adt_windowInsets="false"
                 app:layout_constrainedHeight="true"
                 app:layout_constraintBottom_toTopOf="@+id/search_apply_filter"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -474,10 +471,11 @@
                             android:text="@string/genre"
                             app:closeIcon="@drawable/ic_add" />
 
-                        <androidx.recyclerview.widget.RecyclerView
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                             android:id="@+id/genre_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:adt_windowInsets="false"
                             app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
 
                         <com.revolgenx.anilib.ui.view.widgets.chip.DynamicChip
@@ -487,10 +485,11 @@
                             android:text="@string/tags"
                             app:closeIcon="@drawable/ic_add" />
 
-                        <androidx.recyclerview.widget.RecyclerView
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                             android:id="@+id/tags_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:adt_windowInsets="false"
                             app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
 
                         <com.revolgenx.anilib.ui.view.widgets.chip.DynamicChip
@@ -500,10 +499,11 @@
                             android:text="@string/streaming_on"
                             app:closeIcon="@drawable/ic_add" />
 
-                        <androidx.recyclerview.widget.RecyclerView
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
                             android:id="@+id/licensed_by_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:adt_windowInsets="false"
                             app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
 
                     </LinearLayout>
@@ -559,8 +559,7 @@
                             android:id="@+id/minimum_tag_percetage_header"
                             style="@style/FilterHeaderStyle"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/minimum_tag_percentage" />
+                            android:layout_height="wrap_content" />
 
 
                         <com.pranavpandey.android.dynamic.support.widget.DynamicSlider
@@ -575,7 +574,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+            </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
 
             <com.revolgenx.anilib.ui.view.widgets.AlCardView
                 android:id="@+id/search_apply_filter"

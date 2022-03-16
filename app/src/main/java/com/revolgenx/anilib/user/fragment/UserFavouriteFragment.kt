@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.revolgenx.anilib.search.data.field.SearchTypes
@@ -17,6 +18,7 @@ import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class UserFavouriteFragment() : BasePresenterFragment<BaseModel>() {
+    override val applyInset: Boolean = false
     override val basePresenter: Presenter<BaseModel>
         get() = UserFavouritePresenter(requireContext(), viewLifecycleOwner)
 
@@ -34,29 +36,31 @@ abstract class UserFavouriteFragment() : BasePresenterFragment<BaseModel>() {
 
     override var gridMaxSpan: Int = 6
     override var gridMinSpan: Int = 3
-    override val autoAddLayoutManager: Boolean get() = favouriteType != SearchTypes.STUDIO
+
+    override fun getBaseLayoutManager(): RecyclerView.LayoutManager {
+        return if (favouriteType == SearchTypes.STUDIO) {
+            LinearLayoutManager(requireContext())
+        } else {
+            super.getBaseLayoutManager()
+        }
+    }
+
+    override fun getItemSpanSize(position: Int): Int {
+        if (favouriteType != SearchTypes.STUDIO) {
+            return if (adapter?.getItemViewType(position)?.let {
+                    it == SearchTypes.MANGA.ordinal || it == SearchTypes.ANIME.ordinal || it == SearchTypes.CHARACTER.ordinal || it == SearchTypes.STAFF.ordinal
+                } == true) {
+                1
+            } else {
+                span
+            }
+        }
+        return super.getItemSpanSize(position)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         sharedViewModel.hasUserData ?: return
-
-        if (favouriteType == SearchTypes.STUDIO) {
-            layoutManager = LinearLayoutManager(requireContext())
-        } else {
-            (layoutManager as GridLayoutManager).spanSizeLookup =
-                object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.getItemViewType(position)?.let {
-                                it == SearchTypes.MANGA.ordinal || it == SearchTypes.ANIME.ordinal || it == SearchTypes.CHARACTER.ordinal || it == SearchTypes.STAFF.ordinal
-                            } == true) {
-                            1
-                        } else {
-                            span
-                        }
-                    }
-                }
-        }
         with(viewModel.field) {
             userName = sharedViewModel.userName
             userId = sharedViewModel.userId

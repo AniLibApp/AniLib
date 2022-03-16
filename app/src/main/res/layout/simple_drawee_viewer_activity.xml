@@ -23,7 +23,7 @@
                 android:transitionName="big_image_viewer"
                 app:failureImage="@drawable/ic_error_anilib" />
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+            <com.revolgenx.anilib.common.ui.view.AlToolbar
                 android:id="@+id/draweeViewerToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"

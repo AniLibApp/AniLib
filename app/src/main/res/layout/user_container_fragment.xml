@@ -6,13 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout
+    <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
+        style="@style/AlAppBarLayoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:adt_backgroundAware="disable"
-        app:adt_colorType="primary"
-        app:adt_contrastWithColorType="none"
-        app:elevation="1dp">
+        android:layout_height="wrap_content">
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout
@@ -21,7 +18,7 @@
             android:layout_height="wrap_content"
             app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
             app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -73,7 +70,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/username_tv" />
 
-                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
+                <com.revolgenx.anilib.user.view.UserHeaderItemView
                     android:id="@+id/following_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -93,7 +90,7 @@
                     app:titleAlignCenter="true"
                     app:titleTextSize="@dimen/profile_title_size" />
 
-                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
+                <com.revolgenx.anilib.user.view.UserHeaderItemView
                     android:id="@+id/follower_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -111,8 +108,7 @@
                     app:titleAlignCenter="true"
                     app:titleTextSize="@dimen/profile_title_size" />
 
-
-                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
+                <com.revolgenx.anilib.user.view.UserHeaderItemView
                     android:id="@+id/anime_count_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -130,8 +126,7 @@
                     app:titleAlignCenter="true"
                     app:titleTextSize="@dimen/profile_title_size" />
 
-
-                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
+                <com.revolgenx.anilib.user.view.UserHeaderItemView
                     android:id="@+id/manga_count_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,18 +144,10 @@
                     app:titleAlignCenter="true"
                     app:titleTextSize="@dimen/profile_title_size" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/translucent_gray"
-                    app:layout_constraintTop_toBottomOf="@+id/following_header" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicToolbar
+            <com.revolgenx.anilib.common.ui.view.AlToolbar
                 android:id="@+id/profile_fragment_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
@@ -170,17 +157,19 @@
         </com.pranavpandey.android.dynamic.support.widget.DynamicCollapsingToolbarLayout>
 
 
-        <com.revolgenx.anilib.ui.view.widgets.tablayout.AniLibTextPrimaryTabLayout
+        <com.revolgenx.anilib.common.ui.view.AlTextPrimaryTabLayout
             android:id="@+id/user_tab_layout"
             style="@style/DynamicTextTabLayoutStyle"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="@dimen/toolbar_size"
             app:adt_backgroundColorType="background"
             app:adt_colorType="accent"
             app:adt_contrastWithColorType="background"
+            app:apply_inset="true"
             app:tabMode="scrollable" />
 
-    </com.pranavpandey.android.dynamic.support.widget.DynamicAppBarLayout>
+
+    </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
 
     <com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
