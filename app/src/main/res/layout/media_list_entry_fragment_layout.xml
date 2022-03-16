@@ -351,6 +351,7 @@
                     android:id="@+id/custom_list_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:adt_windowInsets="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

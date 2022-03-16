@@ -26,7 +26,7 @@ class MediaWatchFragment : BasePresenterFragment<MediaStreamingEpisodeModel>() {
     }
 
     override var gridMaxSpan: Int = 4
-    override var gridMinSpan: Int = 4
+    override var gridMinSpan: Int = 2
 
     override val basePresenter: Presenter<MediaStreamingEpisodeModel> by lazy {
         MediaWatchPresenter(requireContext())
