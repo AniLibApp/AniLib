@@ -264,15 +264,15 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
     }
 
     private fun isNewNotification(item: NotificationModel?): Boolean {
-        if (getLastNotification(context) == -1) {
+        if (getLastNotification() == -1) {
             setNewNotification(item)
             return false
         }
-        return getLastNotification(context) != item?.id
+        return getLastNotification() != item?.id
     }
 
     private fun setNewNotification(item: NotificationModel?) {
-        setNewNotification(context, item?.id ?: -1)
+        setNewNotification(item?.id ?: -1)
     }
 
 

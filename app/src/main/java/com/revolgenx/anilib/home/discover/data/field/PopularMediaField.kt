@@ -14,6 +14,6 @@ class PopularMediaField: MediaField() {
     override var includeStudio: Boolean = true
 
     fun savePopularField(context: Context) {
-        storePopularField(context, this)
+        storePopularField(this)
     }
 }

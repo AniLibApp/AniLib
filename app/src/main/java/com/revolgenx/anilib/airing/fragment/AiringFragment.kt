@@ -130,7 +130,7 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
         if (menu is MenuBuilder) {
             menu.setOptionalIconsVisible(true)
         }
-        menu.findItem(R.id.weekly_filter).isChecked = showAiringWeekly(requireContext())
+        menu.findItem(R.id.weekly_filter).isChecked = showAiringWeekly()
     }
 
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
@@ -158,7 +158,7 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
                     it.onDoneListener = {
                         if (context != null) {
                             viewModel.updateField(requireContext())
-                            storeAiringField(requireContext(), viewModel.field)
+                            storeAiringField(viewModel.field)
                             createSource()
                             invalidateAdapter()
                         }
@@ -237,7 +237,7 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
         }
 
         viewModel.updateField(requireContext())
-        viewModel.updateDateRange(showAiringWeekly(requireContext()))
+        viewModel.updateDateRange(showAiringWeekly())
 
 
         ItemTouchHelper(object :

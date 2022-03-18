@@ -24,6 +24,9 @@ class AlCheckBox : LinearLayout {
 
     var onCheckChangeListener: ((state: CheckBoxState) -> Unit)? = null
 
+    val checkDrawable: DynamicImageView
+    val textView: DynamicTextView
+
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0)
     constructor(context: Context, attributeSet: AttributeSet?, defStyle: Int) : super(
@@ -33,7 +36,7 @@ class AlCheckBox : LinearLayout {
     ) {
         orientation = HORIZONTAL
 
-        val textView = DynamicTextView(context).also {
+        textView = DynamicTextView(context).also {
             it.layoutParams =
                 LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).also {
                     it.gravity = Gravity.CENTER_VERTICAL
@@ -42,7 +45,7 @@ class AlCheckBox : LinearLayout {
             it.gravity = Gravity.CENTER_VERTICAL
             it.textSize = 14f
         }
-        val checkDrawable = DynamicImageView(context).also {
+        checkDrawable = DynamicImageView(context).also {
             it.layoutParams =
                 LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).also {
                     it.gravity = Gravity.CENTER_VERTICAL
@@ -70,35 +73,54 @@ class AlCheckBox : LinearLayout {
         addView(textView)
 
         setOnClickListener {
-            updateState()
-            when (state) {
-                CheckBoxState.CHECKED -> {
-                    checkDrawable.colorType = Theme.ColorType.ACCENT
-                    textView.colorType = Theme.ColorType.ACCENT
-                    checkDrawable.setImageResource(R.drawable.ic_check_circle)
-                }
-                CheckBoxState.INTERMEDIATE -> {
-                    checkDrawable.colorType = Theme.ColorType.ACCENT
-                    textView.colorType = Theme.ColorType.ACCENT
-                    checkDrawable.setImageResource(R.drawable.ic_intermediate_circle)
-                }
-                CheckBoxState.UNCHECKED -> {
-                    textView.colorType = Theme.ColorType.TINT_BACKGROUND
-                    checkDrawable.colorType = Theme.ColorType.TINT_BACKGROUND
-                    checkDrawable.setImageResource(R.drawable.ic_uncheck_circle)
-                }
-            }
+            toggleState()
+            updateCheckbox()
             onCheckChangeListener?.invoke(state)
         }
     }
 
-    private fun updateState() {
+    fun updateState(bool: Boolean?) {
+        state = when(bool){
+            true->{
+                CheckBoxState.CHECKED
+            }
+            false->{
+                CheckBoxState.UNCHECKED
+            }
+            null ->{
+                CheckBoxState.INTERMEDIATE
+            }
+        }
+        updateCheckbox()
+    }
+
+
+    private fun toggleState() {
         state = when (state) {
             CheckBoxState.CHECKED -> if (hasIntermediate) CheckBoxState.INTERMEDIATE else CheckBoxState.UNCHECKED
             CheckBoxState.INTERMEDIATE -> CheckBoxState.UNCHECKED
             CheckBoxState.UNCHECKED -> CheckBoxState.CHECKED
         }
+    }
 
+    private fun updateCheckbox() {
+        when (state) {
+            CheckBoxState.CHECKED -> {
+                checkDrawable.colorType = Theme.ColorType.ACCENT
+                textView.colorType = Theme.ColorType.ACCENT
+                checkDrawable.setImageResource(R.drawable.ic_check_circle)
+            }
+            CheckBoxState.INTERMEDIATE -> {
+                checkDrawable.colorType = Theme.ColorType.ACCENT
+                textView.colorType = Theme.ColorType.ACCENT
+                checkDrawable.setImageResource(R.drawable.ic_intermediate_circle)
+            }
+            CheckBoxState.UNCHECKED -> {
+                textView.colorType = Theme.ColorType.TINT_BACKGROUND
+                checkDrawable.colorType = Theme.ColorType.TINT_BACKGROUND
+                checkDrawable.setImageResource(R.drawable.ic_uncheck_circle)
+            }
+        }
     }
 
     override fun onSaveInstanceState(): Parcelable {

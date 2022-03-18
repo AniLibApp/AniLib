@@ -15,6 +15,6 @@ class TrendingMediaField : MediaField() {
     }
 
     fun saveTrendingField(context: Context) {
-        storeTrendingField(context, this)
+        storeTrendingField(this)
     }
 }

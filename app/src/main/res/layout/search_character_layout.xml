@@ -26,18 +26,18 @@
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
             android:id="@+id/searchCharacterNameTv"
+            style="@style/TitleFontStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="6dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
-            style="@style/TitleFontStyle"
             android:maxLines="1"
-            android:textSize="11sp"
+            android:padding="6dp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/searchCharacterImageView"
             app:layout_constraintRight_toRightOf="@id/searchCharacterImageView"
             app:layout_constraintTop_toBottomOf="@id/searchCharacterImageView"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="SmallSp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
-import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.SeasonPresenterLayoutBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
@@ -20,7 +18,7 @@ import com.revolgenx.anilib.common.event.OpenSearchEvent
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
-import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
+import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
@@ -76,7 +74,7 @@ class SeasonPresenter(context: Context) :
             mediaGenreLayout.addGenre(
                 item.genres?.take(5)
             ) { genre ->
-                OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
+                OpenSearchEvent(SearchFilterEventModel(genre = genre)).postEvent
             }
 
             mediaRatingTv.text = item.averageScore

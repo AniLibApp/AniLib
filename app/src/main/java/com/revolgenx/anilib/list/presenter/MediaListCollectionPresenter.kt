@@ -29,7 +29,7 @@ import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionVM
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.media.data.model.isAnime
-import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
+import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.view.GenreLayout
@@ -192,7 +192,7 @@ class MediaListCollectionPresenter(
             progressTv?.compoundDrawablesRelative?.get(0)?.setTint(dynamicTextColorPrimary)
 
             genreLayout?.addGenre(item.media?.genres?.take(3)) { genre ->
-                OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
+                OpenSearchEvent(SearchFilterEventModel(genre = genre)).postEvent
             }
 
             startDateTv?.text = context.getString(R.string.startdate_format)

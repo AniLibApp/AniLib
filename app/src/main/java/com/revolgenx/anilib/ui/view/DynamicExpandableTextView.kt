@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.ui.view
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -12,9 +13,8 @@ import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 class DynamicExpandableTextView(context: Context, attributeSet: AttributeSet?, style: Int) :
     DynamicTextView(context, attributeSet, style), View.OnClickListener {
 
-    var myMaxLines = Integer.MAX_VALUE
-
-    private var expansionListener:((Boolean)->Unit)? = null
+    private var currentMaxLines = Integer.MAX_VALUE
+    private val isExpanded get() = currentMaxLines == Integer.MAX_VALUE
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0) {
@@ -38,52 +38,34 @@ class DynamicExpandableTextView(context: Context, attributeSet: AttributeSet?, s
         lengthAfter: Int
     ) {
         post {
-            if (lineCount > MAX_LINES){
+            if (lineCount > MAX_LINES) {
                 setCompoundDrawablesWithIntrinsicBounds(
                     null,
                     null,
                     null,
                     moreIcon
                 )
-            }
-            else{
+            } else {
                 setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 maxLines = MAX_LINES
             }
         }
     }
 
-
-    override fun setMaxLines(maxLines: Int) {
-        myMaxLines = maxLines
-        super.setMaxLines(maxLines)
-    }
-
     override fun onClick(v: View) {
-        /* Toggle between expanded collapsed states */
         toggle()
     }
 
     fun toggle() {
-        maxLines = if (isExpanded())
+        val newMaxLine = if (isExpanded)
             MAX_LINES
         else
             Integer.MAX_VALUE
 
-        expansionListener?.invoke(isExpanded())
+        currentMaxLines = newMaxLine
+        maxLines = currentMaxLines
     }
 
-    fun isExpanded(): Boolean {
-        return myMaxLines == Integer.MAX_VALUE
-    }
-
-    fun needsExpansion(): Boolean {
-        return lineCount > MAX_LINES
-    }
-
-    fun expansionListener(listener: (Boolean) -> Unit) {
-        expansionListener = listener
-    }
 
     companion object {
         private const val MAX_LINES = 5

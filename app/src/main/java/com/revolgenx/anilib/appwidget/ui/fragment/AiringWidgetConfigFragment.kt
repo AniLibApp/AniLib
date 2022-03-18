@@ -26,7 +26,7 @@ import java.util.*
 class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmentLayoutBinding>() {
 
     private val field by lazy {
-        getAiringScheduleFieldForWidget(requireContext())
+        getAiringScheduleFieldForWidget()
     }
 
     override var setHomeAsUp: Boolean = true

@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.viewmodel.MainSharedVM
 import com.revolgenx.anilib.common.preference.*
@@ -62,7 +62,7 @@ open class DiscoverWatchingFragment : DiscoverAiringFragment() {
                 it.isNestedScrollingEnabled = false
             }
 
-            val recyclerViewContainer = DynamicViewPager2Layout(requireContext()).also {
+            val recyclerViewContainer = FrameLayout(requireContext()).also {
                 it.layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT

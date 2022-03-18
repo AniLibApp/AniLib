@@ -7,7 +7,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.media.data.model.MediaTagModel
 import com.revolgenx.anilib.databinding.ChipTagPresenterBinding
 import com.revolgenx.anilib.common.event.OpenSearchEvent
-import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
+import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 
 class MediaTagChipAdapter(val onTagInfoClicked: (MediaTagModel) -> Unit) :
     RecyclerView.Adapter<MediaTagChipAdapter.TagChipViewHolder>() {
@@ -49,7 +49,7 @@ class MediaTagChipAdapter(val onTagInfoClicked: (MediaTagModel) -> Unit) :
                 chipTagView.isCloseIconVisible = true
 
                 root.setOnClickListener {
-                    OpenSearchEvent(SearchFilterModel(tag = tags.name)).postEvent
+                    OpenSearchEvent(SearchFilterEventModel(tag = tags.name)).postEvent
 
                 }
 

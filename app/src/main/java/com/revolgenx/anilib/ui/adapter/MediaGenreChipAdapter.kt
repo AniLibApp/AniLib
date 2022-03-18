@@ -1,13 +1,11 @@
 package com.revolgenx.anilib.ui.adapter
 
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.revolgenx.anilib.app.theme.dynamicSurfaceColor
 import com.revolgenx.anilib.databinding.ChipTagPresenterBinding
 import com.revolgenx.anilib.common.event.OpenSearchEvent
-import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
+import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 
 class MediaGenreChipAdapter() : RecyclerView.Adapter<MediaGenreChipAdapter.GenreChipViewHolder>() {
 
@@ -34,7 +32,7 @@ class MediaGenreChipAdapter() : RecyclerView.Adapter<MediaGenreChipAdapter.Genre
         val genre = currentList?.get(position) ?: return
         holder.binding.chipTagView.text = genre
         holder.binding.root.setOnClickListener {
-            OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
+            OpenSearchEvent(SearchFilterEventModel(genre = genre)).postEvent
         }
     }
 

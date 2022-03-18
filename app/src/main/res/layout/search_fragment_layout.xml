@@ -2,6 +2,7 @@
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -130,7 +131,7 @@
                 android:layout_height="wrap_content"
                 app:adt_windowInsets="false"
                 app:layout_constrainedHeight="true"
-                app:layout_constraintBottom_toTopOf="@+id/search_apply_filter"
+                app:layout_constraintBottom_toTopOf="@+id/search_apply_filter_layout"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -577,24 +578,48 @@
             </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
 
             <com.revolgenx.anilib.ui.view.widgets.AlCardView
-                android:id="@+id/search_apply_filter"
+                android:id="@+id/search_apply_filter_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-                <com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:includeFontPadding="false"
-                    android:padding="10dp"
-                    android:text="@string/apply_filter"
-                    android:textSize="14sp"
-                    app:adt_colorType="accent"
-                    app:drawableStartCompat="@drawable/ic_check_circle" />
+                    android:orientation="horizontal">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                        android:id="@+id/apply_search_history"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingHorizontal="16dp"
+                        android:src="@drawable/ic_history"
+                        app:adt_colorType="text_primary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
+                        android:id="@+id/search_apply_filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:padding="10dp"
+                        android:text="@string/apply_filter"
+                        android:textSize="14sp"
+                        app:adt_colorType="accent"
+                        app:adt_rtlSupport="false"
+                        app:drawableStartCompat="@drawable/ic_check_circle"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="TooManyViews" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 

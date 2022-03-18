@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.getAiringField
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.preference.storeAiringField
 import com.revolgenx.anilib.common.ui.bottomsheet.DynamicBottomSheetFragment
 import com.revolgenx.anilib.constant.ALAiringSort
@@ -85,7 +84,7 @@ class AiringFilterBottomSheet : DynamicBottomSheetFragment<AiringFilterDialogLay
             airingField.showFromPlanning = showFromPlanningListSwitch.isChecked
             airingField.showFromWatching = showFromWatchListSwitch.isChecked
             airingField.sort = getActiveAiringSort()
-            storeAiringField(requireContext(), airingField)
+            storeAiringField(airingField)
             onDoneListener?.invoke()
         }
     }

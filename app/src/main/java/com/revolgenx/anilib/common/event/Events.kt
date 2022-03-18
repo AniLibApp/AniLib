@@ -4,9 +4,7 @@ import android.text.Spanned
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.data.meta.MediaListMeta
 import com.revolgenx.anilib.app.setting.data.meta.TagFilterSettingMeta
-import com.revolgenx.anilib.common.event.BaseEvent
-import com.revolgenx.anilib.common.event.CommonEvent
-import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
+import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 
 data class OpenUserProfileEvent(val userId: Int? = null, val username: String? = null) : BaseEvent()
 data class OpenUserFriendEvent(val userId: Int? = null, val isFollower: Boolean = false) :
@@ -21,7 +19,7 @@ enum class SettingEventTypes {
 interface SettingEventData
 data class TagSettingEventMeta(val meta: TagFilterSettingMeta):SettingEventData
 
-class OpenSearchEvent(val data: SearchFilterModel? = null) : BaseEvent()
+class OpenSearchEvent(val data: SearchFilterEventModel? = null) : BaseEvent()
 data class OpenReviewEvent(val reviewId: Int) : BaseEvent()
 class OpenAllReviewEvent() : BaseEvent()
 class OpenNotificationCenterEvent : BaseEvent()

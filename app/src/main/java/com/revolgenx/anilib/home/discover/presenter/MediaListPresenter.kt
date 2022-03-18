@@ -24,7 +24,7 @@ import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.home.discover.viewmodel.MediaListVM
 import com.revolgenx.anilib.media.data.model.isAnime
-import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
+import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
@@ -82,7 +82,7 @@ class MediaListPresenter(
             mediaListProgressTv.compoundDrawablesRelative[0]?.setTint(dynamicTextColorPrimary)
 
             mediaListGenreLayout.addGenre(media.genres?.take(3)) { genre ->
-                OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
+                OpenSearchEvent(SearchFilterEventModel(genre = genre)).postEvent
             }
 
             when (item.user?.mediaListOptions?.scoreFormat) {

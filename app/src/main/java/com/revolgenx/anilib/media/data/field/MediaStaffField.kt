@@ -1,12 +1,10 @@
 package com.revolgenx.anilib.media.data.field
 
 import com.revolgenx.anilib.MediaStaffQuery
-import com.revolgenx.anilib.common.data.field.BaseField
+import com.revolgenx.anilib.common.data.field.BaseSourceField
 
-class MediaStaffField : BaseField<MediaStaffQuery>() {
+class MediaStaffField : BaseSourceField<MediaStaffQuery>() {
     var mediaId = -1
-    var page = 0
-    var perPage = PER_PAGE
 
     override fun toQueryOrMutation(): MediaStaffQuery {
         return MediaStaffQuery(page = nn(page), perPage = nn(perPage), mediaId = nn(mediaId))

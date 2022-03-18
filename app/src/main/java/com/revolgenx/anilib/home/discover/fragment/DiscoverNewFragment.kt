@@ -19,7 +19,7 @@ import com.revolgenx.anilib.home.discover.bottomsheet.MediaFilterBottomSheetFrag
 import com.revolgenx.anilib.ui.view.showcase.DiscoverMediaShowcaseLayout
 import com.revolgenx.anilib.home.discover.viewmodel.DiscoverNewViewModel
 import com.revolgenx.anilib.home.discover.viewmodel.ShowCaseViewModel
-import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
+import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class DiscoverNewFragment : DiscoverPopularFragment() {
@@ -104,7 +104,7 @@ open class DiscoverNewFragment : DiscoverPopularFragment() {
 
     private fun handleClick(which: Int) {
         if (which == 0) {
-            OpenSearchEvent(SearchFilterModel(sort = MediaSort.ID_DESC.ordinal)).postEvent
+            OpenSearchEvent(SearchFilterEventModel(sort = MediaSort.ID_DESC.ordinal)).postEvent
         } else if (which == 1) {
             showMediaFilterDialog(
                 MediaFilterBottomSheetFragment.MediaFilterType.NEWLY_ADDED.ordinal

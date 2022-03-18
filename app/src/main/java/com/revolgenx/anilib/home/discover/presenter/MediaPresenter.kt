@@ -17,7 +17,7 @@ import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.event.OpenSearchEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter.Companion.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.media.data.model.MediaModel
-import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
+import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
@@ -75,7 +75,7 @@ class MediaPresenter(
             mediaFormatTv.status = item.mediaListEntry?.status
 
             mediaGenreLayout.addGenre(item.genres?.take(3)) { genre ->
-                OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
+                OpenSearchEvent(SearchFilterEventModel(genre = genre)).postEvent
             }
 
             mediaPresenterCardView.strokeColor =

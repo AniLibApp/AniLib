@@ -21,7 +21,6 @@ import com.google.firebase.ktx.Firebase
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.appwidget.ui.fragment.AiringWidgetConfigFragment
 import com.revolgenx.anilib.ui.dialog.*
 import com.revolgenx.anilib.common.event.*
@@ -320,11 +319,11 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
     private fun updateSharedPreference() {
-        if (!isSharedPreferenceSynced(context)) {
+        if (!isSharedPreferenceSynced()) {
             TagPrefUtil.reloadTagPref(context)
             TagPrefUtil.reloadGenrePref(context)
             TagPrefUtil.reloadStreamingPref(context)
-            isSharedPreferenceSynced(context, true)
+            isSharedPreferenceSynced(true)
         }
     }
 

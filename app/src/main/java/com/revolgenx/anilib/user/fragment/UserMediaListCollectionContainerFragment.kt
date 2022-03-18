@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.marginBottom
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.revolgenx.anilib.R
@@ -109,6 +112,18 @@ class UserMediaListCollectionContainerFragment :
                                 else MediaType.MANGA.ordinal
                 }
             })
+
+            ViewCompat.setOnApplyWindowInsetsListener(listExtendedFab) { v, insets ->
+                (v.layoutParams as ViewGroup.MarginLayoutParams).also {
+                    it.setMargins(
+                        it.marginStart,
+                        it.topMargin,
+                        it.marginEnd,
+                        it.bottomMargin + insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+                    )
+                }
+                insets
+            }
 
             sharedViewModel.currentGroupNameWithCount.observe(viewLifecycleOwner) {
                 if (it == null) {

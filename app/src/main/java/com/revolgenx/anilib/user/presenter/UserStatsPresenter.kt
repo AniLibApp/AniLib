@@ -15,7 +15,7 @@ import com.revolgenx.anilib.common.event.*
 import com.revolgenx.anilib.common.presenter.BasePresenter.Companion.PRESENTER_BINDING_KEY
 import com.revolgenx.anilib.databinding.ImageStatsPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.TextStatsPresenterLayoutBinding
-import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
+import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.user.data.model.stats.*
 
 class UserStatsPresenter(context: Context) : Presenter<BaseStatisticModel>(context) {
@@ -77,7 +77,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatisticModel>(conte
                     item.genre?.let { genre ->
                         statsTitleTv.text = genre
                         root.setOnClickListener { _ ->
-                            OpenSearchEvent(SearchFilterModel(genre = genre)).postEvent
+                            OpenSearchEvent(SearchFilterEventModel(genre = genre)).postEvent
                         }
                     }
                 }
@@ -89,7 +89,7 @@ class UserStatsPresenter(context: Context) : Presenter<BaseStatisticModel>(conte
                             return@setOnClickListener;
                         }
                         root.setOnClickListener { _ ->
-                            OpenSearchEvent(SearchFilterModel(tag = tag.name)).postEvent
+                            OpenSearchEvent(SearchFilterEventModel(tag = tag.name)).postEvent
                         }
                     }
                 }

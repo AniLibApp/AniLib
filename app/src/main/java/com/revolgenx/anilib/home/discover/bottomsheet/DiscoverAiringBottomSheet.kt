@@ -21,7 +21,7 @@ class DiscoverAiringBottomSheet : DynamicBottomSheetFragment<AiringFilterDialogL
     }
 
     private val airingField by lazy {
-        getDiscoverAiringField(requireContext())
+        getDiscoverAiringField()
     }
 
     var onDoneListener: (() -> Unit)? = null
@@ -82,7 +82,7 @@ class DiscoverAiringBottomSheet : DynamicBottomSheetFragment<AiringFilterDialogL
             airingField.showFromPlanning = showFromPlanningListSwitch.isChecked
             airingField.showFromWatching = showFromWatchListSwitch.isChecked
             airingField.sort = getActiveAiringSort()
-            storeDiscoverAiringField(requireContext(), airingField)
+            storeDiscoverAiringField(airingField)
             onDoneListener?.invoke()
         }
     }

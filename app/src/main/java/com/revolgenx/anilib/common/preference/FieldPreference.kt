@@ -2,7 +2,6 @@ package com.revolgenx.anilib.common.preference
 
 import android.content.Context
 import com.google.gson.Gson
-import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.constant.AiringListDisplayMode
 import com.revolgenx.anilib.constant.MediaListDisplayMode
@@ -14,6 +13,8 @@ import com.revolgenx.anilib.home.discover.data.field.PopularMediaField
 import com.revolgenx.anilib.home.discover.data.field.TrendingMediaField
 import com.revolgenx.anilib.home.season.data.field.SeasonField
 import com.revolgenx.anilib.list.data.meta.MediaListCollectionFilterMeta
+import com.revolgenx.anilib.search.data.field.SearchField
+import com.revolgenx.anilib.search.data.model.SearchFilterModel
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.type.MediaType
@@ -119,8 +120,10 @@ const val WIDGET_AIRING_SHOW_ETA_KEY = "WIDGET_AIRING_SHOW_ETA_KEY"
 const val ACTIVITY_UNION_TYPE_KEY = "ACTIVITY_UNION_TYPE_KEY"
 const val ACTIVITY_IS_FOLLOWING_KEY = "ACTIVITY_IS_FOLLOWING_KEY"
 
+const val SEARCH_FILTER_KEY = "SEARCH_FILTER_KEY"
 
-fun getDiscoverAiringField(context: Context) = AiringMediaField().apply {
+
+fun getDiscoverAiringField() = AiringMediaField().apply {
     notYetAired = load(DISCOVER_AIRING_NOT_AIRED_KEY, true)
     sort = load(DISCOVER_AIRING_SORT_KEY, AiringSort.TIME.ordinal)
     showFromPlanning = load(DISCOVER_AIRING_PLANNING_KEY, false)
@@ -133,7 +136,7 @@ fun getAiringField(context: Context) = AiringMediaField().apply {
     sort = load(AIRING_SORT_KEY, AiringSort.TIME.ordinal)
     showFromPlanning = load(AIRING_PLANNING_KEY, false)
     showFromWatching = load(AIRING_WATCHING_KEY, false)
-    isWeeklyTypeDate = showAiringWeekly(context)
+    isWeeklyTypeDate = showAiringWeekly()
 }
 
 
@@ -189,7 +192,7 @@ fun getNewlyAddedField() = NewlyAddedMediaField().apply {
 }
 
 
-fun storeDiscoverAiringField(context: Context, field: AiringMediaField) {
+fun storeDiscoverAiringField(field: AiringMediaField) {
     with(field) {
         save(DISCOVER_AIRING_SORT_KEY, sort ?: AiringSort.TIME.ordinal)
         save(DISCOVER_AIRING_NOT_AIRED_KEY, notYetAired)
@@ -198,7 +201,7 @@ fun storeDiscoverAiringField(context: Context, field: AiringMediaField) {
     }
 }
 
-fun storeAiringField(context: Context, field: AiringMediaField) {
+fun storeAiringField(field: AiringMediaField) {
     with(field) {
         save(AIRING_SORT_KEY, sort ?: AiringSort.TIME.ordinal)
         save(AIRING_NOT_AIRED_KEY, notYetAired)
@@ -207,7 +210,7 @@ fun storeAiringField(context: Context, field: AiringMediaField) {
     }
 }
 
-fun storeNewlyAddedField(context: Context, field: NewlyAddedMediaField) {
+fun storeNewlyAddedField(field: NewlyAddedMediaField) {
     with(field) {
         save(NEWLY_ADDED_FORMAT_IN_KEY, formatsIn?.joinToString(",") ?: "")
         save(NEWLY_ADDED_FORMAT_KEY, format ?: DEFAULT_FORMAT)
@@ -235,7 +238,7 @@ fun storeSeasonField(field: SeasonField) {
 }
 
 
-fun storeTrendingField(context: Context, field: TrendingMediaField) {
+fun storeTrendingField(field: TrendingMediaField) {
     with(field) {
         save(TRENDING_FORMAT_IN_KEY, formatsIn?.joinToString(",") ?: "")
         save(TRENDING_FORMAT_KEY, format ?: DEFAULT_FORMAT)
@@ -248,7 +251,7 @@ fun storeTrendingField(context: Context, field: TrendingMediaField) {
     }
 }
 
-fun storePopularField(context: Context, field: PopularMediaField) {
+fun storePopularField(field: PopularMediaField) {
     with(field) {
         save(POPULAR_FORMAT_IN_KEY, formatsIn?.joinToString(",") ?: "")
         save(POPULAR_FORMAT_KEY, format ?: DEFAULT_FORMAT)
@@ -437,7 +440,7 @@ fun loadMediaListCollectionFilter(type: Int): MediaListCollectionFilterMeta {
 }
 
 
-fun showAiringWeekly(context: Context, isChecked: Boolean? = null): Boolean =
+fun showAiringWeekly(isChecked: Boolean? = null): Boolean =
     if (isChecked == null) load(SHOW_AIRING_WEEKLY_KEY, true) else {
         save(
             SHOW_AIRING_WEEKLY_KEY, isChecked
@@ -446,7 +449,7 @@ fun showAiringWeekly(context: Context, isChecked: Boolean? = null): Boolean =
     }
 
 
-fun showSeasonHeader(context: Context, isChecked: Boolean? = null): Boolean =
+fun showSeasonHeader(isChecked: Boolean? = null): Boolean =
     if (isChecked == null) load(SEASON_HEADER_KEY, false) else {
         save(
             SEASON_HEADER_KEY, isChecked
@@ -456,7 +459,6 @@ fun showSeasonHeader(context: Context, isChecked: Boolean? = null): Boolean =
 
 
 fun getAiringScheduleFieldForWidget(
-    context: Context,
     field: AiringMediaField? = null
 ): AiringMediaField {
     return (field ?: AiringMediaField()).apply {
@@ -489,7 +491,6 @@ fun getActivityUnionField(field: ActivityUnionField? = null): ActivityUnionField
     }
 }
 
-
 fun storeActivityUnionField(field: ActivityUnionField) {
     with(field) {
         dynamicPreferences.let {
@@ -497,4 +498,12 @@ fun storeActivityUnionField(field: ActivityUnionField) {
             it.save(ACTIVITY_IS_FOLLOWING_KEY, isFollowing)
         }
     }
+}
+
+fun saveRecentSearchField(saveModel: SearchFilterModel) {
+    save(SEARCH_FILTER_KEY, Gson().toJson(saveModel))
+}
+
+fun loadRecentSearchField(): SearchFilterModel {
+    return Gson().fromJson(load(SEARCH_FILTER_KEY, null), SearchFilterModel::class.java) ?: SearchFilterModel()
 }

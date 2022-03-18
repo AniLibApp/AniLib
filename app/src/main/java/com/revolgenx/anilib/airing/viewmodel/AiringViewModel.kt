@@ -94,12 +94,12 @@ class AiringViewModel(private val airingMediaService: AiringMediaService) :
             field.sort = it.sort
             field.showFromPlanning = it.showFromPlanning
             field.showFromWatching = it.showFromWatching
-            field.isWeeklyTypeDate = showAiringWeekly(context)
+            field.isWeeklyTypeDate = showAiringWeekly()
         }
     }
 
     fun updateWeeklyField(context: Context, bool: Boolean) {
-        showAiringWeekly(context, bool)
+        showAiringWeekly(bool)
         field.isWeeklyTypeDate = bool
     }
 }

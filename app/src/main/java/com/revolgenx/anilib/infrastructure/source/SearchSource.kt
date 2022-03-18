@@ -18,7 +18,7 @@ class SearchSource(
     }
 
     override fun getElementType(data: BaseModel): Int {
-        return field.searchType.ordinal
+        return field.searchFilterModel.searchType.ordinal
     }
 
     override fun onPageOpened(page: Page, dependencies: List<Element<*>>) {

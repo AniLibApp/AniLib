@@ -87,7 +87,7 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
 //        }
 
         private fun updateField() {
-            getAiringScheduleFieldForWidget(context, field)
+            getAiringScheduleFieldForWidget(field)
             field.airingGreaterThan = startDateTime.toEpochSecond().toInt()
             field.airingLessThan = endDateTime.toEpochSecond().toInt()
             field.perPage = 8

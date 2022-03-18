@@ -22,16 +22,16 @@ class ShowSeasonHeaderDialog: BaseDialogFragment<ShowSeasonHeaderDialogLayoutBin
 
     override fun onShowListener(alertDialog: DynamicDialog, savedInstanceState: Bundle?) {
         super.onShowListener(alertDialog, savedInstanceState)
-        binding.showSeasonHeaderSwitch.isChecked = showSeasonHeader(requireContext())
+        binding.showSeasonHeaderSwitch.isChecked = showSeasonHeader()
     }
 
     override fun onPositiveClicked(dialogInterface: DialogInterface, which: Int) {
         super.onPositiveClicked(dialogInterface, which)
-        val showSeasonHeader = showSeasonHeader(requireContext())
+        val showSeasonHeader = showSeasonHeader()
         val isChecked = binding.showSeasonHeaderSwitch.isChecked
         val isChanged = showSeasonHeader != isChecked
 
-        showSeasonHeader(requireContext(), isChecked)
+        showSeasonHeader(isChecked)
         onDoneListener?.invoke(isChecked, isChanged)
     }
 }

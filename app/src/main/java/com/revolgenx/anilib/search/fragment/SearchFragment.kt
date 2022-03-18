@@ -32,7 +32,7 @@ import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.search.data.field.SearchTypes
 import com.revolgenx.anilib.ui.selector.data.meta.SelectableMeta
 import com.revolgenx.anilib.common.data.field.TagField
-import com.revolgenx.anilib.search.data.model.filter.SearchFilterModel
+import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.databinding.SearchFragmentLayoutBinding
 import com.revolgenx.anilib.ui.selector.dialog.SelectableDialogFragment
 import com.revolgenx.anilib.activity.event.ActivityEventListener
@@ -60,14 +60,14 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     companion object {
         private const val SEARCH_FILTER_DATA_KEY = "SEARCH_FILTER_DATA_KEY"
 
-        fun newInstance(searchFilterModel: SearchFilterModel?) = SearchFragment().also {
-            it.arguments = bundleOf(SEARCH_FILTER_DATA_KEY to searchFilterModel)
+        fun newInstance(searchFilterEventModel: SearchFilterEventModel?) = SearchFragment().also {
+            it.arguments = bundleOf(SEARCH_FILTER_DATA_KEY to searchFilterEventModel)
         }
     }
 
     private val viewModel by viewModel<SearchFragmentViewModel>()
-    private val searchFilterModel
-        get() = arguments?.getParcelable<SearchFilterModel?>(
+    private val searchFilterEventModel
+        get() = arguments?.getParcelable<SearchFilterEventModel?>(
             SEARCH_FILTER_DATA_KEY
         )
 
@@ -85,14 +85,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private val sBinding get() = _sBinding!!
 
     private val field get() = viewModel.field
+    private val filterModel get() = viewModel.filterModel
     private val handler = Handler(Looper.getMainLooper())
 
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
-
-    private var genreAdapter: Adapter? = null
-    private var tagsAdapter: Adapter? = null
-    private var streamingOnAdapter: Adapter? = null
-    private var readableOnAdapter: Adapter? = null
 
     private val yearGreater = 1970f
     private val yearLesser = Calendar.getInstance().get(Calendar.YEAR) + 1f
@@ -122,14 +118,14 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         (yearLesser.toInt() downTo 1940).toList()
     }
 
-    private val searchTypeAnime get() = field.searchType == SearchTypes.ANIME
-    private val searchTypeManga get() = field.searchType == SearchTypes.MANGA
+    private val searchTypeAnime get() = filterModel.searchType == SearchTypes.ANIME
+    private val searchTypeManga get() = filterModel.searchType == SearchTypes.MANGA
 
     private val genrePresenter by lazy {
         SearchTagPresenter(requireContext()).also {
             it.tagRemoved { genre ->
-                field.genreIn?.remove(genre)
-                field.genreNotIn?.remove(genre)
+                filterModel.genreIn?.remove(genre)
+                filterModel.genreNotIn?.remove(genre)
             }
         }
     }
@@ -137,10 +133,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private val licensedByPresenter by lazy {
         SearchTagPresenter(requireContext()).also {
             it.tagRemoved { licensedBy ->
-                if (field.searchType == SearchTypes.ANIME) {
-                    field.streamingOn?.remove(licensedBy)
-                } else if (field.searchType == SearchTypes.MANGA) {
-                    field.readableOn?.remove(licensedBy)
+                if (filterModel.searchType == SearchTypes.ANIME) {
+                    filterModel.streamingOn?.remove(licensedBy)
+                } else if (filterModel.searchType == SearchTypes.MANGA) {
+                    filterModel.readableOn?.remove(licensedBy)
                 }
             }
         }
@@ -149,8 +145,8 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private val tagPresenter by lazy {
         SearchTagPresenter(requireContext()).also {
             it.tagRemoved { tag ->
-                field.tagsIn?.remove(tag)
-                field.tagsNotIn?.remove(tag)
+                filterModel.tagsIn?.remove(tag)
+                filterModel.tagsNotIn?.remove(tag)
             }
         }
     }
@@ -261,22 +257,32 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
-        field.genreNotIn = getExcludedGenre().toMutableList()
-        field.tagsNotIn = getExcludedTags().toMutableList()
-        field.isHentai = if (canShowAdult(requireContext())) null else false
+        filterModel.genreNotIn = getExcludedGenre().toMutableList()
+        field.searchFilterModel.genreNotIn = filterModel.genreNotIn?.toMutableList()
 
-        searchFilterModel?.let {
+        filterModel.tagsNotIn = getExcludedTags().toMutableList()
+        field.searchFilterModel.tagsNotIn = filterModel.tagsNotIn?.toMutableList()
+
+        filterModel.isHentai = if (canShowAdult()) null else false
+        field.searchFilterModel.isHentai = filterModel.isHentai
+
+        searchFilterEventModel?.let {
             it.genre?.let { genre ->
-                field.genreIn = (field.genreIn ?: mutableListOf()).also { it.add(genre) }
+                filterModel.genreIn =
+                    (field.searchFilterModel.genreIn ?: mutableListOf()).also { it.add(genre) }
+                field.searchFilterModel.genreIn = filterModel.genreIn?.toMutableList()
             }
             it.tag?.let { tag ->
-                field.tagsIn = (field.tagsIn ?: mutableListOf()).also { it.add(tag) }
+                filterModel.tagsIn =
+                    (field.searchFilterModel.tagsIn ?: mutableListOf()).also { it.add(tag) }
+                field.searchFilterModel.tagsIn = filterModel.tagsIn?.toMutableList()
             }
-            field.sort = it.sort
+            filterModel.sort = it.sort
+            field.searchFilterModel.sort = filterModel.sort
         }
 
         sBinding.bind()
-        sBinding.bindFilter(savedInstanceState)
+        sBinding.bindFilter()
         sBinding.initListener()
         sBinding.initFilterListener()
     }
@@ -296,12 +302,12 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
                 addTab(newTab().setText(R.string.users))
             }
 
-            getTabAt(field.searchType.ordinal)?.select()
+            getTabAt(field.searchFilterModel.searchType.ordinal)?.select()
         }
     }
 
 
-    private fun SearchFragmentLayoutBinding.bindFilter(savedInstanceState: Bundle?) {
+    private fun SearchFragmentLayoutBinding.bindFilter() {
         val searchTypeItems: List<DynamicMenu> =
             requireContext().resources.getStringArray(R.array.advance_search_type).map {
                 DynamicMenu(null, it)
@@ -332,12 +338,12 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             }
 
         val searchYearItems =
-            mutableListOf(SelectableSpinnerMenu(getString(R.string.none), field.year == null))
+            mutableListOf(SelectableSpinnerMenu(getString(R.string.none), filterModel.year == null))
         yearList.map {
             searchYearItems.add(
                 SelectableSpinnerMenu(
                     it.toString(),
-                    it == field.year
+                    it == filterModel.year
                 )
             )
         }
@@ -350,16 +356,30 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         filterYearSpinner.adapter = makeSelectableSpinnerAdapter(requireContext(), searchYearItems)
         filterCountrySpinner.adapter = makeSpinnerAdapter(requireContext(), searchCountryItems)
 
+        filterTypeSpinner.setSelection(filterModel.searchType.ordinal)
+        filterSeasonSpinner.setSelection(filterModel.season?.plus(1) ?: 0)
+        filterFormatSpinner.setSelection(filterModel.format?.plus(1) ?: 0)
+        filterStatusSpinner.setSelection(filterModel.status?.plus(1) ?: 0)
+        filterSourceSpinner.setSelection(filterModel.source?.plus(1) ?: 0)
+        filterYearSpinner.setSelection(filterModel.year?.let { yearList.indexOf(it) }
+            ?.takeIf { it != -1 }?.plus(1) ?: 0)
+        filterCountrySpinner.setSelection(filterModel.countryOfOrigin?.plus(1) ?: 0)
+
         filterYearSpinner.onItemSelected { position ->
             searchYearItems.firstOrNull { it.isSelected }?.isSelected = false
             searchYearItems[position].isSelected = true
-            field.year = position.takeIf { it > 0 }?.let {
+            filterModel.year = position.takeIf { it > 0 }?.let {
                 yearList[it - 1]
             }
         }
 
+
         hentaiCheckbox.visibility =
-            if (canShowAdult(requireContext())) View.VISIBLE else View.GONE
+            if (canShowAdult()) View.VISIBLE else View.GONE
+
+        hentaiCheckbox.updateState(if (filterModel.isHentai == null) false else filterModel.isHentai?.takeIf { it })
+
+        doujinCheckbox.isChecked = filterModel.doujins == true
 
         val alMediaSorts = AlMediaSort.values()
         val alMediaSortList = requireContext().resources.getStringArray(R.array.al_media_sort)
@@ -369,7 +389,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         }
         filterSortLayout.setSortItems(mediaSortItems)
 
-        field.sort?.let { sort ->
+        filterModel.sort?.let { sort ->
             var sortOrder = SortOrder.NONE
             val currentSort = if (sort < 34) {
                 if (sort % 2 == 0) {
@@ -434,68 +454,30 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         minimumTagRank.setLabelFormatter {
             it.toInt().toString()
         }
+        minimumTagRank.value = filterModel.minimumTagRank?.toFloat() ?: 18f
+        updateMinimumTagPercentageHeader()
 
-        if (field.yearGreater != null || field.yearLesser != null) {
-            yearRangeFilterHeader.text = getString(R.string.year_range_s_s).format(
-                field.yearGreater?.year ?: yearGreater.toInt(),
-                field.yearLesser?.year ?: yearLesser.toInt()
-            )
-        } else {
-            yearRangeFilterHeader.setText(R.string.year_range)
+        yearRangeSlider.values = listOf(
+            filterModel.yearGreater?.year?.toFloat() ?: yearGreater,
+            filterModel.yearLesser?.year?.toFloat() ?: yearLesser
+        )
+
+        updateYearRangeHeader()
+
+        if (searchTypeAnime) {
+            changeEpisodesRangeSlider()
+            changeDurationRangeSlider()
+
+            updateEpisodeRangeHeader()
+            updateDurationRangeHeader()
+        } else if (searchTypeManga) {
+            changeChaptersRangeSlider()
+            changeVolumeRangeSlider()
+
+            updateChapterRangeHeader()
+            updateVolumeRangeHeader()
         }
 
-        if (field.searchType == SearchTypes.ANIME) {
-            if (field.episodesGreater != null || field.episodesLesser != null) {
-                episodeOrChapterRangeFilterHeader.text =
-                    getString(R.string.episodes_range_s_s).format(
-                        field.episodesGreater ?: episodesGreater.toInt(),
-                        field.episodesLesser ?: episodesLesser.toInt()
-                    )
-            } else {
-                episodeOrChapterRangeFilterHeader.setText(R.string.episodes)
-            }
-        } else if (field.searchType == SearchTypes.MANGA) {
-            if (field.chaptersGreater != null || field.chaptersLesser != null) {
-                episodeOrChapterRangeFilterHeader.text =
-                    getString(R.string.chapters_range_s_s).format(
-                        field.chaptersGreater ?: chaptersGreater.toInt(),
-                        field.chaptersLesser ?: chaptersLesser.toInt()
-                    )
-            } else {
-                episodeOrChapterRangeFilterHeader.setText(R.string.chapters)
-            }
-        }
-
-        if (field.searchType == SearchTypes.ANIME) {
-            if (field.durationGreater != null || field.durationLesser != null) {
-                durationOrVolumeRangeFilterHeader.text =
-                    getString(R.string.duration_range_s_s).format(
-                        field.durationGreater ?: durationGreater.toInt(),
-                        field.durationLesser ?: durationLesser.toInt()
-                    )
-            } else {
-                durationOrVolumeRangeFilterHeader.setText(R.string.duration)
-            }
-        } else if (field.searchType == SearchTypes.MANGA) {
-            if (field.volumesGreater != null || field.volumesLesser != null) {
-                durationOrVolumeRangeFilterHeader.text =
-                    getString(R.string.volumes_range_s_s).format(
-                        field.volumesGreater ?: volumesGreater.toInt(),
-                        field.volumesLesser ?: volumesLesser.toInt()
-                    )
-            } else {
-                durationOrVolumeRangeFilterHeader.setText(R.string.volumes)
-            }
-        }
-
-        minimumTagPercetageHeader.text =
-            getString(R.string.minimum_tag_percentage_s).format(field.minimumTagRank ?: 18)
-
-        if (savedInstanceState == null) {
-            yearRangeSlider.values = listOf(yearGreater, yearLesser)
-            episodeOrChapterRangeSlider.values = listOf(episodesGreater, episodesLesser)
-            durationOrVolumeRangeSlider.values = listOf(durationGreater, durationLesser)
-        }
 
     }
 
@@ -529,19 +511,25 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             if (applyingFilter) return@doOnTabSelected
 
             filterTypeSpinner.setSelection(position, false)
-            field.searchType = SearchTypes.values()[position]
+            filterModel.searchType = SearchTypes.values()[position]
+            field.searchFilterModel.searchType = filterModel.searchType
             filter()
         }
     }
 
     private fun SearchFragmentLayoutBinding.initFilterListener() {
+        applySearchHistory.setOnClickListener {
+            viewModel.loadRecentField()
+            bindFilter()
+        }
+
         filterClearIv.setOnClickListener {
             filterSearchEt.setText("")
         }
 
         filterTypeSpinner.onItemSelected {
             val searchType = SearchTypes.values()[it]
-            field.searchType = searchType
+            filterModel.searchType = searchType
 
             when (it) {
                 0, 1 -> {
@@ -567,20 +555,20 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         }
 
         filterSeasonSpinner.onItemSelected {
-            field.season = it.takeIf { it > 0 }?.let { it - 1 }
+            filterModel.season = it.takeIf { it > 0 }?.let { it - 1 }
         }
 
         filterStatusSpinner.onItemSelected {
-            field.status = it.takeIf { it > 0 }?.let { it - 1 }
+            filterModel.status = it.takeIf { it > 0 }?.let { it - 1 }
         }
 
         filterFormatSpinner.onItemSelected {
-            field.format = it.takeIf { it > 0 }?.let { it - 1 }
+            filterModel.format = it.takeIf { it > 0 }?.let { it - 1 }
         }
 
         filterSortLayout.onSortItemSelected = sort@{
             if (context == null) return@sort
-            field.sort = if (it != null) {
+            filterModel.sort = if (it != null) {
                 if (it.order == SortOrder.DESC) {
                     (it.data as AlMediaSort).sort + 1
                 } else {
@@ -589,22 +577,22 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             } else null
         }
         filterSourceSpinner.onItemSelected {
-            field.source = it.takeIf { it > 0 }?.let { it - 1 }
+            filterModel.source = it.takeIf { it > 0 }?.let { it - 1 }
         }
 
         filterCountrySpinner.onItemSelected {
-            field.countryOfOrigin = it.takeIf { it > 0 }?.let { it - 1 }
+            filterModel.countryOfOrigin = it.takeIf { it > 0 }?.let { it - 1 }
         }
 
         doujinCheckbox.setOnCheckedChangeListener(null)
         doujinCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            field.doujins = isChecked
+            filterModel.doujins = isChecked
         }
 
         hentaiCheckbox.onCheckChangeListener = check@{
             context ?: return@check
 
-            field.isHentai = it.takeIf { it != AlCheckBox.CheckBoxState.UNCHECKED }?.let {
+            filterModel.isHentai = it.takeIf { it != AlCheckBox.CheckBoxState.UNCHECKED }?.let {
                 it == AlCheckBox.CheckBoxState.CHECKED
             }
         }
@@ -612,10 +600,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         filterGenreChip.setOnClickListener {
             val selectableList = genreList.map {
                 val state = when {
-                    field.genreIn?.contains(it) == true -> {
+                    filterModel.genreIn?.contains(it) == true -> {
                         SelectedState.SELECTED
                     }
-                    field.genreNotIn?.contains(it) == true -> {
+                    filterModel.genreNotIn?.contains(it) == true -> {
                         SelectedState.INTERMEDIATE
                     }
                     else -> {
@@ -626,13 +614,13 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             }
             openSelectorDialog(R.string.genre, selectableList, true) { list ->
                 if (context != null) {
-                    field.genreIn = mutableListOf()
-                    field.genreNotIn = mutableListOf()
+                    filterModel.genreIn = mutableListOf()
+                    filterModel.genreNotIn = mutableListOf()
                     list.forEach { genrePair ->
                         if (genrePair.second == SelectedState.SELECTED) {
-                            field.genreIn!!.add(genrePair.first)
+                            filterModel.genreIn!!.add(genrePair.first)
                         } else if (genrePair.second == SelectedState.INTERMEDIATE) {
-                            field.genreNotIn!!.add(genrePair.first)
+                            filterModel.genreNotIn!!.add(genrePair.first)
                         }
                     }
                     invalidateGenreAdapter()
@@ -643,10 +631,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         filterTagChip.setOnClickListener {
             val selectableList = tagList.map {
                 val state = when {
-                    field.tagsIn?.contains(it) == true -> {
+                    filterModel.tagsIn?.contains(it) == true -> {
                         SelectedState.SELECTED
                     }
-                    field.tagsNotIn?.contains(it) == true -> {
+                    filterModel.tagsNotIn?.contains(it) == true -> {
                         SelectedState.INTERMEDIATE
                     }
                     else -> {
@@ -657,13 +645,13 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             }
             openSelectorDialog(R.string.tags, selectableList, true) { list ->
                 if (context != null) {
-                    field.tagsIn = mutableListOf()
-                    field.tagsNotIn = mutableListOf()
+                    filterModel.tagsIn = mutableListOf()
+                    filterModel.tagsNotIn = mutableListOf()
                     list.forEach { pair ->
                         if (pair.second == SelectedState.SELECTED) {
-                            field.tagsIn!!.add(pair.first)
+                            filterModel.tagsIn!!.add(pair.first)
                         } else if (pair.second == SelectedState.INTERMEDIATE) {
-                            field.tagsNotIn!!.add(pair.first)
+                            filterModel.tagsNotIn!!.add(pair.first)
                         }
                     }
                     invalidateTagAdapter()
@@ -672,10 +660,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         }
 
         licensedByTagChip.setOnClickListener {
-            if (field.searchType == SearchTypes.ANIME) {
+            if (searchTypeAnime) {
                 val selectableList = streamingOnList.map {
                     val state = when {
-                        field.streamingOn?.contains(it) == true -> {
+                        filterModel.streamingOn?.contains(it) == true -> {
                             SelectedState.SELECTED
                         }
                         else -> {
@@ -686,19 +674,19 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
                 }
                 openSelectorDialog(R.string.streaming_on, selectableList) { list ->
                     if (context != null) {
-                        field.streamingOn = mutableListOf()
+                        filterModel.streamingOn = mutableListOf()
                         list.forEach { pair ->
                             if (pair.second == SelectedState.SELECTED) {
-                                field.streamingOn!!.add(pair.first)
+                                filterModel.streamingOn!!.add(pair.first)
                             }
                         }
                         invalidateStreamingOnAdapter()
                     }
                 }
-            } else if (field.searchType == SearchTypes.MANGA) {
+            } else if (searchTypeManga) {
                 val selectableList = readableOnList.map {
                     val state = when {
-                        field.readableOn?.contains(it) == true -> {
+                        filterModel.readableOn?.contains(it) == true -> {
                             SelectedState.SELECTED
                         }
                         else -> {
@@ -710,10 +698,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
 
                 openSelectorDialog(R.string.readable_on, selectableList) { list ->
                     if (context != null) {
-                        field.streamingOn = mutableListOf()
+                        filterModel.readableOn = mutableListOf()
                         list.forEach { pair ->
                             if (pair.second == SelectedState.SELECTED) {
-                                field.streamingOn!!.add(pair.first)
+                                filterModel.readableOn!!.add(pair.first)
                             }
                         }
                         invalidateReadableOnAdapter()
@@ -725,19 +713,12 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         yearRangeSlider.addOnChangeListener { slider, _, _ ->
             val currentYearGreater = slider.values[0]
             val currentYearLesser = slider.values[1]
-            field.yearGreater = currentYearGreater.takeIf { it != yearGreater }
+            filterModel.yearGreater = currentYearGreater.takeIf { it != yearGreater }
                 ?.let { FuzzyDateIntModel(it.toInt(), 0, 0) }
-            field.yearLesser = currentYearLesser.takeIf { it != yearLesser }
+            filterModel.yearLesser = currentYearLesser.takeIf { it != yearLesser }
                 ?.let { FuzzyDateIntModel(it.toInt(), 0, 0) }
 
-            if (field.yearGreater != null || field.yearLesser != null) {
-                yearRangeFilterHeader.text = getString(R.string.year_range_s_s).format(
-                    field.yearGreater?.year ?: yearGreater.toInt(),
-                    field.yearLesser?.year ?: yearLesser.toInt()
-                )
-            } else {
-                yearRangeFilterHeader.setText(R.string.year_range)
-            }
+            updateYearRangeHeader()
         }
 
         episodeOrChapterRangeSlider.addOnChangeListener { slider, _, _ ->
@@ -745,33 +726,18 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             val currentEpisodeLesser = slider.values[1]
 
             if (searchTypeAnime) {
-                field.episodesGreater =
+                filterModel.episodesGreater =
                     currentEpisodeGreater.takeIf { it != episodesGreater }?.toInt()
-                field.episodesLesser = currentEpisodeLesser.takeIf { it != episodesLesser }?.toInt()
-
-                if (field.episodesGreater != null || field.episodesLesser != null) {
-                    episodeOrChapterRangeFilterHeader.text =
-                        getString(R.string.episodes_range_s_s).format(
-                            field.episodesGreater ?: episodesGreater.toInt(),
-                            field.episodesLesser ?: episodesLesser.toInt()
-                        )
-                } else {
-                    episodeOrChapterRangeFilterHeader.setText(R.string.episodes)
-                }
+                filterModel.episodesLesser =
+                    currentEpisodeLesser.takeIf { it != episodesLesser }?.toInt()
+                updateEpisodeRangeHeader()
             } else if (searchTypeManga) {
-                field.chaptersGreater =
+                filterModel.chaptersGreater =
                     currentEpisodeGreater.takeIf { it != chaptersGreater }?.toInt()
-                field.chaptersLesser = currentEpisodeLesser.takeIf { it != chaptersLesser }?.toInt()
+                filterModel.chaptersLesser =
+                    currentEpisodeLesser.takeIf { it != chaptersLesser }?.toInt()
 
-                if (field.chaptersGreater != null || field.chaptersLesser != null) {
-                    episodeOrChapterRangeFilterHeader.text =
-                        getString(R.string.chapters_range_s_s).format(
-                            field.chaptersGreater ?: chaptersGreater.toInt(),
-                            field.chaptersLesser ?: chaptersLesser.toInt()
-                        )
-                } else {
-                    episodeOrChapterRangeFilterHeader.setText(R.string.chapters)
-                }
+                updateChapterRangeHeader()
             }
         }
 
@@ -780,42 +746,23 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
             val currentDurationLesser = slider.values[1]
 
             if (searchTypeAnime) {
-                field.durationGreater =
+                filterModel.durationGreater =
                     currentDurationGreater.takeIf { it != durationGreater }?.toInt()
-                field.durationLesser =
+                filterModel.durationLesser =
                     currentDurationLesser.takeIf { it != durationLesser }?.toInt()
-
-                if (field.durationGreater != null || field.durationLesser != null) {
-                    durationOrVolumeRangeFilterHeader.text =
-                        getString(R.string.duration_range_s_s).format(
-                            field.durationGreater ?: durationGreater.toInt(),
-                            field.durationLesser ?: durationLesser.toInt()
-                        )
-                } else {
-                    durationOrVolumeRangeFilterHeader.setText(R.string.duration)
-                }
+                updateDurationRangeHeader()
             } else if (searchTypeManga) {
-                field.volumesGreater =
+                filterModel.volumesGreater =
                     currentDurationGreater.takeIf { it != volumesGreater }?.toInt()
-                field.volumesLesser =
+                filterModel.volumesLesser =
                     currentDurationLesser.takeIf { it != volumesLesser }?.toInt()
-
-                if (field.volumesGreater != null || field.volumesLesser != null) {
-                    durationOrVolumeRangeFilterHeader.text =
-                        getString(R.string.volumes_range_s_s).format(
-                            field.volumesGreater ?: volumesGreater.toInt(),
-                            field.volumesLesser ?: volumesLesser.toInt()
-                        )
-                } else {
-                    durationOrVolumeRangeFilterHeader.setText(R.string.volumes)
-                }
+                updateVolumeRangeHeader()
             }
         }
 
         minimumTagRank.addOnChangeListener { _, value, _ ->
-            field.minimumTagRank = value.toInt()
-            minimumTagPercetageHeader.text =
-                getString(R.string.minimum_tag_percentage_s).format(field.minimumTagRank)
+            filterModel.minimumTagRank = value.toInt()
+            updateMinimumTagPercentageHeader()
         }
 
         yearRangeFilterHeader.setOnClickListener {
@@ -823,15 +770,19 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         }
 
         episodeOrChapterRangeFilterHeader.setOnClickListener {
-            if (searchTypeAnime) {
-                episodeOrChapterRangeSlider.values = listOf(episodesGreater, episodesLesser)
-            } else if (searchTypeManga) {
-                episodeOrChapterRangeSlider.values = listOf(chaptersGreater, chaptersLesser)
-            }
+            episodeOrChapterRangeSlider.values =
+                listOf(
+                    if (searchTypeAnime) episodesGreater else chaptersGreater,
+                    if (searchTypeAnime) episodesLesser else chaptersLesser
+                )
         }
 
         durationOrVolumeRangeFilterHeader.setOnClickListener {
-            durationOrVolumeRangeSlider.values = listOf(durationGreater, durationLesser)
+            durationOrVolumeRangeSlider.values =
+                listOf(
+                    if (searchTypeAnime) durationGreater else volumesGreater,
+                    if (searchTypeAnime) durationLesser else volumesLesser
+                )
         }
 
         minimumTagPercetageHeader.setOnClickListener {
@@ -844,40 +795,131 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
 
     }
 
+    private fun SearchFragmentLayoutBinding.updateMinimumTagPercentageHeader() {
+        minimumTagPercetageHeader.text =
+            getString(R.string.minimum_tag_percentage_s).format(filterModel.minimumTagRank ?: 18f)
+    }
+
+    private fun SearchFragmentLayoutBinding.updateYearRangeHeader() {
+        if (filterModel.yearGreater != null || filterModel.yearLesser != null) {
+            yearRangeFilterHeader.text = getString(R.string.year_range_s_s).format(
+                filterModel.yearGreater?.year ?: yearGreater.toInt(),
+                filterModel.yearLesser?.year ?: yearLesser.toInt()
+            )
+        } else {
+            yearRangeFilterHeader.setText(R.string.year_range)
+        }
+    }
+
+    private fun SearchFragmentLayoutBinding.updateEpisodeRangeHeader() {
+        if (filterModel.episodesGreater != null || filterModel.episodesLesser != null) {
+            episodeOrChapterRangeFilterHeader.text =
+                getString(R.string.episodes_range_s_s).format(
+                    filterModel.episodesGreater ?: episodesGreater.toInt(),
+                    filterModel.episodesLesser ?: episodesLesser.toInt()
+                )
+        } else {
+            episodeOrChapterRangeFilterHeader.setText(R.string.episodes)
+        }
+    }
+
+    private fun SearchFragmentLayoutBinding.updateChapterRangeHeader() {
+        if (filterModel.chaptersGreater != null || filterModel.chaptersLesser != null) {
+            episodeOrChapterRangeFilterHeader.text =
+                getString(R.string.chapters_range_s_s).format(
+                    filterModel.chaptersGreater ?: chaptersGreater.toInt(),
+                    filterModel.chaptersLesser ?: chaptersLesser.toInt()
+                )
+        } else {
+            episodeOrChapterRangeFilterHeader.setText(R.string.chapters)
+        }
+    }
+
+    private fun SearchFragmentLayoutBinding.updateVolumeRangeHeader() {
+        if (filterModel.volumesGreater != null || filterModel.volumesLesser != null) {
+            durationOrVolumeRangeFilterHeader.text =
+                getString(R.string.volumes_range_s_s).format(
+                    filterModel.volumesGreater ?: volumesGreater.toInt(),
+                    filterModel.volumesLesser ?: volumesLesser.toInt()
+                )
+        } else {
+            durationOrVolumeRangeFilterHeader.setText(R.string.volumes)
+        }
+    }
+
+    private fun SearchFragmentLayoutBinding.updateDurationRangeHeader() {
+        if (filterModel.durationGreater != null || filterModel.durationLesser != null) {
+            durationOrVolumeRangeFilterHeader.text =
+                getString(R.string.duration_range_s_s).format(
+                    filterModel.durationGreater ?: durationGreater.toInt(),
+                    filterModel.durationLesser ?: durationLesser.toInt()
+                )
+        } else {
+            durationOrVolumeRangeFilterHeader.setText(R.string.duration)
+        }
+    }
+
 
     private fun SearchFragmentLayoutBinding.changeViewForAnime() {
         filterSeasonLayout.visibility = View.VISIBLE
         licensedByTagChip.setText(R.string.streaming_on)
-        episodeOrChapterRangeFilterHeader.setText(R.string.episodes)
-        durationOrVolumeRangeFilterHeader.setText(R.string.duration)
 
         episodeOrChapterRangeSlider.valueFrom = episodesGreater
         episodeOrChapterRangeSlider.valueTo = episodesLesser
-        episodeOrChapterRangeSlider.values = listOf(episodesGreater, episodesLesser)
-
         durationOrVolumeRangeSlider.valueFrom = durationGreater
         durationOrVolumeRangeSlider.valueTo = durationLesser
-        durationOrVolumeRangeSlider.values = listOf(durationGreater, durationLesser)
+
+        changeEpisodesRangeSlider()
+        changeDurationRangeSlider()
 
         invalidateStreamingOnAdapter()
     }
 
+
     private fun SearchFragmentLayoutBinding.changeViewForManga() {
         licensedByTagChip.setText(R.string.readable_on)
         filterSeasonLayout.visibility = View.GONE
-        episodeOrChapterRangeFilterHeader.setText(R.string.chapters)
-        durationOrVolumeRangeFilterHeader.setText(R.string.volumes)
 
         episodeOrChapterRangeSlider.valueFrom = chaptersGreater
         episodeOrChapterRangeSlider.valueTo = chaptersLesser
-        episodeOrChapterRangeSlider.values = listOf(chaptersGreater, chaptersLesser)
-
         durationOrVolumeRangeSlider.valueFrom = volumesGreater
         durationOrVolumeRangeSlider.valueTo = volumesLesser
-        durationOrVolumeRangeSlider.values = listOf(volumesGreater, volumesLesser)
+
+        changeChaptersRangeSlider()
+        changeVolumeRangeSlider()
 
         invalidateReadableOnAdapter()
     }
+
+
+    private fun SearchFragmentLayoutBinding.changeDurationRangeSlider() {
+        durationOrVolumeRangeSlider.values = listOf(
+            filterModel.durationGreater?.toFloat() ?: durationGreater,
+            filterModel.durationLesser?.toFloat() ?: durationLesser
+        )
+    }
+
+    private fun SearchFragmentLayoutBinding.changeVolumeRangeSlider() {
+        durationOrVolumeRangeSlider.values = listOf(
+            filterModel.volumesGreater?.toFloat() ?: volumesGreater,
+            filterModel.volumesLesser?.toFloat() ?: volumesLesser
+        )
+    }
+
+    private fun SearchFragmentLayoutBinding.changeChaptersRangeSlider() {
+        episodeOrChapterRangeSlider.values = listOf(
+            filterModel.chaptersGreater?.toFloat() ?: chaptersGreater,
+            filterModel.chaptersLesser?.toFloat() ?: chaptersLesser
+        )
+    }
+
+    private fun SearchFragmentLayoutBinding.changeEpisodesRangeSlider() {
+        episodeOrChapterRangeSlider.values = listOf(
+            filterModel.episodesGreater?.toFloat() ?: episodesGreater,
+            filterModel.episodesLesser?.toFloat() ?: episodesLesser
+        )
+    }
+
 
     private fun SearchFragmentLayoutBinding.changeViewForOtherSearchType() {
         filterLayer1.visibility = View.INVISIBLE
@@ -893,7 +935,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private fun invalidateStreamingOnAdapter() {
         val streamingOnTagMap = streamingOnList.mapNotNull {
             when {
-                field.streamingOn?.contains(it) == true -> {
+                filterModel.streamingOn?.contains(it) == true -> {
                     TagField(it, TagState.TAGGED)
                 }
                 else -> {
@@ -913,7 +955,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private fun invalidateReadableOnAdapter() {
         val readableTagMap = readableOnList.mapNotNull {
             when {
-                field.streamingOn?.contains(it) == true -> {
+                filterModel.readableOn?.contains(it) == true -> {
                     TagField(it, TagState.TAGGED)
                 }
                 else -> {
@@ -932,10 +974,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private fun invalidateGenreAdapter() {
         val genreTagMap = genreList.mapNotNull {
             when {
-                field.genreIn?.contains(it) == true -> {
+                filterModel.genreIn?.contains(it) == true -> {
                     TagField(it, TagState.TAGGED)
                 }
-                field.genreNotIn?.contains(it) == true -> {
+                filterModel.genreNotIn?.contains(it) == true -> {
                     TagField(it, TagState.UNTAGGED)
                 }
                 else -> {
@@ -956,10 +998,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
     private fun invalidateTagAdapter() {
         val tagTagMap = tagList.mapNotNull {
             when {
-                field.tagsIn?.contains(it) == true -> {
+                filterModel.tagsIn?.contains(it) == true -> {
                     TagField(it, TagState.TAGGED)
                 }
-                field.tagsNotIn?.contains(it) == true -> {
+                filterModel.tagsNotIn?.contains(it) == true -> {
                     TagField(it, TagState.UNTAGGED)
                 }
                 else -> {
@@ -1019,13 +1061,14 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
         filterSearchEt.hideKeyboard()
         applyingFilter = true
         hideBottomSheet()
-        searchTypeTabLayout.getTabAt(field.searchType.ordinal)?.select()
+        viewModel.applyFilter()
+        searchTypeTabLayout.getTabAt(field.searchFilterModel.searchType.ordinal)?.select()
         searchEt.setText(filterSearchEt.text?.toString())
         filter()
     }
 
     private fun changeLayoutManager() {
-        layoutManager = when (field.searchType) {
+        layoutManager = when (field.searchFilterModel.searchType) {
             SearchTypes.STUDIO -> {
                 layoutManager.takeIf { it is LinearLayoutManager }
                     ?: LinearLayoutManager(requireContext())

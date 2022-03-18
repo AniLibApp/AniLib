@@ -14,6 +14,6 @@ class NewlyAddedMediaField : MediaField() {
     override var includeStudio: Boolean = true
 
     fun saveNewlyAddedField(context: Context) {
-        storeNewlyAddedField(context, this)
+        storeNewlyAddedField(this)
     }
 }

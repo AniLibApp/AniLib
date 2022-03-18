@@ -20,7 +20,7 @@ class SettingViewModel(private val settingService: SettingService) : BaseViewMod
     val mediaSettingField = MediaSettingField()
 
     fun getMediaSetting(context: Context) {
-        mediaOptionLiveData.value = Resource.loading(getStoredMediaOptions(context))
+        mediaOptionLiveData.value = Resource.loading()
         settingService.getMediaSetting(mediaSettingField, compositeDisposable) {
             if (it is Resource.Success) {
                 storeMediaOptions(context, it.data)

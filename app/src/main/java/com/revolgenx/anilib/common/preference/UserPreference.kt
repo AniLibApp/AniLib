@@ -27,15 +27,13 @@ private const val canShowAdultKey = "can_show_adult_key"
 private const val lastNotificationKey = "last_notification_key"
 private const val sharedPrefSyncKey = "sharedPrefSyncKey"
 private const val updateProfileColorKey = "updateProfileColorKey"
-private const val recentAnimeListStatusKey = "recentAnimeListStatusKey"
-private const val recentMangaListStatusKey = "recentMangaListStatusKey"
 private const val media_info_or_list_editor_key = "media_info_or_list_editor_key"
 
 
 private const val recent_anime_list_status_key = "recent_anime_list_status_key"
 private const val recent_manga_list_status_key = "recent_manga_list_status_key"
 
-object UserPreference{
+object UserPreference {
     val userId get() = DynamicPreferences.getInstance().load(userIdKey, -1)
 
 }
@@ -49,13 +47,13 @@ fun Context.token(token: String) = save(tokenKey, token)
 fun Context.userId(userId: Int) = save(userIdKey, userId)
 
 fun Context.titlePref() = load(titleKey, "0")
-fun titlePref(context: Context, pref: String) = save(titleKey, pref)
+fun titlePref(pref: String) = save(titleKey, pref)
 
 fun Context.imageQuality() = load(imageQualityKey, "0")
 
-fun Context.userName() = getUserPrefModel(this).name
+fun Context.userName() = getUserPrefModel().name
 fun Context.userScoreFormat() =
-    getUserPrefModel(this).mediaListOptions!!.scoreFormat!!
+    getUserPrefModel().mediaListOptions!!.scoreFormat!!
 
 private var userModel: UserModel? = null
 
@@ -63,8 +61,8 @@ fun Context.saveBasicUserDetail(userPrefModel: UserModel) {
     userModel = userPrefModel
     save(userModelKey, Gson().toJson(userPrefModel))
 
-    if (shouldUpdateProfileColor(this)) {
-        shouldUpdateProfileColor(this, false)
+    if (shouldUpdateProfileColor()) {
+        shouldUpdateProfileColor(false)
 //        userPrefModel.mediaOptions?.profileColor?.let {
 //            saveUserAccentColor(it)
 //        }
@@ -102,12 +100,12 @@ fun saveUserAccentColor(it: String) {
     ThemeController.accentColor = accentColorToSave
 }
 
-fun getUserPrefModel(context: Context): UserModel {
+fun getUserPrefModel(): UserModel {
     if (userModel == null) {
         userModel =
             Gson().fromJson(load(userModelKey, ""), UserModel::class.java)
                 ?: UserModel().also { model ->
-                    model.name = context.getString(R.string.app_name)
+                    model.name = "AniLib"
                 }
     }
 
@@ -138,28 +136,28 @@ fun Context.logOut() {
     loggedIn(false)
     token("")
     userId(-1)
-    titlePref(this, "0")
+    titlePref("0")
     removeNotification(this)
     removeBasicUserDetail(this)
-    removeAiringField(this)
+    removeAiringField()
     shortcutAction(this) {
         it.removeAllDynamicShortcuts()
     }
     removeNotificationWorker(this)
 }
 
-private fun removeNotificationWorker(context: Context){
+private fun removeNotificationWorker(context: Context) {
     WorkManager.getInstance(context)
         .cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
 }
 
 private fun removeNotification(context: Context) {
-    setNewNotification(context)
+    setNewNotification()
 }
 
-private fun removeAiringField(context: Context) {
-    storeDiscoverAiringField(context, AiringMediaField())
-    storeAiringField(context, AiringMediaField())
+private fun removeAiringField() {
+    storeDiscoverAiringField(AiringMediaField())
+    storeAiringField(AiringMediaField())
 }
 
 fun Context.logIn(accessToken: String) {
@@ -167,43 +165,43 @@ fun Context.logIn(accessToken: String) {
     token(accessToken)
     val userId = JWT(accessToken).subject?.trim()?.toInt() ?: -1
     userId(userId)
-    titlePref(this, "3")
+    titlePref("3")
     shortcutAction(this) {
         it.removeAllDynamicShortcuts()
     }
-    shouldUpdateProfileColor(this, true)
+    shouldUpdateProfileColor(true)
 }
 
-private fun shouldUpdateProfileColor(context: Context, update: Boolean) {
+private fun shouldUpdateProfileColor(update: Boolean) {
     save(updateProfileColorKey, update)
 }
 
-private fun shouldUpdateProfileColor(context: Context) =
+private fun shouldUpdateProfileColor() =
     load(updateProfileColorKey, false)
 
 
-fun getLastNotification(context: Context): Int {
+fun getLastNotification(): Int {
     return load(lastNotificationKey, -1)
 }
 
-fun setNewNotification(context: Context, notifId: Int = -1) {
+fun setNewNotification(notifId: Int = -1) {
     save(lastNotificationKey, notifId)
 }
 
 
-fun canShowAdult(context: Context): Boolean {
-    return if (userEnabledAdultContent(context)) {
+fun canShowAdult(): Boolean {
+    return if (userEnabledAdultContent()) {
         load(canShowAdultKey, false)
     } else {
         false
     }
 }
 
-fun userEnabledAdultContent(context: Context): Boolean {
-    return getStoredMediaOptions(context).displayAdultContent
+fun userEnabledAdultContent(): Boolean {
+    return getStoredMediaOptions().displayAdultContent
 }
 
-fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
+fun isSharedPreferenceSynced(synced: Boolean? = null) =
     if (synced == null) {
         load(sharedPrefSyncKey, false)
     } else {
@@ -215,19 +213,21 @@ fun isSharedPreferenceSynced(context: Context, synced: Boolean? = null) =
 fun storeMediaOptions(context: Context, model: UserOptionsModel?) {
     if (model == null) return
 
-    val userPrefModel = getUserPrefModel(context)
+    val userPrefModel = getUserPrefModel()
     userPrefModel.options = model
     context.saveBasicUserDetail(userPrefModel)
 }
 
-fun getStoredMediaOptions(context: Context): UserOptionsModel {
-    return getUserPrefModel(context).options!!
+fun getStoredMediaOptions(): UserOptionsModel {
+    return getUserPrefModel().options!!
 }
 
 fun animeListStatusHistory() = dynamicPreferences.load(recent_anime_list_status_key, "All")
-fun animeListStatusHistory(value: String) = dynamicPreferences.save(recent_anime_list_status_key, value.trim())
+fun animeListStatusHistory(value: String) =
+    dynamicPreferences.save(recent_anime_list_status_key, value.trim())
 
 fun mangaListStatusHistory() = dynamicPreferences.load(recent_manga_list_status_key, "All")
-fun mangaListStatusHistory(value:String) = dynamicPreferences.save(recent_manga_list_status_key, value.trim())
+fun mangaListStatusHistory(value: String) =
+    dynamicPreferences.save(recent_manga_list_status_key, value.trim())
 
 fun openMediaInfoOrListEditor() = dynamicPreferences.load(media_info_or_list_editor_key, false)
