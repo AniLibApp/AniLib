@@ -10,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.marginBottom
+import androidx.core.view.updateLayoutParams
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.revolgenx.anilib.R
@@ -25,6 +26,7 @@ import com.revolgenx.anilib.list.fragment.MangaListCollectionFragment
 import com.revolgenx.anilib.list.fragment.BaseMediaListCollectionFragment
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionContainerCallback
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.util.dp
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserMediaListCollectionContainerFragment :
@@ -113,16 +115,13 @@ class UserMediaListCollectionContainerFragment :
                 }
             })
 
-            ViewCompat.setOnApplyWindowInsetsListener(listExtendedFab) { v, insets ->
-                (v.layoutParams as ViewGroup.MarginLayoutParams).also {
-                    it.setMargins(
-                        it.marginStart,
-                        it.topMargin,
-                        it.marginEnd,
-                        it.bottomMargin + insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
-                    )
+            ViewCompat.setOnApplyWindowInsetsListener(listExtendedFab) { v, windowInsets ->
+                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+                v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    bottomMargin = dp(16f) + insets.bottom
                 }
-                insets
+                windowInsets
             }
 
             sharedViewModel.currentGroupNameWithCount.observe(viewLifecycleOwner) {
