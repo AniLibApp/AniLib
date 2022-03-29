@@ -33,7 +33,7 @@
 
 ## Translation
         
-### Huge thanks to translator for translation and support.
+### Many thanks to the translators who make AniLib available to everyone
         
 [![Arabic](https://img.shields.io/poeditor/progress/383723/ar?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
 [![French](https://img.shields.io/poeditor/progress/383723/fr?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
@@ -45,7 +45,7 @@
 [![Spanish](https://img.shields.io/poeditor/progress/383723/es?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
 
 | Languaje | Translator |
-| -------- | ---------- |
+| --- | --- |
 | Arabic | Sakugaky, Mimogu |
 | French | natsuthelight |
 | German | [André Niebuhr (Epr0m)](https://anilist.co/user/Epr0m/) |
@@ -53,7 +53,11 @@
 | Italian | Yoshimitsu, cayzon |
 | Portuguese | Satoru, SamOak |
 | Russian | Natalie |
-| Spanish | ricardoric_03, [MrJako2001](https://anilist.co/user/MrJaco/)
+| Spanish | ricardoric_03, [MrJako2001](https://anilist.co/user/MrJaco/) |
+
+## Want to help translate AniLib into your language?
+        
+First request to join your language group at [POEditor](https://poeditor.com/join/project?hash=d9NRHxgZSb), then send an email to anilib.dev@gmail.com to approve your request.
                                                                                                                   
 ## Development
 <details><summary>Api Keys</summary>
@@ -84,10 +88,7 @@ Before creating an issue check if it is already opened.
 </details>
 
 ## Support
-If you like this weeb's project, feel free to contribute through [Buymeacoffee](https://www.buymeacoffee.com/9qP65KlG4) or [PayPal](https://paypal.me/rev0lgenX?locale.x=en_US)
-        
-### Note
-Visit [POEditor](https://poeditor.com/join/project?hash=d9NRHxgZSb) to join open collaborative translation team. Please email me first on anilib.dev@gmail.com.        
+If you like this weeb's project, feel free to contribute through [Buymeacoffee](https://www.buymeacoffee.com/9qP65KlG4) or [PayPal](https://paypal.me/rev0lgenX?locale.x=en_US)    
         
 ## License
 
