@@ -415,10 +415,10 @@
     <string name="profile">Perfil</string>
     <string name="sun">Dom</string>
     <string name="mon">Lun</string>
-    <string name="tue">Mart</string>
-    <string name="wed">Miérc</string>
-    <string name="thu">Juev</string>
-    <string name="fri">Vier</string>
+    <string name="tue">Mar</string>
+    <string name="wed">Mié</string>
+    <string name="thu">Jue</string>
+    <string name="fri">Vie</string>
     <string name="sat">Sáb</string>
     <string name="card_classic_mode">Clásico</string>
     <string name="minimal_mode">Minimalista circular</string>
@@ -471,7 +471,7 @@
     <string name="date_range_to">a</string>
     <string name="select_days_within_a_week">Seleccione rango de días</string>
     <string name="disable_ads">Desactivar publicidad</string>
-    <string name="disable_ads_desc">Desactivar publicidad en la sección de radio\nSi lo dejas habilitado, apoyarás el desarrollo de la aplicación</string>
+    <string name="disable_ads_desc">Desactivar publicidad en el apartado de radio\nSi lo mantienes habilitado, apoyarás el desarrollo de la aplicación</string>
     <string name="load_bio">Cargar biografía</string>
     <string name="load_bio_desc">Cargar biografía cuando se acceda al perfil de usuario</string>
     <string name="load_user_bio">Cargar automáticamente biografía</string>
@@ -657,6 +657,7 @@ country of origin -->
     <string name="chapters_range_s_s">Capítulos (%s - %s)</string>
     <string name="volumes_range_s_s">Volúmenes (%s - %s)</string>
     <string name="readable_on">Legible</string>
+    <string name="minimum_tag_percentage">Porcentaje de etiqueta mínima</string>
     <string name="minimum_tag_percentage_s">Porcentaje de etiqueta mínima (%s)</string>
     <string name="favourite">Favorito</string>
     <string name="hide_from_status_list">Ocultar de la lista de estados</string>
@@ -667,5 +668,5 @@ country of origin -->
     <!-- is an error message? -->
     <string name="review_summary_character_length_err_msg">El resumen debe tener menos de 120 caracteres y más de 20</string>
     <string name="open_media_info">Desplegar información rápidamente</string>
-    <string name="enable_to_open_media_info_on_single_click">Permite abrir la información de un medio mediante una sola pulsación</string>
+    <string name="enable_to_open_media_info_on_single_click">Abrir la información de un anime/manga mediante una sola pulsación</string>
 </resources>
