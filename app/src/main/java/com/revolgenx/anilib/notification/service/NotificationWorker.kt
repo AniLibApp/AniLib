@@ -73,7 +73,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
     override fun doWork(): Result {
         return runBlocking {
-            if (context.loggedIn()) {
+            if (loggedIn()) {
                 val suspendedQuery =
                     suspendCoroutine<Resource<List<NotificationModel>>> { continuation ->
                         notificationService.getNotifications(
@@ -165,14 +165,14 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             NotificationUnionType.THREAD_COMMENT_LIKE -> createThreadNotif(item as ThreadCommentLikeNotification)
             NotificationUnionType.AIRING -> {
                 (item as AiringNotificationModel).let {
-                    notificationImage = it.media?.coverImage?.image(context)
+                    notificationImage = it.media?.coverImage?.image()
                     String.format(
                         Locale.getDefault(),
                         context.getString(R.string.episode_airing_notif),
                         it.contexts!![0],
                         it.episode,
                         it.contexts!![1],
-                        it.media?.title?.title(context),
+                        it.media?.title?.title(),
                         it.contexts!![2]
                     )
                 }
@@ -185,7 +185,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                 (item as RelatedMediaNotificationModel)
                 notificationImage = item.media?.coverImage?.image
                 return context.getString(R.string.s_space_s)
-                    .format(item.media?.title?.title(context), item.context)
+                    .format(item.media?.title?.title(), item.context)
             }
 
             NotificationUnionType.MEDIA_DATA_CHANGE -> createMediaDataChangeNotification(item as MediaDataChangeNotificationModel)
@@ -218,14 +218,14 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
     private fun createMediaDataChangeNotification(item: MediaDataChangeNotificationModel): String {
         notificationImage = item.media?.coverImage?.image
         return context.getString(R.string.s_space_s)
-            .format(item.media?.title?.title(context), item.context)
+            .format(item.media?.title?.title(), item.context)
     }
 
 
     private fun createMediaMergeNotification(item: MediaMergeNotificationModel): String {
         notificationImage = item.media?.coverImage?.image
         return context.getString(R.string.s_space_s)
-            .format(item.media?.title?.title(context), item.context)
+            .format(item.media?.title?.title(), item.context)
     }
 
     private fun createMediaDeleteNotification(item: MediaDeletionNotificationModel): String {

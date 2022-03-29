@@ -57,7 +57,7 @@ class SplashActivity : DynamicSplashActivity() {
     }
 
     private fun setAppShortcuts() {
-        shortcutAction(this) {
+        shortcutAction {
 
             if (it.dynamicShortcuts.size != 0) return@shortcutAction
 

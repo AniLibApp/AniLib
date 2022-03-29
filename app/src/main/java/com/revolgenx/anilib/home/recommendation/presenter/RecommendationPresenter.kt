@@ -3,7 +3,6 @@ package com.revolgenx.anilib.home.recommendation.presenter
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -12,17 +11,14 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.RecommendationPresenterLayoutBinding
-import com.revolgenx.anilib.home.recommendation.data.field.SaveRecommendationField
 import com.revolgenx.anilib.home.recommendation.data.model.RecommendationModel
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.type.RecommendationRating
 import com.revolgenx.anilib.common.presenter.BasePresenter
-import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.home.recommendation.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.ui.view.makeErrorToast
 import com.revolgenx.anilib.util.loginContinue
@@ -69,8 +65,8 @@ class RecommendationPresenter(
 
         holder.getBinding()?.apply {
             item.recommendationFrom?.let { from ->
-                recommendedFromTitleTv.text = from.title?.title(context)
-                recommendedFromImageView.setImageURI(from.coverImage?.image(context))
+                recommendedFromTitleTv.text = from.title?.title()
+                recommendedFromImageView.setImageURI(from.coverImage?.image())
                 recommendedFromRatingTv.text = from.averageScore
                 recommendedFromStatusTv.text = from.status?.let {
                     recommendedFromStatusTv.color = Color.parseColor(statusColors[it])
@@ -89,7 +85,7 @@ class RecommendationPresenter(
                             from.id,
                             from.type!!,
                             from.title!!.romaji!!,
-                            from.coverImage!!.image(context),
+                            from.coverImage!!.image(),
                             from.coverImage!!.largeImage,
                             from.bannerImage
                         )
@@ -105,8 +101,8 @@ class RecommendationPresenter(
             }
 
             item.recommended?.let { rec ->
-                recommendedTitleTv.text = rec.title?.title(context)
-                recommendedImageView.setImageURI(rec.coverImage?.image(context))
+                recommendedTitleTv.text = rec.title?.title()
+                recommendedImageView.setImageURI(rec.coverImage?.image())
                 recommendedMediaRatingTv.text = rec.averageScore
                 recommendedStatusTv.text = rec.status?.let {
                     recommendedStatusTv.color = Color.parseColor(statusColors[it])
@@ -124,7 +120,7 @@ class RecommendationPresenter(
                             rec.id,
                             rec.type!!,
                             rec.title!!.romaji!!,
-                            rec.coverImage!!.image(context),
+                            rec.coverImage!!.image(),
                             rec.coverImage!!.largeImage,
                             rec.bannerImage
                         )

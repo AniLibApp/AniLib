@@ -53,7 +53,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if (requireContext().loggedIn() && isSectionEnabled) {
+        if (loggedIn() && isSectionEnabled) {
             dRecyclerView = RecyclerView(requireContext()).also {
                 it.layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -84,7 +84,7 @@ open class DiscoverReadingFragment : DiscoverWatchingFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (requireContext().loggedIn() && isSectionEnabled) {
+        if (loggedIn() && isSectionEnabled) {
             dRecyclerView!!.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 

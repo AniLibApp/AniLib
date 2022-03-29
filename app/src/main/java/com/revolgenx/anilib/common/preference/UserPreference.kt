@@ -6,9 +6,9 @@ import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.pranavpandey.android.dynamic.theme.DynamicPalette
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.ThemeController
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
+import com.revolgenx.anilib.app.App
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.app.setting.data.model.UserOptionsModel
 import com.revolgenx.anilib.notification.service.NotificationWorker
@@ -35,29 +35,28 @@ private const val recent_manga_list_status_key = "recent_manga_list_status_key"
 
 object UserPreference {
     val userId get() = DynamicPreferences.getInstance().load(userIdKey, -1)
-
 }
 
-fun Context.loggedIn() = load(loggedInKey, false)
-fun Context.loggedIn(logIn: Boolean) = save(loggedInKey, logIn)
+fun loggedIn() = load(loggedInKey, false)
+fun loggedIn(logIn: Boolean) = save(loggedInKey, logIn)
 
-fun Context.token() = load(tokenKey, "")
-fun Context.token(token: String) = save(tokenKey, token)
+fun token() = load(tokenKey, "")
+fun token(token: String) = save(tokenKey, token)
 
-fun Context.userId(userId: Int) = save(userIdKey, userId)
+fun userId(userId: Int) = save(userIdKey, userId)
 
-fun Context.titlePref() = load(titleKey, "0")
+fun titlePref() = load(titleKey, "0")
 fun titlePref(pref: String) = save(titleKey, pref)
 
-fun Context.imageQuality() = load(imageQualityKey, "0")
+fun imageQuality() = load(imageQualityKey, "0")
 
-fun Context.userName() = getUserPrefModel().name
-fun Context.userScoreFormat() =
+fun userName() = getUserPrefModel().name
+fun userScoreFormat() =
     getUserPrefModel().mediaListOptions!!.scoreFormat!!
 
 private var userModel: UserModel? = null
 
-fun Context.saveBasicUserDetail(userPrefModel: UserModel) {
+fun saveBasicUserDetail(userPrefModel: UserModel) {
     userModel = userPrefModel
     save(userModelKey, Gson().toJson(userPrefModel))
 
@@ -124,34 +123,36 @@ fun getUserPrefModel(): UserModel {
 }
 
 
-private fun removeBasicUserDetail(context: Context) {
+private fun removeBasicUserDetail() {
     userModel = UserModel().also {
-        it.name = context.getString(R.string.app_name)
+        it.name = "AniLib"
         it.options = UserOptionsModel(UserTitleLanguage.ROMAJI.ordinal, false, false, null)
     }
     save(userModelKey, Gson().toJson(userModel))
 }
 
-fun Context.logOut() {
+fun logOut() {
     loggedIn(false)
     token("")
     userId(-1)
     titlePref("0")
-    removeNotification(this)
-    removeBasicUserDetail(this)
+    removeNotification()
+    removeBasicUserDetail()
     removeAiringField()
-    shortcutAction(this) {
+    shortcutAction {
         it.removeAllDynamicShortcuts()
     }
-    removeNotificationWorker(this)
+    removeNotificationWorker()
 }
 
-private fun removeNotificationWorker(context: Context) {
-    WorkManager.getInstance(context)
-        .cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
+private fun removeNotificationWorker() {
+    App.applicationContext?.let {
+        WorkManager.getInstance(it)
+            .cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
+    }
 }
 
-private fun removeNotification(context: Context) {
+private fun removeNotification() {
     setNewNotification()
 }
 
@@ -166,7 +167,7 @@ fun Context.logIn(accessToken: String) {
     val userId = JWT(accessToken).subject?.trim()?.toInt() ?: -1
     userId(userId)
     titlePref("3")
-    shortcutAction(this) {
+    shortcutAction {
         it.removeAllDynamicShortcuts()
     }
     shouldUpdateProfileColor(true)
@@ -210,12 +211,12 @@ fun isSharedPreferenceSynced(synced: Boolean? = null) =
     }
 
 
-fun storeMediaOptions(context: Context, model: UserOptionsModel?) {
+fun storeMediaOptions(model: UserOptionsModel?) {
     if (model == null) return
 
     val userPrefModel = getUserPrefModel()
     userPrefModel.options = model
-    context.saveBasicUserDetail(userPrefModel)
+    saveBasicUserDetail(userPrefModel)
 }
 
 fun getStoredMediaOptions(): UserOptionsModel {

@@ -180,7 +180,7 @@ class MediaListCollectionPresenter(
             }
 
             titleTv?.text = item.media?.title?.userPreferred
-            coverIv?.setImageURI(item.media?.coverImage?.image(context))
+            coverIv?.setImageURI(item.media?.coverImage?.image())
             formatTv?.text = item.media?.format?.let { mediaFormats[it] }.naText()
 
             statusTv?.text = item.media?.status?.let { status ->
@@ -284,7 +284,7 @@ class MediaListCollectionPresenter(
                 item.id,
                 item.type!!,
                 item.title!!.userPreferred,
-                item.coverImage!!.image(context),
+                item.coverImage!!.image(),
                 item.coverImage!!.largeImage,
                 item.bannerImage
             )

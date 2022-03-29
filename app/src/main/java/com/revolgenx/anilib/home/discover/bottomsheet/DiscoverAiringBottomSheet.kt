@@ -39,7 +39,7 @@ class DiscoverAiringBottomSheet : DynamicBottomSheetFragment<AiringFilterDialogL
 
         binding.apply {
             showAllAiringSwitch.isChecked = !airingField.notYetAired
-            if (requireContext().loggedIn()) {
+            if (loggedIn()) {
                 showFromWatchListSwitch.visibility = View.VISIBLE
                 showFromPlanningListSwitch.visibility = View.VISIBLE
                 showFromPlanningListSwitch.isChecked = airingField.showFromPlanning

@@ -65,9 +65,9 @@ class MediaPresenter(
 
         holder[SELECTABLE_MEDIA_MODEL_KEY] = item
         binding.apply {
-            mediaSimpleDrawee.setImageURI(item.coverImage?.image(context))
+            mediaSimpleDrawee.setImageURI(item.coverImage?.image())
             mediaRatingTv.text = item.averageScore
-            mediaTitleTv.text = item.title?.title(context)
+            mediaTitleTv.text = item.title?.title()
             mediaFormatTv.text = context.getString(R.string.format_episode_s).format(
                 item.format?.let { mediaFormats[it] }.naText(),
                 item.episodes.naText()
@@ -101,7 +101,7 @@ class MediaPresenter(
                             item.id,
                             item.type!!,
                             item.title!!.romaji!!,
-                            item.coverImage!!.image(context),
+                            item.coverImage!!.image(),
                             item.coverImage!!.largeImage,
                             item.bannerImage
                         )

@@ -37,7 +37,7 @@ class MediaInfoRelationshipPresenter(context: Context) :
         val item = edge.node ?: return
 
         holder.getBinding()?.apply {
-            relationshipTitleTv.text = item.title!!.title(context)
+            relationshipTitleTv.text = item.title!!.title()
             relationshipCoverImage.setImageURI(item.coverImage?.largeImage)
             relationshipMediaRatingTv.text = item.averageScore
             mediaSourceSeasonYearTv.text =
@@ -58,7 +58,7 @@ class MediaInfoRelationshipPresenter(context: Context) :
                         item.id,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image(context),
+                        item.coverImage!!.image(),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     )

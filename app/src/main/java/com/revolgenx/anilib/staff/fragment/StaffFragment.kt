@@ -14,6 +14,7 @@ import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.util.prettyNumberFormat
 import com.revolgenx.anilib.staff.viewmodel.StaffViewModel
+import com.revolgenx.anilib.util.loginContinue
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
@@ -116,10 +117,8 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
 
     private fun initListener() {
         binding.staffFavLayout.setOnClickListener {
-            if (requireContext().loggedIn()) {
+            loginContinue {
                 viewModel.toggleCharacterFav(viewModel.staffToggleField)
-            } else {
-                makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
         }
     }

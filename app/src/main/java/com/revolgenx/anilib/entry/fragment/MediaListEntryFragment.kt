@@ -460,7 +460,7 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
 
     private fun updateEntryToolbar() {
         val media = mediaModel ?: return
-        media.title?.title(requireContext())?.let { updateToolbarTitle(it) }
+        media.title?.title()?.let { updateToolbarTitle(it) }
         val mediaListEntry = media.mediaListEntry
         getBaseToolbar().menu.let { menu ->
             menu.findItem(R.id.list_save_menu).isVisible = true
@@ -495,7 +495,7 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
             }
             R.id.list_delete_menu -> {
                 val title =
-                    viewModel.mediaListEntry.value?.data?.media?.title?.title(requireContext())
+                    viewModel.mediaListEntry.value?.data?.media?.title?.title()
                 makeConfirmationDialog(
                     requireContext(),
                     message = getString(

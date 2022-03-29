@@ -499,7 +499,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     @Subscribe
     fun signInEvent(event: AuthenticateEvent) {
         if (loggedIn()) {
-            context.logOut()
+            logOut()
             SessionEvent(false).postEvent
             startActivity(Intent(this.context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

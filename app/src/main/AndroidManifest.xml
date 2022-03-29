@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 
     <application
         android:name=".app.App"
@@ -100,6 +99,17 @@
                     android:pathPrefix="/activity/"
                     android:scheme="https" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="anilist.co"
+                    android:pathPrefix="/home"
+                    android:scheme="https" />
+            </intent-filter>
 
         </activity>
 
@@ -109,9 +119,13 @@
             tools:node="replace">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="${applicationId}" android:host="anilist.co" />
+
+                <data
+                    android:host="anilist.co"
+                    android:scheme="${applicationId}" />
             </intent-filter>
         </activity>
         <activity

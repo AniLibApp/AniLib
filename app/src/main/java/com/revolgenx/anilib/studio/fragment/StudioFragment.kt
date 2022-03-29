@@ -19,6 +19,7 @@ import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.studio.viewmodel.StudioViewModel
+import com.revolgenx.anilib.util.loginContinue
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StudioFragment : BasePresenterFragment<MediaModel>() {
@@ -157,10 +158,8 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
 
     private fun initListener() {
         studioBinding.studioFavIv.setOnClickListener {
-            if (requireContext().loggedIn()) {
+            loginContinue {
                 viewModel.toggleStudioFav(viewModel.toggleFavouriteField)
-            } else {
-                makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
         }
     }

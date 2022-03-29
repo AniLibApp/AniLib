@@ -9,12 +9,12 @@ import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.SeasonPresenterLayoutBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.event.OpenSearchEvent
+import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
@@ -41,10 +41,7 @@ class SeasonPresenter(context: Context) :
         context.resources.getStringArray(R.array.media_status)
     }
 
-    private val isLoggedIn by lazy {
-        context.loggedIn()
-    }
-
+    private val isLoggedIn = loggedIn()
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -60,8 +57,8 @@ class SeasonPresenter(context: Context) :
         val item = element.data ?: return
         val binding = holder.getBinding() ?: return
         binding.apply {
-            mediaTitleTv.naText(item.title!!.title(context))
-            coverImageIv.setImageURI(item.coverImage!!.image(context))
+            mediaTitleTv.naText(item.title!!.title())
+            coverImageIv.setImageURI(item.coverImage!!.image())
             if (item.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeTv.text =
                     context.getString(R.string.ep_d_s).format(item.episodes.naText(), item.duration.naText())
@@ -96,7 +93,7 @@ class SeasonPresenter(context: Context) :
                         item.id,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image(context),
+                        item.coverImage!!.image(),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     )

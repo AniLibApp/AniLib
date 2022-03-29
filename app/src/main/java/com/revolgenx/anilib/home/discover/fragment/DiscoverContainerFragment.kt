@@ -103,7 +103,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
     @SuppressLint("UnsafeOptInUsageError")
     override fun onToolbarInflated() {
         val notificationMenuItem = getBaseToolbar().menu.findItem(R.id.discover_notification_menu)
-        if (requireContext().loggedIn()) {
+        if (loggedIn()) {
             notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner) {
                 if (it > 0) {
                     BadgeUtils.attachBadgeDrawable(
@@ -191,12 +191,12 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
     }
 
     private fun DiscoverContainerFragmentBinding.initRecommendationListener() {
-        if (requireContext().loggedIn()) {
+        if (loggedIn()) {
             recommendationOnListCheckBox.visibility = View.VISIBLE
             recommendationOnListCheckBox.setOnCheckedChangeListener(null)
             recommendationOnListCheckBox.setOnCheckedChangeListener { _, isChecked ->
                 val onList =
-                    if (requireContext().loggedIn()) isChecked else null
+                    if (loggedIn()) isChecked else null
                 recommendationViewModel.field.onList = onList
                 RecommendationEvent.RecommendationFilterEvent(
                     onList,

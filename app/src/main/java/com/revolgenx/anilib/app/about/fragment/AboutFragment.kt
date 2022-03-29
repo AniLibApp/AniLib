@@ -2,6 +2,7 @@ package com.revolgenx.anilib.app.about.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import com.pranavpandey.android.dynamic.theme.Theme
@@ -22,12 +23,6 @@ class AboutFragment : BaseLayoutFragment<AboutFragmentLayoutBinding>() {
         return DynamicPackageUtils.getVersionName(requireContext())
     }
 
-    override fun getBaseToolbar(): Toolbar {
-        val t =  binding.dynamicToolbar
-        t.colorType = Theme.ColorType.BACKGROUND
-        return t
-    }
-
     override fun bindView(
         inflater: LayoutInflater,
         parent: ViewGroup?
@@ -37,14 +32,16 @@ class AboutFragment : BaseLayoutFragment<AboutFragmentLayoutBinding>() {
 
     private val getPages: List<BaseFragment> by lazy{ listOf(AppInfoFragment(), LicensesFragment(), TranslatorsFragment())}
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.apply {
             aboutTabLayout.setupWithViewPager(aboutFragmentViewpager)
             aboutFragmentViewpager.adapter = makePagerAdapter(getPages,requireContext().resources.getStringArray(R.array.about_tab_titles))
         }
+    }
+
+    override fun getBaseToolbar(): Toolbar {
+        return binding.dynamicToolbar
     }
 
 }

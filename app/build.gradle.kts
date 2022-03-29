@@ -269,7 +269,7 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-ktx")
 
     //ads
-    implementation("com.google.android.gms:play-services-ads:19.7.0")
+    implementation("com.google.android.gms:play-services-ads:${LibraryVersion.admob_version}")
 
     //draglistview
     implementation("com.github.woxthebox:draglistview:${LibraryVersion.draglist_version}")

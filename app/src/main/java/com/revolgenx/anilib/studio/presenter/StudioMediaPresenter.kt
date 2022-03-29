@@ -44,8 +44,8 @@ class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresente
         val item = element.data ?: return
 
         holder.getBinding()?.apply {
-            studioMediaImageView.setImageURI(item.coverImage?.image(context))
-            studioMediaTitleTv.text = item.title?.title(context)
+            studioMediaImageView.setImageURI(item.coverImage?.image())
+            studioMediaTitleTv.text = item.title?.title()
             studioMediaRatingTv.text = item.averageScore
             studioMediaFormatYearTv.text = context.getString(R.string.media_format_year_s).format(
                 item.format?.let { mediaFormats[it] }.naText(), item.seasonYear?.toString().naText()
@@ -60,7 +60,7 @@ class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresente
                         item.id,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image(context),
+                        item.coverImage!!.image(),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     )

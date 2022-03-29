@@ -87,7 +87,7 @@ open class DiscoverAiringFragment : BaseDiscoverFragment() {
             airingBinding.dslWeekTabLayout.getTabAt(viewModel.selectedDay)?.select()
 
 
-            if (requireContext().loggedIn()) {
+            if (loggedIn()) {
                 with(viewModel.field) {
                     userId = UserPreference.userId
                 }

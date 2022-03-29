@@ -324,7 +324,7 @@ class ActivityUnionPresenter(
         updateItems(item)
 
         userAvatarIv.setImageURI(item.user!!.avatar?.large)
-        mediaCoverIv.setImageURI(item.media!!.coverImage?.image(context))
+        mediaCoverIv.setImageURI(item.media!!.coverImage?.image())
 
         activityCreatedAtTv.text = item.createdAt
 
@@ -399,7 +399,7 @@ class ActivityUnionPresenter(
                 item.id,
                 item.type!!,
                 item.title!!.userPreferred,
-                item.coverImage!!.image(context),
+                item.coverImage!!.image(),
                 item.coverImage!!.largeImage,
                 item.bannerImage
             )

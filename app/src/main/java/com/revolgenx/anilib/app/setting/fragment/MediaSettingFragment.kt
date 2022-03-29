@@ -91,7 +91,7 @@ class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() 
 
         if (savedInstanceState == null) {
             viewModel.mediaSettingField.userId = UserPreference.userId
-            viewModel.getMediaSetting(requireContext())
+            viewModel.getMediaSetting()
         }
     }
 
@@ -136,7 +136,7 @@ class MediaSettingFragment : BaseToolbarFragment<MediaSettingFragmentBinding>() 
         val model = viewModel.mediaOptionLiveData.value?.data ?: return
         model.airingNotifications = airingAnimeNotificationSwitch.isChecked
         model.titleLanguage = titleLanguageSpinner.spinnerView.selectedItemPosition
-        viewModel.setMediaSetting(requireContext(), MediaSettingMutateField(model))
+        viewModel.setMediaSetting(MediaSettingMutateField(model))
     }
 
 

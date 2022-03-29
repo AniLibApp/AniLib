@@ -51,7 +51,7 @@ class MediaListPresenter(
     }
 
     private val isLoggedInUser by lazy {
-        mediaListMeta.userId == UserPreference.userId || mediaListMeta.userName == context.userName()
+        mediaListMeta.userId == UserPreference.userId || mediaListMeta.userName == userName()
     }
 
     override fun onCreate(parent: ViewGroup, elementType: Int): Holder {
@@ -133,7 +133,7 @@ class MediaListPresenter(
                         media.id,
                         media.type!!,
                         media.title!!.userPreferred,
-                        media.coverImage!!.image(context),
+                        media.coverImage!!.image(),
                         media.coverImage!!.largeImage,
                         media.bannerImage
                     )

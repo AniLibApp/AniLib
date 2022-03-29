@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.StaffMediaRolePresenterBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
@@ -15,6 +13,7 @@ import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
 //staff roles
@@ -42,9 +41,9 @@ class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePr
         val binding = holder.getBinding() ?: return
 
         binding.apply {
-            staffMediaRoleImageView.setImageURI(item.coverImage?.image(context))
+            staffMediaRoleImageView.setImageURI(item.coverImage?.image())
             staffMediaRoleRatingTv.text = item.averageScore
-            staffMediaRoleTitleTv.text = item.title?.title(context)
+            staffMediaRoleTitleTv.text = item.title?.title()
             staffMediaRoleTv.text = item.staffRole
             staffMediaRoleFormatYearTv.text =
                 context.getString(R.string.media_format_year_s).format(
@@ -58,7 +57,7 @@ class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePr
                         item.id,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image(context),
+                        item.coverImage!!.image(),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     )
@@ -66,10 +65,8 @@ class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePr
             }
 
             staffMediaRoleContainer.setOnLongClickListener {
-                if (context.loggedIn()) {
+                context.loginContinue {
                     OpenMediaListEditorEvent(item.id).postEvent
-                } else {
-                    context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                 }
                 true
             }

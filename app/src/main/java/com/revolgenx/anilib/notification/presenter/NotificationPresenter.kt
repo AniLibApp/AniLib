@@ -128,9 +128,7 @@ class NotificationPresenter(context: Context) :
                 NotificationUnionType.AIRING -> {
                     (item as AiringNotificationModel).let {
                         notificationMediaDrawee.setImageURI(
-                            it.media?.coverImage?.image(
-                                context
-                            )
+                            it.media?.coverImage?.image()
                         )
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text = String.format(
@@ -139,7 +137,7 @@ class NotificationPresenter(context: Context) :
                             it.contexts!![0],
                             it.episode,
                             it.contexts!![1],
-                            it.media?.title?.title(context),
+                            it.media?.title?.title(),
                             it.contexts!![2]
                         )
 
@@ -149,7 +147,7 @@ class NotificationPresenter(context: Context) :
                                     it.media?.id,
                                     it.media?.type!!,
                                     it.media?.title!!.romaji!!,
-                                    it.media?.coverImage!!.image(context),
+                                    it.media?.coverImage!!.image(),
                                     it.media?.coverImage!!.largeImage,
                                     it.media?.bannerImage
                                 )
@@ -173,14 +171,12 @@ class NotificationPresenter(context: Context) :
                 NotificationUnionType.RELATED_MEDIA_ADDITION -> {
                     (item as RelatedMediaNotificationModel).let {
                         notificationMediaDrawee.setImageURI(
-                            it.media?.coverImage?.image(
-                                context
-                            )
+                            it.media?.coverImage?.image()
                         )
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text =
                             context.getString(R.string.s_space_s).format(
-                                it.media?.title?.title(context), it.context
+                                it.media?.title?.title(), it.context
                             )
 
                         root.setOnClickListener { _ ->
@@ -189,7 +185,7 @@ class NotificationPresenter(context: Context) :
                                     it.media?.id,
                                     it.media?.type,
                                     it.media?.title!!.romaji!!,
-                                    it.media?.coverImage!!.image(context),
+                                    it.media?.coverImage!!.image(),
                                     it.media?.coverImage!!.largeImage,
                                     it.media?.bannerImage
                                 )
@@ -206,7 +202,7 @@ class NotificationPresenter(context: Context) :
                                     it.media?.id,
                                     it.media?.type,
                                     it.media?.title!!.romaji!!,
-                                    it.media?.coverImage!!.image(context),
+                                    it.media?.coverImage!!.image(),
                                     it.media?.coverImage!!.largeImage,
                                     it.media?.bannerImage
                                 )
@@ -214,15 +210,13 @@ class NotificationPresenter(context: Context) :
                         }
 
                         notificationMediaDrawee.setImageURI(
-                            it.media?.coverImage?.image(
-                                context
-                            )
+                            it.media?.coverImage?.image()
                         )
 
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text =
                             context.getString(R.string.s_space_s).format(
-                                it.media?.title?.title(context), it.context
+                                it.media?.title?.title(), it.context
                             )
                         notificationReasonTv.setText(R.string.show_reason)
                         notificationReasonTv.setOnClickListener { _ ->
@@ -238,7 +232,7 @@ class NotificationPresenter(context: Context) :
                                     it.media?.id,
                                     it.media?.type,
                                     it.media?.title!!.romaji!!,
-                                    it.media?.coverImage!!.image(context),
+                                    it.media?.coverImage!!.image(),
                                     it.media?.coverImage!!.largeImage,
                                     it.media?.bannerImage
                                 )
@@ -246,14 +240,12 @@ class NotificationPresenter(context: Context) :
                         }
 
                         notificationMediaDrawee.setImageURI(
-                            it.media?.coverImage?.image(
-                                context
-                            )
+                            it.media?.coverImage?.image()
                         )
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text =
                             context.getString(R.string.s_space_s).format(
-                                it.media?.title?.title(context), it.context
+                                it.media?.title?.title(), it.context
                             )
                         notificationReasonTv.setText(R.string.show_reason)
                         notificationReasonTv.setOnClickListener { _ ->

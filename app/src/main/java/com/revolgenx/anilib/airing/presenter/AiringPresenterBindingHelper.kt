@@ -7,7 +7,6 @@ import android.view.View
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.AiringCompactPresenterLayoutBinding
 import com.revolgenx.anilib.databinding.AiringMinimalListPresenterLayoutBinding
@@ -15,6 +14,7 @@ import com.revolgenx.anilib.databinding.AiringPresenterLayoutBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.event.OpenSearchEvent
+import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.loginContinue
@@ -27,8 +27,8 @@ object AiringPresenterBindingHelper {
         vararg misc: Array<String> //formats status statuscolor
     ) {
         val media = item.media ?: return
-        mediaTitleTv.naText(media.title!!.title(context))
-        coverImageIv.setImageURI(media.coverImage!!.image(context))
+        mediaTitleTv.naText(media.title!!.title())
+        coverImageIv.setImageURI(media.coverImage!!.image())
 
         if (media.type == MediaType.ANIME.ordinal) {
             mediaEpisodeTv.text =
@@ -68,7 +68,7 @@ object AiringPresenterBindingHelper {
                     media.id,
                     media.type!!,
                     media.title!!.romaji!!,
-                    media.coverImage!!.image(context),
+                    media.coverImage!!.image(),
                     media.coverImage!!.largeImage,
                     media.bannerImage
                 )
@@ -85,7 +85,7 @@ object AiringPresenterBindingHelper {
         airingTimeTv.setAiringText(item)
 
 
-        if (context.loggedIn()) {
+        if (loggedIn()) {
             entryProgressTv.visibility = View.VISIBLE
             entryProgressTv.compoundDrawablesRelative[0]?.setTint(
                 dynamicTextColorPrimary
@@ -113,8 +113,8 @@ object AiringPresenterBindingHelper {
         vararg misc: Array<String>
     ) { //formats status statuscolor
         val media = item.media ?: return
-        mediaTitleTv.naText(media.title!!.title(context))
-        coverImageIv.setImageURI(media.coverImage!!.image(context))
+        mediaTitleTv.naText(media.title!!.title())
+        coverImageIv.setImageURI(media.coverImage!!.image())
 
         if (media.isAnime) {
             mediaEpisodeTv.text =
@@ -141,7 +141,7 @@ object AiringPresenterBindingHelper {
                     media.id,
                     media.type!!,
                     media.title!!.romaji!!,
-                    media.coverImage!!.image(context),
+                    media.coverImage!!.image(),
                     media.coverImage!!.largeImage,
                     media.bannerImage
                 )
@@ -160,7 +160,7 @@ object AiringPresenterBindingHelper {
             item.airingAtModel?.airingTime
         )
 
-        if (context.loggedIn()) {
+        if (loggedIn()) {
             entryProgressTv.visibility = View.VISIBLE
             entryProgressTv.compoundDrawablesRelative[0]?.setTint(dynamicTextColorPrimary)
             entryProgressTv.text = context.getString(R.string.s_slash_s).format(
@@ -188,7 +188,7 @@ object AiringPresenterBindingHelper {
     ) {
         val media = item.media ?: return
         mediaBannerIv.setImageURI(media.bannerImage)
-        mediaTitleTv.text = media.title?.title(context)
+        mediaTitleTv.text = media.title?.title()
         blurFrameLayout.background = blurDrawable
         mediaAiringAtHeaderTv.text =
             context.getString(R.string.ep_1_s_airing_at).format(item.episode)
@@ -208,7 +208,7 @@ object AiringPresenterBindingHelper {
                     media.id,
                     media.type!!,
                     media.title!!.romaji!!,
-                    media.coverImage!!.image(context),
+                    media.coverImage!!.image(),
                     media.coverImage!!.largeImage,
                     media.bannerImage
                 )

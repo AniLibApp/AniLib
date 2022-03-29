@@ -28,7 +28,7 @@ class MainActivityViewModel(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ userModel ->
-                app.saveBasicUserDetail(userModel)
+                saveBasicUserDetail(userModel)
                 basicUserLiveData.value = userModel
             }, {
                 app.makeToast(R.string.user_detail_fetch_failed)

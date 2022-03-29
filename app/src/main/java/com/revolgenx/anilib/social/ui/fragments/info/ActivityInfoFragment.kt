@@ -359,14 +359,14 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         listUserNameTv.text = item.user?.name
         listActivityCreatedAtTv.text = item.createdAt
         item.media?.let { media ->
-            mediaCoverIv.setImageURI(media.coverImage?.image(requireContext()))
+            mediaCoverIv.setImageURI(media.coverImage?.image())
             mediaCoverIv.setOnClickListener {
                 OpenMediaInfoEvent(
                     MediaInfoMeta(
                         media.id,
                         media.type!!,
                         media.title!!.userPreferred,
-                        media.coverImage!!.image(requireContext()),
+                        media.coverImage!!.image(),
                         media.coverImage!!.largeImage,
                         media.bannerImage
                     )

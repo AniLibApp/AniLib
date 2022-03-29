@@ -230,7 +230,7 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
             openCalendarChooserSheet()
         }
 
-        if (requireContext().loggedIn()) {
+        if (loggedIn()) {
             with(viewModel.field) {
                 userId = UserPreference.userId
             }

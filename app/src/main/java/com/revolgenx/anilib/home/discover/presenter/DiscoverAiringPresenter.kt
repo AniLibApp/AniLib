@@ -9,12 +9,12 @@ import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.DiscoverAiringPresenterLayoutBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.event.OpenSearchEvent
+import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.ui.view.makeToast
@@ -54,9 +54,9 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
         val media = item.media ?: return
 
         binding.apply {
-            airingMediaSimpleDrawee.setImageURI(media.coverImage?.image(context))
+            airingMediaSimpleDrawee.setImageURI(media.coverImage?.image())
             mediaRatingTv.text = media.averageScore
-            airingMediaTitleTv.text = media.title?.title(context)
+            airingMediaTitleTv.text = media.title?.title()
             airingFormatTv.text = context.getString(R.string.format_episode_s).format(
                 media.format?.let { mediaFormats[it] }.naText(),
                 media.episodes.naText()
@@ -75,7 +75,7 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
                         media.id,
                         media.type!!,
                         media.title!!.romaji!!,
-                        media.coverImage!!.image(context),
+                        media.coverImage!!.image(),
                         media.coverImage!!.largeImage,
                         media.bannerImage
                     )
@@ -83,7 +83,7 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
             }
 
             root.setOnLongClickListener {
-                if (context.loggedIn()) {
+                if (loggedIn()) {
                     OpenMediaListEditorEvent(media.id).postEvent
                 } else {
                     context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)

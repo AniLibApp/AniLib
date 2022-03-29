@@ -48,9 +48,13 @@ import okhttp3.OkHttpClient
 
 
 open class App : DynamicApplication() {
+    companion object{
+        var applicationContext:Context? = null
+    }
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
+        App.applicationContext = base
     }
 
     override fun onInitialize() {
@@ -97,7 +101,7 @@ open class App : DynamicApplication() {
 
 
     private fun setupNotificationWorker() {
-        if (context.loggedIn()) {
+        if (loggedIn()) {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()

@@ -23,14 +23,14 @@ object NetworkProvider {
                     level = HttpLoggingInterceptor.Level.BODY
                 })
                 .addInterceptor {
-                    if (!context.loggedIn()) {
+                    if (!loggedIn()) {
                         it.proceed(it.request())
                     } else {
                         val request = it.request()
                         val newRequest: Request = request.newBuilder()
                             .addHeader(
                                 "Authorization",
-                                "Bearer ${context.token()}"
+                                "Bearer ${token()}"
                             )
                             .build()
                         it.proceed(newRequest)

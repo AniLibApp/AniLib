@@ -56,6 +56,7 @@ object LibraryVersion {
     const val calendarview_version = "1.0.1"
     const val room_version = "2.4.1"
     const val firebase_bom_version = "29.1.0"
+    const val admob_version = "20.6.0"
 
 
 

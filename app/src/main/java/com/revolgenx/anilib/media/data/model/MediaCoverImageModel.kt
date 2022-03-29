@@ -14,8 +14,8 @@ class MediaCoverImageModel(medium: String?, large: String?, val extraLarge: Stri
     val largeImage: String
         get() = extraLarge ?: image
 
-    fun image(context: Context) =
-        when (context.imageQuality()) {
+    fun image() =
+        when (imageQuality()) {
             "0" -> image
             "1" -> sImage
             "2" -> largeImage

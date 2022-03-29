@@ -7,15 +7,12 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.CharacterMediaPresenterBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
-import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
@@ -47,8 +44,8 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
         val item = element.data ?: return
 
         holder.getBinding()?.apply {
-            characterMediaImageView.setImageURI(item.coverImage?.image(context))
-            characterMediaTitleTv.text = item.title?.title(context)
+            characterMediaImageView.setImageURI(item.coverImage?.image())
+            characterMediaTitleTv.text = item.title?.title()
             characterMediaFormatTv.text =
                 context.getString(R.string.media_format_year_s).format(item.format?.let {
                     mediaFormatList[it]
@@ -66,7 +63,7 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
                         item.id,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image(context),
+                        item.coverImage!!.image(),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     )
@@ -81,6 +78,6 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
             }
         }
 
-        item.title?.title(context)
+        item.title?.title()
     }
 }

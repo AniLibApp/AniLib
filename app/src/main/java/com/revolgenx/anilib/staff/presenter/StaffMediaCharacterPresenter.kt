@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.preference.loggedIn
-import com.revolgenx.anilib.entry.data.meta.EntryEditorMeta
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.StaffMediaCharacterPresenterBinding
 import com.revolgenx.anilib.common.event.OpenCharacterEvent
@@ -17,6 +15,7 @@ import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
 //voice roles
@@ -56,8 +55,8 @@ class StaffMediaCharacterPresenter(context: Context) :
 
         holder.getBinding()?.apply {
 
-            staffMediaImageView.setImageURI(item.coverImage?.image(context))
-            staffMediaTitleTv.text = item.title?.title(context)
+            staffMediaImageView.setImageURI(item.coverImage?.image())
+            staffMediaTitleTv.text = item.title?.title()
             staffMediaRatingTv.text = item.averageScore
             staffMediaStatusTv.text = item.status?.let {
                 staffMediaStatusTv.color = Color.parseColor(statusColors[it])
@@ -75,7 +74,7 @@ class StaffMediaCharacterPresenter(context: Context) :
                         item.id,
                         item.type!!,
                         item.title!!.romaji!!,
-                        item.coverImage!!.image(context),
+                        item.coverImage!!.image(),
                         item.coverImage!!.largeImage,
                         item.bannerImage
                     )
@@ -83,10 +82,8 @@ class StaffMediaCharacterPresenter(context: Context) :
             }
 
             staffMediaContainer.setOnLongClickListener {
-                if (context.loggedIn()) {
+                context.loginContinue {
                     OpenMediaListEditorEvent(item.id).postEvent
-                } else {
-                    context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
                 }
                 true
             }

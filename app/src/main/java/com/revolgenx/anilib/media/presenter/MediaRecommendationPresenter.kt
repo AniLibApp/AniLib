@@ -13,7 +13,6 @@ import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.OverviewRecommendationPresnterLayoutBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
@@ -22,7 +21,6 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.RecommendationRating
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.home.recommendation.data.model.RecommendationModel
-import com.revolgenx.anilib.home.recommendation.presenter.RecommendationPresenter
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.media.viewmodel.MediaOverviewVM
@@ -121,8 +119,8 @@ class MediaRecommendationPresenter(
 
     private fun OverviewRecommendationPresnterLayoutBinding.updateView(data: RecommendationModel) {
         val item = data.recommended ?: return
-        mediaRecommendationTitleTv.text = item.title?.title(context)
-        recommendationCoverImage.setImageURI(item.coverImage?.image(context))
+        mediaRecommendationTitleTv.text = item.title?.title()
+        recommendationCoverImage.setImageURI(item.coverImage?.image())
 
         mediaRatingTv.text = item.averageScore
 
@@ -159,7 +157,7 @@ class MediaRecommendationPresenter(
                     item.id,
                     item.type!!,
                     item.title!!.romaji!!,
-                    item.coverImage!!.image(context),
+                    item.coverImage!!.image(),
                     item.coverImage!!.largeImage,
                     item.bannerImage
                 )
@@ -167,10 +165,8 @@ class MediaRecommendationPresenter(
         }
 
         root.setOnLongClickListener {
-            if (context.loggedIn()) {
+            context.loginContinue {
                 OpenMediaListEditorEvent(item.id).postEvent
-            } else {
-                context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
             true
         }
@@ -197,31 +193,5 @@ class MediaRecommendationPresenter(
         }
     }
 
-
-    private fun updateRecommendation(
-        observer: Observer<Resource<RecommendationModel>>,
-        data: RecommendationModel,
-        currentRating: RecommendationRating,
-        newRating: RecommendationRating
-    ) {
-//        viewModel.saveRecommendation(SaveRecommendationField().also { field ->
-//            field.mediaId = data.recommendedFromId
-//            field.mediaRecommendationId = data.recommendedId
-//
-//            field.rating = if (currentRating == newRating) {
-//                RecommendationRating.NO_RATING.ordinal
-//            } else {
-//                newRating.ordinal
-//            }
-//        }).observe(lifecycleOwner, observer)
-    }
-
-    private fun View.checkLoggedIn(): Boolean {
-        return context.loggedIn().also {
-            if (!it) {
-                context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
-            }
-        }
-    }
 
 }

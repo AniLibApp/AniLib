@@ -19,7 +19,6 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
 import com.revolgenx.anilib.common.preference.loadLegacyMediaBrowseTheme
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
 import com.revolgenx.anilib.common.ui.adapter.registerOnPageChangeCallback
@@ -28,6 +27,7 @@ import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.common.event.OpenImageEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.event.OpenReviewComposerEvent
+import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.databinding.MediaInfoContainerFragmentLayoutBinding
 import com.revolgenx.anilib.media.data.model.isAnime
@@ -318,10 +318,10 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
 
     private fun MediaInfoContainerFragmentLayoutBinding.bindLegacyHeader() {
         val media = mediaModel ?: return
-        val toolbarTitle = media.title?.romaji ?: media.title?.title(requireContext()).naText()
+        val toolbarTitle = media.title?.romaji ?: media.title?.title().naText()
 
         legacyMediaTitleTv.text = toolbarTitle
-        legacyMediaBrowserCoverImage.setImageURI(media.coverImage?.image(requireContext()))
+        legacyMediaBrowserCoverImage.setImageURI(media.coverImage?.image())
         legacyMediaBrowserBannerImage.setImageURI(media.bannerImage)
 
         media.mediaListEntry?.status?.let {
@@ -331,10 +331,10 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
 
     private fun MediaInfoContainerFragmentLayoutBinding.bindHeader() {
         val media = mediaModel ?: return
-        val toolbarTitle = media.title?.romaji ?: media.title?.title(requireContext()).naText()
+        val toolbarTitle = media.title?.romaji ?: media.title?.title().naText()
 
         mediaTitleTv.text = toolbarTitle
-        mediaBrowserCoverImage.setImageURI(media.coverImage?.image(requireContext()))
+        mediaBrowserCoverImage.setImageURI(media.coverImage?.image())
         mediaBrowserBannerImage.setImageURI(media.bannerImage)
 
         mediaPopularityTv.text =
@@ -375,7 +375,7 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
         createTabLayout(R.string.review, R.drawable.ic_review)
         createTabLayout(R.string.stats, R.drawable.ic_chart)
 
-        if (requireContext().loggedIn()) {
+        if (loggedIn()) {
             createTabLayout(R.string.social, R.drawable.ic_activity_union)
         }
     }
@@ -487,7 +487,7 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
                 menu.setOptionalIconsVisible(true)
             }
             val media = mediaModel ?: return
-            toolbar.title = media.title?.romaji ?: media.title?.title(requireContext()).naText()
+            toolbar.title = media.title?.romaji ?: media.title?.title().naText()
             updateFavouriteToolbar()
         }
     }
@@ -552,10 +552,8 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
 
     private fun openReviewWriter() {
         val media = mediaModel ?: return
-        if (requireContext().loggedIn()) {
+        loginContinue {
             OpenReviewComposerEvent(media.id).postEvent
-        } else {
-            makeToast(R.string.please_log_in, null, R.drawable.ic_person)
         }
     }
 

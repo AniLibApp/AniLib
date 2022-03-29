@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.disableCardStyleInHomeScreen
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.DiscoverShowCaseLayoutBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
+import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.ui.view.makeToast
@@ -92,7 +92,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
         with(binding!!) {
             showCaseImageView.setImageURI(media.bannerImage)
             frameBlurLayout.visibility = View.VISIBLE
-            mediaTitleTv.text = media.title?.title(context)
+            mediaTitleTv.text = media.title?.title()
 
             val studioOrWriter = if (media.type == MediaType.ANIME.ordinal) {
                 media.studios?.edges?.filter { it.isMain }
@@ -119,7 +119,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
                         media.id,
                         media.type!!,
                         media.title!!.romaji!!,
-                        media.coverImage!!.image(context),
+                        media.coverImage!!.image(),
                         media.coverImage!!.largeImage,
                         media.bannerImage
                     )
@@ -148,7 +148,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
     private fun changeMediaListStatus(status: Int) {
         if (binding == null || this.mediaModel == null || this.viewLifecycleOwner == null || viewModel == null) return
 
-        if (!context.loggedIn()) {
+        if (!loggedIn()) {
             context.makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             return
         }

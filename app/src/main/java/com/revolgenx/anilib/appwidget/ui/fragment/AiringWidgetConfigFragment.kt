@@ -47,12 +47,10 @@ class AiringWidgetConfigFragment : BaseToolbarFragment<AiringWidgetConfigFragmen
         setHasOptionsMenu(true)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.apply {
-
-            if (!requireContext().loggedIn()) {
+            if (!loggedIn()) {
                 wgShowFromPlanning.visibility = View.GONE
                 wgShowFromWatching.visibility = View.GONE
             }

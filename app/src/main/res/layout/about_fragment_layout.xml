@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="@style/AlAppBarLayoutStyle">
 
         <com.revolgenx.anilib.common.ui.view.AlToolbar
             android:id="@+id/dynamicToolbar"
@@ -28,9 +29,10 @@
             app:adt_colorType="accent"
             app:adt_contrastWithColorType="background"
             app:tabGravity="start"
-            app:tabMode="scrollable" />
+            app:tabMode="scrollable"
+            app:layout_scrollFlags="scroll|enterAlways"/>
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/about_fragment_viewpager"

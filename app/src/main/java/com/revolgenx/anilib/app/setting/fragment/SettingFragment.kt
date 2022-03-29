@@ -34,7 +34,7 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
             OpenSettingEvent(SettingEventTypes.THEME).postEvent
         }
 
-        if (requireContext().loggedIn()) {
+        if (loggedIn()) {
             binding.notificationSetting.setOnClickListener {
                 OpenSettingEvent(SettingEventTypes.NOTIFICATION).postEvent
             }

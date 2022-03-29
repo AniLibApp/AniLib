@@ -15,11 +15,13 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
 import com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
 import com.pranavpandey.android.dynamic.utils.DynamicLinkUtils
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.App
 import com.revolgenx.anilib.type.MediaSeason
 import com.revolgenx.anilib.ui.view.makeToast
 import kotlinx.coroutines.async
@@ -176,10 +178,11 @@ fun Context.copyToClipBoard(str: String?) {
 }
 
 
-inline fun shortcutAction(context: Context, action: (ShortcutManager) -> Unit) {
+inline fun shortcutAction(action: (ShortcutManager) -> Unit) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-        val shortcutManager = context.getSystemService(ShortcutManager::class.java)
-        action(shortcutManager)
+        App.applicationContext?.getSystemService(ShortcutManager::class.java)?.let {
+            action(it)
+        }
     }
 }
 

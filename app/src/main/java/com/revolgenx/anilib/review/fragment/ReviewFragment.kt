@@ -10,17 +10,18 @@ import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.fragment.BaseToolbarFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.databinding.ReviewFragmentLayoutBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenReviewComposerEvent
 import com.revolgenx.anilib.common.event.OpenUserProfileEvent
+import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
 import com.revolgenx.anilib.type.ReviewRating
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.review.viewmodel.ReviewVM
+import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.openLink
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -91,7 +92,7 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
             reviewMediaBannerImage.setImageURI(
                 media?.bannerImage ?: media?.coverImage?.largeImage
             )
-            reviewMediaTitleTv.text = media!!.title!!.title(requireContext())
+            reviewMediaTitleTv.text = media!!.title!!.title()
             reviewMediaTitleTv.setOnClickListener {
                 media?.let { item ->
                     OpenMediaInfoEvent(
@@ -99,7 +100,7 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
                             item.id,
                             item.type!!,
                             item.title!!.romaji!!,
-                            item.coverImage!!.image(requireContext()),
+                            item.coverImage!!.image(),
                             item.coverImage!!.largeImage,
                             item.bannerImage
                         )
@@ -127,18 +128,14 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
         updateReviewRatingButton()
         bindRatingAmount()
         reviewLikeIv.setOnClickListener {
-            if (requireContext().loggedIn()) {
+            loginContinue {
                 viewModel.upVoteReview()
-            } else {
-                makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
         }
 
         reviewDisLikeIv.setOnClickListener {
-            if (requireContext().loggedIn()) {
+            loginContinue {
                 viewModel.downVoteReview()
-            } else {
-                makeToast(R.string.please_log_in, null, R.drawable.ic_person)
             }
         }
     }

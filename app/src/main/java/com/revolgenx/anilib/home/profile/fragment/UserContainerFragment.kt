@@ -122,7 +122,7 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
                 ).postEvent
             }
         } else {
-            if (requireContext().loggedIn()) {
+            if (loggedIn()) {
                 viewModel.userId = UserPreference.userId
 
                 binding.animeCountHeader.setOnClickListener {
@@ -300,7 +300,7 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
 
     private fun toggleFollow() {
         userModel ?: return
-        if (requireContext().loggedIn()) {
+        if (loggedIn()) {
             viewModel.toggleFollow()
         } else {
             makeErrorToast(R.string.please_log_in)

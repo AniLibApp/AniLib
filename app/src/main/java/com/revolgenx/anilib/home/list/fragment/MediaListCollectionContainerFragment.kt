@@ -65,7 +65,7 @@ class MediaListCollectionContainerFragment :
     @SuppressLint("UnsafeOptInUsageError")
     override fun onToolbarInflated() {
         val notificationMenuItem = getBaseToolbar().menu.findItem(R.id.list_notification_menu)
-        if (requireContext().loggedIn()) {
+        if (loggedIn()) {
             notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner) {
                 if (it > 0) {
                     BadgeUtils.attachBadgeDrawable(

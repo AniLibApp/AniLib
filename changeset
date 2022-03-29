@@ -1,10 +1,11 @@
-notification badge
-types of activity list
-exclude tags and genre
-search filter update
+v-1.1.14
+* Fix 'Something went wrong' after app remains in background for long time.
+* Added search type in search screen.
+* Swipe to refresh in home screen.
+* 12hr airing format
+* Save recent search filter history (filter except search query)
+* Changing status bar to transparent
 
-
-remove list editor counter
 
 v-1.1.11
 * Heavy change on entire app. Turned to single activity multi-fragment.

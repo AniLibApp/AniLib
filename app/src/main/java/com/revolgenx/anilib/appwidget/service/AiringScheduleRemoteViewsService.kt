@@ -70,7 +70,7 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
         private val appWidgetManager = AppWidgetManager.getInstance(context)
 
         override fun onCreate() {
-            if (context.loggedIn()) {
+            if (loggedIn()) {
                 field.userId = UserPreference.userId
             }
             updateField()
@@ -133,7 +133,7 @@ class AiringScheduleRemoteViewsService : RemoteViewsService() {
             val airingEpisode = item.episode
             val timeUntilAiring = item.timeUntilAiringModel!!
             val coverImage = item.media?.coverImage?.sImage
-            val title = item.media?.title!!.title(context)
+            val title = item.media?.title!!.title()
             val showEta = AiringWidgetPreference.showEta()
 
             val remoteViews =
