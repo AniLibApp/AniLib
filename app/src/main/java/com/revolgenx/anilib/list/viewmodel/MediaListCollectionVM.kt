@@ -138,8 +138,8 @@ class MediaListCollectionVM(
         groupNamesWithCount.value = groupNameMap
     }
 
-    fun applyFilter(){
-        if(isLoggedInUser){
+    fun applyFilter() {
+        if (isLoggedInUser) {
             storeMediaListFilterField(mediaListFilter)
         }
         filter()
@@ -205,6 +205,8 @@ class MediaListCollectionVM(
                     mediaListFilter.genre!!
                 ) == true
             }
+        }.let {
+            if (mediaListFilter.isHentai == null) it else it.filter { it.media?.isAdult == mediaListFilter.isHentai }
         }.let {
             if (query.isEmpty()) it else {
                 it.filter { model ->

@@ -1,12 +1,8 @@
 package com.revolgenx.anilib.home.season.data.field
 
-import android.content.Context
 import com.revolgenx.anilib.MediaQuery
+import com.revolgenx.anilib.common.preference.*
 import com.revolgenx.anilib.media.data.field.MediaField
-import com.revolgenx.anilib.common.preference.getSeasonField
-import com.revolgenx.anilib.common.preference.storeSeasonField
-import com.revolgenx.anilib.common.preference.storeSeasonGenre
-import com.revolgenx.anilib.common.preference.storeSeasonTag
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaSeason
 import com.revolgenx.anilib.type.MediaSort
@@ -68,6 +64,24 @@ class SeasonField : MediaField() {
 
 
     override fun toQueryOrMutation(): MediaQuery {
+        val genreExcludedList = mutableListOf<String>()
+        val tagExcludedList = mutableListOf<String>()
+
+        genreNotIn?.let {
+            genreExcludedList.addAll(it)
+        }
+
+        tagNotIn?.let {
+            tagExcludedList.addAll(it)
+        }
+
+        if (includeExcludedGenre) {
+            genreExcludedList.addAll(getExcludedGenre())
+        }
+
+        if (includeExcludedTags) {
+            tagExcludedList.addAll(getExcludedTags())
+        }
 
         val mediaSeason = season?.let {
             MediaSeason.values()[it]
@@ -111,7 +125,9 @@ class SeasonField : MediaField() {
             status =  nn(mediaStatus),
             includeStaff = includeStaff,
             includeStudio = includeStudio,
-            genre_in = nn(genres)
+            genre_in = nn(genres),
+            genre_not_in = nn(genreExcludedList),
+            tag_not_in = nn(tagExcludedList)
         )
     }
 

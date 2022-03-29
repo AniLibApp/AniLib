@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.canShowAdult
 import com.revolgenx.anilib.common.ui.bottomsheet.DynamicBottomSheetFragment
 import com.revolgenx.anilib.constant.ALMediaListCollectionSort
 import com.revolgenx.anilib.databinding.MediaListFilterBottomSheetLayoutBinding
@@ -18,6 +19,7 @@ import com.revolgenx.anilib.ui.dialog.FormatSelectionDialog
 import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
+import com.revolgenx.anilib.ui.view.widgets.checkbox.AlCheckBox
 
 class MediaListCollectionFilterBottomSheet :
     DynamicBottomSheetFragment<MediaListFilterBottomSheetLayoutBinding>() {
@@ -51,7 +53,9 @@ class MediaListCollectionFilterBottomSheet :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): MediaListFilterBottomSheetLayoutBinding {
-        return MediaListFilterBottomSheetLayoutBinding.inflate(inflater, container, false)
+        val v = MediaListFilterBottomSheetLayoutBinding.inflate(inflater, container, false)
+        v.hentaiCheckbox.visibility = if (canShowAdult()) View.VISIBLE else View.GONE
+        return v
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,6 +70,9 @@ class MediaListCollectionFilterBottomSheet :
                         ?.let { (spin.selectedItem as DynamicMenu).title.toString() }
                 }
                 sort = getActiveListSort()
+                isHentai = binding.hentaiCheckbox.state.takeIf { it != AlCheckBox.CheckBoxState.UNCHECKED }?.let {
+                    it == AlCheckBox.CheckBoxState.CHECKED
+                }
             }
 
             onFilterMediaList?.invoke(mediaListFilter)
@@ -120,6 +127,8 @@ class MediaListCollectionFilterBottomSheet :
 
         mediaListFilter.status?.let { listStatusSpinner.setSelection(it + 1) }
         mediaListFilter.genre?.let { listGenreSpinner.setSelection(genre.indexOf(it) + 1) }
+
+        hentaiCheckbox.updateState(if (mediaListFilter.isHentai == null) false else mediaListFilter.isHentai!!.takeIf { it })
 
 
         var savedSortOrder: SortOrder = SortOrder.NONE

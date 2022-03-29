@@ -108,13 +108,13 @@ class MediaFilterBottomSheetFragment :
         when (field) {
             is SeasonField -> (field as SeasonField).saveSeasonField()
             is TrendingMediaField -> {
-                (field as TrendingMediaField).saveTrendingField(requireContext())
+                (field as TrendingMediaField).saveTrendingField()
             }
             is PopularMediaField -> {
-                (field as PopularMediaField).savePopularField(requireContext())
+                (field as PopularMediaField).savePopularField()
             }
             is NewlyAddedMediaField -> {
-                (field as NewlyAddedMediaField).saveNewlyAddedField(requireContext())
+                (field as NewlyAddedMediaField).saveNewlyAddedField()
             }
         }
         onDoneListener?.invoke()

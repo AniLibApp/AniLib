@@ -706,5 +706,8 @@
     <string name="search_max_chapter_desc">Set maximum total chapters in search filter. Default value is 500.</string>
     <string name="search_max_duration_desc">Set maximum duration in search filter. Default value is 170.</string>
     <string name="search_max_volume_desc">Set maximum total volumes in search filter. Default value is 50.</string>
-
+    <string name="exclude_tags">Exclude Tags</string>
+    <string name="exclude_tags_everywhere_desc">Excluded tags will be included in Discover, Season.</string>
+    <string name="exclude_genre">Exclude Genre</string>
+    <string name="exclude_genre_everywhere_desc">Excluded genre will be included in Discover, Season.</string>
 </resources>

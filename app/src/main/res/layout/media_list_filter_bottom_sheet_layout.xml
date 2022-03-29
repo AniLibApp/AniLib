@@ -83,7 +83,18 @@
                 android:padding="10dp"/>
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+
+        <com.revolgenx.anilib.ui.view.widgets.checkbox.AlCheckBox
+            android:id="@+id/hentai_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:intermediate_mode="true"
+            app:text="@string/hentai_only"
+            android:layout_marginVertical="8dp"/>
     </LinearLayout>
+
+
 </androidx.core.widget.NestedScrollView>
 
 

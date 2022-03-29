@@ -13,6 +13,8 @@ const val max_search_episode_key = "max_search_episode_key"
 const val max_search_duration_key = "max_search_duration_key"
 const val max_search_chapter_key = "max_search_chapter_key"
 const val max_search_volume_key = "max_search_volume_key"
+const val exclude_genre_everywhere_key = "exclude_genre_everywhere_key"
+const val exclude_tags_everywhere_key = "exclude_tags_everywhere_key"
 
 
 object SearchPreferenceDefault {
@@ -109,4 +111,7 @@ var maxVolumesPref
     set(value) {
         save(max_search_volume_key, value)
     }
+
+val includeExcludedGenre get() = load(exclude_genre_everywhere_key, false)
+val includeExcludedTags get() = load(exclude_tags_everywhere_key, false)
 

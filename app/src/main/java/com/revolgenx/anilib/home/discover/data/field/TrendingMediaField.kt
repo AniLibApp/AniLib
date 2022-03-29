@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.home.discover.data.field
 
-import android.content.Context
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.common.preference.getTrendingField
 import com.revolgenx.anilib.common.preference.storeTrendingField
@@ -14,7 +13,7 @@ class TrendingMediaField : MediaField() {
         fun create() = getTrendingField()
     }
 
-    fun saveTrendingField(context: Context) {
+    fun saveTrendingField() {
         storeTrendingField(this)
     }
 }

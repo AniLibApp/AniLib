@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.home.discover.data.field
 
-import android.content.Context
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.common.preference.getNewlyAddedField
 import com.revolgenx.anilib.common.preference.storeNewlyAddedField
@@ -13,7 +12,7 @@ class NewlyAddedMediaField : MediaField() {
     override var includeStaff: Boolean = true
     override var includeStudio: Boolean = true
 
-    fun saveNewlyAddedField(context: Context) {
+    fun saveNewlyAddedField() {
         storeNewlyAddedField(this)
     }
 }

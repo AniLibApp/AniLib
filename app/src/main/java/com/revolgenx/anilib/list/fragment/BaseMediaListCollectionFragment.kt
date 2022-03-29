@@ -136,6 +136,7 @@ abstract class BaseMediaListCollectionFragment() :
                                 sort = it.sort
                                 genre = it.genre
                                 status = it.status
+                                isHentai = it.isHentai
                             }
                             viewModel.applyFilter()
                         }.show(requireContext())

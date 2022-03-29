@@ -9,5 +9,6 @@ data class MediaListCollectionFilterMeta(
     var status: Int? = null,
     var genre: String? = null,
     var sort: Int? = null,
-    var type:Int? = null
+    var type:Int? = null,
+    var isHentai:Boolean? = null
 ) : Parcelable
