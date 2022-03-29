@@ -668,5 +668,5 @@ country of origin -->
     <!-- is an error message? -->
     <string name="review_summary_character_length_err_msg">El resumen debe tener menos de 120 caracteres y más de 20</string>
     <string name="open_media_info">Desplegar información rápidamente</string>
-    <string name="enable_to_open_media_info_on_single_click">Abrir la información de un anime/manga mediante una sola pulsación</string>
+    <string name="enable_to_open_media_info_on_single_click">Abrir información de un anime/manga mediante una sola pulsación</string>
 </resources>
