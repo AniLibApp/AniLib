@@ -30,6 +30,30 @@
 <a href='https://play.google.com/store/apps/details?id=com.revolgenx.anilib&hl=en&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'  target="_blank"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200px"/></a>
 <a href="https://anilib.onrender.com" target="_blank"><img src="https://raw.githubusercontent.com/rev0lgenX/AniLib/master/.github/assets/anilib_icon.png" width="70px"/></a>
 </div>
+
+## Translation
+        
+### Huge thanks to translator for translation and support.
+        
+[![Arabic](https://img.shields.io/poeditor/progress/383723/ar?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
+[![French](https://img.shields.io/poeditor/progress/383723/fr?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
+[![German](https://img.shields.io/poeditor/progress/383723/de?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
+[![Hindi](https://img.shields.io/poeditor/progress/383723/hi?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
+[![Italian](https://img.shields.io/poeditor/progress/383723/it?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
+[![Portuguese](https://img.shields.io/poeditor/progress/383723/pt?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
+[![Russian](https://img.shields.io/poeditor/progress/383723/ru?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
+[![Spanish](https://img.shields.io/poeditor/progress/383723/es?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
+
+| Languaje | Translator |
+| -------- | ---------- |
+| Arabic | Sakugaky, Mimogu |
+| French | natsuthelight |
+| German | [André Niebuhr (Epr0m)](https://anilist.co/user/Epr0m/) |
+| Hindi | Manoj Chetry (KcMj) |
+| Italian | Yoshimitsu, cayzon |
+| Portuguese | Satoru, SamOak |
+| Russian | Natalie |
+| Spanish | ricardoric_03, [MrJako2001](https://anilist.co/user/MrJaco/)
                                                                                                                   
 ## Development
 <details><summary>Api Keys</summary>
@@ -61,30 +85,6 @@ Before creating an issue check if it is already opened.
 
 ## Support
 If you like this weeb's project, feel free to contribute through [Buymeacoffee](https://www.buymeacoffee.com/9qP65KlG4) or [PayPal](https://paypal.me/rev0lgenX?locale.x=en_US)
-        
-## Translators
-        
-### Huge thanks to translator for translation and support.
-        
-[![Arabic](https://img.shields.io/poeditor/progress/383723/ar?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
-[![Hindi](https://img.shields.io/poeditor/progress/383723/hi?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
-[![Italian](https://img.shields.io/poeditor/progress/383723/it?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
-[![Protuguese](https://img.shields.io/poeditor/progress/383723/pt?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
-[![Spanish](https://img.shields.io/poeditor/progress/383723/es?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
-[![Russian](https://img.shields.io/poeditor/progress/383723/ru?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
-[![French](https://img.shields.io/poeditor/progress/383723/fr?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
-[![German](https://img.shields.io/poeditor/progress/383723/de?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
-
-| Languaje | Translator |
-| -------- | ---------- |
-| Arabic | Sakugaky, Mimogu |
-| Hindi | Manoj Chetry (KcMj) |
-| Italian | Yoshimitsu, cayzon |
-| Portuguese | Satoru, SamOak |
-| Spanish | ricardoric_03, [MrJako2001](https://anilist.co/user/MrJaco/)
-| Russian | Natalie |
-| French | natsuthelight |
-| German | [André Niebuhr (Epr0m)](https://anilist.co/user/Epr0m/) |
         
 ### Note
 Visit [POEditor](https://poeditor.com/join/project?hash=d9NRHxgZSb) to join open collaborative translation team. Please email me first on anilib.dev@gmail.com.        
