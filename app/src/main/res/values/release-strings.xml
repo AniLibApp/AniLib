@@ -2,6 +2,19 @@
 <resources>
     <string name="release_info" translatable="false">
 
+        ### -v1.1.14 \n
+        * Added search type in search screen. \n
+        * Swipe to refresh in home screen. \n
+        * 12hr airing format. \n
+        \t * Change from Settings -> Application \n
+        * Save recent search filter history (filter except search query) \n
+        * Changing status bar to transparent \n
+        * Fix \'Something went wrong\' after app remains in background for long time. \n
+        * Tag exclusion in Discover and Season from filter setting. \n
+        * Open media info directly from link in activity. \n
+
+
+
         ### -v1.1.13 \n
         * Fixed crashing on some media stats. \n
         * Fixed Anime/Manga list filter not saving. \n
