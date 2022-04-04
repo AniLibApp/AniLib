@@ -42,7 +42,7 @@ class MediaInfoRelationshipPresenter(context: Context) :
             relationshipMediaRatingTv.text = item.averageScore
             mediaSourceSeasonYearTv.text =
                 context.getString(R.string.source_seasonyear_s).format(
-                    item.type?.let { context.resources.getStringArray(R.array.media_relation)[it] }
+                    edge.relationType?.ordinal?.let { context.resources.getStringArray(R.array.media_relation)[it] }
                         .naText(), item.seasonYear?.toString().naText()
                 )
 

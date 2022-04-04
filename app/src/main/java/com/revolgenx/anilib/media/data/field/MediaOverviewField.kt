@@ -95,11 +95,23 @@ fun MediaOverViewQuery.Media.toModel() = MediaModel().also {
                         }
                     }
                 }
+            }?.sortedWith { a, b ->
+                val mA = a.relationType ?: AlMediaRelation.UNKNOWN
+                val mB = b.relationType ?: AlMediaRelation.UNKNOWN
+                if (mA.ordinal < 10 && mB.ordinal < 10) {
+                    mA.ordinal - mB.ordinal
+                } else {
+                    if (mA.ordinal > 9) {
+                        -1
+                    } else {
+                        1
+                    }
+                }
             }
         }
     }
 
-    it.externalLinks = externalLinks?.mapNotNull {linkData->
+    it.externalLinks = externalLinks?.mapNotNull { linkData ->
         linkData?.let {
             MediaExternalLinkModel().also { link ->
                 link.id = it.id
@@ -109,7 +121,7 @@ fun MediaOverViewQuery.Media.toModel() = MediaModel().also {
         }
     }
 
-    it.tags = tags?.mapNotNull {tagData->
+    it.tags = tags?.mapNotNull { tagData ->
         tagData?.let {
             MediaTagModel(
                 name = it.name,
