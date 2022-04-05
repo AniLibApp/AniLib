@@ -42,8 +42,8 @@
     <string name="paused">Pausado</string>
     <string name="rewatching">Reviendo</string>
     <string name="episode_progress">Progreso de episodios</string>
-    <string name="start_date">Fecha de emisión</string>
-    <string name="end_date">Fecha de finalización</string>
+    <string name="start_date">Comienzo</string>
+    <string name="end_date">Finalización</string>
     <string name="total_rewatch">Total de repeticiones</string>
     <string name="private_">Privado</string>
     <string name="notes">Notas</string>
