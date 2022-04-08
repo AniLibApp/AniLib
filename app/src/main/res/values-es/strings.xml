@@ -694,7 +694,7 @@ country of origin -->
     <string name="search_max_duration_desc">Establece la duración máxima en el filtro de búsqueda. El valor por defecto es 170.</string>
     <string name="search_max_volume_desc">Establece el máximo de volúmenes totales en el filtro de búsqueda. El valor por defecto es 50.</string>
     <string name="exclude_tags">Excluir etiquetas</string>
-    <string name="exclude_tags_everywhere_desc">Las etiquetas excluidas se incluirán en "Descubrir" y "Temporada".</string>
+    <string name="exclude_tags_everywhere_desc">Las etiquetas excluidas se incluirán en \"Descubrir\" y \"Temporada\".</string>
     <string name="exclude_genre">Excluir géneros</string>
-    <string name="exclude_genre_everywhere_desc">Los géneros excluidas se incluirán en "Descubrir" y "Temporada".</string>
+    <string name="exclude_genre_everywhere_desc">Los géneros excluidas se incluirán en \"Descubrir\" y \"Temporada\".</string>
 </resources>
