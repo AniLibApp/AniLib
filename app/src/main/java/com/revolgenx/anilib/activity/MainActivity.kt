@@ -227,9 +227,9 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                         binding.mainBottomNavView.selectedItemId = R.id.list_navigation_menu
                         mainSharedVM.mediaListCurrentTab.value = MediaType.MANGA.ordinal
                     }
-                    LauncherShortcuts.RADIO -> {
-                        binding.mainBottomNavView.selectedItemId = R.id.music_navigation_menu
-                    }
+//                    LauncherShortcuts.RADIO -> {
+//                        binding.mainBottomNavView.selectedItemId = R.id.music_navigation_menu
+//                    }
                     LauncherShortcuts.NOTIFICATION -> {
                         openNotificationCenter()
                     }
@@ -271,15 +271,15 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 )
             )
         }
-        menuList.add(
-            HomeMenuItem(
-                R.id.music_navigation_menu,
-                R.string.radio,
-                R.drawable.ic_radio,
-                getHomePageOrderFromType(HomePageOrderType.RADIO),
-                radioFragment
-            )
-        )
+//        menuList.add(
+//            HomeMenuItem(
+//                R.id.music_navigation_menu,
+//                R.string.radio,
+//                R.drawable.ic_radio,
+//                getHomePageOrderFromType(HomePageOrderType.RADIO),
+//                radioFragment
+//            )
+//        )
 
         menuList.add(
             HomeMenuItem(
@@ -345,9 +345,9 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             MainActivityPage.LIST -> {
                 getHomePageOrderFromType(HomePageOrderType.LIST)
             }
-            MainActivityPage.RADIO -> {
-                getHomePageOrderFromType(HomePageOrderType.RADIO)
-            }
+//            MainActivityPage.RADIO -> {
+//                getHomePageOrderFromType(HomePageOrderType.RADIO)
+//            }
         }
 
         binding.mainViewPager.setCurrentItem(homePageOrder, false)

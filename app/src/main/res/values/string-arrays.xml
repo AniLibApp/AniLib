@@ -339,7 +339,7 @@
         <item>@string/home</item>
         <item>@string/list</item>
         <item>@string/activity</item>
-        <item>@string/radio</item>
+<!--        <item>@string/radio</item>-->
     </string-array>
 
     <string-array name="media_list_sort">

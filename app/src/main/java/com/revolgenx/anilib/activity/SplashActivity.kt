@@ -110,21 +110,21 @@ class SplashActivity : DynamicSplashActivity() {
             }
 
 
-            val radioShortcut = createShortcut(
-                "radio_shortcut",
-                getString(R.string.radio),
-                getString(R.string.open_radio),
-                R.drawable.ic_shortcut_radio,
-                Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
-                    it.putExtra(
-                        LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
-                        LauncherShortcuts.RADIO.ordinal
-                    )
-                    it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                }
-            )
-
-            anilibShortcuts.add(radioShortcut)
+//            val radioShortcut = createShortcut(
+//                "radio_shortcut",
+//                getString(R.string.radio),
+//                getString(R.string.open_radio),
+//                R.drawable.ic_shortcut_radio,
+//                Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
+//                    it.putExtra(
+//                        LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
+//                        LauncherShortcuts.RADIO.ordinal
+//                    )
+//                    it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+//                }
+//            )
+//
+//            anilibShortcuts.add(radioShortcut)
 
 
             loginContinue(false){

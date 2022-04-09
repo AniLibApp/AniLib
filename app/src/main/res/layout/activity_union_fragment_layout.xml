@@ -35,7 +35,6 @@
                     app:layout_constraintEnd_toStartOf="@id/activity_type_popup_menu"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_scrollFlags="noScroll"
                     app:tabTextAppearance="@style/ActivityUnionTabLayoutTextStyle" />
 
 

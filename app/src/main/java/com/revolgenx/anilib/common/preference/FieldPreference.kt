@@ -341,7 +341,7 @@ fun setHomePageOrderFromType(type: HomePageOrderType, order: Int) {
     when (type) {
         HomePageOrderType.HOME -> save(HOME_PAGE_ORDER_KEY, order)
         HomePageOrderType.LIST -> save(LIST_PAGE_ORDER_KEY, order)
-        HomePageOrderType.RADIO -> save(RADIO_PAGE_ORDER_KEY, order)
+//        HomePageOrderType.RADIO -> save(RADIO_PAGE_ORDER_KEY, order)
         HomePageOrderType.ACTIVITY -> save(ACTIVITY_PAGE_ORDER_KEY, order)
     }
 }
@@ -351,7 +351,7 @@ fun getHomePageOrderFromType(type: HomePageOrderType): Int {
         HomePageOrderType.HOME -> load(HOME_PAGE_ORDER_KEY, 0)
         HomePageOrderType.LIST -> load(LIST_PAGE_ORDER_KEY, 1)
         HomePageOrderType.ACTIVITY -> load(ACTIVITY_PAGE_ORDER_KEY, 2)
-        HomePageOrderType.RADIO -> load(RADIO_PAGE_ORDER_KEY, 3)
+//        HomePageOrderType.RADIO -> load(RADIO_PAGE_ORDER_KEY, 3)
     }
 }
 

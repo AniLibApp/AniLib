@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.DynamicApp.Scroller.Nested.Padding"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -27,7 +27,9 @@
         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/rankingRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:adt_windowInsets="false"
+            />
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
@@ -79,11 +81,12 @@
             android:layout_margin="@dimen/stats_header_margin"
             android:text="@string/status_distribution" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/status_distribution_recycler_View"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            app:adt_windowInsets="false"
             android:padding="@dimen/stats_chart_padding" />
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
@@ -114,7 +117,6 @@
             android:padding="@dimen/stats_chart_padding"
             android:layout_marginBottom="10dp"/>
 
-
-    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+    </LinearLayout>
 
 </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>

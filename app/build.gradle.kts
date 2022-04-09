@@ -42,7 +42,7 @@ android {
         applicationId = "com.revolgenx.anilib"
         minSdk = AndroidSdk.min
         targetSdk = AndroidSdk.target
-        versionCode = 34
+        versionCode = 35
         versionName = "1.1.14"
         vectorDrawables.useSupportLibrary = true
 

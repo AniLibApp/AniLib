@@ -2,6 +2,7 @@ package com.revolgenx.anilib.app.setting.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.pranavpandey.android.dynamic.theme.Theme
 import com.revolgenx.anilib.R
@@ -25,13 +26,11 @@ class ApplicationSettingFragment : BaseToolbarFragment<ApplicationSettingFragmen
         return ApplicationSettingFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         loginContinue(false) {
             binding.mediaTitlePreference.isEnabled = false
         }
-
 
         binding.startUpPageOrder.setOnClickListener {
             HomePageOrderDialog().show(childFragmentManager, HomePageOrderDialog::class.java.simpleName)

@@ -5,29 +5,41 @@
     android:layout_height="match_parent">
 
     <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
+        style="@style/AlAppBarLayoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/AlAppBarLayoutStyle">
+        android:layout_height="wrap_content">
 
-        <com.revolgenx.anilib.common.ui.view.AlTextTabLayout
-            android:id="@+id/list_tab_layout"
-            style="@style/HomeContainerTabLayoutStyle"
+        <com.revolgenx.anilib.common.ui.view.AlToolbar
+            android:id="@+id/dynamicToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            app:adt_backgroundColorType="background"
-            app:adt_colorType="accent"
-            app:adt_contrastWithColorType="background"
+            android:layout_height="@dimen/toolbar_size"
+            app:adt_colorType="background"
             app:adt_textColorType="text_primary"
-            app:entries="@array/login_entries"
-            app:layout_scrollFlags="noScroll"
-            app:tabTextAppearance="@style/RadioTabLayoutTextStyle" />
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_scrollFlags="enterAlways|scroll">
 
+            <com.revolgenx.anilib.common.ui.view.AlTextTabLayout
+                android:id="@+id/list_tab_layout"
+                style="@style/HomeContainerTabLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:adt_backgroundColorType="background"
+                app:adt_colorType="accent"
+                app:adt_contrastWithColorType="background"
+                app:adt_textColorType="text_primary"
+                app:entries="@array/login_entries"
+                app:tabTextAppearance="@style/RadioTabLayoutTextStyle" />
+
+        </com.revolgenx.anilib.common.ui.view.AlToolbar>
 
     </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:adt_windowInsets="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -91,23 +103,23 @@
                             android:id="@+id/sign_in_layout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_marginTop="6dp"
+                            android:layout_weight="1"
                             android:background="@drawable/ads_button_remote"
-                            app:adt_colorType="text_primary"
                             app:ads_icon="@drawable/ic_person"
-                            app:ads_title="@string/sign_in" />
+                            app:ads_title="@string/sign_in"
+                            app:adt_colorType="text_primary" />
 
                         <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
                             android:id="@+id/register_layout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_marginTop="6dp"
+                            android:layout_weight="1"
                             android:background="@drawable/ads_button_remote"
-                            app:adt_colorType="text_primary"
                             app:ads_icon="@drawable/ic_register"
-                            app:ads_title="@string/register" />
+                            app:ads_title="@string/register"
+                            app:adt_colorType="text_primary" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -131,9 +143,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ads_button_remote"
-                        app:adt_colorType="text_primary"
                         app:ads_icon="@drawable/ic_settings"
-                        app:ads_title="@string/settings" />
+                        app:ads_title="@string/settings"
+                        app:adt_colorType="text_primary" />
 
                     <include layout="@layout/divider_layout" />
 
@@ -141,9 +153,9 @@
                         android:id="@+id/aboutItemView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:adt_colorType="text_primary"
                         app:ads_icon="@drawable/ic_info"
-                        app:ads_title="@string/about_anilib" />
+                        app:ads_title="@string/about_anilib"
+                        app:adt_colorType="text_primary" />
 
                 </LinearLayout>
 
@@ -152,6 +164,5 @@
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
-
+    </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
