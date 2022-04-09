@@ -16,8 +16,6 @@ import android.widget.LinearLayout
 import androidx.annotation.StringRes
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
-import androidx.lifecycle.coroutineScope
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,9 +26,7 @@ import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.PageSizePager
 import com.revolgenx.anilib.ui.view.widgets.AlCardView
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.contrastAccentWithBg
 import com.revolgenx.anilib.app.theme.contrastAccentWithSurface
-import com.revolgenx.anilib.app.theme.dynamicTintAccentColor
 import com.revolgenx.anilib.common.preference.enableAutoMlTranslation
 import com.revolgenx.anilib.common.preference.enableMlTranslation
 import com.revolgenx.anilib.common.preference.inUseMlLanguageModel
@@ -393,7 +389,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             return
         }
 
-        val enableMlTranslation = enableMlTranslation(requireContext())
+        val enableMlTranslation = enableMlTranslation()
         val isInUseModel = inUseMlLanguageModel(requireContext())
 
         if (enableMlTranslation) {
@@ -404,7 +400,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             } else {
                 translateSwitch.visibility = View.VISIBLE
                 translateSwitch.setOnCheckedChangeListener(null)
-                val enableAutoTranslate = enableAutoMlTranslation(requireContext())
+                val enableAutoTranslate = enableAutoMlTranslation()
                 translateSwitch.isChecked = enableAutoTranslate
 
                 if (enableAutoTranslate) {

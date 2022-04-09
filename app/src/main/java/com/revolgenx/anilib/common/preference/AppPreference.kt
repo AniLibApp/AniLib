@@ -22,11 +22,11 @@ private const val enableAutoMlLanguageToUseKey = "enable_auto_ml_Language_To_Use
 private const val isAiring12hrFormatKey = "is_airing_12_hr_format_key"
 
 
-fun isCrashReportEnabled(context: Context): Boolean {
+fun isCrashReportEnabled(): Boolean {
     return load(crashReportKey, true)
 }
 
-fun enableCrashReport(context: Context, enable: Boolean) {
+fun enableCrashReport(enable: Boolean) {
     save(crashReportKey, enable)
 }
 
@@ -70,7 +70,7 @@ fun inUseMlLanguageModel(context: Context, code: String? = null): String {
     }
 }
 
-fun enableMlTranslation(context: Context, enable: Boolean? = null): Boolean {
+fun enableMlTranslation(enable: Boolean? = null): Boolean {
     return if (enable != null) {
         save(enableMlLanguageToUseKey, enable)
         enable
@@ -79,7 +79,7 @@ fun enableMlTranslation(context: Context, enable: Boolean? = null): Boolean {
     }
 }
 
-fun enableAutoMlTranslation(context: Context, enable: Boolean? = null): Boolean {
+fun enableAutoMlTranslation(enable: Boolean? = null): Boolean {
     return if (enable != null) {
         save(enableAutoMlLanguageToUseKey, enable)
         enable

@@ -84,7 +84,6 @@
             android:text="@string/airing" />
 
 
-
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -113,6 +112,28 @@
                     app:adt_colorType="text_secondary"
                     app:adt_contrastWithColorType="surface" />
             </LinearLayout>
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/calendar" />
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.revolgenx.anilib.ui.view.preference.AlSpinnerPreference
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_description="@string/first_day_of_the_week"
+                app:ads_entries="@array/first_day_of_week_entries"
+                app:ads_key="first_day_of_week_key"
+                app:ads_value="0"
+                app:ads_values="@array/first_day_of_week_values" />
+
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
@@ -182,10 +203,10 @@
                 <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/enable_to_open_media_info_on_single_click"
-                    app:adt_colorType="text_secondary"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
+                    android:text="@string/enable_to_open_media_info_on_single_click"
+                    app:adt_colorType="text_secondary"
                     app:adt_contrastWithColorType="surface" />
 
             </LinearLayout>
@@ -281,10 +302,10 @@
                 <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/load_bio_desc"
-                    app:adt_colorType="text_secondary"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
+                    android:text="@string/load_bio_desc"
+                    app:adt_colorType="text_secondary"
                     app:adt_contrastWithColorType="surface" />
 
             </LinearLayout>

@@ -303,6 +303,19 @@
         <item>2</item>
     </string-array>
 
+    <!--calendar-->
+    <string-array name="first_day_of_week_entries">
+        <item>@string/auto</item>
+        <item>@string/sunday</item>
+        <item>@string/monday</item>
+    </string-array>
+
+    <string-array name="first_day_of_week_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <string-array name="media_list_collection_sort">
         <item>@string/title</item>
         <item>@string/title_desc</item>

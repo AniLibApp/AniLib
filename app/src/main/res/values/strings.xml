@@ -710,4 +710,8 @@
     <string name="exclude_tags_everywhere_desc">Excluded tags will be included in Discover, Season.</string>
     <string name="exclude_genre">Exclude Genre</string>
     <string name="exclude_genre_everywhere_desc">Excluded genre will be included in Discover, Season.</string>
+    <string name="calendar">Calendar</string>
+    <string name="first_day_of_the_week">First day of the week.</string>
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
 </resources>

@@ -18,7 +18,7 @@ class AniLibDebugTree(context: Context) : Timber.DebugTree() {
     init {
         doIfNotDevFlavor {
             Firebase.crashlytics
-                .setCrashlyticsCollectionEnabled(isCrashReportEnabled(context))
+                .setCrashlyticsCollectionEnabled(isCrashReportEnabled())
             Firebase.analytics
                 .setAnalyticsCollectionEnabled(true)
         }

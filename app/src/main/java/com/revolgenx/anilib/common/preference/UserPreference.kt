@@ -32,6 +32,7 @@ private const val media_info_or_list_editor_key = "media_info_or_list_editor_key
 
 private const val recent_anime_list_status_key = "recent_anime_list_status_key"
 private const val recent_manga_list_status_key = "recent_manga_list_status_key"
+private const val first_day_of_week_key = "first_day_of_week_key"
 
 object UserPreference {
     val userId get() = DynamicPreferences.getInstance().load(userIdKey, -1)
@@ -49,6 +50,8 @@ fun titlePref() = load(titleKey, "0")
 fun titlePref(pref: String) = save(titleKey, pref)
 
 fun imageQuality() = load(imageQualityKey, "0")
+
+val firstDayOfWeekPref get() = load(first_day_of_week_key, "0")
 
 fun userName() = getUserPrefModel().name
 fun userScoreFormat() =

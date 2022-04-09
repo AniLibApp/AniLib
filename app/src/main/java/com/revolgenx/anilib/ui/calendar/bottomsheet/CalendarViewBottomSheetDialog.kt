@@ -28,6 +28,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.contrastAccentWithBg
 import com.revolgenx.anilib.app.theme.contrastPrimaryTextColorWithAccent
 import com.revolgenx.anilib.app.theme.dynamicTextColorPrimary
+import com.revolgenx.anilib.common.preference.firstDayOfWeekPref
 import com.revolgenx.anilib.common.ui.bottomsheet.DynamicBottomSheetFragment
 import com.revolgenx.anilib.databinding.CalendarDayItemBinding
 import com.revolgenx.anilib.databinding.CalendarHeaderItemBinding
@@ -310,7 +311,7 @@ class CalendarViewBottomSheetDialog :
         val start = if (disablePast) now else now.minusYears(rangeYears.toLong())
         val end = if (disableFuture) now else now.plusYears(rangeYears.toLong())
 
-        val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+        val firstDayOfWeek = getFirstDayOfWeek()
 
         calendarView.scrollMode = ScrollMode.PAGED
         calendarView.setup(start, end, firstDayOfWeek)
@@ -595,7 +596,7 @@ class CalendarViewBottomSheetDialog :
         }
     }
 
-    fun getSelectionShapeStartTransitionDrawable(bgAlpha: Float): LayerDrawable {
+    private fun getSelectionShapeStartTransitionDrawable(bgAlpha: Float): LayerDrawable {
         selectionShapeStartBg.apply { alpha = bgAlpha.toInt() }
         return LayerDrawable(arrayOf(selectionShapeStart, selectionShapeStartBg))
     }
@@ -616,7 +617,7 @@ class CalendarViewBottomSheetDialog :
     }
 
     private fun getDaysOfWeek(): Array<DayOfWeek> {
-        val firstDay = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+        val firstDay = getFirstDayOfWeek()
         var daysOfWeek = DayOfWeek.values()
         if (firstDay != DayOfWeek.MONDAY) {
             val rhs = daysOfWeek.sliceArray(firstDay.ordinal..daysOfWeek.indices.last)
@@ -624,6 +625,18 @@ class CalendarViewBottomSheetDialog :
             daysOfWeek = rhs + lhs
         }
         return daysOfWeek
+    }
+
+    private fun getFirstDayOfWeek() = when (firstDayOfWeekPref) {
+        "1" -> {
+            DayOfWeek.SUNDAY
+        }
+        "2" -> {
+            DayOfWeek.MONDAY
+        }
+        else -> {
+            WeekFields.of(Locale.getDefault()).firstDayOfWeek
+        }
     }
 
     private fun switchToCalendarView() {

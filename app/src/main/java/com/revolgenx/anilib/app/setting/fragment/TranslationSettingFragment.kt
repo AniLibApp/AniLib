@@ -38,28 +38,28 @@ class TranslationSettingFragment:BaseToolbarFragment<TranslationSettingFragmentL
             requireContext().openLink(getString(R.string.translate_link))
         }
 
-        binding.enableMiscTranslateOption.isChecked = enableMlTranslation(requireContext())
-        binding.enableAutoTranslation.isChecked = enableAutoMlTranslation(requireContext())
+        binding.enableMiscTranslateOption.isChecked = enableMlTranslation()
+        binding.enableAutoTranslation.isChecked = enableAutoMlTranslation()
 
-        binding.miscTranslateOption.isEnabled = enableMlTranslation(requireContext())
-        binding.enableAutoTranslation.isEnabled = enableMlTranslation(requireContext())
+        binding.miscTranslateOption.isEnabled = enableMlTranslation()
+        binding.enableAutoTranslation.isEnabled = enableMlTranslation()
 
         binding.enableMiscTranslateOption.setOnCheckedChangeListener { _, isChecked ->
             binding.miscTranslateOption.isEnabled = isChecked
             binding.enableAutoTranslation.isEnabled = isChecked
-            enableMlTranslation(requireContext(), isChecked)
+            enableMlTranslation(isChecked)
         }
 
         binding.enableAutoTranslation.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
                 if(inUseMlLanguageModel(requireContext()).isNotEmpty()){
-                    enableAutoMlTranslation(requireContext(), isChecked)
+                    enableAutoMlTranslation(isChecked)
                 }else{
                     makeToast(R.string.select_a_language_model)
                     binding.enableAutoTranslation.isChecked = false
                 }
             }else{
-                enableAutoMlTranslation(requireContext(), isChecked)
+                enableAutoMlTranslation(isChecked)
             }
         }
     }

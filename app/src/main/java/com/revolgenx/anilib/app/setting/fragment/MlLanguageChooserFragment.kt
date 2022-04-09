@@ -57,7 +57,7 @@ class MlLanguageChooserFragment : BaseToolbarFragment<MlLanguageChooserFragmentL
                             if(model.isInUse){
                                 mlTranslateLanguageModels[model.localeCode]?.isInUse = false
                                 inUseMlLanguageModel(requireContext(), "")
-                                enableAutoMlTranslation(requireContext(), false)
+                                enableAutoMlTranslation(false)
                             }
                             adapter.notifyDataSetChanged()
                         }
@@ -96,7 +96,7 @@ class MlLanguageChooserFragment : BaseToolbarFragment<MlLanguageChooserFragmentL
                 ) {
                     inUseMlLanguageModel(requireContext(), "")
                     mlTranslateLanguageModels[model.localeCode]?.isInUse = false
-                    enableAutoMlTranslation(requireContext(), false)
+                    enableAutoMlTranslation(false)
                     adapter.notifyDataSetChanged()
                 }
             } else {
