@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_filter_container_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
+        android:id="@+id/filter_nested_scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:adt_windowInsets="false"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@+id/search_apply_filter_layout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                android:id="@+id/filter_search_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                        android:id="@+id/filter_search_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_search"
+                        app:adt_colorType="tint_background"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                        android:id="@+id/filter_search_et"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:hint="@string/search"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/filter_clear_iv"
+                        app:layout_constraintStart_toEndOf="@+id/filter_search_iv"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                        android:id="@+id/filter_clear_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_round_cancel"
+                        app:adt_colorType="tint_background"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/search_filter_item_padding">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        style="@style/FilterHeaderStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/type" />
+
+                    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                            android:id="@+id/filter_type_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/filter_season_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/search_filter_item_padding">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        style="@style/FilterHeaderStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/season" />
+
+                    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                            android:id="@+id/filter_season_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/filter_layer_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/search_filter_item_padding">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        style="@style/FilterHeaderStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status" />
+
+                    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                            android:id="@+id/filter_status_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/search_filter_item_padding">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        style="@style/FilterHeaderStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/format" />
+
+                    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                            android:id="@+id/filter_format_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/filter_layer_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/search_filter_item_padding">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        style="@style/FilterHeaderStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sort" />
+
+                    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.revolgenx.anilib.ui.view.sort.AlSortLayout
+                            android:id="@+id/filter_sort_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp" />
+
+                    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/search_filter_item_padding">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        style="@style/FilterHeaderStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/source" />
+
+                    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                            android:id="@+id/filter_source_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/filter_layer_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/search_filter_item_padding">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        style="@style/FilterHeaderStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/year" />
+
+                    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                            android:id="@+id/filter_year_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/search_filter_item_padding">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        style="@style/FilterHeaderStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/country_of_origin" />
+
+                    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                            android:id="@+id/filter_country_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/filter_layer_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                    android:id="@+id/doujin_checkbox"
+                    style="@style/AlCheckboxStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/doujin" />
+
+                <com.revolgenx.anilib.ui.view.widgets.checkbox.AlCheckBox
+                    android:id="@+id/hentai_checkbox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:intermediate_mode="true"
+                    app:text="@string/hentai_only" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/filter_layer_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.revolgenx.anilib.ui.view.widgets.chip.DynamicChip
+                    android:id="@+id/filter_genre_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/genre"
+                    app:closeIcon="@drawable/ic_add" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                    android:id="@+id/genre_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:adt_windowInsets="false"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
+
+                <com.revolgenx.anilib.ui.view.widgets.chip.DynamicChip
+                    android:id="@+id/filter_tag_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tags"
+                    app:closeIcon="@drawable/ic_add" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                    android:id="@+id/tags_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:adt_windowInsets="false"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
+
+                <com.revolgenx.anilib.ui.view.widgets.chip.DynamicChip
+                    android:id="@+id/licensed_by_tag_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/streaming_on"
+                    app:closeIcon="@drawable/ic_add" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                    android:id="@+id/licensed_by_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:adt_windowInsets="false"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/filter_layer_6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/year_range_filter_header"
+                    style="@style/FilterHeaderStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/year_range" />
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicRangeSlider
+                    android:id="@+id/year_range_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/episode_or_chapter_range_filter_header"
+                    style="@style/FilterHeaderStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/episodes" />
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicRangeSlider
+                    android:id="@+id/episode_or_chapter_range_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/duration_or_volume_range_filter_header"
+                    style="@style/FilterHeaderStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/episodes" />
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicRangeSlider
+                    android:id="@+id/duration_or_volume_range_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/minimum_tag_percetage_header"
+                    style="@style/FilterHeaderStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicSlider
+                    android:id="@+id/minimum_tag_rank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:value="18"
+                    android:valueFrom="0"
+                    android:valueTo="100" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
+
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+        android:id="@+id/search_apply_filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                android:id="@+id/apply_search_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingHorizontal="16dp"
+                android:src="@drawable/ic_history"
+                app:adt_colorType="text_primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.revolgenx.anilib.ui.view.widgets.DynamicDrawableTextView
+                android:id="@+id/search_apply_filter"
+                tools:ignore="TooManyViews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:padding="10dp"
+                android:text="@string/apply_filter"
+                android:textSize="14sp"
+                app:adt_colorType="accent"
+                app:adt_rtlSupport="false"
+                app:drawableStartCompat="@drawable/ic_check_circle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

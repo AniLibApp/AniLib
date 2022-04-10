@@ -51,9 +51,8 @@ class MediaFilterBottomSheetFragment :
         ctx: Context,
         func: MediaFilterBottomSheetFragment.() -> Unit
     ): MediaFilterBottomSheetFragment {
-        this.windowContext = ctx
         this.func()
-        this.show()
+        this.show(ctx)
         return this
     }
 

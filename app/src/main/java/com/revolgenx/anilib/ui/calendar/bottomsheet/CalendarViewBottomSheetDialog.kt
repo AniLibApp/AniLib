@@ -720,9 +720,8 @@ class CalendarViewBottomSheetDialog :
         ctx: Context,
         func: CalendarViewBottomSheetDialog.() -> Unit
     ): CalendarViewBottomSheetDialog {
-        this.windowContext = ctx
         this.func()
-        this.show()
+        this.show(ctx)
         return this
     }
 
