@@ -20,6 +20,7 @@ import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.studio.viewmodel.StudioViewModel
 import com.revolgenx.anilib.util.loginContinue
+import com.revolgenx.anilib.util.shareText
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StudioFragment : BasePresenterFragment<MediaModel>() {
@@ -49,6 +50,7 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
 
 
     override val setHomeAsUp: Boolean = true
+    override val showMenuIcon: Boolean = true
     override val menuRes: Int = R.menu.studio_fragment_menu
     override val titleRes: Int = R.string.studio
 
@@ -142,9 +144,11 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.studio_share_menu -> {
-                studioModel?.siteUrl?.let {
-                    requireContext().openLink(it)
-                } ?: makeToast(R.string.invalid)
+                shareText(studioModel?.siteUrl)
+                true
+            }
+            R.id.studio_open_in_browser_menu -> {
+                openLink(studioModel?.siteUrl)
                 true
             }
             android.R.id.home -> {
@@ -152,7 +156,6 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
                 true
             }
             else -> return super.onOptionsItemSelected(item)
-
         }
     }
 

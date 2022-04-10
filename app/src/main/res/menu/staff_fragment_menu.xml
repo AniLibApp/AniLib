@@ -3,9 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/staff_open_in_browser_menu"
+        android:icon="@drawable/ic_open_window"
+        android:title="@string/open_in_browser"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/staff_share_menu"
         android:title="@string/share"
         android:icon="@drawable/ic_share"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
 
 </menu>

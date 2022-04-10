@@ -12,10 +12,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.TextView
 import androidx.annotation.ColorRes
-import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.pranavpandey.android.dynamic.preferences.DynamicPreferences
+import androidx.fragment.app.Fragment
 import com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
 import com.pranavpandey.android.dynamic.utils.DynamicLinkUtils
 import com.pranavpandey.android.dynamic.utils.DynamicUnitUtils
@@ -145,6 +144,10 @@ fun Context.hideKeyboard(view: View) {
     )
 }
 
+fun Fragment.openLink(url:String?){
+    requireContext().openLink(url)
+}
+
 fun Context.openLink(url: String?) {
     try {
         if (!url.isNullOrBlank()) {
@@ -157,6 +160,27 @@ fun Context.openLink(url: String?) {
     } catch (e: Exception) {
         Timber.d(e)
         makeToast(R.string.no_app_found_to_open)
+    }
+}
+
+fun Fragment.shareText(text: String?) {
+    requireContext().shareText(text)
+}
+
+fun Context.shareText(text: String?) {
+    try {
+        if (!text.isNullOrBlank()) {
+            Intent(Intent.ACTION_SEND).apply {
+                putExtra(Intent.EXTRA_TEXT, text.trim())
+                type = "text/plain"
+                startActivity(Intent.createChooser(this, null))
+            }
+        } else {
+            makeToast(R.string.invalid)
+        }
+    } catch (e: Exception) {
+        Timber.w(e)
+        makeToast(R.string.operation_failed)
     }
 }
 

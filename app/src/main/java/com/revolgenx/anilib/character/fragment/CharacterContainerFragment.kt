@@ -3,6 +3,7 @@ package com.revolgenx.anilib.character.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
@@ -13,12 +14,13 @@ import com.revolgenx.anilib.character.viewmodel.CharacterContainerViewModel
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
 import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.util.openLink
+import com.revolgenx.anilib.util.shareText
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CharacterContainerFragment : BaseLayoutFragment<CharacterContainerFragmentLayoutBinding>() {
     override val setHomeAsUp: Boolean = true
     override val menuRes: Int = R.menu.character_fragment_menu
-
+    override val showMenuIcon: Boolean = true
     private val characterFragments by lazy {
         listOf(
             CharacterFragment.newInstance(characterId!!),
@@ -44,16 +46,15 @@ class CharacterContainerFragment : BaseLayoutFragment<CharacterContainerFragment
         return CharacterContainerFragmentLayoutBinding.inflate(inflater, parent, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         characterId ?: return
         updateToolbarTitle(viewModel.title ?: requireContext().getString(R.string.character))
         binding.characterViewPager.adapter = makeViewPagerAdapter2(characterFragments)
         val tabItems = listOf(R.string.about to R.drawable.ic_role, R.string.media to R.drawable.ic_media, R.string.voice_role to R.drawable.ic_voice_role)
         setupWithViewPager2(binding.characterTabLayout, binding.characterViewPager, tabItems)
         binding.characterViewPager.offscreenPageLimit = 2
-
     }
 
     override fun getBaseToolbar(): Toolbar {
@@ -63,7 +64,11 @@ class CharacterContainerFragment : BaseLayoutFragment<CharacterContainerFragment
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.character_share_menu -> {
-                requireContext().openLink(viewModel.characterLink)
+                shareText(viewModel.characterLink)
+                true
+            }
+            R.id.character_open_in_browser_menu->{
+                openLink(viewModel.characterLink)
                 true
             }
             else -> {

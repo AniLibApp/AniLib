@@ -515,8 +515,12 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
                 true
             }
 
-            R.id.media_share_menu -> {
+            R.id.media_open_in_browser_menu -> {
                 requireContext().openLink(mediaModel?.siteUrl)
+                true
+            }
+            R.id.media_share_menu -> {
+                shareText(mediaModel?.siteUrl)
                 true
             }
 

@@ -3,6 +3,7 @@ package com.revolgenx.anilib.staff.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
@@ -14,10 +15,12 @@ import com.revolgenx.anilib.util.openLink
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.revolgenx.anilib.common.ui.adapter.makeViewPagerAdapter2
 import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
+import com.revolgenx.anilib.util.shareText
 
 class StaffContainerFragment : BaseLayoutFragment<StaffContainerFragmentLayoutBinding>() {
     override val setHomeAsUp: Boolean = true
     override val menuRes: Int = R.menu.staff_fragment_menu
+    override val showMenuIcon: Boolean = true
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -44,9 +47,8 @@ class StaffContainerFragment : BaseLayoutFragment<StaffContainerFragmentLayoutBi
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         staffId ?: return
         updateToolbarTitle(viewModel.title ?: requireContext().getString(R.string.staff))
         binding.staffViewPager.adapter = makeViewPagerAdapter2(staffFragments)
@@ -68,7 +70,11 @@ class StaffContainerFragment : BaseLayoutFragment<StaffContainerFragmentLayoutBi
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.staff_share_menu -> {
-                requireContext().openLink(viewModel.characterLink)
+                shareText(viewModel.staffLink)
+                true
+            }
+            R.id.staff_open_in_browser_menu->{
+                openLink(viewModel.staffLink)
                 true
             }
             else -> {
@@ -83,6 +89,6 @@ class StaffContainerFragment : BaseLayoutFragment<StaffContainerFragmentLayoutBi
     }
 
     fun updateShareableLink(link: String?) {
-        viewModel.characterLink = link
+        viewModel.staffLink = link
     }
 }

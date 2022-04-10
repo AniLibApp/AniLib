@@ -714,4 +714,5 @@
     <string name="first_day_of_the_week">First day of the week.</string>
     <string name="sunday">Sunday</string>
     <string name="monday">Monday</string>
+    <string name="open_in_browser">Open in browser</string>
 </resources>

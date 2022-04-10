@@ -4,5 +4,5 @@ import androidx.lifecycle.ViewModel
 
 class StaffContainerViewModel: ViewModel() {
     var title:String? = null
-    var characterLink:String? = null
+    var staffLink:String? = null
 }

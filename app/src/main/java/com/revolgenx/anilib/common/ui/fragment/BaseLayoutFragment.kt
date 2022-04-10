@@ -1,9 +1,11 @@
 package com.revolgenx.anilib.common.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.MenuRes
 import androidx.annotation.StringRes
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
 import com.revolgenx.anilib.R
@@ -21,6 +23,8 @@ abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment() {
 
     @MenuRes
     protected open val menuRes: Int? = null
+
+    protected open val showMenuIcon = false
 
     private var _binding: T? = null
     protected val binding: T get() = _binding!!
@@ -50,6 +54,7 @@ abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment() {
     }
 
 
+    @SuppressLint("RestrictedApi")
     protected open fun updateToolbar() {
         getBaseToolbar()?.let { t ->
             t.menu.clear()
@@ -73,6 +78,13 @@ abstract class BaseLayoutFragment<T : ViewBinding> : BaseFragment() {
                 t.setNavigationIcon(R.drawable.ic_back)
                 t.setNavigationOnClickListener {
                     popBackStack()
+                }
+            }
+
+            if(showMenuIcon){
+                val toolbarMenu = t.menu
+                if(toolbarMenu is MenuBuilder){
+                    toolbarMenu.setOptionalIconsVisible(true)
                 }
             }
 

@@ -21,6 +21,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/media_open_in_browser_menu"
+        android:icon="@drawable/ic_open_window"
+        android:title="@string/open_in_browser"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/media_share_menu"
         android:icon="@drawable/ic_share"
         android:title="@string/share"
