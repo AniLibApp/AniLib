@@ -230,10 +230,9 @@ class SearchFragment : BasePresenterFragment<BaseModel>(), ActivityEventListener
                 v.paddingLeft,
                 insets.getInsets(WindowInsetsCompat.Type.systemBars()).top,
                 v.paddingRight,
-                v.bottom + insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
-            )
-            bottomSheetBehavior?.peekHeight =
                 insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            )
+            bottomSheetBehavior?.peekHeight = 0
             insets
         }
 
