@@ -697,4 +697,9 @@ country of origin -->
     <string name="exclude_tags_everywhere_desc">Las etiquetas excluidas se incluirán en \"Descubrir\" y \"Temporada\".</string>
     <string name="exclude_genre">Excluir géneros</string>
     <string name="exclude_genre_everywhere_desc">Los géneros excluidas se incluirán en \"Descubrir\" y \"Temporada\".</string>
+    <string name="calendar">Calendario</string>
+    <string name="first_day_of_the_week">Escoge el primer día de la semana</string>
+    <string name="sunday">Domingo</string>
+    <string name="monday">Lunes</string>
+    <string name="open_in_browser">Abrir en el navegador</string>
 </resources>
