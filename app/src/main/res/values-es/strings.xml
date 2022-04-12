@@ -62,7 +62,7 @@
     <string name="watch">Ver</string>
     <string name="open_list_editor">Abrir editor de listas</string>
     <string name="delete">Borrar</string>
-    <string name="toggle_fav">Activar favoritos</string>
+    <string name="toggle_fav">Marcar como favorito</string>
     <string name="operation_failed">Operación fallida</string>
     <string name="type">Tipo</string>
     <string name="source">Fuente</string>
@@ -232,7 +232,7 @@
     <string name="preferred_media_title">Seleccione el título preferido\n(La configuración de AniList anulará esto después del inicio de sesión)</string>
     <string name="cover_image_quality">Calidad de imagen de la portada</string>
     <string name="preferred_image_quality_desc">Seleccione su calidad de imagen preferida</string>
-    <string name="advanced_scores">Activar calificación avanzada</string>
+    <string name="advanced_scores">Calificación avanzada</string>
     <string name="copied_to_clipboard">Copiado al portapapeles</string>
     <string name="change_log">Registro de cambios</string>
     <string name="are_you_sure">¿Está seguro?</string>
