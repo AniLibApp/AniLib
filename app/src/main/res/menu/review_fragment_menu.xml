@@ -12,7 +12,7 @@
     <item
         android:id="@+id/review_open_link"
         android:icon="@drawable/ic_link"
-        android:title="@string/open_in_anilist"
+        android:title="@string/open_in_browser"
         android:visible="false"
         app:showAsAction="never" />
 
