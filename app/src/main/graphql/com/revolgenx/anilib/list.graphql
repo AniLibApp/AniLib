@@ -13,6 +13,7 @@ query MediaListCollectionQuery(
                 ... mediaListEntry
                 media {
                     ... mediaContent
+                    synonyms
                 }
             }
         }

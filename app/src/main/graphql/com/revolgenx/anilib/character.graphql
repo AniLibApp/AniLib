@@ -49,6 +49,12 @@ query CharacterQuery($characterId:Int){
         isFavourite
         siteUrl
         favourites
+        dateOfBirth {
+            ...fuzzyDate
+        }
+        gender
+        age
+        bloodType
         description(asHtml:true)
     }
 }

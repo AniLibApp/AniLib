@@ -5,6 +5,7 @@ import android.view.*
 import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.data.model.CharacterModel
+import com.revolgenx.anilib.character.viewmodel.CharacterContainerViewModel
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.CharacterFragmentLayoutBinding
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
@@ -13,12 +14,19 @@ import com.revolgenx.anilib.util.prettyNumberFormat
 import com.revolgenx.anilib.character.viewmodel.CharacterViewModel
 import com.revolgenx.anilib.common.event.OpenImageEvent
 import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
+import com.revolgenx.anilib.util.copyToClipBoard
 import com.revolgenx.anilib.util.loginContinue
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.time.Month
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.*
 
 class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
     private val viewModel by viewModel<CharacterViewModel>()
-    private var characterModel: CharacterModel? = null
+    private val containerSharedVM by viewModel<CharacterContainerViewModel>(owner = getViewModelOwner())
+    private val characterModel get() = viewModel.characterModel
     private val characterId: Int? get() = arguments?.getInt(CHARACTER_ID_KEY)
 
     companion object {
@@ -48,7 +56,8 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
                     resourceLayout.resourceStatusContainer.visibility = View.GONE
                     resourceLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     resourceLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
-                    binding.updateView(res.data!!)
+                    containerSharedVM.siteUrl = characterModel?.siteUrl
+                    binding.updateView()
                 }
                 is Resource.Error -> {
                     resourceLayout.resourceStatusContainer.visibility = View.VISIBLE
@@ -67,16 +76,7 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
             when (res) {
                 is Resource.Success -> {
                     binding.characterFavIv.showLoading(false)
-                    if (res.data == true) {
-                        characterModel?.isFavourite = characterModel?.isFavourite?.not() ?: false
-                        binding.characterFavIv.setImageResource(
-                            if (characterModel?.isFavourite == true) {
-                                R.drawable.ic_favourite
-                            } else {
-                                R.drawable.ic_not_favourite
-                            }
-                        )
-                    }
+                    binding.updateFavourite()
                 }
                 is Resource.Error -> {
                     binding.characterFavIv.showLoading(false)
@@ -88,33 +88,36 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
             }
         }
 
-        initListener()
-
-        if (savedInstanceState == null) {
-            viewModel.getCharacterInfo(viewModel.field)
-        }
+        binding.initListener()
+        viewModel.getCharacterInfo(viewModel.field)
     }
 
-    override fun updateToolbar() {
-        val model = characterModel ?: return
-        (parentFragment as? CharacterContainerFragment)?.let {
-            it.updateToolbarTitle(model.name!!.full!!)
-            it.updateShareableLink(model.siteUrl)
+    private fun CharacterFragmentLayoutBinding.initListener() {
+        characterNameTv.setOnLongClickListener {
+            requireContext().copyToClipBoard(characterNameTv.text?.toString())
+            true
         }
-    }
 
-    private fun initListener() {
-        binding.characterFavLayout.setOnClickListener {
+        characterAlternateNameTv.setOnLongClickListener {
+            requireContext().copyToClipBoard(characterAlternateNameTv.text?.toString())
+            true
+        }
+        binding.characterFavIv.setOnClickListener {
             loginContinue {
                 viewModel.toggleCharacterFav(viewModel.toggleField)
             }
         }
     }
 
-    private fun CharacterFragmentLayoutBinding.updateView(item: CharacterModel) {
-        characterModel = item
-        updateToolbar()
-        characterNameTv.text = item.name?.full
+    private fun CharacterFragmentLayoutBinding.updateView() {
+        val item = characterModel ?: return
+        item.name?.let {
+            characterNameTv.text = it.full
+            val alternatives = it.alternative?.joinToString(", ") ?: ""
+            val hasAlternatives = alternatives.isNotBlank()
+            val alternativeNames = (it.native?.plus(if (hasAlternatives) ", " else "") ?: "") + alternatives
+            characterAlternateNameTv.text = alternativeNames
+        }
         characterFavCountTv.text = item.favourites?.toLong()?.prettyNumberFormat()
         characterIv.setImageURI(characterModel?.image?.image)
         characterIv.setOnClickListener {
@@ -122,23 +125,40 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
                 OpenImageEvent(it).postEvent
             }
         }
-        item.name?.native?.let {
-            nativeNameTv.subtitle = it
-        } ?: let {
-            nativeNameTv.visibility = View.GONE
-        }
+        updateFavourite()
 
-        item.name?.alternative?.takeIf { it.isNullOrEmpty().not() }?.let {
-            alternativeNameTv.subtitle = it.joinToString()
-        } ?: let {
-            alternativeNameTv.visibility = View.GONE
-        }
-
-        if (item.isFavourite) {
-            characterFavIv.setImageResource(R.drawable.ic_favourite)
-        }
-
+        val characterInfo = generateCharacterInfo(item) + item.description
         AlMarkwonFactory.getMarkwon()
-            .setMarkdown(characterDescriptionTv, item.description ?: "")
+            .setMarkdown(characterDescriptionTv, characterInfo)
     }
+
+    private fun CharacterFragmentLayoutBinding.updateFavourite() {
+        val favouriteRes = if (characterModel?.isFavourite == true) R.drawable.ic_favourite else R.drawable.ic_not_favourite
+        characterFavIv.setImageResource(favouriteRes)
+    }
+
+
+    private fun generateCharacterInfo(model: CharacterModel): String {
+        var generalInfo = ""
+        model.dateOfBirth?.let {
+            val month = it.month?.let { m ->
+                Month.of(m).getDisplayName(TextStyle.SHORT, Locale.getDefault())
+            } ?: ""
+            val day = it.day ?: ""
+            val year = it.year ?: ""
+            generalInfo += "<b>${getString(R.string.birthday)}:</b> $month $day, $year \n"
+        }
+        model.age?.let {
+            generalInfo += "<b>${getString(R.string.age)}:</b> $it \n"
+        }
+        model.gender?.let {
+            generalInfo += "<b>${getString(R.string.gender)}:</b> $it \n"
+        }
+        model.bloodType?.let {
+            generalInfo += "<b>${getString(R.string.blood_type)}:</b> $it \n \n"
+        }
+
+        return generalInfo
+    }
+
 }

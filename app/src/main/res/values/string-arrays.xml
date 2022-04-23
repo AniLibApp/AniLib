@@ -617,6 +617,15 @@
         <item>@string/time</item>
         <item>@string/episodes</item>
     </string-array>
+    
+    <string-array name="studio_sort">
+        <item>@string/popularity</item>
+        <item>@string/average_score</item>
+        <item>@string/favourites</item>
+        <item>@string/newest</item>
+        <item>@string/oldest</item>
+        <item>@string/title</item>
+    </string-array>
 
     <string-array name="advance_search_format">
         <item>@string/none</item>
@@ -807,6 +816,10 @@
         <item>@string/compact_mode</item>
         <item>@string/normal_mode</item>
         <item>@string/minimal_list_mode</item>
+    </string-array>
+    <string-array name="media_character_display_modes">
+        <item>@string/compact_mode</item>
+        <item>@string/normal_mode</item>
     </string-array>
 
     <string-array name="season_filter_entries">

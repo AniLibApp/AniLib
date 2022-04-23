@@ -65,21 +65,15 @@ abstract class BasePresenterFragment<M : Any>() :
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        span = getSpanCount()
-        layoutManager = getBaseLayoutManager()
-
+        loadLayoutManager()
         if (applyInset) {
             baseRecyclerView.applyWindowInsets()
         }
-
-
         baseSwipeRefreshLayout.setOnRefreshListener {
             createSource()
             baseSwipeRefreshLayout.isRefreshing = false
             invalidateAdapter()
         }
-
-        reloadLayoutManager()
     }
 
     protected open fun getSpanCount() =
@@ -101,10 +95,11 @@ abstract class BasePresenterFragment<M : Any>() :
             }
         }
 
-    protected open fun reloadLayoutManager() {
-        if (::layoutManager.isInitialized) {
-            baseRecyclerView.layoutManager = layoutManager
-        }
+
+    protected open fun loadLayoutManager(){
+        span = getSpanCount()
+        layoutManager = getBaseLayoutManager()
+        baseRecyclerView.layoutManager = layoutManager
     }
 
     override fun onResume() {

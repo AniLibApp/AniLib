@@ -5,6 +5,7 @@ import com.revolgenx.anilib.character.data.field.CharacterMediaField
 import com.revolgenx.anilib.character.data.field.CharacterVoiceActorField
 import com.revolgenx.anilib.character.data.model.*
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.network.converter.toModel
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.media.data.model.toModel
@@ -31,6 +32,10 @@ class CharacterServiceImpl(
                         model.description = it.description
                         model.siteUrl = it.siteUrl
                         model.favourites = it.favourites
+                        model.age = it.age
+                        model.bloodType = it.bloodType
+                        model.dateOfBirth = it.dateOfBirth?.fuzzyDate?.toModel()
+                        model.gender = it.gender
                         model.name = it.name?.let {
                             CharacterNameModel(
                                 it.full,

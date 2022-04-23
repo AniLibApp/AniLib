@@ -12,112 +12,96 @@
         android:orientation="vertical">
 
 
-        <com.revolgenx.anilib.ui.view.widgets.AlCardView
-            style="@style/Widget.DynamicApp.Card.Margin.Clickable"
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/character_iv"
+            android:layout_width="140dp"
+            android:layout_height="210dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            app:roundedCornerRadius="12dp" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/character_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="18sp"
+            app:adt_colorType="text_primary"
+            app:fontFamily="@font/rubik_medium" />
+
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/character_alternate_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:textSize="14sp"
+            app:adt_colorType="tint_background"
+            app:adt_rtlSupport="false"
+            app:fontFamily="@font/rubik_regular" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp">
 
-            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
-                android:layout_width="match_parent"
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                style="@style/CommonHeaderStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="6dp">
-
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/characterIv"
-                        android:layout_width="90dp"
-                        android:layout_height="160dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:transitionName="character_image_transition"
-                        app:roundAsCircle="false"
-                        app:roundedCornerRadius="4dp" />
-
-                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                        android:id="@+id/characterNameTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="6dp"
-                        android:layout_toStartOf="@id/characterFavLayout"
-                        android:layout_toEndOf="@+id/characterIv"
-                        android:textSize="16sp"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
-                        android:id="@+id/nativeNameTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/characterNameTv"
-                        android:layout_toStartOf="@id/characterFavLayout"
-                        android:layout_toEndOf="@+id/characterIv"
-                        app:ads_fillSpace="true"
-                        app:ads_title="@string/native_name" />
+                android:paddingHorizontal="10dp"
+                android:text="@string/description"
+                android:gravity="center_vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
-                        android:id="@+id/alternativeNameTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/nativeNameTv"
-                        android:layout_toEndOf="@+id/characterIv"
-                        app:ads_fillSpace="true"
-                        app:ads_title="@string/alternative_name" />
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/characterFavCountTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:textSize="14sp"
+                app:adt_colorType="accent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/characterFavIv"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SmallSp" />
 
-                    <LinearLayout
-                        android:id="@+id/characterFavLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_margin="4dp"
-                        android:orientation="horizontal">
+            <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
+                android:id="@+id/characterFavIv"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:padding="2dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_not_favourite"
+                app:adt_colorType="accent"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                            android:id="@+id/characterFavCountTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="4dp"
-                            android:textSize="11sp"
-                            app:adt_colorType="accent"
-                            tools:ignore="SmallSp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
-                            android:id="@+id/characterFavIv"
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_not_favourite"
-                            app:adt_colorType="accent" />
-                    </LinearLayout>
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/characterDescriptionTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:textSize="14sp" />
 
-
-                </RelativeLayout>
-
-
-                <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:ads_fillSpace="true"
-                    app:ads_title="@string/description" />
-
-                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                    android:id="@+id/characterDescriptionTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp" />
-
-            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
-        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
-
-        <include layout="@layout/resource_status_container_layout"
-            android:id="@+id/resource_status_layout"/>
+        <include
+            android:id="@+id/resource_status_layout"
+            layout="@layout/resource_status_container_layout" />
 
     </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
 </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>

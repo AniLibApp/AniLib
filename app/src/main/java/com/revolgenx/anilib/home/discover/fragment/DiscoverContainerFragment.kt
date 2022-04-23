@@ -66,11 +66,9 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
         return DiscoverContainerFragmentBinding.inflate(inflater, parent, false)
     }
 
-
     @SuppressLint("UnsafeExperimentalUsageError")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.initListener()
         binding.initSeasonListener()
         binding.initRecommendationListener()
@@ -86,13 +84,11 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
 
         binding.discoverContainerViewPager.offscreenPageLimit = 3
 
-        if (savedInstanceState == null) {
-            seasonViewModel.field = SeasonField.create()
+        seasonViewModel.field = SeasonField.create()
 
-            with(recommendationViewModel.field) {
-                sort = getRecommendationSort()
-                onList = getRecommendationOnList()
-            }
+        with(recommendationViewModel.field) {
+            sort = getRecommendationSort()
+            onList = getRecommendationOnList()
         }
     }
 
@@ -142,9 +138,6 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
 
 
     private fun DiscoverContainerFragmentBinding.initSeasonListener() {
-        seasonFilterFooter.setOnClickListener {
-
-        }
         seasonPreviousIv.setOnClickListener {
             seasonViewModel.previousSeason(requireContext())
             updateSeasonFooterTitle()

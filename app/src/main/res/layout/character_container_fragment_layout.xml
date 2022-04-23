@@ -6,9 +6,9 @@
     android:layout_height="match_parent">
 
     <com.revolgenx.anilib.common.ui.view.AlAppBarLayout
+        style="@style/AlAppBarLayoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/AlAppBarLayoutStyle">
+        android:layout_height="wrap_content">
 
         <com.revolgenx.anilib.common.ui.view.AlToolbar
             android:id="@+id/dynamicToolbar"
@@ -16,10 +16,10 @@
             android:layout_height="wrap_content"
             app:adt_colorType="background"
             app:adt_textColorType="text_primary"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp"
             app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
             app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="enterAlways|scroll"
             app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
@@ -34,11 +34,12 @@
                 app:adt_contrastWithColorType="background"
                 app:adt_textColorType="accent"
                 app:tabInlineLabel="true"
-                app:tabPaddingStart="0dp"
                 app:tabPaddingEnd="16dp"
+                app:tabPaddingStart="0dp"
                 app:tabTextAppearance="@style/AlTabTextAppearance.NoCaps" />
 
         </com.revolgenx.anilib.common.ui.view.AlToolbar>
+
     </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2

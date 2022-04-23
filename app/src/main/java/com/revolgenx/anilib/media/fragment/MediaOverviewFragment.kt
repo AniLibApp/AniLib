@@ -188,11 +188,9 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             }
         }
 
-        if (savedInstanceState == null) {
-            viewModel.getOverview(MediaOverviewField().also {
-                it.mediaId = mediaBrowserMeta!!.mediaId
-            })
-        }
+        viewModel.getOverview(MediaOverviewField().also {
+            it.mediaId = mediaBrowserMeta!!.mediaId
+        })
 
     }
 
@@ -386,6 +384,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             translateSwitch.visibility = View.GONE
             showTranslatedByGoogle(false)
             mediaDescriptionTv.setText(R.string.no_description)
+//            mediaDescriptionView.descriptionTv.setText(R.string.no_description)
             return
         }
 
@@ -431,14 +430,20 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
     ) {
         AlMarkwonFactory.getMarkwon()
             .setMarkdown(mediaDescriptionTv, description)
+//        AlMarkwonFactory.getMarkwon()
+//            .setMarkdown(mediaDescriptionView.descriptionTv, description)
+//        mediaDescriptionView.updateLayout()
     }
 
     private fun translateDescription(description: String) {
         binding.mediaDescriptionTv.text = getString(R.string.translating)
+//        binding.mediaDescriptionView.descriptionTv.text = getString(R.string.translating)
+
         viewModel.translationStore.translate(requireContext(), description)
             .observe(viewLifecycleOwner) {
                 if (it != null) {
                     binding.mediaDescriptionTv.text = it
+//                    binding.mediaDescriptionView.descriptionTv.text = it
                     showTranslatedByGoogle(true)
                 }
             }

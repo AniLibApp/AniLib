@@ -14,6 +14,7 @@ class StaffViewModel(
     , private val toggleService: ToggleService
 ) : BaseViewModel() {
 
+    val staffModel get() = staffInfoLiveData.value?.data
     val staffInfoLiveData = MutableLiveData<Resource<StaffModel>>()
     val toggleStaffFavLiveData = MutableLiveData<Resource<Boolean>>()
 
@@ -30,6 +31,7 @@ class StaffViewModel(
     fun toggleCharacterFav(field: ToggleFavouriteField) {
         toggleStaffFavLiveData.value = Resource.loading(null)
         toggleService.toggleFavourite(field, compositeDisposable) {
+            staffModel?.isFavourite = staffModel?.isFavourite?.not() ?: false
             toggleStaffFavLiveData.value = it
         }
     }

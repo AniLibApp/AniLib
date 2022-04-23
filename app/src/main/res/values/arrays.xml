@@ -77,6 +77,9 @@
         <item>@null</item>
         <item>https://anilist.co/user/MrJaco/</item>
     </string-array>
+    <string-array name="media_character_menu_entries">
+        <item>@string/change_display_mode</item>
+    </string-array>
     <!--end region-->
 
     <integer-array name="url_link_icons">

@@ -3,6 +3,7 @@ package com.revolgenx.anilib.staff.service
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.character.data.model.*
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
+import com.revolgenx.anilib.common.repository.network.converter.toModel
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.media.data.model.toModel
@@ -40,6 +41,14 @@ class StaffServiceImpl(
                         model.isFavourite = it.isFavourite
                         model.siteUrl = it.siteUrl
                         model.description = it.description
+                        model.age = it.age
+                        model.bloodType = it.bloodType
+                        model.homeTown = it.homeTown
+                        model.primaryOccupations = it.primaryOccupations?.filterNotNull()
+                        model.gender = it.gender
+                        model.dateOfBirth = it.dateOfBirth?.fuzzyDate?.toModel()
+                        model.dateOfDeath = it.dateOfDeath?.fuzzyDate?.toModel()
+                        model.yearsActive = it.yearsActive?.filterNotNull()
                     }
                 }
             }
@@ -48,7 +57,7 @@ class StaffServiceImpl(
                 callback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                callback.invoke(Resource.error(it.message , null, it))
+                callback.invoke(Resource.error(it.message, null, it))
             })
 
         compositeDisposable.add(disposable)
@@ -95,8 +104,8 @@ class StaffServiceImpl(
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.staff?.staffMedia?.edges?.mapNotNull { edge->
-                    edge?.node?.onMedia?.mediaContent?.toModel()?.also { model->
+                it.data?.staff?.staffMedia?.edges?.mapNotNull { edge ->
+                    edge?.node?.onMedia?.mediaContent?.toModel()?.also { model ->
                         model.staffRole = edge.staffRole
                     }
                 }
@@ -104,7 +113,7 @@ class StaffServiceImpl(
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
             }, {
-                resourceCallback.invoke(Resource.error(it.message , null, it))
+                resourceCallback.invoke(Resource.error(it.message, null, it))
             })
         compositeDisposable.add(disposable)
     }

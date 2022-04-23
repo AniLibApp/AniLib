@@ -31,9 +31,21 @@ query StaffQuery($id:Int){
         }
         description(asHtml:true)
         favourites
-        languageV2
         isFavourite
         siteUrl
+        dateOfBirth {
+            ...fuzzyDate
+        }
+        dateOfDeath {
+            ...fuzzyDate
+        }
+        age
+        gender
+        yearsActive
+        homeTown
+        bloodType
+        primaryOccupations
+        languageV2
     }
 }
 

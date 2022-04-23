@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.character.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -50,12 +51,13 @@ class CharacterContainerFragment : BaseLayoutFragment<CharacterContainerFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         characterId ?: return
-        updateToolbarTitle(viewModel.title ?: requireContext().getString(R.string.character))
         binding.characterViewPager.adapter = makeViewPagerAdapter2(characterFragments)
-        val tabItems = listOf(R.string.about to R.drawable.ic_role, R.string.media to R.drawable.ic_media, R.string.voice_role to R.drawable.ic_voice_role)
+        val tabItems =
+            listOf(R.string.about to R.drawable.ic_role, R.string.media to R.drawable.ic_media, R.string.voice_role to R.drawable.ic_voice_role)
         setupWithViewPager2(binding.characterTabLayout, binding.characterViewPager, tabItems)
         binding.characterViewPager.offscreenPageLimit = 2
     }
+
 
     override fun getBaseToolbar(): Toolbar {
         return binding.dynamicToolbar
@@ -64,11 +66,11 @@ class CharacterContainerFragment : BaseLayoutFragment<CharacterContainerFragment
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.character_share_menu -> {
-                shareText(viewModel.characterLink)
+                shareText(viewModel.siteUrl)
                 true
             }
-            R.id.character_open_in_browser_menu->{
-                openLink(viewModel.characterLink)
+            R.id.character_open_in_browser_menu -> {
+                openLink(viewModel.siteUrl)
                 true
             }
             else -> {
@@ -77,12 +79,4 @@ class CharacterContainerFragment : BaseLayoutFragment<CharacterContainerFragment
         }
     }
 
-    fun updateToolbarTitle(title: String) {
-        viewModel.title = title
-        getBaseToolbar().title = title
-    }
-
-    fun updateShareableLink(link: String?) {
-        viewModel.characterLink = link
-    }
 }

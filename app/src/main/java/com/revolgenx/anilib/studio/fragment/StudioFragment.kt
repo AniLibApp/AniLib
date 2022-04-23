@@ -2,29 +2,31 @@ package com.revolgenx.anilib.studio.fragment
 
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
+import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
+import com.otaliastudios.elements.extensions.HeaderSource
+import com.otaliastudios.elements.extensions.SimplePresenter
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.app.theme.dynamicBackgroundColor
+import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.studio.data.model.StudioModel
-import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.databinding.StudioFragmentLayoutBinding
 import com.revolgenx.anilib.studio.presenter.StudioMediaPresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
+import com.revolgenx.anilib.studio.bottomsheet.StudioFilterBottomSheet
+import com.revolgenx.anilib.studio.data.constant.StudioSort
+import com.revolgenx.anilib.studio.source.StudioHeaderSource
 import com.revolgenx.anilib.ui.view.makeToast
-import com.revolgenx.anilib.util.naText
-import com.revolgenx.anilib.util.openLink
 import com.revolgenx.anilib.studio.viewmodel.StudioViewModel
-import com.revolgenx.anilib.util.loginContinue
-import com.revolgenx.anilib.util.shareText
+import com.revolgenx.anilib.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StudioFragment : BasePresenterFragment<MediaModel>() {
-
     companion object {
         private const val STUDIO_ID_KEY = "STUDIO_ID_KEY"
         fun newInstance(studioId: Int) = StudioFragment().also {
@@ -35,24 +37,20 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
     private val studioId get() = arguments?.getInt(STUDIO_ID_KEY)
 
     override val basePresenter: Presenter<MediaModel>
-        get() = StudioMediaPresenter(
-            requireContext()
-        )
+        get() = StudioMediaPresenter(requireContext())
 
     override val baseSource: Source<MediaModel>
         get() = viewModel.source ?: createSource()
 
-    private var studioModel: StudioModel? = null
-
     private lateinit var studioBinding: StudioFragmentLayoutBinding
 
     private val viewModel by viewModel<StudioViewModel>()
-
+    private val field get() = viewModel.field
+    private val studioModel get() = viewModel.studioModel
 
     override val setHomeAsUp: Boolean = true
     override val showMenuIcon: Boolean = true
     override val menuRes: Int = R.menu.studio_fragment_menu
-    override val titleRes: Int = R.string.studio
 
     override var gridMaxSpan: Int = 6
     override var gridMinSpan: Int = 3
@@ -68,18 +66,15 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
         savedInstanceState: Bundle?
     ): View {
         val v = super.onCreateView(inflater, container, savedInstanceState)
-
         studioBinding = StudioFragmentLayoutBinding.inflate(inflater, container, false)
-        studioBinding.root.setBackgroundColor(dynamicBackgroundColor)
-        studioBinding.studioFragmentContainerLayout.addView(v)
+        studioBinding.studioContainerLayout.addView(v)
         return studioBinding.root
     }
 
 
     override fun getBaseToolbar(): Toolbar {
-        return studioBinding.studioToolbar.dynamicToolbar
+        return studioBinding.dynamicToolbar
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -94,7 +89,7 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
                     statusLayout.resourceStatusContainer.visibility = View.GONE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
-                    updateView(res.data!!)
+                    studioBinding.updateView(res.data!!)
                 }
                 is Resource.Error -> {
                     statusLayout.resourceStatusContainer.visibility = View.VISIBLE
@@ -113,16 +108,8 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
             when (res) {
                 is Resource.Success -> {
                     studioBinding.studioFavIv.showLoading(false)
-                    if (res.data == true) {
-                        studioModel?.isFavourite = studioModel?.isFavourite?.not() ?: false
-                        studioBinding.studioFavIv.setImageResource(
-                            if (studioModel?.isFavourite == true) {
-                                R.drawable.ic_favourite
-                            } else {
-                                R.drawable.ic_not_favourite
-                            }
-                        )
-                    }
+                    val model = studioModel ?: return@observe
+                    studioBinding.updateView(model)
                 }
                 is Resource.Error -> {
                     studioBinding.studioFavIv.showLoading(false)
@@ -135,14 +122,23 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
         }
 
         initListener()
-
-        if (savedInstanceState == null) {
-            viewModel.getStudioInfo()
-        }
+        viewModel.getStudioInfo()
     }
 
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.studio_filter_menu -> {
+                StudioFilterBottomSheet.newInstance(field.onList, field.sort.ordinal).also {
+                    it.onPositionClicked = { onList, sort ->
+                        field.onList = onList
+                        field.sort = StudioSort.values()[sort]
+                        createSource()
+                        invalidateAdapter()
+                    }
+                    it.show(this)
+                }
+                true
+            }
             R.id.studio_share_menu -> {
                 shareText(studioModel?.siteUrl)
                 true
@@ -165,15 +161,38 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
                 viewModel.toggleStudioFav(viewModel.toggleFavouriteField)
             }
         }
+
+        studioBinding.studioTitleTv.setOnLongClickListener {
+            requireContext().copyToClipBoard(studioModel?.studioName)
+            true
+        }
     }
 
-    private fun updateView(item: StudioModel) {
-        studioModel = item
-        studioBinding.studioNameTv.text = item.studioName
-        studioBinding.studioFavCountTv.text = item.favourites?.toString().naText()
-        if (item.isFavourite) {
-            studioBinding.studioFavIv.setImageResource(R.drawable.ic_favourite)
+    private fun StudioFragmentLayoutBinding.updateView(item: StudioModel) {
+        studioTitleTv.text = item.studioName
+        studioFavCountTv.text = item.favourites?.prettyNumberFormat()
+        val favIcon = if (item.isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite
+        studioBinding.studioFavIv.setImageResource(favIcon)
+    }
+
+    override fun adapterBuilder(): Adapter.Builder {
+        val builder = super.adapterBuilder()
+
+        when (field.sort) {
+            StudioSort.START_DATE_DESC, StudioSort.START_DATE -> {
+                builder.addSource(StudioHeaderSource())
+                builder.addPresenter(SimplePresenter<HeaderSource.Data<AiringScheduleModel, String>>(
+                    requireContext(),
+                    R.layout.header_presenter_layout,
+                    HeaderSource.ELEMENT_TYPE
+                ) { v, header ->
+                    (v as TextView).text = header.header
+                })
+            }
+            else -> {}
         }
+
+        return builder
     }
 
 }

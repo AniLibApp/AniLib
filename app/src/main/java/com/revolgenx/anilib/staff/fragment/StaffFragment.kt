@@ -4,18 +4,24 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.os.bundleOf
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.character.data.model.CharacterModel
+import com.revolgenx.anilib.common.event.OpenImageEvent
 import com.revolgenx.anilib.staff.data.model.StaffModel
 import com.revolgenx.anilib.common.preference.loggedIn
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
+import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.databinding.StaffFragmentLayoutBinding
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.staff.viewmodel.StaffContainerViewModel
 import com.revolgenx.anilib.ui.view.makeToast
-import com.revolgenx.anilib.util.openLink
-import com.revolgenx.anilib.util.prettyNumberFormat
 import com.revolgenx.anilib.staff.viewmodel.StaffViewModel
-import com.revolgenx.anilib.util.loginContinue
+import com.revolgenx.anilib.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.time.Month
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.*
 
 class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
     companion object {
@@ -26,11 +32,9 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
     }
 
     private val staffId get() = arguments?.getInt(STAFF_ID_KEY)
-
-
     private val viewModel by viewModel<StaffViewModel>()
-
-    private var staffModel: StaffModel? = null
+    private val staffShareVM by viewModel<StaffContainerViewModel>(owner = getViewModelOwner())
+    private val staffModel get() = viewModel.staffModel
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.staff_fragment_menu, menu)
@@ -38,10 +42,12 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.staff_open_in_browser_menu -> {
+                openLink(staffModel?.siteUrl)
+                true
+            }
             R.id.staff_share_menu -> {
-                staffModel?.siteUrl?.let {
-                    requireContext().openLink(it)
-                } ?: makeToast(R.string.invalid)
+                shareText(staffModel?.siteUrl)
                 true
             }
             else -> {
@@ -58,8 +64,8 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.staffField.staffId = staffId ?: return
         viewModel.staffToggleField.staffId = staffId
         val statusLayout = binding.resourceStatusLayout
@@ -69,7 +75,8 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
                     statusLayout.resourceStatusContainer.visibility = View.GONE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
-                    binding.updateView(res.data!!)
+                    staffShareVM.staffLink = staffModel?.siteUrl
+                    binding.updateView()
                 }
                 is Resource.Error -> {
                     statusLayout.resourceStatusContainer.visibility = View.VISIBLE
@@ -88,16 +95,7 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
             when (res) {
                 is Resource.Success -> {
                     binding.staffFavIv.showLoading(false)
-                    if (res.data == true) {
-                        staffModel?.isFavourite = staffModel?.isFavourite?.not() ?: false
-                        binding.staffFavIv.setImageResource(
-                            if (staffModel?.isFavourite == true) {
-                                R.drawable.ic_favourite
-                            } else {
-                                R.drawable.ic_not_favourite
-                            }
-                        )
-                    }
+                    binding.updateFavourite()
                 }
                 is Resource.Error -> {
                     binding.staffFavIv.showLoading(false)
@@ -108,60 +106,95 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
                 }
             }
         }
-        initListener()
-
-        if (savedInstanceState == null) {
-            viewModel.getStaffInfo(viewModel.staffField)
-        }
+        binding.initListener()
+        viewModel.getStaffInfo(viewModel.staffField)
     }
 
-    private fun initListener() {
-        binding.staffFavLayout.setOnClickListener {
+    private fun StaffFragmentLayoutBinding.initListener() {
+        staffNameTv.setOnLongClickListener {
+            requireContext().copyToClipBoard(staffNameTv.text?.toString())
+            true
+        }
+
+        staffAlternateNameTv.setOnLongClickListener {
+            requireContext().copyToClipBoard(staffAlternateNameTv.text?.toString())
+            true
+        }
+        staffFavIv.setOnClickListener {
             loginContinue {
                 viewModel.toggleCharacterFav(viewModel.staffToggleField)
             }
         }
     }
 
-    private fun StaffFragmentLayoutBinding.updateView(item: StaffModel) {
-        staffModel = item
-        updateToolbar()
-        staffNameTv.text = item.name?.full
-        staffFavCountIv.text = item.favourites?.toLong()?.prettyNumberFormat()
+    private fun StaffFragmentLayoutBinding.updateView() {
+        val item = staffModel ?: return
+        item.name?.let {
+            staffNameTv.text = it.full
+            val alternatives = it.alternative?.joinToString(", ") ?: ""
+            val hasAlternatives = alternatives.isNotBlank()
+            val alternativeNames = (it.native?.plus(if (hasAlternatives) ", " else "") ?: "") + alternatives
+            staffAlternateNameTv.text = alternativeNames
+        }
+
+        staffFavCountTv.text = item.favourites?.toLong()?.prettyNumberFormat()
         staffIv.setImageURI(staffModel?.image?.image)
-
-        item.name?.native?.let {
-            nativeNameTv.subtitle = it
-        } ?: let {
-            nativeNameTv.visibility = View.GONE
+        staffIv.setOnClickListener {
+            staffModel?.image?.image?.let {
+                OpenImageEvent(it).postEvent
+            }
         }
 
-        item.name?.alternative?.let {
-            alternativeNameTv.subtitle = it.joinToString()
-        } ?: let {
-            alternativeNameTv.visibility = View.GONE
-        }
+        updateFavourite()
 
-
-        item.languageV2?.let {
-            languageTv.subtitle = it
-        } ?: let {
-            languageTv.visibility = View.GONE
-        }
-
-        if (item.isFavourite) {
-            staffFavIv.setImageResource(R.drawable.ic_favourite)
-        }
-
+        val staffDescription = generateStaffInfo(item) + item.description
         AlMarkwonFactory.getMarkwon()
-            .setMarkdown(staffDescriptionTv, item.description ?: "")
+            .setMarkdown(staffDescriptionTv, staffDescription)
     }
 
-    override fun updateToolbar() {
-        val model = staffModel ?: return
-        (parentFragment as? StaffContainerFragment)?.let {
-            it.updateToolbarTitle(model.name!!.full!!)
-            it.updateShareableLink(model.siteUrl)
+    private fun StaffFragmentLayoutBinding.updateFavourite() {
+        val favResource = if (staffModel?.isFavourite == true) R.drawable.ic_favourite else R.drawable.ic_not_favourite
+        staffFavIv.setImageResource(favResource)
+    }
+
+
+    private fun generateStaffInfo(model: StaffModel): String {
+        var generalInfo = ""
+        model.dateOfBirth?.let {
+            val month = it.month?.let { m ->
+                Month.of(m).getDisplayName(TextStyle.SHORT, Locale.getDefault())
+            } ?: ""
+            val day = it.day ?: ""
+            val year = it.year ?: ""
+            generalInfo += "<b>${getString(R.string.birthday)}:</b> $month $day, $year \n"
         }
+        model.dateOfDeath?.let {
+            val month = it.month?.let { m ->
+                Month.of(m).getDisplayName(TextStyle.SHORT, Locale.getDefault())
+            } ?: ""
+            val day = it.day ?: ""
+            val year = it.year ?: ""
+            generalInfo += "<b>${getString(R.string.death)}:</b> $month $day, $year \n"
+        }
+        model.age?.let {
+            generalInfo += "<b>${getString(R.string.age)}:</b> $it \n"
+        }
+        model.gender?.let {
+            generalInfo += "<b>${getString(R.string.gender)}:</b> $it \n"
+        }
+        model.bloodType?.let {
+            generalInfo += "<b>${getString(R.string.blood_type)}:</b> $it \n"
+        }
+        model.yearsActive?.let {
+            val firstDate = it.getOrNull(0)
+            val lastDate = it.getOrNull(1) ?: getString(R.string.present)
+            generalInfo += "<b>${getString(R.string.years_active)}:</b> $firstDate-$lastDate \n"
+        }
+
+        model.homeTown?.let {
+            generalInfo += "<b>${getString(R.string.hometown)}:</b> $it \n \n"
+        }
+
+        return generalInfo
     }
 }

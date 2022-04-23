@@ -17,8 +17,9 @@ class StudioViewModel(
 ) :
     SourceViewModel<StudioMediaSource, StudioMediaField>() {
 
-    val studioInfoLiveData  = MutableLiveData<Resource<StudioModel>>()
-    val toggleFavouriteLiveData  = MutableLiveData<Resource<Boolean>>()
+    val studioModel get() = studioInfoLiveData.value?.data
+    val studioInfoLiveData = MutableLiveData<Resource<StudioModel>>()
+    val toggleFavouriteLiveData = MutableLiveData<Resource<Boolean>>()
 
     var studioField: StudioField = StudioField()
     override var field: StudioMediaField = StudioMediaField()
@@ -32,14 +33,17 @@ class StudioViewModel(
 
     fun getStudioInfo() {
         studioInfoLiveData.value = Resource.loading(null)
-        studioService.getStudioInfo(studioField, compositeDisposable){
+        studioService.getStudioInfo(studioField, compositeDisposable) {
             studioInfoLiveData.value = it
         }
     }
 
     fun toggleStudioFav(toggleFavouriteField: ToggleFavouriteField) {
         toggleFavouriteLiveData.value = Resource.loading(null)
-        toggleService.toggleFavourite(toggleFavouriteField, compositeDisposable){
+        toggleService.toggleFavourite(toggleFavouriteField, compositeDisposable) {
+            studioModel?.let { m->
+                m.isFavourite = !m.isFavourite
+            }
             toggleFavouriteLiveData.value = it
         }
     }

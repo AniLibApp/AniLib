@@ -6,47 +6,42 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.LinearLayout
 import androidx.core.os.bundleOf
-import androidx.recyclerview.widget.GridLayoutManager
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
-import com.revolgenx.anilib.ui.view.widgets.AlCardView
-import com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
-import com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.data.model.CharacterEdgeModel
+import com.revolgenx.anilib.common.preference.mediaCharacterDisplayModePref
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
+import com.revolgenx.anilib.constant.MediaCharacterDisplayMode
+import com.revolgenx.anilib.databinding.MediaCharacterFragmentLayoutBinding
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.media.presenter.MediaCharacterPresenter
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.util.dp
 import com.revolgenx.anilib.media.viewmodel.MediaCharacterVM
+import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaCharacterFragment : BasePresenterFragment<CharacterEdgeModel>() {
 
     override val basePresenter: Presenter<CharacterEdgeModel>
-        get() {
-            return MediaCharacterPresenter(
-                requireContext()
-            )
-        }
+        get() = MediaCharacterPresenter(requireContext())
 
     override val baseSource: Source<CharacterEdgeModel>
-        get() {
-            return viewModel.source ?: createSource()
-        }
+        get() = viewModel.source ?: createSource()
 
     private val mediaBrowserMeta
-        get() = arguments?.getParcelable<MediaInfoMeta?>(
-            MEDIA_INFO_META_KEY
-        )
+        get() = arguments?.getParcelable<MediaInfoMeta?>(MEDIA_INFO_META_KEY)
+
+    private val isAnime get() = mediaBrowserMeta?.type == MediaType.ANIME.ordinal
+    private val displayMode get() = mediaCharacterDisplayModePref
+
     private val viewModel by viewModel<MediaCharacterVM>()
 
-    private lateinit var languageSpinner: DynamicSpinner
+    private var _sBinding: MediaCharacterFragmentLayoutBinding? = null
+    private val sBinding: MediaCharacterFragmentLayoutBinding get() = _sBinding!!
 
 
     companion object {
@@ -66,44 +61,30 @@ class MediaCharacterFragment : BasePresenterFragment<CharacterEdgeModel>() {
         savedInstanceState: Bundle?
     ): View {
         val v = super.onCreateView(inflater, container, savedInstanceState)
-
-        if (mediaBrowserMeta?.type != MediaType.MANGA.ordinal) {
-            languageSpinner = DynamicSpinner(requireContext()).also {
-                it.layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-            }
-
-            val languageContainer = AlCardView(requireContext()).also {
-                it.layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                ).also { params ->
-                    params.setMargins(dp(6f), dp(10f), dp(6f), dp(10f))
-                }
-                it.addView(languageSpinner)
-            }
-            return DynamicLinearLayout(requireContext()).also {
-                it.layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
-                it.orientation = LinearLayout.VERTICAL
-                it.addView(languageContainer)
-                it.addView(v)
-            }
+        _sBinding = MediaCharacterFragmentLayoutBinding.inflate(inflater, container, false)
+        if (mediaBrowserMeta?.type == MediaType.MANGA.ordinal) {
+            sBinding.mediaCharacterLanguageSpinnerLayout.visibility = View.GONE
         }
-        return v
+        sBinding.root.addView(v)
+        return sBinding.root
     }
 
     override fun getSpanCount(): Int {
-        return when (mediaBrowserMeta!!.type) {
-            MediaType.ANIME.ordinal -> {
-                if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
+        val isLandScape = requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        return when (MediaCharacterDisplayMode.values()[displayMode]) {
+            MediaCharacterDisplayMode.COMPACT -> {
+                if (isAnime) {
+                    if (isLandScape) 4 else 2
+                } else {
+                    if (isLandScape) 6 else 3
+                }
             }
-            else -> {
-                if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 3
+            MediaCharacterDisplayMode.NORMAL -> {
+                if (isAnime) {
+                    if (isLandScape) 2 else 1
+                } else {
+                    if (isLandScape) 4 else 2
+                }
             }
         }
     }
@@ -133,13 +114,13 @@ class MediaCharacterFragment : BasePresenterFragment<CharacterEdgeModel>() {
         }
 
         if (mediaBrowserMeta?.type != MediaType.MANGA.ordinal) {
-            languageSpinner.adapter = makeSpinnerAdapter(requireContext(), spinnerItems)
+            sBinding.mediaCharacterLanguageSpinner.adapter = makeSpinnerAdapter(requireContext(), spinnerItems)
 
             viewModel.field.language?.let {
-                languageSpinner.setSelection(it)
+                sBinding.mediaCharacterLanguageSpinner.setSelection(it)
             }
 
-            languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            sBinding.mediaCharacterLanguageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
 
@@ -158,12 +139,26 @@ class MediaCharacterFragment : BasePresenterFragment<CharacterEdgeModel>() {
             }
         }
 
+        sBinding.mediaCharacterPopupMenu.onPopupMenuClickListener = { _, position ->
+            when (position) {
+                0 -> {
+                    makeArrayPopupMenu(
+                        sBinding.mediaCharacterPopupMenu,
+                        resources.getStringArray(R.array.media_character_display_modes),
+                        selectedPosition = mediaCharacterDisplayModePref
+                    ) { _, _, index, _ ->
+                        mediaCharacterDisplayModePref = index
+                        loadLayoutManager()
+                        invalidateAdapter()
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
-        if (::languageSpinner.isInitialized) {
-            languageSpinner.onItemSelectedListener = null
-        }
+        sBinding.mediaCharacterLanguageSpinner.onItemSelectedListener = null
+        _sBinding = null
         super.onDestroyView()
     }
 

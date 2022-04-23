@@ -101,6 +101,7 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                                     entry.userId = collectionModel.user?.id ?: -1
                                                     entry.user = collectionModel.user
                                                     entry.media = it.media?.mediaContent?.toModel()
+                                                    entry.media?.synonyms = it.media?.synonyms?.filterNotNull()
                                                     if ((groupModel.isCustomList.not() && entry.hiddenFromStatusLists.not()) || (groupModel.isCustomList && entry.hiddenFromStatusLists)) {
                                                         allEntries[entry.id] = entry
                                                     }

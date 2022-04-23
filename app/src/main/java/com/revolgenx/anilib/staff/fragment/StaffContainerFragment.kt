@@ -50,7 +50,6 @@ class StaffContainerFragment : BaseLayoutFragment<StaffContainerFragmentLayoutBi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         staffId ?: return
-        updateToolbarTitle(viewModel.title ?: requireContext().getString(R.string.staff))
         binding.staffViewPager.adapter = makeViewPagerAdapter2(staffFragments)
 
         val tabItems = listOf(
@@ -81,14 +80,5 @@ class StaffContainerFragment : BaseLayoutFragment<StaffContainerFragmentLayoutBi
                 false
             }
         }
-    }
-
-    fun updateToolbarTitle(title: String) {
-        viewModel.title = title
-        getBaseToolbar().title = title
-    }
-
-    fun updateShareableLink(link: String?) {
-        viewModel.staffLink = link
     }
 }
