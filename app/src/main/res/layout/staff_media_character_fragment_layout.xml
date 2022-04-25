@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/staff_media_container_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+            android:id="@+id/staff_media_sort_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                android:id="@+id/staff_media_on_list_checkbox"
+                style="@style/AlCheckboxStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:includeFontPadding="false"
+                android:text="@string/on_list" />
+        </FrameLayout>
+
+    </LinearLayout>
+</LinearLayout>

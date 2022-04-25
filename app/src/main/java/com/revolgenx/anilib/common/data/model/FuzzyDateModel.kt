@@ -11,10 +11,11 @@ class FuzzyDateModel(var year: Int? = null, var month: Int? = null, var day: Int
         date = toString()
     }
 
-    constructor(parcel: Parcel) : this() {
-        year = parcel.readValue(Int::class.java.classLoader) as? Int
-        month = parcel.readValue(Int::class.java.classLoader) as? Int
-        day = parcel.readValue(Int::class.java.classLoader) as? Int
+    constructor(parcel: Parcel) : this(
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int
+    ) {
         date = parcel.readString()!!
     }
 

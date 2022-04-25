@@ -1,9 +1,6 @@
 package com.revolgenx.anilib.studio.data.constant
 
-/**
- * Studio to media sort mapping
- * */
-enum class StudioSort {
+enum class StudioMediaSort {
     POPULARITY_DESC,
     SCORE_DESC,
     FAVOURITES_DESC,

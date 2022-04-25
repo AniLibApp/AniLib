@@ -18,7 +18,6 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp"
-            app:layout_scrollFlags="enterAlways|scroll"
             app:subtitleTextAppearance="@style/DynamicToolbarSubTitleTheme"
             app:titleTextAppearance="@style/DynamicToolbarTitleTheme">
 

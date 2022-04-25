@@ -727,4 +727,6 @@
     <string name="years_active">Years active</string>
     <string name="hometown">Hometown</string>
     <string name="present">Present</string>
+    <string name="anime_staff_roles">Anime Staff Roles</string>
+    <string name="manga_staff_roles">Manga Staff Roles</string>
 </resources>

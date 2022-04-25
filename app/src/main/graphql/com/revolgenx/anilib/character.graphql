@@ -62,9 +62,11 @@ query CharacterQuery($characterId:Int){
 query CharacterMediaQuery(
     $characterId:Int,
     $page:Int,
-    $perPage:Int){
+    $perPage:Int,
+    $onList:Boolean,
+    $sort:[MediaSort]){
     character: Character(id:$characterId){
-        media(page:$page, perPage:$perPage){
+        media(page:$page, perPage:$perPage, onList: $onList, sort: $sort){
             nodes{
                 ... on Media{
                     ... mediaContent

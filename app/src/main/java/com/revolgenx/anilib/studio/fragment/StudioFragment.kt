@@ -10,19 +10,19 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.extensions.HeaderSource
 import com.otaliastudios.elements.extensions.SimplePresenter
+import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.data.model.AiringScheduleModel
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
-import com.revolgenx.anilib.studio.data.model.StudioModel
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.databinding.StudioFragmentLayoutBinding
 import com.revolgenx.anilib.studio.presenter.StudioMediaPresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
-import com.revolgenx.anilib.studio.bottomsheet.StudioFilterBottomSheet
-import com.revolgenx.anilib.studio.data.constant.StudioSort
+import com.revolgenx.anilib.studio.data.constant.StudioMediaSort
 import com.revolgenx.anilib.studio.source.StudioHeaderSource
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.studio.viewmodel.StudioViewModel
+import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -89,7 +89,7 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
                     statusLayout.resourceStatusContainer.visibility = View.GONE
                     statusLayout.resourceProgressLayout.progressLayout.visibility = View.VISIBLE
                     statusLayout.resourceErrorLayout.errorLayout.visibility = View.GONE
-                    studioBinding.updateView(res.data!!)
+                    studioBinding.updateView()
                 }
                 is Resource.Error -> {
                     statusLayout.resourceStatusContainer.visibility = View.VISIBLE
@@ -103,13 +103,11 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
                 }
             }
         }
-
         viewModel.toggleFavouriteLiveData.observe(viewLifecycleOwner) { res ->
             when (res) {
                 is Resource.Success -> {
                     studioBinding.studioFavIv.showLoading(false)
-                    val model = studioModel ?: return@observe
-                    studioBinding.updateView(model)
+                    studioBinding.updateView()
                 }
                 is Resource.Error -> {
                     studioBinding.studioFavIv.showLoading(false)
@@ -120,25 +118,22 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
                 }
             }
         }
-
-        initListener()
+        studioBinding.bind()
+        studioBinding.initListener()
         viewModel.getStudioInfo()
+    }
+
+    private fun StudioFragmentLayoutBinding.bind(){
+        val statusItems = requireContext().resources.getStringArray(R.array.studio_media_sort).map {
+            DynamicMenu(null, it)
+        }
+        studioMediaSortSpinner.adapter = makeSpinnerAdapter(requireContext(), statusItems)
+        studioMediaSortSpinner.setSelection(field.sort.ordinal, false)
+        studioMediaOnListCheckbox.isChecked = field.onList
     }
 
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.studio_filter_menu -> {
-                StudioFilterBottomSheet.newInstance(field.onList, field.sort.ordinal).also {
-                    it.onPositionClicked = { onList, sort ->
-                        field.onList = onList
-                        field.sort = StudioSort.values()[sort]
-                        createSource()
-                        invalidateAdapter()
-                    }
-                    it.show(this)
-                }
-                true
-            }
             R.id.studio_share_menu -> {
                 shareText(studioModel?.siteUrl)
                 true
@@ -155,20 +150,36 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
         }
     }
 
-    private fun initListener() {
-        studioBinding.studioFavIv.setOnClickListener {
+    private fun StudioFragmentLayoutBinding.initListener() {
+        studioFavIv.setOnClickListener {
             loginContinue {
                 viewModel.toggleStudioFav(viewModel.toggleFavouriteField)
             }
         }
 
-        studioBinding.studioTitleTv.setOnLongClickListener {
+        studioTitleTv.setOnLongClickListener {
             requireContext().copyToClipBoard(studioModel?.studioName)
             true
         }
+
+        studioMediaSortSpinner.onItemSelected {
+            field.sort = StudioMediaSort.values()[it]
+            renewAdapter()
+        }
+        studioMediaOnListCheckbox.setOnCheckedChangeListener(null)
+        studioMediaOnListCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            field.onList = isChecked
+            renewAdapter()
+        }
     }
 
-    private fun StudioFragmentLayoutBinding.updateView(item: StudioModel) {
+    private fun renewAdapter() {
+        createSource()
+        invalidateAdapter()
+    }
+
+    private fun StudioFragmentLayoutBinding.updateView() {
+        val item = studioModel ?: return
         studioTitleTv.text = item.studioName
         studioFavCountTv.text = item.favourites?.prettyNumberFormat()
         val favIcon = if (item.isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite
@@ -179,7 +190,7 @@ class StudioFragment : BasePresenterFragment<MediaModel>() {
         val builder = super.adapterBuilder()
 
         when (field.sort) {
-            StudioSort.START_DATE_DESC, StudioSort.START_DATE -> {
+            StudioMediaSort.START_DATE_DESC, StudioMediaSort.START_DATE -> {
                 builder.addSource(StudioHeaderSource())
                 builder.addPresenter(SimplePresenter<HeaderSource.Data<AiringScheduleModel, String>>(
                     requireContext(),

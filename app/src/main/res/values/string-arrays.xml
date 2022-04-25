@@ -618,7 +618,34 @@
         <item>@string/episodes</item>
     </string-array>
     
-    <string-array name="studio_sort">
+    <string-array name="studio_media_sort">
+        <item>@string/popularity</item>
+        <item>@string/average_score</item>
+        <item>@string/favourites</item>
+        <item>@string/newest</item>
+        <item>@string/oldest</item>
+        <item>@string/title</item>
+    </string-array>
+
+    <string-array name="character_media_sort">
+        <item>@string/popularity</item>
+        <item>@string/average_score</item>
+        <item>@string/favourites</item>
+        <item>@string/newest</item>
+        <item>@string/oldest</item>
+        <item>@string/title</item>
+    </string-array>
+
+    <string-array name="staff_media_character_sort">
+        <item>@string/popularity</item>
+        <item>@string/average_score</item>
+        <item>@string/favourites</item>
+        <item>@string/newest</item>
+        <item>@string/oldest</item>
+        <item>@string/title</item>
+    </string-array>
+
+    <string-array name="staff_media_role_sort">
         <item>@string/popularity</item>
         <item>@string/average_score</item>
         <item>@string/favourites</item>

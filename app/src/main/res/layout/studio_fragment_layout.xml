@@ -10,66 +10,101 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.revolgenx.anilib.common.ui.view.AlToolbar
-            android:id="@+id/dynamicToolbar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:adt_colorType="background"
-            app:adt_textColorType="text_primary"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp"
-            app:contentInsetStartWithNavigation="0dp"
-            app:layout_scrollFlags="enterAlways|scroll">
+            android:orientation="vertical"
+            app:layout_scrollFlags="scroll|enterAlways">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.revolgenx.anilib.common.ui.view.AlToolbar
+                android:id="@+id/dynamicToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:adt_colorType="background"
+                app:adt_textColorType="text_primary"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp">
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                    android:id="@+id/studio_title_tv"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/studio_title_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textAppearance="@style/TextAppearance.DynamicApp.Toolbar"
+                        app:adt_colorType="text_primary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/studioFavCountTv"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                        android:id="@+id/studioFavCountTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="4dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_toStartOf="@id/studioFavIv"
+                        android:textSize="12sp"
+                        app:adt_colorType="accent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="SmallSp" />
+
+                    <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
+                        android:id="@+id/studioFavIv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_not_favourite"
+                        app:adt_colorType="accent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/studioFavCountTv"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.revolgenx.anilib.common.ui.view.AlToolbar>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp">
+
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
+                    android:id="@+id/studio_media_sort_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical" />
+
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.DynamicApp.Toolbar"
-                    app:adt_colorType="text_primary"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/studioFavCountTv"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_gravity="center_vertical">
 
-                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-                    android:id="@+id/studioFavCountTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="4dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_toStartOf="@id/studioFavIv"
-                    android:textSize="12sp"
-                    app:adt_colorType="accent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="SmallSp" />
-
-                <com.revolgenx.anilib.ui.view.DynamicLoadingImageView
-                    android:id="@+id/studioFavIv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
-                    android:src="@drawable/ic_not_favourite"
-                    app:adt_colorType="accent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/studioFavCountTv"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.revolgenx.anilib.common.ui.view.AlToolbar>
+                    <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+                        android:id="@+id/studio_media_on_list_checkbox"
+                        style="@style/AlCheckboxStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="@string/on_list" />
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
 
     </com.revolgenx.anilib.common.ui.view.AlAppBarLayout>
+
 
     <FrameLayout
         android:id="@+id/studio_container_layout"

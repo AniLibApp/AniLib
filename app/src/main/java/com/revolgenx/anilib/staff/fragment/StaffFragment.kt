@@ -192,9 +192,12 @@ class StaffFragment : BaseLayoutFragment<StaffFragmentLayoutBinding>() {
         }
 
         model.homeTown?.let {
-            generalInfo += "<b>${getString(R.string.hometown)}:</b> $it \n \n"
+            generalInfo += "<b>${getString(R.string.hometown)}:</b> $it \n"
         }
 
+        if (generalInfo.isNotBlank()) {
+            generalInfo += " \n"
+        }
         return generalInfo
     }
 }

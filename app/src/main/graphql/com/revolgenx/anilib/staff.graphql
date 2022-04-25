@@ -52,27 +52,25 @@ query StaffQuery($id:Int){
 query StaffCharacterMediaQuery(
     $staffId:Int,
     $page:Int,
-    $perPage:Int){
+    $perPage:Int,
+    $onList:Boolean,
+    $sort:[MediaSort]){
     staff: Staff(id:$staffId){
-        characters(page:$page,perPage:$perPage){
-            nodes{
-                id
-                name{
-                    full
+        characterMedia(page:$page,perPage:$perPage, onList: $onList, sort: $sort){
+            edges{
+                characterRole
+                characters {
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        ... characterImage
+                    }
                 }
-                image{
-                    ... characterImage
-                }
-
-
-                media{
-                    edges{
-                        characterRole
-                        node{
-                            ... on Media{
-                                ... mediaContent
-                            }
-                        }
+                node{
+                    ... on Media{
+                        ... mediaContent
                     }
                 }
             }
@@ -83,9 +81,11 @@ query StaffCharacterMediaQuery(
 query StaffMediaRoleQuery(
     $staffId:Int,
     $page:Int,
-    $perPage:Int){
+    $perPage:Int,
+    $onList:Boolean,
+    $sort:[MediaSort]){
     staff: Staff(id:$staffId){
-        staffMedia(page:$page,perPage:$perPage){
+        staffMedia(page:$page,perPage:$perPage,onList: $onList, sort: $sort){
             edges{
                 node{
                     ... on Media{

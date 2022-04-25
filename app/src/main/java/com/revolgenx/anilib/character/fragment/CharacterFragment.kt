@@ -155,9 +155,12 @@ class CharacterFragment : BaseLayoutFragment<CharacterFragmentLayoutBinding>() {
             generalInfo += "<b>${getString(R.string.gender)}:</b> $it \n"
         }
         model.bloodType?.let {
-            generalInfo += "<b>${getString(R.string.blood_type)}:</b> $it \n \n"
+            generalInfo += "<b>${getString(R.string.blood_type)}:</b> $it \n"
         }
 
+        if (generalInfo.isNotBlank()) {
+            generalInfo += " \n"
+        }
         return generalInfo
     }
 

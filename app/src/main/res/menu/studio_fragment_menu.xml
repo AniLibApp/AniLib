@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/studio_filter_menu"
-        android:icon="@drawable/ic_filter"
-        android:title="@string/filter"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/studio_open_in_browser_menu"
         android:icon="@drawable/ic_open_window"
         android:title="@string/open_in_browser"

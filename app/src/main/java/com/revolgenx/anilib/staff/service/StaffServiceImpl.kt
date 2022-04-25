@@ -70,22 +70,22 @@ class StaffServiceImpl(
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.staff?.characters?.let {
-                    it.nodes?.mapNotNull { character ->
-                        character?.media?.edges?.mapNotNull { edge ->
-                            edge?.node?.onMedia?.mediaContent?.toModel()?.also { mediaModel ->
-                                mediaModel.character = CharacterModel().also { characterModel ->
+                it.data?.staff?.characterMedia?.edges?.mapNotNull { edge ->
+                    edge?.characters?.mapNotNull { character ->
+                        edge.node?.onMedia?.mediaContent?.toModel()?.also { mediaModel ->
+                            mediaModel.character = character?.let {
+                                CharacterModel().also { characterModel ->
                                     characterModel.id = character.id
                                     characterModel.name = CharacterNameModel(character.name?.full)
                                     characterModel.image =
                                         character.image?.characterImage?.toModel()
 
                                 }
-                                mediaModel.characterRole = edge.characterRole?.ordinal
                             }
+                            mediaModel.characterRole = edge.characterRole?.ordinal
                         }
-                    }?.flatten()
-                }
+                    }
+                }?.flatten()
             }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resourceCallback.invoke(Resource.success(it))
