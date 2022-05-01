@@ -12,8 +12,7 @@ import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 class CharacterViewModel(
     private val characterService: CharacterService,
     private val toggleService: ToggleService
-) :
-    BaseViewModel() {
+) : BaseViewModel() {
 
     val field = CharacterField()
     val toggleField = ToggleFavouriteField()
@@ -21,16 +20,21 @@ class CharacterViewModel(
     val characterInfoLiveData = MutableLiveData<Resource<CharacterModel>>()
     val toggleFavouriteLiveData = MutableLiveData<Resource<Boolean>>()
 
+    val characterModel get() = characterInfoLiveData.value?.data
+
     fun getCharacterInfo(field: CharacterField) {
         characterInfoLiveData.value = Resource.loading(null)
-        characterService.getCharacterInfo(field, compositeDisposable){
+        characterService.getCharacterInfo(field, compositeDisposable) {
             characterInfoLiveData.value = it
         }
     }
 
     fun toggleCharacterFav(field: ToggleFavouriteField) {
         toggleFavouriteLiveData.value = Resource.loading(null)
-        toggleService.toggleFavourite(field, compositeDisposable){
+        toggleService.toggleFavourite(field, compositeDisposable) {
+            characterModel?.let {
+                it.isFavourite = it.isFavourite.not()
+            }
             toggleFavouriteLiveData.value = it
         }
     }

@@ -8,6 +8,9 @@ enum class AiringListDisplayMode{
     COMPACT, NORMAL, MINIMAL_LIST
 }
 
+enum class MediaCharacterDisplayMode{
+    COMPACT, NORMAL
+}
 
 enum class MediaListStatusEditor(val status: Int) {
     CURRENT(0),

@@ -68,28 +68,6 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
         span
     }
 
-    override fun reloadLayoutManager() {
-
-
-        layoutManager =
-            GridLayoutManager(
-                this.context,
-                span
-            ).also {
-                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.getItemViewType(position) == 0) {
-                            1
-                        } else {
-                            span
-                        }
-                    }
-                }
-            }
-
-        super.reloadLayoutManager()
-    }
-
     override fun getSpanCount(): Int {
         var span =
             if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
@@ -183,7 +161,7 @@ class AiringFragment : BasePresenterFragment<AiringScheduleModel>() {
                     selectedPosition = getAiringDisplayMode().ordinal
                 ) { _, _, index, _ ->
                     setAiringDisplayMode(index)
-                    reloadLayoutManager()
+                    loadLayoutManager()
                     invalidateAdapter()
                 }
                 true

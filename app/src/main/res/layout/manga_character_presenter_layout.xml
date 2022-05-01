@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/mangaCharacterImageView"
+            android:id="@+id/media_character_iv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:transitionName="character_image_transition"
@@ -26,7 +26,7 @@
 
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/mangaCharacterNameTv"
+            android:id="@+id/media_character_name_tv"
             style="@style/TitleFontStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,13 +36,13 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="10sp"
-            app:layout_constraintLeft_toLeftOf="@+id/mangaCharacterImageView"
-            app:layout_constraintRight_toRightOf="@+id/mangaCharacterImageView"
-            app:layout_constraintTop_toBottomOf="@+id/mangaCharacterImageView"
+            app:layout_constraintLeft_toLeftOf="@+id/media_character_iv"
+            app:layout_constraintRight_toRightOf="@+id/media_character_iv"
+            app:layout_constraintTop_toBottomOf="@+id/media_character_iv"
             tools:ignore="SmallSp" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
-            android:id="@+id/mangaCharacterRoleTv"
+            android:id="@+id/media_character_role_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
@@ -51,9 +51,9 @@
             android:textSize="10sp"
             app:adt_colorType="accent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/mangaCharacterImageView"
-            app:layout_constraintRight_toRightOf="@+id/mangaCharacterImageView"
-            app:layout_constraintTop_toBottomOf="@+id/mangaCharacterNameTv"
+            app:layout_constraintLeft_toLeftOf="@+id/media_character_iv"
+            app:layout_constraintRight_toRightOf="@+id/media_character_iv"
+            app:layout_constraintTop_toBottomOf="@+id/media_character_name_tv"
             tools:ignore="SmallSp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

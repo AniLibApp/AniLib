@@ -9,13 +9,13 @@ import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.databinding.BrowserRelationshipPresenterLayoutBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
+import com.revolgenx.anilib.databinding.OverviewRelationshipPresenterLayoutBinding
 import com.revolgenx.anilib.media.data.model.MediaEdgeModel
 import com.revolgenx.anilib.util.naText
 
 class MediaInfoRelationshipPresenter(context: Context) :
-    BasePresenter<BrowserRelationshipPresenterLayoutBinding, MediaEdgeModel>(context) {
+    BasePresenter<OverviewRelationshipPresenterLayoutBinding, MediaEdgeModel>(context) {
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
@@ -27,8 +27,8 @@ class MediaInfoRelationshipPresenter(context: Context) :
         inflater: LayoutInflater,
         parent: ViewGroup?,
         elementType: Int
-    ): BrowserRelationshipPresenterLayoutBinding {
-        return BrowserRelationshipPresenterLayoutBinding.inflate(inflater, parent, false)
+    ): OverviewRelationshipPresenterLayoutBinding {
+        return OverviewRelationshipPresenterLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<MediaEdgeModel>) {

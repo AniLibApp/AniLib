@@ -9,10 +9,12 @@ import com.revolgenx.anilib.ui.view.widgets.AlCardView
 import com.pranavpandey.android.dynamic.support.widget.DynamicImageView
 import com.pranavpandey.android.dynamic.support.widget.DynamicTextView
 import com.pranavpandey.android.dynamic.theme.Theme
+import com.pranavpandey.android.dynamic.utils.DynamicColorUtils
 import com.revolgenx.anilib.app.theme.dynamicAccentColor
 import com.revolgenx.anilib.app.theme.isEnoughWhite
+import com.revolgenx.anilib.common.preference.mediaInfoAddTransparencyPref
 
-class MediaBrowseAddLayout:AlCardView {
+class MediaBrowseAddLayout : AlCardView {
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0)
     constructor(context: Context, attributeSet: AttributeSet?, defStyle: Int) : super(
@@ -20,21 +22,26 @@ class MediaBrowseAddLayout:AlCardView {
         attributeSet,
         defStyle
     ) {
-        setBackgroundColor(dynamicAccentColor)
+        mediaInfoAddTransparencyPref.let {
+            if (it != 255) {
+                cardElevation = 0f
+            }
+            setCardBackgroundColor(DynamicColorUtils.setAlpha(dynamicAccentColor, it))
+        }
     }
 
-    fun updateChildTheme(){
+    fun updateChildTheme() {
         (getChildAt(0) as ViewGroup).children.iterator().forEach {
-            if(it is DynamicTextView){
+            if (it is DynamicTextView) {
                 it.contrastWithColorType = Theme.ColorType.NONE
-                it.backgroundAware =Theme.BackgroundAware.DISABLE
-                it.color = if(isEnoughWhite(dynamicAccentColor)) Color.BLACK else Color.WHITE
+                it.backgroundAware = Theme.BackgroundAware.DISABLE
+                it.color = if (isEnoughWhite(dynamicAccentColor)) Color.BLACK else Color.WHITE
             }
 
-            if(it is DynamicImageView){
+            if (it is DynamicImageView) {
                 it.contrastWithColorType = Theme.ColorType.NONE
-                it.backgroundAware =Theme.BackgroundAware.DISABLE
-                it.color = if(isEnoughWhite(dynamicAccentColor)) Color.BLACK else Color.WHITE
+                it.backgroundAware = Theme.BackgroundAware.DISABLE
+                it.color = if (isEnoughWhite(dynamicAccentColor)) Color.BLACK else Color.WHITE
             }
         }
     }

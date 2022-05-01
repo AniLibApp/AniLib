@@ -76,7 +76,7 @@ fun FuzzyDate.toModel() = FuzzyDateModel(
     year,
     month,
     day
-).takeIf { it.year != null && it.month != null && it.day != null }
+).takeIf { it.year != null || it.month != null || it.day != null }
 
 fun ActivityUnionQuery.OnTextActivity.toModel() = TextActivityModel().also { model ->
     model.id = id

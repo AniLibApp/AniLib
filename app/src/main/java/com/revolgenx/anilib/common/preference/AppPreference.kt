@@ -20,6 +20,7 @@ private const val enableMlLanguageToUseKey = "enable_ml_Language_To_Use_Key"
 private const val enableAutoMlLanguageToUseKey = "enable_auto_ml_Language_To_Use_Key"
 
 private const val isAiring12hrFormatKey = "is_airing_12_hr_format_key"
+private const val mediaInfoAddTransparencyKey = "pref_media_add_transparency"
 
 
 fun isCrashReportEnabled(): Boolean {
@@ -92,3 +93,5 @@ val isAiring12hrFormat get()= dynamicPreferences.load(isAiring12hrFormatKey, fal
 fun isAiring12hrFormat(bool: Boolean) {
     dynamicPreferences.save(isAiring12hrFormatKey, bool)
 }
+
+val mediaInfoAddTransparencyPref get() = load(mediaInfoAddTransparencyKey, 255)

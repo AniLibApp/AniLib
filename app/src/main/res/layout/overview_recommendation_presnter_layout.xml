@@ -51,6 +51,7 @@
             android:paddingStart="10dp"
             android:paddingTop="6dp"
             android:paddingEnd="10dp"
+            android:paddingBottom="4dp"
             android:textSize="12sp" />
 
         <com.revolgenx.anilib.ui.view.IndicatorTextView

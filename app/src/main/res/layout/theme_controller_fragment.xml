@@ -192,6 +192,23 @@
             app:ads_max="2"
             app:ads_progress="1" />
 
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/media_info_add_transparency" />
+
+        <com.pranavpandey.android.dynamic.support.setting.base.DynamicSeekBarPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:ads_controls="false"
+            app:ads_key="pref_media_add_transparency"
+            app:ads_max="255"
+            app:ads_min="50"
+            app:ads_progress="255" />
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
