@@ -2,6 +2,12 @@
 <resources>
     <string name="release_info" translatable="false">
 
+        ### -v1.1.15 \n
+        * fix search filter \n
+        * added character, staff, studio filters \n
+        * fix season screen text disappearing \n
+        * etc \n
+
         ### -v1.1.14 \n
         * Added search type in search screen. \n
         * Swipe to refresh in home screen. \n
