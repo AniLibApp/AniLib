@@ -132,6 +132,10 @@ class SearchFragment : BasePresenterFragment<BaseModel>() {
 
         sBinding.bind()
         sBinding.initListener()
+
+        searchFilterEventModel?.openFilter?.takeIf { it }?.let {
+            openSearchFilterBottomSheet()
+        }
     }
 
     private fun SearchFragmentLayoutBinding.bind() {
@@ -183,15 +187,19 @@ class SearchFragment : BasePresenterFragment<BaseModel>() {
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.search_filter_iv -> {
-                SearchFilterBottomSheet().also {
-                    it.applyFilterListener = {
-                        sBinding.applyFilter()
-                    }
-                    it.show(this@SearchFragment)
-                }
+                openSearchFilterBottomSheet()
                 true
             }
             else -> super.onToolbarMenuSelected(item)
+        }
+    }
+
+    private fun openSearchFilterBottomSheet() {
+        SearchFilterBottomSheet().also {
+            it.applyFilterListener = {
+                sBinding.applyFilter()
+            }
+            it.show(this@SearchFragment)
         }
     }
 

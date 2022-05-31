@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class SearchFilterEventModel(
     val genre: String? = null,
     val tag: String? = null,
-    val sort: Int? = null
+    val sort: Int? = null,
+    val openFilter:Boolean = false
 ) : Parcelable

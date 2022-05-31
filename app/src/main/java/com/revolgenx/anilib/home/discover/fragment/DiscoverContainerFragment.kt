@@ -31,6 +31,8 @@ import com.revolgenx.anilib.home.season.fragment.SeasonFragment
 import com.revolgenx.anilib.home.recommendation.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.home.season.viewmodel.SeasonViewModel
 import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
+import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
+import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.onItemSelected
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -98,7 +100,19 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun onToolbarInflated() {
-        val notificationMenuItem = getBaseToolbar().menu.findItem(R.id.discover_notification_menu)
+        val toolbar = getBaseToolbar()
+        val toolbarMenu = toolbar.menu
+        toolbar.findViewById<View>(R.id.discover_search_menu).let {
+            it.post {
+                it.setOnLongClickListener {
+                    OpenSearchEvent(SearchFilterEventModel(openFilter = true)).postEvent
+                    true
+                }
+            }
+        }
+
+
+        val notificationIcon = toolbarMenu.findItem(R.id.discover_notification_menu)
         if (loggedIn()) {
             notificationStoreVM.unreadNotificationCount.observe(viewLifecycleOwner) {
                 if (it > 0) {
@@ -116,7 +130,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
                 }
             }
         } else {
-            notificationMenuItem.isVisible = false
+            notificationIcon.isVisible = false
         }
     }
 
@@ -133,9 +147,7 @@ class DiscoverContainerFragment : BaseLayoutFragment<DiscoverContainerFragmentBi
             }
             else -> super.onToolbarMenuSelected(item)
         }
-
     }
-
 
     private fun DiscoverContainerFragmentBinding.initSeasonListener() {
         seasonPreviousIv.setOnClickListener {

@@ -3,6 +3,7 @@ package com.revolgenx.anilib.home.profile.fragment
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.provider.BlockedNumberContract.unblock
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
@@ -33,6 +34,8 @@ import com.revolgenx.anilib.util.prettyNumberFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
 import com.revolgenx.anilib.home.event.MainActivityPage
+import com.revolgenx.anilib.ui.view.makeConfirmationDialog
+import com.revolgenx.anilib.util.shareText
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>() {
@@ -71,14 +74,6 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
         return UserContainerFragmentBinding.inflate(inflater, parent, false)
     }
 
-    override fun onToolbarInflated() {
-        val menu = getBaseToolbar().menu
-        if (userMeta != null) {
-            menu.findItem(R.id.setting_menu).isVisible = false
-            menu.findItem(R.id.sign_out_menu).isVisible = false
-        }
-    }
-
     override fun onToolbarMenuSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.setting_menu -> {
@@ -90,13 +85,44 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
                 true
             }
             R.id.user_share_menu -> {
-                requireContext().openLink(userModel?.siteUrl)
+                shareText(userModel?.siteUrl)
+                true
+            }
+            R.id.user_open_in_browser_menu->{
+                openLink(userModel?.siteUrl)
+                true
+            }
+            R.id.user_block->{
+                makeConfirmationDialog(requireContext(), R.string.important, R.string.block_user_msg, positiveRes = R.string.okay, negativeRes = R.string.cancel){
+                    openLink(userModel?.siteUrl)
+                }
                 true
             }
             else -> {
                 super.onToolbarMenuSelected(item)
             }
         }
+    }
+
+    override fun onToolbarInflated() {
+        val menu = getBaseToolbar().menu
+        val userBlock = menu.findItem(R.id.user_block)
+        if (userMeta != null) {
+            menu.findItem(R.id.setting_menu).isVisible = false
+            menu.findItem(R.id.sign_out_menu).isVisible = false
+        }else{
+            userBlock.isVisible = false
+        }
+        val user = userModel ?: return
+
+        if(user.id == UserPreference.userId){
+            userBlock.isVisible = false
+        }else{
+            if(user.isBlocked){
+                userBlock.setTitle(R.string.unblock)
+            }
+        }
+
     }
 
 
@@ -210,6 +236,7 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
             OpenImageEvent(user.bannerImage ?: user.avatar?.image).postEvent
         }
 
+        updateToolbar()
     }
 
     override fun getBaseToolbar(): Toolbar {
