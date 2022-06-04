@@ -846,7 +846,13 @@
         <item>@string/normal_mode</item>
         <item>@string/minimal_list_mode</item>
     </string-array>
+
     <string-array name="media_character_display_modes">
+        <item>@string/compact_mode</item>
+        <item>@string/normal_mode</item>
+    </string-array>
+
+    <string-array name="staff_media_character_display_modes">
         <item>@string/compact_mode</item>
         <item>@string/normal_mode</item>
     </string-array>

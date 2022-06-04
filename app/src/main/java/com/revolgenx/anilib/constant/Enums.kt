@@ -11,6 +11,9 @@ enum class AiringListDisplayMode{
 enum class MediaCharacterDisplayMode{
     COMPACT, NORMAL
 }
+enum class StaffMediaCharacterDisplayMode{
+    COMPACT, NORMAL
+}
 
 enum class MediaListStatusEditor(val status: Int) {
     CURRENT(0),

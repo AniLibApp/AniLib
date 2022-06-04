@@ -2,6 +2,7 @@ package com.revolgenx.anilib.media.presenter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -75,6 +76,9 @@ class MediaCharacterPresenter(context: Context) :
         var staffNameTv: TextView? = null
         var staffLanguageTv: TextView? = null
 
+        var mediaCharacterContainer: View? = null
+        var mediaCharacterStaffContainer: View? = null
+
 
         when (binding) {
             is AnimeCharacterNormalPresenterLayoutBinding -> {
@@ -84,11 +88,14 @@ class MediaCharacterPresenter(context: Context) :
                 staffIv = binding.mediaStaffIv
                 staffNameTv = binding.mediaStaffNameTv
                 staffLanguageTv = binding.mediaStaffLanguageTv
+                mediaCharacterContainer = binding.mediaCharacterContainer
+                mediaCharacterStaffContainer = binding.mediaCharacterStaffContainer
             }
             is MangaCharacterNormalPresenterLayoutBinding -> {
                 characterIv = binding.mediaCharacterIv
                 characterNameTv = binding.mediaCharacterNameTv
                 characterRoleTv = binding.mediaCharacterRoleTv
+                mediaCharacterContainer = binding.mediaCharacterContainer
             }
             is AnimeCharacterPresenterLayoutBinding -> {
                 characterIv = binding.mediaCharacterIv
@@ -113,11 +120,19 @@ class MediaCharacterPresenter(context: Context) :
             OpenCharacterEvent(item.id).postEvent
         }
 
+        mediaCharacterContainer?.setOnClickListener {
+            OpenCharacterEvent(item.id).postEvent
+        }
+
         edge.voiceActors?.firstOrNull()?.let { actorModel ->
             staffIv?.setImageURI(actorModel.image?.image)
             staffNameTv?.text = actorModel.name?.full
             staffLanguageTv?.text = actorModel.languageV2
             staffIv?.setOnClickListener {
+                OpenStaffEvent(actorModel.id).postEvent
+            }
+
+            mediaCharacterStaffContainer?.setOnClickListener {
                 OpenStaffEvent(actorModel.id).postEvent
             }
         }

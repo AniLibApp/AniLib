@@ -3,11 +3,8 @@ package com.revolgenx.anilib.common.preference
 import android.content.Context
 import com.google.gson.Gson
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
-import com.revolgenx.anilib.constant.AiringListDisplayMode
-import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
-import com.revolgenx.anilib.constant.AlActivityType
-import com.revolgenx.anilib.constant.MediaCharacterDisplayMode
+import com.revolgenx.anilib.constant.*
 import com.revolgenx.anilib.home.data.meta.HomePageOrderType
 import com.revolgenx.anilib.home.discover.data.field.NewlyAddedMediaField
 import com.revolgenx.anilib.home.discover.data.field.PopularMediaField
@@ -124,6 +121,7 @@ const val ACTIVITY_IS_FOLLOWING_KEY = "ACTIVITY_IS_FOLLOWING_KEY"
 const val SEARCH_FILTER_KEY = "SEARCH_FILTER_KEY"
 
 const val MEDIA_CHARACTER_DISPLAY_MODE_KEY = "MEDIA_CHARACTER_DISPLAY_MODE_KEY"
+const val STAFF_MEDIA_CHARACTER_DISPLAY_MODE_KEY = "STAFF_MEDIA_CHARACTER_DISPLAY_MODE_KEY"
 
 fun getDiscoverAiringField() = AiringMediaField().apply {
     notYetAired = load(DISCOVER_AIRING_NOT_AIRED_KEY, true)
@@ -515,4 +513,10 @@ var mediaCharacterDisplayModePref
     get() = load(MEDIA_CHARACTER_DISPLAY_MODE_KEY, MediaCharacterDisplayMode.NORMAL.ordinal)
     set(value) {
         save(MEDIA_CHARACTER_DISPLAY_MODE_KEY, value)
+    }
+
+var staffMediaCharacterDisplayModePref
+    get() = load(STAFF_MEDIA_CHARACTER_DISPLAY_MODE_KEY, StaffMediaCharacterDisplayMode.NORMAL.ordinal)
+    set(value) {
+        save(STAFF_MEDIA_CHARACTER_DISPLAY_MODE_KEY, value)
     }

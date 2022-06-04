@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.DynamicApp.Card.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/staffMediaContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout
+                android:id="@+id/staffMediaImageContainer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1.7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/staffMediaImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:transitionName="media_cover_transition"
+                    app:roundAsCircle="false"
+                    app:roundedCornerRadius="4dp" />
+
+                <com.revolgenx.anilib.ui.view.score.MediaScoreBadge
+                    android:id="@+id/staffMediaRatingTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:layout_margin="5dp" />
+
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/staffMediaTitleTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/staffMediaImageContainer"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SmallSp" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/staffMediaStatusTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/staffMediaImageContainer"
+                app:layout_constraintTop_toBottomOf="@+id/staffMediaTitleTv"
+                tools:ignore="SmallSp" />
+
+            <com.revolgenx.anilib.ui.view.IndicatorTextView
+                android:id="@+id/staffMediaFormatYearTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/staffMediaImageContainer"
+                app:layout_constraintTop_toBottomOf="@+id/staffMediaStatusTv"
+                app:textColorType="accent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/staffCharacterContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/staffMediaContainer"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/staffCharacterImageView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1.7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:roundAsCircle="false"
+                app:roundedCornerRadius="4dp" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/staffCharacterNameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:gravity="end"
+                app:adt_rtlSupport="false"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@+id/staffCharacterRoleTv"
+                app:layout_constraintEnd_toStartOf="@+id/staffCharacterImageView"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="SmallSp" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/staffCharacterRoleTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="8dp"
+                android:ellipsize="end"
+                android:gravity="end"
+                android:maxLines="1"
+                android:textSize="10sp"
+                app:adt_colorType="accent"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/staffCharacterImageView"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="SmallSp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>
+

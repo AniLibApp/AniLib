@@ -37,6 +37,7 @@
         <item>André Niebuhr (Epr0m)</item>
         <item>natsuthelight</item>
         <item>MrJako2001</item>
+        <item>kyoya</item>
     </string-array>
 
     <string-array name="info_translators_languages">
@@ -50,6 +51,7 @@
         <item>@string/german</item>
         <item>@string/french</item>
         <item>@string/spanish</item>
+        <item>@string/turkish</item>
     </string-array>
 
     <string-array name="info_translators_flags">
@@ -63,6 +65,7 @@
         <item>@drawable/ic_flag_de</item>
         <item>@drawable/ic_flag_fr</item>
         <item>@drawable/ads_ic_flag_es</item>
+        <item>@drawable/ads_ic_flag_tr</item>
     </string-array>
 
     <string-array name="info_translators_urls">
@@ -76,8 +79,14 @@
         <item>https://anilist.co/user/Epr0m/</item>
         <item>@null</item>
         <item>https://anilist.co/user/MrJaco/</item>
+        <item>@null</item>
     </string-array>
+
     <string-array name="media_character_menu_entries">
+        <item>@string/change_display_mode</item>
+    </string-array>
+
+    <string-array name="staff_media_character_menu_entries">
         <item>@string/change_display_mode</item>
     </string-array>
     <!--end region-->

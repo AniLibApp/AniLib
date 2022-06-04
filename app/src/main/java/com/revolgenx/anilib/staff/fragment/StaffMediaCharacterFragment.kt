@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.staff.fragment
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +10,15 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.preference.staffMediaCharacterDisplayModePref
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
+import com.revolgenx.anilib.constant.StaffMediaCharacterDisplayMode
 import com.revolgenx.anilib.databinding.StaffMediaCharacterFragmentLayoutBinding
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.staff.presenter.StaffMediaCharacterPresenter
 import com.revolgenx.anilib.staff.viewmodel.StaffMediaCharacterViewModel
 import com.revolgenx.anilib.staff.data.constant.StaffMediaCharacterSort
+import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.util.onItemSelected
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,6 +31,8 @@ class StaffMediaCharacterFragment : BasePresenterFragment<MediaModel>() {
 
     override val baseSource: Source<MediaModel>
         get() = viewModel.source ?: createSource()
+
+    private val displayMode get() = staffMediaCharacterDisplayModePref
 
     companion object {
         private const val STAFF_ID_KEY = "STAFF_ID_KEY"
@@ -65,7 +71,7 @@ class StaffMediaCharacterFragment : BasePresenterFragment<MediaModel>() {
         sBinding.initListener()
     }
 
-    private fun StaffMediaCharacterFragmentLayoutBinding.bind(){
+    private fun StaffMediaCharacterFragmentLayoutBinding.bind() {
         val statusItems = requireContext().resources.getStringArray(R.array.staff_media_character_sort).map {
             DynamicMenu(null, it)
         }
@@ -74,7 +80,7 @@ class StaffMediaCharacterFragment : BasePresenterFragment<MediaModel>() {
         staffMediaOnListCheckbox.isChecked = field.onList
     }
 
-    private fun StaffMediaCharacterFragmentLayoutBinding.initListener(){
+    private fun StaffMediaCharacterFragmentLayoutBinding.initListener() {
         staffMediaSortSpinner.onItemSelected {
             field.sort = StaffMediaCharacterSort.values()[it]
             renewAdapter()
@@ -83,6 +89,34 @@ class StaffMediaCharacterFragment : BasePresenterFragment<MediaModel>() {
         staffMediaOnListCheckbox.setOnCheckedChangeListener { _, isChecked ->
             field.onList = isChecked
             renewAdapter()
+        }
+
+        staffMediaCharacterPopupMenu.onPopupMenuClickListener = { _, pos ->
+            when (pos) {
+                0 -> {
+                    makeArrayPopupMenu(
+                        staffMediaCharacterPopupMenu,
+                        resources.getStringArray(R.array.staff_media_character_display_modes),
+                        selectedPosition = staffMediaCharacterDisplayModePref
+                    ) { _, _, index, _ ->
+                        staffMediaCharacterDisplayModePref = index
+                        loadLayoutManager()
+                        invalidateAdapter()
+                    }
+                }
+            }
+        }
+    }
+
+    override fun getSpanCount(): Int {
+        val isLandScape = requireContext().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        return when (StaffMediaCharacterDisplayMode.values()[displayMode]) {
+            StaffMediaCharacterDisplayMode.COMPACT -> {
+                if (isLandScape) 4 else 2
+            }
+            StaffMediaCharacterDisplayMode.NORMAL -> {
+                if (isLandScape) 2 else 1
+            }
         }
     }
 
