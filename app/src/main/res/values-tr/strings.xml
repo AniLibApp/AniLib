@@ -62,7 +62,6 @@
     <string name="watch">İzleyin </string>
     <string name="open_list_editor">Liste düzenleyicisini aç</string>
     <string name="delete">Sil</string>
-    <string name="toggle_fav"></string>
     <string name="operation_failed">İşlem başarısız.</string>
     <string name="type">Tür</string>
     <string name="source">Kaynak</string>
@@ -254,18 +253,12 @@
     <string name="title_desc">Başlık Açıklaması</string>
     <string name="score_desc">Puan Açıklaması</string>
     <string name="progress">İlerleme</string>
-    <string name="progress_desc"></string>
     <string name="last_updated">Son Güncelleme</string>
     <string name="last_updated_desc">Son Güncelleme Açıklaması</string>
     <string name="last_added">Son Eklenen</string>
     <string name="last_added_desc">Son Eklenen Açıklama</string>
-    <string name="start_date_desc"></string>
-    <string name="completed_date"></string>
-    <string name="completed_date_desc"></string>
     <string name="release_date">Yayın Tarihi</string>
     <string name="release_date_desc">Yayın Tarihi Açıklama</string>
-    <string name="average_score_desc"></string>
-    <string name="popularity_desc"></string>
 
     <!-- media_format -->
     <string name="tv">TV</string>
@@ -349,7 +342,6 @@
     <string name="updated_at">Güncellenme Tarihi</string>
     <string name="updated_at_desc">Güncellenme Tarihi Açıklama</string>
     <string name="search_match">Arama Eşleşmesi </string>
-    <string name="favourites_desc"></string>
 
     <!-- country of origin -->
     <string name="China">Çin</string>
@@ -361,15 +353,8 @@
     <string name="recent">Son</string>
     <string name="highest_rated">En Yüksek Puanlı</string>
     <string name="lowest_rated">En Düşük Puanlı</string>
-
-    <!-- toggle -->
-    <string name="titles_watched"></string>
-    <string name="hour_watched"></string>
-    <string name="titles_read"></string>
     <string name="rating">Puanlama</string>
-    <string name="rating_desc"></string>
     <string name="created_at">Oluşturulma Tarihi</string>
-    <string name="created_at_desc"></string>
     <string name="hentai_only">Hentai</string>
     <string name="application_language">Uygulama Dili</string>
     <string name="application">Uygulama</string>
@@ -461,7 +446,6 @@
     <string name="day_range_string">%1$s - %2$s</string>
     <string name="date_range_from">şuradan</string>
     <string name="date_range_to">şuraya</string>
-    <string name="select_days_within_a_week"></string>
     <string name="disable_ads">Reklamları Devre Dışı Bırak</string>
     <string name="disable_ads_desc">Radyo Bölümünde Reklamları Devre Dışı Bırak. Açık bırakmak uygulamanın gelişimini destekler.</string>
     <string name="load_bio">Biyografiyi Aç</string>
@@ -470,13 +454,11 @@
     <string name="episode_duration_s">%1$s Bölüm · %2$s dk</string>
     <string name="chapters_volumes_s">%1$s Bölüm · %2$s Cilt</string>
     <string name="airing_time_eta_s_s">ETA: %1$sg %2$dsa %3$ddk %4$ds</string>
-    <string name="add_remove_streaming_on"></string>
     <string name="failed_to_load_list_count">Liste sayısı yüklenemedi</string>
     <string name="status_with_count_format">%1$s (%2$d)</string>
     <string name="add_to_list">Listeye ekle</string>
     <string name="episode_airing_date">B: %1$s · %2$s</string>
     <string name="load_legacy_media_browser_desc">Medyaya göz atıldığı sırada, basit üst bilgiyi banner resmi, kapak resmi ve medya başlığı ile yükle.</string>
-    <string name="load_legacy_media_browser"></string>
     <string name="more">Daha fazla</string>
     <string name="less">Daha az</string>
     <string name="synonyms">Eş Anlamlı(lar)</string>
@@ -486,7 +468,6 @@
     <string name="rank">Sıralama</string>
     <string name="tag_info">Etiket Bilgisi</string>
     <string name="tag_name_percent">%1$s · %2$d%%</string>
-    <string name="status_distribution_string"></string>
     <string name="trailer">Fragman</string>
     <string name="airing_score_progression">Yayınlanan Puan İlerlemesi</string>
     <string name="airing_watchers_progression">Yayınlanan İzleyici İlerlemesi</string>
@@ -523,9 +504,6 @@
     <string name="theme_app_night_summary">Gece sırasında uygulama stili.</string>
     <string name="theme_app_night">Gece teması.</string>
     <string name="theme_color_primary">Ana renk</string>
-    <string name="theme_color_primary_summary"></string>
-    <string name="theme_background_aware_desc"></string>
-    <string name="theme_color_accent_summary"></string>
     <string name="theme_color_accent">Ara renk</string>
     <string name="theme_navigation_bar_desc">Navigasyon çubuğu teması bazı yerlerde daha iyi görsel deneyim sağlamak için gözükmez.</string>
     <string name="theme_navigation_bar_summary">Navigasyon çubuğunu uygulama temasına göre göster.</string>
@@ -537,27 +515,10 @@
     <string name="contributors_desc">Büyük yardımları için çok teşekkürler.</string>
     <string name="licenses">Lisanslar</string>
     <string name="translators">Çevirmenler</string>
-    <string name="progress_volume"></string>
-    <string name="progress_volume_desc"></string>
     <string name="repeat">Tekrarla</string>
-    <string name="repeat_desc"></string>
     <string name="priority">Öncelik</string>
-    <string name="priority_desc"></string>
-    <string name="started_on"></string>
-    <string name="started_on_desc"></string>
-    <string name="finished_on"></string>
-    <string name="finished_on_desc"></string>
-    <string name="added"></string>
-    <string name="added_desc"></string>
-    <string name="updated"></string>
-    <string name="updated_desc"></string>
     <string name="do_you_really_want_to_delete_the_entry_s">%s girdisini gerçekten silmek istediğinizden emin misiniz?</string>
-
-    <!-- do not translate this unless you want to change format to dd//MM/yyyy or yyyy/MM/dd -->
-    <string name="date_format_pattern"></string>
-    <string name="widget_airing_episode"></string>
     <string name="show_eta">ETA Göster</string>
-    <string name="total_reread"></string>
     <string name="hiatus">Ara Verilmiş</string>
 
     <!-- not translated
@@ -606,7 +567,6 @@ country of origin -->
     <string name="reset_to_default">Varsayılana sıfırlansın mı?</string>
     <string name="edit_genre">Türü Düzenle</string>
     <string name="edit_tags">Etiketleri Düzenle</string>
-    <string name="edit_streaming_on"></string>
     <string name="exclude">Hariç Tut</string>
     <string name="edit_filter_tags">Ekle, düzenle, sil, etiketleri hariç tut.\nHariç tutulan etiketler otomatik olarak medya arayışı sırasında eklenir</string>
     <string name="edit_filter_genre">Ekle, düzenle, sil,türü hariç tut.\nHariç tutulan tür medya arayışı sırasında otomatik olarak eklenir</string>
@@ -655,54 +615,4 @@ country of origin -->
     <string name="review_summary_character_length_err_msg">Özet 120 karakterden az, ve 20 karakterden çok olmalı</string>
     <string name="open_media_info">Medya bilgisini aç.</string>
     <string name="enable_to_open_media_info_on_single_click">Tek tıklamayla listede medya bilgisini açmayı aktifleştir.</string>
-    <string name="split_completed_list_by_format"></string>
-    <string name="custom_anime_lists"></string>
-    <string name="custom_manga_lists"></string>
-    <string name="custom_list_name"></string>
-    <string name="game"></string>
-    <string name="multimedia_project"></string>
-    <string name="picture_book"></string>
-    <string name="comic"></string>
-    <string name="failed_to_sign_in"></string>
-    <string name="sign_in_message"></string>
-    <string name="important"></string>
-    <string name="sign_in_browser_requirement_desc"></string>
-    <string name="important_to_know"></string>
-    <string name="okay"></string>
-    <string name="enable_12hr_format"></string>
-    <string name="enable_12hr_format_desc"></string>
-    <string name="search_max_episodes"></string>
-    <string name="search_max_chapters"></string>
-    <string name="search_max_volumes"></string>
-    <string name="search_max_duration"></string>
-    <string name="search_max_episode_desc"></string>
-    <string name="search_max_chapter_desc"></string>
-    <string name="search_max_duration_desc"></string>
-    <string name="search_max_volume_desc"></string>
-    <string name="exclude_tags"></string>
-    <string name="exclude_tags_everywhere_desc"></string>
-    <string name="exclude_genre"></string>
-    <string name="exclude_genre_everywhere_desc"></string>
-    <string name="calendar"></string>
-    <string name="first_day_of_the_week"></string>
-    <string name="sunday"></string>
-    <string name="monday"></string>
-    <string name="open_in_browser"></string>
-    <string name="media_info_add_transparency"></string>
-    <string name="newest"></string>
-    <string name="oldest"></string>
-    <string name="gender"></string>
-    <string name="blood_type"></string>
-    <string name="birthday"></string>
-    <string name="age"></string>
-    <string name="death"></string>
-    <string name="birth"></string>
-    <string name="years_active"></string>
-    <string name="hometown"></string>
-    <string name="present"></string>
-    <string name="anime_staff_roles"></string>
-    <string name="manga_staff_roles"></string>
-    <string name="block"></string>
-    <string name="unblock"></string>
-    <string name="block_user_msg"></string>
 </resources>
