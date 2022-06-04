@@ -43,6 +43,7 @@
 [![Portuguese](https://img.shields.io/poeditor/progress/383723/pt?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
 [![Russian](https://img.shields.io/poeditor/progress/383723/ru?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
 [![Spanish](https://img.shields.io/poeditor/progress/383723/es?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
+[![Turkish](https://img.shields.io/poeditor/progress/383723/tr?style=flat-square&token=c3d1af31e50c5f13084f923522f05a55)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
 
 | Languaje | Translator |
 | --- | --- |
@@ -54,6 +55,7 @@
 | Portuguese | Satoru, SamOak |
 | Russian | Natalie |
 | Spanish | ricardoric_03, [MrJako2001](https://anilist.co/user/MrJaco/) |
+| Turkish | kyoya |
 
 ## Want to help translate AniLib into your language?
         

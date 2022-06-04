@@ -374,6 +374,7 @@
     <string name="russian" translatable="false">русский</string>
     <string name="french" translatable="false">Français</string>
     <string name="german" translatable="false">Deutsch</string>
+    <string name="turkish" translatable="false">Türk</string>
 
 
     <string name="anilist" translatable="false">AniList</string>

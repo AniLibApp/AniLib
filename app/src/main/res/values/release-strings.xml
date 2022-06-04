@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="release_info" translatable="false">
+        ### -v1.1.16 \n
+        * fixes crash on theme change. \n
 
         ### -v1.1.15 \n
         * fix search filter \n
