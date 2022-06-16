@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_subtitle">Anilist güçlendirilmesiyle</string>
+    <string name="app_subtitle">Anilist\'in güçlendirilmesiyle</string>
     <string name="app_description">Anime ve Manga\'nızı yönetmek, track\'lemek, göz atmak ve çok daha fazlası için favori yeriniz olacak.</string>
-    <string name="anilib_site">AniLib Site</string>
+    <string name="anilib_site">AniLib Sitesi</string>
     <string name="visit_site_desc">Daha fazlasını bilmek için Anilib\'i ziyaret edin.</string>
     <string name="discover">Keşfet</string>
-    <string name="season">Sezon</string>
+    <string name="season">Mevsim</string>
     <string name="dynamically_apply_theme">Dinamik olarak temayı uygula</string>
     <string name="something_went_wrong">Bir şeyler ters gitti</string>
     <string name="its_empty">Kendimi boşlukta hissediyorum</string>
@@ -13,12 +13,12 @@
     <string name="ep_d_s">Bölüm: %1$s · S: %2$s dk</string>
     <string name="chap_s">Bölüm: %1$s · Cilt: %2$s</string>
     <string name="manga">Manga</string>
-    <string name="please_log_in">Lütfen giriş yapın</string>
+    <string name="please_log_in">Lütfen giriş yapın.</string>
     <string name="settings">Ayarlar</string>
     <string name="account">Hesap</string>
     <string name="sign_in">Giriş Yap</string>
     <string name="notification">Bildirim</string>
-    <string name="notification_setting_sub">Bildirimlerde neleri göreceğinizi kontrol edin. )\n(Giriş gereklidir)</string>
+    <string name="notification_setting_sub">Bildirimlerde neleri göreceğinizi kontrol edin.\n(Giriş gereklidir)</string>
     <string name="sign_out">Çıkış Yap</string>
     <string name="feed">Feed</string>
     <string name="activity">Aktivite</string>
@@ -35,33 +35,34 @@
 
     <!-- media list status -->
     <string name="current">Mevcut</string>
-    <string name="watching">İzleniyor </string>
+    <string name="watching">İzleniyor</string>
     <string name="planning">Planlanıyor</string>
     <string name="completed">Tamamlandı</string>
     <string name="dropped">Bırakıldı</string>
     <string name="paused">Duraklatıldı</string>
-    <string name="rewatching">Tekrar izleniliyor</string>
-    <string name="episode_progress">Bölüm </string>
+    <string name="rewatching">Tekrar izleniyor</string>
+    <string name="episode_progress">Bölüm İlerlemesi</string>
     <string name="start_date">Başlangıç Tarihi</string>
     <string name="end_date">Bitiş Tarihi</string>
-    <string name="total_rewatch">Toplam Yeniden İzleme </string>
+    <string name="total_rewatch">Toplam Yeniden İzleme</string>
     <string name="private_">Gizli</string>
     <string name="notes">Notlar</string>
     <string name="failed_to_save">Kaydedilemedi.</string>
     <string name="failed_to_toggle">Açılamadı.</string>
     <string name="failed_to_delete">Kaldırılamadı.</string>
     <string name="please_wait">Lütfen bekleyin.</string>
-    <string name="volume_progress">Cilt ilerlemesi</string>
-    <string name="manga_progress">Manga ilerlemesi </string>
+    <string name="volume_progress">Cilt İlerlemesi</string>
+    <string name="manga_progress">Manga İlerlemesi</string>
     <string name="make_private">Gizli Yap</string>
     <string name="overview">Genel Bakış</string>
     <string name="character">Karakterler</string>
-    <string name="stats">İstatistikler </string>
+    <string name="stats">İstatistikler</string>
     <string name="staff">Kadro</string>
     <string name="review">İncelemeler</string>
-    <string name="watch">İzleyin </string>
+    <string name="watch">İzleyin</string>
     <string name="open_list_editor">Liste düzenleyicisini aç</string>
     <string name="delete">Sil</string>
+    <string name="toggle_fav">Favori</string>
     <string name="operation_failed">İşlem başarısız.</string>
     <string name="type">Tür</string>
     <string name="source">Kaynak</string>
@@ -77,16 +78,16 @@
     <string name="romaji_title">Romaji</string>
     <string name="description">Açıklama</string>
     <string name="episode_format_s">B: %1$s · %2$s</string>
-    <string name="too_many_request">Çok fazla istek</string>
+    <string name="too_many_request">Çok fazla istek alındı</string>
     <string name="recommendations">Öneriler</string>
     <string name="chapter_format_s">B: %1$s · %2$s</string>
     <string name="source_seasonyear_s">%1$s · %2$s</string>
-    <string name="relations">İlişkiler</string>
+    <string name="relations">Alakalı</string>
     <string name="genre">Tür</string>
     <string name="tags">Etiketler</string>
     <string name="studios">Stüdyolar</string>
     <string name="producers">Yapımcılar</string>
-    <string name="hashtag">Hashtag</string>
+    <string name="hashtag">Etiket</string>
     <string name="average_score">Ortalama Puan</string>
     <string name="popularity">Popülerlik</string>
     <string name="favourites">Favoriler</string>
@@ -94,7 +95,7 @@
     <string name="hour">Saat</string>
     <string name="min">Dk</string>
     <string name="sec">Sn</string>
-    <string name="ep_s">Bölüm %1$d</string>
+    <string name="ep_s">%1$d.Bölüm</string>
     <string name="no_app_found_to_open">URL\'yi açacak uygulama bulunamadı</string>
     <string name="recent_act_per_day">Gün başına son aktivite</string>
     <string name="rankings">Sıralamalar</string>
@@ -102,7 +103,7 @@
     <string name="score_distribution">Puan Dağılımı</string>
     <string name="native_name">Yerli adı</string>
     <string name="alternative_name">Alternatif adı</string>
-    <string name="about">Hakkında </string>
+    <string name="about">Hakkında</string>
     <string name="share">Paylaş</string>
     <string name="invalid">Geçersiz</string>
     <string name="media">Medya</string>
@@ -130,13 +131,13 @@
     <string name="manga_list">Manga Listesi</string>
     <string name="none">Hiçbiri</string>
     <string name="repeating">Tekrarlanıyor</string>
-    <string name="spoiler_alert">Sürprizbozan Uyarısı</string>
+    <string name="spoiler_alert">Spoiler Uyarısı</string>
     <string name="error">Hata</string>
     <string name="follower">Takipçi</string>
-    <string name="following">Takip edilen</string>
+    <string name="following">Takip eden</string>
     <string name="blocked">Engelli</string>
-    <string name="s_following">%1$sTakipçi</string>
-    <string name="s_followers">%1$sTakip Edilen</string>
+    <string name="s_following">%1$sTakip eden</string>
+    <string name="s_followers">%1$sTakipçi</string>
     <string name="total_anime">Toplam Anime</string>
     <string name="days_watched">İzlenen Gün</string>
     <string name="mean_score">Ortalama Puan</string>
@@ -155,7 +156,7 @@
     <string name="format_distribution">Biçim Dağılımı</string>
     <string name="country_distribution">Ülke Dağılımı</string>
     <string name="release_year">Çıkış Tarihi</string>
-    <string name="watch_year">İzlenen Yıl </string>
+    <string name="watch_year">İzlenen Yıl</string>
     <string name="read_year">Okunan Yıl</string>
     <string name="count">Sayı</string>
     <string name="time_watched">İzlenen Sayı</string>
@@ -166,13 +167,13 @@
     <string name="unfollow">Takip Etmeyi Bırak</string>
     <string name="stop_following_s">%1$s kişisini takip etmeyi bırakılsın mı?</string>
     <string name="yes">Evet</string>
-    <string name="no">Yok</string>
+    <string name="no">Hayır.</string>
     <string name="follow">Takip et</string>
     <string name="episode_airing_notif">%1$s %2$s %3$s %4$s %5$s</string>
     <string name="thread_notif_s">%1$s %2$s %3$s</string>
     <string name="s_space_s">%1$s %2$s</string>
     <string name="new_notification">Yeni bildirim var</string>
-    <string name="airing_schedules">Yayınlanma Zaman(ları)</string>
+    <string name="airing_schedules">Yayınlanma Programı</string>
     <string name="airing_time_e_s_s">B: %1$s · %2$dd %3$dh %4$dm %5$ds</string>
     <string name="format_episode_s">%1$s · E: %2$s</string>
     <string name="select_date">Tarih Seç</string>
@@ -214,7 +215,7 @@
     <string name="activity_like_notif">Birisi benim aktivitemi beğendiğinde</string>
     <string name="likes_activity_reply_notif">Birisi benim aktivite yanıtımı beğendiğinde</string>
     <string name="forum_reply_notif">Birisi benim forum yorumuma yanıt verdiğinde</string>
-    <string name="forum_mention_notif">Forum yorumunda @ bahsedildiğimde </string>
+    <string name="forum_mention_notif">Forum yorumunda @ bahsedildiğimde</string>
     <string name="forum_coment_liked_notif">Birisi benim forum yorumumu beğendiğinde</string>
     <string name="reply_to_subscribed_forum_notif">Birisi benim abone olduğum bir forum konusuna yanıt verdiğinde</string>
     <string name="forum_liked_notif">Birisi benim forum konumu beğendiğinde</string>
@@ -243,7 +244,7 @@
     <string name="romaji">Romaji</string>
     <string name="english">İngilizce</string>
     <string name="user_preferred">Kullanıcı Tercihi</string>
-    <string name="_native">Asıl</string>
+    <string name="_native">Yerli</string>
 
     <!-- image quality -->
     <string name="high">Yüksek</string>
@@ -253,12 +254,18 @@
     <string name="title_desc">Başlık Açıklaması</string>
     <string name="score_desc">Puan Açıklaması</string>
     <string name="progress">İlerleme</string>
+    <string name="progress_desc">İlerleme Açıklaması</string>
     <string name="last_updated">Son Güncelleme</string>
     <string name="last_updated_desc">Son Güncelleme Açıklaması</string>
     <string name="last_added">Son Eklenen</string>
-    <string name="last_added_desc">Son Eklenen Açıklama</string>
+    <string name="last_added_desc">Son Eklenen Açıklaması</string>
+    <string name="start_date_desc">Başlangıç Tarihi Açıklaması</string>
+    <string name="completed_date">Tamamlanan Tarih</string>
+    <string name="completed_date_desc">Tamamlanmış Tarih Açıklaması</string>
     <string name="release_date">Yayın Tarihi</string>
-    <string name="release_date_desc">Yayın Tarihi Açıklama</string>
+    <string name="release_date_desc">Yayın Tarihi Açıklaması</string>
+    <string name="average_score_desc">Ortalama Puan Açıklaması</string>
+    <string name="popularity_desc">Popülerlik Açıklaması</string>
 
     <!-- media_format -->
     <string name="tv">TV</string>
@@ -312,7 +319,7 @@
     <string name="cancelled">İptal edildi</string>
     <string name="not_yet_released">Daha yayınlanmamış</string>
     <string name="releasing">Yayınlanan</string>
-    <string name="finished">Tamamlanmış</string>
+    <string name="finished">Bitmiş</string>
 
     <!-- media_season -->
     <string name="all">Hepsi</string>
@@ -323,25 +330,26 @@
 
     <!-- advance_search_sort -->
     <string name="id">Id</string>
-    <string name="id_desc">Id Açıklama</string>
+    <string name="id_desc">Id Açıklaması</string>
     <string name="title_romaji">Romaji Başlık</string>
-    <string name="title_romaji_desc">Romaji Başlık Açıklama</string>
+    <string name="title_romaji_desc">Romaji Başlık Açıklaması</string>
     <string name="title_english">İngilizce Başlık</string>
-    <string name="title_english_desc">Başlık İngilizce Açıklama</string>
-    <string name="title_native">Asıl Başlık</string>
-    <string name="title_native_desc">Asıl Başlık Açıklama</string>
-    <string name="type_desc">Tür Açıklama</string>
-    <string name="format_desc">Biçim Açıklama</string>
-    <string name="end_date_desc">Bitiş Tarihi Açıklama</string>
-    <string name="trending_desc">Trend Açıklama</string>
-    <string name="episodes_desc">Bölüm Açıklama</string>
+    <string name="title_english_desc">Başlık İngilizce Açıklaması</string>
+    <string name="title_native">Yerli Başlık</string>
+    <string name="title_native_desc">Yerli Başlık Açıklaması</string>
+    <string name="type_desc">Tür Açıklaması</string>
+    <string name="format_desc">Biçim Açıklaması</string>
+    <string name="end_date_desc">Bitiş Tarihi Açıklaması</string>
+    <string name="trending_desc">Trend Açıklaması</string>
+    <string name="episodes_desc">Bölüm Açıklaması</string>
     <string name="duration_desc">Süre Açıklama</string>
     <string name="status_desc">Durum Açıklama</string>
     <string name="chapters_desc">Bölüm Açıklama</string>
     <string name="volumes_desc">Cilt Açıklaması</string>
     <string name="updated_at">Güncellenme Tarihi</string>
     <string name="updated_at_desc">Güncellenme Tarihi Açıklama</string>
-    <string name="search_match">Arama Eşleşmesi </string>
+    <string name="search_match">Arama Eşleşmesi</string>
+    <string name="favourites_desc">Favori Açıklaması</string>
 
     <!-- country of origin -->
     <string name="China">Çin</string>
@@ -353,8 +361,15 @@
     <string name="recent">Son</string>
     <string name="highest_rated">En Yüksek Puanlı</string>
     <string name="lowest_rated">En Düşük Puanlı</string>
+
+    <!-- toggle -->
+    <string name="titles_watched">İzlenen Başlık</string>
+    <string name="hour_watched">İzlenen Saat</string>
+    <string name="titles_read">Okunan Başlık</string>
     <string name="rating">Puanlama</string>
+    <string name="rating_desc">Puanlama Açıklaması</string>
     <string name="created_at">Oluşturulma Tarihi</string>
+    <string name="created_at_desc">Oluşturulma Tarihi Açıklaması</string>
     <string name="hentai_only">Hentai</string>
     <string name="application_language">Uygulama Dili</string>
     <string name="application">Uygulama</string>
@@ -383,8 +398,8 @@
     <string name="failed_to_load">Yüklenemedi</string>
 
     <!-- airing sort -->
-    <string name="media_id">Medya Id</string>
-    <string name="media_id_desc">Media Id Açıklama</string>
+    <string name="media_id">Medya Kimliği</string>
+    <string name="media_id_desc">Media Kimliği Açıklama</string>
     <string name="time">Zaman</string>
     <string name="time_desc">Zaman Açıklama</string>
     <string name="home">Ana Sayfa</string>
@@ -414,7 +429,7 @@
     <string name="stopped">Durduruldu</string>
     <string name="favourite_radio_station">Favori İstasyonlar</string>
     <string name="recently_played_stations">Son Oynatılan İstasyonlar</string>
-    <string name="remove_from_favourite">Favoriler\'den kaldırın</string>
+    <string name="remove_from_favourite">Favorilerden kaldırın</string>
     <string name="no_description">Açıklama Yok</string>
     <string name="translate">Çevir</string>
     <string name="include_already_aired">Çoktan Yayınlanmış Olanları Da Dahil Et</string>
@@ -446,6 +461,7 @@
     <string name="day_range_string">%1$s - %2$s</string>
     <string name="date_range_from">şuradan</string>
     <string name="date_range_to">şuraya</string>
+    <string name="select_days_within_a_week">Bir hafta içindeki gün aralığını seçin</string>
     <string name="disable_ads">Reklamları Devre Dışı Bırak</string>
     <string name="disable_ads_desc">Radyo Bölümünde Reklamları Devre Dışı Bırak. Açık bırakmak uygulamanın gelişimini destekler.</string>
     <string name="load_bio">Biyografiyi Aç</string>
@@ -454,20 +470,23 @@
     <string name="episode_duration_s">%1$s Bölüm · %2$s dk</string>
     <string name="chapters_volumes_s">%1$s Bölüm · %2$s Cilt</string>
     <string name="airing_time_eta_s_s">ETA: %1$sg %2$dsa %3$ddk %4$ds</string>
+    <string name="add_remove_streaming_on">Yayınlandığı Yerleri Ekle/Kaldır</string>
     <string name="failed_to_load_list_count">Liste sayısı yüklenemedi</string>
     <string name="status_with_count_format">%1$s (%2$d)</string>
     <string name="add_to_list">Listeye ekle</string>
     <string name="episode_airing_date">B: %1$s · %2$s</string>
     <string name="load_legacy_media_browser_desc">Medyaya göz atıldığı sırada, basit üst bilgiyi banner resmi, kapak resmi ve medya başlığı ile yükle.</string>
+    <string name="load_legacy_media_browser">Eski Medya Tarayıcı Başlığını Yükle</string>
     <string name="more">Daha fazla</string>
     <string name="less">Daha az</string>
     <string name="synonyms">Eş Anlamlı(lar)</string>
-    <string name="show_spoiler">Sürprizbozan Göster</string>
-    <string name="hide_spoiler">Sürprizbozanları Gizle</string>
+    <string name="show_spoiler">Spoileri Göster</string>
+    <string name="hide_spoiler">Spoileri Gizle</string>
     <string name="category">Kategori</string>
     <string name="rank">Sıralama</string>
     <string name="tag_info">Etiket Bilgisi</string>
     <string name="tag_name_percent">%1$s · %2$d%%</string>
+    <string name="status_distribution_string">%1$s Kullanıcı %2$s</string>
     <string name="trailer">Fragman</string>
     <string name="airing_score_progression">Yayınlanan Puan İlerlemesi</string>
     <string name="airing_watchers_progression">Yayınlanan İzleyici İlerlemesi</string>
@@ -504,6 +523,9 @@
     <string name="theme_app_night_summary">Gece sırasında uygulama stili.</string>
     <string name="theme_app_night">Gece teması.</string>
     <string name="theme_color_primary">Ana renk</string>
+    <string name="theme_color_primary_summary">Birincil elementlerde kullanılan renk.</string>
+    <string name="theme_background_aware_desc">En iyi görünebilirliği sağlamak için renkleri arkaplana göre ayarlayın.</string>
+    <string name="theme_color_accent_summary">İkincil elementlerde kullanılan renk.</string>
     <string name="theme_color_accent">Ara renk</string>
     <string name="theme_navigation_bar_desc">Navigasyon çubuğu teması bazı yerlerde daha iyi görsel deneyim sağlamak için gözükmez.</string>
     <string name="theme_navigation_bar_summary">Navigasyon çubuğunu uygulama temasına göre göster.</string>
@@ -515,15 +537,32 @@
     <string name="contributors_desc">Büyük yardımları için çok teşekkürler.</string>
     <string name="licenses">Lisanslar</string>
     <string name="translators">Çevirmenler</string>
+    <string name="progress_volume">İşlem Düzeyi</string>
+    <string name="progress_volume_desc">İşlem Düzeyi Açıklaması</string>
     <string name="repeat">Tekrarla</string>
+    <string name="repeat_desc">Tekrarlama Açıklaması</string>
     <string name="priority">Öncelik</string>
+    <string name="priority_desc">Öncelik Açıklaması</string>
+    <string name="started_on">Şu Tarihte Başlandı</string>
+    <string name="started_on_desc">Başlandı Açıklaması</string>
+    <string name="finished_on">Şu Tarihte Bitirildi</string>
+    <string name="finished_on_desc">Bitirildi Açıklaması</string>
+    <string name="added">Eklendi</string>
+    <string name="added_desc">Eklendi Açıklaması</string>
+    <string name="updated">Güncellendi</string>
+    <string name="updated_desc">Güncellendi Açıklaması</string>
     <string name="do_you_really_want_to_delete_the_entry_s">%s girdisini gerçekten silmek istediğinizden emin misiniz?</string>
+
+    <!-- do not translate this unless you want to change format to dd//MM/yyyy or yyyy/MM/dd -->
+    <string name="date_format_pattern">MM/dd/yyyy</string>
+    <string name="widget_airing_episode">B: %1$d · %2$s</string>
     <string name="show_eta">ETA Göster</string>
+    <string name="total_reread">Toplam Yeniden Okuma</string>
     <string name="hiatus">Ara Verilmiş</string>
 
     <!-- not translated
 country of origin -->
-    <string name="country_of_origin">Köken Ülkesi</string>
+    <string name="country_of_origin">Menşe Ülkesi</string>
     <string name="Taiwan">Tayvan</string>
     <string name="text_status">Yazı Durumu</string>
     <string name="list_progress">Liste İlerlemesi</string>
@@ -537,7 +576,7 @@ country of origin -->
     <string name="write_a_reply">Bir yanıt yaz...</string>
     <string name="please_read_the_site_guidelines_before_posting">Lütfen göndermeden önce site kurallarını okuduğunuzdan emin olun</string>
     <string name="preview">Önizleme</string>
-    <string name="spoiler">Sürprizbozan</string>
+    <string name="spoiler">Spoiler</string>
     <string name="replies_count">Yanıtlar  · %1$d</string>
     <string name="reply">Yanıtla</string>
     <string name="add_url">URL ekle</string>
@@ -548,9 +587,9 @@ country of origin -->
     <string name="deleted_successfully_please_refresh">Başarıyla silindi, lütfen yenileyin.</string>
     <string name="plan_to_read">Okumaya planlanıyor</string>
     <string name="rereading">Tekrar Okunuyor</string>
-    <string name="plan_to_watch">İzlemeye Planlanıyor</string>
+    <string name="plan_to_watch">İzlemeye planlıyor</string>
     <string name="field_is_empty">Alan boş</string>
-    <string name="posted_successfully">Başarıyla gönderi paylaşıldı</string>
+    <string name="posted_successfully">Gönderi başarıyla paylaşıldı</string>
     <string name="posting">Gönderi</string>
     <string name="replying">Yanıtlanıyor</string>
     <string name="replied_successfully">Başarıyla yanıtlandı</string>
@@ -562,11 +601,12 @@ country of origin -->
     <string name="send">Gönder</string>
     <string name="recent_activity">Son Aktivite</string>
     <string name="register">Kayıt Ol</string>
-    <string name="no_watching_feature_desc">Not: Bu uygulama anime izlemek veya manga okumak için değildir. Bu bir resmi olmayan Anilist için oluşturulmuş bir uygulamadır.</string>
+    <string name="no_watching_feature_desc">Not: Bu uygulama anime izlemek veya manga okumak için değildir. Bu bir resmi olmayan Anilist için oluşturulmuş bir uygulamadır; Daha fazla bilgi için Anilist\'in resmi sitesini ziyaret edin.</string>
     <string name="reload">Tekrardan yükle</string>
     <string name="reset_to_default">Varsayılana sıfırlansın mı?</string>
     <string name="edit_genre">Türü Düzenle</string>
     <string name="edit_tags">Etiketleri Düzenle</string>
+    <string name="edit_streaming_on">Yayınlandığı Yerleri Düzenle</string>
     <string name="exclude">Hariç Tut</string>
     <string name="edit_filter_tags">Ekle, düzenle, sil, etiketleri hariç tut.\nHariç tutulan etiketler otomatik olarak medya arayışı sırasında eklenir</string>
     <string name="edit_filter_genre">Ekle, düzenle, sil,türü hariç tut.\nHariç tutulan tür medya arayışı sırasında otomatik olarak eklenir</string>
@@ -615,4 +655,54 @@ country of origin -->
     <string name="review_summary_character_length_err_msg">Özet 120 karakterden az, ve 20 karakterden çok olmalı</string>
     <string name="open_media_info">Medya bilgisini aç.</string>
     <string name="enable_to_open_media_info_on_single_click">Tek tıklamayla listede medya bilgisini açmayı aktifleştir.</string>
+    <string name="split_completed_list_by_format">Biçime Göre Tamamlanmış Liste Kısmını Ayır</string>
+    <string name="custom_anime_lists">Özel Anime Listeleri</string>
+    <string name="custom_manga_lists">Özel Manga Listeleri</string>
+    <string name="custom_list_name">Özel Liste Adı</string>
+    <string name="game">Oyun</string>
+    <string name="multimedia_project">Çoklu ortam proje</string>
+    <string name="picture_book">Resim Kitabı</string>
+    <string name="comic">Çizgi roman</string>
+    <string name="failed_to_sign_in">Giriş Yapılamadı, %s</string>
+    <string name="sign_in_message">Anilib desteklenen web tarayıcısında AniList giriş sayfasını açacaktır.</string>
+    <string name="important">Önemli</string>
+    <string name="sign_in_browser_requirement_desc">AniLib, Anilist için oluşturulmuş 3.taraf bir uygulamadır, yani bu uygulama üzerinden direkt olarak giriş yapamazsınız. Chrome gibi tarayıcılara ihtiyacınız olacak ve anilist.co\'ya giriş yapmak için veya kayıt olmak için yönlendirileceksiniz. Lütfen bilgilerinizi girmeden önce URL\'nin anilist.co olduğundan emin olun.</string>
+    <string name="important_to_know">Bilmeniz önemli</string>
+    <string name="okay">Tamam, anladım</string>
+    <string name="enable_12hr_format">12 sa biçimini etkinleştir.</string>
+    <string name="enable_12hr_format_desc">Yayınlanma programında 24 sa biçimi yerine 12 sa biçimini göstermeyi etkinleştir.</string>
+    <string name="search_max_episodes">Maks toplam bölim</string>
+    <string name="search_max_chapters">Maks toplam bölüm</string>
+    <string name="search_max_volumes">Maks toplam cilt</string>
+    <string name="search_max_duration">Maks süre</string>
+    <string name="search_max_episode_desc">Arama filtresinde maksimum toplam bölümü ayarlayın. Varsayılan değer 150\'dir.</string>
+    <string name="search_max_chapter_desc">Arama filtresinde maksimum toplam bölümü ayarlayın. Varsayılan değer 500\'dür.</string>
+    <string name="search_max_duration_desc">Arama filtresinde maksimum süreyi ayarlayın. Varsayılan değer 170\'dir.</string>
+    <string name="search_max_volume_desc">Arama filtresinde maksimum toplam cilti ayarlayın. Varsayılan değer 50\'dir.</string>
+    <string name="exclude_tags">Etiketleri Hariç Tut</string>
+    <string name="exclude_tags_everywhere_desc">Hariç tutulan etiketler Keşfet, Mevsim yerlerinde görünecektir.</string>
+    <string name="exclude_genre">Tür(leri) Hariç Tut</string>
+    <string name="exclude_genre_everywhere_desc">Hariç tutulan türler Keşfet, Mevsim yerlerinde görünecektir.</string>
+    <string name="calendar">Takvim</string>
+    <string name="first_day_of_the_week">Haftanın ilk günü.</string>
+    <string name="sunday">Pazar</string>
+    <string name="monday">Pazartesi</string>
+    <string name="open_in_browser">Tarayıcıda aç</string>
+    <string name="media_info_add_transparency">Medya bilgisi şeffaflık ekle</string>
+    <string name="newest">En Yeni</string>
+    <string name="oldest">En Eski</string>
+    <string name="gender">Cinsiyet</string>
+    <string name="blood_type">Kan Türü</string>
+    <string name="birthday">Doğum günü</string>
+    <string name="age">Yaş</string>
+    <string name="death">Ölüm</string>
+    <string name="birth">Doğum</string>
+    <string name="years_active">Aktif yıl</string>
+    <string name="hometown">Memleket</string>
+    <string name="present">Şu an</string>
+    <string name="anime_staff_roles">Anime Kadro Rolleri</string>
+    <string name="manga_staff_roles">Manga Kadro Rolleri</string>
+    <string name="block">Engelle</string>
+    <string name="unblock">Engeli kaldır</string>
+    <string name="block_user_msg">AniLib kullanıcıyı tarayıcıda açacak.\nBu bir 3.taraf bir uygulamadır ve sınırlanmasından dolayı, engelleme/engeli kaldırma işlemleri yalnızca anilist.co üzerinde mümkündür. Kullanıcı sağ üstteki (küçük ekranlarda sol üst olabilir.) açılırlisteyi görmek için giriş yapmalıdır.</string>
 </resources>
