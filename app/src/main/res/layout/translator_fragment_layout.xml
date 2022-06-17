@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.revolgenx.anilib.ui.view.widgets.AlCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.DynamicApp.Card">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.pranavpandey.android.dynamic.support.view.DynamicInfoViewBig
         android:id="@+id/info_translators"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        app:ads_description="@string/contributors_desc"
         app:ads_icon="@drawable/ads_ic_language"
         app:ads_iconBig="@drawable/ads_ic_translate"
-        app:ads_title="@string/translators"
-        app:ads_description="@string/contributors_desc"
+        app:ads_icons="@array/info_translators_flags"
         app:ads_links="@array/info_translators_languages"
         app:ads_subtitles="@array/info_translators_authors"
-        app:ads_urls="@array/info_translators_urls"
-        app:ads_icons="@array/info_translators_flags"/>
+        app:ads_title="@string/translators"
+        app:ads_urls="@array/info_translators_urls" />
 
-</com.revolgenx.anilib.ui.view.widgets.AlCardView>
+</androidx.core.widget.NestedScrollView>

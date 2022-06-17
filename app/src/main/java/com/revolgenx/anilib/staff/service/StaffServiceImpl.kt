@@ -70,19 +70,34 @@ class StaffServiceImpl(
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
-                it.data?.staff?.characterMedia?.edges?.mapNotNull { edge ->
-                    edge?.characters?.mapNotNull { character ->
-                        edge.node?.onMedia?.mediaContent?.toModel()?.also { mediaModel ->
-                            mediaModel.character = character?.let {
-                                CharacterModel().also { characterModel ->
-                                    characterModel.id = character.id
-                                    characterModel.name = CharacterNameModel(character.name?.full)
-                                    characterModel.image =
-                                        character.image?.characterImage?.toModel()
+                it.data?.staff?.let { s ->
+                    s.characterMedia?.edges?.mapNotNull { edge ->
+                        edge?.characters?.mapNotNull { character ->
+                            edge.node?.onMedia?.mediaContent?.toModel()?.also { mediaModel ->
+                                mediaModel.character = character?.let {
+                                    CharacterModel().also { characterModel ->
+                                        characterModel.id = character.id
+                                        characterModel.name = CharacterNameModel(character.name?.full)
+                                        characterModel.image =
+                                            character.image?.characterImage?.toModel()
 
+                                    }
                                 }
+                                mediaModel.characterRole = edge.characterRole?.ordinal
                             }
-                            mediaModel.characterRole = edge.characterRole?.ordinal
+                        }
+                    } ?: s.characters?.edges?.mapNotNull { edge ->
+                        edge?.media?.mapNotNull { media ->
+                            media?.onMedia?.mediaContent?.toModel()?.also { mediaModel ->
+                                mediaModel.character = edge.node?.let { c ->
+                                    CharacterModel().also { characterModel ->
+                                        characterModel.id = c.id
+                                        characterModel.name = CharacterNameModel(c.name?.full)
+                                        characterModel.image = c.image?.characterImage?.toModel()
+                                    }
+                                }
+                                mediaModel.characterRole = edge.role?.ordinal
+                            }
                         }
                     }
                 }?.flatten()

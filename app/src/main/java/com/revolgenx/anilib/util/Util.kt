@@ -6,6 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutManager
+import android.content.res.Configuration
 import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -231,3 +232,5 @@ fun doIfNotDevFlavor(callback: () -> Unit) {
         callback.invoke()
     }
 }
+
+val Context.isLandScape get()= this.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE

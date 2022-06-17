@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.character.presenter
+package com.revolgenx.anilib.staff.presenter
 
 import android.content.Context
 import android.graphics.Color
@@ -7,23 +7,21 @@ import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
-import com.revolgenx.anilib.databinding.CharacterMediaPresenterBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
 import com.revolgenx.anilib.common.presenter.BasePresenter
+import com.revolgenx.anilib.databinding.StaffMediaCharacterSeriesPresenterLayoutBinding
+import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
-class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPresenterBinding, MediaModel>(context) {
-    override val elementTypes: Collection<Int>
-        get() = listOf(0)
+class StaffMediaCharacterSeriesPresenter(context: Context) : BasePresenter<StaffMediaCharacterSeriesPresenterLayoutBinding, MediaModel>(context) {
+    override val elementTypes: Collection<Int> = listOf(0)
 
     private val mediaFormatList by lazy {
         context.resources.getStringArray(R.array.media_format)
     }
-
     private val mediaStatus by lazy {
         context.resources.getStringArray(R.array.media_status)
     }
@@ -31,19 +29,15 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
         context.resources.getStringArray(R.array.status_color)
     }
 
-    override fun bindView(
-        inflater: LayoutInflater,
-        parent: ViewGroup?,
-        elementType: Int
-    ): CharacterMediaPresenterBinding {
-        return CharacterMediaPresenterBinding.inflate(inflater, parent, false)
+    override fun bindView(inflater: LayoutInflater, parent: ViewGroup?, elementType: Int): StaffMediaCharacterSeriesPresenterLayoutBinding {
+        return StaffMediaCharacterSeriesPresenterLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun onBind(page: Page, holder: Holder, element: Element<MediaModel>) {
         super.onBind(page, holder, element)
+        val binding = holder.getBinding() ?: return
         val item = element.data ?: return
-
-        holder.getBinding()?.apply {
+        binding.apply {
             characterMediaImageView.setImageURI(item.coverImage?.image())
             characterMediaTitleTv.text = item.title?.title()
             characterMediaFormatTv.text =

@@ -9,6 +9,7 @@ class StaffMediaCharacterField : BaseSourceField<StaffCharacterMediaQuery>() {
     var staffId: Int? = null
     var onList = false
     var sort = StaffMediaCharacterSort.START_DATE_DESC
+    var sortCharacter = false
 
     override fun toQueryOrMutation(): StaffCharacterMediaQuery {
         return StaffCharacterMediaQuery(
@@ -16,7 +17,8 @@ class StaffMediaCharacterField : BaseSourceField<StaffCharacterMediaQuery>() {
             page = nn(page),
             perPage = nn(perPage),
             onList = nnBool(onList),
-            sort = nn(listOf(MediaSort.safeValueOf(sort.name)))
+            sort = nn(sort.takeIf { it != StaffMediaCharacterSort.CHARACTER_SORT }?.let { listOf(MediaSort.safeValueOf(it.name)) }),
+            sortCharacter = sortCharacter
         )
     }
 }

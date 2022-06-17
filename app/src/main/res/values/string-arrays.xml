@@ -113,7 +113,8 @@
         <item>Gore</item>
         <item>Guns</item>
         <item>Gyaru</item>
-        <item>Harem</item>
+        <item>Male Harem</item>
+        <item>Female Harem</item>
         <item>Henshin</item>
         <item>Hikikomori</item>
         <item>Historical</item>
@@ -645,6 +646,7 @@
         <item>@string/newest</item>
         <item>@string/oldest</item>
         <item>@string/title</item>
+        <item>@string/character</item>
     </string-array>
 
     <string-array name="staff_media_role_sort">

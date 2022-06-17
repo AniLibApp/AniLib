@@ -6,5 +6,6 @@ enum class StaffMediaCharacterSort {
     FAVOURITES_DESC,
     START_DATE_DESC,
     START_DATE,
-    TITLE_ROMAJI
+    TITLE_ROMAJI,
+    CHARACTER_SORT
 }

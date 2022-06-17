@@ -54,8 +54,32 @@ query StaffCharacterMediaQuery(
     $page:Int,
     $perPage:Int,
     $onList:Boolean,
-    $sort:[MediaSort]){
-    staff: Staff(id:$staffId){
+    $sort:[MediaSort],
+    $sortCharacter: Boolean!){
+
+    staff: Staff(id:$staffId)@include(if: $sortCharacter){
+        characters(page: $page, perPage: $perPage, sort: [ROLE, ID_DESC]){
+            edges{
+                role
+                node{
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        ... characterImage
+                    }
+                }
+                media{
+                    ... on Media{
+                        ... mediaContent
+                    }
+                }
+            }
+        }
+    }
+
+    staff: Staff(id:$staffId)@skip(if: $sortCharacter){
         characterMedia(page:$page,perPage:$perPage, onList: $onList, sort: $sort){
             edges{
                 characterRole

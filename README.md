@@ -55,7 +55,7 @@
 | Portuguese | Satoru, SamOak |
 | Russian | Natalie |
 | Spanish | ricardoric_03, [MrJako2001](https://anilist.co/user/MrJaco/) |
-| Turkish | kyoya |
+| Turkish | [kyoya](https://anilist.co/user/kyoyacchi/) |
 
 ## Want to help translate AniLib into your language?
         
