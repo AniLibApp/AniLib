@@ -96,7 +96,7 @@
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -104,14 +104,9 @@
             <com.revolgenx.anilib.ui.view.widgets.AlCardView
                 android:id="@+id/native_title_card_view"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:cardUseCompatPadding="true"
-                app:layout_constrainedHeight="true"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/english_title_card_view"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cardUseCompatPadding="true">
 
                 <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                     android:id="@+id/nativeTitle"
@@ -127,13 +122,8 @@
                 android:id="@+id/english_title_card_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                app:cardUseCompatPadding="true"
-                app:layout_constrainedHeight="true"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/native_title_card_view"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_weight="1"
+                app:cardUseCompatPadding="true">
 
                 <com.revolgenx.anilib.ui.view.header.AlHeaderItemView
                     android:id="@+id/englishTitle"
@@ -144,7 +134,7 @@
                     app:copySubtitleOnLongClick="true" />
 
             </com.revolgenx.anilib.ui.view.widgets.AlCardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <com.revolgenx.anilib.ui.view.widgets.AlCardView
             android:layout_width="match_parent"

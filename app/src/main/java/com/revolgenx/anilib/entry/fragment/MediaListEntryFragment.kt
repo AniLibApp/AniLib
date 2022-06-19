@@ -174,7 +174,7 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
             saveField.private = isChecked
         }
 
-        hideFromStatusList.isChecked = saveField.hiddenFromStatusLists
+        hideFromStatusList.isChecked = saveField.hiddenFromStatusLists == true
         hideFromStatusList.setOnCheckedChangeListener { _, isChecked ->
             saveField.hiddenFromStatusLists = isChecked
         }
@@ -272,12 +272,12 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
         changeDate()
         startDateClearIv.setOnClickListener {
             startDateTv.text = ""
-            saveField.startedAt = null
+            saveField.startedAt = FuzzyDateModel()
         }
 
         finishDateClearIv.setOnClickListener {
             finishDateTv.text = ""
-            saveField.completedAt = null
+            saveField.completedAt = FuzzyDateModel()
         }
 
         startDateTv.setOnClickListener {

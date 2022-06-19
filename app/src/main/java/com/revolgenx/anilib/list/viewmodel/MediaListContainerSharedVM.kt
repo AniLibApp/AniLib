@@ -11,6 +11,9 @@ class MediaListContainerSharedVM : ViewModel() {
 
     var currentGroupNameWithCount = MutableLiveData<Pair<String, Int>?>()
     var mediaListContainerCallback = MutableLiveData<Pair<MediaListCollectionContainerCallback, Int>>()
+
+    var animeListNavigateToTop: (()->Unit)? = null
+    var mangaListNavigateToTop: (()->Unit)? = null
 }
 
 enum class MediaListCollectionContainerCallback{

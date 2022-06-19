@@ -37,38 +37,43 @@ import com.revolgenx.anilib.ui.dialog.MessageDialog
 fun Fragment.makeToast(
     @StringRes str: Int? = null,
     msg: String? = null,
-    @DrawableRes icon: Int? = null
+    @DrawableRes icon: Int? = null,
+    longDuration:Boolean = false
 ) {
-    context?.makeToast(str, msg, icon)
+    context?.makeToast(str, msg, icon, longDuration)
 }
 
 fun Fragment.makeErrorToast(
     @StringRes str: Int? = null,
     msg: String? = null,
+    longDuration:Boolean = false
 ) {
-    context?.makeToast(str, msg, R.drawable.ic_error)
+    context?.makeToast(str, msg, R.drawable.ic_error, longDuration)
 }
 
 fun Context.makeErrorToast(
     @StringRes str: Int? = null,
     msg: String? = null,
+    longDuration:Boolean = false
 ) {
-    makeToast(str, msg, R.drawable.ic_error)
+    makeToast(str, msg, R.drawable.ic_error, longDuration)
 }
 
 fun Context.makeToast(
     @StringRes str: Int? = null,
     msg: String? = null,
-    @DrawableRes icon: Int? = null
+    @DrawableRes icon: Int? = null,
+    longDuration:Boolean = false
 ) {
-    makeDynamicToastView(this, str?.let { getString(it) } ?: msg, icon)
+    makeDynamicToastView(this, str?.let { getString(it) } ?: msg, icon, longDuration)
 }
 
 
 fun makeDynamicToastView(
     context: Context,
     msg: String? = null,
-    @DrawableRes drawable: Int? = null
+    @DrawableRes drawable: Int? = null,
+    longDuration:Boolean = false
 ) {
     val toastBinding = DynamicToastViewLayoutBinding.inflate(
         LayoutInflater.from(context), LinearLayout(
@@ -85,7 +90,7 @@ fun makeDynamicToastView(
 
     ToastCompat(context, Toast(context)).apply {
         view = toastBinding.root
-        duration = Toast.LENGTH_SHORT
+        duration = if(longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
         show()
     }
 

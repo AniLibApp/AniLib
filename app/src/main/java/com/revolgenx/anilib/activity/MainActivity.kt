@@ -304,7 +304,19 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         mainBottomNavView.setOnItemSelectedListener {
             mainBottomNavView.menu.forEachIndexed { index, item ->
                 if (it == item) {
+                    val isNotAlreadySelected = mainViewPager.currentItem != index
                     mainViewPager.setCurrentItem(index, true)
+
+                    if(isNotAlreadySelected) return@forEachIndexed
+
+                    when(item.itemId){
+                        R.id.list_navigation_menu->{
+                            mainSharedVM.listNavigateToTopListener?.invoke()
+                        }
+                        R.id.activity_navigation_menu->{
+                            mainSharedVM.activityNavigateToTopListener?.invoke()
+                        }
+                    }
                 }
             }
             false

@@ -226,12 +226,12 @@ class MediaListCollectionPresenter(
             it.root.setOnClickListener {
                 if(isLoggedInUser){
                     if (openMediaInfoOrListEditor()) {
-                        openMediaInfo(context, item.media!!)
+                        openMediaInfo(item.media!!)
                     } else {
                         openMediaListEditor(context, item.media!!)
                     }
                 }else{
-                    openMediaInfo(context, item.media!!)
+                    openMediaInfo(item.media!!)
                 }
             }
 
@@ -240,7 +240,7 @@ class MediaListCollectionPresenter(
                     if (openMediaInfoOrListEditor()) {
                         openMediaListEditor(context, item.media!!)
                     } else {
-                        openMediaInfo(context, item.media!!)
+                        openMediaInfo(item.media!!)
                     }
                 }else{
                     openMediaListEditor(context, item.media!!)
@@ -278,7 +278,7 @@ class MediaListCollectionPresenter(
         holder.get<MediaListModel?>(PRESENTER_HOLDER_ITEM_KEY)?.onDataChanged = null
     }
 
-    private fun openMediaInfo(context: Context, item: MediaModel) {
+    private fun openMediaInfo(item: MediaModel) {
         OpenMediaInfoEvent(
             MediaInfoMeta(
                 item.id,

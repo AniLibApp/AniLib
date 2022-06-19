@@ -16,8 +16,8 @@ class SaveMediaListEntryField : BaseField<SaveMediaListEntryMutation>() {
     var advancedScores: List<MutablePair<String, Double>>? = null
     var progress: Int? = null
     var progressVolumes: Int? = null
-    var private: Boolean = false
-    var hiddenFromStatusLists = false
+    var private: Boolean? = null
+    var hiddenFromStatusLists: Boolean? = null
     var repeat: Int? = null
     var notes: String? = null
     var startedAt: FuzzyDateModel? = null
@@ -25,6 +25,19 @@ class SaveMediaListEntryField : BaseField<SaveMediaListEntryMutation>() {
     var customLists: List<MutablePair<String, Boolean>>? = null
 
     override fun toQueryOrMutation(): SaveMediaListEntryMutation {
+
+        val startedAt = startedAt?.let {
+            Optional.Present(it.takeIf { !it.isEmpty() }?.let { fd ->
+                FuzzyDateInput(nn(fd.year), nn(fd.month), nn(fd.day))
+            })
+        } ?: Optional.Absent
+
+        val completedAt = completedAt?.let {
+            Optional.Present(it.takeIf { !it.isEmpty() }?.let { fd ->
+                FuzzyDateInput(nn(fd.year), nn(fd.month), nn(fd.day))
+            })
+        } ?: Optional.Absent
+
         return SaveMediaListEntryMutation(
             id = nn(id),
             mediaId = nn(mediaId),
@@ -36,12 +49,8 @@ class SaveMediaListEntryField : BaseField<SaveMediaListEntryMutation>() {
             private_ = nn(private),
             repeat = nn(repeat),
             notes = nn(notes),
-            startedAt = Optional.Present(startedAt?.let {
-                FuzzyDateInput(nn(it.year), nn(it.month), nn(it.day))
-            }),
-            completedAt = Optional.Present(completedAt?.let {
-                FuzzyDateInput(nn(it.year), nn(it.month), nn(it.day))
-            }),
+            startedAt = startedAt,
+            completedAt = completedAt,
             hiddenFromStatusLists = nn(hiddenFromStatusLists),
             customLists = nn(customLists?.filter { it.second }?.map { it.first })
         )

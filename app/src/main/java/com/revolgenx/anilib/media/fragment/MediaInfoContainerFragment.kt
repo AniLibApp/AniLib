@@ -427,6 +427,11 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
                 OpenImageEvent(media.coverImage?.largeImage).postEvent
             }
 
+            legacyMediaTitleTv.setOnClickListener {
+                val title = mediaInfoMeta?.title ?: mediaModel?.title?.romaji ?: return@setOnClickListener
+                makeToast(msg = title, longDuration = true)
+            }
+
             legacyMediaTitleTv.setOnLongClickListener {
                 val title = mediaInfoMeta?.title ?: mediaModel?.title?.romaji
                 ?: return@setOnLongClickListener false
@@ -466,6 +471,11 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
             mediaBrowserCoverImage.setOnClickListener {
                 val media = mediaModel ?: return@setOnClickListener
                 OpenImageEvent(media.coverImage?.largeImage).postEvent
+            }
+
+            mediaTitleTv.setOnClickListener {
+                val title = mediaInfoMeta?.title ?: mediaModel?.title?.romaji ?: return@setOnClickListener
+                makeToast(msg = title, longDuration = true)
             }
 
             mediaTitleTv.setOnLongClickListener {

@@ -78,6 +78,21 @@ abstract class BaseMediaListCollectionFragment() :
         viewModel.field.userId = containerSharedVM.userId
         viewModel.field.userName = containerSharedVM.userName
         binding.onBind()
+
+        when (mediaType) {
+            MediaType.ANIME -> {
+                containerSharedVM.animeListNavigateToTop = {
+                    binding.alListRecyclerView.smoothScrollToPosition(0)
+                }
+            }
+            MediaType.MANGA -> {
+                containerSharedVM.mangaListNavigateToTop = {
+                    binding.alListRecyclerView.smoothScrollToPosition(0)
+                }
+            }
+
+            else -> {}
+        }
     }
 
     private fun loadLayoutManager() {

@@ -18,7 +18,7 @@ class MediaListModel : BaseModel() {
     var progressVolumes: Int? = null
     var repeat: Int? = null
     var priority: Int? = null
-    var private: Boolean = false
+    var private: Boolean? = false
     var notes: String? = null
     var hiddenFromStatusLists = false
 

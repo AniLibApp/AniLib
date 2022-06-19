@@ -167,6 +167,20 @@ class MediaListCollectionContainerFragment :
                 }
                 mainSharedVM.mediaListCurrentTab.value = null
             }
+
+            mainSharedVM.listNavigateToTopListener = goToTop@{
+                context ?: return@goToTop
+                when(alListViewPager.currentItem){
+                    0->{
+                        sharedViewModel.animeListNavigateToTop?.invoke()
+                    }
+                    1->{
+                        sharedViewModel.mangaListNavigateToTop?.invoke()
+                    }
+                }
+
+
+            }
         }
     }
 

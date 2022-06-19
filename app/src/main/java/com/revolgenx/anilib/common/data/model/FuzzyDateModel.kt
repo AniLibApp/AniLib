@@ -24,6 +24,7 @@ class FuzzyDateModel(var year: Int? = null, var month: Int? = null, var day: Int
             ?: "")
     }
 
+    fun isEmpty() = year == null && month == null && day == null
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(year)

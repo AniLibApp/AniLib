@@ -11,6 +11,7 @@ import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.viewmodel.MainSharedVM
 import com.revolgenx.anilib.common.ui.fragment.BasePresenterFragment
 import com.revolgenx.anilib.constant.AlActivityType
 import com.revolgenx.anilib.databinding.ActivityUnionFragmentLayoutBinding
@@ -46,6 +47,7 @@ class ActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
     private val textComposerViewModel by sharedViewModel<ActivityTextComposerViewModel>()
     private val messageComposerViewModel by sharedViewModel<ActivityMessageComposerViewModel>()
     private val activityInfoViewModel by sharedViewModel<ActivityInfoViewModel>()
+    private val mainSharedVM by sharedViewModel<MainSharedVM>()
 
 
     private var _uBinding: ActivityUnionFragmentLayoutBinding? = null
@@ -123,6 +125,11 @@ class ActivityUnionFragment : BasePresenterFragment<ActivityUnionModel>() {
 
         uBinding.activityCreateFab.setOnClickListener {
             OpenActivityTextComposer().postEvent
+        }
+
+        mainSharedVM.activityNavigateToTopListener = goToTop@{
+            context?: return@goToTop
+            baseRecyclerView.smoothScrollToPosition(0)
         }
     }
 
