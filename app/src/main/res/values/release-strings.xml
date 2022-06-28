@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="release_info" translatable="false">
+        ### -v1.1.17 \n
+        * fix bug with increase progress. \n
+        * voice staff character media grouping. \n
+        * __Translator__. Thank you for the contribution. \n
+        \t * Turkish - kyoya  [AniList](https://anilist.co/user/kyoyacchi/) \n
+
+
         ### -v1.1.16 \n
         * fixes crash on theme change. \n
 

@@ -42,8 +42,8 @@ android {
         applicationId = "com.revolgenx.anilib"
         minSdk = AndroidSdk.min
         targetSdk = AndroidSdk.target
-        versionCode = 38
-        versionName = "1.1.16"
+        versionCode = 39
+        versionName = "1.1.17"
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField(
