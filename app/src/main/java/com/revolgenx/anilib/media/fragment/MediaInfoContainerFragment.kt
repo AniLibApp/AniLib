@@ -171,10 +171,18 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
         viewModel.onFavouriteChanged = {
             when (it) {
                 is Resource.Success -> {
-                    binding.bindFavourite()
+                    if (loadLegacyMediaBrowseTheme()) {
+                        binding.bindLegacyFavourite()
+                    } else {
+                        binding.bindFavourite()
+                    }
                 }
                 is Resource.Error -> {
-                    binding.bindFavourite()
+                    if (loadLegacyMediaBrowseTheme()) {
+                        binding.bindLegacyFavourite()
+                    } else {
+                        binding.bindFavourite()
+                    }
                     makeErrorToast(R.string.failed_to_toggle)
                 }
                 else -> {
@@ -307,13 +315,14 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
     }
 
     private fun MediaInfoContainerFragmentLayoutBinding.bind() {
-        val media = mediaModel ?: return
+        mediaModel ?: return
         if (loadLegacyMediaBrowseTheme()) {
             bindLegacyHeader()
+            bindLegacyFavourite()
         } else {
             bindHeader()
+            bindFavourite()
         }
-        bindFavourite()
     }
 
     private fun MediaInfoContainerFragmentLayoutBinding.bindLegacyHeader() {
@@ -366,6 +375,13 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
         mediaFavButton.setImageResource(if (media.isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
         updateFavouriteToolbar()
     }
+
+    private fun MediaInfoContainerFragmentLayoutBinding.bindLegacyFavourite() {
+        val media = mediaModel ?: return
+        legacyMediaFavButton.setImageResource(if (media.isFavourite) R.drawable.ic_favourite else R.drawable.ic_not_favourite)
+        updateFavouriteToolbar()
+    }
+
 
     private fun MediaInfoContainerFragmentLayoutBinding.initTabLayout() {
         createTabLayout(R.string.overview, R.drawable.ic_fire)

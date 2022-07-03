@@ -137,6 +137,21 @@
             android:layout_marginTop="6dp">
 
             <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                android:id="@+id/support_item_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:ads_icon="@drawable/ic_support"
+                app:ads_title="@string/support"
+                app:adt_colorType="text_primary" />
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp">
+
+            <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
                 android:id="@+id/aboutItemView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

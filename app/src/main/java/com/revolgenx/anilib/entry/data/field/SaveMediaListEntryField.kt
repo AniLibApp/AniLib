@@ -52,7 +52,7 @@ class SaveMediaListEntryField : BaseField<SaveMediaListEntryMutation>() {
             startedAt = startedAt,
             completedAt = completedAt,
             hiddenFromStatusLists = nn(hiddenFromStatusLists),
-            customLists = nn(customLists?.filter { it.second }?.map { it.first })
+            customLists = nnList(customLists?.filter { it.second }?.map { it.first })
         )
     }
 }
