@@ -304,10 +304,6 @@ dependencies {
     //ml-kit
     implementation("com.google.mlkit:translate:16.1.1")
 
-    //
-    implementation("com.google.android.gms:play-services-wallet:19.1.0")
-
-
     testImplementation("junit:junit:4.12")
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
