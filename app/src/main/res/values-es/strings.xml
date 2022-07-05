@@ -701,4 +701,23 @@ country of origin -->
     <string name="sunday">Domingo</string>
     <string name="monday">Lunes</string>
     <string name="open_in_browser">Abrir en el navegador</string>
+
+    <string name="media_info_add_transparency">Añadir transparencia a información de medios</string>
+    <string name="newest">Más reciente</string>
+    <string name="oldest">Más antiguo</string>
+    <string name="gender">Género</string>
+    <string name="blood_type">Tipo de sangre</string>
+    <string name="birthday">Cumpleaños</string>
+    <string name="age">Edad</string>
+    <string name="death">Fallecimiento</string>
+    <string name="birth">Nacimiento</string>
+    <string name="years_active">Años de actividad</string>
+    <string name="hometown">Ciudad natal</string>
+    <string name="present">Presente</string>
+    <string name="anime_staff_roles">Funciones como staff en anime</string>
+    <string name="manga_staff_roles">Funciones como staff en manga</string>
+    <string name="block">Bloquear</string>
+    <string name="unblock">Desbloquear</string>
+    <string name="block_user_msg">AniLib abrirá el perfil del usuario en el navegador. Es una aplicación de terceros y debido a la limitación de la misma, el bloqueo/desbloqueo de usuarios sólo es posible a través de anilist.co. El usuario debe iniciar sesión para poder ver el botón desplegable en el perfil que está en la parte superior izquierda (para pantallas pequeñas) o en la parte derecha.</string>
+    <string name="support">Apoyar</string>
 </resources>
