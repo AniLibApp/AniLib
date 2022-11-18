@@ -18,11 +18,34 @@ import timber.log.Timber
 
 class MediaListCollectionService(private val graphRepository: BaseGraphRepository) {
 
+    companion object {
+        private val completedOrders = listOf(
+            "Completed",
+            "Completed TV",
+            "Completed Movie",
+            "Completed OVA",
+            "Completed ONA",
+            "Completed TV Short",
+            "Completed Special",
+            "Completed Music",
+            "Completed Manga",
+            "Completed Novel",
+            "Completed One Shot"
+        )
+    }
+
     fun getMediaListCollection(
         field: MediaListCollectionField,
         compositeDisposable: CompositeDisposable,
         resourceCallback: (Resource<MediaListCollectionModel>) -> Unit
     ) {
+        fun getSectionOrder(sectionOrder: List<String>?): List<String> {
+            sectionOrder ?: return emptyList()
+            return sectionOrder.map {
+                if(completedOrders.contains(it)) "Completed" else it
+            }.distinct()
+        }
+
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map {
                 it.data?.mediaListCollection?.let { collection ->
@@ -35,16 +58,15 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                         MediaListOptionModel().also { optionModel ->
                                             optionModel.scoreFormat = option.scoreFormat?.ordinal
                                             optionModel.rowOrder = getRowOrder(option.rowOrder)
-                                            optionModel.rowOrder = getRowOrder(option.rowOrder)
                                             optionModel.animeList =
                                                 option.animeList?.let { type ->
                                                     MediaListOptionTypeModel().also { typeModel ->
                                                         typeModel.customLists =
                                                             type.customLists?.filterNotNull()
                                                         typeModel.sectionOrder =
-                                                            type.sectionOrder?.filterNotNull()
-                                                                ?.toMutableList()
-                                                                ?.also { sectionOrder ->
+                                                            getSectionOrder(type.sectionOrder?.filterNotNull())
+                                                                .toMutableList()
+                                                                .also { sectionOrder ->
                                                                     typeModel.customLists?.forEach { customList ->
                                                                         if (sectionOrder.contains(
                                                                                 customList
@@ -64,9 +86,9 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                                         typeModel.customLists =
                                                             type.customLists?.filterNotNull()
                                                         typeModel.sectionOrder =
-                                                            type.sectionOrder?.filterNotNull()
-                                                                ?.toMutableList()
-                                                                ?.also { sectionOrder ->
+                                                            getSectionOrder(type.sectionOrder?.filterNotNull())
+                                                                .toMutableList()
+                                                                .also { sectionOrder ->
                                                                     typeModel.customLists?.forEach { customList ->
                                                                         if (sectionOrder.contains(
                                                                                 customList
@@ -124,7 +146,7 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                 resourceCallback.invoke(Resource.success(it))
             }, {
                 Timber.e(it)
-                resourceCallback.invoke(Resource.error(it.message , null, it))
+                resourceCallback.invoke(Resource.error(it.message, null, it))
             })
         compositeDisposable.add(disposable)
     }
