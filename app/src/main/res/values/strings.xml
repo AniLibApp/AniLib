@@ -1,3 +1,102 @@
 <resources>
-    <string name="app_name">AniLib Version 3</string>
+    <string name="app_name">AniLib</string>
+
+    <string name="home">Home</string>
+    <string name="list">List</string>
+    <string name="profile">Profile</string>
+    <string name="explore">Explore</string>
+    <string name="season">Season</string>
+    <string name="recommendation">Recommendation</string>
+    <string name="review">Review</string>
+
+    <!--MediaType-->
+    <string name="anime">Anime</string>
+    <string name="manga">Manga</string>
+    <!---->
+
+    <!--MediaFormat-->
+    <string name="tv">Tv</string>
+    <string name="tv_short">Tv Short</string>
+    <string name="movie">Movie</string>
+    <string name="special">Special</string>
+    <string name="ova">Ova</string>
+    <string name="ona">Ona</string>
+    <string name="one_shot">One Shot</string>
+    <string name="novel">Novel</string>
+    <string name="music">Music</string>
+    <string name="unknown">Unknown</string>
+    <!--MediaFormat-->
+
+    <!--MediaSort-->
+    <string name="id">Id</string>
+    <string name="id_desc">Id Desc</string>
+    <string name="title_romaji">Title Romaji</string>
+    <string name="title_romaji_desc">Title Romaji Desc</string>
+    <string name="title_english">Title English</string>
+    <string name="title_english_desc">Title English Desc</string>
+    <string name="title_native">Title Native</string>
+    <string name="title_native_desc">Title Native Desc</string>
+    <string name="type">Type</string>
+    <string name="type_desc">Type Desc</string>
+    <string name="format">Format</string>
+    <string name="format_desc">Format Desc</string>
+    <string name="start_date">Start Date</string>
+    <string name="start_date_desc">Start Date Desc</string>
+    <string name="end_date">End Date</string>
+    <string name="end_date_desc">End Date Desc</string>
+    <string name="score">Score</string>
+    <string name="score_desc">Score Desc</string>
+    <string name="popularity">Popularity</string>
+    <string name="popularity_desc">Popularity Desc</string>
+    <string name="trending">Trending</string>
+    <string name="trending_desc">Trending Desc</string>
+    <string name="episodes">Episodes</string>
+    <string name="episodes_desc">Episodes Desc</string>
+    <string name="duration">Duration</string>
+    <string name="duration_desc">Duration Desc</string>
+    <string name="status">Status</string>
+    <string name="status_desc">Status Desc</string>
+    <string name="chapters">Chapters</string>
+    <string name="chapters_desc">Chapters Desc</string>
+    <string name="volumes">Volumes</string>
+    <string name="volumes_desc">Volumes Desc</string>
+    <string name="updated_at">Updated At</string>
+    <string name="updated_at_desc">Updated At Desc</string>
+    <string name="search_match">Search Match</string>
+    <string name="favourites">Favourites</string>
+    <string name="favourites_desc">Favourites Desc</string>
+    <!--MediaSort-->
+
+    <!--MediaStatus-->
+    <string name="cancelled">Cancelled</string>
+    <string name="hiatus">Hiatus</string>
+    <string name="not_yet_released">Not yet released</string>
+    <string name="releasing">Releasing</string>
+    <string name="finished">Finished</string>
+    <!--MediaStatus-->
+
+    <!--MediaSeason-->
+    <string name="all">All</string>
+    <string name="winter">Winter</string>
+    <string name="spring">Spring</string>
+    <string name="summer">Summer</string>
+    <string name="fall">Fall</string>
+    <!--MediaSeason-->
+
+
+    <!--Media-->
+    <string name="ep_d_s">Ep: %1$s · D: %2$s min</string>
+    <!--Media-->
+
+    <!--App-->
+    <string name="its_empty">Feeling empty</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="retry">Retry</string>
+    <!--App-->
+    <string name="na">\?</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+    <string name="year">Year</string>
+    <string name="none">None</string>
+    <string name="cancel">Cancel</string>
 </resources>

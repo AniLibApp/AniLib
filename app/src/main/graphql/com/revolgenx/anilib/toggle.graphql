@@ -1,0 +1,84 @@
+mutation ToggleFollowMutation($userId:Int){
+    toggleFollow: ToggleFollow(userId:$userId){
+        id
+        isFollowing
+    }
+}
+
+mutation ToggleLikeV2($id:Int, $type:LikeableType){
+    toggleLikeV2: ToggleLikeV2(id:$id, type:$type){
+        ... on TextActivity{
+            id
+            isLiked
+            likeCount
+        }
+
+        ... on ListActivity{
+            id
+            isLiked
+            likeCount
+        }
+
+        ... on MessageActivity{
+            id
+            isLiked
+            likeCount
+        }
+
+        ... on ActivityReply{
+            id
+            isLiked
+            likeCount
+        }
+    }
+}
+
+mutation ToggleActivitySubscriptionMutation($activityId:Int, $subscribe:Boolean){
+    toggleActivitySubscription: ToggleActivitySubscription(activityId:$activityId, subscribe:$subscribe){
+        ... on TextActivity{
+            id
+            isSubscribed
+        }
+        ... on MessageActivity{
+            id
+            isSubscribed
+        }
+        ... on ListActivity{
+            id
+            isSubscribed
+        }
+    }
+}
+
+
+
+mutation ToggleFavouriteMutation($animeId:Int,$mangaId:Int, $characterId:Int
+    ,$staffId:Int, $studioId:Int){
+    toggleFavourite: ToggleFavourite(animeId:$animeId, mangaId:$mangaId, characterId:$characterId, staffId:$staffId, studioId:$studioId){
+        anime{
+            nodes{
+                isFavourite
+            }
+        }
+        manga{
+            nodes{
+                isFavourite
+            }
+        }
+        characters{
+            nodes{
+                isFavourite
+            }
+        }
+        staff{
+            nodes{
+                isFavourite
+            }
+        }
+        studios{
+            nodes{
+                isFavourite
+            }
+        }
+    }
+}

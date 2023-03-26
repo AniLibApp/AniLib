@@ -1,0 +1,52 @@
+query UserFavouriteQuery(
+    $page:Int,
+    $perPage:Int,
+    $id:Int,
+    $name:String,
+    $includeAnime:Boolean!,
+    $includeManga:Boolean!,
+    $includeCharacter:Boolean!,
+    $includeStaff:Boolean!,
+    $includeStudio:Boolean!)  {
+    user: User(id:$id, name:$name){
+        favourites{
+            anime(page:$page,perPage:$perPage) @include(if:$includeAnime){
+                nodes{
+                    ... on Media{
+                        ... media
+                    }
+                }
+            }
+            manga(page:$page,perPage:$perPage) @include(if:$includeManga){
+                nodes{
+                    ... on Media{
+                        ... media
+                    }
+                }
+            }
+            characters(page:$page,perPage:$perPage) @include(if:$includeCharacter){
+                nodes{
+                    ... on Character{
+                        ... narrowCharacterContent
+                    }
+                }
+            }
+            staff(page:$page,perPage:$perPage) @include(if:$includeStaff){
+                nodes{
+                    ... on Staff{
+                        ... narrowStaffContent
+                    }
+                }
+            }
+            studios(page:$page,perPage:$perPage) @include(if:$includeStudio){
+                nodes{
+                    ... on Studio{
+                        ... studioContent
+                    }
+                }
+            }
+        }
+    }
+}
+
+

@@ -1,0 +1,275 @@
+#media list collection query
+query MediaListCollectionQuery(
+    $userId: Int,
+    $userName: String,
+    $type: MediaType,
+) {
+    mediaListCollection: MediaListCollection(userId: $userId, userName: $userName, type: $type, forceSingleCompletedList: true) {
+        lists {
+            name
+            isCustomList
+            isCompletedList: isSplitCompletedList
+            entries {
+                ... mediaListEntry
+                media {
+                    ... media
+                    synonyms
+                }
+            }
+        }
+        user {
+            id
+            name
+            avatar {
+                ... userAvatar
+            }
+            mediaListOptions {
+                scoreFormat
+                rowOrder
+                animeList {
+                    sectionOrder
+                    customLists
+                    splitCompletedSectionByFormat
+                }
+                mangaList {
+                    sectionOrder
+                    customLists
+                    splitCompletedSectionByFormat
+                }
+            }
+        }
+    }
+}
+
+
+query MediaListPageQuery(
+    $page:Int,
+    $perPage:Int,
+    $userId:Int,
+    $userName:String,
+    $type:MediaType,
+    $status:MediaListStatus,
+    $sort:[MediaListSort]
+){
+    user: User(id:$userId
+        , name:$userName){
+        mediaListOptions{
+            scoreFormat
+        }
+    }
+    page: Page(page:$page, perPage:$perPage){
+        mediaList(userId:$userId
+            , userName:$userName
+            , type:$type
+            , status:$status
+            , sort: $sort){
+            id
+            score
+            progress
+            startedAt{
+                ... fuzzyDate
+            }
+            completedAt{
+                ... fuzzyDate
+            }
+
+            media{
+                ... media
+            }
+        }
+    }
+}
+
+query MediaListCollectionIdQuery(
+    $userId:Int,
+    $userName:String,
+    $type:MediaType,
+    $status_in:[MediaListStatus]
+){
+    mediaListCollection: MediaListCollection(
+        userId:$userId
+        , userName:$userName
+        , type:$type
+        , status_in:$status_in
+        , forceSingleCompletedList:true
+    ){
+        lists{
+            entries{
+                media{
+                    id
+                    isAdult
+                }
+            }
+        }
+    }
+}
+
+query AlMediaListCollectionQuery(
+    $userId:Int,
+    $userName:String,
+    $type:MediaType,
+){
+    mediaListCollection: MediaListCollection(
+        userId:$userId
+        , userName:$userName
+        , type:$type
+        , forceSingleCompletedList:true
+    ){
+        lists{
+            entries{
+                id
+                score
+                progress
+                startedAt{
+                    ... fuzzyDate
+                }
+                completedAt{
+                    ... fuzzyDate
+                }
+                updatedAt
+                createdAt
+                user{
+                    mediaListOptions{
+                        scoreFormat
+                    }
+                }
+                media{
+                    id
+                    title{
+                        ... mediaTitle
+                    }
+                    coverImage{
+                        ... mediaCoverImage
+                    }
+                    startDate {
+                        ... fuzzyDate
+                    }
+                    endDate{
+                        ... fuzzyDate
+                    }
+                    bannerImage
+                    synonyms
+                    format
+                    type
+                    status
+                    genres
+                    popularity
+                    averageScore
+                    isAdult
+                    episodes
+                    chapters
+                }
+            }
+        }
+    }
+}
+
+query MediaListEntryQuery(
+    $mediaId: Int,
+    $userId:Int
+) {
+    user: User(id:$userId){
+        id
+        mediaListOptions{
+            scoreFormat
+            animeList{
+                advancedScoring
+                customLists
+                advancedScoringEnabled
+            }
+            mangaList{
+                advancedScoring
+                customLists
+                advancedScoringEnabled
+            }
+        }
+    }
+    media: Media(id: $mediaId) {
+        id
+        title {
+            ... mediaTitle
+        }
+        type
+        status(version: 2)
+        episodes
+        chapters
+        volumes
+        isFavourite
+        mediaListEntry {
+            ... mediaListEntry
+            advancedScores
+        }
+    }
+}
+
+
+
+mutation SaveMediaListEntryMutation(
+    $id:Int, $mediaId:Int,
+    $status:MediaListStatus,
+    $score:Float,
+    $advanceScores:[Float],
+    $progress:Int,
+    $progressVolumes:Int,
+    $private_:Boolean,
+    $repeat:Int,
+    $notes:String,
+    $startedAt:FuzzyDateInput,
+    $completedAt:FuzzyDateInput,
+    $hiddenFromStatusLists:Boolean,
+    $customLists:[String],
+){
+    saveMediaListEntry: SaveMediaListEntry(id:$id,
+        mediaId:$mediaId ,
+        status:$status,
+        score:$score,
+        advancedScores:$advanceScores,
+        progress:$progress,
+        progressVolumes:$progressVolumes,
+        repeat:$repeat,
+        private:$private_,
+        startedAt:$startedAt,
+        completedAt:$completedAt,
+        notes:$notes,
+        hiddenFromStatusLists: $hiddenFromStatusLists,
+        customLists:$customLists,
+    ){
+        ... mediaListEntry
+        media {
+            ... media
+        }
+    }
+}
+
+
+mutation DeleteMediaListEntryMutation($listId:Int){
+    deleteMediaListEntry: DeleteMediaListEntry(id:$listId){
+        deleted
+    }
+}
+
+
+
+fragment mediaListEntry on MediaList {
+    id
+    mediaId
+    status
+    score
+    progress
+    progressVolumes
+    repeat
+    priority
+    private
+    hiddenFromStatusLists
+    customLists
+    notes
+    updatedAt
+    createdAt
+    userId
+    startedAt {
+        ... fuzzyDate
+    }
+    completedAt {
+        ... fuzzyDate
+    }
+}

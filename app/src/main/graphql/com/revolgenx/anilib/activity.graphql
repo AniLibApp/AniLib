@@ -1,0 +1,266 @@
+query ActivityUnionQuery(
+    $page:Int,
+    $perPage:Int,
+    $userId:Int,
+    $mediaId:Int,
+    $type:ActivityType,
+    $type_in:[ActivityType]
+    $isFollowing:Boolean){
+    page: Page(page:$page,
+        perPage:$perPage){
+        activities(userId:$userId, mediaId:$mediaId, type:$type,type_in:$type_in,isFollowing:$isFollowing, sort:[ID_DESC]){
+            __typename
+            ... on TextActivity{
+                id
+                text
+                replyCount
+                likeCount
+                siteUrl
+                isSubscribed
+                createdAt
+                type
+                userId
+                isLiked
+                likes{
+                    ... likeUsers
+                }
+                user{
+                    ... activityUser
+                }
+            }
+            ... on ListActivity{
+                id
+                status
+                progress
+                replyCount
+                likeCount
+                isSubscribed
+                createdAt
+                siteUrl
+                type
+                userId
+                isLiked
+                media{
+                    id
+                    title{
+                        ... mediaTitle
+                    }
+                    coverImage{
+                        ... mediaCoverImage
+                    }
+                    bannerImage
+                    type
+                    isAdult
+                }
+                likes{
+                    ... likeUsers
+                }
+                user{
+                    ... activityUser
+                }
+            }
+            ... on MessageActivity{
+                id
+                recipientId
+                messengerId
+                type
+                replyCount
+                likeCount
+                message
+                isLiked
+                siteUrl
+                isPrivate
+                isSubscribed
+                createdAt
+                messenger{
+                    ... messengerUser
+                }
+                likes{
+                    ... likeUsers
+                }
+            }
+        }
+    }
+
+}
+
+query ActivityInfoQuery($id:Int){
+    activity: Activity(id:$id){
+        ... on TextActivity{
+            id
+            text
+            replyCount
+            likeCount
+            siteUrl
+            isSubscribed
+            createdAt
+            type
+            userId
+            isLiked
+            likes{
+                ... likeUsers
+            }
+            replies{
+                ... replyUsers
+            }
+            user{
+                ... activityUser
+            }
+        }
+        ... on ListActivity{
+            id
+            status
+            progress
+            replyCount
+            likeCount
+            isSubscribed
+            createdAt
+            siteUrl
+            type
+            userId
+            isLiked
+            media{
+                id
+                title{
+                    ... mediaTitle
+                }
+                coverImage{
+                    ... mediaCoverImage
+                }
+                bannerImage
+                type
+            }
+            likes{
+                ... likeUsers
+            }
+            replies{
+                ... replyUsers
+            }
+            user{
+                ... activityUser
+            }
+        }
+        ... on MessageActivity{
+            id
+            recipientId
+            messengerId
+            type
+            replyCount
+            likeCount
+            message
+            isLiked
+            siteUrl
+            isPrivate
+            isSubscribed
+            createdAt
+            messenger{
+                ... messengerUser
+            }
+            likes{
+                ... likeUsers
+            }
+            replies{
+                ... replyUsers
+            }
+        }
+    }
+}
+
+
+#mutation
+mutation DeleteActivityMutation($id:Int){
+    deleteActivity: DeleteActivity(id:$id){
+        deleted
+    }
+}
+
+mutation DeleteActivityReplyMutation($id:Int){
+    deleteActivityReply: DeleteActivityReply(id:$id){
+        deleted
+    }
+}
+
+
+mutation SaveTextActivityMutation($id:Int, $text:String){
+    saveTextActivity: SaveTextActivity(id:$id, text:$text){
+        id
+    }
+}
+
+
+mutation SaveMessageActivityMutation(
+    $id:Int,
+    $recipientId:Int,
+    $message:String,
+    $_private:Boolean
+){
+    saveMessageActivity: SaveMessageActivity(
+        id:$id,
+        recipientId:$recipientId,
+        message:$message,
+        private:$_private){
+        id
+    }
+}
+
+
+mutation SaveActivityReplyMutation($id:Int,$activityId:Int, $text:String){
+    saveActivityReply: SaveActivityReply(id:$id,activityId:$activityId, text:$text){
+        id
+        activityId
+    }
+}
+
+fragment replyUsers on ActivityReply{
+    id
+    activityId
+    userId
+    isLiked
+    likeCount
+    likes{
+        ... likeUsers
+    }
+    text
+    user{
+        ... activityUser
+    }
+    createdAt
+}
+
+fragment activityUser on User{
+    id
+    name
+    avatar{
+        large
+        medium
+    }
+    donatorBadge
+    donatorTier
+}
+
+fragment likeUsers on User{
+    id
+    name
+    avatar{
+        large
+        medium
+    }
+    isFollowing
+    isFollower
+    isBlocked
+}
+
+
+fragment messengerUser on User{
+    id
+    name
+    avatar{
+        large
+        medium
+    }
+    isFollowing
+    isFollower
+    isBlocked
+}
+
+

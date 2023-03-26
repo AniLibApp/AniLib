@@ -1,0 +1,125 @@
+query MediaReviewQuery($mediaId:Int, $page:Int, $perPage:Int){
+    media: Media(id:$mediaId){
+        reviews(page:$page,perPage:$perPage,sort:[RATING_DESC]){
+            edges{
+                node{
+                    id
+                    summary
+                    userRating
+                    rating
+                    ratingAmount
+                    user{
+                        id
+                        avatar{
+                            ... userAvatar
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+query ReviewQuery($reviewId:Int, $mediaId:Int, $userId:Int){
+    review: Review(id:$reviewId,mediaId:$mediaId,userId:$userId){
+        id
+        userId
+        mediaId
+        summary
+        body
+        rating
+        ratingAmount
+        score
+        private
+        userRating
+        createdAt
+        user{
+            id
+            name
+            avatar{
+                ... userAvatar
+            }
+        }
+        media{
+            id
+            title{
+                ... mediaTitle
+            }
+            coverImage{
+                ... mediaCoverImage
+            }
+            type
+            bannerImage
+        }
+    }
+}
+
+query AllReviewQuery($page:Int, $perPage:Int, $sort:[ReviewSort]){
+    page: Page(page:$page, perPage:$perPage){
+        reviews(sort:$sort){
+            id
+            summary
+            rating
+            ratingAmount
+            score
+            createdAt
+            user{
+                id
+                name
+                avatar{
+                    ... userAvatar
+                }
+            }
+            media{
+                id
+                title{
+                    ... mediaTitle
+                }
+                coverImage{
+                    ... mediaCoverImage
+                }
+                type
+                bannerImage
+                isAdult
+            }
+        }
+    }
+}
+
+
+
+mutation DeleteReviewMutation($reviewId:Int){
+    deleteReview: DeleteReview(id:$reviewId){
+        deleted
+    }
+}
+
+mutation SaveReviewMutation(
+    $reviewId:Int,
+    $mediaId:Int,
+    $body:String,
+    $summary:String,
+    $score:Int,
+    $private_:Boolean
+){
+    saveReview: SaveReview(
+        id:$reviewId,
+        mediaId:$mediaId,
+        body:$body,
+        summary:$summary,
+        score:$score,
+        private:$private_){
+        id
+    }
+}
+
+mutation RateReviewMutation($reviewId:Int, $rating:ReviewRating){
+    rateReview: RateReview(reviewId:$reviewId, rating:$rating){
+        id
+        userRating
+        rating
+        ratingAmount
+    }
+}

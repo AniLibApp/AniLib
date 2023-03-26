@@ -1,0 +1,112 @@
+query MediaSearchQuery(
+    $search:String,
+    $page:Int,
+    $perPage:Int,
+    $type:MediaType,
+    $format:MediaFormat,
+    $season:MediaSeason,
+    $seasonYear:Int,
+    $year:String,
+    $yearGreater:FuzzyDateInt,
+    $yearLesser:FuzzyDateInt,
+    $status:MediaStatus,
+    $source:MediaSource,
+    $licensedBy:[String],
+    $genre:[String],
+    $tag:[String],
+    $tagNotIn:[String],
+    $genreNotIn:[String],
+    $sort:[MediaSort] = [POPULARITY_DESC, SCORE_DESC],
+    $country:CountryCode,
+    $isAdult:Boolean,
+    $isLicensed:Boolean,
+    $episodesGreater:Int,
+    $episodesLesser:Int,
+    $chaptersGreater:Int,
+    $chaptersLesser:Int,
+    $volumesGreater:Int,
+    $volumesLesser:Int,
+    $durationLesser:Int,
+    $durationGreater:Int,
+    $minimumTagRank:Int
+){
+    page: Page(page:$page,perPage:$perPage){
+        media(
+            search:$search,
+            type:$type,
+            format: $format,
+            season:$season,
+            seasonYear:$seasonYear,
+            startDate_like: $year,
+            startDate_greater:$yearGreater,
+            startDate_lesser:$yearLesser,
+            status:$status, source:$source,
+            licensedBy_in:$licensedBy,
+            genre_in:$genre,
+            tag_in:$tag,
+            tag_not_in:$tagNotIn,
+            genre_not_in:$genreNotIn,
+            sort:$sort,
+            countryOfOrigin:$country,
+            isAdult:$isAdult,
+            episodes_greater: $episodesGreater,
+            episodes_lesser: $episodesLesser,
+            chapters_greater: $chaptersGreater,
+            chapters_lesser: $chaptersLesser,
+            volumes_greater: $volumesGreater,
+            volumes_lesser: $volumesLesser,
+            duration_greater: $durationGreater,
+            duration_lesser: $durationLesser,
+            isLicensed: $isLicensed,
+            minimumTagRank: $minimumTagRank
+        ){
+            ... on Media{
+                ... media
+            }
+        }
+    }
+}
+
+query CharacterSearchQuery($search:String, $page:Int, $perPage:Int){
+    page: Page(page:$page,perPage:$perPage){
+        characters(search:$search, sort:[FAVOURITES_DESC]){
+            ... narrowCharacterContent
+        }
+    }
+}
+
+query StaffSearchQuery($search:String, $page:Int, $perPage:Int){
+    page: Page(page:$page, perPage:$perPage){
+        staff(search:$search, sort:[FAVOURITES_DESC]){
+            ... narrowStaffContent
+        }
+    }
+}
+
+query StudioSearchQuery(
+    $search:String,
+    $page:Int,
+    $perPage:Int){
+    page: Page(page:$page, perPage:$perPage){
+        studios(search:$search, sort:[FAVOURITES_DESC]){
+            ... studioContent
+        }
+
+    }
+}
+
+
+query UserSearchQuery(
+    $page:Int,
+    $perPage:Int,
+    $search:String){
+    page: Page(page:$page, perPage:$perPage){
+        users(search:$search){
+            id
+            name
+            avatar{
+                ... userAvatar
+            }
+        }
+    }
+}

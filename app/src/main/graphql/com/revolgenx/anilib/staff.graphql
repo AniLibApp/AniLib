@@ -1,0 +1,139 @@
+query MediaStaffQuery($page:Int, $perPage:Int, $mediaId:Int){
+    media: Media(id:$mediaId){
+        staff(page:$page,perPage:$perPage){
+            edges{
+                role
+                node{
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        ... staffImage
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+query StaffQuery($id:Int){
+    staff: Staff(id:$id){
+        id
+        name{
+            full
+            native
+            alternative
+        }
+        image{
+            ... staffImage
+        }
+        description(asHtml:true)
+        favourites
+        isFavourite
+        siteUrl
+        dateOfBirth {
+            ...fuzzyDate
+        }
+        dateOfDeath {
+            ...fuzzyDate
+        }
+        age
+        gender
+        yearsActive
+        homeTown
+        bloodType
+        primaryOccupations
+        languageV2
+    }
+}
+
+query StaffCharacterMediaQuery(
+    $staffId:Int,
+    $page:Int,
+    $perPage:Int,
+    $onList:Boolean,
+    $sort:[MediaSort],
+    $sortCharacter: Boolean!){
+
+    staff: Staff(id:$staffId)@include(if: $sortCharacter){
+        characters(page: $page, perPage: $perPage, sort: [ROLE, ID_DESC]){
+            edges{
+                role
+                node{
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        ... characterImage
+                    }
+                }
+                media{
+                    ... on Media{
+                        ... media
+                    }
+                }
+            }
+        }
+    }
+
+    staff: Staff(id:$staffId)@skip(if: $sortCharacter){
+        characterMedia(page:$page,perPage:$perPage, onList: $onList, sort: $sort){
+            edges{
+                characterRole
+                characters {
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        ... characterImage
+                    }
+                }
+                node{
+                    ... on Media{
+                        ... media
+                    }
+                }
+            }
+        }
+    }
+}
+
+query StaffMediaRoleQuery(
+    $staffId:Int,
+    $page:Int,
+    $perPage:Int,
+    $onList:Boolean,
+    $sort:[MediaSort]){
+    staff: Staff(id:$staffId){
+        staffMedia(page:$page,perPage:$perPage,onList: $onList, sort: $sort){
+            edges{
+                node{
+                    ... on Media{
+                        ... media
+                    }
+                }
+                staffRole
+            }
+        }
+    }
+}
+
+
+fragment narrowStaffContent on Staff{
+    id
+    name{
+        full
+    }
+    image{
+        ... staffImage
+    }
+}
+
+fragment staffImage on StaffImage{
+    medium
+    large
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="media_season">
+        <item>@string/winter</item>
+        <item>@string/spring</item>
+        <item>@string/summer</item>
+        <item>@string/fall</item>
+    </string-array>
+
+    <string-array name="media_status">
+        <item>@string/finished</item>
+        <item>@string/releasing</item>
+        <item>@string/not_yet_released</item>
+        <item>@string/cancelled</item>
+        <item>@string/hiatus</item>
+    </string-array>
+
+    <string-array name="media_sort">
+        <item>@string/id</item>
+        <item>@string/title_romaji</item>
+        <item>@string/title_english</item>
+        <item>@string/title_native</item>
+        <item>@string/type</item>
+        <item>@string/format</item>
+        <item>@string/start_date</item>
+        <item>@string/end_date</item>
+        <item>@string/score</item>
+        <item>@string/popularity</item>
+        <item>@string/trending</item>
+        <item>@string/episodes</item>
+        <item>@string/duration</item>
+        <item>@string/status</item>
+        <item>@string/chapters</item>
+        <item>@string/volumes</item>
+        <item>@string/updated_at</item>
+        <item>@string/favourites</item>
+    </string-array>
+</resources>

@@ -1,0 +1,117 @@
+query MediaCharacterQuery(
+    $page:Int,
+    $perPage:Int,
+    $mediaId:Int,
+    $language:StaffLanguage){
+    media: Media(id:$mediaId){
+        characters(page:$page, perPage:$perPage, sort:[ROLE,ID]){
+            edges{
+                id
+                role
+                node{
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        ... characterImage
+                    }
+                    siteUrl
+                }
+                voiceActors(language:$language){
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        ... staffImage
+                    }
+                    languageV2
+                }
+
+            }
+
+        }
+    }
+}
+
+query CharacterQuery($characterId:Int){
+    character: Character(id:$characterId){
+        id
+        name{
+            full
+            native
+            alternative
+        }
+        image{
+            ... characterImage
+        }
+        isFavourite
+        siteUrl
+        favourites
+        dateOfBirth {
+            ...fuzzyDate
+        }
+        gender
+        age
+        bloodType
+        description(asHtml:true)
+    }
+}
+
+query CharacterMediaQuery(
+    $characterId:Int,
+    $page:Int,
+    $perPage:Int,
+    $onList:Boolean,
+    $sort:[MediaSort]){
+    character: Character(id:$characterId){
+        media(page:$page, perPage:$perPage, onList: $onList, sort: $sort){
+            nodes{
+                ... on Media{
+                    ... media
+                }
+            }
+        }
+    }
+}
+
+query CharacterActorQuery($characterId:Int ){
+    character: Character(id:$characterId){
+        media(sort:[ID_DESC]){
+            edges{
+                id
+                node{
+                    id
+                }
+                voiceActors(sort:[LANGUAGE]){
+                    id
+                    name{
+                        full
+                    }
+                    image{
+                        ... staffImage
+                    }
+                    languageV2
+                }
+            }
+        }
+    }
+}
+
+fragment narrowCharacterContent on Character{
+    id
+    name{
+        full
+    }
+    image{
+        ... characterImage
+    }
+}
+
+
+
+fragment characterImage on CharacterImage{
+    medium
+    large
+}

@@ -1,0 +1,52 @@
+query MediaRecommendationQuery(
+    $mediaId:Int,
+    $page:Int,
+    $perPage:Int,
+    $sort:[RecommendationSort],
+    $isAdult:Boolean){
+    media: Media(id:$mediaId, isAdult:$isAdult){
+        recommendations(page:$page, perPage:$perPage,sort:$sort){
+            nodes{
+                id
+                rating
+                userRating
+                media{
+                    id
+                }
+                mediaRecommendation{
+                    ... media
+                }
+            }
+        }
+    }
+}
+
+query RecommendationQuery(
+    $page:Int,
+    $perPage:Int,
+    $onList:Boolean,
+    $sort:[RecommendationSort]){
+    page: Page(page:$page, perPage:$perPage){
+        recommendations(onList:$onList, sort:$sort){
+            id
+            rating
+            userRating
+            media{
+                ... media
+            }
+            mediaRecommendation{
+                ... media
+            }
+        }
+    }
+}
+
+
+#mutation
+mutation SaveRecommendationMutation($mediaId:Int, $mediaRecommendationId:Int, $rating:RecommendationRating){
+    saveRecommendation: SaveRecommendation(mediaId:$mediaId, mediaRecommendationId:$mediaRecommendationId, rating:$rating){
+        id
+        userRating
+        rating
+    }
+}

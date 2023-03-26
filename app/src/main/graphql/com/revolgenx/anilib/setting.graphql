@@ -1,0 +1,63 @@
+query UserNotificationSettingQuery($id:Int, $name:String){
+    user: User(id:$id, name:$name){
+        options{
+            notificationOptions{
+                type
+                enabled
+            }
+        }
+    }
+}
+
+query UserMediaOptionsQuery($id:Int, $name:String){
+    user: User(id:$id, name:$name){
+        options{
+            ... userMediaOptions
+        }
+    }
+}
+
+
+query UserMediaListOptionsQuery($id:Int, $name:String){
+    user: User(id:$id, name:$name){
+        mediaListOptions{
+            animeList {
+                splitCompletedSectionByFormat
+            }
+            mangaList {
+                splitCompletedSectionByFormat
+            }
+            ... userMediaListOptions
+        }
+    }
+}
+
+
+mutation UserMediaSettingMutation(
+    $title:UserTitleLanguage,
+    $airingNotification:Boolean){
+    updateUser: UpdateUser(titleLanguage:$title, airingNotifications:$airingNotification){
+        id
+    }
+}
+
+mutation UserMediaListSettingMutation(
+    $animeListOptions:MediaListOptionsInput,
+    $mangaListOptions:MediaListOptionsInput,
+    $scoreFormat:ScoreFormat,
+    $rowOrder:String){
+    updateUser: UpdateUser(animeListOptions:$animeListOptions,
+        mangaListOptions: $mangaListOptions,
+        scoreFormat:$scoreFormat,
+        rowOrder:$rowOrder){
+        id
+    }
+}
+
+mutation UserNotificationSettingMutation(
+    $notificationOptions:[NotificationOptionInput]){
+    updateUser: UpdateUser(notificationOptions:$notificationOptions){
+        id
+    }
+}
+
