@@ -5,6 +5,9 @@ query MediaCharacterQuery(
     $language:StaffLanguage){
     media: Media(id:$mediaId){
         characters(page:$page, perPage:$perPage, sort:[ROLE,ID]){
+            pageInfo @nonnull{
+                ... pageInfo
+            }
             edges{
                 id
                 role

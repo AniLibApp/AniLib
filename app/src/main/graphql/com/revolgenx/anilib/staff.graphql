@@ -1,7 +1,11 @@
 query MediaStaffQuery($page:Int, $perPage:Int, $mediaId:Int){
     media: Media(id:$mediaId){
         staff(page:$page,perPage:$perPage){
+            pageInfo @nonnull{
+                ... pageInfo
+            }
             edges{
+                id
                 role
                 node{
                     id

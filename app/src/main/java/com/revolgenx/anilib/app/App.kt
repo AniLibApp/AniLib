@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.app
 
 import android.app.Application
+import android.content.Context
 import com.facebook.common.logging.FLog
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory
@@ -11,8 +12,10 @@ import com.revolgenx.anilib.common.data.repository.repositoryModules
 import com.revolgenx.anilib.common.data.service.serviceModules
 import com.revolgenx.anilib.common.data.store.storeModules
 import com.revolgenx.anilib.common.ui.screen.viewModelModules
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
@@ -28,6 +31,10 @@ class App : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         setupFresco()
+
+        //move to splash screen
+        AlMarkwonFactory.init(this)
+
         startKoin {
             androidContext(this@App)
             modules(koinMoules)

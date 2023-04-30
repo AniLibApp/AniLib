@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,10 +23,27 @@ import com.revolgenx.anilib.R
 
 @Composable
 fun EmptyScreen() {
+    EmptyScreenLayout(modifier = Modifier.fillMaxSize())
+}
+
+@Composable
+fun LazyItemScope.EmptyScreen() {
+    EmptyScreenLayout(modifier = Modifier.fillParentMaxSize())
+}
+
+@Composable
+fun EmptySection() {
+    EmptyScreenLayout(modifier = Modifier.fillMaxWidth())
+}
+
+@Composable
+fun EmptyScreenLayout(
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier,
         contentAlignment = Alignment.Center
-        ){
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally

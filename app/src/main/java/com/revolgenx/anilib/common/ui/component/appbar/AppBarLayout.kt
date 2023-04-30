@@ -35,7 +35,6 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
-import androidx.compose.ui.unit.dp
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -44,7 +43,7 @@ import kotlin.math.roundToInt
 fun AppBarLayout(
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    colors: AppBarLayoutColors,
+    colors: AppBarLayoutColors = AlAppBarLayoutDefaults.appBarLayoutColors(),
     containerHeight: Dp = AppBarHeight,
     content: @Composable () -> Unit
 ) {
@@ -120,7 +119,7 @@ fun TopAppBarContent(windowInsets: WindowInsets, heightPx: Float, content: @Comp
 }
 
 @ExperimentalMaterial3Api
-object AppBarLayoutDefaults {
+object AlAppBarLayoutDefaults {
     @Composable
     fun appBarLayoutColors(
         containerColor: Color = MaterialTheme.colorScheme.surface,

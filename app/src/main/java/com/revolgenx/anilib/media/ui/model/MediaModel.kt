@@ -2,16 +2,35 @@ package com.revolgenx.anilib.media.ui.model
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
+import com.revolgenx.anilib.MediaOverViewQuery
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.airing.ui.model.AiringAtModel
+import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
+import com.revolgenx.anilib.airing.ui.model.TimeUntilAiringModel
+import com.revolgenx.anilib.character.ui.model.CharacterConnectionModel
+import com.revolgenx.anilib.character.ui.model.CharacterEdgeModel
+import com.revolgenx.anilib.character.ui.model.CharacterImageModel
+import com.revolgenx.anilib.character.ui.model.CharacterModel
+import com.revolgenx.anilib.character.ui.model.CharacterNameModel
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
 import com.revolgenx.anilib.fragment.Media
+import com.revolgenx.anilib.list.ui.model.MediaListModel
+import com.revolgenx.anilib.staff.ui.model.StaffModel
+import com.revolgenx.anilib.studios.ui.model.StudioConnectionModel
+import com.revolgenx.anilib.studios.ui.model.StudioEdgeModel
+import com.revolgenx.anilib.studios.ui.model.StudioModel
 import com.revolgenx.anilib.type.MediaFormat
+import com.revolgenx.anilib.type.MediaRelation
 import com.revolgenx.anilib.type.MediaSeason
 import com.revolgenx.anilib.type.MediaSort
+import com.revolgenx.anilib.type.MediaSource
 import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 data class MediaModel(
     val id: Int = -1,
@@ -20,8 +39,8 @@ data class MediaModel(
     val chapters: Int? = null,
 //    val character: CharacterModel? = null,
     val characterRole: Int? = null,
-//    val characters: CharacterConnectionModel? = null,
-//    val staff: StaffModel? = null,
+    val characters: CharacterConnectionModel? = null,
+    val staff: StaffModel? = null,
 //    val staffs: List<StaffModel>? = null,
     val staffRole: String? = null,
 //    val staffs: StaffConnectionModel? = null,
@@ -29,9 +48,8 @@ data class MediaModel(
     val coverImage: MediaCoverImageModel? = null,
     val description: String? = null,
     val duration: Int? = null,
-//    val endDate: FuzzyDateModel? = null,
     val episodes: Int? = null,
-//    val externalLinks: List<MediaExternalLinkModel>? = null,
+    val externalLinks: List<MediaExternalLinkModel>? = null,
     val favourites: Int? = null,
     val format: MediaFormat? = null,
     val genres: List<String>? = null,
@@ -40,35 +58,35 @@ data class MediaModel(
     val isAdult: Boolean = false,
     val isFavourite: Boolean = false,
     val meanScore: Int? = null,
-//    val mediaListEntry: MediaListModel? = null,
-//    val nextAiringEpisode: AiringScheduleModel? = null,
+    val mediaListEntry: MediaListModel? = null,
+    val nextAiringEpisode: AiringScheduleModel? = null,
     val popularity: Int? = null,
 //    val rankings: List<MediaRankModel>? = null,
 //    val recommendations: RecommendationConnectionModel? = null,
-//    val relations: MediaConnectionModel? = null,
+    val relations: MediaConnectionModel? = null,
 //    val reviews: ReviewConnection? = null,
     val season: MediaSeason? = null,
     val seasonInt: Int? = null,
     val seasonYear: Int? = null,
     val siteUrl: String? = null,
-    val source: Int? = null,
+    val source: MediaSource? = null,
     val startDate: FuzzyDateModel? = null,
     val endDate: FuzzyDateModel? = null,
 //    val stats: MediaStatsModel? = null,
     val status: MediaStatus? = null,
 //    val streamingEpisodes: List<MediaStreamingEpisodeModel>? = null,
-//    val studios: StudioConnectionModel? = null,
+    val studios: StudioConnectionModel? = null,
 //    val studios: List<StudioModel>? = null,
     val synonyms: List<String>? = null,
-//    val tags: List<MediaTagModel>? = null,
+    val tags: List<MediaTagModel>? = null,
     val title: MediaTitleModel? = null,
-//    val trailer: MediaTrailerModel? = null,
+    val trailer: MediaTrailerModel? = null,
     val trending: Int? = null,
 //    val trends: MediaTrendConnectionModel? = null,
     val type: MediaType? = null,
     val updatedAt: Int? = null,
     val volumes: Int? = null,
-): BaseModel(id) {
+) : BaseModel(id) {
     val isAnime get() = type == MediaType.ANIME
 }
 
@@ -94,16 +112,161 @@ fun Media.toModel(): MediaModel {
         seasonYear = seasonYear,
         startDate = startDate?.fuzzyDate?.toModel(),
         endDate = endDate?.fuzzyDate?.toModel(),
-        bannerImage = bannerImage ?: coverImage?.mExtraLarge,
+        bannerImage = bannerImage ?: coverImage?.extraLargeImage,
         isAdult = isAdult ?: false,
-//    mediaListEntry = mediaListEntry?.let { list ->
-//        MediaListModel().also { listModel ->
-//            listModel.progress = list.progress ?: 0
-//            listModel.status = list.status?.ordinal
-//        }
-//    }
+        mediaListEntry = mediaListEntry?.let { list ->
+            MediaListModel(
+                progress = list.progress ?: 0,
+                status = list.status
+            )
+        }
     )
 }
+
+fun MediaOverViewQuery.Media.toModel(): MediaModel {
+    val coverImage = coverImage?.mediaCoverImage?.toModel()
+    return MediaModel(
+        id = id,
+        title = title?.mediaTitle?.toModel(),
+        coverImage = coverImage,
+        bannerImage = bannerImage ?: coverImage?.large,
+        siteUrl = siteUrl,
+        startDate = startDate?.fuzzyDate?.toModel(),
+        endDate = endDate?.fuzzyDate?.toModel(),
+        genres = genres?.filterNotNull(),
+        episodes = episodes,
+        chapters = chapters,
+        volumes = volumes,
+        averageScore = averageScore,
+        meanScore = meanScore,
+        duration = duration,
+        status = status,
+        format = format,
+        type = type,
+        isAdult = isAdult ?: false,
+        popularity = popularity,
+        favourites = favourites,
+        season = season,
+        seasonYear = seasonYear,
+        description = description,
+        source = source,
+        hashtag = hashtag,
+        synonyms = synonyms?.filterNotNull(),
+        isFavourite = isFavourite,
+        mediaListEntry = mediaListEntry?.let {
+            MediaListModel(it.id, status = it.status)
+        },
+        nextAiringEpisode = nextAiringEpisode?.let {
+            AiringScheduleModel(
+                episode = it.episode,
+                timeUntilAiring = it.timeUntilAiring,
+                timeUntilAiringModel =
+                TimeUntilAiringModel(it.timeUntilAiring.toLong()),
+                airingAt = it.airingAt,
+                airingAtModel = AiringAtModel(
+                    LocalDateTime.ofInstant(
+                        Instant.ofEpochSecond(
+                            it.airingAt.toLong()
+                        ), ZoneOffset.systemDefault()
+                    )
+                )
+            )
+        },
+        relations = relations?.let {
+            MediaConnectionModel(
+                edges = it.edges?.map { edge ->
+                    MediaEdgeModel(
+                        relationType = edge?.relationType,
+                        node = edge?.node?.let { node ->
+                            val nodeCoverImage = node.coverImage?.mediaCoverImage?.toModel()
+                            MediaModel(
+                                id = node.id,
+                                title = node.title?.mediaTitle?.toModel(),
+                                format = node.format,
+                                type = node.type,
+                                status = node.status,
+                                averageScore = node.averageScore,
+                                seasonYear = node.seasonYear,
+                                coverImage = nodeCoverImage,
+                                bannerImage = node.bannerImage ?: nodeCoverImage?.extraLargeImage
+                            )
+                        }
+                    )
+                }?.sortedWith { a, b ->
+                    val mA = a.relationType ?: MediaRelation.UNKNOWN__
+                    val mB = b.relationType ?: MediaRelation.UNKNOWN__
+                    if (mA.ordinal < 10 && mB.ordinal < 10) {
+                        mA.ordinal - mB.ordinal
+                    } else {
+                        if (mA.ordinal > 9) {
+                            -1
+                        } else {
+                            1
+                        }
+                    }
+                }
+            )
+        },
+
+        externalLinks = externalLinks?.mapNotNull { linkData ->
+            linkData?.let {
+                MediaExternalLinkModel(it.id, it.site, it.url)
+            }
+        },
+
+        tags = tags?.mapNotNull { tagData ->
+            tagData?.let {
+                MediaTagModel(
+                    name = it.name,
+                    description = it.description,
+                    category = it.category,
+                    isMediaSpoilerTag = it.isMediaSpoiler == true,
+                    rank = it.rank,
+                    isAdult = it.isAdult == true
+                )
+            }
+        },
+
+        trailer = trailer?.let {
+            MediaTrailerModel(it.id, it.site, it.thumbnail)
+        },
+
+        studios = studios?.let {
+            StudioConnectionModel(
+                edges = it.edges?.map {
+                    StudioEdgeModel(
+                        isMain = it?.isMain == true,
+                        node = it?.node?.let { node ->
+                            StudioModel(node.id, studioName = node.name)
+                        }
+                    )
+                }
+            )
+        },
+
+        characters = characters?.let {
+            CharacterConnectionModel(
+                edges = it.edges?.map { edge ->
+                    CharacterEdgeModel(
+                        role = edge?.role,
+                        node = edge?.node?.let { node ->
+                            CharacterModel(
+                                id = node.id,
+                                name = node.name?.let {
+                                    CharacterNameModel(it.full)
+                                },
+                                image = node.image?.let {
+                                    CharacterImageModel(it.medium, it.large)
+                                }
+                            )
+                        }
+                    )
+                }
+            )
+        }
+    )
+}
+
 
 @StringRes
 fun MediaFormat?.toStringRes(): Int {
@@ -155,7 +318,6 @@ fun MediaStatus?.toColor(): Color {
 }
 
 
-
 @StringRes
 fun MediaSort.toStringRes(): Int {
     return when (this) {
@@ -199,4 +361,9 @@ fun MediaSort.toStringRes(): Int {
         MediaSort.UNKNOWN__ -> R.string.unknown
     }
 }
+
+
+fun Int.toMediaStatus() = MediaStatus.values().getOrNull(this)
+fun Int.toMediaSeason() = MediaSeason.values().getOrNull(this)
+fun Int.toMediaFormat() = MediaFormat.values().getOrNull(this)
 

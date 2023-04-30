@@ -7,6 +7,8 @@ import android.os.Parcelable
 import android.util.Log
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.grid.LazyGridItemScope
+import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,48 +26,25 @@ import androidx.paging.Logger
 import androidx.paging.NullPaddedList
 import androidx.paging.PagingData
 import androidx.paging.PagingDataDiffer
-import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import androidx.paging.compose.itemsIndexed
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
 
-/**
- * The class responsible for accessing the data from a [Flow] of [PagingData].
- * In order to obtain an instance of [LazyPagingItems] use the [collectAsLazyPagingItems] extension
- * method of [Flow] with [PagingData].
- * This instance can be used by the [items] and [itemsIndexed] methods inside [LazyListScope] to
- * display data received from the [Flow] of [PagingData].
- *
- * @param T the type of value used by [PagingData].
- */
 public class LazyPagingItems<T : Any> internal constructor(
-    /**
-     * the [Flow] object which contains a stream of [PagingData] elements.
-     */
     internal val flow: Flow<PagingData<T>>
 ) {
     private val mainDispatcher = Dispatchers.Main
 
-    /**
-     * Contains the immutable [ItemSnapshotList] of currently presented items, including any
-     * placeholders if they are enabled.
-     * Note that similarly to [peek] accessing the items in a list will not trigger any loads.
-     * Use [get] to achieve such behavior.
-     */
     var itemSnapshotList by mutableStateOf(
         ItemSnapshotList<T>(0, 0, emptyList())
     )
         private set
 
-    /**
-     * The number of items which can be accessed.
-     */
     val itemCount: Int get() = itemSnapshotList.size
 
     private val differCallback: DifferCallback = object : DifferCallback {
@@ -297,6 +276,26 @@ public fun <T : Any> LazyListScope.items(
     items: LazyPagingItems<T>,
     key: ((item: T) -> Any)? = null,
     itemContent: @Composable LazyItemScope.(value: T?) -> Unit
+) {
+    items(
+        count = items.itemCount,
+        key = if (key == null) null else { index ->
+            val item = items.peek(index)
+            if (item == null) {
+                PagingPlaceholderKey(index)
+            } else {
+                key(item)
+            }
+        }
+    ) { index ->
+        itemContent(items[index])
+    }
+}
+
+public fun <T : Any> LazyGridScope.items(
+    items: LazyPagingItems<T>,
+    key: ((item: T) -> Any)? = null,
+    itemContent: @Composable LazyGridItemScope.(value: T?) -> Unit
 ) {
     items(
         count = items.itemCount,

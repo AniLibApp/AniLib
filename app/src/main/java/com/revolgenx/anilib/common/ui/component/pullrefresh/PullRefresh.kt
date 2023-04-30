@@ -10,17 +10,6 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.platform.inspectable
 import androidx.compose.ui.unit.Velocity
 
-/**
- * PullRefresh modifier to be used in conjunction with [PullRefreshState]. Provides a connection
- * to the nested scroll system. Based on Android's SwipeRefreshLayout.
- *
- * @sample androidx.compose.material.samples.PullRefreshSample
- *
- * @param state The [PullRefreshState] associated with this pull-to-refresh component.
- * The state will be updated by this modifier.
- * @param enabled If not enabled, all scroll delta and fling velocity will be ignored.
- */
-// TODO(b/244423199): Move pullRefresh into its own material library similar to material-ripple.
 fun Modifier.pullRefresh(
     state: PullRefreshState,
     enabled: Boolean = true
@@ -32,21 +21,6 @@ fun Modifier.pullRefresh(
     Modifier.pullRefresh(state::onPull, { state.onRelease() }, enabled)
 }
 
-/**
- * A modifier for building pull-to-refresh components. Provides a connection to the nested scroll
- * system.
- *
- * @sample androidx.compose.material.samples.CustomPullRefreshSample
- *
- * @param onPull Callback for dispatching vertical scroll delta, takes float pullDelta as argument.
- * Positive delta (pulling down) is dispatched only if the child does not consume it (i.e. pulling
- * down despite being at the top of a scrollable component), whereas negative delta (swiping up) is
- * dispatched first (in case it is needed to push the indicator back up), and then whatever is not
- * consumed is passed on to the child.
- * @param onRelease Callback for when drag is released, takes float flingVelocity as argument.
- * @param enabled If not enabled, all scroll delta and fling velocity will be ignored and neither
- * [onPull] nor [onRelease] will be invoked.
- */
 fun Modifier.pullRefresh(
     onPull: (pullDelta: Float) -> Float,
     onRelease: suspend (flingVelocity: Float) -> Unit,

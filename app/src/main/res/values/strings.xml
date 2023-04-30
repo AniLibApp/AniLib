@@ -88,6 +88,12 @@
     <string name="ep_d_s">Ep: %1$s · D: %2$s min</string>
     <!--Media-->
 
+    <!--Character Role-->
+    <string name="main">Main</string>
+    <string name="supporting">Supporting</string>
+    <string name="background">Background</string>
+    <!--Character Role-->
+
     <!--App-->
     <string name="its_empty">Feeling empty</string>
     <string name="something_went_wrong">Something went wrong</string>
@@ -99,4 +105,16 @@
     <string name="year">Year</string>
     <string name="none">None</string>
     <string name="cancel">Cancel</string>
+    <string name="overview">Overview</string>
+    <string name="character">Character</string>
+    <string name="watch">Watch</string>
+    <string name="staff">Staff</string>
+    <string name="media">Media</string>
+    <string name="voices_roles">VoiceRoles</string>
+    <string name="about">About</string>
+    <string name="day_range_string">%1$s - %2$s</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="more">More</string>
+    <string name="date_format_pattern">MM/dd/yyyy</string>
 </resources>

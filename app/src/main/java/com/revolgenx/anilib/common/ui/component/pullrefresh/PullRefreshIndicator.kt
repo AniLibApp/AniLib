@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -58,9 +59,11 @@ fun PullRefreshIndicator(
     contentColor: Color = contentColorFor(backgroundColor),
     scale: Boolean = false
 ) {
-    val showElevation by remember(refreshing, state) {
+    val isVisible by remember(refreshing, state) {
         derivedStateOf { refreshing || state.position > 0.5f }
     }
+
+    if (!isVisible) return
 
     Surface(
         modifier = modifier
@@ -68,7 +71,7 @@ fun PullRefreshIndicator(
             .pullRefreshIndicatorTransform(state, scale),
         shape = SpinnerShape,
         color = backgroundColor,
-        shadowElevation = if (showElevation) Elevation else 0.dp,
+        shadowElevation = Elevation,
     ) {
         Crossfade(
             targetState = refreshing,

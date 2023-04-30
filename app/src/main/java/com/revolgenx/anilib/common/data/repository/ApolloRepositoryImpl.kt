@@ -4,13 +4,15 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Mutation
 import com.apollographql.apollo3.api.Query
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class ApolloRepositoryImpl(private val apolloClient: ApolloClient): ApolloRepository {
-    override suspend fun <D : Query.Data> query(query: Query<D>): ApolloResponse<D> {
-        return apolloClient.query(query).execute()
+class ApolloRepositoryImpl(private val apolloClient: ApolloClient) : ApolloRepository {
+    override fun <D : Query.Data> query(query: Query<D>): Flow<ApolloResponse<D>> {
+        return apolloClient.query(query).toFlow()
     }
 
-    override suspend fun <D : Mutation.Data> mutation(mutation: Mutation<D>): ApolloResponse<D> {
-        return apolloClient.mutation(mutation).execute()
+    override fun <D : Mutation.Data> mutation(mutation: Mutation<D>): Flow<ApolloResponse<D>> {
+        return apolloClient.mutation(mutation).toFlow()
     }
 }

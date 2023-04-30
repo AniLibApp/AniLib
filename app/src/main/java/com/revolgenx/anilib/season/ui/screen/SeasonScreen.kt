@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.season.ui.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,88 +22,90 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.koinViewModel
 import com.revolgenx.anilib.common.ext.naDrawableRes
 import com.revolgenx.anilib.common.ext.naStringRes
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
-import com.revolgenx.anilib.common.ui.compose.paging.PagingLazyColumn
+import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
+import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
+import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
-import com.revolgenx.anilib.common.ui.screen.LoadingScreen
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
-import com.revolgenx.anilib.common.ui.state.InitializationState
-import com.revolgenx.anilib.common.ui.theme.AppTheme
+import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
+import com.revolgenx.anilib.media.ui.model.title
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toDrawableRes
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.screen.MediaFilterBottomSheetScreen
-import com.revolgenx.anilib.media.ui.screen.MediaFilterBottomSheetViewModel
-import com.revolgenx.anilib.season.ui.model.SeasonFilterUiModel
+import com.revolgenx.anilib.media.ui.screen.MediaFilterModalBottomSheet
+import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.type.MediaStatus
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SeasonScreen() {
     val viewModel = koinViewModel<SeasonViewModel>()
-    when (viewModel.initializationState.value) {
-        InitializationState.Completed -> {
-            BottomBarLayout(bottomBar = {
-                val seasonFilterModel = viewModel.seasonFilterUiModel
-                val bottomSheetNavigator = LocalBottomSheetNavigator.current
+    val navigator = LocalMainNavigator.current
+    val openBottomSheet = rememberSaveable { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
 
-                SeasonFilter(
-                    filterModel = seasonFilterModel.value,
-                    previous = {
-                        viewModel.previousSeason()
-                    },
-                    next = {
-                        viewModel.nextSeason()
-                    },
-                    filter = {
-                        val mediaFilterBottomSheetScreen = MediaFilterBottomSheetScreen()
-                        val mediaFilterBottomSheetViewModel = mediaFilterBottomSheetScreen.getLifecycleOwner().koinViewModel<MediaFilterBottomSheetViewModel>()
-                        bottomSheetNavigator.show(mediaFilterBottomSheetScreen)
-                    }
-                )
-            }) {
-                val pagingItems = viewModel.collectAsLazyPagingItems()
-                PagingLazyColumn(
-                    items = pagingItems,
-                    onRefresh = {
-                        viewModel.refresh()
-                    }
-                ) { media ->
-                    media ?: return@PagingLazyColumn
-                    SeasonItem(media)
-                }
+    BottomBarLayout(bottomBar = {
+        val filter = viewModel.field
+        SeasonFilter(
+            filter = filter,
+            onPrevious = {
+                viewModel.previousSeason()
+            },
+            onNext = {
+                viewModel.nextSeason()
+            },
+            onFilter = {
+                openBottomSheet.value = true
             }
-        }
+        )
+    }) {
+        val pagingItems = viewModel.collectAsLazyPagingItems()
 
-        InitializationState.Initializing -> {
-            LoadingScreen()
+        LazyPagingList(
+            items = pagingItems,
+            onRefresh = {
+                viewModel.refresh()
+            }
+        ) { media ->
+            media ?: return@LazyPagingList
+            SeasonItem(media, navigator)
         }
     }
+
+    MediaFilterModalBottomSheet(openBottomSheet, bottomSheetState)
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SeasonItem(
     media: MediaModel = MediaModel(
@@ -112,14 +115,18 @@ private fun SeasonItem(
         status = MediaStatus.FINISHED,
         startDate = FuzzyDateModel(1, 12, 2022),
         episodes = 33,
-        duration = 24
-    )
+        duration = 24,
+    ),
+    navigator: Navigator
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
             .padding(8.dp)
+            .clickable {
+                navigator.push(MediaScreen(media.id, media.type))
+            }
     ) {
         Row {
             FrescoImage(
@@ -139,12 +146,14 @@ private fun SeasonItem(
                     .padding(PaddingValues(horizontal = 8.dp, vertical = 4.dp)),
                 verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
-                Text(
-                    media.title?.title.naText(),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
-                    style = MaterialTheme.typography.titleMedium,
-                )
+                MediaTitleType { type ->
+                    Text(
+                        media.title?.title(type).naText(),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
 
                 Row(
                     modifier = Modifier.padding(PaddingValues(vertical = 2.dp)),
@@ -191,10 +200,10 @@ private fun SeasonItem(
 
 @Composable
 private fun SeasonFilter(
-    filterModel: SeasonFilterUiModel = SeasonFilterUiModel(),
-    next: () -> Unit,
-    previous: () -> Unit,
-    filter: () -> Unit
+    filter: MediaField = MediaField(),
+    onNext: () -> Unit,
+    onPrevious: () -> Unit,
+    onFilter: () -> Unit
 ) {
     ElevatedCard(
         modifier = Modifier
@@ -214,20 +223,20 @@ private fun SeasonFilter(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 val season =
-                    stringResource(id = filterModel.season?.toStringRes().naStringRes())
+                    stringResource(id = filter.season?.toStringRes().naStringRes())
                 Icon(
                     modifier = Modifier.size(28.dp),
                     painter = painterResource(
-                        id = filterModel.season?.toDrawableRes().naDrawableRes()
+                        id = filter.season?.toDrawableRes().naDrawableRes()
                     ), contentDescription = season
                 )
                 Text(
                     season,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    filterModel.seasonYear.toString(),
-                    style = MaterialTheme.typography.titleLarge
+                    filter.seasonYear.toString(),
+                    style = MaterialTheme.typography.titleMedium
                 )
             }
 
@@ -235,7 +244,7 @@ private fun SeasonFilter(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 IconButton(
-                    onClick = { previous() }) {
+                    onClick = { onPrevious() }) {
                     Icon(
                         modifier = Modifier.size(iconSize),
                         imageVector = Icons.Rounded.KeyboardArrowLeft,
@@ -243,7 +252,7 @@ private fun SeasonFilter(
                     )
                 }
                 IconButton(
-                    onClick = { next() }) {
+                    onClick = { onNext() }) {
                     Icon(
                         modifier = Modifier.size(iconSize),
                         imageVector = Icons.Rounded.KeyboardArrowRight,
@@ -251,7 +260,7 @@ private fun SeasonFilter(
                     )
                 }
                 IconButton(
-                    onClick = { filter() }) {
+                    onClick = { onFilter() }) {
                     Icon(
                         modifier = Modifier.size(iconSize),
                         painter = painterResource(id = R.drawable.ic_filter),

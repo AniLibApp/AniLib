@@ -3,6 +3,7 @@ plugins {
     id "org.jetbrains.kotlin.android"
     id "org.jetbrains.kotlin.plugin.serialization"
     id "com.apollographql.apollo3" version "3.7.3"
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -99,18 +100,20 @@ android {
 }
 
 ext{
-    compose = "1.4.0-alpha04"
-    material = "1.1.0-alpha04"
+    compose = "1.5.0-alpha03"
+    material = "1.1.0-rc01"
     accompanist = "0.29.0-alpha"
-    voyager = "1.0.0-rc03"
+    voyager = "1.0.0-rc04"
     timber = "5.0.1"
     koin = "3.3.2"
     koinCompose = "3.4.1"
     desugar = "1.1.5"
-    landscapist = "2.1.2"
+    landscapist = "2.1.11"
+    fresco = "2.6.0"
     paging = "3.2.0-alpha03"
     pagingCompose = "1.0.0-alpha17"
     dataStore = "1.0.0"
+    markwon = "4.6.2"
 }
 
 dependencies {
@@ -160,11 +163,31 @@ dependencies {
     implementation("com.github.skydoves:landscapist-fresco:$landscapist")
     implementation("com.github.skydoves:landscapist-fresco-websupport:$landscapist")
 
+    implementation("com.facebook.fresco:animated-base:$fresco")
+
+
     //kotlin-serialization
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'
 
     //dataStore
     implementation "androidx.datastore:datastore:$dataStore"
+    implementation("androidx.datastore:datastore-preferences:$dataStore")
+
+    //collapsing toolbar
+    implementation("me.onebone:toolbar-compose:2.3.5")
+
+    //markwon
+    implementation("io.noties.markwon:core:$markwon")
+    implementation("io.noties.markwon:html:$markwon")
+    implementation("io.noties.markwon:editor:$markwon")
+    implementation("io.noties.markwon:ext-strikethrough:$markwon")
+    implementation("io.noties.markwon:linkify:$markwon")
+    implementation("io.noties.markwon:inline-parser:$markwon")
+    implementation("io.noties.markwon:simple-ext:$markwon")
+
+    //eventbus
+    implementation("org.greenrobot:eventbus:3.3.1")
+
 
 
     testImplementation("junit:junit:4.13.2")

@@ -9,12 +9,12 @@ data class MediaCoverImageModel(
     val extraLarge: String? = null
 ) {
     var color: String? = null
-    val mExtraLarge = extraLarge ?: large ?: medium
+    val extraLargeImage = extraLarge ?: large ?: medium
     val image
         get() = when (MediaCoverImageType.LARGE) {
             MediaCoverImageType.MEDIUM -> medium ?: large ?: extraLarge
             MediaCoverImageType.LARGE -> large ?: extraLarge ?: medium
-            MediaCoverImageType.EXTRA_LARGE -> mExtraLarge
+            MediaCoverImageType.EXTRA_LARGE -> extraLargeImage
         }
 }
 

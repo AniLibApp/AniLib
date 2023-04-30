@@ -11,26 +11,28 @@ import androidx.compose.ui.Modifier
 
 
 @Composable
-fun LoadingScreen(
-    modifier: Modifier = Modifier.fillMaxSize()
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
+fun LoadingScreen() {
+    LoadingLayout(modifier = Modifier.fillMaxSize())
 }
 
 @Composable
 fun LazyItemScope.LoadingScreen() {
-    LoadingScreen(modifier = Modifier.fillParentMaxSize())
+    LoadingLayout(modifier = Modifier.fillParentMaxSize())
 }
 
 @Composable
-fun LoadingLayout() {
+fun LoadingSection(
+    modifier: Modifier = Modifier,
+) {
+    LoadingLayout(modifier = modifier.fillMaxWidth())
+}
+
+@Composable
+fun LoadingLayout(
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()

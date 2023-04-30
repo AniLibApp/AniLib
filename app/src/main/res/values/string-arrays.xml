@@ -35,4 +35,25 @@
         <item>@string/updated_at</item>
         <item>@string/favourites</item>
     </string-array>
+
+    <string-array name="media_format">
+        <item>@string/tv</item>
+        <item>@string/tv_short</item>
+        <item>@string/movie</item>
+        <item>@string/special</item>
+        <item>@string/ova</item>
+        <item>@string/ona</item>
+        <item>@string/music</item>
+        <item>@string/manga</item>
+        <item>@string/novel</item>
+        <item>@string/one_shot</item>
+        <item>@string/unknown</item>
+    </string-array>
+
+    <string-array name="character_role">
+        <item>@string/main</item>
+        <item>@string/supporting</item>
+        <item>@string/background</item>
+    </string-array>
+
 </resources>

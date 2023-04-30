@@ -3,18 +3,14 @@ package com.revolgenx.anilib.activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
+import com.revolgenx.anilib.airing.ui.screen.AiringScheduleScreen
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.theme.AppTheme
 
@@ -29,7 +25,10 @@ class MainActivity : ComponentActivity() {
                     sheetBackgroundColor = MaterialTheme.colorScheme.background,
                     scrimColor = MaterialTheme.colorScheme.scrim
                 ) {
-                    Navigator(screen = MainScreen()) { navigator ->
+                    Navigator(
+                        screen = AiringScheduleScreen()/*MainActivityScreen()*/,
+                        disposeBehavior = NavigatorDisposeBehavior(false, false)
+                    ) { navigator ->
                         CompositionLocalProvider(
                             LocalMainNavigator provides navigator
                         ) {
@@ -39,21 +38,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AppTheme {
-        Greeting("Android")
     }
 }

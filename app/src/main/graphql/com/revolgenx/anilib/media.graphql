@@ -1,4 +1,4 @@
-query MediaQuery(
+query MediaPageQuery(
     $page: Int,
     $perPage: Int,
     $seasonYear: Int,

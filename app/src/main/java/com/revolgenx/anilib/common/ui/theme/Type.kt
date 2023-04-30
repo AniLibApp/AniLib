@@ -29,43 +29,35 @@ val overpassFonts = FontFamily(
 )
 
 // Set of Material typography styles to start with
+
+val defaultTypography = Typography()
+
 val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = overpassFonts,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    ),
-    labelLarge = TextStyle(
+    bodyLarge = defaultTypography.bodyLarge.copy(fontFamily = overpassFonts),
+    labelLarge = defaultTypography.labelLarge.copy(
         fontFamily = overpassFonts,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.2.sp
     ),
-    titleLarge = TextStyle(
+    titleLarge = defaultTypography.titleLarge.copy(
         fontFamily = overpassFonts,
+        lineHeight = 26.sp,
+        fontSize = 20.sp,
         fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.2.sp
     ),
-    titleMedium = TextStyle(
-        fontFamily = overpassFonts,
-        fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.2.sp
-    ),
-    titleSmall = TextStyle(
-        fontFamily = overpassFonts,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.1.sp
-    ),
+    titleMedium = defaultTypography.titleMedium.copy(fontFamily = overpassFonts),
+    titleSmall = defaultTypography.titleSmall.copy(fontFamily = overpassFonts),
 )
 
+
+val titleRegular = defaultTypography.titleLarge.copy(
+    fontFamily = overpassFonts,
+    fontWeight = FontWeight.Medium,
+    fontSize = 16.sp,
+    lineHeight = 24.sp,
+    letterSpacing = 0.2.sp
+)
 
 
