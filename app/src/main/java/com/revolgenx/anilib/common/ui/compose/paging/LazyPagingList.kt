@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemScope
+import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
@@ -46,6 +47,7 @@ fun <M : BaseModel> LazyPagingList(
     modifier: Modifier = Modifier,
     type: ListPagingListType = ListPagingListType.COLUMN,
     items: LazyPagingItems<M> = flowOf(PagingData.empty<M>()).collectAsLazyPagingItems(),
+    span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     gridOptions: GridOptions? = null,
     onRefresh: (() -> Unit)? = null,
     itemContent: @Composable Any.(value: M?) -> Unit
@@ -66,7 +68,12 @@ fun <M : BaseModel> LazyPagingList(
     Box(modifier.pullRefresh(pullRefreshState)) {
         when (type) {
             ListPagingListType.COLUMN -> LazyColumnLayout(items, itemContent)
-            ListPagingListType.GRID -> LazyGridLayout(items, gridOptions!!, itemContent)
+            ListPagingListType.GRID -> LazyGridLayout(
+                items,
+                gridOptions!!,
+                span = span,
+                itemContent = itemContent
+            )
         }
         PullRefreshIndicator(refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
     }
@@ -83,11 +90,11 @@ private fun <M : BaseModel> LazyColumnLayout(
     ) {
         items(
             items = items,
-            key = { it._id }
+            key = { it.key }
         ) { item ->
             itemContent(item)
         }
-        lazyGridResourceState(items = items)
+        lazyListResourceState(items = items)
     }
 }
 
@@ -95,11 +102,12 @@ private fun <M : BaseModel> LazyColumnLayout(
 private fun <M : BaseModel> LazyGridLayout(
     items: LazyPagingItems<M>,
     gridOptions: GridOptions,
+    span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     itemContent: @Composable() (LazyGridItemScope.(value: M?) -> Unit)
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyVerticalGrid(columns = gridOptions.columns) {
-            items(items = items) { item ->
+            items(items = items, span = span) { item ->
                 itemContent(item)
             }
             lazyGridResourceState(items)
@@ -126,7 +134,7 @@ private fun <M : BaseModel> LazyGridLayout(
     }
 }
 
-private fun <M : BaseModel> LazyListScope.lazyGridResourceState(
+private fun <M : BaseModel> LazyListScope.lazyListResourceState(
     items: LazyPagingItems<M>,
 ) {
     // initial load

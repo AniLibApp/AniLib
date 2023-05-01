@@ -7,7 +7,9 @@ import android.os.Parcelable
 import android.util.Log
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemScope
+import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -295,10 +297,12 @@ public fun <T : Any> LazyListScope.items(
 public fun <T : Any> LazyGridScope.items(
     items: LazyPagingItems<T>,
     key: ((item: T) -> Any)? = null,
+    span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     itemContent: @Composable LazyGridItemScope.(value: T?) -> Unit
 ) {
     items(
         count = items.itemCount,
+        span = span,
         key = if (key == null) null else { index ->
             val item = items.peek(index)
             if (item == null) {

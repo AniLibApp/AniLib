@@ -19,7 +19,7 @@ fun Int?.naStringRes() = this.takeIf { it != null } ?: R.string.na
 fun Int?.naDrawableRes() = this.takeIf { it != null } ?: R.drawable.ic_question_mark
 
 @Composable
-fun composableContext() = LocalContext.current
+fun localContext() = LocalContext.current
 
 
 fun Any?.isNull() = this == null

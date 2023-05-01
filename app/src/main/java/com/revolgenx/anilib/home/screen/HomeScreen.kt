@@ -14,7 +14,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
@@ -22,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
+import com.revolgenx.anilib.common.ui.component.action.ActionsMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.BaseTabScreen
 import com.revolgenx.anilib.common.ui.screen.PagerScreen
@@ -75,6 +80,9 @@ private val pages = listOf(
 fun HomeScreenContent() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val pagerState = rememberPagerState()
+    var isMenuOpen by remember {
+        mutableStateOf(true)
+    }
 
     PagerScreenScaffold(
         pages = pages,
@@ -82,6 +90,25 @@ fun HomeScreenContent() {
         scrollBehavior = scrollBehavior,
         navigationIcon = {},
         actions = {
+            ActionsMenu(
+                items = listOf(
+                    ActionMenuItem.AlwaysShown(
+                        titleRes = R.string.search,
+                        onClick = {},
+                        iconRes = R.drawable.ic_voice,
+                        contentDescriptionRes = R.string.search,
+                    ),
+                    ActionMenuItem.AlwaysShown(
+                        titleRes = R.string.notifcations,
+                        onClick = {},
+                        iconRes = R.drawable.ic_notification,
+                        contentDescriptionRes = R.string.notifcations,
+                    )
+                ),
+                isOpen = isMenuOpen,
+                onToggleOverflow = { isMenuOpen = !isMenuOpen },
+                maxVisibleItems = 2
+            )
             IconButton(onClick = {/* Do Something*/ }) {
                 Icon(Icons.Filled.Search, null)
             }

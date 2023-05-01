@@ -1,9 +1,5 @@
 package com.revolgenx.anilib.media.ui.model
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import com.revolgenx.anilib.app.preference.mediaTitleType
-import com.revolgenx.anilib.common.ext.composableContext
 import com.revolgenx.anilib.fragment.MediaTitle
 
 enum class MediaTitleType {

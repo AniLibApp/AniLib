@@ -5,33 +5,44 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.revolgenx.anilib.airing.data.field.AiringScheduleField
 import com.revolgenx.anilib.airing.data.service.AiringScheduleService
+import com.revolgenx.anilib.airing.data.source.AiringScheduleDailyPagingSource
 import com.revolgenx.anilib.airing.data.source.AiringSchedulePagingSource
+import com.revolgenx.anilib.airing.data.source.AiringScheduleWeeklyPagingSource
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
+import com.revolgenx.anilib.airing.ui.model.BaseAiringScheduleModel
+import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.screen.PagingViewModel
 import com.revolgenx.anilib.type.AiringSort
 import java.time.LocalTime
 import java.time.ZonedDateTime
+import java.time.temporal.WeekFields
+import java.util.Locale
 
 class AiringScheduleViewModel(private val service: AiringScheduleService) :
-    PagingViewModel<AiringScheduleModel, AiringScheduleField, AiringSchedulePagingSource>() {
+    PagingViewModel<BaseAiringScheduleModel, AiringScheduleField, AiringSchedulePagingSource<BaseAiringScheduleModel, AiringScheduleField>>() {
     var startDateTime by mutableStateOf(ZonedDateTime.now().with(LocalTime.MIN))
     var endDateTime by mutableStateOf(ZonedDateTime.now().with(LocalTime.MAX))
 
+    private val weekFields = WeekFields.of(Locale.getDefault())
 
     override var field by mutableStateOf(
         AiringScheduleField(
             airingGreaterThan = startDateTime.toEpochSecond().toInt(),
             airingLessThan = endDateTime.toEpochSecond().toInt(),
-            sort = AiringSort.TIME_DESC
+            sort = AiringSort.TIME
         )
     )
 
 
-    override val pagingSource: AiringSchedulePagingSource
-        get() = AiringSchedulePagingSource(this.field, service)
+    override val pagingSource: AiringSchedulePagingSource<BaseAiringScheduleModel, AiringScheduleField>
+        get() = if (this.field.isWeeklyTypeDate) {
+            AiringScheduleWeeklyPagingSource(this.field, service)
+        } else {
+            AiringScheduleDailyPagingSource(this.field, service)
+        }
 
 
-    fun previous(){
+    fun previous() {
         if (field.isWeeklyTypeDate) {
             startDateTime = startDateTime.minusWeeks(1)
             endDateTime = endDateTime.minusWeeks(1)
@@ -43,7 +54,7 @@ class AiringScheduleViewModel(private val service: AiringScheduleService) :
         refresh()
     }
 
-    fun next(){
+    fun next() {
         if (field.isWeeklyTypeDate) {
             startDateTime = startDateTime.plusWeeks(1)
             endDateTime = endDateTime.plusWeeks(1)
@@ -55,11 +66,29 @@ class AiringScheduleViewModel(private val service: AiringScheduleService) :
         refresh()
     }
 
-    private fun updateDateTime(){
+    private fun updateDateTime() {
         field = field.copy(
             airingGreaterThan = startDateTime.toEpochSecond().toInt(),
             airingLessThan = endDateTime.toEpochSecond().toInt(),
         )
+    }
+
+    fun updateDateRange(isWeeklyTypeDate: Boolean) {
+        if (isWeeklyTypeDate) {
+            startDateTime = ZonedDateTime.now().with(weekFields.dayOfWeek(), 1)
+                .with(LocalTime.MIN)
+            endDateTime = ZonedDateTime.now().with(weekFields.dayOfWeek(), 7)
+                .with(LocalTime.MAX)
+        } else {
+            startDateTime = ZonedDateTime.now().with(LocalTime.MIN)
+            endDateTime = ZonedDateTime.now().with(LocalTime.MAX)
+        }
+        field = field.copy(
+            isWeeklyTypeDate = isWeeklyTypeDate,
+            airingGreaterThan = startDateTime.toEpochSecond().toInt(),
+            airingLessThan = endDateTime.toEpochSecond().toInt(),
+        )
+        refresh()
     }
 
     fun updateField(mField: AiringScheduleField) {

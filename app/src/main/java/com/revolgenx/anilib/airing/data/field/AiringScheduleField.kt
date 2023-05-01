@@ -12,7 +12,7 @@ data class AiringScheduleField(
     val sort: AiringSort? = null,
     val showOnlyWatching: Boolean = false,
     val showOnlyPlanning: Boolean = false,
-    val isWeeklyTypeDate: Boolean = false,
+    var isWeeklyTypeDate: Boolean = false,
     var mediaListIds: List<Int>? = null,
     var needMediaListData: Boolean = false
 ) : BaseSourceUserField<AiringScheduleQuery>() {

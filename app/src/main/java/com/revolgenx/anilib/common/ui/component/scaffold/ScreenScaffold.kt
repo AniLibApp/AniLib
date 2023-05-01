@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.common.ui.component.scaffold
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
@@ -26,7 +27,7 @@ import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenScaffold(
-    title:String = "",
+    title: String = "",
     subTitle: String? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
@@ -72,12 +73,14 @@ fun ScreenTopAppbar(
     ) {
         AppBar(
             title = {
-                Column {
-                    Text(text = title)
+                Column(verticalArrangement = Arrangement.Center) {
+                    Text(
+                        text = title
+                    )
                     subTitle?.let {
                         Text(
                             text = it,
-                            fontSize = 10.sp,
+                            fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }

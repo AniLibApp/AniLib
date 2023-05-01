@@ -114,6 +114,7 @@ ext{
     pagingCompose = "1.0.0-alpha17"
     dataStore = "1.0.0"
     markwon = "4.6.2"
+    sheets = "1.1.1"
 }
 
 dependencies {
@@ -187,6 +188,11 @@ dependencies {
 
     //eventbus
     implementation("org.greenrobot:eventbus:3.3.1")
+
+
+    //sheets
+    implementation "com.maxkeppeler.sheets-compose-dialogs:core:$sheets"
+    implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$sheets"
 
 
 

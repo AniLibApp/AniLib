@@ -124,11 +124,12 @@ private fun SeasonItem(
             .fillMaxWidth()
             .height(180.dp)
             .padding(8.dp)
-            .clickable {
+    ) {
+        Row(
+            modifier = Modifier.clickable {
                 navigator.push(MediaScreen(media.id, media.type))
             }
-    ) {
-        Row {
+        ) {
             FrescoImage(
                 modifier = Modifier
                     .fillMaxHeight()

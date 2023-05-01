@@ -117,4 +117,15 @@
     <string name="next">Next</string>
     <string name="more">More</string>
     <string name="date_format_pattern">MM/dd/yyyy</string>
+    <string name="search">Search</string>
+    <string name="notifcations">Notifications</string>
+    <string name="select_date">Select Date</string>
+    <string name="weekly">Weekly</string>
+    <string name="ep_s_airing_in">Ep %1$d airing in</string>
+    <string name="ep_s_of_s_airing_in">Ep %1$d of %2$d airing in</string>
+    <string name="eta_s_s_s_s">%1$dd %2$dh %3$dm %4$ds</string>
+    <string name="eta_s_s_s">%1$dh %2$dm %3$ds</string>
+    <string name="eta_s_s">%1$dm %2$ds</string>
+    <string name="eta_s">%1$ds</string>
+
 </resources>
