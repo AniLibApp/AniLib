@@ -11,13 +11,12 @@ query BasicUserQuery($id:Int){
         }
     }
 }
-query UserOverViewQuery(
+query UserQuery(
     $userId:Int!,
     $id:Int,
-    $name:String,
-    $includeFollow:Boolean!
+    $name:String
 ){
-    followingPage:Page @include(if:$includeFollow){
+    followingPage:Page{
         pageInfo{
             total
         }
@@ -26,7 +25,7 @@ query UserOverViewQuery(
         }
     }
 
-    followerPage:Page @include(if:$includeFollow){
+    followerPage:Page{
         pageInfo{
             total
         }
@@ -49,25 +48,10 @@ query UserOverViewQuery(
         siteUrl
         statistics{
             anime{
-                count
-                minutesWatched
-                meanScore
-                episodesWatched
-                genres{
-                    count
-                    genre
-                }
-
+                ... userMediaStatistics
             }
             manga{
-                count
-                chaptersRead
-                meanScore
-                volumesRead
-                genres{
-                    count
-                    genre
-                }
+                ... userMediaStatistics
             }
         }
     }
@@ -380,4 +364,15 @@ fragment userMediaListOptions on MediaListOptions{
 fragment userAvatar on UserAvatar{
     medium
     large
+}
+
+fragment userMediaStatistics on UserStatistics{
+    count
+    minutesWatched
+    meanScore
+    episodesWatched
+    genres{
+        count
+        genre
+    }
 }

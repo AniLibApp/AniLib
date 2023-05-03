@@ -7,7 +7,9 @@
     <string name="explore">Explore</string>
     <string name="season">Season</string>
     <string name="recommendation">Recommendation</string>
+    <string name="recommendations">Recommendations</string>
     <string name="review">Review</string>
+    <string name="reviews">Reviews</string>
 
     <!--MediaType-->
     <string name="anime">Anime</string>
@@ -128,4 +130,15 @@
     <string name="eta_s_s">%1$dm %2$ds</string>
     <string name="eta_s">%1$ds</string>
 
+
+    <string name="media_id">Media Id</string>
+    <string name="time">Time</string>
+    <string name="important_to_know">Important to know</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login_browser_requirement_desc">AniLib is a 3rd party client app for AniList, so there is like no direct means of Signing In. Browsers such as Chrome will be needed and you will be redirect to anilist.co to login/register. Please make sure the URL is anilist.co before entering your credentials.</string>
+    <string name="settings">Settings</string>
+    <string name="activity">Activity</string>
+    <string name="user">User</string>
+    <string name="logout">Logout</string>
 </resources>

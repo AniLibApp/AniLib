@@ -48,7 +48,8 @@ fun SortDropdownMenu(
     label: String? = null,
     @StringRes labelRes: Int? = null,
     entries: List<AlSortMenuItem>,
-    onItemsSelected: (index:Int , item: AlSortMenuItem?) -> Unit
+    allowNone: Boolean = true,
+    onItemsSelected: (index: Int, item: AlSortMenuItem?) -> Unit
 ) {
 
     var expanded by remember { mutableStateOf(false) }
@@ -117,7 +118,7 @@ fun SortDropdownMenu(
         ) {
             Box(modifier = Modifier.size(width = menuWidth, height = menuItemHeight)) {
                 LazyColumn {
-                    itemsIndexed(entries) {index, s ->
+                    itemsIndexed(entries) { index, s ->
                         DropdownMenuItem(
                             modifier = Modifier.height(menuHeight),
                             text = { Text(s.title) },
@@ -127,7 +128,7 @@ fun SortDropdownMenu(
                                 }
                                 s.order = when (s.order) {
                                     AlSortOrder.ASC -> AlSortOrder.DESC
-                                    AlSortOrder.DESC -> AlSortOrder.NONE
+                                    AlSortOrder.DESC -> if (allowNone) AlSortOrder.NONE else AlSortOrder.ASC
                                     AlSortOrder.NONE -> AlSortOrder.ASC
                                 }
                                 selectedItem = null

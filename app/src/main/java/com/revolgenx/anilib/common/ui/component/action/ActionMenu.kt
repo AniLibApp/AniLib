@@ -39,7 +39,8 @@ fun ActionsMenu(
         IconButton(onClick = item.onClick) {
             Icon(
                 painter = painterResource(id = item.iconRes!!),
-                contentDescription = item.contentDescriptionRes?.let { stringResource(id = it) },
+                contentDescription = (item.contentDescriptionRes
+                    ?: item.titleRes).let { stringResource(id = it) },
             )
         }
     }
@@ -68,11 +69,15 @@ fun ActionsMenu(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                val title = stringResource(id = item.titleRes)
                                 item.iconRes?.let {
-                                    Icon(painterResource(id = it), contentDescription = title)
+                                    Icon(
+                                        painterResource(id = it),
+                                        contentDescription = (item.contentDescriptionRes
+                                            ?: item.titleRes).let {
+                                            stringResource(id = it)
+                                        })
                                 }
-                                Text(title)
+                                Text(stringResource(id = item.titleRes))
                             }
                             if (item is ActionMenuItem.NeverShown) {
                                 item.isChecked?.let {
@@ -100,7 +105,7 @@ sealed interface ActionMenuItem {
 
     data class AlwaysShown(
         override val titleRes: Int,
-        override val contentDescriptionRes: Int?,
+        override val contentDescriptionRes: Int? = null,
         override val onClick: () -> Unit,
         override val iconRes: Int,
     ) : ActionMenuItem

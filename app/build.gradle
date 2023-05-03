@@ -22,11 +22,12 @@ android {
             useSupportLibrary true
         }
 
-        buildConfigField(
-                "String",
-                "API_URL",
-                "\"https://graphql.anilist.co\""
-        )
+        buildConfigField "String", "CLIENT_ID", '"anilist_client_id"'
+        buildConfigField "String", "REDIRECT_URI", '"anilist_redirect_uri"'
+
+        buildConfigField "String", "API_URL", '"https://graphql.anilist.co"'
+        buildConfigField "String", "AUTH_ENDPOINT", '"https://anilist.co/api/v2/oauth/authorize"'
+        buildConfigField "String", "TOKEN_ENDPOINT", '"https://anilist.co/api/v2/oauth/token"'
     }
 
     bundle {
@@ -36,15 +37,29 @@ android {
     }
 
     buildTypes {
-        debug{
+        debug {
             applicationIdSuffix ".debug"
             debuggable true
+
+            if (rootProject.file("secret.debug.properties").exists()) {
+                def secretProps = new Properties()
+                secretProps.load(new FileInputStream(rootProject.file("secret.debug.properties")))
+                buildConfigField "String", "CLIENT_ID", secretProps['client_id']
+                buildConfigField "String", "REDIRECT_URI", secretProps['redirect_uri']
+            }
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+
+            if (rootProject.file("secret.properties").exists()) {
+                def secretProps = new Properties()
+                secretProps.load(new FileInputStream(rootProject.file("secret.properties")))
+                buildConfigField "String", "CLIENT_ID", secretProps['client_id']
+                buildConfigField "String", "REDIRECT_URI", secretProps['redirect_uri']
+            }
         }
-        alpha{
+        alpha {
             initWith debug
             applicationIdSuffix ".alpha"
         }
@@ -82,7 +97,7 @@ android {
     }
     kotlin {
         sourceSets.all {
-            languageSettings{
+            languageSettings {
                 enableLanguageFeature("DataObjects")
             }
         }
@@ -99,7 +114,7 @@ android {
     }
 }
 
-ext{
+ext {
     compose = "1.5.0-alpha03"
     material = "1.1.0-rc01"
     accompanist = "0.29.0-alpha"
@@ -115,6 +130,8 @@ ext{
     dataStore = "1.0.0"
     markwon = "4.6.2"
     sheets = "1.1.1"
+    customTabs = "1.5.0"
+    jwtdecode = "2.0.2"
 }
 
 dependencies {
@@ -194,6 +211,12 @@ dependencies {
     implementation "com.maxkeppeler.sheets-compose-dialogs:core:$sheets"
     implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$sheets"
 
+    //browser
+    implementation("androidx.browser:browser:$customTabs")
+
+
+    //jwtdecode
+    implementation "com.auth0.android:jwtdecode:$jwtdecode"
 
 
     testImplementation("junit:junit:4.13.2")

@@ -2,6 +2,6 @@ package com.revolgenx.anilib.user.ui.model.stats
 
 
 data class UserStatisticTypesModel(
-    var anime: UserStatisticsModel? = null,
-    var manga: UserStatisticsModel? = null
+    val anime: UserStatisticsModel? = null,
+    val manga: UserStatisticsModel? = null
 )

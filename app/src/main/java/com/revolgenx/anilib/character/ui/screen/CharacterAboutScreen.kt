@@ -25,10 +25,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.character.ui.model.CharacterNameModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
-import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ui.screen.ErrorScreen
-import com.revolgenx.anilib.common.ui.screen.LoadingScreen
+import com.revolgenx.anilib.common.ui.screen.ResourceScreen
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
@@ -42,19 +40,11 @@ fun CharacterAboutScreen(
         viewModel.field.characterId = characterId
         viewModel.getResource()
     }
-    when (val resource = viewModel.resource.value) {
-        is ResourceState.Error -> ErrorScreen(error = resource.message) {
-            viewModel.refresh()
-        }
 
-        is ResourceState.Loading -> LoadingScreen()
-
-        is ResourceState.Success -> {
-            val character = resource.data ?: return
-            CharacterAbout(character)
-        }
-
-        else -> {}
+    ResourceScreen(resourceState = viewModel.resource.value, refresh = {
+        viewModel.refresh()
+    }) { character ->
+        CharacterAbout(character)
     }
 }
 
@@ -71,7 +61,8 @@ private fun CharacterAbout(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(top = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -87,7 +78,7 @@ private fun CharacterAbout(
                 previewPlaceholder = R.drawable.bleach
             )
             Text(
-                modifier= Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = 8.dp),
                 text = character.name?.full.naText(),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,

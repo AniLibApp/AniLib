@@ -22,7 +22,7 @@ class CharacterScreen(val id: Int) : AndroidScreen() {
 private typealias CharacterScreenPage = PagerScreen<CharacterScreenPageType>
 
 
-enum class CharacterScreenPageType {
+private enum class CharacterScreenPageType {
     ABOUT,
     MEDIA,
     VOICE_ROLES

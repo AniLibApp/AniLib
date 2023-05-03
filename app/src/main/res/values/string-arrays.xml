@@ -56,4 +56,11 @@
         <item>@string/background</item>
     </string-array>
 
+    <string-array name="airing_sort">
+        <item>@string/id</item>
+        <item>@string/media_id</item>
+        <item>@string/time</item>
+        <item>@string/episodes</item>
+    </string-array>
+
 </resources>

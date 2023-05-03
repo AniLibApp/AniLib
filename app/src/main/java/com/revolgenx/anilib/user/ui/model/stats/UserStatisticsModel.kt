@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.user.ui.model.stats
 
+import com.revolgenx.anilib.fragment.UserMediaStatistics
+
 data class UserStatisticsModel(
     val count: Int = 0,
     val meanScore: Double = 0.0,
@@ -25,4 +27,22 @@ data class UserStatisticsModel(
 
     val daysWatched: Double = if (minutesWatched != 0) minutesWatched.div(60.0).div(24) else 0.0
 ) {
+}
+
+
+fun UserMediaStatistics.toModel(): UserStatisticsModel {
+    return UserStatisticsModel(
+        count = count,
+        minutesWatched = minutesWatched,
+        episodesWatched = episodesWatched,
+        meanScore = meanScore,
+        genres = genres?.mapNotNull { genre ->
+            genre?.let { g ->
+                UserGenreStatisticModel(
+                    genre = g.genre,
+                    count = g.count
+                )
+            }
+        }
+    )
 }

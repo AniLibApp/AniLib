@@ -9,9 +9,9 @@ data class AiringScheduleField(
     val notYetAired: Boolean = true,
     val airingGreaterThan: Int? = null,
     val airingLessThan: Int? = null,
-    val sort: AiringSort? = null,
-    val showOnlyWatching: Boolean = false,
-    val showOnlyPlanning: Boolean = false,
+    var sort: AiringSort? = null,
+    var showOnlyWatching: Boolean = false,
+    var showOnlyPlanning: Boolean = false,
     var isWeeklyTypeDate: Boolean = false,
     var mediaListIds: List<Int>? = null,
     var needMediaListData: Boolean = false

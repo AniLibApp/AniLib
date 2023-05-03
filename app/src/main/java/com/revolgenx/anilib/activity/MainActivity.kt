@@ -3,17 +3,41 @@ package com.revolgenx.anilib.activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
-import com.revolgenx.anilib.airing.ui.screen.AiringScheduleScreen
+import cafe.adriel.voyager.navigator.tab.CurrentTab
+import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
+import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabNavigator
+import com.revolgenx.anilib.common.data.store.ShowIfLoggedIn
+import com.revolgenx.anilib.common.ui.component.navigation.AlNavigationBar
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
+import com.revolgenx.anilib.common.ui.screen.LoginScreen
 import com.revolgenx.anilib.common.ui.theme.AppTheme
+import com.revolgenx.anilib.home.ui.screen.HomeScreen
+import com.revolgenx.anilib.list.ui.screen.MediaListScreen
+import com.revolgenx.anilib.social.ui.screen.ActivityScreen
+import com.revolgenx.anilib.user.ui.screen.UserScreen
+import org.koin.androidx.compose.koinViewModel
 
+/*
+* todo: handle customtab cancel result
+* */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     scrimColor = MaterialTheme.colorScheme.scrim
                 ) {
                     Navigator(
-                        screen = AiringScheduleScreen()/*MainActivityScreen()*/,
+                        screen = MainActivityScreen(),
                         disposeBehavior = NavigatorDisposeBehavior(false, false)
                     ) { navigator ->
                         CompositionLocalProvider(
@@ -40,3 +64,56 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
+class MainActivityScreen : Screen {
+    @Composable
+    override fun Content() {
+        MainActivityScreenContent()
+    }
+}
+
+@Composable
+fun MainActivityScreenContent(
+    viewModel: MainActivityViewModel = koinViewModel()
+) {
+    TabNavigator(tab = HomeScreen) {
+        Scaffold(
+            bottomBar = {
+                AlNavigationBar {
+                    TabNavigationItem(tab = HomeScreen)
+                    viewModel.authDataStore.ShowIfLoggedIn {
+                        TabNavigationItem(tab = MediaListScreen)
+                        TabNavigationItem(tab = ActivityScreen)
+                    }
+                    viewModel.authDataStore.ShowIfLoggedIn(
+                        orElse = {
+                            TabNavigationItem(tab = LoginScreen)
+                        },
+                        content = { userId ->
+                            TabNavigationItem(tab = UserScreen(userId, true))
+                        }
+                    )
+                }
+            },
+            contentWindowInsets = WindowInsets(0)
+        ) { contentPadding ->
+            Box(Modifier.padding(contentPadding)) {
+                CurrentTab()
+            }
+        }
+    }
+}
+
+@Composable
+private fun RowScope.TabNavigationItem(tab: Tab) {
+    val tabNavigator = LocalTabNavigator.current
+
+    val options = tab.options
+    NavigationBarItem(
+        selected = tabNavigator.current == tab,
+        onClick = { tabNavigator.current = tab },
+        icon = { Icon(painter = options.icon!!, contentDescription = options.title) }
+    )
+}
+

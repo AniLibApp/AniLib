@@ -3,8 +3,16 @@ package com.revolgenx.anilib.common.ext
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import java.util.NavigableMap
 import java.util.TreeMap
 
@@ -20,6 +28,9 @@ fun Int?.naDrawableRes() = this.takeIf { it != null } ?: R.drawable.ic_question_
 
 @Composable
 fun localContext() = LocalContext.current
+
+@Composable
+fun localNavigator() = LocalMainNavigator.current
 
 
 fun Any?.isNull() = this == null
@@ -51,3 +62,10 @@ fun Long.prettyNumberFormat(): String {
         truncated < 100 && truncated / 10.0 != (truncated / 10).toDouble()
     return if (hasDecimal) (truncated / 10.0).toString() + suffix else (truncated / 10).toString() + suffix
 }
+
+
+fun CoroutineScope.launchIO(block: suspend CoroutineScope.() -> Unit): Job =
+    launch(Dispatchers.IO, block = block)
+
+
+fun <T> Flow<T>.onIO() = flowOn(Dispatchers.IO)

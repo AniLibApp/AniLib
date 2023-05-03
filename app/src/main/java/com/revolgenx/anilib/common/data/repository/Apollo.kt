@@ -2,13 +2,16 @@ package com.revolgenx.anilib.common.data.repository
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
-import com.revolgenx.anilib.app.preference.Auth
+import com.revolgenx.anilib.BuildConfig
+import com.revolgenx.anilib.common.data.store.AuthDataStore
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import com.revolgenx.anilib.BuildConfig
 
 object Apollo {
-    fun provideApolloClient(): ApolloClient = ApolloClient.Builder()
+    fun provideApolloClient(authDataStore: AuthDataStore): ApolloClient = ApolloClient.Builder()
         .okHttpClient(
             OkHttpClient.Builder().apply {
                 if (BuildConfig.DEBUG) {
@@ -19,14 +22,17 @@ object Apollo {
             }
                 .addInterceptor {
                     it.proceed(it.request().let { req ->
-                        if (Auth.loggedIn) {
-                            req.newBuilder()
-                                .addHeader(
-                                    "Authorization",
-                                    "Bearer ${Auth.token}"
-                                )
-                                .build()
-                        } else req
+                        runBlocking {
+                            val token = authDataStore.token().first()
+                            if (token != null) {
+                                req.newBuilder()
+                                    .addHeader(
+                                        "Authorization",
+                                        "Bearer $token"
+                                    )
+                                    .build()
+                            } else req
+                        }
                     })
                 }
                 .build())

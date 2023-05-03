@@ -13,11 +13,14 @@ import com.revolgenx.anilib.airing.ui.model.BaseAiringScheduleModel
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.screen.PagingViewModel
 import com.revolgenx.anilib.type.AiringSort
+import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.temporal.WeekFields
 import java.util.Locale
 
+/*TODO calendar locale start of the week  for week range*/
 class AiringScheduleViewModel(private val service: AiringScheduleService) :
     PagingViewModel<BaseAiringScheduleModel, AiringScheduleField, AiringSchedulePagingSource<BaseAiringScheduleModel, AiringScheduleField>>() {
     var startDateTime by mutableStateOf(ZonedDateTime.now().with(LocalTime.MIN))
@@ -62,6 +65,25 @@ class AiringScheduleViewModel(private val service: AiringScheduleService) :
             startDateTime = startDateTime.plusDays(1)
             endDateTime = endDateTime.plusDays(1)
         }
+        updateDateTime()
+        refresh()
+    }
+
+    fun updateStartDate(startDate:LocalDate){
+        startDateTime = startDate.atStartOfDay(ZoneId.systemDefault()).with(
+            LocalTime.MIN
+        )
+        updateDateTime()
+        refresh()
+    }
+
+    fun updateDates(startDate: LocalDate, endDate: LocalDate){
+        startDateTime = startDate.atStartOfDay(ZoneId.systemDefault()).with(
+            LocalTime.MIN
+        )
+        endDateTime =
+            endDate.atTime(LocalTime.MAX).with(LocalTime.MAX).atZone(ZoneId.systemDefault())
+
         updateDateTime()
         refresh()
     }

@@ -107,7 +107,7 @@ fun MediaScreenContent(
         toolbarModifier = Modifier.background(MaterialTheme.colorScheme.surface),
         enabled = true,
         toolbar = {
-            MediaScreenTopAppBar(collapsingToolbarState, media)
+            MediaScreenTopAppBar(media = media, collapsingToolbarState = collapsingToolbarState)
         }
     ) {
         PagerScreenScaffold(
@@ -137,8 +137,8 @@ fun MediaScreenContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CollapsingToolbarScope.MediaScreenTopAppBar(
-    collapsingToolbarState: CollapsingToolbarScaffoldState = rememberCollapsingToolbarScaffoldState(),
-    media: MediaModel? = null
+    media: MediaModel? = null,
+    collapsingToolbarState: CollapsingToolbarScaffoldState = rememberCollapsingToolbarScaffoldState()
 ) {
     val progress = collapsingToolbarState.toolbarState.progress
     val imageAlpha = if (progress <= 0.2) 0.2f else progress

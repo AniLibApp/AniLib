@@ -1,9 +1,11 @@
 package com.revolgenx.anilib.common.ui.screen
 
+import com.revolgenx.anilib.activity.MainActivityViewModel
+import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.common.data.store.StoreFileName
-import com.revolgenx.anilib.season.ui.screen.SeasonViewModel
+import com.revolgenx.anilib.home.season.ui.screen.SeasonViewModel
 import com.revolgenx.anilib.media.ui.screen.MediaFilterBottomSheetViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaOverviewViewModel
@@ -11,13 +13,18 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val viewModelModules = module {
+    //main activity
+    viewModel { MainActivityViewModel(get()) }
+
     //airing
     viewModel { AiringScheduleViewModel(get()) }
+    viewModel { AiringScheduleFilterViewModel() }
 
     // media
     viewModel { MediaViewModel() }
@@ -36,4 +43,6 @@ val viewModelModules = module {
     //staff
     viewModel { StaffAboutViewModel(get()) }
 
+    //user
+    viewModel { UserViewModel(get(), get()) }
 }

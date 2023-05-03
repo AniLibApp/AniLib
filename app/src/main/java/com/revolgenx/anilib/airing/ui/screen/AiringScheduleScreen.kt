@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.airing.ui.screen
 
+import android.util.Range
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,52 +13,65 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.airing.data.field.AiringScheduleField
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleHeaderModel
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
-import com.revolgenx.anilib.airing.ui.model.TimeUntilAiringModel
+import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.ext.isNull
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
 import com.revolgenx.anilib.common.ui.component.action.ActionsMenu
+import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
+import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
+import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
+import com.revolgenx.anilib.common.ui.component.menu.SortDropdownMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.model.title
 import com.revolgenx.anilib.media.ui.model.toStringRes
-import com.revolgenx.anilib.media.ui.screen.MediaScreen
+import com.revolgenx.anilib.type.AiringSort
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
@@ -80,8 +94,21 @@ private fun AiringScreenContent(
     viewModel: AiringScheduleViewModel = koinViewModel()
 ) {
 
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val context = LocalContext.current
+    val field = viewModel.field
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val isMenuOpen = remember { mutableStateOf(false) }
+    val calendarState = rememberUseCaseState()
+    val openBottomSheet = rememberSaveable { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
+    val calendarRange = remember {
+        derivedStateOf {
+            Range(viewModel.startDateTime.toLocalDate(), viewModel.endDateTime.toLocalDate())
+        }
+    }
 
     val dayRangeTitle = remember {
         derivedStateOf {
@@ -128,7 +155,25 @@ private fun AiringScreenContent(
         title = dayRangeTitle.value,
         subTitle = dateRangeSubTitle.value,
         actions = {
-            AiringScheduleAction(viewModel)
+            AiringScheduleAction(
+                isWeeklyTypeDate = field.isWeeklyTypeDate,
+                isMenuOpen = isMenuOpen,
+                onPrevious = {
+                    viewModel.previous()
+                },
+                onNext = {
+                    viewModel.next()
+                },
+                onFilter = {
+                    openBottomSheet.value = true
+                },
+                onCalendar = {
+                    calendarState.show()
+                },
+                onWeekly = {
+                    viewModel.updateDateRange(!field.isWeeklyTypeDate)
+                }
+            )
         },
         scrollBehavior = scrollBehavior
     ) {
@@ -160,7 +205,33 @@ private fun AiringScreenContent(
                 }
             }
         }
+
+
+        AiringScheduleFilterBottomSheet(
+            openBottomSheet = openBottomSheet,
+            bottomSheetState = bottomSheetState
+        ) { airingScheduleField ->
+            viewModel.updateField(airingScheduleField)
+        }
+
     }
+
+
+    CalendarDialog(
+        state = calendarState,
+        config = CalendarConfig(style = CalendarStyle.MONTH),
+        selection = if (field.isWeeklyTypeDate) {
+            CalendarSelection.Period(
+                selectedRange = calendarRange.value
+            ) { startDate, endDate ->
+                viewModel.updateDates(startDate, endDate)
+            }
+        } else {
+            CalendarSelection.Date(selectedDate = viewModel.startDateTime.toLocalDate()) { startDate ->
+                viewModel.updateStartDate(startDate)
+            }
+        })
+
 }
 
 @Composable
@@ -269,58 +340,142 @@ private fun AiringScheduleTimer(airingScheduleModel: AiringScheduleModel) {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AiringScheduleFilterBottomSheet(
+    openBottomSheet: MutableState<Boolean> = mutableStateOf(false),
+    bottomSheetState: SheetState = rememberModalBottomSheetState(),
+    airingScheduleViewModel: AiringScheduleViewModel = koinViewModel(),
+    viewModel: AiringScheduleFilterViewModel = koinViewModel(),
+    onDone: (field: AiringScheduleField) -> Unit
+) {
+    if (openBottomSheet.value) {
+        viewModel.field.value = airingScheduleViewModel.field.copy()
+        val windowInsets = NavigationBarDefaults.windowInsets
+
+        ModalBottomSheet(
+            onDismissRequest = { openBottomSheet.value = false },
+            sheetState = bottomSheetState,
+            containerColor = MaterialTheme.colorScheme.background,
+        ) {
+            AiringScheduleFilterBottomSheetContent(
+                modifier = Modifier
+                    .windowInsetsPadding(windowInsets),
+                field = viewModel.field.value,
+                onPositiveClicked = {
+                    onDone.invoke(viewModel.field.value)
+                }
+            ) {
+                openBottomSheet.value = false
+            }
+        }
+    }
+}
 
 @Composable
-fun AiringScheduleAction(viewModel: AiringScheduleViewModel) {
-    var isMenuOpen by remember {
-        mutableStateOf(false)
+private fun AiringScheduleFilterBottomSheetContent(
+    modifier: Modifier = Modifier,
+    field: AiringScheduleField,
+    onNegativeClicked: (() -> Unit)? = null,
+    onPositiveClicked: (() -> Unit)? = null,
+    dismiss: (() -> Unit)? = null
+) {
+    Column(
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 4.dp)
+    ) {
+        BottomSheetConfirmationAction(
+            onPositiveClicked = {
+                onPositiveClicked?.invoke()
+                dismiss?.invoke()
+            },
+            onNegativeClicked = {
+                onNegativeClicked?.invoke()
+                dismiss?.invoke()
+            }
+        )
+        LazyColumn() {
+            item {
+                val sort = field.sort ?: return@item
+                val selectedSort = (sort.ordinal + 1) / 2
+                val isDesc = sort.rawValue.endsWith("_DESC")
+                val selectedSortIndex = if (isDesc) selectedSort - 1 else selectedSort
+                val selectedSortOrder = if (isDesc) AlSortOrder.DESC else AlSortOrder.ASC
+
+                val sortMenus =
+                    stringArrayResource(id = R.array.airing_sort).mapIndexed { index, s ->
+                        AlSortMenuItem(
+                            s,
+                            if (index == selectedSortIndex) selectedSortOrder else AlSortOrder.NONE
+                        )
+                    }
+
+                SortDropdownMenu(
+                    labelRes = R.string.sort,
+                    entries = sortMenus,
+                    allowNone = false
+                ) { index, selectedItem ->
+                    selectedItem ?: return@SortDropdownMenu
+                    val order = selectedItem.order
+                    val airingIndex = index * 2
+                    val airingSort: AiringSort =
+                        AiringSort.values()[if (order == AlSortOrder.DESC) airingIndex + 1 else airingIndex]
+                    field.sort = airingSort
+                }
+            }
+        }
     }
 
-    val field = viewModel.field
-    val isWeeklyTypeDate = field.isWeeklyTypeDate
+}
 
+
+@Composable
+private fun AiringScheduleAction(
+    isWeeklyTypeDate: Boolean = false,
+    isMenuOpen: MutableState<Boolean> = mutableStateOf(false),
+    onNext: () -> Unit,
+    onPrevious: () -> Unit,
+    onFilter: () -> Unit,
+    onCalendar: () -> Unit,
+    onWeekly: () -> Unit,
+) {
     ActionsMenu(
-        isOpen = isMenuOpen,
-        onToggleOverflow = { isMenuOpen = !isMenuOpen },
+        isOpen = isMenuOpen.value,
+        onToggleOverflow = { isMenuOpen.value = !isMenuOpen.value },
         items = listOf(
             ActionMenuItem.AlwaysShown(
                 titleRes = R.string.previous,
-                onClick = { viewModel.previous() },
+                onClick = onPrevious,
                 iconRes = R.drawable.ic_chevron_left,
                 contentDescriptionRes = R.string.previous,
             ),
             ActionMenuItem.AlwaysShown(
                 titleRes = R.string.next,
-                onClick = { viewModel.next() },
+                onClick = onNext,
                 iconRes = R.drawable.ic_chevron_right,
                 contentDescriptionRes = R.string.next,
             ),
             ActionMenuItem.NeverShown(
                 titleRes = R.string.filter,
-                onClick = {
-
-                },
+                onClick = onFilter,
                 iconRes = R.drawable.ic_filter,
                 contentDescriptionRes = R.string.filter,
             ),
             ActionMenuItem.NeverShown(
                 titleRes = R.string.select_date,
-                onClick = {
-
-                },
+                onClick = onCalendar,
                 iconRes = R.drawable.ic_calendar,
                 contentDescriptionRes = R.string.select_date,
             ),
             ActionMenuItem.NeverShown(
                 titleRes = R.string.weekly,
-                onClick = {
-                    viewModel.updateDateRange(!isWeeklyTypeDate)
-                },
+                onClick = onWeekly,
                 iconRes = R.drawable.ic_time,
                 contentDescriptionRes = R.string.weekly,
                 isChecked = isWeeklyTypeDate,
-                onCheckedChange = { isChecked ->
-                    viewModel.updateDateRange(isChecked)
+                onCheckedChange = {
+                    onWeekly.invoke()
                 }
             )
         ))
