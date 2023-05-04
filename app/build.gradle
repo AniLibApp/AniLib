@@ -132,6 +132,7 @@ ext {
     sheets = "1.1.1"
     customTabs = "1.5.0"
     jwtdecode = "2.0.2"
+    prettytime = "5.0.4.Final"
 }
 
 dependencies {
@@ -216,7 +217,10 @@ dependencies {
 
 
     //jwtdecode
-    implementation "com.auth0.android:jwtdecode:$jwtdecode"
+    implementation("com.auth0.android:jwtdecode:$jwtdecode")
+
+    //pretty time
+    implementation("org.ocpsoft.prettytime:prettytime:$prettytime")
 
 
     testImplementation("junit:junit:4.13.2")

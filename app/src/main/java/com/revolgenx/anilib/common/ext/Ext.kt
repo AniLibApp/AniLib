@@ -3,7 +3,6 @@ package com.revolgenx.anilib.common.ext
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
@@ -13,6 +12,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import org.ocpsoft.prettytime.PrettyTime
+import java.util.Date
 import java.util.NavigableMap
 import java.util.TreeMap
 
@@ -61,6 +62,10 @@ fun Long.prettyNumberFormat(): String {
     val hasDecimal =
         truncated < 100 && truncated / 10.0 != (truncated / 10).toDouble()
     return if (hasDecimal) (truncated / 10.0).toString() + suffix else (truncated / 10).toString() + suffix
+}
+
+fun Long.prettyTime(): String {
+    return PrettyTime().format(Date(this * 1000L))
 }
 
 

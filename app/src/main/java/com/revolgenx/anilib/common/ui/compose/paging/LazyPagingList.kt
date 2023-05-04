@@ -50,7 +50,8 @@ fun <M : BaseModel> LazyPagingList(
     span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     gridOptions: GridOptions? = null,
     onRefresh: (() -> Unit)? = null,
-    itemContent: @Composable Any.(value: M?) -> Unit
+    itemContentIndex: (@Composable LazyItemScope.(index: Int, value: M?) -> Unit)? = null,
+    itemContent: (@Composable Any.(value: M?) -> Unit)? = null
 ) {
     var refreshing by remember { mutableStateOf(false) }
     val pullRefreshState = rememberPullRefreshState(refreshing, onRefresh = {
@@ -67,12 +68,17 @@ fun <M : BaseModel> LazyPagingList(
 
     Box(modifier.pullRefresh(pullRefreshState)) {
         when (type) {
-            ListPagingListType.COLUMN -> LazyColumnLayout(items, itemContent)
+            ListPagingListType.COLUMN -> LazyColumnLayout(
+                items,
+                itemContent = itemContent,
+                itemContentIndex = itemContentIndex
+            )
+
             ListPagingListType.GRID -> LazyGridLayout(
                 items,
                 gridOptions!!,
                 span = span,
-                itemContent = itemContent
+                itemContent = itemContent!!
             )
         }
         PullRefreshIndicator(refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
@@ -82,17 +88,28 @@ fun <M : BaseModel> LazyPagingList(
 @Composable
 private fun <M : BaseModel> LazyColumnLayout(
     items: LazyPagingItems<M>,
-    itemContent: @Composable LazyItemScope.(value: M?) -> Unit
+    itemContentIndex: (@Composable LazyItemScope.(index: Int, value: M?) -> Unit)? = null,
+    itemContent: (@Composable LazyItemScope.(value: M?) -> Unit)? = null
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        items(
-            items = items,
-            key = { it.key }
-        ) { item ->
-            itemContent(item)
+        itemContent?.let {
+            items(
+                items = items,
+                key = { it.key }
+            ) { item ->
+                itemContent(item)
+            }
+        }
+        itemContentIndex?.let {
+            itemsIndexed(
+                items = items,
+                key = { _, item -> item.key }
+            ) { index, item ->
+                itemContentIndex(index, item)
+            }
         }
         lazyListResourceState(items = items)
     }

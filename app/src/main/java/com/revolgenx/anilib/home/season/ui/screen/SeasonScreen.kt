@@ -40,6 +40,7 @@ import com.revolgenx.anilib.common.ext.naDrawableRes
 import com.revolgenx.anilib.common.ext.naStringRes
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
+import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
@@ -49,7 +50,6 @@ import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
-import com.revolgenx.anilib.media.ui.model.title
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toDrawableRes
 import com.revolgenx.anilib.media.ui.model.toStringRes
@@ -126,17 +126,19 @@ private fun SeasonItem(
                 navigator.push(MediaScreen(media.id, media.type))
             }
         ) {
-            FrescoImage(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(104.dp),
-                imageUrl = media.coverImage?.image,
-                imageOptions = ImageOptions(
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.Center
-                ),
-                previewPlaceholder = R.drawable.bleach
-            )
+            MediaCoverImageType { type ->
+                FrescoImage(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(104.dp),
+                    imageUrl = media.coverImage?.image(type),
+                    imageOptions = ImageOptions(
+                        contentScale = ContentScale.Crop,
+                        alignment = Alignment.Center
+                    ),
+                    previewPlaceholder = R.drawable.bleach
+                )
+            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()

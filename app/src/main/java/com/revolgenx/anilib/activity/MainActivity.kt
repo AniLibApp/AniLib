@@ -24,16 +24,15 @@ import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
-import com.revolgenx.anilib.common.data.store.ShowIfLoggedIn
+import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.navigation.AlNavigationBar
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.screen.LoginScreen
 import com.revolgenx.anilib.common.ui.theme.AppTheme
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
 import com.revolgenx.anilib.list.ui.screen.MediaListScreen
-import com.revolgenx.anilib.social.ui.screen.ActivityScreen
+import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
-import org.koin.androidx.compose.koinViewModel
 
 /*
 * todo: handle customtab cancel result
@@ -73,25 +72,26 @@ class MainActivityScreen : Screen {
     }
 }
 
+private var userScreen: UserScreen? = null
+
 @Composable
-fun MainActivityScreenContent(
-    viewModel: MainActivityViewModel = koinViewModel()
-) {
+fun MainActivityScreenContent() {
     TabNavigator(tab = HomeScreen) {
         Scaffold(
             bottomBar = {
                 AlNavigationBar {
                     TabNavigationItem(tab = HomeScreen)
-                    viewModel.authDataStore.ShowIfLoggedIn {
+                    ShowIfLoggedIn {
                         TabNavigationItem(tab = MediaListScreen)
-                        TabNavigationItem(tab = ActivityScreen)
+                        TabNavigationItem(tab = ActivityUnionScreen)
                     }
-                    viewModel.authDataStore.ShowIfLoggedIn(
+                    ShowIfLoggedIn(
                         orElse = {
                             TabNavigationItem(tab = LoginScreen)
                         },
                         content = { userId ->
-                            TabNavigationItem(tab = UserScreen(userId, true))
+                            userScreen = userScreen ?: UserScreen(userId, true)
+                            TabNavigationItem(tab = userScreen!!)
                         }
                     )
                 }

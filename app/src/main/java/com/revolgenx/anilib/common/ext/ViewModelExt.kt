@@ -3,10 +3,13 @@ package com.revolgenx.anilib.common.ext
 import androidx.lifecycle.HasDefaultViewModelProviderFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.NavBackStackEntry
 import cafe.adriel.voyager.androidx.AndroidScreenLifecycleOwner
 import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleOwner
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.toExtras
 import org.koin.androidx.viewmodel.resolveViewModel
 import org.koin.core.annotation.KoinInternalApi
@@ -62,4 +65,9 @@ fun defaultExtras(viewModelStoreOwner: ViewModelStoreOwner): CreationExtras = wh
     else -> {
         CreationExtras.Empty
     }
+}
+
+
+fun ViewModel.launch(block: suspend CoroutineScope.() -> Unit) {
+    viewModelScope.launch(block = block)
 }

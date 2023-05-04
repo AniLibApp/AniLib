@@ -12,6 +12,7 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaOverviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
+import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -20,7 +21,7 @@ import org.koin.dsl.module
 
 val viewModelModules = module {
     //main activity
-    viewModel { MainActivityViewModel(get()) }
+    viewModel { MainActivityViewModel() }
 
     //airing
     viewModel { AiringScheduleViewModel(get()) }
@@ -45,4 +46,8 @@ val viewModelModules = module {
 
     //user
     viewModel { UserViewModel(get(), get()) }
+
+    // notification
+    viewModel { NotificationViewModel(get(), get()) }
+
 }

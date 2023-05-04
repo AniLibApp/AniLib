@@ -12,7 +12,9 @@ object StoreFileName {
     const val seasonFieldFileName = "season_field_preferences.json"
 }
 
-val Context.appPreferenceDataStore: DataStore<Preferences> by preferencesDataStore(name = "app_preferences.json")
+typealias AppPreferencesDataStore = DataStore<Preferences>
+
+val Context.appPreferencesDataStore: AppPreferencesDataStore by preferencesDataStore(name = "app_preferences.json")
 
 val Context.seasonFieldDataStore: DataStore<MediaFieldData> by dataStore(
     fileName = StoreFileName.seasonFieldFileName,

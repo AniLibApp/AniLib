@@ -8,6 +8,8 @@ import com.revolgenx.anilib.list.data.service.MediaListService
 import com.revolgenx.anilib.list.data.service.MediaListServiceImpl
 import com.revolgenx.anilib.media.data.service.MediaService
 import com.revolgenx.anilib.media.data.service.MediaServiceImpl
+import com.revolgenx.anilib.notification.data.service.NotificationService
+import com.revolgenx.anilib.notification.data.service.NotificationServiceImpl
 import com.revolgenx.anilib.staff.data.service.StaffService
 import com.revolgenx.anilib.staff.data.service.StaffServiceImpl
 import com.revolgenx.anilib.user.data.service.UserService
@@ -23,4 +25,5 @@ val serviceModules = module {
     factoryOf(::AiringScheduleServiceImpl) { bind<AiringScheduleService>() }
     factoryOf(::MediaListServiceImpl) { bind<MediaListService>() }
     factoryOf(::UserServiceImpl) { bind<UserService>() }
+    factoryOf(::NotificationServiceImpl) { bind<NotificationService>() }
 }

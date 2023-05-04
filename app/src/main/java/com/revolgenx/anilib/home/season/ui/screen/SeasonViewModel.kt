@@ -24,9 +24,7 @@ class SeasonViewModel(
     private val mediaService: MediaService,
     private val seasonFilterStore: DataStore<MediaFieldData>
 ) :
-    PagingViewModel<MediaModel, MediaField, MediaPagingSource>() {
-
-    override val initialize: Boolean = false
+    PagingViewModel<MediaModel, MediaField, MediaPagingSource>(initialize = false) {
 
     override var field by mutableStateOf(
         MediaField(

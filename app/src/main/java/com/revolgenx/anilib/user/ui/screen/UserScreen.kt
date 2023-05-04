@@ -1,7 +1,5 @@
 package com.revolgenx.anilib.user.ui.screen
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,9 +30,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.common.data.state.ResourceState
-import com.revolgenx.anilib.common.data.store.isLoggedIn
+import com.revolgenx.anilib.common.data.store.logout
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localNavigator
 import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
@@ -43,6 +41,7 @@ import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
+import com.revolgenx.anilib.common.ui.component.common.isLoggedIn
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.BaseTabScreen
@@ -132,7 +131,6 @@ private fun UserScreenContent(
                 isTab = isTab,
                 onLogout = {
                     scope.launch {
-                        viewModel.authDataStore.logout()
                         context.logout()
                     }
                 })
@@ -234,43 +232,36 @@ private fun UserScreenActions(
     isTab: Boolean = false,
     onLogout: () -> Unit
 ) {
-    val loggedIn = localContext().isLoggedIn().value
+    val loggedIn = isLoggedIn()
     val navigator = localNavigator()
-    val actions = mutableListOf<ActionMenuItem>()
-    if (isTab) {
-        actions.add(ActionMenuItem.AlwaysShown(
-            titleRes = R.string.settings,
-            iconRes = R.drawable.ic_settings,
-            onClick = {
-                navigator.push(SettingScreen())
-            }
-        ))
-    }
-
-    if (isTab && loggedIn) {
-        actions.add(
-            ActionMenuItem.NeverShown(
-                titleRes = R.string.logout,
-                iconRes = R.drawable.ic_logout,
-                onClick = onLogout
+    val actions = remember{
+        derivedStateOf {
+            listOfNotNull(
+                isTab.takeIf { it }?.let {
+                    ActionMenuItem.AlwaysShown(
+                        titleRes = R.string.settings,
+                        iconRes = R.drawable.ic_settings,
+                        onClick = {
+                            navigator.push(SettingScreen())
+                        }
+                    )
+                },
+                loggedIn.value.takeIf { it }?.let {
+                    ActionMenuItem.NeverShown(
+                        titleRes = R.string.logout,
+                        iconRes = R.drawable.ic_logout,
+                        onClick = onLogout
+                    )
+                }
             )
-        )
+        }
     }
 
     ActionsMenu(
         isOpen = isMenuOpen.value,
         onToggleOverflow = { isMenuOpen.value = !isMenuOpen.value },
-        items = actions,
+        items = actions.value,
         maxVisibleItems = 1
     )
 }
 
-
-private fun Context.logout() {
-    startActivity(Intent(this, MainActivity::class.java).apply {
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    })
-    if (this is MainActivity) {
-        finish()
-    }
-}

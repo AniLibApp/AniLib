@@ -58,10 +58,12 @@ import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.ext.isNull
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localNavigator
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
 import com.revolgenx.anilib.common.ui.component.action.ActionsMenu
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
+import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
@@ -69,8 +71,8 @@ import com.revolgenx.anilib.common.ui.component.menu.SortDropdownMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
-import com.revolgenx.anilib.media.ui.model.title
 import com.revolgenx.anilib.media.ui.model.toStringRes
+import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.type.AiringSort
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.fresco.FrescoImage
@@ -100,6 +102,7 @@ private fun AiringScreenContent(
     val isMenuOpen = remember { mutableStateOf(false) }
     val calendarState = rememberUseCaseState()
     val openBottomSheet = rememberSaveable { mutableStateOf(false) }
+    val navigator = localNavigator()
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
@@ -200,7 +203,9 @@ private fun AiringScreenContent(
                     }
 
                     is AiringScheduleModel -> {
-                        AiringScheduleItem(airingScheduleModel = airingScheduleModel)
+                        AiringScheduleItem(airingScheduleModel = airingScheduleModel) {
+                            navigator.push(MediaScreen(airingScheduleModel.mediaId, airingScheduleModel.media?.type))
+                        }
                     }
                 }
             }
@@ -235,7 +240,7 @@ private fun AiringScreenContent(
 }
 
 @Composable
-private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel) {
+private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick: () -> Unit) {
     val media = airingScheduleModel.media ?: return
     Card(
         modifier = Modifier
@@ -244,19 +249,21 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel) {
             .padding(8.dp)
     ) {
         Row(modifier = Modifier.clickable {
-//            navigator.push(MediaScreen(media.id, media.type))
+            onClick()
         }) {
-            FrescoImage(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(104.dp),
-                imageUrl = media.coverImage?.image,
-                imageOptions = ImageOptions(
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.Center
-                ),
-                previewPlaceholder = R.drawable.bleach
-            )
+            MediaCoverImageType {
+                FrescoImage(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(104.dp),
+                    imageUrl = media.coverImage?.image(it),
+                    imageOptions = ImageOptions(
+                        contentScale = ContentScale.Crop,
+                        alignment = Alignment.Center
+                    ),
+                    previewPlaceholder = R.drawable.bleach
+                )
+            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()

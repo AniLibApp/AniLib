@@ -1,7 +1,12 @@
 package com.revolgenx.anilib.media.ui.model
 
 import com.revolgenx.anilib.fragment.MediaCoverImage
-import com.revolgenx.anilib.media.data.type.MediaCoverImageType
+
+enum class MediaCoverImageType(val image: String) {
+    MEDIUM("Medium"),
+    LARGE("Large"),
+    EXTRA_LARGE("ExtraLarge")
+}
 
 data class MediaCoverImageModel(
     val medium: String? = null,
@@ -10,12 +15,11 @@ data class MediaCoverImageModel(
 ) {
     var color: String? = null
     val extraLargeImage = extraLarge ?: large ?: medium
-    val image
-        get() = when (MediaCoverImageType.LARGE) {
-            MediaCoverImageType.MEDIUM -> medium ?: large ?: extraLarge
-            MediaCoverImageType.LARGE -> large ?: extraLarge ?: medium
-            MediaCoverImageType.EXTRA_LARGE -> extraLargeImage
-        }
+    fun image(which: MediaCoverImageType) = when (which) {
+        MediaCoverImageType.MEDIUM -> medium ?: large ?: extraLarge
+        MediaCoverImageType.LARGE -> large ?: extraLarge ?: medium
+        MediaCoverImageType.EXTRA_LARGE -> extraLargeImage
+    }
 }
 
 fun MediaCoverImage.toModel() = MediaCoverImageModel(medium, large, extraLarge)

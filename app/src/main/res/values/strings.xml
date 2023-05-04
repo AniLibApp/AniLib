@@ -141,4 +141,6 @@
     <string name="activity">Activity</string>
     <string name="user">User</string>
     <string name="logout">Logout</string>
+    <string name="notifications">Notifications</string>
+    <string name="show_reason">Show reason</string>
 </resources>

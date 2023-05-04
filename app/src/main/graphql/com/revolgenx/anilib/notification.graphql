@@ -1,13 +1,22 @@
 query NotificationQuery(
     $page:Int,
     $perPage:Int,
+    $userId: Int,
+    $includeNotificationCount: Boolean!,
     $resetNotificationCount:Boolean){
-    page: Page(page:$page, perPage:$perPage){
+    User(id: $userId) @include(if: $includeNotificationCount){
+        unreadNotificationCount
+    }
+    page: Page(page:$page, perPage:$perPage) @nonnull{
+        pageInfo @nonnull{
+            ... pageInfo
+        }
         notifications(resetNotificationCount:$resetNotificationCount){
             __typename
             ... on AiringNotification{
                 id
                 type
+                animeId
                 episode
                 contexts
                 createdAt
@@ -24,6 +33,7 @@ query NotificationQuery(
                 context
                 type
                 createdAt
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -45,6 +55,7 @@ query NotificationQuery(
                     siteUrl
                 }
                 createdAt
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -60,6 +71,7 @@ query NotificationQuery(
                 activity{
                     ... notificationActivity
                 }
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -76,6 +88,7 @@ query NotificationQuery(
                 activity{
                     ... notificationActivity
                 }
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -92,6 +105,7 @@ query NotificationQuery(
                 activity{
                     ... notificationActivity
                 }
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -108,6 +122,7 @@ query NotificationQuery(
                 activity{
                     ... notificationActivity
                 }
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -124,6 +139,7 @@ query NotificationQuery(
                 activity{
                     ... notificationActivity
                 }
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -136,16 +152,12 @@ query NotificationQuery(
                 type
                 context
                 createdAt
-                comment{
-                    id
-                    siteUrl
-                }
-
                 thread{
                     ... on Thread{
                         ... basicThreadContent
                     }
                 }
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -158,15 +170,12 @@ query NotificationQuery(
                 type
                 context
                 createdAt
-                comment{
-                    id
-                    siteUrl
-                }
                 thread{
                     ... on Thread{
                         ... basicThreadContent
                     }
                 }
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -179,12 +188,9 @@ query NotificationQuery(
             ... on ThreadCommentSubscribedNotification{
                 id
                 context
-                comment{
-                    id
-                    siteUrl
-                }
                 type
                 createdAt
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -202,15 +208,12 @@ query NotificationQuery(
                 type
                 context
                 createdAt
-                comment{
-                    id
-                    siteUrl
-                }
                 thread{
                     ... on Thread{
                         ... basicThreadContent
                     }
                 }
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -228,6 +231,7 @@ query NotificationQuery(
                         ... basicThreadContent
                     }
                 }
+                userId
                 user{
                     ... on User{
                         ... notificationUserContent
@@ -240,6 +244,7 @@ query NotificationQuery(
                 type
                 context
                 createdAt
+                mediaId
                 media{
                     ... on Media{
                         ... notificationMediaContent
