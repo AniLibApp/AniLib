@@ -52,7 +52,6 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.data.field.AiringScheduleField
-import com.revolgenx.anilib.airing.ui.model.AiringScheduleHeaderModel
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
@@ -70,6 +69,7 @@ import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortDropdownMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
+import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
@@ -193,12 +193,12 @@ private fun AiringScreenContent(
                 },
                 span = { index ->
                     val item = pagingItems[index]
-                    GridItemSpan(if (item is AiringScheduleHeaderModel) maxLineSpan else maxCurrentLineSpan)
+                    GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
                 }
             ) { airingScheduleModel ->
                 airingScheduleModel ?: return@LazyPagingList
                 when (airingScheduleModel) {
-                    is AiringScheduleHeaderModel -> {
+                    is HeaderModel -> {
                         AiringScheduleHeader(airingScheduleModel = airingScheduleModel)
                     }
 
@@ -319,7 +319,7 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
 }
 
 @Composable
-private fun AiringScheduleHeader(airingScheduleModel: AiringScheduleHeaderModel) {
+private fun AiringScheduleHeader(airingScheduleModel: HeaderModel) {
     Box(
         modifier = Modifier
             .fillMaxWidth()

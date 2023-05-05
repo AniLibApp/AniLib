@@ -5,11 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.revolgenx.anilib.airing.data.field.AiringScheduleField
 import com.revolgenx.anilib.airing.data.service.AiringScheduleService
-import com.revolgenx.anilib.airing.data.source.AiringScheduleDailyPagingSource
 import com.revolgenx.anilib.airing.data.source.AiringSchedulePagingSource
-import com.revolgenx.anilib.airing.data.source.AiringScheduleWeeklyPagingSource
-import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
-import com.revolgenx.anilib.airing.ui.model.BaseAiringScheduleModel
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.screen.PagingViewModel
 import com.revolgenx.anilib.type.AiringSort
@@ -22,7 +18,7 @@ import java.util.Locale
 
 /*TODO calendar locale start of the week  for week range*/
 class AiringScheduleViewModel(private val service: AiringScheduleService) :
-    PagingViewModel<BaseAiringScheduleModel, AiringScheduleField, AiringSchedulePagingSource<BaseAiringScheduleModel, AiringScheduleField>>() {
+    PagingViewModel<BaseModel, AiringScheduleField, AiringSchedulePagingSource>() {
     var startDateTime by mutableStateOf(ZonedDateTime.now().with(LocalTime.MIN))
     var endDateTime by mutableStateOf(ZonedDateTime.now().with(LocalTime.MAX))
 
@@ -37,12 +33,8 @@ class AiringScheduleViewModel(private val service: AiringScheduleService) :
     )
 
 
-    override val pagingSource: AiringSchedulePagingSource<BaseAiringScheduleModel, AiringScheduleField>
-        get() = if (this.field.isWeeklyTypeDate) {
-            AiringScheduleWeeklyPagingSource(this.field, service)
-        } else {
-            AiringScheduleDailyPagingSource(this.field, service)
-        }
+    override val pagingSource: AiringSchedulePagingSource
+        get() = AiringSchedulePagingSource(this.field, service)
 
 
     fun previous() {

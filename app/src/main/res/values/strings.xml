@@ -143,4 +143,5 @@
     <string name="logout">Logout</string>
     <string name="notifications">Notifications</string>
     <string name="show_reason">Show reason</string>
+    <string name="studio">Studio</string>
 </resources>

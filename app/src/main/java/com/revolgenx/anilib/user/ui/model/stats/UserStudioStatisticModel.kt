@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.user.ui.model.stats
 
-import com.revolgenx.anilib.studios.ui.model.StudioModel
+import com.revolgenx.anilib.studio.ui.model.StudioModel
 
 
 data class UserStudioStatisticModel(

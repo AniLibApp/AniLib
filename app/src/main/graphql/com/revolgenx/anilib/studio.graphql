@@ -1,21 +1,21 @@
-query StudioQuery($studioId:Int){
+query StudioMediaQuery(
+    $studioId:Int,
+    $page:Int,
+    $perPage:Int,
+    $onList:Boolean,
+    $sort:[MediaSort]
+){
     studio: Studio(id:$studioId){
         id
         name
         isFavourite
         favourites
         siteUrl
-    }
-}
 
-query StudioMediaQuery(
-    $studioId:Int,
-    $page:Int,
-    $perPage:Int,
-    $onList:Boolean,
-    $sort:[MediaSort]){
-    studio: Studio(id:$studioId){
         media(page:$page,perPage:$perPage,onList: $onList, sort:$sort){
+            pageInfo @nonnull{
+                ... pageInfo
+            }
             nodes{
                 ... on Media{
                     ... media
@@ -24,7 +24,6 @@ query StudioMediaQuery(
         }
     }
 }
-
 
 fragment studioContent on Studio{
     id

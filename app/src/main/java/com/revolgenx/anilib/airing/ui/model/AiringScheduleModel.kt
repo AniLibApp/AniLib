@@ -21,11 +21,7 @@ data class AiringScheduleModel(
     val timeUntilAiring: Int = -1,
     val timeUntilAiringModel: TimeUntilAiringModel? = null,
     val airingScheduleTimer: AiringScheduleTimer? = null
-) : BaseAiringScheduleModel(id)
-
-data class AiringScheduleHeaderModel(val title: String) : BaseAiringScheduleModel(title)
-
-sealed class BaseAiringScheduleModel(key: Any) : BaseModel(key)
+) : BaseModel(id)
 
 fun AiringScheduleQuery.AiringSchedule.toModel(): AiringScheduleModel {
     val timeUntilAiringModel = TimeUntilAiringModel(timeUntilAiring.toLong())

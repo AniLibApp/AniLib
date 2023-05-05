@@ -6,11 +6,10 @@ import com.revolgenx.anilib.airing.ui.model.toModel
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.list.data.field.MediaListCollectionIdField
 import com.revolgenx.anilib.list.data.service.MediaListService
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
 
@@ -45,6 +44,6 @@ class AiringScheduleServiceImpl(
                 }
             }
         }
-        return airingFlow.flowOn(Dispatchers.IO)
+        return airingFlow.onIO()
     }
 }

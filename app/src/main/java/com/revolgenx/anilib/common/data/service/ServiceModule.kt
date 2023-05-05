@@ -12,6 +12,8 @@ import com.revolgenx.anilib.notification.data.service.NotificationService
 import com.revolgenx.anilib.notification.data.service.NotificationServiceImpl
 import com.revolgenx.anilib.staff.data.service.StaffService
 import com.revolgenx.anilib.staff.data.service.StaffServiceImpl
+import com.revolgenx.anilib.studio.data.service.StudioService
+import com.revolgenx.anilib.studio.data.service.StudioServiceImpl
 import com.revolgenx.anilib.user.data.service.UserService
 import com.revolgenx.anilib.user.data.service.UserServiceImpl
 import org.koin.core.module.dsl.bind
@@ -26,4 +28,5 @@ val serviceModules = module {
     factoryOf(::MediaListServiceImpl) { bind<MediaListService>() }
     factoryOf(::UserServiceImpl) { bind<UserService>() }
     factoryOf(::NotificationServiceImpl) { bind<NotificationService>() }
+    factoryOf(::StudioServiceImpl) { bind<StudioService>() }
 }

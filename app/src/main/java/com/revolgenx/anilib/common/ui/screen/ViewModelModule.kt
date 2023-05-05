@@ -14,6 +14,7 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
+import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -44,10 +45,14 @@ val viewModelModules = module {
     //staff
     viewModel { StaffAboutViewModel(get()) }
 
+    //studio
+    viewModel {StudioViewModel(get())}
+
     //user
     viewModel { UserViewModel(get(), get()) }
 
     // notification
     viewModel { NotificationViewModel(get(), get()) }
+
 
 }

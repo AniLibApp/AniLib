@@ -18,9 +18,9 @@ import com.revolgenx.anilib.common.ui.model.toModel
 import com.revolgenx.anilib.fragment.Media
 import com.revolgenx.anilib.list.ui.model.MediaListModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
-import com.revolgenx.anilib.studios.ui.model.StudioConnectionModel
-import com.revolgenx.anilib.studios.ui.model.StudioEdgeModel
-import com.revolgenx.anilib.studios.ui.model.StudioModel
+import com.revolgenx.anilib.studio.ui.model.StudioConnectionModel
+import com.revolgenx.anilib.studio.ui.model.StudioEdgeModel
+import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaRelation
 import com.revolgenx.anilib.type.MediaSeason
@@ -86,6 +86,9 @@ data class MediaModel(
     val type: MediaType? = null,
     val updatedAt: Int? = null,
     val volumes: Int? = null,
+
+    // for StudioScreen
+    var studio: StudioModel? = null
 ) : BaseModel(id) {
     val isAnime get() = type == MediaType.ANIME
 }
@@ -237,7 +240,7 @@ fun MediaOverViewQuery.Media.toModel(): MediaModel {
                     StudioEdgeModel(
                         isMain = it?.isMain == true,
                         node = it?.node?.let { node ->
-                            StudioModel(node.id, studioName = node.name)
+                            StudioModel(node.id, name = node.name)
                         }
                     )
                 }

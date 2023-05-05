@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.studios.ui.model
+package com.revolgenx.anilib.studio.ui.model
 
 data class StudioConnectionModel(
     val edges: List<StudioEdgeModel>? = null,
