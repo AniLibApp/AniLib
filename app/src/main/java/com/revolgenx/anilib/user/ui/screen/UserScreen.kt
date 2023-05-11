@@ -59,7 +59,7 @@ import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 import org.koin.androidx.compose.koinViewModel
 
-class UserScreen(private val id: Int = -1, private val isTab: Boolean = false) : BaseTabScreen() {
+class UserScreen(private val id: Int, private val isTab: Boolean = false) : BaseTabScreen() {
     override val options: TabOptions
         @Composable
         get() {

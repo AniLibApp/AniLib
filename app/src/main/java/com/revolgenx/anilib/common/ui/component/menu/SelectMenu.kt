@@ -39,7 +39,8 @@ import com.revolgenx.anilib.R
 
 
 @Composable
-fun DropdownMenu(
+fun SelectMenu(
+    modifier: Modifier = Modifier,
     label: String? = null,
     @StringRes labelRes: Int? = null,
     showNoneItem: Boolean = false,
@@ -51,7 +52,7 @@ fun DropdownMenu(
     var menuSize by remember { mutableStateOf(Size.Zero) }
     var selectedIndex by remember { mutableStateOf(selectedItemPosition ?: -1) }
 
-    Column{
+    Column {
         if (label != null || labelRes != null) {
             Text(
                 label ?: stringResource(id = labelRes!!),
@@ -60,7 +61,7 @@ fun DropdownMenu(
         }
 
         Card(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .clickable {
                     expanded = true
@@ -152,7 +153,7 @@ fun DropdownMenu(
 @Preview
 @Composable
 fun SelectableDropDownMenuPreview() {
-    DropdownMenu(
+    SelectMenu(
         entries = listOf("Winter", "Summer"),
         selectedItemPosition = 0,
         onItemSelected = {

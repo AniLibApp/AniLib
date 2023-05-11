@@ -12,9 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -30,31 +31,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.revolgenx.anilib.R
-
-
-enum class AlSortOrder {
-    ASC, DESC, NONE
-}
-
-data class AlSortMenuItem(val title: String, var order: AlSortOrder = AlSortOrder.NONE)
+import com.revolgenx.anilib.common.data.tuples.MutablePair
 
 @Composable
-fun SortDropdownMenu(
+fun MultiSelectMenu(
     label: String? = null,
     @StringRes labelRes: Int? = null,
-    entries: List<AlSortMenuItem>,
-    allowNone: Boolean = true,
-    onItemsSelected: (index: Int, item: AlSortMenuItem?) -> Unit
+    entries: List<MutablePair<Boolean, String>>,
+    // pair of index and string
+    onItemsSelected: (items: List<Pair<Int, String>>) -> Unit
 ) {
+    val mutableEntries by remember {
+        mutableStateOf( entries.map { mutableStateOf(it) })
+    }
+    val items = mutableEntries.map { it.value.second }
+    fun getSelectedItems() = mutableEntries.filter { it.value.first }.map { it.value.second }
+    fun getSelectedItemsWithIndex() = getSelectedItems().map { items.indexOf(it) to it }
 
     var expanded by remember { mutableStateOf(false) }
     var menuSize by remember { mutableStateOf(Size.Zero) }
-    var selectedItem by remember { mutableStateOf(entries.find { it.order != AlSortOrder.NONE }) }
+    var selectedItems by remember {
+        mutableStateOf(getSelectedItems())
+    }
+
 
     Column {
         if (label != null || labelRes != null) {
@@ -81,24 +84,10 @@ fun SortDropdownMenu(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row() {
-                    val item = selectedItem
-                    if (item != null) {
-                        val orderIcon = if (item.order == AlSortOrder.ASC) {
-                            R.drawable.round_arrow_upward
-                        } else {
-                            R.drawable.round_arrow_downward
-                        }
-                        Icon(
-                            painter = painterResource(id = orderIcon),
-                            contentDescription = item.title
-                        )
-                    }
-
-                    Text(
-                        item?.title ?: stringResource(id = R.string.none)
-                    )
-                }
+                Text(
+                    selectedItems.takeIf { it.isNotEmpty() }?.joinToString(", ")
+                        ?: stringResource(id = R.string.none)
+                )
                 Icon(
                     Icons.Default.ArrowDropDown,
                     contentDescription = null
@@ -118,33 +107,20 @@ fun SortDropdownMenu(
         ) {
             Box(modifier = Modifier.size(width = menuWidth, height = menuItemHeight)) {
                 LazyColumn {
-                    itemsIndexed(entries) { index, s ->
+                    items(mutableEntries) { s ->
                         DropdownMenuItem(
                             modifier = Modifier.height(menuHeight),
-                            text = { Text(s.title) },
+                            text = { Text(s.value.second) },
                             onClick = {
-                                if (selectedItem != s) {
-                                    selectedItem?.order = AlSortOrder.NONE
-                                }
-                                s.order = when (s.order) {
-                                    AlSortOrder.ASC -> AlSortOrder.DESC
-                                    AlSortOrder.DESC -> if (allowNone) AlSortOrder.NONE else AlSortOrder.ASC
-                                    AlSortOrder.NONE -> AlSortOrder.ASC
-                                }
-                                selectedItem = null
-                                selectedItem = s.takeIf { it.order != AlSortOrder.NONE }
-                                onItemsSelected.invoke(index, selectedItem)
+                                s.value = s.value.copy(first = !s.value.first)
+                                selectedItems = getSelectedItems()
+                                onItemsSelected.invoke(getSelectedItemsWithIndex())
                             },
                             leadingIcon = {
-                                if (selectedItem == s) {
-                                    val orderIcon = if (s.order == AlSortOrder.ASC) {
-                                        R.drawable.round_arrow_upward
-                                    } else {
-                                        R.drawable.round_arrow_downward
-                                    }
+                                if (s.value.first) {
                                     Icon(
-                                        painter = painterResource(id = orderIcon),
-                                        contentDescription = s.title
+                                        Icons.Default.Check,
+                                        contentDescription = null
                                     )
                                 }
                             })

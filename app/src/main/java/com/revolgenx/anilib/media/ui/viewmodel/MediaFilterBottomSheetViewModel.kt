@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.media.ui.screen
+package com.revolgenx.anilib.media.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

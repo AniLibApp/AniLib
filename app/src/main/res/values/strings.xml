@@ -96,6 +96,19 @@
     <string name="background">Background</string>
     <!--Character Role-->
 
+    <!--MediaListStatus-->
+    <string name="watching">Watching</string>
+    <string name="plan_to_watch">Plan to watch</string>
+    <string name="rewatching">Rewatching</string>
+    <string name="planning">Planning</string>
+    <string name="completed">Completed</string>
+    <string name="dropped">Dropped</string>
+    <string name="paused">Paused</string>
+    <string name="reading">Reading</string>
+    <string name="plan_to_read">Plan to read</string>
+    <string name="rereading">Rereading</string>
+    <!--MediaListStatus-->
+
     <!--App-->
     <string name="its_empty">Feeling empty</string>
     <string name="something_went_wrong">Something went wrong</string>
@@ -144,4 +157,12 @@
     <string name="notifications">Notifications</string>
     <string name="show_reason">Show reason</string>
     <string name="studio">Studio</string>
+    <string name="stats">Stats</string>
+    <string name="social">Social</string>
+    <string name="edit">Edit</string>
+    <string name="episode_progress">Episode Progress</string>
+    <string name="chapter_progress">Chapter Progress</string>
+    <string name="total_rewatches">Total Rewatches</string>
+    <string name="total_rereads">Total Rereads</string>
+    <string name="volume_progress">Volume Progress</string>
 </resources>

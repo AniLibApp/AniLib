@@ -1,11 +1,7 @@
 package com.revolgenx.anilib.media.ui.screen
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,21 +16,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.androidx.AndroidScreen
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
-import com.revolgenx.anilib.common.ui.component.menu.DropdownMenu
-import com.revolgenx.anilib.common.ui.component.menu.MultiSelectDropdownMenu
-import com.revolgenx.anilib.common.ui.component.menu.SortDropdownMenu
 import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
+import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
+import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
+import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.model.toMediaFormat
 import com.revolgenx.anilib.media.ui.model.toMediaSeason
 import com.revolgenx.anilib.media.ui.model.toMediaStatus
+import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
 import com.revolgenx.anilib.type.MediaSort
 import org.koin.androidx.compose.koinViewModel
 import java.util.Calendar
@@ -75,7 +70,7 @@ private fun MediaFilterBottomSheetContent(
             item {
                 val selectedFormats = field.formatsIn?.map { it.ordinal } ?: emptyList()
                 val formats = stringArrayResource(id = R.array.media_format)
-                MultiSelectDropdownMenu(
+                MultiSelectMenu(
                     labelRes = R.string.format,
                     entries = formats.mapIndexed { index, s ->
                         selectedFormats.contains(
@@ -88,7 +83,7 @@ private fun MediaFilterBottomSheetContent(
                 }
             }
             item {
-                DropdownMenu(
+                SelectMenu(
                     labelRes = R.string.status,
                     entries = stringArrayResource(id = R.array.media_status).toList(),
                     selectedItemPosition = field.status?.ordinal,
@@ -98,7 +93,7 @@ private fun MediaFilterBottomSheetContent(
                 }
             }
             item {
-                DropdownMenu(
+                SelectMenu(
                     labelRes = R.string.season,
                     entries = stringArrayResource(id = R.array.media_season).toList(),
                     selectedItemPosition = field.season?.ordinal
@@ -127,7 +122,7 @@ private fun MediaFilterBottomSheetContent(
                         )
                     }
 
-                SortDropdownMenu(
+                SortSelectMenu(
                     labelRes = R.string.sort,
                     entries = sortMenus,
                 ) { index, selectedItem ->
@@ -147,7 +142,7 @@ private fun MediaFilterBottomSheetContent(
                 }
             }
             item {
-                DropdownMenu(
+                SelectMenu(
                     labelRes = R.string.year,
                     entries = yearList,
                     selectedItemPosition = field.seasonYear?.takeIf { it in yearGreater..yearLesser }

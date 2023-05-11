@@ -1,9 +1,11 @@
 package com.revolgenx.anilib.user.ui.model
 
+import com.revolgenx.anilib.type.ScoreFormat
+
 
 data class MediaListOptionModel(
-    var scoreFormat:Int? = null,
-    var rowOrder:Int? = null,
-    var animeList: MediaListOptionTypeModel? = null,
-    var mangaList: MediaListOptionTypeModel? = null,
+    val scoreFormat: ScoreFormat? = null,
+    val rowOrder: Int? = null,
+    val animeList: MediaListOptionTypeModel? = null,
+    val mangaList: MediaListOptionTypeModel? = null,
 )

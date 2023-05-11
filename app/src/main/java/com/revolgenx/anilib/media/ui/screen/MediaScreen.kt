@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.localNavigator
 import com.revolgenx.anilib.common.ui.component.appbar.AlAppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
@@ -41,6 +43,7 @@ import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.PagerScreen
 import com.revolgenx.anilib.media.ui.model.MediaModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaScreenPageType
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.type.MediaType
 import com.skydoves.landscapist.ImageOptions
@@ -52,33 +55,9 @@ import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 import org.koin.androidx.compose.koinViewModel
 
-enum class MediaScreenPageType {
-    OVERVIEW,
-    WATCH,
-    CHARACTER,
-    STAFF,
-    REVIEW,
-}
-
-private typealias MediaScreenPage = PagerScreen<MediaScreenPageType>
-
-private val watchPage = MediaScreenPage(
-    MediaScreenPageType.WATCH,
-    R.string.watch,
-    R.drawable.ic_watch,
-    true
-)
-
-private val pages = listOf(
-    MediaScreenPage(MediaScreenPageType.OVERVIEW, R.string.overview, R.drawable.ic_fire),
-    watchPage,
-    MediaScreenPage(MediaScreenPageType.CHARACTER, R.string.character, R.drawable.ic_character),
-    MediaScreenPage(MediaScreenPageType.STAFF, R.string.staff, R.drawable.ic_staff),
-    MediaScreenPage(MediaScreenPageType.REVIEW, R.string.review, R.drawable.ic_star)
-)
 
 class MediaScreen(
-    private val id: Int = 145139,
+    private val id: Int,
     private val mediaType: MediaType? = null
 ) : AndroidScreen() {
     @Composable
@@ -96,7 +75,10 @@ fun MediaScreenContent(
 ) {
     val pagerState = rememberPagerState()
     val collapsingToolbarState = rememberCollapsingToolbarScaffoldState()
-    var visiblePages by remember { mutableStateOf(pages) }
+    val pages = viewModel.pages
+    val visiblePages by remember {
+        derivedStateOf { pages.filter { it.isVisible.value } }
+    }
     val media = viewModel.media.value
 
     CollapsingToolbarScaffold(
@@ -127,6 +109,8 @@ fun MediaScreenContent(
                     MediaScreenPageType.CHARACTER -> MediaCharacterScreen(id, mediaType)
                     MediaScreenPageType.STAFF -> MediaStaffScreen(id)
                     MediaScreenPageType.REVIEW -> MediaReviewScreen(id)
+                    MediaScreenPageType.STATS -> MediaStatsScreen(id)
+                    MediaScreenPageType.SOCIAL -> MediaSocialScreen()
                 }
             }
         }

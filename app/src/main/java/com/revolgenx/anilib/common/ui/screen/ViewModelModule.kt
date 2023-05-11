@@ -5,8 +5,9 @@ import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.common.data.store.StoreFileName
+import com.revolgenx.anilib.entry.ui.viewmodel.MediaListEntryEditorViewModel
 import com.revolgenx.anilib.home.season.ui.screen.SeasonViewModel
-import com.revolgenx.anilib.media.ui.screen.MediaFilterBottomSheetViewModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaOverviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
@@ -53,6 +54,10 @@ val viewModelModules = module {
 
     // notification
     viewModel { NotificationViewModel(get(), get()) }
+
+    //editor
+    viewModel { MediaListEntryEditorViewModel(get()) }
+
 
 
 }

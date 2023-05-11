@@ -2,6 +2,7 @@ package com.revolgenx.anilib.media.ui.model
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
+import com.revolgenx.anilib.MediaListEntryQuery
 import com.revolgenx.anilib.MediaOverViewQuery
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.ui.model.AiringAtModel
@@ -90,8 +91,11 @@ data class MediaModel(
     // for StudioScreen
     var studio: StudioModel? = null
 ) : BaseModel(id) {
-    val isAnime get() = type == MediaType.ANIME
+    val isAnime get() = type.isAnime()
 }
+
+
+fun MediaType?.isAnime() = this == MediaType.ANIME
 
 
 fun Media.toModel(): MediaModel {
@@ -317,51 +321,6 @@ fun MediaStatus?.toColor(): Color {
         MediaStatus.CANCELLED -> Color(0xFFD50000)
         MediaStatus.HIATUS -> Color(0xFFFF6E40)
         else -> Color(0xFFD50000)
-    }
-}
-
-
-@StringRes
-fun MediaSort.toStringRes(): Int {
-    return when (this) {
-        MediaSort.ID -> R.string.id
-        MediaSort.ID_DESC -> R.string.id_desc
-        MediaSort.TITLE_ROMAJI -> R.string.title_romaji
-        MediaSort.TITLE_ROMAJI_DESC -> R.string.title_romaji_desc
-        MediaSort.TITLE_ENGLISH -> R.string.title_english
-        MediaSort.TITLE_ENGLISH_DESC -> R.string.title_english_desc
-        MediaSort.TITLE_NATIVE -> R.string.title_native
-        MediaSort.TITLE_NATIVE_DESC -> R.string.title_native_desc
-        MediaSort.TYPE -> R.string.type
-        MediaSort.TYPE_DESC -> R.string.type_desc
-        MediaSort.FORMAT -> R.string.format
-        MediaSort.FORMAT_DESC -> R.string.format_desc
-        MediaSort.START_DATE -> R.string.start_date
-        MediaSort.START_DATE_DESC -> R.string.start_date_desc
-        MediaSort.END_DATE -> R.string.end_date
-        MediaSort.END_DATE_DESC -> R.string.end_date_desc
-        MediaSort.SCORE -> R.string.score
-        MediaSort.SCORE_DESC -> R.string.score_desc
-        MediaSort.POPULARITY -> R.string.popularity
-        MediaSort.POPULARITY_DESC -> R.string.popularity_desc
-        MediaSort.TRENDING -> R.string.trending
-        MediaSort.TRENDING_DESC -> R.string.trending_desc
-        MediaSort.EPISODES -> R.string.episodes
-        MediaSort.EPISODES_DESC -> R.string.episodes_desc
-        MediaSort.DURATION -> R.string.duration
-        MediaSort.DURATION_DESC -> R.string.duration_desc
-        MediaSort.STATUS -> R.string.status
-        MediaSort.STATUS_DESC -> R.string.status_desc
-        MediaSort.CHAPTERS -> R.string.chapters
-        MediaSort.CHAPTERS_DESC -> R.string.chapters_desc
-        MediaSort.VOLUMES -> R.string.volumes
-        MediaSort.VOLUMES_DESC -> R.string.volumes_desc
-        MediaSort.UPDATED_AT -> R.string.updated_at
-        MediaSort.UPDATED_AT_DESC -> R.string.updated_at_desc
-        MediaSort.SEARCH_MATCH -> R.string.search_match
-        MediaSort.FAVOURITES -> R.string.favourites
-        MediaSort.FAVOURITES_DESC -> R.string.favourites_desc
-        MediaSort.UNKNOWN__ -> R.string.unknown
     }
 }
 

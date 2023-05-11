@@ -7,6 +7,8 @@ data class FuzzyDateModel(val day:Int?, val month: Int?, val year:Int?){
     override fun toString(): String {
         return "${year ?: ""}-${month ?: ""}-${day ?: ""}"
     }
+
+    fun isEmpty() = year == null && month == null && day == null
 }
 
 fun FuzzyDate.toModel() = FuzzyDateModel(

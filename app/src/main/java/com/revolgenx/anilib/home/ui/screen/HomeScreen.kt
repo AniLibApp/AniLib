@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.browse.ui.screen.BrowseScreen
 import com.revolgenx.anilib.common.ext.localNavigator
 import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
 import com.revolgenx.anilib.common.ui.component.action.ActionsMenu
@@ -94,7 +95,9 @@ fun HomeScreenContent() {
             listOfNotNull(
                 ActionMenuItem.AlwaysShown(
                     titleRes = R.string.search,
-                    onClick = {},
+                    onClick = {
+                        navigator.push(BrowseScreen())
+                    },
                     iconRes = R.drawable.ic_search,
                     contentDescriptionRes = R.string.search,
                 ),

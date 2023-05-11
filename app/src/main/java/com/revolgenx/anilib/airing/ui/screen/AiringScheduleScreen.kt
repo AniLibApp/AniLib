@@ -62,11 +62,12 @@ import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
 import com.revolgenx.anilib.common.ui.component.action.ActionsMenu
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
+import com.revolgenx.anilib.common.ui.component.common.Header
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
-import com.revolgenx.anilib.common.ui.component.menu.SortDropdownMenu
+import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.model.HeaderModel
@@ -199,7 +200,7 @@ private fun AiringScreenContent(
                 airingScheduleModel ?: return@LazyPagingList
                 when (airingScheduleModel) {
                     is HeaderModel -> {
-                        AiringScheduleHeader(airingScheduleModel = airingScheduleModel)
+                        Header(title = airingScheduleModel.title)
                     }
 
                     is AiringScheduleModel -> {
@@ -319,17 +320,6 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
 }
 
 @Composable
-private fun AiringScheduleHeader(airingScheduleModel: HeaderModel) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-    ) {
-        Text(text = airingScheduleModel.title, style = MaterialTheme.typography.titleMedium)
-    }
-}
-
-@Composable
 private fun AiringScheduleTimer(airingScheduleModel: AiringScheduleModel) {
     val airingScheduleTimer = airingScheduleModel.airingScheduleTimer ?: return
     DisposableEffect(airingScheduleModel.id) {
@@ -418,12 +408,12 @@ private fun AiringScheduleFilterBottomSheetContent(
                         )
                     }
 
-                SortDropdownMenu(
+                SortSelectMenu(
                     labelRes = R.string.sort,
                     entries = sortMenus,
                     allowNone = false
                 ) { index, selectedItem ->
-                    selectedItem ?: return@SortDropdownMenu
+                    selectedItem ?: return@SortSelectMenu
                     val order = selectedItem.order
                     val airingIndex = index * 2
                     val airingSort: AiringSort =

@@ -38,6 +38,7 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localNavigator
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ui.component.common.Header
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -102,7 +103,7 @@ private fun StudioScreenContent(studioId: Int, viewModel: StudioViewModel = koin
 
                 when (baseModel) {
                     is HeaderModel -> {
-                        StudioMediaHeader(baseModel)
+                        Header(baseModel.title)
                     }
 
                     is MediaModel -> {
@@ -170,21 +171,5 @@ private fun StudioMediaItem(mediaModel: MediaModel, onClick: () -> Unit) {
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun StudioMediaHeader(baseModel: HeaderModel) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 10.dp)
-    ) {
-        Text(
-            text = baseModel.title,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 22.sp,
-            color = MaterialTheme.colorScheme.onSurface
-        )
     }
 }

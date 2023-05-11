@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -19,13 +18,12 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
-import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
-import com.revolgenx.anilib.common.ui.component.navigation.AlNavigationBar
+import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.screen.LoginScreen
 import com.revolgenx.anilib.common.ui.theme.AppTheme
@@ -43,20 +41,14 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             AppTheme {
-                BottomSheetNavigator(
-                    sheetShape = MaterialTheme.shapes.extraLarge,
-                    sheetBackgroundColor = MaterialTheme.colorScheme.background,
-                    scrimColor = MaterialTheme.colorScheme.scrim
-                ) {
-                    Navigator(
-                        screen = MainActivityScreen(),
-                        disposeBehavior = NavigatorDisposeBehavior(false, false)
-                    ) { navigator ->
-                        CompositionLocalProvider(
-                            LocalMainNavigator provides navigator
-                        ) {
-                            CurrentScreen()
-                        }
+                Navigator(
+                    screen = MainActivityScreen(),
+                    disposeBehavior = NavigatorDisposeBehavior(false, false)
+                ) { navigator ->
+                    CompositionLocalProvider(
+                        LocalMainNavigator provides navigator
+                    ) {
+                        CurrentScreen()
                     }
                 }
             }
@@ -79,7 +71,7 @@ fun MainActivityScreenContent() {
     TabNavigator(tab = HomeScreen) {
         Scaffold(
             bottomBar = {
-                AlNavigationBar {
+                NavigationBar {
                     TabNavigationItem(tab = HomeScreen)
                     ShowIfLoggedIn {
                         TabNavigationItem(tab = MediaListScreen)
