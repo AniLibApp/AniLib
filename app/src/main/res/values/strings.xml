@@ -165,4 +165,9 @@
     <string name="total_rewatches">Total Rewatches</string>
     <string name="total_rereads">Total Rereads</string>
     <string name="volume_progress">Volume Progress</string>
+    <string name="notes">Notes</string>
+    <string name="_private">Private</string>
+    <string name="custom_lists">Custom Lists</string>
+    <string name="no_custom_lists">No custom lists</string>
+    <string name="hide_from_status_lists">Hide from status lists</string>
 </resources>

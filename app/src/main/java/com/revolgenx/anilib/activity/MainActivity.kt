@@ -27,6 +27,7 @@ import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.screen.LoginScreen
 import com.revolgenx.anilib.common.ui.theme.AppTheme
+import com.revolgenx.anilib.entry.ui.screen.MediaListEntryEditorScreen
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
 import com.revolgenx.anilib.list.ui.screen.MediaListScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen

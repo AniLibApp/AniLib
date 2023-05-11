@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.revolgenx.anilib.R
 
@@ -55,8 +56,8 @@ fun SelectMenu(
     Column {
         if (label != null || labelRes != null) {
             Text(
-                label ?: stringResource(id = labelRes!!),
-                modifier = Modifier.padding(PaddingValues(vertical = 8.dp))
+                modifier = Modifier.padding(PaddingValues(vertical = 8.dp)),
+                text = label ?: stringResource(id = labelRes!!)
             )
         }
 
@@ -83,7 +84,8 @@ fun SelectMenu(
                     stringResource(id = R.string.none)
                 }
                 Text(
-                    selectedItem
+                    text = selectedItem,
+                    letterSpacing = 0.3.sp
                 )
                 Icon(
                     Icons.Default.ArrowDropDown,

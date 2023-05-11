@@ -109,7 +109,7 @@ fun CountEditor(
         horizontalArrangement = Arrangement.spacedBy(3.dp)
     ) {
         IconButton(onClick = { decreaseScore() }) {
-            Icon(painter = painterResource(id = R.drawable.ic_minus), contentDescription = null)
+            Icon(painter = painterResource(id = R.drawable.ic_arrow_down), contentDescription = null)
         }
         BasicTextField(
             modifier = Modifier.weight(1f),
@@ -123,7 +123,7 @@ fun CountEditor(
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
         )
         IconButton(onClick = { increaseScore() }) {
-            Icon(painter = painterResource(id = R.drawable.ic_plus), contentDescription = null)
+            Icon(painter = painterResource(id = R.drawable.ic_arrow_up), contentDescription = null)
         }
     }
 }
@@ -176,7 +176,7 @@ fun DoubleCountEditor(
         horizontalArrangement = Arrangement.spacedBy(3.dp)
     ) {
         IconButton(onClick = { decreaseScore() }) {
-            Icon(painter = painterResource(id = R.drawable.ic_minus), contentDescription = null)
+            Icon(painter = painterResource(id = R.drawable.ic_arrow_down), contentDescription = null)
         }
         BasicTextField(
             modifier = Modifier.weight(1f),
@@ -212,7 +212,7 @@ fun DoubleCountEditor(
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
         )
         IconButton(onClick = { increaseScore() }) {
-            Icon(painter = painterResource(id = R.drawable.ic_plus), contentDescription = null)
+            Icon(painter = painterResource(id = R.drawable.ic_arrow_up), contentDescription = null)
         }
     }
 }

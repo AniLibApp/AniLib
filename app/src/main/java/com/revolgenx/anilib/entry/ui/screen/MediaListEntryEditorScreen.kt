@@ -1,48 +1,62 @@
 package com.revolgenx.anilib.entry.ui.screen
 
+import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
+import com.revolgenx.anilib.common.ui.component.date.CalendarDialog
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.screen.ResourceScreen
 import com.revolgenx.anilib.entry.ui.component.CountEditor
-import com.revolgenx.anilib.entry.ui.component.DoubleCountEditor
 import com.revolgenx.anilib.entry.ui.component.MediaListEntryScore
 import com.revolgenx.anilib.entry.ui.viewmodel.MediaListEntryEditorViewModel
 import com.revolgenx.anilib.list.ui.model.getAlMediaListStatusForType
 import com.revolgenx.anilib.list.ui.model.getStatusFromAlMediaListStatus
 import com.revolgenx.anilib.list.ui.model.toAlMediaListStatus
-import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.type.ScoreFormat
 import org.koin.androidx.compose.koinViewModel
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class MediaListEntryEditorScreen(private val mediaId: Int, private val userId: Int) :
     AndroidScreen() {
@@ -70,23 +84,19 @@ private fun MediaListEditScreenContent(
 
     val editTitle = stringResource(id = R.string.edit)
     var title by remember { mutableStateOf(editTitle) }
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
     ScreenScaffold(
         title = title,
         actions = {},
-        scrollBehavior = scrollBehavior
     ) {
         Column(
             modifier = Modifier
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .verticalScroll(rememberScrollState())
                 .padding(12.dp)
         ) {
             ResourceScreen(
                 resourceState = viewModel.resource.value,
-                refresh = { viewModel.refresh() }
-            ) { userMedia ->
+                refresh = { viewModel.refresh() }) { userMedia ->
                 val media = userMedia.media ?: return@ResourceScreen
                 val user = userMedia.user ?: return@ResourceScreen
                 val entryField = viewModel.saveField
@@ -100,7 +110,7 @@ private fun MediaListEditScreenContent(
                 }
 
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Row(
                         modifier = Modifier.padding(4.dp),
@@ -108,7 +118,7 @@ private fun MediaListEditScreenContent(
                     ) {
                         TextHeaderContent(
                             modifier = Modifier.weight(1f),
-                            heading = stringResource(id = R.string.status)
+                            headingRes = R.string.status
                         ) {
                             val mediaListStatusEntries =
                                 getAlMediaListStatusForType(type = media.type).toList()
@@ -124,7 +134,7 @@ private fun MediaListEditScreenContent(
 
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            heading = stringResource(id = R.string.score)
+                            headingRes = R.string.score
                         ) {
                             MediaListEntryScore(
                                 score = entryField.score,
@@ -140,11 +150,9 @@ private fun MediaListEditScreenContent(
                         modifier = Modifier.padding(4.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        val progressHeading =
-                            stringResource(id = if (isAnime) R.string.episode_progress else R.string.chapter_progress)
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            heading = progressHeading
+                            headingRes = if (isAnime) R.string.episode_progress else R.string.chapter_progress
                         ) {
                             CountEditor(
                                 count = entryField.progress ?: 0,
@@ -154,12 +162,10 @@ private fun MediaListEditScreenContent(
                             }
                         }
 
-                        val repeatHeading =
-                            stringResource(id = if (isAnime) R.string.total_rewatches else R.string.total_rereads)
 
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            heading = repeatHeading
+                            headingRes = if (isAnime) R.string.total_rewatches else R.string.total_rereads
                         ) {
                             CountEditor(
                                 count = entryField.repeat ?: 0,
@@ -176,24 +182,48 @@ private fun MediaListEditScreenContent(
                     ) {
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            heading = stringResource(id = R.string.start_date)
+                            headingRes = R.string.start_date
                         ) {
-                            CountEditor(
-                                count = entryField.progressVolumes ?: 0,
-                            ) { count ->
-                                entryField.progressVolumes = count
-                            }
+                            val openCalendar = remember { mutableStateOf(false) }
+                            val startedAt = entryField.startedAt?.toZoneDateTime()
+                            CalendarPicker(
+                                openCalendar = openCalendar,
+                                selectedDateMillis = startedAt?.toInstant()?.toEpochMilli(),
+                                text = entryField.startedAt?.toString() ?: "",
+                                onClear = {
+                                    entryField.startedAt = null
+                                },
+                                onDateSelected = { selectedDateMillis ->
+                                    val newStartedAt = ZonedDateTime.ofInstant(
+                                        Instant.ofEpochMilli(selectedDateMillis),
+                                        ZoneId.systemDefault()
+                                    )
+                                    entryField.startedAt = FuzzyDateModel.from(newStartedAt)
+                                })
+
                         }
 
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            heading = stringResource(id = R.string.end_date)
+                            headingRes = R.string.end_date
                         ) {
-                            CountEditor(
-                                count = entryField.progressVolumes ?: 0,
-                            ) { count ->
-                                entryField.progressVolumes = count
-                            }
+                            val openCalendar = remember { mutableStateOf(false) }
+                            val completedAt = entryField.completedAt?.toZoneDateTime()
+
+                            CalendarPicker(
+                                openCalendar = openCalendar,
+                                selectedDateMillis = completedAt?.toInstant()?.toEpochMilli(),
+                                text = entryField.completedAt?.toString() ?: "",
+                                onClear = {
+                                    entryField.completedAt = null
+                                },
+                                onDateSelected = { selectedDateMillis ->
+                                    val newCompletedAt = ZonedDateTime.ofInstant(
+                                        Instant.ofEpochMilli(selectedDateMillis),
+                                        ZoneId.systemDefault()
+                                    )
+                                    entryField.completedAt = FuzzyDateModel.from(newCompletedAt)
+                                })
                         }
                     }
 
@@ -204,7 +234,7 @@ private fun MediaListEditScreenContent(
                         ) {
                             CardHeaderContent(
                                 modifier = Modifier.weight(1f),
-                                heading = stringResource(id = R.string.volume_progress)
+                                headingRes = R.string.volume_progress
                             ) {
                                 CountEditor(
                                     count = entryField.progressVolumes ?: 0,
@@ -215,6 +245,65 @@ private fun MediaListEditScreenContent(
                             Spacer(modifier = Modifier.weight(1f))
                         }
                     }
+
+                    CardHeaderContent(
+                        headingRes = R.string.notes,
+                        fixedHeight = false
+                    ) {
+                        BasicTextField(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp, vertical = 14.dp),
+                            value = entryField.notes ?: "",
+                            textStyle = LocalTextStyle.current,
+                            onValueChange = {
+                                entryField.notes = it
+                            })
+                    }
+
+
+                    val hasCustomList = entryField.customLists.isNullOrEmpty().not()
+
+                    TextCheckbox(
+                        text = stringResource(id = R.string._private),
+                        checked = entryField.private
+                    ) {
+                        entryField.private = it
+                    }
+
+                    if (hasCustomList) {
+
+                        TextCheckbox(
+                            text = stringResource(id = R.string.hide_from_status_lists),
+                            checked = entryField.hiddenFromStatusLists ?: false
+                        ) {
+                            entryField.hiddenFromStatusLists = it
+                        }
+
+                    }
+
+
+                    TextHeaderContent(
+                        headingRes = R.string.custom_lists,
+                        headingSize = 14.sp
+                    ) {
+                        if (hasCustomList) {
+                            entryField.customLists!!.map { cList ->
+                                TextCheckbox(
+                                    text = cList.first,
+                                    checked = cList.second
+                                ) {
+                                    cList.second = it
+                                }
+                            }
+                        } else {
+                            Text(
+                                modifier = Modifier.padding(start = 12.dp),
+                                text = stringResource(id = R.string.no_custom_lists)
+                            )
+                        }
+                    }
+
                 }
 
 
@@ -228,13 +317,21 @@ private val FilterContentHeight = 50.dp
 @Composable
 private fun CardHeaderContent(
     modifier: Modifier = Modifier,
-    heading: String,
+    @StringRes headingRes: Int,
+    fixedHeight: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    TextHeaderContent(modifier = modifier, heading = heading) {
+    TextHeaderContent(
+        modifier = modifier,
+        headingRes = headingRes
+    ) {
         Card(
             modifier = Modifier
-                .height(FilterContentHeight)
+                .apply {
+                    if (fixedHeight) {
+                        height(FilterContentHeight)
+                    }
+                }
                 .fillMaxWidth()
         ) {
             content()
@@ -242,24 +339,70 @@ private fun CardHeaderContent(
     }
 }
 
+
 @Composable
 private fun TextHeaderContent(
     modifier: Modifier = Modifier,
-    heading: String,
+    @StringRes headingRes: Int,
+    headingSize: TextUnit? = null,
     content: @Composable () -> Unit
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(
             modifier = Modifier.padding(start = 5.dp, bottom = 3.dp),
-            text = heading,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.SemiBold,
+            text = stringResource(id = headingRes),
+            fontSize = headingSize ?: 13.sp,
+            fontWeight = FontWeight.Medium,
             maxLines = 1,
             letterSpacing = 0.3.sp
         )
         content()
     }
 }
+
+
+@Composable
+private fun CalendarPicker(
+    openCalendar: MutableState<Boolean> = mutableStateOf(false),
+    selectedDateMillis: Long? = null,
+    text: String,
+    onClear: () -> Unit,
+    onDateSelected: (selectedDateMillis: Long) -> Unit
+) {
+    CalendarDialog(
+        openDialog = openCalendar,
+        selectedDateMillis = selectedDateMillis,
+        onDateSelected = onDateSelected
+    )
+    TextButton(
+        modifier = Modifier.fillMaxSize(),
+        onClick = { openCalendar.value = true },
+        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface)
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_calendar),
+            contentDescription = "calendar"
+        )
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 2.dp),
+            text = text,
+            textAlign = TextAlign.Center,
+            fontSize = 13.sp
+        )
+        selectedDateMillis?.let {
+            Icon(
+                modifier = Modifier.clickable {
+                    onClear()
+                },
+                painter = painterResource(id = R.drawable.ic_close),
+                contentDescription = "clear"
+            )
+        }
+    }
+}
+
 
 @Preview
 @Composable

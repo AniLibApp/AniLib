@@ -6,8 +6,11 @@ import com.revolgenx.anilib.entry.data.field.MediaListEntryField
 import com.revolgenx.anilib.entry.data.field.SaveMediaListEntryField
 import com.revolgenx.anilib.entry.data.service.MediaListEntryService
 import com.revolgenx.anilib.entry.ui.model.UserMediaModel
+import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.type.MediaListStatus
+import com.revolgenx.anilib.user.ui.model.UserModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 
 class MediaListEntryEditorViewModel(private val mediaListEntryService: MediaListEntryService) :
@@ -33,7 +36,7 @@ class MediaListEntryEditorViewModel(private val mediaListEntryService: MediaList
                 saveField.progressVolumes = progressVolumes
                 saveField.customLists = customLists
                 saveField.startedAt = startedAt
-                saveField.private = private
+                saveField.private = private ?: false
                 saveField.hiddenFromStatusLists = hiddenFromStatusLists
                 saveField.notes = notes
                 saveField.repeat = repeat

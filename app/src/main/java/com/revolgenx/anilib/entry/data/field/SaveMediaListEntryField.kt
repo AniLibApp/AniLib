@@ -19,13 +19,13 @@ class SaveMediaListEntryField() : BaseField<SaveMediaListEntryMutation>() {
     var advancedScores by mutableStateOf<List<MutablePair<String, Double>>?>(null)
     var progress by mutableStateOf<Int?>(null)
     var progressVolumes by mutableStateOf<Int?>(null)
-    var private by mutableStateOf<Boolean?>(true) // remove later
-    var hiddenFromStatusLists by mutableStateOf<Boolean?>(null)
+    var private: Boolean = false
+    var hiddenFromStatusLists: Boolean? = null
     var repeat by mutableStateOf<Int?>(null)
     var notes by mutableStateOf<String?>(null)
     var startedAt by mutableStateOf<FuzzyDateModel?>(null)
     var completedAt by mutableStateOf<FuzzyDateModel?>(null)
-    var customLists by mutableStateOf<List<MutablePair<String, Boolean>>?>(null)
+    var customLists: List<MutablePair<String, Boolean>>? = null
 
     override fun toQueryOrMutation(): SaveMediaListEntryMutation {
         val startedAt = startedAt?.let {
