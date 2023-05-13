@@ -3,6 +3,7 @@ package com.revolgenx.anilib.entry.ui.screen
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,8 +16,10 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,7 +42,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
+import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.date.CalendarDialog
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
@@ -47,6 +52,7 @@ import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.screen.ResourceScreen
 import com.revolgenx.anilib.entry.ui.component.CountEditor
+import com.revolgenx.anilib.entry.ui.component.DoubleCountEditor
 import com.revolgenx.anilib.entry.ui.component.MediaListEntryScore
 import com.revolgenx.anilib.entry.ui.viewmodel.MediaListEntryEditorViewModel
 import com.revolgenx.anilib.list.ui.model.getAlMediaListStatusForType
@@ -84,21 +90,51 @@ private fun MediaListEditScreenContent(
 
     val editTitle = stringResource(id = R.string.edit)
     var title by remember { mutableStateOf(editTitle) }
+    var isFavourite by remember { mutableStateOf(false) }
+    var userHasMediaListEntry by remember { mutableStateOf(false) }
 
     ScreenScaffold(
         title = title,
-        actions = {},
+        actions = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    painter = painterResource(id = if (isFavourite) R.drawable.ic_heart else R.drawable.ic_heart_outline),
+                    contentDescription = stringResource(id = R.string.favourite)
+                )
+            }
+            if(userHasMediaListEntry){
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_delete),
+                        contentDescription = stringResource(id = R.string.delete)
+                    )
+                }
+            }
+
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_save),
+                    contentDescription = stringResource(id = R.string.save)
+                )
+            }
+        },
     ) {
-        Column(
+        Box(
             modifier = Modifier
+                .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(12.dp)
         ) {
             ResourceScreen(
                 resourceState = viewModel.resource.value,
-                refresh = { viewModel.refresh() }) { userMedia ->
+                refresh = { viewModel.refresh() }
+            ) { userMedia ->
                 val media = userMedia.media ?: return@ResourceScreen
                 val user = userMedia.user ?: return@ResourceScreen
+
+                userHasMediaListEntry = media.mediaListEntry.isNotNull()
+                isFavourite = media.isFavourite
+
                 val entryField = viewModel.saveField
 
                 val isAnime = media.isAnime
@@ -283,6 +319,12 @@ private fun MediaListEditScreenContent(
                     }
 
 
+                    Divider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                    )
+
                     TextHeaderContent(
                         headingRes = R.string.custom_lists,
                         headingSize = 14.sp
@@ -304,6 +346,45 @@ private fun MediaListEditScreenContent(
                         }
                     }
 
+                    user.mediaListOptions
+                        ?.takeIf { if (media.isAnime) it.isAnimeAdvancedScoreEnabled else it.isMangaAdvancedScoreEnabled }
+                        ?.let {
+
+                            Divider(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                            )
+
+                            TextHeaderContent(
+                                headingRes = R.string.advanced_scores,
+                                headingSize = 14.sp
+                            ) {
+                                entryField.advancedScores?.let {
+                                    Grid(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        items = it
+                                    ) { scoreModel ->
+                                        CardHeaderContent(
+                                            heading = scoreModel.heading
+                                        ) {
+                                            DoubleCountEditor(
+                                                count = scoreModel.score.value,
+                                                max = 100.0,
+                                                incrementBy = 1.0
+                                            ) { count ->
+                                                scoreModel.score.value = count
+                                                viewModel.onAdvancedScoreChange(
+                                                    user.mediaListOptions.scoreFormat
+                                                        ?: ScoreFormat.POINT_100
+                                                )
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
                 }
 
 
@@ -317,13 +398,15 @@ private val FilterContentHeight = 50.dp
 @Composable
 private fun CardHeaderContent(
     modifier: Modifier = Modifier,
-    @StringRes headingRes: Int,
+    @StringRes headingRes: Int? = null,
+    heading: String? = null,
     fixedHeight: Boolean = true,
     content: @Composable () -> Unit
 ) {
     TextHeaderContent(
         modifier = modifier,
-        headingRes = headingRes
+        headingRes = headingRes,
+        heading = heading
     ) {
         Card(
             modifier = Modifier
@@ -343,14 +426,15 @@ private fun CardHeaderContent(
 @Composable
 private fun TextHeaderContent(
     modifier: Modifier = Modifier,
-    @StringRes headingRes: Int,
+    @StringRes headingRes: Int? = null,
+    heading: String? = null,
     headingSize: TextUnit? = null,
     content: @Composable () -> Unit
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(
             modifier = Modifier.padding(start = 5.dp, bottom = 3.dp),
-            text = stringResource(id = headingRes),
+            text = heading ?: stringResource(id = headingRes!!),
             fontSize = headingSize ?: 13.sp,
             fontWeight = FontWeight.Medium,
             maxLines = 1,

@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.entry.data.field
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +9,7 @@ import com.revolgenx.anilib.SaveMediaListEntryMutation
 import com.revolgenx.anilib.common.data.field.BaseField
 import com.revolgenx.anilib.common.data.tuples.MutablePair
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
+import com.revolgenx.anilib.entry.ui.model.AdvancedScoreModel
 import com.revolgenx.anilib.type.FuzzyDateInput
 import com.revolgenx.anilib.type.MediaListStatus
 
@@ -16,7 +18,7 @@ class SaveMediaListEntryField() : BaseField<SaveMediaListEntryMutation>() {
     var mediaId: Int? = null
     var status by mutableStateOf(MediaListStatus.CURRENT)
     var score by mutableStateOf(0.0)
-    var advancedScores by mutableStateOf<List<MutablePair<String, Double>>?>(null)
+    var advancedScores: List<AdvancedScoreModel>? = null
     var progress by mutableStateOf<Int?>(null)
     var progressVolumes by mutableStateOf<Int?>(null)
     var private: Boolean = false
@@ -45,7 +47,7 @@ class SaveMediaListEntryField() : BaseField<SaveMediaListEntryMutation>() {
             mediaId = nn(mediaId),
             status = nn(status),
             score = nn(score),
-            advanceScores = nn(advancedScores?.map { it.second }),
+            advanceScores = nn(advancedScores?.map { it.score.value }),
             progress = nn(progress),
             progressVolumes = nn(progressVolumes),
             private_ = nn(private),

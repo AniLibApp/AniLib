@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
@@ -133,6 +134,7 @@ fun CountEditor(
 fun DoubleCountEditor(
     count: Double,
     max: Double = 10.0,
+    incrementBy : Double = 0.5,
     onScoreChange: (count: Double) -> Unit
 ) {
     val min = 0.0
@@ -161,12 +163,12 @@ fun DoubleCountEditor(
         if (newScore < min) min else if (newScore > max) max else newScore
 
     fun increaseScore() {
-        count.plus(0.5).let(::getScoreWithInRange)
+        count.plus(incrementBy).let(::getScoreWithInRange)
             .let { updateScore(it) }
     }
 
     fun decreaseScore() {
-        count.minus(0.5).let(::getScoreWithInRange)
+        count.minus(incrementBy).let(::getScoreWithInRange)
             .let { updateScore(it) }
     }
 
@@ -255,6 +257,7 @@ private fun StarScoreButton(selected: Boolean, onClick: () -> Unit) {
 
     Box(
         modifier = Modifier
+            .fillMaxHeight()
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,

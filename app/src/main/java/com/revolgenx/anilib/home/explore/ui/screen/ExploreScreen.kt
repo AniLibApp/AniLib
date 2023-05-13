@@ -52,7 +52,7 @@ fun ExploreScreen() {
         })
         ShowIfLoggedIn { userId ->
             Text("MediaListEditor", fontSize = 25.sp, modifier= Modifier.clickable {
-                navigator.push(MediaListEntryEditorScreen(141911, userId))
+                navigator.push(MediaListEntryEditorScreen(128893, userId))
             })
         }
     }

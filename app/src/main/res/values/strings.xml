@@ -170,4 +170,8 @@
     <string name="custom_lists">Custom Lists</string>
     <string name="no_custom_lists">No custom lists</string>
     <string name="hide_from_status_lists">Hide from status lists</string>
+    <string name="advanced_scores">Advanced Scores</string>
+    <string name="favourite">Favourite</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
 </resources>

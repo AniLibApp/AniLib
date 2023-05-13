@@ -1,12 +1,14 @@
 package com.revolgenx.anilib.list.ui.model
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.stringArrayResource
 import com.revolgenx.anilib.MediaListEntryQuery
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.tuples.MutablePair
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
+import com.revolgenx.anilib.entry.ui.model.AdvancedScoreModel
 import com.revolgenx.anilib.fragment.MediaListEntry
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.isAnime
@@ -33,7 +35,7 @@ data class MediaListModel(
     val createdAt: Int? = null,
 
     val customLists: List<MutablePair<String, Boolean>>? = null,
-    val advancedScores: List<MutablePair<String, Double>>? = null,
+    val advancedScores: List<AdvancedScoreModel>? = null,
 
     val media: MediaModel? = null,
     val user: UserModel? = null,
@@ -61,9 +63,10 @@ fun MediaListEntry.toModel() = MediaListModel(
 fun MediaListEntryQuery.MediaListEntry.toModel(): MediaListModel {
     return mediaListEntry.toModel().copy(
         advancedScores = (advancedScores as? Map<String, *>)?.map {
-            MutablePair(
+            AdvancedScoreModel(
                 it.key,
-                it.value?.let { if (it is Int) it.toDouble() else it as Double } ?: 0.0
+                mutableStateOf(it.value?.let { if (it is Int) it.toDouble() else it as Double }
+                    ?: 0.0)
             )
         }
     )
