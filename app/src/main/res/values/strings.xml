@@ -109,6 +109,24 @@
     <string name="rereading">Rereading</string>
     <!--MediaListStatus-->
 
+    <!--notification-->
+    <string name="notifications">Notifications</string>
+    <string name="show_reason">Show reason</string>
+    <!--notification-->
+
+    <!--entry-->
+    <string name="notes">Notes</string>
+    <string name="_private">Private</string>
+    <string name="custom_lists">Custom Lists</string>
+    <string name="no_custom_lists">No custom lists</string>
+    <string name="hide_from_status_lists">Hide from status lists</string>
+    <string name="advanced_scores">Advanced Scores</string>
+    <string name="do_you_really_want_to_delete_the_entry_s">Do you really want to delete the entry%s?</string>
+    <string name="failed_to_delete">Failed to delete.</string>
+    <string name="failed_to_save">Failed to save.</string>
+    <!--entry-->
+
+
     <!--App-->
     <string name="its_empty">Feeling empty</string>
     <string name="something_went_wrong">Something went wrong</string>
@@ -154,8 +172,6 @@
     <string name="activity">Activity</string>
     <string name="user">User</string>
     <string name="logout">Logout</string>
-    <string name="notifications">Notifications</string>
-    <string name="show_reason">Show reason</string>
     <string name="studio">Studio</string>
     <string name="stats">Stats</string>
     <string name="social">Social</string>
@@ -165,13 +181,9 @@
     <string name="total_rewatches">Total Rewatches</string>
     <string name="total_rereads">Total Rereads</string>
     <string name="volume_progress">Volume Progress</string>
-    <string name="notes">Notes</string>
-    <string name="_private">Private</string>
-    <string name="custom_lists">Custom Lists</string>
-    <string name="no_custom_lists">No custom lists</string>
-    <string name="hide_from_status_lists">Hide from status lists</string>
-    <string name="advanced_scores">Advanced Scores</string>
-    <string name="favourite">Favourite</string>
+   <string name="favourite">Favourite</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
+    <string name="confirm">Confirm</string>
+
 </resources>

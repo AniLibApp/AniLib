@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.common.ext
 
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.HasDefaultViewModelProviderFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
@@ -8,8 +9,12 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.NavBackStackEntry
 import cafe.adriel.voyager.androidx.AndroidScreenLifecycleOwner
 import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleOwner
+import com.revolgenx.anilib.common.ui.composition.GlobalViewModelStoreOwner
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.ext.android.toExtras
 import org.koin.androidx.viewmodel.resolveViewModel
 import org.koin.core.annotation.KoinInternalApi
@@ -17,6 +22,11 @@ import org.koin.core.context.GlobalContext
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.core.scope.Scope
+
+@Composable()
+inline fun <reified T : ViewModel> activityViewModel(): T {
+    return koinViewModel(viewModelStoreOwner = GlobalViewModelStoreOwner.current)
+}
 
 
 @OptIn(KoinInternalApi::class)
@@ -68,6 +78,7 @@ fun defaultExtras(viewModelStoreOwner: ViewModelStoreOwner): CreationExtras = wh
 }
 
 
-fun ViewModel.launch(block: suspend CoroutineScope.() -> Unit) {
-    viewModelScope.launch(block = block)
+fun ViewModel.launch(block: suspend CoroutineScope.() -> Unit): Job {
+    return viewModelScope.launch(block = block)
 }
+

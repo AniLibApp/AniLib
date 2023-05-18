@@ -10,8 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.core.screen.Screen
@@ -24,19 +27,23 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
+import com.revolgenx.anilib.common.ui.composition.GlobalViewModelStoreOwner
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
+import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
+import com.revolgenx.anilib.common.ui.composition.LocalUserState
 import com.revolgenx.anilib.common.ui.screen.LoginScreen
 import com.revolgenx.anilib.common.ui.theme.AppTheme
-import com.revolgenx.anilib.entry.ui.screen.MediaListEntryEditorScreen
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
 import com.revolgenx.anilib.list.ui.screen.MediaListScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
 * todo: handle customtab cancel result
 * */
 class MainActivity : ComponentActivity() {
+    private val viewModel by viewModel<MainActivityViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -47,7 +54,9 @@ class MainActivity : ComponentActivity() {
                     disposeBehavior = NavigatorDisposeBehavior(false, false)
                 ) { navigator ->
                     CompositionLocalProvider(
-                        LocalMainNavigator provides navigator
+                        LocalMainNavigator provides navigator,
+                        LocalUserState provides viewModel.userState,
+                        GlobalViewModelStoreOwner provides this@MainActivity
                     ) {
                         CurrentScreen()
                     }
@@ -69,8 +78,10 @@ private var userScreen: UserScreen? = null
 
 @Composable
 fun MainActivityScreenContent() {
+    val snackbarHostState = remember { SnackbarHostState() }
     TabNavigator(tab = HomeScreen) {
         Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) },
             bottomBar = {
                 NavigationBar {
                     TabNavigationItem(tab = HomeScreen)
@@ -91,8 +102,10 @@ fun MainActivityScreenContent() {
             },
             contentWindowInsets = WindowInsets(0)
         ) { contentPadding ->
-            Box(Modifier.padding(contentPadding)) {
-                CurrentTab()
+            CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
+                Box(Modifier.padding(contentPadding)) {
+                    CurrentTab()
+                }
             }
         }
     }

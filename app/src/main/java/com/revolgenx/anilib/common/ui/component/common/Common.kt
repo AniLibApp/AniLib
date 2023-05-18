@@ -2,12 +2,10 @@ package com.revolgenx.anilib.common.ui.component.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import com.revolgenx.anilib.common.data.store.appPreferencesDataStore
-import com.revolgenx.anilib.common.data.store.isLoggedIn
 import com.revolgenx.anilib.common.data.store.mediaCoverImageType
 import com.revolgenx.anilib.common.data.store.mediaTitleType
-import com.revolgenx.anilib.common.data.store.userId
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localUser
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageType
 import com.revolgenx.anilib.media.ui.model.MediaTitleType
 
@@ -28,7 +26,7 @@ fun ShowIfLoggedIn(
     orElse: @Composable (() -> Unit) = {},
     content: @Composable (userId: Int) -> Unit
 ) {
-    val userId = localContext().userId().collectAsState(initial = null).value
+    val userId = localUser().userId
     if (userId != null) {
         content(userId)
     } else {
@@ -37,8 +35,8 @@ fun ShowIfLoggedIn(
 }
 
 @Composable
-fun ShowIfLoggedInUser(userId: Int, content: @Composable () -> Unit) {
-    val id = localContext().userId().collectAsState(initial = null).value
+fun ShowIfAuthUser(userId: Int, content: @Composable () -> Unit) {
+    val id = localUser().userId
     if (id != null && id == userId) {
         content()
     }
@@ -46,5 +44,4 @@ fun ShowIfLoggedInUser(userId: Int, content: @Composable () -> Unit) {
 
 
 @Composable
-fun isLoggedIn() =
-    localContext().appPreferencesDataStore.isLoggedIn().collectAsState(initial = false)
+fun isLoggedIn() = localUser().isLoggedIn

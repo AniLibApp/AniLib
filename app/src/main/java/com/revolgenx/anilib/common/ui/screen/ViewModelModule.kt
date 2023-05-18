@@ -4,11 +4,15 @@ import com.revolgenx.anilib.activity.MainActivityViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
-import com.revolgenx.anilib.common.data.store.StoreFileName
+import com.revolgenx.anilib.common.data.store.animeListFilterStoreFileName
+import com.revolgenx.anilib.common.data.store.mangaListFilterStoreFileName
+import com.revolgenx.anilib.common.data.store.seasonFilterStoreFileName
 import com.revolgenx.anilib.entry.ui.viewmodel.MediaListEntryEditorViewModel
 import com.revolgenx.anilib.home.season.ui.screen.SeasonViewModel
-import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
+import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
+import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaOverviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
@@ -23,7 +27,7 @@ import org.koin.dsl.module
 
 val viewModelModules = module {
     //main activity
-    viewModel { MainActivityViewModel() }
+    viewModel { MainActivityViewModel(get()) }
 
     //airing
     viewModel { AiringScheduleViewModel(get()) }
@@ -37,8 +41,8 @@ val viewModelModules = module {
     viewModel { MediaReviewViewModel(get()) }
 
     // season
-    viewModel { SeasonViewModel(get(), get(named(StoreFileName.seasonFieldFileName))) }
-    viewModel { MediaFilterBottomSheetViewModel(get(named(StoreFileName.seasonFieldFileName))) }
+    viewModel { SeasonViewModel(get(), get(named(seasonFilterStoreFileName))) }
+    viewModel { MediaFilterBottomSheetViewModel(get(named(seasonFilterStoreFileName))) }
 
     //character
     viewModel { CharacterAboutViewModel(get()) }
@@ -47,7 +51,7 @@ val viewModelModules = module {
     viewModel { StaffAboutViewModel(get()) }
 
     //studio
-    viewModel {StudioViewModel(get())}
+    viewModel { StudioViewModel(get()) }
 
     //user
     viewModel { UserViewModel(get(), get()) }
@@ -58,6 +62,9 @@ val viewModelModules = module {
     //editor
     viewModel { MediaListEntryEditorViewModel(get()) }
 
+    //list
+    viewModel { AnimeListViewModel(get(), get(), get(named(animeListFilterStoreFileName))) }
+    viewModel { MangaListViewModel(get(), get(), get(named(mangaListFilterStoreFileName))) }
 
 
 }

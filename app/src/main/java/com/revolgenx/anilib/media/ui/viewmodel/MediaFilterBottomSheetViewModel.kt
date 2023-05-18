@@ -3,30 +3,26 @@ package com.revolgenx.anilib.media.ui.viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.revolgenx.anilib.common.data.store.SeasonFilterDataStore
+import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.media.data.field.MediaField
-import com.revolgenx.anilib.media.data.store.MediaFieldData
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 class MediaFilterBottomSheetViewModel(
-    private val seasonFilterStore: DataStore<MediaFieldData>
+    private val seasonFilterStore: SeasonFilterDataStore
 ) : ViewModel() {
     var field by mutableStateOf(MediaField())
 
     init {
-        viewModelScope.launch {
-            field = seasonFilterStore.data.first().toFieldIfDifferent(field)
+        launch {
             seasonFilterStore.data.collect {
-                field = it.toFieldIfDifferent(field)
+                field = it.toField(field)
             }
         }
     }
 
     fun updateFilter() {
-        viewModelScope.launch {
+        launch {
             seasonFilterStore.updateData {
                 field.toData()
             }

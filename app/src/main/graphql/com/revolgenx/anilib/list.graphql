@@ -3,6 +3,7 @@ query MediaListCollectionQuery(
     $userId: Int,
     $userName: String,
     $type: MediaType,
+    $isAnime: Boolean!
 ) {
     mediaListCollection: MediaListCollection(userId: $userId, userName: $userName, type: $type, forceSingleCompletedList: true) {
         lists {
@@ -26,15 +27,11 @@ query MediaListCollectionQuery(
             mediaListOptions {
                 scoreFormat
                 rowOrder
-                animeList {
-                    sectionOrder
-                    customLists
-                    splitCompletedSectionByFormat
+                animeList @include(if: $isAnime){
+                    ... mediaListCollectionTypeOptions
                 }
-                mangaList {
-                    sectionOrder
-                    customLists
-                    splitCompletedSectionByFormat
+                mangaList @skip(if: $isAnime){
+                    ... mediaListCollectionTypeOptions
                 }
             }
         }
@@ -98,66 +95,6 @@ query MediaListCollectionIdQuery(
                 media{
                     id
                     isAdult
-                }
-            }
-        }
-    }
-}
-
-query AlMediaListCollectionQuery(
-    $userId:Int,
-    $userName:String,
-    $type:MediaType,
-){
-    mediaListCollection: MediaListCollection(
-        userId:$userId
-        , userName:$userName
-        , type:$type
-        , forceSingleCompletedList:true
-    ){
-        lists{
-            entries{
-                id
-                score
-                progress
-                startedAt{
-                    ... fuzzyDate
-                }
-                completedAt{
-                    ... fuzzyDate
-                }
-                updatedAt
-                createdAt
-                user{
-                    mediaListOptions{
-                        scoreFormat
-                    }
-                }
-                media{
-                    id
-                    title{
-                        ... mediaTitle
-                    }
-                    coverImage{
-                        ... mediaCoverImage
-                    }
-                    startDate {
-                        ... fuzzyDate
-                    }
-                    endDate{
-                        ... fuzzyDate
-                    }
-                    bannerImage
-                    synonyms
-                    format
-                    type
-                    status
-                    genres
-                    popularity
-                    averageScore
-                    isAdult
-                    episodes
-                    chapters
                 }
             }
         }
@@ -272,4 +209,11 @@ fragment mediaListEntry on MediaList {
     completedAt {
         ... fuzzyDate
     }
+}
+
+
+fragment mediaListCollectionTypeOptions on MediaListTypeOptions{
+    sectionOrder
+    customLists
+    splitCompletedSectionByFormat
 }

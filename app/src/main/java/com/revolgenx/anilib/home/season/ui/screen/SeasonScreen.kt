@@ -88,7 +88,7 @@ fun SeasonScreen() {
         val pagingItems = viewModel.collectAsLazyPagingItems()
 
         LazyPagingList(
-            items = pagingItems,
+            pagingItems = pagingItems,
             onRefresh = {
                 viewModel.refresh()
             }

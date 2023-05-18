@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.media.data.store
+package com.revolgenx.anilib.media.data.filter
 
 import androidx.datastore.core.Serializer
 import kotlinx.serialization.json.Json
@@ -6,13 +6,13 @@ import java.io.InputStream
 import java.io.OutputStream
 
 
-open class MediaFieldSerializer : Serializer<MediaFieldData> {
-    override val defaultValue: MediaFieldData = MediaFieldData()
+open class MediaFilterSerializer : Serializer<MediaFilter> {
+    override val defaultValue: MediaFilter = MediaFilter()
 
-    override suspend fun readFrom(input: InputStream): MediaFieldData {
+    override suspend fun readFrom(input: InputStream): MediaFilter {
         return try {
             Json.decodeFromString(
-                deserializer = MediaFieldData.serializer(),
+                deserializer = MediaFilter.serializer(),
                 string = input.readBytes().decodeToString()
             )
         } catch (e: Exception) {
@@ -21,10 +21,10 @@ open class MediaFieldSerializer : Serializer<MediaFieldData> {
         }
     }
 
-    override suspend fun writeTo(t: MediaFieldData, output: OutputStream) {
+    override suspend fun writeTo(t: MediaFilter, output: OutputStream) {
         output.write(
             Json.encodeToString(
-                serializer = MediaFieldData.serializer(),
+                serializer = MediaFilter.serializer(),
                 value = t
             ).encodeToByteArray()
         )

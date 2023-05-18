@@ -6,6 +6,7 @@ import androidx.compose.ui.res.stringArrayResource
 import com.revolgenx.anilib.MediaListEntryQuery
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.tuples.MutablePair
+import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
 import com.revolgenx.anilib.entry.ui.model.AdvancedScoreModel
@@ -37,9 +38,9 @@ data class MediaListModel(
     val customLists: List<MutablePair<String, Boolean>>? = null,
     val advancedScores: List<AdvancedScoreModel>? = null,
 
-    val media: MediaModel? = null,
+    var media: MediaModel? = null,
     val user: UserModel? = null,
-)
+): BaseModel(id)
 
 fun MediaListEntry.toModel() = MediaListModel(
     id = id,

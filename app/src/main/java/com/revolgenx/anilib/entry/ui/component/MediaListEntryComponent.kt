@@ -27,7 +27,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.type.ScoreFormat
@@ -219,15 +218,6 @@ fun DoubleCountEditor(
     }
 }
 
-@Preview
-@Composable
-fun ScoreEditorPreview() {
-    DoubleCountEditor(
-        count = 3.0,
-    ) {
-
-    }
-}
 
 
 @Composable
@@ -265,6 +255,7 @@ private fun StarScoreButton(selected: Boolean, onClick: () -> Unit) {
             )
     ) {
         Icon(
+            modifier = Modifier.align(Alignment.Center),
             painter = painterResource(id = if (selected) R.drawable.ic_star else R.drawable.ic_star_outline),
             contentDescription = null,
             tint = if (selected) MaterialTheme.colorScheme.primary else LocalContentColor.current

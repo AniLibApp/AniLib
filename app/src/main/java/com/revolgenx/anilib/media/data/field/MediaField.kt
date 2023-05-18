@@ -2,7 +2,7 @@ package com.revolgenx.anilib.media.data.field
 
 import com.revolgenx.anilib.MediaPageQuery
 import com.revolgenx.anilib.common.data.field.BaseSourceField
-import com.revolgenx.anilib.media.data.store.MediaFieldData
+import com.revolgenx.anilib.media.data.filter.MediaFilter
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaSeason
 import com.revolgenx.anilib.type.MediaSort
@@ -42,7 +42,7 @@ data class MediaField(
         )
     }
 
-    fun toData() = MediaFieldData(
+    fun toData() = MediaFilter(
         seasonYear = seasonYear,
         year = year,
         season = season,

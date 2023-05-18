@@ -14,15 +14,20 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
+import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,23 +41,28 @@ fun ScreenScaffold(
     onMoreClick: (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
-    Scaffold(
-        contentWindowInsets = contentWindowInsets,
-        topBar = {
-            ScreenTopAppbar(
-                title = title,
-                subTitle = subTitle,
-                scrollBehavior = scrollBehavior,
-                navigationIcon = navigationIcon,
-                actions = actions,
-                onMoreClick = onMoreClick,
-            )
-        }
-    ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
-            content()
+    val snackbarHostState = remember { SnackbarHostState() }
+    CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
+        Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) },
+            contentWindowInsets = contentWindowInsets,
+            topBar = {
+                ScreenTopAppbar(
+                    title = title,
+                    subTitle = subTitle,
+                    scrollBehavior = scrollBehavior,
+                    navigationIcon = navigationIcon,
+                    actions = actions,
+                    onMoreClick = onMoreClick,
+                )
+            }
+        ) { paddingValues ->
+            Box(modifier = Modifier.padding(paddingValues)) {
+                content()
+            }
         }
     }
+
 }
 
 

@@ -3,7 +3,7 @@ package com.revolgenx.anilib.common.data.repository
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.revolgenx.anilib.BuildConfig
-import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppDataStore
 import com.revolgenx.anilib.common.data.store.token
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -11,7 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
 object Apollo {
-    fun provideApolloClient(appPreferencesDataStore: AppPreferencesDataStore): ApolloClient = ApolloClient.Builder()
+    fun provideApolloClient(appDataStore: AppDataStore): ApolloClient = ApolloClient.Builder()
         .okHttpClient(
             OkHttpClient.Builder().apply {
                 if (BuildConfig.DEBUG) {
@@ -23,7 +23,7 @@ object Apollo {
                 .addInterceptor {
                     it.proceed(it.request().let { req ->
                         runBlocking {
-                            val token = appPreferencesDataStore.token().first()
+                            val token = appDataStore.token().first()
                             if (token != null) {
                                 req.newBuilder()
                                     .addHeader(

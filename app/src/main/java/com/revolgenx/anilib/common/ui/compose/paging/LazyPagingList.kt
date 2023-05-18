@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import com.revolgenx.anilib.common.ui.component.pullrefresh.PullRefreshIndicator
 import com.revolgenx.anilib.common.ui.component.pullrefresh.pullRefresh
 import com.revolgenx.anilib.common.ui.component.pullrefresh.rememberPullRefreshState
@@ -33,7 +33,6 @@ import com.revolgenx.anilib.common.ui.screen.ErrorSection
 import com.revolgenx.anilib.common.ui.screen.LoadingScreen
 import com.revolgenx.anilib.common.ui.screen.LoadingSection
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flowOf
 
 enum class ListPagingListType {
     COLUMN,
@@ -46,7 +45,8 @@ data class GridOptions(val columns: GridCells)
 fun <M : BaseModel> LazyPagingList(
     modifier: Modifier = Modifier,
     type: ListPagingListType = ListPagingListType.COLUMN,
-    items: LazyPagingItems<M> = flowOf(PagingData.empty<M>()).collectAsLazyPagingItems(),
+    items: List<M>? = null,
+    pagingItems: LazyPagingItems<M>? = null,
     span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     gridOptions: GridOptions? = null,
     onRefresh: (() -> Unit)? = null,
@@ -69,14 +69,16 @@ fun <M : BaseModel> LazyPagingList(
     Box(modifier.pullRefresh(pullRefreshState)) {
         when (type) {
             ListPagingListType.COLUMN -> LazyColumnLayout(
-                items,
+                items = items,
+                pagingItems = pagingItems,
                 itemContent = itemContent,
                 itemContentIndex = itemContentIndex
             )
 
             ListPagingListType.GRID -> LazyGridLayout(
-                items,
-                gridOptions!!,
+                items = items,
+                pagingItems = pagingItems,
+                gridOptions = gridOptions!!,
                 span = span,
                 itemContent = itemContent!!
             )
@@ -87,7 +89,8 @@ fun <M : BaseModel> LazyPagingList(
 
 @Composable
 private fun <M : BaseModel> LazyColumnLayout(
-    items: LazyPagingItems<M>,
+    items: List<M>?,
+    pagingItems: LazyPagingItems<M>?,
     itemContentIndex: (@Composable LazyItemScope.(index: Int, value: M?) -> Unit)? = null,
     itemContent: (@Composable LazyItemScope.(value: M?) -> Unit)? = null
 ) {
@@ -96,45 +99,63 @@ private fun <M : BaseModel> LazyColumnLayout(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         itemContent?.let {
-            items(
-                items = items,
-                key = { it.key }
-            ) { item ->
-                itemContent(item)
+            pagingItems?.let {
+                items(
+                    items = pagingItems,
+                    key = { it.key }
+                ) { item ->
+                    itemContent(item)
+                }
+            }
+            items?.let {
+                items(items = it) { item ->
+                    itemContent(item)
+                }
             }
         }
         itemContentIndex?.let {
-            itemsIndexed(
-                items = items,
-                key = { _, item -> item.key }
-            ) { index, item ->
-                itemContentIndex(index, item)
+            pagingItems?.let {
+                itemsIndexed(
+                    items = pagingItems,
+                    key = { _, item -> item.key }
+                ) { index, item ->
+                    itemContentIndex(index, item)
+                }
             }
         }
-        lazyListResourceState(items = items)
+        pagingItems?.let {
+            lazyListResourceState(items = items, pagingItems = pagingItems)
+        }
     }
 }
 
 @Composable
 private fun <M : BaseModel> LazyGridLayout(
-    items: LazyPagingItems<M>,
+    items: List<M>?,
+    pagingItems: LazyPagingItems<M>?,
     gridOptions: GridOptions,
     span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     itemContent: @Composable() (LazyGridItemScope.(value: M?) -> Unit)
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyVerticalGrid(columns = gridOptions.columns) {
-            items(items = items, span = span) { item ->
-                itemContent(item)
+            pagingItems?.let {
+                items(items = pagingItems, span = span) { item ->
+                    itemContent(item)
+                }
+                lazyGridResourceState(pagingItems)
             }
-            lazyGridResourceState(items)
+        }
+
+        if (items?.isEmpty() == true) {
+            EmptyScreen()
         }
 
         // initial load
-        when (val state = items.loadState.refresh) {
+        when (val state = pagingItems?.loadState?.refresh) {
             is LoadState.Error -> {
                 ErrorScreen(state.error.message) {
-                    items.retry()
+                    pagingItems.retry()
                 }
             }
 
@@ -143,23 +164,33 @@ private fun <M : BaseModel> LazyGridLayout(
             }
 
             is LoadState.NotLoading -> {
-                if (items.itemCount == 0) {
+                if (pagingItems.itemCount == 0) {
                     EmptyScreen()
                 }
             }
+
+            else -> {}
         }
     }
 }
 
 private fun <M : BaseModel> LazyListScope.lazyListResourceState(
-    items: LazyPagingItems<M>,
+    items: List<M>?,
+    pagingItems: LazyPagingItems<M>?,
 ) {
+
+    if (items?.isEmpty() == true) {
+        item {
+            EmptyScreen()
+        }
+    }
+
     // initial load
-    when (val state = items.loadState.refresh) {
+    when (val state = pagingItems?.loadState?.refresh) {
         is LoadState.Error -> {
             item {
                 ErrorScreen(state.error.message) {
-                    items.retry()
+                    pagingItems.retry()
                 }
             }
         }
@@ -171,19 +202,21 @@ private fun <M : BaseModel> LazyListScope.lazyListResourceState(
         }
 
         is LoadState.NotLoading -> {
-            if (items.itemCount == 0) {
+            if (pagingItems.itemCount == 0) {
                 item {
                     EmptyScreen()
                 }
             }
         }
+
+        else -> {}
     }
 
-    when (val state = items.loadState.append) {
+    when (val state = pagingItems?.loadState?.append) {
         is LoadState.Error -> {
             item {
                 ErrorSection(error = state.error.message) {
-                    items.retry()
+                    pagingItems.retry()
                 }
             }
         }
@@ -195,6 +228,7 @@ private fun <M : BaseModel> LazyListScope.lazyListResourceState(
         }
 
         is LoadState.NotLoading -> {}
+        else -> {}
     }
 }
 

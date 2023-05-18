@@ -11,26 +11,30 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 private val authTokenKey = stringPreferencesKey("auth_token_key")
 private val userIdKey = intPreferencesKey("user_id_key")
 
-fun AppPreferencesDataStore.token() = data.map { it[authTokenKey] }
-fun AppPreferencesDataStore.userId() = data.map { it[userIdKey] }
-fun AppPreferencesDataStore.isLoggedIn() = data.map { it[userIdKey] != null }
+fun AppDataStore.token() = data.map { it[authTokenKey] }
+fun AppDataStore.userId() = data.map { it[userIdKey] }
+fun AppDataStore.isLoggedIn() = data.map { it[userIdKey] != null }
 
-fun Context.userId() = appPreferencesDataStore.userId()
+fun Context.userId() = appDataStore.userId()
+
+fun AppDataStore.runUserId() = runBlocking { userId().first() }
+
 suspend fun Context.login(token: String) {
     val userId = JWT(token).subject!!.trim().toInt()
-    appPreferencesDataStore.edit { pref ->
+    appDataStore.edit { pref ->
         pref[authTokenKey] = token
         pref[userIdKey] = userId
     }
 }
 
 suspend fun Context.logout() {
-    appPreferencesDataStore.edit { pref ->
+    appDataStore.edit { pref ->
         pref.remove(authTokenKey)
         pref.remove(userIdKey)
     }
@@ -43,8 +47,7 @@ suspend fun Context.logout() {
 }
 
 
-
-fun AppPreferencesDataStore.continueIfLoggedIn(
+fun AppDataStore.continueIfLoggedIn(
     scope: CoroutineScope,
     callback: () -> Unit
 ) {
@@ -60,7 +63,7 @@ fun Context.continueIfLoggedIn(
     scope: CoroutineScope,
     callback: () -> Unit
 ) {
-    val dataStore = this.appPreferencesDataStore
+    val dataStore = this.appDataStore
     scope.launch {
         dataStore.token().first()?.let {
             callback.invoke()

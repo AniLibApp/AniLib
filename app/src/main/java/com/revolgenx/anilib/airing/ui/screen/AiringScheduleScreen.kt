@@ -188,7 +188,7 @@ private fun AiringScreenContent(
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
             LazyPagingList(
-                items = pagingItems,
+                pagingItems = pagingItems,
                 onRefresh = {
                     viewModel.refresh()
                 },

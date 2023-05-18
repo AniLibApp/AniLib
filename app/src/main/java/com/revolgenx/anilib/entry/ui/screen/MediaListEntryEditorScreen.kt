@@ -22,6 +22,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -42,11 +44,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.isNotNull
+import com.revolgenx.anilib.common.data.state.ResourceState
+import com.revolgenx.anilib.common.ext.emptyText
+import com.revolgenx.anilib.common.ext.localNavigator
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.date.CalendarDialog
+import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
@@ -90,20 +96,20 @@ private fun MediaListEditScreenContent(
 
     val editTitle = stringResource(id = R.string.edit)
     var title by remember { mutableStateOf(editTitle) }
-    var isFavourite by remember { mutableStateOf(false) }
-    var userHasMediaListEntry by remember { mutableStateOf(false) }
+    val openConfirmDialog = remember { mutableStateOf(false) }
 
     ScreenScaffold(
         title = title,
         actions = {
+
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
-                    painter = painterResource(id = if (isFavourite) R.drawable.ic_heart else R.drawable.ic_heart_outline),
+                    painter = painterResource(id = if (viewModel.isFavourite) R.drawable.ic_heart else R.drawable.ic_heart_outline),
                     contentDescription = stringResource(id = R.string.favourite)
                 )
             }
-            if(userHasMediaListEntry){
-                IconButton(onClick = { /*TODO*/ }) {
+            if (viewModel.userHasMediaListEntry) {
+                IconButton(onClick = { openConfirmDialog.value = true }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_delete),
                         contentDescription = stringResource(id = R.string.delete)
@@ -111,7 +117,9 @@ private fun MediaListEditScreenContent(
                 }
             }
 
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                viewModel.save()
+            }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_save),
                     contentDescription = stringResource(id = R.string.save)
@@ -119,6 +127,75 @@ private fun MediaListEditScreenContent(
             }
         },
     ) {
+
+        val loading = remember { mutableStateOf(false) }
+
+        val snackbar = localSnackbarHostState()
+        when (viewModel.deleteResource.value) {
+            is ResourceState.Error -> {
+                val failedToDelete = stringResource(id = R.string.failed_to_delete)
+                val retry = stringResource(id = R.string.retry)
+                LaunchedEffect(viewModel) {
+                    when (snackbar.showSnackbar(
+                        failedToDelete,
+                        retry,
+                        duration = SnackbarDuration.Long
+                    )) {
+                        SnackbarResult.Dismissed -> {
+                            viewModel.deleteResource.value = null
+                        }
+
+                        SnackbarResult.ActionPerformed -> {
+                            viewModel.delete()
+                        }
+                    }
+                }
+            }
+
+            is ResourceState.Loading -> {
+                loading.value = true
+            }
+
+            is ResourceState.Success -> {
+                localNavigator().pop()
+            }
+
+            null -> {}
+        }
+
+        when (viewModel.saveResource.value) {
+            is ResourceState.Error -> {
+                val failedToSave = stringResource(id = R.string.failed_to_save)
+                val retry = stringResource(id = R.string.retry)
+                LaunchedEffect(viewModel) {
+                    when (snackbar.showSnackbar(
+                        failedToSave,
+                        retry,
+                        duration = SnackbarDuration.Long
+                    )) {
+                        SnackbarResult.Dismissed -> {
+                            viewModel.saveResource.value = null
+                        }
+
+                        SnackbarResult.ActionPerformed -> {
+                            viewModel.save()
+                        }
+                    }
+                }
+            }
+
+            is ResourceState.Loading -> {
+                loading.value = true
+            }
+
+            is ResourceState.Success -> {
+                localNavigator().pop()
+            }
+
+            null -> {}
+        }
+
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -127,27 +204,31 @@ private fun MediaListEditScreenContent(
         ) {
             ResourceScreen(
                 resourceState = viewModel.resource.value,
+                loading = loading,
                 refresh = { viewModel.refresh() }
             ) { userMedia ->
                 val media = userMedia.media ?: return@ResourceScreen
                 val user = userMedia.user ?: return@ResourceScreen
-
-                userHasMediaListEntry = media.mediaListEntry.isNotNull()
-                isFavourite = media.isFavourite
-
                 val entryField = viewModel.saveField
-
                 val isAnime = media.isAnime
 
                 MediaTitleType {
-                    media.title?.title(it)?.let {
-                        title = it
+                    val mediaTitle = media.title?.title(it)
+                    title = mediaTitle.emptyText()
+                    ConfirmationDialog(
+                        openDialog = openConfirmDialog,
+                        message = stringResource(id = R.string.do_you_really_want_to_delete_the_entry_s).format(
+                            mediaTitle?.let { " $it" } ?: "")
+                    ) {
+                        viewModel.delete()
                     }
                 }
 
                 Column(
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
+
+
                     Row(
                         modifier = Modifier.padding(4.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -284,7 +365,7 @@ private fun MediaListEditScreenContent(
 
                     CardHeaderContent(
                         headingRes = R.string.notes,
-                        fixedHeight = false
+                        fixedCardHeight = false
                     ) {
                         BasicTextField(
                             modifier = Modifier
@@ -400,7 +481,7 @@ private fun CardHeaderContent(
     modifier: Modifier = Modifier,
     @StringRes headingRes: Int? = null,
     heading: String? = null,
-    fixedHeight: Boolean = true,
+    fixedCardHeight: Boolean = true,
     content: @Composable () -> Unit
 ) {
     TextHeaderContent(
@@ -410,10 +491,10 @@ private fun CardHeaderContent(
     ) {
         Card(
             modifier = Modifier
-                .apply {
-                    if (fixedHeight) {
-                        height(FilterContentHeight)
-                    }
+                .let {
+                    if (fixedCardHeight) {
+                        it.height(FilterContentHeight)
+                    } else it
                 }
                 .fillMaxWidth()
         ) {

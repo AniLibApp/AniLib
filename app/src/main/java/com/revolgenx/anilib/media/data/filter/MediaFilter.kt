@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.media.data.store
+package com.revolgenx.anilib.media.data.filter
 
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.type.MediaFormat
@@ -8,7 +8,7 @@ import com.revolgenx.anilib.type.MediaStatus
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MediaFieldData(
+data class MediaFilter(
     val seasonYear: Int? = null,
     val year: Int? = null,
     val season: MediaSeason? = null,
@@ -22,20 +22,26 @@ data class MediaFieldData(
     val idIn: List<Int>? = null,
     val isAdult: Boolean? = null
 ) {
-    fun toField() = MediaField(
-        seasonYear = seasonYear,
-        year = year,
-        season = season,
-        status = status,
-        formatsIn = formatsIn,
-        genreIn = genreIn,
-        tagIn = tagIn,
-        genreNotIn = genreNotIn,
-        tagNotIn = tagNotIn,
-        sort = sort,
-        idIn = idIn,
-        isAdult = isAdult,
-    )
+    fun toField(field: MediaField? = null): MediaField {
+        return if (field != null && compare(field)) {
+            field
+        } else {
+            MediaField(
+                seasonYear = seasonYear,
+                year = year,
+                season = season,
+                status = status,
+                formatsIn = formatsIn,
+                genreIn = genreIn,
+                tagIn = tagIn,
+                genreNotIn = genreNotIn,
+                tagNotIn = tagNotIn,
+                sort = sort,
+                idIn = idIn,
+                isAdult = isAdult,
+            )
+        }
+    }
 
     fun compare(other: MediaField): Boolean {
         if (seasonYear != other.seasonYear) return false
@@ -53,12 +59,5 @@ data class MediaFieldData(
         return true
     }
 
-    fun toFieldIfDifferent(field: MediaField): MediaField {
-        return if (compare(field)) {
-            field
-        } else {
-            toField()
-        }
-    }
 
 }

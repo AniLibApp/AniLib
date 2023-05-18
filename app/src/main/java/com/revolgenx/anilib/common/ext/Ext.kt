@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
+import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
+import com.revolgenx.anilib.common.ui.composition.LocalUserState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -18,8 +20,13 @@ import java.util.NavigableMap
 import java.util.TreeMap
 
 fun String?.naText() = this.takeIf { !it.isNullOrEmpty() } ?: "?"
+fun String?.emptyText() = this.takeIf { !it.isNullOrEmpty() } ?: ""
 fun Int?.naText() = this.takeIf { it != null }?.toString() ?: "?"
 fun Int?.naInt() = this.takeIf { it != null } ?: 0
+
+fun String?.getOrDefault() = this ?: ""
+fun Int?.getOrDefault() = this ?: 0
+fun Double?.getOrDefault() = this ?: 0.0
 
 @StringRes
 fun Int?.naStringRes() = this.takeIf { it != null } ?: R.string.na
@@ -31,8 +38,13 @@ fun Int?.naDrawableRes() = this.takeIf { it != null } ?: R.drawable.ic_question_
 fun localContext() = LocalContext.current
 
 @Composable
+fun localUser() = LocalUserState.current
+
+@Composable
 fun localNavigator() = LocalMainNavigator.current
 
+@Composable
+fun localSnackbarHostState() = LocalSnackbarHostState.current
 
 fun Any?.isNull() = this == null
 fun Any?.isNotNull() = this != null

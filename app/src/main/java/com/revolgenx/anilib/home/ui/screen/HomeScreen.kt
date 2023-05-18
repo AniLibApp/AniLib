@@ -101,7 +101,7 @@ fun HomeScreenContent() {
                     iconRes = R.drawable.ic_search,
                     contentDescriptionRes = R.string.search,
                 ),
-                isLoggedIn.value.takeIf { it }?.let {
+                isLoggedIn.takeIf { it }?.let {
                     ActionMenuItem.AlwaysShown(
                         titleRes = R.string.notifcations,
                         onClick = {

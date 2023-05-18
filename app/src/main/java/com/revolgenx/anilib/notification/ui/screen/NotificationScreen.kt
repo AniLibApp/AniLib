@@ -81,7 +81,7 @@ private fun NotificationScreenContent(
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
             LazyPagingList(
-                items = pagingItems,
+                pagingItems = pagingItems,
                 onRefresh = {
                     viewModel.refresh()
                 },

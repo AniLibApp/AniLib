@@ -10,30 +10,40 @@ import com.revolgenx.anilib.common.ext.isNull
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
-abstract class ResourceViewModel<M, F : BaseField<*>> : BaseViewModel<F>() {
+abstract class ResourceViewModel<M : Any, F : BaseField<*>> : BaseViewModel<F>() {
     open val resource: MutableState<ResourceState<M>?> = mutableStateOf(null)
     protected abstract fun loadData(): Flow<M?>
 
     fun getResource() {
         if (resource.value.isNull()) {
+            onInit()
             refresh()
         }
     }
+
+    protected open fun onInit() {}
+    protected open fun onComplete() {}
 
     fun refresh() {
         resource.value = ResourceState.loading()
         loadData()
             .onEach {
-                Timber.d("My current thread ${Thread.currentThread().name}")
                 val data = it ?: throw ApolloException("No data available")
                 resource.value = ResourceState.success(data)
             }
+            .onCompletion { onComplete() }
             .catch {
                 resource.value = ResourceState.error(it)
             }.launchIn(viewModelScope)
     }
+
+    protected fun getData(): M? {
+        val state = resource.value
+        return if (state is ResourceState.Success) state.data else null
+    }
+
 
 }

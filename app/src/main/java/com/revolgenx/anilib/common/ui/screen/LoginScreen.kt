@@ -74,7 +74,7 @@ private fun LoginScreenContent() {
                 .padding(paddingValues)
                 .padding(top = 12.dp)
         ) {
-            OutlinedCard(
+            Card(
                 modifier = Modifier.padding(12.dp)
             ) {
                 Column(

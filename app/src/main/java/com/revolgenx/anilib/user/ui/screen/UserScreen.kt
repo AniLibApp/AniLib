@@ -246,7 +246,7 @@ private fun UserScreenActions(
                         }
                     )
                 },
-                loggedIn.value.takeIf { it }?.let {
+                loggedIn.takeIf { it }?.let {
                     ActionMenuItem.NeverShown(
                         titleRes = R.string.logout,
                         iconRes = R.drawable.ic_logout,
