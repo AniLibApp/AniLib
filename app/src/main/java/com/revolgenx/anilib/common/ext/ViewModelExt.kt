@@ -81,4 +81,7 @@ fun defaultExtras(viewModelStoreOwner: ViewModelStoreOwner): CreationExtras = wh
 fun ViewModel.launch(block: suspend CoroutineScope.() -> Unit): Job {
     return viewModelScope.launch(block = block)
 }
+fun ViewModel.launchIO(block: suspend CoroutineScope.() -> Unit): Job {
+    return viewModelScope.launchIO(block = block)
+}
 

@@ -2,6 +2,7 @@ package com.revolgenx.anilib.list.ui.viewmodel
 
 import android.os.Handler
 import android.os.Looper
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -20,7 +21,6 @@ import com.revolgenx.anilib.list.data.sort.MediaListCollectionSortComparator
 import com.revolgenx.anilib.list.ui.model.MediaListCollectionModel
 import com.revolgenx.anilib.list.ui.model.MediaListModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 
 abstract class MediaListViewModel(
     private val mediaListService: MediaListService,
@@ -29,16 +29,18 @@ abstract class MediaListViewModel(
 ) :
     ResourceViewModel<MediaListCollectionModel, MediaListCollectionField>() {
 
-    var filter: MediaListCollectionFilter? = null
-
-    var groupNameWithCount by mutableStateOf(mapOf("All" to 0))
-    var mediaListCollection = mutableStateListOf<MediaListModel>()
-
+    private var filter: MediaListCollectionFilter? = null
     private val loggedInUserId = appDataStore.runUserId()
-    private val isLoggedInUser get() = loggedInUserId == field.userId
+
     private val handler = Handler(Looper.getMainLooper())
     private val sortingComparator = MediaListCollectionSortComparator()
+    private val isLoggedInUser get() = loggedInUserId == field.userId
+    var mediaListCollection = mutableStateListOf<MediaListModel>()
 
+
+    var groupNamesWithCount by mutableStateOf(mapOf("All" to 0))
+    val currentGroupName by derivedStateOf { currentGroupNameWithCount.let { "${it.first} ${it.second}" } }
+    var currentGroupNameWithCount by mutableStateOf("All" to 0)
 
     var query by mutableStateOf("")
     var search: String = ""
@@ -61,17 +63,18 @@ abstract class MediaListViewModel(
 
     override fun onInit() {
         launch {
-            filter = if (field.userId == loggedInUserId) {
+            if (isLoggedInUser) {
                 mediaListDataStore.data.collect {
                     filter = it
-                    filterData()
+                    onFilterUpdate()
                 }
-                mediaListDataStore.data.first()
             } else {
-                MediaListCollectionFilter()
+                filter = MediaListCollectionFilter()
+                onFilterUpdate()
             }
         }
     }
+
 
     override fun onComplete() {
         getGroupNameWithCount()
@@ -82,23 +85,39 @@ abstract class MediaListViewModel(
         return mediaListService.getMediaListCollection(field)
     }
 
+    private fun updateCurrentGroupNameWithCount() {
+        groupNamesWithCount.getOrDefault(currentGroupNameWithCount.first, null)?.let {
+            currentGroupNameWithCount = currentGroupNameWithCount.first to it
+        }
+    }
+
+    private fun onFilterUpdate() {
+        filter?.groupName?.let { name ->
+            groupNamesWithCount.firstNotNullOfOrNull { m -> if (m.key == name) m else null }
+                ?.let { currentGroupNameWithCount = it.toPair() }
+        }
+        updateCurrentGroupNameWithCount()
+        filterData()
+    }
+
     fun filterData() {
         filter ?: return
-        launch {
-            launchIO {
-                val mediaListEntries =
-                    getData()
-                        ?.lists
-                        ?.firstOrNull { it.name == "All" }
-                        ?.entries
-                        ?: emptyList()
-
-                val filteredList = getFilteredList(mediaListEntries)
-                mediaListCollection.clear()
-                mediaListCollection.addAll(filteredList)
-            }
+        launchIO {
+            val mediaList =
+                getData()?.lists?.firstOrNull { it.name == currentGroupNameWithCount.first }
+                    ?: let {
+                        if (currentGroupNameWithCount.first != "All") {
+                            mediaListDataStore.updateData {
+                                it.copy(groupName = "All")
+                            }
+                        }
+                        null
+                    }
+            val mediaListEntries = mediaList?.entries ?: emptyList()
+            val filteredList = getFilteredList(mediaListEntries)
+            mediaListCollection.clear()
+            mediaListCollection.addAll(filteredList)
         }
-
     }
 
     private fun getFilteredList(listCollection: List<MediaListModel>): List<MediaListModel> {
@@ -148,6 +167,21 @@ abstract class MediaListViewModel(
     private fun getGroupNameWithCount() {
         val lists = getData()?.lists ?: return
         val groupNameMap = lists.associate { it.name.naText() to it.count }
-        groupNameWithCount = groupNameMap
+        groupNamesWithCount = groupNameMap
+        updateCurrentGroupNameWithCount()
+    }
+
+    fun updateCurrentGroupName(groupName: String) {
+        filter ?: return
+        launch {
+            if (isLoggedInUser) {
+                mediaListDataStore.updateData {
+                    it.copy(groupName = groupName)
+                }
+            } else {
+                filter = filter?.copy(groupName = groupName)
+                onFilterUpdate()
+            }
+        }
     }
 }

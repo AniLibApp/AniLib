@@ -100,7 +100,6 @@ private fun AiringScreenContent(
     val context = LocalContext.current
     val field = viewModel.field
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    val isMenuOpen = remember { mutableStateOf(false) }
     val calendarState = rememberUseCaseState()
     val openBottomSheet = rememberSaveable { mutableStateOf(false) }
     val navigator = localNavigator()
@@ -161,7 +160,6 @@ private fun AiringScreenContent(
         actions = {
             AiringScheduleAction(
                 isWeeklyTypeDate = field.isWeeklyTypeDate,
-                isMenuOpen = isMenuOpen,
                 onPrevious = {
                     viewModel.previous()
                 },
@@ -430,7 +428,6 @@ private fun AiringScheduleFilterBottomSheetContent(
 @Composable
 private fun AiringScheduleAction(
     isWeeklyTypeDate: Boolean = false,
-    isMenuOpen: MutableState<Boolean> = mutableStateOf(false),
     onNext: () -> Unit,
     onPrevious: () -> Unit,
     onFilter: () -> Unit,
@@ -438,8 +435,6 @@ private fun AiringScheduleAction(
     onWeekly: () -> Unit,
 ) {
     ActionsMenu(
-        isOpen = isMenuOpen.value,
-        onToggleOverflow = { isMenuOpen.value = !isMenuOpen.value },
         items = listOf(
             ActionMenuItem.AlwaysShown(
                 titleRes = R.string.previous,

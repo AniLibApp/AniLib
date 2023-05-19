@@ -53,7 +53,7 @@ import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toDrawableRes
 import com.revolgenx.anilib.media.ui.model.toStringRes
-import com.revolgenx.anilib.media.ui.screen.MediaFilterBottomSheet
+import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.type.MediaStatus
 import com.skydoves.landscapist.ImageOptions

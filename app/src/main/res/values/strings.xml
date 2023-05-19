@@ -185,5 +185,6 @@
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="confirm">Confirm</string>
+    <string name="clear">Clear</string>
 
 </resources>

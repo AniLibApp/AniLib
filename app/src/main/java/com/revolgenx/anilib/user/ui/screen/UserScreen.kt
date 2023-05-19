@@ -172,7 +172,6 @@ private fun CollapsingToolbarScope.UserScreenTopAppbar(
 ) {
     val progress = collapsingToolbarState.toolbarState.progress
     val imageAlpha = if (progress <= 0.2) 0.2f else progress
-    val isMenuOpen = remember { mutableStateOf(false) }
 
     FrescoImage(
         modifier = Modifier
@@ -217,7 +216,6 @@ private fun CollapsingToolbarScope.UserScreenTopAppbar(
             actions = {
                 UserScreenActions(
                     isTab = isTab,
-                    isMenuOpen = isMenuOpen,
                     onLogout = onLogout
                 )
             }
@@ -228,7 +226,6 @@ private fun CollapsingToolbarScope.UserScreenTopAppbar(
 
 @Composable
 private fun UserScreenActions(
-    isMenuOpen: MutableState<Boolean> = mutableStateOf(false),
     isTab: Boolean = false,
     onLogout: () -> Unit
 ) {
@@ -258,8 +255,6 @@ private fun UserScreenActions(
     }
 
     ActionsMenu(
-        isOpen = isMenuOpen.value,
-        onToggleOverflow = { isMenuOpen.value = !isMenuOpen.value },
         items = actions.value,
         maxVisibleItems = 1
     )

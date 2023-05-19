@@ -11,7 +11,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,10 +27,9 @@ import com.revolgenx.anilib.R
 @Composable
 fun ActionsMenu(
     items: List<ActionMenuItem>,
-    isOpen: Boolean,
-    onToggleOverflow: () -> Unit,
     maxVisibleItems: Int = items.size,
 ) {
+    var isOpen by remember { mutableStateOf(false) }
     val menuItems = remember(
         key1 = items,
         key2 = maxVisibleItems,
@@ -46,7 +48,9 @@ fun ActionsMenu(
     }
 
     if (menuItems.overflowItems.isNotEmpty()) {
-        IconButton(onClick = onToggleOverflow) {
+        IconButton(onClick = {
+            isOpen = isOpen.not()
+        }) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_more_horiz),
                 contentDescription = "Overflow",
@@ -55,7 +59,9 @@ fun ActionsMenu(
         DropdownMenu(
             expanded = isOpen,
             offset = DpOffset(8.dp, 0.dp),
-            onDismissRequest = onToggleOverflow,
+            onDismissRequest = {
+                isOpen = isOpen.not()
+            },
         ) {
             menuItems.overflowItems.forEach { item ->
                 DropdownMenuItem(
@@ -87,7 +93,7 @@ fun ActionsMenu(
                         }
                     },
                     onClick = {
-                        onToggleOverflow.invoke()
+                        isOpen = false
                         item.onClick.invoke()
                     }
                 )

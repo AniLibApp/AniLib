@@ -32,10 +32,13 @@ import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenScaffold(
+    modifier: Modifier = Modifier,
     title: String = "",
     subTitle: String? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null,
+    topBar: (@Composable () -> Unit)? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
+    floatingActionButton: @Composable () -> Unit = {},
     actions: (@Composable RowScope.() -> Unit)? = null,
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     onMoreClick: (() -> Unit)? = null,
@@ -44,9 +47,11 @@ fun ScreenScaffold(
     val snackbarHostState = remember { SnackbarHostState() }
     CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
         Scaffold(
+            modifier = modifier,
             snackbarHost = { SnackbarHost(snackbarHostState) },
             contentWindowInsets = contentWindowInsets,
-            topBar = {
+            floatingActionButton = floatingActionButton,
+            topBar = topBar ?: {
                 ScreenTopAppbar(
                     title = title,
                     subTitle = subTitle,

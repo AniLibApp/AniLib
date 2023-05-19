@@ -27,13 +27,13 @@ fun BottomBarLayout(
     content: @Composable () -> Unit
 ) {
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
-    val bottomBarNestedScrollConnection = remember {
-        BottomBarNestedScrollConnection(state = scrollState)
+    val bottomNestedScrollConnection = remember {
+        BottomNestedScrollConnection(state = scrollState)
     }
 
     Box(
         modifier = modifier
-            .nestedScroll(bottomBarNestedScrollConnection)
+            .nestedScroll(bottomNestedScrollConnection)
     ) {
         content()
         AnimatedVisibility(
@@ -52,7 +52,7 @@ sealed class ScrollState {
     object ScrollDown : ScrollState()
 }
 
-class BottomBarNestedScrollConnection(
+class BottomNestedScrollConnection(
     private val state: MutableState<ScrollState> = mutableStateOf(ScrollState.ScrollDown)
 ) : NestedScrollConnection {
     override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {

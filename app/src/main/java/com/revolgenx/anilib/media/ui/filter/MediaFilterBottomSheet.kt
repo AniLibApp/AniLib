@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.media.ui.screen
+package com.revolgenx.anilib.media.ui.filter
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

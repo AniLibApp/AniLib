@@ -85,9 +85,6 @@ fun HomeScreenContent() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val pagerState = rememberPagerState()
     val navigator = localNavigator()
-    var isMenuOpen by remember {
-        mutableStateOf(true)
-    }
 
     val isLoggedIn = isLoggedIn()
     val actionItems = remember {
@@ -123,8 +120,6 @@ fun HomeScreenContent() {
         actions = {
             ActionsMenu(
                 items = actionItems.value,
-                isOpen = isMenuOpen,
-                onToggleOverflow = { isMenuOpen = !isMenuOpen },
                 maxVisibleItems = 2
             )
         },
