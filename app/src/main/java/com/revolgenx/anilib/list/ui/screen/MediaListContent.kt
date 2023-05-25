@@ -1,22 +1,28 @@
 package com.revolgenx.anilib.list.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -30,38 +36,66 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
+import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.data.constant.AlMediaSort
+import com.revolgenx.anilib.common.data.tuples.to
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
+import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
+import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
+import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
+import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
+import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.screen.ResourceScreen
+import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
+import com.revolgenx.anilib.list.data.sort.MediaListSortType
 import com.revolgenx.anilib.list.ui.model.MediaListModel
+import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
+import com.revolgenx.anilib.media.ui.model.toMediaFormat
+import com.revolgenx.anilib.media.ui.model.toMediaStatus
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediaListContent(viewModel: MediaListViewModel) {
+fun MediaListContent(
+    viewModel: MediaListViewModel,
+    openFilterBottomSheet: MutableState<Boolean> = mutableStateOf(false)
+) {
     LaunchedEffect(viewModel) {
         viewModel.getResource()
     }
-    val loading = remember { mutableStateOf(false) }
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
     val bottomNestedScrollConnection =
         remember { BottomNestedScrollConnection(state = scrollState) }
-    val openBottomSheet = rememberSaveable { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState(
+    val openGroupNameBottomSheet = rememberSaveable { mutableStateOf(false) }
+    val groupNameBottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+    val filterBottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
     ScreenScaffold(
@@ -75,7 +109,7 @@ fun MediaListContent(viewModel: MediaListViewModel) {
                 FloatingActionButton(
                     elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 0.dp),
                     onClick = {
-                        openBottomSheet.value = true
+                        openGroupNameBottomSheet.value = true
                     }) {
                     Box(modifier = Modifier.padding(horizontal = 20.dp)) {
                         Text(text = viewModel.currentGroupName)
@@ -86,7 +120,6 @@ fun MediaListContent(viewModel: MediaListViewModel) {
     ) {
         ResourceScreen(
             resourceState = viewModel.resource.value,
-            loading = loading,
             refresh = { viewModel.refresh() }) {
             Box(
                 modifier = Modifier.nestedScroll(bottomNestedScrollConnection),
@@ -105,15 +138,69 @@ fun MediaListContent(viewModel: MediaListViewModel) {
         }
     }
 
+
     MediaListGroupNameBottomSheet(
-        openBottomSheet = openBottomSheet,
-        bottomSheetState = bottomSheetState,
+        openBottomSheet = openGroupNameBottomSheet,
+        bottomSheetState = groupNameBottomSheetState,
         selectedGroupName = viewModel.currentGroupNameWithCount.first,
         groupNamesWithCount = viewModel.groupNamesWithCount
     ) { groupName ->
         viewModel.updateCurrentGroupName(groupName)
     }
 
+    MediaListFilterBottomSheet(
+        openBottomSheet = openFilterBottomSheet,
+        bottomSheetState = filterBottomSheetState,
+        viewModel = koinViewModel(),
+        filter = viewModel.filter
+    ) {
+        viewModel.updateFilter(it)
+    }
+
+}
+
+@Composable
+fun ModalBottomSheetPopup(
+    onDismissRequest: () -> Unit,
+    content: @Composable () -> Unit
+) = Popup(
+    onDismissRequest = onDismissRequest,
+    properties = PopupProperties(focusable = true),
+    content = content
+)
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun Scrim(
+    color: Color = BottomSheetDefaults.ScrimColor,
+    visible: Boolean = true,
+    onDismissRequest: () -> Unit
+) {
+    if (color.isSpecified) {
+        val alpha by animateFloatAsState(
+            targetValue = if (visible) 1f else 0f,
+            animationSpec = TweenSpec()
+        )
+        val dismissSheet = if (visible) {
+            Modifier
+                .pointerInput(onDismissRequest) {
+                    detectTapGestures {
+                        onDismissRequest()
+                    }
+                }
+                .clearAndSetSemantics {}
+        } else {
+            Modifier
+        }
+        Canvas(
+            Modifier
+                .fillMaxSize()
+                .then(dismissSheet)
+        ) {
+            drawRect(color = color, alpha = alpha)
+        }
+    }
 }
 
 
@@ -128,7 +215,7 @@ private fun MediaListItem(list: MediaListModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MediaListGroupNameBottomSheet(
+fun MediaListGroupNameBottomSheet(
     openBottomSheet: MutableState<Boolean> = mutableStateOf(false),
     bottomSheetState: SheetState = rememberModalBottomSheetState(),
     groupNamesWithCount: Map<String, Int>,
@@ -143,7 +230,7 @@ private fun MediaListGroupNameBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState,
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.background
         ) {
             MediaListGroupNameContent(
                 modifier = Modifier.windowInsetsPadding(windowInsets),
@@ -197,6 +284,150 @@ private fun MediaListGroupNameContent(
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MediaListFilterBottomSheet(
+    openBottomSheet: MutableState<Boolean> = mutableStateOf(false),
+    bottomSheetState: SheetState = rememberModalBottomSheetState(),
+    filter: MediaListCollectionFilter?,
+    viewModel: MediaListFilterViewModel = koinViewModel(),
+    onFilter: (filter: MediaListCollectionFilter) -> Unit
+) {
+    val scope = rememberCoroutineScope()
+
+    if (openBottomSheet.value) {
+        if (filter == null) {
+            openBottomSheet.value = false
+            return
+        }
+        viewModel.filter = filter
+
+        val windowInsets = NavigationBarDefaults.windowInsets
+
+        ModalBottomSheet(
+            onDismissRequest = { openBottomSheet.value = false },
+            sheetState = bottomSheetState,
+            containerColor = MaterialTheme.colorScheme.background
+        ) {
+
+            MediaListFilterBottomSheetContent(
+                modifier = Modifier.windowInsetsPadding(windowInsets),
+                viewModel = viewModel,
+                dismiss = {
+                    scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+                        if (!bottomSheetState.isVisible) {
+                            openBottomSheet.value = false
+                        }
+                    }
+                }
+            ) {
+                onFilter(it)
+            }
+        }
+    }
+}
+
+@Composable
+fun MediaListFilterBottomSheetContent(
+    modifier: Modifier,
+    viewModel: MediaListFilterViewModel,
+    dismiss: () -> Unit,
+    onFilter: (filter: MediaListCollectionFilter) -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 4.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        BottomSheetConfirmationAction(
+            onPositiveClicked = {
+                onFilter.invoke(viewModel.filter)
+                dismiss.invoke()
+            },
+            onNegativeClicked = {
+                dismiss.invoke()
+            }
+        )
+        val selectedFormats = viewModel.filter.formatsIn?.map { it.ordinal } ?: emptyList()
+        val formats = stringArrayResource(id = R.array.media_format)
+        MultiSelectMenu(
+            labelRes = R.string.format,
+            entries = formats.mapIndexed { index, s ->
+                selectedFormats.contains(
+                    index
+                ) to s
+            },
+        ) { selectedItems ->
+            viewModel.filter = viewModel.filter.copy(
+                formatsIn = selectedItems.takeIf { it.isNotEmpty() }
+                    ?.mapNotNull { it.first.toMediaFormat() }
+            )
+        }
+        SelectMenu(
+            labelRes = R.string.status,
+            entries = stringArrayResource(id = R.array.media_status).toList(),
+            selectedItemPosition = viewModel.filter.status?.ordinal,
+            showNoneItem = true
+        ) { selectedItem ->
+            viewModel.filter = viewModel.filter.copy(
+                status = selectedItem.takeIf { it > -1 }?.toMediaStatus()
+            )
+        }
+
+        val genreList = stringArrayResource(id = R.array.media_genre).toList()
+        SelectMenu(
+            labelRes = R.string.genre,
+            entries = genreList,
+            selectedItemPosition = genreList.indexOf(viewModel.filter.genre),
+            showNoneItem = true
+        ) { selectedItem ->
+            viewModel.filter = viewModel.filter.copy(
+                genre = selectedItem.takeIf { it > -1 }?.let { genreList[it] }
+            )
+        }
+
+        val sort = viewModel.filter.sort
+        var selectedSortIndex: Int? = null
+        var selectedSortOrder: AlSortOrder = AlSortOrder.NONE
+
+        if (sort != null) {
+            val isDesc = sort.toString().endsWith("_DESC")
+            selectedSortIndex = sort.ordinal / 2
+            selectedSortOrder = if (isDesc) AlSortOrder.DESC else AlSortOrder.ASC
+        }
+
+        val sortMenus =
+            stringArrayResource(id = R.array.media_list_collection_sort).mapIndexed { index, s ->
+                AlSortMenuItem(
+                    s,
+                    if (index == selectedSortIndex) selectedSortOrder else AlSortOrder.NONE
+                )
+            }
+
+        SortSelectMenu(
+            labelRes = R.string.sort,
+            entries = sortMenus,
+        ) { index, selectedItem ->
+            var mediaListSortType: MediaListSortType? = null
+
+            if (selectedItem != null) {
+                val alMediaSort = AlMediaSort.values()[index].sort
+                val selectedSort = if (selectedItem.order == AlSortOrder.DESC) {
+                    alMediaSort + 1
+                } else {
+                    alMediaSort
+                }
+                mediaListSortType = MediaListSortType.values()[selectedSort]
+            }
+
+            viewModel.filter = viewModel.filter.copy(
+                sort = mediaListSortType
+            )
         }
     }
 }

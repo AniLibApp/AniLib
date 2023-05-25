@@ -2,6 +2,8 @@ package com.revolgenx.anilib.common.data.event
 
 import org.greenrobot.eventbus.EventBus
 
+interface EventBusListener
+
 abstract class BaseEvent {
     val postEvent: Unit
         get() {

@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 
-private val authTokenKey = stringPreferencesKey("auth_token_key")
-private val userIdKey = intPreferencesKey("user_id_key")
+val authTokenKey = stringPreferencesKey("auth_token_key")
+val userIdKey = intPreferencesKey("user_id_key")
 
 fun AppDataStore.token() = data.map { it[authTokenKey] }
 fun AppDataStore.userId() = data.map { it[userIdKey] }

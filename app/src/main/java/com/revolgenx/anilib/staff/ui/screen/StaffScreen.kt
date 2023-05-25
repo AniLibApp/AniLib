@@ -11,10 +11,10 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.PagerScreen
 
-class StaffScreen(val id: Int) : AndroidScreen() {
+class StaffScreen(val staffId: Int) : AndroidScreen() {
     @Composable
     override fun Content() {
-        StaffScreenContent(id)
+        StaffScreenContent(staffId)
     }
 }
 

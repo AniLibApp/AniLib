@@ -1,17 +1,18 @@
 package com.revolgenx.anilib.activity
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -29,23 +30,27 @@ import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
 import com.revolgenx.anilib.common.ui.composition.GlobalViewModelStoreOwner
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
+import com.revolgenx.anilib.common.ui.composition.LocalMediaState
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.composition.LocalUserState
 import com.revolgenx.anilib.common.ui.screen.LoginScreen
+import com.revolgenx.anilib.common.ui.screen.SpoilerBottomSheet
 import com.revolgenx.anilib.common.ui.theme.AppTheme
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
-import com.revolgenx.anilib.list.ui.screen.MediaListScreen
+import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
+import com.revolgenx.anilib.list.ui.screen.MangaListScreen
+import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
 * todo: handle customtab cancel result
 * */
-class MainActivity : ComponentActivity() {
-    private val viewModel by viewModel<MainActivityViewModel>()
+class MainActivity : BaseActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AlMarkwonFactory.init(this, this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             AppTheme {
@@ -53,17 +58,29 @@ class MainActivity : ComponentActivity() {
                     screen = MainActivityScreen(),
                     disposeBehavior = NavigatorDisposeBehavior(false, false)
                 ) { navigator ->
+                    this@MainActivity.navigator = navigator
                     CompositionLocalProvider(
                         LocalMainNavigator provides navigator,
                         LocalUserState provides viewModel.userState,
+                        LocalMediaState provides viewModel.mediaState,
                         GlobalViewModelStoreOwner provides this@MainActivity
                     ) {
                         CurrentScreen()
                     }
                 }
+
+                val bottomSheetState = rememberModalBottomSheetState(
+                    skipPartiallyExpanded = true
+                )
+                SpoilerBottomSheet(
+                    openBottomSheet = viewModel.openSpoilerBottomSheet,
+                    bottomSheetState = bottomSheetState,
+                    spanned = viewModel.spoilerSpanned
+                )
             }
         }
     }
+
 }
 
 
@@ -86,7 +103,8 @@ fun MainActivityScreenContent() {
                 NavigationBar {
                     TabNavigationItem(tab = HomeScreen)
                     ShowIfLoggedIn {
-                        TabNavigationItem(tab = MediaListScreen)
+                        TabNavigationItem(tab = AnimeListScreen)
+                        TabNavigationItem(tab = MangaListScreen)
                         TabNavigationItem(tab = ActivityUnionScreen)
                     }
                     ShowIfLoggedIn(

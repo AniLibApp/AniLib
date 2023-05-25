@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.staffScreen
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
@@ -33,9 +35,7 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.staff.ui.model.StaffEdgeModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.StaffNameModel
-import com.revolgenx.anilib.staff.ui.screen.StaffScreen
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -58,7 +58,7 @@ fun MediaStaffScreen(
     ) { staffEdgeModel ->
         staffEdgeModel ?: return@LazyPagingList
         MediaStaffItem(staffEdgeModel) { staffId ->
-            navigator.push(StaffScreen(staffId))
+            navigator.staffScreen(staffId)
         }
     }
 }
@@ -81,7 +81,7 @@ private fun MediaStaffItem(
             .clickable {
                 onClick.invoke(staff.id)
             }) {
-            FrescoImage(
+            AsyncImage(
                 modifier = Modifier
                     .height(165.dp)
                     .fillMaxWidth(),

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -23,12 +24,12 @@ import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.screen.ErrorScreen
 import com.revolgenx.anilib.common.ui.screen.LoadingScreen
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -74,17 +75,18 @@ private fun StaffAbout(
                 .padding(top = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            FrescoImage(
+            AsyncImage(
                 modifier = Modifier
                     .size(height = 210.dp, width = 140.dp)
                     .clip(RoundedCornerShape(12.dp)),
-                imageUrl = staff.image?.image,
+                imageUrl =  staff.image?.image,
                 imageOptions = ImageOptions(
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.Center
                 ),
                 previewPlaceholder = R.drawable.bleach
             )
+            
             Text(
                 modifier= Modifier.padding(top = 8.dp),
                 text = staff.name?.full.naText(),

@@ -11,6 +11,7 @@ import com.revolgenx.anilib.entry.ui.viewmodel.MediaListEntryEditorViewModel
 import com.revolgenx.anilib.home.season.ui.screen.SeasonViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
+import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaOverviewViewModel
@@ -18,6 +19,8 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
@@ -65,6 +68,10 @@ val viewModelModules = module {
     //list
     viewModel { AnimeListViewModel(get(), get(), get(named(animeListFilterStoreFileName))) }
     viewModel { MangaListViewModel(get(), get(), get(named(mangaListFilterStoreFileName))) }
+    viewModel { MediaListFilterViewModel() }
 
+    //activity union
+    viewModel { ActivityUnionViewModel(get()) }
+    viewModel { ActivityComposerViewModel() }
 
 }

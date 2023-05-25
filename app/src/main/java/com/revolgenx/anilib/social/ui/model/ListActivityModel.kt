@@ -1,7 +1,10 @@
 package com.revolgenx.anilib.social.ui.model
 
+import com.revolgenx.anilib.ActivityUnionQuery
+import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.media.ui.model.MediaModel
+import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.user.ui.model.UserModel
 
@@ -24,6 +27,38 @@ data class ListActivityModel(
     var progress: String? = null,
     var media: MediaModel? = null
 ) : ActivityModel, BaseModel(id) {
-    val getProgressStatus: String
+    val progressStatus: String
         get() = "${status?.capitalize()}${if (progress.isNullOrBlank()) " " else " $progress of "}${media!!.title!!.userPreferred}"
+}
+
+
+fun ActivityUnionQuery.OnListActivity.toModel(): ListActivityModel {
+    return ListActivityModel(
+        id = id,
+        media = media?.let {
+            MediaModel(
+                id = it.id,
+                title = it.title?.mediaTitle?.toModel(),
+                type = it.type,
+                coverImage = it.coverImage?.mediaCoverImage?.toModel(),
+                bannerImage = it.bannerImage,
+                isAdult = it.isAdult == true,
+            )
+        },
+        status = status!!,
+        progress = progress ?: "",
+        likeCount = likeCount,
+        replyCount = replyCount,
+        isSubscribed = isSubscribed ?: false,
+        type = type!!,
+        user = user?.activityUser?.toModel(),
+        likes = likes?.mapNotNull {
+            it?.likeUsers?.toModel()
+        },
+        siteUrl = siteUrl,
+        createdAt = createdAt,
+        createdAtPrettyTime = createdAt.toLong().prettyTime(),
+        userId = userId,
+        isLiked = isLiked ?: false
+    )
 }

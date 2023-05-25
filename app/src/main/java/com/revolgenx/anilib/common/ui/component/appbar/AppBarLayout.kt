@@ -43,7 +43,7 @@ import kotlin.math.roundToInt
 fun AppBarLayout(
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    colors: AppBarLayoutColors = AlAppBarLayoutDefaults.appBarLayoutColors(),
+    colors: AppBarLayoutColors = AppBarLayoutDefaults.appBarLayoutColors(),
     containerHeight: Dp = AppBarHeight,
     content: @Composable () -> Unit
 ) {
@@ -119,7 +119,7 @@ fun TopAppBarContent(windowInsets: WindowInsets, heightPx: Float, content: @Comp
 }
 
 @ExperimentalMaterial3Api
-object AlAppBarLayoutDefaults {
+object AppBarLayoutDefaults {
     @Composable
     fun appBarLayoutColors(
         containerColor: Color = MaterialTheme.colorScheme.surface,

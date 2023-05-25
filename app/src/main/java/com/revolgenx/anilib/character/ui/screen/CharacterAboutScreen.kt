@@ -2,10 +2,12 @@ package com.revolgenx.anilib.character.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -26,9 +28,9 @@ import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.character.ui.model.CharacterNameModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.screen.ResourceScreen
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -66,7 +68,7 @@ private fun CharacterAbout(
                 .padding(top = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            FrescoImage(
+            AsyncImage(
                 modifier = Modifier
                     .size(height = 210.dp, width = 140.dp)
                     .clip(RoundedCornerShape(12.dp)),

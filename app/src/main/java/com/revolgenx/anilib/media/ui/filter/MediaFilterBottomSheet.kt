@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -14,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
@@ -66,91 +69,81 @@ private fun MediaFilterBottomSheetContent(
             }
         )
 
-        LazyColumn() {
-            item {
-                val selectedFormats = field.formatsIn?.map { it.ordinal } ?: emptyList()
-                val formats = stringArrayResource(id = R.array.media_format)
-                MultiSelectMenu(
-                    labelRes = R.string.format,
-                    entries = formats.mapIndexed { index, s ->
-                        selectedFormats.contains(
-                            index
-                        ) to s
-                    },
-                ) { selectedItems ->
-                    field.formatsIn = selectedItems.takeIf { it.isNotEmpty() }
-                        ?.mapNotNull { it.first.toMediaFormat() }
-                }
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            val selectedFormats = field.formatsIn?.map { it.ordinal } ?: emptyList()
+            val formats = stringArrayResource(id = R.array.media_format)
+            MultiSelectMenu(
+                labelRes = R.string.format,
+                entries = formats.mapIndexed { index, s ->
+                    selectedFormats.contains(
+                        index
+                    ) to s
+                },
+            ) { selectedItems ->
+                field.formatsIn = selectedItems.takeIf { it.isNotEmpty() }
+                    ?.mapNotNull { it.first.toMediaFormat() }
             }
-            item {
-                SelectMenu(
-                    labelRes = R.string.status,
-                    entries = stringArrayResource(id = R.array.media_status).toList(),
-                    selectedItemPosition = field.status?.ordinal,
-                    showNoneItem = true
-                ) { selectedItem ->
-                    field.status = selectedItem.takeIf { it > -1 }?.toMediaStatus()
-                }
+            SelectMenu(
+                labelRes = R.string.status,
+                entries = stringArrayResource(id = R.array.media_status).toList(),
+                selectedItemPosition = field.status?.ordinal,
+                showNoneItem = true
+            ) { selectedItem ->
+                field.status = selectedItem.takeIf { it > -1 }?.toMediaStatus()
             }
-            item {
-                SelectMenu(
-                    labelRes = R.string.season,
-                    entries = stringArrayResource(id = R.array.media_season).toList(),
-                    selectedItemPosition = field.season?.ordinal
-                ) { selectedItem ->
-                    field.season = selectedItem.takeIf { it > -1 }?.toMediaSeason()
-                }
+            SelectMenu(
+                labelRes = R.string.season,
+                entries = stringArrayResource(id = R.array.media_season).toList(),
+                selectedItemPosition = field.season?.ordinal
+            ) { selectedItem ->
+                field.season = selectedItem.takeIf { it > -1 }?.toMediaSeason()
             }
-            item {
-                val sort = field.sort
-                var selectedSortIndex: Int? = null
-                var selectedSortOrder: AlSortOrder = AlSortOrder.NONE
+            val sort = field.sort
+            var selectedSortIndex: Int? = null
+            var selectedSortOrder: AlSortOrder = AlSortOrder.NONE
 
-                if (sort != null) {
-                    val isDesc = sort.rawValue.endsWith("_DESC")
-                    val alMediaSort =
-                        AlMediaSort.from(if (isDesc) sort.ordinal - 1 else sort.ordinal)
-                    selectedSortIndex = alMediaSort?.ordinal
-                    selectedSortOrder = if (isDesc) AlSortOrder.DESC else AlSortOrder.ASC
+            if (sort != null) {
+                val isDesc = sort.rawValue.endsWith("_DESC")
+                val alMediaSort =
+                    AlMediaSort.from(if (isDesc) sort.ordinal - 1 else sort.ordinal)
+                selectedSortIndex = alMediaSort?.ordinal
+                selectedSortOrder = if (isDesc) AlSortOrder.DESC else AlSortOrder.ASC
+            }
+
+            val sortMenus =
+                stringArrayResource(id = R.array.media_sort).mapIndexed { index, s ->
+                    AlSortMenuItem(
+                        s,
+                        if (index == selectedSortIndex) selectedSortOrder else AlSortOrder.NONE
+                    )
                 }
 
-                val sortMenus =
-                    stringArrayResource(id = R.array.media_sort).mapIndexed { index, s ->
-                        AlSortMenuItem(
-                            s,
-                            if (index == selectedSortIndex) selectedSortOrder else AlSortOrder.NONE
-                        )
+            SortSelectMenu(
+                labelRes = R.string.sort,
+                entries = sortMenus,
+            ) { index, selectedItem ->
+                var mediaSort: MediaSort? = null
+
+                if (selectedItem != null) {
+                    val alMediaSort = AlMediaSort.values()[index].sort
+                    val selectedSort = if (selectedItem.order == AlSortOrder.DESC) {
+                        alMediaSort + 1
+                    } else {
+                        alMediaSort
                     }
-
-                SortSelectMenu(
-                    labelRes = R.string.sort,
-                    entries = sortMenus,
-                ) { index, selectedItem ->
-                    var mediaSort: MediaSort? = null
-
-                    if (selectedItem != null) {
-                        val alMediaSort = AlMediaSort.values()[index].sort
-                        val selectedSort = if (selectedItem.order == AlSortOrder.DESC) {
-                            alMediaSort + 1
-                        } else {
-                            alMediaSort
-                        }
-                        mediaSort = MediaSort.values()[selectedSort]
-                    }
-
-                    field.sort = mediaSort
+                    mediaSort = MediaSort.values()[selectedSort]
                 }
+
+                field.sort = mediaSort
             }
-            item {
-                SelectMenu(
-                    labelRes = R.string.year,
-                    entries = yearList,
-                    selectedItemPosition = field.seasonYear?.takeIf { it in yearGreater..yearLesser }
-                        ?.let { yearList.indexOf(it.toString()) }
-                ) { selectedItem ->
-                    field.seasonYear =
-                        selectedItem.takeIf { it > -1 }?.let { yearList[it].toInt() }
-                }
+            SelectMenu(
+                labelRes = R.string.year,
+                entries = yearList,
+                selectedItemPosition = field.seasonYear?.takeIf { it in yearGreater..yearLesser }
+                    ?.let { yearList.indexOf(it.toString()) }
+            ) { selectedItem ->
+                field.seasonYear =
+                    selectedItem.takeIf { it > -1 }?.let { yearList[it].toInt() }
             }
         }
     }
@@ -169,7 +162,7 @@ fun MediaFilterBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState,
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.background
         ) {
             MediaFilterBottomSheetContent(
                 modifier = Modifier

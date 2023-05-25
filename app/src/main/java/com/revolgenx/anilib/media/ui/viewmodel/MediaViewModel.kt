@@ -29,5 +29,4 @@ class MediaViewModel : ViewModel() {
         MediaScreenPage(MediaScreenPageType.STATS, R.string.stats, R.drawable.ic_stats),
         MediaScreenPage(MediaScreenPageType.SOCIAL, R.string.social, R.drawable.ic_forum)
     )
-
 }

@@ -2,18 +2,19 @@ package com.revolgenx.anilib.common.ext
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
+import com.revolgenx.anilib.common.data.event.EventBusListener
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
-import com.revolgenx.anilib.common.ui.composition.LocalUserState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Date
 import java.util.NavigableMap
@@ -36,12 +37,6 @@ fun Int?.naDrawableRes() = this.takeIf { it != null } ?: R.drawable.ic_question_
 
 @Composable
 fun localContext() = LocalContext.current
-
-@Composable
-fun localUser() = LocalUserState.current
-
-@Composable
-fun localNavigator() = LocalMainNavigator.current
 
 @Composable
 fun localSnackbarHostState() = LocalSnackbarHostState.current
@@ -86,3 +81,8 @@ fun CoroutineScope.launchIO(block: suspend CoroutineScope.() -> Unit): Job =
 
 
 fun <T> Flow<T>.onIO() = flowOn(Dispatchers.IO)
+
+@Composable
+fun colorScheme() = MaterialTheme.colorScheme
+
+

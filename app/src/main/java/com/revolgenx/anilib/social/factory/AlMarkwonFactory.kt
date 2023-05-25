@@ -6,7 +6,7 @@ import com.revolgenx.anilib.social.markwon.AlMarkwon
 
 @SuppressLint("StaticFieldLeak")
 object AlMarkwonFactory {
-    fun init(context: Context) {
-        AlMarkwon.init(context, AlMarkwonCallbackImpl(), AlMarkwonPluginsProviderImpl())
+    fun init(context: Context, alMarkwonCallback: AlMarkwonCallback) {
+        AlMarkwon.init(context, alMarkwonCallback, AlMarkwonPluginsProviderImpl())
     }
 }

@@ -82,4 +82,40 @@
         <item>@string/dropped</item>
     </string-array>
 
+    <string-array name="media_list_collection_sort">
+        <item>@string/title</item>
+        <item>@string/score</item>
+        <item>@string/progress</item>
+        <item>@string/last_updated</item>
+        <item>@string/last_added</item>
+        <item>@string/start_date</item>
+        <item>@string/completed_date</item>
+        <item>@string/release_date</item>
+        <item>@string/average_score</item>
+        <item>@string/popularity</item>
+    </string-array>
+
+
+    <string-array name="media_genre">
+        <item>Action</item>
+        <item>Adventure</item>
+        <item>Comedy</item>
+        <item>Drama</item>
+        <item>Ecchi</item>
+        <item>Fantasy</item>
+        <item>Horror</item>
+        <item>Mahou Shoujo</item>
+        <item>Mecha</item>
+        <item>Music</item>
+        <item>Mystery</item>
+        <item>Psychological</item>
+        <item>Romance</item>
+        <item>Sci-Fi</item>
+        <item>Slice of Life</item>
+        <item>Sports</item>
+        <item>Supernatural</item>
+        <item>Thriller</item>
+    </string-array>
+
+
 </resources>

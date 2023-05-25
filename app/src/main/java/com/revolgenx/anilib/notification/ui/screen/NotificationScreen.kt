@@ -34,9 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
@@ -53,7 +54,6 @@ import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
 import com.revolgenx.anilib.social.ui.screen.ActivityScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
 
 class NotificationScreen : AndroidScreen() {
@@ -122,7 +122,7 @@ private fun NotificationScreenContent(
                                 navigator.push(UserScreen(notificationModel.userId))
                             }
                             onClick = {
-                                navigator.push(ActivityScreen())
+                                navigator.push(ActivityScreen(notificationModel.activityId))
                             }
                         }
 
@@ -231,7 +231,8 @@ private fun NotificationItem(
             .padding(8.dp)
     ) {
         Row {
-            FrescoImage(
+
+            AsyncImage(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(75.dp)

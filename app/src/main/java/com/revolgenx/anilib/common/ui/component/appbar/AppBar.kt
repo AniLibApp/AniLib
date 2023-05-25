@@ -42,7 +42,7 @@ fun AppBar(
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = WindowInsets(0),
-    colors: AppBarColors = AlAppBarDefaults.appBarColors(),
+    colors: AppBarColors = AppBarDefaults.appBarColors(),
     containerHeight: Dp = AppBarHeight,
     centeredTitle: Boolean = false,
     titleTextStyle: TextStyle = MaterialTheme.typography.titleLarge,
@@ -206,7 +206,7 @@ private fun AppBarContent(
 
 
 @ExperimentalMaterial3Api
-object AlAppBarDefaults {
+object AppBarDefaults {
     @Composable
     fun appBarColors(
         containerColor: Color = MaterialTheme.colorScheme.surface,

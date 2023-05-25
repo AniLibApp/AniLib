@@ -10,11 +10,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
@@ -23,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.browse.ui.screen.BrowseScreen
-import com.revolgenx.anilib.common.ext.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
 import com.revolgenx.anilib.common.ui.component.action.ActionsMenu
 import com.revolgenx.anilib.common.ui.component.common.isLoggedIn
@@ -35,7 +31,6 @@ import com.revolgenx.anilib.home.recommendation.ui.screen.RecommendationsScreen
 import com.revolgenx.anilib.home.review.ui.screen.ReviewsScreen
 import com.revolgenx.anilib.home.season.ui.screen.SeasonScreen
 import com.revolgenx.anilib.notification.ui.screen.NotificationScreen
-import kotlinx.coroutines.launch
 
 object HomeScreen : BaseTabScreen() {
     override val options: TabOptions

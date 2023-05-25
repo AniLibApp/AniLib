@@ -4,10 +4,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ThumbUp
@@ -29,6 +31,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naInt
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
@@ -36,7 +39,6 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.screen.ReviewScreen
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -74,7 +76,7 @@ private fun MediaReviewItem(
             .padding(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        FrescoImage(
+        AsyncImage(
             modifier = Modifier
                 .size(height = 50.dp, width = 50.dp)
                 .clip(CircleShape),

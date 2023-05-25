@@ -1,8 +1,11 @@
 package com.revolgenx.anilib.social.ui.model
 
 import android.text.Spanned
-import androidx.core.text.toSpanned
+import com.revolgenx.anilib.ActivityUnionQuery
+import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
+import com.revolgenx.anilib.social.factory.markwon
+import com.revolgenx.anilib.social.markwon.anilify
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.user.ui.model.UserModel
 
@@ -23,5 +26,29 @@ data class TextActivityModel(
     override val likes: List<UserModel>? = null,
     val text: String? = null,
     val anilifiedText: String = "",
-    val textSpanned: Spanned = anilifiedText.toSpanned()
+    val textSpanned: Spanned? = null
 ) : ActivityModel, BaseModel(id)
+
+
+fun ActivityUnionQuery.OnTextActivity.toModel(): TextActivityModel {
+    val anilifiedText = anilify(text)
+    return TextActivityModel(
+        id = id,
+        text = text ?: "",
+        anilifiedText = anilifiedText,
+        textSpanned = markwon.toMarkdown(anilifiedText),
+        likeCount = likeCount,
+        replyCount = replyCount,
+        isSubscribed = isSubscribed ?: false,
+        type = type!!,
+        user = user?.activityUser?.toModel(),
+        likes = likes?.mapNotNull {
+            it?.likeUsers?.toModel()
+        },
+        siteUrl = siteUrl,
+        createdAt = createdAt,
+        createdAtPrettyTime = createdAt.toLong().prettyTime(),
+        userId = userId,
+        isLiked = isLiked ?: false,
+    )
+}

@@ -15,7 +15,7 @@ import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.social.factory.markwon
 
 @Composable
-fun MarkdownTextView(
+fun MarkdownText(
     modifier: Modifier = Modifier,
     text: String? = null,
     spanned: Spanned? = null,

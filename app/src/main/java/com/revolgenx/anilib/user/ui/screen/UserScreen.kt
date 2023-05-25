@@ -7,20 +7,21 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -33,15 +34,16 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.data.store.logout
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
 import com.revolgenx.anilib.common.ui.component.action.ActionsMenu
-import com.revolgenx.anilib.common.ui.component.appbar.AlAppBarDefaults
+import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.common.isLoggedIn
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.BaseTabScreen
@@ -50,7 +52,6 @@ import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.fresco.FrescoImage
 import kotlinx.coroutines.launch
 import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.CollapsingToolbarScaffoldState
@@ -173,7 +174,7 @@ private fun CollapsingToolbarScope.UserScreenTopAppbar(
     val progress = collapsingToolbarState.toolbarState.progress
     val imageAlpha = if (progress <= 0.2) 0.2f else progress
 
-    FrescoImage(
+    AsyncImage(
         modifier = Modifier
             .parallax(0.5f)
             .height(300.dp)
@@ -181,11 +182,12 @@ private fun CollapsingToolbarScope.UserScreenTopAppbar(
             .graphicsLayer {
                 alpha = imageAlpha
             },
-        imageUrl = user?.bannerImage,
+        imageUrl =  user?.bannerImage,
         imageOptions = ImageOptions(
             contentScale = ContentScale.Crop,
             alignment = Alignment.Center
         ),
+        previewPlaceholder = R.drawable.bleach
     )
 
 
@@ -196,7 +198,7 @@ private fun CollapsingToolbarScope.UserScreenTopAppbar(
         ),
     ) {
         AppBar(
-            colors = AlAppBarDefaults.appBarColors(
+            colors = AppBarDefaults.appBarColors(
                 containerColor = Color.Transparent,
             ),
             title = {

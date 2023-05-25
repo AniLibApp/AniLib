@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -98,31 +99,36 @@ private fun <M : BaseModel> LazyColumnLayout(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        itemContent?.let {
-            pagingItems?.let {
-                items(
-                    items = pagingItems,
-                    key = { it.key }
-                ) { item ->
+        pagingItems?.let {
+            itemsIndexed(
+                items = pagingItems,
+                key = { i, _ -> i }
+            ) { index, item ->
+                if (itemContent != null) {
                     itemContent(item)
                 }
-            }
-            items?.let {
-                items(items = it) { item ->
-                    itemContent(item)
-                }
-            }
-        }
-        itemContentIndex?.let {
-            pagingItems?.let {
-                itemsIndexed(
-                    items = pagingItems,
-                    key = { _, item -> item.key }
-                ) { index, item ->
+
+                if (itemContentIndex != null) {
                     itemContentIndex(index, item)
                 }
             }
         }
+
+        items?.let {
+            itemsIndexed(
+                items = items,
+                key = { i, _ -> i }
+            ) { index, item ->
+                if (itemContent != null) {
+                    itemContent(item)
+                }
+
+                if (itemContentIndex != null) {
+                    itemContentIndex(index, item)
+                }
+            }
+        }
+
         pagingItems?.let {
             lazyListResourceState(items = items, pagingItems = pagingItems)
         }

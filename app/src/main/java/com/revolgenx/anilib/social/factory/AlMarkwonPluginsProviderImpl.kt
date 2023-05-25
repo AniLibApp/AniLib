@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.social.factory
 
 import androidx.compose.ui.graphics.toArgb
-import com.revolgenx.anilib.app.preference.colorScheme
+import com.revolgenx.anilib.common.ui.theme.LightColorScheme
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.core.MarkwonTheme
 
@@ -12,7 +12,7 @@ class AlMarkwonPluginsProviderImpl : AlMarkwonPluginsProvider {
 }
 internal class Plugin() : AbstractMarkwonPlugin() {
     override fun configureTheme(builder: MarkwonTheme.Builder) {
-        val primaryColor = colorScheme.primary.toArgb()
+        val primaryColor = LightColorScheme.primary.toArgb()
         builder
             .blockQuoteColor(primaryColor)
             .linkColor(primaryColor)

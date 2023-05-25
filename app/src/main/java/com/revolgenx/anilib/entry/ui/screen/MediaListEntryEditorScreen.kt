@@ -46,7 +46,7 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ext.emptyText
-import com.revolgenx.anilib.common.ext.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
 import com.revolgenx.anilib.common.ui.component.common.Grid

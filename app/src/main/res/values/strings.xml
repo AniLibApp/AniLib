@@ -186,5 +186,19 @@
     <string name="save">Save</string>
     <string name="confirm">Confirm</string>
     <string name="clear">Clear</string>
+    <string name="search_manga">Search Manga</string>
+    <string name="search_anime">Search Anime</string>
+    <string name="title">Title</string>
+    <string name="progress">Progress</string>
+    <string name="last_updated">Last Updated</string>
+    <string name="last_added">Last Added</string>
+    <string name="completed_date">Completed Date</string>
+    <string name="release_date">Release Date</string>
+    <string name="average_score">Average Score</string>
+    <string name="genre">Genre</string>
+    <string name="spoiler">Spoiler</string>
+    <string name="preview">Preview</string>
+    <string name="write_a_status">Write a status…</string>
+    <string name="activity_posting_guidelines">Please read the site guidelines before posting</string>
 
 </resources>

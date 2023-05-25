@@ -12,6 +12,8 @@ import com.revolgenx.anilib.media.data.service.MediaService
 import com.revolgenx.anilib.media.data.service.MediaServiceImpl
 import com.revolgenx.anilib.notification.data.service.NotificationService
 import com.revolgenx.anilib.notification.data.service.NotificationServiceImpl
+import com.revolgenx.anilib.social.data.service.ActivityUnionService
+import com.revolgenx.anilib.social.data.service.ActivityUnionServiceImpl
 import com.revolgenx.anilib.staff.data.service.StaffService
 import com.revolgenx.anilib.staff.data.service.StaffServiceImpl
 import com.revolgenx.anilib.studio.data.service.StudioService
@@ -32,4 +34,5 @@ val serviceModules = module {
     factoryOf(::NotificationServiceImpl) { bind<NotificationService>() }
     factoryOf(::StudioServiceImpl) { bind<StudioService>() }
     factoryOf(::MediaListEntryServiceImpl) { bind<MediaListEntryService>() }
+    factoryOf(::ActivityUnionServiceImpl) { bind<ActivityUnionService>() }
 }

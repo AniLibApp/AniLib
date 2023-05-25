@@ -116,15 +116,14 @@ android {
 
 ext {
     compose = "1.5.0-alpha03"
-    material = "1.1.0-rc01"
+    material = "1.1.0"
     accompanist = "0.29.0-alpha"
     voyager = "1.0.0-rc04"
     timber = "5.0.1"
     koin = "3.3.2"
     koinCompose = "3.4.1"
     desugar = "1.1.5"
-    landscapist = "2.1.11"
-    fresco = "2.6.0"
+    landscapist = "2.2.0"
     paging = "3.2.0-alpha03"
     pagingCompose = "1.0.0-alpha17"
     dataStore = "1.0.0"
@@ -178,11 +177,8 @@ dependencies {
 
 
     //landscapist
-    implementation("com.github.skydoves:landscapist-fresco:$landscapist")
-    implementation("com.github.skydoves:landscapist-fresco-websupport:$landscapist")
-
-    implementation("com.facebook.fresco:animated-base:$fresco")
-
+    implementation "com.github.skydoves:landscapist-coil:$landscapist"
+    implementation "com.github.skydoves:landscapist-animation:$landscapist"
 
     //kotlin-serialization
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'

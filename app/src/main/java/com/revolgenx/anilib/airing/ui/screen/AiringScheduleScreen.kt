@@ -57,7 +57,6 @@ import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.ext.isNull
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.localNavigator
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
 import com.revolgenx.anilib.common.ui.component.action.ActionsMenu
@@ -65,18 +64,19 @@ import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAc
 import com.revolgenx.anilib.common.ui.component.common.Header
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.type.AiringSort
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -251,7 +251,7 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
             onClick()
         }) {
             MediaCoverImageType {
-                FrescoImage(
+                AsyncImage(
                     modifier = Modifier
                         .fillMaxHeight()
                         .width(104.dp),
@@ -351,7 +351,7 @@ private fun AiringScheduleFilterBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState,
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.background
         ) {
             AiringScheduleFilterBottomSheetContent(
                 modifier = Modifier

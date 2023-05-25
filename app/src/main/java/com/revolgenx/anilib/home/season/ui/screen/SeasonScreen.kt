@@ -42,22 +42,22 @@ import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.data.field.MediaField
+import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toDrawableRes
 import com.revolgenx.anilib.media.ui.model.toStringRes
-import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.type.MediaStatus
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -127,13 +127,13 @@ private fun SeasonItem(
             }
         ) {
             MediaCoverImageType { type ->
-                FrescoImage(
+                AsyncImage(
                     modifier = Modifier
                         .fillMaxHeight()
                         .width(104.dp),
                     imageUrl = media.coverImage?.image(type),
                     imageOptions = ImageOptions(
-                        contentScale = ContentScale.Crop,
+                        contentScale = ContentScale.Fit,
                         alignment = Alignment.Center
                     ),
                     previewPlaceholder = R.drawable.bleach

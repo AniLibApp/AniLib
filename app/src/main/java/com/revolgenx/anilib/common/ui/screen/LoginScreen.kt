@@ -17,8 +17,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,8 +34,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.localNavigator
-import com.revolgenx.anilib.common.ui.screen.BaseTabScreen
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 
 

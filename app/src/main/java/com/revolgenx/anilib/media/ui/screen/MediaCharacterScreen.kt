@@ -24,7 +24,9 @@ import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.model.CharacterEdgeModel
 import com.revolgenx.anilib.character.ui.screen.CharacterScreen
+import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
@@ -33,7 +35,6 @@ import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.screen.StaffScreen
 import com.revolgenx.anilib.type.MediaType
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -80,14 +81,14 @@ private fun MediaCharacterItem(
                     .weight(1f)
                     .fillMaxWidth()
                     .clickable {
-                        navigator.push(CharacterScreen(character.id))
+                        navigator.characterScreen(character.id)
                     },
                 horizontalArrangement = Arrangement.spacedBy(
                     8.dp,
                     alignment = Alignment.Start
                 )
             ) {
-                FrescoImage(
+                AsyncImage(
                     modifier = Modifier
                         .fillMaxHeight()
                         .width(80.dp),
@@ -145,7 +146,7 @@ private fun MediaCharacterItem(
                             )
                         }
                     }
-                    FrescoImage(
+                    AsyncImage(
                         modifier = Modifier
                             .fillMaxHeight()
                             .width(80.dp),

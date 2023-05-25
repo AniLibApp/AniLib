@@ -18,7 +18,7 @@ import com.revolgenx.anilib.common.ui.viewmodel.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
-abstract class PagingViewModel<M : Any, F : BaseField<*>, S : BasePagingSource<M, *>>(private val initialize:Boolean = true) :
+abstract class PagingViewModel<M : Any, F : BaseField<*>, S : BasePagingSource<M, *>>(initialize:Boolean = true) :
     BaseViewModel<F>() {
     protected val pageSize = 20
     protected abstract val pagingSource: S

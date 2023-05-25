@@ -29,18 +29,21 @@ abstract class MediaListViewModel(
 ) :
     ResourceViewModel<MediaListCollectionModel, MediaListCollectionField>() {
 
-    private var filter: MediaListCollectionFilter? = null
     private val loggedInUserId = appDataStore.runUserId()
 
     private val handler = Handler(Looper.getMainLooper())
     private val sortingComparator = MediaListCollectionSortComparator()
     private val isLoggedInUser get() = loggedInUserId == field.userId
+
+    var filter: MediaListCollectionFilter? by mutableStateOf(null)
     var mediaListCollection = mutableStateListOf<MediaListModel>()
 
 
     var groupNamesWithCount by mutableStateOf(mapOf("All" to 0))
     val currentGroupName by derivedStateOf { currentGroupNameWithCount.let { "${it.first} ${it.second}" } }
     var currentGroupNameWithCount by mutableStateOf("All" to 0)
+
+    var searchHistory: List<String> = emptyList()
 
     var query by mutableStateOf("")
     var search: String = ""
@@ -121,7 +124,7 @@ abstract class MediaListViewModel(
     }
 
     private fun getFilteredList(listCollection: List<MediaListModel>): List<MediaListModel> {
-        val mediaListFilter = filter!!
+        val mediaListFilter = filter ?: return emptyList()
 
         return if (mediaListFilter.formatsIn.isNullOrEmpty()) listCollection else {
             listCollection.filter { mediaListFilter.formatsIn.contains(it.media?.format) }
@@ -180,6 +183,19 @@ abstract class MediaListViewModel(
                 }
             } else {
                 filter = filter?.copy(groupName = groupName)
+                onFilterUpdate()
+            }
+        }
+    }
+
+    fun updateFilter(filter: MediaListCollectionFilter) {
+        launch {
+            if (isLoggedInUser) {
+                mediaListDataStore.updateData {
+                    filter
+                }
+            } else {
+                this@MediaListViewModel.filter = filter
                 onFilterUpdate()
             }
         }

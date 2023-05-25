@@ -20,9 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,21 +31,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.localNavigator
-import com.revolgenx.anilib.common.ui.component.appbar.AlAppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
+import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
-import com.revolgenx.anilib.common.ui.screen.PagerScreen
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaScreenPageType
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.type.MediaType
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.fresco.FrescoImage
 import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.CollapsingToolbarScaffoldState
 import me.onebone.toolbar.CollapsingToolbarScope
@@ -126,7 +122,7 @@ private fun CollapsingToolbarScope.MediaScreenTopAppBar(
     val progress = collapsingToolbarState.toolbarState.progress
     val imageAlpha = if (progress <= 0.2) 0.2f else progress
 
-    FrescoImage(
+    AsyncImage(
         modifier = Modifier
             .parallax(0.5f)
             .height(300.dp)
@@ -139,6 +135,7 @@ private fun CollapsingToolbarScope.MediaScreenTopAppBar(
             contentScale = ContentScale.Crop,
             alignment = Alignment.Center
         ),
+        previewPlaceholder = R.drawable.bleach
     )
 
 
@@ -149,7 +146,7 @@ private fun CollapsingToolbarScope.MediaScreenTopAppBar(
         ),
     ) {
         AppBar(
-            colors = AlAppBarDefaults.appBarColors(
+            colors = AppBarDefaults.appBarColors(
                 containerColor = Color.Transparent,
             ),
             title = {

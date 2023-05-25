@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringArrayResource
@@ -35,11 +37,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.common.Header
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -50,14 +53,13 @@ import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.fresco.FrescoImage
 import org.koin.androidx.compose.koinViewModel
 
 // todo: add filters
-class StudioScreen(private val id: Int) : AndroidScreen() {
+class StudioScreen(private val studioId: Int) : AndroidScreen() {
     @Composable
     override fun Content() {
-        StudioScreenContent(id)
+        StudioScreenContent(studioId)
     }
 }
 
@@ -130,11 +132,11 @@ private fun StudioMediaItem(mediaModel: MediaModel, onClick: () -> Unit) {
                 onClick.invoke()
             }) {
             MediaCoverImageType { type ->
-                FrescoImage(
+                AsyncImage(
                     modifier = Modifier
                         .height(165.dp)
                         .fillMaxWidth(),
-                    imageUrl = mediaModel.coverImage?.image(type),
+                    imageUrl =  mediaModel.coverImage?.image(type),
                     imageOptions = ImageOptions(
                         contentScale = ContentScale.Crop,
                         alignment = Alignment.Center
