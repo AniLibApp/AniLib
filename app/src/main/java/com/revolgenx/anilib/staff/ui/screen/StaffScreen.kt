@@ -29,7 +29,7 @@ enum class StaffScreenPageType {
 
 private val pages = listOf(
     StaffScreenPage(StaffScreenPageType.ABOUT, R.string.about, R.drawable.ic_about),
-    StaffScreenPage(StaffScreenPageType.MEDIA, R.string.media, R.drawable.ic_media),
+    StaffScreenPage(StaffScreenPageType.MEDIA, R.string.media, R.drawable.ic_media_outline),
     StaffScreenPage(
         StaffScreenPageType.VOICE_ROLES,
         R.string.voices_roles,

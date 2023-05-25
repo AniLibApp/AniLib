@@ -69,7 +69,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                     containerColor = Color.Transparent,
                     scrolledContainerColor = Color.Transparent
                 ),
-                containerHeight = 56.dp
+                containerHeight = 58.dp
             ) {
                 Box(
                     modifier = Modifier

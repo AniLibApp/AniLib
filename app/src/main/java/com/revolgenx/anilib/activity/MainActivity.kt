@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.CurrentScreen
@@ -33,6 +34,7 @@ import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalMediaState
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.composition.LocalUserState
+import com.revolgenx.anilib.common.ui.screen.BaseTabScreen
 import com.revolgenx.anilib.common.ui.screen.LoginScreen
 import com.revolgenx.anilib.common.ui.screen.SpoilerBottomSheet
 import com.revolgenx.anilib.common.ui.theme.AppTheme
@@ -130,14 +132,19 @@ fun MainActivityScreenContent() {
 }
 
 @Composable
-private fun RowScope.TabNavigationItem(tab: Tab) {
+private fun RowScope.TabNavigationItem(tab: BaseTabScreen) {
     val tabNavigator = LocalTabNavigator.current
+    val selected = tabNavigator.current == tab
 
-    val options = tab.options
     NavigationBarItem(
-        selected = tabNavigator.current == tab,
+        selected = selected,
         onClick = { tabNavigator.current = tab },
-        icon = { Icon(painter = options.icon!!, contentDescription = options.title) }
+        icon = {
+            Icon(
+                painter = painterResource(id = if (selected) tab.selectedIconRes!! else tab.iconRes!!),
+                contentDescription = tab.options.title
+            )
+        }
     )
 }
 

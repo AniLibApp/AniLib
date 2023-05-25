@@ -133,7 +133,7 @@ private fun SeasonItem(
                         .width(104.dp),
                     imageUrl = media.coverImage?.image(type),
                     imageOptions = ImageOptions(
-                        contentScale = ContentScale.Fit,
+                        contentScale = ContentScale.Crop,
                         alignment = Alignment.Center
                     ),
                     previewPlaceholder = R.drawable.bleach

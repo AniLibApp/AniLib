@@ -123,7 +123,7 @@ private fun StudioMediaItem(mediaModel: MediaModel, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .width(120.dp)
-            .size(height = 236.dp, width = 120.dp)
+            .height(236.dp)
             .padding(8.dp)
     ) {
         Column(modifier = Modifier

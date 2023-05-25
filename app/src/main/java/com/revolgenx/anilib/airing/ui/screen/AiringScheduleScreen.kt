@@ -58,9 +58,10 @@ import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.ext.isNull
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
-import com.revolgenx.anilib.common.ui.component.action.ActionsMenu
+import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.common.Header
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
@@ -203,7 +204,12 @@ private fun AiringScreenContent(
 
                     is AiringScheduleModel -> {
                         AiringScheduleItem(airingScheduleModel = airingScheduleModel) {
-                            navigator.push(MediaScreen(airingScheduleModel.mediaId, airingScheduleModel.media?.type))
+                            navigator.push(
+                                MediaScreen(
+                                    airingScheduleModel.mediaId,
+                                    airingScheduleModel.media?.type
+                                )
+                            )
                         }
                     }
                 }
@@ -434,41 +440,30 @@ private fun AiringScheduleAction(
     onCalendar: () -> Unit,
     onWeekly: () -> Unit,
 ) {
-    ActionsMenu(
-        items = listOf(
-            ActionMenuItem.AlwaysShown(
-                titleRes = R.string.previous,
-                onClick = onPrevious,
-                iconRes = R.drawable.ic_chevron_left,
-                contentDescriptionRes = R.string.previous,
-            ),
-            ActionMenuItem.AlwaysShown(
-                titleRes = R.string.next,
-                onClick = onNext,
-                iconRes = R.drawable.ic_chevron_right,
-                contentDescriptionRes = R.string.next,
-            ),
-            ActionMenuItem.NeverShown(
-                titleRes = R.string.filter,
-                onClick = onFilter,
-                iconRes = R.drawable.ic_filter,
-                contentDescriptionRes = R.string.filter,
-            ),
-            ActionMenuItem.NeverShown(
-                titleRes = R.string.select_date,
-                onClick = onCalendar,
-                iconRes = R.drawable.ic_calendar,
-                contentDescriptionRes = R.string.select_date,
-            ),
-            ActionMenuItem.NeverShown(
-                titleRes = R.string.weekly,
-                onClick = onWeekly,
-                iconRes = R.drawable.ic_time,
-                contentDescriptionRes = R.string.weekly,
-                isChecked = isWeeklyTypeDate,
-                onCheckedChange = {
-                    onWeekly.invoke()
-                }
-            )
-        ))
+    ActionMenu(iconRes = R.drawable.ic_chevron_left, onClick = onPrevious)
+    ActionMenu(iconRes = R.drawable.ic_chevron_right, onClick = onNext)
+    OverflowMenu {
+        OverflowMenuItem(
+            textRes = R.string.filter,
+            iconRes = R.drawable.ic_filter,
+            onClick = onFilter,
+            contentDescriptionRes = R.string.filter
+        )
+        OverflowMenuItem(
+            textRes = R.string.select_date,
+            iconRes = R.drawable.ic_calendar,
+            onClick = onCalendar,
+            contentDescriptionRes = R.string.select_date,
+        )
+        OverflowMenuItem(
+            textRes = R.string.weekly,
+            iconRes = R.drawable.ic_time,
+            onClick = onWeekly,
+            contentDescriptionRes = R.string.weekly,
+            isChecked = isWeeklyTypeDate,
+            onCheckedChange = {
+                onWeekly.invoke()
+            }
+        )
+    }
 }

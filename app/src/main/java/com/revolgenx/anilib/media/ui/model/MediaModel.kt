@@ -96,6 +96,7 @@ data class MediaModel(
 
 
 fun MediaType?.isAnime() = this == MediaType.ANIME
+fun MediaType?.isManga() = this == MediaType.MANGA
 
 
 fun Media.toModel(): MediaModel {

@@ -31,6 +31,8 @@ data class FuzzyDateModel(val day: Int?, val month: Int?, val year: Int?) {
             )
         }
     }
+
+    fun toFuzzyDateInt() = (year ?: 0) * 10000 + (month ?: 0) * 100 + (day ?: 0)
 }
 
 fun FuzzyDate.toModel() = FuzzyDateModel(

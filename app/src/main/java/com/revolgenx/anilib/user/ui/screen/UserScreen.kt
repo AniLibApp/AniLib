@@ -7,21 +7,17 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -34,15 +30,16 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.data.store.logout
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
-import com.revolgenx.anilib.common.ui.component.action.ActionsMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
-import com.revolgenx.anilib.common.ui.component.common.isLoggedIn
+import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
@@ -61,17 +58,18 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 import org.koin.androidx.compose.koinViewModel
 
 class UserScreen(private val id: Int, private val isTab: Boolean = false) : BaseTabScreen() {
+    override val iconRes: Int = R.drawable.ic_person_outline
+    override val selectedIconRes: Int = R.drawable.ic_person
+
     override val options: TabOptions
         @Composable
         get() {
             val title = stringResource(R.string.activity)
-            val icon = painterResource(id = R.drawable.ic_person)
 
             return remember {
                 TabOptions(
                     index = 0u,
                     title = title,
-                    icon = icon
                 )
             }
         }
@@ -187,7 +185,7 @@ private fun CollapsingToolbarScope.UserScreenTopAppbar(
             contentScale = ContentScale.Crop,
             alignment = Alignment.Center
         ),
-        previewPlaceholder = R.drawable.bleach
+        previewPlaceholder = R.drawable.bleach,
     )
 
 
@@ -231,34 +229,20 @@ private fun UserScreenActions(
     isTab: Boolean = false,
     onLogout: () -> Unit
 ) {
-    val loggedIn = isLoggedIn()
     val navigator = localNavigator()
-    val actions = remember{
-        derivedStateOf {
-            listOfNotNull(
-                isTab.takeIf { it }?.let {
-                    ActionMenuItem.AlwaysShown(
-                        titleRes = R.string.settings,
-                        iconRes = R.drawable.ic_settings,
-                        onClick = {
-                            navigator.push(SettingScreen())
-                        }
-                    )
-                },
-                loggedIn.takeIf { it }?.let {
-                    ActionMenuItem.NeverShown(
-                        titleRes = R.string.logout,
-                        iconRes = R.drawable.ic_logout,
-                        onClick = onLogout
-                    )
-                }
+
+    ActionMenu(iconRes = R.drawable.ic_settings) {
+        navigator.push(SettingScreen())
+    }
+
+    ShowIfLoggedIn {
+        OverflowMenu {
+            OverflowMenuItem(
+                textRes = R.string.logout,
+                iconRes = R.drawable.ic_logout,
+                onClick = onLogout
             )
         }
     }
-
-    ActionsMenu(
-        items = actions.value,
-        maxVisibleItems = 1
-    )
 }
 

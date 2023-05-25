@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.common.ui.component.image
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,7 +11,6 @@ import coil.ImageLoader
 import coil.imageLoader
 import com.revolgenx.anilib.R
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.animation.crossfade.CrossfadePlugin
 import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.coil.LocalCoilImageLoader
 import com.skydoves.landscapist.components.rememberImageComponent
@@ -29,13 +29,8 @@ fun AsyncImage(
         imageOptions = imageOptions,
         imageLoader = imageLoader,
         previewPlaceholder = previewPlaceholder,
-        component = rememberImageComponent {
-            +CrossfadePlugin(
-                duration = 300
-            )
-        },
         failure = {
-            Icon(
+            Image(
                 painter = painterResource(id = R.drawable.ic_error_anilib),
                 contentDescription = null
             )

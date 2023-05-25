@@ -3,6 +3,7 @@ package com.revolgenx.anilib.common.ui.screen
 import com.revolgenx.anilib.activity.MainActivityViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
+import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.common.data.store.animeListFilterStoreFileName
 import com.revolgenx.anilib.common.data.store.mangaListFilterStoreFileName
@@ -73,5 +74,8 @@ val viewModelModules = module {
     //activity union
     viewModel { ActivityUnionViewModel(get()) }
     viewModel { ActivityComposerViewModel() }
+
+    //browse
+    viewModel { BrowseViewModel(get()) }
 
 }

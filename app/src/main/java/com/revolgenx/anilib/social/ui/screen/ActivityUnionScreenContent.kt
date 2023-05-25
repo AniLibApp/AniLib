@@ -244,25 +244,35 @@ private fun ActivityItemBottom(model: ActivityModel) {
         )
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_message),
-                    contentDescription = null
-                )
-            }
-            Text(text = model.replyCount.prettyNumberFormat())
-
-            Spacer(modifier = Modifier.size(4.dp))
 
             IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_heart_outline),
-                    contentDescription = null
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_message),
+                        contentDescription = null
+                    )
+                    Text(text = model.replyCount.prettyNumberFormat())
+                }
             }
-            Text(text = model.likeCount.prettyNumberFormat())
+
+            IconButton(onClick = { /*TODO*/ }) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_heart_outline),
+                        contentDescription = null
+                    )
+                    Text(text = model.likeCount.prettyNumberFormat())
+                }
+            }
         }
     }
 }

@@ -12,17 +12,16 @@ import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 
 object MangaListScreen: MediaListScreen(){
+    override val iconRes: Int = R.drawable.ic_book_outline
+    override val selectedIconRes: Int = R.drawable.ic_book
     override val options: TabOptions
         @Composable
         get() {
             val title = stringResource(R.string.manga)
-            val icon = painterResource(id = R.drawable.ic_book)
-
             return remember {
                 TabOptions(
                     index = 0u,
                     title = title,
-                    icon = icon
                 )
             }
         }

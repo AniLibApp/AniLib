@@ -178,7 +178,6 @@ dependencies {
 
     //landscapist
     implementation "com.github.skydoves:landscapist-coil:$landscapist"
-    implementation "com.github.skydoves:landscapist-animation:$landscapist"
 
     //kotlin-serialization
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'

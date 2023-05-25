@@ -1,9 +1,11 @@
 package com.revolgenx.anilib.common.ui.screen
 
 import android.os.Build.VERSION.SDK_INT
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -15,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import coil.ImageLoader
 import coil.decode.GifDecoder
@@ -24,12 +27,9 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.animation.crossfade.CrossfadePlugin
 import com.skydoves.landscapist.coil.CoilImage
-import com.skydoves.landscapist.components.rememberImageComponent
 
 class ImageViewerScreen(private val url: String) : AndroidScreen() {
     @Composable
@@ -95,11 +95,6 @@ private fun ImageViewerScreenContent(imageUrl: String) {
                     contentScale = ContentScale.Fit,
                     alignment = Alignment.Center
                 ),
-                component = rememberImageComponent {
-                    +CrossfadePlugin(
-                        duration = 300
-                    )
-                },
                 loading = {
                     Box(modifier = Modifier.matchParentSize()) {
                         CircularProgressIndicator(
@@ -108,9 +103,10 @@ private fun ImageViewerScreenContent(imageUrl: String) {
                     }
                 },
                 failure = {
-                    Icon(
+                    Image(
+                        modifier = Modifier.size(56.dp),
                         painter = painterResource(id = R.drawable.ic_error_anilib),
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
             )

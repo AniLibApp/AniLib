@@ -39,17 +39,19 @@ import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 
 
 object LoginScreen : BaseTabScreen() {
+
+    override val iconRes: Int = R.drawable.ic_person_outline
+    override val selectedIconRes: Int = R.drawable.ic_person
+
     override val options: TabOptions
         @Composable
         get() {
             val title = stringResource(R.string.profile)
-            val icon = painterResource(id = R.drawable.ic_person)
 
             return remember {
                 TabOptions(
                     index = 0u,
                     title = title,
-                    icon = icon
                 )
             }
         }

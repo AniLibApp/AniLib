@@ -1,3 +1,118 @@
+query BrowseQuery(
+    $search:String,
+    $page:Int,
+    $perPage:Int,
+    $type:MediaType,
+    $format:MediaFormat,
+    $season:MediaSeason,
+    $seasonYear:Int,
+    $year:String,
+    $yearGreater:FuzzyDateInt,
+    $yearLesser:FuzzyDateInt,
+    $status:MediaStatus,
+    $source:MediaSource,
+    $licensedByIdIn:[Int],
+    $genre:[String],
+    $tag:[String],
+    $tagNotIn:[String],
+    $genreNotIn:[String],
+    $sort:[MediaSort] = [POPULARITY_DESC, SCORE_DESC],
+    $country:CountryCode,
+    $isAdult:Boolean,
+    $isLicensed:Boolean,
+    $episodesGreater:Int,
+    $episodesLesser:Int,
+    $chaptersGreater:Int,
+    $chaptersLesser:Int,
+    $volumesGreater:Int,
+    $volumesLesser:Int,
+    $durationLesser:Int,
+    $durationGreater:Int,
+    $minimumTagRank:Int,
+    $browseMedia: Boolean!,
+    $browseCharacter: Boolean!,
+    $browseStaff: Boolean!,
+    $browseStudio: Boolean!,
+    $browseUser: Boolean!,
+){
+    mediaPage: Page(page:$page,perPage:$perPage) @include(if: $browseMedia){
+        pageInfo @nonnull{
+            ... pageInfo
+        }
+        media(
+            search:$search,
+            type:$type,
+            format: $format,
+            season:$season,
+            seasonYear:$seasonYear,
+            startDate_like: $year,
+            startDate_greater:$yearGreater,
+            startDate_lesser:$yearLesser,
+            status:$status, source:$source,
+            licensedById_in:$licensedByIdIn,
+            genre_in:$genre,
+            tag_in:$tag,
+            tag_not_in:$tagNotIn,
+            genre_not_in:$genreNotIn,
+            sort:$sort,
+            countryOfOrigin:$country,
+            isAdult:$isAdult,
+            episodes_greater: $episodesGreater,
+            episodes_lesser: $episodesLesser,
+            chapters_greater: $chaptersGreater,
+            chapters_lesser: $chaptersLesser,
+            volumes_greater: $volumesGreater,
+            volumes_lesser: $volumesLesser,
+            duration_greater: $durationGreater,
+            duration_lesser: $durationLesser,
+            isLicensed: $isLicensed,
+            minimumTagRank: $minimumTagRank
+        ) {
+            ... media
+        }
+    }
+    characterPage: Page(page:$page,perPage:$perPage) @include(if: $browseCharacter){
+        pageInfo @nonnull{
+            ... pageInfo
+        }
+
+        characters(search:$search, sort:[FAVOURITES_DESC]) {
+            ... narrowCharacterContent
+        }
+    }
+    staffPage: Page(page:$page,perPage:$perPage) @include(if: $browseStaff){
+        pageInfo @nonnull{
+            ... pageInfo
+        }
+
+        staff(search:$search, sort:[FAVOURITES_DESC]) {
+            ... narrowStaffContent
+        }
+    }
+
+    studioPage: Page(page:$page,perPage:$perPage) @include(if: $browseStudio){
+        pageInfo @nonnull{
+            ... pageInfo
+        }
+        studios(search:$search, sort:[FAVOURITES_DESC]){
+            ... studioContent
+        }
+    }
+    userPage: Page(page:$page,perPage:$perPage) @include(if: $browseUser){
+        pageInfo @nonnull{
+            ... pageInfo
+        }
+
+        users(search:$search){
+            id
+            name
+            avatar{
+                ... userAvatar
+            }
+        }
+    }
+}
+
 query MediaSearchQuery(
     $search:String,
     $page:Int,
@@ -11,7 +126,7 @@ query MediaSearchQuery(
     $yearLesser:FuzzyDateInt,
     $status:MediaStatus,
     $source:MediaSource,
-    $licensedBy:[String],
+    $licensedByIdIn:[Int],
     $genre:[String],
     $tag:[String],
     $tagNotIn:[String],
@@ -41,7 +156,7 @@ query MediaSearchQuery(
             startDate_greater:$yearGreater,
             startDate_lesser:$yearLesser,
             status:$status, source:$source,
-            licensedBy_in:$licensedBy,
+            licensedById_in:$licensedByIdIn,
             genre_in:$genre,
             tag_in:$tag,
             tag_not_in:$tagNotIn,

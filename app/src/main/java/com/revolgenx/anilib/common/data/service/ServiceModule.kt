@@ -2,6 +2,8 @@ package com.revolgenx.anilib.common.data.service
 
 import com.revolgenx.anilib.airing.data.service.AiringScheduleService
 import com.revolgenx.anilib.airing.data.service.AiringScheduleServiceImpl
+import com.revolgenx.anilib.browse.data.service.BrowseServiceImpl
+import com.revolgenx.anilib.browse.data.service.BrowseService
 import com.revolgenx.anilib.character.data.service.CharacterService
 import com.revolgenx.anilib.character.data.service.CharacterServiceImpl
 import com.revolgenx.anilib.entry.data.service.MediaListEntryService
@@ -35,4 +37,5 @@ val serviceModules = module {
     factoryOf(::StudioServiceImpl) { bind<StudioService>() }
     factoryOf(::MediaListEntryServiceImpl) { bind<MediaListEntryService>() }
     factoryOf(::ActivityUnionServiceImpl) { bind<ActivityUnionService>() }
+    factoryOf(::BrowseServiceImpl) { bind<BrowseService>() }
 }

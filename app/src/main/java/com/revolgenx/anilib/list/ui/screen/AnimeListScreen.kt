@@ -12,23 +12,23 @@ import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 
 object AnimeListScreen : MediaListScreen() {
+    override val iconRes: Int = R.drawable.ic_media_outline
+    override val selectedIconRes: Int = R.drawable.ic_media
     override val options: TabOptions
         @Composable
         get() {
             val title = stringResource(R.string.anime)
-            val icon = painterResource(id = R.drawable.ic_media)
 
             return remember {
                 TabOptions(
                     index = 0u,
                     title = title,
-                    icon = icon
                 )
             }
         }
 
     @Composable
-    override fun mediaListViewModel(): MediaListViewModel{
+    override fun mediaListViewModel(): MediaListViewModel {
         val viewModel = activityViewModel<AnimeListViewModel>()
         viewModel.field.userId = localUser().userId
         return viewModel

@@ -31,9 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.composition.localUser
-import com.revolgenx.anilib.common.ui.component.action.ActionMenuItem
-import com.revolgenx.anilib.common.ui.component.action.ActionsMenu
+import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
 import com.revolgenx.anilib.common.ui.screen.PagerScreen
@@ -72,34 +70,22 @@ private fun UserMediaListScreenContent(userId: Int) {
         pagerState = pagerState,
         pages = pages,
         actions = {
-            ActionsMenu(
-                items = listOf(
-                    ActionMenuItem.AlwaysShown(
-                        titleRes = R.string.search,
-                        iconRes = R.drawable.ic_search,
-                        onClick = {
-                            when (pagerState.currentPage) {
-                                0 -> {
-                                    animeSearchBar = !animeSearchBar
-                                }
+            ActionMenu(iconRes = R.drawable.ic_search) {
+                when (pagerState.currentPage) {
+                    0 -> {
+                        animeSearchBar = !animeSearchBar
+                    }
 
-                                1 -> {
-                                    mangaSearchBar = !mangaSearchBar
-                                }
+                    1 -> {
+                        mangaSearchBar = !mangaSearchBar
+                    }
 
-                                else -> {}
-                            }
-                        }
-                    ),
-                    ActionMenuItem.AlwaysShown(
-                        titleRes = R.string.filter,
-                        iconRes = R.drawable.ic_filter,
-                        onClick = {
+                    else -> {}
+                }
+            }
+            ActionMenu(iconRes = R.drawable.ic_filter) {
 
-                        }
-                    )
-                )
-            )
+            }
         },
     ) { page ->
         Box(

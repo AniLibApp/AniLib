@@ -39,6 +39,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.activityComposerScreen
 import com.revolgenx.anilib.common.ext.activityScreen
+import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -52,14 +53,17 @@ import com.revolgenx.anilib.type.ActivityType
 import org.koin.androidx.compose.koinViewModel
 
 object ActivityUnionScreen : BaseTabScreen() {
+
+    override val iconRes: Int = R.drawable.ic_forum_outline
+    override val selectedIconRes: Int = R.drawable.ic_forum
+
     override val options: TabOptions
         @Composable get() {
             val title = stringResource(R.string.activity)
-            val icon = painterResource(id = R.drawable.ic_forum)
 
             return remember {
                 TabOptions(
-                    index = 0u, title = title, icon = icon
+                    index = 0u, title = title
                 )
             }
         }
@@ -90,11 +94,8 @@ object ActivityUnionScreen : BaseTabScreen() {
                             )
                         },
                         actions = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_filter),
-                                    contentDescription = null
-                                )
+                            ActionMenu(iconRes = R.drawable.ic_filter) {
+
                             }
                         }
                     )

@@ -1,9 +1,11 @@
 package com.revolgenx.anilib.common.ui.component.action
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -25,142 +27,80 @@ import com.revolgenx.anilib.R
 
 
 @Composable
-fun ActionsMenu(
-    items: List<ActionMenuItem>,
-    maxVisibleItems: Int = items.size,
+fun ActionMenu(
+    @DrawableRes iconRes: Int,
+    @StringRes contentDescriptionRes: Int? = null,
+    onClick: () -> Unit,
+) {
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(id = iconRes),
+            contentDescription = contentDescriptionRes?.let { stringResource(id = contentDescriptionRes) }
+        )
+    }
+}
+
+@Composable
+fun OverflowMenu(
+    @DrawableRes overflowIconRes: Int? = null,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     var isOpen by remember { mutableStateOf(false) }
-    val menuItems = remember(
-        key1 = items,
-        key2 = maxVisibleItems,
-    ) {
-        splitMenuItems(items, maxVisibleItems)
+    IconButton(onClick = {
+        isOpen = isOpen.not()
+    }) {
+        Icon(
+            painter = painterResource(id = overflowIconRes ?: R.drawable.ic_more_horiz),
+            contentDescription = stringResource(id = R.string.more),
+        )
     }
-
-    menuItems.alwaysShownItems.forEach { item ->
-        IconButton(onClick = item.onClick) {
-            Icon(
-                painter = painterResource(id = item.iconRes!!),
-                contentDescription = (item.contentDescriptionRes
-                    ?: item.titleRes).let { stringResource(id = it) },
-            )
-        }
-    }
-
-    if (menuItems.overflowItems.isNotEmpty()) {
-        IconButton(onClick = {
+    DropdownMenu(
+        expanded = isOpen,
+        offset = DpOffset(8.dp, 0.dp),
+        onDismissRequest = {
             isOpen = isOpen.not()
-        }) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_more_horiz),
-                contentDescription = "Overflow",
-            )
-        }
-        DropdownMenu(
-            expanded = isOpen,
-            offset = DpOffset(8.dp, 0.dp),
-            onDismissRequest = {
-                isOpen = isOpen.not()
-            },
-        ) {
-            menuItems.overflowItems.forEach { item ->
-                DropdownMenuItem(
-                    text = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                item.iconRes?.let {
-                                    Icon(
-                                        painterResource(id = it),
-                                        contentDescription = (item.contentDescriptionRes
-                                            ?: item.titleRes).let {
-                                            stringResource(id = it)
-                                        })
-                                }
-                                Text(stringResource(id = item.titleRes))
-                            }
-                            if (item is ActionMenuItem.NeverShown) {
-                                item.isChecked?.let {
-                                    Checkbox(checked = it, onCheckedChange = item.onCheckedChange)
-                                }
-                            }
-                        }
-                    },
-                    onClick = {
-                        isOpen = false
-                        item.onClick.invoke()
+        },
+        content = content
+    )
+}
+
+
+@Composable
+fun OverflowMenuItem(
+    @StringRes textRes: Int,
+    @DrawableRes iconRes: Int? = null,
+    @StringRes contentDescriptionRes: Int? = null,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    isChecked: Boolean = false,
+    onCheckedChange: ((Boolean) -> Unit)? = null,
+) {
+    DropdownMenuItem(
+        text = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    iconRes?.let {
+                        Icon(
+                            painterResource(id = it),
+                            contentDescription = (contentDescriptionRes ?: textRes).let {
+                                stringResource(id = it)
+                            })
                     }
-                )
+                    Text(stringResource(id = textRes))
+                }
+                if (onCheckedChange != null) {
+                    Checkbox(checked = isChecked, onCheckedChange = onCheckedChange)
+                }
             }
-        }
-    }
-}
-
-
-sealed interface ActionMenuItem {
-    val titleRes: Int
-    val onClick: () -> Unit
-    val iconRes: Int?
-    val contentDescriptionRes: Int?
-
-    data class AlwaysShown(
-        override val titleRes: Int,
-        override val contentDescriptionRes: Int? = null,
-        override val onClick: () -> Unit,
-        override val iconRes: Int,
-    ) : ActionMenuItem
-
-    data class ShownIfRoom(
-        override val titleRes: Int,
-        override val contentDescriptionRes: Int?,
-        override val onClick: () -> Unit,
-        override val iconRes: Int? = null,
-    ) : ActionMenuItem
-
-    data class NeverShown(
-        override val titleRes: Int,
-        override val contentDescriptionRes: Int? = null,
-        override val onClick: () -> Unit,
-        override val iconRes: Int? = null,
-        val isChecked: Boolean? = null,
-        val onCheckedChange: ((Boolean) -> Unit)? = null
-    ) : ActionMenuItem
-}
-
-
-private data class MenuItems(
-    val alwaysShownItems: List<ActionMenuItem>,
-    val overflowItems: List<ActionMenuItem>,
-)
-
-private fun splitMenuItems(
-    items: List<ActionMenuItem>,
-    maxVisibleItems: Int,
-): MenuItems {
-    val alwaysShownItems: MutableList<ActionMenuItem> =
-        items.filterIsInstance<ActionMenuItem.AlwaysShown>().toMutableList()
-    val ifRoomItems: MutableList<ActionMenuItem> =
-        items.filterIsInstance<ActionMenuItem.ShownIfRoom>().toMutableList()
-    val overflowItems = items.filterIsInstance<ActionMenuItem.NeverShown>()
-
-    val hasOverflow = overflowItems.isNotEmpty() ||
-            (alwaysShownItems.size + ifRoomItems.size - 1) > maxVisibleItems
-    val usedSlots = alwaysShownItems.size + (if (hasOverflow) 1 else 0)
-    val availableSlots = maxVisibleItems - usedSlots
-    if (availableSlots > 0 && ifRoomItems.isNotEmpty()) {
-        val visible = ifRoomItems.subList(0, availableSlots.coerceAtMost(ifRoomItems.size))
-        alwaysShownItems.addAll(visible)
-        ifRoomItems.removeAll(visible)
-    }
-
-    return MenuItems(
-        alwaysShownItems = alwaysShownItems,
-        overflowItems = ifRoomItems + overflowItems,
+        },
+        onClick = onClick,
+        modifier = modifier
     )
 }
