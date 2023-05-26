@@ -1,0 +1,3 @@
+[submodule "app/src/main/kotlin/com/revolgenx/anilib/social/markwon"]
+	path = app/src/main/kotlin/com/revolgenx/anilib/social/markwon
+	url = git@github.com:rev0lgenX/AniLib-markwon.git
