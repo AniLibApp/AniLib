@@ -5,7 +5,7 @@ import com.revolgenx.anilib.common.ui.theme.LightColorScheme
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.core.MarkwonTheme
 
-class AlMarkwonPluginsProviderImpl : AlMarkwonPluginsProvider {
+class AlMarkdownPluginsProviderImpl : AlMarkdownPluginsProvider {
     override fun getPlugins(): List<AbstractMarkwonPlugin> {
         return listOf(Plugin())
     }

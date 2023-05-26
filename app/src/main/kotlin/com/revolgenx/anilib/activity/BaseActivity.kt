@@ -4,10 +4,10 @@ import android.text.Spanned
 import androidx.activity.ComponentActivity
 import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.common.ext.imageViewerScreen
-import com.revolgenx.anilib.social.factory.AlMarkwonCallback
+import com.revolgenx.anilib.social.factory.AlMarkdownCallback
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-abstract class BaseActivity : ComponentActivity(), AlMarkwonCallback {
+abstract class BaseActivity : ComponentActivity(), AlMarkdownCallback {
     protected val viewModel by viewModel<MainActivityViewModel>()
     protected var navigator: Navigator? = null
 

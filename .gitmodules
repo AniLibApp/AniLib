@@ -1,0 +1,3 @@
+[submodule "app/src/main/kotlin/com/revolgenx/anilib/social/markdown"]
+	path = app/src/main/kotlin/com/revolgenx/anilib/social/markdown
+	url = git@github.com:rev0lgenX/AniLib-Markdown.git

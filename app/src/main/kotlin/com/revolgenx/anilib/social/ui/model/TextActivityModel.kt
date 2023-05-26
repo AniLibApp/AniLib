@@ -4,8 +4,8 @@ import android.text.Spanned
 import com.revolgenx.anilib.ActivityUnionQuery
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
-import com.revolgenx.anilib.social.factory.markwon
-import com.revolgenx.anilib.social.markwon.anilify
+import com.revolgenx.anilib.social.factory.markdown
+import com.revolgenx.anilib.social.markdown.anilify
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.user.ui.model.UserModel
 
@@ -36,7 +36,7 @@ fun ActivityUnionQuery.OnTextActivity.toModel(): TextActivityModel {
         id = id,
         text = text ?: "",
         anilifiedText = anilifiedText,
-        textSpanned = markwon.toMarkdown(anilifiedText),
+        textSpanned = markdown.toMarkdown(anilifiedText),
         likeCount = likeCount,
         replyCount = replyCount,
         isSubscribed = isSubscribed ?: false,

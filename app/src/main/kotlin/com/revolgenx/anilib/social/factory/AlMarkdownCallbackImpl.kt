@@ -1,12 +1,10 @@
 package com.revolgenx.anilib.social.factory
 
-import android.content.Context
 import android.text.Spanned
 import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.activity.MainActivityViewModel
-import com.revolgenx.anilib.common.ext.imageViewerScreen
 
-class AlMarkwonCallbackImpl : AlMarkwonCallback {
+class AlMarkdownCallbackImpl : AlMarkdownCallback {
     var navigator: Navigator? = null
     var viewModel: MainActivityViewModel? = null
     override fun onYoutubeClick(link: String) {

@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.viewinterop.AndroidView
 import com.revolgenx.anilib.common.ext.isNotNull
-import com.revolgenx.anilib.social.factory.markwon
+import com.revolgenx.anilib.social.factory.markdown
 
 @Composable
 fun MarkdownText(
@@ -36,19 +36,19 @@ fun MarkdownText(
                 textView.textSize = textSize
             }
             if (text.isNullOrBlank().not()) {
-                markwon.setMarkdown(textView, text!!)
+                markdown.setMarkdown(textView, text!!)
             }
             if (spanned.isNotNull()) {
-                markwon.setParsedMarkdown(textView, spanned!!)
+                markdown.setParsedMarkdown(textView, spanned!!)
             }
             textView
         },
         update = { textView ->
             if (text.isNullOrBlank().not()) {
-                markwon.setMarkdown(textView, text!!)
+                markdown.setMarkdown(textView, text!!)
             }
             if (spanned.isNotNull()) {
-                markwon.setParsedMarkdown(textView, spanned!!)
+                markdown.setParsedMarkdown(textView, spanned!!)
             }
         }
     )

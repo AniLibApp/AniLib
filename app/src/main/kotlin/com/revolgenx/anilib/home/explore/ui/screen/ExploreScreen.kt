@@ -21,7 +21,7 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.screen.ImageViewerScreen
 import com.revolgenx.anilib.common.ui.view.MarkdownText
-import com.revolgenx.anilib.social.markwon.anilify
+import com.revolgenx.anilib.social.markdown.anilify
 
 @Composable
 fun ExploreScreen() {

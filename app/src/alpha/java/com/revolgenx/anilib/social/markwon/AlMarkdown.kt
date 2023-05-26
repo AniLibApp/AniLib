@@ -1,22 +1,22 @@
-package com.revolgenx.anilib.social.markwon
+package com.revolgenx.anilib.social.markdown
 
 import android.content.Context
-import com.revolgenx.anilib.social.factory.AlMarkwonCallback
-import com.revolgenx.anilib.social.factory.AlMarkwonPluginsProvider
+import com.revolgenx.anilib.social.factory.AlMarkdownPluginsProvider
+import com.revolgenx.anilib.social.factory.AlMarkdownCallback
 import io.noties.markwon.Markwon
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.linkify.LinkifyPlugin
 
-object AlMarkwon {
+object AlMarkdown {
     var _markwon: Markwon? = null
         private set
     val markwon: Markwon get() = _markwon!!
 
     fun init(
         context: Context,
-        alMarkwonCallback: AlMarkwonCallback,
-        alMarkwonPluginsProvider: AlMarkwonPluginsProvider? = null
+        callback: AlMarkdownCallback,
+        alMarkdownPluginsProvider: AlMarkdownPluginsProvider? = null
     ): Markwon {
         if (_markwon == null) {
             Markwon.builder(context)

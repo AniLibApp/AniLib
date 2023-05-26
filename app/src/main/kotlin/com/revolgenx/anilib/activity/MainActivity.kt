@@ -25,7 +25,6 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
-import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
@@ -41,7 +40,7 @@ import com.revolgenx.anilib.common.ui.theme.AppTheme
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
 import com.revolgenx.anilib.list.ui.screen.MangaListScreen
-import com.revolgenx.anilib.social.factory.AlMarkwonFactory
+import com.revolgenx.anilib.social.factory.AlMarkdownFactory
 import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
 
@@ -52,7 +51,7 @@ class MainActivity : BaseActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AlMarkwonFactory.init(this, this)
+        AlMarkdownFactory.init(this, this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             AppTheme {

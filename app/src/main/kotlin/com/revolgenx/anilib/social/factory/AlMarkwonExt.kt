@@ -1,5 +1,5 @@
 package com.revolgenx.anilib.social.factory
 
-import com.revolgenx.anilib.social.markwon.AlMarkwon
+import com.revolgenx.anilib.social.markdown.AlMarkdown
 
-val markwon get() = AlMarkwon.markwon
+val markdown get() = AlMarkdown.markwon
