@@ -1,6 +1,11 @@
 package com.revolgenx.anilib.list.ui.screen
 
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -10,12 +15,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -61,6 +70,14 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
 
     val openFilterBottomSheet = rememberSaveable { mutableStateOf(false) }
     val isAnime = viewModel.field.type.isAnime()
+
+    val appbarHeight = if(active) 120.dp else 64.dp
+    val appbarAnimation by animateDpAsState(
+        targetValue = appbarHeight,
+        animationSpec = tween(durationMillis = 300),
+        label = ""
+    )
+
     ScreenScaffold(
         topBar = {
             AppBarLayout(
@@ -69,10 +86,11 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                     containerColor = Color.Transparent,
                     scrolledContainerColor = Color.Transparent
                 ),
-                containerHeight = 58.dp
+                containerHeight = appbarAnimation
             ) {
                 Box(
                     modifier = Modifier
+                        .height(appbarAnimation)
                         .fillMaxWidth(),
                 ) {
                     RowDockedSearchBar(
@@ -88,7 +106,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                         active = active,
                         height = 50.dp,
                         onActiveChange = {
-                            active = if (it && viewModel.searchHistory.isNotEmpty()) {
+                            active = if (it && true/*viewModel.searchHistory.isNotEmpty()*/) {
                                 it
                             } else {
                                 false
@@ -125,7 +143,24 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                             }
                         }
                     ) {
-
+                        AssistChip(
+                            onClick = {
+                                viewModel.search = "hello"
+                                viewModel.searchNow()
+                            },
+                            label = { Text(text = "hello") },
+                            colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = MaterialTheme.colorScheme.onSurface),
+                            trailingIcon = {
+                                Icon(
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .clickable {
+                                            openFilterBottomSheet.value = true
+                                        },
+                                    painter = painterResource(id = R.drawable.ic_cancel),
+                                    contentDescription = stringResource(id = R.string.clear)
+                                )
+                            })
                     }
                 }
             }

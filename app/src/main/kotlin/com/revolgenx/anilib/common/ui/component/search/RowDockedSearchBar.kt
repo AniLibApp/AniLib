@@ -217,7 +217,7 @@ internal val SearchBarMinWidth: Dp = 360.dp
 // Animation specs
 private const val AnimationEnterDurationMillis: Int = 500
 private const val AnimationExitDurationMillis: Int = 300
-private const val AnimationDelayMillis: Int = 100
+private const val AnimationDelayMillis: Int = 50
 private val AnimationEnterEasing = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1.0f)
 private val AnimationExitEasing = CubicBezierEasing(0.0f, 1.0f, 0.0f, 1.0f)
 private val AnimationEnterFloatSpec: FiniteAnimationSpec<Float> = tween(

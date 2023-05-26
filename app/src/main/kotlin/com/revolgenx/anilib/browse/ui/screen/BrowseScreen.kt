@@ -1,5 +1,8 @@
 package com.revolgenx.anilib.browse.ui.screen
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,9 +13,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -74,6 +80,7 @@ class BrowseScreen : AndroidScreen() {
 private fun BrowseScreenContent() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val viewModel = koinViewModel<BrowseViewModel>()
+
 
     ScreenScaffold(
         topBar = {
@@ -177,22 +184,28 @@ fun BrowseScreenTopAppbar(
     viewModel: BrowseViewModel
 ) {
     var active by rememberSaveable { mutableStateOf(false) }
-
+    val appbarHeight = if(active) 166.dp else 110.dp
+    val appbarAnimation by animateDpAsState(
+        targetValue = appbarHeight,
+        animationSpec = tween(durationMillis = 300),
+        label = ""
+    )
     AppBarLayout(
         scrollBehavior = scrollBehavior,
         colors = AppBarLayoutDefaults.appBarLayoutColors(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent
         ),
-        containerHeight = 110.dp
+        containerHeight = appbarAnimation
     ) {
         Column(
             modifier = Modifier
+                .height(appbarAnimation)
                 .fillMaxWidth(),
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
             ) {
                 RowDockedSearchBar(
                     modifier = Modifier
@@ -207,7 +220,7 @@ fun BrowseScreenTopAppbar(
                     active = active,
                     height = 50.dp,
                     onActiveChange = {
-                        active = if (it && viewModel.searchHistory.isNotEmpty()) {
+                        active = if (it && true/*viewModel.searchHistory.isNotEmpty()*/) {
                             it
                         } else {
                             false
@@ -246,7 +259,22 @@ fun BrowseScreenTopAppbar(
                         }
                     }
                 ) {
-
+                    AssistChip(
+                        onClick = {
+                            viewModel.search = "hello"
+                        },
+                        label = { Text(text = "hello") },
+                        colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = MaterialTheme.colorScheme.onSurface),
+                        trailingIcon = {
+                            Icon(
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clickable {
+                                    },
+                                painter = painterResource(id = R.drawable.ic_cancel),
+                                contentDescription = stringResource(id = R.string.clear)
+                            )
+                        })
                 }
             }
 
