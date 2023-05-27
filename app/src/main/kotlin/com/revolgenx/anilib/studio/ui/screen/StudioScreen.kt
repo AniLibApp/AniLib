@@ -49,6 +49,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
+import com.revolgenx.anilib.media.ui.component.MediaCard
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
@@ -108,67 +109,10 @@ private fun StudioScreenContent(studioId: Int, viewModel: StudioViewModel = koin
                     }
 
                     is MediaModel -> {
-                        StudioMediaItem(baseModel) {
-                            navigator.push(MediaScreen(baseModel.id, baseModel.type))
+                        MediaCard(mediaModel = baseModel){
+                            navigator.push(MediaScreen(it, baseModel.type))
                         }
                     }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun StudioMediaItem(mediaModel: MediaModel, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .width(120.dp)
-            .height(236.dp)
-            .padding(8.dp)
-    ) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .clickable {
-                onClick.invoke()
-            }) {
-            MediaCoverImageType { type ->
-                AsyncImage(
-                    modifier = Modifier
-                        .height(165.dp)
-                        .fillMaxWidth(),
-                    imageUrl =  mediaModel.coverImage?.image(type),
-                    imageOptions = ImageOptions(
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
-                    ),
-                    previewPlaceholder = R.drawable.bleach
-                )
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(vertical = 2.dp, horizontal = 4.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                MediaTitleType { type ->
-                    Text(
-                        mediaModel.title?.title(type).naText(),
-                        maxLines = 2,
-                        fontSize = 12.sp,
-                        lineHeight = 14.sp,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-                mediaModel.format?.let {
-                    val formats = stringArrayResource(id = R.array.media_format)
-                    Text(
-                        formats[it.ordinal],
-                        maxLines = 1,
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        overflow = TextOverflow.Ellipsis
-                    )
                 }
             }
         }

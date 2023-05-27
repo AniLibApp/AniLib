@@ -8,21 +8,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,12 +38,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,20 +52,31 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.browse.data.field.BrowseTypes
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
+import com.revolgenx.anilib.character.ui.component.CharacterCard
+import com.revolgenx.anilib.character.ui.model.CharacterModel
+import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.colorScheme
+import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.staffScreen
+import com.revolgenx.anilib.common.ext.studioScreen
+import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
-import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
-import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
+import com.revolgenx.anilib.media.ui.component.MediaCard
 import com.revolgenx.anilib.media.ui.model.MediaModel
+import com.revolgenx.anilib.staff.ui.component.StaffCard
+import com.revolgenx.anilib.staff.ui.model.StaffModel
+import com.revolgenx.anilib.studio.ui.model.StudioModel
+import com.revolgenx.anilib.user.ui.model.UserModel
 import com.skydoves.landscapist.ImageOptions
 import org.koin.androidx.compose.koinViewModel
 
@@ -74,13 +87,14 @@ class BrowseScreen : AndroidScreen() {
     }
 }
 
+private typealias OnClick = (id: Int) -> Unit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BrowseScreenContent() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val viewModel = koinViewModel<BrowseViewModel>()
-
+    val navigator = localNavigator()
 
     ScreenScaffold(
         topBar = {
@@ -109,10 +123,37 @@ private fun BrowseScreenContent() {
                     GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
                 }
             ) { browseModel ->
-                browseModel ?: return@LazyPagingList
                 when (browseModel) {
                     is MediaModel -> {
-                        BrowseMediaTypeItem(browseModel)
+                        MediaCard(browseModel) {
+                            navigator.mediaScreen(it)
+                        }
+                    }
+
+                    is CharacterModel -> {
+                        CharacterCard(browseModel) {
+                            navigator.characterScreen(it)
+                        }
+                    }
+
+                    is StaffModel -> {
+                        StaffCard(browseModel) {
+                            navigator.staffScreen(it)
+                        }
+                    }
+
+                    is StudioModel -> {
+                        BrowseStudioItem(browseModel, onMediaClick = {
+                            navigator.mediaScreen(it)
+                        }, onClick = {
+                            navigator.studioScreen(it)
+                        })
+                    }
+
+                    is UserModel -> {
+                        BrowseUserItem(browseModel) {
+                            navigator.userScreen(it)
+                        }
                     }
                 }
             }
@@ -122,55 +163,80 @@ private fun BrowseScreenContent() {
     }
 }
 
+@Composable
+private fun BrowseUserItem(user: UserModel, onClick: OnClick) {
+    Column(
+        modifier = Modifier
+            .height(110.dp)
+            .fillMaxWidth()
+            .clickable {
+                onClick(user.id)
+            },
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .size(70.dp)
+                .clip(CircleShape),
+            imageUrl = user.avatar?.image,
+            imageOptions = ImageOptions(
+                contentScale = ContentScale.Crop,
+                alignment = Alignment.Center
+            ),
+            previewPlaceholder = R.drawable.bleach
+        )
+
+        Text(
+            user.name.naText(),
+            maxLines = 2,
+            fontSize = 13.sp,
+            lineHeight = 15.sp,
+            overflow = TextOverflow.Ellipsis,
+            fontWeight = FontWeight.SemiBold,
+        )
+    }
+}
 
 @Composable
-private fun BrowseMediaTypeItem(mediaModel: MediaModel) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(236.dp)
-            .padding(4.dp)
+private fun BrowseStudioItem(studio: StudioModel, onMediaClick: OnClick, onClick: OnClick) {
+    val medias = studio.media?.nodes ?: emptyList()
+    Column(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Column {
-            MediaCoverImageType { type ->
-                AsyncImage(
-                    modifier = Modifier
-                        .height(165.dp)
-                        .fillMaxWidth(),
-                    imageUrl = mediaModel.coverImage?.image(type),
-                    imageOptions = ImageOptions(
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
-                    ),
-                    previewPlaceholder = R.drawable.bleach
-                )
-            }
-
-            Column(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(vertical = 2.dp, horizontal = 4.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                MediaTitleType { type ->
-                    Text(
-                        mediaModel.title?.title(type).naText(),
-                        maxLines = 2,
-                        fontSize = 12.sp,
-                        lineHeight = 14.sp,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-                mediaModel.format?.let {
-                    val formats = stringArrayResource(id = R.array.media_format)
-                    Text(
-                        formats[it.ordinal],
-                        maxLines = 1,
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
+                    .weight(1f)
+                    .clickable {
+                        onClick(studio.id)
+                    },
+                text = studio.name.naText(),
+                fontSize = 15.sp,
+                maxLines = 1,
+                fontWeight = FontWeight.Medium,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Text(
+                modifier = Modifier
+                    .clickable {
+                        onClick(studio.id)
+                    },
+                text = stringResource(id = R.string.view_all),
+                color = colorScheme().onSurfaceVariant,
+                fontWeight = FontWeight.Bold,
+                fontSize = 12.sp
+            )
+        }
+        LazyRow {
+            items(items = medias) {
+                MediaCard(mediaModel = it, width = 120.dp, onClick = onMediaClick)
             }
         }
     }
@@ -184,7 +250,7 @@ fun BrowseScreenTopAppbar(
     viewModel: BrowseViewModel
 ) {
     var active by rememberSaveable { mutableStateOf(false) }
-    val appbarHeight = if(active) 166.dp else 110.dp
+    val appbarHeight = if (active) 166.dp else 110.dp
     val appbarAnimation by animateDpAsState(
         targetValue = appbarHeight,
         animationSpec = tween(durationMillis = 300),

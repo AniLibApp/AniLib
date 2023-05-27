@@ -16,7 +16,7 @@ abstract class BasePagingSource<M : Any, F : BaseSourceField<*>>(protected val f
             field.perPage = perPage
             val pageData = loadPage()
             val data = pageData.data
-            val hasNextPage = pageData.pageInfo?.hasNextPage ?: false
+            val hasNextPage = (pageData.pageInfo?.hasNextPage ?: false)
             LoadResult.Page(
                 data = data ?: emptyList(),
                 prevKey = if (page > 1) page - 1 else null,

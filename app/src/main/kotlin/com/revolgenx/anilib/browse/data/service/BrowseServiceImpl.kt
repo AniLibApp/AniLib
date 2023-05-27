@@ -51,7 +51,7 @@ class BrowseServiceImpl(repository: ApolloRepository) : BaseService(repository),
 
                     staffPage != null -> {
                         pageInfo = staffPage.pageInfo.pageInfo
-                        staffPage.staff?.mapNotNull { map ->
+                        data = staffPage.staff?.mapNotNull { map ->
                             map?.narrowStaffContent?.let { staff ->
                                 StaffModel(
                                     id = staff.id,
@@ -66,7 +66,7 @@ class BrowseServiceImpl(repository: ApolloRepository) : BaseService(repository),
 
                     studioPage != null -> {
                         pageInfo = studioPage.pageInfo.pageInfo
-                        studioPage.studios?.mapNotNull { map ->
+                        data = studioPage.studios?.mapNotNull { map ->
                             map?.studioContent?.let { studio ->
                                 StudioModel(
                                     id = studio.id,
@@ -85,7 +85,7 @@ class BrowseServiceImpl(repository: ApolloRepository) : BaseService(repository),
 
                     userPage != null -> {
                         pageInfo = userPage.pageInfo.pageInfo
-                        userPage.users?.mapNotNull { map ->
+                        data = userPage.users?.mapNotNull { map ->
                             map?.let { user ->
                                 UserModel(
                                     id = user.id,

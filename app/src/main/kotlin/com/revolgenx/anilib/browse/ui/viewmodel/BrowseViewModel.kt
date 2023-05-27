@@ -20,6 +20,7 @@ class BrowseViewModel(private val browseService: BrowseService) :
 
     private val handler = Handler(Looper.getMainLooper())
     override val field: BrowseField = BrowseField()
+
     val listType =
         derivedStateOf { if (field.browseType.value == BrowseTypes.STUDIO) ListPagingListType.COLUMN else ListPagingListType.GRID }
     override val pagingSource: BrowsePagingSource

@@ -59,6 +59,7 @@ data class BrowseField(
     var sort: MediaSort? = null,
     var minimumTagRank: Int? = null
 ) : BaseSourceField<BrowseQuery>() {
+    override var perPage: Int = 30
     val type get() = browseType.value
     override fun toQueryOrMutation(): BrowseQuery {
         val mediaType =

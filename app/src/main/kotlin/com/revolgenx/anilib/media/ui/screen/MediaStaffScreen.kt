@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +33,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
+import com.revolgenx.anilib.staff.ui.component.StaffCard
 import com.revolgenx.anilib.staff.ui.model.StaffEdgeModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.StaffNameModel
@@ -71,53 +73,7 @@ private fun MediaStaffItem(
 ) {
     val staff = staffEdgeModel.node ?: return
     val staffRole = staffEdgeModel.role
-    Card(
-        modifier = Modifier
-            .size(height = 236.dp, width = 120.dp)
-            .padding(8.dp)
-    ) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .clickable {
-                onClick.invoke(staff.id)
-            }) {
-            AsyncImage(
-                modifier = Modifier
-                    .height(165.dp)
-                    .fillMaxWidth(),
-                imageUrl = staff.image?.image,
-                imageOptions = ImageOptions(
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.Center
-                ),
-                previewPlaceholder = R.drawable.bleach
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(vertical = 2.dp, horizontal = 4.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    staff.name?.full.naText(),
-                    maxLines = 2,
-                    fontSize = 12.sp,
-                    lineHeight = 14.sp,
-                    overflow = TextOverflow.Ellipsis
-                )
-                staffRole?.let {
-                    Text(
-                        it,
-                        maxLines = 1,
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-            }
-        }
-    }
+    StaffCard(staff = staff, role = staffRole, onClick = onClick)
 }
 
 
@@ -131,5 +87,5 @@ fun MediaStaffItemPreview() {
             ),
             role = "Original Creator"
         )
-    ){}
+    ) {}
 }

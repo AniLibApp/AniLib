@@ -200,5 +200,7 @@
     <string name="preview">Preview</string>
     <string name="write_a_status">Write a status…</string>
     <string name="activity_posting_guidelines">Please read the site guidelines before posting</string>
+    <string name="view_all">View All</string>
+    <string name="format_year">%1$s · %2$s</string>
 
 </resources>
