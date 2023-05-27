@@ -111,7 +111,7 @@ private fun UserScreenContent(
 
     val scope = rememberCoroutineScope()
     val context = localContext()
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState() { pages.size }
     val collapsingToolbarState = rememberCollapsingToolbarScaffoldState()
     val resourceState = viewModel.resource.value
     val userModel = if (resourceState is ResourceState.Success) {
@@ -180,7 +180,7 @@ private fun CollapsingToolbarScope.UserScreenTopAppbar(
             .graphicsLayer {
                 alpha = imageAlpha
             },
-        imageUrl =  user?.bannerImage,
+        imageUrl = user?.bannerImage,
         imageOptions = ImageOptions(
             contentScale = ContentScale.Crop,
             alignment = Alignment.Center

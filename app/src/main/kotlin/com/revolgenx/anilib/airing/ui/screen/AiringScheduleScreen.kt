@@ -352,7 +352,6 @@ private fun AiringScheduleFilterBottomSheet(
 ) {
     if (openBottomSheet.value) {
         viewModel.field.value = airingScheduleViewModel.field.copy()
-        val windowInsets = NavigationBarDefaults.windowInsets
 
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
@@ -360,8 +359,6 @@ private fun AiringScheduleFilterBottomSheet(
             containerColor = MaterialTheme.colorScheme.background
         ) {
             AiringScheduleFilterBottomSheetContent(
-                modifier = Modifier
-                    .windowInsetsPadding(windowInsets),
                 field = viewModel.field.value,
                 onPositiveClicked = {
                     onDone.invoke(viewModel.field.value)

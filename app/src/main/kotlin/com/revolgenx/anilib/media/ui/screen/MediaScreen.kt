@@ -69,12 +69,12 @@ fun MediaScreenContent(
     mediaType: MediaType?,
     viewModel: MediaViewModel = koinViewModel()
 ) {
-    val pagerState = rememberPagerState()
     val collapsingToolbarState = rememberCollapsingToolbarScaffoldState()
     val pages = viewModel.pages
     val visiblePages by remember {
         derivedStateOf { pages.filter { it.isVisible.value } }
     }
+    val pagerState = rememberPagerState() { visiblePages.size }
     val media = viewModel.media.value
 
     CollapsingToolbarScaffold(

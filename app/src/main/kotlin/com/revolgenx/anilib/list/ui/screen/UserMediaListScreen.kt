@@ -62,7 +62,7 @@ private val pages = listOf(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun UserMediaListScreenContent(userId: Int) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState() { pages.size }
     var animeSearchBar by rememberSaveable { mutableStateOf(false) }
     var mangaSearchBar by rememberSaveable { mutableStateOf(false) }
 

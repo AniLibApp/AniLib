@@ -35,7 +35,7 @@ import com.revolgenx.anilib.common.ui.screen.PagerScreen
 @Composable
 fun <T> PagerScreenTopAppBar(
     pages: List<PagerScreen<T>> = emptyList(),
-    pagerState: PagerState = rememberPagerState(),
+    pagerState: PagerState,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
     actions: (@Composable RowScope.() -> Unit)? = null,
@@ -69,7 +69,7 @@ fun <T> PagerScreenTopAppBar(
 @Composable
 private fun <T> PagerScreenTabRow(
     pages: List<PagerScreen<T>>,
-    pagerState: PagerState = rememberPagerState(),
+    pagerState: PagerState,
     onClick: (index: Int) -> Unit
 ) {
     val selectedTabIndex = pagerState.currentPage

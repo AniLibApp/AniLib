@@ -75,7 +75,7 @@ private val pages = listOf(
 @Composable
 fun HomeScreenContent() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState() { pages.size }
     val navigator = localNavigator()
 
     PagerScreenScaffold(

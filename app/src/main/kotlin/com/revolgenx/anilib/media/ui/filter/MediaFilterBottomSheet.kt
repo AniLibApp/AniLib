@@ -158,15 +158,12 @@ fun MediaFilterBottomSheet(
     viewModel: MediaFilterBottomSheetViewModel = koinViewModel()
 ) {
     if (openBottomSheet.value) {
-        val windowInsets = NavigationBarDefaults.windowInsets
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState,
             containerColor = MaterialTheme.colorScheme.background
         ) {
             MediaFilterBottomSheetContent(
-                modifier = Modifier
-                    .windowInsetsPadding(windowInsets),
                 field = viewModel.field,
                 onPositiveClicked = {
                     viewModel.updateFilter()

@@ -3,6 +3,7 @@ package com.revolgenx.anilib.staff.ui.screen
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -40,8 +41,11 @@ private val pages = listOf(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun StaffScreenContent(staffId: Int) {
+    val pagerState = rememberPagerState { pages.size }
+
     PagerScreenScaffold(
-        pages = pages
+        pages = pages,
+        pagerState = pagerState
     ) { page ->
         Box(
             modifier = Modifier

@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun <T> PagerScreenScaffold(
     pages: List<PagerScreen<T>> = emptyList(),
-    pagerState: PagerState = rememberPagerState(),
+    pagerState: PagerState,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
     actions: (@Composable RowScope.() -> Unit)? = null,
@@ -52,7 +52,6 @@ fun <T> PagerScreenScaffold(
         }
     ) { paddingValues ->
         HorizontalPager(
-            pageCount = pages.size,
             state = pagerState,
             modifier = Modifier
                 .padding(paddingValues)

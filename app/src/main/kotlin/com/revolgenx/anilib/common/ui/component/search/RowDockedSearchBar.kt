@@ -16,12 +16,10 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -48,7 +46,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
@@ -57,7 +54,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import kotlinx.coroutines.delay
 
@@ -77,6 +76,7 @@ fun RowDockedSearchBar(
     trailingIcon: @Composable (() -> Unit)? = null,
     shape: Shape = SearchBarDefaults.dockedShape,
     colors: SearchBarColors = SearchBarDefaults.colors(),
+    fontSize: TextUnit = 16.sp,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -104,6 +104,7 @@ fun RowDockedSearchBar(
                 leadingIcon = leadingIcon,
                 trailingIcon = trailingIcon,
                 colors = colors.inputFieldColors,
+                fontSize = fontSize,
                 interactionSource = interactionSource,
             )
             AnimatedVisibility(
@@ -157,6 +158,7 @@ private fun SearchBarInputField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     colors: TextFieldColors = SearchBarDefaults.inputFieldColors(),
+    fontSize: TextUnit = TextUnit.Unspecified,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val focusRequester = remember { FocusRequester() }
@@ -178,7 +180,7 @@ private fun SearchBarInputField(
             },
         enabled = enabled,
         singleLine = true,
-        textStyle = LocalTextStyle.current.merge(TextStyle(color = textColor)),
+        textStyle = LocalTextStyle.current.merge(TextStyle(color = textColor, fontSize = fontSize)),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = { onSearch(query) }),
@@ -204,7 +206,10 @@ private fun SearchBarInputField(
                 },
                 shape = SearchBarDefaults.inputFieldShape,
                 colors = colors,
-                contentPadding = TextFieldDefaults.contentPaddingWithoutLabel(top = 8.dp, bottom = 8.dp),
+                contentPadding = TextFieldDefaults.contentPaddingWithoutLabel(
+                    top = 8.dp,
+                    bottom = 8.dp
+                ),
                 container = {},
             )
         }

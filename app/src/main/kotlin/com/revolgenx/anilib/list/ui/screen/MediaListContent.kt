@@ -225,15 +225,12 @@ fun MediaListGroupNameBottomSheet(
     val scope = rememberCoroutineScope()
 
     if (openBottomSheet.value) {
-        val windowInsets = NavigationBarDefaults.windowInsets
-
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState,
             containerColor = MaterialTheme.colorScheme.background
         ) {
             MediaListGroupNameContent(
-                modifier = Modifier.windowInsetsPadding(windowInsets),
                 groupNamesWithCount = groupNamesWithCount,
                 selectedGroupName = selectedGroupName,
                 onGroupNameSelected = {
@@ -306,8 +303,6 @@ private fun MediaListFilterBottomSheet(
         }
         viewModel.filter = filter
 
-        val windowInsets = NavigationBarDefaults.windowInsets
-
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState,
@@ -315,7 +310,6 @@ private fun MediaListFilterBottomSheet(
         ) {
 
             MediaListFilterBottomSheetContent(
-                modifier = Modifier.windowInsetsPadding(windowInsets),
                 viewModel = viewModel,
                 dismiss = {
                     scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
@@ -333,7 +327,7 @@ private fun MediaListFilterBottomSheet(
 
 @Composable
 fun MediaListFilterBottomSheetContent(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     viewModel: MediaListFilterViewModel,
     dismiss: () -> Unit,
     onFilter: (filter: MediaListCollectionFilter) -> Unit,

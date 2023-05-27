@@ -46,7 +46,7 @@ private val pages = listOf(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun ActivityComposerScreenContent() {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState() { pages.size }
     val viewModel = koinViewModel<ActivityComposerViewModel>()
 
     PagerScreenScaffold(
