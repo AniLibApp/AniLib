@@ -24,13 +24,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.util.OnClick
 
 
 @Composable
 fun ActionMenu(
     @DrawableRes iconRes: Int,
     @StringRes contentDescriptionRes: Int? = null,
-    onClick: () -> Unit,
+    onClick: OnClick,
 ) {
     IconButton(onClick = onClick) {
         Icon(
@@ -70,7 +71,7 @@ fun OverflowMenuItem(
     @StringRes textRes: Int,
     @DrawableRes iconRes: Int? = null,
     @StringRes contentDescriptionRes: Int? = null,
-    onClick: () -> Unit,
+    onClick: OnClick,
     modifier: Modifier = Modifier,
     isChecked: Boolean = false,
     onCheckedChange: ((Boolean) -> Unit)? = null,

@@ -58,7 +58,7 @@ query CharacterQuery($characterId:Int){
         gender
         age
         bloodType
-        description(asHtml:true)
+        description
     }
 }
 
@@ -70,6 +70,9 @@ query CharacterMediaQuery(
     $sort:[MediaSort]){
     character: Character(id:$characterId){
         media(page:$page, perPage:$perPage, onList: $onList, sort: $sort){
+            pageInfo @nonnull{
+                ... pageInfo
+            }
             nodes{
                 ... on Media{
                     ... media

@@ -71,6 +71,7 @@ import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.screen.ResourceScreen
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
 import com.revolgenx.anilib.list.data.sort.MediaListSortType
 import com.revolgenx.anilib.list.ui.model.MediaListModel
@@ -159,50 +160,6 @@ fun MediaListContent(
         viewModel.updateFilter(it)
     }
 
-}
-
-@Composable
-fun ModalBottomSheetPopup(
-    onDismissRequest: () -> Unit,
-    content: @Composable () -> Unit
-) = Popup(
-    onDismissRequest = onDismissRequest,
-    properties = PopupProperties(focusable = true),
-    content = content
-)
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun Scrim(
-    color: Color = BottomSheetDefaults.ScrimColor,
-    visible: Boolean = true,
-    onDismissRequest: () -> Unit
-) {
-    if (color.isSpecified) {
-        val alpha by animateFloatAsState(
-            targetValue = if (visible) 1f else 0f,
-            animationSpec = TweenSpec()
-        )
-        val dismissSheet = if (visible) {
-            Modifier
-                .pointerInput(onDismissRequest) {
-                    detectTapGestures {
-                        onDismissRequest()
-                    }
-                }
-                .clearAndSetSemantics {}
-        } else {
-            Modifier
-        }
-        Canvas(
-            Modifier
-                .fillMaxSize()
-                .then(dismissSheet)
-        ) {
-            drawRect(color = color, alpha = alpha)
-        }
-    }
 }
 
 
@@ -331,7 +288,7 @@ private fun MediaListFilterBottomSheet(
 fun MediaListFilterBottomSheetContent(
     modifier: Modifier = Modifier,
     viewModel: MediaListFilterViewModel,
-    dismiss: () -> Unit,
+    dismiss: OnClick,
     onFilter: (filter: MediaListCollectionFilter) -> Unit,
 ) {
     Column(

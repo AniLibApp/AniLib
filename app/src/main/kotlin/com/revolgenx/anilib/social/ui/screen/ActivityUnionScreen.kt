@@ -40,6 +40,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.activityComposerScreen
 import com.revolgenx.anilib.common.ext.activityScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
+import com.revolgenx.anilib.common.ui.component.action.DisappearingFloatingButton
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -103,19 +104,11 @@ object ActivityUnionScreen : BaseTabScreen() {
             },
             navigationIcon = {},
             floatingActionButton = {
-                AnimatedVisibility(visible = scrollState.value == ScrollState.ScrollDown,
-                    enter = fadeIn() + expandIn { IntSize(1, 1) }) {
-                    FloatingActionButton(elevation = FloatingActionButtonDefaults.elevation(
-                        defaultElevation = 0.dp
-                    ),
-                        onClick = {
-                            navigator.activityComposerScreen()
-                        }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_create),
-                            contentDescription = null
-                        )
-                    }
+                DisappearingFloatingButton(
+                    scrollState = scrollState,
+                    iconRes = R.drawable.ic_create
+                ) {
+                    navigator.activityComposerScreen()
                 }
             },
             scrollBehavior = scrollBehavior,

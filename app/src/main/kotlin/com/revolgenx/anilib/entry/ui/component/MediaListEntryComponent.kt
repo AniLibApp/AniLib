@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.type.ScoreFormat
 import kotlin.math.round
 
@@ -242,7 +243,7 @@ private fun StarScore(score: Double, onScoreChange: (score: Double) -> Unit) {
 
 
 @Composable
-private fun StarScoreButton(selected: Boolean, onClick: () -> Unit) {
+private fun StarScoreButton(selected: Boolean, onClick: OnClick) {
     val interactionSource = remember { MutableInteractionSource() }
 
     Box(
@@ -290,7 +291,7 @@ private fun SmileyScore(score: Double, onScoreChange: (score: Double) -> Unit) {
 }
 
 @Composable
-private fun SmileyScoreButton(selected: Boolean, icon: Int, onClick: () -> Unit) {
+private fun SmileyScoreButton(selected: Boolean, icon: Int, onClick: OnClick) {
     IconButton(onClick = onClick) {
         Icon(
             painter = painterResource(id = icon),
