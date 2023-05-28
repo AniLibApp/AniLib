@@ -30,6 +30,7 @@ fun ExploreScreen() {
     ) {
 
         val navigator = localNavigator()
+
         Text("Airing Schedule", fontSize = 25.sp, modifier= Modifier.clickable {
             navigator.airingScheduleScreen()
         })

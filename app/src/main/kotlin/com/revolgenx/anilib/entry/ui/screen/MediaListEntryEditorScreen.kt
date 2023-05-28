@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.state.ResourceState
+import com.revolgenx.anilib.common.ext.colorScheme
 import com.revolgenx.anilib.common.ext.emptyText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
@@ -137,9 +138,7 @@ private fun MediaListEditScreenContent(
                 val retry = stringResource(id = R.string.retry)
                 LaunchedEffect(viewModel) {
                     when (snackbar.showSnackbar(
-                        failedToDelete,
-                        retry,
-                        duration = SnackbarDuration.Long
+                        failedToDelete, retry, duration = SnackbarDuration.Long
                     )) {
                         SnackbarResult.Dismissed -> {
                             viewModel.deleteResource.value = null
@@ -169,9 +168,7 @@ private fun MediaListEditScreenContent(
                 val retry = stringResource(id = R.string.retry)
                 LaunchedEffect(viewModel) {
                     when (snackbar.showSnackbar(
-                        failedToSave,
-                        retry,
-                        duration = SnackbarDuration.Long
+                        failedToSave, retry, duration = SnackbarDuration.Long
                     )) {
                         SnackbarResult.Dismissed -> {
                             viewModel.saveResource.value = null
@@ -202,11 +199,9 @@ private fun MediaListEditScreenContent(
                 .verticalScroll(rememberScrollState())
                 .padding(12.dp)
         ) {
-            ResourceScreen(
-                resourceState = viewModel.resource.value,
+            ResourceScreen(resourceState = viewModel.resource.value,
                 loading = loading,
-                refresh = { viewModel.refresh() }
-            ) { userMedia ->
+                refresh = { viewModel.refresh() }) { userMedia ->
                 val media = userMedia.media ?: return@ResourceScreen
                 val user = userMedia.user ?: return@ResourceScreen
                 val entryField = viewModel.saveField
@@ -215,11 +210,9 @@ private fun MediaListEditScreenContent(
                 MediaTitleType {
                     val mediaTitle = media.title?.title(it)
                     title = mediaTitle.emptyText()
-                    ConfirmationDialog(
-                        openDialog = openConfirmDialog,
+                    ConfirmationDialog(openDialog = openConfirmDialog,
                         message = stringResource(id = R.string.do_you_really_want_to_delete_the_entry_s).format(
-                            mediaTitle?.let { " $it" } ?: "")
-                    ) {
+                            mediaTitle?.let { " $it" } ?: "")) {
                         viewModel.delete()
                     }
                 }
@@ -228,20 +221,20 @@ private fun MediaListEditScreenContent(
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
 
-
                     Row(
                         modifier = Modifier.padding(4.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        TextHeaderContent(
+
+                        CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            headingRes = R.string.status
+                            heading = stringResource(R.string.status),
+                            fixedCardHeight = false
                         ) {
                             val mediaListStatusEntries =
                                 getAlMediaListStatusForType(type = media.type).toList()
                             val mediaListStatus = entryField.status
                             SelectMenu(
-                                modifier = Modifier.height(FilterContentHeight),
                                 entries = mediaListStatusEntries,
                                 selectedItemPosition = mediaListStatus.toAlMediaListStatus()
                             ) { newStatus ->
@@ -250,8 +243,7 @@ private fun MediaListEditScreenContent(
                         }
 
                         CardHeaderContent(
-                            modifier = Modifier.weight(1f),
-                            headingRes = R.string.score
+                            modifier = Modifier.weight(1f), heading = stringResource(R.string.score)
                         ) {
                             MediaListEntryScore(
                                 score = entryField.score,
@@ -269,7 +261,7 @@ private fun MediaListEditScreenContent(
                     ) {
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            headingRes = if (isAnime) R.string.episode_progress else R.string.chapter_progress
+                            heading = stringResource(if (isAnime) R.string.episode_progress else R.string.chapter_progress)
                         ) {
                             CountEditor(
                                 count = entryField.progress ?: 0,
@@ -282,7 +274,7 @@ private fun MediaListEditScreenContent(
 
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            headingRes = if (isAnime) R.string.total_rewatches else R.string.total_rereads
+                            heading = stringResource(if (isAnime) R.string.total_rewatches else R.string.total_rereads)
                         ) {
                             CountEditor(
                                 count = entryField.repeat ?: 0,
@@ -299,12 +291,11 @@ private fun MediaListEditScreenContent(
                     ) {
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            headingRes = R.string.start_date
+                            heading = stringResource(R.string.start_date)
                         ) {
                             val openCalendar = remember { mutableStateOf(false) }
                             val startedAt = entryField.startedAt?.toZoneDateTime()
-                            CalendarPicker(
-                                openCalendar = openCalendar,
+                            CalendarPicker(openCalendar = openCalendar,
                                 selectedDateMillis = startedAt?.toInstant()?.toEpochMilli(),
                                 text = entryField.startedAt?.toString() ?: "",
                                 onClear = {
@@ -322,13 +313,12 @@ private fun MediaListEditScreenContent(
 
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            headingRes = R.string.end_date
+                            heading = stringResource(R.string.end_date)
                         ) {
                             val openCalendar = remember { mutableStateOf(false) }
                             val completedAt = entryField.completedAt?.toZoneDateTime()
 
-                            CalendarPicker(
-                                openCalendar = openCalendar,
+                            CalendarPicker(openCalendar = openCalendar,
                                 selectedDateMillis = completedAt?.toInstant()?.toEpochMilli(),
                                 text = entryField.completedAt?.toString() ?: "",
                                 onClear = {
@@ -351,7 +341,7 @@ private fun MediaListEditScreenContent(
                         ) {
                             CardHeaderContent(
                                 modifier = Modifier.weight(1f),
-                                headingRes = R.string.volume_progress
+                                heading = stringResource(R.string.volume_progress)
                             ) {
                                 CountEditor(
                                     count = entryField.progressVolumes ?: 0,
@@ -364,13 +354,11 @@ private fun MediaListEditScreenContent(
                     }
 
                     CardHeaderContent(
-                        headingRes = R.string.notes,
-                        fixedCardHeight = false
+                        heading = stringResource(R.string.notes), fixedCardHeight = false
                     ) {
-                        BasicTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp, vertical = 14.dp),
+                        BasicTextField(modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 14.dp),
                             value = entryField.notes ?: "",
                             textStyle = LocalTextStyle.current,
                             onValueChange = {
@@ -382,8 +370,7 @@ private fun MediaListEditScreenContent(
                     val hasCustomList = entryField.customLists.isNullOrEmpty().not()
 
                     TextCheckbox(
-                        text = stringResource(id = R.string._private),
-                        checked = entryField.private
+                        text = stringResource(id = R.string._private), checked = entryField.private
                     ) {
                         entryField.private = it
                     }
@@ -407,14 +394,12 @@ private fun MediaListEditScreenContent(
                     )
 
                     TextHeaderContent(
-                        headingRes = R.string.custom_lists,
-                        headingSize = 14.sp
+                        heading = stringResource(R.string.custom_lists), headingSize = 14.sp
                     ) {
                         if (hasCustomList) {
                             entryField.customLists!!.map { cList ->
                                 TextCheckbox(
-                                    text = cList.first,
-                                    checked = cList.second
+                                    text = cList.first, checked = cList.second
                                 ) {
                                     cList.second = it
                                 }
@@ -427,8 +412,7 @@ private fun MediaListEditScreenContent(
                         }
                     }
 
-                    user.mediaListOptions
-                        ?.takeIf { if (media.isAnime) it.isAnimeAdvancedScoreEnabled else it.isMangaAdvancedScoreEnabled }
+                    user.mediaListOptions?.takeIf { if (media.isAnime) it.isAnimeAdvancedScoreEnabled else it.isMangaAdvancedScoreEnabled }
                         ?.let {
 
                             Divider(
@@ -438,13 +422,14 @@ private fun MediaListEditScreenContent(
                             )
 
                             TextHeaderContent(
-                                headingRes = R.string.advanced_scores,
+                                heading = stringResource(id = R.string.advanced_scores),
                                 headingSize = 14.sp
                             ) {
                                 entryField.advancedScores?.let {
                                     Grid(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        items = it
+                                        modifier = Modifier.fillMaxWidth(), items = it,
+                                        rowSpacing = 8.dp,
+                                        columnSpacing = 8.dp
                                     ) { scoreModel ->
                                         CardHeaderContent(
                                             heading = scoreModel.heading
@@ -474,31 +459,36 @@ private fun MediaListEditScreenContent(
     }
 }
 
-private val FilterContentHeight = 50.dp
+private val FilterContentHeight = 56.dp
 
 @Composable
 private fun CardHeaderContent(
     modifier: Modifier = Modifier,
-    @StringRes headingRes: Int? = null,
-    heading: String? = null,
+    heading: String,
     fixedCardHeight: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    TextHeaderContent(
-        modifier = modifier,
-        headingRes = headingRes,
-        heading = heading
+    Card(
+        modifier = modifier
     ) {
-        Card(
-            modifier = Modifier
-                .let {
-                    if (fixedCardHeight) {
-                        it.height(FilterContentHeight)
-                    } else it
-                }
-                .fillMaxWidth()
+        Column(
+            modifier = Modifier.padding(top = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            content()
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = heading,
+                maxLines = 1,
+                color = colorScheme().onSurface,
+                style = MaterialTheme.typography.bodySmall
+            )
+            Box(modifier = Modifier.let {
+                if (fixedCardHeight) {
+                    it.height(FilterContentHeight)
+                } else it
+            }) {
+                content()
+            }
         }
     }
 }
@@ -507,15 +497,14 @@ private fun CardHeaderContent(
 @Composable
 private fun TextHeaderContent(
     modifier: Modifier = Modifier,
-    @StringRes headingRes: Int? = null,
-    heading: String? = null,
+    heading: String,
     headingSize: TextUnit? = null,
     content: @Composable () -> Unit
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(
             modifier = Modifier.padding(start = 5.dp, bottom = 3.dp),
-            text = heading ?: stringResource(id = headingRes!!),
+            text = heading,
             fontSize = headingSize ?: 13.sp,
             fontWeight = FontWeight.Medium,
             maxLines = 1,
@@ -545,8 +534,7 @@ private fun CalendarPicker(
         colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface)
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_calendar),
-            contentDescription = "calendar"
+            painter = painterResource(id = R.drawable.ic_calendar), contentDescription = "calendar"
         )
         Text(
             modifier = Modifier
@@ -560,9 +548,7 @@ private fun CalendarPicker(
             Icon(
                 modifier = Modifier.clickable {
                     onClear()
-                },
-                painter = painterResource(id = R.drawable.ic_close),
-                contentDescription = "clear"
+                }, painter = painterResource(id = R.drawable.ic_close), contentDescription = "clear"
             )
         }
     }

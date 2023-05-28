@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.media.ui.filter
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
@@ -69,11 +71,16 @@ private fun MediaFilterBottomSheetContent(
             }
         )
 
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
             val selectedFormats = field.formatsIn?.map { it.ordinal } ?: emptyList()
             val formats = stringArrayResource(id = R.array.media_format)
             MultiSelectMenu(
-                labelRes = R.string.format,
+                label = stringResource(id = R.string.format),
                 entries = formats.mapIndexed { index, s ->
                     selectedFormats.contains(
                         index
@@ -84,7 +91,7 @@ private fun MediaFilterBottomSheetContent(
                     ?.mapNotNull { it.first.toMediaFormat() }
             }
             SelectMenu(
-                labelRes = R.string.status,
+                label = stringResource(id = R.string.status),
                 entries = stringArrayResource(id = R.array.media_status).toList(),
                 selectedItemPosition = field.status?.ordinal,
                 showNoneItem = true
@@ -92,7 +99,7 @@ private fun MediaFilterBottomSheetContent(
                 field.status = selectedItem.takeIf { it > -1 }?.toMediaStatus()
             }
             SelectMenu(
-                labelRes = R.string.season,
+                label = stringResource(id = R.string.season),
                 entries = stringArrayResource(id = R.array.media_season).toList(),
                 selectedItemPosition = field.season?.ordinal
             ) { selectedItem ->
@@ -119,7 +126,7 @@ private fun MediaFilterBottomSheetContent(
                 }
 
             SortSelectMenu(
-                labelRes = R.string.sort,
+                label = stringResource(id = R.string.sort),
                 entries = sortMenus,
             ) { index, selectedItem ->
                 var mediaSort: MediaSort? = null
@@ -137,7 +144,7 @@ private fun MediaFilterBottomSheetContent(
                 field.sort = mediaSort
             }
             SelectMenu(
-                labelRes = R.string.year,
+                label = stringResource(id = R.string.year),
                 entries = yearList,
                 selectedItemPosition = field.seasonYear?.takeIf { it in yearGreater..yearLesser }
                     ?.let { yearList.indexOf(it.toString()) }

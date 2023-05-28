@@ -410,7 +410,7 @@ private fun AiringScheduleFilterBottomSheetContent(
                     }
 
                 SortSelectMenu(
-                    labelRes = R.string.sort,
+                    label = stringResource(id = R.string.sort),
                     entries = sortMenus,
                     allowNone = false
                 ) { index, selectedItem ->

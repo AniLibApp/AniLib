@@ -13,14 +13,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -36,98 +43,88 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.tuples.MutablePair
+import com.revolgenx.anilib.common.ext.colorScheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MultiSelectMenu(
+    modifier: Modifier = Modifier,
     label: String? = null,
-    @StringRes labelRes: Int? = null,
     entries: List<MutablePair<Boolean, String>>,
-    // pair of index and string
     onItemsSelected: (items: List<Pair<Int, String>>) -> Unit
 ) {
     val mutableEntries by remember {
-        mutableStateOf( entries.map { mutableStateOf(it) })
+        mutableStateOf(entries.map { mutableStateOf(it) })
     }
     val items = mutableEntries.map { it.value.second }
     fun getSelectedItems() = mutableEntries.filter { it.value.first }.map { it.value.second }
     fun getSelectedItemsWithIndex() = getSelectedItems().map { items.indexOf(it) to it }
 
     var expanded by remember { mutableStateOf(false) }
-    var menuSize by remember { mutableStateOf(Size.Zero) }
     var selectedItems by remember {
         mutableStateOf(getSelectedItems())
     }
 
+    val shape = if (expanded)
+        RoundedCornerShape(8.dp).copy(bottomEnd = CornerSize(0.dp), bottomStart = CornerSize(0.dp))
+    else RoundedCornerShape(8.dp)
 
-    Column {
-        if (label != null || labelRes != null) {
-            Text(
-                label ?: stringResource(id = labelRes!!),
-                modifier = Modifier.padding(PaddingValues(vertical = 8.dp))
-            )
-        }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+    ) {
 
-        Card(
+        val selectedItem = selectedItems.takeIf { it.isNotEmpty() }?.joinToString(", ")
+            ?: stringResource(id = R.string.none)
+        TextField(
             modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    expanded = true
-                }
-                .onGloballyPositioned { coordinates ->
-                    menuSize = coordinates.size.toSize()
-                },
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(PaddingValues(horizontal = 8.dp, vertical = 12.dp)),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    selectedItems.takeIf { it.isNotEmpty() }?.joinToString(", ")
-                        ?: stringResource(id = R.string.none)
-                )
-                Icon(
-                    Icons.Default.ArrowDropDown,
-                    contentDescription = null
-                )
-            }
-        }
+                .menuAnchor()
+                .fillMaxWidth(),
+            readOnly = true,
+            value = selectedItem,
+            onValueChange = {},
+            shape = shape,
+            label = { label?.let { Text(it) } },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedLabelColor = colorScheme().onSurfaceVariant
+            ),
+        )
 
 
-        val menuWidth = with(LocalDensity.current) { menuSize.width.toDp() }
         val menuHeight = 40.dp
         val entriesSize = entries.size
-        val menuItemHeight = menuHeight * if (entriesSize > 10) 10 else entriesSize
+        val menuItemHeight = menuHeight.plus(4.dp) * if (entriesSize > 10) 10 else entriesSize
 
         DropdownMenu(
+            modifier = modifier
+                .exposedDropdownSize()
+                .height(height = menuItemHeight),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            Box(modifier = Modifier.size(width = menuWidth, height = menuItemHeight)) {
-                LazyColumn {
-                    items(mutableEntries) { s ->
-                        DropdownMenuItem(
-                            modifier = Modifier.height(menuHeight),
-                            text = { Text(s.value.second) },
-                            onClick = {
-                                s.value = s.value.copy(first = !s.value.first)
-                                selectedItems = getSelectedItems()
-                                onItemsSelected.invoke(getSelectedItemsWithIndex())
-                            },
-                            leadingIcon = {
-                                if (s.value.first) {
-                                    Icon(
-                                        Icons.Default.Check,
-                                        contentDescription = null
-                                    )
-                                }
-                            })
-                    }
 
-                }
+            mutableEntries.forEach { s ->
+                DropdownMenuItem(
+                    modifier = Modifier.height(menuHeight),
+                    text = { Text(s.value.second) },
+                    onClick = {
+                        s.value = s.value.copy(first = !s.value.first)
+                        selectedItems = getSelectedItems()
+                        onItemsSelected.invoke(getSelectedItemsWithIndex())
+                    },
+                    leadingIcon = {
+                        if (s.value.first) {
+                            Icon(
+                                Icons.Default.Check,
+                                contentDescription = null
+                            )
+                        }
+                    })
             }
+
         }
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -48,6 +49,7 @@ import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.IntSize
@@ -336,7 +338,6 @@ fun MediaListFilterBottomSheetContent(
         modifier = modifier
             .padding(horizontal = 16.dp)
             .padding(bottom = 4.dp)
-            .verticalScroll(rememberScrollState())
     ) {
         BottomSheetConfirmationAction(
             onPositiveClicked = {
@@ -347,81 +348,91 @@ fun MediaListFilterBottomSheetContent(
                 dismiss.invoke()
             }
         )
-        val selectedFormats = viewModel.filter.formatsIn?.map { it.ordinal } ?: emptyList()
-        val formats = stringArrayResource(id = R.array.media_format)
-        MultiSelectMenu(
-            labelRes = R.string.format,
-            entries = formats.mapIndexed { index, s ->
-                selectedFormats.contains(
-                    index
-                ) to s
-            },
-        ) { selectedItems ->
-            viewModel.filter = viewModel.filter.copy(
-                formatsIn = selectedItems.takeIf { it.isNotEmpty() }
-                    ?.mapNotNull { it.first.toMediaFormat() }
-            )
-        }
-        SelectMenu(
-            labelRes = R.string.status,
-            entries = stringArrayResource(id = R.array.media_status).toList(),
-            selectedItemPosition = viewModel.filter.status?.ordinal,
-            showNoneItem = true
-        ) { selectedItem ->
-            viewModel.filter = viewModel.filter.copy(
-                status = selectedItem.takeIf { it > -1 }?.toMediaStatus()
-            )
-        }
 
-        val genreList = stringArrayResource(id = R.array.media_genre).toList()
-        SelectMenu(
-            labelRes = R.string.genre,
-            entries = genreList,
-            selectedItemPosition = genreList.indexOf(viewModel.filter.genre),
-            showNoneItem = true
-        ) { selectedItem ->
-            viewModel.filter = viewModel.filter.copy(
-                genre = selectedItem.takeIf { it > -1 }?.let { genreList[it] }
-            )
-        }
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
 
-        val sort = viewModel.filter.sort
-        var selectedSortIndex: Int? = null
-        var selectedSortOrder: AlSortOrder = AlSortOrder.NONE
-
-        if (sort != null) {
-            val isDesc = sort.toString().endsWith("_DESC")
-            selectedSortIndex = sort.ordinal / 2
-            selectedSortOrder = if (isDesc) AlSortOrder.DESC else AlSortOrder.ASC
-        }
-
-        val sortMenus =
-            stringArrayResource(id = R.array.media_list_collection_sort).mapIndexed { index, s ->
-                AlSortMenuItem(
-                    s,
-                    if (index == selectedSortIndex) selectedSortOrder else AlSortOrder.NONE
+            val selectedFormats = viewModel.filter.formatsIn?.map { it.ordinal } ?: emptyList()
+            val formats = stringArrayResource(id = R.array.media_format)
+            MultiSelectMenu(
+                label = stringResource(id = R.string.format),
+                entries = formats.mapIndexed { index, s ->
+                    selectedFormats.contains(
+                        index
+                    ) to s
+                },
+            ) { selectedItems ->
+                viewModel.filter = viewModel.filter.copy(
+                    formatsIn = selectedItems.takeIf { it.isNotEmpty() }
+                        ?.mapNotNull { it.first.toMediaFormat() }
+                )
+            }
+            SelectMenu(
+                label = stringResource(id = R.string.status),
+                entries = stringArrayResource(id = R.array.media_status).toList(),
+                selectedItemPosition = viewModel.filter.status?.ordinal,
+                showNoneItem = true
+            ) { selectedItem ->
+                viewModel.filter = viewModel.filter.copy(
+                    status = selectedItem.takeIf { it > -1 }?.toMediaStatus()
                 )
             }
 
-        SortSelectMenu(
-            labelRes = R.string.sort,
-            entries = sortMenus,
-        ) { index, selectedItem ->
-            var mediaListSortType: MediaListSortType? = null
-
-            if (selectedItem != null) {
-                val alMediaSort = AlMediaSort.values()[index].sort
-                val selectedSort = if (selectedItem.order == AlSortOrder.DESC) {
-                    alMediaSort + 1
-                } else {
-                    alMediaSort
-                }
-                mediaListSortType = MediaListSortType.values()[selectedSort]
+            val genreList = stringArrayResource(id = R.array.media_genre).toList()
+            SelectMenu(
+                label = stringResource(id = R.string.genre),
+                entries = genreList,
+                selectedItemPosition = genreList.indexOf(viewModel.filter.genre),
+                showNoneItem = true
+            ) { selectedItem ->
+                viewModel.filter = viewModel.filter.copy(
+                    genre = selectedItem.takeIf { it > -1 }?.let { genreList[it] }
+                )
             }
 
-            viewModel.filter = viewModel.filter.copy(
-                sort = mediaListSortType
-            )
+            val sort = viewModel.filter.sort
+            var selectedSortIndex: Int? = null
+            var selectedSortOrder: AlSortOrder = AlSortOrder.NONE
+
+            if (sort != null) {
+                val isDesc = sort.toString().endsWith("_DESC")
+                selectedSortIndex = sort.ordinal / 2
+                selectedSortOrder = if (isDesc) AlSortOrder.DESC else AlSortOrder.ASC
+            }
+
+            val sortMenus =
+                stringArrayResource(id = R.array.media_list_collection_sort).mapIndexed { index, s ->
+                    AlSortMenuItem(
+                        s,
+                        if (index == selectedSortIndex) selectedSortOrder else AlSortOrder.NONE
+                    )
+                }
+
+            SortSelectMenu(
+                label = stringResource(id = R.string.sort),
+                entries = sortMenus,
+            ) { index, selectedItem ->
+                var mediaListSortType: MediaListSortType? = null
+
+                if (selectedItem != null) {
+                    val alMediaSort = AlMediaSort.values()[index].sort
+                    val selectedSort = if (selectedItem.order == AlSortOrder.DESC) {
+                        alMediaSort + 1
+                    } else {
+                        alMediaSort
+                    }
+                    mediaListSortType = MediaListSortType.values()[selectedSort]
+                }
+
+                viewModel.filter = viewModel.filter.copy(
+                    sort = mediaListSortType
+                )
+            }
         }
+
     }
 }
