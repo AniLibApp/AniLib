@@ -4,6 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +30,7 @@ import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.skydoves.landscapist.ImageOptions
 
@@ -103,6 +106,74 @@ fun MediaItem(mediaModel: MediaModel) {
                 fontSize = 12.sp,
                 lineHeight = 14.sp,
                 fontWeight = FontWeight.SemiBold,
+            )
+        }
+    }
+}
+
+
+@Composable
+fun MediaRowItem(
+    mediaModel: MediaModel,
+    onClick: OnClick
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                onClick = onClick
+            ),
+        horizontalArrangement = Arrangement.spacedBy(
+            8.dp,
+            alignment = Alignment.Start
+        )
+    ) {
+        MediaCoverImageType { type ->
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(72.dp),
+                imageUrl = mediaModel.coverImage?.image(type),
+                imageOptions = ImageOptions(
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center
+                ),
+                previewPlaceholder = R.drawable.bleach
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(vertical = 2.dp)
+        ) {
+
+            MediaTitleType { type ->
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = mediaModel.title?.title(type).naText(),
+                    maxLines = 2,
+                    fontSize = 12.sp,
+                    lineHeight = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
+
+            val format = mediaModel.format?.let {
+                stringArrayResource(id = R.array.media_format)[it.ordinal]
+            }.naText()
+            val year = mediaModel.seasonYear.naText()
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.format_year).format(format, year),
+                maxLines = 1,
+                fontSize = 11.sp,
+                letterSpacing = 0.2.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                overflow = TextOverflow.Ellipsis,
+                fontWeight = FontWeight.Medium,
             )
         }
     }

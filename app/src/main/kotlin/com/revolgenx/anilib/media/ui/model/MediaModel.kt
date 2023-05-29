@@ -22,6 +22,7 @@ import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.studio.ui.model.StudioConnectionModel
 import com.revolgenx.anilib.studio.ui.model.StudioEdgeModel
 import com.revolgenx.anilib.studio.ui.model.StudioModel
+import com.revolgenx.anilib.type.CharacterRole
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaRelation
 import com.revolgenx.anilib.type.MediaSeason
@@ -38,8 +39,6 @@ data class MediaModel(
     val averageScore: Int? = null,
     val bannerImage: String? = null,
     val chapters: Int? = null,
-//    val character: CharacterModel? = null,
-    val characterRole: Int? = null,
     val characters: CharacterConnectionModel? = null,
     val staff: StaffModel? = null,
 //    val staffs: List<StaffModel>? = null,
@@ -89,7 +88,10 @@ data class MediaModel(
     val volumes: Int? = null,
 
     // for StudioScreen
-    var studio: StudioModel? = null
+    var studio: StudioModel? = null,
+    var character: CharacterModel? = null,
+    var characterRole: CharacterRole? = null,
+
 ) : BaseModel(id) {
     val isAnime get() = type.isAnime()
 }

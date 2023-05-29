@@ -63,6 +63,9 @@ query StaffCharacterMediaQuery(
 
     staff: Staff(id:$staffId)@include(if: $sortCharacter){
         characters(page: $page, perPage: $perPage, sort: [ROLE, ID_DESC]){
+            pageInfo @nonnull{
+                ... pageInfo
+            }
             edges{
                 role
                 node{
@@ -85,6 +88,9 @@ query StaffCharacterMediaQuery(
 
     staff: Staff(id:$staffId)@skip(if: $sortCharacter){
         characterMedia(page:$page,perPage:$perPage, onList: $onList, sort: $sort){
+            pageInfo @nonnull{
+                ... pageInfo
+            }
             edges{
                 characterRole
                 characters {

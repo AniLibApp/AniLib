@@ -12,6 +12,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
+import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterViewModel
 import org.koin.androidx.compose.koinViewModel
 
 class StaffScreen(val staffId: Int) : AndroidScreen() {
@@ -46,7 +47,9 @@ private fun StaffScreenContent(staffId: Int) {
     val pagerState = rememberPagerState { pages.size }
 
     val aboutViewModel = koinViewModel<StaffAboutViewModel>()
+    val staffMediaCharacterViewModel = koinViewModel<StaffMediaCharacterViewModel>()
     aboutViewModel.field.staffId = staffId
+    staffMediaCharacterViewModel.field.staffId = staffId
 
     PagerScreenScaffold(
         pages = pages,
@@ -58,7 +61,7 @@ private fun StaffScreenContent(staffId: Int) {
         ) {
             when (pages[page].type) {
                 StaffScreenPageType.ABOUT -> StaffAboutScreen(aboutViewModel)
-                StaffScreenPageType.MEDIA -> StaffMediaCharacterScreen()
+                StaffScreenPageType.MEDIA -> StaffMediaCharacterScreen(staffMediaCharacterViewModel)
                 StaffScreenPageType.VOICE_ROLES -> StaffMediaRoleScreen()
             }
         }
