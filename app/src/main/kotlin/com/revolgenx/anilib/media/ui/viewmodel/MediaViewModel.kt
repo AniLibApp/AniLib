@@ -3,7 +3,7 @@ package com.revolgenx.anilib.media.ui.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.screen.PagerScreen
+import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.media.ui.model.MediaModel
 
 enum class MediaScreenPageType {

@@ -3,7 +3,7 @@ package com.revolgenx.anilib.common.ext
 import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.airing.ui.screen.AiringScheduleScreen
 import com.revolgenx.anilib.character.ui.screen.CharacterScreen
-import com.revolgenx.anilib.common.ui.screen.ImageViewerScreen
+import com.revolgenx.anilib.common.ui.screen.image.ImageViewerScreen
 import com.revolgenx.anilib.entry.ui.screen.MediaListEntryEditorScreen
 import com.revolgenx.anilib.list.ui.screen.UserMediaListScreen
 import com.revolgenx.anilib.media.ui.screen.MediaScreen

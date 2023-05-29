@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.common.ui.screen
+package com.revolgenx.anilib.common.ui.screen.spoiler
 
 import android.text.Spanned
 import androidx.compose.foundation.layout.Arrangement
@@ -16,11 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.view.MarkdownText
+import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

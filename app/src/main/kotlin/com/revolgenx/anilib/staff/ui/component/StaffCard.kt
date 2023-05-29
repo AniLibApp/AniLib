@@ -3,11 +3,13 @@ package com.revolgenx.anilib.staff.ui.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,22 +22,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.colorScheme
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.skydoves.landscapist.ImageOptions
 
 @Composable
-fun StaffCard(staff: StaffModel, role: String? = null, onClick: (id: Int) -> Unit) {
+fun StaffCard(staff: StaffModel, onClick: (id: Int) -> Unit) {
     Card(
         modifier = Modifier
-            .let {
-                if (role != null) {
-                    it.height(236.dp)
-                } else {
-                    it.height(224.dp)
-                }
-            }
+            .height(224.dp)
             .fillMaxWidth()
             .padding(8.dp)
     ) {
@@ -70,13 +68,60 @@ fun StaffCard(staff: StaffModel, role: String? = null, onClick: (id: Int) -> Uni
                     overflow = TextOverflow.Ellipsis,
                     fontWeight = FontWeight.SemiBold,
                 )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun StaffRowCard(staff: StaffModel, role: String? = null, onClick: OnClickWithId) {
+    Card(
+        modifier = Modifier
+            .height(124.dp)
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .clickable {
+                    onClick(staff.id)
+                },
+            horizontalArrangement = Arrangement.spacedBy(
+                8.dp,
+                alignment = Alignment.Start
+            )
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(72.dp),
+                imageUrl = staff.image?.image,
+                imageOptions = ImageOptions(
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center
+                ),
+                previewPlaceholder = R.drawable.bleach
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(vertical = 2.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = staff.name?.full.naText(), maxLines = 2)
+
                 role?.let {
                     Text(
                         it,
-                        maxLines = 1,
+                        maxLines = 3,
                         fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        overflow = TextOverflow.Ellipsis
+                        lineHeight = 12.sp,
+                        color = colorScheme().onSurfaceVariant,
+                        overflow = TextOverflow.Ellipsis,
+                        fontWeight = FontWeight.Light
                     )
                 }
             }

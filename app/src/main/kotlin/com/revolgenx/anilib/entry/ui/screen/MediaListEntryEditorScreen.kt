@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.entry.ui.screen
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -57,7 +56,7 @@ import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
-import com.revolgenx.anilib.common.ui.screen.ResourceScreen
+import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.entry.ui.component.CountEditor
 import com.revolgenx.anilib.entry.ui.component.DoubleCountEditor

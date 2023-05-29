@@ -40,7 +40,7 @@ import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
-import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
+import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.notification.ui.model.ActivityNotificationModel

@@ -46,7 +46,7 @@ import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
-import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
+import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet

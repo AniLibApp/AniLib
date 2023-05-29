@@ -19,8 +19,8 @@ import com.revolgenx.anilib.common.ext.userMediaListScreen
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
-import com.revolgenx.anilib.common.ui.screen.ImageViewerScreen
-import com.revolgenx.anilib.common.ui.view.MarkdownText
+import com.revolgenx.anilib.common.ui.screen.image.ImageViewerScreen
+import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.social.markdown.anilify
 
 @Composable

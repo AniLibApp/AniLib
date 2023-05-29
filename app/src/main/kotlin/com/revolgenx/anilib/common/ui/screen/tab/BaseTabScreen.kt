@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.common.ui.screen
+package com.revolgenx.anilib.common.ui.screen.tab
 
 import androidx.annotation.DrawableRes
 import cafe.adriel.voyager.androidx.AndroidScreenLifecycleOwner

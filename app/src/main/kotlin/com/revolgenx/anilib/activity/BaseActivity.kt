@@ -31,6 +31,7 @@ abstract class BaseActivity : ComponentActivity(), AlMarkdownCallback {
     }
 
     override fun onUserMentionClicked(username: String) {
+
     }
 
     override fun onAniListLinkClick(id: Int, type: String) {

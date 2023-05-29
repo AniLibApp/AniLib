@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,7 +27,7 @@ import com.revolgenx.anilib.common.ui.component.tab.ScrollableTabRow
 import com.revolgenx.anilib.common.ui.component.tab.Tab
 import com.revolgenx.anilib.common.ui.component.tab.TabContent
 import com.revolgenx.anilib.common.ui.component.tab.pagerTabIndicatorOffset
-import com.revolgenx.anilib.common.ui.screen.PagerScreen
+import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)

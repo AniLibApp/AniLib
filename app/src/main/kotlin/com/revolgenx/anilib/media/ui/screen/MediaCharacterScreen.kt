@@ -22,14 +22,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.character.ui.component.CharacterStaffCard
 import com.revolgenx.anilib.character.ui.model.CharacterEdgeModel
-import com.revolgenx.anilib.character.ui.screen.CharacterScreen
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
-import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
+import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.screen.StaffScreen
@@ -64,104 +65,14 @@ private fun MediaCharacterItem(
 ) {
     val character = characterEdgeModel.node ?: return
     val voiceActors = characterEdgeModel.voiceActors
-
     val navigator = LocalMainNavigator.current
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(130.dp)
-            .padding(8.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .clickable {
-                        navigator.characterScreen(character.id)
-                    },
-                horizontalArrangement = Arrangement.spacedBy(
-                    8.dp,
-                    alignment = Alignment.Start
-                )
-            ) {
-                AsyncImage(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(80.dp),
-                    imageUrl = character.image?.image,
-                    imageOptions = ImageOptions(
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
-                    ),
-                    previewPlaceholder = R.drawable.bleach
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(vertical = 2.dp)
-                ) {
-                    Text(text = character.name?.full.naText())
-                    characterEdgeModel.role?.let {
-                        stringArrayResource(id = R.array.character_role).getOrNull(it.ordinal)
-                            ?.let {
-                                Text(text = it, fontSize = 11.sp)
-                            }
-                    }
-                }
-            }
-            voiceActors?.firstOrNull()?.let { staff ->
-                Row(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .clickable {
-                            navigator.push(StaffScreen(staff.id))
-                        },
-                    horizontalArrangement = Arrangement.spacedBy(
-                        8.dp,
-                        alignment = Alignment.End
-                    )
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                            .padding(vertical = 2.dp),
-                        verticalArrangement = Arrangement.Bottom,
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        Text(
-                            text = staff.name?.full.naText(),
-                            textAlign = TextAlign.End
-                        )
-                        staff.languageV2?.let {
-                            Text(
-                                text = it,
-                                fontSize = 11.sp,
-                                textAlign = TextAlign.End
-                            )
-                        }
-                    }
-                    AsyncImage(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .width(80.dp),
-                        imageUrl = staff.image?.image,
-                        imageOptions = ImageOptions(
-                            contentScale = ContentScale.Crop,
-                            alignment = Alignment.Center
-                        ),
-                        previewPlaceholder = R.drawable.bleach
-                    )
-                }
-            }
-
-        }
-    }
+    CharacterStaffCard(
+        character = character,
+        characterRole = characterEdgeModel.role,
+        staff = voiceActors?.firstOrNull(),
+        onCharacterClick = { navigator.characterScreen(it) },
+        onStaffClick = { navigator.staffScreen(it) }
+    )
 }
 
 

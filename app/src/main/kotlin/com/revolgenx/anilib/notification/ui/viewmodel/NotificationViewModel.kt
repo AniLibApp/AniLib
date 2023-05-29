@@ -3,7 +3,7 @@ package com.revolgenx.anilib.notification.ui.viewmodel
 import com.revolgenx.anilib.common.data.store.AppDataStore
 import com.revolgenx.anilib.common.data.store.userId
 import com.revolgenx.anilib.common.ext.launch
-import com.revolgenx.anilib.common.ui.screen.PagingViewModel
+import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 import com.revolgenx.anilib.notification.data.field.NotificationField
 import com.revolgenx.anilib.notification.data.service.NotificationService
 import com.revolgenx.anilib.notification.data.source.NotificationPagingSource

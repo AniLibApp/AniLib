@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.common.ui.screen
+package com.revolgenx.anilib.common.ui.viewmodel
 
 import com.revolgenx.anilib.activity.MainActivityViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel

@@ -19,7 +19,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -34,7 +33,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
-import com.revolgenx.anilib.common.ui.screen.PagerScreen
+import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel

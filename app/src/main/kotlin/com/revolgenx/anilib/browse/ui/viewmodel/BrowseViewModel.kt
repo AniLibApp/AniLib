@@ -6,14 +6,13 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.browse.data.field.BrowseField
 import com.revolgenx.anilib.browse.data.field.BrowseTypes
 import com.revolgenx.anilib.browse.data.service.BrowseService
 import com.revolgenx.anilib.browse.data.source.BrowsePagingSource
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.model.BaseModel
-import com.revolgenx.anilib.common.ui.screen.PagingViewModel
+import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 
 class BrowseViewModel(private val browseService: BrowseService) :
     PagingViewModel<BaseModel, BrowseField, BrowsePagingSource>() {
@@ -31,6 +30,7 @@ class BrowseViewModel(private val browseService: BrowseService) :
         set(value) {
             if (field != value) {
                 query = value
+                this.field.search = value
                 handler.removeCallbacksAndMessages(null)
                 handler.postDelayed({
                     refresh()

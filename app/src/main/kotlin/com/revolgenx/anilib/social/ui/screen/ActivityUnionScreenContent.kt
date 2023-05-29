@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,10 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +26,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
@@ -35,18 +35,15 @@ import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.screen.collectAsLazyPagingItems
-import com.revolgenx.anilib.common.ui.view.MarkdownText
-import com.revolgenx.anilib.media.ui.model.MediaModel
-import com.revolgenx.anilib.media.ui.model.MediaTitleModel
+import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.social.ui.model.ActivityModel
 import com.revolgenx.anilib.social.ui.model.ListActivityModel
 import com.revolgenx.anilib.social.ui.model.MessageActivityModel
 import com.revolgenx.anilib.social.ui.model.TextActivityModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
-import com.revolgenx.anilib.type.ActivityType
 import com.skydoves.landscapist.ImageOptions
 
 @Composable
@@ -173,8 +170,7 @@ fun ActivityItemTop(model: ActivityModel) {
     val navigator = localNavigator()
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
@@ -248,30 +244,27 @@ private fun ActivityItemBottom(model: ActivityModel) {
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            IconButton(onClick = { /*TODO*/ }) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(2.dp),
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_message),
-                        contentDescription = null
-                    )
-                    Text(text = model.replyCount.prettyNumberFormat())
-                }
+            TextButton(
+                colors = ButtonDefaults.textButtonColors(colorScheme().onSurface),
+                onClick = { /*TODO*/ }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_message),
+                    contentDescription = null
+                )
+                Text(text = model.replyCount.prettyNumberFormat())
             }
 
-            IconButton(onClick = { /*TODO*/ }) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(2.dp),
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_heart_outline),
-                        contentDescription = null
-                    )
-                    Text(text = model.likeCount.prettyNumberFormat())
-                }
+
+            TextButton(
+                colors = ButtonDefaults.textButtonColors(colorScheme().onSurface),
+                onClick = { /*TODO*/ }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_heart_outline),
+                    contentDescription = null
+                )
+                Text(text = model.likeCount.prettyNumberFormat())
             }
         }
     }

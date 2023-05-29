@@ -1,9 +1,9 @@
 package com.revolgenx.anilib.character.ui.model
 
 import android.text.Spanned
-import androidx.compose.ui.res.stringResource
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.CharacterQuery
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
@@ -24,7 +24,7 @@ data class CharacterModel(
     val gender: String? = null,
 
     val name: CharacterNameModel? = null,
-    val isFavourite: Boolean = false,
+    val isFavourite: MutableState<Boolean> = mutableStateOf(false),
     // If the character is blocked from being added to favourites
     val isFavouriteBlocked: Boolean = false,
     val media: MediaConnectionModel? = null,
@@ -35,32 +35,32 @@ data class CharacterModel(
     val image: CharacterImageModel? = null,
 
     var spannedDescription: Spanned? = null,
-) : BaseModel(id)
+) : BaseModel(id){
+    fun generalDescription(): String {
+        var generalInfo = ""
+        dateOfBirth?.let {
+            val month = it.month?.let { m ->
+                Month.of(m).getDisplayName(TextStyle.SHORT, Locale.getDefault())
+            } ?: ""
+            val day = it.day ?: ""
+            val year = it.year ?: ""
+            generalInfo += "<b>Birthday:</b> $month $day, $year \n"
+        }
+        age?.let {
+            generalInfo += "<b>Age:</b> $it \n"
+        }
+        gender?.let {
+            generalInfo += "<b>Gender:</b> $it \n"
+        }
+        bloodType?.let {
+            generalInfo += "<b>Blood Type:</b> $it \n"
+        }
 
-private fun addInfoToDescription(character: CharacterModel): String {
-    var generalInfo = ""
-    character.dateOfBirth?.let {
-        val month = it.month?.let { m ->
-            Month.of(m).getDisplayName(TextStyle.SHORT, Locale.getDefault())
-        } ?: ""
-        val day = it.day ?: ""
-        val year = it.year ?: ""
-        generalInfo += "<b>Birthday:</b> $month $day, $year \n"
+        if (generalInfo.isNotBlank()) {
+            generalInfo += " \n"
+        }
+        return generalInfo
     }
-    character.age?.let {
-        generalInfo += "<b>Age:</b> $it \n"
-    }
-    character.gender?.let {
-        generalInfo += "<b>Gender:</b> $it \n"
-    }
-    character.bloodType?.let {
-        generalInfo += "<b>Blood Type:</b> $it \n"
-    }
-
-    if (generalInfo.isNotBlank()) {
-        generalInfo += " \n"
-    }
-    return generalInfo
 }
 
 
@@ -69,7 +69,7 @@ fun CharacterImage.toModel() = CharacterImageModel(medium, large)
 fun CharacterQuery.Character.toModel(): CharacterModel {
     val model = CharacterModel(
         id = id,
-        isFavourite = isFavourite,
+        isFavourite = mutableStateOf(isFavourite),
         description = description,
         siteUrl = siteUrl,
         favourites = favourites,
@@ -87,7 +87,7 @@ fun CharacterQuery.Character.toModel(): CharacterModel {
         image = image?.characterImage?.toModel()
     )
     model.spannedDescription =
-        markdown.toMarkdown(addInfoToDescription(model) + anilify(model.description))
+        markdown.toMarkdown(model.generalDescription() + anilify(model.description))
 
     return model
 }

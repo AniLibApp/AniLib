@@ -33,9 +33,9 @@ import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalMediaState
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.composition.LocalUserState
-import com.revolgenx.anilib.common.ui.screen.BaseTabScreen
-import com.revolgenx.anilib.common.ui.screen.LoginScreen
-import com.revolgenx.anilib.common.ui.screen.SpoilerBottomSheet
+import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
+import com.revolgenx.anilib.common.ui.screen.auth.LoginScreen
+import com.revolgenx.anilib.common.ui.screen.spoiler.SpoilerBottomSheet
 import com.revolgenx.anilib.common.ui.theme.AppTheme
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen

@@ -33,7 +33,7 @@ query StaffQuery($id:Int){
         image{
             ... staffImage
         }
-        description(asHtml:true)
+        description
         favourites
         isFavourite
         siteUrl

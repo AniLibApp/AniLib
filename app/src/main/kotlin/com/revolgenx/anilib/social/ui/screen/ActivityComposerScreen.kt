@@ -17,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
-import com.revolgenx.anilib.common.ui.screen.PagerScreen
-import com.revolgenx.anilib.common.ui.view.MarkdownText
+import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
+import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import org.koin.androidx.compose.koinViewModel
 

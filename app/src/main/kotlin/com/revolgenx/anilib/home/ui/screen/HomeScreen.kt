@@ -21,8 +21,8 @@ import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.screen.BaseTabScreen
-import com.revolgenx.anilib.common.ui.screen.PagerScreen
+import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
+import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.home.explore.ui.screen.ExploreScreen
 import com.revolgenx.anilib.home.recommendation.ui.screen.RecommendationsScreen
 import com.revolgenx.anilib.home.review.ui.screen.ReviewsScreen

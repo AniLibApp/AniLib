@@ -1,8 +1,7 @@
 package com.revolgenx.anilib.studio.ui.viewmodel
 
 import com.revolgenx.anilib.common.ui.model.BaseModel
-import com.revolgenx.anilib.common.ui.screen.PagingViewModel
-import com.revolgenx.anilib.media.ui.model.MediaModel
+import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 import com.revolgenx.anilib.studio.data.field.StudioField
 import com.revolgenx.anilib.studio.data.service.StudioService
 import com.revolgenx.anilib.studio.data.source.StudioPagingSource

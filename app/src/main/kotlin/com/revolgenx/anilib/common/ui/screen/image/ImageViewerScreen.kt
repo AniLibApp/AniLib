@@ -1,6 +1,6 @@
-package com.revolgenx.anilib.common.ui.screen
+package com.revolgenx.anilib.common.ui.screen.image
 
-import android.os.Build.VERSION.SDK_INT
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -74,7 +73,7 @@ private fun ImageViewerScreenContent(imageUrl: String) {
         val context = localContext()
         imageLoader = imageLoader ?: ImageLoader.Builder(context)
             .components {
-                if (SDK_INT >= 28) {
+                if (Build.VERSION.SDK_INT >= 28) {
                     add(ImageDecoderDecoder.Factory())
                 } else {
                     add(GifDecoder.Factory())

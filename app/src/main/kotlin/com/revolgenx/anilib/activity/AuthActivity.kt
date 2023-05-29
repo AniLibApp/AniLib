@@ -9,7 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.lifecycle.lifecycleScope
 import com.revolgenx.anilib.common.data.store.login
 import com.revolgenx.anilib.common.ext.launchIO
-import com.revolgenx.anilib.common.ui.screen.LoadingScreen
+import com.revolgenx.anilib.common.ui.screen.state.LoadingScreen
 import com.revolgenx.anilib.common.ui.theme.AppTheme
 
 /*todo: need to change way to show messages */

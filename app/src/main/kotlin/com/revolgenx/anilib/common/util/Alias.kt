@@ -1,4 +1,5 @@
 package com.revolgenx.anilib.common.util
 
 typealias OnClick = () -> Unit
-typealias OnClickWithId = (id: Int) -> Unit
+typealias OnClickWithId = (_: Int) -> Unit
+typealias OnClickWithString = (_: String) -> Unit

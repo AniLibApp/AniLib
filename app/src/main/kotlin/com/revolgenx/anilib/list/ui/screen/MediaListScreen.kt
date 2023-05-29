@@ -1,24 +1,18 @@
 package com.revolgenx.anilib.list.ui.screen
 
-import androidx.compose.animation.core.CubicBezierEasing
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,11 +36,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
-import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
-import com.revolgenx.anilib.common.ui.screen.BaseTabScreen
+import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.isAnime
 

@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.media.ui.viewmodel
 
-import com.revolgenx.anilib.common.ui.screen.PagingViewModel
+import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 import com.revolgenx.anilib.media.data.field.MediaStaffField
 import com.revolgenx.anilib.media.data.service.MediaService
 import com.revolgenx.anilib.media.data.source.MediaStaffPagingSource

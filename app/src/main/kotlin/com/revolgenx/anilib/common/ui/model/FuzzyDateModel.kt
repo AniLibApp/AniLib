@@ -2,11 +2,21 @@ package com.revolgenx.anilib.common.ui.model
 
 import com.revolgenx.anilib.fragment.FuzzyDate
 import java.time.LocalDate
+import java.time.Month
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
+import java.time.format.TextStyle
+import java.util.Locale
 
 
 data class FuzzyDateModel(val day: Int?, val month: Int?, val year: Int?) {
+    val shortDate
+        get() = "${
+            month?.let { m ->
+                Month.of(m).getDisplayName(TextStyle.SHORT, Locale.getDefault())
+            } ?: ""
+        } ${day?.let { "$it," } ?: ""} ${year ?: ""}"
+
     override fun toString(): String {
         return "${year ?: ""}-${month ?: ""}-${day ?: ""}"
     }

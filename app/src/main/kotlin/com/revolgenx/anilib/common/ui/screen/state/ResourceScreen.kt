@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.common.ui.screen
+package com.revolgenx.anilib.common.ui.screen.state
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState

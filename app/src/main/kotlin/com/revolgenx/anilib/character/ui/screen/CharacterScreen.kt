@@ -13,7 +13,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
-import com.revolgenx.anilib.common.ui.screen.PagerScreen
+import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import org.koin.androidx.compose.koinViewModel
 
 class CharacterScreen(val characterId: Int) : AndroidScreen() {

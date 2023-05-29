@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.datastore.core.DataStore
 import com.revolgenx.anilib.common.ext.launch
-import com.revolgenx.anilib.common.ui.screen.PagingViewModel
+import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 import com.revolgenx.anilib.home.season.data.store.SeasonFieldData
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.data.service.MediaService

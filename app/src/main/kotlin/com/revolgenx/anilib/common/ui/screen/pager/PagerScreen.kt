@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.common.ui.screen
+package com.revolgenx.anilib.common.ui.screen.pager
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

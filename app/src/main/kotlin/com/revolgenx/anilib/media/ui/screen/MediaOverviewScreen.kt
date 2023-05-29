@@ -11,8 +11,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.data.state.ResourceState
-import com.revolgenx.anilib.common.ui.screen.ErrorSection
-import com.revolgenx.anilib.common.ui.screen.LoadingSection
+import com.revolgenx.anilib.common.ui.screen.state.ErrorSection
+import com.revolgenx.anilib.common.ui.screen.state.LoadingSection
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaOverviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel

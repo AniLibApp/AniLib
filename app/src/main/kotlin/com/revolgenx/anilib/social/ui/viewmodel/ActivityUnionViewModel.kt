@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.social.ui.viewmodel
 
-import com.revolgenx.anilib.common.ui.screen.PagingViewModel
+import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.data.service.ActivityUnionService
 import com.revolgenx.anilib.social.data.source.ActivityUnionPagingSource

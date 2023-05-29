@@ -4,7 +4,7 @@ import android.app.Application
 import com.revolgenx.anilib.common.data.repository.repositoryModules
 import com.revolgenx.anilib.common.data.service.serviceModules
 import com.revolgenx.anilib.common.data.store.storeModules
-import com.revolgenx.anilib.common.ui.screen.viewModelModules
+import com.revolgenx.anilib.common.ui.viewmodel.viewModelModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber

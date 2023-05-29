@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,11 +27,11 @@ import com.revolgenx.anilib.common.ui.component.pullrefresh.PullRefreshIndicator
 import com.revolgenx.anilib.common.ui.component.pullrefresh.pullRefresh
 import com.revolgenx.anilib.common.ui.component.pullrefresh.rememberPullRefreshState
 import com.revolgenx.anilib.common.ui.model.BaseModel
-import com.revolgenx.anilib.common.ui.screen.EmptyScreen
-import com.revolgenx.anilib.common.ui.screen.ErrorScreen
-import com.revolgenx.anilib.common.ui.screen.ErrorSection
-import com.revolgenx.anilib.common.ui.screen.LoadingScreen
-import com.revolgenx.anilib.common.ui.screen.LoadingSection
+import com.revolgenx.anilib.common.ui.screen.state.EmptyScreen
+import com.revolgenx.anilib.common.ui.screen.state.ErrorScreen
+import com.revolgenx.anilib.common.ui.screen.state.ErrorSection
+import com.revolgenx.anilib.common.ui.screen.state.LoadingScreen
+import com.revolgenx.anilib.common.ui.screen.state.LoadingSection
 import kotlinx.coroutines.delay
 
 enum class ListPagingListType {

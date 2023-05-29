@@ -1,10 +1,9 @@
-package com.revolgenx.anilib.common.ui.screen
+package com.revolgenx.anilib.common.ui.viewmodel
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -14,7 +13,6 @@ import com.revolgenx.anilib.common.data.field.BaseField
 import com.revolgenx.anilib.common.data.source.BasePagingSource
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingItems
 import com.revolgenx.anilib.common.ui.compose.paging.collectAsLazyPagingItems
-import com.revolgenx.anilib.common.ui.viewmodel.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.common.ui.screen
+package com.revolgenx.anilib.common.ui.screen.auth
 
 import android.content.Context
 import androidx.browser.customtabs.CustomTabsIntent
@@ -35,6 +35,7 @@ import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 
 

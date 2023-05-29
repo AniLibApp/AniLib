@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -43,8 +42,8 @@ import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
-import com.revolgenx.anilib.common.ui.screen.BaseTabScreen
-import com.revolgenx.anilib.common.ui.screen.PagerScreen
+import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
+import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 import com.revolgenx.anilib.user.ui.model.UserModel

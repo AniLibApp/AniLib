@@ -1,6 +1,7 @@
-package com.revolgenx.anilib.common.ui.view
+package com.revolgenx.anilib.common.ui.component.text
 
 import android.text.Spanned
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -30,7 +31,9 @@ fun MarkdownText(
     AndroidView(
         modifier = modifier,
         factory = { context ->
-            val textView = TextView(context)
+            val textView = TextView(context).also {
+                it.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            }
             textView.setTextColor(color.toArgb())
             if (fontSize.isSpecified) {
                 textView.textSize = textSize
