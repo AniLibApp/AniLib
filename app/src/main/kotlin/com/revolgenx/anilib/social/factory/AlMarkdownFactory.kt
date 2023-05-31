@@ -7,6 +7,6 @@ import com.revolgenx.anilib.social.markdown.AlMarkdown
 @SuppressLint("StaticFieldLeak")
 object AlMarkdownFactory {
     fun init(context: Context, alMarkdownCallback: AlMarkdownCallback) {
-        AlMarkdown.init(context, alMarkdownCallback, AlMarkdownPluginsProviderImpl())
+        AlMarkdown.init(context, alMarkdownCallback)
     }
 }

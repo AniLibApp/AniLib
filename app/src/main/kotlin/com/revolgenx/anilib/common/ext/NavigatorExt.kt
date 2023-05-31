@@ -33,8 +33,8 @@ fun Navigator.studioScreen(studioId: Int) {
     push(StudioScreen(studioId))
 }
 
-fun Navigator.userScreen(userId: Int) {
-    push(UserScreen(userId))
+fun Navigator.userScreen(userId: Int? = null, username: String? = null) {
+    push(UserScreen(id = userId, username = username))
 }
 
 fun Navigator.mediaListEntryEditorScreen(mediaId: Int, userId: Int) {
@@ -50,7 +50,7 @@ fun Navigator.activityScreen(activityId: Int) {
     push(ActivityScreen(activityId))
 }
 
-fun Navigator.activityComposerScreen(activityId: Int? = null){
+fun Navigator.activityComposerScreen(activityId: Int? = null) {
     push(ActivityComposerScreen(activityId))
 }
 

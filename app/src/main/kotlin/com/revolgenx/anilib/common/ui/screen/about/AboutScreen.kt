@@ -33,6 +33,7 @@ import com.revolgenx.anilib.common.ext.colorScheme
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithString
 import com.skydoves.landscapist.ImageOptions
@@ -87,9 +88,9 @@ fun AboutScreen(
                 textAlign = TextAlign.Center
             )
             alternative?.let {
-                Text(
+                MediumText(
                     text = it,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    textAlign = TextAlign.Center
                 )
             }
 

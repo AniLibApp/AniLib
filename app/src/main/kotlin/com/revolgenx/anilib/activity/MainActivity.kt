@@ -51,7 +51,6 @@ class MainActivity : BaseActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AlMarkdownFactory.init(this, this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             AppTheme {
@@ -113,7 +112,7 @@ fun MainActivityScreenContent() {
                             TabNavigationItem(tab = LoginScreen)
                         },
                         content = { userId ->
-                            userScreen = userScreen ?: UserScreen(userId, true)
+                            userScreen = userScreen ?: UserScreen(userId, isTab = true)
                             TabNavigationItem(tab = userScreen!!)
                         }
                     )

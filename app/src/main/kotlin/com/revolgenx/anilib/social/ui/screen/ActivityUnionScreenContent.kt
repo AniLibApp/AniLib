@@ -37,6 +37,7 @@ import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
@@ -199,10 +200,8 @@ fun ActivityItemTop(model: ActivityModel) {
             )
 
 
-            Text(
+            MediumText(
                 text = model.user?.name.naText(),
-                fontSize = 13.sp,
-                maxLines = 2
             )
         }
 

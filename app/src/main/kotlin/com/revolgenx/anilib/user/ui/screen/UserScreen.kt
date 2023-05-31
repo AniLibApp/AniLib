@@ -57,7 +57,11 @@ import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 import org.koin.androidx.compose.koinViewModel
 
-class UserScreen(private val id: Int, private val isTab: Boolean = false) : BaseTabScreen() {
+class UserScreen(
+    private val id: Int? = null,
+    private val username: String? = null,
+    private val isTab: Boolean = false
+) : BaseTabScreen() {
     override val iconRes: Int = R.drawable.ic_person_outline
     override val selectedIconRes: Int = R.drawable.ic_person
 
@@ -76,7 +80,9 @@ class UserScreen(private val id: Int, private val isTab: Boolean = false) : Base
 
     @Composable
     override fun Content() {
-        UserScreenContent(userId = id, isTab = isTab)
+        id?.let {
+            UserScreenContent(userId = id, isTab = isTab)
+        }
     }
 }
 
