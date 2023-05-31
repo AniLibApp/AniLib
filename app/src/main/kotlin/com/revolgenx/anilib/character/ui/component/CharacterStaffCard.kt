@@ -11,23 +11,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.model.CharacterModel
-import com.revolgenx.anilib.common.ext.colorScheme
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
-import com.revolgenx.anilib.common.ui.component.media.CardRowEndItem
-import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowEndItemContent
+import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.type.CharacterRole
@@ -79,16 +75,13 @@ fun CharacterStaffCard(
                         .fillMaxHeight()
                         .padding(vertical = 2.dp)
                 ) {
-                    Text(text = character.name?.full.naText())
+                    MediumText(text = character.name?.full.naText())
                     characterRole?.let {
                         stringArrayResource(id = R.array.character_role).getOrNull(it.ordinal)
                             ?.let {
-                                Text(
-                                    text = it,
-                                    fontSize = 11.sp,
-                                    color = colorScheme().onSurfaceVariant,
-                                    letterSpacing = 0.2.sp,
-                                    fontWeight = FontWeight.Light
+                                LightText(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = it
                                 )
                             }
                     }
@@ -100,7 +93,7 @@ fun CharacterStaffCard(
                         .weight(1f)
                         .fillMaxWidth()
                 ) {
-                    CardRowEndItem(
+                    CharacterOrStaffRowEndItemContent(
                         text = staff.name?.full.naText(),
                         subTitle = staff.languageV2,
                         imageUrl = staff.image?.image

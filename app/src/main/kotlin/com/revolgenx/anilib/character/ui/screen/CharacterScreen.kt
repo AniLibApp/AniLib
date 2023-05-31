@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
+import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
@@ -50,10 +51,12 @@ private fun CharacterScreenContent(characterId: Int) {
     val pagerState = rememberPagerState { pages.size }
     val aboutViewModel = koinViewModel<CharacterAboutViewModel>()
     val mediaViewModel = koinViewModel<CharacterMediaViewModel>()
+    val actorViewModel = koinViewModel<CharacterActorViewModel>()
 
     LaunchedEffect(aboutViewModel, mediaViewModel){
         aboutViewModel.field.characterId = characterId
         mediaViewModel.field.characterId = characterId
+        actorViewModel.field.characterId = characterId
     }
 
     PagerScreenScaffold(
@@ -67,7 +70,7 @@ private fun CharacterScreenContent(characterId: Int) {
             when (pages[page].type) {
                 CharacterScreenPageType.ABOUT -> CharacterAboutScreen(aboutViewModel)
                 CharacterScreenPageType.MEDIA -> CharacterMediaScreen(mediaViewModel)
-                CharacterScreenPageType.VOICE_ROLES -> CharacterActorScreen()
+                CharacterScreenPageType.VOICE_ROLES -> CharacterActorScreen(actorViewModel)
             }
         }
     }

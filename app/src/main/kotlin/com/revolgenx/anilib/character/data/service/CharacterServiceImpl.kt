@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.character.data.service
 
+import com.revolgenx.anilib.character.data.field.CharacterActorField
 import com.revolgenx.anilib.character.data.field.CharacterField
 import com.revolgenx.anilib.character.data.field.CharacterMediaField
 import com.revolgenx.anilib.character.ui.model.CharacterModel
@@ -9,6 +10,9 @@ import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
+import com.revolgenx.anilib.staff.ui.model.StaffModel
+import com.revolgenx.anilib.staff.ui.model.StaffNameModel
+import com.revolgenx.anilib.staff.ui.model.toModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -35,5 +39,22 @@ class CharacterServiceImpl(apolloRepository: ApolloRepository) : BaseService(apo
             }
         }
             .flowOn(Dispatchers.IO)
+    }
+
+    override fun getCharacterActor(field: CharacterActorField): Flow<List<StaffModel>?> {
+        return field.toQuery().map {
+            val hashMap = mutableMapOf<Int, StaffModel>()
+            it.dataAssertNoErrors.character?.media?.edges?.forEach {
+                it?.voiceActors?.filterNotNull()?.forEach { actor ->
+                    hashMap[actor.id] = StaffModel(
+                        id = actor.id,
+                        name = StaffNameModel(full = actor.name?.full),
+                        languageV2 = actor.languageV2,
+                        image = actor.image?.staffImage?.toModel()
+                    )
+                }
+            }
+            hashMap.values.toList()
+        }
     }
 }

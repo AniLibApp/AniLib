@@ -30,12 +30,14 @@ import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.skydoves.landscapist.ImageOptions
 
 @Composable
-fun MediaCard(mediaModel: MediaModel, width: Dp? = null, onClick: (id: Int) -> Unit) {
+fun MediaItemCard(mediaModel: MediaModel, width: Dp? = null, onClick: (id: Int) -> Unit) {
     Card(
         modifier = Modifier
             .let {
@@ -56,7 +58,7 @@ fun MediaCard(mediaModel: MediaModel, width: Dp? = null, onClick: (id: Int) -> U
                 },
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            MediaItem(mediaModel)
+            MediaItemContent(mediaModel)
             val format = mediaModel.format?.let {
                 stringArrayResource(id = R.array.media_format)[it.ordinal]
             }.naText()
@@ -65,14 +67,9 @@ fun MediaCard(mediaModel: MediaModel, width: Dp? = null, onClick: (id: Int) -> U
                 modifier = Modifier
                     .padding(vertical = 2.dp, horizontal = 4.dp),
             ) {
-                Text(
+                LightText(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.format_year).format(format, year),
-                    maxLines = 1,
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    overflow = TextOverflow.Ellipsis,
-                    fontWeight = FontWeight.Medium,
+                    text = stringResource(id = R.string.format_year).format(format, year)
                 )
             }
         }
@@ -80,7 +77,7 @@ fun MediaCard(mediaModel: MediaModel, width: Dp? = null, onClick: (id: Int) -> U
 }
 
 @Composable
-fun MediaItem(mediaModel: MediaModel) {
+fun MediaItemContent(mediaModel: MediaModel) {
     Column {
         MediaCoverImageType { type ->
             AsyncImage(
@@ -97,15 +94,11 @@ fun MediaItem(mediaModel: MediaModel) {
         }
 
         MediaTitleType { type ->
-            Text(
+            MediumText(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 2.dp, horizontal = 4.dp),
-                text = mediaModel.title?.title(type).naText(),
-                maxLines = 2,
-                fontSize = 12.sp,
-                lineHeight = 14.sp,
-                fontWeight = FontWeight.SemiBold,
+                text = mediaModel.title?.title(type).naText()
             )
         }
     }
@@ -113,7 +106,7 @@ fun MediaItem(mediaModel: MediaModel) {
 
 
 @Composable
-fun MediaRowItem(
+fun MediaItemRowContent(
     mediaModel: MediaModel,
     onClick: OnClick
 ) {
@@ -149,14 +142,10 @@ fun MediaRowItem(
         ) {
 
             MediaTitleType { type ->
-                Text(
+                MediumText(
                     modifier = Modifier
                         .fillMaxWidth(),
                     text = mediaModel.title?.title(type).naText(),
-                    maxLines = 2,
-                    fontSize = 12.sp,
-                    lineHeight = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
                 )
             }
 
@@ -165,15 +154,9 @@ fun MediaRowItem(
             }.naText()
             val year = mediaModel.seasonYear.naText()
 
-            Text(
+            LightText(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.format_year).format(format, year),
-                maxLines = 1,
-                fontSize = 11.sp,
-                letterSpacing = 0.2.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                overflow = TextOverflow.Ellipsis,
-                fontWeight = FontWeight.Medium,
             )
         }
     }

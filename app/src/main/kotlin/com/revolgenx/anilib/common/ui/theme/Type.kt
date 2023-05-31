@@ -52,12 +52,3 @@ val Typography = Typography(
 )
 
 
-val titleRegular = defaultTypography.titleLarge.copy(
-    fontFamily = overpassFonts,
-    fontWeight = FontWeight.Medium,
-    fontSize = 16.sp,
-    lineHeight = 24.sp,
-    letterSpacing = 0.2.sp
-)
-
-

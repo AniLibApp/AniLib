@@ -25,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
@@ -82,7 +83,8 @@ fun AboutScreen(
                 text = name,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
-                letterSpacing = 0.2.sp
+                letterSpacing = 0.2.sp,
+                textAlign = TextAlign.Center
             )
             alternative?.let {
                 Text(

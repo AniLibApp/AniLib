@@ -43,6 +43,8 @@ import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
@@ -147,11 +149,10 @@ private fun SeasonItem(
                 verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
                 MediaTitleType { type ->
-                    Text(
-                        media.title?.title(type).naText(),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 2,
-                        style = MaterialTheme.typography.titleMedium,
+                    MediumText(
+                        text = media.title?.title(type).naText(),
+                        fontSize = 16.sp,
+                        lineHeight = 18.sp
                     )
                 }
 
@@ -160,11 +161,10 @@ private fun SeasonItem(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     media.genres?.take(4)?.map { genre ->
-                        Text(
-                            genre,
+                        LightText(
+                            text = genre,
                             fontSize = 10.sp,
                             color = MaterialTheme.colorScheme.primary,
-                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }

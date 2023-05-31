@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -149,6 +150,12 @@ private fun <M : BaseModel> LazyGridLayout(
                     itemContent(item)
                 }
                 lazyGridResourceState(pagingItems)
+            }
+
+            items?.let {
+                items(items = items) { item ->
+                    itemContent(item)
+                }
             }
         }
 

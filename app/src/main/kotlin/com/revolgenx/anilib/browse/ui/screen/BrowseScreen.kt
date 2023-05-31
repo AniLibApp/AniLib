@@ -60,19 +60,20 @@ import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ext.studioScreen
 import com.revolgenx.anilib.common.ext.userScreen
+import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffCard
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
+import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaItemCard
 import com.revolgenx.anilib.media.ui.model.MediaModel
-import com.revolgenx.anilib.staff.ui.component.StaffCard
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.user.ui.model.UserModel
@@ -124,20 +125,32 @@ private fun BrowseScreenContent() {
             ) { browseModel ->
                 when (browseModel) {
                     is MediaModel -> {
-                        MediaCard(browseModel) {
+                        MediaItemCard(browseModel) {
                             navigator.mediaScreen(it)
                         }
                     }
 
                     is CharacterModel -> {
-                        CharacterCard(browseModel) {
-                            navigator.characterScreen(it)
+                        with(browseModel) {
+                            CharacterOrStaffCard(
+                                title = name?.full.naText(),
+                                imageUrl = image?.image
+                            ) {
+                                navigator.staffScreen(id)
+                                navigator.characterScreen(id)
+
+                            }
                         }
                     }
 
                     is StaffModel -> {
-                        StaffCard(browseModel) {
-                            navigator.staffScreen(it)
+                        with(browseModel) {
+                            CharacterOrStaffCard(
+                                title = name?.full.naText(),
+                                imageUrl = image?.image
+                            ) {
+                                navigator.staffScreen(id)
+                            }
                         }
                     }
 
@@ -186,14 +199,7 @@ private fun BrowseUserItem(user: UserModel, onClick: OnClick) {
             previewPlaceholder = R.drawable.bleach
         )
 
-        Text(
-            user.name.naText(),
-            maxLines = 2,
-            fontSize = 13.sp,
-            lineHeight = 15.sp,
-            overflow = TextOverflow.Ellipsis,
-            fontWeight = FontWeight.SemiBold,
-        )
+        MediumText(text = user.name.naText())
     }
 }
 
@@ -235,7 +241,7 @@ private fun BrowseStudioItem(studio: StudioModel, onMediaClick: OnClick, onClick
         }
         LazyRow {
             items(items = medias) {
-                MediaCard(mediaModel = it, width = 120.dp, onClick = onMediaClick)
+                MediaItemCard(mediaModel = it, width = 120.dp, onClick = onMediaClick)
             }
         }
     }

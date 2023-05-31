@@ -26,7 +26,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaItemCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,7 +60,7 @@ fun CharacterMediaScreen(viewModel: CharacterMediaViewModel) {
                 gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
             ) { model ->
                 model ?: return@LazyPagingList
-                MediaCard(mediaModel = model) {
+                MediaItemCard(mediaModel = model) {
                     navigator.mediaScreen(it)
                 }
             }

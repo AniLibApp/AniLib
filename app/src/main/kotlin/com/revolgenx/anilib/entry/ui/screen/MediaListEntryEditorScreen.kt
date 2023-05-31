@@ -55,6 +55,7 @@ import com.revolgenx.anilib.common.ui.component.date.CalendarDialog
 import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.util.OnClick
@@ -394,7 +395,7 @@ private fun MediaListEditScreenContent(
                     )
 
                     TextHeaderContent(
-                        heading = stringResource(R.string.custom_lists), headingSize = 14.sp
+                        heading = stringResource(R.string.custom_lists)
                     ) {
                         if (hasCustomList) {
                             entryField.customLists!!.map { cList ->
@@ -423,7 +424,6 @@ private fun MediaListEditScreenContent(
 
                             TextHeaderContent(
                                 heading = stringResource(id = R.string.advanced_scores),
-                                headingSize = 14.sp
                             ) {
                                 entryField.advancedScores?.let {
                                     Grid(
@@ -498,17 +498,15 @@ private fun CardHeaderContent(
 private fun TextHeaderContent(
     modifier: Modifier = Modifier,
     heading: String,
-    headingSize: TextUnit? = null,
     content: @Composable () -> Unit
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(
+        MediumText(
             modifier = Modifier.padding(start = 5.dp, bottom = 3.dp),
             text = heading,
-            fontSize = headingSize ?: 13.sp,
-            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp,
             maxLines = 1,
-            letterSpacing = 0.3.sp
+            lineHeight = TextUnit.Unspecified
         )
         content()
     }

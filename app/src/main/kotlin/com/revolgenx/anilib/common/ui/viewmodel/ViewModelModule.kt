@@ -5,6 +5,7 @@ import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
+import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
 import com.revolgenx.anilib.common.data.store.animeListFilterStoreFileName
 import com.revolgenx.anilib.common.data.store.mangaListFilterStoreFileName
@@ -53,6 +54,7 @@ val viewModelModules = module {
     //character
     viewModel { CharacterAboutViewModel(get()) }
     viewModel { CharacterMediaViewModel(get()) }
+    viewModel { CharacterActorViewModel(get()) }
 
     //staff
     viewModel { StaffAboutViewModel(get()) }

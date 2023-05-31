@@ -35,6 +35,7 @@ import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -229,14 +230,11 @@ private fun ActivityItemBottom(model: ActivityModel) {
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Bottom
     ) {
-        Text(
+        LightText(
             modifier = Modifier
                 .weight(1f)
                 .padding(bottom = 8.dp),
-            text = model.createdAtPrettyTime,
-            fontSize = 11.sp,
-            color = colorScheme().onSurfaceVariant,
-            fontWeight = FontWeight.Medium
+            text = model.createdAtPrettyTime
         )
 
         Row(
@@ -245,7 +243,7 @@ private fun ActivityItemBottom(model: ActivityModel) {
         ) {
 
             TextButton(
-                colors = ButtonDefaults.textButtonColors(colorScheme().onSurface),
+                colors = ButtonDefaults.textButtonColors(contentColor = colorScheme().onSurface),
                 onClick = { /*TODO*/ }
             ) {
                 Icon(
@@ -257,7 +255,7 @@ private fun ActivityItemBottom(model: ActivityModel) {
 
 
             TextButton(
-                colors = ButtonDefaults.textButtonColors(colorScheme().onSurface),
+                colors = ButtonDefaults.textButtonColors(contentColor = colorScheme().onSurface),
                 onClick = { /*TODO*/ }
             ) {
                 Icon(
