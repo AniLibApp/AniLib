@@ -12,7 +12,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.res.ResourcesCompat
+import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.isNotNull
+import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.social.factory.markdown
 
 @Composable
@@ -28,11 +31,14 @@ fun MarkdownText(
             fontSize.toPx()
         }
     } else 0f
+
     AndroidView(
         modifier = modifier,
         factory = { context ->
             val textView = TextView(context).also {
                 it.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                it.typeface = ResourcesCompat.getFont(context, R.font.overpass_regular)
+                it.letterSpacing = 0.02f
             }
             textView.setTextColor(color.toArgb())
             if (fontSize.isSpecified) {
