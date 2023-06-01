@@ -198,7 +198,7 @@ private fun MediaListEditScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(12.dp)
+                .padding(8.dp)
         ) {
             ResourceScreen(resourceState = viewModel.resource.value,
                 loading = loading,

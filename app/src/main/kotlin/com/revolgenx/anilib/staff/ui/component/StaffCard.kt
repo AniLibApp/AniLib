@@ -20,18 +20,23 @@ import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowEndItemContent
+import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.util.OnClickWithId
+import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.skydoves.landscapist.ImageOptions
 
 @Composable
-fun StaffRowCard(staff: StaffModel, role: String? = null, onClick: OnClickWithId) {
+fun StaffRowCard(
+    staff: StaffModel,
+    role: String? = null,
+    onRoleClick: OnClickWithValue<String>? = null,
+    onClick: OnClickWithValue<Int>
+) {
     Card(
         modifier = Modifier
             .height(124.dp)
@@ -71,7 +76,11 @@ fun StaffRowCard(staff: StaffModel, role: String? = null, onClick: OnClickWithId
 
                 role?.let {
                     LightText(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onRoleClick?.invoke(it)
+                            },
                         text = it,
                         maxLines = 4
                     )
@@ -86,8 +95,8 @@ fun StaffRowCard(staff: StaffModel, role: String? = null, onClick: OnClickWithId
 fun StaffMediaCharacterCard(
     mediaModel: MediaModel,
     character: CharacterModel?,
-    onMediaClick: OnClickWithId,
-    onCharacterClick: OnClickWithId
+    onMediaClick: OnClickWithValue<Int>,
+    onCharacterClick: OnClickWithValue<Int>
 ) {
     Card(
         modifier = Modifier

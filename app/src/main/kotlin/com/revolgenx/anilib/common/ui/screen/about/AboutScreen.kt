@@ -35,7 +35,7 @@ import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClick
-import com.revolgenx.anilib.common.util.OnClickWithString
+import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.skydoves.landscapist.ImageOptions
 
 @Composable
@@ -48,7 +48,7 @@ fun AboutScreen(
     onFavouriteClick: OnClick,
     description: String?,
     spannedDescription: Spanned?,
-    onImageClick: OnClickWithString
+    onImageClick: OnClickWithValue<String>
 ) {
     Column(
         modifier = Modifier

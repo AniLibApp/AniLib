@@ -21,13 +21,13 @@ import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
+import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.home.explore.ui.screen.ExploreScreen
 import com.revolgenx.anilib.home.recommendation.ui.screen.RecommendationsScreen
-import com.revolgenx.anilib.home.review.ui.screen.ReviewsScreen
 import com.revolgenx.anilib.home.season.ui.screen.SeasonScreen
 import com.revolgenx.anilib.notification.ui.screen.NotificationScreen
+import com.revolgenx.anilib.review.ui.screen.ReviewListScreen
 
 object HomeScreen : BaseTabScreen() {
     override val iconRes: Int = R.drawable.ic_home_outline
@@ -104,7 +104,7 @@ fun HomeScreenContent() {
                 HomeScreenPages.EXPLORE -> ExploreScreen()
                 HomeScreenPages.SEASON -> SeasonScreen()
                 HomeScreenPages.RECOMMENDATIONS -> RecommendationsScreen()
-                HomeScreenPages.REVIEWS -> ReviewsScreen()
+                HomeScreenPages.REVIEWS -> ReviewListScreen()
             }
         }
     }

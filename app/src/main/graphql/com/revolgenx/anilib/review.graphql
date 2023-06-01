@@ -59,8 +59,11 @@ query ReviewQuery($reviewId:Int, $mediaId:Int, $userId:Int){
     }
 }
 
-query AllReviewQuery($page:Int, $perPage:Int, $sort:[ReviewSort]){
-    page: Page(page:$page, perPage:$perPage){
+query ReviewListQuery($page:Int, $perPage:Int, $sort:[ReviewSort]){
+    page: Page(page:$page, perPage:$perPage) @nonnull{
+        pageInfo @nonnull{
+            ... pageInfo
+        }
         reviews(sort:$sort){
             id
             summary
@@ -68,6 +71,7 @@ query AllReviewQuery($page:Int, $perPage:Int, $sort:[ReviewSort]){
             ratingAmount
             score
             createdAt
+            userId
             user{
                 id
                 name
@@ -75,6 +79,7 @@ query AllReviewQuery($page:Int, $perPage:Int, $sort:[ReviewSort]){
                     ... userAvatar
                 }
             }
+            mediaId
             media{
                 id
                 title{

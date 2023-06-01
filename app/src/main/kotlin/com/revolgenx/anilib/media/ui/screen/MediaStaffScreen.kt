@@ -1,21 +1,24 @@
 package com.revolgenx.anilib.media.ui.screen
 
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
+import com.revolgenx.anilib.common.util.OnClickWithValue
+import com.revolgenx.anilib.common.util.OnLongClickWithValue
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.staff.ui.component.StaffRowCard
 import com.revolgenx.anilib.staff.ui.model.StaffEdgeModel
-import com.revolgenx.anilib.staff.ui.model.StaffModel
-import com.revolgenx.anilib.staff.ui.model.StaffNameModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -23,6 +26,8 @@ fun MediaStaffScreen(
     mediaId: Int,
     viewModel: MediaStaffViewModel = koinViewModel()
 ) {
+    val snackbar = localSnackbarHostState()
+    val scope = rememberCoroutineScope()
     val navigator = LocalMainNavigator.current
     LaunchedEffect(mediaId) {
         viewModel.field.mediaId = mediaId
@@ -37,7 +42,17 @@ fun MediaStaffScreen(
         }
     ) { staffEdgeModel ->
         staffEdgeModel ?: return@LazyPagingList
-        MediaStaffItem(staffEdgeModel) { staffId ->
+        MediaStaffItem(
+            staffEdgeModel = staffEdgeModel,
+            onRoleClick = {
+                scope.launch {
+                    snackbar.showSnackbar(
+                        it,
+                        withDismissAction = true,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }) { staffId ->
             navigator.staffScreen(staffId)
         }
     }
@@ -47,23 +62,15 @@ fun MediaStaffScreen(
 @Composable
 private fun MediaStaffItem(
     staffEdgeModel: StaffEdgeModel,
+    onRoleClick: OnClickWithValue<String>,
     onClick: (staffId: Int) -> Unit
 ) {
     val staff = staffEdgeModel.node ?: return
     val staffRole = staffEdgeModel.role
-    StaffRowCard(staff = staff, role = staffRole, onClick = onClick)
-}
-
-
-@Preview
-@Composable
-fun MediaStaffItemPreview() {
-    MediaStaffItem(
-        StaffEdgeModel(
-            node = StaffModel(
-                name = StaffNameModel("Aya Takaha Aya Takaha Aya Takaha")
-            ),
-            role = "Original Creator"
-        )
-    ) {}
+    StaffRowCard(
+        staff = staff,
+        role = staffRole,
+        onRoleClick = onRoleClick,
+        onClick = onClick
+    )
 }

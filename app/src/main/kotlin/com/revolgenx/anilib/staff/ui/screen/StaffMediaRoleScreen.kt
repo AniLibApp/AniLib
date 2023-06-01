@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.staff.ui.screen
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -14,15 +16,17 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFloatingButton
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -37,9 +41,11 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,6 +54,7 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
     val bottomScrollConnection =
         remember { BottomNestedScrollConnection(state = scrollState) }
+    val scope = rememberCoroutineScope()
 
     ScreenScaffold(
         topBar = {},
@@ -59,6 +66,7 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
         contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) {
         val pagingItems = viewModel.collectAsLazyPagingItems()
+        val snackbar = localSnackbarHostState()
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -82,7 +90,17 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
                     }
 
                     is MediaModel -> {
-                        StaffMediaRoleItem(model = model) {
+                        StaffMediaRoleItem(
+                            model = model,
+                            onRoleClick = {
+                                scope.launch {
+                                    snackbar.showSnackbar(
+                                        it,
+                                        withDismissAction = true,
+                                        duration = SnackbarDuration.Short
+                                    )
+                                }
+                            }) {
                             navigator.mediaScreen(model.id)
                         }
                     }
@@ -94,7 +112,11 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
 
 
 @Composable
-private fun StaffMediaRoleItem(model: MediaModel, onClick: OnClick) {
+private fun StaffMediaRoleItem(
+    model: MediaModel,
+    onRoleClick: OnClickWithValue<String>,
+    onClick: OnClick
+) {
     Card(
         modifier = Modifier
             .width(168.dp)
@@ -107,7 +129,11 @@ private fun StaffMediaRoleItem(model: MediaModel, onClick: OnClick) {
                 Box(modifier = Modifier.fillMaxHeight()) {
                     model.staffRole?.let {
                         LightText(
-                            modifier = Modifier.align(Alignment.BottomStart),
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .clickable {
+                                    onRoleClick(it)
+                                },
                             text = it,
                             maxLines = 2
                         )

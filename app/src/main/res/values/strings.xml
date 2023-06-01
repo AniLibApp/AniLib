@@ -126,6 +126,10 @@
     <string name="failed_to_save">Failed to save.</string>
     <!--entry-->
 
+    <!--reivews-->
+    <string name="review_score_format">Score: %1$s/100</string>
+    <string name="review_of_s_by_s">Review of %1$s by %2$s</string>
+    <!--reivews-->
 
     <!--App-->
     <string name="its_empty">Feeling empty</string>
@@ -182,7 +186,7 @@
     <string name="total_rewatches">Total Rewatches</string>
     <string name="total_rereads">Total Rereads</string>
     <string name="volume_progress">Volume Progress</string>
-   <string name="favourite">Favourite</string>
+    <string name="favourite">Favourite</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="confirm">Confirm</string>

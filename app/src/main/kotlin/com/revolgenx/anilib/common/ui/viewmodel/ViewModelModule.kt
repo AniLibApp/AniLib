@@ -22,6 +22,7 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
+import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
@@ -85,5 +86,8 @@ val viewModelModules = module {
 
     //browse
     viewModel { BrowseViewModel(get()) }
+
+    //reviews
+    viewModel { ReviewListViewModel(get()) }
 
 }

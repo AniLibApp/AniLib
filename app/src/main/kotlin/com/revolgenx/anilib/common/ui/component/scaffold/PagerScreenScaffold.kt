@@ -9,12 +9,17 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.revolgenx.anilib.common.ui.component.appbar.PagerScreenTopAppBar
+import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import kotlinx.coroutines.launch
 
@@ -31,31 +36,36 @@ fun <T> PagerScreenScaffold(
     onMoreClick: (() -> Unit)? = null,
     content: @Composable (page: Int) -> Unit
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    Scaffold(
-        contentWindowInsets = contentWindowInsets,
-        topBar = {
-            PagerScreenTopAppBar(
-                pages = pages,
-                navigationIcon = navigationIcon,
-                actions = actions,
-                scrollBehavior = scrollBehavior,
-                pagerState = pagerState,
-                windowInsets = windowInsets,
-                onMoreClick = onMoreClick,
-            ) { index ->
-                coroutineScope.launch {
-                    pagerState.scrollToPage(index)
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
+        val coroutineScope = rememberCoroutineScope()
+        Scaffold(
+            contentWindowInsets = contentWindowInsets,
+            snackbarHost = { SnackbarHost(snackbarHostState) },
+            topBar = {
+                PagerScreenTopAppBar(
+                    pages = pages,
+                    navigationIcon = navigationIcon,
+                    actions = actions,
+                    scrollBehavior = scrollBehavior,
+                    pagerState = pagerState,
+                    windowInsets = windowInsets,
+                    onMoreClick = onMoreClick,
+                ) { index ->
+                    coroutineScope.launch {
+                        pagerState.scrollToPage(index)
+                    }
                 }
             }
-        }
-    ) { paddingValues ->
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
-                .padding(paddingValues)
-        ) { page ->
-            content(page)
+        ) { paddingValues ->
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .padding(paddingValues)
+            ) { page ->
+                content(page)
+            }
         }
     }
 }

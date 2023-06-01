@@ -7,6 +7,7 @@ import com.revolgenx.anilib.common.ui.screen.image.ImageViewerScreen
 import com.revolgenx.anilib.entry.ui.screen.MediaListEntryEditorScreen
 import com.revolgenx.anilib.list.ui.screen.UserMediaListScreen
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
+import com.revolgenx.anilib.review.ui.screen.ReviewScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityComposerScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityScreen
 import com.revolgenx.anilib.staff.ui.screen.StaffScreen
@@ -56,4 +57,9 @@ fun Navigator.activityComposerScreen(activityId: Int? = null) {
 
 fun Navigator.imageViewerScreen(url: String) {
     push(ImageViewerScreen(url))
+}
+
+
+fun Navigator.reviewScreen(reviewId: Int) {
+    push(ReviewScreen(reviewId))
 }

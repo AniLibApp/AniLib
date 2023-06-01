@@ -24,7 +24,7 @@ import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowEndItemContent
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.util.OnClickWithId
+import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.type.CharacterRole
 import com.skydoves.landscapist.ImageOptions
@@ -34,8 +34,8 @@ fun CharacterStaffCard(
     character: CharacterModel,
     characterRole: CharacterRole?,
     staff: StaffModel?,
-    onCharacterClick: OnClickWithId,
-    onStaffClick: OnClickWithId
+    onCharacterClick: OnClickWithValue<Int>,
+    onStaffClick: OnClickWithValue<Int>
 ) {
     Card(
         modifier = Modifier
