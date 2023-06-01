@@ -81,11 +81,11 @@ private fun StudioScreenContent(studioId: Int, viewModel: StudioViewModel = koin
 
                 when (baseModel) {
                     is HeaderModel -> {
-                        Header(baseModel.title)
+                        Header(header = baseModel)
                     }
 
                     is MediaModel -> {
-                        MediaItemCard(mediaModel = baseModel){
+                        MediaItemCard(mediaModel = baseModel) {
                             navigator.push(MediaScreen(it, baseModel.type))
                         }
                     }

@@ -26,6 +26,7 @@ import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterViewModel
+import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -59,6 +60,7 @@ val viewModelModules = module {
     //staff
     viewModel { StaffAboutViewModel(get()) }
     viewModel { StaffMediaCharacterViewModel(get()) }
+    viewModel { StaffMediaRoleViewModel(get()) }
 
     //studio
     viewModel { StudioViewModel(get()) }

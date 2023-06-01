@@ -7,22 +7,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.revolgenx.anilib.common.ext.colorScheme
+import com.revolgenx.anilib.common.ui.model.HeaderModel
 
 @Composable
-fun Header(title: String) {
+fun Header(header: HeaderModel) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 10.dp)
     ) {
         Text(
-            text = title,
+            text = header.title ?: stringResource(id = header.titleRes!!),
             fontWeight = FontWeight.SemiBold,
             fontSize = 22.sp,
-            color = MaterialTheme.colorScheme.onSurface
+            color = colorScheme().onSurface
         )
     }
 }

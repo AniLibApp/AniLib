@@ -194,19 +194,19 @@ private fun AiringScreenContent(
                     val item = pagingItems[index]
                     GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
                 }
-            ) { airingScheduleModel ->
-                airingScheduleModel ?: return@LazyPagingList
-                when (airingScheduleModel) {
+            ) { model ->
+                model ?: return@LazyPagingList
+                when (model) {
                     is HeaderModel -> {
-                        Header(title = airingScheduleModel.title)
+                        Header(header = model)
                     }
 
                     is AiringScheduleModel -> {
-                        AiringScheduleItem(airingScheduleModel = airingScheduleModel) {
+                        AiringScheduleItem(airingScheduleModel = model) {
                             navigator.push(
                                 MediaScreen(
-                                    airingScheduleModel.mediaId,
-                                    airingScheduleModel.media?.type
+                                    model.mediaId,
+                                    model.media?.type
                                 )
                             )
                         }
@@ -299,11 +299,13 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                         }
                     }
 
-                    Text(
-                        stringResource(id = media.format.toStringRes()),
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
+                    media.format.toStringRes()?.let {
+                        Text(
+                            stringResource(id = it),
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                    }
                 }
                 val epAiringIn = if (media.episodes.isNull()) {
                     stringResource(id = R.string.ep_s_airing_in).format(airingScheduleModel.episode)

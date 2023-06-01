@@ -41,7 +41,7 @@ fun CharacterStaffCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(124.dp)
-            .padding(8.dp)
+            .padding(6.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -55,7 +55,7 @@ fun CharacterStaffCard(
                         onCharacterClick(character.id)
                     },
                 horizontalArrangement = Arrangement.spacedBy(
-                    8.dp,
+                    6.dp,
                     alignment = Alignment.Start
                 )
             ) {

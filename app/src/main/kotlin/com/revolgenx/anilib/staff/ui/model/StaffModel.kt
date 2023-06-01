@@ -78,7 +78,7 @@ data class StaffModel(
         bloodType?.let {
             generalInfo += "<b>Blood Type:</b> $it \n"
         }
-        yearsActive?.let {
+        yearsActive?.takeIf { it.isNotEmpty() }?.let {
             val firstDate = it.getOrNull(0).naText()
             val lastDate = it.getOrNull(1) ?: "Present"
             generalInfo += "<b>Years active:</b> $firstDate-$lastDate \n"

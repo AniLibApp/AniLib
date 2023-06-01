@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.common.ui.compose.paging
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import com.revolgenx.anilib.common.ui.component.pullrefresh.PullRefreshIndicator
 import com.revolgenx.anilib.common.ui.component.pullrefresh.pullRefresh
@@ -97,7 +95,6 @@ private fun <M : BaseModel> LazyColumnLayout(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         pagingItems?.let {
             itemsIndexed(

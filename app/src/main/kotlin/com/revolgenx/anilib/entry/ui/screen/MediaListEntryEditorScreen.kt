@@ -504,7 +504,7 @@ private fun TextHeaderContent(
         MediumText(
             modifier = Modifier.padding(start = 5.dp, bottom = 3.dp),
             text = heading,
-            fontSize = 14.sp,
+            fontSize = 16.sp,
             maxLines = 1,
             lineHeight = TextUnit.Unspecified
         )

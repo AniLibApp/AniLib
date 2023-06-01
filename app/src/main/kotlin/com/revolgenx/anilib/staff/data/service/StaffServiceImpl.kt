@@ -12,6 +12,7 @@ import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.staff.data.field.StaffField
 import com.revolgenx.anilib.staff.data.field.StaffMediaCharacterField
+import com.revolgenx.anilib.staff.data.field.StaffMediaRoleField
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.toModel
 import kotlinx.coroutines.Dispatchers
@@ -74,6 +75,21 @@ class StaffServiceImpl(apolloRepository: ApolloRepository) : StaffService,
             PageModel(
                 pageInfo = pageInfo,
                 data = data
+            )
+        }.onIO()
+    }
+
+
+    override fun getStaffMediaRole(field: StaffMediaRoleField): Flow<PageModel<MediaModel>> {
+        return field.toQuery().map {
+            val staffMedia = it.dataAssertNoErrors.staff?.staffMedia
+            PageModel(
+                pageInfo = staffMedia?.pageInfo?.pageInfo,
+                data = staffMedia?.edges?.mapNotNull { edge ->
+                    edge?.node?.onMedia?.media?.toModel()?.also { model ->
+                        model.staffRole = edge.staffRole
+                    }
+                }
             )
         }.onIO()
     }

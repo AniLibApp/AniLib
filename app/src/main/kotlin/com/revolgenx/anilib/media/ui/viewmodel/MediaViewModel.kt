@@ -23,7 +23,7 @@ class MediaViewModel : ViewModel() {
     val pages = listOf(
         MediaScreenPage(MediaScreenPageType.OVERVIEW, R.string.overview, R.drawable.ic_fire),
         MediaScreenPage(MediaScreenPageType.WATCH, R.string.watch, R.drawable.ic_watch),
-        MediaScreenPage(MediaScreenPageType.CHARACTER, R.string.character, R.drawable.ic_person_outline),
+        MediaScreenPage(MediaScreenPageType.CHARACTER, R.string.character, R.drawable.ic_person),
         MediaScreenPage(MediaScreenPageType.STAFF, R.string.staff, R.drawable.ic_staff),
         MediaScreenPage(MediaScreenPageType.REVIEW, R.string.review, R.drawable.ic_star),
         MediaScreenPage(MediaScreenPageType.STATS, R.string.stats, R.drawable.ic_stats),

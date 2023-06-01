@@ -120,6 +120,9 @@ query StaffMediaRoleQuery(
     $sort:[MediaSort]){
     staff: Staff(id:$staffId){
         staffMedia(page:$page,perPage:$perPage,onList: $onList, sort: $sort){
+            pageInfo @nonnull{
+                ... pageInfo
+            }
             edges{
                 node{
                     ... on Media{

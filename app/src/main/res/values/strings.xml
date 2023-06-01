@@ -143,7 +143,8 @@
     <string name="watch">Watch</string>
     <string name="staff">Staff</string>
     <string name="media">Media</string>
-    <string name="voices_roles">VoiceRoles</string>
+    <string name="voice_roles">Voice Roles</string>
+    <string name="staff_roles">Staff Roles</string>
     <string name="about">About</string>
     <string name="day_range_string">%1$s - %2$s</string>
     <string name="previous">Previous</string>
@@ -211,5 +212,7 @@
     <string name="blood_type">Blood Type</string>
     <string name="years_active">Years active</string>
     <string name="hometown">Hometown</string>
+    <string name="anime_staff_roles">Anime Staff Roles</string>
+    <string name="manga_staff_roles">Manga Staff Roles</string>
 
 </resources>

@@ -36,7 +36,7 @@ fun CharacterOrStaffRowEndItemContent(
                 onClick = onClick
             ),
         horizontalArrangement = Arrangement.spacedBy(
-            8.dp,
+            6.dp,
             alignment = Alignment.End
         )
     ) {

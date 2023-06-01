@@ -36,10 +36,10 @@ private enum class CharacterScreenPageType {
 
 private val pages = listOf(
     CharacterScreenPage(CharacterScreenPageType.ABOUT, R.string.about, R.drawable.ic_about),
-    CharacterScreenPage(CharacterScreenPageType.MEDIA, R.string.media, R.drawable.ic_media_outline),
+    CharacterScreenPage(CharacterScreenPageType.MEDIA, R.string.media, R.drawable.ic_media),
     CharacterScreenPage(
         CharacterScreenPageType.VOICE_ROLES,
-        R.string.voices_roles,
+        R.string.voice_roles,
         R.drawable.ic_voice
     )
 )

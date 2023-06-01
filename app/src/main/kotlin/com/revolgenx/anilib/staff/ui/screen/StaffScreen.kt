@@ -13,6 +13,7 @@ import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterViewModel
+import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel
 import org.koin.androidx.compose.koinViewModel
 
 class StaffScreen(val staffId: Int) : AndroidScreen() {
@@ -33,11 +34,11 @@ enum class StaffScreenPageType {
 
 private val pages = listOf(
     StaffScreenPage(StaffScreenPageType.ABOUT, R.string.about, R.drawable.ic_about),
-    StaffScreenPage(StaffScreenPageType.MEDIA, R.string.media, R.drawable.ic_media_outline),
+    StaffScreenPage(StaffScreenPageType.MEDIA, R.string.media, R.drawable.ic_media),
     StaffScreenPage(
         StaffScreenPageType.VOICE_ROLES,
-        R.string.voices_roles,
-        R.drawable.ic_voice
+        R.string.staff_roles,
+        R.drawable.ic_staff
     )
 )
 
@@ -47,9 +48,11 @@ private fun StaffScreenContent(staffId: Int) {
     val pagerState = rememberPagerState { pages.size }
 
     val aboutViewModel = koinViewModel<StaffAboutViewModel>()
-    val staffMediaCharacterViewModel = koinViewModel<StaffMediaCharacterViewModel>()
+    val mediaCharacterViewModel = koinViewModel<StaffMediaCharacterViewModel>()
+    val mediaRoleViewModel = koinViewModel<StaffMediaRoleViewModel>()
     aboutViewModel.field.staffId = staffId
-    staffMediaCharacterViewModel.field.staffId = staffId
+    mediaCharacterViewModel.field.staffId = staffId
+    mediaRoleViewModel.field.staffId = staffId
 
     PagerScreenScaffold(
         pages = pages,
@@ -61,8 +64,8 @@ private fun StaffScreenContent(staffId: Int) {
         ) {
             when (pages[page].type) {
                 StaffScreenPageType.ABOUT -> StaffAboutScreen(aboutViewModel)
-                StaffScreenPageType.MEDIA -> StaffMediaCharacterScreen(staffMediaCharacterViewModel)
-                StaffScreenPageType.VOICE_ROLES -> StaffMediaRoleScreen()
+                StaffScreenPageType.MEDIA -> StaffMediaCharacterScreen(mediaCharacterViewModel)
+                StaffScreenPageType.VOICE_ROLES -> StaffMediaRoleScreen(mediaRoleViewModel)
             }
         }
     }

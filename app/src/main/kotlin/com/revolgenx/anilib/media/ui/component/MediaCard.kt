@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,8 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +31,8 @@ import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.MediaModel
+import com.revolgenx.anilib.media.ui.model.toColor
+import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.skydoves.landscapist.ImageOptions
 
 @Composable
@@ -107,7 +106,8 @@ fun MediaItemContent(mediaModel: MediaModel) {
 
 @Composable
 fun MediaItemRowContent(
-    mediaModel: MediaModel,
+    media: MediaModel,
+    content: @Composable () -> Unit = {},
     onClick: OnClick
 ) {
     Row(
@@ -117,7 +117,7 @@ fun MediaItemRowContent(
                 onClick = onClick
             ),
         horizontalArrangement = Arrangement.spacedBy(
-            8.dp,
+            6.dp,
             alignment = Alignment.Start
         )
     ) {
@@ -126,7 +126,7 @@ fun MediaItemRowContent(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(72.dp),
-                imageUrl = mediaModel.coverImage?.image(type),
+                imageUrl = media.coverImage?.image(type),
                 imageOptions = ImageOptions(
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.Center
@@ -145,19 +145,28 @@ fun MediaItemRowContent(
                 MediumText(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = mediaModel.title?.title(type).naText(),
+                    text = media.title?.title(type).naText(),
                 )
             }
 
-            val format = mediaModel.format?.let {
-                stringArrayResource(id = R.array.media_format)[it.ordinal]
+
+            Text(
+                stringResource(id = media.status.toStringRes()),
+                color = media.status.toColor(),
+                fontSize = 12.sp
+            )
+
+            val format = media.format.toStringRes()?.let {
+                stringResource(id = it)
             }.naText()
-            val year = mediaModel.seasonYear.naText()
+            val year = media.seasonYear.naText()
 
             LightText(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.format_year).format(format, year),
             )
+
+            content()
         }
     }
 }

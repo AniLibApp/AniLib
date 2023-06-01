@@ -36,7 +36,7 @@ fun StaffRowCard(staff: StaffModel, role: String? = null, onClick: OnClickWithId
         modifier = Modifier
             .height(124.dp)
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(6.dp)
     ) {
         Row(
             modifier = Modifier
@@ -46,7 +46,7 @@ fun StaffRowCard(staff: StaffModel, role: String? = null, onClick: OnClickWithId
                     onClick(staff.id)
                 },
             horizontalArrangement = Arrangement.spacedBy(
-                8.dp,
+                6.dp,
                 alignment = Alignment.Start
             )
         ) {
@@ -105,7 +105,7 @@ fun StaffMediaCharacterCard(
                     .fillMaxWidth(),
 
                 ) {
-                MediaItemRowContent(mediaModel = mediaModel) {
+                MediaItemRowContent(media = mediaModel) {
                     onMediaClick(mediaModel.id)
                 }
             }
