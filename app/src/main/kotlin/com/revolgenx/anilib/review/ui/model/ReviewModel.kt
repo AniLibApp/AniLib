@@ -34,7 +34,7 @@ data class ReviewModel(
     val createdAtDate: String = "",
     val media: MediaModel? = null,
     val user: UserModel? = null,
-) : BaseModel(id)
+) : BaseModel
 
 
 fun ReviewListQuery.Review.toModel(): ReviewModel {

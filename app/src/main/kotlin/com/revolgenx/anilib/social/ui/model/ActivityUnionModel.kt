@@ -11,7 +11,7 @@ data class ActivityUnionModel(
     val textActivityModel: TextActivityModel? = null,
     val listActivityModel: ListActivityModel? = null,
     val messageActivityModel: MessageActivityModel? = null
-) : BaseModel(textActivityModel?.id ?: listActivityModel?.id ?: messageActivityModel?.id ?: -1)
+) : BaseModel
 
 
 

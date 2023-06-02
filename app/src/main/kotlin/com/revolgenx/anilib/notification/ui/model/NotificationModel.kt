@@ -23,7 +23,7 @@ interface BaseNotificationModel {
     var unreadNotificationCount: Int
 }
 
-abstract class NotificationModel(id: Int) : BaseNotificationModel, BaseModel(id)
+abstract class NotificationModel(id: Int) : BaseNotificationModel, BaseModel
 
 fun NotificationQuery.Notification.toModel(): NotificationModel? {
     return when {

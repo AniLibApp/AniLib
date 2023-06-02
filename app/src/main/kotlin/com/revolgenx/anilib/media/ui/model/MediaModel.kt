@@ -74,7 +74,7 @@ data class MediaModel(
     val endDate: FuzzyDateModel? = null,
 //    val stats: MediaStatsModel? = null,
     val status: MediaStatus? = null,
-//    val streamingEpisodes: List<MediaStreamingEpisodeModel>? = null,
+    val streamingEpisodes: List<StreamingEpisodeModel>? = null,
     val studios: StudioConnectionModel? = null,
 //    val studios: List<StudioModel>? = null,
     val synonyms: List<String>? = null,
@@ -92,7 +92,7 @@ data class MediaModel(
     var character: CharacterModel? = null,
     var characterRole: CharacterRole? = null,
 
-) : BaseModel(id) {
+    ) : BaseModel {
     val isAnime get() = type.isAnime()
 }
 
@@ -163,6 +163,16 @@ fun MediaOverViewQuery.Media.toModel(): MediaModel {
         hashtag = hashtag,
         synonyms = synonyms?.filterNotNull(),
         isFavourite = isFavourite,
+        streamingEpisodes = streamingEpisodes?.mapNotNull {
+            it?.let {
+                StreamingEpisodeModel(
+                    title = it.title,
+                    thumbnail = it.thumbnail,
+                    url = it.url,
+                    site = it.site
+                )
+            }
+        },
         mediaListEntry = mediaListEntry?.let {
             MediaListModel(it.id, status = it.status)
         },

@@ -16,7 +16,6 @@ import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.userScreen
-import com.revolgenx.anilib.social.factory.AlMarkdownCallback
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -54,7 +53,7 @@ abstract class BaseActivity : ComponentActivity(), EventBusListener {
 
                 is OpenMediaScreenEvent -> {
                     viewModel.openSpoilerBottomSheet.value = false
-                    navigator?.mediaScreen(mediaId)
+                    navigator?.mediaScreen(mediaId, type)
                 }
 
                 is OpenCharacterScreenEvent -> {

@@ -13,13 +13,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
-import com.revolgenx.anilib.common.util.onMediaClick
+import com.revolgenx.anilib.common.util.OnClick
 
 @Composable
 fun DisappearingFloatingButton(
     scrollState: MutableState<ScrollState>,
     @DrawableRes iconRes: Int,
-    onClick: onMediaClick
+    onClick: OnClick
 ) {
     AnimatedVisibility(
         visible = scrollState.value == ScrollState.ScrollDown,

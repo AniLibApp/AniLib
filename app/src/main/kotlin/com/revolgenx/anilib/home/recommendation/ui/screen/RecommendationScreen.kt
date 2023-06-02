@@ -53,6 +53,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithValue
+import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
@@ -90,8 +91,8 @@ fun RecommendationScreen(viewModel: RecommendationViewModel = koinViewModel()) {
                 },
             ) { model ->
                 model ?: return@LazyPagingList
-                RecommendationItem(model = model) {
-                    navigator.mediaScreen(it)
+                RecommendationItem(model = model) {id, type->
+                    navigator.mediaScreen(id, type)
                 }
             }
         }
@@ -100,7 +101,7 @@ fun RecommendationScreen(viewModel: RecommendationViewModel = koinViewModel()) {
 
 
 @Composable
-fun RecommendationItem(model: RecommendationModel, onMediaClick: OnClickWithValue<Int>) {
+fun RecommendationItem(model: RecommendationModel, onMediaClick: OnMediaClick) {
     Card(
         modifier = Modifier
             .padding(6.dp)

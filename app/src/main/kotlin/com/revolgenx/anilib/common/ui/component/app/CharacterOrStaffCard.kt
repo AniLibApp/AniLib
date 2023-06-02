@@ -18,7 +18,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.util.onMediaClick
+import com.revolgenx.anilib.common.util.OnClick
 import com.skydoves.landscapist.ImageOptions
 
 
@@ -27,7 +27,7 @@ fun CharacterOrStaffCard(
     title: String,
     subTitle: String? = null,
     imageUrl: String?,
-    onClick: onMediaClick
+    onClick: OnClick
 ) {
     Card(
         modifier = Modifier

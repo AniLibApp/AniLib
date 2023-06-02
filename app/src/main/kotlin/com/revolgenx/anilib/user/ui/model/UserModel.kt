@@ -25,7 +25,7 @@ data class UserModel(
 
     var following: Int = 0,
     var followers: Int = 0,
-) : BaseModel(id) {
+) : BaseModel {
     val isMutual get() = isFollower && isFollowing
 }
 

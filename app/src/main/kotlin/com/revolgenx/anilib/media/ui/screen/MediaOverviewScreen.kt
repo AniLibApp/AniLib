@@ -7,42 +7,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.common.data.state.ResourceState
-import com.revolgenx.anilib.common.ui.screen.state.ErrorSection
-import com.revolgenx.anilib.common.ui.screen.state.LoadingSection
+import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.media.ui.model.MediaModel
-import com.revolgenx.anilib.media.ui.viewmodel.MediaOverviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MediaOverviewScreen(
-    mediaId: Int,
-    mediaViewModel: MediaViewModel = koinViewModel(),
-    viewModel: MediaOverviewViewModel = koinViewModel()
+    viewModel: MediaViewModel,
 ) {
-    LaunchedEffect(mediaId) {
-        viewModel.field.mediaId = mediaId
-        viewModel.getResource()
-    }
-
-    when (val resource = viewModel.resource.value) {
-        is ResourceState.Error -> ErrorSection(error = resource.message) {
-            viewModel.refresh()
-        }
-
-        is ResourceState.Loading -> LoadingSection()
-
-        is ResourceState.Success -> {
-            val media = resource.data ?: return
-            mediaViewModel.media.value = media
-            MediaOverview(media)
-        }
-
-        else -> {}
+    ResourceScreen(resourceState = viewModel.resource.value, refresh = { viewModel.refresh() }) {
+        MediaOverview(it)
     }
 }
 

@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
+import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.common.ui.component.pullrefresh.PullRefreshIndicator
 import com.revolgenx.anilib.common.ui.component.pullrefresh.pullRefresh
 import com.revolgenx.anilib.common.ui.component.pullrefresh.rememberPullRefreshState
@@ -49,7 +51,7 @@ fun <M : BaseModel> LazyPagingList(
     span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     gridOptions: GridOptions? = null,
     onRefresh: (() -> Unit)? = null,
-    itemContentIndex: (@Composable LazyItemScope.(index: Int, value: M?) -> Unit)? = null,
+    itemContentIndex: (@Composable Any.(index: Int, value: M?) -> Unit)? = null,
     itemContent: (@Composable Any.(value: M?) -> Unit)? = null
 ) {
     var refreshing by remember { mutableStateOf(false) }
@@ -65,7 +67,9 @@ fun <M : BaseModel> LazyPagingList(
         }
     }
 
-    Box(modifier.pullRefresh(pullRefreshState)) {
+    Box(modifier.let {
+        it.takeIf { onRefresh.isNotNull() }?.pullRefresh(pullRefreshState) ?: it
+    }) {
         when (type) {
             ListPagingListType.COLUMN -> LazyColumnLayout(
                 items = items,
@@ -79,7 +83,8 @@ fun <M : BaseModel> LazyPagingList(
                 pagingItems = pagingItems,
                 gridOptions = gridOptions!!,
                 span = span,
-                itemContent = itemContent!!
+                itemContent = itemContent,
+                itemContentIndex = itemContentIndex
             )
         }
         PullRefreshIndicator(refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
@@ -138,20 +143,39 @@ private fun <M : BaseModel> LazyGridLayout(
     pagingItems: LazyPagingItems<M>?,
     gridOptions: GridOptions,
     span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
-    itemContent: @Composable() (LazyGridItemScope.(value: M?) -> Unit)
+    itemContent: @Composable() (LazyGridItemScope.(value: M?) -> Unit)? = null,
+    itemContentIndex: (@Composable LazyGridItemScope.(index: Int, value: M?) -> Unit)? = null,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyVerticalGrid(columns = gridOptions.columns) {
             pagingItems?.let {
-                items(items = pagingItems, span = span) { item ->
-                    itemContent(item)
+                itemsIndexed(
+                    items = pagingItems,
+                    span = span,
+                    key = { i, _ -> i }
+                ) { index, item ->
+                    if (itemContent != null) {
+                        itemContent(item)
+                    }
+
+                    if (itemContentIndex != null) {
+                        itemContentIndex(index, item)
+                    }
                 }
                 lazyGridResourceState(pagingItems)
             }
 
             items?.let {
-                items(items = items) { item ->
-                    itemContent(item)
+                itemsIndexed(
+                    items = it,
+                ) { index, item ->
+                    if (itemContent != null) {
+                        itemContent(item)
+                    }
+
+                    if (itemContentIndex != null) {
+                        itemContentIndex(index, item)
+                    }
                 }
             }
         }

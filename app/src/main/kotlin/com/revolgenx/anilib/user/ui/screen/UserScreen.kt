@@ -44,7 +44,7 @@ import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
-import com.revolgenx.anilib.common.util.onMediaClick
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
@@ -173,7 +173,7 @@ private fun CollapsingToolbarScope.UserScreenTopAppbar(
     user: UserModel? = null,
     isTab: Boolean = false,
     collapsingToolbarState: CollapsingToolbarScaffoldState = rememberCollapsingToolbarScaffoldState(),
-    onLogout: onMediaClick
+    onLogout: OnClick
 ) {
     val progress = collapsingToolbarState.toolbarState.progress
     val imageAlpha = if (progress <= 0.2) 0.2f else progress
@@ -233,7 +233,7 @@ private fun CollapsingToolbarScope.UserScreenTopAppbar(
 @Composable
 private fun UserScreenActions(
     isTab: Boolean = false,
-    onLogout: onMediaClick
+    onLogout: OnClick
 ) {
     val navigator = localNavigator()
 

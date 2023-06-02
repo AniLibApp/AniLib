@@ -4,13 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.common.data.state.ResourceState
-import com.revolgenx.anilib.common.util.onMediaClick
+import com.revolgenx.anilib.common.util.OnClick
 
 @Composable
 fun <T> ResourceScreen(
     resourceState: ResourceState<T>?,
     loading: MutableState<Boolean> = mutableStateOf(false),
-    refresh: onMediaClick,
+    refresh: OnClick,
     content: @Composable (data: T) -> Unit
 ) {
 

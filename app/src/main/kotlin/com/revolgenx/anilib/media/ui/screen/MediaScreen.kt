@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
@@ -65,7 +67,7 @@ class MediaScreen(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MediaScreenContent(
-    id: Int,
+    mediaId: Int,
     mediaType: MediaType?,
     viewModel: MediaViewModel = koinViewModel()
 ) {
@@ -75,7 +77,25 @@ fun MediaScreenContent(
         derivedStateOf { pages.filter { it.isVisible.value } }
     }
     val pagerState = rememberPagerState() { visiblePages.size }
-    val media = viewModel.media.value
+
+
+    LaunchedEffect(viewModel) {
+        viewModel.field.mediaId = mediaId
+        viewModel.getResource()
+    }
+
+    val media = remember {
+        derivedStateOf {
+            val resourceState = viewModel.resource.value
+            if (resourceState is ResourceState.Success)
+                resourceState.data
+            else null
+        }
+    }
+
+    if(media.value?.streamingEpisodes?.isNotEmpty() == true){
+        viewModel.showWatchPage()
+    }
 
     CollapsingToolbarScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -84,7 +104,7 @@ fun MediaScreenContent(
         toolbarModifier = Modifier.background(MaterialTheme.colorScheme.surface),
         enabled = true,
         toolbar = {
-            MediaScreenTopAppBar(media = media, collapsingToolbarState = collapsingToolbarState)
+            MediaScreenTopAppBar(media = media.value, collapsingToolbarState = collapsingToolbarState)
         }
     ) {
         PagerScreenScaffold(
@@ -100,12 +120,12 @@ fun MediaScreenContent(
                     .fillMaxSize()
             ) {
                 when (visiblePages[page].type) {
-                    MediaScreenPageType.OVERVIEW -> MediaOverviewScreen(id, viewModel)
-                    MediaScreenPageType.WATCH -> MediaWatchScreen()
-                    MediaScreenPageType.CHARACTER -> MediaCharacterScreen(id, mediaType)
-                    MediaScreenPageType.STAFF -> MediaStaffScreen(id)
-                    MediaScreenPageType.REVIEW -> MediaReviewScreen(id)
-                    MediaScreenPageType.STATS -> MediaStatsScreen(id)
+                    MediaScreenPageType.OVERVIEW -> MediaOverviewScreen(viewModel)
+                    MediaScreenPageType.WATCH -> MediaWatchScreen(viewModel)
+                    MediaScreenPageType.CHARACTER -> MediaCharacterScreen(mediaId, mediaType)
+                    MediaScreenPageType.STAFF -> MediaStaffScreen(mediaId)
+                    MediaScreenPageType.REVIEW -> MediaReviewScreen(mediaId)
+                    MediaScreenPageType.STATS -> MediaStatsScreen(mediaId)
                     MediaScreenPageType.SOCIAL -> MediaSocialScreen()
                 }
             }
@@ -135,7 +155,8 @@ private fun CollapsingToolbarScope.MediaScreenTopAppBar(
             contentScale = ContentScale.Crop,
             alignment = Alignment.Center
         ),
-        previewPlaceholder = R.drawable.bleach
+        previewPlaceholder = R.drawable.bleach,
+        failure = {}
     )
 
 

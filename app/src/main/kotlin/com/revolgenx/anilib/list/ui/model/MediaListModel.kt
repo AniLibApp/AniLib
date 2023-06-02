@@ -40,7 +40,7 @@ data class MediaListModel(
 
     var media: MediaModel? = null,
     val user: UserModel? = null,
-): BaseModel(id)
+): BaseModel
 
 fun MediaListEntry.toModel() = MediaListModel(
     id = id,

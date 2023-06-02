@@ -61,6 +61,7 @@ import com.revolgenx.anilib.common.ui.theme.review_list_gradient_bottom
 import com.revolgenx.anilib.common.ui.theme.review_list_gradient_top
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithValue
+import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.skydoves.landscapist.ImageOptions
@@ -102,8 +103,8 @@ fun ReviewListScreen(
                     onUserClick = {
                         navigator.userScreen(it)
                     },
-                    onMediaClick = {
-                        navigator.mediaScreen(it)
+                    onMediaClick = { id, type ->
+                        navigator.mediaScreen(id, type)
                     }) {
                     navigator.reviewScreen(it)
                 }
@@ -117,7 +118,7 @@ fun ReviewListScreen(
 fun ReviewListItem(
     model: ReviewModel,
     onUserClick: OnClickWithValue<Int>,
-    onMediaClick: OnClickWithValue<Int>,
+    onMediaClick: OnMediaClick,
     onReviewClick: OnClickWithValue<Int>
 ) {
     Card(
@@ -190,9 +191,7 @@ fun ReviewListItem(
                                 Text(
                                     modifier = Modifier
                                         .clickable {
-                                            model.mediaId.let {
-                                                onMediaClick(it)
-                                            }
+                                            onMediaClick(model.mediaId, model.media?.type)
                                         },
                                     text = stringResource(id = R.string.review_of_s_by_s).format(
                                         model.media?.title?.title(it),
@@ -243,7 +242,8 @@ fun ReviewListItem(
             )
 
             Row(
-                modifier = Modifier.padding(horizontal = 4.dp)
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
                     .padding(top = 2.dp, bottom = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {

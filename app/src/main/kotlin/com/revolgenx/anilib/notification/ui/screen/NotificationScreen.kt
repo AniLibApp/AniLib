@@ -41,7 +41,7 @@ import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.common.util.onMediaClick
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.notification.ui.model.ActivityNotificationModel
 import com.revolgenx.anilib.notification.ui.model.AiringNotificationModel
@@ -222,7 +222,7 @@ private fun NotificationItem(
     createdAt: String,
     isUnread: Boolean,
     onImageClick: (() -> Unit)? = null,
-    onClick: onMediaClick
+    onClick: OnClick
 ) {
 
     Card(

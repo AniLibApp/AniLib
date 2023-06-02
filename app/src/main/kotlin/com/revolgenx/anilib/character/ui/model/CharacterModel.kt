@@ -35,7 +35,7 @@ data class CharacterModel(
     val image: CharacterImageModel? = null,
 
     var spannedDescription: Spanned? = null,
-) : BaseModel(id){
+) : BaseModel {
     fun generalDescription(): String {
         var generalInfo = ""
         dateOfBirth?.let {

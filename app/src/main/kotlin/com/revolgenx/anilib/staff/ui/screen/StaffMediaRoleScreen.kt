@@ -39,8 +39,8 @@ import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.common.util.onMediaClick
 import com.revolgenx.anilib.common.util.OnClickWithValue
+import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel
@@ -100,8 +100,8 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
                                     )
                                 }
                             },
-                            onMediaClick = {
-                                navigator.mediaScreen(it)
+                            onMediaClick = { id, type ->
+                                navigator.mediaScreen(id, type)
                             })
                     }
                 }
@@ -115,7 +115,7 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
 private fun StaffMediaRoleItem(
     model: MediaModel,
     onRoleClick: OnClickWithValue<String>,
-    onMediaClick: OnClickWithValue<Int>
+    onMediaClick: OnMediaClick
 ) {
     Card(
         modifier = Modifier

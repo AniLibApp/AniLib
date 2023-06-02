@@ -22,6 +22,7 @@ import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.screen.image.ImageViewerScreen
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.social.markdown.anilify
+import com.revolgenx.anilib.type.MediaType
 
 @Composable
 fun ExploreScreen() {
@@ -35,7 +36,7 @@ fun ExploreScreen() {
             navigator.airingScheduleScreen()
         })
         Text("Media", fontSize = 25.sp, modifier= Modifier.clickable {
-            navigator.mediaScreen(145139)
+            navigator.mediaScreen(145139, MediaType.ANIME)
         })
         Text("Staff", fontSize = 25.sp, modifier= Modifier.clickable {
             navigator.staffScreen(97139)

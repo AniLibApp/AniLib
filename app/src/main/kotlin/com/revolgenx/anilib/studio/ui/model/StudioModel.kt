@@ -12,7 +12,7 @@ data class StudioModel(
     val siteUrl: String? = null,
     val isAnimationStudio: Boolean = false,
     val media: MediaConnectionModel? = null,
-) : BaseModel(id)
+) : BaseModel
 
 
 fun StudioMediaQuery.Studio.toModel(): StudioModel {

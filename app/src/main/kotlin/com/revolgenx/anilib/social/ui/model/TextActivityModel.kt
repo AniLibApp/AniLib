@@ -27,7 +27,7 @@ data class TextActivityModel(
     val text: String? = null,
     val anilifiedText: String = "",
     val textSpanned: Spanned? = null
-) : ActivityModel, BaseModel(id)
+) : ActivityModel, BaseModel
 
 
 fun ActivityUnionQuery.OnTextActivity.toModel(): TextActivityModel {

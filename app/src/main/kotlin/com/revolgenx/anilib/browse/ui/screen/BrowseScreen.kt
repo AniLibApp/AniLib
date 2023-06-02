@@ -51,7 +51,6 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.browse.data.field.BrowseTypes
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
-import com.revolgenx.anilib.character.ui.component.CharacterCard
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.colorScheme
@@ -72,6 +71,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
+import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.component.MediaItemCard
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
@@ -125,8 +125,8 @@ private fun BrowseScreenContent() {
             ) { browseModel ->
                 when (browseModel) {
                     is MediaModel -> {
-                        MediaItemCard(browseModel) {
-                            navigator.mediaScreen(it)
+                        MediaItemCard(browseModel) {id, type->
+                            navigator.mediaScreen(id, type)
                         }
                     }
 
@@ -155,8 +155,8 @@ private fun BrowseScreenContent() {
                     }
 
                     is StudioModel -> {
-                        BrowseStudioItem(browseModel, onMediaClick = {
-                            navigator.mediaScreen(it)
+                        BrowseStudioItem(browseModel, onMediaClick = { id, type ->
+                            navigator.mediaScreen(id, type)
                         }, onClick = {
                             navigator.studioScreen(it)
                         })
@@ -204,7 +204,7 @@ private fun BrowseUserItem(user: UserModel, onClick: OnClick) {
 }
 
 @Composable
-private fun BrowseStudioItem(studio: StudioModel, onMediaClick: OnClick, onClick: OnClick) {
+private fun BrowseStudioItem(studio: StudioModel, onMediaClick: OnMediaClick, onClick: OnClick) {
     val medias = studio.media?.nodes ?: emptyList()
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -241,7 +241,7 @@ private fun BrowseStudioItem(studio: StudioModel, onMediaClick: OnClick, onClick
         }
         LazyRow {
             items(items = medias) {
-                MediaItemCard(mediaModel = it, width = 120.dp, onClick = onMediaClick)
+                MediaItemCard(media = it, width = 120.dp, onMediaClick = onMediaClick)
             }
         }
     }

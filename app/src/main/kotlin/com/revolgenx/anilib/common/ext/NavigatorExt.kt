@@ -12,14 +12,15 @@ import com.revolgenx.anilib.social.ui.screen.ActivityComposerScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityScreen
 import com.revolgenx.anilib.staff.ui.screen.StaffScreen
 import com.revolgenx.anilib.studio.ui.screen.StudioScreen
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.screen.UserScreen
 
 fun Navigator.airingScheduleScreen() {
     push(AiringScheduleScreen())
 }
 
-fun Navigator.mediaScreen(mediaId: Int) {
-    push(MediaScreen(mediaId))
+fun Navigator.mediaScreen(mediaId: Int, type: MediaType?) {
+    push(MediaScreen(mediaId, type))
 }
 
 fun Navigator.staffScreen(staffId: Int) {

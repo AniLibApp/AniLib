@@ -355,6 +355,31 @@ public fun <T : Any> LazyListScope.itemsIndexed(
     }
 }
 
+
+
+public fun <T : Any> LazyGridScope.itemsIndexed(
+    items: LazyPagingItems<T>,
+    key: ((index: Int, item: T) -> Any)? = null,
+    span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
+    itemContent: @Composable LazyGridItemScope.(index: Int, value: T?) -> Unit
+) {
+    items(
+        count = items.itemCount,
+        span = span,
+        key = if (key == null) null else { index ->
+            val item = items.peek(index)
+            if (item == null) {
+                PagingPlaceholderKey(index)
+            } else {
+                key(index, item)
+            }
+        }
+    ) { index ->
+        itemContent(index, items[index])
+    }
+}
+
+
 @SuppressLint("BanParcelableUsage")
 private data class PagingPlaceholderKey(private val index: Int) : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {

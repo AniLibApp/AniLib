@@ -32,7 +32,7 @@ data class MessageActivityModel(
     val message: String? = null,
     val messageAnilified: String = "",
     val messageSpanned: Spanned? = null
-) : ActivityModel, BaseModel(id)
+) : ActivityModel, BaseModel
 
 fun ActivityUnionQuery.OnMessageActivity.toModel(): MessageActivityModel {
     val anilifiedMsg = anilify(message)

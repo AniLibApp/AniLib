@@ -7,4 +7,4 @@ data class ThreadModel(
     val id: Int,
     val title: String?,
     val siteUrl: String?
-) : BaseModel(id)
+) : BaseModel

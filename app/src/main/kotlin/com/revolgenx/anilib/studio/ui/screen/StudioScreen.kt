@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.component.common.Header
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -85,8 +86,8 @@ private fun StudioScreenContent(studioId: Int, viewModel: StudioViewModel = koin
                     }
 
                     is MediaModel -> {
-                        MediaItemCard(mediaModel = baseModel) {
-                            navigator.push(MediaScreen(it, baseModel.type))
+                        MediaItemCard(media = baseModel) {id, type->
+                            navigator.mediaScreen(id, type)
                         }
                     }
                 }

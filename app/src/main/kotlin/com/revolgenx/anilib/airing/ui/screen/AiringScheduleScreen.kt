@@ -72,7 +72,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.common.util.onMediaClick
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.type.AiringSort
@@ -244,7 +244,7 @@ private fun AiringScreenContent(
 }
 
 @Composable
-private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick: onMediaClick) {
+private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick: OnClick) {
     val media = airingScheduleModel.media ?: return
     Card(
         modifier = Modifier
@@ -432,11 +432,11 @@ private fun AiringScheduleFilterBottomSheetContent(
 @Composable
 private fun AiringScheduleAction(
     isWeeklyTypeDate: Boolean = false,
-    onNext: onMediaClick,
-    onPrevious: onMediaClick,
-    onFilter: onMediaClick,
-    onCalendar: onMediaClick,
-    onWeekly: onMediaClick,
+    onNext: OnClick,
+    onPrevious: OnClick,
+    onFilter: OnClick,
+    onCalendar: OnClick,
+    onWeekly: OnClick,
 ) {
     ActionMenu(iconRes = R.drawable.ic_chevron_left, onClick = onPrevious)
     ActionMenu(iconRes = R.drawable.ic_chevron_right, onClick = onNext)

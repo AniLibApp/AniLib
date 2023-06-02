@@ -24,7 +24,7 @@ data class CharacterEdgeModel(
     //    The voice actors of the character with role date
     val voiceActorRoles: List<StaffRoleType>? = null,
     val voiceActors: List<StaffModel>? = null
-) : BaseModel(id)
+) : BaseModel
 
 fun MediaCharacterQuery.Edge.toModel() = CharacterEdgeModel(
     id = id ?: -1,

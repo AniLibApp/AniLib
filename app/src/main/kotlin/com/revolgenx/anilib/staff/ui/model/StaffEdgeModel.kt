@@ -11,7 +11,7 @@ data class StaffEdgeModel(
     val id: Int = -1,
     val node: StaffModel? = null,
     val role: String? = null,
-) : BaseModel(id)
+) : BaseModel
 
 
 fun MediaStaffQuery.Edge.toModel() = StaffEdgeModel(

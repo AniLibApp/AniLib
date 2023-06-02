@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.auth0.android.jwt.JWT
 import com.revolgenx.anilib.activity.MainActivity
-import com.revolgenx.anilib.common.util.onMediaClick
+import com.revolgenx.anilib.common.util.OnClick
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -50,7 +50,7 @@ suspend fun Context.logout() {
 
 fun AppDataStore.continueIfLoggedIn(
     scope: CoroutineScope,
-    callback: onMediaClick
+    callback: OnClick
 ) {
     scope.launch {
         val userId = this@continueIfLoggedIn.userId().first()
@@ -62,7 +62,7 @@ fun AppDataStore.continueIfLoggedIn(
 
 fun Context.continueIfLoggedIn(
     scope: CoroutineScope,
-    callback: onMediaClick
+    callback: OnClick
 ) {
     val dataStore = this.appDataStore
     scope.launch {

@@ -50,7 +50,7 @@ data class StaffModel(
     val yearsActive: List<Int>? = null,
 
     var spannedDescription: Spanned? = null,
-) : BaseModel(id) {
+) : BaseModel {
     fun generalDescription(): String {
         var generalInfo = ""
         dateOfBirth?.let {

@@ -26,7 +26,7 @@ data class ListActivityModel(
     var status: String? = null,
     var progress: String? = null,
     var media: MediaModel? = null
-) : ActivityModel, BaseModel(id) {
+) : ActivityModel, BaseModel {
     val progressStatus: String
         get() = "${status?.capitalize()}${if (progress.isNullOrBlank()) " " else " $progress of "}${media!!.title!!.userPreferred}"
 }

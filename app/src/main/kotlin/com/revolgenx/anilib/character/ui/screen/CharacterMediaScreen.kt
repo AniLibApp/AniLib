@@ -60,8 +60,8 @@ fun CharacterMediaScreen(viewModel: CharacterMediaViewModel) {
                 gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
             ) { model ->
                 model ?: return@LazyPagingList
-                MediaItemCard(mediaModel = model) {
-                    navigator.mediaScreen(it)
+                MediaItemCard(media = model) {id, type->
+                    navigator.mediaScreen(id, type)
                 }
             }
         }

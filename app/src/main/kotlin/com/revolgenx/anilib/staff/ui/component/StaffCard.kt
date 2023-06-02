@@ -25,6 +25,7 @@ import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClickWithValue
+import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
@@ -95,7 +96,7 @@ fun StaffRowCard(
 fun StaffMediaCharacterCard(
     mediaModel: MediaModel,
     character: CharacterModel?,
-    onMediaClick: OnClickWithValue<Int>,
+    onMediaClick: OnMediaClick,
     onCharacterClick: OnClickWithValue<Int>
 ) {
     Card(
@@ -114,8 +115,8 @@ fun StaffMediaCharacterCard(
                     .fillMaxWidth(),
 
                 ) {
-                MediaItemRowContent(media = mediaModel) {
-                    onMediaClick(mediaModel.id)
+                MediaItemRowContent(media = mediaModel) {id, type->
+                    onMediaClick(id, type)
                 }
             }
 

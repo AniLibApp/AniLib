@@ -2,6 +2,7 @@ package com.revolgenx.anilib.common.ui.component.image
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,6 +13,7 @@ import coil.imageLoader
 import com.revolgenx.anilib.R
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
+import com.skydoves.landscapist.coil.CoilImageState
 import com.skydoves.landscapist.coil.LocalCoilImageLoader
 import com.skydoves.landscapist.components.rememberImageComponent
 
@@ -22,6 +24,7 @@ fun AsyncImage(
     imageLoader: @Composable () -> ImageLoader = { getCoilImageLoader() },
     imageOptions: ImageOptions = ImageOptions(),
     @DrawableRes previewPlaceholder: Int = 0,
+    failure: (@Composable BoxScope.(CoilImageState.Failure) -> Unit)? = null
 ) {
     CoilImage(
         modifier = modifier,
@@ -29,7 +32,7 @@ fun AsyncImage(
         imageOptions = imageOptions,
         imageLoader = imageLoader,
         previewPlaceholder = previewPlaceholder,
-        failure = {
+        failure = failure ?: {
             Image(
                 painter = painterResource(id = R.drawable.ic_error_anilib),
                 contentDescription = null

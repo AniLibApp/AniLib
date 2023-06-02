@@ -34,7 +34,7 @@ import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
-import com.revolgenx.anilib.common.util.onMediaClick
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
@@ -107,7 +107,7 @@ private fun UserMediaListScreenContent(userId: Int) {
 
 
 @Composable
-private fun AnimeListContent(userId: Int?, showSearchBar: Boolean, hideSearchBar: onMediaClick) {
+private fun AnimeListContent(userId: Int?, showSearchBar: Boolean, hideSearchBar: OnClick) {
     val viewModel = koinViewModel<AnimeListViewModel>()
     viewModel.field.userId = userId
     MediaListCommonContent(viewModel, showSearchBar, hideSearchBar)
@@ -115,7 +115,7 @@ private fun AnimeListContent(userId: Int?, showSearchBar: Boolean, hideSearchBar
 
 
 @Composable
-private fun MangaListContent(userId: Int?, showSearchBar: Boolean, hideSearchBar: onMediaClick) {
+private fun MangaListContent(userId: Int?, showSearchBar: Boolean, hideSearchBar: OnClick) {
     val viewModel = koinViewModel<MangaListViewModel>()
     viewModel.field.userId = userId
     MediaListCommonContent(viewModel, showSearchBar, hideSearchBar)
@@ -126,7 +126,7 @@ private fun MangaListContent(userId: Int?, showSearchBar: Boolean, hideSearchBar
 fun MediaListCommonContent(
     viewModel: MediaListViewModel,
     showSearchBar: Boolean,
-    hideSearchBar: onMediaClick
+    hideSearchBar: OnClick
 ) {
     var active by rememberSaveable { mutableStateOf(false) }
     val openFilterBottomSheet = rememberSaveable { mutableStateOf(false) }

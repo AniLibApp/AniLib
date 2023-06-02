@@ -48,7 +48,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.common.util.onMediaClick
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
@@ -203,9 +203,9 @@ private fun SeasonItem(
 @Composable
 private fun SeasonFilter(
     filter: MediaField = MediaField(),
-    onNext: onMediaClick,
-    onPrevious: onMediaClick,
-    onFilter: onMediaClick
+    onNext: OnClick,
+    onPrevious: OnClick,
+    onFilter: OnClick
 ) {
     ElevatedCard(
         modifier = Modifier

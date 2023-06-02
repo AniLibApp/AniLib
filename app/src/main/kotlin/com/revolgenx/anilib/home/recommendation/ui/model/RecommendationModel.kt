@@ -18,7 +18,7 @@ data class RecommendationModel(
     val media: MediaModel?,
     // The recommended media
     val mediaRecommendation: MediaModel?
-) : BaseModel(id)
+) : BaseModel
 
 
 fun RecommendationQuery.Recommendation.toModel(): RecommendationModel {

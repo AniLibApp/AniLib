@@ -34,16 +34,6 @@ query MediaPageQuery(
     }
 }
 
-query MediaWatchQuery($mediaId:Int){
-    media: Media(id:$mediaId){
-        streamingEpisodes{
-            title
-            thumbnail
-            url
-            site
-        }
-    }
-}
 
 query MediaStatsQuery($mediaId:Int){
     media: Media(id:$mediaId){
@@ -150,6 +140,12 @@ query MediaOverViewQuery($mediaId:Int){
                     averageScore
                 }
             }
+        }
+        streamingEpisodes{
+            title
+            thumbnail
+            url
+            site
         }
         externalLinks{
             id

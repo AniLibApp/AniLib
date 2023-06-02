@@ -30,14 +30,14 @@ import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.util.OnClickWithValue
+import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.skydoves.landscapist.ImageOptions
 
 @Composable
-fun MediaItemCard(mediaModel: MediaModel, width: Dp? = null, onClick: (id: Int) -> Unit) {
+fun MediaItemCard(media: MediaModel, width: Dp? = null, onMediaClick: OnMediaClick) {
     Card(
         modifier = Modifier
             .let {
@@ -54,15 +54,15 @@ fun MediaItemCard(mediaModel: MediaModel, width: Dp? = null, onClick: (id: Int) 
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    onClick(mediaModel.id)
+                    onMediaClick(media.id, media.type)
                 },
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            MediaItemContent(mediaModel)
-            val format = mediaModel.format?.let {
+            MediaItemContent(media)
+            val format = media.format?.let {
                 stringArrayResource(id = R.array.media_format)[it.ordinal]
             }.naText()
-            val year = mediaModel.seasonYear.naText()
+            val year = media.seasonYear.naText()
             Box(
                 modifier = Modifier
                     .padding(vertical = 2.dp, horizontal = 4.dp),
@@ -109,13 +109,13 @@ fun MediaItemContent(mediaModel: MediaModel) {
 fun MediaItemRowContent(
     media: MediaModel,
     content: @Composable () -> Unit = {},
-    onMediaClick: OnClickWithValue<Int>
+    onMediaClick: OnMediaClick
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onMediaClick(media.id)
+                onMediaClick(media.id, media.type)
             },
         horizontalArrangement = Arrangement.spacedBy(
             6.dp,
@@ -176,13 +176,13 @@ fun MediaItemRowContent(
 fun MediaRowItemContentEnd(
     media: MediaModel,
     content: @Composable () -> Unit = {},
-    onMediaClick: OnClickWithValue<Int>
+    onMediaClick: OnMediaClick
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onMediaClick(media.id)
+                onMediaClick(media.id, media.type)
             },
         horizontalArrangement = Arrangement.spacedBy(
             6.dp,

@@ -58,8 +58,8 @@ fun StaffMediaCharacterScreen(viewModel: StaffMediaCharacterViewModel) {
                 StaffMediaCharacterCard(
                     mediaModel = model,
                     character = model.character,
-                    onMediaClick = {
-                        navigator.mediaScreen(it)
+                    onMediaClick = {id, type->
+                        navigator.mediaScreen(id, type)
                     },
                     onCharacterClick = {
                         navigator.characterScreen(it)
