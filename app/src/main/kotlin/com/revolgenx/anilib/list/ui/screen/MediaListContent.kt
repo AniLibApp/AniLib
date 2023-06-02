@@ -54,7 +54,7 @@ import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
-import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.onMediaClick
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
 import com.revolgenx.anilib.list.data.sort.MediaListSortType
 import com.revolgenx.anilib.list.ui.model.MediaListModel
@@ -271,7 +271,7 @@ private fun MediaListFilterBottomSheet(
 fun MediaListFilterBottomSheetContent(
     modifier: Modifier = Modifier,
     viewModel: MediaListFilterViewModel,
-    dismiss: OnClick,
+    dismiss: onMediaClick,
     onFilter: (filter: MediaListCollectionFilter) -> Unit,
 ) {
     Column(

@@ -9,21 +9,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.colorScheme
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.onMediaClick
 import com.skydoves.landscapist.ImageOptions
 
 
@@ -32,7 +27,7 @@ fun CharacterOrStaffCard(
     title: String,
     subTitle: String? = null,
     imageUrl: String?,
-    onClick: OnClick
+    onClick: onMediaClick
 ) {
     Card(
         modifier = Modifier

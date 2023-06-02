@@ -74,7 +74,7 @@ class BrowseServiceImpl(repository: ApolloRepository) : BaseService(repository),
                                     media = studio.media?.let { media ->
                                         MediaConnectionModel(
                                             nodes = media.nodes?.mapNotNull {
-                                                it?.takeIf { /*if (field.canShowAdult) true else it.mediaContent.isAdult == false*/ true }?.media?.toModel()
+                                                it?.takeIf { /*if (field.canShowAdult) true else it.mediaContent.isAdult == false todo filter 18 media*/ true }?.media?.toModel()
                                             }
                                         )
                                     }

@@ -20,7 +20,7 @@ class ActivityUnionServiceImpl(apolloRepository: ApolloRepository) : BaseService
                     data = it.activities?.map {
                         ActivityUnionModel(
                             listActivityModel = it?.onListActivity
-                                ?.takeIf { /* if (field.canShowAdult) true else it.media?.isAdult == false*/ true }
+                                ?.takeIf { /* if (field.canShowAdult) true else it.media?.isAdult == false todo filter 18 media*/ true }
                                 ?.toModel(),
                             messageActivityModel = it?.onMessageActivity?.toModel(),
                             textActivityModel = it?.onTextActivity?.toModel()

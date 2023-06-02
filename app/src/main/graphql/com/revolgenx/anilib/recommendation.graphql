@@ -26,7 +26,10 @@ query RecommendationQuery(
     $perPage:Int,
     $onList:Boolean,
     $sort:[RecommendationSort]){
-    page: Page(page:$page, perPage:$perPage){
+    page: Page(page:$page, perPage:$perPage) @nonnull{
+        pageInfo @nonnull{
+            ... pageInfo
+        }
         recommendations(onList:$onList, sort:$sort){
             id
             rating

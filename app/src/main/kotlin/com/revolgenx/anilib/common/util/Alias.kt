@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.common.util
 
-typealias OnClick = () -> Unit
+typealias onMediaClick = () -> Unit
 typealias OnClickWithValue<M> = (_: M) -> Unit
 
 typealias OnLongClick = () -> Unit

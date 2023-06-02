@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowEndItemContent
+import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowItemContentEnd
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
@@ -129,7 +129,7 @@ fun StaffMediaCharacterCard(
                 val role = mediaModel.characterRole?.let {
                     stringArrayResource(id = R.array.character_role).getOrNull(it.ordinal)
                 }
-                CharacterOrStaffRowEndItemContent(
+                CharacterOrStaffRowItemContentEnd(
                     text = character.name?.full.naText(),
                     subTitle = role,
                     imageUrl = character.image?.image

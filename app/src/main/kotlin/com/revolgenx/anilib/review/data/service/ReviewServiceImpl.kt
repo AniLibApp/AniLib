@@ -17,7 +17,7 @@ class ReviewServiceImpl(repository: ApolloRepository) : BaseService(repository),
                 PageModel(
                     pageInfo = page.pageInfo.pageInfo,
                     data = page.reviews?.mapNotNull { review ->
-                        review.takeIf { true/*if (field.canShowAdult) true else review.media?.isAdult == false*/ /*todo filter media*/ }
+                        review.takeIf { true/*if (field.canShowAdult) true else review.media?.isAdult == false*/ /*todo filter 18 media*/ }
                             ?.toModel()
                     }
                 )

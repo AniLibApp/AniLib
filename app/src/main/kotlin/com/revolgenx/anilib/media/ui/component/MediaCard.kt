@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +30,7 @@ import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
@@ -108,14 +109,14 @@ fun MediaItemContent(mediaModel: MediaModel) {
 fun MediaItemRowContent(
     media: MediaModel,
     content: @Composable () -> Unit = {},
-    onClick: OnClick
+    onMediaClick: OnClickWithValue<Int>
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(
-                onClick = onClick
-            ),
+            .clickable {
+                onMediaClick(media.id)
+            },
         horizontalArrangement = Arrangement.spacedBy(
             6.dp,
             alignment = Alignment.Start
@@ -167,6 +168,79 @@ fun MediaItemRowContent(
             )
 
             content()
+        }
+    }
+}
+
+@Composable
+fun MediaRowItemContentEnd(
+    media: MediaModel,
+    content: @Composable () -> Unit = {},
+    onMediaClick: OnClickWithValue<Int>
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onMediaClick(media.id)
+            },
+        horizontalArrangement = Arrangement.spacedBy(
+            6.dp,
+            alignment = Alignment.End
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .padding(vertical = 2.dp),
+            horizontalAlignment = Alignment.End
+        ) {
+
+
+            MediaTitleType { type ->
+                MediumText(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = media.title?.title(type).naText(),
+                    textAlign = TextAlign.End
+                )
+            }
+
+
+            Text(
+                stringResource(id = media.status.toStringRes()),
+                color = media.status.toColor(),
+                fontSize = 12.sp,
+                textAlign = TextAlign.End,
+            )
+
+            val format = media.format.toStringRes()?.let {
+                stringResource(id = it)
+            }.naText()
+            val year = media.seasonYear.naText()
+
+            LightText(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.format_year).format(format, year),
+                textAlign = TextAlign.End,
+            )
+
+            content()
+        }
+
+        MediaCoverImageType { type ->
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(72.dp),
+                imageUrl = media.coverImage?.image(type),
+                imageOptions = ImageOptions(
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center
+                ),
+                previewPlaceholder = R.drawable.bleach
+            )
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.staff.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
@@ -40,7 +39,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.onMediaClick
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -100,9 +99,10 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
                                         duration = SnackbarDuration.Short
                                     )
                                 }
-                            }) {
-                            navigator.mediaScreen(model.id)
-                        }
+                            },
+                            onMediaClick = {
+                                navigator.mediaScreen(it)
+                            })
                     }
                 }
             }
@@ -115,7 +115,7 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
 private fun StaffMediaRoleItem(
     model: MediaModel,
     onRoleClick: OnClickWithValue<String>,
-    onClick: OnClick
+    onMediaClick: OnClickWithValue<Int>
 ) {
     Card(
         modifier = Modifier
@@ -140,7 +140,7 @@ private fun StaffMediaRoleItem(
                     }
                 }
             },
-            onClick = onClick
+            onMediaClick = onMediaClick
         )
     }
 }

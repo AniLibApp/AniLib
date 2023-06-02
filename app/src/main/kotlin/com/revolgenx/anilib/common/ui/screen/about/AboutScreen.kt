@@ -34,7 +34,7 @@ import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.onMediaClick
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.skydoves.landscapist.ImageOptions
 
@@ -45,7 +45,7 @@ fun AboutScreen(
     imageUrl: String?,
     favourites: Int,
     isFavourite: Boolean,
-    onFavouriteClick: OnClick,
+    onFavouriteClick: onMediaClick,
     description: String?,
     spannedDescription: Spanned?,
     onImageClick: OnClickWithValue<String>

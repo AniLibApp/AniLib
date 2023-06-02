@@ -11,6 +11,7 @@ import com.revolgenx.anilib.common.data.store.animeListFilterStoreFileName
 import com.revolgenx.anilib.common.data.store.mangaListFilterStoreFileName
 import com.revolgenx.anilib.common.data.store.seasonFilterStoreFileName
 import com.revolgenx.anilib.entry.ui.viewmodel.MediaListEntryEditorViewModel
+import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.home.season.ui.screen.SeasonViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
@@ -89,5 +90,8 @@ val viewModelModules = module {
 
     //reviews
     viewModel { ReviewListViewModel(get()) }
+
+    //recommendations
+    viewModel { RecommendationViewModel(get()) }
 
 }

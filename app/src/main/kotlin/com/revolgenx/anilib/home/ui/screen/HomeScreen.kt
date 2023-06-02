@@ -24,7 +24,7 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.home.explore.ui.screen.ExploreScreen
-import com.revolgenx.anilib.home.recommendation.ui.screen.RecommendationsScreen
+import com.revolgenx.anilib.home.recommendation.ui.screen.RecommendationScreen
 import com.revolgenx.anilib.home.season.ui.screen.SeasonScreen
 import com.revolgenx.anilib.notification.ui.screen.NotificationScreen
 import com.revolgenx.anilib.review.ui.screen.ReviewListScreen
@@ -103,7 +103,7 @@ fun HomeScreenContent() {
             when (HomeScreenPages.values()[page]) {
                 HomeScreenPages.EXPLORE -> ExploreScreen()
                 HomeScreenPages.SEASON -> SeasonScreen()
-                HomeScreenPages.RECOMMENDATIONS -> RecommendationsScreen()
+                HomeScreenPages.RECOMMENDATIONS -> RecommendationScreen()
                 HomeScreenPages.REVIEWS -> ReviewListScreen()
             }
         }

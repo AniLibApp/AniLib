@@ -8,14 +8,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.stringResource
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.onMediaClick
 
 @Composable
 fun ConfirmationDialog(
     openDialog: MutableState<Boolean> = mutableStateOf(false),
     title: String? = null,
     message: String,
-    confirm: OnClick
+    confirm: onMediaClick
 ) {
     if (openDialog.value) {
         AlertDialog(

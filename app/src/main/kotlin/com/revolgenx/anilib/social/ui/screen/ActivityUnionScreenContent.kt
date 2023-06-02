@@ -1,9 +1,11 @@
 package com.revolgenx.anilib.social.ui.screen
 
+import android.graphics.Color
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
@@ -208,12 +211,14 @@ fun ActivityItemTop(model: ActivityModel) {
         Row {
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
+                    modifier = Modifier.size(20.dp),
                     painter = painterResource(id = if (model.isSubscribed) R.drawable.ic_notification else R.drawable.ic_notification_outline),
                     contentDescription = null
                 )
             }
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
+                    modifier = Modifier.size(20.dp),
                     painter = painterResource(id = R.drawable.ic_more_horiz),
                     contentDescription = null
                 )
@@ -237,32 +242,50 @@ private fun ActivityItemBottom(model: ActivityModel) {
         )
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
             TextButton(
                 colors = ButtonDefaults.textButtonColors(contentColor = colorScheme().onSurface),
-                onClick = { /*TODO*/ }
+                onClick = { /*TODO*/ },
+                contentPadding = PaddingValues(8.dp)
             ) {
                 Icon(
+                    modifier = Modifier.size(20.dp),
                     painter = painterResource(id = R.drawable.ic_message),
                     contentDescription = null
                 )
-                Text(text = model.replyCount.prettyNumberFormat())
+                MediumText(
+                    modifier = Modifier.padding(start = 2.dp),
+                    text = model.replyCount.prettyNumberFormat(),
+                    fontSize = 14.sp
+                )
             }
 
 
             TextButton(
                 colors = ButtonDefaults.textButtonColors(contentColor = colorScheme().onSurface),
-                onClick = { /*TODO*/ }
+                onClick = { /*TODO*/ },
+                contentPadding = PaddingValues(8.dp)
             ) {
                 Icon(
+                    modifier = Modifier.size(20.dp),
                     painter = painterResource(id = R.drawable.ic_heart_outline),
                     contentDescription = null
                 )
-                Text(text = model.likeCount.prettyNumberFormat())
+                MediumText(
+                    modifier = Modifier.padding(start = 2.dp),
+                    text = model.likeCount.prettyNumberFormat(),
+                )
             }
+
         }
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun ActivityItemBottomPreview() {
+    ActivityItemBottom(TextActivityModel(0, likeCount = 2, replyCount = 3))
 }

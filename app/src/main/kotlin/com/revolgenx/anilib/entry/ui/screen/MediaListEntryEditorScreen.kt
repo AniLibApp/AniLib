@@ -35,7 +35,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -58,7 +57,7 @@ import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
-import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.onMediaClick
 import com.revolgenx.anilib.entry.ui.component.CountEditor
 import com.revolgenx.anilib.entry.ui.component.DoubleCountEditor
 import com.revolgenx.anilib.entry.ui.component.MediaListEntryScore
@@ -518,7 +517,7 @@ private fun CalendarPicker(
     openCalendar: MutableState<Boolean> = mutableStateOf(false),
     selectedDateMillis: Long? = null,
     text: String,
-    onClear: OnClick,
+    onClear: onMediaClick,
     onDateSelected: (selectedDateMillis: Long) -> Unit
 ) {
     CalendarDialog(

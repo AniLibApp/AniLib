@@ -21,7 +21,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
-import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowEndItemContent
+import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowItemContentEnd
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClickWithValue
@@ -93,7 +93,7 @@ fun CharacterStaffCard(
                         .weight(1f)
                         .fillMaxWidth()
                 ) {
-                    CharacterOrStaffRowEndItemContent(
+                    CharacterOrStaffRowItemContentEnd(
                         text = staff.name?.full.naText(),
                         subTitle = staff.languageV2,
                         imageUrl = staff.image?.image

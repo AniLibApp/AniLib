@@ -8,6 +8,8 @@ import com.revolgenx.anilib.character.data.service.CharacterService
 import com.revolgenx.anilib.character.data.service.CharacterServiceImpl
 import com.revolgenx.anilib.entry.data.service.MediaListEntryService
 import com.revolgenx.anilib.entry.data.service.MediaListEntryServiceImpl
+import com.revolgenx.anilib.home.recommendation.data.service.RecommendationService
+import com.revolgenx.anilib.home.recommendation.data.service.RecommendationServiceImpl
 import com.revolgenx.anilib.list.data.service.MediaListService
 import com.revolgenx.anilib.list.data.service.MediaListServiceImpl
 import com.revolgenx.anilib.media.data.service.MediaService
@@ -41,4 +43,5 @@ val serviceModules = module {
     factoryOf(::ActivityUnionServiceImpl) { bind<ActivityUnionService>() }
     factoryOf(::BrowseServiceImpl) { bind<BrowseService>() }
     factoryOf(::ReviewServiceImpl) { bind<ReviewService>() }
+    factoryOf(::RecommendationServiceImpl) { bind<RecommendationService>() }
 }
