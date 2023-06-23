@@ -26,13 +26,9 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MediaCharacterScreen(
-    mediaId: Int,
-    mediaType: MediaType?,
-    viewModel: MediaCharacterViewModel = koinViewModel()
+    viewModel: MediaCharacterViewModel = koinViewModel(),
+    mediaType: MediaType?
 ) {
-    LaunchedEffect(mediaId) {
-        viewModel.field.mediaId = mediaId
-    }
     val pagingItems = viewModel.collectAsLazyPagingItems()
     LazyPagingList(
         pagingItems = pagingItems,

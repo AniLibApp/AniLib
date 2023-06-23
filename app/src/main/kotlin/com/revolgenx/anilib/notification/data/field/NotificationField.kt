@@ -4,9 +4,13 @@ import com.revolgenx.anilib.NotificationQuery
 import com.revolgenx.anilib.common.data.field.BaseSourceField
 import com.revolgenx.anilib.common.data.field.BaseSourceUserField
 
-class NotificationField : BaseSourceUserField<NotificationQuery>() {
-    var resetNotificationCount = true
-    var includeNotificationCount = false
+data class NotificationField(
+    val resetNotificationCount: Boolean = true,
+    var includeNotificationCount: Boolean = false
+) : BaseSourceUserField<NotificationQuery>() {
+
+    var unreadNotificationCount: Int? = null
+
     override fun toQueryOrMutation(): NotificationQuery {
         return NotificationQuery(
             page = nn(page),

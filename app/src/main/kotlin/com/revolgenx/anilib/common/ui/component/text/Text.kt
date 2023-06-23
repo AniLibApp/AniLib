@@ -9,7 +9,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import com.revolgenx.anilib.common.ext.colorScheme
+import com.revolgenx.anilib.common.ui.theme.colorScheme
 
 @Composable
 fun MediumText(

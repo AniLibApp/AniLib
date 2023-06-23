@@ -31,6 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
+import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
+import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
@@ -42,8 +44,14 @@ import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.media.ui.model.MediaModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaScreenPageType
+import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
+import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.type.MediaType
 import com.skydoves.landscapist.ImageOptions
 import me.onebone.toolbar.CollapsingToolbarScaffold
@@ -56,11 +64,11 @@ import org.koin.androidx.compose.koinViewModel
 
 class MediaScreen(
     private val id: Int,
-    private val mediaType: MediaType? = null
+    private val mediaType: MediaType?
 ) : AndroidScreen() {
     @Composable
     override fun Content() {
-        MediaScreenContent(id, mediaType)
+        MediaScreenContent(id, mediaType ?: MediaType.ANIME)
     }
 }
 
@@ -68,9 +76,15 @@ class MediaScreen(
 @Composable
 fun MediaScreenContent(
     mediaId: Int,
-    mediaType: MediaType?,
-    viewModel: MediaViewModel = koinViewModel()
+    mediaType: MediaType,
 ) {
+    val viewModel: MediaViewModel = koinViewModel()
+    val statsViewModel: MediaStatsViewModel = koinViewModel()
+    val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
+    val reviewViewModel: MediaReviewViewModel = koinViewModel()
+    val staffViewModel: MediaStaffViewModel = koinViewModel()
+    val characterViewModel: MediaCharacterViewModel = koinViewModel()
+
     val collapsingToolbarState = rememberCollapsingToolbarScaffoldState()
     val pages = viewModel.pages
     val visiblePages by remember {
@@ -81,6 +95,14 @@ fun MediaScreenContent(
 
     LaunchedEffect(viewModel) {
         viewModel.field.mediaId = mediaId
+        statsViewModel.field.mediaId = mediaId
+        reviewViewModel.field.mediaId = mediaId
+        staffViewModel.field.mediaId = mediaId
+        characterViewModel.field.mediaId = mediaId
+        activityUnionViewModel.field.also {
+            it.mediaId = mediaId
+            it.type = ActivityType.MEDIA_LIST
+        }
         viewModel.getResource()
     }
 
@@ -93,7 +115,7 @@ fun MediaScreenContent(
         }
     }
 
-    if(media.value?.streamingEpisodes?.isNotEmpty() == true){
+    if (media.value?.streamingEpisodes?.isNotEmpty() == true) {
         viewModel.showWatchPage()
     }
 
@@ -104,7 +126,10 @@ fun MediaScreenContent(
         toolbarModifier = Modifier.background(MaterialTheme.colorScheme.surface),
         enabled = true,
         toolbar = {
-            MediaScreenTopAppBar(media = media.value, collapsingToolbarState = collapsingToolbarState)
+            MediaScreenTopAppBar(
+                media = media.value,
+                collapsingToolbarState = collapsingToolbarState
+            )
         }
     ) {
         PagerScreenScaffold(
@@ -122,11 +147,15 @@ fun MediaScreenContent(
                 when (visiblePages[page].type) {
                     MediaScreenPageType.OVERVIEW -> MediaOverviewScreen(viewModel)
                     MediaScreenPageType.WATCH -> MediaWatchScreen(viewModel)
-                    MediaScreenPageType.CHARACTER -> MediaCharacterScreen(mediaId, mediaType)
-                    MediaScreenPageType.STAFF -> MediaStaffScreen(mediaId)
-                    MediaScreenPageType.REVIEW -> MediaReviewScreen(mediaId)
-                    MediaScreenPageType.STATS -> MediaStatsScreen(mediaId)
-                    MediaScreenPageType.SOCIAL -> MediaSocialScreen()
+                    MediaScreenPageType.CHARACTER -> MediaCharacterScreen(
+                        characterViewModel,
+                        mediaType
+                    )
+
+                    MediaScreenPageType.STAFF -> MediaStaffScreen(staffViewModel)
+                    MediaScreenPageType.REVIEW -> MediaReviewScreen(reviewViewModel)
+                    MediaScreenPageType.STATS -> MediaStatsScreen(statsViewModel, mediaType)
+                    MediaScreenPageType.SOCIAL -> MediaActivityUnionScreen(activityUnionViewModel)
                 }
             }
         }

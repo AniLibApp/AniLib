@@ -29,7 +29,6 @@ import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.component.MediaItemCard
 import com.revolgenx.anilib.media.ui.model.MediaModel
-import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
 import org.koin.androidx.compose.koinViewModel
 

@@ -120,8 +120,7 @@ ext {
     accompanist = "0.29.0-alpha"
     voyager = "1.0.0-rc04"
     timber = "5.0.1"
-    koin = "3.3.2"
-    koinCompose = "3.4.1"
+    koin = "3.4.1"
     desugar = "1.1.5"
     landscapist = "2.2.0"
     paging = "3.2.0-alpha03"
@@ -132,6 +131,7 @@ ext {
     customTabs = "1.5.0"
     jwtdecode = "2.0.2"
     prettytime = "5.0.4.Final"
+    vico = "1.6.5"
 }
 
 dependencies {
@@ -156,7 +156,8 @@ dependencies {
 
     //koin
     implementation("io.insert-koin:koin-android:$koin")
-    implementation "io.insert-koin:koin-androidx-compose:$koinCompose"
+    implementation "io.insert-koin:koin-androidx-compose:$koin"
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin"
 
 
     //apollo
@@ -213,6 +214,11 @@ dependencies {
 
     //pretty time
     implementation("org.ocpsoft.prettytime:prettytime:$prettytime")
+
+    //chart
+    implementation "com.patrykandpatrick.vico:core:$vico"
+    implementation "com.patrykandpatrick.vico:compose:$vico"
+    implementation "com.patrykandpatrick.vico:compose-m3:$vico"
 
 
     testImplementation("junit:junit:4.13.2")

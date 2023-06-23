@@ -7,10 +7,10 @@ import com.revolgenx.anilib.type.ActivityType
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MediaActivityUnionScreen(mediaId: Int) {
-    val viewModel = koinViewModel<ActivityUnionViewModel>()
+fun MediaActivityUnionScreen(
+    viewModel: ActivityUnionViewModel = koinViewModel()
+) {
     viewModel.field.also {
-        it.mediaId = mediaId
         it.type = ActivityType.MEDIA_LIST
     }
     ActivityUnionScreenContent(viewModel = viewModel)

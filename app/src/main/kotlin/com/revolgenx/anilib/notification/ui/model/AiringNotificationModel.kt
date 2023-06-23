@@ -13,4 +13,4 @@ data class AiringNotificationModel(
     val episode: Int,
     val contexts: List<String>?,
     val media: MediaModel?
-) : NotificationModel(id)
+) : NotificationModel()

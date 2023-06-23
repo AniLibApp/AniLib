@@ -14,4 +14,4 @@ class ThreadNotificationModel(
     val user: UserModel?,
     val thread: ThreadModel?,
     val context: String?
-) : NotificationModel(id)
+) : NotificationModel()

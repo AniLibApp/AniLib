@@ -11,4 +11,4 @@ data class MediaDeletionNotificationModel(
     val deletedMediaTitle: String?,
     val context: String?,
     val reason: String?
-) : NotificationModel(id)
+) : NotificationModel()

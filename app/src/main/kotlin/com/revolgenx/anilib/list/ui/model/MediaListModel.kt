@@ -13,6 +13,7 @@ import com.revolgenx.anilib.entry.ui.model.AdvancedScoreModel
 import com.revolgenx.anilib.fragment.MediaListEntry
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.isAnime
+import com.revolgenx.anilib.media.ui.model.isManga
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.model.UserModel
@@ -40,7 +41,7 @@ data class MediaListModel(
 
     var media: MediaModel? = null,
     val user: UserModel? = null,
-): BaseModel
+) : BaseModel
 
 fun MediaListEntry.toModel() = MediaListModel(
     id = id,
@@ -71,6 +72,30 @@ fun MediaListEntryQuery.MediaListEntry.toModel(): MediaListModel {
             )
         }
     )
+}
+
+
+fun MediaListStatus.toColorRes() = when (this) {
+    MediaListStatus.CURRENT -> R.color.current
+    MediaListStatus.PLANNING -> R.color.planning
+    MediaListStatus.COMPLETED -> R.color.completed
+    MediaListStatus.DROPPED -> R.color.dropped
+    MediaListStatus.PAUSED -> R.color.paused
+    MediaListStatus.REPEATING -> R.color.repeating
+    MediaListStatus.UNKNOWN__ -> R.color.dropped
+}
+
+fun MediaListStatus.toStringRes(mediaType: MediaType): Int {
+    val isManga = mediaType.isManga()
+    return when (this) {
+        MediaListStatus.CURRENT -> if (isManga) R.string.watching else R.string.reading
+        MediaListStatus.PLANNING -> if (isManga) R.string.plan_to_read else R.string.plan_to_watch
+        MediaListStatus.COMPLETED -> R.string.completed
+        MediaListStatus.DROPPED -> R.string.dropped
+        MediaListStatus.PAUSED -> R.string.paused
+        MediaListStatus.REPEATING -> if (isManga) R.string.rereading else R.string.rewatching
+        MediaListStatus.UNKNOWN__ -> R.string.unknown
+    }
 }
 
 fun MediaListStatus.toAlMediaListStatus() = when (this) {

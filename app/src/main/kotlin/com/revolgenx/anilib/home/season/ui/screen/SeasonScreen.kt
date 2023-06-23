@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naDrawableRes
 import com.revolgenx.anilib.common.ext.naStringRes
 import com.revolgenx.anilib.common.ext.naText
@@ -57,7 +58,6 @@ import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toDrawableRes
 import com.revolgenx.anilib.media.ui.model.toStringRes
-import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.type.MediaStatus
 import com.skydoves.landscapist.ImageOptions
 import org.koin.androidx.compose.koinViewModel
@@ -125,7 +125,7 @@ private fun SeasonItem(
     ) {
         Row(
             modifier = Modifier.clickable {
-                navigator.push(MediaScreen(media.id, media.type))
+                navigator.mediaScreen(media.id, media.type)
             }
         ) {
             MediaCoverImageType { type ->

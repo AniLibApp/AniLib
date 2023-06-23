@@ -59,7 +59,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.revolgenx.anilib.common.ext.colorScheme
+import com.revolgenx.anilib.common.ui.theme.colorScheme
 import kotlinx.coroutines.delay
 
 @ExperimentalMaterial3Api

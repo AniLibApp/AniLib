@@ -55,6 +55,7 @@ import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.ext.isNull
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
@@ -74,7 +75,6 @@ import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.toStringRes
-import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.type.AiringSort
 import com.skydoves.landscapist.ImageOptions
 import org.koin.androidx.compose.koinViewModel
@@ -203,11 +203,9 @@ private fun AiringScreenContent(
 
                     is AiringScheduleModel -> {
                         AiringScheduleItem(airingScheduleModel = model) {
-                            navigator.push(
-                                MediaScreen(
-                                    model.mediaId,
-                                    model.media?.type
-                                )
+                            navigator.mediaScreen(
+                                model.mediaId,
+                                model.media?.type
                             )
                         }
                     }

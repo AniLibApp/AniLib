@@ -14,4 +14,4 @@ data class RelatedMediaNotificationModel(
     val mediaId: Int,
     val media: MediaModel?,
     val context: String?
-) : NotificationModel(id)
+) : NotificationModel()

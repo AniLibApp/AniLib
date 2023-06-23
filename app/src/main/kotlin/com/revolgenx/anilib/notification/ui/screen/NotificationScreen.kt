@@ -34,15 +34,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
-import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.notification.ui.model.ActivityNotificationModel
 import com.revolgenx.anilib.notification.ui.model.AiringNotificationModel
 import com.revolgenx.anilib.notification.ui.model.FollowingNotificationModel
@@ -111,7 +111,10 @@ private fun NotificationScreenContent(
                                     } $c3"
                             }
                             onClick = {
-                                navigator.push(MediaScreen(notificationModel.animeId, notificationModel.media?.type))
+                                navigator.mediaScreen(
+                                    notificationModel.animeId,
+                                    notificationModel.media?.type
+                                )
                             }
                         }
 
@@ -157,7 +160,10 @@ private fun NotificationScreenContent(
                                     "${notificationModel.media?.title?.title(it)} ${notificationModel.context}"
                             }
                             onClick = {
-                                navigator.push(MediaScreen(notificationModel.mediaId, notificationModel.media?.type))
+                                navigator.mediaScreen(
+                                    notificationModel.mediaId,
+                                    notificationModel.media?.type
+                                )
                             }
                         }
 
@@ -172,7 +178,10 @@ private fun NotificationScreenContent(
                             reason = notificationModel.reason
 
                             onClick = {
-                                navigator.push(MediaScreen(notificationModel.mediaId, notificationModel.media?.type))
+                                navigator.mediaScreen(
+                                    notificationModel.mediaId,
+                                    notificationModel.media?.type
+                                )
                             }
                         }
 
@@ -187,7 +196,10 @@ private fun NotificationScreenContent(
                             reason = notificationModel.reason
 
                             onClick = {
-                                navigator.push(MediaScreen(notificationModel.mediaId, notificationModel.media?.type))
+                                navigator.mediaScreen(
+                                    notificationModel.mediaId,
+                                    notificationModel.media?.type
+                                )
                             }
                         }
 

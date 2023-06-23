@@ -115,7 +115,7 @@ fun AppTheme(
         typography = Typography,
         content = {
             CompositionLocalProvider(
-                LocalTextStyle provides MaterialTheme.typography.titleSmall
+                LocalTextStyle provides typography().titleSmall
             ) {
                 Surface {
                     content()
@@ -124,3 +124,8 @@ fun AppTheme(
         }
     )
 }
+
+@Composable
+fun colorScheme() = MaterialTheme.colorScheme
+@Composable
+fun typography() = MaterialTheme.typography

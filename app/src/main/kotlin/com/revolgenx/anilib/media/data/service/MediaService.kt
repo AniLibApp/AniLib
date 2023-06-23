@@ -7,7 +7,9 @@ import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.data.field.MediaOverviewField
 import com.revolgenx.anilib.media.data.field.MediaReviewField
 import com.revolgenx.anilib.media.data.field.MediaStaffField
+import com.revolgenx.anilib.media.data.field.MediaStatsField
 import com.revolgenx.anilib.media.ui.model.MediaModel
+import com.revolgenx.anilib.media.ui.model.MediaStatsModel
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.staff.ui.model.StaffEdgeModel
 import kotlinx.coroutines.flow.Flow
@@ -33,5 +35,9 @@ interface MediaService {
     fun getMediaReviewList(
         field: MediaReviewField
     ): Flow<PageModel<ReviewModel>>
+
+    fun getMediaStats(
+        field: MediaStatsField
+    ): Flow<MediaStatsModel?>
 
 }

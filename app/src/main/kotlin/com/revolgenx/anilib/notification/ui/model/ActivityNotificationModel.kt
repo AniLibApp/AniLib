@@ -15,4 +15,4 @@ data class ActivityNotificationModel(
     val context: String?,
     val activity: ActivityUnionModel? = null,
     val user: UserModel?
-) : NotificationModel(id)
+) : NotificationModel()

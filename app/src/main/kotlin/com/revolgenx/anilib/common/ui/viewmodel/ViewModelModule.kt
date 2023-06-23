@@ -20,6 +20,7 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
@@ -43,10 +44,11 @@ val viewModelModules = module {
     viewModel { AiringScheduleFilterViewModel() }
 
     // media
-    viewModel { MediaViewModel(get()) }
+    viewModel { MediaViewModel(get(), get() ) }
     viewModel { MediaCharacterViewModel(get()) }
     viewModel { MediaStaffViewModel(get()) }
     viewModel { MediaReviewViewModel(get()) }
+    viewModel { MediaStatsViewModel(get()) }
 
     // season
     viewModel { SeasonViewModel(get(), get(named(seasonFilterStoreFileName))) }

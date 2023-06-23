@@ -12,4 +12,4 @@ data class FollowingNotificationModel(
     val userId: Int,
     val context: String?,
     val user: UserModel?
-) : NotificationModel(id)
+) : NotificationModel()

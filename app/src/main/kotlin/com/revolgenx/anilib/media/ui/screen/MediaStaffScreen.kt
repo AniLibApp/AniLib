@@ -23,15 +23,11 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MediaStaffScreen(
-    mediaId: Int,
     viewModel: MediaStaffViewModel = koinViewModel()
 ) {
     val snackbar = localSnackbarHostState()
     val scope = rememberCoroutineScope()
     val navigator = LocalMainNavigator.current
-    LaunchedEffect(mediaId) {
-        viewModel.field.mediaId = mediaId
-    }
     val pagingItems = viewModel.collectAsLazyPagingItems()
     LazyPagingList(
         type = ListPagingListType.GRID,

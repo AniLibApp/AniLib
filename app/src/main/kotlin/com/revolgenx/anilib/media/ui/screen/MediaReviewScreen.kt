@@ -37,17 +37,10 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.screen.ReviewScreen
 import com.skydoves.landscapist.ImageOptions
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MediaReviewScreen(
-    mediaId: Int,
-    viewModel: MediaReviewViewModel = koinViewModel()
-) {
+fun MediaReviewScreen(viewModel: MediaReviewViewModel) {
     val navigator = LocalMainNavigator.current
-    LaunchedEffect(mediaId) {
-        viewModel.field.mediaId = mediaId
-    }
     val pagingItems = viewModel.collectAsLazyPagingItems()
     LazyPagingList(
         pagingItems = pagingItems,

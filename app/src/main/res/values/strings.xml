@@ -131,6 +131,13 @@
     <string name="review_of_s_by_s">Review of %1$s by %2$s</string>
     <!--reivews-->
 
+    <!--notifications-->
+    <string name="thread_notif_s">%1$s %2$s %3$s</string>
+    <string name="episode_airing_notif">%1$s %2$s %3$s %4$s %5$s</string>
+    <string name="new_notification">New notification available</string>
+    <!--notifications-->
+
+
     <!--App-->
     <string name="its_empty">Feeling empty</string>
     <string name="something_went_wrong">Something went wrong</string>
@@ -218,5 +225,16 @@
     <string name="hometown">Hometown</string>
     <string name="anime_staff_roles">Anime Staff Roles</string>
     <string name="manga_staff_roles">Manga Staff Roles</string>
+
+    <string name="s_space_s">%1$s %2$s</string>
+    <string name="rankings">Rankings</string>
+    <string name="recent_activity_per_day">Recent Activity Per Day</string>
+    <string name="airing_score_progression">Airing Score Progression</string>
+    <string name="airing_watchers_progression">Airing Watchers Progression</string>
+    <string name="status_distribution">Status Distribution</string>
+    <string name="score_distribution">Score Distribution</string>
+
+    <string name="status_distribution_string">%1$s Users %2$s</string>
+
 
 </resources>

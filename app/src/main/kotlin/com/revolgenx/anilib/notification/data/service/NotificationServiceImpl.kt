@@ -14,7 +14,6 @@ class NotificationServiceImpl(apolloRepository: ApolloRepository) :
     NotificationService, BaseService(apolloRepository) {
 
     override fun getNotificationList(field: NotificationField): Flow<PageModel<NotificationModel>> {
-        val totalPage = field.page * field.perPage
         if (field.page == 1) {
             field.includeNotificationCount = true
         }
@@ -25,8 +24,10 @@ class NotificationServiceImpl(apolloRepository: ApolloRepository) :
                     pageInfo = page.pageInfo.pageInfo,
                     data = page.notifications?.mapNotNull { notification ->
                         notification?.toModel()?.also {
-                            it.unreadNotificationCount = data.User?.unreadNotificationCount ?: 0
-                            field.includeNotificationCount = it.unreadNotificationCount > totalPage
+                            field.unreadNotificationCount =
+                                field.unreadNotificationCount ?: data.User?.unreadNotificationCount
+                            it.unreadNotificationCount = field.unreadNotificationCount ?: 0
+                            field.includeNotificationCount = false
                         }
                     }
                 )

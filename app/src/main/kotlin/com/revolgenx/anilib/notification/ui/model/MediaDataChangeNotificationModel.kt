@@ -13,4 +13,4 @@ data class MediaDataChangeNotificationModel(
     val mediaId: Int,
     val media: MediaModel?,
     val reason: String?
-) : NotificationModel(id)
+) : NotificationModel()

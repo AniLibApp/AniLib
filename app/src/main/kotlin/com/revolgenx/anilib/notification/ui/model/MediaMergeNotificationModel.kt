@@ -14,4 +14,4 @@ data class MediaMergeNotificationModel(
     val deletedMediaTitles: List<String>?,
     val mediaId: Int,
     val media: MediaModel?
-) : NotificationModel(id)
+) : NotificationModel()
