@@ -136,7 +136,7 @@ query StaffMediaRoleQuery(
 }
 
 
-fragment narrowStaffContent on Staff{
+fragment smallStaff on Staff{
     id
     name{
         full

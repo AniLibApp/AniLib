@@ -21,7 +21,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.activityComposerScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
-import com.revolgenx.anilib.common.ui.component.action.DisappearingFloatingButton
+import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -84,7 +84,7 @@ object ActivityUnionScreen : BaseTabScreen() {
             },
             navigationIcon = {},
             floatingActionButton = {
-                DisappearingFloatingButton(
+                DisappearingFAB(
                     scrollState = scrollState,
                     iconRes = R.drawable.ic_create
                 ) {

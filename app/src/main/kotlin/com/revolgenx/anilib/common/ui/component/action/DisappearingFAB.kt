@@ -16,10 +16,26 @@ import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.util.OnClick
 
 @Composable
-fun DisappearingFloatingButton(
+fun DisappearingFAB(
     scrollState: MutableState<ScrollState>,
     @DrawableRes iconRes: Int,
     onClick: OnClick
+) {
+    DisappearingFAB(
+        scrollState = scrollState,
+        content = {
+            Icon(painter = painterResource(id = iconRes), contentDescription = null)
+        },
+        onClick = onClick
+    )
+}
+
+
+@Composable
+fun DisappearingFAB(
+    scrollState: MutableState<ScrollState>,
+    content: @Composable () -> Unit,
+    onClick: OnClick? = null,
 ) {
     AnimatedVisibility(
         visible = scrollState.value == ScrollState.ScrollDown,
@@ -27,9 +43,9 @@ fun DisappearingFloatingButton(
     ) {
         FloatingActionButton(
             elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 0.dp),
-            onClick = onClick
+            onClick = onClick ?: {}
         ) {
-            Icon(painter = painterResource(id = iconRes), contentDescription = null)
+            content()
         }
     }
 }

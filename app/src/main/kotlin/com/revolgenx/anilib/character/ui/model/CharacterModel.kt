@@ -8,6 +8,7 @@ import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
 import com.revolgenx.anilib.fragment.CharacterImage
+import com.revolgenx.anilib.fragment.SmallCharacter
 import com.revolgenx.anilib.media.ui.model.MediaConnectionModel
 import com.revolgenx.anilib.social.factory.markdown
 import com.revolgenx.anilib.social.markdown.anilify
@@ -91,3 +92,11 @@ fun CharacterQuery.Character.toModel(): CharacterModel {
 
     return model
 }
+
+fun SmallCharacter.toModel() = CharacterModel(
+    id = id,
+    name = name?.let {
+        CharacterNameModel(it.full)
+    },
+    image = image?.characterImage?.toModel()
+)

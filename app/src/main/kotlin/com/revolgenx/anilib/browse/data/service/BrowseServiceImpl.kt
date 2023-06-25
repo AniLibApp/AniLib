@@ -15,6 +15,7 @@ import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.StaffNameModel
 import com.revolgenx.anilib.staff.ui.model.toModel
 import com.revolgenx.anilib.studio.ui.model.StudioModel
+import com.revolgenx.anilib.studio.ui.model.toModel
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
@@ -37,49 +38,21 @@ class BrowseServiceImpl(repository: ApolloRepository) : BaseService(repository),
                     characterPage != null -> {
                         pageInfo = characterPage.pageInfo.pageInfo
                         data = characterPage.characters?.mapNotNull { map ->
-                            map?.narrowCharacterContent?.let { character ->
-                                CharacterModel(
-                                    id = character.id,
-                                    name = character.name?.let {
-                                        CharacterNameModel(it.full)
-                                    },
-                                    image = character.image?.characterImage?.toModel()
-                                )
-                            }
+                            map?.smallCharacter?.toModel()
                         }
                     }
 
                     staffPage != null -> {
                         pageInfo = staffPage.pageInfo.pageInfo
                         data = staffPage.staff?.mapNotNull { map ->
-                            map?.narrowStaffContent?.let { staff ->
-                                StaffModel(
-                                    id = staff.id,
-                                    name = staff.name?.let { name ->
-                                        StaffNameModel(name.full)
-                                    },
-                                    image = staff.image?.staffImage?.toModel()
-                                )
-                            }
+                            map?.smallStaff?.toModel()
                         }
                     }
 
                     studioPage != null -> {
                         pageInfo = studioPage.pageInfo.pageInfo
                         data = studioPage.studios?.mapNotNull { map ->
-                            map?.studioContent?.let { studio ->
-                                StudioModel(
-                                    id = studio.id,
-                                    name = studio.name,
-                                    media = studio.media?.let { media ->
-                                        MediaConnectionModel(
-                                            nodes = media.nodes?.mapNotNull {
-                                                it?.takeIf { /*if (field.canShowAdult) true else it.mediaContent.isAdult == false todo filter 18 media*/ true }?.media?.toModel()
-                                            }
-                                        )
-                                    }
-                                )
-                            }
+                            map?.studio?.toModel()
                         }
                     }
 

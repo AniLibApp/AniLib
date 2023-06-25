@@ -2,7 +2,9 @@ package com.revolgenx.anilib.studio.ui.model
 
 import com.revolgenx.anilib.StudioMediaQuery
 import com.revolgenx.anilib.common.ui.model.BaseModel
+import com.revolgenx.anilib.fragment.Studio
 import com.revolgenx.anilib.media.ui.model.MediaConnectionModel
+import com.revolgenx.anilib.media.ui.model.toModel
 
 data class StudioModel(
     val id: Int = -1,
@@ -24,3 +26,15 @@ fun StudioMediaQuery.Studio.toModel(): StudioModel {
         siteUrl = siteUrl,
     )
 }
+
+fun Studio.toModel() = StudioModel(
+    id = id,
+    name = name,
+    media = media?.let { media ->
+        MediaConnectionModel(
+            nodes = media.nodes?.mapNotNull {
+                it?.takeIf { /*if (field.canShowAdult) true else it.mediaContent.isAdult == false todo filter 18 media*/ true }?.media?.toModel()
+            }
+        )
+    }
+)

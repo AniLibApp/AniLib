@@ -105,7 +105,7 @@ query CharacterActorQuery($characterId:Int ){
     }
 }
 
-fragment narrowCharacterContent on Character{
+fragment smallCharacter on Character{
     id
     name{
         full

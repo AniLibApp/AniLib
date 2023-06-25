@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaScreen
-import com.revolgenx.anilib.common.ui.component.action.DisappearingFloatingButton
+import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.common.Header
@@ -58,7 +58,7 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
     ScreenScaffold(
         topBar = {},
         floatingActionButton = {
-            DisappearingFloatingButton(scrollState = scrollState, iconRes = R.drawable.ic_filter) {
+            DisappearingFAB(scrollState = scrollState, iconRes = R.drawable.ic_filter) {
                 //todo filter
             }
         },

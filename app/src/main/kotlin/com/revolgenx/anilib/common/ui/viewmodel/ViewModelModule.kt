@@ -30,6 +30,9 @@ import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
+import com.revolgenx.anilib.user.data.field.UserFavouriteType
+import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteContentViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -69,6 +72,12 @@ val viewModelModules = module {
 
     //user
     viewModel { UserViewModel(get(), get()) }
+    viewModel { UserFavouriteViewModel() }
+    viewModel(named(UserFavouriteType.ANIME)) { UserFavouriteContentViewModel(UserFavouriteType.ANIME, get()) }
+    viewModel(named(UserFavouriteType.MANGA)) { UserFavouriteContentViewModel(UserFavouriteType.MANGA, get()) }
+    viewModel(named(UserFavouriteType.CHARACTER)) { UserFavouriteContentViewModel(UserFavouriteType.CHARACTER, get()) }
+    viewModel(named(UserFavouriteType.STAFF)) { UserFavouriteContentViewModel(UserFavouriteType.STAFF, get()) }
+    viewModel(named(UserFavouriteType.STUDIO)) { UserFavouriteContentViewModel(UserFavouriteType.STUDIO, get()) }
 
     // notification
     viewModel { NotificationViewModel(get(), get()) }

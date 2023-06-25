@@ -36,7 +36,7 @@ fun Navigator.studioScreen(studioId: Int) {
 }
 
 fun Navigator.userScreen(userId: Int? = null, username: String? = null) {
-    push(UserScreen(id = userId, username = username))
+    push(UserScreen(id = userId, userName = username))
 }
 
 fun Navigator.mediaListEntryEditorScreen(mediaId: Int, userId: Int) {

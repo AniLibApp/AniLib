@@ -29,6 +29,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -41,7 +42,7 @@ fun AppBar(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    windowInsets: WindowInsets = WindowInsets(0),
+    windowInsets: WindowInsets = emptyWindowInsets(),
     colors: AppBarColors = AppBarDefaults.appBarColors(),
     containerHeight: Dp = AppBarHeight,
     centeredTitle: Boolean = false,

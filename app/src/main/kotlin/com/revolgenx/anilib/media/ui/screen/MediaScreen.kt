@@ -35,6 +35,7 @@ import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.state.ResourceState
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
@@ -86,9 +87,8 @@ fun MediaScreenContent(
     val characterViewModel: MediaCharacterViewModel = koinViewModel()
 
     val collapsingToolbarState = rememberCollapsingToolbarScaffoldState()
-    val pages = viewModel.pages
     val visiblePages by remember {
-        derivedStateOf { pages.filter { it.isVisible.value } }
+        derivedStateOf { viewModel.pages.filter { it.isVisible.value } }
     }
     val pagerState = rememberPagerState() { visiblePages.size }
 
@@ -138,7 +138,7 @@ fun MediaScreenContent(
             navigationIcon = {},
             actions = {},
             contentWindowInsets = NavigationBarDefaults.windowInsets,
-            windowInsets = WindowInsets(0)
+            windowInsets = emptyWindowInsets()
         ) { page ->
             Box(
                 modifier = Modifier

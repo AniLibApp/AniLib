@@ -26,6 +26,7 @@ import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.TabNavigator
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
 import com.revolgenx.anilib.common.ui.composition.GlobalViewModelStoreOwner
@@ -118,7 +119,7 @@ fun MainActivityScreenContent() {
                     )
                 }
             },
-            contentWindowInsets = WindowInsets(0)
+            contentWindowInsets = emptyWindowInsets()
         ) { contentPadding ->
             CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
                 Box(Modifier.padding(contentPadding)) {

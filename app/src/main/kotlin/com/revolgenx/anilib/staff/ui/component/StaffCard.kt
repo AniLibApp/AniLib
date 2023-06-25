@@ -18,18 +18,32 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.character.ui.component.CharacterOrStaffCard
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowItemContentEnd
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.skydoves.landscapist.ImageOptions
+
+
+@Composable
+fun StaffCard(model: StaffModel, onClick: OnClickWithId) {
+    CharacterOrStaffCard(
+        title = model.name?.full.naText(),
+        subTitle = model.languageV2,
+        imageUrl = model.image?.image
+    ) {
+        onClick(model.id)
+    }
+}
 
 @Composable
 fun StaffRowCard(
@@ -115,7 +129,7 @@ fun StaffMediaCharacterCard(
                     .fillMaxWidth(),
 
                 ) {
-                MediaItemRowContent(media = mediaModel) {id, type->
+                MediaItemRowContent(media = mediaModel) { id, type ->
                     onMediaClick(id, type)
                 }
             }

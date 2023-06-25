@@ -9,6 +9,7 @@ import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
+import com.revolgenx.anilib.fragment.SmallStaff
 import com.revolgenx.anilib.fragment.StaffImage
 import com.revolgenx.anilib.media.ui.model.MediaConnectionModel
 import com.revolgenx.anilib.social.factory.markdown
@@ -122,3 +123,11 @@ fun StaffQuery.Staff.toModel(): StaffModel {
         markdown.toMarkdown(model.generalDescription() + anilify(model.description))
     return model
 }
+
+fun SmallStaff.toModel() = StaffModel(
+    id = id,
+    name = name?.let { name ->
+        StaffNameModel(name.full)
+    },
+    image = image?.staffImage?.toModel()
+)

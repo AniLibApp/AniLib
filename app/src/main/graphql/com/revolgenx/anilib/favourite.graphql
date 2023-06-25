@@ -11,6 +11,9 @@ query UserFavouriteQuery(
     user: User(id:$id, name:$name){
         favourites{
             anime(page:$page,perPage:$perPage) @include(if:$includeAnime){
+                pageInfo @nonnull{
+                    ... pageInfo
+                }
                 nodes{
                     ... on Media{
                         ... media
@@ -18,6 +21,9 @@ query UserFavouriteQuery(
                 }
             }
             manga(page:$page,perPage:$perPage) @include(if:$includeManga){
+                pageInfo @nonnull{
+                    ... pageInfo
+                }
                 nodes{
                     ... on Media{
                         ... media
@@ -25,23 +31,32 @@ query UserFavouriteQuery(
                 }
             }
             characters(page:$page,perPage:$perPage) @include(if:$includeCharacter){
+                pageInfo @nonnull{
+                    ... pageInfo
+                }
                 nodes{
                     ... on Character{
-                        ... narrowCharacterContent
+                        ... smallCharacter
                     }
                 }
             }
             staff(page:$page,perPage:$perPage) @include(if:$includeStaff){
+                pageInfo @nonnull{
+                    ... pageInfo
+                }
                 nodes{
                     ... on Staff{
-                        ... narrowStaffContent
+                        ... smallStaff
                     }
                 }
             }
             studios(page:$page,perPage:$perPage) @include(if:$includeStudio){
+                pageInfo @nonnull{
+                    ... pageInfo
+                }
                 nodes{
                     ... on Studio{
-                        ... studioContent
+                        ... studio
                     }
                 }
             }

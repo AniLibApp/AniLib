@@ -24,27 +24,52 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.OnClickWithId
+import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.skydoves.landscapist.ImageOptions
 
 @Composable
-fun CharacterCard(staff: CharacterModel, onClick: (id: Int) -> Unit) {
+fun CharacterCard(model: CharacterModel, onClick: OnClickWithId) {
+    CharacterOrStaffCard(
+        title = model.name?.full.naText(),
+        imageUrl = model.image?.image,
+    ) {
+        onClick(model.id)
+    }
+}
+
+@Composable
+fun CharacterOrStaffCard(
+    title: String,
+    subTitle: String? = null,
+    imageUrl: String?,
+    onClick: OnClick
+) {
     Card(
         modifier = Modifier
-            .height(224.dp)
+            .let {
+                if (subTitle != null) {
+                    it.height(236.dp)
+                } else {
+                    it.height(224.dp)
+                }
+            }
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .clickable {
-                onClick.invoke(staff.id)
-            }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable(onClick = onClick)
         ) {
             AsyncImage(
                 modifier = Modifier
                     .height(165.dp)
                     .fillMaxWidth(),
-                imageUrl = staff.image?.image,
+                imageUrl = imageUrl,
                 imageOptions = ImageOptions(
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.Center
@@ -52,17 +77,17 @@ fun CharacterCard(staff: CharacterModel, onClick: (id: Int) -> Unit) {
                 previewPlaceholder = R.drawable.bleach
             )
 
-            Text(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                text = staff.name?.full.naText(),
-                maxLines = 2,
-                fontSize = 12.sp,
-                lineHeight = 14.sp,
-                overflow = TextOverflow.Ellipsis,
-                fontWeight = FontWeight.SemiBold,
-            )
+                    .fillMaxHeight()
+                    .padding(start = 6.dp, end = 6.dp, top = 2.dp, bottom = 1.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                MediumText(text = title)
+                subTitle?.let {
+                    LightText(text = it)
+                }
+            }
         }
     }
 }

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,7 +36,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,7 +45,7 @@ import com.revolgenx.anilib.common.ext.naInt
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.reviewScreen
 import com.revolgenx.anilib.common.ext.userScreen
-import com.revolgenx.anilib.common.ui.component.action.DisappearingFloatingButton
+import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
@@ -80,7 +78,7 @@ fun ReviewListScreen(
     ScreenScaffold(
         topBar = {},
         floatingActionButton = {
-            DisappearingFloatingButton(scrollState = scrollState, iconRes = R.drawable.ic_filter) {
+            DisappearingFAB(scrollState = scrollState, iconRes = R.drawable.ic_filter) {
                 //todo filter
             }
         },

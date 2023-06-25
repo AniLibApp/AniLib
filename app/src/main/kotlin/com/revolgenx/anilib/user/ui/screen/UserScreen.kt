@@ -4,16 +4,22 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -28,13 +34,14 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.data.store.logout
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.horizontalWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
-import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
-import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
+import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
@@ -42,11 +49,13 @@ import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
-import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.user.ui.model.UserModel
+import com.revolgenx.anilib.user.ui.viewmodel.UserScreenPageType
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
 import com.skydoves.landscapist.ImageOptions
 import kotlinx.coroutines.launch
@@ -59,7 +68,7 @@ import org.koin.androidx.compose.koinViewModel
 
 class UserScreen(
     private val id: Int? = null,
-    private val username: String? = null,
+    private val userName: String? = null,
     private val isTab: Boolean = false
 ) : BaseTabScreen() {
     override val iconRes: Int = R.drawable.ic_person_outline
@@ -81,37 +90,39 @@ class UserScreen(
     @Composable
     override fun Content() {
         id?.let {
-            UserScreenContent(userId = id, isTab = isTab)
+            UserScreenContent(userId = id, userName = userName, isTab = isTab)
         }
     }
 }
 
 
-private typealias UserScreenPage = PagerScreen<UserScreenPageType>
-
-
-private enum class UserScreenPageType {
-    OVERVIEW,
-    ACTIVITY,
-    FAVOURITES
-}
-
-private val pages = listOf(
-    UserScreenPage(UserScreenPageType.OVERVIEW, R.string.overview),
-    UserScreenPage(UserScreenPageType.ACTIVITY, R.string.activity),
-    UserScreenPage(UserScreenPageType.FAVOURITES, R.string.favourites)
-)
-
-
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun UserScreenContent(
-    userId: Int,
+    userId: Int?,
+    userName: String?,
     isTab: Boolean,
-    viewModel: UserViewModel = koinViewModel()
 ) {
+    val viewModel: UserViewModel = koinViewModel()
+    val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
+
+
+    viewModel.userId.value = userId
+    viewModel.field.userName = userName
+    viewModel.field.userId = viewModel.userId.value
+    activityUnionViewModel.field.userId = viewModel.userId.value
+
+    LaunchedEffect(viewModel.userId.value) {
+        if (viewModel.userId.value != null) {
+            viewModel.showAllPages()
+        }
+    }
+
+    val pages by remember {
+        derivedStateOf { viewModel.pages.filter { it.isVisible.value } }
+    }
+
     LaunchedEffect(userId) {
-        viewModel.field.userId = userId
         viewModel.getResource()
     }
 
@@ -146,20 +157,17 @@ private fun UserScreenContent(
             pagerState = pagerState,
             navigationIcon = {},
             actions = {},
-            contentWindowInsets = NavigationBarDefaults.windowInsets,
-            windowInsets = WindowInsets(0)
+            contentWindowInsets = horizontalWindowInsets(),
+            windowInsets = emptyWindowInsets()
         ) { page ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 when (pages[page].type) {
-                    UserScreenPageType.OVERVIEW -> UserOverviewScreen(viewModel.resource) {
-                        viewModel.refresh()
-                    }
-
-                    UserScreenPageType.ACTIVITY -> UserActivityScreen(userId)
-                    UserScreenPageType.FAVOURITES -> UserFavouritesScreen(userId)
+                    UserScreenPageType.OVERVIEW -> UserOverviewScreen(viewModel)
+                    UserScreenPageType.ACTIVITY -> UserActivityUnionScreen(activityUnionViewModel)
+                    UserScreenPageType.FAVOURITES -> UserFavouritesScreen(viewModel.userId.value)
                 }
             }
         }

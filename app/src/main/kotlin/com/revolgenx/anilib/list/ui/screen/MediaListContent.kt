@@ -42,8 +42,11 @@ import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.hideBottomSheet
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
+import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
@@ -51,6 +54,7 @@ import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
 import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
+import com.revolgenx.anilib.common.ui.component.radio.TextRadioButton
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
@@ -86,21 +90,16 @@ fun MediaListContent(
     )
     ScreenScaffold(
         topBar = {},
-        contentWindowInsets = WindowInsets(0),
+        contentWindowInsets = emptyWindowInsets(),
         floatingActionButton = {
-            AnimatedVisibility(
-                visible = scrollState.value == ScrollState.ScrollDown,
-                enter = fadeIn() + expandIn { IntSize(1, 1) }
-            ) {
-                FloatingActionButton(
-                    elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 0.dp),
-                    onClick = {
-                        openGroupNameBottomSheet.value = true
-                    }) {
+            DisappearingFAB(
+                scrollState = scrollState,
+                content = {
                     Box(modifier = Modifier.padding(horizontal = 20.dp)) {
                         Text(text = viewModel.currentGroupName)
                     }
-                }
+                }) {
+                openGroupNameBottomSheet.value = true
             }
         }
     ) {
@@ -177,11 +176,7 @@ fun MediaListGroupNameBottomSheet(
                 selectedGroupName = selectedGroupName,
                 onGroupNameSelected = {
                     onGroupNameSelected(it)
-                    scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-                        if (!bottomSheetState.isVisible) {
-                            openBottomSheet.value = false
-                        }
-                    }
+                    scope.hideBottomSheet(bottomSheetState, openBottomSheet)
                 }
             )
         }
@@ -201,27 +196,8 @@ private fun MediaListGroupNameContent(
             .verticalScroll(rememberScrollState())
     ) {
         groupNamesWithCount.forEach { (k, v) ->
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .selectable(
-                        selected = (selectedGroupName == k),
-                        onClick = { onGroupNameSelected(k) },
-                        role = Role.RadioButton
-                    )
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                RadioButton(
-                    selected = (selectedGroupName == k),
-                    onClick = null // null recommended for accessibility with screenreaders
-                )
-                Text(
-                    text = "$k $v",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(start = 16.dp)
-                )
+            TextRadioButton(text = "$k $v", selected = selectedGroupName == k) {
+                onGroupNameSelected(k)
             }
         }
     }

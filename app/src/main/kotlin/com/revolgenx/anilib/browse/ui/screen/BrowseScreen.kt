@@ -51,6 +51,7 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.browse.data.field.BrowseTypes
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
+import com.revolgenx.anilib.character.ui.component.CharacterCard
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ui.theme.colorScheme
@@ -59,7 +60,7 @@ import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ext.studioScreen
 import com.revolgenx.anilib.common.ext.userScreen
-import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffCard
+import com.revolgenx.anilib.character.ui.component.CharacterOrStaffCard
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
@@ -69,12 +70,14 @@ import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
+import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.component.MediaItemCard
 import com.revolgenx.anilib.media.ui.model.MediaModel
+import com.revolgenx.anilib.staff.ui.component.StaffCard
 import com.revolgenx.anilib.staff.ui.model.StaffModel
+import com.revolgenx.anilib.studio.ui.component.StudioItem
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.skydoves.landscapist.ImageOptions
@@ -86,8 +89,6 @@ class BrowseScreen : AndroidScreen() {
         BrowseScreenContent()
     }
 }
-
-private typealias OnClick = (id: Int) -> Unit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -118,44 +119,28 @@ private fun BrowseScreenContent() {
                     viewModel.refresh()
                 },
                 gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
-                span = { index ->
-                    val item = pagingItems[index]
-                    GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
-                }
             ) { browseModel ->
                 when (browseModel) {
                     is MediaModel -> {
-                        MediaItemCard(browseModel) {id, type->
+                        MediaItemCard(browseModel) { id, type ->
                             navigator.mediaScreen(id, type)
                         }
                     }
 
                     is CharacterModel -> {
-                        with(browseModel) {
-                            CharacterOrStaffCard(
-                                title = name?.full.naText(),
-                                imageUrl = image?.image
-                            ) {
-                                navigator.staffScreen(id)
-                                navigator.characterScreen(id)
-
-                            }
+                        CharacterCard(browseModel) {
+                            navigator.characterScreen(it)
                         }
                     }
 
                     is StaffModel -> {
-                        with(browseModel) {
-                            CharacterOrStaffCard(
-                                title = name?.full.naText(),
-                                imageUrl = image?.image
-                            ) {
-                                navigator.staffScreen(id)
-                            }
+                        StaffCard(browseModel) {
+                            navigator.staffScreen(it)
                         }
                     }
 
                     is StudioModel -> {
-                        BrowseStudioItem(browseModel, onMediaClick = { id, type ->
+                        StudioItem(browseModel, onMediaClick = { id, type ->
                             navigator.mediaScreen(id, type)
                         }, onClick = {
                             navigator.studioScreen(it)
@@ -176,7 +161,7 @@ private fun BrowseScreenContent() {
 }
 
 @Composable
-private fun BrowseUserItem(user: UserModel, onClick: OnClick) {
+private fun BrowseUserItem(user: UserModel, onClick: OnClickWithId) {
     Column(
         modifier = Modifier
             .height(110.dp)
@@ -202,51 +187,6 @@ private fun BrowseUserItem(user: UserModel, onClick: OnClick) {
         MediumText(text = user.name.naText())
     }
 }
-
-@Composable
-private fun BrowseStudioItem(studio: StudioModel, onMediaClick: OnMediaClick, onClick: OnClick) {
-    val medias = studio.media?.nodes ?: emptyList()
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            verticalAlignment = Alignment.Bottom
-        ) {
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable {
-                        onClick(studio.id)
-                    },
-                text = studio.name.naText(),
-                fontSize = 15.sp,
-                maxLines = 1,
-                fontWeight = FontWeight.Medium,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            Text(
-                modifier = Modifier
-                    .clickable {
-                        onClick(studio.id)
-                    },
-                text = stringResource(id = R.string.view_all),
-                color = colorScheme().onSurfaceVariant,
-                fontWeight = FontWeight.Bold,
-                fontSize = 12.sp
-            )
-        }
-        LazyRow {
-            items(items = medias) {
-                MediaItemCard(media = it, width = 120.dp, onMediaClick = onMediaClick)
-            }
-        }
-    }
-}
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -4,6 +4,7 @@ import com.revolgenx.anilib.type.MediaType
 
 typealias OnClick = () -> Unit
 typealias OnClickWithValue<M> = (M) -> Unit
+typealias OnClickWithId = OnClickWithValue<Int>
 typealias OnMediaClick = (id: Int, type: MediaType?) -> Unit
 
 typealias OnLongClick = () -> Unit

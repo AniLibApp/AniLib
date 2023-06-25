@@ -2,7 +2,15 @@ package com.revolgenx.anilib.common.ext
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
@@ -79,4 +87,20 @@ fun CoroutineScope.launchIO(block: suspend CoroutineScope.() -> Unit): Job =
 
 fun <T> Flow<T>.onIO() = flowOn(Dispatchers.IO)
 
+@Composable
+fun emptyWindowInsets() = WindowInsets(0)
 
+@Composable
+fun horizontalWindowInsets() = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
+@Composable
+fun horizontalBottomWindowInsets() = NavigationBarDefaults.windowInsets
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+fun CoroutineScope.hideBottomSheet(state: SheetState, openBottomSheet: MutableState<Boolean>) {
+    this.launch { state.hide() }.invokeOnCompletion {
+        if (!state.isVisible) {
+            openBottomSheet.value = false
+        }
+    }
+}

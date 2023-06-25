@@ -77,7 +77,7 @@ query BrowseQuery(
         }
 
         characters(search:$search, sort:[FAVOURITES_DESC]) {
-            ... narrowCharacterContent
+            ... smallCharacter
         }
     }
     staffPage: Page(page:$page,perPage:$perPage) @include(if: $browseStaff){
@@ -86,7 +86,7 @@ query BrowseQuery(
         }
 
         staff(search:$search, sort:[FAVOURITES_DESC]) {
-            ... narrowStaffContent
+            ... smallStaff
         }
     }
 
@@ -95,7 +95,7 @@ query BrowseQuery(
             ... pageInfo
         }
         studios(search:$search, sort:[FAVOURITES_DESC]){
-            ... studioContent
+            ... studio
         }
     }
     userPage: Page(page:$page,perPage:$perPage) @include(if: $browseUser){
