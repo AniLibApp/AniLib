@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.user.ui.viewmodel
+package com.revolgenx.anilib.user.ui.viewmodel.userStats
 
 import androidx.compose.runtime.mutableIntStateOf
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel

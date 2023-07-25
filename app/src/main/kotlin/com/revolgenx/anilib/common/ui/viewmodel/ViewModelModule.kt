@@ -34,11 +34,15 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.data.field.UserFavouriteType
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteContentViewModel
-import com.revolgenx.anilib.user.ui.viewmodel.UserStatsMediaType
-import com.revolgenx.anilib.user.ui.viewmodel.UserStatsOverviewViewModel
-import com.revolgenx.anilib.user.ui.viewmodel.UserStatsType
-import com.revolgenx.anilib.user.ui.viewmodel.UserStatsViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTypeMediaType
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsOverviewViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsGenreViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsStaffViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsStudioViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTagsViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsVoiceActorsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -108,19 +112,40 @@ val viewModelModules = module {
             get()
         )
     }
-    viewModel { UserStatsViewModel() }
-    viewModel(named(UserStatsMediaType.USER_STATS_ANIME)) {
-        UserStatsOverviewViewModel(
-            MediaType.ANIME,
-            get()
-        )
+    viewModel(named(UserStatsTypeMediaType.USER_STATS_ANIME)) {
+        UserStatsViewModel()
     }
-    viewModel(named(UserStatsMediaType.USER_STATS_MANGA)) {
-        UserStatsOverviewViewModel(
-            MediaType.MANGA,
-            get()
-        )
+    viewModel(named(UserStatsTypeMediaType.USER_STATS_MANGA)) {
+        UserStatsViewModel()
     }
+    viewModel(named(UserStatsTypeMediaType.USER_STATS_OVERVIEW_ANIME)) {
+        UserStatsOverviewViewModel(MediaType.ANIME, get())
+    }
+    viewModel(named(UserStatsTypeMediaType.USER_STATS_OVERVIEW_MANGA)) {
+        UserStatsOverviewViewModel(MediaType.MANGA, get())
+    }
+    viewModel(named(UserStatsTypeMediaType.USER_STATS_GENRE_ANIME)) {
+        UserStatsGenreViewModel(MediaType.ANIME, get())
+    }
+    viewModel(named(UserStatsTypeMediaType.USER_STATS_GENRE_MANGA)) {
+        UserStatsGenreViewModel(MediaType.MANGA, get())
+    }
+    viewModel(named(UserStatsTypeMediaType.USER_STATS_TAGS_ANIME)) {
+        UserStatsTagsViewModel(MediaType.ANIME, get())
+    }
+    viewModel(named(UserStatsTypeMediaType.USER_STATS_TAGS_MANGA)) {
+        UserStatsTagsViewModel(MediaType.MANGA, get())
+    }
+    viewModel(named(UserStatsTypeMediaType.USER_STATS_STAFF_ANIME)) {
+        UserStatsStaffViewModel(MediaType.ANIME, get())
+    }
+    viewModel(named(UserStatsTypeMediaType.USER_STATS_STAFF_MANGA)) {
+        UserStatsStaffViewModel(MediaType.MANGA, get())
+    }
+
+    viewModel { UserStatsVoiceActorsViewModel(get()) }
+    viewModel { UserStatsStudioViewModel(get()) }
+
 
     // notification
     viewModel { NotificationViewModel(get(), get()) }

@@ -1,7 +1,5 @@
 package com.revolgenx.anilib.user.data.service
 
-import com.patrykandpatrick.vico.core.entry.entryModelOf
-import com.patrykandpatrick.vico.core.entry.entryOf
 import com.revolgenx.anilib.UserStatsQuery
 import com.revolgenx.anilib.character.ui.model.toModel
 import com.revolgenx.anilib.common.data.model.PageModel
@@ -13,27 +11,19 @@ import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.media.ui.model.MediaTagModel
 import com.revolgenx.anilib.media.ui.model.toModel
-import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.toModel
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.studio.ui.model.toModel
 import com.revolgenx.anilib.user.data.field.UserFavouriteField
 import com.revolgenx.anilib.user.data.field.UserField
-import com.revolgenx.anilib.user.data.field.UserStatsField
+import com.revolgenx.anilib.user.data.field.UserStatsTypeField
 import com.revolgenx.anilib.user.data.field.UserStatsOverviewField
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.model.stats.BaseStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserCountryStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserFormatStatisticModel
 import com.revolgenx.anilib.user.ui.model.stats.UserGenreStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserReleaseYearStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserScoreStatisticModel
 import com.revolgenx.anilib.user.ui.model.stats.UserStaffStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserStartYearStatisticModel
 import com.revolgenx.anilib.user.ui.model.stats.UserStatisticTypesModel
-import com.revolgenx.anilib.user.ui.model.stats.UserStatisticsModel
-import com.revolgenx.anilib.user.ui.model.stats.UserStatusStatisticModel
 import com.revolgenx.anilib.user.ui.model.stats.UserStudioStatisticModel
 import com.revolgenx.anilib.user.ui.model.stats.UserTagStatisticModel
 import com.revolgenx.anilib.user.ui.model.stats.UserVoiceActorStatisticModel
@@ -122,7 +112,7 @@ class UserServiceImpl(apolloRepository: ApolloRepository) :
         }.onIO()
     }
 
-    override fun getUserStats(field: UserStatsField): Flow<List<BaseStatisticModel>> {
+    override fun getUserStats(field: UserStatsTypeField): Flow<List<BaseStatisticModel>> {
         return field.toQuery().map {
             it.dataAssertNoErrors.user?.statistics?.let {
                 if (it.anime != null) {

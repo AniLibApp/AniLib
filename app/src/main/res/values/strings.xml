@@ -265,6 +265,9 @@
     <string name="chapters_read_s">Chapters Read: %1$d</string>
     <string name="mean_score_s">Mean Score: %1$.2f</string>
     <string name="country_distribution">Country Distribution</string>
+    <string name="count">Count</string>
+    <string name="time_watched">Time Watched</string>
+    <string name="s_day_s_hour">%1$dd %2$dh</string>
     <!--User Stats-->
 
 

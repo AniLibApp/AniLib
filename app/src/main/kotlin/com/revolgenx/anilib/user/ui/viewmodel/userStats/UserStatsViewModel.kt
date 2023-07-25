@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.user.ui.viewmodel
+package com.revolgenx.anilib.user.ui.viewmodel.userStats
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
@@ -14,9 +14,17 @@ enum class UserStatsType(@StringRes val res: Int) {
     STAFF(R.string.staff)
 }
 
-enum class UserStatsMediaType{
+enum class UserStatsTypeMediaType{
     USER_STATS_ANIME,
-    USER_STATS_MANGA
+    USER_STATS_MANGA,
+    USER_STATS_OVERVIEW_ANIME,
+    USER_STATS_OVERVIEW_MANGA,
+    USER_STATS_GENRE_ANIME,
+    USER_STATS_GENRE_MANGA,
+    USER_STATS_TAGS_ANIME,
+    USER_STATS_TAGS_MANGA,
+    USER_STATS_STAFF_ANIME,
+    USER_STATS_STAFF_MANGA,
 }
 
 class UserStatsViewModel : ViewModel() {

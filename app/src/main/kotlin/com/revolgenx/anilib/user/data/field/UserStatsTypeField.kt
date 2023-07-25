@@ -6,9 +6,9 @@ import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.model.isManga
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.UserStatisticsSort
-import com.revolgenx.anilib.user.ui.viewmodel.UserStatsType
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsType
 
-data class UserStatsField(val mediaType: MediaType, val statsType: UserStatsType) :
+data class UserStatsTypeField(val mediaType: MediaType, val statsType: UserStatsType) :
     BaseUserField<UserStatsQuery>() {
     var sort: UserStatisticsSort? = null
     override fun toQueryOrMutation(): UserStatsQuery {

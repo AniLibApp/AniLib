@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.user.ui.screen
+package com.revolgenx.anilib.user.ui.screen.userStats
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.horizontalScroll
@@ -12,7 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,14 +39,12 @@ import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.common.ui.theme.primary
-import com.revolgenx.anilib.common.ui.theme.secondaryContainer
-import com.revolgenx.anilib.common.ui.theme.surfaceContainerHighest
 import com.revolgenx.anilib.list.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.model.stats.BaseStatisticModel
-import com.revolgenx.anilib.user.ui.viewmodel.UserStatsOverviewViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsOverviewViewModel
 
 @Composable
 fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewViewModel) {
