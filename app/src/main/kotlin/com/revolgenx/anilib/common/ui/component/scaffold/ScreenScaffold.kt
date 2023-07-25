@@ -33,7 +33,8 @@ import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
-
+import com.revolgenx.anilib.common.ui.theme.background
+import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +47,7 @@ fun ScreenScaffold(
     topBar: (@Composable () -> Unit)? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
     floatingActionButton: @Composable () -> Unit = {},
-    containerColor: Color = MaterialTheme.colorScheme.background,
+    containerColor: Color = background,
     appBarLayoutColors: AppBarLayoutColors = AppBarLayoutDefaults.appBarLayoutColors(),
     appBarColors: AppBarColors = AppBarDefaults.appBarColors(),
     actions: (@Composable RowScope.() -> Unit)? = null,
@@ -112,7 +113,7 @@ fun ScreenTopAppbar(
                         Text(
                             text = it,
                             fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = onSurfaceVariant
                         )
                     }
                 }

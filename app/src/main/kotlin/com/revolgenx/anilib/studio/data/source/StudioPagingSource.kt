@@ -2,6 +2,7 @@ package com.revolgenx.anilib.studio.data.source
 
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.source.BasePagingSource
+import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.HeaderModel
@@ -22,7 +23,7 @@ class StudioPagingSource(field: StudioField, private val studioService: StudioSe
             if (field.sort == MediaSort.START_DATE_DESC) {
                 it.map {
                     val results = arrayListOf<BaseModel>()
-                    for (mediaModel in it.data ?: emptyList()) {
+                    for (mediaModel in it.data.getOrEmpty()) {
                         val header =
                             mediaModel.startDate?.year?.toString() ?: "TBA"
 

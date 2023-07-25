@@ -117,5 +117,26 @@
         <item>Thriller</item>
     </string-array>
 
+    <string-array name="anime_stats_score_menu">
+        <item>@string/titles_watched</item>
+        <item>@string/hours_watched</item>
+    </string-array>
+
+    <string-array name="anime_stats_menu">
+        <item>@string/titles_watched</item>
+        <item>@string/hours_watched</item>
+        <item>@string/mean_score</item>
+    </string-array>
+
+    <string-array name="manga_stats_score_menu">
+        <item>@string/titles_read</item>
+        <item>@string/chapters_read</item>
+    </string-array>
+
+    <string-array name="manga_stats_menu">
+        <item>@string/titles_read</item>
+        <item>@string/chapters_read</item>
+        <item>@string/mean_score</item>
+    </string-array>
 
 </resources>

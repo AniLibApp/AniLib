@@ -2,24 +2,16 @@ package com.revolgenx.anilib.home.explore.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
-import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
-import com.patrykandpatrick.vico.compose.chart.Chart
-import com.patrykandpatrick.vico.compose.chart.line.lineChart
-import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
-import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
-import com.patrykandpatrick.vico.core.component.marker.MarkerComponent
-import com.patrykandpatrick.vico.core.component.text.textComponent
-import com.patrykandpatrick.vico.core.entry.entryModelOf
-import com.patrykandpatrick.vico.core.entry.entryOf
 import com.revolgenx.anilib.common.ext.airingScheduleScreen
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.mediaListEntryEditorScreen
@@ -28,11 +20,11 @@ import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ext.studioScreen
 import com.revolgenx.anilib.common.ext.userMediaListScreen
 import com.revolgenx.anilib.common.ext.userScreen
-import com.revolgenx.anilib.common.ui.component.chart.rememberMarker
-import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.component.button.SegmentedButton
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
-import com.revolgenx.anilib.common.ui.screen.image.ImageViewerScreen
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
+import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.screen.image.ImageViewerScreen
 import com.revolgenx.anilib.social.markdown.anilify
 import com.revolgenx.anilib.type.MediaType
 
@@ -43,26 +35,16 @@ fun ExploreScreen() {
     ) {
 
         val navigator = localNavigator()
-        val entries = listOf(entryOf(14.0, 2000.2), entryOf(15.0, 4000.3), entryOf(16.0, 9000.0))
-        val chartEntryModel = entryModelOf(entries)
+        Spacer(modifier = Modifier.size(20.dp))
+        SegmentedButton(items = arrayOf("Day", "Week", "Month"), selectedPosition = 0) {
 
-        val marker = rememberMarker()
-
-        ProvideChartStyle(m3ChartStyle()) {
-            Chart(
-                marker = marker,
-                chart = lineChart(),
-                model = chartEntryModel,
-                startAxis = startAxis(),
-                bottomAxis = bottomAxis(),
-            )
         }
 
         Text("Airing Schedule", fontSize = 25.sp, modifier = Modifier.clickable {
             navigator.airingScheduleScreen()
         })
         Text("Media", fontSize = 25.sp, modifier = Modifier.clickable {
-            navigator.mediaScreen(145139, MediaType.ANIME)
+            navigator.mediaScreen(21, MediaType.ANIME)
         })
         Text("Staff", fontSize = 25.sp, modifier = Modifier.clickable {
             navigator.staffScreen(97139)

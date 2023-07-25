@@ -30,7 +30,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarColors
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
@@ -59,7 +58,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.revolgenx.anilib.common.ui.theme.colorScheme
+import com.revolgenx.anilib.common.ui.theme.onSurface
+import com.revolgenx.anilib.common.ui.theme.primary
 import kotlinx.coroutines.delay
 
 @ExperimentalMaterial3Api
@@ -164,7 +164,7 @@ private fun SearchBarInputField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val focusRequester = remember { FocusRequester() }
-    val textColor = colorScheme().onSurface
+    val textColor = onSurface
 
     BasicTextField(
         value = query,
@@ -183,7 +183,7 @@ private fun SearchBarInputField(
         enabled = enabled,
         singleLine = true,
         textStyle = LocalTextStyle.current.merge(TextStyle(color = textColor, fontSize = fontSize, fontWeight = FontWeight.Normal)),
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+        cursorBrush = SolidColor(primary),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = { onSearch(query) }),
         interactionSource = interactionSource,

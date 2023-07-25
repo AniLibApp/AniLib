@@ -16,6 +16,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ui.theme.onBackground
 import com.revolgenx.anilib.social.factory.markdown
 
 @Composable
@@ -23,7 +24,7 @@ fun MarkdownText(
     modifier: Modifier = Modifier,
     text: String? = null,
     spanned: Spanned? = null,
-    color: Color = MaterialTheme.colorScheme.onBackground,
+    color: Color = onBackground,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
     val textSize = if (fontSize.isSpecified) {

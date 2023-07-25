@@ -44,6 +44,7 @@ import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
+import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
@@ -123,7 +124,7 @@ fun MediaScreenContent(
         modifier = Modifier.fillMaxSize(),
         state = collapsingToolbarState,
         scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
-        toolbarModifier = Modifier.background(MaterialTheme.colorScheme.surface),
+        toolbarModifier = Modifier.background(surfaceContainer),
         enabled = true,
         toolbar = {
             MediaScreenTopAppBar(

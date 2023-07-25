@@ -17,7 +17,9 @@ private typealias UserScreenPage = PagerScreen<UserScreenPageType>
 enum class UserScreenPageType {
     OVERVIEW,
     ACTIVITY,
-    FAVOURITES
+    FAVOURITES,
+    ANIME_STATS,
+    MANGA_STATS
 }
 
 class UserViewModel(
@@ -32,13 +34,22 @@ class UserViewModel(
     val pages = listOf(
         UserScreenPage(UserScreenPageType.OVERVIEW, R.string.overview),
         UserScreenPage(
-            UserScreenPageType.ACTIVITY,
-            R.string.activity,
+            UserScreenPageType.ACTIVITY, R.string.activity,
             isVisible = mutableStateOf(false)
         ),
         UserScreenPage(
             UserScreenPageType.FAVOURITES,
             R.string.favourites,
+            isVisible = mutableStateOf(false)
+        ),
+        UserScreenPage(
+            UserScreenPageType.ANIME_STATS,
+            R.string.anime_stats,
+            isVisible = mutableStateOf(false)
+        ),
+        UserScreenPage(
+            UserScreenPageType.MANGA_STATS,
+            R.string.manga_stats,
             isVisible = mutableStateOf(false)
         )
     )

@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ui.theme.onSurface
+import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -210,10 +212,10 @@ private fun AppBarContent(
 object AppBarDefaults {
     @Composable
     fun appBarColors(
-        containerColor: Color = MaterialTheme.colorScheme.surface,
-        navigationIconContentColor: Color = MaterialTheme.colorScheme.onSurface,
-        titleContentColor: Color = MaterialTheme.colorScheme.onSurface,
-        actionIconContentColor: Color = MaterialTheme.colorScheme.onSurface,
+        containerColor: Color = surfaceContainer,
+        navigationIconContentColor: Color = onSurface,
+        titleContentColor: Color = onSurface,
+        actionIconContentColor: Color = onSurface,
     ): AppBarColors =
         AppBarColors(
             containerColor,

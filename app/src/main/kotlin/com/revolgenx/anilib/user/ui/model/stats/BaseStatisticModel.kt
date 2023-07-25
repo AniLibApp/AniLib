@@ -3,7 +3,7 @@ package com.revolgenx.anilib.user.ui.model.stats
 import java.util.concurrent.TimeUnit
 
 @Suppress("LeakingThis")
-abstract class BaseStatisticModel : StatisticModel {
+abstract class BaseStatisticModel(minutesWatched: Int = 0) : StatisticModel {
     //conversion
     val hoursWatched: Int = minutesWatched.takeIf { it != 0 }?.div(60) ?: 0
     val day: Long = TimeUnit.MINUTES.toDays(minutesWatched.toLong())

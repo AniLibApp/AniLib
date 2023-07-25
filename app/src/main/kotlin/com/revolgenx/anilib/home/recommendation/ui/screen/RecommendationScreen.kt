@@ -27,7 +27,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.theme.colorScheme
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -36,6 +35,8 @@ import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
+import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
@@ -144,7 +145,7 @@ private fun RecommendationButton(
                         .size(14.dp),
                     painter = painterResource(id = R.drawable.ic_thumb_up),
                     contentDescription = null,
-                    tint = if (model.userRating == RecommendationRating.RATE_UP) colorScheme().primary else colorScheme().onSurfaceVariant
+                    tint = if (model.userRating == RecommendationRating.RATE_UP) primary else onSurfaceVariant
                 )
             }
 
@@ -159,7 +160,7 @@ private fun RecommendationButton(
                         .size(14.dp),
                     painter = painterResource(id = R.drawable.ic_thumb_down),
                     contentDescription = null,
-                    tint = if (model.userRating == RecommendationRating.RATE_DOWN) colorScheme().primary else colorScheme().onSurfaceVariant
+                    tint = if (model.userRating == RecommendationRating.RATE_DOWN) primary else onSurfaceVariant
                 )
             }
 

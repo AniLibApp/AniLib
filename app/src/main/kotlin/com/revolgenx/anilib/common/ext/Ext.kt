@@ -27,8 +27,8 @@ import java.util.TreeMap
 
 fun String?.naText() = this.takeIf { !it.isNullOrEmpty() } ?: "?"
 fun String?.emptyText() = this.takeIf { !it.isNullOrEmpty() } ?: ""
-fun Int?.naText() = this.takeIf { it != null }?.toString() ?: "?"
-fun Int?.naInt() = this.takeIf { it != null } ?: 0
+fun Int?.naText() = this?.toString() ?: "?"
+fun Int?.naInt() = this ?: 0
 
 fun String?.getOrDefault() = this ?: ""
 fun Int?.getOrDefault() = this ?: 0
@@ -104,3 +104,5 @@ fun CoroutineScope.hideBottomSheet(state: SheetState, openBottomSheet: MutableSt
         }
     }
 }
+
+fun <T> List<T>?.getOrEmpty() = this ?: emptyList()

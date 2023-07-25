@@ -2,6 +2,7 @@ package com.revolgenx.anilib.list.data.service
 
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.list.data.field.MediaListCollectionIdField
@@ -35,7 +36,7 @@ class MediaListServiceImpl(apolloRepository: ApolloRepository) : MediaListServic
                 list?.entries?.mapNotNull { entry ->
                     entry?.takeIf { if (true/*field.canShowAdult*/) true else it.media?.isAdult == false }?.media?.id
                 }
-            }?.flatten() ?: emptyList()
+            }?.flatten().getOrEmpty()
         }.onIO()
     }
 

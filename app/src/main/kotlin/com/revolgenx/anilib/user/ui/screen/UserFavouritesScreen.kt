@@ -38,13 +38,11 @@ import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.radio.TextRadioButton
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
-import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingItems
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
-import com.revolgenx.anilib.common.ui.theme.colorScheme
+import com.revolgenx.anilib.common.ui.theme.background
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.component.MediaItemCard
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -53,7 +51,6 @@ import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.studio.ui.component.StudioItem
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.user.data.field.UserFavouriteType
-import com.revolgenx.anilib.user.data.field.toStringRes
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteContentViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -63,8 +60,8 @@ import org.koin.core.qualifier.named
 private typealias UserFavouriteScreenPage = PagerScreen<UserFavouriteType>
 
 val pages = listOf(
-    UserFavouriteScreenPage(UserFavouriteType.ANIME, R.string.anime),
-    UserFavouriteScreenPage(UserFavouriteType.MANGA, R.string.manga),
+    UserFavouriteScreenPage(UserFavouriteType.FAVOURITE_ANIME, R.string.anime),
+    UserFavouriteScreenPage(UserFavouriteType.FAVOURITE_MANGA, R.string.manga),
     UserFavouriteScreenPage(UserFavouriteType.CHARACTER, R.string.character),
     UserFavouriteScreenPage(UserFavouriteType.STAFF, R.string.staff),
     UserFavouriteScreenPage(UserFavouriteType.STUDIO, R.string.studio),
@@ -84,9 +81,9 @@ fun UserFavouritesScreen(
 
     val viewModel: UserFavouriteViewModel = koinViewModel()
     val favAnimeViewModel: UserFavouriteContentViewModel =
-        koinViewModel(named(UserFavouriteType.ANIME))
+        koinViewModel(named(UserFavouriteType.FAVOURITE_ANIME))
     val favMangaViewModel: UserFavouriteContentViewModel =
-        koinViewModel(named(UserFavouriteType.MANGA))
+        koinViewModel(named(UserFavouriteType.FAVOURITE_MANGA))
     val favCharacterViewModel: UserFavouriteContentViewModel =
         koinViewModel(named(UserFavouriteType.CHARACTER))
     val favStaffViewModel: UserFavouriteContentViewModel =
@@ -106,7 +103,7 @@ fun UserFavouritesScreen(
                 scrollState = scrollState,
                 content = {
                     Box(modifier = Modifier.padding(horizontal = 20.dp)) {
-                        Text(text = stringResource(id = viewModel.favouriteType.value.toStringRes()))
+                        Text(text = stringResource(id = viewModel.favouriteType.value.res))
                     }
                 },
                 onClick = {
@@ -125,8 +122,8 @@ fun UserFavouritesScreen(
                 .nestedScroll(bottomNestedScrollConnection)
         ) {
             val contentViewModel = when (viewModel.favouriteType.value) {
-                UserFavouriteType.ANIME -> favAnimeViewModel
-                UserFavouriteType.MANGA -> favMangaViewModel
+                UserFavouriteType.FAVOURITE_ANIME -> favAnimeViewModel
+                UserFavouriteType.FAVOURITE_MANGA -> favMangaViewModel
                 UserFavouriteType.CHARACTER -> favCharacterViewModel
                 UserFavouriteType.STAFF -> favStaffViewModel
                 UserFavouriteType.STUDIO -> favStudioViewModel
@@ -200,7 +197,7 @@ private fun FavouriteTypeFilterBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState,
-            containerColor = colorScheme().background
+            containerColor = background
         ) {
             Column(
                 modifier = Modifier
@@ -209,7 +206,7 @@ private fun FavouriteTypeFilterBottomSheet(
             ) {
                 UserFavouriteType.values().forEach { type ->
                     TextRadioButton(
-                        text = stringResource(type.toStringRes()),
+                        text = stringResource(type.res),
                         selected = type == selectedFavouriteType
                     ) {
                         onFavouriteTypeSelected(type)

@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.type.ScoreFormat
 import kotlin.math.round
@@ -259,7 +260,7 @@ private fun StarScoreButton(selected: Boolean, onClick: OnClick) {
             modifier = Modifier.align(Alignment.Center),
             painter = painterResource(id = if (selected) R.drawable.ic_star else R.drawable.ic_star_outline),
             contentDescription = null,
-            tint = if (selected) MaterialTheme.colorScheme.primary else LocalContentColor.current
+            tint = if (selected) primary else LocalContentColor.current
         )
     }
 }
@@ -296,7 +297,7 @@ private fun SmileyScoreButton(selected: Boolean, icon: Int, onClick: OnClick) {
         Icon(
             painter = painterResource(id = icon),
             contentDescription = null,
-            tint = if (selected) MaterialTheme.colorScheme.primary else LocalContentColor.current
+            tint = if (selected) primary else LocalContentColor.current
         )
     }
 }

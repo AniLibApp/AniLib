@@ -48,6 +48,7 @@ import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
+import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.data.field.MediaField
@@ -163,7 +164,7 @@ private fun SeasonItem(
                         LightText(
                             text = genre,
                             fontSize = 10.sp,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = primary,
                         )
                     }
                 }
@@ -192,7 +193,7 @@ private fun SeasonItem(
                     Text(
                         stringResource(id = it),
                         fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = primary,
                     )
                 }
             }

@@ -43,9 +43,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.state.ResourceState
-import com.revolgenx.anilib.common.ui.theme.colorScheme
 import com.revolgenx.anilib.common.ext.emptyText
-import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
 import com.revolgenx.anilib.common.ui.component.common.Grid
@@ -55,8 +53,10 @@ import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
+import com.revolgenx.anilib.common.ui.theme.onSurface
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.entry.ui.component.CountEditor
 import com.revolgenx.anilib.entry.ui.component.DoubleCountEditor
@@ -478,7 +478,7 @@ private fun CardHeaderContent(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = heading,
                 maxLines = 1,
-                color = colorScheme().onSurface,
+                color = onSurface,
                 style = MaterialTheme.typography.bodySmall
             )
             Box(modifier = Modifier.let {
@@ -528,7 +528,7 @@ private fun CalendarPicker(
     TextButton(
         modifier = Modifier.fillMaxSize(),
         onClick = { openCalendar.value = true },
-        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface)
+        colors = ButtonDefaults.textButtonColors(contentColor = onSurface)
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_calendar), contentDescription = "calendar"

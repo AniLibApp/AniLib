@@ -17,8 +17,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ui.theme.colorScheme
+import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.component.MediaItemCard
@@ -27,7 +28,7 @@ import com.revolgenx.anilib.studio.ui.model.StudioModel
 
 @Composable
 fun StudioItem(studio: StudioModel, onMediaClick: OnMediaClick, onClick: OnClickWithId) {
-    val medias = studio.media?.nodes ?: emptyList()
+    val medias = studio.media?.nodes.getOrEmpty()
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -56,7 +57,7 @@ fun StudioItem(studio: StudioModel, onMediaClick: OnMediaClick, onClick: OnClick
                         onClick(studio.id)
                     },
                 text = stringResource(id = R.string.view_all),
-                color = colorScheme().onSurfaceVariant,
+                color = onSurfaceVariant,
                 fontWeight = FontWeight.Bold,
                 fontSize = 12.sp
             )

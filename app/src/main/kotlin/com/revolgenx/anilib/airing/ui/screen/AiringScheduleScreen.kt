@@ -72,6 +72,9 @@ import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.model.HeaderModel
+import com.revolgenx.anilib.common.ui.theme.background
+import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
+import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.toStringRes
@@ -291,7 +294,7 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                             Text(
                                 genre,
                                 fontSize = 10.sp,
-                                color = MaterialTheme.colorScheme.primary,
+                                color = primary,
                                 overflow = TextOverflow.Ellipsis
                             )
                         }
@@ -301,7 +304,7 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                         Text(
                             stringResource(id = it),
                             fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = primary,
                         )
                     }
                 }
@@ -314,7 +317,7 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                     )
                 }
                 Column {
-                    Text(epAiringIn, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(epAiringIn, color = onSurfaceVariant)
                     AiringScheduleTimer(airingScheduleModel)
                 }
             }
@@ -336,7 +339,7 @@ private fun AiringScheduleTimer(airingScheduleModel: AiringScheduleModel) {
         fontSize = 18.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 20.sp,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        color = onSurfaceVariant,
     )
 }
 
@@ -355,7 +358,7 @@ private fun AiringScheduleFilterBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState,
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = background
         ) {
             AiringScheduleFilterBottomSheetContent(
                 field = viewModel.field.value,

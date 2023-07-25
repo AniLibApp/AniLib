@@ -40,6 +40,7 @@ import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
+import com.revolgenx.anilib.common.ui.theme.onSurface
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.isAnime
 
@@ -142,7 +143,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                                 viewModel.searchNow()
                             },
                             label = { Text(text = "hello") },
-                            colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = MaterialTheme.colorScheme.onSurface),
+                            colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = onSurface),
                             trailingIcon = {
                                 Icon(
                                     modifier = Modifier

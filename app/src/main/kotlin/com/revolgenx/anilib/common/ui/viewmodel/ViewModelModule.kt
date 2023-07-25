@@ -30,9 +30,14 @@ import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.data.field.UserFavouriteType
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteContentViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.UserStatsMediaType
+import com.revolgenx.anilib.user.ui.viewmodel.UserStatsOverviewViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.UserStatsType
+import com.revolgenx.anilib.user.ui.viewmodel.UserStatsViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -47,7 +52,7 @@ val viewModelModules = module {
     viewModel { AiringScheduleFilterViewModel() }
 
     // media
-    viewModel { MediaViewModel(get(), get() ) }
+    viewModel { MediaViewModel(get(), get()) }
     viewModel { MediaCharacterViewModel(get()) }
     viewModel { MediaStaffViewModel(get()) }
     viewModel { MediaReviewViewModel(get()) }
@@ -73,11 +78,49 @@ val viewModelModules = module {
     //user
     viewModel { UserViewModel(get(), get()) }
     viewModel { UserFavouriteViewModel() }
-    viewModel(named(UserFavouriteType.ANIME)) { UserFavouriteContentViewModel(UserFavouriteType.ANIME, get()) }
-    viewModel(named(UserFavouriteType.MANGA)) { UserFavouriteContentViewModel(UserFavouriteType.MANGA, get()) }
-    viewModel(named(UserFavouriteType.CHARACTER)) { UserFavouriteContentViewModel(UserFavouriteType.CHARACTER, get()) }
-    viewModel(named(UserFavouriteType.STAFF)) { UserFavouriteContentViewModel(UserFavouriteType.STAFF, get()) }
-    viewModel(named(UserFavouriteType.STUDIO)) { UserFavouriteContentViewModel(UserFavouriteType.STUDIO, get()) }
+    viewModel(named(UserFavouriteType.FAVOURITE_ANIME)) {
+        UserFavouriteContentViewModel(
+            UserFavouriteType.FAVOURITE_ANIME,
+            get()
+        )
+    }
+    viewModel(named(UserFavouriteType.FAVOURITE_MANGA)) {
+        UserFavouriteContentViewModel(
+            UserFavouriteType.FAVOURITE_MANGA,
+            get()
+        )
+    }
+    viewModel(named(UserFavouriteType.CHARACTER)) {
+        UserFavouriteContentViewModel(
+            UserFavouriteType.CHARACTER,
+            get()
+        )
+    }
+    viewModel(named(UserFavouriteType.STAFF)) {
+        UserFavouriteContentViewModel(
+            UserFavouriteType.STAFF,
+            get()
+        )
+    }
+    viewModel(named(UserFavouriteType.STUDIO)) {
+        UserFavouriteContentViewModel(
+            UserFavouriteType.STUDIO,
+            get()
+        )
+    }
+    viewModel { UserStatsViewModel() }
+    viewModel(named(UserStatsMediaType.USER_STATS_ANIME)) {
+        UserStatsOverviewViewModel(
+            MediaType.ANIME,
+            get()
+        )
+    }
+    viewModel(named(UserStatsMediaType.USER_STATS_MANGA)) {
+        UserStatsOverviewViewModel(
+            MediaType.MANGA,
+            get()
+        )
+    }
 
     // notification
     viewModel { NotificationViewModel(get(), get()) }

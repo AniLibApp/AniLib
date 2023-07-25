@@ -85,7 +85,7 @@ fun MediaListStatus.toColorRes() = when (this) {
     MediaListStatus.UNKNOWN__ -> R.color.dropped
 }
 
-fun MediaListStatus.toStringRes(mediaType: MediaType): Int {
+fun MediaListStatus?.toStringRes(mediaType: MediaType): Int {
     val isManga = mediaType.isManga()
     return when (this) {
         MediaListStatus.CURRENT -> if (isManga) R.string.watching else R.string.reading
@@ -94,7 +94,7 @@ fun MediaListStatus.toStringRes(mediaType: MediaType): Int {
         MediaListStatus.DROPPED -> R.string.dropped
         MediaListStatus.PAUSED -> R.string.paused
         MediaListStatus.REPEATING -> if (isManga) R.string.rereading else R.string.rewatching
-        MediaListStatus.UNKNOWN__ -> R.string.unknown
+        else -> R.string.unknown
     }
 }
 

@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.revolgenx.anilib.common.data.field.BaseSourceField
 import com.revolgenx.anilib.common.data.model.PageModel
+import com.revolgenx.anilib.common.ext.getOrEmpty
 
 abstract class BasePagingSource<M : Any, F : BaseSourceField<*>>(protected val field: F) :
     PagingSource<Int, M>() {
@@ -18,7 +19,7 @@ abstract class BasePagingSource<M : Any, F : BaseSourceField<*>>(protected val f
             val data = pageData.data
             val hasNextPage = (pageData.pageInfo?.hasNextPage ?: false)
             LoadResult.Page(
-                data = data ?: emptyList(),
+                data = data.getOrEmpty(),
                 prevKey = if (page > 1) page - 1 else null,
                 nextKey = if (hasNextPage) page + 1 else null
             )

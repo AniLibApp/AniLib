@@ -10,8 +10,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.revolgenx.anilib.common.ui.theme.colorScheme
 import com.revolgenx.anilib.common.ui.model.HeaderModel
+import com.revolgenx.anilib.common.ui.theme.onSurface
 
 @Composable
 fun Header(header: HeaderModel) {
@@ -24,7 +24,7 @@ fun Header(header: HeaderModel) {
             text = header.title ?: stringResource(id = header.titleRes!!),
             fontWeight = FontWeight.SemiBold,
             fontSize = 22.sp,
-            color = colorScheme().onSurface
+            color = onSurface
         )
     }
 }

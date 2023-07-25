@@ -289,7 +289,7 @@ fun MediaOverViewQuery.Media.toModel(): MediaModel {
 
 
 @StringRes
-fun MediaFormat?.toStringRes(): Int? {
+fun MediaFormat?.toStringRes(): Int {
     return when (this) {
         MediaFormat.TV -> R.string.tv
         MediaFormat.TV_SHORT -> R.string.tv_short
@@ -301,7 +301,7 @@ fun MediaFormat?.toStringRes(): Int? {
         MediaFormat.MUSIC -> R.string.music
         MediaFormat.NOVEL -> R.string.novel
         MediaFormat.ONE_SHOT -> R.string.one_shot
-        else -> null
+        else -> R.string.unknown
     }
 }
 

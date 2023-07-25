@@ -3,6 +3,7 @@ package com.revolgenx.anilib.staff.data.source
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.source.BasePagingSource
+import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.staff.data.field.StaffMediaRoleField
@@ -20,7 +21,7 @@ class StaffMediaRolePagingSource(
     override suspend fun loadPage(): PageModel<BaseModel> {
         return staffService.getStaffMediaRole(field).map {
             val results = mutableListOf<BaseModel>()
-            for (model in it.data ?: emptyList()) {
+            for (model in it.data.getOrEmpty()) {
                 val header =
                     if (model.isAnime) R.string.anime_staff_roles else R.string.manga_staff_roles
                 if (header != lastHeader) {

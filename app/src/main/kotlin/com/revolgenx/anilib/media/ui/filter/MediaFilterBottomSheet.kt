@@ -24,12 +24,14 @@ import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
+import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
 import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
+import com.revolgenx.anilib.common.ui.theme.background
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.model.toMediaFormat
 import com.revolgenx.anilib.media.ui.model.toMediaSeason
@@ -77,7 +79,7 @@ private fun MediaFilterBottomSheetContent(
                 .padding(vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            val selectedFormats = field.formatsIn?.map { it.ordinal } ?: emptyList()
+            val selectedFormats = field.formatsIn?.map { it.ordinal }.getOrEmpty()
             val formats = stringArrayResource(id = R.array.media_format)
             MultiSelectMenu(
                 label = stringResource(id = R.string.format),
@@ -168,7 +170,7 @@ fun MediaFilterBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState,
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = background
         ) {
             MediaFilterBottomSheetContent(
                 field = viewModel.field,

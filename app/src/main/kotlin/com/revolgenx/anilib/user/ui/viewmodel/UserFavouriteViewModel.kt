@@ -5,5 +5,5 @@ import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.user.data.field.UserFavouriteType
 
 class UserFavouriteViewModel : ViewModel() {
-    var favouriteType = mutableStateOf(UserFavouriteType.ANIME)
+    var favouriteType = mutableStateOf(UserFavouriteType.FAVOURITE_ANIME)
 }

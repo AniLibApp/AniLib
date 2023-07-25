@@ -1,0 +1,62 @@
+package com.revolgenx.anilib.common.ui.component.chart
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
+import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
+import com.patrykandpatrick.vico.compose.chart.Chart
+import com.patrykandpatrick.vico.compose.chart.column.columnChart
+import com.patrykandpatrick.vico.compose.chart.line.lineChart
+import com.patrykandpatrick.vico.compose.chart.scroll.rememberChartScrollSpec
+import com.patrykandpatrick.vico.compose.style.currentChartStyle
+import com.patrykandpatrick.vico.core.axis.AxisPosition
+import com.patrykandpatrick.vico.core.axis.AxisRenderer
+import com.patrykandpatrick.vico.core.chart.values.AxisValuesOverrider
+import com.patrykandpatrick.vico.core.entry.ChartEntryModel
+import com.patrykandpatrick.vico.core.marker.Marker
+import com.patrykandpatrick.vico.core.scroll.InitialScroll
+
+@Composable
+fun ColumnChart(
+    marker: Marker,
+    model: ChartEntryModel,
+    bottomAxis: AxisRenderer<AxisPosition.Horizontal.Bottom>? = null
+) {
+    Chart(
+        marker = marker,
+        chart = columnChart(
+            spacing = 12.dp,
+            innerSpacing = 2.dp
+        ),
+        model = model,
+        startAxis = startAxis(
+            valueFormatter = { value, _ -> value.toInt().toString() }
+        ),
+        bottomAxis = bottomAxis ?: bottomAxis()
+    )
+}
+
+@Composable
+fun LineChart(
+    marker: Marker,
+    model: ChartEntryModel,
+    bottomAxis: AxisRenderer<AxisPosition.Horizontal.Bottom>? = null,
+    spacing: Dp = currentChartStyle.lineChart.spacing,
+    initialScroll: InitialScroll = InitialScroll.Start,
+) {
+    Chart(
+        marker = marker,
+        chart = lineChart(
+            spacing = spacing,
+            axisValuesOverrider = AxisValuesOverrider.adaptiveYValues(yFraction = 1.2f)
+        ),
+        model = model,
+        startAxis = startAxis(
+            valueFormatter = { value, _ -> value.toInt().toString() }
+        ),
+        bottomAxis = bottomAxis ?: bottomAxis(),
+        chartScrollSpec = rememberChartScrollSpec(initialScroll = initialScroll)
+    )
+}
+

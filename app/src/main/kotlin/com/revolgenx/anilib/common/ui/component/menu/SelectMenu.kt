@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.theme.colorScheme
+import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,7 +68,7 @@ fun SelectMenu(
             colors = ExposedDropdownMenuDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                focusedLabelColor = colorScheme().onSurfaceVariant
+                focusedLabelColor = onSurfaceVariant
             ),
         )
 

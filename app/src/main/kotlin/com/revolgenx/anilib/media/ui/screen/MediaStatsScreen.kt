@@ -30,23 +30,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
-import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
-import com.patrykandpatrick.vico.compose.chart.Chart
-import com.patrykandpatrick.vico.compose.chart.column.columnChart
-import com.patrykandpatrick.vico.compose.chart.line.lineChart
 import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
-import com.patrykandpatrick.vico.core.entry.ChartEntryModel
-import com.patrykandpatrick.vico.core.marker.Marker
+import com.patrykandpatrick.vico.core.scroll.InitialScroll
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
+import com.revolgenx.anilib.common.ui.component.chart.ColumnChart
+import com.revolgenx.anilib.common.ui.component.chart.LineChart
 import com.revolgenx.anilib.common.ui.component.chart.rememberMarker
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.model.stats.StatusDistributionModel
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.list.ui.model.toColorRes
 import com.revolgenx.anilib.list.ui.model.toStringRes
+import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.type.MediaRankType
 import com.revolgenx.anilib.type.MediaType
@@ -56,6 +53,8 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
     LaunchedEffect(viewModel) {
         viewModel.getResource()
     }
+
+    val isAnime = mediaType.isAnime()
 
     ResourceScreen(
         resourceState = viewModel.resource.value,
@@ -120,11 +119,26 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
                     HeaderText(text = stringResource(id = R.string.recent_activity_per_day))
                     LineChart(marker = marker, model = statsModel.trendsEntries)
 
-                    HeaderText(text = stringResource(id = R.string.airing_score_progression))
-                    LineChart(marker = marker, model = statsModel.airingScoreProgressionEntries)
+                    statsModel.airingScoreProgressionEntries?.let {
+                        HeaderText(text = stringResource(id = R.string.airing_score_progression))
+                        LineChart(
+                            marker = marker,
+                            model = it,
+                            spacing = 50.dp,
+                            initialScroll = InitialScroll.End
+                        )
+                    }
 
-                    HeaderText(text = stringResource(id = R.string.airing_watchers_progression))
-                    LineChart(marker = marker, model = statsModel.airingWatchersProgressionEntries)
+
+                    statsModel.airingWatchersProgressionEntries?.let {
+                        HeaderText(text = stringResource(id = R.string.airing_watchers_progression))
+                        LineChart(
+                            marker = marker,
+                            model = it,
+                            spacing = 50.dp,
+                            initialScroll = InitialScroll.End
+                        )
+                    }
 
                     statsModel.statusDistribution?.let { statusDistribution ->
                         HeaderText(text = stringResource(id = R.string.status_distribution))
@@ -200,32 +214,4 @@ private fun HeaderText(text: String) {
     )
 }
 
-@Composable
-private fun LineChart(marker: Marker, model: ChartEntryModel) {
-    Chart(
-        marker = marker,
-        chart = lineChart(),
-        model = model,
-        startAxis = startAxis(
-            valueFormatter = { value, _ -> value.toInt().toString() }
-        ),
-        bottomAxis = bottomAxis(),
-    )
-}
 
-
-@Composable
-private fun ColumnChart(marker: Marker, model: ChartEntryModel) {
-    Chart(
-        marker = marker,
-        chart = columnChart(
-            spacing =  12.dp,
-            innerSpacing = 2.dp
-        ),
-        model = model,
-        startAxis = startAxis(
-            valueFormatter = { value, _ -> value.toInt().toString() }
-        ),
-        bottomAxis = bottomAxis(),
-    )
-}

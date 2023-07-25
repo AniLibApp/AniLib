@@ -28,6 +28,7 @@ import com.revolgenx.anilib.common.ui.component.tab.Tab
 import com.revolgenx.anilib.common.ui.component.tab.TabContent
 import com.revolgenx.anilib.common.ui.component.tab.pagerTabIndicatorOffset
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
+import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -74,7 +75,7 @@ private fun <T> PagerScreenTabRow(
     val selectedTabIndex = pagerState.currentPage
     ScrollableTabRow(
         selectedTabIndex = selectedTabIndex,
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = surfaceContainer,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)

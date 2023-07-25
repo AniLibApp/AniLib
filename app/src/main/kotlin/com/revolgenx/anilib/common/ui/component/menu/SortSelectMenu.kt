@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.theme.colorScheme
+import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 
 
 enum class AlSortOrder {
@@ -79,7 +79,7 @@ fun SortSelectMenu(
             colors = ExposedDropdownMenuDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                focusedLabelColor = colorScheme().onSurfaceVariant
+                focusedLabelColor = onSurfaceVariant
             ),
         )
 

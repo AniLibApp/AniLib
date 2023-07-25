@@ -41,6 +41,9 @@ import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
+import com.revolgenx.anilib.common.ui.theme.primary
+import com.revolgenx.anilib.common.ui.theme.secondary
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.notification.ui.model.ActivityNotificationModel
@@ -283,7 +286,7 @@ private fun NotificationItem(
                                 reasonState.value = reason
                             },
                             text = reasonState.value,
-                            color = MaterialTheme.colorScheme.secondary,
+                            color = secondary,
                             fontSize = 11.sp,
                             lineHeight = 11.sp,
                             maxLines = 2,
@@ -293,7 +296,7 @@ private fun NotificationItem(
                     Text(
                         text = createdAt,
                         fontSize = 10.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = onSurfaceVariant
                     )
                 }
             }
@@ -303,7 +306,7 @@ private fun NotificationItem(
                     modifier = Modifier
                         .fillMaxHeight()
                         .width(4.dp),
-                    color = MaterialTheme.colorScheme.primary
+                    color = primary
                 )
             }
 

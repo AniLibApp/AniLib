@@ -1,4 +1,7 @@
 package com.revolgenx.anilib.common.ui.theme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_primary = Color(0xFF02A4F8)
@@ -68,3 +71,15 @@ val review_list_gradient_bottom = Color(0xB3000000)
 
 val seed = Color(0xFF02A4F8)
 
+
+
+val background @Composable get() = colorScheme.background
+val onBackground @Composable get() = colorScheme.onBackground
+val surfaceContainer @Composable get() = colorScheme.surfaceContainer
+val onSurface @Composable get() = colorScheme.onSurface
+val surfaceContainerHighest @Composable get() = colorScheme.surfaceContainerHighest
+val onSurfaceVariant @Composable get() = colorScheme.onSurfaceVariant
+val primary @Composable get() = colorScheme.primary
+val secondary @Composable get() = colorScheme.secondary
+val secondaryContainer @Composable get() = colorScheme.secondaryContainer
+val onSecondaryContainer @Composable get() = colorScheme.onSecondaryContainer

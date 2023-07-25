@@ -35,6 +35,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.data.store.logout
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
@@ -51,9 +52,11 @@ import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
+import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserScreenPageType
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
@@ -139,7 +142,7 @@ private fun UserScreenContent(
         modifier = Modifier.fillMaxSize(),
         state = collapsingToolbarState,
         scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
-        toolbarModifier = Modifier.background(MaterialTheme.colorScheme.surface),
+        toolbarModifier = Modifier.background(surfaceContainer),
         enabled = true,
         toolbar = {
             UserScreenTopAppbar(
@@ -157,7 +160,7 @@ private fun UserScreenContent(
             pagerState = pagerState,
             navigationIcon = {},
             actions = {},
-            contentWindowInsets = horizontalWindowInsets(),
+            contentWindowInsets = if(isTab) horizontalWindowInsets() else horizontalBottomWindowInsets(),
             windowInsets = emptyWindowInsets()
         ) { page ->
             Box(
@@ -168,6 +171,8 @@ private fun UserScreenContent(
                     UserScreenPageType.OVERVIEW -> UserOverviewScreen(viewModel)
                     UserScreenPageType.ACTIVITY -> UserActivityUnionScreen(activityUnionViewModel)
                     UserScreenPageType.FAVOURITES -> UserFavouritesScreen(viewModel.userId.value)
+                    UserScreenPageType.ANIME_STATS -> UserStatsScreen(viewModel.userId.value, MediaType.ANIME)
+                    UserScreenPageType.MANGA_STATS -> UserStatsScreen(viewModel.userId.value, MediaType.MANGA)
                 }
             }
         }

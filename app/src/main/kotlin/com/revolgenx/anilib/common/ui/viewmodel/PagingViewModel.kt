@@ -9,18 +9,17 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.data.field.BaseField
 import com.revolgenx.anilib.common.data.source.BasePagingSource
-import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingItems
-import com.revolgenx.anilib.common.ui.compose.paging.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
-abstract class PagingViewModel<M : Any, F : BaseField<*>, S : BasePagingSource<M, *>>(initialize:Boolean = true) :
+abstract class PagingViewModel<M : Any, F : BaseField<*>, S : BasePagingSource<M, *>>(initialize: Boolean = true) :
     BaseViewModel<F>() {
     protected val pageSize = 20
     protected abstract val pagingSource: S
-    internal var lazyPagingItems: LazyPagingItems<M>? = null
 
     private val pager: Flow<PagingData<M>>
         get() = Pager(
@@ -45,7 +44,5 @@ abstract class PagingViewModel<M : Any, F : BaseField<*>, S : BasePagingSource<M
 }
 
 @Composable
-fun <M : Any, F : BaseField<*>, S : BasePagingSource<M, *>> PagingViewModel<M, F, S>.collectAsLazyPagingItems(): LazyPagingItems<M> {
-    lazyPagingItems = pagingDataFlow.collectAsLazyPagingItems(lazyPagingItems)
-    return lazyPagingItems!!
-}
+fun <M : Any, F : BaseField<*>, S : BasePagingSource<M, *>> PagingViewModel<M, F, S>.collectAsLazyPagingItems(): LazyPagingItems<M> =
+    pagingDataFlow.collectAsLazyPagingItems()

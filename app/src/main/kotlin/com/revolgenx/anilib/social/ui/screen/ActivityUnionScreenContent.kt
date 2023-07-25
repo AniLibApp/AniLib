@@ -30,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.theme.colorScheme
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userScreen
@@ -41,6 +40,7 @@ import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.theme.onSurface
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.social.ui.model.ActivityModel
 import com.revolgenx.anilib.social.ui.model.ListActivityModel
@@ -244,7 +244,7 @@ private fun ActivityItemBottom(model: ActivityModel) {
         ) {
 
             TextButton(
-                colors = ButtonDefaults.textButtonColors(contentColor = colorScheme().onSurface),
+                colors = ButtonDefaults.textButtonColors(contentColor = onSurface),
                 onClick = { /*TODO*/ },
                 contentPadding = PaddingValues(8.dp)
             ) {
@@ -262,7 +262,7 @@ private fun ActivityItemBottom(model: ActivityModel) {
 
 
             TextButton(
-                colors = ButtonDefaults.textButtonColors(contentColor = colorScheme().onSurface),
+                colors = ButtonDefaults.textButtonColors(contentColor = onSurface),
                 onClick = { /*TODO*/ },
                 contentPadding = PaddingValues(8.dp)
             ) {

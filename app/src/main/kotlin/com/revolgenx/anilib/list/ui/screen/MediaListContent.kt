@@ -43,6 +43,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.hideBottomSheet
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
@@ -58,6 +59,7 @@ import com.revolgenx.anilib.common.ui.component.radio.TextRadioButton
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
+import com.revolgenx.anilib.common.ui.theme.background
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
 import com.revolgenx.anilib.list.data.sort.MediaListSortType
@@ -169,7 +171,7 @@ fun MediaListGroupNameBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState,
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = background
         ) {
             MediaListGroupNameContent(
                 groupNamesWithCount = groupNamesWithCount,
@@ -224,7 +226,7 @@ private fun MediaListFilterBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState,
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = background
         ) {
 
             MediaListFilterBottomSheetContent(
@@ -272,7 +274,7 @@ fun MediaListFilterBottomSheetContent(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
-            val selectedFormats = viewModel.filter.formatsIn?.map { it.ordinal } ?: emptyList()
+            val selectedFormats = viewModel.filter.formatsIn?.map { it.ordinal }.getOrEmpty()
             val formats = stringArrayResource(id = R.array.media_format)
             MultiSelectMenu(
                 label = stringResource(id = R.string.format),

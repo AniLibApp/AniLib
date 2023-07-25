@@ -30,13 +30,7 @@ fun ShowIfLoggedIn(
 }
 
 @Composable
-fun ShowIfAuthUser(userId: Int, content: @Composable () -> Unit) {
+fun IsLoggedIn(content: @Composable (loggedIn: Boolean, userId: Int?) -> Unit) {
     val id = localUser().userId
-    if (id != null && id == userId) {
-        content()
-    }
+    content(id != null, id)
 }
-
-
-@Composable
-fun isLoggedIn() = localUser().isLoggedIn

@@ -9,7 +9,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import com.revolgenx.anilib.common.ui.theme.colorScheme
+import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 
 @Composable
 fun MediumText(
@@ -52,7 +52,7 @@ fun LightText(
         maxLines = maxLines ?: 1,
         fontSize = fontSize ?: 11.sp,
         lineHeight = lineHeight ?: 12.sp,
-        color = color ?: colorScheme().onSurfaceVariant,
+        color = color ?: onSurfaceVariant,
         overflow = TextOverflow.Ellipsis,
         fontWeight = FontWeight.Light,
         letterSpacing = 0.2.sp,

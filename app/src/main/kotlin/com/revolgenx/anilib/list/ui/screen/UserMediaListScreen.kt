@@ -34,6 +34,7 @@ import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
+import com.revolgenx.anilib.common.ui.theme.onSurface
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
@@ -179,7 +180,7 @@ fun MediaListCommonContent(
                             viewModel.searchNow()
                         },
                         label = { Text(text = "hello") },
-                        colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = MaterialTheme.colorScheme.onSurface),
+                        colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = onSurface),
                         trailingIcon = {
                             Icon(
                                 modifier = Modifier

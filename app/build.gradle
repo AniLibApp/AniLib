@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace "com.revolgenx.anilib"
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.revolgenx.anilib"
@@ -116,29 +116,28 @@ android {
 
 ext {
     compose = "1.5.0-alpha03"
-    material = "1.2.0-alpha02"
+    material = "1.2.0-alpha03"
     accompanist = "0.29.0-alpha"
     voyager = "1.0.0-rc04"
     timber = "5.0.1"
     koin = "3.4.1"
     desugar = "1.1.5"
     landscapist = "2.2.0"
-    paging = "3.2.0-alpha03"
-    pagingCompose = "1.0.0-alpha17"
+    paging = "3.2.0-rc01"
     dataStore = "1.0.0"
     markwon = "4.6.2"
     sheets = "1.1.1"
     customTabs = "1.5.0"
     jwtdecode = "2.0.2"
     prettytime = "5.0.4.Final"
-    vico = "1.6.5"
+    vico = "1.7.1"
 }
 
 dependencies {
 
     implementation("androidx.core:core-ktx:1.10.1")
 
-    implementation("androidx.activity:activity-compose:1.7.1")
+    implementation("androidx.activity:activity-compose:1.7.2")
 
     //compose
     implementation("androidx.compose.ui:ui-tooling-preview:$compose")
@@ -166,7 +165,7 @@ dependencies {
 
     //paging
     implementation("androidx.paging:paging-runtime:$paging")
-    implementation("androidx.paging:paging-compose:$pagingCompose")
+    implementation("androidx.paging:paging-compose:$paging")
 
     //timber
     implementation("com.jakewharton.timber:timber:$timber")

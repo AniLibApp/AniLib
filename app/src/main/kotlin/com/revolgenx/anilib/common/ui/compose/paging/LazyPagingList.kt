@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -23,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.common.ui.component.pullrefresh.PullRefreshIndicator
 import com.revolgenx.anilib.common.ui.component.pullrefresh.pullRefresh

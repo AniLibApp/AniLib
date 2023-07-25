@@ -1,23 +1,47 @@
 package com.revolgenx.anilib.user.data.service
 
+import com.patrykandpatrick.vico.core.entry.entryModelOf
+import com.patrykandpatrick.vico.core.entry.entryOf
+import com.revolgenx.anilib.UserStatsQuery
 import com.revolgenx.anilib.character.ui.model.toModel
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
-import com.revolgenx.anilib.common.ext.isNotNull
+import com.revolgenx.anilib.common.ext.getOrEmpty
+import com.revolgenx.anilib.common.ext.naInt
 import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.common.ui.model.BaseModel
-import com.revolgenx.anilib.fragment.PageInfo
+import com.revolgenx.anilib.media.ui.model.MediaTagModel
 import com.revolgenx.anilib.media.ui.model.toModel
+import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.toModel
+import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.studio.ui.model.toModel
 import com.revolgenx.anilib.user.data.field.UserFavouriteField
 import com.revolgenx.anilib.user.data.field.UserField
+import com.revolgenx.anilib.user.data.field.UserStatsField
+import com.revolgenx.anilib.user.data.field.UserStatsOverviewField
+import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
 import com.revolgenx.anilib.user.ui.model.UserModel
+import com.revolgenx.anilib.user.ui.model.stats.BaseStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.UserCountryStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.UserFormatStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.UserGenreStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.UserReleaseYearStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.UserScoreStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.UserStaffStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.UserStartYearStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.UserStatisticTypesModel
+import com.revolgenx.anilib.user.ui.model.stats.UserStatisticsModel
+import com.revolgenx.anilib.user.ui.model.stats.UserStatusStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.UserStudioStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.UserTagStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.UserVoiceActorStatisticModel
+import com.revolgenx.anilib.user.ui.model.stats.toModel
 import com.revolgenx.anilib.user.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import org.jetbrains.annotations.Nullable
 
 class UserServiceImpl(apolloRepository: ApolloRepository) :
     UserService, BaseService(apolloRepository) {
@@ -25,8 +49,8 @@ class UserServiceImpl(apolloRepository: ApolloRepository) :
         return field.toQuery().map {
             it.dataAssertNoErrors.let { data ->
                 data.user?.toModel()?.also {
-                    it.followers = data.followerPage?.pageInfo?.total ?: 0
-                    it.following = data.followingPage?.pageInfo?.total ?: 0
+                    it.followers = data.followerPage?.pageInfo?.total.naInt()
+                    it.following = data.followingPage?.pageInfo?.total.naInt()
                 }
             }
         }.onIO()
@@ -75,4 +99,198 @@ class UserServiceImpl(apolloRepository: ApolloRepository) :
             )
         }.onIO()
     }
+
+    override fun getUserStatsOverview(field: UserStatsOverviewField): Flow<UserModel?> {
+        return field.toQuery().map {
+            it.dataAssertNoErrors.user?.let { user ->
+                UserModel(
+                    id = user.id,
+                    name = user.name,
+                    mediaListOptions = user.mediaListOptions?.let { option ->
+                        MediaListOptionModel(
+                            scoreFormat = option.scoreFormat
+                        )
+                    },
+                    statistics = user.statistics?.let { stats ->
+                        UserStatisticTypesModel(
+                            anime = stats.anime?.userStatisticsOverview?.toModel(),
+                            manga = stats.manga?.userStatisticsOverview?.toModel()
+                        )
+                    }
+                )
+            }
+        }.onIO()
+    }
+
+    override fun getUserStats(field: UserStatsField): Flow<List<BaseStatisticModel>> {
+        return field.toQuery().map {
+            it.dataAssertNoErrors.user?.statistics?.let {
+                if (it.anime != null) {
+                    when {
+                        it.anime.genres != null -> {
+                            getStatsGenreModel(it.anime.genres.filterNotNull())
+                        }
+
+                        it.anime.tags != null -> {
+                            getStatsTagModel(it.anime.tags.filterNotNull())
+                        }
+
+                        it.anime.studios != null -> {
+                            getStatsStudioModel(it.anime.studios.filterNotNull())
+                        }
+
+                        it.anime.voiceActors != null -> {
+                            getStatsVoiceActorModel(it.anime.voiceActors.filterNotNull())
+                        }
+
+                        it.anime.staff != null -> {
+                            getStatsStaffModel(it.anime.staff.filterNotNull())
+                        }
+
+                        else -> {
+                            emptyList()
+                        }
+                    }
+                } else {
+                    if (it.manga != null) {
+                        when {
+                            it.manga.genres != null -> {
+                                getStatsGenreModel1(it.manga.genres.filterNotNull())
+                            }
+
+                            it.manga.tags != null -> {
+                                getStatsTagModel1(it.manga.tags.filterNotNull())
+                            }
+
+                            it.manga.staff != null -> {
+                                getStatsStaffModel1(it.manga.staff.filterNotNull())
+                            }
+
+                            else -> {
+                                emptyList()
+                            }
+                        }
+                    } else {
+                        emptyList()
+                    }
+                }
+            }.getOrEmpty()
+        }.onIO()
+    }
+
+
+    private fun getStatsGenreModel(genres: List<UserStatsQuery.Genre>): List<UserGenreStatisticModel> {
+        return genres.map { genre ->
+            UserGenreStatisticModel(
+                genre = genre.genre,
+                count = genre.count,
+                minutesWatched = genre.minutesWatched,
+                meanScore = genre.meanScore,
+                mediaIds = genre.mediaIds.filterNotNull()
+            )
+        }
+    }
+
+    private fun getStatsGenreModel1(genres: List<UserStatsQuery.Genre1>): List<UserGenreStatisticModel> {
+        return genres.map { genre ->
+            UserGenreStatisticModel(
+                genre = genre.genre,
+                count = genre.count,
+                chaptersRead = genre.chaptersRead,
+                meanScore = genre.meanScore,
+                mediaIds = genre.mediaIds.filterNotNull()
+            )
+        }
+    }
+
+    private fun getStatsTagModel(tags: List<UserStatsQuery.Tag>): List<UserTagStatisticModel> {
+        return tags.map { stats ->
+            UserTagStatisticModel(
+                count = stats.count,
+                meanScore = stats.meanScore,
+                minutesWatched = stats.minutesWatched,
+                mediaIds = stats.mediaIds.filterNotNull(),
+                tag = stats.tag?.let {
+                    MediaTagModel(
+                        id = it.id,
+                        name = it.name
+                    )
+                }
+            )
+        }
+    }
+
+    private fun getStatsTagModel1(tags: List<UserStatsQuery.Tag2>): List<UserTagStatisticModel> {
+        return tags.map { stats ->
+            UserTagStatisticModel(
+                count = stats.count,
+                meanScore = stats.meanScore,
+                chaptersRead = stats.chaptersRead,
+                mediaIds = stats.mediaIds.filterNotNull(),
+                tag = stats.tag?.let {
+                    MediaTagModel(
+                        id = it.id,
+                        name = it.name
+                    )
+                }
+            )
+        }
+    }
+
+
+    private fun getStatsStaffModel(staff: @Nullable List<UserStatsQuery.Staff>): List<UserStaffStatisticModel> {
+        return staff.map { stats ->
+            UserStaffStatisticModel(
+                count = stats.count,
+                meanScore = stats.meanScore,
+                minutesWatched = stats.minutesWatched,
+                mediaIds = stats.mediaIds.filterNotNull(),
+                staff = stats.staff?.smallStaff?.toModel()
+            )
+        }
+    }
+
+
+    private fun getStatsStaffModel1(staff: List<UserStatsQuery.Staff2>): List<UserStaffStatisticModel> {
+        return staff.map { stats ->
+            UserStaffStatisticModel(
+                count = stats.count,
+                meanScore = stats.meanScore,
+                chaptersRead = stats.chaptersRead,
+                mediaIds = stats.mediaIds.filterNotNull(),
+                staff = stats.staff?.smallStaff?.toModel()
+            )
+        }
+    }
+
+
+    private fun getStatsStudioModel(studios: List<UserStatsQuery.Studio>): List<UserStudioStatisticModel> {
+        return studios.map { stats ->
+            UserStudioStatisticModel(
+                count = stats.count,
+                meanScore = stats.meanScore,
+                minutesWatched = stats.minutesWatched,
+                mediaIds = stats.mediaIds.filterNotNull(),
+                studio = stats.studio?.let {
+                    StudioModel(
+                        id = it.id,
+                        name = it.name
+                    )
+                }
+            )
+        }
+    }
+
+    private fun getStatsVoiceActorModel(voiceActors: List<UserStatsQuery.VoiceActor>): List<UserVoiceActorStatisticModel> {
+        return voiceActors.map { stats ->
+            UserVoiceActorStatisticModel(
+                count = stats.count,
+                meanScore = stats.meanScore,
+                minutesWatched = stats.minutesWatched,
+                mediaIds = stats.mediaIds.filterNotNull(),
+                voiceActor = stats.voiceActor?.smallStaff?.toModel()
+            )
+        }
+    }
+
 }

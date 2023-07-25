@@ -1,6 +1,9 @@
 package com.revolgenx.anilib.common.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -33,22 +36,35 @@ val overpassFonts = FontFamily(
 val defaultTypography = Typography()
 
 val Typography = Typography(
-    bodyLarge = defaultTypography.bodyLarge.copy(fontFamily = overpassFonts),
+    bodyLarge = defaultTypography.bodyLarge.copy(
+        fontFamily = overpassFonts,
+        platformStyle = PlatformTextStyle(includeFontPadding = true)
+    ),
     labelLarge = defaultTypography.labelLarge.copy(
         fontFamily = overpassFonts,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.2.sp
+        letterSpacing = 0.2.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = true)
     ),
     titleLarge = defaultTypography.titleLarge.copy(
         fontFamily = overpassFonts,
         lineHeight = 26.sp,
         fontSize = 20.sp,
         fontWeight = FontWeight.Medium,
+        platformStyle = PlatformTextStyle(includeFontPadding = true)
     ),
-    titleMedium = defaultTypography.titleMedium.copy(fontFamily = overpassFonts),
-    titleSmall = defaultTypography.titleSmall.copy(fontFamily = overpassFonts),
+    titleMedium = defaultTypography.titleMedium.copy(
+        fontFamily = overpassFonts,
+        platformStyle = PlatformTextStyle(includeFontPadding = true)
+    ),
+    titleSmall = defaultTypography.titleSmall.copy(
+        fontFamily = overpassFonts,
+        platformStyle = PlatformTextStyle(includeFontPadding = true)
+    ),
 )
 
 
+@Composable
+fun typography() = MaterialTheme.typography

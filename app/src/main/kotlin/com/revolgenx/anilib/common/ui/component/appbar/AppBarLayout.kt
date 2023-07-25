@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -35,6 +34,7 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
+import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -122,8 +122,8 @@ fun TopAppBarContent(windowInsets: WindowInsets, heightPx: Float, content: @Comp
 object AppBarLayoutDefaults {
     @Composable
     fun appBarLayoutColors(
-        containerColor: Color = MaterialTheme.colorScheme.surface,
-        scrolledContainerColor: Color = MaterialTheme.colorScheme.surface,
+        containerColor: Color = surfaceContainer,
+        scrolledContainerColor: Color = surfaceContainer,
     ): AppBarLayoutColors =
         AppBarLayoutColors(
             containerColor,

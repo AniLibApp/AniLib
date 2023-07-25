@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.text.LightText
@@ -45,7 +46,7 @@ import com.skydoves.landscapist.ImageOptions
 fun MediaWatchScreen(viewModel: MediaViewModel) {
     ResourceScreen(resourceState = viewModel.resource.value, refresh = { viewModel.refresh() }) {
         LazyPagingList(
-            items = it.streamingEpisodes ?: emptyList(),
+            items = it.streamingEpisodes.getOrEmpty(),
             type = ListPagingListType.GRID,
             gridOptions = GridOptions(GridCells.Adaptive(168.dp))
         ) { ep ->
