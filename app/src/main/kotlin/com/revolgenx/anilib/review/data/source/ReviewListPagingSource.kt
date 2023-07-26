@@ -7,7 +7,7 @@ import com.revolgenx.anilib.review.data.service.ReviewService
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import kotlinx.coroutines.flow.single
 
-class ReviewListSource(
+class ReviewListPagingSource(
     field: ReviewListField,
     private val service: ReviewService
 ) : BasePagingSource<ReviewModel, ReviewListField>(field) {

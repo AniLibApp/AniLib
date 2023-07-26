@@ -3,12 +3,8 @@ package com.revolgenx.anilib.user.ui.screen.userStats
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -112,7 +108,7 @@ private fun UserStatsTypeItem(isAnime: Boolean, model: BaseStatisticModel) {
                     Spacer(modifier = Modifier.size(2.dp))
                     StatsTypeCardItem(
                         labelId = if (isAnime) R.string.time_watched else R.string.chapters_read,
-                        text = if (isAnime) stringResource(id = R.string.s_day_s_hour).format(
+                        text = if (isAnime) stringResource(id = R.string.d_day_d_hour).format(
                             model.day,
                             model.hour
                         ) else model.chaptersRead.naText()
@@ -124,8 +120,8 @@ private fun UserStatsTypeItem(isAnime: Boolean, model: BaseStatisticModel) {
 }
 
 @Composable
-fun RowScope.StatsTypeCardItem(@StringRes labelId: Int, text: String) {
-    Column(modifier = Modifier/*.weight(1f)*/) {
+fun StatsTypeCardItem(@StringRes labelId: Int, text: String) {
+    Column {
         Text(
             text = text,
             color = primary,

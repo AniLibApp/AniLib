@@ -355,13 +355,13 @@ private fun StatisticModelItem(
 ) {
     Column {
         header()
-        Text(text = stringResource(id = R.string.count_s).format(model.count))
+        Text(text = stringResource(id = R.string.count_d).format(model.count))
         Text(
-            text = stringResource(id = if (isAnime) R.string.hours_watched_s else R.string.chapters_read_s).format(
+            text = stringResource(id = if (isAnime) R.string.hours_watched_d else R.string.chapters_read_d).format(
                 (if (isAnime) model.hoursWatched else model.chaptersRead).naInt()
             )
         )
-        Text(text = stringResource(id = R.string.mean_score_s).format(model.meanScore))
+        Text(text = stringResource(id = R.string.mean_score_d).format(model.meanScore))
     }
 }
 

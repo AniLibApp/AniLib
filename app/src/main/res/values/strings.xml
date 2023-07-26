@@ -260,14 +260,18 @@
     <string name="watch_year">Watch Year</string>
     <string name="read_year">Read Year</string>
     <string name="format_distribution">Format Distribution</string>
-    <string name="count_s">Count: %1$d</string>
-    <string name="hours_watched_s">Hours Watched: %1$d</string>
-    <string name="chapters_read_s">Chapters Read: %1$d</string>
-    <string name="mean_score_s">Mean Score: %1$.2f</string>
+    <string name="count_d">Count: %1$d</string>
+    <string name="hours_watched_d">Hours Watched: %1$d</string>
+    <string name="chapters_read_d">Chapters Read: %1$d</string>
+    <string name="mean_score_d">Mean Score: %1$.2f</string>
     <string name="country_distribution">Country Distribution</string>
     <string name="count">Count</string>
     <string name="time_watched">Time Watched</string>
-    <string name="s_day_s_hour">%1$dd %2$dh</string>
+    <string name="d_day_d_hour">%1$dd %2$dh</string>
+    <string name="follow">Follow</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="mutual">Mutual</string>
     <!--User Stats-->
 
 

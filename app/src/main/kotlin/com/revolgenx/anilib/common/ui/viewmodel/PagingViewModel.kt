@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.emptyFlow
 
 abstract class PagingViewModel<M : Any, F : BaseField<*>, S : BasePagingSource<M, *>>(initialize: Boolean = true) :
     BaseViewModel<F>() {
-    protected val pageSize = 20
+    protected val pageSize = 30
     protected abstract val pagingSource: S
 
     private val pager: Flow<PagingData<M>>

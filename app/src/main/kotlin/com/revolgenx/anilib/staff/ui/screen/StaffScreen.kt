@@ -38,7 +38,7 @@ private val pages = listOf(
     StaffScreenPage(
         StaffScreenPageType.VOICE_ROLES,
         R.string.staff_roles,
-        R.drawable.ic_staff
+        R.drawable.ic_group
     )
 )
 

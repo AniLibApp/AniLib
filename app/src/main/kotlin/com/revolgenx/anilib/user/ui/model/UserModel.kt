@@ -2,9 +2,8 @@ package com.revolgenx.anilib.user.ui.model
 
 import com.revolgenx.anilib.UserQuery
 import com.revolgenx.anilib.common.ui.model.BaseModel
-import com.revolgenx.anilib.user.ui.model.stats.UserGenreStatisticModel
+import com.revolgenx.anilib.fragment.UserRelation
 import com.revolgenx.anilib.user.ui.model.stats.UserStatisticTypesModel
-import com.revolgenx.anilib.user.ui.model.stats.UserStatisticsModel
 import com.revolgenx.anilib.user.ui.model.stats.toModel
 
 data class UserModel(
@@ -48,5 +47,16 @@ fun UserQuery.User.toModel(): UserModel {
                 manga = stats.manga?.userMediaStatistics?.toModel()
             )
         }
+    )
+}
+
+fun UserRelation.toModel(): UserModel{
+    val avatar = avatar?.userAvatar?.toModel()
+    return UserModel(
+        id = id,
+        name = name,
+        avatar = avatar,
+        isFollower = isFollower ?: false,
+        isFollowing = isFollowing ?: false
     )
 }

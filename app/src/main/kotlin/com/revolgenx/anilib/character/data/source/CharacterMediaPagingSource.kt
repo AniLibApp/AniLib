@@ -7,7 +7,7 @@ import com.revolgenx.anilib.common.data.source.BasePagingSource
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import kotlinx.coroutines.flow.single
 
-class CharacterMediaSource(
+class CharacterMediaPagingSource(
     field: CharacterMediaField,
     private val characterService: CharacterService
 ) :

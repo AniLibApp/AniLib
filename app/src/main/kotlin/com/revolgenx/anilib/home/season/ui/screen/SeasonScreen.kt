@@ -189,13 +189,11 @@ private fun SeasonItem(
                     fontSize = 12.sp
                 )
 
-                media.format.toStringRes()?.let {
-                    Text(
-                        stringResource(id = it),
-                        fontSize = 12.sp,
-                        color = primary,
-                    )
-                }
+                Text(
+                    stringResource(id = media.format.toStringRes()),
+                    fontSize = 12.sp,
+                    color = primary,
+                )
             }
         }
     }

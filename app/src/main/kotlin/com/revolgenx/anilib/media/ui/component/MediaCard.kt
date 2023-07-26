@@ -157,9 +157,7 @@ fun MediaItemRowContent(
                 fontSize = 12.sp
             )
 
-            val format = media.format.toStringRes()?.let {
-                stringResource(id = it)
-            }.naText()
+            val format = stringResource(id = media.format.toStringRes())
             val year = media.seasonYear.naText()
 
             LightText(
@@ -215,9 +213,8 @@ fun MediaRowItemContentEnd(
                 textAlign = TextAlign.End,
             )
 
-            val format = media.format.toStringRes()?.let {
-                stringResource(id = it)
-            }.naText()
+            val format = stringResource(id = media.format.toStringRes())
+
             val year = media.seasonYear.naText()
 
             LightText(

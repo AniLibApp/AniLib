@@ -7,7 +7,7 @@ import com.revolgenx.anilib.staff.data.field.StaffMediaCharacterField
 import com.revolgenx.anilib.staff.data.service.StaffService
 import kotlinx.coroutines.flow.single
 
-class StaffMediaCharacterSource(
+class StaffMediaCharacterPagingSource(
     field: StaffMediaCharacterField,
     private val staffService: StaffService
 ) : BasePagingSource<MediaModel, StaffMediaCharacterField>(field) {

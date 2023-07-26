@@ -41,7 +41,7 @@ fun ScrollableTabRow(
     contentColor: Color = TabRowDefaults.contentColor,
     edgePadding: Dp = ScrollableTabRowPadding,
     indicator: @Composable (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
-        TabRowDefaults.Indicator(
+        TabRowDefaults.SecondaryIndicator(
             Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
         )
     },

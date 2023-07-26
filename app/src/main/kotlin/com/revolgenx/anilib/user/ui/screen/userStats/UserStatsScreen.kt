@@ -128,6 +128,7 @@ fun UserStatsScreen(userId: Int?, type: MediaType) {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserStatsTypeBottomSheet(
     openBottomSheet: MutableState<Boolean>,

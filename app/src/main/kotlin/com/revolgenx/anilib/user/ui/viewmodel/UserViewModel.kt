@@ -3,6 +3,7 @@ package com.revolgenx.anilib.user.ui.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.store.AppDataStore
+import com.revolgenx.anilib.common.data.store.runUserId
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.user.data.field.UserField
@@ -27,7 +28,9 @@ class UserViewModel(
     val appDataStore: AppDataStore
 ) :
     ResourceViewModel<UserModel, UserField>() {
+    private val loggedInUserId = appDataStore.runUserId()
     override val field: UserField = UserField()
+    val isLoggedInUser get() = loggedInUserId == field.userId
     val userId = mutableStateOf<Int?>(null)
 
 

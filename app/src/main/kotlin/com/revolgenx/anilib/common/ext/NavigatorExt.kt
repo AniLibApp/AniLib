@@ -7,6 +7,7 @@ import com.revolgenx.anilib.common.ui.screen.image.ImageViewerScreen
 import com.revolgenx.anilib.entry.ui.screen.MediaListEntryEditorScreen
 import com.revolgenx.anilib.list.ui.screen.UserMediaListScreen
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
+import com.revolgenx.anilib.relation.ui.screen.UserSocialRelationScreen
 import com.revolgenx.anilib.review.ui.screen.ReviewScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityComposerScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityScreen
@@ -43,10 +44,13 @@ fun Navigator.mediaListEntryEditorScreen(mediaId: Int, userId: Int) {
     push(MediaListEntryEditorScreen(mediaId, userId))
 }
 
-fun Navigator.userMediaListScreen(userId: Int) {
-    push(UserMediaListScreen(userId))
+fun Navigator.userMediaListScreen(userId: Int, mangaTab: Boolean = false) {
+    push(UserMediaListScreen(userId, mangaTab))
 }
 
+fun Navigator.userRelationScreen(userId: Int, isFollower: Boolean? = null) {
+    push(UserSocialRelationScreen(userId, isFollower))
+}
 
 fun Navigator.activityScreen(activityId: Int) {
     push(ActivityScreen(activityId))

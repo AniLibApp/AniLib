@@ -300,13 +300,11 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                         }
                     }
 
-                    media.format.toStringRes()?.let {
-                        Text(
-                            stringResource(id = it),
-                            fontSize = 12.sp,
-                            color = primary,
-                        )
-                    }
+                    Text(
+                        stringResource(id = media.format.toStringRes()),
+                        fontSize = 12.sp,
+                        color = primary,
+                    )
                 }
                 val epAiringIn = if (media.episodes.isNull()) {
                     stringResource(id = R.string.ep_s_airing_in).format(airingScheduleModel.episode)

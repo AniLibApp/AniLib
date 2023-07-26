@@ -23,6 +23,8 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
+import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationType
+import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
@@ -145,6 +147,10 @@ val viewModelModules = module {
 
     viewModel { UserStatsVoiceActorsViewModel(get()) }
     viewModel { UserStatsStudioViewModel(get()) }
+
+    // user relation
+    viewModel(named(UserRelationType.USER_RELATION_FOLLOWING)) { UserRelationViewModel(false, get()) }
+    viewModel(named(UserRelationType.USER_RELATION_FOLLOWER)) { UserRelationViewModel(true, get()) }
 
 
     // notification

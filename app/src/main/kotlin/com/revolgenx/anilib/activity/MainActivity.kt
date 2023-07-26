@@ -31,6 +31,7 @@ import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
 import com.revolgenx.anilib.common.ui.composition.GlobalViewModelStoreOwner
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
+import com.revolgenx.anilib.common.ui.composition.LocalMainTabNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalMediaState
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.composition.LocalUserState
@@ -97,7 +98,7 @@ private var userScreen: UserScreen? = null
 @Composable
 fun MainActivityScreenContent() {
     val snackbarHostState = remember { SnackbarHostState() }
-    TabNavigator(tab = HomeScreen) {
+    TabNavigator(tab = HomeScreen) { tabNavigator ->
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) },
             bottomBar = {
@@ -121,7 +122,10 @@ fun MainActivityScreenContent() {
             },
             contentWindowInsets = emptyWindowInsets()
         ) { contentPadding ->
-            CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
+            CompositionLocalProvider(
+                LocalMainTabNavigator provides tabNavigator,
+                LocalSnackbarHostState provides snackbarHostState
+            ) {
                 Box(Modifier.padding(contentPadding)) {
                     CurrentTab()
                 }

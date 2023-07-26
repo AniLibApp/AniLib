@@ -54,7 +54,7 @@ class MediaViewModel(
         MediaScreenPage(MediaScreenPageType.OVERVIEW, R.string.overview, R.drawable.ic_fire),
         watchPage,
         MediaScreenPage(MediaScreenPageType.CHARACTER, R.string.character, R.drawable.ic_person),
-        MediaScreenPage(MediaScreenPageType.STAFF, R.string.staff, R.drawable.ic_staff),
+        MediaScreenPage(MediaScreenPageType.STAFF, R.string.staff, R.drawable.ic_group),
         MediaScreenPage(MediaScreenPageType.REVIEW, R.string.review, R.drawable.ic_star),
         MediaScreenPage(MediaScreenPageType.STATS, R.string.stats, R.drawable.ic_stats),
         socialPage

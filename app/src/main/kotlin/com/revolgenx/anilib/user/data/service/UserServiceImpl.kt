@@ -9,8 +9,10 @@ import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.naInt
 import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.common.ui.model.BaseModel
+import com.revolgenx.anilib.fragment.PageInfo
 import com.revolgenx.anilib.media.ui.model.MediaTagModel
 import com.revolgenx.anilib.media.ui.model.toModel
+import com.revolgenx.anilib.relation.data.field.UserRelationField
 import com.revolgenx.anilib.staff.ui.model.toModel
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.studio.ui.model.toModel
@@ -46,41 +48,69 @@ class UserServiceImpl(apolloRepository: ApolloRepository) :
         }.onIO()
     }
 
+    override fun getUserRelation(field: UserRelationField): Flow<PageModel<UserModel>> {
+        return field.toQuery().map {
+            it.dataAssertNoErrors.let {
+                var pageInfo: PageInfo? = null
+                var data: List<UserModel>? = null
+                it.followersPage?.let {
+                    pageInfo = it.pageInfo.pageInfo
+                    data = it.followers?.mapNotNull { it?.userRelation?.toModel() }
+                }
+
+                it.followingPage?.let {
+                    pageInfo = it.pageInfo.pageInfo
+                    data = it.following?.mapNotNull { it?.userRelation?.toModel() }
+                }
+
+                PageModel(
+                    pageInfo = pageInfo,
+                    data = data
+                )
+            }
+        }.onIO()
+    }
+
     override fun getUserFavourite(field: UserFavouriteField): Flow<PageModel<BaseModel>> {
         return field.toQuery().map {
             val fav = it.dataAssertNoErrors.user?.favourites
-            val (pageInfo, data) = when {
+            var pageInfo: PageInfo? = null
+            var data: List<BaseModel>? = null
+            when {
                 fav?.anime != null -> {
-                    fav.anime.pageInfo.pageInfo to fav.anime.nodes?.mapNotNull {
+                    pageInfo = fav.anime.pageInfo.pageInfo
+                    data = fav.anime.nodes?.mapNotNull {
                         it?.onMedia?.media?.toModel()
                     }
                 }
 
                 fav?.manga != null -> {
-                    fav.manga.pageInfo.pageInfo to fav.manga.nodes?.mapNotNull {
+                    pageInfo = fav.manga.pageInfo.pageInfo
+                    data = fav.manga.nodes?.mapNotNull {
                         it?.onMedia?.media?.toModel()
                     }
                 }
 
                 fav?.characters != null -> {
-                    fav.characters.pageInfo.pageInfo to fav.characters.nodes?.mapNotNull {
+                    pageInfo = fav.characters.pageInfo.pageInfo
+                    data = fav.characters.nodes?.mapNotNull {
                         it?.onCharacter?.smallCharacter?.toModel()
                     }
                 }
 
                 fav?.staff != null -> {
-                    fav.staff.pageInfo.pageInfo to fav.staff.nodes?.mapNotNull {
+                    pageInfo = fav.staff.pageInfo.pageInfo
+                    data = fav.staff.nodes?.mapNotNull {
                         it?.onStaff?.smallStaff?.toModel()
                     }
                 }
 
                 fav?.studios != null -> {
-                    fav.studios.pageInfo.pageInfo to fav.studios.nodes?.mapNotNull {
+                    pageInfo = fav.studios.pageInfo.pageInfo
+                    data = fav.studios.nodes?.mapNotNull {
                         it?.onStudio?.studio?.toModel()
                     }
                 }
-
-                else -> null to emptyList()
             }
 
             PageModel(

@@ -7,7 +7,7 @@ import com.revolgenx.anilib.home.recommendation.data.service.RecommendationServi
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import kotlinx.coroutines.flow.single
 
-class RecommendationSource(field: RecommendationField, private val service: RecommendationService) :
+class RecommendationPagingSource(field: RecommendationField, private val service: RecommendationService) :
     BasePagingSource<RecommendationModel, RecommendationField>(field) {
     override suspend fun loadPage(): PageModel<RecommendationModel> {
         return service.getRecommendationList(field).single()

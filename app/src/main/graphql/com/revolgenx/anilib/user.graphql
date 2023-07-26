@@ -56,55 +56,32 @@ query UserQuery(
         }
     }
 }
-query UserFollowingFollowerCountQuery(
-    $userId:Int!
-){
-    followingPage:Page{
-        pageInfo{
-            total
-        }
-        following(userId:$userId){
-            __typename
-        }
-    }
 
-    followerPage:Page{
-        pageInfo{
-            total
+query UserRelationQuery(
+    $page: Int!,
+    $perPage: Int!,
+    $userId:Int!,
+    $isFollower: Boolean!
+) {
+    followersPage: Page(page:$page, perPage:$perPage)  @include(if:$isFollower){
+        pageInfo @nonnull{
+            ... pageInfo
         }
         followers(userId:$userId){
-            __typename
+            ... userRelation
+        }
+    }
+
+    followingPage: Page(page:$page, perPage:$perPage)  @skip(if:$isFollower){
+        pageInfo @nonnull{
+            ... pageInfo
+        }
+        following(userId: $userId){
+            ... userRelation
         }
     }
 }
 
-query UserFollowersQuery($id:Int!, $page:Int, $perPage:Int){
-    page: Page(page:$page, perPage:$perPage){
-        followers(userId:$id){
-            id
-            name
-            avatar{
-                ... userAvatar
-            }
-            isFollower
-            isFollowing
-        }
-    }
-}
-
-query UserFollowingQuery($id:Int!, $page:Int, $perPage:Int){
-    page: Page(page:$page, perPage:$perPage){
-        following(userId:$id){
-            id
-            name
-            avatar{
-                ... userAvatar
-            }
-            isFollower
-            isFollowing
-        }
-    }
-}
 
 query UserStatisticOverviewQuery($id:Int, $name:String,$includeAnime:Boolean!){
     user: User(id:$id, name:$name){
@@ -329,4 +306,15 @@ fragment userStatisticsOverview on UserStatistics{
         chaptersRead
         startYear
     }
+}
+
+
+fragment userRelation on User{
+    id
+    name
+    avatar{
+        ... userAvatar
+    }
+    isFollower
+    isFollowing
 }

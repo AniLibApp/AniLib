@@ -19,8 +19,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -39,12 +41,17 @@ import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
+import com.revolgenx.anilib.media.ui.model.isAnime
+import com.revolgenx.anilib.type.MediaType
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
-class UserMediaListScreen(val userId: Int) : AndroidScreen() {
+class UserMediaListScreen(private val userId: Int, private var mangaTab: Boolean) :
+    AndroidScreen() {
     @Composable
     override fun Content() {
-        UserMediaListScreenContent(userId)
+        UserMediaListScreenContent(userId, mangaTab)
+        mangaTab = false
     }
 }
 
@@ -56,14 +63,20 @@ private enum class MediaListScreenPageType {
 }
 
 private val pages = listOf(
-    MediaListScreenPage(MediaListScreenPageType.ANIME, R.string.anime),
-    MediaListScreenPage(MediaListScreenPageType.MANGA, R.string.manga),
+    MediaListScreenPage(MediaListScreenPageType.ANIME, R.string.anime, R.drawable.ic_media),
+    MediaListScreenPage(MediaListScreenPageType.MANGA, R.string.manga, R.drawable.ic_book),
 )
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-private fun UserMediaListScreenContent(userId: Int) {
+private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
     val pagerState = rememberPagerState() { pages.size }
+    if (mangaTab) {
+        LaunchedEffect(userId) {
+            pagerState.scrollToPage(1)
+        }
+    }
+
     var animeSearchBar by rememberSaveable { mutableStateOf(false) }
     var mangaSearchBar by rememberSaveable { mutableStateOf(false) }
 
