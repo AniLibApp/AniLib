@@ -272,6 +272,8 @@
     <string name="following">Following</string>
     <string name="followers">Followers</string>
     <string name="mutual">Mutual</string>
+    <string name="review_by_user">Review by %s</string>
+    <string name="score_d_100">Score: %1$d/100</string>
     <!--User Stats-->
 
 

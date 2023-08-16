@@ -26,6 +26,7 @@ fun AsyncImage(
     @DrawableRes previewPlaceholder: Int = 0,
     failure: (@Composable BoxScope.(CoilImageState.Failure) -> Unit)? = null
 ) {
+    imageUrl ?: return
     CoilImage(
         modifier = modifier,
         imageModel = { imageUrl },

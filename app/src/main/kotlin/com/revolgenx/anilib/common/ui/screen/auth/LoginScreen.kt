@@ -15,6 +15,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -103,9 +104,7 @@ private fun LoginScreenContent() {
                         fontSize = 13.sp
                     )
 
-                    Divider(
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    HorizontalDivider()
 
                     OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = {
                         login(context)
@@ -117,9 +116,7 @@ private fun LoginScreenContent() {
                         Text(text = stringResource(id = R.string.sign_up))
                     }
 
-                    Divider(
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    HorizontalDivider()
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(

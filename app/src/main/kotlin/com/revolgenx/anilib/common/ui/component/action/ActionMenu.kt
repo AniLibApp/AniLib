@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
@@ -29,15 +30,24 @@ import com.revolgenx.anilib.common.util.OnClick
 
 @Composable
 fun ActionMenu(
-    @DrawableRes iconRes: Int,
+    @DrawableRes iconRes: Int? = null,
+    imageVector: ImageVector? = null,
     @StringRes contentDescriptionRes: Int? = null,
     onClick: OnClick,
 ) {
     IconButton(onClick = onClick) {
-        Icon(
-            painter = painterResource(id = iconRes),
-            contentDescription = contentDescriptionRes?.let { stringResource(id = contentDescriptionRes) }
-        )
+        if (iconRes != null) {
+            Icon(
+                painter = painterResource(id = iconRes),
+                contentDescription = contentDescriptionRes?.let { stringResource(id = contentDescriptionRes) }
+            )
+        }
+        if (imageVector != null) {
+            Icon(
+                imageVector = imageVector,
+                contentDescription = contentDescriptionRes?.let { stringResource(id = contentDescriptionRes) }
+            )
+        }
     }
 }
 

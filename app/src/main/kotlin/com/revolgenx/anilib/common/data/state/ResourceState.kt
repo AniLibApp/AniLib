@@ -32,4 +32,6 @@ sealed class ResourceState<T> {
 
         fun <T> loading(data: T? = null): ResourceState<T> = Loading(data)
     }
+
+    val stateValue get() = if (this is Success) data else null
 }

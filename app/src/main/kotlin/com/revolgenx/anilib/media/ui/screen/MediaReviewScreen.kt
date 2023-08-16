@@ -14,11 +14,9 @@ import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +27,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naInt
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
+import com.revolgenx.anilib.common.ext.reviewScreen
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
@@ -36,7 +35,6 @@ import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.review.ui.model.ReviewModel
-import com.revolgenx.anilib.review.ui.screen.ReviewScreen
 import com.skydoves.landscapist.ImageOptions
 
 @Composable
@@ -51,7 +49,7 @@ fun MediaReviewScreen(viewModel: MediaReviewViewModel) {
     ) { staffEdgeModel ->
         staffEdgeModel ?: return@LazyPagingList
         MediaReviewItem(staffEdgeModel) { reviewId ->
-            navigator.push(ReviewScreen(reviewId))
+            navigator.reviewScreen(reviewId)
         }
     }
 }

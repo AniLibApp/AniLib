@@ -24,38 +24,12 @@ query MediaReviewQuery($mediaId:Int, $page:Int, $perPage:Int){
 }
 
 
-
-query ReviewQuery($reviewId:Int, $mediaId:Int, $userId:Int){
-    review: Review(id:$reviewId,mediaId:$mediaId,userId:$userId){
-        id
-        userId
-        mediaId
-        summary
+query ReviewQuery($reviewId:Int){
+    review: Review(id:$reviewId){
+        ... reviewFragment
         body
-        rating
-        ratingAmount
-        score
         private
         userRating
-        createdAt
-        user{
-            id
-            name
-            avatar{
-                ... userAvatar
-            }
-        }
-        media{
-            id
-            title{
-                ... mediaTitle
-            }
-            coverImage{
-                ... mediaCoverImage
-            }
-            type
-            bannerImage
-        }
     }
 }
 
@@ -65,37 +39,10 @@ query ReviewListQuery($page:Int, $perPage:Int, $sort:[ReviewSort]){
             ... pageInfo
         }
         reviews(sort:$sort){
-            id
-            summary
-            rating
-            ratingAmount
-            score
-            createdAt
-            userId
-            user{
-                id
-                name
-                avatar{
-                    ... userAvatar
-                }
-            }
-            mediaId
-            media{
-                id
-                title{
-                    ... mediaTitle
-                }
-                coverImage{
-                    ... mediaCoverImage
-                }
-                type
-                bannerImage
-                isAdult
-            }
+            ... reviewFragment
         }
     }
 }
-
 
 
 mutation DeleteReviewMutation($reviewId:Int){
@@ -129,5 +76,36 @@ mutation RateReviewMutation($reviewId:Int, $rating:ReviewRating){
         userRating
         rating
         ratingAmount
+    }
+}
+
+
+fragment reviewFragment on Review{
+    id
+    summary
+    rating
+    ratingAmount
+    score
+    createdAt
+    userId
+    user{
+        id
+        name
+        avatar{
+            ... userAvatar
+        }
+    }
+    mediaId
+    media{
+        id
+        title{
+            ... mediaTitle
+        }
+        coverImage{
+            ... mediaCoverImage
+        }
+        type
+        bannerImage
+        isAdult
     }
 }

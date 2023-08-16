@@ -11,6 +11,7 @@ import com.revolgenx.anilib.media.data.field.MediaOverviewField
 import com.revolgenx.anilib.media.data.service.MediaService
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
 
 enum class MediaScreenPageType {
     OVERVIEW,
@@ -61,10 +62,14 @@ class MediaViewModel(
     )
 
     override fun loadData(): Flow<MediaModel?> {
-        return mediaService.getMediaOverview(field)
+        return mediaService.getMediaOverview(field).onEach {media->
+            if (media?.streamingEpisodes?.isNotEmpty() == true) {
+                showWatchPage()
+            }
+        }
     }
 
-    fun showWatchPage() {
+    private fun showWatchPage() {
         watchPage.isVisible.value = true
     }
 

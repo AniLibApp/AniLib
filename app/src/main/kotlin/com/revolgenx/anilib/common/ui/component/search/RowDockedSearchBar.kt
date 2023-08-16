@@ -29,6 +29,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.SearchBarColors
 import androidx.compose.material3.SearchBarDefaults
@@ -115,7 +116,7 @@ fun RowDockedSearchBar(
                 exit = DockedExitTransition,
             ) {
                 Column {
-                    Divider(color = colors.dividerColor)
+                    HorizontalDivider()
                     Row(
                         Modifier
                             .fillMaxWidth()

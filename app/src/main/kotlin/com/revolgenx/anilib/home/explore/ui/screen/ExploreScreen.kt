@@ -16,6 +16,7 @@ import com.revolgenx.anilib.common.ext.airingScheduleScreen
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.mediaListEntryEditorScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
+import com.revolgenx.anilib.common.ext.reviewScreen
 import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ext.studioScreen
 import com.revolgenx.anilib.common.ext.userMediaListScreen
@@ -57,6 +58,9 @@ fun ExploreScreen() {
         })
         Text("User", fontSize = 25.sp, modifier = Modifier.clickable {
             navigator.userScreen(260015)
+        })
+        Text("Review", fontSize = 25.sp, modifier = Modifier.clickable {
+            navigator.reviewScreen(21990)
         })
         ShowIfLoggedIn { userId ->
             Text("MediaListEditor", fontSize = 25.sp, modifier = Modifier.clickable {

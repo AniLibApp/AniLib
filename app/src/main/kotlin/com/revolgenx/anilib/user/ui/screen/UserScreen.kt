@@ -18,6 +18,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -27,8 +30,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.data.store.logout
 import com.revolgenx.anilib.common.ext.emptyText
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
@@ -54,13 +56,18 @@ import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
+import com.revolgenx.anilib.common.ui.component.appbar.AppBarHeight
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
-import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
+import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
+import com.revolgenx.anilib.common.ui.component.appbar.CollapsibleAppBarLayout
+import com.revolgenx.anilib.common.ui.component.appbar.collapse
+import com.revolgenx.anilib.common.ui.component.appbar.collapseProgress
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
+import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localTabNavigator
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
@@ -72,17 +79,11 @@ import com.revolgenx.anilib.list.ui.screen.MangaListScreen
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.screen.userStats.UserStatsScreen
 import com.revolgenx.anilib.user.ui.viewmodel.UserScreenPageType
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
 import com.skydoves.landscapist.ImageOptions
 import kotlinx.coroutines.launch
-import me.onebone.toolbar.CollapsingToolbarScaffold
-import me.onebone.toolbar.CollapsingToolbarScaffoldState
-import me.onebone.toolbar.CollapsingToolbarScope
-import me.onebone.toolbar.ScrollStrategy
-import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 import org.koin.androidx.compose.koinViewModel
 
 class UserScreen(
@@ -125,7 +126,6 @@ private fun UserScreenContent(
     val viewModel: UserViewModel = koinViewModel()
     val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
 
-
     viewModel.userId.value = userId
     viewModel.field.userName = userName
     viewModel.field.userId = viewModel.userId.value
@@ -148,21 +148,18 @@ private fun UserScreenContent(
     val scope = rememberCoroutineScope()
     val context = localContext()
     val pagerState = rememberPagerState() { pages.size }
-    val collapsingToolbarState = rememberCollapsingToolbarScaffoldState()
-    val resourceState = viewModel.resource.value
-    val userModel = if (resourceState is ResourceState.Success) {
-        resourceState.data
-    } else null
+    val scrollBehavior =
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState(), canScroll = {
+            pagerState.currentPage == UserScreenPageType.OVERVIEW.ordinal
+        })
 
-    CollapsingToolbarScaffold(
+
+    ScreenScaffold(
         modifier = Modifier.fillMaxSize(),
-        state = collapsingToolbarState,
-        scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
-        toolbarModifier = Modifier.background(surfaceContainer),
-        enabled = true,
-        toolbar = {
+        topBar = {
             UserScreenTopAppbar(
-                user = userModel,
+                viewModel = viewModel,
+                scrollBehavior = scrollBehavior,
                 isLoggedInUser = viewModel.isLoggedInUser,
                 isTab = isTab,
                 onLogout = {
@@ -170,7 +167,8 @@ private fun UserScreenContent(
                         context.logout()
                     }
                 })
-        }
+        },
+        contentWindowInsets = emptyWindowInsets()
     ) {
         PagerScreenScaffold(
             pages = pages,
@@ -183,10 +181,14 @@ private fun UserScreenContent(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .nestedScroll(scrollBehavior.nestedScrollConnection)
             ) {
                 when (pages[page].type) {
                     UserScreenPageType.OVERVIEW -> UserOverviewScreen(viewModel)
-                    UserScreenPageType.ACTIVITY -> UserActivityUnionScreen(activityUnionViewModel)
+                    UserScreenPageType.ACTIVITY -> UserActivityUnionScreen(
+                        activityUnionViewModel
+                    )
+
                     UserScreenPageType.FAVOURITES -> UserFavouritesScreen(viewModel.userId.value)
                     UserScreenPageType.ANIME_STATS -> UserStatsScreen(
                         viewModel.userId.value,
@@ -198,6 +200,15 @@ private fun UserScreenContent(
                         MediaType.MANGA
                     )
                 }
+
+                when (pages[page].type) {
+                    UserScreenPageType.OVERVIEW -> {}
+                    else -> {
+                        LaunchedEffect(scrollBehavior) {
+                            scrollBehavior.state.collapse(scrollBehavior.snapAnimationSpec)
+                        }
+                    }
+                }
             }
         }
     }
@@ -206,185 +217,202 @@ private fun UserScreenContent(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CollapsingToolbarScope.UserScreenTopAppbar(
-    user: UserModel? = null,
+private fun UserScreenTopAppbar(
+    viewModel: UserViewModel,
+    scrollBehavior: TopAppBarScrollBehavior,
     isLoggedInUser: Boolean = false,
     isTab: Boolean = false,
-    collapsingToolbarState: CollapsingToolbarScaffoldState = rememberCollapsingToolbarScaffoldState(),
     onLogout: OnClick
 ) {
-    val progress = collapsingToolbarState.toolbarState.progress
-    val imageAlpha = if (progress <= 0.2) 0.2f else progress
+
+    val topAppBarState = scrollBehavior.state
+    val progress = topAppBarState.collapseProgress().value
+    val imageAlpha = if (progress >= 0.7f) 1f else progress
+    val isCollapsed = progress > 0.7f
 
     val tabNavigator = if (isTab) localTabNavigator() else null
     val navigator = localNavigator()
 
-    Column(
-        modifier = Modifier
-            .parallax(0.5f)
-            .fillMaxWidth()
-            .graphicsLayer {
-                alpha = imageAlpha
-            }
-    ) {
-        Box(
-            modifier = Modifier.height(200.dp)
+    val user = viewModel.resource.value?.stateValue
+    val userAppBarHeight = 310.dp
+    Box {
+        CollapsibleAppBarLayout(
+            containerHeight = userAppBarHeight,
+            maxHeightOffsetLimit = AppBarHeight,
+            scrollBehavior = scrollBehavior,
+            colors = AppBarLayoutDefaults.transparentColors()
         ) {
-            AsyncImage(
+            Column(
                 modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .parallax(0.5f)
-                    .height(150.dp)
-                    .fillMaxWidth(),
-                imageUrl = user?.bannerImage,
-                imageOptions = ImageOptions(
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.Center
-                ),
-                previewPlaceholder = R.drawable.bleach,
-            )
-
-            Row(
-                modifier = Modifier
-                    .height(112.dp)
                     .fillMaxWidth()
-                    .align(Alignment.BottomStart),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
             ) {
                 Box(
-                    modifier = Modifier
-                        .size(112.dp)
+                    modifier = Modifier.height(200.dp)
                 ) {
                     AsyncImage(
                         modifier = Modifier
-                            .size(80.dp)
-                            .clip(CircleShape)
-                            .align(Alignment.Center),
-                        imageUrl = user?.avatar?.image,
+                            .align(Alignment.TopStart)
+                            .height(150.dp)
+                            .fillMaxWidth(),
+                        imageUrl = user?.bannerImage,
                         imageOptions = ImageOptions(
                             contentScale = ContentScale.Crop,
                             alignment = Alignment.Center
                         ),
                         previewPlaceholder = R.drawable.bleach,
+                        failure = {}
                     )
-                }
+
+                    Row(
+                        modifier = Modifier
+                            .height(112.dp)
+                            .fillMaxWidth()
+                            .align(Alignment.BottomStart),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(112.dp)
+                        ) {
+                            AsyncImage(
+                                modifier = Modifier
+                                    .size(80.dp)
+                                    .clip(CircleShape)
+                                    .align(Alignment.Center),
+                                imageUrl = user?.avatar?.image,
+                                imageOptions = ImageOptions(
+                                    contentScale = ContentScale.Crop,
+                                    alignment = Alignment.Center
+                                ),
+                                previewPlaceholder = R.drawable.bleach,
+                            )
+                        }
 
 //                user?.takeIf { !isLoggedInUser }?.let {
-                FilledTonalButton(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    onClick = { }
+                        FilledTonalButton(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            onClick = { }
+                        ) {
+                            Text(
+                                text = stringResource(id = if (/*it.isFollowing*/ false) R.string.following else R.string.follow)
+                            )
+                        }
+//                }
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .height(100.dp)
+                        .padding(horizontal = 8.dp)
                 ) {
                     Text(
-                        text = stringResource(id = if (/*it.isFollowing*/ false) R.string.following else R.string.follow)
+                        text = user?.name.emptyText(),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        letterSpacing = 0.1.sp
                     )
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        UserCountInfo(
+                            label = stringResource(id = R.string.following),
+                            count = user?.following.naInt().prettyNumberFormat(),
+                            iconRes = R.drawable.ic_person_check_outline,
+                            onClick = {
+                                user?.id?.let {
+                                    navigator.userRelationScreen(userId = it)
+                                }
+                            }
+                        )
+                        UserCountInfo(
+                            label = stringResource(id = R.string.followers),
+                            count = user?.followers.naInt().prettyNumberFormat(),
+                            iconRes = R.drawable.ic_group_outline,
+                            onClick = {
+                                user?.id?.let {
+                                    navigator.userRelationScreen(userId = it, true)
+                                }
+                            }
+                        )
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        UserCountInfo(
+                            label = stringResource(id = R.string.anime),
+                            count = user?.statistics?.anime?.count.naInt().prettyNumberFormat(),
+                            iconRes = R.drawable.ic_media_outline,
+                            onClick = {
+                                if (isTab) {
+                                    tabNavigator?.current = AnimeListScreen
+                                } else {
+                                    user?.id?.let {
+                                        navigator.userMediaListScreen(userId = it)
+                                    }
+                                }
+                            }
+                        )
+                        UserCountInfo(
+                            label = stringResource(id = R.string.manga),
+                            count = user?.statistics?.manga?.count.naInt().prettyNumberFormat(),
+                            iconRes = R.drawable.ic_book_outline,
+                            onClick = {
+                                if (isTab) {
+                                    tabNavigator?.current = MangaListScreen
+                                } else {
+                                    user?.id?.let {
+                                        navigator.userMediaListScreen(userId = it, true)
+                                    }
+                                }
+                            }
+                        )
+                    }
                 }
-//                }
             }
+
+            Box(
+                modifier = Modifier
+                    .height(userAppBarHeight)
+                    .fillMaxWidth()
+                    .graphicsLayer {
+                        alpha = imageAlpha
+                    }
+                    .background(surfaceContainer)
+            ) {}
         }
 
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
+
+        AppBarLayout(
+            colors = AppBarLayoutDefaults.transparentColors(),
         ) {
-            Text(
-                text = user?.name.emptyText(),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = 0.1.sp
-            )
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                UserCountInfo(
-                    label = stringResource(id = R.string.following),
-                    count = user?.following.naInt().prettyNumberFormat(),
-                    iconRes = R.drawable.ic_person_check_outline,
-                    onClick = {
-                        user?.id?.let {
-                            navigator.userRelationScreen(userId = it)
-                        }
+            AppBar(
+                colors = AppBarDefaults.transparentColor(),
+                title = {
+                    if (isCollapsed) {
+                        Text(
+                            modifier = Modifier.padding(horizontal = 6.dp),
+                            text = user?.name ?: stringResource(id = R.string.user),
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1,
+                        )
                     }
-                )
-                UserCountInfo(
-                    label = stringResource(id = R.string.followers),
-                    count = user?.followers.naInt().prettyNumberFormat(),
-                    iconRes = R.drawable.ic_group_outline,
-                    onClick = {
-                        user?.id?.let {
-                            navigator.userRelationScreen(userId = it, true)
-                        }
+                },
+                navigationIcon = {
+                    if (isTab.not()) {
+                        NavigationIcon()
                     }
-                )
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                UserCountInfo(
-                    label = stringResource(id = R.string.anime),
-                    count = user?.statistics?.anime?.count.naInt().prettyNumberFormat(),
-                    iconRes = R.drawable.ic_media_outline,
-                    onClick = {
-                        if (isTab) {
-                            tabNavigator?.current = AnimeListScreen
-                        } else {
-                            user?.id?.let {
-                                navigator.userMediaListScreen(userId = it)
-                            }
-                        }
-                    }
-                )
-                UserCountInfo(
-                    label = stringResource(id = R.string.manga),
-                    count = user?.statistics?.manga?.count.naInt().prettyNumberFormat(),
-                    iconRes = R.drawable.ic_book_outline,
-                    onClick = {
-                        if (isTab) {
-                            tabNavigator?.current = MangaListScreen
-                        } else {
-                            user?.id?.let {
-                                navigator.userMediaListScreen(userId = it, true)
-                            }
-                        }
-                    }
-                )
-            }
-        }
-    }
-
-
-    AppBarLayout(
-        colors = AppBarLayoutColors(
-            containerColor = Color.Transparent,
-            scrolledContainerColor = Color.Transparent
-        ),
-    ) {
-        AppBar(
-            colors = AppBarDefaults.appBarColors(
-                containerColor = Color.Transparent,
-            ),
-            title = {
-                MediaTitleType {
-                    Text(
-                        text = user?.name ?: stringResource(id = R.string.user),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
+                },
+                actions = {
+                    UserScreenActions(
+                        isTab = isTab,
+                        onLogout = onLogout
                     )
                 }
-            },
-            navigationIcon = {
-                if (isTab.not()) {
-                    NavigationIcon()
-                }
-            },
-            actions = {
-                UserScreenActions(
-                    isTab = isTab,
-                    onLogout = onLogout
-                )
-            }
-        )
+            )
+        }
     }
 }
 

@@ -19,9 +19,7 @@ fun CharacterAboutScreen(
         viewModel.getResource()
     }
 
-    ResourceScreen(resourceState = viewModel.resource.value, refresh = {
-        viewModel.refresh()
-    }) { character ->
+    ResourceScreen(viewModel = viewModel) { character ->
         AboutScreen(
             name = character.name?.full.naText(),
             alternative = character.name?.alternativeText,

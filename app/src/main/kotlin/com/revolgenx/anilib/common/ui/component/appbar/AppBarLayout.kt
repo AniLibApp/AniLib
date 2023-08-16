@@ -34,6 +34,7 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
+import androidx.compose.ui.unit.isSpecified
 import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -129,11 +130,14 @@ object AppBarLayoutDefaults {
             containerColor,
             scrolledContainerColor
         )
+
+    @Composable
+    fun transparentColors() = AppBarLayoutColors(Color.Transparent, Color.Transparent)
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-private suspend fun settleAppBar(
+internal suspend fun settleAppBar(
     state: TopAppBarState,
     velocity: Float,
     flingAnimationSpec: DecayAnimationSpec<Float>?,

@@ -223,6 +223,9 @@ object AppBarDefaults {
             titleContentColor,
             actionIconContentColor
         )
+
+    @Composable
+    fun transparentColor() = appBarColors(containerColor = Color.Transparent)
 }
 
 @ExperimentalMaterial3Api

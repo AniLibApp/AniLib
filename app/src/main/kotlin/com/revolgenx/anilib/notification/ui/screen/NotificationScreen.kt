@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -302,12 +303,7 @@ private fun NotificationItem(
             }
 
             if (isUnread) {
-                Divider(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(4.dp),
-                    color = primary
-                )
+                HorizontalDivider(modifier = Modifier.padding(4.dp), color = primary)
             }
 
         }

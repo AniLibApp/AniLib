@@ -1,12 +1,16 @@
 package com.revolgenx.anilib.review.ui.model
 
+import android.text.Spanned
 import com.revolgenx.anilib.MediaReviewQuery
 import com.revolgenx.anilib.ReviewListQuery
 import com.revolgenx.anilib.ReviewQuery
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
+import com.revolgenx.anilib.fragment.ReviewFragment
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
+import com.revolgenx.anilib.social.factory.markdown
+import com.revolgenx.anilib.social.markdown.anilify
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ReviewRating
 import com.revolgenx.anilib.user.ui.model.UserModel
@@ -34,10 +38,42 @@ data class ReviewModel(
     val createdAtDate: String = "",
     val media: MediaModel? = null,
     val user: UserModel? = null,
+    val anilifiedBody: String = "",
+    val bodySpanned: Spanned? = null
 ) : BaseModel
 
 
 fun ReviewListQuery.Review.toModel(): ReviewModel {
+    return reviewFragment.toModel()
+}
+
+fun ReviewQuery.Review.toModel(): ReviewModel {
+    val anilifiedBody = anilify(body)
+    return reviewFragment.toModel().copy(
+        body = body,
+        anilifiedBody = anilifiedBody,
+        bodySpanned =  markdown.toMarkdown(anilifiedBody),
+        private = this.private ?: false,
+        userRating = userRating
+    )
+}
+
+fun MediaReviewQuery.Node.toModel() = ReviewModel(
+    id = id,
+    rating = rating,
+    ratingAmount = ratingAmount,
+    summary = summary,
+    userRating = userRating,
+    user = user?.let {
+        UserModel(
+            id = it.id,
+            avatar = it.avatar?.userAvatar?.toModel()
+        )
+    }
+)
+
+
+fun ReviewFragment.toModel(): ReviewModel {
     return ReviewModel(
         id = id,
         rating = rating,
@@ -71,19 +107,4 @@ fun ReviewListQuery.Review.toModel(): ReviewModel {
         }
     )
 }
-
-
-fun MediaReviewQuery.Node.toModel() = ReviewModel(
-    id = id,
-    rating = rating,
-    ratingAmount = ratingAmount,
-    summary = summary,
-    userRating = userRating,
-    user = user?.let {
-        UserModel(
-            id = it.id,
-            avatar = it.avatar?.userAvatar?.toModel()
-        )
-    }
-)
 

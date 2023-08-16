@@ -115,8 +115,8 @@ android {
 }
 
 ext {
-    compose = "1.5.0-alpha03"
-    material = "1.2.0-alpha03"
+    composeUi = "1.6.0-alpha02"
+    material = "1.2.0-alpha04"
     accompanist = "0.29.0-alpha"
     voyager = "1.0.0-rc04"
     timber = "5.0.1"
@@ -140,7 +140,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.7.2")
 
     //compose
-    implementation("androidx.compose.ui:ui-tooling-preview:$compose")
+    implementation("androidx.compose.ui:ui-tooling-preview:$composeUi")
 
     //material
     implementation("androidx.compose.material3:material3:$material")
@@ -224,9 +224,9 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose")
-    debugImplementation("androidx.compose.ui:ui-tooling:$compose")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:$compose")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeUi")
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeUi")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeUi")
 }
 
 
