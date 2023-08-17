@@ -274,6 +274,7 @@
     <string name="mutual">Mutual</string>
     <string name="review_by_user">Review by %s</string>
     <string name="score_d_100">Score: %1$d/100</string>
+    <string name="d_out_of_d_liked_this_review">%1$d out of %2$d liked this review</string>
     <!--User Stats-->
 
 

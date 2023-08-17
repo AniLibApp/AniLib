@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ui.theme.secondaryContainer
 import com.revolgenx.anilib.common.util.OnClick
 
 
@@ -33,21 +36,51 @@ fun ActionMenu(
     @DrawableRes iconRes: Int? = null,
     imageVector: ImageVector? = null,
     @StringRes contentDescriptionRes: Int? = null,
+    tonalButton: Boolean = false,
     onClick: OnClick,
 ) {
-    IconButton(onClick = onClick) {
-        if (iconRes != null) {
-            Icon(
-                painter = painterResource(id = iconRes),
-                contentDescription = contentDescriptionRes?.let { stringResource(id = contentDescriptionRes) }
+    if (tonalButton) {
+        FilledTonalIconButton(
+            onClick = onClick,
+            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                containerColor = secondaryContainer.copy(alpha = 0.12f)
+            )
+        ) {
+            ActionMenuIcon(
+                iconRes,
+                imageVector,
+                contentDescriptionRes,
             )
         }
-        if (imageVector != null) {
-            Icon(
-                imageVector = imageVector,
-                contentDescription = contentDescriptionRes?.let { stringResource(id = contentDescriptionRes) }
+    } else {
+        IconButton(onClick = onClick) {
+            ActionMenuIcon(
+                iconRes,
+                imageVector,
+                contentDescriptionRes,
             )
         }
+    }
+}
+
+
+@Composable
+private fun ActionMenuIcon(
+    @DrawableRes iconRes: Int?,
+    imageVector: ImageVector?,
+    @StringRes contentDescriptionRes: Int?,
+) {
+    if (iconRes != null) {
+        Icon(
+            painter = painterResource(id = iconRes),
+            contentDescription = contentDescriptionRes?.let { stringResource(id = contentDescriptionRes) }
+        )
+    }
+    if (imageVector != null) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = contentDescriptionRes?.let { stringResource(id = contentDescriptionRes) }
+        )
     }
 }
 

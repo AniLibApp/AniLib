@@ -1,9 +1,12 @@
 package com.revolgenx.anilib.review.ui.model
 
 import android.text.Spanned
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.MediaReviewQuery
 import com.revolgenx.anilib.ReviewListQuery
 import com.revolgenx.anilib.ReviewQuery
+import com.revolgenx.anilib.common.ext.naInt
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.ReviewFragment
@@ -26,9 +29,8 @@ data class ReviewModel(
     val mediaType: MediaType? = null,
     val summary: String? = null,
     val body: String? = null,
-    val rating: Int? = null,
-    val ratingAmount: Int? = null,
-    val userRating: ReviewRating? = null,
+    val rating: Int = 0,
+    val ratingAmount: Int = 0,
     val score: Int? = null,
     val private: Boolean = false,
     val siteUrl: String? = null,
@@ -39,7 +41,8 @@ data class ReviewModel(
     val media: MediaModel? = null,
     val user: UserModel? = null,
     val anilifiedBody: String = "",
-    val bodySpanned: Spanned? = null
+    val bodySpanned: Spanned? = null,
+    var userRating: MutableState<ReviewRating> = mutableStateOf(ReviewRating.NO_VOTE)
 ) : BaseModel
 
 
@@ -52,32 +55,33 @@ fun ReviewQuery.Review.toModel(): ReviewModel {
     return reviewFragment.toModel().copy(
         body = body,
         anilifiedBody = anilifiedBody,
-        bodySpanned =  markdown.toMarkdown(anilifiedBody),
-        private = this.private ?: false,
-        userRating = userRating
-    )
+        bodySpanned = markdown.toMarkdown(anilifiedBody),
+        private = this.private ?: false
+    ).also {
+        it.userRating.value = userRating ?: ReviewRating.NO_VOTE
+    }
 }
 
 fun MediaReviewQuery.Node.toModel() = ReviewModel(
     id = id,
-    rating = rating,
-    ratingAmount = ratingAmount,
+    rating = rating.naInt(),
+    ratingAmount = ratingAmount.naInt(),
     summary = summary,
-    userRating = userRating,
     user = user?.let {
         UserModel(
             id = it.id,
             avatar = it.avatar?.userAvatar?.toModel()
         )
     }
-)
-
+).also {
+    it.userRating.value = userRating ?: ReviewRating.NO_VOTE
+}
 
 fun ReviewFragment.toModel(): ReviewModel {
     return ReviewModel(
         id = id,
-        rating = rating,
-        ratingAmount = ratingAmount,
+        rating = rating.naInt(),
+        ratingAmount = ratingAmount.naInt(),
         summary = summary,
         score = score,
         createdAt = createdAt,

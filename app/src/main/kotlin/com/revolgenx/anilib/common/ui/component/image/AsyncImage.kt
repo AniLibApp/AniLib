@@ -2,8 +2,8 @@ package com.revolgenx.anilib.common.ui.component.image
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -11,11 +11,12 @@ import androidx.compose.ui.res.painterResource
 import coil.ImageLoader
 import coil.imageLoader
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.imageViewerScreen
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.coil.CoilImageState
 import com.skydoves.landscapist.coil.LocalCoilImageLoader
-import com.skydoves.landscapist.components.rememberImageComponent
 
 @Composable
 fun AsyncImage(
@@ -24,11 +25,21 @@ fun AsyncImage(
     imageLoader: @Composable () -> ImageLoader = { getCoilImageLoader() },
     imageOptions: ImageOptions = ImageOptions(),
     @DrawableRes previewPlaceholder: Int = 0,
-    failure: (@Composable BoxScope.(CoilImageState.Failure) -> Unit)? = null
+    failure: (@Composable BoxScope.(CoilImageState.Failure) -> Unit)? = null,
+    viewable: Boolean = false
 ) {
     imageUrl ?: return
     CoilImage(
-        modifier = modifier,
+        modifier = modifier.let {
+            if (viewable) {
+                val navigator = localNavigator()
+                it.clickable {
+                    navigator.imageViewerScreen(imageUrl)
+                }
+            } else {
+                modifier
+            }
+        },
         imageModel = { imageUrl },
         imageOptions = imageOptions,
         imageLoader = imageLoader,

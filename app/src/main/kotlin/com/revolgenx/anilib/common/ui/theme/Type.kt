@@ -36,6 +36,10 @@ val overpassFonts = FontFamily(
 val defaultTypography = Typography()
 
 val Typography = Typography(
+    displayMedium = defaultTypography.displayMedium.copy(
+        fontFamily = overpassFonts,
+        platformStyle = PlatformTextStyle(includeFontPadding = true)
+    ),
     bodyLarge = defaultTypography.bodyLarge.copy(
         fontFamily = overpassFonts,
         platformStyle = PlatformTextStyle(includeFontPadding = true)

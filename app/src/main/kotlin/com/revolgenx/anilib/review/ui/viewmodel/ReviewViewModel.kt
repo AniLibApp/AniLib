@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.review.ui.viewmodel
 
-import com.revolgenx.anilib.common.ui.viewmodel.BaseViewModel
 import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.review.data.field.ReviewField

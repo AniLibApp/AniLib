@@ -1,9 +1,11 @@
 package com.revolgenx.anilib.common.ui.component.text
 
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -20,6 +22,7 @@ fun MediumText(
     lineHeight: TextUnit? = null,
     textAlign: TextAlign? = null,
     color: Color = Color.Unspecified,
+    style: TextStyle = LocalTextStyle.current
 ) {
     Text(
         modifier = modifier,
@@ -31,7 +34,8 @@ fun MediumText(
         fontWeight = FontWeight.Medium,
         letterSpacing = 0.2.sp,
         textAlign = textAlign,
-        color = color
+        color = color,
+        style = style
     )
 }
 

@@ -77,6 +77,7 @@ val background @Composable get() = colorScheme.background
 val onBackground @Composable get() = colorScheme.onBackground
 val surfaceContainer @Composable get() = colorScheme.surfaceContainer
 val onSurface @Composable get() = colorScheme.onSurface
+val inverseOnSurface @Composable get() = colorScheme.inverseOnSurface
 val surfaceContainerHighest @Composable get() = colorScheme.surfaceContainerHighest
 val onSurfaceVariant @Composable get() = colorScheme.onSurfaceVariant
 val primary @Composable get() = colorScheme.primary
