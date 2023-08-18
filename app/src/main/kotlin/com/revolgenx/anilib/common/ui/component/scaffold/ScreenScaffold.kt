@@ -31,7 +31,7 @@ import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
-import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
+import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.theme.background
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant

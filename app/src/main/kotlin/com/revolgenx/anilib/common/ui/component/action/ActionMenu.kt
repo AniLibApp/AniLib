@@ -27,9 +27,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.theme.secondaryContainer
+import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
+import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import com.revolgenx.anilib.common.util.OnClick
 
+const val ActionMenuContainerAlpha = 0.17f
 
 @Composable
 fun ActionMenu(
@@ -43,7 +45,7 @@ fun ActionMenu(
         FilledTonalIconButton(
             onClick = onClick,
             colors = IconButtonDefaults.filledTonalIconButtonColors(
-                containerColor = secondaryContainer.copy(alpha = 0.12f)
+                containerColor = surfaceContainer.copy(alpha = ActionMenuContainerAlpha)
             )
         ) {
             ActionMenuIcon(
@@ -147,4 +149,16 @@ fun OverflowMenuItem(
         onClick = onClick,
         modifier = modifier
     )
+}
+
+@Composable
+fun NavigationIcon(
+    @DrawableRes icon: Int? = null,
+    tonalButton: Boolean = false,
+    onClick: (() -> Unit)? = null
+) {
+    val navigator = LocalMainNavigator.current
+    ActionMenu(iconRes = icon ?: R.drawable.ic_back, tonalButton = tonalButton) {
+        onClick?.invoke() ?: navigator.pop()
+    }
 }

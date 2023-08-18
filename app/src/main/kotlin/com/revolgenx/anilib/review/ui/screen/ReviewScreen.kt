@@ -20,13 +20,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -40,33 +36,23 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.emptyText
 import com.revolgenx.anilib.common.ext.naInt
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
-import com.revolgenx.anilib.common.ui.component.appbar.AppBar
-import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
-import com.revolgenx.anilib.common.ui.component.appbar.AppBarHeight
-import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
-import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
-import com.revolgenx.anilib.common.ui.component.appbar.CollapsibleAppBarLayout
-import com.revolgenx.anilib.common.ui.component.appbar.collapseProgress
+import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
-import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
@@ -75,8 +61,6 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.ui.theme.inverseOnSurface
 import com.revolgenx.anilib.common.ui.theme.onSurface
-import com.revolgenx.anilib.common.ui.theme.review_list_gradient_bottom
-import com.revolgenx.anilib.common.ui.theme.review_list_gradient_top
 import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import com.revolgenx.anilib.common.ui.theme.typography
 import com.revolgenx.anilib.review.ui.model.ReviewModel
@@ -168,8 +152,7 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
                 MediumText(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     text = stringResource(id = R.string.d_out_of_d_liked_this_review).format(
-                        review.rating,
-                        review.ratingAmount
+                        review.rating, review.ratingAmount
                     ),
                 )
             }
@@ -191,9 +174,7 @@ private fun ColumnScope.ReviewLikeDislike(viewModel: ReviewViewModel, review: Re
 // todo mutation
 @Composable
 fun ReviewLikeDislikeButton(
-    likeButton: Boolean,
-    rating: ReviewRating,
-    onCheckChange: (Boolean) -> Unit
+    likeButton: Boolean, rating: ReviewRating, onCheckChange: (Boolean) -> Unit
 ) {
     IconToggleButton(
         checked = if (likeButton) rating == ReviewRating.UP_VOTE else rating == ReviewRating.DOWN_VOTE,
@@ -209,31 +190,21 @@ fun ReviewLikeDislikeButton(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ReviewScreenTopAppBar(
-    viewModel: ReviewViewModel,
-    scrollBehavior: TopAppBarScrollBehavior
+    viewModel: ReviewViewModel, scrollBehavior: TopAppBarScrollBehavior
 ) {
     val resourceValue = viewModel.resource.value
     val review = resourceValue?.stateValue
 
     val media = review?.media
-    val imageAppbarHeight = 200.dp
+    val containerHeight = 200.dp
 
-    val topAppBarState = scrollBehavior.state
-    val progress = topAppBarState.collapseProgress().value
-    val imageAlpha = if (progress >= 0.8f) 0.8f else progress
-    val isCollapsed = progress > 0.7f
-
-
-    Box {
-        CollapsibleAppBarLayout(
-            containerHeight = imageAppbarHeight,
-            maxHeightOffsetLimit = AppBarHeight,
-            scrollBehavior = scrollBehavior,
-            colors = AppBarLayoutDefaults.transparentColors()
-        ) {
+    CollapsingAppbar(
+        scrollBehavior = scrollBehavior,
+        containerHeight = containerHeight,
+        containerContent = { isCollapsed ->
             AsyncImage(
                 modifier = Modifier
-                    .height(imageAppbarHeight)
+                    .height(containerHeight)
                     .fillMaxWidth(),
                 imageUrl = media?.bannerImage,
                 imageOptions = ImageOptions(
@@ -243,83 +214,59 @@ private fun ReviewScreenTopAppBar(
                 failure = {},
                 viewable = true
             )
-
-
-
             Box(
                 modifier = Modifier
-                    .height(imageAppbarHeight)
+                    .height(containerHeight)
                     .fillMaxWidth()
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color.Transparent,
-                                surfaceContainer.copy(0.8f)
+                                Color.Transparent, surfaceContainer.copy(0.8f)
                             )
                         )
                     )
-            ) {}
-
-
-            if (!isCollapsed) {
-                MediaTitleType { type ->
-                    Text(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 14.dp),
-                        color = onSurface,
-                        text = media?.title?.title(type) ?: stringResource(id = R.string.review),
-                        textAlign = TextAlign.Center,
-                        style = typography().titleLarge.copy(
-                            shadow = Shadow(
-                                color = inverseOnSurface,
-                                offset = Offset(2.0f, 2.0f),
-                                blurRadius = 1f
+            ) {
+                if (!isCollapsed) {
+                    MediaTitleType { type ->
+                        Text(
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 14.dp),
+                            color = onSurface,
+                            text = media?.title?.title(type) ?: stringResource(id = R.string.review),
+                            textAlign = TextAlign.Center,
+                            style = typography().titleLarge.copy(
+                                shadow = Shadow(
+                                    color = inverseOnSurface,
+                                    offset = Offset(2.0f, 2.0f),
+                                    blurRadius = 1f
+                                )
                             )
                         )
+                    }
+                }
+            }
+        },
+        title = { isCollapsed ->
+            if (isCollapsed) {
+                MediaTitleType {
+                    Text(
+                        text = media?.title?.title(it) ?: stringResource(id = R.string.review),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                     )
                 }
             }
+        },
+        actions = { isCollapsed ->
+            ActionMenu(imageVector = Icons.Filled.Search, tonalButton = !isCollapsed) {
 
-            Box(
-                modifier = Modifier
-                    .height(imageAppbarHeight)
-                    .fillMaxWidth()
-                    .graphicsLayer {
-                        alpha = imageAlpha
-                    }
-                    .background(surfaceContainer)
-            ) {}
+            }
+            ActionMenu(
+                imageVector = Icons.Filled.Notifications, tonalButton = !isCollapsed
+            ) {
+
+            }
         }
-
-        AppBarLayout(
-            colors = AppBarLayoutDefaults.transparentColors()
-        ) {
-            AppBar(colors = AppBarDefaults.appBarColors(containerColor = Color.Transparent),
-                title = {
-                    if (isCollapsed) {
-                        MediaTitleType {
-                            Text(
-                                text = media?.title?.title(it)
-                                    ?: stringResource(id = R.string.review),
-                                overflow = TextOverflow.Ellipsis,
-                                maxLines = 1,
-                            )
-                        }
-                    }
-                },
-                navigationIcon = {
-                    NavigationIcon(tonalButton = !isCollapsed)
-                },
-                actions = {
-                    ActionMenu(imageVector = Icons.Filled.Search, tonalButton = !isCollapsed) {
-
-                    }
-                    ActionMenu(imageVector = Icons.Filled.Notifications, tonalButton = !isCollapsed) {
-
-                    }
-                })
-
-        }
-    }
+    )
 }

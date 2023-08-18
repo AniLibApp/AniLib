@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.user.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,7 +29,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -56,16 +54,14 @@ import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
-import com.revolgenx.anilib.common.ui.component.appbar.AppBarHeight
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
-import com.revolgenx.anilib.common.ui.component.appbar.CollapsibleAppBarLayout
+import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.appbar.collapse
 import com.revolgenx.anilib.common.ui.component.appbar.collapseProgress
-import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
-import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
+import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -224,24 +220,19 @@ private fun UserScreenTopAppbar(
     isTab: Boolean = false,
     onLogout: OnClick
 ) {
-
-    val topAppBarState = scrollBehavior.state
-    val progress = topAppBarState.collapseProgress().value
-    val imageAlpha = if (progress >= 0.7f) 1f else progress
-    val isCollapsed = progress > 0.7f
-
     val tabNavigator = if (isTab) localTabNavigator() else null
     val navigator = localNavigator()
 
     val user = viewModel.resource.value?.stateValue
-    val userAppBarHeight = 310.dp
-    Box {
-        CollapsibleAppBarLayout(
-            containerHeight = userAppBarHeight,
-            maxHeightOffsetLimit = AppBarHeight,
-            scrollBehavior = scrollBehavior,
-            colors = AppBarLayoutDefaults.transparentColors()
-        ) {
+    val containerHeight = 310.dp
+
+    CollapsingAppbar(
+        scrollBehavior = scrollBehavior,
+        containerHeight = containerHeight,
+        maxAlpha = 1f,
+        alphaFraction = 0.7f,
+        collapseFraction = 0.7f,
+        containerContent = { _ ->
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -372,59 +363,40 @@ private fun UserScreenTopAppbar(
                     }
                 }
             }
-
-            Box(
-                modifier = Modifier
-                    .height(userAppBarHeight)
-                    .fillMaxWidth()
-                    .graphicsLayer {
-                        alpha = imageAlpha
-                    }
-                    .background(surfaceContainer)
-            ) {}
-        }
-
-
-        AppBarLayout(
-            colors = AppBarLayoutDefaults.transparentColors(),
-        ) {
-            AppBar(
-                colors = AppBarDefaults.transparentColor(),
-                title = {
-                    if (isCollapsed) {
-                        Text(
-                            modifier = Modifier.padding(horizontal = 6.dp),
-                            text = user?.name ?: stringResource(id = R.string.user),
-                            overflow = TextOverflow.Ellipsis,
-                            maxLines = 1,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    if (isTab.not()) {
-                        NavigationIcon()
-                    }
-                },
-                actions = {
-                    UserScreenActions(
-                        isTab = isTab,
-                        onLogout = onLogout
-                    )
-                }
+        },
+        title = { isCollapsed ->
+            if (isCollapsed) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 6.dp),
+                    text = user?.name ?: stringResource(id = R.string.user),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            }
+        },
+        navigationIcon = if (isTab.not()) null else ({}),
+        actions = {isCollapsed->
+            UserScreenActions(
+                isTab = isTab,
+                isCollapsed = isCollapsed,
+                onLogout = onLogout
             )
         }
-    }
+    )
+
+
 }
 
 
 @Composable
 private fun UserScreenActions(
     isTab: Boolean = false,
+    isCollapsed: Boolean,
     onLogout: OnClick
 ) {
     val navigator = localNavigator()
 
-    ActionMenu(iconRes = R.drawable.ic_settings) {
+    ActionMenu(iconRes = R.drawable.ic_settings, tonalButton = !isCollapsed) {
         navigator.push(SettingScreen())
     }
 

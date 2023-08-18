@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ext.isNotNull
-import com.revolgenx.anilib.common.ui.component.navigation.NavigationIcon
+import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.tab.ScrollableTabRow
 import com.revolgenx.anilib.common.ui.component.tab.Tab
 import com.revolgenx.anilib.common.ui.component.tab.TabContent
