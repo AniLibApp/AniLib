@@ -19,6 +19,7 @@ import com.revolgenx.anilib.databinding.EditTagHolderLayoutBinding
 import com.revolgenx.anilib.ui.dialog.InputDialog
 import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.app.setting.data.model.EditTagFilterViewModel
+import com.revolgenx.anilib.util.getParcelableCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditTagFilterFragment : BaseToolbarFragment<EditTagFilterFragmentLayoutBinding>() {
@@ -58,7 +59,7 @@ class EditTagFilterFragment : BaseToolbarFragment<EditTagFilterFragmentLayoutBin
         super.onViewCreated(view, savedInstanceState)
 
         val tagFilterMeta =
-            arguments?.getParcelable<TagFilterSettingMeta>(TAG_SETTING_FILTER_META_KEY)
+            arguments?.getParcelableCompat<TagFilterSettingMeta>(TAG_SETTING_FILTER_META_KEY)
                 ?: return super.onViewCreated(view, savedInstanceState)
 
         viewModel.tagFilterType = tagFilterMeta.type

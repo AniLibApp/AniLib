@@ -1,16 +1,3 @@
-object BuildPluginsVersion {
-    const val AGP = "7.0.4"
-    const val KOTLIN = "1.6.10"
-    const val GOOGLE_SERVICE = "4.3.10"
-}
-
-
-object AndroidSdk {
-    const val min = 21
-    const val compile = 31
-    const val target = 31
-}
-
 object PackagingOptions {
     val excludes =
         listOf("META-INF/LICENSE", "META-INF/LICENSE.txt", "META-INF/NOTICE", "META-INF/NOTICE.txt")
@@ -18,7 +5,6 @@ object PackagingOptions {
 
 
 object LibraryVersion {
-    const val kotlinVersion = "1.6.10"
     const val preference_version = "1.1.0"
     const val koin_version = "3.1.4"
     const val lifecycle_version = "2.3.1"

@@ -14,6 +14,7 @@ import com.revolgenx.anilib.databinding.SelectableDialogFragmentBinding
 import com.revolgenx.anilib.ui.selector.data.meta.SelectableMeta
 import com.revolgenx.anilib.ui.selector.constant.SelectedState
 import com.revolgenx.anilib.ui.selector.presenter.SelectableItemPresenter
+import com.revolgenx.anilib.util.getParcelableCompat
 
 class SelectableDialogFragment : BaseDialogFragment<SelectableDialogFragmentBinding>() {
     override var positiveText: Int? = R.string.done
@@ -33,7 +34,7 @@ class SelectableDialogFragment : BaseDialogFragment<SelectableDialogFragmentBind
 
 
     private val selectableMeta by lazy {
-        arguments?.getParcelable<SelectableMeta?>(selectable_meta_key)
+        arguments?.getParcelableCompat<SelectableMeta?>(selectable_meta_key)
     }
     override val titleRes: Int get() = selectableMeta?.title ?: R.string.select
     private val hasIntermediaMode get() = selectableMeta?.hasIntermediateMode ?: false

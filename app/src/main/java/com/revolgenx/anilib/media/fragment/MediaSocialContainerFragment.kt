@@ -16,10 +16,11 @@ import com.revolgenx.anilib.common.ui.adapter.setupWithViewPager2
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.MediaSocialFragmentLayoutBinding
+import com.revolgenx.anilib.util.getParcelableCompat
 
 class MediaSocialContainerFragment : BaseLayoutFragment<MediaSocialFragmentLayoutBinding>() {
     private val mediaBrowserMeta
-        get() = arguments?.getParcelable<MediaInfoMeta?>(
+        get() = arguments?.getParcelableCompat<MediaInfoMeta?>(
             MEDIA_INFO_META_KEY
         )
 

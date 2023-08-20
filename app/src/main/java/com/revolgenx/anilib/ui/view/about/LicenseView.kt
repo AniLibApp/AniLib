@@ -326,21 +326,6 @@ class LicenseView : DynamicRecyclerViewFrame {
             .setIconBig(DynamicResourceUtils.getDrawable(
                 context, R.drawable.ads_ic_android)))
 
-
-        licenses.add(DynamicInfo()
-            .setTitle(context
-                .getString(R.string.license_exoplayer))
-            .setLinks(resources.getStringArray(
-                R.array.license_links_exoplayer))
-            .setLinksSubtitles(resources.getStringArray(
-                R.array.license_links_subtitles_exoplayer))
-            .setLinksUrls(resources.getStringArray(
-                R.array.license_links_url_exoplayer))
-            .setLinksIconsResId(R.array.ads_license_links_icons)
-            .setLinksColorsResId(R.array.ads_license_links_colors)
-            .setIconBig(DynamicResourceUtils.getDrawable(
-                context, R.drawable.ads_ic_android)))
-
      licenses.add(DynamicInfo()
             .setTitle(context
                 .getString(R.string.license_android_toggle_switch))

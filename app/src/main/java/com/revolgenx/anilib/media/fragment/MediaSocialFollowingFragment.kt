@@ -10,6 +10,7 @@ import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.media.data.model.MediaSocialFollowingModel
 import com.revolgenx.anilib.media.presenter.MediaSocialFollowingPresenter
 import com.revolgenx.anilib.media.viewmodel.MediaSocialFollowingViewModel
+import com.revolgenx.anilib.util.getParcelableCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaSocialFollowingFragment : BasePresenterFragment<MediaSocialFollowingModel>() {
@@ -21,7 +22,7 @@ class MediaSocialFollowingFragment : BasePresenterFragment<MediaSocialFollowingM
     }
 
     private val mediaBrowserMeta
-        get() = arguments?.getParcelable<MediaInfoMeta?>(MEDIA_INFO_META_KEY)
+        get() = arguments?.getParcelableCompat<MediaInfoMeta?>(MEDIA_INFO_META_KEY)
 
 
     override val basePresenter: Presenter<MediaSocialFollowingModel>

@@ -30,7 +30,6 @@ import com.revolgenx.anilib.common.ui.fragment.BaseFragment
 import com.revolgenx.anilib.user.data.meta.UserMeta
 import com.revolgenx.anilib.home.data.meta.HomePageOrderType
 import com.revolgenx.anilib.databinding.ActivityMainBinding
-import com.revolgenx.anilib.radio.ui.fragments.RadioFragment
 import com.revolgenx.anilib.social.ui.fragments.ActivityUnionFragment
 import com.revolgenx.anilib.app.about.fragment.AboutFragment
 import com.revolgenx.anilib.home.discover.fragment.DiscoverContainerFragment
@@ -131,10 +130,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         ActivityUnionFragment()
     }
 
-    private val radioFragment by lazy {
-        RadioFragment()
-    }
-
     private val profileFragment by lazy {
         UserContainerFragment()
     }
@@ -227,9 +222,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                         binding.mainBottomNavView.selectedItemId = R.id.list_navigation_menu
                         mainSharedVM.mediaListCurrentTab.value = MediaType.MANGA.ordinal
                     }
-//                    LauncherShortcuts.RADIO -> {
-//                        binding.mainBottomNavView.selectedItemId = R.id.music_navigation_menu
-//                    }
                     LauncherShortcuts.NOTIFICATION -> {
                         openNotificationCenter()
                     }
@@ -271,15 +263,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 )
             )
         }
-//        menuList.add(
-//            HomeMenuItem(
-//                R.id.music_navigation_menu,
-//                R.string.radio,
-//                R.drawable.ic_radio,
-//                getHomePageOrderFromType(HomePageOrderType.RADIO),
-//                radioFragment
-//            )
-//        )
 
         menuList.add(
             HomeMenuItem(
@@ -357,9 +340,6 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             MainActivityPage.LIST -> {
                 getHomePageOrderFromType(HomePageOrderType.LIST)
             }
-//            MainActivityPage.RADIO -> {
-//                getHomePageOrderFromType(HomePageOrderType.RADIO)
-//            }
         }
 
         binding.mainViewPager.setCurrentItem(homePageOrder, false)
@@ -425,7 +405,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                 }
                 MEDIA_INFO_ACTION_KEY -> {
                     val meta =
-                        intent.getParcelableExtra<MediaInfoMeta?>(MEDIA_INFO_DATA_KEY) ?: return
+                        intent.parcelableExtraCompat<MediaInfoMeta?>(MEDIA_INFO_DATA_KEY) ?: return
                     openMediaInfoCenter(meta)
                 }
                 ENTRY_LIST_ACTION_KEY -> {

@@ -13,6 +13,7 @@ import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.media.data.model.MediaStreamingEpisodeModel
 import com.revolgenx.anilib.media.presenter.MediaWatchPresenter
 import com.revolgenx.anilib.media.viewmodel.MediaWatchViewModel
+import com.revolgenx.anilib.util.getParcelableCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaWatchFragment : BasePresenterFragment<MediaStreamingEpisodeModel>() {
@@ -55,7 +56,7 @@ class MediaWatchFragment : BasePresenterFragment<MediaStreamingEpisodeModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mediaBrowserMeta = arguments?.getParcelable(MEDIA_INFO_META_KEY) ?: return
+        mediaBrowserMeta = arguments?.getParcelableCompat(MEDIA_INFO_META_KEY) ?: return
     }
 
 

@@ -30,7 +30,7 @@
                 app:adt_contrastWithColorType="background"
                 app:adt_textColorType="text_primary"
                 app:entries="@array/login_entries"
-                app:tabTextAppearance="@style/RadioTabLayoutTextStyle" />
+                app:tabTextAppearance="@style/HomeTabLayoutTextStyle" />
 
         </com.revolgenx.anilib.common.ui.view.AlToolbar>
 

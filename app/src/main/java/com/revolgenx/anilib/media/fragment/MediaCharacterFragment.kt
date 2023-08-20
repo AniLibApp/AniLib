@@ -22,6 +22,7 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.media.viewmodel.MediaCharacterVM
 import com.revolgenx.anilib.ui.view.makeArrayPopupMenu
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
+import com.revolgenx.anilib.util.getParcelableCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaCharacterFragment : BasePresenterFragment<CharacterEdgeModel>() {
@@ -33,7 +34,7 @@ class MediaCharacterFragment : BasePresenterFragment<CharacterEdgeModel>() {
         get() = viewModel.source ?: createSource()
 
     private val mediaBrowserMeta
-        get() = arguments?.getParcelable<MediaInfoMeta?>(MEDIA_INFO_META_KEY)
+        get() = arguments?.getParcelableCompat<MediaInfoMeta?>(MEDIA_INFO_META_KEY)
 
     private val isAnime get() = mediaBrowserMeta?.type == MediaType.ANIME.ordinal
     private val displayMode get() = mediaCharacterDisplayModePref

@@ -452,11 +452,7 @@
     <string name="minimal_mode">Minimal Round Mode</string>
     <string name="minimal_list_mode">Minimal List Mode</string>
 
-    //radio
-    <string name="radio">Radio</string>
-
     <string name="notification_channel">Now Playing</string>
-    <string name="notification_channel_description">Shows what radio is currently playing</string>
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="buffering">Buffering … </string>

@@ -35,6 +35,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
 import com.revolgenx.anilib.home.event.MainActivityPage
 import com.revolgenx.anilib.ui.view.makeConfirmationDialog
+import com.revolgenx.anilib.util.getParcelableCompat
 import com.revolgenx.anilib.util.shareText
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -50,7 +51,7 @@ class UserContainerFragment : BaseLayoutFragment<UserContainerFragmentBinding>()
     override val setHomeAsUp: Boolean get() = userMeta != null
     override val menuRes: Int = R.menu.user_profile_menu
 
-    private val userMeta get() = arguments?.getParcelable<UserMeta?>(USER_PROFILE_INFO_KEY)
+    private val userMeta get() = arguments?.getParcelableCompat<UserMeta?>(USER_PROFILE_INFO_KEY)
 
     private val viewModel by viewModel<UserContainerSharedVM>()
     private val mainSharedVM by sharedViewModel<MainSharedVM>()

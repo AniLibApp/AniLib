@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 plugins{
-    kotlin("android") version BuildPluginsVersion.KOTLIN apply false
+    kotlin("android") version "1.8.0" apply false
 }
 
 
@@ -11,9 +11,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath ("com.google.gms:google-services:${BuildPluginsVersion.GOOGLE_SERVICE}")
+        classpath ("com.google.gms:google-services:4.3.15")
         classpath ("com.google.firebase:firebase-crashlytics-gradle:2.5.2")
-        classpath("com.android.tools.build:gradle:7.2.1")
+        classpath("com.android.tools.build:gradle:8.0.2")
     }
 }
 

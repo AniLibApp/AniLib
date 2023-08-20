@@ -31,6 +31,7 @@ import com.revolgenx.anilib.search.presenter.SearchPresenter
 import com.revolgenx.anilib.search.viewmodel.SearchFragmentViewModel
 import com.revolgenx.anilib.ui.selector.constant.SelectedState
 import com.revolgenx.anilib.ui.view.*
+import com.revolgenx.anilib.util.getParcelableCompat
 import com.revolgenx.anilib.util.loginContinue
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -46,7 +47,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>() {
 
     private val viewModel by viewModel<SearchFragmentViewModel>()
     private val searchFilterEventModel
-        get() = arguments?.getParcelable<SearchFilterEventModel?>(
+        get() = arguments?.getParcelableCompat<SearchFilterEventModel?>(
             SEARCH_FILTER_DATA_KEY
         )
 

@@ -15,6 +15,7 @@ import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityMessageComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.activity_composer.ActivityTextComposerViewModel
+import com.revolgenx.anilib.util.getParcelableCompat
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -38,7 +39,7 @@ class MediaSocialRecentActivityFragment : BasePresenterFragment<ActivityUnionMod
     override val baseSource: Source<ActivityUnionModel>
         get() = viewModel.source ?: createSource()
 
-    private val mediaBrowserMeta get() = arguments?.getParcelable<MediaInfoMeta?>(
+    private val mediaBrowserMeta get() = arguments?.getParcelableCompat<MediaInfoMeta?>(
         MEDIA_INFO_META_KEY
     )
 

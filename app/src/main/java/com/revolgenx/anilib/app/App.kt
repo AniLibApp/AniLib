@@ -31,9 +31,6 @@ import com.revolgenx.anilib.common.repository.networkModules
 import com.revolgenx.anilib.common.repository.repositoryModules
 import com.revolgenx.anilib.notification.service.NotificationWorker
 import com.revolgenx.anilib.infrastructure.service.serviceModule
-import com.revolgenx.anilib.radio.repository.radioApiModules
-import com.revolgenx.anilib.radio.repository.radioRoomModules
-import com.revolgenx.anilib.radio.source.radioSourceModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -78,9 +75,6 @@ open class App : DynamicApplication() {
         repositoryModules,
         networkModules,
         serviceModule,
-        radioRoomModules,
-        radioApiModules,
-        radioSourceModule,
         activityServiceModules,
         activityViewModelModules
     )

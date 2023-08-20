@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.revolgenx.anilib">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -134,14 +133,6 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop" />
         <activity android:name=".activity.MarkwonPlaygroundActivity" />
-
-        <service
-            android:name=".radio.service.RadioService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.media.browse.MediaBrowserService" />
-            </intent-filter>
-        </service>
 
         <!--Widget-->
 

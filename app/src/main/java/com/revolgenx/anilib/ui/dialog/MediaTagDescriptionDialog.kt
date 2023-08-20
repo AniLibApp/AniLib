@@ -9,6 +9,7 @@ import com.revolgenx.anilib.common.ui.dialog.BaseDialogFragment
 import com.revolgenx.anilib.media.data.model.MediaTagModel
 import com.revolgenx.anilib.databinding.MediaTagDescriptionDialogBinding
 import com.revolgenx.anilib.media.viewmodel.MediaTagDescriptionViewModel
+import com.revolgenx.anilib.util.getParcelableCompat
 import com.revolgenx.anilib.util.naText
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -34,7 +35,7 @@ class MediaTagDescriptionDialog : BaseDialogFragment<MediaTagDescriptionDialogBi
         positiveButton?.textSize = 14f
 
         binding.apply {
-            (arguments?.getParcelable<MediaTagModel?>(MEDIA_TAG_DIALOG_KEY))?.let {
+            (arguments?.getParcelableCompat<MediaTagModel?>(MEDIA_TAG_DIALOG_KEY))?.let {
                 tagNameTv.text = it.name
                 tagCategoryTv.text = it.category.naText()
                 tagDescriptionTv.text = it.description.naText()

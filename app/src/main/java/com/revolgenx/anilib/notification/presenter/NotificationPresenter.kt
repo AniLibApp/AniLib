@@ -265,6 +265,8 @@ class NotificationPresenter(context: Context) :
                         }
                     }
                 }
+
+                else -> {}
             }
         }
 

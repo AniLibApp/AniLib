@@ -27,6 +27,7 @@ import com.revolgenx.anilib.list.fragment.BaseMediaListCollectionFragment
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionContainerCallback
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.dp
+import com.revolgenx.anilib.util.getParcelableCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserMediaListCollectionContainerFragment :
@@ -43,7 +44,7 @@ class UserMediaListCollectionContainerFragment :
     }
 
     private val userMediaListMeta
-        get() = arguments?.getParcelable<MediaListMeta?>(
+        get() = arguments?.getParcelableCompat<MediaListMeta?>(
             media_list_meta_key
         )
 

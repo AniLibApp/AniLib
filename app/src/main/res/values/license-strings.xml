@@ -46,8 +46,6 @@
     <!--Jsoup-->
     <string name="license_jsoup" translatable="false">Jsoup</string>
     <string name="license_copy_jsoup" translatable="false">Copyright © 2009–2020 Jonathan Hedley </string>
-    <!--ExoPlayer-->
-    <string name="license_exoplayer" translatable="false">ExoPlayer</string>
     <!--Android-Toggle-Switch-->
     <string name="license_android_toggle_switch" translatable="false">Android-Toggle-Switch</string>
     <string name="license_copy_android_toggle_switch" translatable="false">Copyright © 2017 Lorenzo Rigato</string>
@@ -287,22 +285,6 @@
         <item>https://github.com/jhy/jsoup</item>
     </string-array>
 
-
-    <!--ExoPlayer-->
-    <string-array name="license_links_exoplayer">
-        <item>@string/apache_2</item>
-        <item>@string/sources</item>
-    </string-array>
-
-    <string-array name="license_links_subtitles_exoplayer">
-        <item>@string/license_desc</item>
-        <item>@string/license_sources_desc</item>
-    </string-array>
-
-    <string-array name="license_links_url_exoplayer">
-        <item>@string/apache_url</item>
-        <item>https://github.com/google/ExoPlayer</item>
-    </string-array>
 
     <!--Android-Toggle-Switch-->
     <string-array name="license_links_android_toggle_switch">

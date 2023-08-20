@@ -11,6 +11,7 @@ import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.media.data.model.MediaReviewModel
 import com.revolgenx.anilib.media.presenter.MediaReviewPresenter
 import com.revolgenx.anilib.media.viewmodel.MediaReviewViewModel
+import com.revolgenx.anilib.util.getParcelableCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaReviewFragment : BasePresenterFragment<MediaReviewModel>() {
@@ -50,7 +51,7 @@ class MediaReviewFragment : BasePresenterFragment<MediaReviewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mediaBrowserMeta =
-            arguments?.getParcelable(MEDIA_INFO_META_KEY) ?: return
+            arguments?.getParcelableCompat(MEDIA_INFO_META_KEY) ?: return
     }
 
 }

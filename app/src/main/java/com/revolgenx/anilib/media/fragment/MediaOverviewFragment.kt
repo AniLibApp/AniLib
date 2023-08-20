@@ -54,12 +54,13 @@ import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.ui.view.airing.AiringEpisodeView
 import com.revolgenx.anilib.media.viewmodel.MediaOverviewVM
 import com.revolgenx.anilib.studio.data.model.StudioEdgeModel
+import com.revolgenx.anilib.util.getParcelableCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>() {
 
     private val mediaBrowserMeta: MediaInfoMeta?
-        get() = arguments?.getParcelable(
+        get() = arguments?.getParcelableCompat(
             MEDIA_INFO_META_KEY
         )
 

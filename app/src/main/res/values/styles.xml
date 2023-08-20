@@ -71,8 +71,6 @@
 
     <style name="ListTabLayoutTextStyle" parent="HomeTabLayoutTextStyle"></style>
 
-    <style name="RadioTabLayoutTextStyle" parent="HomeTabLayoutTextStyle"></style>
-
     <style name="ActivityUnionTabLayoutTextStyle" parent="HomeTabLayoutTextStyle"></style>
 
     <style name="DynamicTextTabLayoutStyle.Background">
@@ -111,15 +109,6 @@
         <item name="android:layout_height">@dimen/discover_media_height</item>
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
-    </style>
-
-    <style name="RadioHeaderTextStyle">
-        <item name="fontFamily">@font/cabin_semi_bold</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:layout_marginStart">10dp</item>
-        <item name="android:layout_marginEnd">10dp</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">5dp</item>
     </style>
 
     <style name="DividerViewStyle">

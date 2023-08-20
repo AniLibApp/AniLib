@@ -29,6 +29,7 @@ import com.revolgenx.anilib.databinding.MediaStatsFragmentLayoutBinding
 import com.revolgenx.anilib.media.presenter.RankingsPresenter
 import com.revolgenx.anilib.media.presenter.MediaStatusDistributionPresenter
 import com.revolgenx.anilib.media.viewmodel.MediaStatsViewModel
+import com.revolgenx.anilib.util.getParcelableCompat
 import com.revolgenx.anilib.util.prettyNumberFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
@@ -107,7 +108,7 @@ class MediaStatsFragment : BaseLayoutFragment<MediaStatsFragmentLayoutBinding>()
             FlexboxLayoutManager(requireContext())
 
         mediaBrowserMeta =
-            arguments?.getParcelable(MEDIA_INFO_META_KEY) ?: return
+            arguments?.getParcelableCompat(MEDIA_INFO_META_KEY) ?: return
 
         visibleToUser = savedInstanceState?.getBoolean(visibleToUserKey) ?: false
 

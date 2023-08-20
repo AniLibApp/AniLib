@@ -20,6 +20,7 @@ import com.revolgenx.anilib.ui.dialog.sorting.AniLibSortingModel
 import com.revolgenx.anilib.ui.dialog.sorting.SortOrder
 import com.revolgenx.anilib.ui.view.makeSpinnerAdapter
 import com.revolgenx.anilib.ui.view.widgets.checkbox.AlCheckBox
+import com.revolgenx.anilib.util.getParcelableCompat
 
 class MediaListCollectionFilterBottomSheet :
     DynamicBottomSheetFragment<MediaListFilterBottomSheetLayoutBinding>() {
@@ -27,7 +28,7 @@ class MediaListCollectionFilterBottomSheet :
     private var formatDialog: DialogFragment? = null
 
     private val mediaListFilter by lazy {
-        arguments?.getParcelable(media_list_collection_filter_meta_key)
+        arguments?.getParcelableCompat(media_list_collection_filter_meta_key)
             ?: MediaListCollectionFilterMeta()
     }
 

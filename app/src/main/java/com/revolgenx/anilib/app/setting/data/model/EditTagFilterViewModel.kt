@@ -95,6 +95,10 @@ class EditTagFilterViewModel : BaseViewModel() {
                     it.tag
                 })
             }
+
+            TagFilterMetaType.STREAMING_ON -> {
+
+            }
         }
     }
 
@@ -109,6 +113,9 @@ class EditTagFilterViewModel : BaseViewModel() {
             TagFilterMetaType.TAG -> {
                 tagFields.filter { it.isSelected }.forEach { it.isExcluded = false }
                 TagPrefUtil.saveExcludedTags(tagFields.filter { it.isExcluded }.map {it.tag })
+            }
+            TagFilterMetaType.STREAMING_ON -> {
+
             }
         }
     }

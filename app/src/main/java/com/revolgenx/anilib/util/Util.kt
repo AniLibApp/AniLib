@@ -8,6 +8,9 @@ import android.content.Intent
 import android.content.pm.ShortcutManager
 import android.content.res.Configuration
 import android.os.Build
+import android.os.Build.VERSION.SDK_INT
+import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
@@ -15,6 +18,7 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import com.pranavpandey.android.dynamic.support.widget.DynamicSpinner
 import com.pranavpandey.android.dynamic.utils.DynamicLinkUtils
@@ -39,7 +43,7 @@ object LauncherShortcutKeys {
 }
 
 enum class LauncherShortcuts {
-    HOME, ANIME, MANGA, RADIO, NOTIFICATION
+    HOME, ANIME, MANGA, NOTIFICATION
 }
 
 fun getSeasonFromMonth(monthOfYear: Int): MediaSeason {
@@ -77,7 +81,7 @@ fun Long.prettyNumberFormat(): String { //Long.MIN_VALUE == -Long.MIN_VALUE so w
     val suffix = e.value
     val truncated = this / (divideBy / 10) //the number part of the output times 10
     val hasDecimal =
-        truncated < 100 && truncated / 10.0 != (truncated / 10).toDouble()
+            truncated < 100 && truncated / 10.0 != (truncated / 10).toDouble()
     return if (hasDecimal) (truncated / 10.0).toString() + suffix else (truncated / 10).toString() + suffix
 }
 
@@ -128,10 +132,10 @@ fun DynamicSpinner.onItemSelected(callback: (position: Int) -> Unit) {
         }
 
         override fun onItemSelected(
-            parent: AdapterView<*>?,
-            view: View?,
-            position: Int,
-            id: Long
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
         ) {
             callback.invoke(position)
         }
@@ -140,12 +144,12 @@ fun DynamicSpinner.onItemSelected(callback: (position: Int) -> Unit) {
 
 fun Context.hideKeyboard(view: View) {
     (getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(
-        view.windowToken,
-        0
+            view.windowToken,
+            0
     )
 }
 
-fun Fragment.openLink(url:String?){
+fun Fragment.openLink(url: String?) {
     requireContext().openLink(url)
 }
 
@@ -233,4 +237,14 @@ fun doIfNotDevFlavor(callback: () -> Unit) {
     }
 }
 
-val Context.isLandScape get()= this.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+val Context.isLandScape get() = this.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+
+inline fun <reified T : Parcelable?> Bundle.getParcelableCompat(key: String): T? {
+    return BundleCompat.getParcelable(this, key, T::class.java)
+}
+
+inline fun <reified T : Parcelable?> Intent.parcelableExtraCompat(key: String): T? = when {
+    SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
+}

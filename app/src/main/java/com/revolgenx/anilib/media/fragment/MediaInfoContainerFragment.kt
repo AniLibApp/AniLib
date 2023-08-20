@@ -70,7 +70,7 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
 
     private var isFavourite = false
     private val mediaInfoMeta: MediaInfoMeta?
-        get() = arguments?.getParcelable(
+        get() = arguments?.getParcelableCompat(
             MEDIA_INFO_META_KEY
         )
 
