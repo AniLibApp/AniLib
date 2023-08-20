@@ -275,7 +275,13 @@
     <string name="review_by_user">Review by %s</string>
     <string name="score_d_100">Score: %1$d/100</string>
     <string name="d_out_of_d_liked_this_review">%1$d out of %2$d liked this review</string>
+    <string name="add">Add</string>
     <!--User Stats-->
+
+    <!--media screen-->
+    <string name="season_dot_year">%1$s · %2$s</string>
+    <string name="episode_airing_date">E: %1$s · %2$s</string>
+    <!--media screen-->
 
 
 </resources>

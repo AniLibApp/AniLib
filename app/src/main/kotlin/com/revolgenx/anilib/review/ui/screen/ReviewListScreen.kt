@@ -53,6 +53,7 @@ import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.theme.review_list_gradient_bottom
@@ -215,13 +216,7 @@ fun ReviewListItem(
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 12.sp,
                                 letterSpacing = 0.2.sp,
-                                color = Color.White, style = LocalTextStyle.current.copy(
-                                    shadow = Shadow(
-                                        color = Color.Black,
-                                        offset = Offset(2.0f, 2.0f),
-                                        blurRadius = 1f
-                                    )
-                                )
+                                color = Color.White, style = LocalTextStyle.current.shadow()
                             )
                         }
                     }

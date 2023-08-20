@@ -4,7 +4,9 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -12,6 +14,34 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
+
+
+@Composable
+fun SemiBoldText(
+    text: String,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit? = null,
+    maxLines: Int? = null,
+    lineHeight: TextUnit? = null,
+    textAlign: TextAlign? = null,
+    color: Color = Color.Unspecified,
+    style: TextStyle = LocalTextStyle.current
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        maxLines = maxLines ?: 2,
+        fontSize = fontSize ?: 16.sp,
+        lineHeight = lineHeight ?: 18.sp,
+        overflow = TextOverflow.Ellipsis,
+        fontWeight = FontWeight.SemiBold,
+        letterSpacing = 0.2.sp,
+        textAlign = textAlign,
+        color = color,
+        style = style
+    )
+}
+
 
 @Composable
 fun MediumText(
@@ -63,3 +93,12 @@ fun LightText(
         textAlign = textAlign
     )
 }
+
+
+fun TextStyle.shadow(color: Color = Color.Black) = copy(
+    shadow = Shadow(
+        color = color,
+        offset = Offset(2.0f, 2.0f),
+        blurRadius = 1f
+    )
+)

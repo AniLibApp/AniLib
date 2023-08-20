@@ -12,6 +12,7 @@ import coil.ImageLoader
 import coil.imageLoader
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.imageViewerScreen
+import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
@@ -28,13 +29,14 @@ fun AsyncImage(
     failure: (@Composable BoxScope.(CoilImageState.Failure) -> Unit)? = null,
     viewable: Boolean = false
 ) {
-    imageUrl ?: return
     CoilImage(
         modifier = modifier.let {
             if (viewable) {
                 val navigator = localNavigator()
                 it.clickable {
-                    navigator.imageViewerScreen(imageUrl)
+                    imageUrl?.let {
+                        navigator.imageViewerScreen(imageUrl)
+                    }
                 }
             } else {
                 modifier
@@ -45,10 +47,12 @@ fun AsyncImage(
         imageLoader = imageLoader,
         previewPlaceholder = previewPlaceholder,
         failure = failure ?: {
-            Image(
-                painter = painterResource(id = R.drawable.ic_error_anilib),
-                contentDescription = null
-            )
+            if (imageUrl.isNotNull()) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_error_anilib),
+                    contentDescription = null
+                )
+            }
         }
     )
 }
