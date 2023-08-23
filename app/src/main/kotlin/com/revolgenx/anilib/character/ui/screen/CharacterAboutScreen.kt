@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.common.ext.imageViewerScreen
-import com.revolgenx.anilib.common.ext.naInt
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.about.AboutScreen
@@ -24,7 +24,7 @@ fun CharacterAboutScreen(
             name = character.name?.full.naText(),
             alternative = character.name?.alternativeText,
             imageUrl = character.image?.image,
-            favourites = character.favourites.naInt(),
+            favourites = character.favourites.orZero(),
             isFavourite = character.isFavourite.value,
             description = character.description,
             spannedDescription = character.spannedDescription,

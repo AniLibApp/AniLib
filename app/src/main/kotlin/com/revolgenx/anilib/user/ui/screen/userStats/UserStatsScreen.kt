@@ -48,7 +48,7 @@ import org.koin.core.qualifier.named
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserStatsScreen(userId: Int?, type: MediaType) {
-    val isAnime = type.isAnime()
+    val isAnime = type.isAnime
     val viewModel: UserStatsViewModel = koinViewModel(named(if (isAnime) UserStatsTypeMediaType.USER_STATS_ANIME else UserStatsTypeMediaType.USER_STATS_MANGA))
     val overviewViewModel: UserStatsOverviewViewModel =
         koinViewModel(named(if (isAnime) UserStatsTypeMediaType.USER_STATS_OVERVIEW_ANIME else UserStatsTypeMediaType.USER_STATS_OVERVIEW_MANGA))

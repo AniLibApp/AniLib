@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.state.ResourceState
-import com.revolgenx.anilib.common.ext.emptyText
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
 import com.revolgenx.anilib.common.ui.component.common.Grid
@@ -210,7 +209,7 @@ private fun MediaListEditScreenContent(
 
                 MediaTitleType {
                     val mediaTitle = media.title?.title(it)
-                    title = mediaTitle.emptyText()
+                    title = mediaTitle.orEmpty()
                     ConfirmationDialog(openDialog = openConfirmDialog,
                         message = stringResource(id = R.string.do_you_really_want_to_delete_the_entry_s).format(
                             mediaTitle?.let { " $it" } ?: "")) {

@@ -24,7 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.naInt
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.reviewScreen
@@ -99,9 +99,9 @@ private fun MediaReviewItem(
                         Icon(
                             modifier = Modifier.size(12.dp),
                             imageVector = Icons.Rounded.ThumbUp,
-                            contentDescription = reviewModel.rating.naInt().toString(),
+                            contentDescription = reviewModel.rating.orZero().toString(),
                         )
-                        Text(reviewModel.rating.naInt().prettyNumberFormat())
+                        Text(reviewModel.rating.orZero().prettyNumberFormat())
                     }
                 }
             }

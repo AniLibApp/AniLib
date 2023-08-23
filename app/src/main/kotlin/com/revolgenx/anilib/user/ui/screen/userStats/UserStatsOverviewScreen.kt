@@ -29,7 +29,7 @@ import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.scroll.InitialScroll
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.naInt
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.button.SegmentedButton
 import com.revolgenx.anilib.common.ui.component.chart.ColumnChart
@@ -67,7 +67,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                val isAnime = mediaType.isAnime()
+                val isAnime = mediaType.isAnime
 
                 val totalLabel =
                     stringResource(id = if (isAnime) R.string.total_anime else R.string.total_manga)
@@ -358,7 +358,7 @@ private fun StatisticModelItem(
         Text(text = stringResource(id = R.string.count_d).format(model.count))
         Text(
             text = stringResource(id = if (isAnime) R.string.hours_watched_d else R.string.chapters_read_d).format(
-                (if (isAnime) model.hoursWatched else model.chaptersRead).naInt()
+                (if (isAnime) model.hoursWatched else model.chaptersRead).orZero()
             )
         )
         Text(text = stringResource(id = R.string.mean_score_d).format(model.meanScore))

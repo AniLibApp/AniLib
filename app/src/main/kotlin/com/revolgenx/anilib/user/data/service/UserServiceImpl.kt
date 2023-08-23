@@ -6,7 +6,7 @@ import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.ext.getOrEmpty
-import com.revolgenx.anilib.common.ext.naInt
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.PageInfo
@@ -41,8 +41,8 @@ class UserServiceImpl(apolloRepository: ApolloRepository) :
         return field.toQuery().map {
             it.dataAssertNoErrors.let { data ->
                 data.user?.toModel()?.also {
-                    it.followers = data.followerPage?.pageInfo?.total.naInt()
-                    it.following = data.followingPage?.pageInfo?.total.naInt()
+                    it.followers = data.followerPage?.pageInfo?.total.orZero()
+                    it.following = data.followingPage?.pageInfo?.total.orZero()
                 }
             }
         }.onIO()

@@ -40,7 +40,7 @@ val LightColorScheme = lightColorScheme(
     surfaceContainerHigh = md_theme_light_surface,
     surfaceContainerHighest = md_theme_light_surfaceVariant,
     surface = md_theme_light_surface,
-    surfaceVariant= md_theme_light_surfaceVariant,
+    surfaceVariant = md_theme_light_surfaceVariant,
     onSurface = md_theme_light_onSurface,
     onSurfaceVariant = md_theme_light_onSurfaceVariant,
     outline = md_theme_light_outline,
@@ -129,3 +129,6 @@ fun AppTheme(
     )
 }
 
+
+@Composable
+fun shapes() = MaterialTheme.shapes

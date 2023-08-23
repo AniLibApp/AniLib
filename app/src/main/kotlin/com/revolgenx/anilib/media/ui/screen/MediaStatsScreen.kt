@@ -54,7 +54,7 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
         viewModel.getResource()
     }
 
-    val isAnime = mediaType.isAnime()
+    val isAnime = mediaType.isAnime
 
     ResourceScreen(
         resourceState = viewModel.resource.value,

@@ -24,7 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.emptyText
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -88,7 +87,7 @@ fun UserRelationItem(user: UserModel) {
                 previewPlaceholder = R.drawable.bleach
             )
             Text(
-                text = user.name.emptyText(),
+                text = user.name.orEmpty(),
                 fontSize = 15.sp
             )
         }

@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.MediaReviewQuery
 import com.revolgenx.anilib.ReviewListQuery
 import com.revolgenx.anilib.ReviewQuery
-import com.revolgenx.anilib.common.ext.naInt
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.ReviewFragment
@@ -18,7 +18,6 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ReviewRating
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.model.toModel
-import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -64,8 +63,8 @@ fun ReviewQuery.Review.toModel(): ReviewModel {
 
 fun MediaReviewQuery.Node.toModel() = ReviewModel(
     id = id,
-    rating = rating.naInt(),
-    ratingAmount = ratingAmount.naInt(),
+    rating = rating.orZero(),
+    ratingAmount = ratingAmount.orZero(),
     summary = summary,
     user = user?.let {
         UserModel(
@@ -80,8 +79,8 @@ fun MediaReviewQuery.Node.toModel() = ReviewModel(
 fun ReviewFragment.toModel(): ReviewModel {
     return ReviewModel(
         id = id,
-        rating = rating.naInt(),
-        ratingAmount = ratingAmount.naInt(),
+        rating = rating.orZero(),
+        ratingAmount = ratingAmount.orZero(),
         summary = summary,
         score = score,
         createdAt = createdAt,

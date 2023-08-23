@@ -77,24 +77,24 @@ data class BrowseField(
             isLicensed = nn(doujins?.takeIf { !it }),
             isAdult = nn(isHentai),
 
-            episodesGreater = nn(episodesGreater?.minus(1)?.takeIf { mediaType.isAnime() }),
-            episodesLesser = nn(episodesLesser?.plus(1)?.takeIf { mediaType.isAnime() }),
-            durationGreater = nn(durationGreater?.minus(1)?.takeIf { mediaType.isAnime() }),
-            durationLesser = nn(durationLesser?.plus(1)?.takeIf { mediaType.isAnime() }),
+            episodesGreater = nn(episodesGreater?.minus(1)?.takeIf { mediaType.isAnime }),
+            episodesLesser = nn(episodesLesser?.plus(1)?.takeIf { mediaType.isAnime }),
+            durationGreater = nn(durationGreater?.minus(1)?.takeIf { mediaType.isAnime }),
+            durationLesser = nn(durationLesser?.plus(1)?.takeIf { mediaType.isAnime }),
 
-            chaptersGreater = nn(chaptersGreater?.minus(1)?.takeIf { mediaType.isManga() }),
-            chaptersLesser = nn(chaptersLesser?.plus(1)?.takeIf { mediaType.isManga() }),
-            volumesGreater = nn(volumesGreater?.minus(1)?.takeIf { mediaType.isManga() }),
-            volumesLesser = nn(volumesLesser?.plus(1)?.takeIf { mediaType.isManga() }),
+            chaptersGreater = nn(chaptersGreater?.minus(1)?.takeIf { mediaType.isManga }),
+            chaptersLesser = nn(chaptersLesser?.plus(1)?.takeIf { mediaType.isManga }),
+            volumesGreater = nn(volumesGreater?.minus(1)?.takeIf { mediaType.isManga }),
+            volumesLesser = nn(volumesLesser?.plus(1)?.takeIf { mediaType.isManga }),
 
-            licensedByIdIn = nn(if (mediaType.isAnime()) streamingOn else readableOn),
+            licensedByIdIn = nn(if (mediaType.isAnime) streamingOn else readableOn),
 
             yearGreater = nn(yearGreater?.toFuzzyDateInt()?.minus(1)),
             yearLesser = nn(yearLesser?.toFuzzyDateInt()?.plus(10000)),
 
-            season = nn(season?.takeIf { mediaType.isAnime() }),
-            seasonYear = nn(season?.let { year }?.takeIf { mediaType.isAnime() }),
-            year = nn(year?.takeIf { mediaType.isManga() || season.isNull() }?.let { "$it%" }),
+            season = nn(season?.takeIf { mediaType.isAnime }),
+            seasonYear = nn(season?.let { year }?.takeIf { mediaType.isAnime }),
+            year = nn(year?.takeIf { mediaType.isManga || season.isNull() }?.let { "$it%" }),
 
             status = nn(status),
             country = nn(countryOfOrigin?.let { countryOfOrigins[it] }),

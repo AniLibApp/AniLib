@@ -63,7 +63,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
     val openFilterBottomSheet = rememberSaveable { mutableStateOf(false) }
-    val isAnime = viewModel.field.type.isAnime()
+    val isAnime = viewModel.field.type.isAnime
 
     val appbarHeight = if(active) 120.dp else 64.dp
     val appbarAnimation by animateDpAsState(

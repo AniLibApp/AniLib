@@ -17,8 +17,8 @@ val LocalMainTabNavigator = compositionLocalOf<TabNavigator> {
     error("Navigator not initialized")
 }
 
-val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState> {
-    error("No SnackbarHostState provided")
+val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState?> {
+    null
 }
 
 val LocalUserState = compositionLocalOf {

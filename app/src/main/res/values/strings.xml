@@ -29,6 +29,21 @@
     <string name="unknown">Unknown</string>
     <!--MediaFormat-->
 
+    <!--MediaSource-->
+    <string name="original">Original</string>
+    <string name="light_novel">Light Novel</string>
+    <string name="visual_novel">Visual Novel</string>
+    <string name="video_game">Video Game</string>
+    <string name="other">Other</string>
+    <string name="doujinshi">Doujinshi</string>
+    <string name="game">Game</string>
+    <string name="multimedia_project">Multimedia Project</string>
+    <string name="picture_book">Picture Book</string>
+    <string name="comic">Comic</string>
+    <string name="web_novel">Web Novel</string>
+    <string name="live_action">Live Action</string>
+    <!--MediaSource-->
+
     <!--MediaSort-->
     <string name="id">Id</string>
     <string name="id_desc">Id Desc</string>
@@ -143,7 +158,7 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="retry">Retry</string>
     <!--App-->
-    <string name="na">\?</string>
+    <string name="na">N/A</string>
     <string name="filter">Filter</string>
     <string name="sort">Sort</string>
     <string name="year">Year</string>
@@ -278,10 +293,26 @@
     <string name="add">Add</string>
     <!--User Stats-->
 
-    <!--media screen-->
+    <!--Media Screen-->
     <string name="season_dot_year">%1$s · %2$s</string>
     <string name="episode_airing_date">E: %1$s · %2$s</string>
-    <!--media screen-->
+    <string name="source">Source</string>
+    <string name="min_s">%1$s min</string>
+    <string name="_native">Native</string>
+    <string name="english">English</string>
+    <string name="romaji">Romaji</string>
+    <string name="links">Links</string>
+    <string name="press_again_to_exit">Press again to exit</string>
+    <string name="synonyms">Synonyms</string>
+    <string name="s_percent">%1$s%%</string>
+    <string name="name">Name</string>
+    <string name="rank">Rank</string>
+    <string name="category">Category</string>
+    <string name="show_spoilers">Show Spoilers</string>
+    <string name="hide_spoilers">Hide Spoilers</string>
+    <string name="invalid_url">Invalid URL</string>
+    <string name="no_app_found_to_handle_url">No app found to handle URL</string>
+    <!--Media Screen-->
 
 
 </resources>

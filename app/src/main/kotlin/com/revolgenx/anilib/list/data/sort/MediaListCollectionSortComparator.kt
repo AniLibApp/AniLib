@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.list.data.sort
 
-import com.revolgenx.anilib.common.ext.getOrDefault
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.list.ui.model.MediaListModel
 
 class MediaListCollectionSortComparator: Comparator<MediaListModel> {
@@ -10,48 +10,48 @@ class MediaListCollectionSortComparator: Comparator<MediaListModel> {
         val media2 = item2.media!!
         return when (type) {
             MediaListSortType.TITLE -> {
-                media1.title?.userPreferred.getOrDefault()
-                    .compareTo(media2.title?.userPreferred.getOrDefault())
+                media1.title?.userPreferred.orEmpty()
+                    .compareTo(media2.title?.userPreferred.orEmpty())
             }
             MediaListSortType.TITLE_DESC -> {
-                media2.title?.userPreferred.getOrDefault()
-                    .compareTo(media1.title?.userPreferred.getOrDefault())
+                media2.title?.userPreferred.orEmpty()
+                    .compareTo(media1.title?.userPreferred.orEmpty())
             }
             MediaListSortType.SCORE -> {
-                (item1.score.getOrDefault()).compareTo(item2.score.getOrDefault())
+                (item1.score.orZero()).compareTo(item2.score.orZero())
             }
             MediaListSortType.SCORE_DESC -> {
-                (item2.score.getOrDefault()).compareTo(item1.score.getOrDefault())
+                (item2.score.orZero()).compareTo(item1.score.orZero())
             }
             MediaListSortType.PROGRESS -> {
-                (item1.progress.getOrDefault()).compareTo(item2.progress.getOrDefault())
+                (item1.progress.orZero()).compareTo(item2.progress.orZero())
             }
             MediaListSortType.PROGRESS_DESC -> {
-                (item2.progress.getOrDefault()).compareTo(item1.progress.getOrDefault())
+                (item2.progress.orZero()).compareTo(item1.progress.orZero())
             }
             MediaListSortType.AVERAGE_SCORE -> {
-                (media1.averageScore.getOrDefault()).compareTo(media2.averageScore.getOrDefault())
+                (media1.averageScore.orZero()).compareTo(media2.averageScore.orZero())
             }
             MediaListSortType.AVERAGE_SCORE_DESC -> {
-                (media2.averageScore.getOrDefault()).compareTo(media1.averageScore.getOrDefault())
+                (media2.averageScore.orZero()).compareTo(media1.averageScore.orZero())
             }
             MediaListSortType.POPULARITY -> {
-                (media1.popularity.getOrDefault()).compareTo(media2.popularity.getOrDefault())
+                (media1.popularity.orZero()).compareTo(media2.popularity.orZero())
             }
             MediaListSortType.POPULARITY_DESC -> {
-                (media2.popularity.getOrDefault()).compareTo(media1.popularity.getOrDefault())
+                (media2.popularity.orZero()).compareTo(media1.popularity.orZero())
             }
             MediaListSortType.UPDATED_AT -> {
-                (item1.updatedAt.getOrDefault()).compareTo(item2.updatedAt.getOrDefault())
+                (item1.updatedAt.orZero()).compareTo(item2.updatedAt.orZero())
             }
             MediaListSortType.UPDATED_AT_DESC -> {
-                (item2.updatedAt.getOrDefault()).compareTo(item1.updatedAt.getOrDefault())
+                (item2.updatedAt.orZero()).compareTo(item1.updatedAt.orZero())
             }
             MediaListSortType.ADDED -> {
-                (item1.createdAt.getOrDefault()).compareTo(item2.createdAt.getOrDefault())
+                (item1.createdAt.orZero()).compareTo(item2.createdAt.orZero())
             }
             MediaListSortType.ADDED_DESC -> {
-                (item2.createdAt.getOrDefault()).compareTo(item1.createdAt.getOrDefault())
+                (item2.createdAt.orZero()).compareTo(item1.createdAt.orZero())
             }
             MediaListSortType.STARTED -> {
                 item1.startedAt?.toZoneDateTime()?.compareTo(item2.startedAt?.toZoneDateTime()) ?: 0

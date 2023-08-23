@@ -1,7 +1,9 @@
 package com.revolgenx.anilib.common.ext
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
@@ -11,7 +13,7 @@ import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import kotlinx.coroutines.CoroutineScope
@@ -26,25 +28,34 @@ import java.util.NavigableMap
 import java.util.TreeMap
 
 fun String?.naText() = this.takeIf { !it.isNullOrEmpty() } ?: "?"
-fun String?.emptyText() = this.takeIf { !it.isNullOrEmpty() } ?: ""
 fun Int?.naText() = this?.toString() ?: "?"
-fun Int?.naInt() = this ?: 0
+fun Int?.orZero() = this ?: 0
+fun Int?.orZeroString() = this.orZero().toString()
+fun Double?.orZero() = this ?: 0.0
 
-fun String?.getOrDefault() = this ?: ""
-fun Int?.getOrDefault() = this ?: 0
-fun Double?.getOrDefault() = this ?: 0.0
+@Composable
+fun Int?.orNaString() = this?.toString() ?: R.string.na.stringResource()
 
-@StringRes
-fun Int?.naStringRes() = this.takeIf { it != null } ?: R.string.na
+@Composable
+fun String?.orNaString(): String = this ?: R.string.na.stringResource()
 
 @DrawableRes
-fun Int?.naDrawableRes() = this.takeIf { it != null } ?: R.drawable.ic_question_mark
+fun Int?.naDrawableRes() = this ?: R.drawable.ic_question_mark
 
 @Composable
-fun localContext() = LocalContext.current
+fun Int?.naStringResource(): String = this?.stringResource() ?: R.string.na.stringResource()
 
 @Composable
-fun localSnackbarHostState() = LocalSnackbarHostState.current
+inline fun Int.stringResource() = androidx.compose.ui.res.stringResource(id = this)
+
+@Composable
+inline fun Int.painterResource() = painterResource(id = this)
+
+@Composable
+fun localSnackbarHostState() = LocalSnackbarHostState.current!!
+
+@Composable
+fun maybeLocalSnackbarHostState() = LocalSnackbarHostState.current
 
 fun Any?.isNull() = this == null
 fun Any?.isNotNull() = this != null
@@ -92,6 +103,7 @@ fun emptyWindowInsets() = WindowInsets(0)
 
 @Composable
 fun horizontalWindowInsets() = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
+
 @Composable
 fun horizontalBottomWindowInsets() = NavigationBarDefaults.windowInsets
 
@@ -106,3 +118,12 @@ fun CoroutineScope.hideBottomSheet(state: SheetState, openBottomSheet: MutableSt
 }
 
 fun <T> List<T>?.getOrEmpty() = this ?: emptyList()
+
+internal fun Context.activity(): Activity? {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is Activity) return context
+        context = context.baseContext
+    }
+    return null
+}

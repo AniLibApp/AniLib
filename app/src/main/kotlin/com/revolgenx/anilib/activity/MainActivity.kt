@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.activity
 
 import android.os.Bundle
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
@@ -10,12 +11,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.core.view.WindowCompat
@@ -26,7 +33,12 @@ import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.TabNavigator
+import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.activity
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
+import com.revolgenx.anilib.common.ext.stringResource
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
 import com.revolgenx.anilib.common.ui.composition.GlobalViewModelStoreOwner
@@ -45,6 +57,8 @@ import com.revolgenx.anilib.list.ui.screen.MangaListScreen
 import com.revolgenx.anilib.social.factory.AlMarkdownFactory
 import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /*
 * todo: handle customtab cancel result
@@ -129,7 +143,9 @@ fun MainActivityScreenContent() {
                 Box(Modifier.padding(contentPadding)) {
                     CurrentTab()
                 }
+                BackPress()
             }
+
         }
     }
 }
@@ -151,3 +167,32 @@ private fun RowScope.TabNavigationItem(tab: BaseTabScreen) {
     )
 }
 
+@Composable
+fun BackPress() {
+    var exit by remember { mutableStateOf(false) }
+    val snackbar = localSnackbarHostState()
+    val scope = rememberCoroutineScope()
+    val context = localContext()
+    LaunchedEffect(key1 = exit) {
+        if (exit) {
+            delay(2000)
+            exit = false
+        }
+    }
+
+    val msg = R.string.press_again_to_exit.stringResource()
+    BackHandler {
+        if (exit) {
+            context.activity()?.finish()
+        } else {
+            exit = true
+            scope.launch {
+                snackbar.showSnackbar(
+                    message = msg,
+                    withDismissAction = true,
+                    duration = SnackbarDuration.Short
+                )
+            }
+        }
+    }
+}

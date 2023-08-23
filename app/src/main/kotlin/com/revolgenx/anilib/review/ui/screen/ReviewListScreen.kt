@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.mediaScreen
-import com.revolgenx.anilib.common.ext.naInt
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.reviewScreen
 import com.revolgenx.anilib.common.ext.userScreen
@@ -248,7 +248,7 @@ fun ReviewListItem(
                 )
                 MediumText(
                     modifier = Modifier.padding(horizontal = 3.dp),
-                    text = model.rating.naInt().toString(),
+                    text = model.rating.orZero().toString(),
                     fontSize = 12.sp
                 )
             }

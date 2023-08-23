@@ -53,7 +53,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
-import com.revolgenx.anilib.common.ext.naInt
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
@@ -156,7 +156,7 @@ fun MediaScreenContent(
                     .nestedScroll(scrollBehavior.nestedScrollConnection)
             ) {
                 when (visiblePages[page].type) {
-                    MediaScreenPageType.OVERVIEW -> MediaOverviewScreen(viewModel)
+                    MediaScreenPageType.OVERVIEW -> MediaOverviewScreen(viewModel, mediaType)
                     MediaScreenPageType.WATCH -> MediaWatchScreen(viewModel)
                     MediaScreenPageType.CHARACTER -> MediaCharacterScreen(
                         characterViewModel,
@@ -227,7 +227,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
     mediaType: MediaType,
     isCollapsed: Boolean
 ) {
-    val isAnime = mediaType.isAnime()
+    val isAnime = mediaType.isAnime
     AsyncImage(
         modifier = Modifier
             .height(containerHeight)
@@ -314,7 +314,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                 contentDescription = null
                             )
                             MediumText(
-                                text = media?.popularity.naInt().prettyNumberFormat(),
+                                text = media?.popularity.orZero().prettyNumberFormat(),
                                 color = onSurfaceVariant,
                                 fontSize = 14.sp,
                                 lineHeight = 15.sp,
@@ -328,7 +328,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                 contentDescription = null
                             )
                             MediumText(
-                                text = media?.favourites.naInt().prettyNumberFormat(),
+                                text = media?.favourites.orZero().prettyNumberFormat(),
                                 color = onSurfaceVariant,
                                 fontSize = 14.sp,
                                 lineHeight = 15.sp,

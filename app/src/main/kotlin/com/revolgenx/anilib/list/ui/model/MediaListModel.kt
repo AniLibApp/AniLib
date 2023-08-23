@@ -86,7 +86,7 @@ fun MediaListStatus.toColorRes() = when (this) {
 }
 
 fun MediaListStatus?.toStringRes(mediaType: MediaType): Int {
-    val isManga = mediaType.isManga()
+    val isManga = mediaType.isManga
     return when (this) {
         MediaListStatus.CURRENT -> if (isManga) R.string.watching else R.string.reading
         MediaListStatus.PLANNING -> if (isManga) R.string.plan_to_read else R.string.plan_to_watch
@@ -120,4 +120,4 @@ fun getStatusFromAlMediaListStatus(status: Int) = when (status) {
 
 @Composable
 fun getAlMediaListStatusForType(type: MediaType?) =
-    stringArrayResource(id = if (type.isAnime()) R.array.anime_media_list_status else R.array.manga_media_list_status)
+    stringArrayResource(id = if (type.isAnime) R.array.anime_media_list_status else R.array.manga_media_list_status)

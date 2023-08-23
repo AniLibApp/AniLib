@@ -3,7 +3,7 @@ package com.revolgenx.anilib.staff.ui.screen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.revolgenx.anilib.common.ext.imageViewerScreen
-import com.revolgenx.anilib.common.ext.naInt
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.about.AboutScreen
@@ -26,7 +26,7 @@ fun StaffAboutScreen(
             name = staff.name?.full.naText(),
             alternative = staff.name?.alternativeText,
             imageUrl = staff.image?.image,
-            favourites = staff.favourites.naInt(),
+            favourites = staff.favourites.orZero(),
             isFavourite = staff.isFavourite.value,
             description = staff.description,
             spannedDescription = staff.spannedDescription,

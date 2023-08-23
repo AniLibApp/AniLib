@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.naInt
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
@@ -133,7 +133,7 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(text = stringResource(id = R.string.review_by_user).format(user?.name.naText()))
-                        Text(text = stringResource(id = R.string.score_d_100).format(review.score.naInt()))
+                        Text(text = stringResource(id = R.string.score_d_100).format(review.score.orZero()))
                     }
 
                     LightText(

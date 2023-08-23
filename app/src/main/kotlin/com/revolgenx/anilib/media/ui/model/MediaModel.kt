@@ -1,9 +1,9 @@
 package com.revolgenx.anilib.media.ui.model
 
+import android.text.Spanned
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
-import com.revolgenx.anilib.MediaListEntryQuery
-import com.revolgenx.anilib.MediaOverViewQuery
+import com.revolgenx.anilib.MediaOverviewQuery
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.ui.model.AiringAtModel
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
@@ -18,6 +18,7 @@ import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
 import com.revolgenx.anilib.fragment.Media
 import com.revolgenx.anilib.list.ui.model.MediaListModel
+import com.revolgenx.anilib.social.factory.markdown
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.studio.ui.model.StudioConnectionModel
 import com.revolgenx.anilib.studio.ui.model.StudioEdgeModel
@@ -26,7 +27,6 @@ import com.revolgenx.anilib.type.CharacterRole
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaRelation
 import com.revolgenx.anilib.type.MediaSeason
-import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.type.MediaSource
 import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
@@ -78,7 +78,9 @@ data class MediaModel(
     val studios: StudioConnectionModel? = null,
 //    val studios: List<StudioModel>? = null,
     val synonyms: List<String>? = null,
+    val synonymsString: String? = null,
     val tags: List<MediaTagModel>? = null,
+    val tagsWithoutSpoiler: List<MediaTagModel>? = null,
     val title: MediaTitleModel? = null,
     val trailer: MediaTrailerModel? = null,
     val trending: Int? = null,
@@ -91,14 +93,14 @@ data class MediaModel(
     var studio: StudioModel? = null,
     var character: CharacterModel? = null,
     var characterRole: CharacterRole? = null,
-
-    ) : BaseModel {
-    val isAnime get() = type.isAnime()
+    var descriptionSpanned: Spanned? = null
+) : BaseModel {
+    val isAnime get() = type.isAnime
 }
 
 
-fun MediaType?.isAnime() = this == MediaType.ANIME
-fun MediaType?.isManga() = this == MediaType.MANGA
+val MediaType?.isAnime get() = this == MediaType.ANIME
+val MediaType?.isManga get() = this == MediaType.MANGA
 
 
 fun Media.toModel(): MediaModel {
@@ -133,8 +135,20 @@ fun Media.toModel(): MediaModel {
     )
 }
 
-fun MediaOverViewQuery.Media.toModel(): MediaModel {
+fun MediaOverviewQuery.Media.toModel(): MediaModel {
     val coverImage = coverImage?.mediaCoverImage?.toModel()
+    val mediaTags = tags?.mapNotNull { tagData ->
+        tagData?.let {
+            MediaTagModel(
+                name = it.name,
+                description = it.description,
+                category = it.category,
+                isMediaSpoilerTag = it.isMediaSpoiler == true,
+                rank = it.rank,
+                isAdult = it.isAdult == true
+            )
+        }
+    }
     return MediaModel(
         id = id,
         title = title?.mediaTitle?.toModel(),
@@ -159,9 +173,11 @@ fun MediaOverViewQuery.Media.toModel(): MediaModel {
         season = season,
         seasonYear = seasonYear,
         description = description,
+        descriptionSpanned = markdown.toMarkdown(description.orEmpty()),
         source = source,
         hashtag = hashtag,
         synonyms = synonyms?.filterNotNull(),
+        synonymsString = synonyms?.joinToString("\n"),
         isFavourite = isFavourite,
         streamingEpisodes = streamingEpisodes?.mapNotNull {
             it?.let {
@@ -230,22 +246,18 @@ fun MediaOverViewQuery.Media.toModel(): MediaModel {
 
         externalLinks = externalLinks?.mapNotNull { linkData ->
             linkData?.let {
-                MediaExternalLinkModel(it.id, it.site, it.url)
+                MediaExternalLinkModel(
+                    it.id,
+                    it.url,
+                    it.site,
+                    it.icon,
+                    it.color?.let { Color(android.graphics.Color.parseColor(it)) })
             }
         },
 
-        tags = tags?.mapNotNull { tagData ->
-            tagData?.let {
-                MediaTagModel(
-                    name = it.name,
-                    description = it.description,
-                    category = it.category,
-                    isMediaSpoilerTag = it.isMediaSpoiler == true,
-                    rank = it.rank,
-                    isAdult = it.isAdult == true
-                )
-            }
-        },
+        tags = mediaTags,
+
+        tagsWithoutSpoiler = mediaTags?.filter { !it.isMediaSpoilerTag },
 
         trailer = trailer?.let {
             MediaTrailerModel(it.id, it.site, it.thumbnail)
@@ -304,6 +316,30 @@ fun MediaFormat?.toStringRes(): Int {
         else -> R.string.unknown
     }
 }
+
+
+@StringRes
+fun MediaSource?.toStringRes(): Int {
+    return when (this) {
+        MediaSource.ORIGINAL -> R.string.original
+        MediaSource.MANGA -> R.string.manga
+        MediaSource.LIGHT_NOVEL -> R.string.light_novel
+        MediaSource.VISUAL_NOVEL -> R.string.visual_novel
+        MediaSource.VIDEO_GAME -> R.string.video_game
+        MediaSource.OTHER -> R.string.other
+        MediaSource.NOVEL -> R.string.novel
+        MediaSource.DOUJINSHI -> R.string.doujinshi
+        MediaSource.ANIME -> R.string.anime
+        MediaSource.WEB_NOVEL -> R.string.web_novel
+        MediaSource.LIVE_ACTION -> R.string.live_action
+        MediaSource.GAME -> R.string.game
+        MediaSource.COMIC -> R.string.comic
+        MediaSource.MULTIMEDIA_PROJECT -> R.string.multimedia_project
+        MediaSource.PICTURE_BOOK -> R.string.picture_book
+        else -> R.string.unknown
+    }
+}
+
 
 @StringRes
 fun MediaType?.toStringRes(): Int {

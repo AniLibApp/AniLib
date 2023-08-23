@@ -40,35 +40,27 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.store.logout
-import com.revolgenx.anilib.common.ext.emptyText
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.naInt
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userMediaListScreen
 import com.revolgenx.anilib.common.ext.userRelationScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
-import com.revolgenx.anilib.common.ui.component.appbar.AppBar
-import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
-import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
-import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.appbar.collapse
-import com.revolgenx.anilib.common.ui.component.appbar.collapseProgress
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.image.AsyncImage
-import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localTabNavigator
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
-import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
 import com.revolgenx.anilib.list.ui.screen.MangaListScreen
@@ -299,7 +291,7 @@ private fun UserScreenTopAppbar(
                         .padding(horizontal = 8.dp)
                 ) {
                     Text(
-                        text = user?.name.emptyText(),
+                        text = user?.name.orEmpty(),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = 0.1.sp
@@ -310,7 +302,7 @@ private fun UserScreenTopAppbar(
                     ) {
                         UserCountInfo(
                             label = stringResource(id = R.string.following),
-                            count = user?.following.naInt().prettyNumberFormat(),
+                            count = user?.following.orZero().prettyNumberFormat(),
                             iconRes = R.drawable.ic_person_check_outline,
                             onClick = {
                                 user?.id?.let {
@@ -320,7 +312,7 @@ private fun UserScreenTopAppbar(
                         )
                         UserCountInfo(
                             label = stringResource(id = R.string.followers),
-                            count = user?.followers.naInt().prettyNumberFormat(),
+                            count = user?.followers.orZero().prettyNumberFormat(),
                             iconRes = R.drawable.ic_group_outline,
                             onClick = {
                                 user?.id?.let {
@@ -334,7 +326,7 @@ private fun UserScreenTopAppbar(
                     ) {
                         UserCountInfo(
                             label = stringResource(id = R.string.anime),
-                            count = user?.statistics?.anime?.count.naInt().prettyNumberFormat(),
+                            count = user?.statistics?.anime?.count.orZero().prettyNumberFormat(),
                             iconRes = R.drawable.ic_media_outline,
                             onClick = {
                                 if (isTab) {
@@ -348,7 +340,7 @@ private fun UserScreenTopAppbar(
                         )
                         UserCountInfo(
                             label = stringResource(id = R.string.manga),
-                            count = user?.statistics?.manga?.count.naInt().prettyNumberFormat(),
+                            count = user?.statistics?.manga?.count.orZero().prettyNumberFormat(),
                             iconRes = R.drawable.ic_book_outline,
                             onClick = {
                                 if (isTab) {

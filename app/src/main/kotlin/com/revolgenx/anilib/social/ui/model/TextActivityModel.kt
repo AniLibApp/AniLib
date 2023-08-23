@@ -34,7 +34,7 @@ fun ActivityUnionQuery.OnTextActivity.toModel(): TextActivityModel {
     val anilifiedText = anilify(text)
     return TextActivityModel(
         id = id,
-        text = text ?: "",
+        text = text.orEmpty(),
         anilifiedText = anilifiedText,
         textSpanned = markdown.toMarkdown(anilifiedText),
         likeCount = likeCount,

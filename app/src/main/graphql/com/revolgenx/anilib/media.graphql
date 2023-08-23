@@ -78,7 +78,7 @@ query MediaStatsQuery($mediaId:Int){
     }
 }
 
-query MediaOverViewQuery($mediaId:Int){
+query MediaOverviewQuery($mediaId:Int){
     media: Media(id:$mediaId){
         id
         title {
@@ -151,6 +151,8 @@ query MediaOverViewQuery($mediaId:Int){
             id
             url
             site
+            color
+            icon
         }
         tags{
             name
