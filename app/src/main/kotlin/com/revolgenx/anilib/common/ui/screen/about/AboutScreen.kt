@@ -30,13 +30,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithValue
-import com.skydoves.landscapist.ImageOptions
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 
 @Composable
 fun AboutScreen(
@@ -63,7 +63,7 @@ fun AboutScreen(
                 .padding(top = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AsyncImage(
+            ImageAsync(
                 modifier = Modifier
                     .size(height = 210.dp, width = 140.dp)
                     .clip(RoundedCornerShape(12.dp))

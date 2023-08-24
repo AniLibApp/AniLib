@@ -10,6 +10,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,16 +21,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import coil.ImageLoader
+import coil.compose.AsyncImage
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
+import coil.imageLoader
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.coil.CoilImage
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+
 
 class ImageViewerScreen(private val url: String) : AndroidScreen() {
     @Composable
@@ -71,7 +76,7 @@ private fun ImageViewerScreenContent(imageUrl: String) {
     ) {
 
         val context = localContext()
-        imageLoader = imageLoader ?: ImageLoader.Builder(context)
+        imageLoader = imageLoader ?: context.imageLoader.newBuilder()
             .components {
                 if (Build.VERSION.SDK_INT >= 28) {
                     add(ImageDecoderDecoder.Factory())
@@ -81,34 +86,38 @@ private fun ImageViewerScreenContent(imageUrl: String) {
             }
             .build()
 
+
+        val loading = remember { mutableStateOf(false) }
+
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
-            CoilImage(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center),
-                imageModel = { imageUrl },
-                imageLoader = { imageLoader!! },
+            ImageAsync(
+                modifier = Modifier.fillMaxSize(),
+                imageUrl = imageUrl,
                 imageOptions = ImageOptions(
                     contentScale = ContentScale.Fit,
                     alignment = Alignment.Center
                 ),
-                loading = {
-                    Box(modifier = Modifier.matchParentSize()) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
+                onLoading = {
+                    loading.value = true
                 },
-                failure = {
-                    Image(
-                        modifier = Modifier.size(56.dp),
-                        painter = painterResource(id = R.drawable.ic_error_anilib),
-                        contentDescription = null,
+                onSuccess = {
+                    loading.value = false
+                },
+                onError = {
+                    loading.value = false
+                },
+                imageLoader = imageLoader
+            )
+
+            if (loading.value) {
+                Box(modifier = Modifier.matchParentSize()) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
                     )
                 }
-            )
+            }
         }
     }
 }

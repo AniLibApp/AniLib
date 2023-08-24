@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.app
 
 import android.app.Application
+import coil.Coil
 import com.revolgenx.anilib.common.data.repository.repositoryModules
 import com.revolgenx.anilib.common.data.service.serviceModules
 import com.revolgenx.anilib.common.data.store.storeModules
@@ -31,6 +32,7 @@ class App : Application() {
             modules(koinMoules)
         }
         AlMarkdownFactory.init(this, AlMarkdownCallbackImpl())
+        Coil.setImageLoader(Coil.imageLoader(this).newBuilder().crossfade(true).build())
     }
 
 

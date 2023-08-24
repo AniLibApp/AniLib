@@ -15,11 +15,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClick
-import com.skydoves.landscapist.ImageOptions
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 
 
 @Composable
@@ -60,7 +60,7 @@ fun CharacterOrStaffRowItemContentEnd(
                 )
             }
         }
-        AsyncImage(
+        ImageAsync(
             modifier = Modifier
                 .fillMaxHeight()
                 .width(72.dp),

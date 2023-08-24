@@ -2,7 +2,6 @@ package com.revolgenx.anilib.media.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,9 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
-import com.revolgenx.anilib.common.ui.component.text.LightText
-import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
@@ -40,7 +37,7 @@ import com.revolgenx.anilib.common.ui.theme.review_list_gradient_top
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.media.ui.model.StreamingEpisodeModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
-import com.skydoves.landscapist.ImageOptions
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 
 @Composable
 fun MediaWatchScreen(viewModel: MediaViewModel) {
@@ -76,7 +73,7 @@ private fun MediaWatchItem(
                 }
             }
         ) {
-            AsyncImage(
+            ImageAsync(
                 modifier = Modifier
                     .fillMaxSize(),
                 imageUrl = streamingEpisode.thumbnail,

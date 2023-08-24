@@ -115,14 +115,14 @@ android {
 }
 
 ext {
-    composeUi = "1.6.0-alpha02"
-    material = "1.2.0-alpha04"
+    composeUi = "1.5.0"
+    material = "1.2.0-alpha06"
     accompanist = "0.29.0-alpha"
-    voyager = "1.0.0-rc04"
+    voyager = "1.0.0-rc05"
     timber = "5.0.1"
     koin = "3.4.1"
+    coil = "2.4.0"
     desugar = "1.1.5"
-    landscapist = "2.2.0"
     paging = "3.2.0"
     dataStore = "1.0.0"
     markwon = "4.6.2"
@@ -174,8 +174,9 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar")
 
 
-    //landscapist
-    implementation "com.github.skydoves:landscapist-coil:$landscapist"
+    //coil
+    implementation("io.coil-kt:coil-compose:$coil")
+    implementation("io.coil-kt:coil-gif:$coil")
 
     //kotlin-serialization
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'

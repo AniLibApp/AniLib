@@ -20,14 +20,14 @@ import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowItemContentEnd
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.type.CharacterRole
-import com.skydoves.landscapist.ImageOptions
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 
 @Composable
 fun CharacterStaffCard(
@@ -59,7 +59,7 @@ fun CharacterStaffCard(
                     alignment = Alignment.Start
                 )
             ) {
-                AsyncImage(
+                ImageAsync(
                     modifier = Modifier
                         .fillMaxHeight()
                         .width(72.dp),

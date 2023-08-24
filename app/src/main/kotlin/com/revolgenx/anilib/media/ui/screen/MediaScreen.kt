@@ -60,7 +60,7 @@ import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.appbar.collapse
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -84,7 +84,7 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.type.MediaType
-import com.skydoves.landscapist.ImageOptions
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -228,7 +228,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
     isCollapsed: Boolean
 ) {
     val isAnime = mediaType.isAnime
-    AsyncImage(
+    ImageAsync(
         modifier = Modifier
             .height(containerHeight)
             .fillMaxWidth(),
@@ -272,7 +272,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     MediaCoverImageType {
-                        AsyncImage(
+                        ImageAsync(
                             modifier = Modifier
                                 .size(width = 110.dp, height = 160.dp)
                                 .clip(RoundedCornerShape(12.dp)),

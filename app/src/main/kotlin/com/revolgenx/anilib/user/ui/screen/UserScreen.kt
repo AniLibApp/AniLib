@@ -54,7 +54,7 @@ import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.appbar.collapse
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -70,7 +70,7 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.screen.userStats.UserStatsScreen
 import com.revolgenx.anilib.user.ui.viewmodel.UserScreenPageType
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
-import com.skydoves.landscapist.ImageOptions
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -232,7 +232,7 @@ private fun UserScreenTopAppbar(
                 Box(
                     modifier = Modifier.height(200.dp)
                 ) {
-                    AsyncImage(
+                    ImageAsync(
                         modifier = Modifier
                             .align(Alignment.TopStart)
                             .height(150.dp)
@@ -243,7 +243,7 @@ private fun UserScreenTopAppbar(
                             alignment = Alignment.Center
                         ),
                         previewPlaceholder = R.drawable.bleach,
-                        failure = {}
+                        viewable = true
                     )
 
                     Row(
@@ -258,7 +258,7 @@ private fun UserScreenTopAppbar(
                             modifier = Modifier
                                 .size(112.dp)
                         ) {
-                            AsyncImage(
+                            ImageAsync(
                                 modifier = Modifier
                                     .size(80.dp)
                                     .clip(CircleShape)
@@ -269,19 +269,20 @@ private fun UserScreenTopAppbar(
                                     alignment = Alignment.Center
                                 ),
                                 previewPlaceholder = R.drawable.bleach,
+                                viewable = true
                             )
                         }
 
-//                user?.takeIf { !isLoggedInUser }?.let {
-                        FilledTonalButton(
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                            onClick = { }
-                        ) {
-                            Text(
-                                text = stringResource(id = if (/*it.isFollowing*/ false) R.string.following else R.string.follow)
-                            )
+                        user?.takeIf { !isLoggedInUser }?.let {
+                            FilledTonalButton(
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                onClick = { }
+                            ) {
+                                Text(
+                                    text = stringResource(id = if (it.isFollowing) R.string.following else R.string.follow)
+                                )
+                            }
                         }
-//                }
                     }
                 }
 
@@ -367,7 +368,7 @@ private fun UserScreenTopAppbar(
             }
         },
         navigationIcon = if (isTab.not()) null else ({}),
-        actions = {isCollapsed->
+        actions = { isCollapsed ->
             UserScreenActions(
                 isTab = isTab,
                 isCollapsed = isCollapsed,

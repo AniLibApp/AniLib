@@ -22,7 +22,7 @@ import com.revolgenx.anilib.character.ui.component.CharacterOrStaffCard
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowItemContentEnd
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClickWithId
@@ -31,7 +31,7 @@ import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
-import com.skydoves.landscapist.ImageOptions
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 
 
 @Composable
@@ -70,7 +70,7 @@ fun StaffRowCard(
                 alignment = Alignment.Start
             )
         ) {
-            AsyncImage(
+            ImageAsync(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(72.dp),

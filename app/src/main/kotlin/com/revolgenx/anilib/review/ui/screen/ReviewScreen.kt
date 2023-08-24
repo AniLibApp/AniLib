@@ -52,7 +52,7 @@ import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
@@ -66,7 +66,7 @@ import com.revolgenx.anilib.common.ui.theme.typography
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
 import com.revolgenx.anilib.type.ReviewRating
-import com.skydoves.landscapist.ImageOptions
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import org.koin.androidx.compose.koinViewModel
 
 class ReviewScreen(private val reviewId: Int) : AndroidScreen() {
@@ -115,7 +115,7 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
                         }, horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
 
-                    AsyncImage(
+                    ImageAsync(
                         modifier = Modifier
                             .size(48.dp)
                             .width(48.dp)
@@ -202,7 +202,7 @@ private fun ReviewScreenTopAppBar(
         scrollBehavior = scrollBehavior,
         containerHeight = containerHeight,
         containerContent = { isCollapsed ->
-            AsyncImage(
+            ImageAsync(
                 modifier = Modifier
                     .height(containerHeight)
                     .fillMaxWidth(),
@@ -211,7 +211,6 @@ private fun ReviewScreenTopAppBar(
                     contentScale = ContentScale.Crop, alignment = Alignment.Center
                 ),
                 previewPlaceholder = R.drawable.bleach,
-                failure = {},
                 viewable = true
             )
             Box(

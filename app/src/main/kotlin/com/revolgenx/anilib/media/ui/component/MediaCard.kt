@@ -27,14 +27,14 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
-import com.skydoves.landscapist.ImageOptions
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 
 @Composable
 fun MediaItemCard(media: MediaModel, width: Dp? = null, onMediaClick: OnMediaClick) {
@@ -80,7 +80,7 @@ fun MediaItemCard(media: MediaModel, width: Dp? = null, onMediaClick: OnMediaCli
 fun MediaItemContent(mediaModel: MediaModel) {
     Column {
         MediaCoverImageType { type ->
-            AsyncImage(
+            ImageAsync(
                 modifier = Modifier
                     .height(165.dp)
                     .fillMaxWidth(),
@@ -123,7 +123,7 @@ fun MediaItemRowContent(
         )
     ) {
         MediaCoverImageType { type ->
-            AsyncImage(
+            ImageAsync(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(72.dp),
@@ -227,7 +227,7 @@ fun MediaRowItemContentEnd(
         }
 
         MediaCoverImageType { type ->
-            AsyncImage(
+            ImageAsync(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(72.dp),

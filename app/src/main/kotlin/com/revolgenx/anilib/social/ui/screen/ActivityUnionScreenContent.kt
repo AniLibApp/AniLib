@@ -34,7 +34,7 @@ import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
@@ -47,7 +47,7 @@ import com.revolgenx.anilib.social.ui.model.ListActivityModel
 import com.revolgenx.anilib.social.ui.model.MessageActivityModel
 import com.revolgenx.anilib.social.ui.model.TextActivityModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
-import com.skydoves.landscapist.ImageOptions
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 
 @Composable
 fun ActivityUnionScreenContent(
@@ -90,7 +90,7 @@ fun ListActivityItem(model: ListActivityModel) {
             modifier = Modifier.fillMaxSize()
         ) {
             MediaCoverImageType { imageType ->
-                AsyncImage(
+                ImageAsync(
                     modifier = Modifier
                         .fillMaxHeight()
                         .width(90.dp),
@@ -187,7 +187,7 @@ fun ActivityItemTop(model: ActivityModel) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            AsyncImage(
+            ImageAsync(
                 modifier = Modifier
                     .size(38.dp)
                     .width(38.dp)

@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.media.ui.screen
 
-import android.content.Context
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -58,7 +57,7 @@ import com.revolgenx.anilib.common.ext.orZeroString
 import com.revolgenx.anilib.common.ext.painterResource
 import com.revolgenx.anilib.common.ext.stringResource
 import com.revolgenx.anilib.common.ui.component.common.Grid
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
@@ -205,9 +204,10 @@ fun MediaExternalLink(media: MediaModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     link.icon?.let {
-                        AsyncImage(
+                        ImageAsync(
                             modifier = Modifier.size(28.dp),
-                            imageUrl = it, failure = {})
+                            imageUrl = it
+                        )
                     }
                     Text(
                         text = link.site.naText(), style = LocalTextStyle.current.shadow(

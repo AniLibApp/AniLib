@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ui.component.image.AsyncImage
+import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
@@ -37,7 +37,7 @@ import com.revolgenx.anilib.user.ui.model.stats.UserStudioStatisticModel
 import com.revolgenx.anilib.user.ui.model.stats.UserTagStatisticModel
 import com.revolgenx.anilib.user.ui.model.stats.UserVoiceActorStatisticModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTypeViewModel
-import com.skydoves.landscapist.ImageOptions
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 
 @Composable
 fun UserStatsTypeScreen(type: MediaType, viewModel: UserStatsTypeViewModel) {
@@ -81,7 +81,7 @@ private fun UserStatsTypeItem(isAnime: Boolean, model: BaseStatisticModel) {
     ) {
         Row {
             image?.let {
-                AsyncImage(
+                ImageAsync(
                     modifier = Modifier
                         .height(110.dp)
                         .width(72.dp),

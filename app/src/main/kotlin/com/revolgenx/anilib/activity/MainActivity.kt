@@ -3,9 +3,9 @@ package com.revolgenx.anilib.activity
 import android.os.Bundle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.navigator.tab.CurrentTab
@@ -47,14 +46,14 @@ import com.revolgenx.anilib.common.ui.composition.LocalMainTabNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalMediaState
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.composition.LocalUserState
-import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.common.ui.screen.auth.LoginScreen
 import com.revolgenx.anilib.common.ui.screen.spoiler.SpoilerBottomSheet
+import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
+import com.revolgenx.anilib.common.ui.screen.transition.SlideTransition
 import com.revolgenx.anilib.common.ui.theme.AppTheme
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
 import com.revolgenx.anilib.list.ui.screen.MangaListScreen
-import com.revolgenx.anilib.social.factory.AlMarkdownFactory
 import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
 import kotlinx.coroutines.delay
@@ -64,7 +63,7 @@ import kotlinx.coroutines.launch
 * todo: handle customtab cancel result
 * */
 class MainActivity : BaseActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -81,7 +80,7 @@ class MainActivity : BaseActivity() {
                         LocalMediaState provides viewModel.mediaState,
                         GlobalViewModelStoreOwner provides this@MainActivity
                     ) {
-                        CurrentScreen()
+                        SlideTransition(navigator = navigator)
                     }
                 }
 
@@ -136,16 +135,15 @@ fun MainActivityScreenContent() {
             },
             contentWindowInsets = emptyWindowInsets()
         ) { contentPadding ->
-            CompositionLocalProvider(
-                LocalMainTabNavigator provides tabNavigator,
-                LocalSnackbarHostState provides snackbarHostState
-            ) {
-                Box(Modifier.padding(contentPadding)) {
+            Box(Modifier.padding(contentPadding)) {
+                CompositionLocalProvider(
+                    LocalMainTabNavigator provides tabNavigator,
+                    LocalSnackbarHostState provides snackbarHostState
+                ) {
                     CurrentTab()
                 }
-                BackPress()
+                BackPress(snackbarHostState)
             }
-
         }
     }
 }
@@ -168,9 +166,8 @@ private fun RowScope.TabNavigationItem(tab: BaseTabScreen) {
 }
 
 @Composable
-fun BackPress() {
+fun BackPress(snackbarHostState: SnackbarHostState) {
     var exit by remember { mutableStateOf(false) }
-    val snackbar = localSnackbarHostState()
     val scope = rememberCoroutineScope()
     val context = localContext()
     LaunchedEffect(key1 = exit) {
@@ -187,7 +184,7 @@ fun BackPress() {
         } else {
             exit = true
             scope.launch {
-                snackbar.showSnackbar(
+                snackbarHostState.showSnackbar(
                     message = msg,
                     withDismissAction = true,
                     duration = SnackbarDuration.Short
