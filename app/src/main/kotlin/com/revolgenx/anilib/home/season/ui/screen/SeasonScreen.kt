@@ -37,7 +37,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naDrawableRes
-import com.revolgenx.anilib.common.ext.naStringResource
+import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
@@ -223,7 +223,7 @@ private fun SeasonFilter(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                val season = filter.season?.toStringRes().naStringResource()
+                val season = filter.season?.toStringRes().toStringResourceOrNa()
                 Icon(
                     modifier = Modifier.size(28.dp),
                     painter = painterResource(

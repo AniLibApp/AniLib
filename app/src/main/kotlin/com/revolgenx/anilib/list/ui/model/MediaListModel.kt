@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.list.ui.model
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.stringArrayResource
@@ -9,6 +11,12 @@ import com.revolgenx.anilib.common.data.tuples.MutablePair
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
+import com.revolgenx.anilib.common.ui.theme.status_completed
+import com.revolgenx.anilib.common.ui.theme.status_current
+import com.revolgenx.anilib.common.ui.theme.status_dropped
+import com.revolgenx.anilib.common.ui.theme.status_paused
+import com.revolgenx.anilib.common.ui.theme.status_planning
+import com.revolgenx.anilib.common.ui.theme.status_repeating
 import com.revolgenx.anilib.entry.ui.model.AdvancedScoreModel
 import com.revolgenx.anilib.fragment.MediaListEntry
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -75,16 +83,17 @@ fun MediaListEntryQuery.MediaListEntry.toModel(): MediaListModel {
 }
 
 
-fun MediaListStatus.toColorRes() = when (this) {
-    MediaListStatus.CURRENT -> R.color.current
-    MediaListStatus.PLANNING -> R.color.planning
-    MediaListStatus.COMPLETED -> R.color.completed
-    MediaListStatus.DROPPED -> R.color.dropped
-    MediaListStatus.PAUSED -> R.color.paused
-    MediaListStatus.REPEATING -> R.color.repeating
-    MediaListStatus.UNKNOWN__ -> R.color.dropped
+fun MediaListStatus?.toColor() = when (this) {
+    MediaListStatus.CURRENT -> status_current
+    MediaListStatus.PLANNING -> status_planning
+    MediaListStatus.COMPLETED -> status_completed
+    MediaListStatus.DROPPED -> status_dropped
+    MediaListStatus.PAUSED -> status_paused
+    MediaListStatus.REPEATING -> status_repeating
+    else -> status_dropped
 }
 
+@StringRes
 fun MediaListStatus?.toStringRes(mediaType: MediaType): Int {
     val isManga = mediaType.isManga
     return when (this) {
@@ -96,6 +105,16 @@ fun MediaListStatus?.toStringRes(mediaType: MediaType): Int {
         MediaListStatus.REPEATING -> if (isManga) R.string.rereading else R.string.rewatching
         else -> R.string.unknown
     }
+}
+@DrawableRes
+fun MediaListStatus?.toDrawableRes() = when (this) {
+    MediaListStatus.CURRENT -> R.drawable.ic_watching
+    MediaListStatus.PLANNING -> R.drawable.ic_planning
+    MediaListStatus.COMPLETED -> R.drawable.ic_check
+    MediaListStatus.DROPPED -> R.drawable.ic_dropped
+    MediaListStatus.PAUSED -> R.drawable.ic_paused
+    MediaListStatus.REPEATING -> R.drawable.ic_autorenew
+    else -> R.drawable.ic_info
 }
 
 fun MediaListStatus.toAlMediaListStatus() = when (this) {

@@ -25,3 +25,12 @@ enum class AlMediaSort(val sort: Int) {
     }
 }
 
+enum class LauncherShortcuts {
+    HOME, ANIME, MANGA, NOTIFICATION
+}
+
+object LauncherShortcutKeys {
+    const val LAUNCHER_SHORTCUT_EXTRA_KEY = "LAUNCHER_SHORTCUT_EXTRA_KEY"
+}
+
+

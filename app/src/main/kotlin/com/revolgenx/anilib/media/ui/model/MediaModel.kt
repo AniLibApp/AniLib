@@ -8,6 +8,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.ui.model.AiringAtModel
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
 import com.revolgenx.anilib.airing.ui.model.TimeUntilAiringModel
+import com.revolgenx.anilib.browse.data.field.countryOfOrigins
 import com.revolgenx.anilib.character.ui.model.CharacterConnectionModel
 import com.revolgenx.anilib.character.ui.model.CharacterEdgeModel
 import com.revolgenx.anilib.character.ui.model.CharacterImageModel
@@ -16,6 +17,12 @@ import com.revolgenx.anilib.character.ui.model.CharacterNameModel
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
+import com.revolgenx.anilib.common.ui.theme.status_cancelled
+import com.revolgenx.anilib.common.ui.theme.status_finished
+import com.revolgenx.anilib.common.ui.theme.status_hiatus
+import com.revolgenx.anilib.common.ui.theme.status_not_yet_released
+import com.revolgenx.anilib.common.ui.theme.status_releasing
+import com.revolgenx.anilib.common.ui.theme.status_unknown
 import com.revolgenx.anilib.fragment.Media
 import com.revolgenx.anilib.list.ui.model.MediaListModel
 import com.revolgenx.anilib.social.factory.markdown
@@ -33,6 +40,7 @@ import com.revolgenx.anilib.type.MediaType
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.util.Locale
 
 data class MediaModel(
     val id: Int = -1,
@@ -136,6 +144,9 @@ fun Media.toModel(): MediaModel {
 }
 
 fun MediaOverviewQuery.Media.toModel(): MediaModel {
+    val country = (countryOfOrigin as? String)?.let {
+        Locale("", it).displayCountry
+    }
     val coverImage = coverImage?.mediaCoverImage?.toModel()
     val mediaTags = tags?.mapNotNull { tagData ->
         tagData?.let {
@@ -179,6 +190,7 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
         synonyms = synonyms?.filterNotNull(),
         synonymsString = synonyms?.joinToString("\n"),
         isFavourite = isFavourite,
+        countryOfOrigin = country,
         streamingEpisodes = streamingEpisodes?.mapNotNull {
             it?.let {
                 StreamingEpisodeModel(
@@ -362,14 +374,15 @@ fun MediaStatus?.toStringRes(): Int {
     }
 }
 
+
 fun MediaStatus?.toColor(): Color {
     return when (this) {
-        MediaStatus.FINISHED -> Color(0xFF02A4F8)
-        MediaStatus.RELEASING -> Color(0xFF00C853)
-        MediaStatus.NOT_YET_RELEASED -> Color(0xFF673AB7)
-        MediaStatus.CANCELLED -> Color(0xFFD50000)
-        MediaStatus.HIATUS -> Color(0xFFFF6E40)
-        else -> Color(0xFFD50000)
+        MediaStatus.FINISHED -> status_finished
+        MediaStatus.RELEASING -> status_releasing
+        MediaStatus.NOT_YET_RELEASED -> status_not_yet_released
+        MediaStatus.CANCELLED -> status_cancelled
+        MediaStatus.HIATUS -> status_hiatus
+        else -> status_unknown
     }
 }
 

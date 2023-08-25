@@ -124,6 +124,19 @@
     <string name="rereading">Rereading</string>
     <!--MediaListStatus-->
 
+    <!--MediaRelationType-->
+    <string name="contains">Contains</string>
+    <string name="compilation">Compilation</string>
+    <string name="spin_off">Spin off</string>
+    <string name="alternative">Alternative</string>
+    <string name="side_story">Side Story</string>
+    <string name="parent">Parent</string>
+    <string name="sequel">Sequel</string>
+    <string name="prequel">Prequel</string>
+    <string name="adaptation">Adaptation</string>
+    <string name="summary">Summary</string>
+    <!--MediaRelationType-->
+
     <!--notification-->
     <string name="notifications">Notifications</string>
     <string name="show_reason">Show reason</string>
@@ -229,7 +242,7 @@
     <string name="write_a_status">Write a status…</string>
     <string name="activity_posting_guidelines">Please read the site guidelines before posting</string>
     <string name="view_all">View All</string>
-    <string name="format_year">%1$s · %2$s</string>
+    <string name="s_dot_s">%1$s · %2$s</string>
     <string name="description">Description</string>
     <string name="no_description">No description</string>
     <string name="birth">Birth</string>
@@ -293,6 +306,10 @@
     <string name="add">Add</string>
     <!--User Stats-->
 
+    <!--Others-->
+    <string name="q_mark" translatable="false">\?</string>
+    <!--Others-->
+
     <!--Media Screen-->
     <string name="season_dot_year">%1$s · %2$s</string>
     <string name="episode_airing_date">E: %1$s · %2$s</string>
@@ -312,6 +329,13 @@
     <string name="hide_spoilers">Hide Spoilers</string>
     <string name="invalid_url">Invalid URL</string>
     <string name="no_app_found_to_handle_url">No app found to handle URL</string>
+    <string name="tag_name_percent">%1$s · %2$d%%</string>
+    <string name="trailer">Trailer</string>
+    <string name="country">Country</string>
+    <string name="hashtag">Hashtag</string>
+    <string name="studios">Studios</string>
+    <string name="producers">Producers</string>
+    <string name="relations">Relations</string>
     <!--Media Screen-->
 
 

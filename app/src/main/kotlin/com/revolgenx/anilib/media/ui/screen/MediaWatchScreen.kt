@@ -13,6 +13,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -26,7 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.getOrEmpty
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.openLink
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -41,6 +45,10 @@ import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 
 @Composable
 fun MediaWatchScreen(viewModel: MediaViewModel) {
+    val context = localContext()
+    val snackbarHostState = localSnackbarHostState()
+    val scope = rememberCoroutineScope()
+
     ResourceScreen(resourceState = viewModel.resource.value, refresh = { viewModel.refresh() }) {
         LazyPagingList(
             items = it.streamingEpisodes.getOrEmpty(),
@@ -48,8 +56,8 @@ fun MediaWatchScreen(viewModel: MediaViewModel) {
             gridOptions = GridOptions(GridCells.Adaptive(168.dp))
         ) { ep ->
             ep ?: return@LazyPagingList
-            MediaWatchItem(streamingEpisode = ep) {
-                /*todo open url*/
+            MediaWatchItem(streamingEpisode = ep) {link->
+                context.openLink(link, scope, snackbarHostState)
             }
         }
     }

@@ -41,7 +41,7 @@ import com.revolgenx.anilib.common.ui.component.chart.rememberMarker
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.model.stats.StatusDistributionModel
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
-import com.revolgenx.anilib.list.ui.model.toColorRes
+import com.revolgenx.anilib.list.ui.model.toColor
 import com.revolgenx.anilib.list.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
@@ -148,7 +148,7 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
                             rowSpacing = 3.dp
                         ) { item ->
                             val statusColor =
-                                item.status.toColorRes().let { color -> colorResource(id = color) }
+                                item.status.toColor()
                             val listStatus = item.status.toStringRes(mediaType)
                                 .let { str -> stringResource(id = str) }
                             Box(
@@ -187,8 +187,8 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
                                         .fillMaxHeight()
                                         .background(
                                             color = item.status
-                                                .toColorRes()
-                                                .let { color -> colorResource(id = color) })
+                                                .toColor()
+                                        )
                                 )
 
                             }

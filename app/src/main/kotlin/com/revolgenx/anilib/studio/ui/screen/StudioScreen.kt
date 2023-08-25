@@ -27,7 +27,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.media.ui.component.MediaItemCard
+import com.revolgenx.anilib.media.ui.component.MediaCard
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -85,7 +85,7 @@ private fun StudioScreenContent(studioId: Int, viewModel: StudioViewModel = koin
                     }
 
                     is MediaModel -> {
-                        MediaItemCard(media = baseModel) {id, type->
+                        MediaCard(media = baseModel) { id, type->
                             navigator.mediaScreen(id, type)
                         }
                     }

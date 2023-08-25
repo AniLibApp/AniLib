@@ -19,10 +19,12 @@ import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ui.component.button.SmallTextButton
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
+import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.common.util.OnMediaClick
-import com.revolgenx.anilib.media.ui.component.MediaItemCard
+import com.revolgenx.anilib.media.ui.component.MediaCard
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 
 
@@ -36,7 +38,7 @@ fun StudioItem(studio: StudioModel, onMediaClick: OnMediaClick, onClick: OnClick
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            verticalAlignment = Alignment.Bottom
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 modifier = Modifier
@@ -51,20 +53,15 @@ fun StudioItem(studio: StudioModel, onMediaClick: OnMediaClick, onClick: OnClick
                 overflow = TextOverflow.Ellipsis
             )
 
-            Text(
-                modifier = Modifier
-                    .clickable {
-                        onClick(studio.id)
-                    },
-                text = stringResource(id = R.string.view_all),
-                color = onSurfaceVariant,
-                fontWeight = FontWeight.Bold,
-                fontSize = 12.sp
-            )
+            SmallTextButton(
+                text = stringResource(id = R.string.view_all)
+            ) {
+                onClick(studio.id)
+            }
         }
         LazyRow {
             items(items = medias) {
-                MediaItemCard(media = it, width = 120.dp, onMediaClick = onMediaClick)
+                MediaCard(media = it, width = 120.dp, onMediaClick = onMediaClick)
             }
         }
     }

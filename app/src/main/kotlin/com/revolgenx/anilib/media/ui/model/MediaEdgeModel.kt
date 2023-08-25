@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.media.ui.model
 
+import androidx.annotation.StringRes
+import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.StaffRoleType
@@ -29,3 +31,23 @@ data class MediaEdgeModel(
     //    The voice actors of the character
     val voiceActors: List<StaffModel>? = null
 )
+
+@StringRes
+fun MediaRelation?.toStringRes(): Int {
+    return when (this) {
+        MediaRelation.ADAPTATION -> R.string.adaptation
+        MediaRelation.PREQUEL -> R.string.prequel
+        MediaRelation.SEQUEL -> R.string.sequel
+        MediaRelation.PARENT -> R.string.parent
+        MediaRelation.SIDE_STORY -> R.string.side_story
+        MediaRelation.CHARACTER -> R.string.character
+        MediaRelation.SUMMARY -> R.string.summary
+        MediaRelation.ALTERNATIVE -> R.string.alternative
+        MediaRelation.SPIN_OFF -> R.string.spin_off
+        MediaRelation.OTHER -> R.string.other
+        MediaRelation.SOURCE -> R.string.source
+        MediaRelation.COMPILATION -> R.string.compilation
+        MediaRelation.CONTAINS -> R.string.contains
+        else -> R.string.q_mark
+    }
+}

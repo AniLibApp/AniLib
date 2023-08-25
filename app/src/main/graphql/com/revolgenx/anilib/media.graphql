@@ -111,17 +111,19 @@ query MediaOverviewQuery($mediaId:Int){
         season
         seasonYear
         description(asHtml:true)
-        chapters
-        volumes
         source(version: 3)
         hashtag
         synonyms
         siteUrl
+        countryOfOrigin
         mediaListEntry {
             id
             status
         }
         relations{
+            pageInfo {
+                ... pageInfo
+            }
             edges{
                 relationType(version:2)
                 node{
@@ -182,7 +184,7 @@ query MediaOverviewQuery($mediaId:Int){
                 }
             }
         }
-        characters(sort:[ROLE, ID]){
+        characters(sort:[ROLE, ID], page: 1, perPage: 8){
             edges{
                 role
                 node{

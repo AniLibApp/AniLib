@@ -72,6 +72,20 @@ val review_list_gradient_bottom = Color(0xB3000000)
 val seed = Color(0xFF02A4F8)
 
 
+val status_current = Color(0xFF42A5F5)
+val status_planning = Color(0xFFF09967)
+val status_completed = Color(0xFF7AD358)
+val status_dropped = Color(0xFFF8375B)
+val status_paused = Color(0xFFF37A7D)
+val status_repeating = Color(0xFF9C27B0)
+
+
+val status_finished = Color(0xFF42A5F5)
+val status_releasing = Color(0xFF00C853)
+val status_not_yet_released = Color(0xFF673AB7)
+val status_cancelled = Color(0xFFD50000)
+val status_hiatus = Color(0xFFFF6E40)
+val status_unknown = Color(0xFFD50000)
 
 val background @Composable get() = colorScheme.background
 val onBackground @Composable get() = colorScheme.onBackground

@@ -65,7 +65,7 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.theme.onSurface
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithId
-import com.revolgenx.anilib.media.ui.component.MediaItemCard
+import com.revolgenx.anilib.media.ui.component.MediaCard
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.component.StaffCard
 import com.revolgenx.anilib.staff.ui.model.StaffModel
@@ -114,7 +114,7 @@ private fun BrowseScreenContent() {
             ) { browseModel ->
                 when (browseModel) {
                     is MediaModel -> {
-                        MediaItemCard(browseModel) { id, type ->
+                        MediaCard(browseModel) { id, type ->
                             navigator.mediaScreen(id, type)
                         }
                     }

@@ -34,22 +34,22 @@ fun Int?.orZeroString() = this.orZero().toString()
 fun Double?.orZero() = this ?: 0.0
 
 @Composable
-fun Int?.orNaString() = this?.toString() ?: R.string.na.stringResource()
+fun Int?.orNaString() = this?.toString() ?: R.string.na.toStringResource()
 
 @Composable
-fun String?.orNaString(): String = this ?: R.string.na.stringResource()
+fun String?.orNaString(): String = this ?: R.string.na.toStringResource()
 
 @DrawableRes
 fun Int?.naDrawableRes() = this ?: R.drawable.ic_question_mark
 
 @Composable
-fun Int?.naStringResource(): String = this?.stringResource() ?: R.string.na.stringResource()
+fun Int?.toStringResourceOrNa(): String = this?.toStringResource() ?: R.string.na.toStringResource()
 
 @Composable
-inline fun Int.stringResource() = androidx.compose.ui.res.stringResource(id = this)
+fun Int.toStringResource() = androidx.compose.ui.res.stringResource(id = this)
 
 @Composable
-inline fun Int.painterResource() = painterResource(id = this)
+fun Int.toPainterResource() = painterResource(id = this)
 
 @Composable
 fun localSnackbarHostState() = LocalSnackbarHostState.current!!

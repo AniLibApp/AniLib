@@ -36,8 +36,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.activity
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.localSnackbarHostState
-import com.revolgenx.anilib.common.ext.stringResource
+import com.revolgenx.anilib.common.ext.toStringResource
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
 import com.revolgenx.anilib.common.ui.composition.GlobalViewModelStoreOwner
@@ -177,7 +176,7 @@ fun BackPress(snackbarHostState: SnackbarHostState) {
         }
     }
 
-    val msg = R.string.press_again_to_exit.stringResource()
+    val msg = R.string.press_again_to_exit.toStringResource()
     BackHandler {
         if (exit) {
             context.activity()?.finish()
