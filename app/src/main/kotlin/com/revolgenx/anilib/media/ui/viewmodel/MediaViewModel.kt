@@ -5,6 +5,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.store.AppDataStore
 import com.revolgenx.anilib.common.data.store.isLoggedIn
 import com.revolgenx.anilib.common.ext.launch
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.media.data.field.MediaOverviewField
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.onEach
 
 enum class MediaScreenPageType {
     OVERVIEW,
+    RECOMMENDATIONS,
     WATCH,
     CHARACTER,
     STAFF,
@@ -40,6 +42,14 @@ class MediaViewModel(
         mutableStateOf(false)
     )
 
+    private val recommendationsPage = MediaScreenPage(
+        MediaScreenPageType.RECOMMENDATIONS,
+        R.string.recommendations,
+        R.drawable.ic_thumb_up,
+        mutableStateOf(false)
+    )
+
+
     private val socialPage =
         MediaScreenPage(MediaScreenPageType.SOCIAL, R.string.social, R.drawable.ic_forum)
 
@@ -53,6 +63,7 @@ class MediaViewModel(
 
     val pages = listOf(
         MediaScreenPage(MediaScreenPageType.OVERVIEW, R.string.overview, R.drawable.ic_fire),
+        recommendationsPage,
         watchPage,
         MediaScreenPage(MediaScreenPageType.CHARACTER, R.string.character, R.drawable.ic_person),
         MediaScreenPage(MediaScreenPageType.STAFF, R.string.staff, R.drawable.ic_group),
@@ -62,15 +73,23 @@ class MediaViewModel(
     )
 
     override fun loadData(): Flow<MediaModel?> {
-        return mediaService.getMediaOverview(field).onEach {media->
-            if (media?.streamingEpisodes?.isNotEmpty() == true) {
-                showWatchPage()
-            }
+        return mediaService.getMediaOverview(field).onEach { media ->
+            showHiddenPages(media)
         }
     }
 
-    private fun showWatchPage() {
-        watchPage.isVisible.value = true
+    private fun showHiddenPages(media: MediaModel?) {
+        if (media?.streamingEpisodes?.isNotEmpty() == true) {
+            watchPage.isVisible.value = true
+        }
+
+        media?.recommendations?.pageInfo?.let {
+            if (it.total.orZero() > it.perPage.orZero()) {
+                recommendationsPage.isVisible.value = true
+            }
+        }
+
     }
+
 
 }

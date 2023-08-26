@@ -24,6 +24,8 @@ import com.revolgenx.anilib.common.ui.theme.status_not_yet_released
 import com.revolgenx.anilib.common.ui.theme.status_releasing
 import com.revolgenx.anilib.common.ui.theme.status_unknown
 import com.revolgenx.anilib.fragment.Media
+import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
+import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.list.ui.model.MediaListModel
 import com.revolgenx.anilib.social.factory.markdown
 import com.revolgenx.anilib.staff.ui.model.StaffModel
@@ -70,7 +72,7 @@ data class MediaModel(
     val nextAiringEpisode: AiringScheduleModel? = null,
     val popularity: Int? = null,
 //    val rankings: List<MediaRankModel>? = null,
-//    val recommendations: RecommendationConnectionModel? = null,
+    val recommendations: RecommendationConnectionModel? = null,
     val relations: MediaConnectionModel? = null,
 //    val reviews: ReviewConnection? = null,
     val season: MediaSeason? = null,
@@ -305,6 +307,22 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
                             )
                         }
                     )
+                }
+            )
+        },
+        recommendations = recommendations?.let {
+            RecommendationConnectionModel(
+                pageInfo = it.pageInfo?.pageInfo,
+                nodes = it.nodes?.mapNotNull { node ->
+                    node?.mediaRecommendation?.let { mediaRecommendation ->
+                        RecommendationModel(
+                            mediaRecommendation = mediaRecommendation.media.toModel(),
+                            id = -1,
+                            rating = 0,
+                            media = null,
+                            userRating = null
+                        )
+                    }
                 }
             )
         }

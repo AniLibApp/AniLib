@@ -88,7 +88,8 @@ fun MediaCard(
                     ) {
                         LightText(
                             text = status,
-                            color = statusColor
+                            color = statusColor,
+                            lineHeight = 11.sp
                         )
 
                         media.mediaListEntry?.let {
@@ -102,7 +103,8 @@ fun MediaCard(
                     }
 
                     LightText(
-                        text = stringResource(id = R.string.s_dot_s).format(format, year)
+                        text = stringResource(id = R.string.s_dot_s).format(format, year),
+                        lineHeight = 11.sp
                     )
                 }
             }

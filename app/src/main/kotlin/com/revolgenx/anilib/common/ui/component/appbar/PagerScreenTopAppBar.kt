@@ -77,7 +77,7 @@ private fun <T> PagerScreenTabRow(
         selectedTabIndex = selectedTabIndex,
         containerColor = surfaceContainer,
         indicator = { tabPositions ->
-            TabRowDefaults.Indicator(
+            TabRowDefaults.SecondaryIndicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
             )
         },

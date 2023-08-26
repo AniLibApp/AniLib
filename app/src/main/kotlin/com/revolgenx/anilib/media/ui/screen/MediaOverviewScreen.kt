@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -32,7 +33,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -81,6 +81,7 @@ import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.common.util.OnMediaClick
+import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
 import com.revolgenx.anilib.media.ui.component.MediaCard
 import com.revolgenx.anilib.media.ui.model.MediaConnectionModel
 import com.revolgenx.anilib.media.ui.model.MediaEdgeModel
@@ -99,10 +100,11 @@ import com.revolgenx.anilib.type.MediaType
 @Composable
 fun MediaOverviewScreen(
     viewModel: MediaViewModel,
-    mediaType: MediaType
+    mediaType: MediaType,
+    recommendationScreen: OnClick
 ) {
     ResourceScreen(resourceState = viewModel.resource.value, refresh = { viewModel.refresh() }) {
-        MediaOverview(it, mediaType)
+        MediaOverview(it, mediaType, recommendationScreen)
     }
 }
 
@@ -110,7 +112,8 @@ fun MediaOverviewScreen(
 @Composable
 private fun MediaOverview(
     media: MediaModel,
-    mediaType: MediaType
+    mediaType: MediaType,
+    recommendationScreen: OnClick
 ) {
 
     val isAnime = mediaType.isAnime
@@ -151,9 +154,44 @@ private fun MediaOverview(
         MediaRelation(media.relations) { id, type ->
             navigator.mediaScreen(id, type)
         }
+        MediaRecommendation(
+            media.recommendations,
+            viewAll = {
+                recommendationScreen.invoke()
+            }
+        ) { id, type ->
+            navigator.mediaScreen(id, type)
+        }
         MediaTag(media.tags, media.tagsWithoutSpoiler ?: emptyList())
         MediaExternalLink(media.externalLinks) {
             openLink(it.url)
+        }
+    }
+}
+
+@Composable
+fun MediaRecommendation(
+    recommendations: RecommendationConnectionModel?,
+    viewAll: OnClick,
+    onMediaClick: OnMediaClick
+) {
+    val medias = recommendations?.nodes ?: return
+
+    val showViewAll = recommendations.pageInfo.let {
+        it?.total.orZero() > it?.perPage.orZero()
+    }
+
+    MediaHeaderWithButton(
+        header = R.string.recommendations.toStringResource(),
+        buttonText = R.string.view_all.toStringResource(),
+        showButton = showViewAll,
+        onClick = viewAll
+    )
+
+    LazyRow {
+        items(items = medias) {
+            val media = it.mediaRecommendation ?: return@items
+            MediaCard(media = media, onMediaClick = onMediaClick)
         }
     }
 }
@@ -201,15 +239,41 @@ fun MediaRelationCard(
                     .padding(horizontal = 4.dp)
             ) {
                 LightText(
-                    text = sourceYearText
+                    text = sourceYearText,
+                    lineHeight = 11.sp
                 )
                 LightText(
-                    text = stringResource(id = R.string.s_dot_s).format(format, status)
+                    text = stringResource(id = R.string.s_dot_s).format(format, status),
+                    lineHeight = 11.sp
                 )
             }
         },
         onMediaClick = onMediaClick
     )
+}
+
+
+@Composable
+fun MediaHeaderWithButton(
+    header: String,
+    buttonText: String,
+    showButton: Boolean = true,
+    onClick: OnClick
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        MediaHeader(text = header)
+
+        if (showButton) {
+            SmallTextButton(
+                text = buttonText,
+                onClick = onClick
+            )
+        }
+    }
 }
 
 @Composable
@@ -414,20 +478,13 @@ private fun MediaTag(
     val showMoreButton = remember {
         tags.size != tagsWithoutSpoiler.size
     }
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        MediaHeader(text = R.string.tags.toStringResource())
 
-        if (showMoreButton) {
-            SmallTextButton(
-                text = (if (!showSpoilerTags.value) R.string.show_spoilers else R.string.hide_spoilers).toStringResource()
-            ) {
-                showSpoilerTags.value = !showSpoilerTags.value
-            }
-        }
+    MediaHeaderWithButton(
+        header = R.string.tags.toStringResource(),
+        showButton = showMoreButton,
+        buttonText = (if (!showSpoilerTags.value) R.string.show_spoilers else R.string.hide_spoilers).toStringResource()
+    ) {
+        showSpoilerTags.value = !showSpoilerTags.value
     }
 
     val tagDetail = remember {

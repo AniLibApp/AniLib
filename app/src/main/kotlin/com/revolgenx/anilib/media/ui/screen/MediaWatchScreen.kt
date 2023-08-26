@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +44,7 @@ import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.media.ui.model.StreamingEpisodeModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.common.ui.component.text.shadow
 
 @Composable
 fun MediaWatchScreen(viewModel: MediaViewModel) {
@@ -49,20 +52,21 @@ fun MediaWatchScreen(viewModel: MediaViewModel) {
     val snackbarHostState = localSnackbarHostState()
     val scope = rememberCoroutineScope()
 
-    ResourceScreen(resourceState = viewModel.resource.value, refresh = { viewModel.refresh() }) {
+    ResourceScreen(viewModel = viewModel) {
         LazyPagingList(
             items = it.streamingEpisodes.getOrEmpty(),
             type = ListPagingListType.GRID,
             gridOptions = GridOptions(GridCells.Adaptive(168.dp))
         ) { ep ->
             ep ?: return@LazyPagingList
-            MediaWatchItem(streamingEpisode = ep) {link->
+            MediaWatchItem(streamingEpisode = ep) { link ->
                 context.openLink(link, scope, snackbarHostState)
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MediaWatchItem(
     streamingEpisode: StreamingEpisodeModel,
@@ -72,15 +76,14 @@ private fun MediaWatchItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(6.dp)
-            .height(116.dp)
-    ) {
-        Box(
-            modifier = Modifier.clickable {
-                streamingEpisode.url?.let {
-                    onWatchClick(it)
-                }
+            .height(116.dp),
+        onClick = {
+            streamingEpisode.url?.let {
+                onWatchClick(it)
             }
-        ) {
+        }
+    ) {
+        Box {
             ImageAsync(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -118,13 +121,7 @@ private fun MediaWatchItem(
                         fontSize = 13.sp,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
-                        style = LocalTextStyle.current.copy(
-                            shadow = Shadow(
-                                color = Color.Black,
-                                offset = Offset(2.0f, 2.0f),
-                                blurRadius = 1f
-                            )
-                        )
+                        style = LocalTextStyle.current.shadow()
                     )
                     streamingEpisode.site?.let {
                         Text(
@@ -135,13 +132,7 @@ private fun MediaWatchItem(
                             fontSize = 11.sp,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            style = LocalTextStyle.current.copy(
-                                shadow = Shadow(
-                                    color = Color.Black,
-                                    offset = Offset(2.0f, 2.0f),
-                                    blurRadius = 1f
-                                )
-                            )
+                            style = LocalTextStyle.current.shadow()
                         )
                     }
                 }

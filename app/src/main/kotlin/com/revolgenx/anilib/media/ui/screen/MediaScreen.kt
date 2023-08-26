@@ -38,6 +38,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -85,6 +86,7 @@ import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -104,6 +106,7 @@ fun MediaScreenContent(
     mediaId: Int,
     mediaType: MediaType,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val viewModel: MediaViewModel = koinViewModel()
     val statsViewModel: MediaStatsViewModel = koinViewModel()
     val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
@@ -115,7 +118,6 @@ fun MediaScreenContent(
         derivedStateOf { viewModel.pages.filter { it.isVisible.value } }
     }
     val pagerState = rememberPagerState() { visiblePages.size }
-
 
     LaunchedEffect(viewModel) {
         viewModel.field.mediaId = mediaId
@@ -156,7 +158,14 @@ fun MediaScreenContent(
                     .nestedScroll(scrollBehavior.nestedScrollConnection)
             ) {
                 when (visiblePages[page].type) {
-                    MediaScreenPageType.OVERVIEW -> MediaOverviewScreen(viewModel, mediaType)
+                    MediaScreenPageType.OVERVIEW -> MediaOverviewScreen(viewModel, mediaType,
+                        recommendationScreen = {
+                            coroutineScope.launch {
+                                pagerState.scrollToPage(MediaScreenPageType.RECOMMENDATIONS.ordinal)
+                            }
+                        })
+
+                    MediaScreenPageType.RECOMMENDATIONS -> MediaRecommendationScreen()
                     MediaScreenPageType.WATCH -> MediaWatchScreen(viewModel)
                     MediaScreenPageType.CHARACTER -> MediaCharacterScreen(
                         characterViewModel,

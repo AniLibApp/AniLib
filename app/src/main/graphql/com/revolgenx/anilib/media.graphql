@@ -199,6 +199,17 @@ query MediaOverviewQuery($mediaId:Int){
                 }
             }
         }
+
+        recommendations(page: 1, perPage: 20, sort: [RATING_DESC, ID]){
+            pageInfo{
+                ... pageInfo
+            }
+            nodes {
+                mediaRecommendation{
+                    ... media
+                }
+            }
+        }
     }
 }
 
