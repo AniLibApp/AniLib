@@ -2,9 +2,12 @@ package com.revolgenx.anilib.media.data.service
 
 import com.revolgenx.anilib.character.ui.model.CharacterEdgeModel
 import com.revolgenx.anilib.common.data.model.PageModel
+import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
+import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.media.data.field.MediaCharacterField
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.data.field.MediaOverviewField
+import com.revolgenx.anilib.media.data.field.MediaRecommendationField
 import com.revolgenx.anilib.media.data.field.MediaReviewField
 import com.revolgenx.anilib.media.data.field.MediaStaffField
 import com.revolgenx.anilib.media.data.field.MediaStatsField
@@ -23,6 +26,8 @@ interface MediaService {
     fun getMediaOverview(
         field: MediaOverviewField
     ): Flow<MediaModel?>
+
+    fun getMediaRecommendationList(field: MediaRecommendationField): Flow<PageModel<RecommendationModel>>
 
     fun getMediaCharacterList(
         field: MediaCharacterField

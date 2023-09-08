@@ -9,6 +9,7 @@ import com.revolgenx.anilib.list.ui.screen.UserMediaListScreen
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.relation.ui.screen.UserSocialRelationScreen
 import com.revolgenx.anilib.review.ui.screen.ReviewScreen
+import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityComposerScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityScreen
 import com.revolgenx.anilib.staff.ui.screen.StaffScreen
@@ -68,3 +69,9 @@ fun Navigator.imageViewerScreen(url: String) {
 fun Navigator.reviewScreen(reviewId: Int) {
     push(ReviewScreen(reviewId))
 }
+
+fun Navigator.settingScreen(isTab: Boolean = false) {
+    SettingScreen.isTab = isTab
+    push(SettingScreen)
+}
+

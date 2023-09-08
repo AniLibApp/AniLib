@@ -1,19 +1,17 @@
 package com.revolgenx.anilib.activity
 
-import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.text.Spanned
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.BuildConfig
@@ -31,15 +29,11 @@ import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.userScreen
+import com.revolgenx.anilib.common.ui.theme.LightColorScheme
+import com.revolgenx.anilib.notification.data.worker.NotificationWorker
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import android.os.Build
-import androidx.compose.ui.graphics.toArgb
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
-import com.revolgenx.anilib.common.ui.theme.LightColorScheme
-import com.revolgenx.anilib.notification.data.worker.NotificationWorker
 
 
 abstract class BaseActivity : ComponentActivity(), EventBusListener {

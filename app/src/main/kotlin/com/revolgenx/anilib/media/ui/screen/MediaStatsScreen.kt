@@ -41,6 +41,8 @@ import com.revolgenx.anilib.common.ui.component.chart.rememberMarker
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.model.stats.StatusDistributionModel
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
+import com.revolgenx.anilib.common.ui.theme.rank_type_popular
+import com.revolgenx.anilib.common.ui.theme.rank_type_rated
 import com.revolgenx.anilib.list.ui.model.toColor
 import com.revolgenx.anilib.list.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.model.isAnime
@@ -87,14 +89,12 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
                                 val rankDrawable =
                                     if (rank.rankType == MediaRankType.POPULAR) R.drawable.ic_heart else R.drawable.ic_star
                                 val rankColor =
-                                    if (rank.rankType == MediaRankType.RATED) R.color.rank_type_popular else R.color.rank_type_rated
+                                    if (rank.rankType == MediaRankType.RATED) rank_type_popular else rank_type_rated
                                 Icon(
                                     modifier = Modifier.size(20.dp),
                                     painter = painterResource(id = rankDrawable),
                                     contentDescription = null,
-                                    tint = colorResource(
-                                        id = rankColor
-                                    )
+                                    tint = rankColor
                                 )
                                 val seasons = stringArrayResource(id = R.array.media_season)
                                 val rankText = remember {

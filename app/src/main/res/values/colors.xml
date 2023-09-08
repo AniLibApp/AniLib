@@ -7,14 +7,4 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="rank_type_popular">#E85D75</color>
-    <color name="rank_type_rated">#F7BF63</color>
-
-    <color name="current">#42A5F5</color>
-    <color name="planning">#F09967</color>
-    <color name="completed">#7AD358</color>
-    <color name="dropped">#F8375B</color>
-    <color name="paused">#F37A7D</color>
-    <color name="repeating">#9C27B0</color>
-
 </resources>

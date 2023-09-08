@@ -3,6 +3,7 @@ package com.revolgenx.anilib.common.data.repository
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.revolgenx.anilib.BuildConfig
+import com.revolgenx.anilib.common.data.constant.Config
 import com.revolgenx.anilib.common.data.store.AppDataStore
 import com.revolgenx.anilib.common.data.store.token
 import kotlinx.coroutines.flow.first
@@ -36,6 +37,6 @@ object Apollo {
                     })
                 }
                 .build())
-        .serverUrl(BuildConfig.API_URL)
+        .serverUrl(Config.API_URL)
         .build()
 }

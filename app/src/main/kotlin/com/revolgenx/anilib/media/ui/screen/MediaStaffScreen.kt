@@ -23,7 +23,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MediaStaffScreen(
-    viewModel: MediaStaffViewModel = koinViewModel()
+    viewModel: MediaStaffViewModel
 ) {
     val snackbar = localSnackbarHostState()
     val scope = rememberCoroutineScope()

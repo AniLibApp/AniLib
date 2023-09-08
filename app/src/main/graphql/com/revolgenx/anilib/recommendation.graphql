@@ -6,16 +6,11 @@ query MediaRecommendationQuery(
     $isAdult:Boolean){
     media: Media(id:$mediaId, isAdult:$isAdult){
         recommendations(page:$page, perPage:$perPage,sort:$sort){
+            pageInfo {
+                ... pageInfo
+            }
             nodes{
-                id
-                rating
-                userRating
-                media{
-                    id
-                }
-                mediaRecommendation{
-                    ... media
-                }
+                ... recommendationFragment
             }
         }
     }
@@ -31,13 +26,8 @@ query RecommendationQuery(
             ... pageInfo
         }
         recommendations(onList:$onList, sort:$sort){
-            id
-            rating
-            userRating
+            ... recommendationFragment
             media{
-                ... media
-            }
-            mediaRecommendation{
                 ... media
             }
         }
@@ -51,5 +41,19 @@ mutation SaveRecommendationMutation($mediaId:Int, $mediaRecommendationId:Int, $r
         id
         userRating
         rating
+    }
+}
+
+
+#fragment
+fragment recommendationFragment on Recommendation{
+    id
+    rating
+    userRating
+    media{
+        id
+    }
+    mediaRecommendation{
+        ... media
     }
 }

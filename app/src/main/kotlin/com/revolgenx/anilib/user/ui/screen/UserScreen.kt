@@ -46,6 +46,7 @@ import com.revolgenx.anilib.common.ext.horizontalWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
+import com.revolgenx.anilib.common.ext.settingScreen
 import com.revolgenx.anilib.common.ext.userMediaListScreen
 import com.revolgenx.anilib.common.ext.userRelationScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
@@ -390,7 +391,7 @@ private fun UserScreenActions(
     val navigator = localNavigator()
 
     ActionMenu(iconRes = R.drawable.ic_settings, tonalButton = !isCollapsed) {
-        navigator.push(SettingScreen())
+        navigator.settingScreen()
     }
 
     if (isTab) {

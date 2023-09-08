@@ -34,6 +34,7 @@ import androidx.core.net.toUri
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.data.constant.Config
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
@@ -99,10 +100,7 @@ private fun LoginScreenContent() {
                         )
                     }
 
-                    Text(
-                        text = stringResource(id = R.string.login_browser_requirement_desc),
-                        fontSize = 13.sp
-                    )
+
 
                     HorizontalDivider()
 
@@ -125,7 +123,7 @@ private fun LoginScreenContent() {
                         )
                     ) {
                         FilledTonalButton(onClick = {
-                            navigator.push(SettingScreen())
+                            navigator.push(SettingScreen)
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_settings),
@@ -151,7 +149,7 @@ private fun LoginScreenContent() {
 
 
 private fun login(context: Context) {
-    val authUri = BuildConfig.AUTH_ENDPOINT.toUri().buildUpon()
+    val authUri = Config.AUTH_ENDPOINT.toUri().buildUpon()
         .appendQueryParameter("client_id", BuildConfig.CLIENT_ID)
         .appendQueryParameter("response_type", "token")
         .build()

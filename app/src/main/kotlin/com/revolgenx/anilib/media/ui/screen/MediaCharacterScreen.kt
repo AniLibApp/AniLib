@@ -16,7 +16,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MediaCharacterScreen(
-    viewModel: MediaCharacterViewModel = koinViewModel(),
+    viewModel: MediaCharacterViewModel,
     mediaType: MediaType?
 ) {
     val pagingItems = viewModel.collectAsLazyPagingItems()

@@ -191,7 +191,7 @@ fun MediaRecommendation(
     LazyRow {
         items(items = medias) {
             val media = it.mediaRecommendation ?: return@items
-            MediaCard(media = media, onMediaClick = onMediaClick)
+            MediaCard(width = 140.dp, media = media, onMediaClick = onMediaClick)
         }
     }
 }

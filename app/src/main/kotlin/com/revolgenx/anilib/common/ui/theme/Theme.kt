@@ -1,6 +1,8 @@
 package com.revolgenx.anilib.common.ui.theme
 
 import android.os.Build
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -11,9 +13,10 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.revolgenx.anilib.common.ext.componentActivity
 
 val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
@@ -102,14 +105,23 @@ fun AppTheme(
         else -> LightColorScheme
     }
 
-    val systemUiController = rememberSystemUiController()
-    val useDarkIcons = !darkTheme
-
-    DisposableEffect(systemUiController, useDarkIcons) {
-        systemUiController.setSystemBarsColor(
-            color = Color.Transparent,
-            darkIcons = useDarkIcons,
-            isNavigationBarContrastEnforced = false
+    val activity = componentActivity()
+    DisposableEffect(darkTheme) {
+        activity?.enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.auto(
+                android.graphics.Color.TRANSPARENT,
+                android.graphics.Color.TRANSPARENT,
+            ) { darkTheme },
+            navigationBarStyle = if (darkTheme) {
+                SystemBarStyle.dark(
+                    android.graphics.Color.TRANSPARENT,
+                )
+            } else {
+                SystemBarStyle.light(
+                    android.graphics.Color.TRANSPARENT,
+                    android.graphics.Color.TRANSPARENT,
+                )
+            },
         )
         onDispose {}
     }

@@ -45,7 +45,7 @@ class MediaViewModel(
     private val recommendationsPage = MediaScreenPage(
         MediaScreenPageType.RECOMMENDATIONS,
         R.string.recommendations,
-        R.drawable.ic_thumb_up,
+        R.drawable.ic_recommendation,
         mutableStateOf(false)
     )
 

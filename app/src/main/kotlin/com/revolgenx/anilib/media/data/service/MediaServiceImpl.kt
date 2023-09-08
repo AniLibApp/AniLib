@@ -6,9 +6,13 @@ import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.ext.onIO
+import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
+import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
+import com.revolgenx.anilib.home.recommendation.ui.model.toModel
 import com.revolgenx.anilib.media.data.field.MediaCharacterField
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.data.field.MediaOverviewField
+import com.revolgenx.anilib.media.data.field.MediaRecommendationField
 import com.revolgenx.anilib.media.data.field.MediaReviewField
 import com.revolgenx.anilib.media.data.field.MediaStaffField
 import com.revolgenx.anilib.media.data.field.MediaStatsField
@@ -19,9 +23,7 @@ import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.model.toModel
 import com.revolgenx.anilib.staff.ui.model.StaffEdgeModel
 import com.revolgenx.anilib.staff.ui.model.toModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class MediaServiceImpl(apolloRepository: ApolloRepository) :
@@ -38,6 +40,15 @@ class MediaServiceImpl(apolloRepository: ApolloRepository) :
 
     override fun getMediaOverview(field: MediaOverviewField): Flow<MediaModel?> =
         field.toQuery().map { it.dataAssertNoErrors.media?.toModel() }.onIO()
+
+    override fun getMediaRecommendationList(field: MediaRecommendationField): Flow<PageModel<RecommendationModel>> =
+        field.toQuery().map {
+            val recommendations = it.dataAssertNoErrors.media?.recommendations
+            PageModel(
+                pageInfo = recommendations?.pageInfo?.pageInfo,
+                data = recommendations?.nodes?.mapNotNull { it?.recommendationFragment?.toModel() }
+            )
+        }.onIO()
 
     override fun getMediaCharacterList(field: MediaCharacterField): Flow<PageModel<CharacterEdgeModel>> =
         field.toQuery().map {

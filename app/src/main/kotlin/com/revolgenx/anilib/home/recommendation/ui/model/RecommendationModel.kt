@@ -3,6 +3,7 @@ package com.revolgenx.anilib.home.recommendation.ui.model
 import com.revolgenx.anilib.RecommendationQuery
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.model.BaseModel
+import com.revolgenx.anilib.fragment.RecommendationFragment
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.type.RecommendationRating
@@ -22,11 +23,15 @@ data class RecommendationModel(
 
 
 fun RecommendationQuery.Recommendation.toModel(): RecommendationModel {
+    return recommendationFragment.toModel().copy(media = media?.media?.toModel())
+}
+
+fun RecommendationFragment.toModel(): RecommendationModel{
     return RecommendationModel(
         id = id,
         rating = rating.orZero(),
         userRating = userRating,
-        media = media?.media?.toModel(),
+        media = null,
         mediaRecommendation = mediaRecommendation?.media?.toModel()
     )
 }

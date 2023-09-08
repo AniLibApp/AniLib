@@ -12,7 +12,7 @@ import com.revolgenx.anilib.common.util.OnClick
 
 @Composable
 fun ConfirmationDialog(
-    openDialog: MutableState<Boolean> = mutableStateOf(false),
+    openDialog: MutableState<Boolean>,
     title: String? = null,
     message: String,
     confirm: OnClick

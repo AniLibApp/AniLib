@@ -18,6 +18,7 @@ import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
@@ -60,6 +61,7 @@ val viewModelModules = module {
 
     // media
     viewModel { MediaViewModel(get(), get()) }
+    viewModel { MediaRecommendationViewModel(get()) }
     viewModel { MediaCharacterViewModel(get()) }
     viewModel { MediaStaffViewModel(get()) }
     viewModel { MediaReviewViewModel(get()) }

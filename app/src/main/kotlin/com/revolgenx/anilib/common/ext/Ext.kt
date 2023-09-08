@@ -3,6 +3,8 @@ package com.revolgenx.anilib.common.ext
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.view.Window
+import androidx.activity.ComponentActivity
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -13,7 +15,9 @@ import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.window.DialogWindowProvider
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import kotlinx.coroutines.CoroutineScope
@@ -119,11 +123,25 @@ fun CoroutineScope.hideBottomSheet(state: SheetState, openBottomSheet: MutableSt
 
 fun <T> List<T>?.getOrEmpty() = this ?: emptyList()
 
-internal fun Context.activity(): Activity? {
+internal fun Context.componentActivity(): ComponentActivity? {
     var context = this
     while (context is ContextWrapper) {
-        if (context is Activity) return context
+        if (context is ComponentActivity) return context
         context = context.baseContext
     }
     return null
 }
+
+@Composable
+fun window(): Window? =
+    (LocalView.current.parent as? DialogWindowProvider)?.window
+        ?: LocalView.current.context.findWindow()
+private tailrec fun Context.findWindow(): Window? =
+    when (this) {
+        is Activity -> window
+        is ContextWrapper -> baseContext.findWindow()
+        else -> null
+    }
+
+@Composable
+fun componentActivity() = localContext().componentActivity()

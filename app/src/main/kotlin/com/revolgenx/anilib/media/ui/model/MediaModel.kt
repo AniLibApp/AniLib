@@ -26,6 +26,7 @@ import com.revolgenx.anilib.common.ui.theme.status_unknown
 import com.revolgenx.anilib.fragment.Media
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
+import com.revolgenx.anilib.home.recommendation.ui.model.toModel
 import com.revolgenx.anilib.list.ui.model.MediaListModel
 import com.revolgenx.anilib.social.factory.markdown
 import com.revolgenx.anilib.staff.ui.model.StaffModel
@@ -314,15 +315,7 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
             RecommendationConnectionModel(
                 pageInfo = it.pageInfo?.pageInfo,
                 nodes = it.nodes?.mapNotNull { node ->
-                    node?.mediaRecommendation?.let { mediaRecommendation ->
-                        RecommendationModel(
-                            mediaRecommendation = mediaRecommendation.media.toModel(),
-                            id = -1,
-                            rating = 0,
-                            media = null,
-                            userRating = null
-                        )
-                    }
+                    node?.recommendationFragment?.toModel()
                 }
             )
         }

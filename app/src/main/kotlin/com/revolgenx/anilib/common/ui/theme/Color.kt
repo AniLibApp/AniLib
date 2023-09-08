@@ -87,6 +87,12 @@ val status_cancelled = Color(0xFFD50000)
 val status_hiatus = Color(0xFFFF6E40)
 val status_unknown = Color(0xFFD50000)
 
+val logout_color = Color(0xFFF8375B)
+
+val rank_type_popular = Color(0xFFE85D75)
+val rank_type_rated = Color(0xFFF7BF63)
+
+
 val background @Composable get() = colorScheme.background
 val onBackground @Composable get() = colorScheme.onBackground
 val surfaceContainer @Composable get() = colorScheme.surfaceContainer

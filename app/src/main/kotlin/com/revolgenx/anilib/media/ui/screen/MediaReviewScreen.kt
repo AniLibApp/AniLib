@@ -84,10 +84,10 @@ private fun MediaReviewItem(
         ) {
             Column(
                 modifier = Modifier
-                    .padding(8.dp)
                     .clickable {
                         onClick.invoke(reviewModel.id)
                     }
+                    .padding(8.dp)
             ) {
                 Text(reviewModel.summary.naText())
                 Row(

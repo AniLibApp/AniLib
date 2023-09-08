@@ -86,6 +86,7 @@ import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -108,6 +109,7 @@ fun MediaScreenContent(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val viewModel: MediaViewModel = koinViewModel()
+    val recommendationViewModel: MediaRecommendationViewModel = koinViewModel()
     val statsViewModel: MediaStatsViewModel = koinViewModel()
     val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
     val reviewViewModel: MediaReviewViewModel = koinViewModel()
@@ -121,6 +123,7 @@ fun MediaScreenContent(
 
     LaunchedEffect(viewModel) {
         viewModel.field.mediaId = mediaId
+        recommendationViewModel.field.mediaId = mediaId
         statsViewModel.field.mediaId = mediaId
         reviewViewModel.field.mediaId = mediaId
         staffViewModel.field.mediaId = mediaId
@@ -165,7 +168,7 @@ fun MediaScreenContent(
                             }
                         })
 
-                    MediaScreenPageType.RECOMMENDATIONS -> MediaRecommendationScreen()
+                    MediaScreenPageType.RECOMMENDATIONS -> MediaRecommendationScreen(recommendationViewModel)
                     MediaScreenPageType.WATCH -> MediaWatchScreen(viewModel)
                     MediaScreenPageType.CHARACTER -> MediaCharacterScreen(
                         characterViewModel,

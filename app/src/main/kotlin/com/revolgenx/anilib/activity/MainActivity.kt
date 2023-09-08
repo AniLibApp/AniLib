@@ -3,6 +3,7 @@ package com.revolgenx.anilib.activity
 import android.os.Bundle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
@@ -25,7 +26,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
@@ -33,7 +33,7 @@ import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.activity
+import com.revolgenx.anilib.common.ext.componentActivity
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.toStringResource
@@ -53,6 +53,7 @@ import com.revolgenx.anilib.common.ui.theme.AppTheme
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
 import com.revolgenx.anilib.list.ui.screen.MangaListScreen
+import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
 import kotlinx.coroutines.delay
@@ -65,11 +66,11 @@ class MainActivity : BaseActivity() {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
         setContent {
-            AppTheme {
+            AppTheme{
                 Navigator(
-                    screen = MainActivityScreen(),
+                    screen = MainActivityScreen,
                     disposeBehavior = NavigatorDisposeBehavior(false, false)
                 ) { navigator ->
                     this@MainActivity.navigator = navigator
@@ -94,11 +95,10 @@ class MainActivity : BaseActivity() {
             }
         }
     }
-
 }
 
 
-class MainActivityScreen : Screen {
+object MainActivityScreen : Screen {
     @Composable
     override fun Content() {
         MainActivityScreenContent()
@@ -123,7 +123,8 @@ fun MainActivityScreenContent() {
                     }
                     ShowIfLoggedIn(
                         orElse = {
-                            TabNavigationItem(tab = LoginScreen)
+                            SettingScreen.isTab = true
+                            TabNavigationItem(tab = SettingScreen)
                         },
                         content = { userId ->
                             userScreen = userScreen ?: UserScreen(userId, isTab = true)
@@ -179,7 +180,7 @@ fun BackPress(snackbarHostState: SnackbarHostState) {
     val msg = R.string.press_again_to_exit.toStringResource()
     BackHandler {
         if (exit) {
-            context.activity()?.finish()
+            context.componentActivity()?.finish()
         } else {
             exit = true
             scope.launch {

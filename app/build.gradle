@@ -14,8 +14,8 @@ android {
         applicationId "com.revolgenx.anilib"
         minSdk 21
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 41
+        versionName "2.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -24,10 +24,6 @@ android {
 
         buildConfigField "String", "CLIENT_ID", '"anilist_client_id"'
         buildConfigField "String", "REDIRECT_URI", '"anilist_redirect_uri"'
-
-        buildConfigField "String", "API_URL", '"https://graphql.anilist.co"'
-        buildConfigField "String", "AUTH_ENDPOINT", '"https://anilist.co/api/v2/oauth/authorize"'
-        buildConfigField "String", "TOKEN_ENDPOINT", '"https://anilist.co/api/v2/oauth/token"'
     }
 
     bundle {
@@ -116,8 +112,7 @@ android {
 
 ext {
     composeUi = "1.5.0"
-    material = "1.2.0-alpha06"
-    accompanist = "0.29.0-alpha"
+    material = "1.2.0-alpha07"
     voyager = "1.0.0-rc05"
     timber = "5.0.1"
     koin = "3.4.1"
@@ -135,18 +130,15 @@ ext {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-ktx:1.12.0")
 
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.activity:activity-compose:1.8.0-beta01")
 
     //compose
     implementation("androidx.compose.ui:ui-tooling-preview:$composeUi")
 
     //material
     implementation("androidx.compose.material3:material3:$material")
-
-    //accompanist
-    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanist")
 
     //voyager
     implementation("cafe.adriel.voyager:voyager-navigator:$voyager")
