@@ -86,6 +86,15 @@ import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
+import com.revolgenx.anilib.common.ui.icons.appicon.IcReview
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
+import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
+import com.revolgenx.anilib.common.ui.icons.appicon.IcWinter
 import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -168,7 +177,10 @@ fun MediaScreenContent(
                             }
                         })
 
-                    MediaScreenPageType.RECOMMENDATIONS -> MediaRecommendationScreen(recommendationViewModel)
+                    MediaScreenPageType.RECOMMENDATIONS -> MediaRecommendationScreen(
+                        recommendationViewModel
+                    )
+
                     MediaScreenPageType.WATCH -> MediaWatchScreen(viewModel)
                     MediaScreenPageType.CHARACTER -> MediaCharacterScreen(
                         characterViewModel,
@@ -226,7 +238,10 @@ private fun MediaScreenTopAppBar(
             }
         },
         actions = { isCollapsed ->
-            ActionMenu(imageVector = Icons.Filled.Search, tonalButton = !isCollapsed, onClick = {})
+            ActionMenu(
+                icon = AppIcons.IcSearch,
+                tonalButton = !isCollapsed, onClick = {}
+            )
         }
     )
 }
@@ -322,12 +337,11 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                         ) {
                             Icon(
                                 modifier = Modifier.size(12.dp),
-                                painter = painterResource(id = R.drawable.ic_star),
+                                imageVector = AppIcons.IcStar,
                                 contentDescription = null
                             )
                             MediumText(
                                 text = media?.popularity.orZero().prettyNumberFormat(),
-                                color = onSurfaceVariant,
                                 fontSize = 14.sp,
                                 lineHeight = 15.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainer)
@@ -336,12 +350,11 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                             Spacer(modifier = Modifier.width(6.dp))
                             Icon(
                                 modifier = Modifier.size(12.dp),
-                                painter = painterResource(id = R.drawable.ic_heart),
+                                imageVector = AppIcons.IcHeart,
                                 contentDescription = null
                             )
                             MediumText(
                                 text = media?.favourites.orZero().prettyNumberFormat(),
-                                color = onSurfaceVariant,
                                 fontSize = 14.sp,
                                 lineHeight = 15.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainer)
@@ -360,7 +373,6 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                     season,
                                     media?.seasonYear.naText()
                                 ),
-                                color = onSurfaceVariant,
                                 fontSize = 14.sp,
                                 lineHeight = 15.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainer)
@@ -373,7 +385,6 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                     it.episode,
                                     it.airingAtModel?.airingDateTime.naText()
                                 ),
-                                color = onSurfaceVariant,
                                 fontSize = 15.sp,
                                 lineHeight = 16.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainer)
@@ -400,11 +411,11 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                             )
                         }
 
-                        ActionMenu(iconRes = R.drawable.ic_more_horiz) {
+                        ActionMenu(icon = AppIcons.IcMoreHoriz) {
 
                         }
 
-                        ActionMenu(iconRes = R.drawable.ic_review) {
+                        ActionMenu(icon = AppIcons.IcReview) {
 
                         }
 
@@ -415,7 +426,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                             }
                         ) {
                             Icon(
-                                painter = painterResource(id = if (media?.isFavourite == true) R.drawable.ic_heart else R.drawable.ic_heart_outline),
+                                imageVector = if (media?.isFavourite == true) AppIcons.IcHeart else AppIcons.IcHeartOutline,
                                 contentDescription = null
                             )
                         }

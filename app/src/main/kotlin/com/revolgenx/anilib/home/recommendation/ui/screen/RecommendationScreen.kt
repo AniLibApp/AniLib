@@ -35,6 +35,11 @@ import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCalendar
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
+import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
+import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
@@ -57,7 +62,7 @@ fun RecommendationScreen(viewModel: RecommendationViewModel = koinViewModel()) {
     ScreenScaffold(
         topBar = {},
         floatingActionButton = {
-            DisappearingFAB(scrollState = scrollState, iconRes = R.drawable.ic_filter) {
+            DisappearingFAB(scrollState = scrollState, icon = AppIcons.IcFilter) {
                 //todo filter
             }
         },
@@ -143,7 +148,7 @@ private fun RecommendationButton(
                     modifier = Modifier
                         .padding(8.dp)
                         .size(14.dp),
-                    painter = painterResource(id = R.drawable.ic_thumb_up),
+                    imageVector = AppIcons.IcThumbUp,
                     contentDescription = null,
                     tint = if (model.userRating == RecommendationRating.RATE_UP) primary else onSurfaceVariant
                 )
@@ -158,7 +163,7 @@ private fun RecommendationButton(
                     modifier = Modifier
                         .padding(8.dp)
                         .size(14.dp),
-                    painter = painterResource(id = R.drawable.ic_thumb_down),
+                    imageVector = AppIcons.IcThumbDown,
                     contentDescription = null,
                     tint = if (model.userRating == RecommendationRating.RATE_DOWN) primary else onSurfaceVariant
                 )

@@ -54,6 +54,13 @@ import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCalendar
+import com.revolgenx.anilib.common.ui.icons.appicon.IcClose
+import com.revolgenx.anilib.common.ui.icons.appicon.IcDelete
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSave
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.ui.theme.onSurface
@@ -105,14 +112,14 @@ private fun MediaListEditScreenContent(
 
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
-                    painter = painterResource(id = if (viewModel.isFavourite) R.drawable.ic_heart else R.drawable.ic_heart_outline),
+                    imageVector = if (viewModel.isFavourite) AppIcons.IcHeart else AppIcons.IcHeartOutline,
                     contentDescription = stringResource(id = R.string.favourite)
                 )
             }
             if (viewModel.userHasMediaListEntry) {
                 IconButton(onClick = { openConfirmDialog.value = true }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_delete),
+                        imageVector = AppIcons.IcDelete,
                         contentDescription = stringResource(id = R.string.delete)
                     )
                 }
@@ -122,7 +129,7 @@ private fun MediaListEditScreenContent(
                 viewModel.save()
             }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_save),
+                    imageVector = AppIcons.IcSave,
                     contentDescription = stringResource(id = R.string.save)
                 )
             }
@@ -522,7 +529,8 @@ private fun CalendarPicker(
         colors = ButtonDefaults.textButtonColors(contentColor = onSurface)
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_calendar), contentDescription = "calendar"
+            imageVector = AppIcons.IcCalendar,
+            contentDescription = "calendar"
         )
         Text(
             modifier = Modifier
@@ -536,7 +544,9 @@ private fun CalendarPicker(
             Icon(
                 modifier = Modifier.clickable {
                     onClear()
-                }, painter = painterResource(id = R.drawable.ic_close), contentDescription = "clear"
+                },
+                imageVector = AppIcons.IcClose,
+                contentDescription = "clear"
             )
         }
     }

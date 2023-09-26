@@ -80,6 +80,12 @@ import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCalendar
+import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronLeft
+import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronRight
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
+import com.revolgenx.anilib.common.ui.icons.appicon.IcTime
 import org.koin.androidx.compose.koinViewModel
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -437,30 +443,29 @@ private fun AiringScheduleAction(
     onCalendar: OnClick,
     onWeekly: OnClick,
 ) {
-    ActionMenu(iconRes = R.drawable.ic_chevron_left, onClick = onPrevious)
-    ActionMenu(iconRes = R.drawable.ic_chevron_right, onClick = onNext)
+    ActionMenu(icon = AppIcons.IcChevronLeft, onClick = onPrevious)
+    ActionMenu(icon = AppIcons.IcChevronRight, onClick = onNext)
     OverflowMenu {
         OverflowMenuItem(
             textRes = R.string.filter,
-            iconRes = R.drawable.ic_filter,
+            icon = AppIcons.IcFilter,
             onClick = onFilter,
             contentDescriptionRes = R.string.filter
         )
         OverflowMenuItem(
             textRes = R.string.select_date,
-            iconRes = R.drawable.ic_calendar,
+            icon = AppIcons.IcCalendar,
             onClick = onCalendar,
             contentDescriptionRes = R.string.select_date,
         )
         OverflowMenuItem(
             textRes = R.string.weekly,
-            iconRes = R.drawable.ic_time,
+            icon = AppIcons.IcTime,
             onClick = onWeekly,
             contentDescriptionRes = R.string.weekly,
-            isChecked = isWeeklyTypeDate,
-            onCheckedChange = {
-                onWeekly.invoke()
-            }
-        )
+            isChecked = isWeeklyTypeDate
+        ) {
+            onWeekly.invoke()
+        }
     }
 }

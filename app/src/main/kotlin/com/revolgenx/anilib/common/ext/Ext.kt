@@ -43,9 +43,6 @@ fun Int?.orNaString() = this?.toString() ?: R.string.na.toStringResource()
 @Composable
 fun String?.orNaString(): String = this ?: R.string.na.toStringResource()
 
-@DrawableRes
-fun Int?.naDrawableRes() = this ?: R.drawable.ic_question_mark
-
 @Composable
 fun Int?.toStringResourceOrNa(): String = this?.toStringResource() ?: R.string.na.toStringResource()
 

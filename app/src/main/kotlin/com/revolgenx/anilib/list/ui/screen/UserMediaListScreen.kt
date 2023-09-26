@@ -16,13 +16,11 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -35,15 +33,19 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcBook
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
+import com.revolgenx.anilib.common.ui.icons.appicon.IcClose
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.theme.onSurface
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
-import com.revolgenx.anilib.media.ui.model.isAnime
-import com.revolgenx.anilib.type.MediaType
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 class UserMediaListScreen(private val userId: Int, private var mangaTab: Boolean) :
@@ -63,8 +65,8 @@ private enum class MediaListScreenPageType {
 }
 
 private val pages = listOf(
-    MediaListScreenPage(MediaListScreenPageType.ANIME, R.string.anime, R.drawable.ic_media),
-    MediaListScreenPage(MediaListScreenPageType.MANGA, R.string.manga, R.drawable.ic_book),
+    MediaListScreenPage(MediaListScreenPageType.ANIME, R.string.anime, AppIcons.IcMedia),
+    MediaListScreenPage(MediaListScreenPageType.MANGA, R.string.manga, AppIcons.IcBook),
 )
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -84,7 +86,7 @@ private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
         pagerState = pagerState,
         pages = pages,
         actions = {
-            ActionMenu(iconRes = R.drawable.ic_search) {
+            ActionMenu(icon = AppIcons.IcSearch) {
                 when (pagerState.currentPage) {
                     0 -> {
                         animeSearchBar = !animeSearchBar
@@ -97,7 +99,7 @@ private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
                     else -> {}
                 }
             }
-            ActionMenu(iconRes = R.drawable.ic_filter) {
+            ActionMenu(icon = AppIcons.IcFilter) {
 
             }
         },
@@ -164,7 +166,6 @@ fun MediaListCommonContent(
                         viewModel.searchNow()
                     },
                     active = active,
-                    height = 50.dp,
                     onActiveChange = {
                         active = if (it && viewModel.searchHistory.isNotEmpty()) {
                             it
@@ -180,7 +181,7 @@ fun MediaListCommonContent(
                                 viewModel.searchNow()
                             }) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.ic_cancel),
+                                    imageVector = AppIcons.IcCancel,
                                     contentDescription = stringResource(id = R.string.clear)
                                 )
                             }
@@ -201,7 +202,7 @@ fun MediaListCommonContent(
                                     .clickable {
                                         openFilterBottomSheet.value = true
                                     },
-                                painter = painterResource(id = R.drawable.ic_cancel),
+                                imageVector = AppIcons.IcCancel,
                                 contentDescription = stringResource(id = R.string.clear)
                             )
                         })

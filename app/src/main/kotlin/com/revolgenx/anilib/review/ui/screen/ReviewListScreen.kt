@@ -64,6 +64,11 @@ import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
+import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
+import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,7 +84,7 @@ fun ReviewListScreen(
     ScreenScaffold(
         topBar = {},
         floatingActionButton = {
-            DisappearingFAB(scrollState = scrollState, iconRes = R.drawable.ic_filter) {
+            DisappearingFAB(scrollState = scrollState, icon = AppIcons.IcFilter) {
                 //todo filter
             }
         },
@@ -243,7 +248,7 @@ fun ReviewListItem(
                 LightText(modifier = Modifier.weight(1f), text = model.createdAtPrettyTime)
                 Icon(
                     modifier = Modifier.size(12.dp),
-                    painter = painterResource(id = R.drawable.ic_thumb_up),
+                    imageVector = AppIcons.IcThumbUp,
                     contentDescription = null
                 )
                 MediumText(

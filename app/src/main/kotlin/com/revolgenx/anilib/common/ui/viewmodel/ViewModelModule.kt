@@ -28,6 +28,7 @@ import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationType
 import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
+import com.revolgenx.anilib.setting.ui.viewmodel.SettingViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
@@ -152,7 +153,12 @@ val viewModelModules = module {
     viewModel { UserStatsStudioViewModel(get()) }
 
     // user relation
-    viewModel(named(UserRelationType.USER_RELATION_FOLLOWING)) { UserRelationViewModel(false, get()) }
+    viewModel(named(UserRelationType.USER_RELATION_FOLLOWING)) {
+        UserRelationViewModel(
+            false,
+            get()
+        )
+    }
     viewModel(named(UserRelationType.USER_RELATION_FOLLOWER)) { UserRelationViewModel(true, get()) }
 
 
@@ -180,5 +186,8 @@ val viewModelModules = module {
 
     //recommendations
     viewModel { RecommendationViewModel(get()) }
+
+    //settings
+    viewModel { SettingViewModel(get()) }
 
 }

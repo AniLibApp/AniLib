@@ -10,20 +10,20 @@ import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilterSerializer
 import com.revolgenx.anilib.media.data.filter.MediaFilter
 
-typealias AppDataStore = DataStore<Preferences>
+typealias PreferencesDataStore = DataStore<Preferences>
 typealias SeasonFilterDataStore = DataStore<MediaFilter>
 typealias MediaListFilterDataStore = DataStore<MediaListCollectionFilter>
 
-val Context.appDataStore: AppDataStore by preferencesDataStore(name = "app_preferences.json")
+val Context.preferencesDataStore: PreferencesDataStore by preferencesDataStore(name = "preferences_data_store.json")
 
-const val seasonFilterStoreFileName = "season_filter_preferences.json"
+const val seasonFilterStoreFileName = "season_filter_data_store.json"
 val Context.seasonFilterDataStore: SeasonFilterDataStore by dataStore(
     fileName = seasonFilterStoreFileName,
     serializer = SeasonFilterSerializer()
 )
 
-const val animeListFilterStoreFileName = "anime_list_filter_preferences.json"
-const val mangaListFilterStoreFileName = "manga_list_filter_preferences.json"
+const val animeListFilterStoreFileName = "anime_list_filter_data_store.json"
+const val mangaListFilterStoreFileName = "manga_list_filter_data_store.json"
 
 val Context.animeListFilterDataStore: MediaListFilterDataStore by dataStore(
     fileName = animeListFilterStoreFileName,

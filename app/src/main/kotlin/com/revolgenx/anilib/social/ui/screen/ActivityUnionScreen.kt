@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,11 @@ import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConn
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCreate
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
+import com.revolgenx.anilib.common.ui.icons.appicon.IcForum
+import com.revolgenx.anilib.common.ui.icons.appicon.IcForumOutline
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.ActivityType
@@ -35,8 +41,8 @@ import org.koin.androidx.compose.koinViewModel
 
 object ActivityUnionScreen : BaseTabScreen() {
 
-    override val iconRes: Int = R.drawable.ic_forum_outline
-    override val selectedIconRes: Int = R.drawable.ic_forum
+    override val tabIcon: ImageVector = AppIcons.IcForumOutline
+    override val selectedIcon: ImageVector = AppIcons.IcForum
 
     override val options: TabOptions
         @Composable get() {
@@ -75,7 +81,7 @@ object ActivityUnionScreen : BaseTabScreen() {
                             )
                         },
                         actions = {
-                            ActionMenu(iconRes = R.drawable.ic_filter) {
+                            ActionMenu(icon = AppIcons.IcFilter) {
 
                             }
                         }
@@ -86,7 +92,7 @@ object ActivityUnionScreen : BaseTabScreen() {
             floatingActionButton = {
                 DisappearingFAB(
                     scrollState = scrollState,
-                    iconRes = R.drawable.ic_create
+                    icon = AppIcons.IcCreate
                 ) {
                     navigator.activityComposerScreen()
                 }

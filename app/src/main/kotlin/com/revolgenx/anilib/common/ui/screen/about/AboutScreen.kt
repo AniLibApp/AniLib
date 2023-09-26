@@ -37,6 +37,9 @@ import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
 
 @Composable
 fun AboutScreen(
@@ -53,8 +56,8 @@ fun AboutScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Column(
@@ -113,8 +116,9 @@ fun AboutScreen(
                         text = favourites.prettyNumberFormat(),
                         color = onSurfaceVariant
                     )
+                    AppIcons.IcHeart
                     Icon(
-                        painter = painterResource(id = if (isFavourite) R.drawable.ic_heart else R.drawable.ic_heart_outline),
+                        imageVector = if(isFavourite) AppIcons.IcHeart else AppIcons.IcHeartOutline,
                         contentDescription = null
                     )
                 }

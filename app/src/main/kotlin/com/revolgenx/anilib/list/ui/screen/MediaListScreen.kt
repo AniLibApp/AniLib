@@ -18,7 +18,6 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -31,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
@@ -39,6 +37,10 @@ import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.common.ui.theme.onSurface
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
@@ -98,7 +100,6 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                             viewModel.searchNow()
                         },
                         active = active,
-                        height = 50.dp,
                         onActiveChange = {
                             active = if (it && true/*viewModel.searchHistory.isNotEmpty()*/) {
                                 it
@@ -109,7 +110,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                         placeholder = { Text(text = stringResource(id = if (isAnime) R.string.search_anime else R.string.search_manga)) },
                         leadingIcon = {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_search),
+                                imageVector = AppIcons.IcSearch,
                                 contentDescription = stringResource(id = if (isAnime) R.string.search_anime else R.string.search_manga)
                             )
                         },
@@ -121,7 +122,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                                         viewModel.searchNow()
                                     }) {
                                         Icon(
-                                            painter = painterResource(id = R.drawable.ic_cancel),
+                                            imageVector = AppIcons.IcCancel,
                                             contentDescription = stringResource(id = R.string.clear)
                                         )
                                     }
@@ -130,7 +131,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                                     openFilterBottomSheet.value = true
                                 }) {
                                     Icon(
-                                        painter = painterResource(id = R.drawable.ic_filter),
+                                        imageVector = AppIcons.IcFilter,
                                         contentDescription = stringResource(id = R.string.filter)
                                     )
                                 }
@@ -151,7 +152,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                                         .clickable {
                                             openFilterBottomSheet.value = true
                                         },
-                                    painter = painterResource(id = R.drawable.ic_cancel),
+                                    imageVector = AppIcons.IcCancel,
                                     contentDescription = stringResource(id = R.string.clear)
                                 )
                             })

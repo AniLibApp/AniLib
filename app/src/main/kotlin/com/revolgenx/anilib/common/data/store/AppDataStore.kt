@@ -4,21 +4,35 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageType
 import com.revolgenx.anilib.media.ui.model.MediaTitleType
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 
-val mediaTitleTypeKey = intPreferencesKey("media_title_type_key")
-val mediaCoverImageTypeKey = intPreferencesKey("media_cover_image_type_key")
+class AppDataStore(private val dataStore: PreferencesDataStore) {
+    companion object{
+        val mediaTitleTypeKey = intPreferencesKey("media_title_type_key")
+        val mediaCoverImageTypeKey = intPreferencesKey("media_cover_image_type_key")
+    }
 
-fun AppDataStore.mediaTitleType() =
-    data.map { MediaTitleType.values()[it[mediaTitleTypeKey] ?: 0] }
+    val mediaTitleType = dataStore.data.map { MediaTitleType.values()[it[mediaTitleTypeKey] ?: 0] }
+    val mediaCoverImageType =
+        dataStore.data.map { MediaCoverImageType.values()[it[mediaCoverImageTypeKey] ?: 1] }
 
-fun AppDataStore.mediaCoverImageType() =
-    data.map { MediaCoverImageType.values()[it[mediaCoverImageTypeKey] ?: 1] }
+    fun mediaTitleType(scope: CoroutineScope, mediaTitleType: MediaTitleType) {
+        scope.launch {
+            dataStore.edit {
+                it[mediaTitleTypeKey] = mediaTitleType.ordinal
+            }
+        }
+    }
 
-suspend fun AppDataStore.mediaTitleType(mediaTitleType: MediaTitleType) = edit {
-    it[mediaTitleTypeKey] = mediaTitleType.ordinal
+    fun mediaCoverImageType(scope: CoroutineScope, mediaCoverImageType: MediaCoverImageType) {
+        scope.launch {
+            dataStore.edit {
+                it[mediaCoverImageTypeKey] = mediaCoverImageType.ordinal
+            }
+        }
+    }
 }
-suspend fun AppDataStore.mediaCoverImageType(mediaCoverImageType: MediaCoverImageType) = edit {
-    it[mediaCoverImageTypeKey] = mediaCoverImageType.ordinal
-}
+

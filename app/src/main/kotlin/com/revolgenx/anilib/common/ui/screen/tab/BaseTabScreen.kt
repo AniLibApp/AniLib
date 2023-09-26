@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.common.ui.screen.tab
 
-import androidx.annotation.DrawableRes
+import androidx.compose.ui.graphics.vector.ImageVector
 import cafe.adriel.voyager.androidx.AndroidScreenLifecycleOwner
 import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleOwner
 import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleProvider
@@ -9,11 +9,8 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.tab.Tab
 
 abstract class BaseTabScreen : Tab, ScreenLifecycleProvider {
-    @DrawableRes
-    open val iconRes: Int? = null
-
-    @DrawableRes
-    open val selectedIconRes: Int? = null
+    open val tabIcon: ImageVector? = null
+    open val selectedIcon: ImageVector? = null
 
     override val key: ScreenKey = uniqueScreenKey
     override fun getLifecycleOwner(): ScreenLifecycleOwner = AndroidScreenLifecycleOwner.get(this)

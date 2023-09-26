@@ -38,7 +38,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -46,18 +45,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcNotification
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
+import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
+import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.ui.theme.inverseOnSurface
 import com.revolgenx.anilib.common.ui.theme.onSurface
@@ -66,7 +71,6 @@ import com.revolgenx.anilib.common.ui.theme.typography
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
 import com.revolgenx.anilib.type.ReviewRating
-import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import org.koin.androidx.compose.koinViewModel
 
 class ReviewScreen(private val reviewId: Int) : AndroidScreen() {
@@ -181,7 +185,7 @@ fun ReviewLikeDislikeButton(
         onCheckedChange = onCheckChange
     ) {
         Icon(
-            painter = painterResource(id = if (likeButton) R.drawable.ic_thumb_up else R.drawable.ic_thumb_down),
+            imageVector = if (likeButton) AppIcons.IcThumbUp else AppIcons.IcThumbDown,
             contentDescription = null
         )
     }
@@ -258,11 +262,11 @@ private fun ReviewScreenTopAppBar(
             }
         },
         actions = { isCollapsed ->
-            ActionMenu(imageVector = Icons.Filled.Search, tonalButton = !isCollapsed) {
+            ActionMenu(icon = AppIcons.IcSearch, tonalButton = !isCollapsed) {
 
             }
             ActionMenu(
-                imageVector = Icons.Filled.Notifications, tonalButton = !isCollapsed
+                icon = AppIcons.IcNotification, tonalButton = !isCollapsed
             ) {
 
             }

@@ -14,6 +14,10 @@ import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcAbout
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
+import com.revolgenx.anilib.common.ui.icons.appicon.IcVoice
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -35,12 +39,12 @@ private enum class CharacterScreenPageType {
 }
 
 private val pages = listOf(
-    CharacterScreenPage(CharacterScreenPageType.ABOUT, R.string.about, R.drawable.ic_about),
-    CharacterScreenPage(CharacterScreenPageType.MEDIA, R.string.media, R.drawable.ic_media),
+    CharacterScreenPage(CharacterScreenPageType.ABOUT, R.string.about, AppIcons.IcAbout),
+    CharacterScreenPage(CharacterScreenPageType.MEDIA, R.string.media, AppIcons.IcMedia),
     CharacterScreenPage(
         CharacterScreenPageType.VOICE_ROLES,
         R.string.voice_roles,
-        R.drawable.ic_voice
+        AppIcons.IcVoice
     )
 )
 
@@ -53,7 +57,7 @@ private fun CharacterScreenContent(characterId: Int) {
     val mediaViewModel = koinViewModel<CharacterMediaViewModel>()
     val actorViewModel = koinViewModel<CharacterActorViewModel>()
 
-    LaunchedEffect(aboutViewModel, mediaViewModel){
+    LaunchedEffect(aboutViewModel, mediaViewModel) {
         aboutViewModel.field.characterId = characterId
         mediaViewModel.field.characterId = characterId
         actorViewModel.field.characterId = characterId

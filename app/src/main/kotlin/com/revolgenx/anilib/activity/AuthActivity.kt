@@ -6,19 +6,24 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.lifecycleScope
-import com.revolgenx.anilib.common.data.store.login
+import com.revolgenx.anilib.common.data.store.AuthDataStore
+import com.revolgenx.anilib.common.data.store.ThemeDataStore
 import com.revolgenx.anilib.common.ext.launchIO
 import com.revolgenx.anilib.common.ui.screen.state.LoadingScreen
 import com.revolgenx.anilib.common.ui.theme.AppTheme
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 /*todo: need to change way to show messages */
 class AuthActivity : ComponentActivity() {
+    private val authDataStore: AuthDataStore by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppTheme{
+            AppTheme() {
                 LoadingScreen()
             }
         }
@@ -29,14 +34,18 @@ class AuthActivity : ComponentActivity() {
         val regex = "(?:access_token=)(.*?)(?:&)".toRegex()
         val matchResult = regex.find(data?.fragment.toString())
         if (matchResult?.groups?.get(1) != null) {
-            lifecycleScope.launchIO {
-                try {
-                    login(matchResult.groups[1]!!.value)
-                    returnToActivity(true)
-                } catch (e: Exception) {
+            try {
+                matchResult.groups[1]?.value?.let {
+                    lifecycleScope.launch {
+                        authDataStore.login(matchResult.groups[1]!!.value)
+                    }
+                } ?: let {
                     Toast.makeText(this@AuthActivity, "Login Failed", Toast.LENGTH_LONG).show()
-                    returnToActivity()
                 }
+                returnToActivity(true)
+            } catch (e: Exception) {
+                Toast.makeText(this@AuthActivity, "Login Failed", Toast.LENGTH_LONG).show()
+                returnToActivity()
             }
         } else {
             Toast.makeText(this@AuthActivity, "Login Failed", Toast.LENGTH_LONG).show()

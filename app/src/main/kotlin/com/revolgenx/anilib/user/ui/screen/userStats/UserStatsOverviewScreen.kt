@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.user.ui.screen.userStats
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,13 +28,23 @@ import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.scroll.InitialScroll
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.component.button.SegmentedButton
 import com.revolgenx.anilib.common.ui.component.chart.ColumnChart
 import com.revolgenx.anilib.common.ui.component.chart.LineChart
 import com.revolgenx.anilib.common.ui.component.chart.rememberMarker
 import com.revolgenx.anilib.common.ui.component.common.Grid
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcBook
+import com.revolgenx.anilib.common.ui.icons.appicon.IcBookmark
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCalculate
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCalendar
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHourglass
+import com.revolgenx.anilib.common.ui.icons.appicon.IcLibraryBooks
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPercent
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPlay
+import com.revolgenx.anilib.common.ui.icons.appicon.IcTv
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.common.ui.theme.primary
@@ -83,17 +92,17 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                 val items = remember {
                     listOf(
                         StatsNumberData(
-                            iconRes = if (isAnime) R.drawable.ic_tv else R.drawable.ic_library_books,
+                            icon = if (isAnime) AppIcons.IcTv else AppIcons.IcLibraryBooks,
                             label = totalLabel,
                             value = stats.count.toString()
                         ),
                         StatsNumberData(
-                            iconRes = if (isAnime) R.drawable.ic_play else R.drawable.ic_bookmark,
+                            icon = if (isAnime) AppIcons.IcPlay else AppIcons.IcBookmark,
                             label = countLabel,
                             value = if (isAnime) stats.episodesWatched.toString() else stats.chaptersRead.toString()
                         ),
                         StatsNumberData(
-                            iconRes = if (isAnime) R.drawable.ic_calendar else R.drawable.ic_book,
+                            icon = if (isAnime) AppIcons.IcCalendar else AppIcons.IcBook,
                             label = currentLabel,
                             value = if (isAnime) String.format(
                                 "%.2f",
@@ -101,7 +110,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                             ) else stats.volumesRead.toString()
                         ),
                         StatsNumberData(
-                            iconRes = R.drawable.ic_hourglass,
+                            icon = AppIcons.IcHourglass,
                             label = plannedLabel,
                             value = if (isAnime) String.format(
                                 "%.2f",
@@ -109,12 +118,12 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                             ) else stats.chaptersPlanned.toString()
                         ),
                         StatsNumberData(
-                            iconRes = R.drawable.ic_percent,
+                            icon = AppIcons.IcPercent,
                             label = meanScoreLabel,
                             value = stats.meanScore.toString()
                         ),
                         StatsNumberData(
-                            iconRes = R.drawable.ic_calculate,
+                            icon = AppIcons.IcCalculate,
                             label = standardDeviationLabel,
                             value = stats.standardDeviation.toString()
                         )
@@ -127,7 +136,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                 ) {
                     Grid(items = items) {
                         StatsNumberText(
-                            iconRes = it.iconRes,
+                            icon = it.icon,
                             label = it.label,
                             value = it.value
                         )
@@ -262,13 +271,13 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
 }
 
 private data class StatsNumberData(
-    @DrawableRes val iconRes: Int,
+    val icon: ImageVector,
     val label: String,
     val value: String
 )
 
 @Composable
-private fun StatsNumberText(@DrawableRes iconRes: Int, label: String, value: String) {
+private fun StatsNumberText(icon: ImageVector, label: String, value: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -283,7 +292,7 @@ private fun StatsNumberText(@DrawableRes iconRes: Int, label: String, value: Str
             Icon(
                 modifier = Modifier
                     .align(Alignment.CenterEnd),
-                painter = painterResource(id = iconRes),
+                imageVector = icon,
                 contentDescription = null,
                 tint = onSurfaceVariant
             )

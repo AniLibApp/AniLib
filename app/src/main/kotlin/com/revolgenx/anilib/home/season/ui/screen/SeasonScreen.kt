@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,25 +30,29 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.mediaScreen
-import com.revolgenx.anilib.common.ext.naDrawableRes
-import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
 import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronLeft
+import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronRight
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
+import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
@@ -57,10 +62,9 @@ import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.media.ui.model.toColor
-import com.revolgenx.anilib.media.ui.model.toDrawableRes
+import com.revolgenx.anilib.media.ui.model.toImageVector
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.type.MediaStatus
-import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -172,21 +176,23 @@ private fun SeasonItem(
                 Text(
                     stringResource(id = media.status.toStringRes()),
                     color = media.status.toColor(),
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
                 )
 
                 Text(
                     "${media.startDate?.toString().naText()} ~ ${
                         media.endDate?.toString().naText()
                     }",
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    color = onSurfaceVariant
                 )
                 Text(
                     stringResource(id = R.string.ep_d_s).format(
                         media.episodes.naText(),
                         media.duration.naText()
                     ),
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    color = onSurfaceVariant
                 )
 
                 Text(
@@ -206,10 +212,11 @@ private fun SeasonFilter(
     onPrevious: OnClick,
     onFilter: OnClick
 ) {
-    ElevatedCard(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(8.dp),
+        elevation = CardDefaults.cardElevation(1.dp)
     ) {
         val iconSize = 28.dp
         Row(
@@ -224,12 +231,13 @@ private fun SeasonFilter(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 val season = filter.season?.toStringRes().toStringResourceOrNa()
-                Icon(
-                    modifier = Modifier.size(28.dp),
-                    painter = painterResource(
-                        id = filter.season?.toDrawableRes().naDrawableRes()
-                    ), contentDescription = season
-                )
+                filter.season?.toImageVector()?.let {
+                    Icon(
+                        modifier = Modifier.size(28.dp),
+                        imageVector = it,
+                        contentDescription = season
+                    )
+                }
                 Text(
                     season,
                     style = MaterialTheme.typography.titleMedium
@@ -247,7 +255,7 @@ private fun SeasonFilter(
                     onClick = { onPrevious() }) {
                     Icon(
                         modifier = Modifier.size(iconSize),
-                        imageVector = Icons.Rounded.KeyboardArrowLeft,
+                        imageVector = AppIcons.IcChevronLeft,
                         contentDescription = "left"
                     )
                 }
@@ -255,7 +263,7 @@ private fun SeasonFilter(
                     onClick = { onNext() }) {
                     Icon(
                         modifier = Modifier.size(iconSize),
-                        imageVector = Icons.Rounded.KeyboardArrowRight,
+                        imageVector = AppIcons.IcChevronRight,
                         contentDescription = "right"
                     )
                 }
@@ -263,7 +271,7 @@ private fun SeasonFilter(
                     onClick = { onFilter() }) {
                     Icon(
                         modifier = Modifier.size(iconSize),
-                        painter = painterResource(id = R.drawable.ic_filter),
+                        imageVector = AppIcons.IcFilter,
                         contentDescription = "filter"
                     )
                 }

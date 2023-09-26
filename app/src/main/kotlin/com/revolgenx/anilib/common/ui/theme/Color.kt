@@ -3,6 +3,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.revolgenx.anilib.common.ext.SecondaryItemAlpha
 
 val md_theme_light_primary = Color(0xFF02A4F8)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
@@ -25,7 +26,7 @@ val md_theme_light_onBackground = Color(0xFF1A1C1E)
 val md_theme_light_surface = Color(0xFFF1F9FF)
 val md_theme_light_onSurface = Color(0xFF282B2E)
 val md_theme_light_surfaceVariant = Color(0xFFF1F9FF)
-val md_theme_light_onSurfaceVariant = Color(0xFF42474E)
+val md_theme_light_onSurfaceVariant = md_theme_light_onSurface.copy(SecondaryItemAlpha)
 val md_theme_light_outline = Color(0xFF72787E)
 val md_theme_light_inverseOnSurface = Color(0xFFF0F0F4)
 val md_theme_light_inverseSurface = Color(0xFF2F3033)
@@ -88,6 +89,7 @@ val status_hiatus = Color(0xFFFF6E40)
 val status_unknown = Color(0xFFD50000)
 
 val logout_color = Color(0xFFF8375B)
+val support_color = Color(0xFFE85D75)
 
 val rank_type_popular = Color(0xFFE85D75)
 val rank_type_rated = Color(0xFFF7BF63)

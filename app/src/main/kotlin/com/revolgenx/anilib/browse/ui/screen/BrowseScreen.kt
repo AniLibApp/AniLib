@@ -22,7 +22,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -53,6 +52,7 @@ import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ext.studioScreen
 import com.revolgenx.anilib.common.ext.userScreen
+import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
@@ -73,6 +73,11 @@ import com.revolgenx.anilib.studio.ui.component.StudioItem
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowDown
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import org.koin.androidx.compose.koinViewModel
 
 class BrowseScreen : AndroidScreen() {
@@ -221,7 +226,6 @@ fun BrowseScreenTopAppbar(
                         viewModel.refresh()
                     },
                     active = active,
-                    height = 50.dp,
                     onActiveChange = {
                         active = if (it && true/*viewModel.searchHistory.isNotEmpty()*/) {
                             it
@@ -234,30 +238,27 @@ fun BrowseScreenTopAppbar(
                     },
                     leadingIcon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_search),
+                            imageVector = AppIcons.IcSearch,
                             contentDescription = stringResource(id = R.string.search)
                         )
                     },
                     trailingIcon = {
                         Row {
                             if (viewModel.query.isNotEmpty()) {
-                                IconButton(onClick = {
+                                ActionMenu(
+                                    icon = AppIcons.IcCancel,
+                                    contentDescriptionRes = R.string.clear
+                                ) {
                                     viewModel.search = ""
                                     viewModel.refresh()
-                                }) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.ic_cancel),
-                                        contentDescription = stringResource(id = R.string.clear)
-                                    )
                                 }
                             }
-                            IconButton(onClick = {
 
-                            }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_filter),
-                                    contentDescription = stringResource(id = R.string.filter)
-                                )
+                            ActionMenu(
+                                icon = AppIcons.IcFilter,
+                                contentDescriptionRes = R.string.filter
+                            ) {
+
                             }
                         }
                     }
@@ -274,7 +275,7 @@ fun BrowseScreenTopAppbar(
                                     .size(20.dp)
                                     .clickable {
                                     },
-                                painter = painterResource(id = R.drawable.ic_cancel),
+                                imageVector = AppIcons.IcCancel,
                                 contentDescription = stringResource(id = R.string.clear)
                             )
                         })

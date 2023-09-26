@@ -44,6 +44,10 @@ val Typography = Typography(
         fontFamily = overpassFonts,
         platformStyle = PlatformTextStyle(includeFontPadding = true)
     ),
+    bodyMedium = defaultTypography.bodyMedium.copy(
+        fontFamily = overpassFonts,
+        platformStyle = PlatformTextStyle(includeFontPadding = true)
+    ),
     labelLarge = defaultTypography.labelLarge.copy(
         fontFamily = overpassFonts,
         fontWeight = FontWeight.Medium,

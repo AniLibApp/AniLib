@@ -11,6 +11,9 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcGroup
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonCheck
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 
 class UserSocialRelationScreen(private val userId: Int, private var isFollower: Boolean?) :
@@ -34,12 +37,12 @@ private val pages = listOf(
     UserRelationScreenPage(
         UserRelationScreenPageType.FOLLOWING,
         R.string.following,
-        R.drawable.ic_person_check
+        AppIcons.IcPersonCheck
     ),
     UserRelationScreenPage(
         UserRelationScreenPageType.FOLLOWERS,
         R.string.followers,
-        R.drawable.ic_group
+        AppIcons.IcGroup
     ),
 )
 

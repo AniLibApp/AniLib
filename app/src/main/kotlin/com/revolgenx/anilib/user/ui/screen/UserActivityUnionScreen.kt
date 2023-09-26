@@ -3,11 +3,7 @@ package com.revolgenx.anilib.user.ui.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +21,9 @@ import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConn
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCreate
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreenContent
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
@@ -44,12 +43,12 @@ fun UserActivityUnionScreen(viewModel: ActivityUnionViewModel) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ){
-                        ActionMenu(iconRes = R.drawable.ic_filter) {
+                        ActionMenu(icon = AppIcons.IcFilter) {
                         }
 
                         VerticalDivider(modifier = Modifier.height(20.dp), color = onSurfaceVariant)
 
-                        ActionMenu(iconRes = R.drawable.ic_create) {
+                        ActionMenu(icon = AppIcons.IcCreate) {
                             navigator.activityComposerScreen()
                         }
                     }

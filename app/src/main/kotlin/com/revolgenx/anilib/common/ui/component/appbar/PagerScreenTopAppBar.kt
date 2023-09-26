@@ -96,7 +96,7 @@ private fun <T> PagerScreenTabRow(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Icon(
-                                painter = painterResource(id = page.icon!!),
+                                imageVector = page.icon!!,
                                 contentDescription = pageTitle
                             )
                             Text(pageTitle)

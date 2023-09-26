@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
@@ -139,6 +140,7 @@ abstract class BaseActivity : ComponentActivity(), EventBusListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         createChannel()
 

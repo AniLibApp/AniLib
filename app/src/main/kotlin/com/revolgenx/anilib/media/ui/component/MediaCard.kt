@@ -40,7 +40,7 @@ import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.list.ui.model.toColor
-import com.revolgenx.anilib.list.ui.model.toDrawableRes
+import com.revolgenx.anilib.list.ui.model.toImageVector
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,7 +95,7 @@ fun MediaCard(
                         media.mediaListEntry?.let {
                             Icon(
                                 modifier = Modifier.size(12.dp),
-                                painter = it.status.toDrawableRes().toPainterResource(),
+                                imageVector = it.status.toImageVector(),
                                 tint = it.status.toColor(),
                                 contentDescription = null
                             )

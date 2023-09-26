@@ -25,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
@@ -33,6 +32,7 @@ import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.data.store.ThemeDataStore
 import com.revolgenx.anilib.common.ext.componentActivity
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
@@ -45,7 +45,6 @@ import com.revolgenx.anilib.common.ui.composition.LocalMainTabNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalMediaState
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.composition.LocalUserState
-import com.revolgenx.anilib.common.ui.screen.auth.LoginScreen
 import com.revolgenx.anilib.common.ui.screen.spoiler.SpoilerBottomSheet
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.common.ui.screen.transition.SlideTransition
@@ -58,6 +57,7 @@ import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 /*
 * todo: handle customtab cancel result
@@ -66,9 +66,10 @@ class MainActivity : BaseActivity() {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
-            AppTheme{
+            AppTheme() {
                 Navigator(
                     screen = MainActivityScreen,
                     disposeBehavior = NavigatorDisposeBehavior(false, false)
@@ -158,7 +159,7 @@ private fun RowScope.TabNavigationItem(tab: BaseTabScreen) {
         onClick = { tabNavigator.current = tab },
         icon = {
             Icon(
-                painter = painterResource(id = if (selected) tab.selectedIconRes!! else tab.iconRes!!),
+                imageVector = if (selected) tab.selectedIcon!! else tab.tabIcon!!,
                 contentDescription = tab.options.title
             )
         }

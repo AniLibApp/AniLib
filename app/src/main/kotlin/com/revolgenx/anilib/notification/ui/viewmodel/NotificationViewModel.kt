@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.notification.ui.viewmodel
 
-import com.revolgenx.anilib.common.data.store.AppDataStore
-import com.revolgenx.anilib.common.data.store.userId
+import com.revolgenx.anilib.common.data.store.AuthDataStore
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 import com.revolgenx.anilib.notification.data.field.NotificationField
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.first
 
 class NotificationViewModel(
     private val notificationService: NotificationService,
-    private val appDataStore: AppDataStore
+    private val authDataStore: AuthDataStore
 ) :
     PagingViewModel<NotificationModel, NotificationField, NotificationPagingSource>(initialize = false) {
 
@@ -20,8 +19,10 @@ class NotificationViewModel(
 
     init {
         launch {
-            field.userId = appDataStore.userId().first()
-            refresh()
+            authDataStore.userId.collect{ userId ->
+                field.userId = userId
+                refresh()
+            }
         }
     }
 

@@ -37,6 +37,8 @@ import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithValue
@@ -58,7 +60,7 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
     ScreenScaffold(
         topBar = {},
         floatingActionButton = {
-            DisappearingFAB(scrollState = scrollState, iconRes = R.drawable.ic_filter) {
+            DisappearingFAB(scrollState = scrollState, icon = AppIcons.IcFilter) {
                 //todo filter
             }
         },

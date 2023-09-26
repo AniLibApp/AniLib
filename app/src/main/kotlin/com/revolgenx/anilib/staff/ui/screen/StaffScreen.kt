@@ -10,6 +10,10 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcAbout
+import com.revolgenx.anilib.common.ui.icons.appicon.IcGroup
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterViewModel
@@ -33,12 +37,12 @@ enum class StaffScreenPageType {
 }
 
 private val pages = listOf(
-    StaffScreenPage(StaffScreenPageType.ABOUT, R.string.about, R.drawable.ic_about),
-    StaffScreenPage(StaffScreenPageType.MEDIA, R.string.media, R.drawable.ic_media),
+    StaffScreenPage(StaffScreenPageType.ABOUT, R.string.about, AppIcons.IcAbout),
+    StaffScreenPage(StaffScreenPageType.MEDIA, R.string.media, AppIcons.IcMedia),
     StaffScreenPage(
         StaffScreenPageType.VOICE_ROLES,
         R.string.staff_roles,
-        R.drawable.ic_group
+        AppIcons.IcGroup
     )
 )
 

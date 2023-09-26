@@ -22,6 +22,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -29,9 +30,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,27 +40,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.data.store.logout
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
-import com.revolgenx.anilib.common.ext.settingScreen
 import com.revolgenx.anilib.common.ext.userMediaListScreen
 import com.revolgenx.anilib.common.ext.userRelationScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
-import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
-import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.appbar.collapse
-import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localTabNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcBookOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcGroupOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMediaOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPerson
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonCheckOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSettings
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.common.util.OnClick
@@ -71,7 +76,6 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.screen.userStats.UserStatsScreen
 import com.revolgenx.anilib.user.ui.viewmodel.UserScreenPageType
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
-import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -80,8 +84,8 @@ class UserScreen(
     private val userName: String? = null,
     private val isTab: Boolean = false
 ) : BaseTabScreen() {
-    override val iconRes: Int = R.drawable.ic_person_outline
-    override val selectedIconRes: Int = R.drawable.ic_person
+    override val tabIcon: ImageVector = AppIcons.IcPersonOutline
+    override val selectedIcon: ImageVector = AppIcons.IcPerson
 
     override val options: TabOptions
         @Composable
@@ -134,8 +138,6 @@ private fun UserScreenContent(
         viewModel.getResource()
     }
 
-    val scope = rememberCoroutineScope()
-    val context = localContext()
     val pagerState = rememberPagerState() { pages.size }
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState(), canScroll = {
@@ -146,16 +148,13 @@ private fun UserScreenContent(
     ScreenScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
+            val isLoggedInUser = viewModel.isLoggedInUser.collectAsState(initial = false)
             UserScreenTopAppbar(
                 viewModel = viewModel,
                 scrollBehavior = scrollBehavior,
-                isLoggedInUser = viewModel.isLoggedInUser,
-                isTab = isTab,
-                onLogout = {
-                    scope.launch {
-                        context.logout()
-                    }
-                })
+                isLoggedInUser = isLoggedInUser.value,
+                isTab = isTab
+            )
         },
         contentWindowInsets = emptyWindowInsets()
     ) {
@@ -209,9 +208,8 @@ private fun UserScreenContent(
 private fun UserScreenTopAppbar(
     viewModel: UserViewModel,
     scrollBehavior: TopAppBarScrollBehavior,
-    isLoggedInUser: Boolean = false,
+    isLoggedInUser: Boolean,
     isTab: Boolean = false,
-    onLogout: OnClick
 ) {
     val tabNavigator = if (isTab) localTabNavigator() else null
     val navigator = localNavigator()
@@ -305,7 +303,7 @@ private fun UserScreenTopAppbar(
                         UserCountInfo(
                             label = stringResource(id = R.string.following),
                             count = user?.following.orZero().prettyNumberFormat(),
-                            iconRes = R.drawable.ic_person_check_outline,
+                            icon = AppIcons.IcPersonCheckOutline,
                             onClick = {
                                 user?.id?.let {
                                     navigator.userRelationScreen(userId = it)
@@ -315,7 +313,7 @@ private fun UserScreenTopAppbar(
                         UserCountInfo(
                             label = stringResource(id = R.string.followers),
                             count = user?.followers.orZero().prettyNumberFormat(),
-                            iconRes = R.drawable.ic_group_outline,
+                            icon = AppIcons.IcGroupOutline,
                             onClick = {
                                 user?.id?.let {
                                     navigator.userRelationScreen(userId = it, true)
@@ -329,7 +327,7 @@ private fun UserScreenTopAppbar(
                         UserCountInfo(
                             label = stringResource(id = R.string.anime),
                             count = user?.statistics?.anime?.count.orZero().prettyNumberFormat(),
-                            iconRes = R.drawable.ic_media_outline,
+                            icon = AppIcons.IcMediaOutline,
                             onClick = {
                                 if (isTab) {
                                     tabNavigator?.current = AnimeListScreen
@@ -343,7 +341,7 @@ private fun UserScreenTopAppbar(
                         UserCountInfo(
                             label = stringResource(id = R.string.manga),
                             count = user?.statistics?.manga?.count.orZero().prettyNumberFormat(),
-                            iconRes = R.drawable.ic_book_outline,
+                            icon = AppIcons.IcBookOutline,
                             onClick = {
                                 if (isTab) {
                                     tabNavigator?.current = MangaListScreen
@@ -370,49 +368,21 @@ private fun UserScreenTopAppbar(
         },
         navigationIcon = if (isTab.not()) null else ({}),
         actions = { isCollapsed ->
-            UserScreenActions(
-                isTab = isTab,
-                isCollapsed = isCollapsed,
-                onLogout = onLogout
-            )
+            ActionMenu(icon = AppIcons.IcSettings, tonalButton = !isCollapsed){
+                SettingScreen.isTab = false
+                navigator.push(SettingScreen)
+            }
         }
     )
 
 
 }
 
-
-@Composable
-private fun UserScreenActions(
-    isTab: Boolean = false,
-    isCollapsed: Boolean,
-    onLogout: OnClick
-) {
-    val navigator = localNavigator()
-
-    ActionMenu(iconRes = R.drawable.ic_settings, tonalButton = !isCollapsed) {
-        navigator.settingScreen()
-    }
-
-    if (isTab) {
-        ShowIfLoggedIn {
-            OverflowMenu {
-                OverflowMenuItem(
-                    textRes = R.string.logout,
-                    iconRes = R.drawable.ic_logout,
-                    onClick = onLogout
-                )
-            }
-        }
-    }
-}
-
-
 @Composable
 private fun UserCountInfo(
     label: String,
     count: String,
-    iconRes: Int? = null,
+    icon: ImageVector? = null,
     onClick: OnClick = {}
 ) {
     Row(
@@ -422,10 +392,11 @@ private fun UserCountInfo(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        iconRes?.let {
+        icon?.let {
             Icon(
                 modifier = Modifier.size(17.dp),
-                painter = painterResource(id = iconRes), contentDescription = null,
+                imageVector = icon,
+                contentDescription = null,
                 tint = onSurfaceVariant
             )
         }

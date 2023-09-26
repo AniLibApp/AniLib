@@ -8,6 +8,7 @@ import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,11 +54,13 @@ fun MarkdownText(
     overflow: TextOverflow = TextOverflow.Clip,
     onClick: OnClick? = null
 ) {
-    val textSize = if (fontSize.isSpecified) {
-        with(LocalDensity.current) {
-            fontSize.toPx()
+    val textSize = with(LocalDensity.current) {
+            if (fontSize.isSpecified) {
+                fontSize.toPx()
+            } else {
+                LocalTextStyle.current.fontSize.toPx()
+            }
         }
-    } else 0f
 
     AndroidView(
         modifier = modifier.fillMaxWidth(),

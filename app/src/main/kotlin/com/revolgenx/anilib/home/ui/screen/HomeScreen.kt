@@ -2,7 +2,6 @@ package com.revolgenx.anilib.home.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,6 +10,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +22,11 @@ import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHome
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHomeOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcNotification
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.home.explore.ui.screen.ExploreScreen
@@ -31,8 +36,8 @@ import com.revolgenx.anilib.notification.ui.screen.NotificationScreen
 import com.revolgenx.anilib.review.ui.screen.ReviewListScreen
 
 object HomeScreen : BaseTabScreen() {
-    override val iconRes: Int = R.drawable.ic_home_outline
-    override val selectedIconRes: Int = R.drawable.ic_home
+    override val tabIcon: ImageVector = AppIcons.IcHomeOutline
+    override val selectedIcon: ImageVector = AppIcons.IcHome
     override val options: TabOptions
         @Composable
         get() {
@@ -85,11 +90,11 @@ fun HomeScreenContent() {
         scrollBehavior = scrollBehavior,
         navigationIcon = {},
         actions = {
-            ActionMenu(iconRes = R.drawable.ic_search) {
+            ActionMenu(icon = AppIcons.IcSearch) {
                 navigator.push(BrowseScreen())
             }
             ShowIfLoggedIn {
-                ActionMenu(iconRes = R.drawable.ic_notification) {
+                ActionMenu(icon = AppIcons.IcNotification) {
                     navigator.push(NotificationScreen())
                 }
             }

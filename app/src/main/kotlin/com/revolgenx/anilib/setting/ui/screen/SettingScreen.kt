@@ -1,52 +1,75 @@
 package com.revolgenx.anilib.setting.ui.screen
 
 import android.content.Context
+import android.content.Intent
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.common.data.constant.Config
-import com.revolgenx.anilib.common.data.store.logout
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.openLink
-import com.revolgenx.anilib.common.ext.toPainterResource
 import com.revolgenx.anilib.common.ext.toStringResource
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.common.ShowIfNotLoggedIn
 import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcAnilib
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
+import com.revolgenx.anilib.common.ui.icons.appicon.IcInfoOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcList
+import com.revolgenx.anilib.common.ui.icons.appicon.IcLogin
+import com.revolgenx.anilib.common.ui.icons.appicon.IcLogout
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
+import com.revolgenx.anilib.common.ui.icons.appicon.IcNotification
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPalette
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPerson
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonAdd
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
+import com.revolgenx.anilib.common.ui.icons.appicon.IcTune
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.common.ui.theme.logout_color
+import com.revolgenx.anilib.common.ui.theme.support_color
 import com.revolgenx.anilib.common.util.versionName
-import com.revolgenx.anilib.setting.ui.component.SettingItem
+import com.revolgenx.anilib.setting.ui.component.TextPreferenceItem
+import com.revolgenx.anilib.setting.ui.viewmodel.SettingViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 object SettingScreen : BaseTabScreen() {
     var isTab = false
 
-    override val iconRes: Int = R.drawable.ic_person_outline
-    override val selectedIconRes: Int = R.drawable.ic_person
+    override val tabIcon: ImageVector = AppIcons.IcPersonOutline
+    override val selectedIcon: ImageVector = AppIcons.IcPerson
 
     override val options: TabOptions
         @Composable
@@ -70,8 +93,12 @@ object SettingScreen : BaseTabScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreenContent(isTab: Boolean) {
+
+    val viewModel:SettingViewModel = koinViewModel()
     val context = localContext()
     val scope = rememberCoroutineScope()
+    val navigator = localNavigator()
+
     val openLoginDialog = remember {
         mutableStateOf(false)
     }
@@ -84,15 +111,16 @@ fun SettingScreenContent(isTab: Boolean) {
     }
 
     ScreenScaffold(
-        title = R.string.settings.toStringResource(),
+        title = stringResource(id = R.string.setting_label),
         topBar = (@Composable {}).takeIf { isTab },
         actions = {
             ActionMenu(
-                iconRes = R.drawable.ic_search
+                icon = AppIcons.IcSearch
             ) {
-
+                navigator.push(SearchSettingScreen)
             }
-        }
+        },
+        contentWindowInsets = if(isTab) WindowInsets.statusBars else ScaffoldDefaults.contentWindowInsets
     ) {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
@@ -107,7 +135,7 @@ fun SettingScreenContent(isTab: Boolean) {
                         modifier = Modifier
                             .size(64.dp)
                             .align(Alignment.Center),
-                        painter = R.drawable.ic_anilib.toPainterResource(),
+                        imageVector = AppIcons.IcAnilib,
                         contentDescription = null,
                     )
 
@@ -115,10 +143,10 @@ fun SettingScreenContent(isTab: Boolean) {
                         modifier = Modifier.align(Alignment.TopEnd)
                     ) {
                         ActionMenu(
-                            iconRes = R.drawable.ic_search,
+                            icon = AppIcons.IcSearch,
                             tonalButton = true
                         ) {
-
+                            navigator.push(SearchSettingScreen)
                         }
                     }
                 }
@@ -126,18 +154,18 @@ fun SettingScreenContent(isTab: Boolean) {
             }
 
             ShowIfNotLoggedIn {
-                SettingItem(
-                    icon = R.drawable.ic_login,
-                    title = R.string.login.toStringResource(),
-                    subtitle = R.string.log_into_anilist.toStringResource()
+                TextPreferenceItem(
+                    icon = AppIcons.IcLogin,
+                    title = R.string.setting_label_login.toStringResource(),
+                    subtitle = R.string.setting_log_into_anilist.toStringResource()
                 ) {
                     openLoginDialog.value = true
                 }
 
-                SettingItem(
-                    icon = R.drawable.ic_person_add,
-                    title = R.string.sign_up.toStringResource(),
-                    subtitle = R.string.sign_up_to_anilist.toStringResource()
+                TextPreferenceItem(
+                    icon = AppIcons.IcPersonAdd,
+                    title = R.string.setting_label_sign_up.toStringResource(),
+                    subtitle = R.string.setting_sign_up_to_anilist.toStringResource()
                 ) {
                     openRegisterDialog.value = true
                 }
@@ -145,55 +173,68 @@ fun SettingScreenContent(isTab: Boolean) {
                 HorizontalDivider()
             }
 
-            SettingItem(
-                icon = R.drawable.ic_tune,
-                title = R.string.general.toStringResource(),
-                subtitle = R.string.general_setting_desc.toStringResource()
-            )
+            TextPreferenceItem(
+                icon = AppIcons.IcTune,
+                title = R.string.setting_label_general.toStringResource(),
+                subtitle = R.string.setting_general_setting_desc.toStringResource()
+            ){
+                navigator.push(GeneralSettingScreen)
 
-            SettingItem(
-                icon = R.drawable.ic_palette,
-                title = R.string.appearance.toStringResource(),
-                subtitle = R.string.appearance_desc.toStringResource()
-            )
+            }
 
-            SettingItem(
-                icon = R.drawable.ic_media,
-                title = R.string.anime_and_manga.toStringResource(),
-                subtitle = R.string.anime_and_manga_setting_desc.toStringResource()
+            TextPreferenceItem(
+                icon =AppIcons.IcPalette,
+                title = R.string.setting_label_appearance.toStringResource(),
+                subtitle = R.string.setting_appearance_desc.toStringResource()
+            ){
+                navigator.push(AppearanceSettingScreen)
+            }
+
+            TextPreferenceItem(
+                icon = AppIcons.IcMedia,
+                title = R.string.setting_label_anime_and_manga.toStringResource(),
+                subtitle = R.string.setting_anime_and_manga_setting_desc.toStringResource()
             )
 
             ShowIfLoggedIn {
-                SettingItem(
-                    icon = R.drawable.ic_list,
-                    title = R.string.lists.toStringResource(),
-                    subtitle = R.string.list_setting_desc.toStringResource()
+                TextPreferenceItem(
+                    icon = AppIcons.IcList,
+                    title = R.string.setting_label_lists.toStringResource(),
+                    subtitle = R.string.setting_list_setting_desc.toStringResource()
                 )
 
-                SettingItem(
-                    icon = R.drawable.ic_notification,
+                TextPreferenceItem(
+                    icon = AppIcons.IcNotification,
                     title = R.string.notifications.toStringResource(),
-                    subtitle = R.string.notifications_setting_desc.toStringResource()
+                    subtitle = R.string.setting_notifications_setting_desc.toStringResource()
                 )
             }
 
-            SettingItem(
-                icon = R.drawable.ic_filter,
+            TextPreferenceItem(
+                icon = AppIcons.IcFilter,
                 title = R.string.filter.toStringResource(),
-                subtitle = R.string.filter_desc.toStringResource()
+                subtitle = R.string.setting_filter_desc.toStringResource()
             )
 
 
-            SettingItem(
-                icon = R.drawable.ic_info_outline,
+            TextPreferenceItem(
+                icon = AppIcons.IcHeart,
+                title = R.string.setting_label_support.toStringResource(),
+                subtitle = R.string.setting_support_desc.toStringResource()
+                    .format(versionName),
+                iconTint = support_color
+            )
+
+            TextPreferenceItem(
+                icon = AppIcons.IcInfoOutline,
                 title = R.string.about.toStringResource(),
-                subtitle = R.string.about_desc.toStringResource()
+                subtitle = R.string.setting_about_desc.toStringResource()
                     .format(versionName)
             )
 
             ShowIfLoggedIn {
-                SettingItem(
-                    icon = R.drawable.ic_logout,
+                TextPreferenceItem(
+                    icon = AppIcons.IcLogout,
                     title = R.string.logout.toStringResource(),
                     iconTint = logout_color
                 ) {
@@ -206,8 +247,8 @@ fun SettingScreenContent(isTab: Boolean) {
 
     ConfirmationDialog(
         openDialog = openLoginDialog,
-        message = stringResource(id = R.string.login_signup_notice),
-        title = stringResource(id = R.string.important_to_know)
+        message = stringResource(id = R.string.setting_login_signup_notice),
+        title = stringResource(id = R.string.setting_important_to_know)
     ) {
         login(context)
     }
@@ -215,19 +256,25 @@ fun SettingScreenContent(isTab: Boolean) {
 
     ConfirmationDialog(
         openDialog = openRegisterDialog,
-        message = stringResource(id = R.string.login_signup_notice),
-        title = stringResource(id = R.string.important_to_know)
+        message = stringResource(id = R.string.setting_login_signup_notice),
+        title = stringResource(id = R.string.setting_important_to_know)
     ) {
         register(context)
     }
 
     ConfirmationDialog(
         openDialog = openLogoutDialog,
-        message = stringResource(id = R.string.are_you_sure_you_want_to_log_out),
+        message = stringResource(id = R.string.setting_are_you_sure_you_want_to_log_out),
         title = stringResource(id = R.string.logout)
     ) {
         scope.launch {
-            context.logout()
+            viewModel.authDataStore.logout()
+            context.startActivity(Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
+            if (context is MainActivity) {
+                context.finish()
+            }
         }
     }
 

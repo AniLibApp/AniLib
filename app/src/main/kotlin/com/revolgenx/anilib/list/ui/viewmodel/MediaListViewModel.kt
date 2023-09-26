@@ -7,9 +7,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.revolgenx.anilib.common.data.store.AppDataStore
+import com.revolgenx.anilib.common.data.store.AuthDataStore
 import com.revolgenx.anilib.common.data.store.MediaListFilterDataStore
-import com.revolgenx.anilib.common.data.store.runUserId
 import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ext.launchIO
@@ -22,19 +21,18 @@ import com.revolgenx.anilib.list.data.sort.MediaListCollectionSortComparator
 import com.revolgenx.anilib.list.ui.model.MediaListCollectionModel
 import com.revolgenx.anilib.list.ui.model.MediaListModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 abstract class MediaListViewModel(
     private val mediaListService: MediaListService,
-    private val appDataStore: AppDataStore,
+    private val authDataStore: AuthDataStore,
     private val mediaListDataStore: MediaListFilterDataStore
 ) :
     ResourceViewModel<MediaListCollectionModel, MediaListCollectionField>() {
 
-    private val loggedInUserId = appDataStore.runUserId()
-
     private val handler = Handler(Looper.getMainLooper())
     private val sortingComparator = MediaListCollectionSortComparator()
-    private val isLoggedInUser get() = loggedInUserId == field.userId
+    private val isLoggedInUser = authDataStore.userId.map { field.userId == it }
 
     var filter: MediaListCollectionFilter? by mutableStateOf(null)
     var mediaListCollection = mutableStateListOf<MediaListModel>()
@@ -67,14 +65,16 @@ abstract class MediaListViewModel(
 
     override fun onInit() {
         launch {
-            if (isLoggedInUser) {
-                mediaListDataStore.data.collect {
-                    filter = it
+            isLoggedInUser.collect { isLoggedIn ->
+                if (isLoggedIn) {
+                    mediaListDataStore.data.collect {
+                        filter = it
+                        onFilterUpdate()
+                    }
+                } else {
+                    filter = MediaListCollectionFilter()
                     onFilterUpdate()
                 }
-            } else {
-                filter = MediaListCollectionFilter()
-                onFilterUpdate()
             }
         }
     }
@@ -178,26 +178,30 @@ abstract class MediaListViewModel(
     fun updateCurrentGroupName(groupName: String) {
         filter ?: return
         launch {
-            if (isLoggedInUser) {
-                mediaListDataStore.updateData {
-                    it.copy(groupName = groupName)
+            isLoggedInUser.collect { isLoggedIn ->
+                if (isLoggedIn) {
+                    mediaListDataStore.updateData {
+                        it.copy(groupName = groupName)
+                    }
+                } else {
+                    filter = filter?.copy(groupName = groupName)
+                    onFilterUpdate()
                 }
-            } else {
-                filter = filter?.copy(groupName = groupName)
-                onFilterUpdate()
             }
         }
     }
 
     fun updateFilter(filter: MediaListCollectionFilter) {
         launch {
-            if (isLoggedInUser) {
-                mediaListDataStore.updateData {
-                    filter
+            isLoggedInUser.collect { isLoggedIn ->
+                if (isLoggedIn) {
+                    mediaListDataStore.updateData {
+                        filter
+                    }
+                } else {
+                    this@MediaListViewModel.filter = filter
+                    onFilterUpdate()
                 }
-            } else {
-                this@MediaListViewModel.filter = filter
-                onFilterUpdate()
             }
         }
     }

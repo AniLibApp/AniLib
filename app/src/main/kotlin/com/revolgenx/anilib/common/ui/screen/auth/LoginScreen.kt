@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -24,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,14 +37,20 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.Config
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcInfo
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPerson
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPin
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSettings
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 
 
 object LoginScreen : BaseTabScreen() {
 
-    override val iconRes: Int = R.drawable.ic_person_outline
-    override val selectedIconRes: Int = R.drawable.ic_person
+    override val tabIcon: ImageVector = AppIcons.IcPersonOutline
+    override val selectedIcon: ImageVector = AppIcons.IcPerson
 
     override val options: TabOptions
         @Composable
@@ -90,11 +96,11 @@ private fun LoginScreenContent() {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_pin),
-                            contentDescription = stringResource(id = R.string.important_to_know)
+                            imageVector = AppIcons.IcPin,
+                            contentDescription = stringResource(id = R.string.setting_important_to_know)
                         )
                         Text(
-                            text = stringResource(id = R.string.important_to_know),
+                            text = stringResource(id = R.string.setting_important_to_know),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -107,11 +113,11 @@ private fun LoginScreenContent() {
                     OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = {
                         login(context)
                     }) {
-                        Text(text = stringResource(id = R.string.login))
+                        Text(text = stringResource(id = R.string.setting_label_login))
                     }
 
                     Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
-                        Text(text = stringResource(id = R.string.sign_up))
+                        Text(text = stringResource(id = R.string.setting_label_sign_up))
                     }
 
                     HorizontalDivider()
@@ -126,15 +132,15 @@ private fun LoginScreenContent() {
                             navigator.push(SettingScreen)
                         }) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_settings),
-                                contentDescription = stringResource(id = R.string.settings)
+                                imageVector = AppIcons.IcSettings,
+                                contentDescription = stringResource(id = R.string.setting_label)
                             )
                             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                            Text(text = stringResource(id = R.string.settings))
+                            Text(text = stringResource(id = R.string.setting_label))
                         }
                         OutlinedButton(onClick = { /*TODO*/ }) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_info),
+                                imageVector = AppIcons.IcInfo,
                                 contentDescription = stringResource(id = R.string.about)
                             )
                             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))

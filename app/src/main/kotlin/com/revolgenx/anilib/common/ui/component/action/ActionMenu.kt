@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.common.ui.component.action
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ColumnScope
@@ -28,6 +27,9 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcBack
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
 import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import com.revolgenx.anilib.common.util.OnClick
 
@@ -35,8 +37,7 @@ const val ActionMenuContainerAlpha = 0.17f
 
 @Composable
 fun ActionMenu(
-    @DrawableRes iconRes: Int? = null,
-    imageVector: ImageVector? = null,
+    icon: ImageVector? = null,
     @StringRes contentDescriptionRes: Int? = null,
     tonalButton: Boolean = false,
     onClick: OnClick,
@@ -49,16 +50,14 @@ fun ActionMenu(
             )
         ) {
             ActionMenuIcon(
-                iconRes,
-                imageVector,
+                icon,
                 contentDescriptionRes,
             )
         }
     } else {
         IconButton(onClick = onClick) {
             ActionMenuIcon(
-                iconRes,
-                imageVector,
+                icon,
                 contentDescriptionRes,
             )
         }
@@ -68,16 +67,9 @@ fun ActionMenu(
 
 @Composable
 private fun ActionMenuIcon(
-    @DrawableRes iconRes: Int?,
     imageVector: ImageVector?,
     @StringRes contentDescriptionRes: Int?,
 ) {
-    if (iconRes != null) {
-        Icon(
-            painter = painterResource(id = iconRes),
-            contentDescription = contentDescriptionRes?.let { stringResource(id = contentDescriptionRes) }
-        )
-    }
     if (imageVector != null) {
         Icon(
             imageVector = imageVector,
@@ -88,7 +80,7 @@ private fun ActionMenuIcon(
 
 @Composable
 fun OverflowMenu(
-    @DrawableRes overflowIconRes: Int? = null,
+    icon: ImageVector? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
     var isOpen by remember { mutableStateOf(false) }
@@ -96,7 +88,7 @@ fun OverflowMenu(
         isOpen = isOpen.not()
     }) {
         Icon(
-            painter = painterResource(id = overflowIconRes ?: R.drawable.ic_more_horiz),
+            imageVector = icon ?: AppIcons.IcMoreHoriz,
             contentDescription = stringResource(id = R.string.more),
         )
     }
@@ -113,12 +105,12 @@ fun OverflowMenu(
 
 @Composable
 fun OverflowMenuItem(
-    @StringRes textRes: Int,
-    @DrawableRes iconRes: Int? = null,
-    @StringRes contentDescriptionRes: Int? = null,
-    onClick: OnClick,
     modifier: Modifier = Modifier,
+    @StringRes textRes: Int,
+    icon: ImageVector? = null,
+    @StringRes contentDescriptionRes: Int? = null,
     isChecked: Boolean = false,
+    onClick: OnClick,
     onCheckedChange: ((Boolean) -> Unit)? = null,
 ) {
     DropdownMenuItem(
@@ -132,12 +124,11 @@ fun OverflowMenuItem(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    iconRes?.let {
+                    icon?.let {
                         Icon(
-                            painterResource(id = it),
-                            contentDescription = (contentDescriptionRes ?: textRes).let {
-                                stringResource(id = it)
-                            })
+                            imageVector = it,
+                            contentDescription = stringResource(id = (contentDescriptionRes ?: textRes))
+                        )
                     }
                     Text(stringResource(id = textRes))
                 }
@@ -153,12 +144,12 @@ fun OverflowMenuItem(
 
 @Composable
 fun NavigationIcon(
-    @DrawableRes icon: Int? = null,
+    icon: ImageVector? = null,
     tonalButton: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
     val navigator = LocalMainNavigator.current
-    ActionMenu(iconRes = icon ?: R.drawable.ic_back, tonalButton = tonalButton) {
+    ActionMenu(icon = icon ?: AppIcons.IcBack, tonalButton = tonalButton) {
         onClick?.invoke() ?: navigator.pop()
     }
 }

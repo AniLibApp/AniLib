@@ -2,6 +2,7 @@ package com.revolgenx.anilib.common.data.store
 
 import android.content.Context
 import android.content.Intent
+import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -15,60 +16,42 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 
-val authTokenKey = stringPreferencesKey("auth_token_key")
-val userIdKey = intPreferencesKey("user_id_key")
-
-fun AppDataStore.token() = data.map { it[authTokenKey] }
-fun AppDataStore.userId() = data.map { it[userIdKey] }
-fun AppDataStore.isLoggedIn() = data.map { it[userIdKey] != null }
-
-fun Context.userId() = appDataStore.userId()
-
-fun AppDataStore.runUserId() = runBlocking { userId().first() }
-
-suspend fun Context.login(token: String) {
-    val userId = JWT(token).subject!!.trim().toInt()
-    appDataStore.edit { pref ->
-        pref[authTokenKey] = token
-        pref[userIdKey] = userId
+class AuthDataStore(private val dataStore: PreferencesDataStore) {
+    companion object {
+        val authTokenKey = stringPreferencesKey("auth_token_key")
+        val userIdKey = intPreferencesKey("user_id_key")
     }
-}
 
-suspend fun Context.logout() {
-    appDataStore.edit { pref ->
-        pref.remove(authTokenKey)
-        pref.remove(userIdKey)
+    val token = dataStore.data.map { it[authTokenKey] }
+    val userId = dataStore.data.map { it[userIdKey] }
+    val isLoggedIn = dataStore.data.map { it[userIdKey] != null }
+    fun continueIfLoggedIn(
+        scope: CoroutineScope,
+        callback: OnClick
+    ) {
+        scope.launch {
+            userId.collect { id ->
+                if (id != null) {
+                    callback.invoke()
+                }
+            }
+        }
     }
-    startActivity(Intent(this, MainActivity::class.java).apply {
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    })
-    if (this is MainActivity) {
-        finish()
+
+    suspend fun login(token: String) {
+        val userId = JWT(token).subject!!.trim().toInt()
+        dataStore.edit { pref ->
+            pref[authTokenKey] = token
+            pref[userIdKey] = userId
+        }
     }
-}
 
-
-fun AppDataStore.continueIfLoggedIn(
-    scope: CoroutineScope,
-    callback: OnClick
-) {
-    scope.launch {
-        val userId = this@continueIfLoggedIn.userId().first()
-        if (userId != null) {
-            callback.invoke()
+    suspend fun logout() {
+        dataStore.edit { pref ->
+            pref.remove(authTokenKey)
+            pref.remove(userIdKey)
         }
     }
 }
 
-fun Context.continueIfLoggedIn(
-    scope: CoroutineScope,
-    callback: OnClick
-) {
-    val dataStore = this.appDataStore
-    scope.launch {
-        dataStore.token().first()?.let {
-            callback.invoke()
-        }
-    }
-}
 

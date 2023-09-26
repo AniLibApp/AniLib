@@ -334,25 +334,32 @@
     <!--Media Screen-->
 
     <!--Settings-->
-    <string name="settings">Settings</string>
-    <string name="important_to_know">Important to know</string>
-    <string name="login">Login</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="log_into_anilist">Log into AniList</string>
-    <string name="sign_up_to_anilist">Sign up to AniList</string>
-    <string name="general">General</string>
-    <string name="general_setting_desc">App language</string>
-    <string name="appearance">Appearance</string>
-    <string name="appearance_desc">App theme</string>
-    <string name="login_signup_notice">You\'ll be redirected to anilist.co to login/register. Make sure browser such as Chrome is installed and the URL is anilist.co before entering your credentials.</string>
-    <string name="anime_and_manga">Anime &amp; Manga</string>
-    <string name="anime_and_manga_setting_desc">Title language, airing notifications</string>
-    <string name="filter_desc">Filter tags, genre, etc</string>
-    <string name="about_desc">AniLib %1$s</string>
-    <string name="lists">Lists</string>
-    <string name="list_setting_desc">Scoring system, advanced scoring</string>
-    <string name="notifications_setting_desc">Activity subscriptions, social, site data changes</string>
-    <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
+    <string name="setting_label">Settings</string>
+    <string name="setting_important_to_know">Important to know</string>
+    <string name="setting_label_login">Login</string>
+    <string name="setting_label_sign_up">Sign Up</string>
+    <string name="setting_log_into_anilist">Log into AniList</string>
+    <string name="setting_sign_up_to_anilist">Sign up to AniList</string>
+    <string name="setting_label_general">General</string>
+    <string name="setting_general_setting_desc">App language</string>
+    <string name="setting_label_appearance">Appearance</string>
+    <string name="setting_appearance_desc">App theme</string>
+    <string name="setting_login_signup_notice">You\'ll be redirected to anilist.co to login/register. Make sure browser such as Chrome is installed and the URL is anilist.co before entering your credentials.</string>
+    <string name="setting_label_anime_and_manga">Anime &amp; Manga</string>
+    <string name="setting_anime_and_manga_setting_desc">Title language, airing notifications</string>
+    <string name="setting_filter_desc">Filter tags, genre, etc</string>
+    <string name="setting_about_desc">AniLib %1$s</string>
+    <string name="setting_label_lists">Lists</string>
+    <string name="setting_list_setting_desc">Scoring system, advanced scoring</string>
+    <string name="setting_notifications_setting_desc">Activity subscriptions, social, site data changes</string>
+    <string name="setting_are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
+    <string name="setting_label_support">Support</string>
+    <string name="setting_support_desc">Support the app</string>
+    <string name="setting_placeholder_search">Search Settings</string>
+    <string name="setting_theme_dark_mode">Dark mode</string>
+    <string name="theme_dark_follow_system">Follow system</string>
+    <string name="theme_dark_off">Off</string>
+    <string name="theme_dark_on">On</string>
     <!--Settings-->
 
 </resources>

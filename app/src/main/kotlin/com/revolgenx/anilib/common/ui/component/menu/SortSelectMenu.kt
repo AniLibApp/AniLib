@@ -23,6 +23,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowDownward
+import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowUpward
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 
 
@@ -56,12 +59,12 @@ fun SortSelectMenu(
         val item = selectedItem
         if (item != null) {
             val orderIcon = if (item.order == AlSortOrder.ASC) {
-                R.drawable.round_arrow_upward
+                AppIcons.IcArrowUpward
             } else {
-                R.drawable.round_arrow_downward
+                AppIcons.IcArrowDownward
             }
             Icon(
-                painter = painterResource(id = orderIcon),
+                imageVector = orderIcon,
                 contentDescription = item.title
             )
         }
@@ -90,8 +93,8 @@ fun SortSelectMenu(
 
         DropdownMenu(
             modifier = modifier
-            .exposedDropdownSize()
-            .height(height = menuItemHeight),
+                .exposedDropdownSize()
+                .height(height = menuItemHeight),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
@@ -115,12 +118,12 @@ fun SortSelectMenu(
                     leadingIcon = {
                         if (selectedItem == s) {
                             val orderIcon = if (s.order == AlSortOrder.ASC) {
-                                R.drawable.round_arrow_upward
+                                AppIcons.IcArrowUpward
                             } else {
-                                R.drawable.round_arrow_downward
+                                AppIcons.IcArrowDownward
                             }
                             Icon(
-                                painter = painterResource(id = orderIcon),
+                                imageVector = orderIcon,
                                 contentDescription = s.title
                             )
                         }

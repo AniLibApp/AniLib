@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.list.ui.model
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +7,14 @@ import androidx.compose.ui.res.stringArrayResource
 import com.revolgenx.anilib.MediaListEntryQuery
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.tuples.MutablePair
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcAutorenew
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCheck
+import com.revolgenx.anilib.common.ui.icons.appicon.IcDropped
+import com.revolgenx.anilib.common.ui.icons.appicon.IcInfo
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPaused
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPlanning
+import com.revolgenx.anilib.common.ui.icons.appicon.IcWatching
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
@@ -106,15 +113,15 @@ fun MediaListStatus?.toStringRes(mediaType: MediaType): Int {
         else -> R.string.unknown
     }
 }
-@DrawableRes
-fun MediaListStatus?.toDrawableRes() = when (this) {
-    MediaListStatus.CURRENT -> R.drawable.ic_watching
-    MediaListStatus.PLANNING -> R.drawable.ic_planning
-    MediaListStatus.COMPLETED -> R.drawable.ic_check
-    MediaListStatus.DROPPED -> R.drawable.ic_dropped
-    MediaListStatus.PAUSED -> R.drawable.ic_paused
-    MediaListStatus.REPEATING -> R.drawable.ic_autorenew
-    else -> R.drawable.ic_info
+
+fun MediaListStatus?.toImageVector() = when (this) {
+    MediaListStatus.CURRENT -> AppIcons.IcWatching
+    MediaListStatus.PLANNING -> AppIcons.IcPlanning
+    MediaListStatus.COMPLETED -> AppIcons.IcCheck
+    MediaListStatus.DROPPED -> AppIcons.IcDropped
+    MediaListStatus.PAUSED -> AppIcons.IcPaused
+    MediaListStatus.REPEATING -> AppIcons.IcAutorenew
+    else -> AppIcons.IcInfo
 }
 
 fun MediaListStatus.toAlMediaListStatus() = when (this) {

@@ -2,10 +2,18 @@ package com.revolgenx.anilib.media.ui.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.data.store.AppDataStore
-import com.revolgenx.anilib.common.data.store.isLoggedIn
+import com.revolgenx.anilib.common.data.store.AuthDataStore
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ext.orZero
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFire
+import com.revolgenx.anilib.common.ui.icons.appicon.IcForum
+import com.revolgenx.anilib.common.ui.icons.appicon.IcGroup
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPerson
+import com.revolgenx.anilib.common.ui.icons.appicon.IcRecommendation
+import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
+import com.revolgenx.anilib.common.ui.icons.appicon.IcStats
+import com.revolgenx.anilib.common.ui.icons.appicon.IcWatch
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.media.data.field.MediaOverviewField
@@ -29,7 +37,7 @@ private typealias MediaScreenPage = PagerScreen<MediaScreenPageType>
 
 class MediaViewModel(
     private val mediaService: MediaService,
-    private val appDataStore: AppDataStore
+    private val authDataStore: AuthDataStore
 ) :
     ResourceViewModel<MediaModel, MediaOverviewField>() {
 
@@ -38,37 +46,37 @@ class MediaViewModel(
     private val watchPage = MediaScreenPage(
         MediaScreenPageType.WATCH,
         R.string.watch,
-        R.drawable.ic_watch,
+        AppIcons.IcWatch,
         mutableStateOf(false)
     )
 
     private val recommendationsPage = MediaScreenPage(
         MediaScreenPageType.RECOMMENDATIONS,
         R.string.recommendations,
-        R.drawable.ic_recommendation,
+        AppIcons.IcRecommendation,
         mutableStateOf(false)
     )
 
 
     private val socialPage =
-        MediaScreenPage(MediaScreenPageType.SOCIAL, R.string.social, R.drawable.ic_forum)
+        MediaScreenPage(MediaScreenPageType.SOCIAL, R.string.social,AppIcons.IcForum)
 
     init {
         launch {
-            appDataStore.isLoggedIn().collect {
+            authDataStore.isLoggedIn.collect {
                 socialPage.isVisible.value = it
             }
         }
     }
 
     val pages = listOf(
-        MediaScreenPage(MediaScreenPageType.OVERVIEW, R.string.overview, R.drawable.ic_fire),
+        MediaScreenPage(MediaScreenPageType.OVERVIEW, R.string.overview,AppIcons.IcFire),
         recommendationsPage,
         watchPage,
-        MediaScreenPage(MediaScreenPageType.CHARACTER, R.string.character, R.drawable.ic_person),
-        MediaScreenPage(MediaScreenPageType.STAFF, R.string.staff, R.drawable.ic_group),
-        MediaScreenPage(MediaScreenPageType.REVIEW, R.string.review, R.drawable.ic_star),
-        MediaScreenPage(MediaScreenPageType.STATS, R.string.stats, R.drawable.ic_stats),
+        MediaScreenPage(MediaScreenPageType.CHARACTER, R.string.character,AppIcons.IcPerson),
+        MediaScreenPage(MediaScreenPageType.STAFF, R.string.staff,AppIcons.IcGroup),
+        MediaScreenPage(MediaScreenPageType.REVIEW, R.string.review,AppIcons.IcStar),
+        MediaScreenPage(MediaScreenPageType.STATS, R.string.stats,AppIcons.IcStats),
         socialPage
     )
 

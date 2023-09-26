@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,6 +30,14 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowDown
+import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowUp
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHappy
+import com.revolgenx.anilib.common.ui.icons.appicon.IcNeutral
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSad
+import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
+import com.revolgenx.anilib.common.ui.icons.appicon.IcStarOutline
 import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.type.ScoreFormat
@@ -111,7 +120,7 @@ fun CountEditor(
         horizontalArrangement = Arrangement.spacedBy(3.dp)
     ) {
         IconButton(onClick = { decreaseScore() }) {
-            Icon(painter = painterResource(id = R.drawable.ic_arrow_down), contentDescription = null)
+            Icon(imageVector = AppIcons.IcArrowDown, contentDescription = null)
         }
         BasicTextField(
             modifier = Modifier.weight(1f),
@@ -125,7 +134,7 @@ fun CountEditor(
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
         )
         IconButton(onClick = { increaseScore() }) {
-            Icon(painter = painterResource(id = R.drawable.ic_arrow_up), contentDescription = null)
+            Icon(imageVector = AppIcons.IcArrowUp, contentDescription = null)
         }
     }
 }
@@ -179,7 +188,7 @@ fun DoubleCountEditor(
         horizontalArrangement = Arrangement.spacedBy(3.dp)
     ) {
         IconButton(onClick = { decreaseScore() }) {
-            Icon(painter = painterResource(id = R.drawable.ic_arrow_down), contentDescription = null)
+            Icon(imageVector = AppIcons.IcArrowDown, contentDescription = null)
         }
         BasicTextField(
             modifier = Modifier.weight(1f),
@@ -215,7 +224,7 @@ fun DoubleCountEditor(
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
         )
         IconButton(onClick = { increaseScore() }) {
-            Icon(painter = painterResource(id = R.drawable.ic_arrow_up), contentDescription = null)
+            Icon(imageVector = AppIcons.IcArrowUp, contentDescription = null)
         }
     }
 }
@@ -258,7 +267,7 @@ private fun StarScoreButton(selected: Boolean, onClick: OnClick) {
     ) {
         Icon(
             modifier = Modifier.align(Alignment.Center),
-            painter = painterResource(id = if (selected) R.drawable.ic_star else R.drawable.ic_star_outline),
+            imageVector = if (selected) AppIcons.IcStar else AppIcons.IcStarOutline,
             contentDescription = null,
             tint = if (selected) primary else LocalContentColor.current
         )
@@ -279,23 +288,23 @@ private fun SmileyScore(score: Double, onScoreChange: (score: Double) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        SmileyScoreButton(selected = isHappy, R.drawable.ic_happy) {
+        SmileyScoreButton(selected = isHappy, AppIcons.IcHappy) {
             updateScore(3.0)
         }
-        SmileyScoreButton(selected = isNeutral, R.drawable.ic_neutral) {
+        SmileyScoreButton(selected = isNeutral, AppIcons.IcNeutral) {
             updateScore(2.0)
         }
-        SmileyScoreButton(selected = isSad, R.drawable.ic_sad) {
+        SmileyScoreButton(selected = isSad, AppIcons.IcSad) {
             updateScore(1.0)
         }
     }
 }
 
 @Composable
-private fun SmileyScoreButton(selected: Boolean, icon: Int, onClick: OnClick) {
+private fun SmileyScoreButton(selected: Boolean, icon: ImageVector, onClick: OnClick) {
     IconButton(onClick = onClick) {
         Icon(
-            painter = painterResource(id = icon),
+            imageVector = icon,
             contentDescription = null,
             tint = if (selected) primary else LocalContentColor.current
         )

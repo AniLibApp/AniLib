@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.common.ui.theme
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
@@ -13,10 +15,10 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import com.revolgenx.anilib.common.data.store.ThemeDataStore
 import com.revolgenx.anilib.common.ext.componentActivity
+import org.koin.androidx.compose.get
 
 val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
@@ -90,11 +92,12 @@ val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun AppTheme(
-    darkTheme: Boolean = false,
+    themeDataStore: ThemeDataStore = get(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    val darkTheme = themeDataStore.isDark()
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
@@ -131,7 +134,7 @@ fun AppTheme(
         typography = Typography,
         content = {
             CompositionLocalProvider(
-                LocalTextStyle provides typography().titleSmall
+                LocalTextStyle provides typography().bodyMedium
             ) {
                 Surface {
                     content()

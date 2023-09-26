@@ -22,8 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +37,9 @@ import com.revolgenx.anilib.common.ui.component.chart.ColumnChart
 import com.revolgenx.anilib.common.ui.component.chart.LineChart
 import com.revolgenx.anilib.common.ui.component.chart.rememberMarker
 import com.revolgenx.anilib.common.ui.component.common.Grid
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
+import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
 import com.revolgenx.anilib.common.ui.model.stats.StatusDistributionModel
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.ui.theme.rank_type_popular
@@ -86,13 +87,13 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
                                 horizontalArrangement = Arrangement.spacedBy(2.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                val rankDrawable =
-                                    if (rank.rankType == MediaRankType.POPULAR) R.drawable.ic_heart else R.drawable.ic_star
+                                val rankImage =
+                                    if (rank.rankType == MediaRankType.POPULAR) AppIcons.IcHeart else AppIcons.IcStar
                                 val rankColor =
                                     if (rank.rankType == MediaRankType.RATED) rank_type_popular else rank_type_rated
                                 Icon(
                                     modifier = Modifier.size(20.dp),
-                                    painter = painterResource(id = rankDrawable),
+                                    imageVector = rankImage,
                                     contentDescription = null,
                                     tint = rankColor
                                 )

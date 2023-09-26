@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -55,15 +54,14 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaScreen
-import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.openLink
 import com.revolgenx.anilib.common.ext.orNaString
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.orZeroString
 import com.revolgenx.anilib.common.ext.studioScreen
-import com.revolgenx.anilib.common.ext.toPainterResource
 import com.revolgenx.anilib.common.ext.toStringResource
+import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ui.component.button.SmallTextButton
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
@@ -71,6 +69,13 @@ import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowDown
+import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowUp
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHide
+import com.revolgenx.anilib.common.ui.icons.appicon.IcInfo
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMarkdownYoutube
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPlay
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.ui.theme.background
 import com.revolgenx.anilib.common.ui.theme.inverseOnSurface
@@ -166,6 +171,8 @@ private fun MediaOverview(
         MediaExternalLink(media.externalLinks) {
             openLink(it.url)
         }
+
+        Spacer(modifier = Modifier.size(8.dp))
     }
 }
 
@@ -176,6 +183,7 @@ fun MediaRecommendation(
     onMediaClick: OnMediaClick
 ) {
     val medias = recommendations?.nodes ?: return
+    if (medias.isEmpty()) return
 
     val showViewAll = recommendations.pageInfo.let {
         it?.total.orZero() > it?.perPage.orZero()
@@ -344,23 +352,15 @@ fun MediaTrailer(
             modifier = Modifier.fillMaxSize(),
             imageUrl = trailer.thumbnail
         )
-        val iconRes = when (trailer.source) {
-            TrailerSource.YOUTUBE -> {
-                R.drawable.ic_markdown_youtube.toPainterResource()
-            }
-
-            TrailerSource.DAILYMOTION -> {
-                R.drawable.ic_play.toPainterResource()
-            }
-
-            TrailerSource.UNKNOWN -> {
-                null
-            }
+        val icon = when (trailer.source) {
+            TrailerSource.YOUTUBE -> AppIcons.IcMarkdownYoutube
+            TrailerSource.DAILYMOTION -> AppIcons.IcPlay
+            TrailerSource.UNKNOWN -> null
         }
-        iconRes?.let {
+        icon?.let {
             Icon(
                 modifier = Modifier.align(Alignment.Center),
-                painter = iconRes,
+                imageVector = icon,
                 contentDescription = null,
                 tint = Color.Unspecified
             )
@@ -515,7 +515,7 @@ private fun MediaTag(
                 ) {
                     if (tag.isMediaSpoilerTag) {
                         Icon(
-                            painter = R.drawable.ic_hide.toPainterResource(),
+                            imageVector = AppIcons.IcHide,
                             contentDescription = null,
                             tint = secondary
                         )
@@ -525,7 +525,7 @@ private fun MediaTag(
                             .format(tag.name, tag.rank.orZero())
                     )
                     Icon(
-                        painter = R.drawable.ic_info.toPainterResource(),
+                        imageVector = AppIcons.IcInfo,
                         contentDescription = null,
                         tint = secondary
                     )
@@ -605,14 +605,12 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
             ) {
                 Text(
                     text = item.title,
-                    fontSize = 15.sp,
                     lineHeight = 16.sp,
                     color = onSurfaceVariant,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
                     text = item.value,
-                    fontSize = 15.sp,
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -693,15 +691,13 @@ private fun MediaDescription(media: MediaModel) {
         ) {
             if (showFullDesc) {
                 MarkdownText(
-                    spanned = media.descriptionSpanned,
-                    fontSize = 15.sp,
+                    spanned = media.descriptionSpanned
                 ) {
                     showFullDesc = !showFullDesc
                 }
             } else {
                 MarkdownText(
                     spanned = media.descriptionSpanned,
-                    fontSize = 15.sp,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 ) {
@@ -713,7 +709,7 @@ private fun MediaDescription(media: MediaModel) {
                 modifier = Modifier
                     .size(28.dp)
                     .align(Alignment.CenterHorizontally),
-                painter = if (showFullDesc) R.drawable.ic_arrow_up.toPainterResource() else R.drawable.ic_arrow_down.toPainterResource(),
+                imageVector = if (showFullDesc) AppIcons.IcArrowUp else AppIcons.IcArrowDown,
                 contentDescription = null
             )
         }

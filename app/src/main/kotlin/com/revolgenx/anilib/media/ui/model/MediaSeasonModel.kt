@@ -1,9 +1,12 @@
 package com.revolgenx.anilib.media.ui.model
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.runtime.Composable
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFall
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSpring
+import com.revolgenx.anilib.common.ui.icons.appicon.IcSummer
+import com.revolgenx.anilib.common.ui.icons.appicon.IcWinter
 import com.revolgenx.anilib.type.MediaSeason
 
 @StringRes
@@ -17,15 +20,12 @@ fun MediaSeason?.toStringRes(): Int {
     }
 }
 
-@DrawableRes
-fun MediaSeason?.toDrawableRes(): Int {
-    return when (this) {
-        MediaSeason.WINTER -> R.drawable.ic_winter
-        MediaSeason.SPRING -> R.drawable.ic_spring
-        MediaSeason.SUMMER -> R.drawable.ic_summer
-        MediaSeason.FALL -> R.drawable.ic_fall
-        else -> R.drawable.ic_winter
-    }
+fun MediaSeason?.toImageVector() = when (this) {
+    MediaSeason.WINTER -> AppIcons.IcWinter
+    MediaSeason.SPRING -> AppIcons.IcSpring
+    MediaSeason.SUMMER -> AppIcons.IcSummer
+    MediaSeason.FALL -> AppIcons.IcFall
+    else -> AppIcons.IcWinter
 }
 
 fun MediaSeason?.nextSeason(): MediaSeason {
@@ -49,19 +49,21 @@ fun MediaSeason?.previousSeason(): MediaSeason {
 }
 
 
-
 fun seasonFromMonth(monthOfYear: Int): MediaSeason {
     monthOfYear.let {
         return when (it) {
             12, 1, 2 -> {
                 MediaSeason.WINTER
             }
+
             3, 4, 5 -> {
                 MediaSeason.SPRING
             }
+
             6, 7, 8 -> {
                 MediaSeason.SUMMER
             }
+
             else -> MediaSeason.FALL
         }
     }
