@@ -101,6 +101,7 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.studio.ui.model.StudioConnectionModel
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.type.MediaType
+import anilib.i18n.R as I18nR
 
 @Composable
 fun MediaOverviewScreen(
@@ -190,8 +191,8 @@ fun MediaRecommendation(
     }
 
     MediaHeaderWithButton(
-        header = R.string.recommendations.toStringResource(),
-        buttonText = R.string.view_all.toStringResource(),
+        header = I18nR.string.recommendations.toStringResource(),
+        buttonText = I18nR.string.view_all.toStringResource(),
         showButton = showViewAll,
         onClick = viewAll
     )
@@ -208,7 +209,7 @@ fun MediaRecommendation(
 fun MediaRelation(relations: MediaConnectionModel?, onMediaClick: OnMediaClick) {
     if (relations?.edges.isNullOrEmpty()) return
 
-    MediaHeader(text = R.string.relations.toStringResource())
+    MediaHeader(text = I18nR.string.relations.toStringResource())
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -235,7 +236,7 @@ fun MediaRelationCard(
             val source = mediaEdgeModel.relationType.toStringRes().toStringResource()
             val seasonYear = media.seasonYear.naText()
             val sourceYearText = if (media.isAnime) {
-                stringResource(id = R.string.s_dot_s).format(source, seasonYear)
+                stringResource(id = I18nR.string.s_dot_s).format(source, seasonYear)
             } else {
                 source
             }
@@ -251,7 +252,7 @@ fun MediaRelationCard(
                     lineHeight = 11.sp
                 )
                 LightText(
-                    text = stringResource(id = R.string.s_dot_s).format(format, status),
+                    text = stringResource(id = I18nR.string.s_dot_s).format(format, status),
                     lineHeight = 11.sp
                 )
             }
@@ -309,7 +310,7 @@ fun MediaStudio(studioConnection: StudioConnectionModel?, onClick: OnClickWithVa
     }
 
     if (studios.isNullOrEmpty().not()) {
-        MediaHeader(text = R.string.studios.toStringResource())
+        MediaHeader(text = I18nR.string.studios.toStringResource())
         MediaFlowRow {
             studios!!.forEach {
                 MediaInfoChip(text = it.node?.name.orEmpty()) {
@@ -320,7 +321,7 @@ fun MediaStudio(studioConnection: StudioConnectionModel?, onClick: OnClickWithVa
     }
 
     if (producers.isNullOrEmpty().not()) {
-        MediaHeader(text = R.string.producers.toStringResource())
+        MediaHeader(text = I18nR.string.producers.toStringResource())
         MediaFlowRow {
             producers!!.forEach {
                 MediaInfoChip(text = it.node?.name.orEmpty()) {
@@ -338,7 +339,7 @@ fun MediaTrailer(
 ) {
     trailer ?: return
 
-    MediaHeader(text = R.string.trailer.toStringResource())
+    MediaHeader(text = I18nR.string.trailer.toStringResource())
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -370,7 +371,7 @@ fun MediaTrailer(
 
 @Composable
 fun MediaStats(media: MediaModel) {
-    MediaHeader(text = R.string.stats.toStringResource())
+    MediaHeader(text = I18nR.string.stats.toStringResource())
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -378,20 +379,20 @@ fun MediaStats(media: MediaModel) {
         Grid(
             items = listOf(
                 MediaInfoItem(
-                    title = R.string.average_score.toStringResource(),
-                    value = R.string.s_percent.toStringResource()
+                    title = I18nR.string.average_score.toStringResource(),
+                    value = I18nR.string.s_percent.toStringResource()
                         .format(media.averageScore.orZero())
                 ),
                 MediaInfoItem(
-                    title = R.string.mean_score.toStringResource(),
-                    value = R.string.s_percent.toStringResource().format(media.meanScore.orZero())
+                    title = I18nR.string.mean_score.toStringResource(),
+                    value = I18nR.string.s_percent.toStringResource().format(media.meanScore.orZero())
                 ),
                 MediaInfoItem(
-                    title = R.string.popularity.toStringResource(),
+                    title = I18nR.string.popularity.toStringResource(),
                     value = media.popularity.orZeroString()
                 ),
                 MediaInfoItem(
-                    title = R.string.favourites.toStringResource(),
+                    title = I18nR.string.favourites.toStringResource(),
                     value = media.popularity.orZeroString()
                 ),
             ),
@@ -428,7 +429,7 @@ fun MediaExternalLink(
     externalLinks: List<MediaExternalLinkModel>?,
     onClick: OnClickWithValue<MediaExternalLinkModel>
 ) {
-    MediaHeader(text = R.string.links.toStringResource())
+    MediaHeader(text = I18nR.string.links.toStringResource())
 
     MediaFlowRow {
         externalLinks?.forEach { link ->
@@ -480,9 +481,9 @@ private fun MediaTag(
     }
 
     MediaHeaderWithButton(
-        header = R.string.tags.toStringResource(),
+        header = I18nR.string.tags.toStringResource(),
         showButton = showMoreButton,
-        buttonText = (if (!showSpoilerTags.value) R.string.show_spoilers else R.string.hide_spoilers).toStringResource()
+        buttonText = (if (!showSpoilerTags.value) I18nR.string.show_spoilers else I18nR.string.hide_spoilers).toStringResource()
     ) {
         showSpoilerTags.value = !showSpoilerTags.value
     }
@@ -521,7 +522,7 @@ private fun MediaTag(
                         )
                     }
                     Text(
-                        text = R.string.tag_name_percent.toStringResource()
+                        text = I18nR.string.tag_name_percent.toStringResource()
                             .format(tag.name, tag.rank.orZero())
                     )
                     Icon(
@@ -545,7 +546,7 @@ private fun MediaTag(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun MediaGenre(genres: List<String>?, onClick: OnClickWithValue<String>) {
-    MediaHeader(text = R.string.genre.toStringResource())
+    MediaHeader(text = I18nR.string.genre.toStringResource())
 
     MediaFlowRow {
         genres?.forEach { genre ->
@@ -561,36 +562,36 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
     Grid(
         items = listOf(
             MediaInfoItem(
-                title = R.string.format.toStringResource(),
+                title = I18nR.string.format.toStringResource(),
                 value = media.format?.toStringRes().toStringResourceOrNa()
             ),
             MediaInfoItem(
-                title = R.string.source.toStringResource(),
+                title = I18nR.string.source.toStringResource(),
                 value = media.source?.toStringRes().toStringResourceOrNa()
             ),
             MediaInfoItem(
-                title = if (isAnime) R.string.episodes.toStringResource() else R.string.chapters.toStringResource(),
+                title = if (isAnime) I18nR.string.episodes.toStringResource() else I18nR.string.chapters.toStringResource(),
                 value = if (isAnime) media.episodes.orNaString() else media.chapters.orNaString()
             ),
             MediaInfoItem(
-                title = if (isAnime) R.string.duration.toStringResource() else R.string.volumes.toStringResource(),
-                value = if (isAnime) R.string.min_s.toStringResource()
+                title = if (isAnime) I18nR.string.duration.toStringResource() else I18nR.string.volumes.toStringResource(),
+                value = if (isAnime) I18nR.string.min_s.toStringResource()
                     .format(media.duration.orNaString()) else media.volumes.orNaString()
             ),
             MediaInfoItem(
-                title = R.string.status.toStringResource(),
+                title = I18nR.string.status.toStringResource(),
                 value = media.status?.toStringRes().toStringResourceOrNa()
             ),
             MediaInfoItem(
-                title = R.string.country.toStringResource(),
+                title = I18nR.string.country.toStringResource(),
                 value = media.countryOfOrigin.orNaString()
             ),
             MediaInfoItem(
-                title = R.string.start_date.toStringResource(),
+                title = I18nR.string.start_date.toStringResource(),
                 value = media.startDate?.shortDate.orNaString()
             ),
             MediaInfoItem(
-                title = R.string.end_date.toStringResource(),
+                title = I18nR.string.end_date.toStringResource(),
                 value = media.endDate?.shortDate.orNaString()
             ),
         ),
@@ -626,23 +627,23 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
         ) {
             listOf(
                 MediaInfoItem(
-                    title = R.string.romaji.toStringResource(),
+                    title = I18nR.string.romaji.toStringResource(),
                     value = media.title?.romaji.orNaString()
                 ),
                 MediaInfoItem(
-                    title = R.string.english.toStringResource(),
+                    title = I18nR.string.english.toStringResource(),
                     value = media.title?.english.orNaString()
                 ),
                 MediaInfoItem(
-                    title = R.string._native.toStringResource(),
+                    title = I18nR.string._native.toStringResource(),
                     value = media.title?.native.orNaString()
                 ),
                 MediaInfoItem(
-                    title = R.string.hashtag.toStringResource(),
+                    title = I18nR.string.hashtag.toStringResource(),
                     value = media.hashtag.orNaString()
                 ),
                 MediaInfoItem(
-                    title = R.string.synonyms.toStringResource(),
+                    title = I18nR.string.synonyms.toStringResource(),
                     value = media.synonymsString.orNaString()
                 ),
 
@@ -737,18 +738,18 @@ fun MediaTagDetailBottomSheet(
                     .padding(bottom = 12.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.tags),
+                    text = stringResource(id = I18nR.string.tags),
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                MediaTagDetailItem(R.string.name.toStringResource(), tag.name)
+                MediaTagDetailItem(I18nR.string.name.toStringResource(), tag.name)
                 MediaTagDetailItem(
-                    R.string.category.toStringResource(),
+                    I18nR.string.category.toStringResource(),
                     tag.category.orNaString()
                 )
-                MediaTagDetailItem(R.string.rank.toStringResource(), tag.rank.orNaString())
+                MediaTagDetailItem(I18nR.string.rank.toStringResource(), tag.rank.orNaString())
                 MediaTagDetailItem(
-                    R.string.description.toStringResource(),
+                    I18nR.string.description.toStringResource(),
                     tag.description.orNaString()
                 )
             }

@@ -45,6 +45,7 @@ import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.common.ui.theme.onSurface
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.isAnime
+import anilib.i18n.R as I18nR
 
 abstract class MediaListScreen : BaseTabScreen() {
     @Composable
@@ -107,11 +108,11 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                                 false
                             }
                         },
-                        placeholder = { Text(text = stringResource(id = if (isAnime) R.string.search_anime else R.string.search_manga)) },
+                        placeholder = { Text(text = stringResource(id = if (isAnime) I18nR.string.search_anime else I18nR.string.search_manga)) },
                         leadingIcon = {
                             Icon(
                                 imageVector = AppIcons.IcSearch,
-                                contentDescription = stringResource(id = if (isAnime) R.string.search_anime else R.string.search_manga)
+                                contentDescription = stringResource(id = if (isAnime) I18nR.string.search_anime else I18nR.string.search_manga)
                             )
                         },
                         trailingIcon = {
@@ -123,7 +124,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                                     }) {
                                         Icon(
                                             imageVector = AppIcons.IcCancel,
-                                            contentDescription = stringResource(id = R.string.clear)
+                                            contentDescription = stringResource(id = I18nR.string.clear)
                                         )
                                     }
                                 }
@@ -132,7 +133,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                                 }) {
                                     Icon(
                                         imageVector = AppIcons.IcFilter,
-                                        contentDescription = stringResource(id = R.string.filter)
+                                        contentDescription = stringResource(id = I18nR.string.filter)
                                     )
                                 }
                             }
@@ -153,7 +154,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                                             openFilterBottomSheet.value = true
                                         },
                                     imageVector = AppIcons.IcCancel,
-                                    contentDescription = stringResource(id = R.string.clear)
+                                    contentDescription = stringResource(id = I18nR.string.clear)
                                 )
                             })
                     }

@@ -40,6 +40,7 @@ import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
+import anilib.i18n.R as I18nR
 
 @Composable
 fun AboutScreen(
@@ -105,7 +106,7 @@ fun AboutScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(id = R.string.description),
+                    text = stringResource(id = I18nR.string.description),
                     style = MaterialTheme.typography.titleLarge
                 )
 
@@ -129,7 +130,7 @@ fun AboutScreen(
             if (description != null) {
                 MarkdownText(spanned = spannedDescription)
             } else {
-                Text(text = stringResource(id = R.string.no_description))
+                Text(text = stringResource(id = I18nR.string.no_description))
             }
         }
     }

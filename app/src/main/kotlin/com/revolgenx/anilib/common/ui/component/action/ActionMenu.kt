@@ -32,6 +32,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcBack
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
 import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import com.revolgenx.anilib.common.util.OnClick
+import anilib.i18n.R as I18nR
 
 const val ActionMenuContainerAlpha = 0.17f
 
@@ -89,7 +90,7 @@ fun OverflowMenu(
     }) {
         Icon(
             imageVector = icon ?: AppIcons.IcMoreHoriz,
-            contentDescription = stringResource(id = R.string.more),
+            contentDescription = stringResource(id = I18nR.string.more),
         )
     }
     DropdownMenu(

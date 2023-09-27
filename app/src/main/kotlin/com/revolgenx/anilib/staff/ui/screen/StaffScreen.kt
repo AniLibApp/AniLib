@@ -19,6 +19,7 @@ import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 class StaffScreen(val staffId: Int) : AndroidScreen() {
     @Composable
@@ -37,11 +38,11 @@ enum class StaffScreenPageType {
 }
 
 private val pages = listOf(
-    StaffScreenPage(StaffScreenPageType.ABOUT, R.string.about, AppIcons.IcAbout),
-    StaffScreenPage(StaffScreenPageType.MEDIA, R.string.media, AppIcons.IcMedia),
+    StaffScreenPage(StaffScreenPageType.ABOUT, I18nR.string.about, AppIcons.IcAbout),
+    StaffScreenPage(StaffScreenPageType.MEDIA, I18nR.string.media, AppIcons.IcMedia),
     StaffScreenPage(
         StaffScreenPageType.VOICE_ROLES,
-        R.string.staff_roles,
+        I18nR.string.staff_roles,
         AppIcons.IcGroup
     )
 )

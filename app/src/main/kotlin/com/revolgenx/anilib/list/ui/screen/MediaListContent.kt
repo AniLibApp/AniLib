@@ -70,6 +70,7 @@ import com.revolgenx.anilib.media.ui.model.toMediaFormat
 import com.revolgenx.anilib.media.ui.model.toMediaStatus
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -277,7 +278,7 @@ fun MediaListFilterBottomSheetContent(
             val selectedFormats = viewModel.filter.formatsIn?.map { it.ordinal }.getOrEmpty()
             val formats = stringArrayResource(id = R.array.media_format)
             MultiSelectMenu(
-                label = stringResource(id = R.string.format),
+                label = stringResource(id = I18nR.string.format),
                 entries = formats.mapIndexed { index, s ->
                     selectedFormats.contains(
                         index
@@ -290,7 +291,7 @@ fun MediaListFilterBottomSheetContent(
                 )
             }
             SelectMenu(
-                label = stringResource(id = R.string.status),
+                label = stringResource(id = I18nR.string.status),
                 entries = stringArrayResource(id = R.array.media_status).toList(),
                 selectedItemPosition = viewModel.filter.status?.ordinal,
                 showNoneItem = true
@@ -302,7 +303,7 @@ fun MediaListFilterBottomSheetContent(
 
             val genreList = stringArrayResource(id = R.array.media_genre).toList()
             SelectMenu(
-                label = stringResource(id = R.string.genre),
+                label = stringResource(id = I18nR.string.genre),
                 entries = genreList,
                 selectedItemPosition = genreList.indexOf(viewModel.filter.genre),
                 showNoneItem = true
@@ -331,7 +332,7 @@ fun MediaListFilterBottomSheetContent(
                 }
 
             SortSelectMenu(
-                label = stringResource(id = R.string.sort),
+                label = stringResource(id = I18nR.string.sort),
                 entries = sortMenus,
             ) { index, selectedItem ->
                 var mediaListSortType: MediaListSortType? = null

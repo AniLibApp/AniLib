@@ -44,6 +44,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.Locale
+import anilib.i18n.R as I18nR
 
 data class MediaModel(
     val id: Int = -1,
@@ -326,17 +327,17 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
 @StringRes
 fun MediaFormat?.toStringRes(): Int {
     return when (this) {
-        MediaFormat.TV -> R.string.tv
-        MediaFormat.TV_SHORT -> R.string.tv_short
-        MediaFormat.MOVIE -> R.string.movie
-        MediaFormat.SPECIAL -> R.string.special
-        MediaFormat.OVA -> R.string.ova
-        MediaFormat.ONA -> R.string.ona
-        MediaFormat.MANGA -> R.string.manga
-        MediaFormat.MUSIC -> R.string.music
-        MediaFormat.NOVEL -> R.string.novel
-        MediaFormat.ONE_SHOT -> R.string.one_shot
-        else -> R.string.unknown
+        MediaFormat.TV -> I18nR.string.tv
+        MediaFormat.TV_SHORT -> I18nR.string.tv_short
+        MediaFormat.MOVIE -> I18nR.string.movie
+        MediaFormat.SPECIAL -> I18nR.string.special
+        MediaFormat.OVA -> I18nR.string.ova
+        MediaFormat.ONA -> I18nR.string.ona
+        MediaFormat.MANGA -> I18nR.string.manga
+        MediaFormat.MUSIC -> I18nR.string.music
+        MediaFormat.NOVEL -> I18nR.string.novel
+        MediaFormat.ONE_SHOT -> I18nR.string.one_shot
+        else -> I18nR.string.unknown
     }
 }
 
@@ -344,22 +345,22 @@ fun MediaFormat?.toStringRes(): Int {
 @StringRes
 fun MediaSource?.toStringRes(): Int {
     return when (this) {
-        MediaSource.ORIGINAL -> R.string.original
-        MediaSource.MANGA -> R.string.manga
-        MediaSource.LIGHT_NOVEL -> R.string.light_novel
-        MediaSource.VISUAL_NOVEL -> R.string.visual_novel
-        MediaSource.VIDEO_GAME -> R.string.video_game
-        MediaSource.OTHER -> R.string.other
-        MediaSource.NOVEL -> R.string.novel
-        MediaSource.DOUJINSHI -> R.string.doujinshi
-        MediaSource.ANIME -> R.string.anime
-        MediaSource.WEB_NOVEL -> R.string.web_novel
-        MediaSource.LIVE_ACTION -> R.string.live_action
-        MediaSource.GAME -> R.string.game
-        MediaSource.COMIC -> R.string.comic
-        MediaSource.MULTIMEDIA_PROJECT -> R.string.multimedia_project
-        MediaSource.PICTURE_BOOK -> R.string.picture_book
-        else -> R.string.unknown
+        MediaSource.ORIGINAL -> I18nR.string.original
+        MediaSource.MANGA -> I18nR.string.manga
+        MediaSource.LIGHT_NOVEL -> I18nR.string.light_novel
+        MediaSource.VISUAL_NOVEL -> I18nR.string.visual_novel
+        MediaSource.VIDEO_GAME -> I18nR.string.video_game
+        MediaSource.OTHER -> I18nR.string.other
+        MediaSource.NOVEL -> I18nR.string.novel
+        MediaSource.DOUJINSHI -> I18nR.string.doujinshi
+        MediaSource.ANIME -> I18nR.string.anime
+        MediaSource.WEB_NOVEL -> I18nR.string.web_novel
+        MediaSource.LIVE_ACTION -> I18nR.string.live_action
+        MediaSource.GAME -> I18nR.string.game
+        MediaSource.COMIC -> I18nR.string.comic
+        MediaSource.MULTIMEDIA_PROJECT -> I18nR.string.multimedia_project
+        MediaSource.PICTURE_BOOK -> I18nR.string.picture_book
+        else -> I18nR.string.unknown
     }
 }
 
@@ -367,21 +368,21 @@ fun MediaSource?.toStringRes(): Int {
 @StringRes
 fun MediaType?.toStringRes(): Int {
     return when (this) {
-        MediaType.ANIME -> R.string.anime
-        MediaType.MANGA -> R.string.manga
-        else -> R.string.unknown
+        MediaType.ANIME -> I18nR.string.anime
+        MediaType.MANGA -> I18nR.string.manga
+        else -> I18nR.string.unknown
     }
 }
 
 @StringRes
 fun MediaStatus?.toStringRes(): Int {
     return when (this) {
-        MediaStatus.FINISHED -> R.string.finished
-        MediaStatus.RELEASING -> R.string.releasing
-        MediaStatus.NOT_YET_RELEASED -> R.string.not_yet_released
-        MediaStatus.CANCELLED -> R.string.cancelled
-        MediaStatus.HIATUS -> R.string.hiatus
-        else -> R.string.unknown
+        MediaStatus.FINISHED -> I18nR.string.finished
+        MediaStatus.RELEASING -> I18nR.string.releasing
+        MediaStatus.NOT_YET_RELEASED -> I18nR.string.not_yet_released
+        MediaStatus.CANCELLED -> I18nR.string.cancelled
+        MediaStatus.HIATUS -> I18nR.string.hiatus
+        else -> I18nR.string.unknown
     }
 }
 

@@ -23,6 +23,7 @@ import com.revolgenx.anilib.common.ui.component.search.SearchBar
 import com.revolgenx.anilib.common.ui.component.search.SearchBarContainerHeight
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
+import anilib.i18n.R as I18nR
 
 object SearchSettingScreen : AndroidScreen() {
 
@@ -75,7 +76,7 @@ fun SearchSettingTopAppBar() {
                 onActiveChange = {
 
                 },
-                placeholder = { Text(text = stringResource(id = R.string.setting_placeholder_search)) },
+                placeholder = { Text(text = stringResource(id = I18nR.string.setting_placeholder_search)) },
                 leadingIcon = {
                     NavigationIcon()
                 },
@@ -83,7 +84,7 @@ fun SearchSettingTopAppBar() {
                     if ("viewModel.query".isNotEmpty()) {
                         ActionMenu(
                             icon = AppIcons.IcCancel,
-                            contentDescriptionRes = R.string.clear
+                            contentDescriptionRes = I18nR.string.clear
                         ) {
 
                         }

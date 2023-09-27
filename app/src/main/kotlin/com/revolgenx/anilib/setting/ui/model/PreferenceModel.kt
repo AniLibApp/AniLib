@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
+import anilib.i18n.R as I18nR
 
 
 interface PreferenceValueChangedListener<T> {
@@ -65,27 +66,28 @@ sealed class PreferenceModel {
     data class ListPreferenceModel<T>(
         val pref: PreferenceData<T>,
         override val title: String,
-        override val subtitle: String? = "%s",
-        val subtitleProvider: @Composable (value: T, entries: Map<T, String>) -> String? =
-            { v, e -> subtitle?.format(e[v]) },
+        override val subtitle: String = "%s",
+        val entries: List<ListPreferenceEntry<out T>>,
+        val subtitleProvider: (value: Any?) -> String? = { v ->
+            subtitle.format(entries.first { it.value == v }.title)
+        },
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
         override val onValueChanged: suspend (newValue: T) -> Boolean = { true },
-        val entries: List<ListPreferenceEntry<out T>>,
     ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<T>
 
 
     data class BasicListPreference(
         val value: String,
         override val title: String,
-        override val subtitle: String? = "%s",
-        val subtitleProvider: @Composable (value: String, entries: Map<String, String>) -> String? =
-            { v, e -> subtitle?.format(e[v]) },
+        override val subtitle: String = "%s",
+        val entries: List<ListPreferenceEntry<String>>,
+        val subtitleProvider: (value: Any?) -> String? = { v ->
+            subtitle.format(entries.first { it.value == v }.title)
+        },
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
-        override val onValueChanged: suspend (newValue: String) -> Boolean = { true },
-
-        val entries: Map<String, String>,
+        override val onValueChanged: suspend (newValue: String?) -> Boolean = { true },
     ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<String>
 
 
@@ -98,7 +100,7 @@ sealed class PreferenceModel {
                 v.map { e[it] }
                     .takeIf { it.isNotEmpty() }
                     ?.joinToString()
-            } ?: stringResource(R.string.none)
+            } ?: stringResource(I18nR.string.none)
             subtitle?.format(combined)
         },
         override val icon: ImageVector? = null,

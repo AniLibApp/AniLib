@@ -58,6 +58,7 @@ import com.revolgenx.anilib.user.ui.screen.UserScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import anilib.i18n.R as I18nR
 
 /*
 * todo: handle customtab cancel result
@@ -159,7 +160,7 @@ private fun RowScope.TabNavigationItem(tab: BaseTabScreen) {
         onClick = { tabNavigator.current = tab },
         icon = {
             Icon(
-                imageVector = if (selected) tab.selectedIcon!! else tab.tabIcon!!,
+                imageVector = if (selected) tab.selectedIcon else tab.tabIcon,
                 contentDescription = tab.options.title
             )
         }
@@ -178,7 +179,7 @@ fun BackPress(snackbarHostState: SnackbarHostState) {
         }
     }
 
-    val msg = R.string.press_again_to_exit.toStringResource()
+    val msg = I18nR.string.press_again_to_exit.toStringResource()
     BackHandler {
         if (exit) {
             context.componentActivity()?.finish()

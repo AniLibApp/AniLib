@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
+import anilib.i18n.R as I18nR
 
 
 data class ListPreferenceEntry<T>(val title: String, val value: T?)
@@ -32,7 +33,7 @@ data class ListPreferenceEntry<T>(val title: String, val value: T?)
 fun <T> ListPreferenceItem(
     value: T?,
     title: String,
-    subtitle: String?,
+    subtitle: String? = null,
     icon: ImageVector? = null,
     entries: List<ListPreferenceEntry<out T>>,
     onValueChange: (T?) -> Unit,
@@ -69,7 +70,7 @@ fun <T> ListPreferenceItem(
             },
             confirmButton = {
                 TextButton(onClick = { isDialogShown = false }) {
-                    Text(text = stringResource(R.string.cancel))
+                    Text(text = stringResource(I18nR.string.cancel))
                 }
             },
         )

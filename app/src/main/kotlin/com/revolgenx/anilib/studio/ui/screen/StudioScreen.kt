@@ -31,6 +31,7 @@ import com.revolgenx.anilib.media.ui.component.MediaCard
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 // todo: add filters
 class StudioScreen(private val studioId: Int) : AndroidScreen() {
@@ -45,7 +46,7 @@ class StudioScreen(private val studioId: Int) : AndroidScreen() {
 @Composable
 private fun StudioScreenContent(studioId: Int, viewModel: StudioViewModel = koinViewModel()) {
     viewModel.field.studioId = studioId
-    val studio = stringResource(id = R.string.studio)
+    val studio = stringResource(id = I18nR.string.studio)
     var studioName by remember { mutableStateOf<String?>(null) }
     val navigator = localNavigator()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())

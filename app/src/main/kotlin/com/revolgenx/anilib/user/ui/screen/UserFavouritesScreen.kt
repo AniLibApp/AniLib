@@ -55,16 +55,17 @@ import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteContentViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
+import anilib.i18n.R as I18nR
 
 
 private typealias UserFavouriteScreenPage = PagerScreen<UserFavouriteType>
 
 val pages = listOf(
-    UserFavouriteScreenPage(UserFavouriteType.FAVOURITE_ANIME, R.string.anime),
-    UserFavouriteScreenPage(UserFavouriteType.FAVOURITE_MANGA, R.string.manga),
-    UserFavouriteScreenPage(UserFavouriteType.CHARACTER, R.string.character),
-    UserFavouriteScreenPage(UserFavouriteType.STAFF, R.string.staff),
-    UserFavouriteScreenPage(UserFavouriteType.STUDIO, R.string.studio),
+    UserFavouriteScreenPage(UserFavouriteType.FAVOURITE_ANIME, I18nR.string.anime),
+    UserFavouriteScreenPage(UserFavouriteType.FAVOURITE_MANGA, I18nR.string.manga),
+    UserFavouriteScreenPage(UserFavouriteType.CHARACTER, I18nR.string.character),
+    UserFavouriteScreenPage(UserFavouriteType.STAFF, I18nR.string.staff),
+    UserFavouriteScreenPage(UserFavouriteType.STUDIO, I18nR.string.studio),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

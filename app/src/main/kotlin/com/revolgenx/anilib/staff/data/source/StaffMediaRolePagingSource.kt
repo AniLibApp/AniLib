@@ -10,6 +10,7 @@ import com.revolgenx.anilib.staff.data.field.StaffMediaRoleField
 import com.revolgenx.anilib.staff.data.service.StaffService
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
+import anilib.i18n.R as I18nR
 
 class StaffMediaRolePagingSource(
     field: StaffMediaRoleField,
@@ -23,7 +24,7 @@ class StaffMediaRolePagingSource(
             val results = mutableListOf<BaseModel>()
             for (model in it.data.getOrEmpty()) {
                 val header =
-                    if (model.isAnime) R.string.anime_staff_roles else R.string.manga_staff_roles
+                    if (model.isAnime) I18nR.string.anime_staff_roles else I18nR.string.manga_staff_roles
                 if (header != lastHeader) {
                     results.add(HeaderModel(titleRes = header))
                     lastHeader = header

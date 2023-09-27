@@ -8,15 +8,16 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcSpring
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSummer
 import com.revolgenx.anilib.common.ui.icons.appicon.IcWinter
 import com.revolgenx.anilib.type.MediaSeason
+import anilib.i18n.R as I18nR
 
 @StringRes
 fun MediaSeason?.toStringRes(): Int {
     return when (this) {
-        MediaSeason.WINTER -> R.string.winter
-        MediaSeason.SPRING -> R.string.spring
-        MediaSeason.SUMMER -> R.string.summer
-        MediaSeason.FALL -> R.string.fall
-        else -> R.string.unknown
+        MediaSeason.WINTER -> I18nR.string.winter
+        MediaSeason.SPRING -> I18nR.string.spring
+        MediaSeason.SUMMER -> I18nR.string.summer
+        MediaSeason.FALL -> I18nR.string.fall
+        else -> I18nR.string.unknown
     }
 }
 

@@ -20,6 +20,7 @@ import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.imageLoader
+import com.revolgenx.anilib.common.data.store.ThemeDataStore
 import com.revolgenx.anilib.common.ext.componentActivity
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
@@ -27,6 +28,7 @@ import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import org.koin.androidx.compose.get
 
 
 class ImageViewerScreen(private val url: String) : AndroidScreen() {
@@ -43,7 +45,8 @@ private var imageLoader: ImageLoader? = null
 @Composable
 private fun ImageViewerScreenContent(imageUrl: String) {
     val activity = componentActivity()
-    val darkTheme = false
+    val themeDataStore: ThemeDataStore = get()
+    val darkTheme = themeDataStore.isDark()
     DisposableEffect(darkTheme) {
         activity?.enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(
@@ -62,10 +65,16 @@ private fun ImageViewerScreenContent(imageUrl: String) {
                     android.graphics.Color.TRANSPARENT,
                     android.graphics.Color.TRANSPARENT,
                 ) { darkTheme },
-                navigationBarStyle = SystemBarStyle.auto(
-                    android.graphics.Color.TRANSPARENT,
-                    android.graphics.Color.TRANSPARENT,
-                ) { darkTheme },
+                navigationBarStyle = if (darkTheme) {
+                    SystemBarStyle.dark(
+                        android.graphics.Color.TRANSPARENT,
+                    )
+                } else {
+                    SystemBarStyle.light(
+                        android.graphics.Color.TRANSPARENT,
+                        android.graphics.Color.TRANSPARENT,
+                    )
+                },
             )
         }
     }

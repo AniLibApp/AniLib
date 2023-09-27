@@ -45,6 +45,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcPin
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSettings
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
+import anilib.i18n.R as I18nR
 
 
 object LoginScreen : BaseTabScreen() {
@@ -55,7 +56,7 @@ object LoginScreen : BaseTabScreen() {
     override val options: TabOptions
         @Composable
         get() {
-            val title = stringResource(R.string.profile)
+            val title = stringResource(I18nR.string.profile)
 
             return remember {
                 TabOptions(
@@ -97,10 +98,10 @@ private fun LoginScreenContent() {
                     ) {
                         Icon(
                             imageVector = AppIcons.IcPin,
-                            contentDescription = stringResource(id = R.string.setting_important_to_know)
+                            contentDescription = stringResource(id = I18nR.string.setting_important_to_know)
                         )
                         Text(
-                            text = stringResource(id = R.string.setting_important_to_know),
+                            text = stringResource(id = I18nR.string.setting_important_to_know),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -113,11 +114,11 @@ private fun LoginScreenContent() {
                     OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = {
                         login(context)
                     }) {
-                        Text(text = stringResource(id = R.string.setting_label_login))
+                        Text(text = stringResource(id = I18nR.string.setting_label_login))
                     }
 
                     Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
-                        Text(text = stringResource(id = R.string.setting_label_sign_up))
+                        Text(text = stringResource(id = I18nR.string.setting_label_sign_up))
                     }
 
                     HorizontalDivider()
@@ -133,18 +134,18 @@ private fun LoginScreenContent() {
                         }) {
                             Icon(
                                 imageVector = AppIcons.IcSettings,
-                                contentDescription = stringResource(id = R.string.setting_label)
+                                contentDescription = stringResource(id = I18nR.string.setting_label)
                             )
                             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                            Text(text = stringResource(id = R.string.setting_label))
+                            Text(text = stringResource(id = I18nR.string.setting_label))
                         }
                         OutlinedButton(onClick = { /*TODO*/ }) {
                             Icon(
                                 imageVector = AppIcons.IcInfo,
-                                contentDescription = stringResource(id = R.string.about)
+                                contentDescription = stringResource(id = I18nR.string.about)
                             )
                             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                            Text(text = stringResource(id = R.string.about))
+                            Text(text = stringResource(id = I18nR.string.about))
                         }
                     }
                 }

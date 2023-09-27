@@ -38,6 +38,7 @@ import com.revolgenx.anilib.user.ui.model.stats.UserTagStatisticModel
 import com.revolgenx.anilib.user.ui.model.stats.UserVoiceActorStatisticModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTypeViewModel
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import anilib.i18n.R as I18nR
 
 @Composable
 fun UserStatsTypeScreen(type: MediaType, viewModel: UserStatsTypeViewModel) {
@@ -102,13 +103,13 @@ private fun UserStatsTypeItem(isAnime: Boolean, model: BaseStatisticModel) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    StatsTypeCardItem(labelId = R.string.count, text = model.count.toString())
+                    StatsTypeCardItem(labelId = I18nR.string.count, text = model.count.toString())
                     Spacer(modifier = Modifier.size(2.dp))
-                    StatsTypeCardItem(labelId = R.string.mean_score, text = "${model.meanScore}%")
+                    StatsTypeCardItem(labelId = I18nR.string.mean_score, text = "${model.meanScore}%")
                     Spacer(modifier = Modifier.size(2.dp))
                     StatsTypeCardItem(
-                        labelId = if (isAnime) R.string.time_watched else R.string.chapters_read,
-                        text = if (isAnime) stringResource(id = R.string.d_day_d_hour).format(
+                        labelId = if (isAnime) I18nR.string.time_watched else I18nR.string.chapters_read,
+                        text = if (isAnime) stringResource(id = I18nR.string.d_day_d_hour).format(
                             model.day,
                             model.hour
                         ) else model.chaptersRead.naText()

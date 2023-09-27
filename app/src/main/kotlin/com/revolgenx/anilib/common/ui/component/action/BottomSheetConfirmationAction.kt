@@ -14,12 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
+import anilib.i18n.R as I18nR
 
 
 @Composable
 fun BottomSheetConfirmationAction(
-    @StringRes positiveTextRes: Int = R.string.filter,
-    @StringRes negativeTextRes: Int = R.string.cancel,
+    @StringRes positiveTextRes: Int = I18nR.string.filter,
+    @StringRes negativeTextRes: Int = I18nR.string.cancel,
     onPositiveClicked: (() -> Unit)?,
     onNegativeClicked: (() -> Unit)?
 ) {

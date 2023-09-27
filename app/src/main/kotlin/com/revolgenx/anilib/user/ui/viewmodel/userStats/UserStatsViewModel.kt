@@ -4,14 +4,15 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.R
+import anilib.i18n.R as I18nR
 
 enum class UserStatsType(@StringRes val res: Int) {
-    OVERVIEW(R.string.overview),
-    GENRE(R.string.genre),
-    TAGS(R.string.tags),
-    VOICE_ACTORS(R.string.voice_actors),
-    STUDIO(R.string.studio),
-    STAFF(R.string.staff)
+    OVERVIEW(I18nR.string.overview),
+    GENRE(I18nR.string.genre),
+    TAGS(I18nR.string.tags),
+    VOICE_ACTORS(I18nR.string.voice_actors),
+    STUDIO(I18nR.string.studio),
+    STAFF(I18nR.string.staff)
 }
 
 enum class UserStatsTypeMediaType{

@@ -23,6 +23,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcErrorAnilib
 import com.revolgenx.anilib.common.util.OnClick
+import anilib.i18n.R as I18nR
 
 
 @Composable
@@ -81,11 +82,11 @@ fun ErrorLayout(
                 modifier = Modifier.size(56.dp),
                 imageVector = AppIcons.IcErrorAnilib,
                 contentDescription = stringResource(
-                    id = R.string.something_went_wrong
+                    id = I18nR.string.something_went_wrong
                 )
             )
             Text(
-                stringResource(id = R.string.something_went_wrong),
+                stringResource(id = I18nR.string.something_went_wrong),
                 style = MaterialTheme.typography.bodyLarge,
             )
             error?.let {
@@ -95,7 +96,7 @@ fun ErrorLayout(
                 )
             }
             Button(onClick = { retry.invoke() }) {
-                Text(stringResource(id = R.string.retry))
+                Text(stringResource(id = I18nR.string.retry))
             }
         }
     }

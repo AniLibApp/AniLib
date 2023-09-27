@@ -13,6 +13,7 @@ import com.revolgenx.anilib.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import anilib.i18n.R as I18nR
 
 @Composable
 fun localContext() = LocalContext.current
@@ -29,11 +30,11 @@ fun Context.openLink(
                 it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             })
         } else {
-            errorMsg = this.getString(R.string.invalid_url)
+            errorMsg = this.getString(I18nR.string.invalid_url)
         }
     } catch (e: Exception) {
         Timber.d(e)
-        errorMsg = this.getString(R.string.no_app_found_to_handle_url)
+        errorMsg = this.getString(I18nR.string.no_app_found_to_handle_url)
     }
     errorMsg?.let {
         scope?.launch {

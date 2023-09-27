@@ -21,6 +21,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCalendar
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSadAnilib
+import anilib.i18n.R as I18nR
 
 
 @Composable
@@ -54,11 +55,11 @@ fun EmptyScreenLayout(
                 modifier = Modifier.size(56.dp),
                 imageVector = AppIcons.IcSadAnilib,
                 contentDescription = stringResource(
-                    id = R.string.its_empty
+                    id = I18nR.string.its_empty
                 )
             )
             Text(
-                stringResource(id = R.string.its_empty),
+                stringResource(id = I18nR.string.its_empty),
                 style = MaterialTheme.typography.bodyLarge,
             )
         }

@@ -30,6 +30,7 @@ import org.ocpsoft.prettytime.PrettyTime
 import java.util.Date
 import java.util.NavigableMap
 import java.util.TreeMap
+import anilib.i18n.R as I18nR
 
 fun String?.naText() = this.takeIf { !it.isNullOrEmpty() } ?: "?"
 fun Int?.naText() = this?.toString() ?: "?"
@@ -38,13 +39,13 @@ fun Int?.orZeroString() = this.orZero().toString()
 fun Double?.orZero() = this ?: 0.0
 
 @Composable
-fun Int?.orNaString() = this?.toString() ?: R.string.na.toStringResource()
+fun Int?.orNaString() = this?.toString() ?: I18nR.string.na.toStringResource()
 
 @Composable
-fun String?.orNaString(): String = this ?: R.string.na.toStringResource()
+fun String?.orNaString(): String = this ?: I18nR.string.na.toStringResource()
 
 @Composable
-fun Int?.toStringResourceOrNa(): String = this?.toStringResource() ?: R.string.na.toStringResource()
+fun Int?.toStringResourceOrNa(): String = this?.toStringResource() ?: I18nR.string.na.toStringResource()
 
 @Composable
 fun Int.toStringResource() = androidx.compose.ui.res.stringResource(id = this)

@@ -17,14 +17,15 @@ import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.type.MediaSource
 import com.revolgenx.anilib.type.MediaStatus
 import com.revolgenx.anilib.type.MediaType
+import anilib.i18n.R as I18nR
 
 enum class BrowseTypes(@StringRes val title: Int) {
-    ANIME(R.string.anime),
-    MANGA(R.string.manga),
-    CHARACTER(R.string.character),
-    STAFF(R.string.staff),
-    STUDIO(R.string.studio),
-    USER(R.string.user)
+    ANIME(I18nR.string.anime),
+    MANGA(I18nR.string.manga),
+    CHARACTER(I18nR.string.character),
+    STAFF(I18nR.string.staff),
+    STUDIO(I18nR.string.studio),
+    USER(I18nR.string.user)
 }
 
 val countryOfOrigins = listOf("JP", "KR", "CN", "TW")

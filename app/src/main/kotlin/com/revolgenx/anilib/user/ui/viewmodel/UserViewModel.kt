@@ -10,6 +10,7 @@ import com.revolgenx.anilib.user.data.service.UserService
 import com.revolgenx.anilib.user.ui.model.UserModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import anilib.i18n.R as I18nR
 
 
 private typealias UserScreenPage = PagerScreen<UserScreenPageType>
@@ -35,24 +36,24 @@ class UserViewModel(
     val userId = mutableStateOf<Int?>(null)
 
     val pages = listOf(
-        UserScreenPage(UserScreenPageType.OVERVIEW, R.string.overview),
+        UserScreenPage(UserScreenPageType.OVERVIEW, I18nR.string.overview),
         UserScreenPage(
-            UserScreenPageType.ACTIVITY, R.string.activity,
+            UserScreenPageType.ACTIVITY, I18nR.string.activity,
             isVisible = mutableStateOf(false)
         ),
         UserScreenPage(
             UserScreenPageType.FAVOURITES,
-            R.string.favourites,
+            I18nR.string.favourites,
             isVisible = mutableStateOf(false)
         ),
         UserScreenPage(
             UserScreenPageType.ANIME_STATS,
-            R.string.anime_stats,
+            I18nR.string.anime_stats,
             isVisible = mutableStateOf(false)
         ),
         UserScreenPage(
             UserScreenPageType.MANGA_STATS,
-            R.string.manga_stats,
+            I18nR.string.manga_stats,
             isVisible = mutableStateOf(false)
         )
     )

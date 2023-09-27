@@ -15,6 +15,7 @@ import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcGroup
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonCheck
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
+import anilib.i18n.R as I18nR
 
 class UserSocialRelationScreen(private val userId: Int, private var isFollower: Boolean?) :
     AndroidScreen() {
@@ -36,12 +37,12 @@ private enum class UserRelationScreenPageType {
 private val pages = listOf(
     UserRelationScreenPage(
         UserRelationScreenPageType.FOLLOWING,
-        R.string.following,
+        I18nR.string.following,
         AppIcons.IcPersonCheck
     ),
     UserRelationScreenPage(
         UserRelationScreenPageType.FOLLOWERS,
-        R.string.followers,
+        I18nR.string.followers,
         AppIcons.IcGroup
     ),
 )

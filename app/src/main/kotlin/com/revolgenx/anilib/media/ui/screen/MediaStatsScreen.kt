@@ -50,6 +50,7 @@ import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.type.MediaRankType
 import com.revolgenx.anilib.type.MediaType
+import anilib.i18n.R as I18nR
 
 @Composable
 fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
@@ -72,7 +73,7 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 statsModel.rankings?.let {
-                    HeaderText(text = stringResource(id = R.string.rankings))
+                    HeaderText(text = stringResource(id = I18nR.string.rankings))
                     Grid(items = it) { rank ->
                         Card(
                             modifier = Modifier
@@ -117,11 +118,11 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
                         }
                     }
 
-                    HeaderText(text = stringResource(id = R.string.recent_activity_per_day))
+                    HeaderText(text = stringResource(id = I18nR.string.recent_activity_per_day))
                     LineChart(marker = marker, model = statsModel.trendsEntries)
 
                     statsModel.airingScoreProgressionEntries?.let {
-                        HeaderText(text = stringResource(id = R.string.airing_score_progression))
+                        HeaderText(text = stringResource(id = I18nR.string.airing_score_progression))
                         LineChart(
                             marker = marker,
                             model = it,
@@ -132,7 +133,7 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
 
 
                     statsModel.airingWatchersProgressionEntries?.let {
-                        HeaderText(text = stringResource(id = R.string.airing_watchers_progression))
+                        HeaderText(text = stringResource(id = I18nR.string.airing_watchers_progression))
                         LineChart(
                             marker = marker,
                             model = it,
@@ -142,7 +143,7 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
                     }
 
                     statsModel.statusDistribution?.let { statusDistribution ->
-                        HeaderText(text = stringResource(id = R.string.status_distribution))
+                        HeaderText(text = stringResource(id = I18nR.string.status_distribution))
                         Grid(
                             items = statusDistribution,
                             columnSpacing = 3.dp,
@@ -161,7 +162,7 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
                             ) {
                                 Text(
                                     modifier = Modifier.align(Alignment.CenterStart),
-                                    text = stringResource(id = R.string.status_distribution_string).format(
+                                    text = stringResource(id = I18nR.string.status_distribution_string).format(
                                         item.amount.prettyNumberFormat(),
                                         listStatus
                                     ),
@@ -197,7 +198,7 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
                     }
 
 
-                    HeaderText(text = stringResource(id = R.string.score_distribution))
+                    HeaderText(text = stringResource(id = I18nR.string.score_distribution))
                     ColumnChart(marker = marker, model = statsModel.scoreDistributionEntry)
                 }
             }

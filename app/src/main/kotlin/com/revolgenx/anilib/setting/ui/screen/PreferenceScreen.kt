@@ -84,8 +84,8 @@ private fun PreferenceItem(
             ListPreferenceItem(
                 value = prefState.value,
                 title = item.title,
-                subtitle = item.subtitle,
-                entries = item.entries
+                entries = item.entries,
+                subtitle = item.subtitleProvider(prefState.value)
             ) { newValue ->
                 scope.launch {
                     item.pref.set(newValue)
@@ -93,7 +93,19 @@ private fun PreferenceItem(
             }
         }
 
-        is PreferenceModel.BasicListPreference -> TODO()
+        is PreferenceModel.BasicListPreference -> {
+            ListPreferenceItem(
+                value = item.value,
+                title = item.title,
+                entries = item.entries,
+                subtitle = item.subtitleProvider(item.value)
+            ) { newValue ->
+                scope.launch {
+                    item.onValueChanged(newValue)
+                }
+            }
+        }
+
         is PreferenceModel.CustomPreference -> TODO()
         is PreferenceModel.EditTextPreference -> TODO()
         is PreferenceModel.InfoPreference -> TODO()

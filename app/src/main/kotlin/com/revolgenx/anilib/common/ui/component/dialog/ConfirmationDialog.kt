@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.stringResource
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.util.OnClick
+import anilib.i18n.R as I18nR
 
 @Composable
 fun ConfirmationDialog(
@@ -23,7 +24,7 @@ fun ConfirmationDialog(
                 openDialog.value = false
             },
             title = {
-                Text(text = title ?: stringResource(id = R.string.confirm))
+                Text(text = title ?: stringResource(id = I18nR.string.confirm))
             },
             text = {
                 Text(text = message)

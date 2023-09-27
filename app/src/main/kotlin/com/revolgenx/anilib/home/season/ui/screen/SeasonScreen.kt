@@ -66,6 +66,7 @@ import com.revolgenx.anilib.media.ui.model.toImageVector
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.type.MediaStatus
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -187,7 +188,7 @@ private fun SeasonItem(
                     color = onSurfaceVariant
                 )
                 Text(
-                    stringResource(id = R.string.ep_d_s).format(
+                    stringResource(id = I18nR.string.ep_d_s).format(
                         media.episodes.naText(),
                         media.duration.naText()
                     ),

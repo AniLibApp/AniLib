@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.tuples.MutablePair
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
+import anilib.i18n.R as I18nR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +58,7 @@ fun MultiSelectMenu(
     ) {
 
         val selectedItem = selectedItems.takeIf { it.isNotEmpty() }?.joinToString(", ")
-            ?: stringResource(id = R.string.none)
+            ?: stringResource(id = I18nR.string.none)
         TextField(
             modifier = Modifier
                 .menuAnchor()

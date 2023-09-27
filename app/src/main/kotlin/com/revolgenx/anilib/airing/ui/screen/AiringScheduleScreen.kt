@@ -90,6 +90,7 @@ import org.koin.androidx.compose.koinViewModel
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
+import anilib.i18n.R as I18nR
 
 /*TODO HANDLE USER DATA*/
 class AiringScheduleScreen : AndroidScreen() {
@@ -125,7 +126,7 @@ private fun AiringScreenContent(
     val dayRangeTitle = remember {
         derivedStateOf {
             if (viewModel.field.isWeeklyTypeDate) {
-                context.getString(R.string.day_range_string).format(
+                context.getString(I18nR.string.day_range_string).format(
                     viewModel.startDateTime.dayOfWeek.getDisplayName(
                         TextStyle.SHORT,
                         Locale.getDefault()
@@ -147,10 +148,10 @@ private fun AiringScreenContent(
 
     val dateRangeSubTitle = remember {
         derivedStateOf {
-            val dateFormatPattern = context.getString(R.string.date_format_pattern)
+            val dateFormatPattern = context.getString(I18nR.string.date_format_pattern)
 
             if (viewModel.field.isWeeklyTypeDate) {
-                context.getString(R.string.day_range_string).format(
+                context.getString(I18nR.string.day_range_string).format(
                     viewModel.startDateTime.format(
                         DateTimeFormatter.ofPattern(
                             dateFormatPattern
@@ -313,9 +314,9 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                     )
                 }
                 val epAiringIn = if (media.episodes.isNull()) {
-                    stringResource(id = R.string.ep_s_airing_in).format(airingScheduleModel.episode)
+                    stringResource(id = I18nR.string.ep_s_airing_in).format(airingScheduleModel.episode)
                 } else {
-                    stringResource(id = R.string.ep_s_of_s_airing_in).format(
+                    stringResource(id = I18nR.string.ep_s_of_s_airing_in).format(
                         airingScheduleModel.episode,
                         media.episodes
                     )
@@ -416,7 +417,7 @@ private fun AiringScheduleFilterBottomSheetContent(
                     }
 
                 SortSelectMenu(
-                    label = stringResource(id = R.string.sort),
+                    label = stringResource(id = I18nR.string.sort),
                     entries = sortMenus,
                     allowNone = false
                 ) { index, selectedItem ->
@@ -447,22 +448,22 @@ private fun AiringScheduleAction(
     ActionMenu(icon = AppIcons.IcChevronRight, onClick = onNext)
     OverflowMenu {
         OverflowMenuItem(
-            textRes = R.string.filter,
+            textRes = I18nR.string.filter,
             icon = AppIcons.IcFilter,
             onClick = onFilter,
-            contentDescriptionRes = R.string.filter
+            contentDescriptionRes = I18nR.string.filter
         )
         OverflowMenuItem(
-            textRes = R.string.select_date,
+            textRes = I18nR.string.select_date,
             icon = AppIcons.IcCalendar,
             onClick = onCalendar,
-            contentDescriptionRes = R.string.select_date,
+            contentDescriptionRes = I18nR.string.select_date,
         )
         OverflowMenuItem(
-            textRes = R.string.weekly,
+            textRes = I18nR.string.weekly,
             icon = AppIcons.IcTime,
             onClick = onWeekly,
-            contentDescriptionRes = R.string.weekly,
+            contentDescriptionRes = I18nR.string.weekly,
             isChecked = isWeeklyTypeDate
         ) {
             onWeekly.invoke()

@@ -4,6 +4,7 @@ import android.content.Context
 import com.revolgenx.anilib.R
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import anilib.i18n.R as I18nR
 
 
 class TimeUntilAiringModel(time: Long = 0) {
@@ -51,19 +52,19 @@ class TimeUntilAiringModel(time: Long = 0) {
     fun formatString(context: Context): String {
         return when {
             day != 0L -> {
-                context.getString(R.string.eta_s_s_s_s).format(day, hour, min, sec)
+                context.getString(I18nR.string.eta_s_s_s_s).format(day, hour, min, sec)
             }
 
             hour != 0L -> {
-                context.getString(R.string.eta_s_s_s).format(hour, min, sec)
+                context.getString(I18nR.string.eta_s_s_s).format(hour, min, sec)
             }
 
             min != 0L -> {
-                context.getString(R.string.eta_s_s).format(min, sec)
+                context.getString(I18nR.string.eta_s_s).format(min, sec)
             }
 
             sec != 0L -> {
-                context.getString(R.string.eta_s).format(sec)
+                context.getString(I18nR.string.eta_s).format(sec)
             }
 
             else -> ""

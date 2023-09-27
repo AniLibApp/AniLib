@@ -9,8 +9,8 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.tab.Tab
 
 abstract class BaseTabScreen : Tab, ScreenLifecycleProvider {
-    open val tabIcon: ImageVector? = null
-    open val selectedIcon: ImageVector? = null
+    abstract val tabIcon: ImageVector
+    abstract val selectedIcon: ImageVector
 
     override val key: ScreenKey = uniqueScreenKey
     override fun getLifecycleOwner(): ScreenLifecycleOwner = AndroidScreenLifecycleOwner.get(this)

@@ -33,6 +33,7 @@ import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
+import anilib.i18n.R as I18nR
 
 
 @Composable
@@ -101,7 +102,7 @@ fun UserRelationItem(user: UserModel) {
                         modifier = Modifier
                             .align(Alignment.Center)
                             .padding(horizontal = 10.dp),
-                        text = stringResource(id = R.string.mutual)
+                        text = stringResource(id = I18nR.string.mutual)
                     )
                 }
             }

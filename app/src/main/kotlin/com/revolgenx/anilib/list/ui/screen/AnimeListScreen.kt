@@ -13,6 +13,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMediaOutline
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
+import anilib.i18n.R as I18nR
 
 object AnimeListScreen : MediaListScreen() {
     override val tabIcon: ImageVector = AppIcons.IcMediaOutline
@@ -20,7 +21,7 @@ object AnimeListScreen : MediaListScreen() {
     override val options: TabOptions
         @Composable
         get() {
-            val title = stringResource(R.string.anime)
+            val title = stringResource(I18nR.string.anime)
 
             return remember {
                 TabOptions(

@@ -21,6 +21,7 @@ import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 class ActivityComposerScreen(val activityId: Int? = null) : AndroidScreen() {
     @Composable
@@ -38,8 +39,8 @@ private enum class ActivityComposerScreenPages {
 }
 
 private val pages = listOf(
-    HomeScreenPage(ActivityComposerScreenPages.STATUS, R.string.status),
-    HomeScreenPage(ActivityComposerScreenPages.PREVIEW, R.string.preview),
+    HomeScreenPage(ActivityComposerScreenPages.STATUS, I18nR.string.status),
+    HomeScreenPage(ActivityComposerScreenPages.PREVIEW, I18nR.string.preview),
 )
 
 
@@ -82,13 +83,13 @@ fun ActivityComposerStatusScreen(viewModel: ActivityComposerViewModel, currentPa
             modifier = Modifier.fillMaxWidth(),
             value = viewModel.text.value,
             onValueChange = { viewModel.text.value = it },
-            label = { Text(text = stringResource(id = R.string.write_a_status)) }
+            label = { Text(text = stringResource(id = I18nR.string.write_a_status)) }
         )
 
         Box(modifier = Modifier.fillMaxWidth()) {
             Text(
                 modifier = Modifier.align(Alignment.CenterEnd),
-                text = stringResource(id = R.string.activity_posting_guidelines)
+                text = stringResource(id = I18nR.string.activity_posting_guidelines)
             )
         }
     }

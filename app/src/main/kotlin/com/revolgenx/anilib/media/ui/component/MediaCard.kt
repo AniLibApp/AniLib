@@ -41,6 +41,7 @@ import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.list.ui.model.toColor
 import com.revolgenx.anilib.list.ui.model.toImageVector
+import anilib.i18n.R as I18nR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -103,7 +104,7 @@ fun MediaCard(
                     }
 
                     LightText(
-                        text = stringResource(id = R.string.s_dot_s).format(format, year),
+                        text = stringResource(id = I18nR.string.s_dot_s).format(format, year),
                         lineHeight = 11.sp
                     )
                 }
@@ -201,7 +202,7 @@ fun MediaItemRowContent(
 
             LightText(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.s_dot_s).format(format, year),
+                text = stringResource(id = I18nR.string.s_dot_s).format(format, year),
             )
 
             content()
@@ -258,7 +259,7 @@ fun MediaRowItemContentEnd(
 
             LightText(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.s_dot_s).format(format, year),
+                text = stringResource(id = I18nR.string.s_dot_s).format(format, year),
                 textAlign = TextAlign.End,
             )
 

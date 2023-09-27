@@ -77,6 +77,7 @@ import org.koin.androidx.compose.koinViewModel
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import anilib.i18n.R as I18nR
 
 class MediaListEntryEditorScreen(private val mediaId: Int, private val userId: Int) :
     AndroidScreen() {
@@ -102,7 +103,7 @@ private fun MediaListEditScreenContent(
         viewModel.getResource()
     }
 
-    val editTitle = stringResource(id = R.string.edit)
+    val editTitle = stringResource(id = I18nR.string.edit)
     var title by remember { mutableStateOf(editTitle) }
     val openConfirmDialog = remember { mutableStateOf(false) }
 
@@ -113,14 +114,14 @@ private fun MediaListEditScreenContent(
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
                     imageVector = if (viewModel.isFavourite) AppIcons.IcHeart else AppIcons.IcHeartOutline,
-                    contentDescription = stringResource(id = R.string.favourite)
+                    contentDescription = stringResource(id = I18nR.string.favourite)
                 )
             }
             if (viewModel.userHasMediaListEntry) {
                 IconButton(onClick = { openConfirmDialog.value = true }) {
                     Icon(
                         imageVector = AppIcons.IcDelete,
-                        contentDescription = stringResource(id = R.string.delete)
+                        contentDescription = stringResource(id = I18nR.string.delete)
                     )
                 }
             }
@@ -130,7 +131,7 @@ private fun MediaListEditScreenContent(
             }) {
                 Icon(
                     imageVector = AppIcons.IcSave,
-                    contentDescription = stringResource(id = R.string.save)
+                    contentDescription = stringResource(id = I18nR.string.save)
                 )
             }
         },
@@ -141,8 +142,8 @@ private fun MediaListEditScreenContent(
         val snackbar = localSnackbarHostState()
         when (viewModel.deleteResource.value) {
             is ResourceState.Error -> {
-                val failedToDelete = stringResource(id = R.string.failed_to_delete)
-                val retry = stringResource(id = R.string.retry)
+                val failedToDelete = stringResource(id = I18nR.string.failed_to_delete)
+                val retry = stringResource(id = I18nR.string.retry)
                 LaunchedEffect(viewModel) {
                     when (snackbar.showSnackbar(
                         failedToDelete, retry, duration = SnackbarDuration.Long
@@ -171,8 +172,8 @@ private fun MediaListEditScreenContent(
 
         when (viewModel.saveResource.value) {
             is ResourceState.Error -> {
-                val failedToSave = stringResource(id = R.string.failed_to_save)
-                val retry = stringResource(id = R.string.retry)
+                val failedToSave = stringResource(id = I18nR.string.failed_to_save)
+                val retry = stringResource(id = I18nR.string.retry)
                 LaunchedEffect(viewModel) {
                     when (snackbar.showSnackbar(
                         failedToSave, retry, duration = SnackbarDuration.Long
@@ -218,7 +219,7 @@ private fun MediaListEditScreenContent(
                     val mediaTitle = media.title?.title(it)
                     title = mediaTitle.orEmpty()
                     ConfirmationDialog(openDialog = openConfirmDialog,
-                        message = stringResource(id = R.string.do_you_really_want_to_delete_the_entry_s).format(
+                        message = stringResource(id = I18nR.string.do_you_really_want_to_delete_the_entry_s).format(
                             mediaTitle?.let { " $it" } ?: "")) {
                         viewModel.delete()
                     }
@@ -235,7 +236,7 @@ private fun MediaListEditScreenContent(
 
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            heading = stringResource(R.string.status),
+                            heading = stringResource(I18nR.string.status),
                             fixedCardHeight = false
                         ) {
                             val mediaListStatusEntries =
@@ -250,7 +251,7 @@ private fun MediaListEditScreenContent(
                         }
 
                         CardHeaderContent(
-                            modifier = Modifier.weight(1f), heading = stringResource(R.string.score)
+                            modifier = Modifier.weight(1f), heading = stringResource(I18nR.string.score)
                         ) {
                             MediaListEntryScore(
                                 score = entryField.score,
@@ -268,7 +269,7 @@ private fun MediaListEditScreenContent(
                     ) {
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            heading = stringResource(if (isAnime) R.string.episode_progress else R.string.chapter_progress)
+                            heading = stringResource(if (isAnime) I18nR.string.episode_progress else I18nR.string.chapter_progress)
                         ) {
                             CountEditor(
                                 count = entryField.progress ?: 0,
@@ -281,7 +282,7 @@ private fun MediaListEditScreenContent(
 
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            heading = stringResource(if (isAnime) R.string.total_rewatches else R.string.total_rereads)
+                            heading = stringResource(if (isAnime) I18nR.string.total_rewatches else I18nR.string.total_rereads)
                         ) {
                             CountEditor(
                                 count = entryField.repeat ?: 0,
@@ -298,7 +299,7 @@ private fun MediaListEditScreenContent(
                     ) {
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            heading = stringResource(R.string.start_date)
+                            heading = stringResource(I18nR.string.start_date)
                         ) {
                             val openCalendar = remember { mutableStateOf(false) }
                             val startedAt = entryField.startedAt?.toZoneDateTime()
@@ -320,7 +321,7 @@ private fun MediaListEditScreenContent(
 
                         CardHeaderContent(
                             modifier = Modifier.weight(1f),
-                            heading = stringResource(R.string.end_date)
+                            heading = stringResource(I18nR.string.end_date)
                         ) {
                             val openCalendar = remember { mutableStateOf(false) }
                             val completedAt = entryField.completedAt?.toZoneDateTime()
@@ -348,7 +349,7 @@ private fun MediaListEditScreenContent(
                         ) {
                             CardHeaderContent(
                                 modifier = Modifier.weight(1f),
-                                heading = stringResource(R.string.volume_progress)
+                                heading = stringResource(I18nR.string.volume_progress)
                             ) {
                                 CountEditor(
                                     count = entryField.progressVolumes ?: 0,
@@ -361,7 +362,7 @@ private fun MediaListEditScreenContent(
                     }
 
                     CardHeaderContent(
-                        heading = stringResource(R.string.notes), fixedCardHeight = false
+                        heading = stringResource(I18nR.string.notes), fixedCardHeight = false
                     ) {
                         BasicTextField(modifier = Modifier
                             .fillMaxWidth()
@@ -377,7 +378,7 @@ private fun MediaListEditScreenContent(
                     val hasCustomList = entryField.customLists.isNullOrEmpty().not()
 
                     TextCheckbox(
-                        text = stringResource(id = R.string._private), checked = entryField.private
+                        text = stringResource(id = I18nR.string._private), checked = entryField.private
                     ) {
                         entryField.private = it
                     }
@@ -385,7 +386,7 @@ private fun MediaListEditScreenContent(
                     if (hasCustomList) {
 
                         TextCheckbox(
-                            text = stringResource(id = R.string.hide_from_status_lists),
+                            text = stringResource(id = I18nR.string.hide_from_status_lists),
                             checked = entryField.hiddenFromStatusLists ?: false
                         ) {
                             entryField.hiddenFromStatusLists = it
@@ -397,7 +398,7 @@ private fun MediaListEditScreenContent(
                     HorizontalDivider(modifier = Modifier.padding(4.dp))
 
                     TextHeaderContent(
-                        heading = stringResource(R.string.custom_lists)
+                        heading = stringResource(I18nR.string.custom_lists)
                     ) {
                         if (hasCustomList) {
                             entryField.customLists!!.map { cList ->
@@ -410,7 +411,7 @@ private fun MediaListEditScreenContent(
                         } else {
                             Text(
                                 modifier = Modifier.padding(start = 12.dp),
-                                text = stringResource(id = R.string.no_custom_lists)
+                                text = stringResource(id = I18nR.string.no_custom_lists)
                             )
                         }
                     }
@@ -420,7 +421,7 @@ private fun MediaListEditScreenContent(
 
                             HorizontalDivider(modifier = Modifier.padding(4.dp))
                             TextHeaderContent(
-                                heading = stringResource(id = R.string.advanced_scores),
+                                heading = stringResource(id = I18nR.string.advanced_scores),
                             ) {
                                 entryField.advancedScores?.let {
                                     Grid(

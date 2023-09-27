@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.theme.background
+import anilib.i18n.R as I18nR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +43,7 @@ fun SpoilerBottomSheet(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.spoiler) + " ( ╯°□°)╯",
+                    text = stringResource(id = I18nR.string.spoiler) + " ( ╯°□°)╯",
                     style = MaterialTheme.typography.titleLarge,
                 )
 

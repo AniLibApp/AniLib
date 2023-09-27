@@ -34,6 +34,7 @@ import com.revolgenx.anilib.home.recommendation.ui.screen.RecommendationScreen
 import com.revolgenx.anilib.home.season.ui.screen.SeasonScreen
 import com.revolgenx.anilib.notification.ui.screen.NotificationScreen
 import com.revolgenx.anilib.review.ui.screen.ReviewListScreen
+import anilib.i18n.R as I18nR
 
 object HomeScreen : BaseTabScreen() {
     override val tabIcon: ImageVector = AppIcons.IcHomeOutline
@@ -41,7 +42,7 @@ object HomeScreen : BaseTabScreen() {
     override val options: TabOptions
         @Composable
         get() {
-            val title = stringResource(R.string.home)
+            val title = stringResource(I18nR.string.home)
 
             return remember {
                 TabOptions(
@@ -67,10 +68,10 @@ private enum class HomeScreenPages {
 }
 
 private val pages = listOf(
-    HomeScreenPage(HomeScreenPages.EXPLORE, R.string.explore),
-    HomeScreenPage(HomeScreenPages.SEASON, R.string.season),
-    HomeScreenPage(HomeScreenPages.RECOMMENDATIONS, R.string.recommendations),
-    HomeScreenPage(HomeScreenPages.REVIEWS, R.string.reviews),
+    HomeScreenPage(HomeScreenPages.EXPLORE, I18nR.string.explore),
+    HomeScreenPage(HomeScreenPages.SEASON, I18nR.string.season),
+    HomeScreenPage(HomeScreenPages.RECOMMENDATIONS, I18nR.string.recommendations),
+    HomeScreenPage(HomeScreenPages.REVIEWS, I18nR.string.reviews),
 )
 
 

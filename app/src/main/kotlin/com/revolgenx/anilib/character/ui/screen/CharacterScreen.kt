@@ -20,6 +20,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
 import com.revolgenx.anilib.common.ui.icons.appicon.IcVoice
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 class CharacterScreen(val characterId: Int) : AndroidScreen() {
     @Composable
@@ -39,11 +40,11 @@ private enum class CharacterScreenPageType {
 }
 
 private val pages = listOf(
-    CharacterScreenPage(CharacterScreenPageType.ABOUT, R.string.about, AppIcons.IcAbout),
-    CharacterScreenPage(CharacterScreenPageType.MEDIA, R.string.media, AppIcons.IcMedia),
+    CharacterScreenPage(CharacterScreenPageType.ABOUT, I18nR.string.about, AppIcons.IcAbout),
+    CharacterScreenPage(CharacterScreenPageType.MEDIA, I18nR.string.media, AppIcons.IcMedia),
     CharacterScreenPage(
         CharacterScreenPageType.VOICE_ROLES,
-        R.string.voice_roles,
+        I18nR.string.voice_roles,
         AppIcons.IcVoice
     )
 )

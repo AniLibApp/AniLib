@@ -98,6 +98,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcWinter
 import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 
 class MediaScreen(
@@ -230,7 +231,7 @@ private fun MediaScreenTopAppBar(
             if (isCollapsed) {
                 MediaTitleType {
                     Text(
-                        text = media?.title?.title(it) ?: stringResource(id = R.string.media),
+                        text = media?.title?.title(it) ?: stringResource(id = I18nR.string.media),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                     )
@@ -369,7 +370,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
 
 
                             MediumText(
-                                text = stringResource(id = R.string.season_dot_year).format(
+                                text = stringResource(id = I18nR.string.season_dot_year).format(
                                     season,
                                     media?.seasonYear.naText()
                                 ),
@@ -381,7 +382,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
 
                         media?.nextAiringEpisode?.let {
                             MediumText(
-                                text = stringResource(id = R.string.episode_airing_date).format(
+                                text = stringResource(id = I18nR.string.episode_airing_date).format(
                                     it.episode,
                                     it.airingAtModel?.airingDateTime.naText()
                                 ),
@@ -405,7 +406,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                 text = media?.mediaListEntry?.status?.toStringRes(mediaType = mediaType)
                                     .let {
                                         stringResource(
-                                            id = it ?: R.string.add
+                                            id = it ?: I18nR.string.add
                                         )
                                     }
                             )

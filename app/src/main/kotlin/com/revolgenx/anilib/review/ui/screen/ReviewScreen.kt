@@ -72,6 +72,7 @@ import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
 import com.revolgenx.anilib.type.ReviewRating
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 class ReviewScreen(private val reviewId: Int) : AndroidScreen() {
     @Composable
@@ -136,8 +137,8 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
                         modifier = Modifier.fillMaxHeight(),
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text(text = stringResource(id = R.string.review_by_user).format(user?.name.naText()))
-                        Text(text = stringResource(id = R.string.score_d_100).format(review.score.orZero()))
+                        Text(text = stringResource(id = I18nR.string.review_by_user).format(user?.name.naText()))
+                        Text(text = stringResource(id = I18nR.string.score_d_100).format(review.score.orZero()))
                     }
 
                     LightText(
@@ -155,7 +156,7 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
 
                 MediumText(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    text = stringResource(id = R.string.d_out_of_d_liked_this_review).format(
+                    text = stringResource(id = I18nR.string.d_out_of_d_liked_this_review).format(
                         review.rating, review.ratingAmount
                     ),
                 )
@@ -236,7 +237,7 @@ private fun ReviewScreenTopAppBar(
                                 .align(Alignment.BottomCenter)
                                 .padding(bottom = 14.dp),
                             color = onSurface,
-                            text = media?.title?.title(type) ?: stringResource(id = R.string.review),
+                            text = media?.title?.title(type) ?: stringResource(id = I18nR.string.review),
                             textAlign = TextAlign.Center,
                             style = typography().titleLarge.copy(
                                 shadow = Shadow(
@@ -254,7 +255,7 @@ private fun ReviewScreenTopAppBar(
             if (isCollapsed) {
                 MediaTitleType {
                     Text(
-                        text = media?.title?.title(it) ?: stringResource(id = R.string.review),
+                        text = media?.title?.title(it) ?: stringResource(id = I18nR.string.review),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                     )

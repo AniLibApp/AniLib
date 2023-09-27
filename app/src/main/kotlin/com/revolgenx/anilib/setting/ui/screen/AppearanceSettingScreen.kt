@@ -11,9 +11,10 @@ import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import com.revolgenx.anilib.setting.ui.model.PreferenceDataModel
 import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import org.koin.androidx.compose.get
+import anilib.i18n.R as I18nR
 
 object AppearanceSettingScreen : PreferenceScreen() {
-    override val titleRes: Int = R.string.setting_label_appearance
+    override val titleRes: Int = I18nR.string.setting_label_appearance
 
     @Composable
     override fun Content() {
@@ -26,30 +27,30 @@ object AppearanceSettingScreen : PreferenceScreen() {
         return listOf(
             PreferenceModel.ListPreferenceModel(
                 PreferenceDataModel(dataStore = dataStore, ThemeDataStore.themeModeKey),
-                title = stringResource(id = R.string.setting_theme_dark_mode),
+                title = stringResource(id = I18nR.string.setting_theme_dark_mode),
                 entries = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     listOf(
                         ListPreferenceEntry(
-                            title = stringResource(id = R.string.theme_dark_follow_system),
+                            title = stringResource(id = I18nR.string.theme_dark_follow_system),
                             value = null
                         ),
                         ListPreferenceEntry(
-                            title = stringResource(id = R.string.theme_dark_off),
+                            title = stringResource(id = I18nR.string.theme_dark_off),
                             value = false
                         ),
                         ListPreferenceEntry(
-                            title = stringResource(id = R.string.theme_dark_on),
+                            title = stringResource(id = I18nR.string.theme_dark_on),
                             value = true
                         ),
                     )
                 } else {
                     listOf(
                         ListPreferenceEntry(
-                            title = stringResource(id = R.string.theme_dark_off),
+                            title = stringResource(id = I18nR.string.theme_dark_off),
                             value = false
                         ),
                         ListPreferenceEntry(
-                            title = stringResource(id = R.string.theme_dark_on),
+                            title = stringResource(id = I18nR.string.theme_dark_on),
                             value = true
                         ),
                     )

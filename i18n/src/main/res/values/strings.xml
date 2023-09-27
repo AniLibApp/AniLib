@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AniLib</string>
+    <string name="app_name" translatable="false">AniLib</string>
 
     <string name="home">Home</string>
     <string name="list">List</string>
@@ -360,6 +360,8 @@
     <string name="theme_dark_follow_system">Follow system</string>
     <string name="theme_dark_off">Off</string>
     <string name="theme_dark_on">On</string>
+    <string name="setting_general_app_language">App Language</string>
+    <string name="label_default">Default</string>
     <!--Settings-->
 
 </resources>

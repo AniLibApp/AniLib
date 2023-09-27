@@ -32,6 +32,7 @@ import com.revolgenx.anilib.media.ui.model.isManga
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.model.UserModel
+import anilib.i18n.R as I18nR
 
 data class MediaListModel(
     val id: Int = -1,
@@ -104,13 +105,13 @@ fun MediaListStatus?.toColor() = when (this) {
 fun MediaListStatus?.toStringRes(mediaType: MediaType): Int {
     val isManga = mediaType.isManga
     return when (this) {
-        MediaListStatus.CURRENT -> if (isManga) R.string.watching else R.string.reading
-        MediaListStatus.PLANNING -> if (isManga) R.string.plan_to_read else R.string.plan_to_watch
-        MediaListStatus.COMPLETED -> R.string.completed
-        MediaListStatus.DROPPED -> R.string.dropped
-        MediaListStatus.PAUSED -> R.string.paused
-        MediaListStatus.REPEATING -> if (isManga) R.string.rereading else R.string.rewatching
-        else -> R.string.unknown
+        MediaListStatus.CURRENT -> if (isManga) I18nR.string.watching else I18nR.string.reading
+        MediaListStatus.PLANNING -> if (isManga) I18nR.string.plan_to_read else I18nR.string.plan_to_watch
+        MediaListStatus.COMPLETED -> I18nR.string.completed
+        MediaListStatus.DROPPED -> I18nR.string.dropped
+        MediaListStatus.PAUSED -> I18nR.string.paused
+        MediaListStatus.REPEATING -> if (isManga) I18nR.string.rereading else I18nR.string.rewatching
+        else -> I18nR.string.unknown
     }
 }
 

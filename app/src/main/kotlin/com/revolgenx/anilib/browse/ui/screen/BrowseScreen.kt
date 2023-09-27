@@ -79,6 +79,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 class BrowseScreen : AndroidScreen() {
     @Composable
@@ -234,12 +235,12 @@ fun BrowseScreenTopAppbar(
                         }
                     },
                     placeholder = {
-                        Text(text = stringResource(id = R.string.search))
+                        Text(text = stringResource(id = I18nR.string.search))
                     },
                     leadingIcon = {
                         Icon(
                             imageVector = AppIcons.IcSearch,
-                            contentDescription = stringResource(id = R.string.search)
+                            contentDescription = stringResource(id = I18nR.string.search)
                         )
                     },
                     trailingIcon = {
@@ -247,7 +248,7 @@ fun BrowseScreenTopAppbar(
                             if (viewModel.query.isNotEmpty()) {
                                 ActionMenu(
                                     icon = AppIcons.IcCancel,
-                                    contentDescriptionRes = R.string.clear
+                                    contentDescriptionRes = I18nR.string.clear
                                 ) {
                                     viewModel.search = ""
                                     viewModel.refresh()
@@ -256,7 +257,7 @@ fun BrowseScreenTopAppbar(
 
                             ActionMenu(
                                 icon = AppIcons.IcFilter,
-                                contentDescriptionRes = R.string.filter
+                                contentDescriptionRes = I18nR.string.filter
                             ) {
 
                             }
@@ -276,7 +277,7 @@ fun BrowseScreenTopAppbar(
                                     .clickable {
                                     },
                                 imageVector = AppIcons.IcCancel,
-                                contentDescription = stringResource(id = R.string.clear)
+                                contentDescription = stringResource(id = I18nR.string.clear)
                             )
                         })
                 }

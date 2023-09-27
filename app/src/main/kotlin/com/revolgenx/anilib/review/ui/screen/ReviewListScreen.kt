@@ -70,6 +70,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -197,7 +198,7 @@ fun ReviewListItem(
                                         .clickable {
                                             onMediaClick(model.mediaId, model.media?.type)
                                         },
-                                    text = stringResource(id = R.string.review_of_s_by_s).format(
+                                    text = stringResource(id = I18nR.string.review_of_s_by_s).format(
                                         model.media?.title?.title(it),
                                         model.user?.name.naText()
                                     ),
@@ -215,7 +216,7 @@ fun ReviewListItem(
                                 )
                             }
                             Text(
-                                text = stringResource(id = R.string.review_score_format).format(
+                                text = stringResource(id = I18nR.string.review_score_format).format(
                                     model.score,
                                 ),
                                 fontWeight = FontWeight.SemiBold,

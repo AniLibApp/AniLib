@@ -78,20 +78,20 @@ import com.revolgenx.anilib.user.ui.viewmodel.UserScreenPageType
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 class UserScreen(
     private val id: Int? = null,
     private val userName: String? = null,
     private val isTab: Boolean = false
 ) : BaseTabScreen() {
-    override val tabIcon: ImageVector = AppIcons.IcPersonOutline
-    override val selectedIcon: ImageVector = AppIcons.IcPerson
+    override val tabIcon: ImageVector get() = AppIcons.IcPersonOutline
+    override val selectedIcon: ImageVector get() = AppIcons.IcPerson
 
     override val options: TabOptions
         @Composable
         get() {
-            val title = stringResource(R.string.activity)
-
+            val title = stringResource(I18nR.string.user)
             return remember {
                 TabOptions(
                     index = 0u,
@@ -278,7 +278,7 @@ private fun UserScreenTopAppbar(
                                 onClick = { }
                             ) {
                                 Text(
-                                    text = stringResource(id = if (it.isFollowing) R.string.following else R.string.follow)
+                                    text = stringResource(id = if (it.isFollowing) I18nR.string.following else I18nR.string.follow)
                                 )
                             }
                         }
@@ -301,7 +301,7 @@ private fun UserScreenTopAppbar(
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         UserCountInfo(
-                            label = stringResource(id = R.string.following),
+                            label = stringResource(id = I18nR.string.following),
                             count = user?.following.orZero().prettyNumberFormat(),
                             icon = AppIcons.IcPersonCheckOutline,
                             onClick = {
@@ -311,7 +311,7 @@ private fun UserScreenTopAppbar(
                             }
                         )
                         UserCountInfo(
-                            label = stringResource(id = R.string.followers),
+                            label = stringResource(id = I18nR.string.followers),
                             count = user?.followers.orZero().prettyNumberFormat(),
                             icon = AppIcons.IcGroupOutline,
                             onClick = {
@@ -325,7 +325,7 @@ private fun UserScreenTopAppbar(
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         UserCountInfo(
-                            label = stringResource(id = R.string.anime),
+                            label = stringResource(id = I18nR.string.anime),
                             count = user?.statistics?.anime?.count.orZero().prettyNumberFormat(),
                             icon = AppIcons.IcMediaOutline,
                             onClick = {
@@ -339,7 +339,7 @@ private fun UserScreenTopAppbar(
                             }
                         )
                         UserCountInfo(
-                            label = stringResource(id = R.string.manga),
+                            label = stringResource(id = I18nR.string.manga),
                             count = user?.statistics?.manga?.count.orZero().prettyNumberFormat(),
                             icon = AppIcons.IcBookOutline,
                             onClick = {
@@ -360,7 +360,7 @@ private fun UserScreenTopAppbar(
             if (isCollapsed) {
                 Text(
                     modifier = Modifier.padding(horizontal = 6.dp),
-                    text = user?.name ?: stringResource(id = R.string.user),
+                    text = user?.name ?: stringResource(id = I18nR.string.user),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
@@ -368,7 +368,7 @@ private fun UserScreenTopAppbar(
         },
         navigationIcon = if (isTab.not()) null else ({}),
         actions = { isCollapsed ->
-            ActionMenu(icon = AppIcons.IcSettings, tonalButton = !isCollapsed){
+            ActionMenu(icon = AppIcons.IcSettings, tonalButton = !isCollapsed) {
                 SettingScreen.isTab = false
                 navigator.push(SettingScreen)
             }

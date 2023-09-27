@@ -27,6 +27,7 @@ import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowDownward
 import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowUpward
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
+import anilib.i18n.R as I18nR
 
 
 enum class AlSortOrder {
@@ -74,7 +75,7 @@ fun SortSelectMenu(
                 .menuAnchor()
                 .fillMaxWidth(),
             readOnly = true,
-            value = item?.title ?: stringResource(id = R.string.none),
+            value = item?.title ?: stringResource(id = I18nR.string.none),
             onValueChange = {},
             shape = shape,
             label = { label?.let { Text(it) } },

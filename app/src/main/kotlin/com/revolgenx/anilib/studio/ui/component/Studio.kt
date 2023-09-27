@@ -26,6 +26,7 @@ import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.component.MediaCard
 import com.revolgenx.anilib.studio.ui.model.StudioModel
+import anilib.i18n.R as I18nR
 
 
 @Composable
@@ -54,7 +55,7 @@ fun StudioItem(studio: StudioModel, onMediaClick: OnMediaClick, onClick: OnClick
             )
 
             SmallTextButton(
-                text = stringResource(id = R.string.view_all)
+                text = stringResource(id = I18nR.string.view_all)
             ) {
                 onClick(studio.id)
             }

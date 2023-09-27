@@ -21,6 +21,7 @@ import com.revolgenx.anilib.media.data.service.MediaService
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
+import anilib.i18n.R as I18nR
 
 enum class MediaScreenPageType {
     OVERVIEW,
@@ -45,21 +46,21 @@ class MediaViewModel(
 
     private val watchPage = MediaScreenPage(
         MediaScreenPageType.WATCH,
-        R.string.watch,
+        I18nR.string.watch,
         AppIcons.IcWatch,
         mutableStateOf(false)
     )
 
     private val recommendationsPage = MediaScreenPage(
         MediaScreenPageType.RECOMMENDATIONS,
-        R.string.recommendations,
+        I18nR.string.recommendations,
         AppIcons.IcRecommendation,
         mutableStateOf(false)
     )
 
 
     private val socialPage =
-        MediaScreenPage(MediaScreenPageType.SOCIAL, R.string.social,AppIcons.IcForum)
+        MediaScreenPage(MediaScreenPageType.SOCIAL, I18nR.string.social,AppIcons.IcForum)
 
     init {
         launch {
@@ -70,13 +71,13 @@ class MediaViewModel(
     }
 
     val pages = listOf(
-        MediaScreenPage(MediaScreenPageType.OVERVIEW, R.string.overview,AppIcons.IcFire),
+        MediaScreenPage(MediaScreenPageType.OVERVIEW, I18nR.string.overview,AppIcons.IcFire),
         recommendationsPage,
         watchPage,
-        MediaScreenPage(MediaScreenPageType.CHARACTER, R.string.character,AppIcons.IcPerson),
-        MediaScreenPage(MediaScreenPageType.STAFF, R.string.staff,AppIcons.IcGroup),
-        MediaScreenPage(MediaScreenPageType.REVIEW, R.string.review,AppIcons.IcStar),
-        MediaScreenPage(MediaScreenPageType.STATS, R.string.stats,AppIcons.IcStats),
+        MediaScreenPage(MediaScreenPageType.CHARACTER, I18nR.string.character,AppIcons.IcPerson),
+        MediaScreenPage(MediaScreenPageType.STAFF, I18nR.string.staff,AppIcons.IcGroup),
+        MediaScreenPage(MediaScreenPageType.REVIEW, I18nR.string.review,AppIcons.IcStar),
+        MediaScreenPage(MediaScreenPageType.STATS, I18nR.string.stats,AppIcons.IcStats),
         socialPage
     )
 

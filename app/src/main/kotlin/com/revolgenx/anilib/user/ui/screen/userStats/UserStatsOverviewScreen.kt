@@ -54,6 +54,7 @@ import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.model.stats.BaseStatisticModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsOverviewViewModel
+import anilib.i18n.R as I18nR
 
 @Composable
 fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewViewModel) {
@@ -79,15 +80,15 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                 val isAnime = mediaType.isAnime
 
                 val totalLabel =
-                    stringResource(id = if (isAnime) R.string.total_anime else R.string.total_manga)
+                    stringResource(id = if (isAnime) I18nR.string.total_anime else I18nR.string.total_manga)
                 val countLabel =
-                    stringResource(id = if (isAnime) R.string.episodes_watched else R.string.chapters_read)
+                    stringResource(id = if (isAnime) I18nR.string.episodes_watched else I18nR.string.chapters_read)
                 val currentLabel =
-                    stringResource(id = if (isAnime) R.string.days_watched else R.string.volume_read)
+                    stringResource(id = if (isAnime) I18nR.string.days_watched else I18nR.string.volume_read)
                 val plannedLabel =
-                    stringResource(id = if (isAnime) R.string.days_planned else R.string.chapters_planned)
-                val meanScoreLabel = stringResource(id = R.string.mean_score)
-                val standardDeviationLabel = stringResource(id = R.string.standard_deviation)
+                    stringResource(id = if (isAnime) I18nR.string.days_planned else I18nR.string.chapters_planned)
+                val meanScoreLabel = stringResource(id = I18nR.string.mean_score)
+                val standardDeviationLabel = stringResource(id = I18nR.string.standard_deviation)
 
                 val items = remember {
                     listOf(
@@ -143,7 +144,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                     }
                 }
 
-                HeaderText(text = stringResource(id = R.string.score))
+                HeaderText(text = stringResource(id = I18nR.string.score))
                 SegmentedButton(
                     items = stringArrayResource(id = if (isAnime) R.array.anime_stats_score_menu else R.array.manga_stats_score_menu),
                     selectedPosition = viewModel.statsScoreType.intValue
@@ -160,7 +161,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                     )
                 }
 
-                HeaderText(text = stringResource(id = if (isAnime) R.string.episode_count else R.string.chapter_count))
+                HeaderText(text = stringResource(id = if (isAnime) I18nR.string.episode_count else I18nR.string.chapter_count))
                 SegmentedButton(
                     items = stringArrayResource(id = if (isAnime) R.array.anime_stats_menu else R.array.manga_stats_score_menu),
                     selectedPosition = viewModel.statsLengthType.intValue
@@ -173,7 +174,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                     1 -> stats.lengthsHourEntry
                     else -> stats.lengthsMeanScoreEntry
                 }?.let { entryModel ->
-                    val unknown = stringResource(id = R.string.unknown)
+                    val unknown = stringResource(id = I18nR.string.unknown)
                     ColumnChart(
                         marker = marker,
                         model = entryModel,
@@ -187,7 +188,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
 
                 stats.formats?.let { formatDistribution ->
 
-                    HeaderText(text = stringResource(id = R.string.format_distribution))
+                    HeaderText(text = stringResource(id = I18nR.string.format_distribution))
                     StatisticModelItemCard(
                         modelDistribution = formatDistribution,
                         isAnime
@@ -198,7 +199,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
 
 
                 stats.statuses?.let { statusDistribution ->
-                    HeaderText(text = stringResource(id = R.string.status_distribution))
+                    HeaderText(text = stringResource(id = I18nR.string.status_distribution))
                     StatisticModelItemCard(
                         modelDistribution = statusDistribution,
                         isAnime
@@ -209,7 +210,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
 
 
                 stats.countries?.let { countryDistribution ->
-                    HeaderText(text = stringResource(id = R.string.country_distribution))
+                    HeaderText(text = stringResource(id = I18nR.string.country_distribution))
                     StatisticModelItemCard(
                         modelDistribution = countryDistribution,
                         isAnime
@@ -220,7 +221,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
 
 
 
-                HeaderText(text = stringResource(id = R.string.release_year))
+                HeaderText(text = stringResource(id = I18nR.string.release_year))
                 SegmentedButton(
                     items = stringArrayResource(id = if (isAnime) R.array.anime_stats_menu else R.array.manga_stats_score_menu),
                     selectedPosition = viewModel.statsReleaseYearType.intValue
@@ -243,7 +244,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                 }
 
 
-                HeaderText(text = stringResource(id = if (isAnime) R.string.watch_year else R.string.read_year))
+                HeaderText(text = stringResource(id = if (isAnime) I18nR.string.watch_year else I18nR.string.read_year))
                 SegmentedButton(
                     items = stringArrayResource(id = if (isAnime) R.array.anime_stats_menu else R.array.manga_stats_score_menu),
                     selectedPosition = viewModel.statsStartYearType.intValue
@@ -364,13 +365,13 @@ private fun StatisticModelItem(
 ) {
     Column {
         header()
-        Text(text = stringResource(id = R.string.count_d).format(model.count))
+        Text(text = stringResource(id = I18nR.string.count_d).format(model.count))
         Text(
-            text = stringResource(id = if (isAnime) R.string.hours_watched_d else R.string.chapters_read_d).format(
+            text = stringResource(id = if (isAnime) I18nR.string.hours_watched_d else I18nR.string.chapters_read_d).format(
                 (if (isAnime) model.hoursWatched else model.chaptersRead).orZero()
             )
         )
-        Text(text = stringResource(id = R.string.mean_score_d).format(model.meanScore))
+        Text(text = stringResource(id = I18nR.string.mean_score_d).format(model.meanScore))
     }
 }
 

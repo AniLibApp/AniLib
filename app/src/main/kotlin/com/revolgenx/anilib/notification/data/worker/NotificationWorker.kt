@@ -41,6 +41,7 @@ import com.revolgenx.anilib.notification.ui.model.ThreadNotificationModel
 import com.revolgenx.anilib.type.NotificationType.*
 import kotlinx.coroutines.flow.single
 import java.util.Locale
+import anilib.i18n.R as I18nR
 
 data class NotificationData(val title: String, val image: String? = null)
 class NotificationWorker(
@@ -79,7 +80,7 @@ class NotificationWorker(
         val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
 
         notificationBuilder.setContentText(notificationData.title)
-        notificationBuilder.setContentTitle(context.getString(R.string.new_notification))
+        notificationBuilder.setContentTitle(context.getString(I18nR.string.new_notification))
         val pendingIntent = createNotificationPendingIntent()
         notificationBuilder.setContentIntent(pendingIntent)
         notificationBuilder.setSmallIcon(
@@ -120,7 +121,7 @@ class NotificationWorker(
 
     private fun createThreadNotification(item: ThreadNotificationModel): NotificationData {
         return NotificationData(
-            title = context.getString(R.string.thread_notif_s)
+            title = context.getString(I18nR.string.thread_notif_s)
                 .format(item.user?.name, item.context, item.thread?.title),
             image = item.user?.avatar?.image
         )
@@ -128,7 +129,7 @@ class NotificationWorker(
 
     private fun createActivityNotification(item: ActivityNotificationModel): NotificationData {
         return NotificationData(
-            title = context.getString(R.string.s_space_s)
+            title = context.getString(I18nR.string.s_space_s)
                 .format(item.user?.name, item.context),
             image = item.user?.avatar?.image
         )
@@ -138,7 +139,7 @@ class NotificationWorker(
         return NotificationData(
             title = String.format(
                 Locale.getDefault(),
-                context.getString(R.string.episode_airing_notif),
+                context.getString(I18nR.string.episode_airing_notif),
                 item.contexts!![0],
                 item.episode,
                 item.contexts[1],
@@ -152,7 +153,7 @@ class NotificationWorker(
 
     private fun createFollowingNotification(item: FollowingNotificationModel): NotificationData {
         return NotificationData(
-            title = context.getString(R.string.s_space_s)
+            title = context.getString(I18nR.string.s_space_s)
                 .format(item.user?.name, item.context),
             image = item.user?.avatar?.image
         )
@@ -160,7 +161,7 @@ class NotificationWorker(
 
     private fun createRelatedMediaChangeNotification(item: RelatedMediaNotificationModel): NotificationData {
         return NotificationData(
-            title = context.getString(R.string.s_space_s)
+            title = context.getString(I18nR.string.s_space_s)
                 .format(item.media?.title?.userPreferred, item.context),
             image = item.media?.coverImage?.image(MediaCoverImageType.LARGE)
         )
@@ -169,7 +170,7 @@ class NotificationWorker(
 
     private fun createMediaDataChangeNotification(item: MediaDataChangeNotificationModel): NotificationData {
         return NotificationData(
-            title = context.getString(R.string.s_space_s)
+            title = context.getString(I18nR.string.s_space_s)
                 .format(item.media?.title?.userPreferred, item.context),
             image = item.media?.coverImage?.image(MediaCoverImageType.LARGE)
         )
@@ -178,7 +179,7 @@ class NotificationWorker(
 
     private fun createMediaMergeNotification(item: MediaMergeNotificationModel): NotificationData {
         return NotificationData(
-            title = context.getString(R.string.s_space_s)
+            title = context.getString(I18nR.string.s_space_s)
                 .format(item.media?.title?.userPreferred, item.context),
             image = item.media?.coverImage?.image(MediaCoverImageType.LARGE)
         )
@@ -186,7 +187,7 @@ class NotificationWorker(
 
     private fun createMediaDeleteNotification(item: MediaDeletionNotificationModel): NotificationData {
         return NotificationData(
-            title = context.getString(R.string.s_space_s)
+            title = context.getString(I18nR.string.s_space_s)
                 .format(item.deletedMediaTitle, item.context),
         )
     }

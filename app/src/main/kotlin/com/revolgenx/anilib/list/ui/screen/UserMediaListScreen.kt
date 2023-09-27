@@ -47,6 +47,7 @@ import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 class UserMediaListScreen(private val userId: Int, private var mangaTab: Boolean) :
     AndroidScreen() {
@@ -65,8 +66,8 @@ private enum class MediaListScreenPageType {
 }
 
 private val pages = listOf(
-    MediaListScreenPage(MediaListScreenPageType.ANIME, R.string.anime, AppIcons.IcMedia),
-    MediaListScreenPage(MediaListScreenPageType.MANGA, R.string.manga, AppIcons.IcBook),
+    MediaListScreenPage(MediaListScreenPageType.ANIME, I18nR.string.anime, AppIcons.IcMedia),
+    MediaListScreenPage(MediaListScreenPageType.MANGA, I18nR.string.manga, AppIcons.IcBook),
 )
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -173,7 +174,7 @@ fun MediaListCommonContent(
                             false
                         }
                     },
-                    placeholder = { Text(text = stringResource(id = R.string.search)) },
+                    placeholder = { Text(text = stringResource(id = I18nR.string.search)) },
                     trailingIcon = {
                         if (viewModel.query.isNotEmpty()) {
                             IconButton(onClick = {
@@ -182,7 +183,7 @@ fun MediaListCommonContent(
                             }) {
                                 Icon(
                                     imageVector = AppIcons.IcCancel,
-                                    contentDescription = stringResource(id = R.string.clear)
+                                    contentDescription = stringResource(id = I18nR.string.clear)
                                 )
                             }
                         }
@@ -203,7 +204,7 @@ fun MediaListCommonContent(
                                         openFilterBottomSheet.value = true
                                     },
                                 imageVector = AppIcons.IcCancel,
-                                contentDescription = stringResource(id = R.string.clear)
+                                contentDescription = stringResource(id = I18nR.string.clear)
                             )
                         })
                 }

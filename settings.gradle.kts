@@ -13,4 +13,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "AniLib"
-include ':app'
+include(":app")
+include(":i18n")

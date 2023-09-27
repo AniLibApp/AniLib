@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
+import anilib.i18n.R as I18nR
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,7 +54,7 @@ fun SelectMenu(
         val selectedItem = if (selectedIndex > -1) {
             entries[selectedIndex]
         } else {
-            stringResource(id = R.string.none)
+            stringResource(id = I18nR.string.none)
         }
         TextField(
             modifier = Modifier
@@ -88,7 +89,7 @@ fun SelectMenu(
             if (showNoneItem) {
                 DropdownMenuItem(
                     modifier = Modifier.height(menuHeight),
-                    text = { Text(stringResource(id = R.string.none)) },
+                    text = { Text(stringResource(id = I18nR.string.none)) },
                     onClick = {
                         expanded = false
                         selectedIndex = -1

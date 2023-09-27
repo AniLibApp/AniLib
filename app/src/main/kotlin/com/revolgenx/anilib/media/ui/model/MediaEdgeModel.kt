@@ -6,6 +6,7 @@ import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.StaffRoleType
 import com.revolgenx.anilib.type.MediaRelation
+import anilib.i18n.R as I18nR
 
 data class MediaEdgeModel(
     val characterName: String? = null,
@@ -35,19 +36,19 @@ data class MediaEdgeModel(
 @StringRes
 fun MediaRelation?.toStringRes(): Int {
     return when (this) {
-        MediaRelation.ADAPTATION -> R.string.adaptation
-        MediaRelation.PREQUEL -> R.string.prequel
-        MediaRelation.SEQUEL -> R.string.sequel
-        MediaRelation.PARENT -> R.string.parent
-        MediaRelation.SIDE_STORY -> R.string.side_story
-        MediaRelation.CHARACTER -> R.string.character
-        MediaRelation.SUMMARY -> R.string.summary
-        MediaRelation.ALTERNATIVE -> R.string.alternative
-        MediaRelation.SPIN_OFF -> R.string.spin_off
-        MediaRelation.OTHER -> R.string.other
-        MediaRelation.SOURCE -> R.string.source
-        MediaRelation.COMPILATION -> R.string.compilation
-        MediaRelation.CONTAINS -> R.string.contains
-        else -> R.string.q_mark
+        MediaRelation.ADAPTATION -> I18nR.string.adaptation
+        MediaRelation.PREQUEL -> I18nR.string.prequel
+        MediaRelation.SEQUEL -> I18nR.string.sequel
+        MediaRelation.PARENT -> I18nR.string.parent
+        MediaRelation.SIDE_STORY -> I18nR.string.side_story
+        MediaRelation.CHARACTER -> I18nR.string.character
+        MediaRelation.SUMMARY -> I18nR.string.summary
+        MediaRelation.ALTERNATIVE -> I18nR.string.alternative
+        MediaRelation.SPIN_OFF -> I18nR.string.spin_off
+        MediaRelation.OTHER -> I18nR.string.other
+        MediaRelation.SOURCE -> I18nR.string.source
+        MediaRelation.COMPILATION -> I18nR.string.compilation
+        MediaRelation.CONTAINS -> I18nR.string.contains
+        else -> I18nR.string.q_mark
     }
 }

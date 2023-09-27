@@ -38,6 +38,7 @@ import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.ActivityType
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 object ActivityUnionScreen : BaseTabScreen() {
 
@@ -46,7 +47,7 @@ object ActivityUnionScreen : BaseTabScreen() {
 
     override val options: TabOptions
         @Composable get() {
-            val title = stringResource(R.string.activity)
+            val title = stringResource(I18nR.string.activity)
 
             return remember {
                 TabOptions(
@@ -77,7 +78,7 @@ object ActivityUnionScreen : BaseTabScreen() {
                         title = {
                             Text(
                                 modifier = Modifier.padding(horizontal = 8.dp),
-                                text = stringResource(id = R.string.activity)
+                                text = stringResource(id = I18nR.string.activity)
                             )
                         },
                         actions = {

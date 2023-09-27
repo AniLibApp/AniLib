@@ -58,6 +58,7 @@ import com.revolgenx.anilib.social.ui.screen.ActivityScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import org.koin.androidx.compose.koinViewModel
+import anilib.i18n.R as I18nR
 
 class NotificationScreen : AndroidScreen() {
     @Composable
@@ -74,7 +75,7 @@ private fun NotificationScreenContent(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val navigator = localNavigator()
     ScreenScaffold(
-        title = stringResource(id = R.string.notifications),
+        title = stringResource(id = I18nR.string.notifications),
         scrollBehavior = scrollBehavior
     ) {
         val pagingItems = viewModel.collectAsLazyPagingItems()
@@ -278,7 +279,7 @@ private fun NotificationItem(
                 )
                 Column {
                     reason?.let {
-                        val showReason = stringResource(id = R.string.show_reason)
+                        val showReason = stringResource(id = I18nR.string.show_reason)
                         val reasonState = remember { mutableStateOf(showReason) }
                         Text(
                             modifier = Modifier.clickable {
