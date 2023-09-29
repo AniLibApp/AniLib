@@ -35,7 +35,7 @@ import com.revolgenx.anilib.notification.data.worker.NotificationWorker
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import anilib.i18n.R as I18nR
+import anilib.i18n.R as I18n
 
 
 abstract class BaseActivity : ComponentActivity(), EventBusListener {
@@ -76,7 +76,7 @@ abstract class BaseActivity : ComponentActivity(), EventBusListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
             notificationManager.getNotificationChannel(NOTIFICATION_CHANNEL_ID) == null
         ) {
-            val name = context.getString(I18nR.string.app_name)
+            val name = context.getString(I18n.string.app_name)
             val channel = NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 name,

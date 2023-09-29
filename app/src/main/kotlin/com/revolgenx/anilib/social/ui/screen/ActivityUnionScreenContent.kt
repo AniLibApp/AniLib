@@ -32,7 +32,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userScreen
-import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
+import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.LightText

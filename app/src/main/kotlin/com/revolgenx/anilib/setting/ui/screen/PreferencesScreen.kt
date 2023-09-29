@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.setting.ui.screen
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,62 +17,88 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.ui.theme.typography
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
+import com.revolgenx.anilib.setting.ui.component.SwitchPreferenceItem
 import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import kotlinx.coroutines.launch
+
+abstract class ViewModelPreferencesScreen<VM: ViewModel> : PreferenceScreen() {
+    protected var _viewModel: VM? = null
+    protected val viewModel get() = _viewModel!!
+
+    @Composable
+    override fun Content() {
+        _viewModel = getViewModel()
+        super.Content()
+    }
+
+    @Composable
+    abstract fun getViewModel(): VM
+}
 
 abstract class PreferenceScreen : AndroidScreen() {
     abstract val titleRes: Int
 
+    protected open var actions: (@Composable RowScope.() -> Unit)? = null
+
     @Composable
     abstract fun getPreferences(): List<PreferenceModel>
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        val preferences = getPreferences()
-        PreferenceScreenContent(titleRes, preferences)
+        ScreenScaffold(
+            title = stringResource(id = titleRes),
+            actions = actions
+        ) {
+            PreferenceContent()
+        }
     }
+
+    @Composable
+    protected open fun PreferenceContent() {
+        val preferences = getPreferences()
+        PreferenceScreenContent(preferences)
+    }
+
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PreferenceScreenContent(titleRes: Int, preferences: List<PreferenceModel>) {
-    ScreenScaffold(
-        title = stringResource(id = titleRes),
-    ) {
-        LazyColumn() {
-            preferences.forEachIndexed { i, preference ->
-                when (preference) {
-                    is PreferenceModel.PreferenceGroup -> {
-                        item {
-                            PreferenceGroupHeader(title = preference.title)
-                        }
-                        items(items = preference.preferenceItems) { item ->
-                            PreferenceItem(
-                                item = item
-                            )
-                        }
-                        item {
-                            if (i < preferences.lastIndex) {
-                                Spacer(modifier = Modifier.height(12.dp))
-                            }
+fun PreferenceScreenContent(preferences: List<PreferenceModel>) {
+    LazyColumn() {
+        preferences.forEachIndexed { i, preference ->
+            when (preference) {
+                is PreferenceModel.PreferenceGroup -> {
+                    item {
+                        PreferenceGroupHeader(title = preference.title)
+                    }
+                    items(items = preference.preferenceItems) { item ->
+                        PreferenceItem(
+                            item = item
+                        )
+                    }
+                    item {
+                        if (i < preferences.lastIndex) {
+                            Spacer(modifier = Modifier.height(12.dp))
                         }
                     }
+                }
 
-                    else -> {
-                        item {
-                            PreferenceItem(item = preference)
-                        }
+                else -> {
+                    item {
+                        PreferenceItem(item = preference)
                     }
                 }
             }
         }
     }
 }
+
 
 @Composable
 private fun PreferenceItem(
@@ -80,30 +107,39 @@ private fun PreferenceItem(
     val scope = rememberCoroutineScope()
     when (item) {
         is PreferenceModel.ListPreferenceModel<*> -> {
-            val prefState = item.pref.collectAsState()
+            val prefState = item.pref?.collectAsNullableState() ?: item.prefState
+            val prefValue = prefState?.value
             ListPreferenceItem(
-                value = prefState.value,
+                value = prefValue,
                 title = item.title,
                 entries = item.entries,
-                subtitle = item.subtitleProvider(prefState.value)
+                subtitle = item.subtitleProvider(prefValue)
             ) { newValue ->
                 scope.launch {
-                    item.pref.set(newValue)
+                    if (!item.onValueChangedListener(newValue)) {
+                        item.pref?.set(newValue)
+                    }
                 }
             }
         }
 
-        is PreferenceModel.BasicListPreference -> {
-            ListPreferenceItem(
-                value = item.value,
+        is PreferenceModel.SwitchPreference -> {
+            val prefState = item.pref?.collectAsState()
+            val prefValue = prefState?.value ?: (item.prefState?.value == true)
+            SwitchPreferenceItem(
                 title = item.title,
-                entries = item.entries,
-                subtitle = item.subtitleProvider(item.value)
-            ) { newValue ->
-                scope.launch {
-                    item.onValueChanged(newValue)
-                }
-            }
+                subtitle = item.subtitle,
+                icon = item.icon,
+                checked = prefValue,
+                onCheckedChanged = { newValue ->
+                    scope.launch {
+                        val invoked = item.onValueChanged?.invoke(newValue)
+                        if (invoked == null || !invoked) {
+                            item.pref?.set(newValue)
+                        }
+                    }
+                },
+            )
         }
 
         is PreferenceModel.CustomPreference -> TODO()
@@ -112,7 +148,6 @@ private fun PreferenceItem(
         is PreferenceModel.MultiSelectListPreference -> TODO()
         is PreferenceModel.PreferenceGroup -> TODO()
         is PreferenceModel.SliderPreference -> TODO()
-        is PreferenceModel.SwitchPreference -> TODO()
         is PreferenceModel.TextPreferenceModel -> TODO()
     }
 }

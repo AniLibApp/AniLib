@@ -17,34 +17,34 @@ import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import org.xmlpull.v1.XmlPullParser
 import anilib.i18n.R as I18nR
 
-object GeneralSettingScreen : PreferenceScreen() {
+object GeneralSettingsScreen : PreferenceScreen() {
 
-    override val titleRes: Int = I18nR.string.setting_label_general
+    override val titleRes: Int = I18nR.string.settings_general
 
     @Composable
     override fun getPreferences(): List<PreferenceModel> {
         val context = localContext()
         val langs = remember { getLangs(context) }
-        var currentLanguage by remember {
+        val currentLanguage = remember {
             mutableStateOf(
                 AppCompatDelegate.getApplicationLocales().get(0)?.toLanguageTag() ?: ""
             )
         }
         LaunchedEffect(currentLanguage) {
-            val locale = if (currentLanguage.isEmpty()) {
+            val locale = if (currentLanguage.value.isEmpty()) {
                 LocaleListCompat.getEmptyLocaleList()
             } else {
-                LocaleListCompat.forLanguageTags(currentLanguage)
+                LocaleListCompat.forLanguageTags(currentLanguage.value)
             }
             AppCompatDelegate.setApplicationLocales(locale)
         }
         return listOf(
-            PreferenceModel.BasicListPreference(
-                value = currentLanguage,
-                title = stringResource(anilib.i18n.R.string.setting_general_app_language),
+            PreferenceModel.ListPreferenceModel(
+                prefState = currentLanguage,
+                title = stringResource(anilib.i18n.R.string.settings_general_app_language),
                 entries = langs,
                 onValueChanged = { newValue ->
-                    currentLanguage = newValue!!
+                    currentLanguage.value = newValue!!
                     true
                 },
             )
@@ -74,7 +74,7 @@ object GeneralSettingScreen : PreferenceScreen() {
         langs.add(
             0,
             ListPreferenceEntry(
-                title = context.getString(anilib.i18n.R.string.label_default),
+                title = context.getString(anilib.i18n.R.string.settings_default),
                 value = ""
             )
         )

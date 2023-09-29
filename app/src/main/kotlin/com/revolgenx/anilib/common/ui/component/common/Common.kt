@@ -1,20 +1,7 @@
 package com.revolgenx.anilib.common.ui.component.common
 
 import androidx.compose.runtime.Composable
-import com.revolgenx.anilib.common.ui.composition.localMediaState
 import com.revolgenx.anilib.common.ui.composition.localUser
-import com.revolgenx.anilib.media.ui.model.MediaCoverImageType
-import com.revolgenx.anilib.media.ui.model.MediaTitleType
-
-@Composable
-fun MediaTitleType(content: @Composable (type: MediaTitleType) -> Unit) {
-    content(localMediaState().titleType)
-}
-
-@Composable
-fun MediaCoverImageType(content: @Composable (type: MediaCoverImageType) -> Unit) {
-    content(localMediaState().coverImageType)
-}
 
 @Composable
 fun ShowIfLoggedIn(

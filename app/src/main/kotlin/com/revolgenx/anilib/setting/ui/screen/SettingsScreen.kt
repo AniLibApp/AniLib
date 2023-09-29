@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.BuildConfig
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.common.data.constant.Config
 import com.revolgenx.anilib.common.ext.localContext
@@ -61,7 +60,7 @@ import com.revolgenx.anilib.common.ui.theme.logout_color
 import com.revolgenx.anilib.common.ui.theme.support_color
 import com.revolgenx.anilib.common.util.versionName
 import com.revolgenx.anilib.setting.ui.component.TextPreferenceItem
-import com.revolgenx.anilib.setting.ui.viewmodel.SettingViewModel
+import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
@@ -95,7 +94,7 @@ object SettingScreen : BaseTabScreen() {
 @Composable
 fun SettingScreenContent(isTab: Boolean) {
 
-    val viewModel:SettingViewModel = koinViewModel()
+    val viewModel: SettingsViewModel = koinViewModel()
     val context = localContext()
     val scope = rememberCoroutineScope()
     val navigator = localNavigator()
@@ -112,7 +111,7 @@ fun SettingScreenContent(isTab: Boolean) {
     }
 
     ScreenScaffold(
-        title = stringResource(id = I18nR.string.setting_label),
+        title = stringResource(id = I18nR.string.settings),
         topBar = (@Composable {}).takeIf { isTab },
         actions = {
             ActionMenu(
@@ -121,7 +120,7 @@ fun SettingScreenContent(isTab: Boolean) {
                 navigator.push(SearchSettingScreen)
             }
         },
-        contentWindowInsets = if(isTab) WindowInsets.statusBars else ScaffoldDefaults.contentWindowInsets
+        contentWindowInsets = if (isTab) WindowInsets.statusBars else ScaffoldDefaults.contentWindowInsets
     ) {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
@@ -157,16 +156,16 @@ fun SettingScreenContent(isTab: Boolean) {
             ShowIfNotLoggedIn {
                 TextPreferenceItem(
                     icon = AppIcons.IcLogin,
-                    title = I18nR.string.setting_label_login.toStringResource(),
-                    subtitle = I18nR.string.setting_log_into_anilist.toStringResource()
+                    title = I18nR.string.settings_login.toStringResource(),
+                    subtitle = I18nR.string.settings_log_into_anilist.toStringResource()
                 ) {
                     openLoginDialog.value = true
                 }
 
                 TextPreferenceItem(
                     icon = AppIcons.IcPersonAdd,
-                    title = I18nR.string.setting_label_sign_up.toStringResource(),
-                    subtitle = I18nR.string.setting_sign_up_to_anilist.toStringResource()
+                    title = I18nR.string.settings_sign_up.toStringResource(),
+                    subtitle = I18nR.string.settings_sign_up_to_anilist.toStringResource()
                 ) {
                     openRegisterDialog.value = true
                 }
@@ -176,52 +175,56 @@ fun SettingScreenContent(isTab: Boolean) {
 
             TextPreferenceItem(
                 icon = AppIcons.IcTune,
-                title = I18nR.string.setting_label_general.toStringResource(),
-                subtitle = I18nR.string.setting_general_setting_desc.toStringResource()
-            ){
-                navigator.push(GeneralSettingScreen)
+                title = I18nR.string.settings_general.toStringResource(),
+                subtitle = I18nR.string.settings_general_desc.toStringResource()
+            ) {
+                navigator.push(GeneralSettingsScreen)
 
             }
 
             TextPreferenceItem(
-                icon =AppIcons.IcPalette,
-                title = I18nR.string.setting_label_appearance.toStringResource(),
-                subtitle = I18nR.string.setting_appearance_desc.toStringResource()
-            ){
-                navigator.push(AppearanceSettingScreen)
+                icon = AppIcons.IcPalette,
+                title = I18nR.string.settings_appearance.toStringResource(),
+                subtitle = I18nR.string.settings_appearance_desc.toStringResource()
+            ) {
+                navigator.push(AppearanceSettingsScreen)
             }
 
             TextPreferenceItem(
                 icon = AppIcons.IcMedia,
-                title = I18nR.string.setting_label_anime_and_manga.toStringResource(),
-                subtitle = I18nR.string.setting_anime_and_manga_setting_desc.toStringResource()
-            )
+                title = I18nR.string.settings_anime_and_manga.toStringResource(),
+                subtitle = I18nR.string.settings_anime_and_manga_desc.toStringResource()
+            ) {
+                navigator.push(MediaSettingsScreen)
+            }
 
             ShowIfLoggedIn {
                 TextPreferenceItem(
                     icon = AppIcons.IcList,
-                    title = I18nR.string.setting_label_lists.toStringResource(),
-                    subtitle = I18nR.string.setting_list_setting_desc.toStringResource()
+                    title = I18nR.string.settings_lists.toStringResource(),
+                    subtitle = I18nR.string.settings_list_desc.toStringResource()
                 )
 
                 TextPreferenceItem(
                     icon = AppIcons.IcNotification,
                     title = I18nR.string.notifications.toStringResource(),
-                    subtitle = I18nR.string.setting_notifications_setting_desc.toStringResource()
-                )
+                    subtitle = I18nR.string.settings_notifications_desc.toStringResource()
+                ){
+                    navigator.push(NotificationSettingsScreen())
+                }
             }
 
             TextPreferenceItem(
                 icon = AppIcons.IcFilter,
                 title = I18nR.string.filter.toStringResource(),
-                subtitle = I18nR.string.setting_filter_desc.toStringResource()
+                subtitle = I18nR.string.settings_filter_desc.toStringResource()
             )
 
 
             TextPreferenceItem(
                 icon = AppIcons.IcHeart,
-                title = I18nR.string.setting_label_support.toStringResource(),
-                subtitle = I18nR.string.setting_support_desc.toStringResource()
+                title = I18nR.string.settings_support.toStringResource(),
+                subtitle = I18nR.string.settings_support_desc.toStringResource()
                     .format(versionName),
                 iconTint = support_color
             )
@@ -229,7 +232,7 @@ fun SettingScreenContent(isTab: Boolean) {
             TextPreferenceItem(
                 icon = AppIcons.IcInfoOutline,
                 title = I18nR.string.about.toStringResource(),
-                subtitle = I18nR.string.setting_about_desc.toStringResource()
+                subtitle = I18nR.string.settings_about_desc.toStringResource()
                     .format(versionName)
             )
 
@@ -248,8 +251,8 @@ fun SettingScreenContent(isTab: Boolean) {
 
     ConfirmationDialog(
         openDialog = openLoginDialog,
-        message = stringResource(id = I18nR.string.setting_login_signup_notice),
-        title = stringResource(id = I18nR.string.setting_important_to_know)
+        message = stringResource(id = I18nR.string.settings_login_signup_notice),
+        title = stringResource(id = I18nR.string.settings_important_to_know)
     ) {
         login(context)
     }
@@ -257,15 +260,15 @@ fun SettingScreenContent(isTab: Boolean) {
 
     ConfirmationDialog(
         openDialog = openRegisterDialog,
-        message = stringResource(id = I18nR.string.setting_login_signup_notice),
-        title = stringResource(id = I18nR.string.setting_important_to_know)
+        message = stringResource(id = I18nR.string.settings_login_signup_notice),
+        title = stringResource(id = I18nR.string.settings_important_to_know)
     ) {
         register(context)
     }
 
     ConfirmationDialog(
         openDialog = openLogoutDialog,
-        message = stringResource(id = I18nR.string.setting_are_you_sure_you_want_to_log_out),
+        message = stringResource(id = I18nR.string.settings_are_you_sure_you_want_to_log_out),
         title = stringResource(id = I18nR.string.logout)
     ) {
         scope.launch {

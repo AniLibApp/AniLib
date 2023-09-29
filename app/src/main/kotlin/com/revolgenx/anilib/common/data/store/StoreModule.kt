@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.common.data.store
 
 import android.content.Context
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -12,4 +13,5 @@ val storeModules = module {
     single { AppDataStore(get()) }
     single { AuthDataStore(get()) }
     single { ThemeDataStore(get()) }
+    single { MediaSettingsDataStore(get()) }
 }

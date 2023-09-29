@@ -2,25 +2,17 @@ package com.revolgenx.anilib.setting.ui.model
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.data.store.PreferenceData
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
-import org.koin.core.component.KoinComponent
 import anilib.i18n.R as I18nR
 
 
 interface PreferenceValueChangedListener<T> {
-    val onValueChanged: suspend (newValue: T) -> Boolean
+    val onValueChanged: (suspend (newValue: T) -> Boolean)?
 }
 
 interface PreferenceItemModel {
@@ -38,17 +30,18 @@ sealed class PreferenceModel {
         override val subtitle: String? = null,
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
-        override val onValueChanged: suspend (newValue: String) -> Boolean = { true },
+        override val onValueChanged: (suspend (newValue: String) -> Boolean)?,
         val onClick: (() -> Unit)? = null,
     ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<String>
 
     data class SwitchPreference(
-        val pref: Preferences.Key<Boolean>,
+        val pref: PreferenceData<Boolean>? = null,
+        val prefState: State<Boolean>? = null,
         override val title: String,
         override val subtitle: String? = null,
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
-        override val onValueChanged: suspend (newValue: Boolean) -> Boolean = { true },
+        override val onValueChanged: (suspend (newValue: Boolean) -> Boolean)? = null,
     ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<Boolean>
 
     data class SliderPreference(
@@ -59,12 +52,13 @@ sealed class PreferenceModel {
         override val subtitle: String? = null,
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
-        override val onValueChanged: suspend (newValue: Int) -> Boolean = { true },
+        override val onValueChanged: (suspend (newValue: Int) -> Boolean)?,
     ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<Int>
 
 
     data class ListPreferenceModel<T>(
-        val pref: PreferenceData<T>,
+        val pref: PreferenceData<T>? = null,
+        val prefState: State<T>? = null,
         override val title: String,
         override val subtitle: String = "%s",
         val entries: List<ListPreferenceEntry<out T>>,
@@ -73,23 +67,12 @@ sealed class PreferenceModel {
         },
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
-        override val onValueChanged: suspend (newValue: T) -> Boolean = { true },
-    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<T>
-
-
-    data class BasicListPreference(
-        val value: String,
-        override val title: String,
-        override val subtitle: String = "%s",
-        val entries: List<ListPreferenceEntry<String>>,
-        val subtitleProvider: (value: Any?) -> String? = { v ->
-            subtitle.format(entries.first { it.value == v }.title)
-        },
-        override val icon: ImageVector? = null,
-        override val enabled: Boolean = true,
-        override val onValueChanged: suspend (newValue: String?) -> Boolean = { true },
-    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<String>
-
+        override val onValueChanged: (suspend (newValue: T?) -> Boolean)? = null,
+    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<T> {
+        val onValueChangedListener: (suspend (newValue: Any?) -> Boolean) = {
+            onValueChanged?.invoke(it as? T) == true
+        }
+    }
 
     data class MultiSelectListPreference(
         val pref: Preferences.Key<Set<String>>,
@@ -105,8 +88,7 @@ sealed class PreferenceModel {
         },
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
-        override val onValueChanged: suspend (newValue: Set<String>) -> Boolean = { true },
-
+        override val onValueChanged: (suspend (newValue: Set<String>) -> Boolean)?,
         val entries: Map<String, String>,
     ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<Set<String>>
 
@@ -117,7 +99,7 @@ sealed class PreferenceModel {
         override val subtitle: String? = "%s",
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
-        override val onValueChanged: suspend (newValue: String) -> Boolean = { true },
+        override val onValueChanged: (suspend (newValue: String) -> Boolean)?,
     ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<String>
 
 
@@ -144,42 +126,4 @@ sealed class PreferenceModel {
         override val enabled: Boolean = true,
         val preferenceItems: List<PreferenceModel>,
     ) : PreferenceModel()
-}
-
-
-interface PreferenceData<T> {
-    fun get(): T?
-    suspend fun set(value: Any?)
-    fun map(): Flow<T?>
-
-    @Composable
-    fun collectAsState(): State<T?>
-}
-
-class PreferenceDataModel<T>(
-    private val dataStore: DataStore<Preferences>,
-    private val prefKey: Preferences.Key<T>,
-    private val defaultValue: T? = null
-) : PreferenceData<T> {
-    override fun get(): T? = runBlocking {
-        map().first()
-    }
-
-    override fun map(): Flow<T?> = dataStore.data.map { it[prefKey] ?: defaultValue }
-
-    override suspend fun set(value: Any?) {
-        if (value == null) {
-            dataStore.edit { it.remove(prefKey) }
-        } else {
-            dataStore.edit {
-                it[prefKey] = value as T
-            }
-        }
-    }
-
-    @Composable
-    override fun collectAsState(): State<T?> {
-        val flow = remember(this) { map() }
-        return flow.collectAsState(initial = get())
-    }
 }

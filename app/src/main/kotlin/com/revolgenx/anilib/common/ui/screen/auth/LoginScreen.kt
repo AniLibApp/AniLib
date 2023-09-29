@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.BuildConfig
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.Config
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -98,10 +96,10 @@ private fun LoginScreenContent() {
                     ) {
                         Icon(
                             imageVector = AppIcons.IcPin,
-                            contentDescription = stringResource(id = I18nR.string.setting_important_to_know)
+                            contentDescription = stringResource(id = I18nR.string.settings_important_to_know)
                         )
                         Text(
-                            text = stringResource(id = I18nR.string.setting_important_to_know),
+                            text = stringResource(id = I18nR.string.settings_important_to_know),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -114,11 +112,11 @@ private fun LoginScreenContent() {
                     OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = {
                         login(context)
                     }) {
-                        Text(text = stringResource(id = I18nR.string.setting_label_login))
+                        Text(text = stringResource(id = I18nR.string.settings_login))
                     }
 
                     Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
-                        Text(text = stringResource(id = I18nR.string.setting_label_sign_up))
+                        Text(text = stringResource(id = I18nR.string.settings_sign_up))
                     }
 
                     HorizontalDivider()
@@ -134,10 +132,10 @@ private fun LoginScreenContent() {
                         }) {
                             Icon(
                                 imageVector = AppIcons.IcSettings,
-                                contentDescription = stringResource(id = I18nR.string.setting_label)
+                                contentDescription = stringResource(id = I18nR.string.settings)
                             )
                             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                            Text(text = stringResource(id = I18nR.string.setting_label))
+                            Text(text = stringResource(id = I18nR.string.settings))
                         }
                         OutlinedButton(onClick = { /*TODO*/ }) {
                             Icon(

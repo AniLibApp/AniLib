@@ -23,7 +23,7 @@ object Apollo {
                 .addInterceptor {
                     it.proceed(it.request().let { req ->
                         runBlocking {
-                            val token = authDataStore.token.first()
+                            val token = authDataStore.token.getNullable()
                             if (token != null) {
                                 req.newBuilder()
                                     .addHeader(

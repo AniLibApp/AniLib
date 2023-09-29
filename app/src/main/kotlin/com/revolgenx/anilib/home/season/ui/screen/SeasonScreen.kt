@@ -12,12 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.KeyboardArrowLeft
-import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,8 +35,8 @@ import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
-import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
-import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
+import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
+import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.LightText
@@ -64,7 +60,9 @@ import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toImageVector
 import com.revolgenx.anilib.media.ui.model.toStringRes
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import com.revolgenx.anilib.type.MediaStatus
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -114,7 +112,11 @@ fun SeasonScreen() {
 private fun SeasonItem(
     media: MediaModel = MediaModel(
         title = MediaTitleModel(romaji = "Cowboy Bebop: Tengoku no Tobira"),
-        coverImage = MediaCoverImageModel(large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5-NozHwXWdNLCz.jpg"),
+        coverImage = MediaCoverImageModel(
+            large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5-NozHwXWdNLCz.jpg",
+            medium = null,
+            extraLarge = null
+        ),
         genres = listOf("Action", "Comedy"),
         status = MediaStatus.FINISHED,
         startDate = FuzzyDateModel(1, 12, 2022),

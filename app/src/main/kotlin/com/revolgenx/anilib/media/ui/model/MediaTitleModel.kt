@@ -1,25 +1,31 @@
 package com.revolgenx.anilib.media.ui.model
 
+import androidx.annotation.IntDef
 import com.revolgenx.anilib.fragment.MediaTitle
-
-enum class MediaTitleType {
-    ROMAJI,
-    ENGLISH,
-    NATIVE,
-    USER_PREFERRED
-}
 
 data class MediaTitleModel(
     val english: String? = null,
     val romaji: String? = null,
     val native: String? = null,
     val userPreferred: String? = null
-){
-    fun title(which: MediaTitleType) = when (which) {
-        MediaTitleType.ROMAJI -> romaji
-        MediaTitleType.ENGLISH -> english ?: romaji
-        MediaTitleType.NATIVE -> native ?: romaji
-        MediaTitleType.USER_PREFERRED -> userPreferred ?: romaji
+) {
+    companion object {
+        @Retention(AnnotationRetention.SOURCE)
+        @IntDef(type_romaji, type_english, type_native, type_user_preferred)
+        annotation class MediaTitleType
+
+        const val type_romaji = 0
+        const val type_english = 1
+        const val type_native = 2
+        const val type_user_preferred = 3
+    }
+
+    fun title(@MediaTitleType which: Int) = when (which) {
+        type_romaji -> romaji
+        type_english -> english ?: romaji
+        type_native -> native ?: romaji
+        type_user_preferred -> userPreferred ?: romaji
+        else -> romaji
     }
 }
 

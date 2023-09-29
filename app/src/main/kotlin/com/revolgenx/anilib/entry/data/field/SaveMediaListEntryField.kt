@@ -1,9 +1,8 @@
 package com.revolgenx.anilib.entry.data.field
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.apollographql.apollo3.api.Optional
 import com.revolgenx.anilib.SaveMediaListEntryMutation
 import com.revolgenx.anilib.common.data.field.BaseField

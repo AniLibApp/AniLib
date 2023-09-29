@@ -18,6 +18,8 @@ import com.revolgenx.anilib.notification.data.service.NotificationService
 import com.revolgenx.anilib.notification.data.service.NotificationServiceImpl
 import com.revolgenx.anilib.review.data.service.ReviewService
 import com.revolgenx.anilib.review.data.service.ReviewServiceImpl
+import com.revolgenx.anilib.setting.data.service.SettingsService
+import com.revolgenx.anilib.setting.data.service.SettingsServiceImpl
 import com.revolgenx.anilib.social.data.service.ActivityUnionService
 import com.revolgenx.anilib.social.data.service.ActivityUnionServiceImpl
 import com.revolgenx.anilib.staff.data.service.StaffService
@@ -44,4 +46,5 @@ val serviceModules = module {
     factoryOf(::BrowseServiceImpl) { bind<BrowseService>() }
     factoryOf(::ReviewServiceImpl) { bind<ReviewService>() }
     factoryOf(::RecommendationServiceImpl) { bind<RecommendationService>() }
+    factoryOf(::SettingsServiceImpl) { bind<SettingsService>() }
 }

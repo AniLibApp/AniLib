@@ -7,6 +7,7 @@ import com.revolgenx.anilib.common.data.field.BaseField
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.common.util.OnClick
+import timber.log.Timber
 
 @Composable
 fun <T> ResourceScreen(
@@ -15,10 +16,7 @@ fun <T> ResourceScreen(
     refresh: OnClick,
     content: @Composable (data: T) -> Unit
 ) {
-
-    if (loading.value) {
-        LinearLoadingSection()
-    }
+    ResourceLoadingSection(loading)
     when (resourceState) {
         is ResourceState.Error -> ErrorScreen(error = resourceState.message) {
             refresh.invoke()
@@ -41,12 +39,11 @@ fun <M : Any, F : BaseField<*>> ResourceScreen(
     loading: MutableState<Boolean> = mutableStateOf(false),
     content: @Composable (data: M) -> Unit
 ) {
-    if (loading.value) {
-        LinearLoadingSection()
-    }
+    ResourceLoadingSection(loading)
 
     when (val resourceState = viewModel.resource.value) {
         is ResourceState.Error -> ErrorScreen(error = resourceState.message) {
+            viewModel.refresh()
         }
 
         is ResourceState.Loading -> LoadingScreen()
@@ -57,5 +54,14 @@ fun <M : Any, F : BaseField<*>> ResourceScreen(
         }
 
         else -> {}
+    }
+}
+
+
+
+@Composable
+private fun ResourceLoadingSection(loading: MutableState<Boolean>) {
+    if (loading.value) {
+        LinearLoadingSection()
     }
 }

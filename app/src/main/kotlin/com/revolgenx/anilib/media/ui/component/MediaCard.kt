@@ -27,10 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ext.toPainterResource
 import com.revolgenx.anilib.common.ext.toStringResource
-import com.revolgenx.anilib.common.ui.component.common.MediaCoverImageType
-import com.revolgenx.anilib.common.ui.component.common.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText

@@ -334,34 +334,58 @@
     <!--Media Screen-->
 
     <!--Settings-->
-    <string name="setting_label">Settings</string>
-    <string name="setting_important_to_know">Important to know</string>
-    <string name="setting_label_login">Login</string>
-    <string name="setting_label_sign_up">Sign Up</string>
-    <string name="setting_log_into_anilist">Log into AniList</string>
-    <string name="setting_sign_up_to_anilist">Sign up to AniList</string>
-    <string name="setting_label_general">General</string>
-    <string name="setting_general_setting_desc">App language</string>
-    <string name="setting_label_appearance">Appearance</string>
-    <string name="setting_appearance_desc">App theme</string>
-    <string name="setting_login_signup_notice">You\'ll be redirected to anilist.co to login/register. Make sure browser such as Chrome is installed and the URL is anilist.co before entering your credentials.</string>
-    <string name="setting_label_anime_and_manga">Anime &amp; Manga</string>
-    <string name="setting_anime_and_manga_setting_desc">Title language, airing notifications</string>
-    <string name="setting_filter_desc">Filter tags, genre, etc</string>
-    <string name="setting_about_desc">AniLib %1$s</string>
-    <string name="setting_label_lists">Lists</string>
-    <string name="setting_list_setting_desc">Scoring system, advanced scoring</string>
-    <string name="setting_notifications_setting_desc">Activity subscriptions, social, site data changes</string>
-    <string name="setting_are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
-    <string name="setting_label_support">Support</string>
-    <string name="setting_support_desc">Support the app</string>
-    <string name="setting_placeholder_search">Search Settings</string>
-    <string name="setting_theme_dark_mode">Dark mode</string>
-    <string name="theme_dark_follow_system">Follow system</string>
-    <string name="theme_dark_off">Off</string>
-    <string name="theme_dark_on">On</string>
-    <string name="setting_general_app_language">App Language</string>
-    <string name="label_default">Default</string>
+    <string name="settings">Settings</string>
+    <string name="settings_important_to_know">Important to know</string>
+    <string name="settings_login">Login</string>
+    <string name="settings_sign_up">Sign Up</string>
+    <string name="settings_log_into_anilist">Log into AniList</string>
+    <string name="settings_sign_up_to_anilist">Sign up to AniList</string>
+    <string name="settings_general">General</string>
+    <string name="settings_general_desc">App language</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_appearance_desc">App theme</string>
+    <string name="settings_login_signup_notice">You\'ll be redirected to anilist.co to login/register. Make sure browser such as Chrome is installed and the URL is anilist.co before entering your credentials.</string>
+    <string name="settings_anime_and_manga">Anime &amp; Manga</string>
+    <string name="settings_anime_and_manga_desc">Title language, airing notifications</string>
+    <string name="settings_filter_desc">Filter tags, genre, etc</string>
+    <string name="settings_about_desc">AniLib %1$s</string>
+    <string name="settings_lists">Lists</string>
+    <string name="settings_list_desc">Scoring system, advanced scoring</string>
+    <string name="settings_notifications_desc">Activity subscriptions, social, site data changes</string>
+    <string name="settings_are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
+    <string name="settings_support">Support</string>
+    <string name="settings_support_desc">Support the app</string>
+    <string name="settings_placeholder_search">Search Settings</string>
+    <string name="settings_theme_dark_mode">Dark mode</string>
+    <string name="settings_theme_dark_follow_system">Follow system</string>
+    <string name="settings_theme_dark_off">Off</string>
+    <string name="settings_theme_dark_on">On</string>
+    <string name="settings_general_app_language">App Language</string>
+    <string name="settings_default">Default</string>
+    <string name="settings_title_language">Title Language</string>
+    <string name="settings_adult_content">18+ Content</string>
+    <string name="settings_airing_anime_notifications">Airing Anime Notifications</string>
+    <string name="settings_activity_merge_time">Activity Merge Time</string>
+
+    <string name="automatically_subscribe_me_to_activity_i_create">Automatically subscribe me to activity I create</string>
+    <string name="automatically_subscribe_me_to_activity_i_reply_to">Automatically subscribe me to activity I reply to</string>
+    <string name="when_someone_follows_me">When someone follows me</string>
+    <string name="receive_message_notif">When i receive a message</string>
+    <string name="mention_replay_notif">When I am @ mentioned in an activity or activity reply</string>
+    <string name="activity_like_notif">When someone likes my activity</string>
+    <string name="likes_activity_reply_notif">When someone likes my activity reply</string>
+    <string name="forum_reply_notif">When someone replies to my forum comment</string>
+    <string name="forum_mention_notif">When I am @ mentioned in a forum comment</string>
+    <string name="forum_coment_liked_notif">When someone likes my forum comment</string>
+    <string name="reply_to_subscribed_forum_notif">When someone replies to a forum thread I\'m subscribed to</string>
+    <string name="forum_liked_notif">When someone likes my forum thread</string>
+    <string name="media_related_to_me">When an anime or manga in my list has a new related entry created.</string>
+    <string name="media_modified_in_my_list">When an anime or manga in my list has its data changed that affects my list</string>
+    <string name="media_merged_in_my_list">When one or more anime or manga in my list are merged into another</string>
+    <string name="media_deleted_in_my_list">When an anime or manga in my list is deleted from the site</string>
+    <string name="activity_subscriptions">Activity Subscriptions</string>
+    <string name="site_data_changes">Site Data Changes</string>
+
     <!--Settings-->
 
 </resources>

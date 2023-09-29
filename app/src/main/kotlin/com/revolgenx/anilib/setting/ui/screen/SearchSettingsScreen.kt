@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
@@ -76,7 +75,7 @@ fun SearchSettingTopAppBar() {
                 onActiveChange = {
 
                 },
-                placeholder = { Text(text = stringResource(id = I18nR.string.setting_placeholder_search)) },
+                placeholder = { Text(text = stringResource(id = I18nR.string.settings_placeholder_search)) },
                 leadingIcon = {
                     NavigationIcon()
                 },

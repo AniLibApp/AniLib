@@ -25,7 +25,7 @@ import com.revolgenx.anilib.common.data.constant.LauncherShortcutKeys
 import com.revolgenx.anilib.common.data.constant.LauncherShortcuts
 import com.revolgenx.anilib.common.ui.theme.LightColorScheme
 import com.revolgenx.anilib.common.util.immutableFlagUpdateCurrent
-import com.revolgenx.anilib.media.ui.model.MediaCoverImageType
+import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.notification.data.field.NotificationField
 import com.revolgenx.anilib.notification.data.service.NotificationService
 import com.revolgenx.anilib.notification.ui.model.ActivityNotificationModel
@@ -146,7 +146,7 @@ class NotificationWorker(
                 item.media?.title?.userPreferred,
                 item.contexts[2]
             ),
-            image = item.media?.coverImage?.image(MediaCoverImageType.LARGE)
+            image = item.media?.coverImage?.image(MediaCoverImageModel.type_large)
         )
     }
 
@@ -163,7 +163,7 @@ class NotificationWorker(
         return NotificationData(
             title = context.getString(I18nR.string.s_space_s)
                 .format(item.media?.title?.userPreferred, item.context),
-            image = item.media?.coverImage?.image(MediaCoverImageType.LARGE)
+            image = item.media?.coverImage?.image(MediaCoverImageModel.type_large)
         )
     }
 
@@ -172,7 +172,7 @@ class NotificationWorker(
         return NotificationData(
             title = context.getString(I18nR.string.s_space_s)
                 .format(item.media?.title?.userPreferred, item.context),
-            image = item.media?.coverImage?.image(MediaCoverImageType.LARGE)
+            image = item.media?.coverImage?.image(MediaCoverImageModel.type_large)
         )
     }
 
@@ -181,7 +181,7 @@ class NotificationWorker(
         return NotificationData(
             title = context.getString(I18nR.string.s_space_s)
                 .format(item.media?.title?.userPreferred, item.context),
-            image = item.media?.coverImage?.image(MediaCoverImageType.LARGE)
+            image = item.media?.coverImage?.image(MediaCoverImageModel.type_large)
         )
     }
 
