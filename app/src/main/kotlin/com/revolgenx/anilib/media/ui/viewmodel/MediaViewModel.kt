@@ -81,7 +81,7 @@ class MediaViewModel(
         socialPage
     )
 
-    override fun loadData(): Flow<MediaModel?> {
+    override fun load(): Flow<MediaModel?> {
         return mediaService.getMediaOverview(field).onEach { media ->
             showHiddenPages(media)
         }

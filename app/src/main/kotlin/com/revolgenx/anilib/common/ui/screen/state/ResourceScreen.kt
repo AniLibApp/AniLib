@@ -1,46 +1,25 @@
 package com.revolgenx.anilib.common.ui.screen.state
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.common.data.field.BaseField
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.common.util.OnClick
-import timber.log.Timber
-
-@Composable
-fun <T> ResourceScreen(
-    resourceState: ResourceState<T>?,
-    loading: MutableState<Boolean> = mutableStateOf(false),
-    refresh: OnClick,
-    content: @Composable (data: T) -> Unit
-) {
-    ResourceLoadingSection(loading)
-    when (resourceState) {
-        is ResourceState.Error -> ErrorScreen(error = resourceState.message) {
-            refresh.invoke()
-        }
-
-        is ResourceState.Loading -> LoadingScreen()
-
-        is ResourceState.Success -> {
-            val data = resourceState.data ?: return
-            content(data)
-        }
-
-        else -> {}
-    }
-}
 
 @Composable
 fun <M : Any, F : BaseField<*>> ResourceScreen(
     viewModel: ResourceViewModel<M, F>,
-    loading: MutableState<Boolean> = mutableStateOf(false),
     content: @Composable (data: M) -> Unit
 ) {
-    ResourceLoadingSection(loading)
+    ResourceLoadingSection(viewModel)
+    ResourceScreenContent(viewModel, content)
+}
 
+@Composable
+private fun <M : Any, F : BaseField<*>> ResourceScreenContent(
+    viewModel: ResourceViewModel<M, F>,
+    content: @Composable (data: M) -> Unit
+) {
     when (val resourceState = viewModel.resource.value) {
         is ResourceState.Error -> ErrorScreen(error = resourceState.message) {
             viewModel.refresh()
@@ -57,11 +36,9 @@ fun <M : Any, F : BaseField<*>> ResourceScreen(
     }
 }
 
-
-
 @Composable
-private fun ResourceLoadingSection(loading: MutableState<Boolean>) {
-    if (loading.value) {
+private fun <M : Any, F : BaseField<*>> ResourceLoadingSection(viewModel: ResourceViewModel<M, F>) {
+    if (viewModel.saveResource.value is ResourceState.Loading || viewModel.deleteResource.value is ResourceState.Loading) {
         LinearLoadingSection()
     }
 }

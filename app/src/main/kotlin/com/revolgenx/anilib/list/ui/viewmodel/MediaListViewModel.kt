@@ -85,7 +85,7 @@ abstract class MediaListViewModel(
         filterData()
     }
 
-    override fun loadData(): Flow<MediaListCollectionModel?> {
+    override fun load(): Flow<MediaListCollectionModel?> {
         return mediaListService.getMediaListCollection(field)
     }
 

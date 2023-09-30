@@ -62,5 +62,5 @@ class UserViewModel(
         pages.forEach { it.isVisible.value = true }
     }
 
-    override fun loadData(): Flow<UserModel?> = userService.getUser(field)
+    override fun load(): Flow<UserModel?> = userService.getUser(field)
 }

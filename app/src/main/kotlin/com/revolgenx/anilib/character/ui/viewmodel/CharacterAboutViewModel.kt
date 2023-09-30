@@ -13,6 +13,6 @@ import kotlinx.coroutines.flow.Flow
 class CharacterAboutViewModel(private val characterService: CharacterService) :
     ResourceViewModel<CharacterModel, CharacterField>() {
     override val field: CharacterField = CharacterField()
-    override fun loadData(): Flow<CharacterModel?> = characterService.getCharacter(field)
+    override fun load(): Flow<CharacterModel?> = characterService.getCharacter(field)
 
 }

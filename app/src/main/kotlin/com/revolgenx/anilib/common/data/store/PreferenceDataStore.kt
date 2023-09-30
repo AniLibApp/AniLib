@@ -40,7 +40,7 @@ class PreferenceDataModel<T>(
     private val prefKey: Preferences.Key<T>,
     private val defaultValue: T? = null,
 ) : PreferenceData<T> {
-    override fun get(): T = getNullable()!!
+    override fun get(): T = runBlocking { map().first() }
 
     override fun getNullable(): T? = runBlocking {
         mapNullable().first()

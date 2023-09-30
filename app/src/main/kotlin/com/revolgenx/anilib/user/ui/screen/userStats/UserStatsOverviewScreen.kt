@@ -64,8 +64,8 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
     }
 
     ResourceScreen(
-        resourceState = viewModel.resource.value,
-        refresh = { viewModel.refresh() }) { user ->
+        viewModel = viewModel
+    ) { user ->
         val stats = user.statistics?.anime ?: user.statistics?.manga ?: return@ResourceScreen
 
         ProvideChartStyle(m3ChartStyle()) {

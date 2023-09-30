@@ -35,8 +35,10 @@ query UserMediaListOptionsQuery($id:Int, $name:String){
 
 mutation UserMediaSettingMutation(
     $title:UserTitleLanguage,
-    $airingNotification:Boolean){
-    updateUser: UpdateUser(titleLanguage:$title, airingNotifications:$airingNotification){
+    $airingNotification:Boolean,
+    $activityMergeTime:Int,
+){
+    updateUser: UpdateUser(titleLanguage:$title, airingNotifications:$airingNotification, activityMergeTime: $activityMergeTime){
         id
     }
 }

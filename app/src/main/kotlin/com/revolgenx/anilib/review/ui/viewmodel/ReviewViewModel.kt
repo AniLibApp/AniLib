@@ -21,7 +21,7 @@ class ReviewListViewModel(
 
 class ReviewViewModel(private val reviewService: ReviewService): ResourceViewModel<ReviewModel, ReviewField>(){
     override val field: ReviewField = ReviewField()
-    override fun loadData(): Flow<ReviewModel?> {
+    override fun load(): Flow<ReviewModel?> {
         return reviewService.getReview(field)
     }
 }

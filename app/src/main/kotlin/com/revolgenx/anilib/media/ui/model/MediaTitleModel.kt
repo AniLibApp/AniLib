@@ -29,6 +29,5 @@ data class MediaTitleModel(
     }
 }
 
-
 fun MediaTitle.toModel() = MediaTitleModel(english, romaji, native, userPreferred)
 

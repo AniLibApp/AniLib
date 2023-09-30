@@ -11,7 +11,7 @@ class MediaStatsViewModel(private val mediaService: MediaService) :
 
     override val field: MediaStatsField = MediaStatsField()
 
-    override fun loadData(): Flow<MediaStatsModel?> {
+    override fun load(): Flow<MediaStatsModel?> {
         return mediaService.getMediaStats(field)
     }
 }

@@ -385,6 +385,19 @@
     <string name="media_deleted_in_my_list">When an anime or manga in my list is deleted from the site</string>
     <string name="activity_subscriptions">Activity Subscriptions</string>
     <string name="site_data_changes">Site Data Changes</string>
+    <string name="merge_time_never">Never</string>
+    <string name="merge_time_30_min">30 Minutes</string>
+    <string name="merge_time_1_hour">1 Hour</string>
+    <string name="merge_time_2_hours">2 Hours</string>
+    <string name="merge_time_3_hours">3 Hours</string>
+    <string name="merge_time_6_hours">6 Hours</string>
+    <string name="merge_time_12_hours">12 Hours</string>
+    <string name="merge_time_1_day">1 Day</string>
+    <string name="merge_time_2_days">2 Days</string>
+    <string name="merge_time_3_days">3 Days</string>
+    <string name="merge_time_1_week">1 Week</string>
+    <string name="merge_time_2_weeks">2 Weeks</string>
+    <string name="merge_time_always">Always</string>
 
     <!--Settings-->
 

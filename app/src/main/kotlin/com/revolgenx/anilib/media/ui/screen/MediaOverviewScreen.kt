@@ -50,7 +50,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaScreen
@@ -109,7 +108,7 @@ fun MediaOverviewScreen(
     mediaType: MediaType,
     recommendationScreen: OnClick
 ) {
-    ResourceScreen(resourceState = viewModel.resource.value, refresh = { viewModel.refresh() }) {
+    ResourceScreen(viewModel = viewModel) {
         MediaOverview(it, mediaType, recommendationScreen)
     }
 }

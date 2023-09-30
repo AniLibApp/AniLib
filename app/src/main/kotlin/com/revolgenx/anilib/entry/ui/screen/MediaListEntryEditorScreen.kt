@@ -134,8 +134,6 @@ private fun MediaListEditScreenContent(
         },
     ) {
 
-        val loading = remember { mutableStateOf(false) }
-
         val snackbar = localSnackbarHostState()
         when (viewModel.deleteResource.value) {
             is ResourceState.Error -> {
@@ -155,16 +153,10 @@ private fun MediaListEditScreenContent(
                     }
                 }
             }
-
-            is ResourceState.Loading -> {
-                loading.value = true
-            }
-
             is ResourceState.Success -> {
                 localNavigator().pop()
             }
-
-            null -> {}
+            else -> {}
         }
 
         when (viewModel.saveResource.value) {
@@ -186,15 +178,11 @@ private fun MediaListEditScreenContent(
                 }
             }
 
-            is ResourceState.Loading -> {
-                loading.value = true
-            }
-
             is ResourceState.Success -> {
                 localNavigator().pop()
             }
 
-            null -> {}
+            else -> {}
         }
 
 
@@ -204,9 +192,7 @@ private fun MediaListEditScreenContent(
                 .verticalScroll(rememberScrollState())
                 .padding(8.dp)
         ) {
-            ResourceScreen(resourceState = viewModel.resource.value,
-                loading = loading,
-                refresh = { viewModel.refresh() }) { userMedia ->
+            ResourceScreen(viewModel = viewModel) { userMedia ->
                 val media = userMedia.media ?: return@ResourceScreen
                 val user = userMedia.user ?: return@ResourceScreen
                 val entryField = viewModel.saveField

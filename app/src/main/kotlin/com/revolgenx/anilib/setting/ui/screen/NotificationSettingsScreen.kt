@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.setting.ui.screen
 
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
@@ -19,11 +18,15 @@ import com.revolgenx.anilib.type.NotificationType
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
-class NotificationSettingsScreen : PreferenceScreen() {
+class NotificationSettingsScreen : ViewModelPreferencesScreen<NotificationSettingsViewModel>() {
 
     override val titleRes: Int = I18nR.string.notifications
-    override var actions: @Composable() (RowScope.() -> Unit)? = {
-        val viewModel: NotificationSettingsViewModel = koinViewModel()
+
+    @Composable
+    override fun getViewModel(): NotificationSettingsViewModel = koinViewModel()
+
+    @Composable()
+    override fun SaveAction() {
         ActionMenu(
             icon = AppIcons.IcSave
         ) {
@@ -33,8 +36,7 @@ class NotificationSettingsScreen : PreferenceScreen() {
 
     @Composable
     override fun PreferenceContent() {
-        val viewModel: NotificationSettingsViewModel = koinViewModel()
-        ResourceScreen(viewModel = viewModel, loading = viewModel.loading) {
+        ResourceScreen(viewModel = viewModel) {
             SaveResourceState(viewModel)
             super.PreferenceContent()
         }
@@ -68,7 +70,7 @@ class NotificationSettingsScreen : PreferenceScreen() {
 
     @Composable
     override fun getPreferences(): List<PreferenceModel> {
-        val viewModel: NotificationSettingsViewModel = koinViewModel()
+        val viewModel: NotificationSettingsViewModel = getViewModel()
         val resourceValue = viewModel.resource.value?.stateValue ?: emptyMap()
         return listOf(
             getActivitySubscriptionsGroup(resourceValue),

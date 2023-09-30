@@ -13,7 +13,7 @@ abstract class UserStatsTypeViewModel(
     private val userService: UserService
 ) : ResourceViewModel<List<BaseStatisticModel>, UserStatsTypeField>() {
     override val field: UserStatsTypeField = UserStatsTypeField(mediaType, userStatsType)
-    override fun loadData(): Flow<List<BaseStatisticModel>?> {
+    override fun load(): Flow<List<BaseStatisticModel>?> {
         return userService.getUserStats(field)
     }
 }

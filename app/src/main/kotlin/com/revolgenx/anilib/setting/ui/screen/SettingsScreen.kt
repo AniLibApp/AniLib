@@ -195,7 +195,7 @@ fun SettingScreenContent(isTab: Boolean) {
                 title = I18nR.string.settings_anime_and_manga.toStringResource(),
                 subtitle = I18nR.string.settings_anime_and_manga_desc.toStringResource()
             ) {
-                navigator.push(MediaSettingsScreen)
+                navigator.push(MediaSettingsScreen())
             }
 
             ShowIfLoggedIn {

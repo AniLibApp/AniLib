@@ -16,7 +16,7 @@ class UserStatsOverviewViewModel(mediaType: MediaType, private val userService: 
     val statsStartYearType = mutableIntStateOf(0)
 
     override val field: UserStatsOverviewField = UserStatsOverviewField(mediaType)
-    override fun loadData(): Flow<UserModel?> {
+    override fun load(): Flow<UserModel?> {
         return userService.getUserStatsOverview(field)
     }
 }

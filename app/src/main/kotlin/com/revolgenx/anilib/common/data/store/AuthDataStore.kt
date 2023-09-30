@@ -6,6 +6,8 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.auth0.android.jwt.JWT
 import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.media.ui.model.MediaTitleModel
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -52,6 +54,7 @@ class AuthDataStore(override val dataStore: PreferencesDataStore) : BasePreferen
         dataStore.edit { pref ->
             pref[authTokenKey] = mToken
             pref[userIdKey] = userId
+            pref[MediaSettingsDataStore.mediaTitleTypeKey] = MediaTitleModel.type_user_preferred
         }
     }
 
@@ -59,6 +62,8 @@ class AuthDataStore(override val dataStore: PreferencesDataStore) : BasePreferen
         dataStore.edit { pref ->
             pref.remove(authTokenKey)
             pref.remove(userIdKey)
+            pref.remove(MediaSettingsDataStore.displayAdultContentKey)
+            pref[MediaSettingsDataStore.mediaTitleTypeKey] = MediaTitleModel.type_romaji
         }
     }
 }

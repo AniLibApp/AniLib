@@ -61,8 +61,8 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
     val isAnime = mediaType.isAnime
 
     ResourceScreen(
-        resourceState = viewModel.resource.value,
-        refresh = { viewModel.refresh() }) { statsModel ->
+        viewModel = viewModel
+    ) { statsModel ->
         ProvideChartStyle(m3ChartStyle()) {
             val marker = rememberMarker()
 

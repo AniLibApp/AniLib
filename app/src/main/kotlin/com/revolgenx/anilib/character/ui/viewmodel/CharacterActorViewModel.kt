@@ -11,7 +11,7 @@ class CharacterActorViewModel(
 ): ResourceViewModel<List<StaffModel>, CharacterActorField>() {
     override val field: CharacterActorField = CharacterActorField()
 
-    override fun loadData(): Flow<List<StaffModel>?> {
+    override fun load(): Flow<List<StaffModel>?> {
         return service.getCharacterActor(field)
     }
 }

@@ -10,7 +10,7 @@ class StaffAboutViewModel(private val staffService: StaffService) :
     ResourceViewModel<StaffModel, StaffField>() {
     override val field: StaffField = StaffField()
 
-    override fun loadData(): Flow<StaffModel?> {
+    override fun load(): Flow<StaffModel?> {
         return staffService.getStaff(field)
     }
 }

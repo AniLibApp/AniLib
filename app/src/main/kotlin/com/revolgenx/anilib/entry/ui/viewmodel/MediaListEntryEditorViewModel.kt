@@ -36,10 +36,10 @@ class MediaListEntryEditorViewModel(private val mediaListEntryService: MediaList
     var isFavourite by mutableStateOf(false)
     var userHasMediaListEntry by mutableStateOf(false)
 
-    val deleteResource: MutableState<ResourceState<Boolean>?> = mutableStateOf(null)
-    val saveResource: MutableState<ResourceState<MediaListModel>?> = mutableStateOf(null)
+    override val deleteResource: MutableState<ResourceState<Any>?> = mutableStateOf(null)
+    override val saveResource: MutableState<ResourceState<Any>?> = mutableStateOf(null)
 
-    override fun loadData(): Flow<UserMediaModel> {
+    override fun load(): Flow<UserMediaModel> {
         return mediaListEntryService.getMediaListEntry(field).onEach {
             it.toSaveField()
         }
@@ -105,7 +105,7 @@ class MediaListEntryEditorViewModel(private val mediaListEntryService: MediaList
         }
     }
 
-    fun save() {
+    override fun save() {
         saveResource.value = ResourceState.loading()
         mediaListEntryService.saveMediaListEntry(saveField)
             .onEach {
@@ -117,7 +117,7 @@ class MediaListEntryEditorViewModel(private val mediaListEntryService: MediaList
             .launchIn(viewModelScope)
     }
 
-    fun delete() {
+    override fun delete() {
         val resourceValue = resource.value
         if (resourceValue is ResourceState.Success) {
             deleteResource.value = ResourceState.loading()

@@ -19,9 +19,7 @@ fun StaffAboutScreen(
         viewModel.getResource()
     }
 
-    ResourceScreen(resourceState = viewModel.resource.value, refresh = {
-        viewModel.refresh()
-    }) { staff ->
+    ResourceScreen(viewModel = viewModel) { staff ->
         AboutScreen(
             name = staff.name?.full.naText(),
             alternative = staff.name?.alternativeText,

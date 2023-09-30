@@ -15,7 +15,14 @@ import kotlinx.coroutines.flow.onEach
 
 abstract class ResourceViewModel<M : Any, F : BaseField<*>> : BaseViewModel<F>() {
     open val resource: MutableState<ResourceState<M>?> = mutableStateOf(null)
-    protected abstract fun loadData(): Flow<M?>
+
+    open val deleteResource: MutableState<ResourceState<Any>?> = mutableStateOf(null)
+    open val saveResource: MutableState<ResourceState<Any>?> = mutableStateOf(null)
+
+    protected abstract fun load(): Flow<M?>
+    
+    open fun save(){}
+    open fun delete(){}
 
     fun getResource() {
         if (resource.value.isNull()) {
@@ -29,7 +36,7 @@ abstract class ResourceViewModel<M : Any, F : BaseField<*>> : BaseViewModel<F>()
 
     fun refresh() {
         resource.value = ResourceState.loading()
-        loadData()
+        load()
             .onEach {
                 val data = it ?: throw ApolloException("No data available")
                 resource.value = ResourceState.success(data)

@@ -211,6 +211,7 @@ fragment userMediaOptions on UserOptions{
     displayAdultContent
     airingNotifications
     profileColor
+    activityMergeTime
 }
 
 fragment userMediaListOptions on MediaListOptions{

@@ -44,8 +44,6 @@ abstract class ViewModelPreferencesScreen<VM: ViewModel> : PreferenceScreen() {
 abstract class PreferenceScreen : AndroidScreen() {
     abstract val titleRes: Int
 
-    protected open var actions: (@Composable RowScope.() -> Unit)? = null
-
     @Composable
     abstract fun getPreferences(): List<PreferenceModel>
 
@@ -54,7 +52,9 @@ abstract class PreferenceScreen : AndroidScreen() {
     override fun Content() {
         ScreenScaffold(
             title = stringResource(id = titleRes),
-            actions = actions
+            actions = {
+                SaveAction()
+            }
         ) {
             PreferenceContent()
         }
@@ -64,6 +64,11 @@ abstract class PreferenceScreen : AndroidScreen() {
     protected open fun PreferenceContent() {
         val preferences = getPreferences()
         PreferenceScreenContent(preferences)
+    }
+
+    @Composable
+    protected open fun SaveAction() {
+
     }
 
 }

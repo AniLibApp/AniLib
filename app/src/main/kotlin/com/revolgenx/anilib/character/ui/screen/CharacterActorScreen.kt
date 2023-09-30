@@ -21,8 +21,8 @@ fun CharacterActorScreen(viewModel: CharacterActorViewModel) {
         viewModel.getResource()
     }
     ResourceScreen(
-        resourceState = viewModel.resource.value,
-        refresh = { viewModel.refresh() }) { staffModels ->
+        viewModel = viewModel
+    ) { staffModels ->
         LazyPagingList(
             items = staffModels,
             type = ListPagingListType.GRID,
