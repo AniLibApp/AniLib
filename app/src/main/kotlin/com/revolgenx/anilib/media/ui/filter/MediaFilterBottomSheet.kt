@@ -3,21 +3,16 @@ package com.revolgenx.anilib.media.ui.filter
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -25,7 +20,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
 import com.revolgenx.anilib.common.ext.getOrEmpty
-import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
+import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
@@ -60,15 +55,14 @@ private fun MediaFilterBottomSheetContent(
 ) {
     Column(
         modifier = modifier
-            .padding(horizontal = 16.dp)
             .padding(bottom = 4.dp)
     ) {
-        BottomSheetConfirmationAction(
-            onPositiveClicked = {
+        BottomSheetConfirmation(
+            confirmClicked = {
                 onPositiveClicked?.invoke()
                 dismiss?.invoke()
             },
-            onNegativeClicked = {
+            dismissClicked = {
                 onNegativeClicked?.invoke()
                 dismiss?.invoke()
             }
@@ -77,6 +71,7 @@ private fun MediaFilterBottomSheetContent(
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp)
                 .padding(vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {

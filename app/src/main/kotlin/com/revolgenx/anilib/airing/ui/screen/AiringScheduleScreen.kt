@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.airing.ui.screen
 
-import android.util.Range
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,11 +42,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.calendar.CalendarDialog
-import com.maxkeppeler.sheets.calendar.models.CalendarConfig
-import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.data.field.AiringScheduleField
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
@@ -58,12 +52,12 @@ import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
-import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
+import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.common.Header
-import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
-import com.revolgenx.anilib.media.ui.component.MediaTitleType
+import com.revolgenx.anilib.common.ui.component.date.CalendarBottomSheet
+import com.revolgenx.anilib.common.ui.component.date.CalendarRangeBottomSheet
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
@@ -84,9 +78,12 @@ import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
+import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.type.AiringSort
 import org.koin.androidx.compose.koinViewModel
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
@@ -110,16 +107,23 @@ private fun AiringScreenContent(
     val context = LocalContext.current
     val field = viewModel.field
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    val calendarState = rememberUseCaseState()
+
     val openBottomSheet = rememberSaveable { mutableStateOf(false) }
     val navigator = localNavigator()
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
 
+    val openCalendarDialog = rememberSaveable { mutableStateOf(false) }
+
     val calendarRange = remember {
         derivedStateOf {
-            Range(viewModel.startDateTime.toLocalDate(), viewModel.endDateTime.toLocalDate())
+            Pair(
+                viewModel.startDateTime.toLocalDate().atStartOfDay(ZoneOffset.UTC).toInstant()
+                    .toEpochMilli(),
+                viewModel.endDateTime.toLocalDate().atStartOfDay(ZoneOffset.UTC).toInstant()
+                    .toEpochMilli()
+            )
         }
     }
 
@@ -180,7 +184,7 @@ private fun AiringScreenContent(
                     openBottomSheet.value = true
                 },
                 onCalendar = {
-                    calendarState.show()
+                    openCalendarDialog.value = true
                 },
                 onWeekly = {
                     viewModel.updateDateRange(!field.isWeeklyTypeDate)
@@ -234,20 +238,22 @@ private fun AiringScreenContent(
     }
 
 
-    CalendarDialog(
-        state = calendarState,
-        config = CalendarConfig(style = CalendarStyle.MONTH),
-        selection = if (field.isWeeklyTypeDate) {
-            CalendarSelection.Period(
-                selectedRange = calendarRange.value
-            ) { startDate, endDate ->
-                viewModel.updateDates(startDate, endDate)
-            }
-        } else {
-            CalendarSelection.Date(selectedDate = viewModel.startDateTime.toLocalDate()) { startDate ->
-                viewModel.updateStartDate(startDate)
-            }
-        })
+    if (field.isWeeklyTypeDate) {
+        CalendarRangeBottomSheet(
+            openBottomSheet = openCalendarDialog,
+            initialSelectedStartDateMillis = calendarRange.value.first,
+            initialSelectedEndDateMillis = calendarRange.value.second,
+        ) { selectedStartDateMillis, selectedEndDateMillis ->
+            viewModel.updateDates(selectedStartDateMillis, selectedEndDateMillis)
+        }
+    } else {
+        CalendarBottomSheet(
+            openBottomSheet = openCalendarDialog,
+            initialSelectedDateMillis = calendarRange.value.first,
+        ) { selectedDateMillis ->
+            viewModel.updateStartDate(selectedDateMillis)
+        }
+    }
 
 }
 
@@ -390,12 +396,12 @@ private fun AiringScheduleFilterBottomSheetContent(
             .padding(horizontal = 16.dp)
             .padding(bottom = 4.dp)
     ) {
-        BottomSheetConfirmationAction(
-            onPositiveClicked = {
+        BottomSheetConfirmation(
+            confirmClicked = {
                 onPositiveClicked?.invoke()
                 dismiss?.invoke()
             },
-            onNegativeClicked = {
+            dismissClicked = {
                 onNegativeClicked?.invoke()
                 dismiss?.invoke()
             }
@@ -446,27 +452,36 @@ private fun AiringScheduleAction(
 ) {
     ActionMenu(icon = AppIcons.IcChevronLeft, onClick = onPrevious)
     ActionMenu(icon = AppIcons.IcChevronRight, onClick = onNext)
-    OverflowMenu {
+    OverflowMenu { expanded ->
         OverflowMenuItem(
             textRes = I18nR.string.filter,
             icon = AppIcons.IcFilter,
-            onClick = onFilter,
+            onClick = {
+                expanded.value = false
+                onFilter()
+            },
             contentDescriptionRes = I18nR.string.filter
         )
         OverflowMenuItem(
             textRes = I18nR.string.select_date,
             icon = AppIcons.IcCalendar,
-            onClick = onCalendar,
+            onClick = {
+                expanded.value = false
+                onCalendar()
+            },
             contentDescriptionRes = I18nR.string.select_date,
         )
         OverflowMenuItem(
             textRes = I18nR.string.weekly,
             icon = AppIcons.IcTime,
-            onClick = onWeekly,
+            onClick = {
+                expanded.value = false
+                onWeekly()
+            },
             contentDescriptionRes = I18nR.string.weekly,
             isChecked = isWeeklyTypeDate
         ) {
-            onWeekly.invoke()
+            onWeekly()
         }
     }
 }

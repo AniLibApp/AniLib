@@ -23,8 +23,7 @@ interface PreferenceData<T> {
     fun get(): T
     fun getNullable(): T?
     suspend fun set(value: Any?)
-    fun map(): Flow<T>
-    fun mapNullable(): Flow<T?>
+    fun map(): Flow<T?>
 
     suspend fun collect(collector: FlowCollector<T?>)
 
@@ -40,17 +39,14 @@ class PreferenceDataModel<T>(
     private val prefKey: Preferences.Key<T>,
     private val defaultValue: T? = null,
 ) : PreferenceData<T> {
-    override fun get(): T = runBlocking { map().first() }
+    override fun get(): T = getNullable()!!
 
-    override fun getNullable(): T? = runBlocking {
-        mapNullable().first()
-    }
+    override fun getNullable(): T? = runBlocking { map().first() }
 
-    override fun map(): Flow<T> = dataStore.data.map { it[prefKey] ?: defaultValue!! }
-    override fun mapNullable(): Flow<T?> = dataStore.data.map { it[prefKey] }
+    override fun map(): Flow<T?> = dataStore.data.map { it[prefKey] ?: defaultValue }
 
     override suspend fun collect(collector: FlowCollector<T?>) {
-        mapNullable().collect(collector)
+        map().collect(collector)
     }
 
     override suspend fun set(value: Any?) {
@@ -66,13 +62,13 @@ class PreferenceDataModel<T>(
 
     @Composable
     override fun collectAsState(): State<T> {
-        val flow = remember(this) { map() }
+        val flow = remember(this) { map().map { it!! } }
         return flow.collectAsState(initial = get())
     }
 
     @Composable
     override fun collectAsNullableState(): State<T?> {
-        val flow = remember(this) { mapNullable() }
+        val flow = remember(this) { map() }
         return flow.collectAsState(initial = getNullable())
     }
 

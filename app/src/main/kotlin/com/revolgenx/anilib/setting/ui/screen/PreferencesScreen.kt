@@ -28,6 +28,7 @@ import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import kotlinx.coroutines.launch
 
 abstract class ViewModelPreferencesScreen<VM: ViewModel> : PreferenceScreen() {
+    @Transient
     protected var _viewModel: VM? = null
     protected val viewModel get() = _viewModel!!
 

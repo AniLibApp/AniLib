@@ -147,6 +147,7 @@ class MediaSettingsScreen : ViewModelPreferencesScreen<MediaSettingsViewModel>()
                     PreferenceModel.SwitchPreference(
                         pref = mediaSettingsDataStore.displayAdultContent,
                         title = stringResource(id = I18nR.string.settings_adult_content),
+                        subtitle = stringResource(id = I18nR.string.show_adult_content_desc)
                     )
                 )
             }

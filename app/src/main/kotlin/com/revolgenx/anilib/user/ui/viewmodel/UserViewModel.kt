@@ -31,7 +31,7 @@ class UserViewModel(
     ResourceViewModel<UserModel, UserField>() {
     override val field: UserField = UserField()
 
-    val isLoggedInUser = authDataStore.userId.mapNullable().map { it == field.userId }
+    val isLoggedInUser = authDataStore.userId.map().map { it == field.userId }
 
     val userId = mutableStateOf<Int?>(null)
 

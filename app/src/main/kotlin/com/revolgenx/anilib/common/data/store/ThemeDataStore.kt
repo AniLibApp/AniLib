@@ -13,7 +13,7 @@ class ThemeDataStore(override val dataStore: PreferencesDataStore) : BasePrefere
 //        const val themeModeDark = true
     }
 
-    private val themeMode = PreferenceDataModel(
+    val themeMode = PreferenceDataModel(
         dataStore = dataStore,
         prefKey = themeModeKey,
         defaultValue = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) themeModeSystem else themeModeLight

@@ -177,6 +177,7 @@
     <string name="year">Year</string>
     <string name="none">None</string>
     <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
     <string name="overview">Overview</string>
     <string name="character">Character</string>
     <string name="watch">Watch</string>
@@ -398,6 +399,11 @@
     <string name="merge_time_1_week">1 Week</string>
     <string name="merge_time_2_weeks">2 Weeks</string>
     <string name="merge_time_always">Always</string>
+    <string name="cover_image_quality">Cover Image Quality</string>
+    <string name="high">High</string>
+    <string name="low">Low</string>
+    <string name="medium">Medium</string>
+    <string name="show_adult_content_desc">Changing this won\'t change setting in AniList. It depends on AniList, so disabling users preference on AniList would remove this setting.</string>
 
     <!--Settings-->
 

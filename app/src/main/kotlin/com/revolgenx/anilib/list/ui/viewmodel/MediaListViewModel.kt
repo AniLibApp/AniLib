@@ -32,7 +32,7 @@ abstract class MediaListViewModel(
 
     private val handler = Handler(Looper.getMainLooper())
     private val sortingComparator = MediaListCollectionSortComparator()
-    private val isLoggedInUser = authDataStore.userId.mapNullable().map { field.userId == it }
+    private val isLoggedInUser = authDataStore.userId.map().map { field.userId == it }
 
     var filter: MediaListCollectionFilter? by mutableStateOf(null)
     var mediaListCollection = mutableStateListOf<MediaListModel>()

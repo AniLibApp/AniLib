@@ -44,8 +44,8 @@ import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
 import com.revolgenx.anilib.common.ui.component.common.Grid
+import com.revolgenx.anilib.common.ui.component.date.CalendarBottomSheet
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
-import com.revolgenx.anilib.common.ui.component.date.CalendarDialog
 import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -499,14 +499,14 @@ private fun TextHeaderContent(
 @Composable
 private fun CalendarPicker(
     openCalendar: MutableState<Boolean> = mutableStateOf(false),
-    selectedDateMillis: Long? = null,
+    selectedDateMillis: Long?,
     text: String,
     onClear: OnClick,
     onDateSelected: (selectedDateMillis: Long) -> Unit
 ) {
-    CalendarDialog(
-        openDialog = openCalendar,
-        selectedDateMillis = selectedDateMillis,
+    CalendarBottomSheet(
+        openBottomSheet = openCalendar,
+        initialSelectedDateMillis = selectedDateMillis,
         onDateSelected = onDateSelected
     )
     TextButton(

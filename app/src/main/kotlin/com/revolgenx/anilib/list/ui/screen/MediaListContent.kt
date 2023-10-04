@@ -31,7 +31,7 @@ import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.hideBottomSheet
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmationAction
+import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
@@ -240,15 +240,14 @@ fun MediaListFilterBottomSheetContent(
 ) {
     Column(
         modifier = modifier
-            .padding(horizontal = 16.dp)
             .padding(bottom = 4.dp)
     ) {
-        BottomSheetConfirmationAction(
-            onPositiveClicked = {
+        BottomSheetConfirmation(
+            confirmClicked = {
                 onFilter.invoke(viewModel.filter)
                 dismiss.invoke()
             },
-            onNegativeClicked = {
+            dismissClicked = {
                 dismiss.invoke()
             }
         )
@@ -256,6 +255,7 @@ fun MediaListFilterBottomSheetContent(
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp)
                 .padding(vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {

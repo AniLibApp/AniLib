@@ -14,18 +14,15 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBack
@@ -82,11 +79,11 @@ private fun ActionMenuIcon(
 @Composable
 fun OverflowMenu(
     icon: ImageVector? = null,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.(isOpen: MutableState<Boolean>) -> Unit
 ) {
-    var isOpen by remember { mutableStateOf(false) }
+    val expanded = remember { mutableStateOf(false) }
     IconButton(onClick = {
-        isOpen = isOpen.not()
+        expanded.value = !expanded.value
     }) {
         Icon(
             imageVector = icon ?: AppIcons.IcMoreHoriz,
@@ -94,12 +91,14 @@ fun OverflowMenu(
         )
     }
     DropdownMenu(
-        expanded = isOpen,
+        expanded = expanded.value,
         offset = DpOffset(8.dp, 0.dp),
         onDismissRequest = {
-            isOpen = isOpen.not()
+            expanded.value = expanded.value.not()
         },
-        content = content
+        content = {
+            content(expanded)
+        }
     )
 }
 
@@ -128,7 +127,9 @@ fun OverflowMenuItem(
                     icon?.let {
                         Icon(
                             imageVector = it,
-                            contentDescription = stringResource(id = (contentDescriptionRes ?: textRes))
+                            contentDescription = stringResource(
+                                id = (contentDescriptionRes ?: textRes)
+                            )
                         )
                     }
                     Text(stringResource(id = textRes))

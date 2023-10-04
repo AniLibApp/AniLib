@@ -9,6 +9,7 @@ import com.revolgenx.anilib.airing.data.source.AiringSchedulePagingSource
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 import com.revolgenx.anilib.type.AiringSort
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
@@ -61,21 +62,15 @@ class AiringScheduleViewModel(private val service: AiringScheduleService) :
         refresh()
     }
 
-    fun updateStartDate(startDate:LocalDate){
-        startDateTime = startDate.atStartOfDay(ZoneId.systemDefault()).with(
-            LocalTime.MIN
-        )
+    fun updateStartDate(startDate:Long){
+        startDateTime = Instant.ofEpochMilli(startDate).atZone(ZoneId.systemDefault()).with(LocalTime.MIN)
         updateDateTime()
         refresh()
     }
 
-    fun updateDates(startDate: LocalDate, endDate: LocalDate){
-        startDateTime = startDate.atStartOfDay(ZoneId.systemDefault()).with(
-            LocalTime.MIN
-        )
-        endDateTime =
-            endDate.atTime(LocalTime.MAX).with(LocalTime.MAX).atZone(ZoneId.systemDefault())
-
+    fun updateDates(startDate: Long, endDate: Long){
+        startDateTime = Instant.ofEpochMilli(startDate).atZone(ZoneId.systemDefault()).with(LocalTime.MIN)
+        endDateTime = Instant.ofEpochMilli(endDate).atZone(ZoneId.systemDefault()).with(LocalTime.MAX)
         updateDateTime()
         refresh()
     }

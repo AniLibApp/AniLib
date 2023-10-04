@@ -28,7 +28,7 @@ class AuthDataStore(override val dataStore: PreferencesDataStore) : BasePreferen
         prefKey = userIdKey
     )
 
-    val isLoggedIn = userId.mapNullable().map { it != null }
+    val isLoggedIn = userId.map().map { it != null }
 
     @Composable
     fun isLoggedIn(): Boolean {

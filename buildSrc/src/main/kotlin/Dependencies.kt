@@ -12,7 +12,7 @@ object PackagingOptions {
 
 object Libs{
     val composeUi = "1.5.0"
-    val material = "1.2.0-alpha07"
+    val material = "1.2.0-alpha08"
     val voyager = "1.0.0-rc05"
     val timber = "5.0.1"
     val koin = "3.4.1"

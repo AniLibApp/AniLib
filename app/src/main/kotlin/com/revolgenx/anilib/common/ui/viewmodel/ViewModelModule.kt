@@ -28,6 +28,8 @@ import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationType
 import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
+import com.revolgenx.anilib.setting.ui.viewmodel.AppearanceSettingsViewModel
+import com.revolgenx.anilib.setting.ui.viewmodel.GeneralSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.MediaSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.NotificationSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
@@ -191,6 +193,8 @@ val viewModelModules = module {
 
     //settings
     viewModel { SettingsViewModel(get()) }
+    viewModel { GeneralSettingsViewModel(get()) }
+    viewModel { AppearanceSettingsViewModel(get()) }
     viewModel { MediaSettingsViewModel(get(), get(), get()) }
     viewModel { NotificationSettingsViewModel(get(), get()) }
 

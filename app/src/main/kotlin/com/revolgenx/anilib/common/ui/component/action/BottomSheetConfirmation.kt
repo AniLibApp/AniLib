@@ -13,28 +13,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.util.OnClick
 import anilib.i18n.R as I18nR
 
 
 @Composable
-fun BottomSheetConfirmationAction(
+fun BottomSheetConfirmation(
     @StringRes positiveTextRes: Int = I18nR.string.filter,
     @StringRes negativeTextRes: Int = I18nR.string.cancel,
-    onPositiveClicked: (() -> Unit)?,
-    onNegativeClicked: (() -> Unit)?
+    confirmEnabled: Boolean = true,
+    dismissClicked: OnClick,
+    confirmClicked: OnClick
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(PaddingValues(horizontal = 8.dp)),
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        OutlinedButton(onClick = onNegativeClicked ?: {}) {
+        OutlinedButton(onClick = dismissClicked) {
             Text(stringResource(id = negativeTextRes))
         }
-        Button(onClick = onPositiveClicked ?: {}) {
+        Button(
+            onClick = confirmClicked,
+            enabled = confirmEnabled
+        ) {
             Text(stringResource(id = positiveTextRes))
         }
     }
 }
+
+

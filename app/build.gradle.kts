@@ -195,10 +195,6 @@ dependencies {
     implementation("org.greenrobot:eventbus:3.3.1")
 
 
-    //sheets
-    implementation("com.maxkeppeler.sheets-compose-dialogs:core:${Libs.sheets}")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:${Libs.sheets}")
-
     //browser
     implementation("androidx.browser:browser:${Libs.customTabs}")
 
