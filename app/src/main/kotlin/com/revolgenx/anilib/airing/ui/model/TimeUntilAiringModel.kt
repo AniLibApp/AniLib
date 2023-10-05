@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 import anilib.i18n.R as I18nR
 
 
-class TimeUntilAiringModel(time: Long = 0) {
+class TimeUntilAiringModel(time: Long) {
     var oldTime: Long = 0
     var time: Long = 0
         set(value) {
@@ -17,6 +17,8 @@ class TimeUntilAiringModel(time: Long = 0) {
             min = value
             sec = value
         }
+
+    val alreadyAired get() = time < 1
 
     var day: Long = 0
         private set(value) {

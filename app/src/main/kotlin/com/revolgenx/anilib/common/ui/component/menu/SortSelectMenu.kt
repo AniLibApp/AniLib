@@ -87,21 +87,14 @@ fun SortSelectMenu(
             ),
         )
 
-
-        val menuHeight = 40.dp
-        val entriesSize = entries.size
-        val menuItemHeight = menuHeight * if (entriesSize > 10) 10 else entriesSize
-
         DropdownMenu(
             modifier = modifier
-                .exposedDropdownSize()
-                .height(height = menuItemHeight),
+                .exposedDropdownSize(),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
             entries.forEachIndexed { index, s ->
                 DropdownMenuItem(
-                    modifier = Modifier.height(menuHeight),
                     text = { Text(s.title) },
                     onClick = {
                         if (selectedItem != s) {

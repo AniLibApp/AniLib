@@ -14,12 +14,12 @@ import java.time.ZoneOffset
 data class AiringScheduleModel(
     val id: Int = -1,
     val airingAt: Int = -1,
-    val airingAtModel: AiringAtModel? = null,
+    val airingAtModel: AiringAtModel,
     val episode: Int = -1,
     val media: MediaModel? = null,
     val mediaId: Int = -1,
     val timeUntilAiring: Int = -1,
-    val timeUntilAiringModel: TimeUntilAiringModel? = null,
+    val timeUntilAiringModel: TimeUntilAiringModel,
     val airingScheduleTimer: AiringScheduleTimer? = null
 ) : BaseModel
 

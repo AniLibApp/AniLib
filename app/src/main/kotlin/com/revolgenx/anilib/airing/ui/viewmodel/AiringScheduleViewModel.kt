@@ -28,8 +28,7 @@ class AiringScheduleViewModel(private val service: AiringScheduleService) :
     override var field by mutableStateOf(
         AiringScheduleField(
             airingGreaterThan = startDateTime.toEpochSecond().toInt(),
-            airingLessThan = endDateTime.toEpochSecond().toInt(),
-            sort = AiringSort.TIME
+            airingLessThan = endDateTime.toEpochSecond().toInt()
         )
     )
 
@@ -64,6 +63,7 @@ class AiringScheduleViewModel(private val service: AiringScheduleService) :
 
     fun updateStartDate(startDate:Long){
         startDateTime = Instant.ofEpochMilli(startDate).atZone(ZoneId.systemDefault()).with(LocalTime.MIN)
+        endDateTime = Instant.ofEpochMilli(startDate).atZone(ZoneId.systemDefault()).with(LocalTime.MAX)
         updateDateTime()
         refresh()
     }

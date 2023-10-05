@@ -12,8 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -44,7 +45,9 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.data.field.AiringScheduleField
+import com.revolgenx.anilib.airing.ui.model.AiringAtModel
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
+import com.revolgenx.anilib.airing.ui.model.AiringScheduleTimer
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.ext.isNull
@@ -56,6 +59,7 @@ import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.common.Header
+import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.date.CalendarBottomSheet
 import com.revolgenx.anilib.common.ui.component.date.CalendarRangeBottomSheet
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
@@ -64,6 +68,8 @@ import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -290,13 +296,10 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
             ) {
                 Column {
                     MediaTitleType { type ->
-                        Text(
-                            media.title?.title(type).naText(),
-                            modifier = Modifier
-                                .padding(horizontal = 2.dp, vertical = 3.dp),
-                            overflow = TextOverflow.Ellipsis,
-                            maxLines = 2,
-                            style = MaterialTheme.typography.titleMedium
+                        MediumText(
+                            text = media.title?.title(type).naText(),
+                            fontSize = 16.sp,
+                            lineHeight = 18.sp
                         )
                     }
                     Row(
@@ -319,17 +322,37 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                         color = primary,
                     )
                 }
-                val epAiringIn = if (media.episodes.isNull()) {
-                    stringResource(id = I18nR.string.ep_s_airing_in).format(airingScheduleModel.episode)
+
+                val timeUntilAiringModel = airingScheduleModel.timeUntilAiringModel
+                val epAiringTitle = if (media.episodes.isNull()) {
+                    val epAiredRes = if (timeUntilAiringModel.alreadyAired) {
+                        I18nR.string.ep_s_aired_on
+                    } else {
+                        I18nR.string.ep_s_airing_in
+                    }
+                    stringResource(id = epAiredRes).format(airingScheduleModel.episode)
                 } else {
-                    stringResource(id = I18nR.string.ep_s_of_s_airing_in).format(
+                    val epAiredRes = if (timeUntilAiringModel.alreadyAired) {
+                        I18nR.string.ep_s_of_s_aired_on
+                    } else {
+                        I18nR.string.ep_s_of_s_airing_in
+                    }
+                    stringResource(id = epAiredRes).format(
                         airingScheduleModel.episode,
                         media.episodes
                     )
                 }
                 Column {
-                    Text(epAiringIn, color = onSurfaceVariant)
-                    AiringScheduleTimer(airingScheduleModel)
+                    Text(
+                        text = epAiringTitle,
+                        color = onSurfaceVariant,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 12.sp
+                    )
+                    AiringScheduleTimer(
+                        airingScheduleModel.airingAtModel,
+                        airingScheduleModel.airingScheduleTimer!!,
+                    )
                 }
             }
         }
@@ -337,20 +360,29 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
 }
 
 @Composable
-private fun AiringScheduleTimer(airingScheduleModel: AiringScheduleModel) {
-    val airingScheduleTimer = airingScheduleModel.airingScheduleTimer ?: return
-    DisposableEffect(airingScheduleModel.id) {
+private fun AiringScheduleTimer(
+    airingAtModel: AiringAtModel,
+    airingScheduleTimer: AiringScheduleTimer
+) {
+    val context = localContext()
+    DisposableEffect(airingScheduleTimer) {
         airingScheduleTimer.start()
         onDispose {
             airingScheduleTimer.stop()
         }
     }
+    val scheduleTimeText = if (airingScheduleTimer.timeUntilAiringModel.alreadyAired) {
+        airingAtModel.airedAt
+    } else {
+        airingScheduleTimer.timeLeft.value.formatString(context)
+    }
     Text(
-        text = airingScheduleTimer.timeLeft.value.formatString(localContext()),
+        text = scheduleTimeText,
         fontSize = 18.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 20.sp,
         color = onSurfaceVariant,
+        letterSpacing = 0.2.sp
     )
 }
 
@@ -393,7 +425,6 @@ private fun AiringScheduleFilterBottomSheetContent(
 ) {
     Column(
         modifier = modifier
-            .padding(horizontal = 16.dp)
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
@@ -406,38 +437,63 @@ private fun AiringScheduleFilterBottomSheetContent(
                 dismiss?.invoke()
             }
         )
-        LazyColumn() {
-            item {
-                val sort = field.sort ?: return@item
-                val selectedSort = (sort.ordinal + 1) / 2
-                val isDesc = sort.rawValue.endsWith("_DESC")
-                val selectedSortIndex = if (isDesc) selectedSort - 1 else selectedSort
-                val selectedSortOrder = if (isDesc) AlSortOrder.DESC else AlSortOrder.ASC
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            AiringSortMenu(field)
+            TextSwitch(
+                title = stringResource(id = I18nR.string.include_already_aired),
+                checked = !field.notYetAired,
+                onCheckedChanged = {
+                    field.notYetAired = !it
+                })
+            ShowIfLoggedIn {
+                TextSwitch(
+                    title = stringResource(id = I18nR.string.show_only_from_your_watching_list),
+                    checked = field.showOnlyWatching,
+                    onCheckedChanged = {
+                        field.showOnlyWatching = !it
+                    })
 
-                val sortMenus =
-                    stringArrayResource(id = R.array.airing_sort).mapIndexed { index, s ->
-                        AlSortMenuItem(
-                            s,
-                            if (index == selectedSortIndex) selectedSortOrder else AlSortOrder.NONE
-                        )
-                    }
-
-                SortSelectMenu(
-                    label = stringResource(id = I18nR.string.sort),
-                    entries = sortMenus,
-                    allowNone = false
-                ) { index, selectedItem ->
-                    selectedItem ?: return@SortSelectMenu
-                    val order = selectedItem.order
-                    val airingIndex = index * 2
-                    val airingSort: AiringSort =
-                        AiringSort.values()[if (order == AlSortOrder.DESC) airingIndex + 1 else airingIndex]
-                    field.sort = airingSort
-                }
+                TextSwitch(
+                    title = stringResource(id = I18nR.string.show_only_from_your_planning_list),
+                    checked = field.showOnlyPlanning,
+                    onCheckedChanged = {
+                        field.showOnlyPlanning = !it
+                    })
             }
         }
     }
+}
 
+@Composable
+private fun AiringSortMenu(field: AiringScheduleField) {
+    val selectedSort = (field.sort.ordinal + 1) / 2
+    val isDesc = field.sort.rawValue.endsWith("_DESC")
+    val selectedSortIndex = if (isDesc) selectedSort - 1 else selectedSort
+    val selectedSortOrder = if (isDesc) AlSortOrder.DESC else AlSortOrder.ASC
+    val sortMenus =
+        stringArrayResource(id = R.array.airing_sort).mapIndexed { index, s ->
+            AlSortMenuItem(
+                s,
+                if (index == selectedSortIndex) selectedSortOrder else AlSortOrder.NONE
+            )
+        }
+
+    SortSelectMenu(
+        label = stringResource(id = I18nR.string.sort),
+        entries = sortMenus,
+        allowNone = false
+    ) { index, selectedItem ->
+        selectedItem ?: return@SortSelectMenu
+        val order = selectedItem.order
+        val airingIndex = index * 2
+        val airingSort: AiringSort =
+            AiringSort.values()[if (order == AlSortOrder.DESC) airingIndex + 1 else airingIndex]
+        field.sort = airingSort
+    }
 }
 
 

@@ -64,6 +64,7 @@ fun CalendarRangeBottomSheet(
     openBottomSheet: MutableState<Boolean>,
     initialSelectedStartDateMillis: Long?,
     initialSelectedEndDateMillis: Long?,
+    rangeLessThan: Long? = 604800000,
     onDateRangeSelected: (selectedStartDateMillis: Long, selectedEndDateMillis: Long) -> Unit
 ) {
     if (openBottomSheet.value) {
@@ -73,7 +74,7 @@ fun CalendarRangeBottomSheet(
         )
 
         val confirmEnabled = remember {
-            derivedStateOf { datePickerState.selectedEndDateMillis != null && (datePickerState.selectedEndDateMillis!! - datePickerState.selectedStartDateMillis!!) <= 604800000 }
+            derivedStateOf { datePickerState.selectedEndDateMillis != null && rangeLessThan?.let { (datePickerState.selectedEndDateMillis!! - datePickerState.selectedStartDateMillis!!) < rangeLessThan } ?: true }
         }
 
         ModalBottomSheet(

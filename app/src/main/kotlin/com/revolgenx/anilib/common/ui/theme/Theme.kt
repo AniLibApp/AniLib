@@ -133,12 +133,8 @@ fun AppTheme(
         colorScheme = colorScheme,
         typography = Typography,
         content = {
-            CompositionLocalProvider(
-                LocalTextStyle provides typography().bodyMedium
-            ) {
-                Surface {
-                    content()
-                }
+            Surface {
+                content()
             }
         }
     )

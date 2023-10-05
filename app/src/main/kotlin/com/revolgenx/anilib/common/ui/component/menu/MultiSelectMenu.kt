@@ -77,21 +77,15 @@ fun MultiSelectMenu(
         )
 
 
-        val menuHeight = 40.dp
-        val entriesSize = entries.size
-        val menuItemHeight = menuHeight.plus(4.dp) * if (entriesSize > 10) 10 else entriesSize
-
         DropdownMenu(
             modifier = modifier
-                .exposedDropdownSize()
-                .height(height = menuItemHeight),
+                .exposedDropdownSize(),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
 
             mutableEntries.forEach { s ->
                 DropdownMenuItem(
-                    modifier = Modifier.height(menuHeight),
                     text = { Text(s.value.second) },
                     onClick = {
                         s.value = s.value.copy(first = !s.value.first)

@@ -6,10 +6,10 @@ import com.revolgenx.anilib.type.AiringSort
 import com.revolgenx.anilib.type.MediaListStatus
 
 data class AiringScheduleField(
-    val notYetAired: Boolean = true,
+    var notYetAired: Boolean = true,
     val airingGreaterThan: Int? = null,
     val airingLessThan: Int? = null,
-    var sort: AiringSort? = null,
+    var sort: AiringSort = AiringSort.TIME,
     var showOnlyWatching: Boolean = false,
     var showOnlyPlanning: Boolean = false,
     var isWeeklyTypeDate: Boolean = false,

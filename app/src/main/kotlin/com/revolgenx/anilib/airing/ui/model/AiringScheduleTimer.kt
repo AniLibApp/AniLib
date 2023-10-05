@@ -23,14 +23,14 @@ data class AiringScheduleTimer(
     val timeLeft = mutableStateOf(timeUntilAiringModel, policy = timeLeftPolicy)
 
     override fun run() {
-        if (timeUntilAiringModel.time <= 0) return
+        if (timeUntilAiringModel.alreadyAired) return
         timeUntilAiringModel.time -= 1
         timeLeft.value = timeUntilAiringModel
         handler.postDelayed(this, 1000)
     }
 
     fun start() {
-        if (timeUntilAiringModel.time <= 0) return
+        if (timeUntilAiringModel.alreadyAired) return
         timeUntilAiringModel.time = airingAt.minus(Instant.now().epochSecond)
         timeLeft.value = timeUntilAiringModel
         handler.postDelayed(this, 1000)
